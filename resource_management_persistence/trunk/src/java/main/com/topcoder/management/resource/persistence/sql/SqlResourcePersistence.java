@@ -33,7 +33,7 @@ import com.topcoder.management.resource.persistence.ResourcePersistenceException
  * concern.
  * </p>
  *
- * @author aubergineanode, Chenhong, bendlund, TCSDEVELOPER
+ * @author aubergineanode, Chenhong, bendlund, mittu
  * @version 1.1
  * @since 1.0
  */

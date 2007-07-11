@@ -4,6 +4,7 @@
 package com.topcoder.management.resource.persistence.sql;
 
 import java.io.File;
+import java.util.Arrays;
 
 import junit.framework.TestCase;
 
@@ -19,8 +20,9 @@ import com.topcoder.util.config.ConfigManager;
  * Unit test cases for class <code>AbstractResourcePersistence </code>. In this test class, the
  * functionality of this component will be tested.
  *
- * @author Chenhong, TCSDEVELOPER
- * @version 1.1
+ * @author Chenhong, mittu, TCSDEVELOPER
+ * @version 1.2
+ * @since 1.1
  */
 public class TestAbstractResourcePersistence extends TestCase {
 
@@ -37,8 +39,7 @@ public class TestAbstractResourcePersistence extends TestCase {
     /**
      * Set up the environment. Create AbstractResourcePersistence instance for test.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void setUp() throws Exception {
         ConfigManager cm = ConfigManager.getInstance();
@@ -51,6 +52,8 @@ public class TestAbstractResourcePersistence extends TestCase {
         String namespace = "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl";
 
         factory = new DBConnectionFactoryImpl(namespace);
+        persistence1 = new SqlResourcePersistence(factory, "sysuser");
+        persistence2 = new SqlResourcePersistence(factory, "sysuser");
 
         DBTestUtil.clearTables();
 
@@ -60,10 +63,10 @@ public class TestAbstractResourcePersistence extends TestCase {
     /**
      * Tear down the environment. Clear all namespaces in the config manager.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void tearDown() throws Exception {
+        DBTestUtil.clearTables();
         DBTestUtil.clearConfigManager();
     }
 
@@ -85,10 +88,9 @@ public class TestAbstractResourcePersistence extends TestCase {
     /**
      * Test method <code>void addResource(Resource resource) </code>.
      *
-     * In this test case, the resource has null submission and no external properties.
+     * In this test case, the resource has one submission and no external properties.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testAddResource_1() throws Exception {
 
@@ -97,7 +99,7 @@ public class TestAbstractResourcePersistence extends TestCase {
 
         ResourceRole role = DBTestUtil.createResourceRole(5);
 
-        r.setSubmission(null);
+        r.addSubmission(new Long(121));
 
         persistence1.addResourceRole(role);
 
@@ -108,7 +110,6 @@ public class TestAbstractResourcePersistence extends TestCase {
         Resource ret = persistence1.loadResource(r.getId());
         assertNotNull("The resource got back should not be null.", ret);
 
-        assertNull("The submission should be null.", ret.getSubmission());
         assertTrue("The external properties should be empty.", ret.getAllProperties().isEmpty());
     }
 
@@ -118,8 +119,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * In this test case, the resource has null submission and no external properties, project and phase is
      * also not set.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testAddResource_2() throws Exception {
         // create a resource instance.
@@ -129,7 +129,7 @@ public class TestAbstractResourcePersistence extends TestCase {
 
         r.setPhase(null);
         r.setProject(null);
-        r.setSubmission(null);
+        r.setSubmissions(new Long[0]);
 
         persistence1.addResourceRole(role);
 
@@ -141,18 +141,16 @@ public class TestAbstractResourcePersistence extends TestCase {
         assertNotNull("The resource got back should not be null.", ret);
         assertNull("The project should be null.", ret.getProject());
         assertNull("The phase should be null.", ret.getPhase());
-
-        assertNull("The submission should be null.", ret.getSubmission());
+        assertEquals("The submissions should be empty", 0, ret.getSubmissions().length);
         assertTrue("The external properties should be empty.", ret.getAllProperties().isEmpty());
     }
 
     /**
      * Test method <code>void addResource(Resource resource) </code>.
      *
-     * In this test case, the submission will be set and also with external properties.
+     * In this test case, the submissions will be set and also with external properties.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testAddResource_3() throws Exception {
         DBTestUtil.insertIntoResource_info_type_lu(11, "name");
@@ -160,7 +158,8 @@ public class TestAbstractResourcePersistence extends TestCase {
         // create a resource instance.
         Resource r = DBTestUtil.createResource(11, 1, 1);
 
-        r.setSubmission(new Long(121));
+        r.addSubmission(new Long(121));
+        r.addSubmission(new Long(1200));
 
         r.setProperty("name", new Integer(100));
 
@@ -175,8 +174,14 @@ public class TestAbstractResourcePersistence extends TestCase {
         Resource ret = persistence1.loadResource(r.getId());
 
         assertNotNull("The resource got back should not be null.", ret);
-        assertEquals("The submission should be 121", new Long(121), ret.getSubmission());
+        Long[] submissions = ret.getSubmissions();
 
+        assertEquals("The submissions should be as expected", 2, submissions.length);
+        if (submissions[0].longValue() == 121) {
+            assertEquals("The submissions should be as expected", 1200, submissions[1].longValue());
+        } else {
+            assertEquals("The submissions should be as expected", 121, submissions[1].longValue());
+        }
         assertEquals("The value for'name' should be 100", new Integer(100), new Integer(ret.getProperty(
             "name").toString()));
     }
@@ -186,8 +191,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      *
      * In this test case, the submission will be set and also with multiple external properties.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testAddResource_4() throws Exception {
         DBTestUtil.insertIntoResource_info_type_lu(11, "name");
@@ -196,7 +200,8 @@ public class TestAbstractResourcePersistence extends TestCase {
         // create a resource instance.
         Resource r = DBTestUtil.createResource(11, 1, 1);
 
-        r.setSubmission(new Long(121));
+        r.addSubmission(new Long(121));
+        r.addSubmission(new Long(1200));
 
         r.setProperty("name", "kaka");
         r.setProperty("height", "185cm");
@@ -213,7 +218,14 @@ public class TestAbstractResourcePersistence extends TestCase {
         Resource ret = persistence1.loadResource(r.getId());
 
         assertNotNull("The resource got back should not be null.", ret);
-        assertEquals("The submission should be 121", new Long(121), ret.getSubmission());
+
+        Long[] submissions = ret.getSubmissions();
+        assertEquals("The submissions should be as expected", 2, submissions.length);
+        if (submissions[0].longValue() == 121) {
+            assertEquals("The submissions should be as expected", 1200, submissions[1].longValue());
+        } else {
+            assertEquals("The submissions should be as expected", 121, submissions[1].longValue());
+        }
 
         assertEquals("The value for'name' should be kaka", "kaka", ret.getProperty("name"));
         assertEquals("The value for'height' should be 185cm", "185cm", ret.getProperty("height"));
@@ -226,8 +238,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * In this test case, the resource instance will have property which is not configged in the
      * resource_info_type_lu table, such properties will be ignored during inserting the resource.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testAddResource_5() throws Exception {
         // Only have 'name' and 'weight' resource_info_type.
@@ -237,7 +248,8 @@ public class TestAbstractResourcePersistence extends TestCase {
         // create a resource instance.
         Resource r = DBTestUtil.createResource(11, 1, 1);
 
-        r.setSubmission(new Long(121));
+        r.addSubmission(new Long(121));
+        r.addSubmission(new Long(1200));
 
         r.setProperty("name", "kaka");
         r.setProperty("height", "185cm");
@@ -258,7 +270,13 @@ public class TestAbstractResourcePersistence extends TestCase {
         Resource ret = persistence1.loadResource(r.getId());
 
         assertNotNull("The resource got back should not be null.", ret);
-        assertEquals("The submission should be 121", new Long(121), ret.getSubmission());
+        Long[] submissions = ret.getSubmissions();
+        assertEquals("The submissions should be as expected", 2, submissions.length);
+        if (submissions[0].longValue() == 121) {
+            assertEquals("The submissions should be as expected", 1200, submissions[1].longValue());
+        } else {
+            assertEquals("The submissions should be as expected", 121, submissions[1].longValue());
+        }
 
         assertEquals("The value for'name' should be kaka", "kaka", ret.getProperty("name"));
         assertEquals("The value for'height' should be 185cm", "185cm", ret.getProperty("height"));
@@ -271,8 +289,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * Test method <code> void deleteResource(Resource resource)  </code>. In this test case, the resource id
      * does not exist in the database.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testDeleteResource_1() throws Exception {
         Resource r = DBTestUtil.createResource(100, 1, 1);
@@ -283,8 +300,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * Test method <code> void deleteResource(Resource resource)  </code>. In this test case, the resource id
      * exists in the database.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testDeleteResource_2() throws Exception {
         DBTestUtil.insertIntoResource_info_type_lu(11, "name");
@@ -292,7 +308,8 @@ public class TestAbstractResourcePersistence extends TestCase {
         // create a resource instance.
         Resource r = DBTestUtil.createResource(11, 1, 1);
 
-        r.setSubmission(new Long(121));
+        r.addSubmission(new Long(121));
+        r.addSubmission(new Long(1200));
 
         r.setProperty("name", new Integer(100));
 
@@ -318,8 +335,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * Test method <code>void updateResource(Resource resource) </code>. The external property is updated
      * from new Integer(100) to "topcoder".
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testUpdateResource_1() throws Exception {
         DBTestUtil.insertIntoResource_info_type_lu(11, "name");
@@ -327,7 +343,8 @@ public class TestAbstractResourcePersistence extends TestCase {
         // create a resource instance.
         Resource r = DBTestUtil.createResource(11, 1, 1);
 
-        r.setSubmission(new Long(121));
+        r.addSubmission(new Long(121));
+        r.addSubmission(new Long(122));
 
         r.setProperty("name", new Integer(100));
 
@@ -339,7 +356,6 @@ public class TestAbstractResourcePersistence extends TestCase {
         persistence1.addResource(r);
 
         r.setProperty("name", "topcoder");
-
         persistence1.updateResource(r);
 
         Resource ret = persistence1.loadResource(r.getId());
@@ -350,8 +366,7 @@ public class TestAbstractResourcePersistence extends TestCase {
     /**
      * Test method <code>void updateResource(Resource resource) </code>. The submission is updated to 1200.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testUpdateResource_2() throws Exception {
 
@@ -360,7 +375,7 @@ public class TestAbstractResourcePersistence extends TestCase {
         // create a resource instance.
         Resource r = DBTestUtil.createResource(11, 1, 1);
 
-        r.setSubmission(new Long(121));
+        r.addSubmission(new Long(121));
         r.setProperty("name", new Integer(100));
 
         ResourceRole role = DBTestUtil.createResourceRole(5);
@@ -370,14 +385,15 @@ public class TestAbstractResourcePersistence extends TestCase {
         // add resource to database.
         persistence1.addResource(r);
 
-        r.setSubmission(new Long(1200));
+        r.removeSubmission(new Long(121));
+        r.addSubmission(new Long(1200));
         r.setProject(new Long(2)); // change project id from 1 to 2
         r.setPhase(new Long(3)); // change phase id from 1 to 3.
         persistence1.updateResource(r);
 
         Resource ret = persistence1.loadResource(r.getId());
 
-        assertEquals("The summission now should be 1200.", new Long(1200), ret.getSubmission());
+        assertEquals("The summission now should be 1200.", new Long(1200), ret.getSubmissions()[0]);
         assertEquals("The project id now should be 2.", new Long(2), ret.getProject());
         assertEquals("The phase id now should be 3.", new Long(3), ret.getPhase());
     }
@@ -387,8 +403,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      *
      * This test will focus on testing the updating the submission of resource instance.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testUpdateResource_3() throws Exception {
 
@@ -397,41 +412,42 @@ public class TestAbstractResourcePersistence extends TestCase {
         // create a resource instance.
         Resource r = DBTestUtil.createResource(11, 1, 1);
 
-        r.setSubmission(new Long(121));
+        r.addSubmission(new Long(121));
         ResourceRole role = DBTestUtil.createResourceRole(5);
         persistence1.addResourceRole(role);
         // add resource to database.
         persistence1.addResource(r);
 
         // set the submission to 1200.
-        r.setSubmission(new Long(1200));
+        r.removeSubmission(new Long(121));
+        r.addSubmission(new Long(1200));
         persistence1.updateResource(r);
 
         Resource ret = persistence1.loadResource(r.getId());
-        assertEquals("The summission now should be 1200.", new Long(1200), ret.getSubmission());
+        assertEquals("The summission now should be 1200.", new Long(1200), ret.getSubmissions()[0]);
 
-        // Set the submission to null.
-        r.setSubmission(null);
+        // Clear all the submissions.
+        r.clearSubmissions();
         persistence1.updateResource(r);
 
         // Load the resource and validate its submission is null.
         ret = persistence1.loadResource(r.getId());
-        assertNull("The submission is null.", ret.getSubmission());
+        assertFalse("All the submissions are cleared.", ret.hasSubmissions());
 
         // Set the submission to 121 and update again.
-        r.setSubmission(new Long(121));
+        r.addSubmission(new Long(121));
         persistence1.updateResource(r);
 
         // Load the resource and validate its submission is 121.
         ret = persistence1.loadResource(r.getId());
-        assertEquals("The summission now should be 121.", new Long(121), ret.getSubmission());
+        assertEquals("The summission now should be 121.", new Long(121), ret.getSubmissions()[0]);
 
         // Simply call update again, though the submission is not modified.
         persistence1.updateResource(r);
 
         // Load the resource and validate its submission is 121.
         ret = persistence1.loadResource(r.getId());
-        assertEquals("The summission now should be 121.", new Long(121), ret.getSubmission());
+        assertEquals("The summission now should be 121.", new Long(121), ret.getSubmissions()[0]);
     }
 
     /**
@@ -439,8 +455,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      *
      * This test will focus on testing the updating the external properties of resource instance.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testUpdateResource_4() throws Exception {
         DBTestUtil.insertIntoResource_info_type_lu(11, "name");
@@ -500,10 +515,54 @@ public class TestAbstractResourcePersistence extends TestCase {
     }
 
     /**
+     * Test method <code>void updateResource(Resource resource) </code> for accuracy.
+     *
+     * @throws Exception to junit.
+     */
+    public void testUpdateResource_5() throws Exception {
+
+        DBTestUtil.insertIntoResource_info_type_lu(11, "name");
+
+        // create a resource instance.
+        Resource r = DBTestUtil.createResource(11, 1, 1);
+
+        r.addSubmission(new Long(121));
+        r.addSubmission(new Long(122));
+        r.addSubmission(new Long(123));
+        r.setProperty("name", new Integer(100));
+
+        ResourceRole role = DBTestUtil.createResourceRole(5);
+
+        persistence1.addResourceRole(role);
+
+        // add resource to database.
+        persistence1.addResource(r);
+
+        r.removeSubmission(new Long(121));
+        r.addSubmission(new Long(1200));
+        r.addSubmission(new Long(1201));
+        r.setProject(new Long(2)); // change project id from 1 to 2
+        r.setPhase(new Long(3)); // change phase id from 1 to 3.
+        persistence1.updateResource(r);
+
+        Resource ret = persistence1.loadResource(r.getId());
+
+        assertEquals("The summissions should be as expected.", 4, ret.countSubmissions());
+        Long[] submissions = ret.getSubmissions();
+        Arrays.sort(submissions);
+        assertEquals("The summission now should be 122.", new Long(122), submissions[0]);
+        assertEquals("The summission now should be 123.", new Long(123), submissions[1]);
+        assertEquals("The summission now should be 1200.", new Long(1200), submissions[2]);
+        assertEquals("The summission now should be 1201.", new Long(1201), submissions[3]);
+
+        assertEquals("The project id now should be 2.", new Long(2), ret.getProject());
+        assertEquals("The phase id now should be 3.", new Long(3), ret.getPhase());
+    }
+
+    /**
      * Test method <code> Resource loadResource(long resourceId) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      *
      */
     public void testLoadResource_1() throws Exception {
@@ -514,8 +573,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * Test method <code> Resource loadResource(long resourceId) </code>. This test case also test the update
      * resource accuracy. The phase, project of the resource are updated to null.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      *
      */
     public void testLoadResource_2() throws Exception {
@@ -525,7 +583,7 @@ public class TestAbstractResourcePersistence extends TestCase {
         // create a resource instance.
         Resource r = DBTestUtil.createResource(11, 1, 1);
 
-        r.setSubmission(new Long(121));
+        r.addSubmission(new Long(121));
 
         r.setProperty("name", new Integer(100));
 
@@ -536,7 +594,7 @@ public class TestAbstractResourcePersistence extends TestCase {
         // add resource to database.
         persistence1.addResource(r);
 
-        r.setSubmission(new Long(1200));
+        r.addSubmission(new Long(1200));
         r.setPhase(null);
         r.setProject(null);
         r.setModificationUser("me");
@@ -545,7 +603,15 @@ public class TestAbstractResourcePersistence extends TestCase {
 
         Resource ret = persistence1.loadResource(r.getId());
 
-        assertEquals("The summission now should be 1200.", new Long(1200), ret.getSubmission());
+        Long[] submissions = ret.getSubmissions();
+
+        assertEquals("The submissions should be as expected", 2, submissions.length);
+        if (submissions[0].longValue() == 121) {
+            assertEquals("The submissions should be as expected", 1200, submissions[1].longValue());
+        } else {
+            assertEquals("The submissions should be as expected", 121, submissions[1].longValue());
+        }
+
         assertNull("The phase should be null.", ret.getPhase());
         assertNull("The project should be null.", ret.getProject());
         assertEquals("The modificationUser should be 'me' now", "me", ret.getModificationUser());
@@ -556,8 +622,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * <code>void addNotification(long user, long project, long notificationType, String operator)</code>.
      * The notificationType instance should be got from table notification_type_lu.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testAddNotification() throws Exception {
         NotificationType type = DBTestUtil.createNotificationType(2);
@@ -577,8 +642,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * Test method
      * <code>void removeNotification(long user, long project, long notificationType, String operator) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testRemoveNotification_1() throws Exception {
         NotificationType type = DBTestUtil.createNotificationType(2);
@@ -594,8 +658,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * In this test case, first add a Notification instance and check if it has been successfully added. Then
      * removed it and check if it does not exist any longer in the database.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testRemoveNotification_2() throws Exception {
         NotificationType type = DBTestUtil.createNotificationType(2);
@@ -619,8 +682,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * Test method <code>Notification loadNotification(long user, long project, long notificationType) </code>.
      * If there is no entry for user, project, notificationType, null will be returned.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testLoadNotification_1() throws Exception {
         Notification ret = persistence1.loadNotification(1, 1, 2);
@@ -631,8 +693,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * Test method <code>Notification loadNotification(long user, long project, long notificationType) </code>.
      * There is one notification in the database, it should be correctly loaded.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testLoadNotification_2() throws Exception {
 
@@ -652,8 +713,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * Test method <code>void addNotificationType(NotificationType notificationType) </code>. Add a
      * notificationType instance into the database, and get it back to compare.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testAddNotificationType() throws Exception {
 
@@ -671,8 +731,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * Test method <code>void deleteNotificationType(NotificationType notificationType) </code>. First add a
      * NotificationType into the database, delete it, and check if it can be loaded back or not.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testDeleteNotificationType() throws Exception {
 
@@ -699,8 +758,7 @@ public class TestAbstractResourcePersistence extends TestCase {
     /**
      * Test method <code> void updateNotificationType(NotificationType notificationType) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testUpdateNotificationType() throws Exception {
 
@@ -726,8 +784,7 @@ public class TestAbstractResourcePersistence extends TestCase {
     /**
      * Test method <code>NotificationType loadNotificationType(long notificationTypeId) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testLoadNotificationType() throws Exception {
 
@@ -746,8 +803,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * Test method <code>void addResourceRole(ResourceRole resourceRole) </code>. First add a ResourceRole,
      * then load it back to check if add method is correct.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testAddResourceRole() throws Exception {
         ResourceRole role = DBTestUtil.createResourceRole(100);
@@ -769,8 +825,7 @@ public class TestAbstractResourcePersistence extends TestCase {
     /**
      * Test method <code>void deleteResourceRole(ResourceRole resourceRole) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testDeleteResourceRole_1() throws Exception {
         ResourceRole role = DBTestUtil.createResourceRole(100);
@@ -786,8 +841,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * ResourceRole and check if it is added. Then delete the ResourceRole and reload to check if it is
      * deleted already.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testDeleteResourceRole_2() throws Exception {
         ResourceRole role = DBTestUtil.createResourceRole(100);
@@ -815,8 +869,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * Test method <code>void updateResourceRole(ResourceRole resourceRole)  </code>. Update the phaseType to
      * 2, name to "developer" and description to "test".
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testUpdateResourceRole() throws Exception {
         ResourceRole role = DBTestUtil.createResourceRole(100);
@@ -844,8 +897,7 @@ public class TestAbstractResourcePersistence extends TestCase {
     /**
      * Test method <code>ResourceRole loadResourceRole(long resourceRoleId) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testLoadResourceRole() throws Exception {
         ResourceRole role = DBTestUtil.createResourceRole(111);
@@ -872,8 +924,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * Test method <code>Resource[] loadResources(long[] resourceIds) </code>. In this test case, one
      * resource will be added into the database.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testLoadResources_1() throws Exception {
         DBTestUtil.insertIntoResource_info_type_lu(11, "name");
@@ -882,7 +933,8 @@ public class TestAbstractResourcePersistence extends TestCase {
         // create a resource instance.
         Resource r = DBTestUtil.createResource(11, 1, 1);
 
-        r.setSubmission(new Long(121));
+        r.addSubmission(new Long(121));
+        r.addSubmission(new Long(1200));
 
         r.setProperty("name", "kaka");
         r.setProperty("sex", "male");
@@ -898,7 +950,14 @@ public class TestAbstractResourcePersistence extends TestCase {
 
         Resource result = ret[0];
         assertEquals("The id should be 11", 11, result.getId());
-        assertEquals("The submission id should be 121", 121, result.getSubmission().longValue());
+        Long[] submissions = result.getSubmissions();
+        assertEquals("The submissions should be as expected", 2, submissions.length);
+        if (submissions[0].longValue() == 121) {
+            assertEquals("The submissions should be as expected", 1200, submissions[1].longValue());
+        } else {
+            assertEquals("The submissions should be as expected", 121, submissions[1].longValue());
+        }
+
         assertEquals("property 'name' value should be kaka", "kaka", result.getProperty("name"));
         assertEquals("property 'sex' value should be male", "male", result.getProperty("sex"));
     }
@@ -908,8 +967,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      *
      * In this test case, multiple resource instance will be loaded.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testLoadResources_2() throws Exception {
         DBTestUtil.insertIntoResource_info_type_lu(11, "name");
@@ -922,8 +980,11 @@ public class TestAbstractResourcePersistence extends TestCase {
         Resource r = DBTestUtil.createResource(11, 1, 1);
         Resource r2 = DBTestUtil.createResource(10, 1, 1);
 
-        r.setSubmission(new Long(121));
-        r2.setSubmission(new Long(1200));
+        r.addSubmission(new Long(121));
+        r.addSubmission(new Long(1200));
+        r2.addSubmission(new Long(1200));
+        r2.addSubmission(new Long(121));
+        r2.addSubmission(new Long(122));
 
         r.setProperty("name", new Integer(100));
         r.setProperty("name5", new Integer(1000));
@@ -954,6 +1015,17 @@ public class TestAbstractResourcePersistence extends TestCase {
 
         assertEquals("The value for name4 of the second resource should be integer 10", "10", ret[1]
             .getProperty("name4"));
+
+        Long[] submissions1 = ret[0].getSubmissions();
+        assertEquals("The submissions should be as expected", 2, submissions1.length);
+        if (submissions1[0].longValue() == 121) {
+            assertEquals("The submissions should be as expected", 1200, submissions1[1].longValue());
+        } else {
+            assertEquals("The submissions should be as expected", 121, submissions1[1].longValue());
+        }
+
+        Long[] submissions2 = ret[1].getSubmissions();
+        assertEquals("The submissions should be as expected", 3, submissions2.length);
     }
 
     /**
@@ -961,8 +1033,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      *
      * There is no resources in the table, should load no items.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testLoadResourcesNone() throws Exception {
 
@@ -975,8 +1046,7 @@ public class TestAbstractResourcePersistence extends TestCase {
     /**
      * Test method <code>NotificationType[] loadNotificationTypes(long[] notificationTypeIds) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      *
      */
     public void testLoadNotificationTypes() throws Exception {
@@ -995,8 +1065,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      *
      * The notification is cleared, nothing should be loaded.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      *
      */
     public void testLoadNotificationTypesNone() throws Exception {
@@ -1009,8 +1078,7 @@ public class TestAbstractResourcePersistence extends TestCase {
     /**
      * Test method <code>ResourceRole[] loadResourceRoles(long[] resourceRoleIds) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testLoadResourceRoles() throws Exception {
         ResourceRole role = DBTestUtil.createResourceRole(100);
@@ -1033,8 +1101,7 @@ public class TestAbstractResourcePersistence extends TestCase {
     /**
      * Test method <code>ResourceRole[] loadResourceRoles(long[] resourceRoleIds) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testLoadResourceRolesWith0ArrayArgumnet() throws Exception {
         ResourceRole role = DBTestUtil.createResourceRole(100);
@@ -1057,8 +1124,7 @@ public class TestAbstractResourcePersistence extends TestCase {
     /**
      * Test method <code>ResourceRole[] loadResourceRoles(long[] resourceRoleIds) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testLoadResourceRolesWith0ArrayArguments() throws Exception {
         ResourceRole role = DBTestUtil.createResourceRole(100);
@@ -1082,8 +1148,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * Test method
      * <code>Notification[] loadNotifications(long[] userIds, long[] projectIds, long[] notificationTypes) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testLoadNotifications() throws Exception {
 
@@ -1094,8 +1159,8 @@ public class TestAbstractResourcePersistence extends TestCase {
         persistence1.addNotification(1, 2, 2, "tc");
         persistence1.addNotification(2, 2, 2, "developer");
 
-        Notification[] ret = persistence1.loadNotifications(new long[] {1, 2}, new long[] {2, 2},
-            new long[] {2, 2});
+        Notification[] ret =
+            persistence1.loadNotifications(new long[] {1, 2}, new long[] {2, 2}, new long[] {2, 2});
 
         assertEquals("The size returned should be 2.", 2, ret.length);
     }
@@ -1104,8 +1169,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * Test method
      * <code>Notification[] loadNotifications(long[] userIds, long[] projectIds, long[] notificationTypes) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testLoadNotificationsWithAll0ArrayArguments() throws Exception {
         NotificationType type = DBTestUtil.createNotificationType(2);
@@ -1125,12 +1189,11 @@ public class TestAbstractResourcePersistence extends TestCase {
      * <code>Notification[] loadNotifications(long[] userIds, long[] projectIds, long[] notificationTypes) </code>.
      * The notification table is clear, should load no notifications.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testLoadNotificationsNone() throws Exception {
-        Notification[] ret = persistence1.loadNotifications(new long[] {1, 2}, new long[] {2, 2},
-            new long[] {2, 2});
+        Notification[] ret =
+            persistence1.loadNotifications(new long[] {1, 2}, new long[] {2, 2}, new long[] {2, 2});
 
         assertEquals("The size returned should be 0.", 0, ret.length);
     }
@@ -1140,8 +1203,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * <code>Notification[] loadNotifications(long[] userIds, long[] projectIds, long[] notificationTypes) </code>.
      * The arguments are all length-0 long array, no Notification instance would be loaded.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testLoadNotificationsWithLength0Array() throws Exception {
 
@@ -1153,8 +1215,7 @@ public class TestAbstractResourcePersistence extends TestCase {
     /**
      * Test method <code>String getConnectionName()</code>. Expects the same connection name.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testGetConnectionName() throws Exception {
         assertEquals("ConnectionName is wrong.", "sysuser", persistence2.getConnectionName());
@@ -1164,8 +1225,7 @@ public class TestAbstractResourcePersistence extends TestCase {
      * Test method <code>DBConnectionFactory getConnectionFactory()</code>. Expects the same connection
      * name.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testGetConnectionFactory() throws Exception {
         assertNotNull("ConnectionFactorys is null.", persistence2.getConnectionFactory());

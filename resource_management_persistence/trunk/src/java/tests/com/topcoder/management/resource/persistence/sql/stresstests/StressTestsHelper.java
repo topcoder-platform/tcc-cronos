@@ -19,8 +19,10 @@ import com.topcoder.util.config.ConfigManager;
 
 /**
  * This is the utility class to help the stress testing.
- * @author fuyun
- * @version 1.1
+ * 
+ * @author fuyun, littleken
+ * @version 1.2
+ * @since 1.1
  */
 final class StressTestsHelper {
 
@@ -28,6 +30,7 @@ final class StressTestsHelper {
      * <p>
      * Loads the configuration file.
      * </p>
+     * 
      * @throws Exception if there is any problem.
      */
     static final void loadConfiguration() throws Exception {
@@ -38,31 +41,32 @@ final class StressTestsHelper {
      * <p>
      * Cleans up the test environment.
      * </p>
+     * 
      * @throws Exception if there is any problem.
      */
     static final void cleanConfiguration() throws Exception {
         ConfigManager.getInstance().removeNamespace(
-                "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl");
+            "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl");
     }
 
     /**
      * Prepares the data in database for testing.
+     * 
      * @throws Exception if there is any problem.
      */
     static final void prepareDatabase() throws Exception {
         Connection conn = null;
         try {
             conn = getConnection();
-            executeSQL(
-                    conn,
-                    "INSERT INTO notification_type_lu VALUES (2007, 'notification_type_1', "
-                    + "'used for test', 'stress', current, 'stress', current);");
+            executeSQL(conn, "INSERT INTO notification_type_lu VALUES (2007, 'notification_type_1', "
+                + "'used for test', 'stress', current, 'stress', current);");
             executeSQL(conn, "INSERT INTO project VALUES (2007);");
             executeSQL(conn, "INSERT INTO phase_type_lu VALUES (2007);");
-            executeSQL(
-                    conn,
-                    "INSERT INTO resource_role_lu VALUES (2007, 2007, 'resource_role_1', "
-                    + "'userd for test', 'stress', current, 'stress', current);");
+            executeSQL(conn, "INSERT INTO resource_role_lu VALUES (2007, 2007, 'resource_role_1', "
+                + "'userd for test', 'stress', current, 'stress', current);");
+            for (int i = 1; i <= 10; i++) {
+                executeSQL(conn, "INSERT INTO submission VALUES (" + i + ");");
+            }
 
         } finally {
             closeResource(conn, null, null);
@@ -72,6 +76,7 @@ final class StressTestsHelper {
 
     /**
      * Cleans the test data in database.
+     * 
      * @throws Exception if there is any problem.
      */
     static final void cleanDatabase() throws Exception {
@@ -97,12 +102,12 @@ final class StressTestsHelper {
 
     /**
      * Closes the resource if they are available.
+     * 
      * @param conn the <code>Connection</code> to close.
      * @param stmt the <Code>Statement</code> to close.
      * @param rs the <code>ResultSet</code> to close.
      */
-    static final void closeResource(Connection conn, Statement stmt,
-            ResultSet rs) {
+    static final void closeResource(Connection conn, Statement stmt, ResultSet rs) {
         if (rs != null) {
             try {
                 rs.close();
@@ -128,6 +133,7 @@ final class StressTestsHelper {
 
     /**
      * Executes the SQL with the given connection.
+     * 
      * @param conn the connection used to execute the SQL.
      * @param sql the SQL statement to execute.
      * @throws Exception if there is any problem.
@@ -144,6 +150,7 @@ final class StressTestsHelper {
 
     /**
      * Executes the SQL.
+     * 
      * @param sql the SQL statement to execute.
      * @throws Exception if there is any problem.
      */
@@ -159,6 +166,7 @@ final class StressTestsHelper {
 
     /**
      * Gets the connection from DB Connection Factory.
+     * 
      * @return the connection retrieved.
      * @throws Exception if fails to get the connection.
      */
@@ -168,16 +176,17 @@ final class StressTestsHelper {
 
     /**
      * Gets the <code>DBConnectionFactory</code> instance.
+     * 
      * @return the <code>DBConnectionFactory</code> instance.
      * @throws Exception if there is any problem.
      */
     static final DBConnectionFactory getDBConnectionFactory() throws Exception {
-        return new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class
-                .getName());
+        return new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName());
     }
 
     /**
      * Gets the number of records returned by the given SQL.
+     * 
      * @param sql the SQL statement to retrieve the records.
      * @return the number of records returned by the given SQL.
      * @throws Exception if there is any problem.
@@ -199,6 +208,7 @@ final class StressTestsHelper {
 
     /**
      * Returns the notification type with the specific id.
+     * 
      * @param id the id
      * @return the notification type with the specific id
      */
@@ -216,6 +226,7 @@ final class StressTestsHelper {
 
     /**
      * Returns the resource with the specific id.
+     * 
      * @param id the id
      * @return the resource with the specific id
      */
@@ -227,11 +238,15 @@ final class StressTestsHelper {
         resource.setCreationUser("stress");
         resource.setModificationTimestamp(current);
         resource.setModificationUser("stress");
+        for (int i = 1; i <= 10; i++) {
+            resource.addSubmission(new Long(i));
+        }
         return resource;
     }
 
     /**
      * Returns the resource role with the specific id.
+     * 
      * @param id the id
      * @return the resource role with the specific id
      */

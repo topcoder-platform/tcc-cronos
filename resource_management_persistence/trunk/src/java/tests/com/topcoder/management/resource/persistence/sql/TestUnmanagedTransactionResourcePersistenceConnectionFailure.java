@@ -7,16 +7,16 @@ package com.topcoder.management.resource.persistence.sql;
  * Unit test cases for class <code>UnmanagedTransactionResourcePersistence </code>. In this test class, the
  * connection failure cases are tested.
  *
- * @author TCSDEVELOPER
+ * @author mittu
  * @version 1.1
  */
-public class TestUnmanagedTransactionResourcePersistenceConnectionFailure extends TestAbstractlResourcePersistenceConnectionFailure {
+public class TestUnmanagedTransactionResourcePersistenceConnectionFailure extends
+    TestAbstractlResourcePersistenceConnectionFailure {
 
     /**
      * Set up the environment. Create UnmanagedTransactionResourcePersistence instance for test.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void setUp() throws Exception {
         super.setUp();
@@ -27,8 +27,7 @@ public class TestUnmanagedTransactionResourcePersistenceConnectionFailure extend
     /**
      * Tear down the environment. Clear all namespaces in the config manager.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void tearDown() throws Exception {
         super.tearDown();

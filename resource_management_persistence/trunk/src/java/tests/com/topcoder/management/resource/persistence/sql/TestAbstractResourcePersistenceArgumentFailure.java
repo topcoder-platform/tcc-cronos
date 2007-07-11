@@ -18,7 +18,7 @@ import junit.framework.TestCase;
  * Unit test case for class <code>SqlResourcePersistence </code>. In this class, it only test the failure for invalid
  * arguments. The unit test cases for functionalities of this class is in test class TestSqlResourcePersistence.
  *
- * @author Chenhong
+ * @author Chenhong, mittu
  * @version 1.1
  */
 public class TestAbstractResourcePersistenceArgumentFailure extends TestCase {

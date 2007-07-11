@@ -14,6 +14,7 @@ import com.topcoder.management.resource.persistence.ResourcePersistenceException
 import com.topcoder.util.config.ConfigManager;
 
 import java.io.File;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -27,16 +28,13 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Iterator;
 
-
 /**
- * This is the helper class for assisting the process of testing.
- *
- * It helps to clear the database tables, create certain records etc.
- *
- * @author tianniu
+ * This is the helper class for assisting the process of testing. It helps to
+ * clear the database tables, create certain records etc.
+ * @author TCSDEVELOPER
  * @version 1.0
  */
-final class AccuracyHelper {
+public final class AccuracyHelper {
     /**
      * <p>
      * Represents the namespace for DB Connection Factory component.
@@ -51,14 +49,11 @@ final class AccuracyHelper {
      */
     private static DBConnectionFactory factory;
 
-    /**
-     * The table names in this component.
-     */
-    private static String[] tableNames = {
-        "notification", "notification_type_lu", "resource_submission", "resource_info",
-        "resource_info_type_lu", "resource", "resource_role_lu", "submission", "project_phase",
-        "phase_type_lu", "project"
-    };
+    /** The table names in this component. */
+    private static String[] tableNames = {"notification", "notification_type_lu", "resource_submission",
+                                          "resource_info", "resource_info_type_lu", "resource",
+                                          "resource_role_lu", "submission",
+                                          "project_phase", "phase_type_lu", "project" };
 
     /**
      * Private constructor.
@@ -69,9 +64,7 @@ final class AccuracyHelper {
 
     /**
      * Clear the config manager.
-     *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public static void clearConfigManager() throws Exception {
         ConfigManager cm = ConfigManager.getInstance();
@@ -83,10 +76,7 @@ final class AccuracyHelper {
 
     /**
      * Create a notification type instance for testing, it will not hit the db.
-     *
-     * @param id
-     *            the id of the notification type.
-     *
+     * @param id the id of the notification type.
      * @return the NotificationType instance.
      */
     public static NotificationType createNotificationType(long id) {
@@ -103,10 +93,7 @@ final class AccuracyHelper {
 
     /**
      * Create a resource role instance for testing, it will not hit the db.
-     *
-     * @param id
-     *            the id of the resource role.
-     *
+     * @param id the id of the resource role.
      * @return the ResourceRole instance.
      */
     public static ResourceRole createResourceRole(long id) {
@@ -127,15 +114,11 @@ final class AccuracyHelper {
     }
 
     /**
-     * Create a Resource instance for test. This Resource instance has not submission property and no external
-     * properties.
-     *
-     * @param resourceId
-     *            the id for resource
-     * @param projectId
-     *            the project id
-     * @param phaseId
-     *            the phase id
+     * Create a Resource instance for test. This Resource instance has not
+     * submission property and no external properties.
+     * @param resourceId the id for resource
+     * @param projectId the project id
+     * @param phaseId the phase id
      * @return the Resource instance
      */
     public static Resource createResource(long resourceId, long projectId, long phaseId) {
@@ -161,9 +144,7 @@ final class AccuracyHelper {
      * <p>
      * Deletes data from the table used by this component.
      * </p>
-     *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public static void clearTables() throws Exception {
         Connection connection = getConnection();
@@ -183,9 +164,7 @@ final class AccuracyHelper {
 
     /**
      * Insert some records for testing.
-     *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public static void setupDatbase() throws Exception {
         Connection connection = getConnection();
@@ -201,17 +180,24 @@ final class AccuracyHelper {
         statement.addBatch("insert into phase_type_lu (phase_type_id) values(3)");
         statement.addBatch("insert into phase_type_lu (phase_type_id) values(4)");
 
-        statement.addBatch(
-            "insert into project_phase (project_phase_id, project_id, phase_type_id) values(1,1,1)");
-        statement.addBatch(
-            "insert into project_phase (project_phase_id, project_id, phase_type_id) values(2,2,2)");
-        statement.addBatch(
-            "insert into project_phase (project_phase_id, project_id, phase_type_id) values(3,3,3)");
-        statement.addBatch(
-            "insert into project_phase (project_phase_id, project_id, phase_type_id) values(4,4,4)");
+        statement
+                .addBatch("insert into project_phase (project_phase_id, project_id, phase_type_id) values(1,1,1)");
+        statement
+                .addBatch("insert into project_phase (project_phase_id, project_id, phase_type_id) values(2,2,2)");
+        statement
+                .addBatch("insert into project_phase (project_phase_id, project_id, phase_type_id) values(3,3,3)");
+        statement
+                .addBatch("insert into project_phase (project_phase_id, project_id, phase_type_id) values(4,4,4)");
 
         statement.addBatch("insert into submission (submission_id) values(121);");
         statement.addBatch("insert into submission (submission_id) values(1200);");
+        
+        statement.addBatch("insert into submission (submission_id) values(1);");
+        //statement.addBatch("insert into submission (submission_id) values(121);");
+        statement.addBatch("insert into submission (submission_id) values(122);");
+        statement.addBatch("insert into submission (submission_id) values(123);");
+        
+        
 
         statement.executeBatch();
         statement.close();
@@ -219,26 +205,20 @@ final class AccuracyHelper {
     }
 
     /**
-     * Insert records into resource_info_type_lu table, so that resource can set properties.
-     *
-     * @param id
-     *            the id of the resource_info_type.
-     *
-     * @param name
-     *            the name of the resource_info_type
-     *
-     * @throws Exception
-     *             to junit.
+     * Insert records into resource_info_type_lu table, so that resource can set
+     * properties.
+     * @param id the id of the resource_info_type.
+     * @param name the name of the resource_info_type
+     * @throws Exception to junit.
      */
-    public static void insertIntoResource_info_type_lu(int id, String name)
-        throws Exception {
+    public static void insertIntoResource_info_type_lu(int id, String name) throws Exception {
         Connection connection = getConnection();
 
         PreparedStatement statement = null;
 
         String query = "INSERT INTO resource_info_type_lu"
-            + " (resource_info_type_id, name,description, create_user, create_date, modify_user, modify_date)"
-            + " VALUES (?, ?, ?, ?, ?, ?, ?)";
+                + " (resource_info_type_id, name,description, create_user, create_date, modify_user, modify_date)"
+                + " VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try {
             statement = connection.prepareStatement(query);
@@ -260,12 +240,8 @@ final class AccuracyHelper {
 
     /**
      * Insert a submission.
-     *
-     * @param id
-     *            the id of the submission
-     *
-     * @throws Exception
-     *             to junit.
+     * @param id the id of the submission
+     * @throws Exception to junit.
      */
     public static void insertIntoSubmission(int id) throws Exception {
         String query = "insert into submission (submission_id)  values (?)";
@@ -287,15 +263,12 @@ final class AccuracyHelper {
 
     /**
      * get the submission entry for Resource instance.
-     *
-     * @param resource
-     *            the Resource instance
+     * @param resource the Resource instance
      * @return Integer if exists, otherwise null
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
+     * @throws ResourcePersistenceException DOCUMENT ME!
      */
-    public static Integer getSubmissionEntry(Resource resource)
-        throws Exception {
+    public static Integer getSubmissionEntry(Resource resource) throws Exception {
         String query = "SELECT submission_id FROM resource_submission WHERE resource_id = ?";
 
         Connection connection = getConnection();
@@ -328,11 +301,8 @@ final class AccuracyHelper {
      * <p>
      * Returns a new connection to be used for persistence.
      * </p>
-     *
      * @return the connection instance for database operation
-     *
-     * @throws Exception
-     *             If unable to obtain a Connection
+     * @throws Exception If unable to obtain a Connection
      */
     private static Connection getConnection() throws Exception {
         ConfigManager cm = ConfigManager.getInstance();
@@ -341,7 +311,7 @@ final class AccuracyHelper {
             cm.removeNamespace((String) iter.next());
         }
 
-        cm.add(new File("test_files/DBConnectionFactory.xml").getAbsolutePath());
+        cm.add(new File("test_files/accuracy/DBConnectionFactory.xml").getAbsolutePath());
 
         factory = new DBConnectionFactoryImpl(DB_FACTORY_NAMESPACE);
 
@@ -352,9 +322,7 @@ final class AccuracyHelper {
      * <p>
      * Closes the given Connection instance.
      * </p>
-     *
-     * @param connection
-     *            the given Connection instance to close.
+     * @param connection the given Connection instance to close.
      */
     private static void closeConnection(Connection connection) {
         try {
@@ -370,9 +338,7 @@ final class AccuracyHelper {
      * <p>
      * Closes the given PreparedStatement instance.
      * </p>
-     *
-     * @param statement
-     *            the given Statement instance to close.
+     * @param statement the given Statement instance to close.
      */
     private static void closeStatement(Statement statement) {
         try {
@@ -388,9 +354,7 @@ final class AccuracyHelper {
      * <p>
      * Closes the given ResultSet.
      * </p>
-     *
-     * @param rs
-     *            the given ResultSet instance to close.
+     * @param rs the given ResultSet instance to close.
      */
     private static void closeResultSet(ResultSet rs) {
         try {
@@ -403,8 +367,8 @@ final class AccuracyHelper {
     }
 
     /**
-     * Invokes a method using reflection, pass out exception from invoked method.
-     *
+     * Invokes a method using reflection, pass out exception from invoked
+     * method.
      * @param obj the object to invoke on
      * @param type the type of obj
      * @param name the name of the method
@@ -413,10 +377,9 @@ final class AccuracyHelper {
      * @return the return value, or null if the method is a void-return one
      * @throws Exception if any error happens.
      */
-    public static Object invokeMethod(Object obj, Class type, String name,
-            Class[] parameterTypes, Object[] parameters) throws Exception {
-
-        Method  method = type.getDeclaredMethod(name, parameterTypes);
+    public static Object invokeMethod(Object obj, Class type, String name, Class[] parameterTypes,
+            Object[] parameters) throws Exception {
+        Method method = type.getDeclaredMethod(name, parameterTypes);
 
         try {
             // check isAccessible

@@ -23,7 +23,7 @@ import com.topcoder.management.resource.persistence.ResourcePersistenceException
  * persistence.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author mittu
  * @version 1.1
  *
  */

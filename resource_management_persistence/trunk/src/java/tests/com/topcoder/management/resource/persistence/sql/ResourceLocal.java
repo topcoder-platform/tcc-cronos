@@ -12,7 +12,7 @@ import com.topcoder.management.resource.persistence.ResourcePersistence;
  * EJBHome interface as part of the UnmanagedResourcePersistence demo.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author mittu
  * @version 1.1
  */
 public interface ResourceLocal extends EJBHome, ResourcePersistence {

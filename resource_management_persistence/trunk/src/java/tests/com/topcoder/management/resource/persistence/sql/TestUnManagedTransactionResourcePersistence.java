@@ -7,7 +7,7 @@ package com.topcoder.management.resource.persistence.sql;
  * Unit test cases for class <code>UnmanagedTransactionResourcePersistence </code>. In this test class, the
  * functionality of this component will be tested.
  *
- * @author TCSDEVELOPER
+ * @author mittu
  * @version 1.1
  */
 public class TestUnManagedTransactionResourcePersistence extends TestAbstractResourcePersistence {

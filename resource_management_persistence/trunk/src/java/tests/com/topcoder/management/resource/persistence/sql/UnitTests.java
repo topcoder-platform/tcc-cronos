@@ -10,7 +10,7 @@ import junit.framework.TestSuite;
 /**
  * This test case aggregates all Unit test cases.
  *
- * @author Chenhong, TCSDEVELOPER
+ * @author Chenhong, mittu
  * @version 1.1
  */
 public class UnitTests extends TestCase {
@@ -33,7 +33,6 @@ public class UnitTests extends TestCase {
         suite.addTestSuite(TestUnmanagedTransactionResourcePersistenceConnectionFailure.class);
 
         suite.addTestSuite(BenchmarkTest.class);
-
         return suite;
     }
 

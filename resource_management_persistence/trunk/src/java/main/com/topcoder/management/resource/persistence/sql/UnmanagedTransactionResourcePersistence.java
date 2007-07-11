@@ -31,7 +31,7 @@ import com.topcoder.management.resource.persistence.ResourcePersistenceException
  * concern.
  * </p>
  *
- * @author bendlund, TCSDEVELOPER
+ * @author bendlund, mittu
  * @version 1.1
  */
 public class UnmanagedTransactionResourcePersistence extends AbstractResourcePersistence {

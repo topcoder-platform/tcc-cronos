@@ -19,7 +19,7 @@ import com.topcoder.util.config.ConfigManager;
  * Unit test cases for class <code>AbstractResourcePersistence </code>. In this test class, the connection
  * failure cases are tested.
  *
- * @author TCSDEVELOPER
+ * @author mittu
  * @version 1.1
  */
 public abstract class TestAbstractlResourcePersistenceConnectionFailure extends TestCase {
@@ -39,8 +39,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
     /**
      * Set up the environment. Create SqlResourcePersistence instance for test.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void setUp() throws Exception {
         ConfigManager cm = ConfigManager.getInstance();
@@ -60,8 +59,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
     /**
      * Tear down the environment. Clear all namespaces in the config manager.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void tearDown() throws Exception {
     }
@@ -69,8 +67,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
     /**
      * Test method <code>void addResource(Resource resource) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testAddResource() throws Exception {
         try {
@@ -92,8 +89,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
     /**
      * Test method <code> void deleteResource(Resource resource)  </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testDeleteResource() throws Exception {
         try {
@@ -115,13 +111,13 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
     /**
      * Test method <code>void updateResource(Resource resource) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testUpdateResource() throws Exception {
         try {
             Resource r = DBTestUtil.createResource(11, 1, 1);
-            r.setSubmission(new Long(121));
+            r.addSubmission(new Long(121));
+            r.addSubmission(new Long(122));
             r.setProperty("name", new Integer(100));
             r.setProperty("name", "topcoder");
             persistence1.updateResource(r);
@@ -131,7 +127,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
         }
         try {
             Resource r = DBTestUtil.createResource(11, 1, 1);
-            r.setSubmission(new Long(121));
+            r.addSubmission(new Long(121));
             r.setProperty("name", new Integer(100));
             r.setProperty("name", "topcoder");
             persistence2.updateResource(r);
@@ -144,8 +140,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
     /**
      * Test method <code> Resource loadResource(long resourceId) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      *
      */
     public void testLoadResource() throws Exception {
@@ -167,8 +162,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
      * Test method
      * <code>void addNotification(long user, long project, long notificationType, String operator)</code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testAddNotification() throws Exception {
         try {
@@ -189,8 +183,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
      * Test method
      * <code>void removeNotification(long user, long project, long notificationType, String operator) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testRemoveNotification() throws Exception {
         try {
@@ -210,8 +203,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
     /**
      * Test method <code>Notification loadNotification(long user, long project, long notificationType) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testLoadNotification() throws Exception {
         try {
@@ -231,8 +223,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
     /**
      * Test method <code>void addNotificationType(NotificationType notificationType) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testAddNotificationType() throws Exception {
         try {
@@ -256,8 +247,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
     /**
      * Test method <code>void deleteNotificationType(NotificationType notificationType) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testDeleteNotificationType() throws Exception {
         try {
@@ -281,8 +271,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
     /**
      * Test method <code> void updateNotificationType(NotificationType notificationType) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testUpdateNotificationType() throws Exception {
         try {
@@ -306,8 +295,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
     /**
      * Test method <code>NotificationType loadNotificationType(long notificationTypeId) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testLoadNotificationType() throws Exception {
         try {
@@ -331,8 +319,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
     /**
      * Test method <code>void addResourceRole(ResourceRole resourceRole) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testAddResourceRole() throws Exception {
         try {
@@ -354,8 +341,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
     /**
      * Test method <code>void deleteResourceRole(ResourceRole resourceRole) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testDeleteResourceRole() throws Exception {
         try {
@@ -377,8 +363,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
     /**
      * Test method <code>void updateResourceRole(ResourceRole resourceRole)  </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testUpdateResourceRole() throws Exception {
         try {
@@ -408,8 +393,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
     /**
      * Test method <code>ResourceRole loadResourceRole(long resourceRoleId) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testLoadResourceRole() throws Exception {
         try {
@@ -429,8 +413,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
     /**
      * Test method <code>Resource[] loadResources(long[] resourceIds) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testLoadResources() throws Exception {
         try {
@@ -450,8 +433,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
     /**
      * Test method <code>NotificationType[] loadNotificationTypes(long[] notificationTypeIds) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      *
      */
     public void testLoadNotificationTypes() throws Exception {
@@ -472,8 +454,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
     /**
      * Test method <code>ResourceRole[] loadResourceRoles(long[] resourceRoleIds) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testLoadResourceRoles() throws Exception {
         try {
@@ -494,8 +475,7 @@ public abstract class TestAbstractlResourcePersistenceConnectionFailure extends 
      * Test method
      * <code>Notification[] loadNotifications(long[] userIds, long[] projectIds, long[] notificationTypes) </code>.
      *
-     * @throws Exception
-     *             to junit.
+     * @throws Exception to junit.
      */
     public void testLoadNotifications() throws Exception {
         try {

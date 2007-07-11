@@ -12,6 +12,7 @@ import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceRole;
 import com.topcoder.management.resource.persistence.sql.AbstractResourcePersistence;
 import com.topcoder.management.resource.persistence.sql.SqlResourcePersistence;
+
 import com.topcoder.util.config.ConfigManager;
 
 import junit.framework.TestCase;
@@ -20,12 +21,10 @@ import java.io.File;
 
 import java.util.Date;
 
-
 /**
- * Unit test cases for class <code>AbstractResourcePersistence</code>. In this test class,
- * the functionality of this component will be tested.
- *
- * @author tianniu
+ * Unit test cases for class <code>AbstractResourcePersistence</code>. In
+ * this test class, the functionality of this component will be tested.
+ * @author TCSDEVELOPER, 
  * @version 1.1
  */
 public class AbstractResourcePersistenceAccuracyTests extends TestCase {
@@ -47,14 +46,13 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
      * <p>
      * Set up the test environment.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void setUp() throws Exception {
         ConfigManager cm = ConfigManager.getInstance();
         AccuracyHelper.clearConfigManager();
 
-        File file = new File("test_files/DBConnectionFactory.xml");
+        File file = new File("test_files/accuracy/DBConnectionFactory.xml");
 
         cm.add(file.getAbsolutePath());
 
@@ -62,7 +60,8 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
 
         factory = new DBConnectionFactoryImpl(namespace);
 
-        //cause AbstractResourcePersistence is abstract, we use it's subclass to test.
+        // cause AbstractResourcePersistence is abstract, we use it's subclass
+        // to test.
         instance = new SqlResourcePersistence(factory);
 
         AccuracyHelper.clearTables();
@@ -74,7 +73,6 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
      * <p>
      * Tear down the environment.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void tearDown() throws Exception {
@@ -83,9 +81,9 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
 
     /**
      * <p>
-     * Test constructor <code> SqlResourcePersistence(DBConnectionFactory)</code> for accuracy.
+     * Test constructor
+     * <code> SqlResourcePersistence(DBConnectionFactory)</code> for accuracy.
      * </p>
-     *
      * <p>
      * This is accuracy test for the constructor.
      * </p>
@@ -96,10 +94,10 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
 
     /**
      * <p>
-     * Test constructor <code>SqlResourcePersistence(DBConnectionFactory, String) </code>. The parameter
-     * connectionName can be null.
+     * Test constructor
+     * <code>SqlResourcePersistence(DBConnectionFactory, String) </code>. The
+     * parameter connectionName can be null.
      * </p>
-     *
      * <p>
      * This is accuracy test for the constructor.
      * </p>
@@ -111,10 +109,10 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
 
     /**
      * <p>
-     * Test constructor <code>SqlResourcePersistence(DBConnectionFactory, String) </code>. The parameter
-     * connectionName can be null.
+     * Test constructor
+     * <code>SqlResourcePersistence(DBConnectionFactory, String) </code>. The
+     * parameter connectionName can be null.
      * </p>
-     *
      * <p>
      * This is accuracy test for the constructor.
      * </p>
@@ -129,13 +127,11 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
      * <p>
      * Test method <code>void addResource(Resource resource) </code>.
      * </p>
-     *
      * <p>
-     * In this test case, the resource has null submission and no external properties.
+     * In this test case, the resource has null submission and no external
+     * properties.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     public void testAddResource1Accuracy() throws Exception {
         // create a resource instance.
@@ -143,7 +139,7 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
 
         ResourceRole role = AccuracyHelper.createResourceRole(5);
 
-        r.setSubmission(null);
+        r.addSubmission(new Long(1));
 
         instance.addResourceRole(role);
 
@@ -154,7 +150,7 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         Resource ret = instance.loadResource(r.getId());
         assertNotNull("The resource got back should not be null.", ret);
 
-        assertNull("The submission should be null.", ret.getSubmission());
+        assertTrue("The submission should be null.", ret.getSubmissions().length == 1);
         assertTrue("The external properties should be empty.", ret.getAllProperties().isEmpty());
     }
 
@@ -162,14 +158,11 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
      * <p>
      * Test method <code>void addResource(Resource resource) </code>.
      * </p>
-     *
      * <p>
-     * In this test case, the resource has null submission and no external properties, project and
-     * phase is also not set.
+     * In this test case, the resource has null submission and no external
+     * properties, project and phase is also not set.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     public void testAddResource2Accuracy() throws Exception {
         // create a resource instance.
@@ -179,7 +172,7 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
 
         r.setPhase(null);
         r.setProject(null);
-        r.setSubmission(null);
+        r.addSubmission(new Long(1));
 
         instance.addResourceRole(role);
 
@@ -192,17 +185,14 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         assertNull("The project should be null.", ret.getProject());
         assertNull("The phase should be null.", ret.getPhase());
 
-        assertNull("The submission should be null.", ret.getSubmission());
+        assertTrue("The submission should contain one element.", ret.getSubmissions().length == 1);
         assertTrue("The external properties should be empty.", ret.getAllProperties().isEmpty());
     }
 
     /**
-     * Test method <code>void addResource(Resource resource) </code>.
-     *
-     * In this test case, the submission will be set and also with external properties.
-     *
-     * @throws Exception
-     *             to JUnit.
+     * Test method <code>void addResource(Resource resource) </code>. In this
+     * test case, the submission will be set and also with external properties.
+     * @throws Exception to JUnit.
      */
     public void testAddResource3Accuracy() throws Exception {
         AccuracyHelper.insertIntoResource_info_type_lu(11, "name");
@@ -210,7 +200,7 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         // create a resource instance.
         Resource r = AccuracyHelper.createResource(11, 1, 1);
 
-        r.setSubmission(new Long(121));
+        r.addSubmission(new Long(121));
 
         r.setProperty("name", new Integer(100));
 
@@ -225,19 +215,17 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         Resource ret = instance.loadResource(r.getId());
 
         assertNotNull("The resource got back should not be null.", ret);
-        assertEquals("The submission should be 121", new Long(121), ret.getSubmission());
+        assertEquals("The submission should be 121", new Long(121), ret.getSubmissions()[0]);
 
-        assertEquals("The value for'name' should be 100", new Integer(100),
-            new Integer(ret.getProperty("name").toString()));
+        assertEquals("The value for'name' should be 100", new Integer(100), new Integer(ret
+                .getProperty("name").toString()));
     }
 
     /**
-     * Test method <code>void addResource(Resource resource) </code>.
-     *
-     * In this test case, the submission will be set and also with multiple external properties.
-     *
-     * @throws Exception
-     *             to JUnit.
+     * Test method <code>void addResource(Resource resource) </code>. In this
+     * test case, the submission will be set and also with multiple external
+     * properties.
+     * @throws Exception to JUnit.
      */
     public void testAddResource4Accuracy() throws Exception {
         AccuracyHelper.insertIntoResource_info_type_lu(11, "name");
@@ -247,7 +235,7 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         // create a resource instance.
         Resource r = AccuracyHelper.createResource(11, 1, 1);
 
-        r.setSubmission(new Long(121));
+        r.addSubmission(new Long(121));
 
         r.setProperty("name", "kaka");
         r.setProperty("height", "185cm");
@@ -264,7 +252,7 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         Resource ret = instance.loadResource(r.getId());
 
         assertNotNull("The resource got back should not be null.", ret);
-        assertEquals("The submission should be 121", new Long(121), ret.getSubmission());
+        assertEquals("The submission should be 121", new Long(121), ret.getSubmissions()[0]);
 
         assertEquals("The value for'name' should be kaka", "kaka", ret.getProperty("name"));
         assertEquals("The value for'height' should be 185cm", "185cm", ret.getProperty("height"));
@@ -272,11 +260,10 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
     }
 
     /**
-     * Test method <code>void addResource(Resource resource) </code>.
-     *
-     * In this test case, the resource instance will have property which is not configged in the
-     * resource_info_type_lu table, such properties will be ignored during inserting the resource.
-     *
+     * Test method <code>void addResource(Resource resource) </code>. In this
+     * test case, the resource instance will have property which is not
+     * configged in the resource_info_type_lu table, such properties will be
+     * ignored during inserting the resource.
      * @throws Exception to JUnit.
      */
     public void testAddResource5Accuracy() throws Exception {
@@ -287,7 +274,7 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         // create a resource instance.
         Resource r = AccuracyHelper.createResource(11, 1, 1);
 
-        r.setSubmission(new Long(121));
+        r.addSubmission(new Long(121));
 
         r.setProperty("name", "kaka");
         r.setProperty("height", "185cm");
@@ -308,7 +295,7 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         Resource ret = instance.loadResource(r.getId());
 
         assertNotNull("The resource got back should not be null.", ret);
-        assertEquals("The submission should be 121", new Long(121), ret.getSubmission());
+        assertEquals("The submission should be 121", new Long(121), ret.getSubmissions()[0]);
 
         assertEquals("The value for'name' should be kaka", "kaka", ret.getProperty("name"));
         assertEquals("The value for'height' should be 185cm", "185cm", ret.getProperty("height"));
@@ -316,13 +303,56 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         assertNull("property weight should not be inserted", ret.getProperty("weight"));
         assertNull("property shots should not be inserted", ret.getProperty("shots"));
     }
-
     /**
-     * Test method <code> void deleteResource(Resource resource)  </code>.
-     * In this test case, the resource id does not exist in the database.
+     * Test method <code>void addResource(Resource resource) </code>.
+     *
+     * In this test case, the submission will be set and also with multiple external properties.
      *
      * @throws Exception
-     *             to JUnit.
+     *             To JUnit.
+     * @since 1.2
+     */
+    public void testAddResource6Accuracy() throws Exception {
+        AccuracyHelper.insertIntoResource_info_type_lu(11, "name");
+        AccuracyHelper.insertIntoResource_info_type_lu(12, "weight");
+        AccuracyHelper.insertIntoResource_info_type_lu(13, "height");
+        // create a resource instance.
+        Resource r = AccuracyHelper.createResource(18, 1, 1);
+
+        Long[] submissions = new Long[3];
+        submissions[0] = new Long(121);
+        submissions[1] = new Long(122);
+        submissions[2] = new Long(123);
+        r.setSubmissions(submissions);
+
+
+        r.setProperty("name", "kaka");
+        r.setProperty("height", "185cm");
+        r.setProperty("weight", "85kg");
+
+        ResourceRole role = AccuracyHelper.createResourceRole(5);
+
+        instance.addResourceRole(role);
+
+        // add resource.
+        instance.addResource(r);
+
+        // get back the resource instance from persistence.
+        Resource ret = instance.loadResource(r.getId());
+
+        assertNotNull("The resource got back should not be null.", ret);
+        assertTrue("The submission contain 121", ret.containsSubmission(new Long(121)));
+        assertEquals("The submission's number should be 3", 3, ret.countSubmissions());
+
+        assertEquals("The value for'name' should be kaka", "kaka", ret.getProperty("name"));
+        assertEquals("The value for'height' should be 185cm", "185cm", ret.getProperty("height"));
+        assertEquals("The value for'weight' should be 85kg", "85kg", ret.getProperty("weight"));
+    }
+
+    /**
+     * Test method <code> void deleteResource(Resource resource)  </code>. In
+     * this test case, the resource id does not exist in the database.
+     * @throws Exception to JUnit.
      */
     public void testDeleteResource1Accuracy() throws Exception {
         Resource r = AccuracyHelper.createResource(100, 1, 1);
@@ -330,8 +360,8 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
     }
 
     /**
-     * Test method <code> void deleteResource(Resource resource)  </code>.
-     * In this test case, the resource id exists in the database.
+     * Test method <code> void deleteResource(Resource resource)  </code>. In
+     * this test case, the resource id exists in the database.
      * @throws Exception to JUnit.
      */
     public void testDeleteResource2Accuracy() throws Exception {
@@ -340,7 +370,42 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         // create a resource instance.
         Resource r = AccuracyHelper.createResource(11, 1, 1);
 
-        r.setSubmission(new Long(121));
+        r.addSubmission(new Long(121));
+
+        r.setProperty("name", new Integer(100));
+
+        ResourceRole role = AccuracyHelper.createResourceRole(5);
+
+        instance.addResourceRole(role);
+
+        // add resource.
+        instance.addResource(r);
+
+        // delete the resource.
+        instance.deleteResource(r);
+
+        Integer submission = AccuracyHelper.getSubmissionEntry(r);
+
+        assertTrue("The submission should contain one element.", r.getSubmissions().length == 1);
+
+        Resource ret = instance.loadResource(r.getId());
+        assertNull("The resource should be deleted.", ret);
+    }
+    /**
+     * Test method <code> void deleteResource(Resource resource)  </code>. In this test case, the resource id
+     * exists in the database.
+     *
+     * @throws Exception
+     *             To JUnit.
+     * @since 1.2
+     */
+    public void testDeleteResource3Accuracy() throws Exception {
+        AccuracyHelper.insertIntoResource_info_type_lu(11, "name");
+
+        // create a resource instance.
+        Resource r = AccuracyHelper.createResource(11, 1, 1);
+
+        r.addSubmission(new Long(121));
 
         r.setProperty("name", new Integer(100));
 
@@ -363,9 +428,8 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
     }
 
     /**
-     * Test method <code>void updateResource(Resource resource) </code>. The external property is updated from new
-     * Integer(100) to "topcoder".
-     *
+     * Test method <code>void updateResource(Resource resource) </code>. The
+     * external property is updated from new Integer(100) to "topcoder".
      * @throws Exception to JUnit.
      */
     public void testUpdateResource1Accuracy() throws Exception {
@@ -374,7 +438,7 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         // create a resource instance.
         Resource r = AccuracyHelper.createResource(11, 1, 1);
 
-        r.setSubmission(new Long(121));
+        r.addSubmission(new Long(121));
 
         r.setProperty("name", new Integer(100));
 
@@ -391,22 +455,26 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
 
         Resource ret = instance.loadResource(r.getId());
 
-        assertEquals("The correct value should be 'topcoder'", "topcoder",
-            ret.getProperty("name").toString());
+        assertEquals("The correct value should be 'topcoder'", "topcoder", ret.getProperty("name")
+                .toString());
     }
 
     /**
-     * Test method <code>void updateResource(Resource resource) </code>. The submission is updated to 1200.
-     *
-     * @throws Exception  to JUnit.
+     * Test method <code>void updateResource(Resource resource) </code>. The
+     * submission is updated to 1200.
+     * @throws Exception to JUnit.
      */
     public void testUpdateResource2Accuracy() throws Exception {
         AccuracyHelper.insertIntoResource_info_type_lu(11, "name");
 
+        Long[] only121 = {new Long(121) };
+
+        Long[] only1200 = {new Long(1200) };
+
         // create a resource instance.
         Resource r = AccuracyHelper.createResource(11, 1, 1);
 
-        r.setSubmission(new Long(121));
+        r.setSubmissions(only121);
         r.setProperty("name", new Integer(100));
 
         ResourceRole role = AccuracyHelper.createResourceRole(5);
@@ -416,32 +484,36 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         // add resource to database.
         instance.addResource(r);
 
-        r.setSubmission(new Long(1200));
+        r.setSubmissions(only1200);
         r.setProject(new Long(2)); // change project id from 1 to 2
         r.setPhase(new Long(3)); // change phase id from 1 to 3.
         instance.updateResource(r);
 
         Resource ret = instance.loadResource(r.getId());
 
-        assertEquals("The summission now should be 1200.", new Long(1200), ret.getSubmission());
+        assertEquals("The summission now should be 1200.", new Long(1200).longValue(), ret
+                .getSubmissions()[0].longValue());
         assertEquals("The project id now should be 2.", new Long(2), ret.getProject());
         assertEquals("The phase id now should be 3.", new Long(3), ret.getPhase());
     }
 
     /**
-     * Test method <code>void updateResource(Resource resource) </code>. The submission is updated to 1200.
-     *
-     * This test will focus on testing the updating the submission of resource instance.
-     *
-     * @throws Exception  to JUnit.
+     * Test method <code>void updateResource(Resource resource) </code>. The
+     * submission is updated to 1200. This test will focus on testing the
+     * updating the submission of resource instance.
+     * @throws Exception to JUnit.
      */
     public void testUpdateResource3Accuracy() throws Exception {
         AccuracyHelper.insertIntoResource_info_type_lu(11, "name");
 
+        Long[] only121 = {new Long(121) };
+
+        Long[] only1200 = {new Long(1200) };
+
         // create a resource instance.
         Resource r = AccuracyHelper.createResource(11, 1, 1);
 
-        r.setSubmission(new Long(121));
+        r.setSubmissions(only121);
 
         ResourceRole role = AccuracyHelper.createResourceRole(5);
         instance.addResourceRole(role);
@@ -449,42 +521,34 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         instance.addResource(r);
 
         // set the submission to 1200.
-        r.setSubmission(new Long(1200));
+        r.setSubmissions(only1200);
         instance.updateResource(r);
 
         Resource ret = instance.loadResource(r.getId());
-        assertEquals("The summission now should be 1200.", new Long(1200), ret.getSubmission());
-
-        // Set the submission to null.
-        r.setSubmission(null);
-        instance.updateResource(r);
-
-        // Load the resource and validate its submission is null.
-        ret = instance.loadResource(r.getId());
-        assertNull("The submission is null.", ret.getSubmission());
+        assertEquals("The summission now should be 1200.", new Long(1200).longValue(), ret
+                .getSubmissions()[0].longValue());
 
         // Set the submission to 121 and update again.
-        r.setSubmission(new Long(121));
+        r.setSubmissions(only121);
         instance.updateResource(r);
 
         // Load the resource and validate its submission is 121.
         ret = instance.loadResource(r.getId());
-        assertEquals("The summission now should be 121.", new Long(121), ret.getSubmission());
+        assertEquals("The summission now should be 121.", new Long(121), ret.getSubmissions()[0]);
 
         // Simply call update again, though the submission is not modified.
         instance.updateResource(r);
 
         // Load the resource and validate its submission is 121.
         ret = instance.loadResource(r.getId());
-        assertEquals("The summission now should be 121.", new Long(121), ret.getSubmission());
+        assertEquals("The summission now should be 121.", new Long(121), ret.getSubmissions()[0]);
     }
 
     /**
-     * Test method <code>void updateResource(Resource resource) </code>. The submission is updated to 1200.
-     *
-     * This test will focus on testing the updating the external properties of resource instance.
-     *
-     * @throws Exception  to JUnit.
+     * Test method <code>void updateResource(Resource resource) </code>. The
+     * submission is updated to 1200. This test will focus on testing the
+     * updating the external properties of resource instance.
+     * @throws Exception to JUnit.
      */
     public void testUpdateResource4Accuracy() throws Exception {
         AccuracyHelper.insertIntoResource_info_type_lu(11, "name");
@@ -528,7 +592,8 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         assertEquals("property 'name' should be 'cindy zj'", "cindy zj", result.getProperty("name"));
         assertEquals("property 'sex' should be 'f'", "f", result.getProperty("sex"));
 
-        // Removed 'name' and 'sex' properties, added 'age', 'height' and 'weight' properties and update.
+        // Removed 'name' and 'sex' properties, added 'age', 'height' and
+        // 'weight' properties and update.
         r = AccuracyHelper.createResource(r.getId(), 1, 1);
         r.setProperty("age", "25");
         r.setProperty("height", "155cm");
@@ -542,33 +607,20 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         assertEquals("property 'height' should be '155cm'", "155cm", result.getProperty("height"));
         assertEquals("property 'weight' should be '48kg'", "48kg", result.getProperty("weight"));
     }
-
     /**
-     * Test method <code> Resource loadResource(long resourceId) </code>.
+     * Test method <code>void updateResource(Resource resource) </code>.
+     *
+     * This test will focus on testing the updating the submission of resource instance.
+     * Note:previous has no submissions,current has 3 submissions.
      *
      * @throws Exception
-     *             to JUnit.
-     *
+     *             To JUnit.
      */
-    public void testLoadResource1Accuracy() throws Exception {
-        assertNull("The resource does not exist.", instance.loadResource(1000));
-    }
-
-    /**
-     * Test method <code> Resource loadResource(long resourceId) </code>. This test case also test the update resource
-     * accuracy. The phase, project of the resource are updated to null.
-     *
-     * @throws Exception
-     *             to JUnit.
-     *
-     */
-    public void testLoadResource2Accuracy() throws Exception {
+    public void testUpdateResource5() throws Exception {
         AccuracyHelper.insertIntoResource_info_type_lu(11, "name");
 
         // create a resource instance.
         Resource r = AccuracyHelper.createResource(11, 1, 1);
-
-        r.setSubmission(new Long(121));
 
         r.setProperty("name", new Integer(100));
 
@@ -579,7 +631,132 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         // add resource to database.
         instance.addResource(r);
 
-        r.setSubmission(new Long(1200));
+        Long[] submissions = new Long[3];
+        submissions[0] = new Long(121);
+        submissions[1] = new Long(122);
+        submissions[2] = new Long(123);
+
+        r.setSubmissions(submissions);
+        instance.updateResource(r);
+
+        Resource ret = instance.loadResource(r.getId());
+
+        assertEquals("The number of submissions now should be 3.", 3, ret.countSubmissions());
+    }
+
+    /**
+     * Test method <code>void updateResource(Resource resource) </code>.
+     *
+     * This test will focus on testing the updating the submission of resource instance.
+     * Note:previous has 3 submissions,current has 0 submission.
+     *
+     * @throws Exception
+     *             Throw it to JUnit.
+     */
+    public void testUpdateResource6() throws Exception {
+        AccuracyHelper.insertIntoResource_info_type_lu(11, "name");
+
+        // create a resource instance.
+        Resource r = AccuracyHelper.createResource(11, 1, 1);
+
+        r.setProperty("name", new Integer(100));
+
+        Long[] submissions = new Long[3];
+        submissions[0] = new Long(121);
+        submissions[1] = new Long(122);
+        submissions[2] = new Long(123);
+        r.setSubmissions(submissions);
+
+        ResourceRole role = AccuracyHelper.createResourceRole(5);
+
+        instance.addResourceRole(role);
+
+        // add resource to database.
+        instance.addResource(r);
+
+
+        r.setSubmissions(new Long[0]);
+        instance.updateResource(r);
+
+        Resource ret = instance.loadResource(r.getId());
+
+        assertEquals("The number of submissions now should be 0.", 0, ret.countSubmissions());
+    }
+
+    /**
+     * Test method <code>void updateResource(Resource resource) </code>.
+     *
+     * This test will focus on testing the updating the submission of resource instance.
+     * Note:previous has 3 submissions,current has 2 submission.
+     *
+     * @throws Exception
+     *             Throw it to JUnit.
+     */
+    public void testUpdateResource7() throws Exception {
+        AccuracyHelper.insertIntoResource_info_type_lu(11, "name");
+
+        // create a resource instance.
+        Resource r = AccuracyHelper.createResource(11, 1, 1);
+
+        r.setProperty("name", new Integer(100));
+
+        Long[] submissions = new Long[3];
+        submissions[0] = new Long(121);
+        submissions[1] = new Long(122);
+        submissions[2] = new Long(123);
+        r.setSubmissions(submissions);
+
+        ResourceRole role = AccuracyHelper.createResourceRole(5);
+
+        instance.addResourceRole(role);
+
+        // add resource to database.
+        instance.addResource(r);
+
+        Long[] newSubmissions = new Long[2];
+        newSubmissions[0] = new Long(121);
+        newSubmissions[1] = new Long(122);
+        r.setSubmissions(newSubmissions);
+        instance.updateResource(r);
+
+        Resource ret = instance.loadResource(r.getId());
+
+        assertEquals("The number of submissions now should be 2.", 2, ret.countSubmissions());
+    }
+
+
+    /**
+     * Test method <code> Resource loadResource(long resourceId) </code>.
+     * @throws Exception to JUnit.
+     */
+    public void testLoadResource1Accuracy() throws Exception {
+        assertNull("The resource does not exist.", instance.loadResource(1000));
+    }
+
+    /**
+     * Test method <code> Resource loadResource(long resourceId) </code>. This
+     * test case also test the update resource accuracy. The phase, project of
+     * the resource are updated to null.
+     * @throws Exception to JUnit.
+     */
+    public void testLoadResource2Accuracy() throws Exception {
+        AccuracyHelper.insertIntoResource_info_type_lu(11, "name");
+
+        // create a resource instance.
+        Resource r = AccuracyHelper.createResource(11, 1, 1);
+
+        r.addSubmission(new Long(121));
+
+        r.setProperty("name", new Integer(100));
+
+        ResourceRole role = AccuracyHelper.createResourceRole(5);
+
+        instance.addResourceRole(role);
+
+        // add resource to database.
+        instance.addResource(r);
+
+        r.addSubmission(new Long(1200));
         r.setPhase(null);
         r.setProject(null);
         r.setModificationUser("me");
@@ -588,18 +765,62 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
 
         Resource ret = instance.loadResource(r.getId());
 
-        assertEquals("The summission now should be 1200.", new Long(1200), ret.getSubmission());
+        assertTrue("The  summission now should contain 121.", ret.containsSubmission(new Long(121)));
+        assertTrue("The  summission now should contain 1200.", ret
+                .containsSubmission(new Long(1200)));
         assertNull("The phase should be null.", ret.getPhase());
         assertNull("The project should be null.", ret.getProject());
         assertEquals("The modificationUser should be 'me' now", "me", ret.getModificationUser());
     }
 
     /**
-     * Test method <code>void addNotification(long user, long project, long notificationType, String operator)</code>.
-     * The notificationType instance should be got from table notification_type_lu.
+     * Test method <code> Resource loadResource(long resourceId) </code>. This test case also test the update
+     * resource accuracy. The phase, project of the resource are updated to null.
      *
      * @throws Exception
-     *             to JUnit.
+     *             To JUnit.
+     *
+     */
+    public void testLoadResource3() throws Exception {
+
+        AccuracyHelper.insertIntoResource_info_type_lu(11, "name");
+
+        // create a resource instance.
+        Resource r = AccuracyHelper.createResource(11, 1, 1);
+
+        r.addSubmission(new Long(121));
+
+        r.setProperty("name", new Integer(100));
+
+        ResourceRole role = AccuracyHelper.createResourceRole(5);
+
+        instance.addResourceRole(role);
+
+        // add resource to database.
+        instance.addResource(r);
+
+        r.addSubmission(new Long(1200));
+        r.setPhase(null);
+        r.setProject(null);
+        r.setModificationUser("me");
+
+        instance.updateResource(r);
+
+        Resource ret = instance.loadResource(r.getId());
+
+        assertTrue("The submission now should contain 1200.", ret.containsSubmission(new Long(1200)));
+        assertNull("The phase should be null.", ret.getPhase());
+        assertNull("The project should be null.", ret.getProject());
+        assertEquals("The modificationUser should be 'me' now", "me", ret.getModificationUser());
+    }
+
+    /**
+     * Test method
+     * <code>void addNotification(long user, long project, long notificationType, String
+     * operator)</code>.
+     * The notificationType instance should be got from table
+     * notification_type_lu.
+     * @throws Exception to JUnit.
      */
     public void testAddNotification1Accuracy() throws Exception {
         NotificationType type = AccuracyHelper.createNotificationType(2);
@@ -609,18 +830,17 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         instance.addNotification(1, 2, 2, "tc");
 
         Notification ret = instance.loadNotification(1, 2, 2);
-        assertEquals("The desription should be 'what is a tree'", "what is a tree",
-            ret.getNotificationType().getDescription());
+        assertEquals("The desription should be 'what is a tree'", "what is a tree", ret
+                .getNotificationType().getDescription());
 
         assertEquals("The modificationUser should be 'tc'", "tc", ret.getModificationUser());
     }
 
     /**
      * Test method
-     * <code>void removeNotification(long user, long project, long notificationType, String operator) </code>.
-     *
-     * @throws Exception
-     *             to JUnit.
+     * <code>void removeNotification(long user, long project, long notificationType, String
+     * operator) </code>.
+     * @throws Exception to JUnit.
      */
     public void testRemoveNotification1Accuracy() throws Exception {
         NotificationType type = AccuracyHelper.createNotificationType(2);
@@ -632,12 +852,12 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
 
     /**
      * Test method
-     * <code>void removeNotification(long user, long project, long notificationType, String operator) </code>. In this
-     * test case, first add a Notification instance and check if it has been successfully added. Then removed it and
-     * check if it does not exist any longer in the database.
-     *
-     * @throws Exception
-     *             to JUnit.
+     * <code>void removeNotification(long user, long project, long notificationType, String
+     * operator) </code>.
+     * In this test case, first add a Notification instance and check if it has
+     * been successfully added. Then removed it and check if it does not exist
+     * any longer in the database.
+     * @throws Exception to JUnit.
      */
     public void testRemoveNotification2Accuracy() throws Exception {
         NotificationType type = AccuracyHelper.createNotificationType(2);
@@ -658,11 +878,11 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
     }
 
     /**
-     * Test method <code>Notification loadNotification(long user, long project, long notificationType) </code>. If
-     * there is no entry for user, project, notificationType, null will be returned.
-     *
-     * @throws Exception
-     *             to JUnit.
+     * Test method
+     * <code>Notification loadNotification(long user, long project, long notificationType) </code>.
+     * If there is no entry for user, project, notificationType, null will be
+     * returned.
+     * @throws Exception to JUnit.
      */
     public void testLoadNotification1Accuracy() throws Exception {
         Notification ret = instance.loadNotification(1, 1, 2);
@@ -670,11 +890,10 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
     }
 
     /**
-     * Test method <code>Notification loadNotification(long user, long project, long notificationType) </code>. There
-     * is one notification in the database, it should be correctly loaded.
-     *
-     * @throws Exception
-     *             to JUnit.
+     * Test method
+     * <code>Notification loadNotification(long user, long project, long notificationType) </code>.
+     * There is one notification in the database, it should be correctly loaded.
+     * @throws Exception to JUnit.
      */
     public void testLoadNotification2Accuracy() throws Exception {
         NotificationType type = AccuracyHelper.createNotificationType(5);
@@ -690,11 +909,11 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
     }
 
     /**
-     * Test method <code>void addNotificationType(NotificationType notificationType) </code>. Add a notificationType
-     * instance into the database, and get it back to compare.
-     *
-     * @throws Exception
-     *             to JUnit.
+     * Test method
+     * <code>void addNotificationType(NotificationType notificationType) </code>.
+     * Add a notificationType instance into the database, and get it back to
+     * compare.
+     * @throws Exception to JUnit.
      */
     public void testAddNotificationType1Accuracy() throws Exception {
         NotificationType type = AccuracyHelper.createNotificationType(2);
@@ -708,11 +927,11 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
     }
 
     /**
-     * Test method <code>void deleteNotificationType(NotificationType notificationType) </code>. First add a
-     * NotificationType into the database, delete it, and check if it can be loaded back or not.
-     *
-     * @throws Exception
-     *             to JUnit.
+     * Test method
+     * <code>void deleteNotificationType(NotificationType notificationType) </code>.
+     * First add a NotificationType into the database, delete it, and check if
+     * it can be loaded back or not.
+     * @throws Exception to JUnit.
      */
     public void testDeleteNotificationType1Accuracy() throws Exception {
         // Run the test a number of times.
@@ -736,8 +955,8 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
     }
 
     /**
-     * Test method <code> void updateNotificationType(NotificationType notificationType) </code>.
-     *
+     * Test method
+     * <code> void updateNotificationType(NotificationType notificationType) </code>.
      * @throws Exception to JUnit.
      */
     public void testUpdateNotificationType1Accuracy() throws Exception {
@@ -761,8 +980,8 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
     }
 
     /**
-     * Test method <code>NotificationType loadNotificationType(long notificationTypeId) </code>.
-     *
+     * Test method
+     * <code>NotificationType loadNotificationType(long notificationTypeId) </code>.
      * @throws Exception to JUnit.
      */
     public void testLoadNotificationType1Accuracy() throws Exception {
@@ -779,10 +998,9 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
 
     /**
      * Test method <code>void addResourceRole(ResourceRole resourceRole) </code>.
-     * First add a ResourceRole, then load it back to check if add method is correct.
-     *
-     * @throws Exception
-     *             to JUnit.
+     * First add a ResourceRole, then load it back to check if add method is
+     * correct.
+     * @throws Exception to JUnit.
      */
     public void testAddResourceRole1Accuracy() throws Exception {
         ResourceRole role = AccuracyHelper.createResourceRole(100);
@@ -797,15 +1015,15 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
 
         assertNotNull("The resourceRole instance should be got back.", ret);
         assertEquals("The name should be 'tc'", "tc", ret.getName());
-        assertEquals("The phaseType should be 1", new Integer(1).intValue(),
-            ret.getPhaseType().intValue());
-        assertEquals("The description should be 'resource role'", "resource role",
-            ret.getDescription());
+        assertEquals("The phaseType should be 1", new Integer(1).intValue(), ret.getPhaseType()
+                .intValue());
+        assertEquals("The description should be 'resource role'", "resource role", ret
+                .getDescription());
     }
 
     /**
-     * Test method <code>void deleteResourceRole(ResourceRole resourceRole) </code>.
-     *
+     * Test method
+     * <code>void deleteResourceRole(ResourceRole resourceRole) </code>.
      * @throws Exception to JUnit.
      */
     public void testDeleteResourceRole1Accuracy() throws Exception {
@@ -818,9 +1036,10 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
     }
 
     /**
-     * Test method <code>void deleteResourceRole(ResourceRole resourceRole) </code>. First add a ResourceRole and
-     * check if it is added. Then delete the ResourceRole and reload to check if it is deleted already.
-     *
+     * Test method
+     * <code>void deleteResourceRole(ResourceRole resourceRole) </code>. First
+     * add a ResourceRole and check if it is added. Then delete the ResourceRole
+     * and reload to check if it is deleted already.
      * @throws Exception to JUnit.
      */
     public void testDeleteResourceRole2Accuracy() throws Exception {
@@ -846,11 +1065,10 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
     }
 
     /**
-     * Test method <code>void updateResourceRole(ResourceRole resourceRole)  </code>. Update the phaseType to 2, name
-     * to "developer" and description to "test".
-     *
-     * @throws Exception
-     *             to JUnit.
+     * Test method
+     * <code>void updateResourceRole(ResourceRole resourceRole)  </code>.
+     * Update the phaseType to 2, name to "developer" and description to "test".
+     * @throws Exception to JUnit.
      */
     public void testUpdateResourceRole1Accuracy() throws Exception {
         ResourceRole role = AccuracyHelper.createResourceRole(100);
@@ -870,17 +1088,16 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         ResourceRole ret = instance.loadResourceRole(role.getId());
         // check if the ResourceRole is in the database.
         assertNotNull("Should not be null.", ret);
-        assertEquals("Equal is expected.", role.getPhaseType().intValue(),
-            ret.getPhaseType().intValue());
+        assertEquals("Equal is expected.", role.getPhaseType().intValue(), ret.getPhaseType()
+                .intValue());
         assertEquals("The name should be updated to 'developer'", "developer", ret.getName());
         assertEquals("The description should be updated to 'test'", "test", ret.getDescription());
     }
 
     /**
-     * Test method <code>ResourceRole loadResourceRole(long resourceRoleId) </code>.
-     *
-     * @throws Exception
-     *             to JUnit.
+     * Test method
+     * <code>ResourceRole loadResourceRole(long resourceRoleId) </code>.
+     * @throws Exception to JUnit.
      */
     public void testLoadResourceRole1Accuracy() throws Exception {
         ResourceRole role = AccuracyHelper.createResourceRole(111);
@@ -898,8 +1115,8 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
 
         // check if the ResourceRole is in the database.
         assertNotNull("Should not be null.", ret);
-        assertEquals("Equal is expected.", role.getPhaseType().intValue(),
-            ret.getPhaseType().intValue());
+        assertEquals("Equal is expected.", role.getPhaseType().intValue(), ret.getPhaseType()
+                .intValue());
         assertEquals("The name should be  'developer'", "developer", ret.getName());
         assertEquals("The description should be  'test'", "test", ret.getDescription());
 
@@ -909,10 +1126,9 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
     }
 
     /**
-     * Test method <code>ResourceRole loadResourceRole(long resourceRoleId) </code>.
-     *
-     * @throws Exception
-     *             to JUnit.
+     * Test method
+     * <code>ResourceRole loadResourceRole(long resourceRoleId) </code>.
+     * @throws Exception to JUnit.
      */
     public void testLoadResourceRole2Accuracy() throws Exception {
         ResourceRole role = new ResourceRole(5);
@@ -945,7 +1161,6 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
     /**
      * Test method <code>Resource[] loadResources(long[] resourceIds) </code>.
      * In this test case, one resource will be added into the database.
-     *
      * @throws Exception to JUnit.
      */
     public void testLoadResources1Accuracy() throws Exception {
@@ -955,7 +1170,7 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         // create a resource instance.
         Resource r = AccuracyHelper.createResource(11, 1, 1);
 
-        r.setSubmission(new Long(121));
+        r.addSubmission(new Long(121));
 
         r.setProperty("name", "kaka");
         r.setProperty("sex", "male");
@@ -965,22 +1180,20 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
 
         instance.addResource(r);
 
-        Resource[] ret = instance.loadResources(new long[] {11});
+        Resource[] ret = instance.loadResources(new long[] {11 });
 
         assertEquals("The size should be 1", 1, ret.length);
 
         Resource result = ret[0];
         assertEquals("The id should be 11", 11, result.getId());
-        assertEquals("The submission id should be 121", 121, result.getSubmission().longValue());
+        assertEquals("The submission id should be 121", 121, result.getSubmissions()[0].longValue());
         assertEquals("property 'name' value should be kaka", "kaka", result.getProperty("name"));
         assertEquals("property 'sex' value should be male", "male", result.getProperty("sex"));
     }
 
     /**
      * Test method <code>Resource[] loadResources(long[] resourceIds) </code>.
-     *
      * In this test case, multiple resource instance will be loaded.
-     *
      * @throws Exception to JUnit.
      */
     public void testLoadResources2Accuracy() throws Exception {
@@ -994,8 +1207,8 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         Resource r = AccuracyHelper.createResource(11, 1, 1);
         Resource r2 = AccuracyHelper.createResource(10, 1, 1);
 
-        r.setSubmission(new Long(121));
-        r2.setSubmission(new Long(1200));
+        r.addSubmission(new Long(121));
+        r2.addSubmission(new Long(1200));
 
         r.setProperty("name", new Integer(100));
         r.setProperty("name5", new Integer(1000));
@@ -1012,29 +1225,31 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         instance.addResource(r);
         instance.addResource(r2);
 
-        Resource[] ret = instance.loadResources(new long[] {11, 10});
+        Resource mytest1 = instance.loadResource(11);
+        assertEquals("The size of the first resource should be 3", 3, mytest1.getAllProperties()
+                .size());
+
+        Resource[] ret = instance.loadResources(new long[] {11, 10 });
 
         assertNotNull("The resource got back should not be null.", ret);
         assertEquals("Should load 2 items", 2, ret.length);
 
-        assertEquals("The size of the first resource should be 3", 3,
-            ret[0].getAllProperties().size());
+        assertEquals("The size of the first resource should be 3", 3, ret[0].getAllProperties()
+                .size());
 
         assertEquals("The value for name4 of the first resource should be 'value4'", "value4",
-            ret[0].getProperty("name4"));
+                ret[0].getProperty("name4"));
 
-        assertEquals("The size of the second resource should be 2.", 2,
-            ret[1].getAllProperties().size());
+        assertEquals("The size of the second resource should be 2.", 2, ret[1].getAllProperties()
+                .size());
 
         assertEquals("The value for name4 of the second resource should be integer 10", "10",
-            ret[1].getProperty("name4"));
+                ret[1].getProperty("name4"));
     }
 
     /**
      * Test method <code>Resource[] loadResources(long[] resourceIds) </code>.
-     *
      * In this test case, multiple resource instance will be loaded.
-     *
      * @throws Exception to JUnit.
      */
     public void testLoadResources3Accuracy() throws Exception {
@@ -1044,23 +1259,20 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
 
     /**
      * Test method <code>Resource[] loadResources(long[] resourceIds) </code>.
-     *
      * There is no resources in the table, should load no items.
-     *
      * @throws Exception to JUnit.
      */
     public void testLoadResourcesNone() throws Exception {
-        Resource[] ret = instance.loadResources(new long[] {11, 10});
+        Resource[] ret = instance.loadResources(new long[] {11, 10 });
 
         assertNotNull("The resource got back should not be null.", ret);
         assertEquals("There should have no item loaded", 0, ret.length);
     }
 
     /**
-     * Test method <code>NotificationType[] loadNotificationTypes(long[] notificationTypeIds) </code>.
-     *
+     * Test method
+     * <code>NotificationType[] loadNotificationTypes(long[] notificationTypeIds) </code>.
      * @throws Exception to JUnit.
-     *
      */
     public void testLoadNotificationTypes1Accuracy() throws Exception {
         for (int i = 0; i < 5; i++) {
@@ -1068,16 +1280,15 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
             instance.addNotificationType(type);
         }
 
-        NotificationType[] ret = instance.loadNotificationTypes(new long[] {1, 2, 3, 4, 5});
+        NotificationType[] ret = instance.loadNotificationTypes(new long[] {1, 2, 3, 4, 5 });
         assertNotNull("The notificationType instance should be returned.", ret);
         assertEquals("The size should be 5.", 5, ret.length);
     }
 
     /**
-     * Test method <code>NotificationType[] loadNotificationTypes(long[] notificationTypeIds) </code>.
-     *
+     * Test method
+     * <code>NotificationType[] loadNotificationTypes(long[] notificationTypeIds) </code>.
      * @throws Exception to JUnit.
-     *
      */
     public void testLoadNotificationTypes2Accuracy() throws Exception {
         NotificationType[] ret = instance.loadNotificationTypes(new long[] {});
@@ -1085,23 +1296,21 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
     }
 
     /**
-     * Test method <code>NotificationType[] loadNotificationTypes(long[] notificationTypeIds) </code>.
-     *
+     * Test method
+     * <code>NotificationType[] loadNotificationTypes(long[] notificationTypeIds) </code>.
      * The notification is cleared, nothing should be loaded.
-     *
      * @throws Exception to JUnit.
-     *
      */
     public void testLoadNotificationTypesNoneAccuracy() throws Exception {
-        NotificationType[] ret = instance.loadNotificationTypes(new long[] {1, 2, 3, 4, 5});
+        NotificationType[] ret = instance.loadNotificationTypes(new long[] {1, 2, 3, 4, 5 });
 
         assertNotNull("The notificationType instance should be returned.", ret);
         assertEquals("The size should be 0.", 0, ret.length);
     }
 
     /**
-     * Test method <code>ResourceRole[] loadResourceRoles(long[] resourceRoleIds) </code>.
-     *
+     * Test method
+     * <code>ResourceRole[] loadResourceRoles(long[] resourceRoleIds) </code>.
      * @throws Exception to JUnit.
      */
     public void testLoadResourceRolesAccuracy() throws Exception {
@@ -1116,43 +1325,18 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         instance.addResourceRole(role);
         instance.addResourceRole(role2);
 
-        ResourceRole[] ret = instance.loadResourceRoles(new long[] {100, 11});
+        ResourceRole[] ret = instance.loadResourceRoles(new long[] {100, 11 });
 
         assertNotNull("The resourceRole instance should be got back.", ret);
         assertEquals("The size should be 2", 2, ret.length);
     }
 
     /**
-     * Test method <code>ResourceRole[] loadResourceRoles(long[] resourceRoleIds) </code>.
-     *
+     * Test method
+     * <code>ResourceRole[] loadResourceRoles(long[] resourceRoleIds) </code>.
      * @throws Exception to JUnit.
      */
-    public void testLoadResourceRolesWith0ArrayArgumnetAccuracy()
-        throws Exception {
-        ResourceRole role = AccuracyHelper.createResourceRole(100);
-        ResourceRole role2 = AccuracyHelper.createResourceRole(11);
-
-        // delete the ResourceRole if they are already existing.
-        instance.deleteResourceRole(role);
-        instance.deleteResourceRole(role2);
-
-        // add the ResourceRoles.
-        instance.addResourceRole(role);
-        instance.addResourceRole(role2);
-
-        ResourceRole[] ret = instance.loadResourceRoles(new long[0]);
-
-        assertNotNull("The resourceRole instance should be got back.", ret);
-        assertEquals("The size should be 0", 0, ret.length);
-    }
-
-    /**
-     * Test method <code>ResourceRole[] loadResourceRoles(long[] resourceRoleIds) </code>.
-     *
-     * @throws Exception to JUnit.
-     */
-    public void testLoadResourceRolesWith0ArrayArgumentsAccuracy()
-        throws Exception {
+    public void testLoadResourceRolesWith0ArrayArgumnetAccuracy() throws Exception {
         ResourceRole role = AccuracyHelper.createResourceRole(100);
         ResourceRole role2 = AccuracyHelper.createResourceRole(11);
 
@@ -1172,10 +1356,32 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
 
     /**
      * Test method
-     * <code>Notification[] loadNotifications(long[] userIds, long[] projectIds, long[] notificationTypes) </code>.
-     *
-     * @throws Exception
-     *             to JUnit.
+     * <code>ResourceRole[] loadResourceRoles(long[] resourceRoleIds) </code>.
+     * @throws Exception to JUnit.
+     */
+    public void testLoadResourceRolesWith0ArrayArgumentsAccuracy() throws Exception {
+        ResourceRole role = AccuracyHelper.createResourceRole(100);
+        ResourceRole role2 = AccuracyHelper.createResourceRole(11);
+
+        // delete the ResourceRole if they are already existing.
+        instance.deleteResourceRole(role);
+        instance.deleteResourceRole(role2);
+
+        // add the ResourceRoles.
+        instance.addResourceRole(role);
+        instance.addResourceRole(role2);
+
+        ResourceRole[] ret = instance.loadResourceRoles(new long[0]);
+
+        assertNotNull("The resourceRole instance should be got back.", ret);
+        assertEquals("The size should be 0", 0, ret.length);
+    }
+
+    /**
+     * Test method
+     * <code>Notification[] loadNotifications(long[] userIds, long[] projectIds, long[]
+     * notificationTypes) </code>.
+     * @throws Exception to JUnit.
      */
     public void testLoadNotificationsAccuracy() throws Exception {
         NotificationType type = AccuracyHelper.createNotificationType(2);
@@ -1185,21 +1391,19 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
         instance.addNotification(1, 2, 2, "tc");
         instance.addNotification(2, 2, 2, "developer");
 
-        Notification[] ret = instance.loadNotifications(new long[] {1, 2}, new long[] {2, 2},
-                new long[] {2, 2});
+        Notification[] ret = instance.loadNotifications(new long[] {1, 2 }, new long[] {2, 2 },
+                new long[] {2, 2 });
 
         assertEquals("The size returned should be 2.", 2, ret.length);
     }
 
     /**
      * Test method
-     * <code>Notification[] loadNotifications(long[] userIds, long[] projectIds, long[] notificationTypes) </code>.
-     *
-     * @throws Exception
-     *             to JUnit.
+     * <code>Notification[] loadNotifications(long[] userIds, long[] projectIds, long[]
+     * notificationTypes) </code>.
+     * @throws Exception to JUnit.
      */
-    public void testLoadNotificationsWithAll0ArrayArgumentsAccuracy()
-        throws Exception {
+    public void testLoadNotificationsWithAll0ArrayArgumentsAccuracy() throws Exception {
         NotificationType type = AccuracyHelper.createNotificationType(2);
         // first persist notificationType.
         instance.addNotificationType(type);
@@ -1214,27 +1418,27 @@ public class AbstractResourcePersistenceAccuracyTests extends TestCase {
 
     /**
      * Test method
-     * <code>Notification[] loadNotifications(long[] userIds, long[] projectIds, long[] notificationTypes) </code>.
+     * <code>Notification[] loadNotifications(long[] userIds, long[] projectIds, long[]
+     * notificationTypes) </code>.
      * The notification table is clear, should load no notifications.
-     *
      * @throws Exception to JUnit.
      */
     public void testLoadNotificationsNoneAccuracy() throws Exception {
-        Notification[] ret = instance.loadNotifications(new long[] {1, 2}, new long[] {2, 2},
-                new long[] {2, 2});
+        Notification[] ret = instance.loadNotifications(new long[] {1, 2 }, new long[] {2, 2 },
+                new long[] {2, 2 });
 
         assertEquals("The size returned should be 0.", 0, ret.length);
     }
 
     /**
      * Test method
-     * <code>Notification[] loadNotifications(long[] userIds, long[] projectIds, long[] notificationTypes) </code>.
-     * The arguments are all length-0 long array, no Notification instance would be loaded.
-     *
+     * <code>Notification[] loadNotifications(long[] userIds, long[] projectIds, long[]
+     * notificationTypes) </code>.
+     * The arguments are all length-0 long array, no Notification instance would
+     * be loaded.
      * @throws Exception to JUnit.
      */
-    public void testLoadNotificationsWithLength0ArrayAccuracy()
-        throws Exception {
+    public void testLoadNotificationsWithLength0ArrayAccuracy() throws Exception {
         Notification[] ret = instance.loadNotifications(new long[0], new long[0], new long[0]);
 
         assertEquals("The size returned should be 0.", 0, ret.length);

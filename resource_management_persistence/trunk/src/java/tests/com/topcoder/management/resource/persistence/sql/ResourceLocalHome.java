@@ -10,7 +10,7 @@ import javax.ejb.EJBLocalHome;
  * An EJBLocalHome interface as part of the UnmanagedResourcePersistence demo.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author mittu
  * @version 1.1
  */
 public interface ResourceLocalHome extends EJBLocalHome {
