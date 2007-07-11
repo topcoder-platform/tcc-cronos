@@ -45,9 +45,13 @@
         <tr>
             <td class="bold">My Standing:</td>
             <td>
+<%--
                 <a href="${ctx}/server/player/showPesonalizedBall.do?gameId=${game.id}">
+--%>
                     ${orpheus:getPlayerRankFromList(leaderProfiles, user_profile)}
+<%--
                 </a>
+--%>
             </td>
         </tr>
     </table>
