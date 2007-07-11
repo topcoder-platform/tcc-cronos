@@ -708,7 +708,9 @@ public class InformixExpenseTypeDAO implements ExpenseEntryTypeDAO {
             ExpenseType type;
 
             while ((type = createExpenseEntryType(resultSet)) != null) {
-                list.add(type);
+                if (type.getId() > 0) {
+                    list.add(type);
+                }
             }
 
             return (ExpenseType[]) list.toArray(new ExpenseType[list.size()]);
@@ -785,7 +787,9 @@ public class InformixExpenseTypeDAO implements ExpenseEntryTypeDAO {
             ExpenseType type;
 
             while ((type = createExpenseEntryType(resultSet)) != null) {
-                list.add(type);
+                if (type.getId() > 0) {
+                    list.add(type);
+                }
             }
 
             return (ExpenseType[]) list.toArray(new ExpenseType[list.size()]);

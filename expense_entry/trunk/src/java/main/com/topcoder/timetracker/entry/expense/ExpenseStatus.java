@@ -57,7 +57,6 @@ public class ExpenseStatus extends TimeTrackerBean {
      * @throws IllegalArgumentException if <code>id</code> is not positive.
      */
     public ExpenseStatus(long id) {
-        ExpenseEntryHelper.validatePositive(id, "id");
         super.setId(id);
     }
 

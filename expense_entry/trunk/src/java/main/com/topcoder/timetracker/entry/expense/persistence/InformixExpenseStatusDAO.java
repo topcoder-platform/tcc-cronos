@@ -637,7 +637,9 @@ public class InformixExpenseStatusDAO implements ExpenseEntryStatusDAO {
             ExpenseStatus status;
 
             while ((status = createExpenseEntryStatus(resultSet)) != null) {
-                list.add(status);
+                if (status.getId() > 0) {
+                    list.add(status);
+                }
             }
 
             return (ExpenseStatus[]) list.toArray(new ExpenseStatus[list.size()]);
@@ -715,7 +717,9 @@ public class InformixExpenseStatusDAO implements ExpenseEntryStatusDAO {
             ExpenseStatus status;
 
             while ((status = createExpenseEntryStatus(resultSet)) != null) {
-                list.add(status);
+                if (status.getId() > 0) {
+                    list.add(status);
+                }
             }
 
             return (ExpenseStatus[]) list.toArray(new ExpenseStatus[list.size()]);
