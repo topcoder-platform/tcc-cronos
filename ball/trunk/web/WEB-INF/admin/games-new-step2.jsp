@@ -109,7 +109,7 @@
             <td>Auction Start:</td>
             <td class="right">Month:</td>
             <td>
-                <select name="month${n}" id="month${n}" class="inputBox"
+                <select name="month${n}" id="month${n}" class="inputBox"  style="height: 20px;"
                         onchange="recalcAuctionStart(${n});">
                     <option value="01" ${admin:selectIfMonthMatches(currentTime, 0, request, null, dateFormat)}>Jan</option>
                     <option value="02" ${admin:selectIfMonthMatches(currentTime, 1, request, null, dateFormat)}>Feb</option>
@@ -130,7 +130,7 @@
             <td>&nbsp;</td>
             <td class="right">Day:</td>
             <td>
-                <select name="day${n}" id="day${n}" class="inputBox"
+                <select name="day${n}" id="day${n}" class="inputBox"  style="height: 20px;"
                         onchange="recalcAuctionStart(${n});">
                     <c:forEach begin="1" end="31" var="i">
                         <option value="${i < 10 ? ('0' + i) : i}" ${admin:selectIfDayMatches(currentTime, i, request, null, dateFormat)}>${i}</option>
@@ -142,7 +142,7 @@
             <td>&nbsp;</td>
             <td class="right">Year:</td>
             <td>
-                <select name="year${n}" id="year${n}" class="inputBox"
+                <select name="year${n}" id="year${n}" class="inputBox" style="height: 20px;"
                         onchange="recalcAuctionStart(${n});">
                     <c:forEach begin="2006" end="2010" var="i">
                         <option value="${i}" ${admin:selectIfYearMatches(currentTime, i, request, null, dateFormat)}>${i}</option>
@@ -156,7 +156,7 @@
             <td>
                 <input name="time${n}" type="text" value="${admin:getTime(currentTime)}" class="inputBox" style="width:60px"
                        onchange="recalcAuctionStart(${n});"/>
-                <select name="ampm${n}" id="ampm${n}" class="inputBox" onchange="recalcAuctionStart(${n});">
+                <select name="ampm${n}" id="ampm${n}" class="inputBox" onchange="recalcAuctionStart(${n});" style="height: 20px;">
                     <option value="am" ${admin:selectIfAMPMMatches(currentTime, 0, request, null, dateFormat)}>AM</option>
                     <option value="pm" ${admin:selectIfAMPMMatches(currentTime, 1, request, null, dateFormat)}>PM</option>
                 </select>
@@ -166,7 +166,7 @@
             <td>Auction End:</td>
             <td class="right">Month:</td>
             <td>
-                <select name="month2${n}" id="month2${n}" class="inputBox"
+                <select name="month2${n}" id="month2${n}" class="inputBox" style="height: 20px;"
                         onchange="recalcAuctionEnd(${n});">
                     <option value="01" ${admin:selectIfMonthMatches(currentTime, 0, request, null, dateFormat)}>Jan</option>
                     <option value="02" ${admin:selectIfMonthMatches(currentTime, 1, request, null, dateFormat)}>Feb</option>
@@ -187,7 +187,7 @@
             <td>&nbsp;</td>
             <td class="right">Day:</td>
             <td>
-                <select name="day2${n}" id="day2${n}" class="inputBox" onchange="recalcAuctionEnd(${n});">
+                <select name="day2${n}" id="day2${n}" class="inputBox" onchange="recalcAuctionEnd(${n});" style="height: 20px;">
                 <c:forEach begin="1" end="31" var="i">
                     <option value="${i < 10 ? ('0' + i) : i}" ${admin:selectIfDayMatches(currentTime, i, request, null, dateFormat)}>${i}</option>
                 </c:forEach>
@@ -198,7 +198,7 @@
             <td>&nbsp;</td>
             <td class="right">Year:</td>
             <td>
-                <select name="year2${n}" id="year2${n}" class="inputBox" onchange="recalcAuctionEnd(${n});">
+                <select name="year2${n}" id="year2${n}" class="inputBox" onchange="recalcAuctionEnd(${n});" style="height: 20px;">
                     <c:forEach begin="2006" end="2010" var="i">
                         <option value="${i}" ${admin:selectIfYearMatches(currentTime, i, request, null, dateFormat)}>${i}</option>
                     </c:forEach>
@@ -210,7 +210,7 @@
             <td class="right">Time:</td>
             <td><input name="time2${n}" type="text" value="${admin:getTime(currentTime)}" class="inputBox" style="width:60px"
                        onchange="recalcAuctionEnd(${n});"/>
-                <select name="ampm2${n}" id="ampm2${n}" class="inputBox" onchange="recalcAuctionEnd(${n});">
+                <select name="ampm2${n}" id="ampm2${n}" class="inputBox" onchange="recalcAuctionEnd(${n});" style="height: 20px;">
                     <option value="am" ${admin:selectIfAMPMMatches(currentTime, 0, request, null, dateFormat)}>AM</option>
                     <option value="pm" ${admin:selectIfAMPMMatches(currentTime, 1, request, null, dateFormat)}>PM</option>
                 </select>
