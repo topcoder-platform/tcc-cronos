@@ -76,14 +76,14 @@ CREATE TABLE resource_info (
 );
 CREATE TABLE resource_submission (
   resource_id                   INTEGER                         NOT NULL,
-  submission_id                 INTEGER                         NOT NULL,
+  submissions_id                 INTEGER                         NOT NULL,
   create_user                   VARCHAR(64)                     NOT NULL,
   create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   modify_user                   VARCHAR(64)                     NOT NULL,
   modify_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
-  PRIMARY KEY(resource_id, submission_id),
-  FOREIGN KEY(submission_id)
-    REFERENCES submission(submission_id),
+  PRIMARY KEY(resource_id, submissions_id),
+  FOREIGN KEY(submissions_id)
+    REFERENCES submission(submissions_id),
   FOREIGN KEY(resource_id)
     REFERENCES resource(resource_id)
 );

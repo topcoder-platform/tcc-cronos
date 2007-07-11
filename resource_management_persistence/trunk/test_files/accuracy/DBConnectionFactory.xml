@@ -16,10 +16,9 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-               			<Value>jdbc:informix-sqli://peony:1526/resource_management_persistence:INFORMIXSERVER=topcoder</Value>
-       							
-       				</Property>
-					<Property name="user">
+                        <Value>jdbc:informix-sqli://peony:1526/resource_management_persistence:INFORMIXSERVER=topcoder</Value>
+                    </Property>
+                    <Property name="user">
                         <Value>informix</Value>
                     </Property>
                     <Property name="password">
@@ -36,13 +35,13 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-               			<Value>jdbc:informix-sqli://peony:1526/resource_management_persistence:INFORMIXSERVER=topcoder</Value>
-       				</Property>
-					<Property name="user">
+                        <Value>jdbc:informix-sqli://peony:1526/resource:INFORMIXSERVER=topcoder</Value>
+                    </Property>
+                    <Property name="user">
                         <Value>informix</Value>
                     </Property>
                     <Property name="password">
-                        <Value>informix1</Value>
+                        <Value>informix</Value>
                     </Property>
                 </Property>
 			</Property>
