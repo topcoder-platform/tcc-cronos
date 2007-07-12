@@ -337,11 +337,11 @@ public final class Helper {
         validateNotNull(before, beforeUsage);
         validateNotNull(after, afterUsage);
 
-        if (before.after(after)) {
+        if (after.before(before)) {
             throw new IllegalArgumentException(beforeUsage + " must not exceed " + afterUsage + ", but: ["
                 + before + "] > [" + after + "].");
         }
-        if (condition == null) {
+/*        if (condition == null) {
             return;
         }
         if (condition.booleanValue() && (!before.equals(after))) {
@@ -351,6 +351,6 @@ public final class Helper {
         if ((!condition.booleanValue()) && before.equals(after)) {
             throw new IllegalArgumentException(beforeUsage + " must not equal " + afterUsage + ", but: ["
                     + before + "] == [" + after + "].");
-        }
+        }*/
     }
 }
