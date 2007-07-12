@@ -48,6 +48,15 @@ class Helper {
     /**
      * This constant provides the DataType instance that can be used in the
      * query methods to specify that a ResultSet column of a query result should
+     * be returned as value of type Double or as null in case the ResultSet value
+     * was null, and to specify that PreparedStatement#setDouble() should be used
+     * for a parameter.
+     */
+    static final DataType DOUBLE_TYPE = new DoubleType();
+    
+    /**
+     * This constant provides the DataType instance that can be used in the
+     * query methods to specify that a ResultSet column of a query result should
      * be returned as value of type Boolean or as null in case the ResultSet
      * value was null, and to specify that PreparedStatement#setBoolean() should
      * be used for a parameter.
@@ -245,6 +254,64 @@ class Helper {
             Helper.assertObjectNullOrIsInstance(value, Long.class, "value " + index);
 
             preparedStatement.setLong(index, ((Long) value).longValue());
+        }
+    }
+
+    /**
+     * This class is a wrapper for type safe getting of values from a ResultSet
+     * and setting of values to a PreparedStatement. The values retrieved by the
+     * getValue(java.sql.ResultSet, int) implementation of this DataType are
+     * assured to be of type Double or to be null in case the ResultSet value was
+     * null. PreparedStatement#setDouble() will be used to set the value, which
+     * should be of Double type.
+     * @author urtks
+     * @version 1.0
+     */
+    private static class DoubleType extends DataType {
+        /**
+         * This method retrieves the value at the given index from the given
+         * resultSet as instance of Double type.
+         * @param resultSet
+         *            the result set from which to retrieve the value
+         * @param index
+         *            the index at which to retrieve the value
+         * @return the retrieved value as Double or null if the value in the
+         *         ResultSet was null.
+         * @throws IllegalArgumentException
+         *             if resultSet is null
+         * @throws SQLException
+         *             if error occurs while working with the given ResultSet or
+         *             the index does not exist in the result set
+         */
+        protected Object getValue(ResultSet resultSet, int index) throws SQLException {
+            Helper.assertObjectNotNull(resultSet, "resultSet");
+
+            return resultSet.wasNull() ? null : new Double(resultSet.getDouble(index));
+        }
+
+        /**
+         * This method sets the value at the given index from the given
+         * preparedStatement as instance of Double type.
+         * @param preparedStatement
+         *            the prepared statement from which to set the value
+         * @param index
+         *            the index at which to set the value
+         * @param value
+         *            the value to set
+         * @throws IllegalArgumentException
+         *             if preparedStatement or value is null, or value is not an
+         *             instance of Double type
+         * @throws SQLException
+         *             if error occurs while working with the given
+         *             preparedStatement or the index does not exist in the
+         *             prepared statement
+         */
+        protected void setValue(PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException {
+            Helper.assertObjectNotNull(preparedStatement, "statement");
+            Helper.assertObjectNullOrIsInstance(value, Double.class, "value " + index);
+
+            preparedStatement.setDouble(index, ((Double) value).doubleValue());
         }
     }
 

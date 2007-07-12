@@ -260,13 +260,13 @@ public class SqlUploadPersistenceTest extends TestCase {
 
         statement.addBatch("INSERT INTO submission"
             + "(submission_id, upload_id, submission_status_id, "
-            + "create_user, create_date, modify_user, modify_date) "
-            + "VALUES (1, 2, 3, 'System', CURRENT, 'System', CURRENT)");
+            + "create_user, create_date, modify_user, modify_date, screening_score, initial_score, final_score, placement) "
+            + "VALUES (1, 2, 3, 'System', CURRENT, 'System', CURRENT, 1, 2, 3, 0)");
 
         statement.addBatch("INSERT INTO submission"
             + "(submission_id, upload_id, submission_status_id, "
-            + "create_user, create_date, modify_user, modify_date) "
-            + "VALUES (2, 1, 1, 'System', CURRENT, 'System', CURRENT)");
+            + "create_user, create_date, modify_user, modify_date, screening_score, initial_score, final_score, placement) "
+            + "VALUES (2, 1, 1, 'System', CURRENT, 'System', CURRENT, 1, 2, 3, 0)");
 
         statement.addBatch("INSERT INTO deliverable_lu"
             + "(deliverable_id, phase_type_id, resource_role_id, per_submission, required, "
@@ -2464,7 +2464,7 @@ public class SqlUploadPersistenceTest extends TestCase {
             "informix_connection");
 
         try {
-            persistence.loadUploads(null);
+            persistence.loadUploads((long[])null);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             assertEquals("uploadIds should not be null.", e.getMessage());
@@ -2683,7 +2683,7 @@ public class SqlUploadPersistenceTest extends TestCase {
             "informix_connection");
 
         try {
-            persistence.loadSubmissions(null);
+            persistence.loadSubmissions((long[])null);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             assertEquals("submissionIds should not be null.", e.getMessage());

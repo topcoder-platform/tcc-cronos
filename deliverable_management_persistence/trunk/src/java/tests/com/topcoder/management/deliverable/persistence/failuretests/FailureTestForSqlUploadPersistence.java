@@ -1084,7 +1084,7 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
      */
     public void testLoadUploads_1() throws Exception {
         try {
-            persistence.loadUploads(null);
+            persistence.loadUploads((long[])null);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // ok.
@@ -1128,7 +1128,7 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
      */
     public void testLoadSubmissions_1() throws Exception {
         try {
-            persistence.loadSubmissions(null);
+            persistence.loadSubmissions((long[])null);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // ok.

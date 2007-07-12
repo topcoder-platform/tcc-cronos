@@ -156,32 +156,35 @@ public class SqlUploadPersistence implements UploadPersistence {
         Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
         Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE};
 
+    // OrChange : Modifications for the or integration
     /**
      * Represents the sql statement to add submission.
      */
     private static final String ADD_SUBMISSION_SQL = "INSERT INTO submission "
         + "(submission_id, create_user, create_date, modify_user, modify_date, "
-        + "upload_id, submission_status_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            + "upload_id, submission_status_id, screening_score, initial_score, final_score, placement)"
+            + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * Represents the argument types for the sql statement to add submission.
      */
-    private static final DataType[] ADD_SUBMISSION_ARGUMENT_TYPES = new DataType[] {
-        Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE,
-        Helper.DATE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE};
+    private static final DataType[] ADD_SUBMISSION_ARGUMENT_TYPES = new DataType[] { Helper.LONG_TYPE,
+            Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.LONG_TYPE,
+            Helper.LONG_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.LONG_TYPE };
 
     /**
      * Represents the sql statement to update submission.
      */
     private static final String UPDATE_SUBMISSION_SQL = "UPDATE submission "
-        + "SET modify_user=?, modify_date=?, upload_id=?, submission_status_id=? "
+        + "SET modify_user=?, modify_date=?, upload_id=?, submission_status_id=?, screening_score=?, initial_score=?, final_score=?, placement=? "
         + "WHERE submission_id=?";
 
     /**
      * Represents the argument types for the sql statement to update submission.
      */
-    private static final DataType[] UPDATE_SUBMISSION_ARGUMENT_TYPES = new DataType[] {
-        Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE};
+    private static final DataType[] UPDATE_SUBMISSION_ARGUMENT_TYPES = new DataType[] { Helper.STRING_TYPE,
+            Helper.DATE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,  Helper.DOUBLE_TYPE,
+            Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE };
 
     /**
      * Represents the sql statement to load uploads.
@@ -231,7 +234,8 @@ public class SqlUploadPersistence implements UploadPersistence {
         + "upload_type_lu.name, upload_type_lu.description, "
         + "upload_status_lu.upload_status_id, upload_status_lu.create_user, upload_status_lu.create_date, "
         + "upload_status_lu.modify_user, upload_status_lu.modify_date, "
-        + "upload_status_lu.name, upload_status_lu.description "
+        + "upload_status_lu.name, upload_status_lu.description, submission.screening_score, "
+        + "submission.initial_score, submission.final_score, submission.placement "
         + "FROM submission INNER JOIN submission_status_lu "
         + "ON submission.submission_status_id=submission_status_lu.submission_status_id "
         + "INNER JOIN upload ON submission.upload_id=upload.upload_id "
@@ -253,7 +257,7 @@ public class SqlUploadPersistence implements UploadPersistence {
         Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
         Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
         Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE,
-        Helper.STRING_TYPE};
+        Helper.STRING_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.LONG_TYPE };
 
     /**
      * The name of the connection producer to use when a
@@ -1010,7 +1014,11 @@ public class SqlUploadPersistence implements UploadPersistence {
             submission.getCreationUser(), submission.getCreationTimestamp(),
             submission.getModificationUser(), submission.getModificationTimestamp(),
             new Long(submission.getUpload().getId()),
-            new Long(submission.getSubmissionStatus().getId())};
+            new Long(submission.getSubmissionStatus().getId()),
+            new Double(submission.getScreeningScore()),
+            new Double(submission.getInitialScore()),
+            new Double(submission.getFinalScore()),
+            new Long(submission.getPlacement())};
 
         try {
             // add submission to database
@@ -1043,8 +1051,11 @@ public class SqlUploadPersistence implements UploadPersistence {
 
         // build arguments
         Object[] queryArgs = new Object[] {submission.getModificationUser(),
-            submission.getModificationTimestamp(), new Long(submission.getUpload().getId()),
-            new Long(submission.getSubmissionStatus().getId()), new Long(submission.getId())};
+            submission.getModificationTimestamp(),
+                new Long(submission.getUpload().getId()), new Long(submission.getSubmissionStatus().getId()),
+                new Double(submission.getScreeningScore()), new Double(submission.getInitialScore()),
+                new Double(submission.getFinalScore()), new Long(submission.getPlacement()),
+                new Long(submission.getId()) };
 
         try {
             // update submission to database
@@ -1215,7 +1226,14 @@ public class SqlUploadPersistence implements UploadPersistence {
 
             // create a new Submission object
             Submission submission = new Submission();
-            loadSubmissionFieldsSequentially(submission, row, 0);
+            
+            int index = loadSubmissionFieldsSequentially(submission, row, 0);
+            
+            // load the submission values.
+            submission.setScreeningScore(((Double)row[index++]).doubleValue());
+            submission.setIntialScore(((Double)row[index++]).doubleValue());
+            submission.setFinalScore(((Double)row[index++]).doubleValue());
+            submission.setPlacement(((Long)row[index++]).longValue());
 
             // assign it to the array
             submissions[i] = submission;
@@ -1323,6 +1341,11 @@ public class SqlUploadPersistence implements UploadPersistence {
      */
     private Submission loadSubmission(CustomResultSet resultSet) throws InvalidCursorStateException {
         Submission submission = new Submission();
+        
+        submission.setScreeningScore(resultSet.getDouble("screening_score"));
+        submission.setIntialScore(resultSet.getDouble("initial_score"));
+        submission.setFinalScore(resultSet.getDouble("final_score"));
+        submission.setPlacement(resultSet.getLong("placement"));
 
         submission.setId(resultSet.getLong("submission_id"));
         submission.setCreationUser(resultSet.getString("submission_create_user"));

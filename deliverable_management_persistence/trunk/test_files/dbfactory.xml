@@ -14,13 +14,13 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://wishingbone:15260/dmp:INFORMIXSERVER=or</Value>
+                        <Value>jdbc:informix-sqli://63.118.154.218:1526/tcs_test_or:INFORMIXSERVER=devinformix10_shm</Value>
                     </Property>
                     <Property name="user">
-                        <Value>informix</Value>
+                        <Value>coder</Value>
                     </Property>
                     <Property name="password">
-                        <Value>informix</Value>
+                        <Value>altec</Value>
                     </Property>
                 </Property>
             </Property>
