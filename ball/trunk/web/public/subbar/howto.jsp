@@ -17,3 +17,6 @@
 <li>
     <a href="${ctx}/public/registration.jsp?phase=start&nextPhase=step1">Sign Up Today!</a>
 </li>
+<li>
+    <a href="${ctx}/server/puzzle/jigsaw.do">Practice</a> 
+</li>
