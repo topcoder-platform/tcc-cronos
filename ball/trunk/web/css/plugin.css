@@ -52,6 +52,10 @@ p { line-height: 18px; }
 	width: 748px;
 	margin: 13px auto 0 auto;
 }
+#page-full {
+	width: 940px;
+	margin: 13px auto 0 auto;
+}
 #pagePlugin {
 	width: 675px;
 	margin: 13px auto 0 auto;

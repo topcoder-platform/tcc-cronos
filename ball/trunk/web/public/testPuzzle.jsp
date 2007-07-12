@@ -61,9 +61,20 @@
     </script>
 </head>
 
-<body id="page" onunload="unsetClockUpdatePeriod();">
+<c:if test="${puzzleName eq 'Jigsaw Puzzle'}">
+	<body id="page-full" onunload="unsetClockUpdatePeriod();">
+</c:if>
+<c:if test="${puzzleName ne 'Jigsaw Puzzle'}">
+	<body id="page" onunload="unsetClockUpdatePeriod();">
+</c:if>
+
 <div id="container">
-    <%@ include file="../includes/header.jsp" %>
+	<c:if test="${puzzleName eq 'Jigsaw Puzzle'}">
+    	<%@ include file="../includes/header_jigsaw.jsp" %>
+    </c:if>
+    <c:if test="${puzzleName ne 'Jigsaw Puzzle'}">
+    	<%@ include file="../includes/header.jsp" %>
+    </c:if>
 
     <div id="pluginTestTitle">
     	Practice: ${puzzleName}
@@ -83,16 +94,21 @@
     </div>
 
     <div id="wrap">
-    	<img src="${ctx}/i/tabletop.gif" width=100%/>
+    	<c:if test="${puzzleName eq 'Jigsaw Puzzle'}">
+    		<img src="${ctx}/i/tabletop.gif" width="940"/>
+    	</c:if>
+    	<c:if test="${puzzleName ne 'Jigsaw Puzzle'}">
+    		<img src="${ctx}/i/tabletop.gif" width="100%"/>
+    	</c:if>
     
         <div id="plugin-table-full">
             <ul>
                 <li class="auction-block">
                     <table border="0" cellpadding="0" cellspacing="0">
                         <tr>
-                            <td width="645" class="link">
+                            <td class="link">
                                 <p>
-                                    The following are puzzles similar to the kind that you will find in the Ball game itself.  
+                                    The following puzzle is similar to the kind that you will find in the actual Ball game.  
                                     You are welcome to use these practice puzzles to try to improve your skill at them.
                                 </p>
 
@@ -114,7 +130,12 @@
             </ul>
         </div>
 
-        <img src="${ctx}/i/tablebot.gif" width=100%/>
+        <c:if test="${puzzleName eq 'Jigsaw Puzzle'}">
+    		<img src="${ctx}/i/tablebot.gif" width="940"/>
+    	</c:if>
+    	<c:if test="${puzzleName ne 'Jigsaw Puzzle'}">
+    		<img src="${ctx}/i/tablebot.gif" width="100%"/>
+    	</c:if>
     </div>
 </div>
 <script type="text/javascript">
