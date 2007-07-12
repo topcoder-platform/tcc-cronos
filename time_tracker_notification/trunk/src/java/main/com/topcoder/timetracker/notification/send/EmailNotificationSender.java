@@ -37,8 +37,7 @@ import com.topcoder.timetracker.notification.NotificationSendingException;
 import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogException;
-import com.topcoder.util.log.LogFactory;
+import com.topcoder.util.log.LogManager;
 
 /**
  * <p>
@@ -115,11 +114,7 @@ public class EmailNotificationSender implements NotificationSender {
         this.contactManager = cm;
         this.generator = generator;
 
-        try {
-            this.log = (logName != null) ? LogFactory.getLog(logName) : LogFactory.getLog();
-        } catch (LogException le) {
-            throw new NotificationConfigurationException("Error get the log.", le);
-        }
+        this.log = (logName != null) ? LogManager.getLog(logName) : LogManager.getLog();
     }
 
     /**
@@ -187,18 +182,10 @@ public class EmailNotificationSender implements NotificationSender {
         try {
             contacts = contactManager.searchContacts(combinedFilter);
         } catch (PersistenceException pe) {
-            try {
-                this.log.log(Level.ERROR, createLog(notificaion.getId(), pe.getMessage()));
-            } catch (LogException le) {
-                throw new NotificationSendingException("Error logging.", le);
-            }
+            this.log.log(Level.ERROR, createLog(notificaion.getId(), pe.getMessage()));
             throw new NotificationSendingException("Error when retrieving contact information.", pe);
         } catch (AssociationException ae) {
-            try {
-                this.log.log(Level.ERROR, createLog(notificaion.getId(), ae.getMessage()));
-            } catch (LogException le) {
-                throw new NotificationSendingException("Error logging.", le);
-            }
+            this.log.log(Level.ERROR, createLog(notificaion.getId(), ae.getMessage()));
             throw new NotificationSendingException("Error when retrieving contact information.", ae);
         }
 
@@ -241,11 +228,7 @@ public class EmailNotificationSender implements NotificationSender {
             try {
                 messageBody = generator.generateMessage(contactName, notificaion.getMessage());
             } catch (MessageBodyGeneratorException mbge) {
-                try {
-                    this.log.log(Level.ERROR, createLog(notificaion.getId(), mbge.getMessage()));
-                } catch (LogException le) {
-                    throw new NotificationSendingException("Error logging.");
-                }
+                this.log.log(Level.ERROR, createLog(notificaion.getId(), mbge.getMessage()));
                 throw new NotificationSendingException("Error generating message.", mbge);
             }
 
@@ -260,25 +243,13 @@ public class EmailNotificationSender implements NotificationSender {
 
                 EmailEngine.send(message);
             } catch (AddressException ae) {
-                try {
-                    this.log.log(Level.ERROR, createLog(notificaion.getId(), ae.getMessage()));
-                } catch (LogException le) {
-                    throw new NotificationSendingException("Error logging.", le);
-                }
+                this.log.log(Level.ERROR, createLog(notificaion.getId(), ae.getMessage()));
                 throw new NotificationSendingException("The email address is invalid.", ae);
             } catch (ConfigManagerException cme) {
-                try {
-                    this.log.log(Level.ERROR, createLog(notificaion.getId(), cme.getMessage()));
-                } catch (LogException le) {
-                    throw new NotificationSendingException("Error logging.", le);
-                }
+                this.log.log(Level.ERROR, createLog(notificaion.getId(), cme.getMessage()));
                 throw new NotificationSendingException("Can not load config.", cme);
             } catch (SendingException se) {
-                try {
-                    this.log.log(Level.ERROR, createLog(notificaion.getId(), se.getMessage()));
-                } catch (LogException le) {
-                    throw new NotificationSendingException("Error logging.", le);
-                }
+                this.log.log(Level.ERROR, createLog(notificaion.getId(), se.getMessage()));
                 throw new NotificationSendingException("There is problem sending.", se);
             }
         }
