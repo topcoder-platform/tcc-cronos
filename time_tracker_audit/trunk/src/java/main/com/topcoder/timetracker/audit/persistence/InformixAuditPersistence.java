@@ -40,7 +40,9 @@ import java.sql.Timestamp;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -77,6 +79,11 @@ public class InformixAuditPersistence implements AuditPersistence {
     /** Possible SQL statement used to obtain all audit details from DB given their audit header id. */
     private static final String SQL_SELECT_DETAILS = "SELECT audit_detail_id, old_value, new_value, column_name "
         + "FROM audit_detail WHERE audit_id = ?";
+
+    /** Possible SQL statement used to obtain all audit details from DB given their audit header id. */
+    private static final String SQL_SELECT_DETAILS_FOR_HEADERS =
+        "SELECT audit_id,audit_detail_id,old_value,new_value,column_name" +
+        " FROM audit_detail WHERE audit_id IN";
 
     /** Represents the SQL statement used to insert a single audit header row into the database. */
     private static final String SQL_INSERT_AUDIT = "INSERT INTO audit "
@@ -547,7 +554,7 @@ public class InformixAuditPersistence implements AuditPersistence {
         try {
             conn = this.createConnection();
 
-            List headers = new ArrayList();
+            List headersList = new ArrayList();
 
             if (filter == null) {
                 // no filter, customer sql query will be used here
@@ -555,20 +562,24 @@ public class InformixAuditPersistence implements AuditPersistence {
                 rs = ps.executeQuery();
 
                 while (rs.next()) {
-                    headers.add(this.loadAuditHeader(conn, rs));
+                    headersList.add(this.loadAuditHeader(conn, rs));
                 }
             } else {
                 // using filter
                 CustomResultSet customResultSet = (CustomResultSet) searchBundle.search(filter);
 
                 while (customResultSet.next()) {
-                    headers.add(this.loadAuditHeader(conn, customResultSet));
+                    headersList.add(this.loadAuditHeader(conn, customResultSet));
                 }
+
             }
 
-            return (AuditHeader[]) headers.toArray(new AuditHeader[headers.size()]);
+            AuditHeader[] headers = (AuditHeader[]) headersList.toArray(new AuditHeader[headersList.size()]);
+
+            loadDetails(conn, headers);
+            return headers;
         } catch (SearchBuilderException e) {
-            throw new AuditPersistenceException("Error occur when search audits from search builder.", e);
+            throw new AuditPersistenceException("Error occurs when searching audits from search builder.", e);
         } catch (SQLException e) {
             throw new AuditPersistenceException("Something wrong in the database related operations.", e);
         } finally {
@@ -749,7 +760,7 @@ public class InformixAuditPersistence implements AuditPersistence {
             throw new AuditPersistenceException("Fails to retrieve the data from the customResultSet.", e);
         }
 
-        header.setDetails(loadDetails(conn, header.getId()));
+//        header.setDetails(loadDetails(conn, header.getId()));
         header.setPersisted(true);
 
         return header;
@@ -809,7 +820,7 @@ public class InformixAuditPersistence implements AuditPersistence {
             throw new AuditPersistenceException("Fails to retrieve the data from the ResultSet.", e);
         }
 
-        header.setDetails(loadDetails(conn, header.getId()));
+//        header.setDetails(loadDetails(conn, header.getId()));
         header.setPersisted(true);
 
         return header;
@@ -869,6 +880,89 @@ public class InformixAuditPersistence implements AuditPersistence {
 
     /**
      * <p>
+     * Reads in all the details attached to a given audit ID.
+     * </p>
+     *
+     * @param conn the connection to the database.
+     * @param auditId The Audit ID whose details are to be obtained.
+     *
+     * @return An array (non-null, possibly empty) of details matching the given audit ID.
+     *
+     * @throws AuditPersistenceException If there are any problems to load the audit details.
+     */
+    private static void loadDetails(Connection conn, AuditHeader[] headers) throws AuditPersistenceException {
+        if (headers.length == 0) {
+            return;
+        }
+
+        StringBuffer statement = new StringBuffer(SQL_SELECT_DETAILS_FOR_HEADERS);
+
+        statement.append(" (");
+
+        for (int i = 0; i < headers.length; ++i) {
+            if (i != 0) {
+                statement.append(",?");
+            } else {
+                statement.append('?');
+            }
+        }
+        statement.append(')');
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(statement.toString());
+            for (int i = 0; i < headers.length; ++i) {
+                ps.setLong(i+1, headers[i].getId());
+            }
+
+            rs = ps.executeQuery();
+
+            Map auditIdToDetails = new HashMap(); // key = audit ID, value = list of AuditDetail
+
+            while (rs.next()) {
+                AuditDetail detail = new AuditDetail();
+
+                String oldValue = rs.getString("old_value");
+                String newValue = rs.getString("new_value");
+
+                detail.setId(rs.getLong("audit_detail_id"));
+                detail.setOldValue((oldValue != null) ? oldValue : "");
+                detail.setNewValue((newValue != null) ? newValue : "");
+                detail.setColumnName(rs.getString("column_name"));
+                detail.setPersisted(true);
+
+                final Long auditId = new Long(rs.getLong("audit_id"));
+                List details = (List) auditIdToDetails.get(auditId);
+
+                if (details == null) {
+                    details = new ArrayList();
+                    auditIdToDetails.put(auditId, details);
+                }
+
+                details.add(detail);
+            }
+
+            for (int i = 0; i < headers.length; ++i) {
+                final Long auditId = new Long(headers[i].getId());
+                List details = (List) auditIdToDetails.get(auditId);
+
+                if (details != null) {
+                    headers[i].setDetails((AuditDetail[]) details.toArray(new AuditDetail[details.size()]));
+                } else {
+                    headers[i].setDetails(new AuditDetail[0]);
+                }
+            }
+        } catch (SQLException e) {
+            throw new AuditPersistenceException("Something wrong in the database related operations.", e);
+        } finally {
+            releaseResource(rs, ps);
+        }
+    }
+
+    /**
+     * <p>
      * Get database connection from the db connection factory.
      * </p>
      *
@@ -911,7 +1005,7 @@ public class InformixAuditPersistence implements AuditPersistence {
      * @param resultSet the resultSet set to be closed.
      * @param statement the SQL statement to be closed.
      */
-    private void releaseResource(ResultSet resultSet, Statement statement) {
+    private static void releaseResource(ResultSet resultSet, Statement statement) {
         if (resultSet != null) {
             try {
                 resultSet.close();
