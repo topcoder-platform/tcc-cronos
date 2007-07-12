@@ -29,7 +29,7 @@ import com.topcoder.timetracker.rates.RatePersistence;
 import com.topcoder.timetracker.rates.RatePersistenceException;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
+import com.topcoder.util.log.LogManager;
 import com.topcoder.util.objectfactory.InvalidClassSpecificationException;
 import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
@@ -148,7 +148,7 @@ public class InformixRatePersistence implements RatePersistence {
         String useLog = ConfigHelper.getStringProperty(namespace, "useLog", false);
 
         if (useLog != null && "true".equals(useLog)) {
-            this.log = LogFactory.getLog(logName);
+            this.log = LogManager.getLog(logName);
         } else {
             this.log = null;
         }
