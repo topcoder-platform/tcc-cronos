@@ -95,7 +95,7 @@
     <property name="base_exception.path" value="base_exception/${base_exception.version}"/>
     <property name="base_exception.jar" value="${tcs_libdir}/${base_exception.path}/${base_exception.jar.name}"/>
 
-    <property name="logging_wrapper.version" value="1.2"/>
+    <property name="logging_wrapper.version" value="2.0"/>
     <property name="logging_wrapper.jar.name" value="logging_wrapper.jar"/>
     <property name="logging_wrapper.path" value="logging_wrapper/${logging_wrapper.version}"/>
     <property name="logging_wrapper.jar" value="${tcs_libdir}/${logging_wrapper.path}/${logging_wrapper.jar.name}"/>
