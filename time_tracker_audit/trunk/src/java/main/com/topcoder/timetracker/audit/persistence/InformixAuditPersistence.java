@@ -3,34 +3,6 @@
  */
 package com.topcoder.timetracker.audit.persistence;
 
-import com.topcoder.db.connectionfactory.ConfigurationException;
-import com.topcoder.db.connectionfactory.DBConnectionException;
-import com.topcoder.db.connectionfactory.DBConnectionFactory;
-import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
-
-import com.topcoder.search.builder.SearchBuilderConfigurationException;
-import com.topcoder.search.builder.SearchBuilderException;
-import com.topcoder.search.builder.SearchBundle;
-import com.topcoder.search.builder.SearchBundleManager;
-import com.topcoder.search.builder.filter.Filter;
-
-import com.topcoder.timetracker.audit.ApplicationArea;
-import com.topcoder.timetracker.audit.AuditConfigurationException;
-import com.topcoder.timetracker.audit.AuditDetail;
-import com.topcoder.timetracker.audit.AuditHeader;
-import com.topcoder.timetracker.audit.AuditPersistence;
-import com.topcoder.timetracker.audit.AuditPersistenceException;
-import com.topcoder.timetracker.audit.TimeTrackerAuditHelper;
-
-import com.topcoder.util.idgenerator.IDGenerationException;
-import com.topcoder.util.idgenerator.IDGenerator;
-import com.topcoder.util.idgenerator.IDGeneratorFactory;
-import com.topcoder.util.log.Level;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
-import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
-import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,11 +10,35 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.topcoder.db.connectionfactory.ConfigurationException;
+import com.topcoder.db.connectionfactory.DBConnectionException;
+import com.topcoder.db.connectionfactory.DBConnectionFactory;
+import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
+import com.topcoder.search.builder.SearchBuilderConfigurationException;
+import com.topcoder.search.builder.SearchBuilderException;
+import com.topcoder.search.builder.SearchBundle;
+import com.topcoder.search.builder.SearchBundleManager;
+import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.timetracker.audit.ApplicationArea;
+import com.topcoder.timetracker.audit.AuditConfigurationException;
+import com.topcoder.timetracker.audit.AuditDetail;
+import com.topcoder.timetracker.audit.AuditHeader;
+import com.topcoder.timetracker.audit.AuditPersistence;
+import com.topcoder.timetracker.audit.AuditPersistenceException;
+import com.topcoder.timetracker.audit.TimeTrackerAuditHelper;
+import com.topcoder.util.idgenerator.IDGenerationException;
+import com.topcoder.util.idgenerator.IDGenerator;
+import com.topcoder.util.idgenerator.IDGeneratorFactory;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogManager;
+import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
+import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 
 /**
  * <p>
@@ -260,7 +256,7 @@ public class InformixAuditPersistence implements AuditPersistence {
                 DEFAULT_VALUE_NAMESPACE_PROPERTY, true);
 
         // create log instance
-        log = (logName == null) ? LogFactory.getLog() : LogFactory.getLog(logName);
+        log = (logName == null) ? LogManager.getLog() : LogManager.getLog(logName);
 
         if (log == null) {
             throw new AuditConfigurationException("Fails to create the Log from LogFactory.");
