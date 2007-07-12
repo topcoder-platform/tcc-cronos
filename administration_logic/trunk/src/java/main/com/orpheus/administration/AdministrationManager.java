@@ -6,7 +6,6 @@ package com.orpheus.administration;
 
 import com.orpheus.administration.entities.DomainTargetImpl;
 import com.orpheus.administration.entities.HostingSlotImpl;
-
 import com.orpheus.game.GameDataException;
 import com.orpheus.game.GameDataManager;
 import com.orpheus.game.persistence.DomainTarget;
@@ -15,13 +14,11 @@ import com.orpheus.game.persistence.GameDataHome;
 import com.orpheus.game.persistence.HostingBlock;
 import com.orpheus.game.persistence.HostingSlot;
 import com.orpheus.game.persistence.PersistenceException;
-
 import com.topcoder.randomstringimg.Configuration;
 import com.topcoder.randomstringimg.InvalidConfigException;
 import com.topcoder.randomstringimg.ObfuscationAlgorithm;
 import com.topcoder.randomstringimg.ObfuscationException;
 import com.topcoder.randomstringimg.RandomStringImage;
-
 import com.topcoder.util.algorithm.hash.HashAlgorithmManager;
 import com.topcoder.util.algorithm.hash.HashException;
 import com.topcoder.util.algorithm.hash.algorithm.HashAlgorithm;
@@ -30,12 +27,9 @@ import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.objectfactory.ObjectFactoryException;
 import com.topcoder.util.objectfactory.SpecificationFactoryException;
 import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
-import com.topcoder.util.objectfactory.impl.IllegalReferenceException;
-import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
 import com.topcoder.util.web.sitestatistics.SiteStatistics;
 import com.topcoder.util.web.sitestatistics.StatisticsException;
 import com.topcoder.util.web.sitestatistics.TextStatistics;
-
 import com.topcoder.webspider.crawling.BreadthFirstCrawlStrategy;
 import com.topcoder.webspider.validators.DepthValidator;
 import com.topcoder.webspider.validators.RegExValidator;
@@ -43,22 +37,18 @@ import com.topcoder.webspider.web.WebAddressContext;
 import com.topcoder.webspider.web.WebCrawler;
 import com.topcoder.webspider.web.WebPageData;
 
+import javax.ejb.CreateException;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
 import java.rmi.RemoteException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
-import javax.ejb.CreateException;
 
 /**
  * <p>
@@ -276,10 +266,6 @@ public class AdministrationManager {
      * use when generating puzzles and brain teasers and set up with
      * configuration values from given namespace.
      *
-     *
-     * @param puzzleTypeSource
-     *            PuzzleTypeSource to use when generating puzzles and brain
-     *            teasers.
      * @param namespace
      *            namespace to load configuration details from.
      * @throws ConfigurationException
@@ -417,6 +403,9 @@ public class AdministrationManager {
                     ae.printStackTrace(System.err);
                 } catch (GameDataException gde) {
                     gde.printStackTrace();
+                } catch (Exception e) {
+                    System.err.println("An unexpected error while initializing slot " + slotId);
+                    e.printStackTrace();
                 }
             }
         } catch (Exception e) {
@@ -437,8 +426,6 @@ public class AdministrationManager {
      * @throws AdministrationException
      *             if an error such as RemoteException of GameDataException
      *             occurs.
-     * @throws IllegalReferenceException
-     * @throws SpecificationConfigurationException
      */
     private void generateHuntTargets(long slotId, GameData gameData)
         throws AdministrationException {
@@ -487,7 +474,6 @@ public class AdministrationManager {
      * @throws HashException
      * @throws ObjectFactoryException
      * @throws SpecificationFactoryException
-     * @throws Exception - if fail to generate hunt targets for specified domain.
      */
     private DomainTarget[] generateDomainTargets(GameData gameData, String domainName) throws
             ObjectFactoryException, AdministrationException,
@@ -661,15 +647,14 @@ public class AdministrationManager {
      * Create {@link SiteStatistics} from object factory.
      * </p>
      * @return created {@link SiteStatistics} object.
-     * @throws AdministrationException
-     * @throws SpecificationFactoryException
+     * @throws AdministrationException if fails to create <code>SiteStatistics</code> instance. 
+     * @throws SpecificationFactoryException if fails to create <code>ObjectFactory</code> instance. 
+     * @throws ObjectFactoryException if fails to create <code>SiteStatistics</code> instance. 
      */
-    private SiteStatistics createSiteStatistics() throws
-            ObjectFactoryException, AdministrationException,
+    private SiteStatistics createSiteStatistics() throws ObjectFactoryException, AdministrationException,
             SpecificationFactoryException {
         // Create an instance of ObjectFactory
-        ObjectFactory of = new ObjectFactory(new ConfigManagerSpecificationFactory(
-                objectFactory), ObjectFactory.BOTH);
+        ObjectFactory of = new ObjectFactory(new ConfigManagerSpecificationFactory(objectFactory), ObjectFactory.BOTH);
 
         try {
             return (SiteStatistics) of.createObject("SiteStatistics");
