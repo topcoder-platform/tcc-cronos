@@ -106,6 +106,11 @@ public class DbTaskTypeDAO extends BaseDAO implements TaskTypeDAO {
         + "where task_type.task_type_id = comp_task_type.task_type_id";
 
     /**
+     * Represents the sql script to count time entries that reference a given task type.
+     */
+    private static final String COUNT_REFERENCES = "SELECT COUNT(time_entry_id) FROM time_entry WHERE task_type_id = ?";
+
+    /**
      * <p>
      * This is the filter factory that is used to create Search Filters for
      * searching the data store for Task Types using this implementation.
@@ -650,6 +655,53 @@ public class DbTaskTypeDAO extends BaseDAO implements TaskTypeDAO {
         taskType.setChanged(false);
 
         return taskType;
+    }
+
+    /**
+     * This is a batch version of the <code>isTaskTypeReferenced</code> method.
+     *
+     * @return a <code>boolean</code> array containing exactly the same count of elements as the
+     *         <code>taskTypeIds</code> parameter does. Every entry in the resulting array
+     *         specifies whether a task type is being referenced.
+     * @param taskTypeIds
+     *            An array of ids for which the operation should be performed.
+     * @throws IllegalArgumentException
+     *             if taskTypeIds is null, empty or contains values &lt; 0.
+     * @throws DataAccessException
+     *             if a problem occurs while accessing the persistent store.
+     */
+    public boolean[] areTaskTypesReferenced(long[] taskTypeIds) throws DataAccessException {
+        checkTaskTypeIds(taskTypeIds);
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            boolean[] referenced = new boolean[taskTypeIds.length];
+
+            conn = getConnection();
+
+            for (int i = 0; i < taskTypeIds.length; i++) {
+                pstmt = conn.prepareStatement(COUNT_REFERENCES);
+                pstmt.setLong(1, taskTypeIds[i]);
+
+                ResultSet rs = pstmt.executeQuery();
+
+                if (!rs.next()) {
+                    throw new DataAccessException("Query for task type ID [" + taskTypeIds[i] + "] returned 0 results.");
+                }
+
+                referenced[i] = (rs.getInt(1) != 0);
+            }
+
+            return referenced;
+        } catch (SQLException se) {
+            throw new DataAccessException(
+                    "An error occurred while trying to determine whether one or more entries are being referenced.");
+        } finally {
+            Util.closeStatement(pstmt);
+            Util.closeConnection(conn);
+        }
     }
 
     /**

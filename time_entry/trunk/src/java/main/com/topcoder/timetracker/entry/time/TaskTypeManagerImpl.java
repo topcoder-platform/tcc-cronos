@@ -273,6 +273,25 @@ public class TaskTypeManagerImpl implements TaskTypeManager {
     }
 
     /**
+     * This is a batch version of the <code>isTaskTypeReferenced</code> method.
+     *
+     * @return a <code>boolean</code> array containing exactly the same count of elements as the
+     *         <code>taskTypeIds</code> parameter does. Every entry in the resulting array
+     *         specifies whether a task type is being referenced.
+     * @param taskTypeIds
+     *            An array of ids for which the operation should be performed.
+     * @throws IllegalArgumentException
+     *             if taskTypeIds is null, empty or contains values &lt; 0.
+     * @throws BatchOperationException
+     *             if a problem occurs while processing the batch.
+     * @throws DataAccessException
+     *             if a problem occurs while accessing the persistent store.
+     */
+    public boolean[] areTaskTypesReferenced(long[] taskTypeIds) throws BatchOperationException, DataAccessException {
+        return this.taskTypeDao.areTaskTypesReferenced(taskTypeIds);
+    }
+
+    /**
      * <p>
      * Retrieves the <code>TaskTypeFilterFactory</code> that is capable of creating SearchFilters to
      * use when searching for TaskTypes.

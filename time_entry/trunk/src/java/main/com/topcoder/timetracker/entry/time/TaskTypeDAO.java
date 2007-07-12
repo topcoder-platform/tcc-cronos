@@ -103,6 +103,21 @@ public interface TaskTypeDAO {
      * @throws DataAccessException if a problem occurs while accessing the persistent store.
      */
     public TaskType[] getTaskTypes(long[] taskTypeIds) throws BatchOperationException, DataAccessException;
+    
+    /**
+     * This is a batch version of the <code>isTaskTypeReferenced</code> method.
+     * 
+     * @return a <code>boolean</code> array containing exactly the same count of elements as the
+     *         <code>taskTypeIds</code> parameter does. Every entry in the resulting array
+     *         specifies whether a task type is being referenced.
+     * @param taskTypeIds
+     *            An array of ids for which the operation should be performed.
+     * @throws IllegalArgumentException
+     *             if taskTypeIds is null, empty or contains values &lt; 0.
+     * @throws DataAccessException
+     *             if a problem occurs while accessing the persistent store.
+     */
+    public boolean[] areTaskTypesReferenced(long[] taskTypeIds) throws DataAccessException;
 
     /**
      * <p>
