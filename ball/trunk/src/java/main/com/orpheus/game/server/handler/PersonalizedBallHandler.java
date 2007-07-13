@@ -18,10 +18,10 @@ import org.w3c.dom.Element;
 import javax.naming.Context;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.BasicStroke;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -46,11 +46,11 @@ public class PersonalizedBallHandler extends AbstractGameServerHandler implement
     private static final Color UNLOCKED_SLOT = new Color(0xEC7523);
     private static final Color UNLOCKED_SLOT_BORDER = new Color(0xDB6727);
 
-    private static final Color COMPLETED_SLOT = new Color(0xEC7523);
-    private static final Color COMPLETED_SLOT_BORDER = new Color(0xDB6727);
+    private static final Color COMPLETED_SLOT = new Color(0xA74600);
+    private static final Color COMPLETED_SLOT_BORDER = new Color(0xA7FF00);
 
-    private static final Color CURRENT_SLOT = new Color(0xEC7523);
-    private static final Color CURRENT_SLOT_BORDER = new Color(0xDB6727);
+    private static final Color CURRENT_SLOT = new Color(0xF7F7F7);
+    private static final Color CURRENT_SLOT_BORDER = new Color(0xF7FFF7);
 
     /**
      * <p>A <code>Context</code> providing a <code>JNDI</code> context to be used for looking up the home interface for
@@ -129,14 +129,14 @@ public class PersonalizedBallHandler extends AbstractGameServerHandler implement
             request.setAttribute(getString(GAME_DETIALS_ATTR_NAME_CONFIG), game);
             request.setAttribute(getString(SLOT_COMPLETIONS_ATTR_NAME_CONFIG), completedSlots);
             // Prepare data to be used for rendering the image
-            generateImage(request, game);
+            generateImage(request, game, gameDateEjbAdapter);
             return null;
         } catch (Exception e) {
             throw new HandlerExecutionException("Failed to get data for personalized ball", e);
         }
     }
 
-    private void generateImage(HttpServletRequest request, Game game) {
+    private void generateImage(HttpServletRequest request, Game game, GameDataEJBAdapter gameDateEjbAdapter) {
         HttpSession session = request.getSession(false);
         Map completedSlots = (Map) request.getAttribute(getString(SLOT_COMPLETIONS_ATTR_NAME_CONFIG));
         // A radius for circles representing the game slots
@@ -163,9 +163,9 @@ public class PersonalizedBallHandler extends AbstractGameServerHandler implement
                     gameSlots.add(slots[j]);
                     slotCenters.add(center);
                     angle += Math.atan(d / r);
-//                    angle += 10;
-                    angle %= 360;
+//                    angle %= 360;
                     r = a + b * angle * Math.PI / 180;
+                    System.out.println("R = " + r + ", angle = " + angle);
                     xmin = Math.min(xmin, (int) center.getX() - radius - 5);
                     ymin = Math.min(ymin, (int) center.getY() - radius - 5);
                     xmax = Math.max(xmax, (int) center.getX());
@@ -247,6 +247,20 @@ public class PersonalizedBallHandler extends AbstractGameServerHandler implement
                 graphics.fillOval(x - radius, y - radius, radius * 2, radius * 2);
                 graphics.setColor(borderColor);
                 graphics.drawOval(x - radius, y - radius, radius * 2, radius * 2);
+/*
+                if (slot.getHostingEnd() == null) {
+                    DownloadData ballImage = gameDateEjbAdapter.getDownloadData(game.getBallColor().getImageId());
+                    ImageDecoder decoder = new JAIImageDecoder();
+                    Image ball = decoder.decode(ballImage.getContent());
+                    BufferedImage im = new BufferedImage(ball.getWidth(), ball.getHeight(), BufferedImage.TYPE_INT_RGB);
+                    for (int xx = 0; xx < im.getWidth(); xx++) {
+                        for (int yy = 0; yy < im.getHeight(); yy++) {
+                            im.setRGB(x, y, ball.getPixel(x, y).getRGB());
+                        }
+                    }
+                    graphics.drawImage(im, (int) center.getX(), (int) center.getY(), null);
+                }
+*/
             }
             // Convert image to JPEG format
             MutableMemoryImage mutableImage = new MutableMemoryImage(image);
