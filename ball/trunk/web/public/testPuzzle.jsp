@@ -79,6 +79,10 @@
     <div id="pluginTestTitle">
     	Practice: ${puzzleName}
     	<form name="SelectPuzzleForm" id="SelectPuzzleForm">
+    		<!--<select size="1" name="puzzleType" id="puzzleType">
+    			<option value="Jigsaw">Jigsaw</option>
+    			<option value="Jigsaw">Sliding Tile</option>
+    		</select>-->
 	    	<select size="1" name="puzzleId" id="puzzleId">
 	    	   	<c:forEach items="${puzzleIDs}" var="puzzleID">
 	    	 		<c:if test="${puzzleID ne selPuzzleID}">
