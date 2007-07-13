@@ -405,7 +405,7 @@
 Thank you for registering to be a sponsor of The Ball.  The next step is
 to confirm your e-mail address by browsing to this URL:
 
-http://127.0.0.1/public/sponsorRegistration.jsp?a=%%%confirm_email%%%&amp;u=%%%confirm_unlock_code%%%
+http://www.theball.com/public/sponsorRegistration.jsp?a=%%%confirm_email%%%&amp;u=%%%confirm_unlock_code%%%
 
 After that, an administrator must review and approve your account before
 you can bid to host the Ball on your web site.  Please expect to be
