@@ -2,8 +2,8 @@
    <!-- NOTE: the URLs in this file are those by which the SERVER retrieves
         the content.  They are not visible to clients, nor used directly by them
         See the Front Controller's SimpleDownloadData class -->
-   <data id="IE" content-url="http://127.0.0.1:8080/download/the_ball_game_plugin.msi" media-type="application"
+   <data id="IE" content-url="http://www.theball.com/download/the_ball_game_plugin.msi" media-type="application"
          media-subtype="x-msdownload" suggested-name="the_ball_game_plugin.msi"/>
-   <data id="FireFox" content-url="http://127.0.0.1:8080/download/the_ball_game_plugin.xpi" media-type="application"
+   <data id="FireFox" content-url="http://www.theball.com/download/the_ball_game_plugin.xpi" media-type="application"
          media-subtype="x-xpinstall" suggested-name="the_ball_game_plugin.xpi"/>
 </download-data>
