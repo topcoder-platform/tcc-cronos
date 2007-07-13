@@ -29,10 +29,27 @@
             <c:forEach items="${gameSlots}" var="slot" varStatus="slotIndex">
                 <c:if test="${slot.hostingStart ne null}">
                     <c:if test="${completedSlots[slot.id] ne null}">
-                        <area alt="${slot.domain.domainName}" shape="circle"
+                        <area alt="Unlocked by you: ${slot.domain.domainName}" shape="circle"
                               coords="${slotCenters[slotIndex.index].x},${slotCenters[slotIndex.index].y},${circleRadius}"
                               target="OrpheusUnlockedSlot" href="http://${slot.domain.domainName}"/>
                     </c:if>
+                    <c:if test="${completedSlots[slot.id] eq null}">
+                        <c:if test="${slot.hostingEnd ne null}">
+                            <area alt="Unlocked by another player" shape="circle"
+                                  coords="${slotCenters[slotIndex.index].x},${slotCenters[slotIndex.index].y},${circleRadius}"
+                                  href="#"/>
+                        </c:if>
+                        <c:if test="${slot.hostingEnd eq null}">
+                            <area alt="The Ball is here" shape="circle"
+                                  coords="${slotCenters[slotIndex.index].x},${slotCenters[slotIndex.index].y},${circleRadius}"
+                                  href="#"/>
+                        </c:if>
+                    </c:if>
+                </c:if>
+                <c:if test="${slot.hostingStart eq null}">
+                    <area alt="Upcoming site" shape="circle"
+                          coords="${slotCenters[slotIndex.index].x},${slotCenters[slotIndex.index].y},${circleRadius}"
+                          href="#"/>
                 </c:if>
             </c:forEach>
         </map>
