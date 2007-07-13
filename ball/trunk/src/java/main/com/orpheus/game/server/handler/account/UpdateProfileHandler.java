@@ -14,6 +14,7 @@ import com.topcoder.util.datavalidator.registration.http.HttpValidationManager;
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
+import com.topcoder.web.user.LoginHandler;
 import com.topcoder.user.profile.manager.ConfigProfileTypeFactory;
 import org.w3c.dom.Element;
 
@@ -106,7 +107,8 @@ public class UpdateProfileHandler extends AbstractGameServerHandler implements H
             HttpServletRequest request = context.getRequest();
             String form_status = request.getParameter("status");
             
-            UserProfile profile = userProfileManager.getUserProfile(playerId);
+            //UserProfile profile = userProfileManager.getUserProfile(playerId);
+            UserProfile profile = LoginHandler.getAuthenticatedUser(request.getSession());
             request.setAttribute("profile", profile);
             
             if ("save".equals(form_status)) {

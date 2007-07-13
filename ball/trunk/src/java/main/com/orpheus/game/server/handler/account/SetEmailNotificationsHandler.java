@@ -11,6 +11,8 @@ import com.topcoder.user.profile.manager.UserProfileManager;
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
+import com.topcoder.web.user.LoginHandler;
+
 import org.w3c.dom.Element;
 
 import javax.servlet.http.HttpServletRequest;
@@ -72,7 +74,8 @@ public class SetEmailNotificationsHandler extends AbstractGameServerHandler impl
             HttpServletRequest request = context.getRequest();
             String form_status = request.getParameter("status");
             
-            UserProfile profile = userProfileManager.getUserProfile(playerId);
+            //UserProfile profile = userProfileManager.getUserProfile(playerId);
+            UserProfile profile = LoginHandler.getAuthenticatedUser(request.getSession());
             request.setAttribute("profile", profile);
             
             if ("save".equals(form_status)) {

@@ -11,6 +11,8 @@ import com.topcoder.util.datavalidator.registration.http.HttpValidationManager;
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
+import com.topcoder.web.user.LoginHandler;
+
 import org.w3c.dom.Element;
 
 import javax.servlet.http.HttpServletRequest;
@@ -81,7 +83,8 @@ public class ChangePasswordHandler extends AbstractGameServerHandler implements 
             if ("save".equals(form_status)) {
                 HttpValidationManager validationManager = (HttpValidationManager)HttpValidationManager.getInstance();
                 boolean isValid = validationManager.validate(request, "player_change_password_validation_rules");
-                UserProfile profile = userProfileManager.getUserProfile(playerId);
+                //UserProfile profile = userProfileManager.getUserProfile(playerId);
+                UserProfile profile = LoginHandler.getAuthenticatedUser(request.getSession());
                 String password = (String) profile.getProperty(UserConstants.CREDENTIALS_PASSWORD);
                 
                 String currPassword = request.getParameter(getString(CURRENT_PASSWORD_PARAM_NAME_CONFIG));
