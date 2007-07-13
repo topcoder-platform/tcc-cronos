@@ -96,6 +96,11 @@ public class OrpheusFunctions {
     public static final int BID_STATUS_OUTBID = 2;
 
     /**
+     * <p>An <code>int</code> corresponding to default sound option.</p>
+     */
+    public static final Integer DEFAULT_SOUND_OPTION = new Integer(1);
+
+    /**
      * <p>Constructs new <code>OrpheusFunctions</code> instance. This implementation does nothing and is used for
      * preventing the instantiation of this utility class.</p>
      */
@@ -725,6 +730,21 @@ public class OrpheusFunctions {
      */
     public static String getPlayerPaymentMethodPref(UserProfile account) {
         return (String) account.getProperty(UserConstants.PLAYER_PAYMENT_PREF);
+    }
+
+    /**
+     * <p>Gets the index of sound option preferred by the specified user account.</p>
+     *
+     * @param account a <code>UserProfile</code> providing details for user account.
+     * @return a <code>Integer</code> referencing the selected sound option.
+     */
+    public static Integer getPreferredSound(UserProfile account) {
+        Integer option = (Integer) account.getProperty(UserConstants.PREFS_SOUND);
+        if (option == null) {
+            return DEFAULT_SOUND_OPTION;
+        } else {
+            return option;
+        }
     }
 
     /**

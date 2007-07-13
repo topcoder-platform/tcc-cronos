@@ -394,5 +394,11 @@
         <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
         <function-signature>boolean isInList(com.topcoder.user.profile.UserProfile,com.topcoder.user.profile.UserProfile[])</function-signature>
     </function>
+
+    <function>
+        <name>getPreferredSound</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.Integer getPreferredSound(com.topcoder.user.profile.UserProfile)</function-signature>
+    </function>
 </taglib>
 
