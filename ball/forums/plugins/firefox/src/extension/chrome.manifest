@@ -1,0 +1,6 @@
+content     orpheus    chrome/orpheus/content/ xpcnativewrappers=no
+skin	orpheus	classic/1.0	chrome/orpheus/skin/ 
+
+overlay chrome://browser/content/browser.xul chrome://orpheus/content/orpheus.xul
+
+locale	orpheus	en-US	chrome/orpheus/locale/en-US/

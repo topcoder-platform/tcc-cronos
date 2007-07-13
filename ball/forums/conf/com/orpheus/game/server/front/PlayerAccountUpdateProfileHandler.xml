@@ -1,0 +1,40 @@
+<action name="PlayerAccountUpdateProfile" type="default" url-pattern="/server/player/myAccount-updateProfile.do" priority="10">
+    <handler type="SessionValidationHandler">
+        <login_page_result>login</login_page_result>
+    </handler>
+    <handler type="UpdateProfileHandler">
+    	<email_address_param>email</email_address_param>
+    	<first_name_param>firstName</first_name_param>
+    	<last_name_param>lastName</last_name_param>
+    	<address1_param>addr1</address1_param>
+    	<address2_param>addr2</address2_param>
+    	<city_param>city</city_param>
+    	<state_param>state</state_param>
+    	<postal_code_param>postalCode</postal_code_param>
+    	<country_param>country</country_param>
+    	<payment_method_param>paymentMethod</payment_method_param>
+    	<phone_param>phone</phone_param>
+    	<object_factory_ns>com.orpheus.game.server.ObjectFactory</object_factory_ns>
+    </handler>
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>player</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <result name="auth_failed" type="loggingForward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+        <log-message>attempted to view Player Account - Update Profile page without PLAYER role assigned</log-message>
+        <category>WEB SITE</category>
+    </result>
+    <result name="success" type="loggingForward">
+        <forward-url>/WEB-INF/player/myaccount-updateprofile.jsp</forward-url>
+        <log-message>presented with Player Account - Update Profile page</log-message>
+        <category>WEB SITE</category>
+    </result>
+    <result name="login" type="loggingForward">
+        <forward-url>/public/timeout.jsp</forward-url>
+        <log-message>failed to open Player Account - Update Profile page due to session timeout or is not authenticated to server</log-message>
+        <category>WEB SITE</category>
+    </result>
+</action>

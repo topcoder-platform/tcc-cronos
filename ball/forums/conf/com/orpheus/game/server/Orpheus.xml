@@ -1,0 +1,1555 @@
+<?xml version="1.0" ?>
+<CMConfig>
+    <Config name="com.topcoder.web.frontcontroller">
+        <Property name="action_selector">
+            <Value>com.topcoder.web.frontcontroller.actionselectors.RegexActionSelector</Value>
+        </Property>
+        <Property name="resource_parser">
+            <Value>com.topcoder.web.frontcontroller.parsers.DefaultResourceParser</Value>
+        </Property>
+        <Property name="resource_root">
+            <Value>/var/opt/orpheus/conf/com/orpheus/game/server/front</Value>
+        </Property>
+        <Property name="action_context_attributes">
+            <Property name="form_validator_namespace">
+                <Value>com.topcoder.formvalidator</Value>
+            </Property>
+            <Property name="xsl_engine_namespace">
+                <Value>com.topcoder.xslengine.http.HTTPXSLInternationalizer</Value>
+            </Property>
+            <Property name="response_xml_context_key">
+                <Value>response</Value>
+            </Property>
+            <Property name="response_xml_root_name">
+                <Value>response</Value>
+            </Property>
+            <!-- This property provides a from address to be used by Messenger Framework when sending emails to
+                 players-->
+            <Property name="from">
+                <Value>do-not-reply@theball.com</Value>
+            </Property>
+            <Property name="OrpheusMessagePlugin">
+                <Value>OrpheusMessagePlugin</Value>
+            </Property>
+        </Property>
+        <!-- for RESTFrontController -->
+        <Property name="rest_context_file">
+            <Value>/var/opt/orpheus/conf/RESTContextBuilder.xml</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.security.authorization.persistence.CacheFactoryImpl">
+        <Property name="timeout">
+            <Value>100000</Value>
+        </Property>
+        <Property name="max_cache_size">
+            <Value>3</Value>
+        </Property>
+        <Property name="eviction_strategy">
+            <Property name="class">
+                <Value>com.topcoder.util.cache.FIFOCacheEvictionStrategy</Value>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="com.orpheus.game.GameDataHelper">
+        <Property name="game_data_jndi_name">
+            <Value>orpheus/GameData</Value>
+        </Property>
+        <Property name="use_remote_home">
+            <Value>true</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration for JNDI Utility 1.0 component -->
+    <Config name="com.topcoder.naming.jndiutility">
+        <Property name="context">
+            <Property name="default">
+                <Property name="factory">
+                    <Value>org.jnp.interfaces.NamingContextFactory</Value>
+                </Property>
+                <Property name="url">
+                    <Value>jnp://localhost:1099</Value>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Game Persistence DAO Factory -->
+    <Config name="com.orpheus.game.persistence.GameDataDAOFactory">
+        <Property name="specNamespace">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="gameDataDAO">
+            <Value>OrpheusGameDataDAO</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration parameters for DB Connection Factory 1.0 -->
+    <Config name="com.orpheus.game.OrpheusDB">
+        <Property name="connections">
+            <Property name="default">
+                <Value>orpheus</Value>
+            </Property>
+            <Property name="orpheus">
+                <Property name="producer">
+                    <Value>com.topcoder.db.connectionfactory.producers.JNDIConnectionProducer</Value>
+                </Property>
+                <Property name="parameters">
+                    <Property name="jndi_name">
+                        <Value>java:orpheus/MSSQLDS</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <!-- Configuration parameters for Orpheus SQL Server DAO-->
+    <Config name="com.orpheus.game.persistence.dao.SQLServerGameDataDAO">
+        <Property name="specNamespace">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="factoryKey">
+            <Value>OrpheusDB</Value>
+        </Property>
+        <Property name="name">
+            <Value>orpheus</Value>
+        </Property>
+        <Property name="randomStringImageKey">
+            <Value>OrpheusImage</Value>
+        </Property>
+        <Property name="keyLength">
+            <Value>8</Value>
+        </Property>
+        <Property name="mediaType">
+            <Value>image/pjpeg</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration parameters for Orpheus User Persistence DAO-->
+    <Config name="com.orpheus.user.persistence.DAOFactory">
+        <Property name="specNamespace">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="userProfileDAO">
+            <Value>OrpheusUserProfileDAO</Value>
+        </Property>
+        <Property name="pendingConfirmationDAO">
+            <Value>OrpheusPendingConfirmationDAO</Value>
+        </Property>
+        <Property name="OrpheusUserProfileDAO">
+            <Value>OrpheusUserProfileDAO</Value>
+        </Property>
+        <Property name="OrpheusPendingConfirmationDAO">
+            <Value>OrpheusPendingConfirmationDAO</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration parameters for Object Factory used to instantiate the objects -->
+    <Config name="com.orpheus.game.server.ObjectFactory">
+        <Property name="OrpheusBloomFilterBitSetSerializer">
+            <Property name="type">
+                <Value>com.orpheus.game.server.util.OrpheusBitSetSerializer</Value>
+            </Property>
+        </Property>
+        <Property name="SiteStatistics">
+            <Property name="type">
+                <Value>com.topcoder.util.web.sitestatistics.impl.SiteStatisticsImpl</Value>
+            </Property>
+            <Property name="params">
+                <!-- Connection Namespace, String -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.orpheus.game.OrpheusSiteStatistics</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="OrpheusLengthRule">
+            <Property name="type">
+                <Value>com.orpheus.game.server.util.OrpheusWordInclusionRule</Value>
+            </Property>
+            <Property name="params">
+                <!-- Min Length, int -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>int</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>6</Value>
+                    </Property>
+                </Property>
+                <!-- Max Length, int -->
+                <Property name="param2">
+                    <Property name="type">
+                        <Value>int</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>20</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="OrpheusElementInclusionRule">
+            <Property name="type">
+                <Value>com.orpheus.game.server.util.OrpheusElementInclusionRule</Value>
+            </Property>
+        </Property>
+        <Property name="OrpheusDB">
+            <Property name="type">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="params">
+                <!-- Connection Namespace, String -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.orpheus.game.OrpheusDB</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="com/topcoder/db/connectionfactory/DBConnectionFactory:OrpheusDB">
+            <Property name="type">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="params">
+                <!-- Connection Namespace, String -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.orpheus.game.OrpheusDB</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="com/orpheus/administration/persistence/AdminDataDAO:OrpheusAdminDataDAO">
+            <Property name="type">
+                <Value>com.orpheus.administration.persistence.impl.SQLServerAdminDataDAO</Value>
+            </Property>
+            <Property name="params">
+                <!-- Namespace, String -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.orpheus.administration.persistence.impl.SQLServerAdminDataDAO</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="com/orpheus/administration/persistence/MessageDAO:OrpheusAdminMessageDAO">
+            <Property name="type">
+                <Value>com.orpheus.administration.persistence.impl.SQLServerMessageDAO</Value>
+            </Property>
+            <Property name="params">
+                <!-- Namespace, String -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.orpheus.administration.persistence.impl.SQLServerMessageDAO</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="OrpheusGameDataDAO">
+            <Property name="type">
+                <Value>com.orpheus.game.persistence.dao.SQLServerGameDataDAO</Value>
+            </Property>
+            <Property name="params">
+                <!-- Connection Namespace, String -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.orpheus.game.persistence.dao.SQLServerGameDataDAO</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="OrpheusImage">
+            <Property name="type">
+                <Value>com.topcoder.randomstringimg.RandomStringImage</Value>
+            </Property>
+            <Property name="params">
+                <!-- Namespace, String -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>/var/opt/orpheus/conf/RandomStringImage.xml</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="OrpheusUserProfileTranslator">
+            <Property name="type">
+                <Value>com.orpheus.user.persistence.impl.UserProfileTranslator</Value>
+            </Property>
+            <Property name="params">
+                <!-- Namespace, String -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.user.profile.manager</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="OrpheusConfirmationMessageTranslator">
+            <Property name="type">
+                <Value>com.orpheus.user.persistence.impl.ConfirmationMessageTranslator</Value>
+            </Property>
+        </Property>
+        <Property name="OrpheusCache">
+            <Property name="type">
+                <Value>com.topcoder.util.cache.SimpleCache</Value>
+            </Property>
+            <!--
+                        <Property name="params">
+                            <Property name="param1">
+                                <Property name="type">
+                                    <Value>String</Value>
+                                </Property>
+                                <Property name="value">
+                                    <Value>com.topcoder.user.profile.manager</Value>
+                                </Property>
+                            </Property>
+                        </Property>
+            -->
+        </Property>
+        <Property name="OrpheusProfileTypeFactory">
+            <Property name="type">
+                <Value>com.topcoder.user.profile.manager.ConfigProfileTypeFactory</Value>
+            </Property>
+            <Property name="params">
+                <!-- Namespace, String -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.user.profile.manager</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="OrpheusUserProfileDAO">
+            <Property name="type">
+                <Value>com.orpheus.user.persistence.impl.SQLServerUserProfileDAO</Value>
+            </Property>
+            <Property name="params">
+                <!-- Connection Namespace, String -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.orpheus.user.persistence.impl.SQLServerUserProfileDAO</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="OrpheusPendingConfirmationDAO">
+            <Property name="type">
+                <Value>com.orpheus.user.persistence.impl.SQLServerPendingConfirmationDAO</Value>
+            </Property>
+            <Property name="params">
+                <!-- Connection Namespace, String -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.orpheus.user.persistence.impl.SQLServerPendingConfirmationDAO</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="OrpheusUserProfileManager">
+            <Property name="type">
+                <Value>com.topcoder.user.profile.manager.SimpleUserProfileManager</Value>
+            </Property>
+            <Property name="params">
+                <!-- Namespace, String -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.user.profile.manager</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="com/topcoder/user/profile/manager/UserProfileManager">
+            <Property name="type">
+                <Value>com.topcoder.user.profile.manager.SimpleUserProfileManager</Value>
+            </Property>
+            <Property name="params">
+                <!-- Namespace, String -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.user.profile.manager</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="com/orpheus/administration/persistence/MessageTranslator:OrpheusMessageTranslator">
+            <Property name="type">
+                <Value>com.orpheus.administration.persistence.impl.RSSItemTranslator</Value>
+            </Property>
+        </Property>
+        <Property name="com/orpheus/administration/persistence/SearchCriteriaTranslator:OrpheusSearchCriteriaTranslator">
+            <Property name="type">
+                <Value>com.orpheus.administration.persistence.impl.RSSSearchCriteriaTranslator</Value>
+            </Property>
+        </Property>
+        <Property name="OrpheusDatabaseSearchStrategy">
+            <Property name="type">
+                <Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+            </Property>
+            <Property name="params">
+                <!-- Namespace, String -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.orpheus.game.server.DatabaseSearchStrategy</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+        <Property name="OrpheusBidIncrementCalculator">
+            <Property name="type">
+                <Value>com.topcoder.util.auction.impl.LeadingBidBasedMinimumIncrementCalculator</Value>
+            </Property>
+            <Property name="params">
+                <!-- Fraction, double -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>double</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>0.01</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+        <Property name="OrpheusAuctionStrategy">
+            <Property name="type">
+<!--
+                <Value>com.topcoder.util.auction.impl.AutomatedProxyBiddingAuctionStrategy</Value>
+-->
+                <Value>com.orpheus.game.server.auction.OrpheusAuctionStrategy</Value>
+            </Property>
+            <Property name="params">
+                <!-- Increment Calculator, MinimumIncrementCalculator -->
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>OrpheusBidIncrementCalculator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+        <Property name="OrpheusBidValidator">
+            <Property name="type">
+                <Value>com.orpheus.auction.BidValidatorImpl</Value>
+            </Property>
+        </Property>
+
+        <Property name="OrpheusAuctionPersistence">
+            <Property name="type">
+                <Value>com.orpheus.auction.persistence.RemoteCustomAuctionPersistence</Value>
+            </Property>
+            <Property name="params">
+                <!-- Namespace, String -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.orpheus.game.server.AuctionPersistence</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+        <Property name="OrpheusAcutionTranslator">
+            <Property name="type">
+                <Value>com.orpheus.auction.persistence.impl.DefaultAuctionTranslator</Value>
+            </Property>
+        </Property>
+
+        <Property name="OrpheusAcutionDAO">
+            <Property name="type">
+                <Value>com.orpheus.auction.persistence.impl.SQLServerAuctionDAO</Value>
+            </Property>
+            <Property name="params">
+                <!-- Namespace, String -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.orpheus.game.server.SQLServerAuctionDAO</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+    </Config>
+
+    <!-- Configuration parameters for Orpheus SQL Server User Profile DAO-->
+    <Config name="com.orpheus.user.persistence.impl.SQLServerUserProfileDAO">
+        <Property name="specNamespace">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="factoryKey">
+            <Value>OrpheusDB</Value>
+        </Property>
+        <Property name="name">
+            <Value>orpheus</Value>
+        </Property>
+        <Property name="cacheKey">
+            <Value>OrpheusCache</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration parameters for Orpheus SQL Server Pending Confirmation DAO-->
+    <Config name="com.orpheus.user.persistence.impl.SQLServerPendingConfirmationDAO">
+        <Property name="specNamespace">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="factoryKey">
+            <Value>OrpheusDB</Value>
+        </Property>
+        <Property name="name">
+            <Value>orpheus</Value>
+        </Property>
+        <Property name="cacheKey">
+            <Value>OrpheusCache</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration for User Profile Manager 1.0 component -->
+    <Config name="com.topcoder.user.profile.manager">
+        <Property name="upm_log_name">
+            <Value>UserProfileManager</Value>
+        </Property>
+        <Property name="profile_type_factory_class">
+            <Value>com.topcoder.user.profile.manager.ConfigProfileTypeFactory</Value>
+        </Property>
+        <Property name="persistence_class">
+            <Value>com.orpheus.user.persistence.RemoteOrpheusUserProfilePersistence</Value>
+        </Property>
+        <Property name="jndiEjbReference">
+            <Value>orpheus/UserProfile</Value>
+        </Property>
+        <Property name="specNamespace">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="translatorKey">
+            <Value>OrpheusUserProfileTranslator</Value>
+        </Property>
+        <Property name="cacheKey">
+            <Value>OrpheusCache</Value>
+        </Property>
+        <Property name="factoryKey">
+            <Value>OrpheusProfileTypeFactory</Value>
+        </Property>
+        <Property name="log">
+            <Value>UserProfileManager</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.user.profile.ConfigProfileType.base">
+        <!--
+                <Property name="first_name">
+                    <Value>notnull</Value>
+                </Property>
+                <Property name="last_name">
+                    <Value>notnull</Value>
+                </Property>
+                <Property name="email_address">
+                    <Value></Value>
+                </Property>
+        -->
+    </Config>
+    <Config name="com.topcoder.user.profile.ConfigProfileType.credentials">
+        <!--
+                <Property name="credentials-handle">
+                    <Value></Value>
+                </Property>
+                <Property name="credentials-password">
+                    <Value></Value>
+                </Property>
+                <Property name="credentials-is-active">
+                    <Value></Value>
+                </Property>
+        -->
+    </Config>
+    <Config name="com.topcoder.user.profile.ConfigProfileType.address">
+        <!--
+                <Property name="address-street1">
+                    <Value>notnull</Value>
+                </Property>
+                <Property name="address-street2">
+                    <Value>notnull</Value>
+                </Property>
+                <Property name="address-city">
+                    <Value>notnull</Value>
+                </Property>
+                <Property name="address-state">
+                    <Value>notnull</Value>
+                </Property>
+                <Property name="address-postal-code">
+                    <Value>notnull</Value>
+                </Property>
+                <Property name="address-phone-number">
+                    <Value>notnull</Value>
+                </Property>
+        -->
+    </Config>
+    <Config name="com.topcoder.user.profile.ConfigProfileType.player">
+        <!--
+                <Property name="player-payment-pref">
+                    <Value></Value>
+                </Property>
+        -->
+    </Config>
+    <Config name="com.topcoder.user.profile.ConfigProfileType.sponsor">
+        <!--
+                <Property name="sponsor-payment-pref">
+                    <Value>notnull</Value>
+                </Property>
+                <Property name="sponsor-fax-number">
+                    <Value>notnull</Value>
+                </Property>
+                <Property name="sponsor-is-approved">
+                    <Value>notnull</Value>
+                </Property>
+        -->
+    </Config>
+    <Config name="com.topcoder.user.profile.ConfigProfileType.admin">
+        <!--
+                <Property name="name16">
+                    <Value>value16</Value>
+                </Property>
+        -->
+    </Config>
+    <Config name="com.topcoder.user.profile.ConfigProfileType.preferences">
+        <!--
+                <Property name="prefs-sound">
+                    <Value>notnull</Value>
+                </Property>
+                <Property name="prefs-general-notification">
+                    <Value>notnull</Value>
+                </Property>
+        -->
+    </Config>
+
+    <!-- Configuration for Game Operation Logic component -->
+    <Config name="com.orpheus.game.GameOperationLogicUtility">
+        <Property name="context_name">
+            <Value>default</Value>
+        </Property>
+        <Property name="use_local_interface">
+            <Value>false</Value>
+        </Property>
+        <Property name="puzzle_type_source">
+            <Value>puzzle_type_source</Value>
+        </Property>
+        <Property name="game_data_manager">
+            <Value>OrpheusGameDataManager</Value>
+        </Property>
+        <Property name="game_data_remote">
+            <Value>orpheus/GameData</Value>
+        </Property>
+        <Property name="game_data_local">
+            <Value>orpheus/GameDataLocal</Value>
+        </Property>
+        <Property name="data_store">
+            <Value>rss_data_store</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration for DB Connection Factory 1.0 component -->
+    <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+        <Property name="connections">
+            <Property name="default">
+                <Value>orpheus</Value>
+            </Property>
+            <Property name="orpheus">
+                <Property name="producer">
+                    <Value>com.topcoder.db.connectionfactory.producers.JNDIConnectionProducer</Value>
+                </Property>
+                <Property name="parameters">
+                    <Property name="jndi_name">
+                        <Value>java:orpheus/MSSQLDS</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Password Validator 1.0 component -->
+    <Config name="com.topcoder.security.passwordvalidator">
+        <!-- The roles configured -->
+        <Property name="roles">
+            <Value>player</Value>
+            <Value>sponsor</Value>
+            <Value>admin</Value>
+        </Property>
+        <!-- The default role -->
+        <Property name="default_role">
+            <Value>player</Value>
+        </Property>
+        <!-- The password persistence implementation, optional
+             Notice: the class name provided is regarded as a sample and is not included in the design -->
+        <Property name="password_persistence">
+            <Value></Value>
+        </Property>
+        <!-- The encryption algorithm name, optional -->
+        <Property name="encryption_algorithm">
+            <Value>DES56</Value>
+        </Property>
+        <!-- The password rule factory to create rules, optional -->
+        <Property name="rule_factory">
+            <Value>com.topcoder.security.passwordvalidator.rule.BasicPasswordRuleFactory</Value>
+        </Property>
+        <!-- Password rules for admin -->
+        <Property name="admin_rules">
+            <Value>MinimumLengthRule(6)</Value>
+        </Property>
+        <!-- Password rules for player -->
+        <Property name="player_rules">
+            <Value>MinimumLengthRule(6)</Value>
+        </Property>
+        <!-- Password rules for sponsor -->
+        <Property name="sponsor_rules">
+            <Value>MinimumLengthRule(6)</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Encryption 1.0 component -->
+    <Config name="com.topcoder.encryption">
+        <Property name="default_algorithms">
+            <Value>com.topcoder.encryption.DES56Algorithm</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Orpheus Game Server -->
+    <Config name="com.orpheus.game.server">
+        <Property name="FireFoxPlugin">
+            <Property name="fileSize">
+                <Value>223k</Value>
+            </Property>
+            <Property name="datePosted">
+                <Value>05/04/2007</Value>
+            </Property>
+            <Property name="version">
+                <Value>1.0.34</Value>
+            </Property>
+            <Property name="language">
+                <Value>English</Value>
+            </Property>
+            <Property name="browser">
+                <Value>Mozilla FireFox</Value>
+            </Property>
+        </Property>
+        <Property name="InternetExplorerPlugin">
+            <Property name="fileSize">
+                <Value>2084k</Value>
+            </Property>
+            <Property name="datePosted">
+                <Value>04/16/2007</Value>
+            </Property>
+            <Property name="version">
+                <Value>1.0.78</Value>
+            </Property>
+            <Property name="language">
+                <Value>English</Value>
+            </Property>
+            <Property name="browser">
+                <Value>Microsoft Internet Explorer</Value>
+            </Property>
+        </Property>
+        <Property name="AdminFee">
+            <Value>0.2</Value>
+        </Property>
+        <Property name="ContactEmailAddress">
+            <Value>sramkissoon@topcoder.com</Value>
+        </Property>
+        <!-- This must be an absolute path to a file. This is how currently Puzzle Framework works -->
+        <Property name="PuzzleTypeSourceConfigFile">
+            <Value>/var/opt/orpheus/conf/PuzzleTypeSource.xml</Value>
+        </Property>
+        <!-- A configuration for RSS DataStore -->
+        <Property name="RSSDataStore">
+            <!-- A name of servlet context attribute to put RSS DataStore to -->
+            <Property name="Name">
+                <Value>rss_data_store</Value>
+            </Property>
+            <!-- A name of servlet context attribute to put RSS DataStore to -->
+            <Property name="Remote">
+                <Value>true</Value>
+            </Property>
+            <!-- A configuration namespace to be used to configure DataStore -->
+            <Property name="NameSpace">
+                <Value>com.orpheus.game.server.RSSDataStore</Value>
+            </Property>
+        </Property>
+        <!-- A name of servlet context attribute which PuzzleTypeSource is to be bound under -->
+        <Property name="PuzzleTypeSourceContextAttr">
+            <Value>puzzle_type_source</Value>
+        </Property>
+        <!-- A fraction (from 0 to 1) specifying the number of bids which can be posted by a single sponsor for a
+             single auction -->
+        <Property name="BidNumberLimit">
+            <Value>0.5</Value>
+        </Property>
+        <!-- A time period for updating a brainteaser presented to player, seconds -->
+        <Property name="BrainteaserUpdatePeriod">
+            <Value>300</Value>
+        </Property>
+        <!-- A time period for solving the game win puzzles by players, seconds -->
+        <Property name="SolvePuzzlePeriod">
+            <Value>300</Value>
+        </Property>
+        <!-- A time period for recognition of duplicate requests, milliseconds -->
+        <Property name="DuplicateRequestRecognitionInterval">
+            <Value>300</Value>
+        </Property>
+        <!-- A mapping from logged event parameter names to parameter IDs -->
+        <Property name="LogEventParams">
+            <Property name="auctionId">
+                <Value>1</Value>
+            </Property>
+            <Property name="ballKey">
+                <Value>2</Value>
+            </Property>
+            <Property name="bidId">
+                <Value>3</Value>
+            </Property>
+            <Property name="blockId">
+                <Value>4</Value>
+            </Property>
+            <Property name="domain">
+                <Value>5</Value>
+            </Property>
+            <Property name="domainId">
+                <Value>6</Value>
+            </Property>
+            <Property name="email">
+                <Value>7</Value>
+            </Property>
+            <Property name="gameId">
+                <Value>8</Value>
+            </Property>
+            <Property name="hash">
+                <Value>9</Value>
+            </Property>
+            <Property name="imageId">
+                <Value>10</Value>
+            </Property>
+            <Property name="maxBid">
+                <Value>11</Value>
+            </Property>
+            <Property name="slotId">
+                <Value>12</Value>
+            </Property>
+            <Property name="target">
+                <Value>13</Value>
+            </Property>
+            <Property name="text">
+                <Value>14</Value>
+            </Property>
+            <Property name="timestamp">
+                <Value>15</Value>
+            </Property>
+            <Property name="url">
+                <Value>16</Value>
+            </Property>
+            <Property name="username">
+                <Value>17</Value>
+            </Property>
+        </Property>
+        <!-- Parameters for instantiating DB Connection Factory -->
+        <Property name="DBConnectionFactory">
+            <Property name="specNamespace">
+                <Value>com.orpheus.game.server.ObjectFactory</Value>
+            </Property>
+            <Property name="factoryKey">
+                <Value>OrpheusDB</Value>
+            </Property>
+        </Property>
+    </Config>
+
+    <!-- Configuration for RSS DataStore -->
+    <Config name="com.orpheus.game.server.RSSDataStore">
+        <Property name="specNamespace">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="messageTranslatorKey">
+            <Value>OrpheusMessageTranslator</Value>
+        </Property>
+        <Property name="searchCriteriaTranslatorKey">
+            <Value>OrpheusSearchCriteriaTranslator</Value>
+        </Property>
+        <Property name="jndiEjbReference">
+            <Value>orpheus/Message</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Email Engine 3.0 component -->
+    <Config name="com.topcoder.message.email.EmailEngine">
+        <Property name="smtp_host_addr">
+            <Value>63.118.154.162</Value>
+        </Property>
+        <Property name="smtp_host_port">
+            <Value>25</Value>
+        </Property>
+        <Property name="username">
+            <Value></Value>
+        </Property>
+        <Property name="password">
+            <Value></Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Forgot Password 1.1 component -->
+    <Config name="com.topcoder.forgotpassword.Orpheus">
+        <Property name="ForgotPasswordNames">
+            <Value>OrpheusUserForgotPassword</Value>
+        </Property>
+        <Property name="OrpheusUserForgotPassword">
+            <Property name="validator">
+                <Property name="className">
+                    <Value>com.topcoder.security.forgotpassword.validator.UserProfileObjectValidator</Value>
+                </Property>
+                <Property name="params">
+                    <Value>
+                        userProfileManager.className=com.topcoder.user.profile.manager.SimpleUserProfileManager</Value>
+                    <Value>userProfileManager.namespace=com.topcoder.user.profile.manager</Value>
+                    <Value>userProfileKeys=email_address</Value>
+                </Property>
+            </Property>
+            <Property name="successResponseMessage">
+                <Value>The email provided is valid.</Value>
+            </Property>
+            <Property name="failureResponseMessage">
+                <Value>The email provided is not valid.</Value>
+            </Property>
+            <Property name="successActionHandler">
+                <Property name="className">
+                    <Value>com.topcoder.security.forgotpassword.actionhandler.UserProfileEmailActionHandler</Value>
+                </Property>
+                <Property name="params">
+                    <Value>
+                        userProfileManager.className=com.topcoder.user.profile.manager.SimpleUserProfileManager</Value>
+                    <Value>userProfileManager.namespace=com.topcoder.user.profile.manager</Value>
+                    <Value>userProfileSearchKeys=email_address</Value>
+                    <Value>userProfileResultKeys=email_address,credentials-password,credentials-handle</Value>
+                    <Value>emailKey=email_address</Value>
+                    <Value>fromAddress=do-not-reply@theball.com</Value>
+                    <Value>subject=Your password</Value>
+                    <Value>templateSource=classpath</Value>
+                    <Value>templateName=com/orpheus/game/server/template/ForgottenPasswordEmailBody.txt</Value>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Document Generator 2.0 component -->
+    <Config name="com.topcoder.util.file">
+        <Property name="sources">
+            <Value>file</Value>
+            <Value>classpath</Value>
+        </Property>
+        <Property name="default_source">
+            <Value>file</Value>
+        </Property>
+        <Property name="file_class">
+            <Value>com.topcoder.util.file.templatesource.FileTemplateSource</Value>
+        </Property>
+        <Property name="classpath_class">
+            <Value>com.orpheus.game.server.util.OrpheusTemplateSource</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration for File Upload 2.0 component -->
+    <Config name="com.orpheus.game.server.FileUpload">
+        <Property name="allowed_dirs">
+            <Value>/var/opt/orpheus/upload</Value>
+            <Value>/var/opt/orpheus/upload1</Value>
+            <Value>/var/opt/orpheus/upload2</Value>
+            <Value>/var/opt/orpheus/upload3</Value>
+        </Property>
+        <Property name="temp_directory">
+            <Value>/var/opt/orpheus/tmp</Value>
+        </Property>
+        <Property name="default_dir">
+            <Value>/var/opt/orpheus/upload</Value>
+        </Property>
+        <Property name="overwrite">
+            <Value>false</Value>
+        </Property>
+        <Property name="max_single_file_size">
+            <Value>500000</Value>
+        </Property>
+        <Property name="max_total_file_size">
+            <Value>10000000</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Administration Persistence DAO Factory 1.0 -->
+    <Config name="com.orpheus.administration.persistence.DAOFactory">
+        <Property name="specNamespace">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="adminDataDAO">
+            <Value>OrpheusAdminDataDAO</Value>
+        </Property>
+        <Property name="messageDAO">
+            <Value>OrpheusAdminMessageDAO</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Orpheus Administration SQL Server DAO-->
+    <Config name="com.orpheus.administration.persistence.impl.SQLServerAdminDataDAO">
+        <Property name="specNamespace">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="factoryKey">
+            <Value>OrpheusDB</Value>
+        </Property>
+        <Property name="name">
+            <Value>orpheus</Value>
+        </Property>
+        <Property name="adminFee">
+            <Value>0.2</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Orpheus Administration Message SQL Server DAO-->
+    <Config name="com.orpheus.administration.persistence.impl.SQLServerMessageDAO">
+        <Property name="specNamespace">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="factoryKey">
+            <Value>OrpheusDB</Value>
+        </Property>
+        <Property name="name">
+            <Value>orpheus</Value>
+        </Property>
+        <Property name="searchNamespace">
+            <Value>com.orpheus.game.server.MessageSearchBundle</Value>
+        </Property>
+        <Property name="searchBundle">
+            <Value>OrpheusSearchBundle</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Orpheus Email Confirmation Callback -->
+    <Config name="com.orpheus.game.server.util.OrpheusEmailConfirmationCallbackSupport">
+        <Property name="specNamespace">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="factoryKey">
+            <Value>OrpheusDB</Value>
+        </Property>
+        <Property name="connectionName">
+            <Value>orpheus</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Search Builder 1.3.1 -->
+    <Config name="com.orpheus.game.server.MessageSearchBundle">
+        <Property name="searchStrategyFactoryNamespace">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="fieldValidatorFactoryNamespace">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="searchBundles">
+            <Property name="OrpheusSearchBundle">
+                <Property name="searchableFields">
+                    <Property name="id">
+                        <Value>id</Value>
+                    </Property>
+                    <Property name="guid">
+                        <Value>guid</Value>
+                    </Property>
+                    <Property name="category">
+                        <Value>category</Value>
+                    </Property>
+                    <Property name="content_type">
+                        <Value>content_type</Value>
+                    </Property>
+                    <Property name="update_time">
+                        <Value>update_time</Value>
+                    </Property>
+                    <Property name="content">
+                        <Value>content</Value>
+                    </Property>
+                </Property>
+                <Property name="alias">
+                    <Property name="publishedDate">
+                        <Value>update_time</Value>
+                    </Property>
+                    <Property name="updatedDate">
+                        <Value>update_time</Value>
+                    </Property>
+                </Property>
+                <Property name="searchStrategy">
+                    <Property name="class">
+                        <Value>OrpheusDatabaseSearchStrategy</Value>
+                    </Property>
+                </Property>
+                <Property name="context">
+                    <Value>SELECT * FROM message WHERE </Value>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Search Startegy -->
+    <Config name="com.orpheus.game.server.DatabaseSearchStrategy">
+        <Property name="connectionFactory">
+            <Property name="name">
+                <Value>com.orpheus.game.OrpheusDB</Value>
+            </Property>
+        </Property>
+        <Property name="connectionName">
+            <Value>orpheus</Value>
+        </Property>
+        <Property name="searchFragmentFactoryNamespace">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="searchFragmentBuilders">
+            <Property name="first">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.AndFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.AndFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="second">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.OrFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.OrFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="third">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.LikeFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.LikeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="fourth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.NotFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.NotFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="fifth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.EqualToFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.EqualsFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="sixth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.InFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.InFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="eighth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.NullFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.NullFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="ninth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.GreaterThanFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="tenth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="eleventh">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.BetweenFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="twelvth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.LessThanOrEqualToFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="thirteenth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.LessThanFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+<!--
+    <Config name="com.topcoder.search.builder.validator.factory">
+        <Property name="validator:default">
+            <Property name="type">
+                <Value>com.topcoder.search.builder.AlwaysTrueValidator</Value>
+            </Property>
+        </Property>
+    </Config>
+-->
+
+
+    <!-- Configuration for Orpheus Auction Key Constants -->
+    <Config name="com.orpheus.auction.KeyConstants">
+        <Property name="auction_manager">
+            <Value>OrpheusAuctionManager</Value>
+        </Property>
+        <Property name="game_data_manager">
+            <Value>OrpheusGameDataManager</Value>
+        </Property>
+        <Property name="administration_manager">
+            <Value>OrpheusAdministrationManager</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Orpheus Auction Manager -->
+    <Config name="com.orpheus.game.server.AuctionManager">
+        <Property name="config_manager_specification_factory">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="auction_persistence">
+            <Value>OrpheusAuctionPersistence</Value>
+        </Property>
+        <Property name="bid_validator">
+            <Value>OrpheusBidValidator</Value>
+        </Property>
+        <Property name="auction_strategy">
+            <Value>OrpheusAuctionStrategy</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Orpheus Game Manager -->
+    <Config name="com.orpheus.game.server.GameManager">
+        <Property name="game_data_ejb_jndi_names">
+            <Value>orpheus/GameData,Remote</Value>
+        </Property>
+        <Property name="game_started_poll_interval">
+            <Value>5000</Value>
+        </Property>
+        <Property name="new_game_poll_interval">
+            <Value>5000</Value>
+        </Property>
+        <Property name="target_update_poll_interval">
+            <Value>300000</Value>
+        </Property>
+        <!-- For Bloom Filter -->
+        <Property name="capacity">
+            <Value>100</Value>
+        </Property>
+        <!-- For Bloom Filter -->
+        <Property name="errorRate">
+            <Value>0.01</Value>
+        </Property>
+        <!-- Category for Bloom Filter update message -->
+        <Property name="category">
+            <Value>BloomFilter</Value>
+        </Property>
+        <Property name="messengerPluginNS">
+            <Value>com.orpheus.game.server.RSSDataStore</Value>
+        </Property>
+        <!-- Properties to instantiate the Bloom Filter Bit Set Serializer -->
+        <Property name="bit_serializer_spec">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="bit_serializer_key">
+            <Value>OrpheusBloomFilterBitSetSerializer</Value>
+        </Property>
+        <!-- Moved from Administration Manager -->
+        <Property name="jigsaw">
+            <Property name="puzzleTypeName">
+                <Value>jigsaw</Value>
+            </Property>
+            <Property name="width">
+                <Value>7</Value>
+            </Property>
+            <Property name="height">
+                <Value>6</Value>
+            </Property>
+        </Property>
+        <Property name="slidingTile">
+            <Property name="puzzleTypeName">
+                <Value>sliding-tile</Value>
+            </Property>
+            <Property name="width">
+                <Value>4</Value>
+            </Property>
+            <Property name="height">
+                <Value>4</Value>
+            </Property>
+        </Property>
+        <Property name="missingLetter">
+            <Property name="puzzleTypeName">
+                <Value>missing-letter</Value>
+            </Property>
+            <Property name="seriesSize">
+                <Value>12</Value>
+            </Property>
+        </Property>
+        <Property name="letterScramble">
+            <Property name="puzzleTypeName">
+                <Value>letter-scramble</Value>
+            </Property>
+            <Property name="seriesSize">
+                <Value>12</Value>
+            </Property>
+        </Property>
+        <Property name="admin_data_ejb_jndi_names">
+            <Value>orpheus/AdminData,Remote</Value>
+        </Property>
+        <Property name="RandomStringImageFile">
+            <Value>/var/opt/orpheus/conf/RandomStringImage.xml</Value>
+        </Property>
+        <Property name="emailNotification">
+            <Property name="MessengerPluginName">
+                <Value>OrpheusMessagePlugin</Value>
+            </Property>
+            <Property name="fromAddress">
+                <Value>do-not-reply@theball.com</Value>
+            </Property>
+            <Property name="subject">
+                <Value>Updated Target for the Ball (Server T2)</Value>
+            </Property>
+            <Property name="recipients">
+                <Value>sergeiistomin@mail.ru</Value>
+                <Value>service@theball.com</Value>
+            </Property>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Orpheus Game Manager Object Factory -->
+    <Config name="com.orpheus.game.GameDataManager_ObjectFactory">
+        <Property name="SiteStatistics">
+            <Property name="type">
+                <Value>com.topcoder.util.web.sitestatistics.impl.SiteStatisticsImpl</Value>
+            </Property>
+            <Property name="params">
+                <!-- Connection Namespace, String -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.orpheus.game.OrpheusSiteStatistics</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Orpheus Administration Manager -->
+    <Config name="com.orpheus.game.server.AdministrationManager">
+        <Property name="game-data-jndi-name">
+            <Value>orpheus/GameData</Value>
+        </Property>
+        <Property name="MinTargetLength">
+            <Value>6</Value>
+        </Property>
+        <Property name="MaxTargetLength">
+            <Value>12</Value>
+        </Property>
+        <Property name="PreferredTargetLength">
+            <Value>8</Value>
+        </Property>
+        <Property name="MinDistinctPages">
+            <Value>1</Value>
+        </Property>
+        <Property name="MaxDistinctPages">
+            <Value>4</Value>
+        </Property>
+        <Property name="PreferredDistinctPages">
+            <Value>3</Value>
+        </Property>
+        <Property name="HuntTargetsPerSlot">
+            <Value>3</Value>
+        </Property>
+        <Property name="SpideringDepth">
+            <!-- minimum accepted value is 1 -->
+            <Value>1</Value>
+        </Property>
+        <Property name="objFactoryNS">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="RandomStringImageFile">
+            <Value>/var/opt/orpheus/conf/RandomStringImage.xml</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Remote Auction Persistence  -->
+    <Config name="com.orpheus.game.server.AuctionPersistence">
+        <Property name="specNamespace">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="translatorKey">
+            <Value>OrpheusAcutionTranslator</Value>
+        </Property>
+        <Property name="cacheKey">
+            <Value>OrpheusCache</Value>
+        </Property>
+        <Property name="jndiEjbReference">
+            <Value>orpheus/Auction</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Auction DAO Factory  -->
+    <Config name="com.orpheus.auction.persistence.AuctionDAOFactory">
+        <Property name="specNamespace">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="auctionDAO">
+            <Value>OrpheusAcutionDAO</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Auction DAO Factory  -->
+    <Config name="com.orpheus.game.server.SQLServerAuctionDAO">
+        <Property name="specNamespace">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="auctionDAO">
+            <Value>OrpheusAcutionDAO</Value>
+        </Property>
+        <Property name="cacheKey">
+            <Value>OrpheusCache</Value>
+        </Property>
+        <Property name="factoryKey">
+            <Value>OrpheusDB</Value>
+        </Property>
+        <Property name="name">
+            <Value>orpheus</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Form Validation Handler -->
+    <Config name="com.topcoder.formvalidator">
+        <Property name="FormValidator">
+            <Property name="filePath">
+                <Value>/var/opt/orpheus/conf/FormValidation.xml</Value>
+            </Property>
+            <Property name="numberOfOperands">
+                    <Value>1</Value>
+            </Property>
+            <Property name="maximumChainLevel">
+                    <Value>5</Value>
+            </Property>>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Site Statistics -->
+    <Config name="com.orpheus.game.OrpheusSiteStatistics">
+        <Property name="case_sensitive_element">
+            <Value>false</Value>
+        </Property>
+        <Property name="case_sensitive_word">
+            <Value>false</Value>
+        </Property>
+        <Property name="ignore_punctuation">
+            <Value>false</Value>
+        </Property>
+        <Property name="observe_natural_separators">
+            <Value>true</Value>
+        </Property>
+        <Property name="object_factory">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="element_inclusion_rule">
+            <Value>OrpheusElementInclusionRule</Value>
+        </Property>
+        <Property name="word_inclusion_rule">
+            <Value>OrpheusLengthRule</Value>
+        </Property>
+    </Config>
+    
+    <!-- Configuration for Practice Puzzle Support -->
+    <Config name="com.orpheus.game.server.util.PracticePuzzleSupport">
+        <Property name="specNamespace">
+            <Value>com.orpheus.game.server.ObjectFactory</Value>
+        </Property>
+        <Property name="factoryKey">
+            <Value>OrpheusDB</Value>
+        </Property>
+        <Property name="connectionName">
+            <Value>orpheus</Value>
+        </Property>
+    </Config>
+</CMConfig>

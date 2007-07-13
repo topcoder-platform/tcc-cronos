@@ -1,0 +1,7 @@
+<action name="SponsorRegistrationPreHandler" type="default" url-pattern="/server/sponsor/preSubmitDomains.do" priority="10">
+    <handler type="SponsorRegistrationPreHandler">
+    </handler>
+    <result name="success" type="forward">
+        <forward-url>/public/sponsorRegistration.jsp?phase=step3&amp;nextPhase=step4</forward-url>
+    </result>
+</action>

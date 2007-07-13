@@ -1,0 +1,72 @@
+<action name="WinnerData" type="default" url-pattern="/server/plugin/winnerData.do" priority="10">
+    <handler type="SessionValidationHandler">
+        <login_page_result>login</login_page_result>
+    </handler>
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>player</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <handler type="form_validation">
+        <form-name>winnerForm</form-name>
+    </handler>
+    <handler type="WinnerDataHandler">
+        <object_factory>
+            <namespace>com.orpheus.game.server.ObjectFactory</namespace>
+            <user_profile_manager_key>OrpheusUserProfileManager</user_profile_manager_key>
+            <profile_type_factory_key>OrpheusProfileTypeFactory</profile_type_factory_key>
+        </object_factory>
+        <profile_type_names>
+            <value>player</value>
+            <value>address</value>
+            <value>base</value>
+            <value>credentials</value>
+        </profile_type_names>
+        <profile_property_param_names>
+            <value>firstName</value>
+            <value>lastName</value>
+            <value>address1</value>
+            <value>address2</value>
+            <value>city</value>
+            <value>state</value>
+            <value>postalCode</value>
+            <value>phone</value>
+            <value>country</value>
+        </profile_property_param_names>
+        <profile_property_names>
+            <value>first_name</value>
+            <value>last_name</value>
+            <value>address-street1</value>
+            <value>address-street2</value>
+            <value>address-city</value>
+            <value>address-state</value>
+            <value>address-postal-code</value>
+            <value>address-phone-number</value>
+            <value>address-country</value>
+        </profile_property_names>
+    </handler>
+    <result name="success" type="dbLoggingForward">
+        <forward-url>/server/plugin/welcome.do</forward-url>
+        <log-message>has submitted Game Winner Registration form to the server</log-message>
+        <action-code>107</action-code>
+    </result>
+    <result name="validation-error" type="dbLoggingForward">
+        <forward-url>/WEB-INF/plugin/puzzle_solved.jsp</forward-url>
+        <log-message>had failed to pass the validation for the Game Winner Registration form</log-message>
+        <action-code>104</action-code>
+    </result>
+    <result name="login" type="dbLoggingForward">
+        <forward-url>/plugin/timeout.jsp</forward-url>
+        <log-message>had failed to submit the Game Winner Registration form to server due to session timeout or is not
+            authenticated to server
+        </log-message>
+        <action-code>106</action-code>
+    </result>
+    <result name="auth_failed" type="dbLoggingForward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+        <log-message>attempted to submit the Game Winner Registration form to server without PLAYER role assigned
+        </log-message>
+        <action-code>20</action-code>
+    </result>
+</action>

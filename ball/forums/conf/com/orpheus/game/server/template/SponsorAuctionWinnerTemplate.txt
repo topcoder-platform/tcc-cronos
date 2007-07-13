@@ -1,0 +1,22 @@
+Hello %credentials-handle%,
+
+Congratulations, you have won an auction for hosting the Ball!  Here are
+the details\:
+
+Auction Number\: %AUCTION_ID%
+Your Winning Bid\: %BID_AMOUNT%
+
+
+Please remember that due to the unpredictable nature of game play, we
+cannot guarantee that the Ball will advance as far as your site before
+the game is over (but if it doesn't then there is no charge to you).
+Once your site does host the Ball, a member of our team will contact
+you by email or telephone to follow up on payment details.
+
+Thank you for participating in our game, and please play again - it's fun,
+it's easy, and most of all it will help promote your website!
+
+
+Regards,
+The Ball Team
+

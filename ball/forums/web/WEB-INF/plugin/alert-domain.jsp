@@ -1,0 +1,1 @@
+<%@ taglib uri="/orpheus" prefix="orpheus" %>${orpheus:getLength(games)}

@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+
+    <description>Orpheus Game Server Functions</description>
+    <display-name>Orpheus JSP Functions</display-name>
+    <tlib-version>1.1</tlib-version>
+    <short-name>orpheus</short-name>
+    <uri>http://software.topcoder.com/taglibs/orpheus_functions</uri>
+
+    <function>
+        <name>getRegistrationManager</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>com.topcoder.web.registration.RegistrationManager getRegistrationManager()</function-signature>
+    </function>
+
+    <function>
+        <name>getSponsorRegistrationManager</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>com.topcoder.web.registration.RegistrationManager getSponsorRegistrationManager()</function-signature>
+    </function>
+
+    <function>
+        <name>getDataPagingFooterMessage</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getFooterMessage(com.topcoder.web.tag.paging.DataPagingTag)</function-signature>
+    </function>
+
+    <function>
+        <name>getStartingUrl</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getStartingUrl(com.orpheus.game.persistence.Game)</function-signature>
+    </function>
+
+    <function>
+        <name>getMinimumPayout</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>double getMinimumPayout(com.orpheus.game.persistence.Game)</function-signature>
+    </function>
+
+    <function>
+        <name>getGameStatus</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getGameStatus(com.orpheus.game.persistence.Game)</function-signature>
+    </function>
+
+    <function>
+        <name>getCurrentHostingSlot</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>com.orpheus.game.persistence.HostingSlot getCurrentHostingSlot(com.orpheus.game.persistence.Game)</function-signature>
+    </function>
+
+    <function>
+        <name>getCurrentHost</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getCurrentHost(com.orpheus.game.persistence.Game)</function-signature>
+    </function>
+
+    <function>
+        <name>getPlayerStatus</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getPlayerStatus(com.orpheus.game.persistence.Game,com.orpheus.game.persistence.Game[])</function-signature>
+    </function>
+
+    <function>
+        <name>getPlayerRank</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getPlayerRank(com.topcoder.user.profile.UserProfile[],com.topcoder.user.profile.UserProfile)</function-signature>
+    </function>
+
+    <function>
+        <name>getPlayerRankFromList</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getPlayerRank(java.util.List,com.topcoder.user.profile.UserProfile)</function-signature>
+    </function>
+
+    <function>
+        <name>convertToList</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.util.List convertToList(java.lang.Object[])</function-signature>
+    </function>
+
+    <function>
+        <name>getPlayerActiveGamesComparator</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>com.orpheus.game.server.comparator.ActiveGamesComparator getPlayerActiveGamesComparator(com.orpheus.game.persistence.Game[])</function-signature>
+    </function>
+
+    <function>
+        <name>getPluginAllGamesComparator</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>com.orpheus.game.server.comparator.plugin.AllGamesListSorter getPluginAllGamesComparator(com.orpheus.game.persistence.Game[])</function-signature>
+    </function>
+
+    <function>
+        <name>getPluginMyGamesComparator</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>com.orpheus.game.server.comparator.plugin.MyGamesListSorter getPluginMyGamesComparator()</function-signature>
+    </function>
+
+    <function>
+        <name>getPlayerGamesComparator</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>com.orpheus.game.server.comparator.MyGamesComparator getPlayerGamesComparator()</function-signature>
+    </function>
+
+    <function>
+        <name>getFirefoxPluginInfo</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>com.orpheus.game.server.PluginInfo getFirefoxPluginInfo()</function-signature>
+    </function>
+
+    <function>
+        <name>getInternetExplorerPluginInfo</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>com.orpheus.game.server.PluginInfo getInternetExplorerPluginInfo()</function-signature>
+    </function>
+
+    <function>
+        <name>isDuplicateEmailAddress</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>boolean isDuplicateEmailAddress(java.lang.Throwable)</function-signature>
+    </function>
+
+    <function>
+        <name>isDuplicateHandle</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>boolean isDuplicateHandle(java.lang.Throwable)</function-signature>
+    </function>
+
+    <function>
+        <name>getPluginGameStatus</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getPluginGameStatus(com.orpheus.game.persistence.Game)</function-signature>
+    </function>
+
+    <function>
+        <name>getSponsorContactName</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getSponsorContactName(com.topcoder.user.profile.UserProfile)</function-signature>
+    </function>
+
+    <function>
+        <name>getEmailAddress</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getEmailAddress(com.topcoder.user.profile.UserProfile)</function-signature>
+    </function>
+
+    <function>
+        <name>getHandle</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getHandle(com.topcoder.user.profile.UserProfile)</function-signature>
+    </function>
+
+    <function>
+        <name>getAddress1</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getAddress1(com.topcoder.user.profile.UserProfile)</function-signature>
+    </function>
+
+    <function>
+        <name>getAddress2</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getAddress2(com.topcoder.user.profile.UserProfile)</function-signature>
+    </function>
+
+    <function>
+        <name>getCity</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getCity(com.topcoder.user.profile.UserProfile)</function-signature>
+    </function>
+
+    <function>
+        <name>getState</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getState(com.topcoder.user.profile.UserProfile)</function-signature>
+    </function>
+
+    <function>
+        <name>getPostalCode</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getPostalCode(com.topcoder.user.profile.UserProfile)</function-signature>
+    </function>
+
+    <function>
+        <name>getCountry</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getCountry(com.topcoder.user.profile.UserProfile)</function-signature>
+    </function>
+
+    <function>
+        <name>getPhone</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getPhone(com.topcoder.user.profile.UserProfile)</function-signature>
+    </function>
+
+    <function>
+        <name>getFax</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getFax(com.topcoder.user.profile.UserProfile)</function-signature>
+    </function>
+
+    <function>
+        <name>getDomainApprovalStatus</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getDomainApprovalStatus(com.orpheus.game.persistence.Domain)</function-signature>
+    </function>
+
+    <function>
+        <name>getApprovalStatusDomain</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>int getApprovalStatus(com.orpheus.game.persistence.Domain)</function-signature>
+    </function>
+
+    <function>
+        <name>getApprovalStatusImage</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>int getApprovalStatus(com.orpheus.game.persistence.ImageInfo)</function-signature>
+    </function>
+
+    <function>
+        <name>getLength</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>int getSize(java.lang.Object[])</function-signature>
+    </function>
+
+    <function>
+        <name>getCurrentUser</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>com.topcoder.user.profile.UserProfile getUserProfile(javax.servlet.http.HttpServletRequest)</function-signature>
+    </function>
+
+    <function>
+        <name>getContactEmailAddress</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getContactEmailAddress()</function-signature>
+    </function>
+
+    <function>
+        <name>error</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String error(java.lang.String, java.util.Map)</function-signature>
+    </function>
+
+    <function>
+        <name>isGameRunning</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>boolean isGameRunning(com.orpheus.game.persistence.Game)</function-signature>
+    </function>
+
+    <function>
+        <name>fixTestPuzzleUrl</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String fixTestPuzzleUrl(java.lang.String,long,long)</function-signature>
+    </function>
+
+    <function>
+        <name>fixTestPuzzleUrlForTest</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String fixTestPracticePuzzleUrl(java.lang.String,long)</function-signature>
+    </function>
+
+    <function>
+        <name>getFirstName</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getFirstName(com.topcoder.user.profile.UserProfile,javax.servlet.http.HttpServletRequest,java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <name>getLastName</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getLastName(com.topcoder.user.profile.UserProfile,javax.servlet.http.HttpServletRequest,java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <name>resolveAddress1</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getAddress1(com.topcoder.user.profile.UserProfile,javax.servlet.http.HttpServletRequest,java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <name>resolveAddress2</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getAddress2(com.topcoder.user.profile.UserProfile,javax.servlet.http.HttpServletRequest,java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <name>resolvePostalCode</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getPostalCode(com.topcoder.user.profile.UserProfile,javax.servlet.http.HttpServletRequest,java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <name>resolveCity</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getCity(com.topcoder.user.profile.UserProfile,javax.servlet.http.HttpServletRequest,java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <name>resolvePhone</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getPhone(com.topcoder.user.profile.UserProfile,javax.servlet.http.HttpServletRequest,java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <name>resolveCountry</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getCountry(com.topcoder.user.profile.UserProfile,javax.servlet.http.HttpServletRequest,java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <name>resolvePaymentPref</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getPlayerPaymentMethodPref(com.topcoder.user.profile.UserProfile,javax.servlet.http.HttpServletRequest,java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <name>resolveState</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getState(com.topcoder.user.profile.UserProfile,javax.servlet.http.HttpServletRequest,java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <name>getSolvePuzzlePeriod</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>int getSolvePuzzlePeriod()</function-signature>
+    </function>
+
+    <function>
+        <name>buildDomainUrl</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String buildDomainUrl(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <name>concat</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String concat(java.lang.String,int)</function-signature>
+    </function>
+
+    <function>
+        <name>concatLong</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String concat(java.lang.String,long)</function-signature>
+    </function>
+
+    <function>
+        <name>concatString</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String concat(java.lang.String,java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <name>getMaxDomainNum</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>int getMaxDomainNum(javax.servlet.http.HttpServletRequest)</function-signature>
+    </function>
+
+    <function>
+        <name>isImageCountLimitReached</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>boolean isImageCountLimitReached(javax.servlet.http.HttpServletRequest,int)</function-signature>
+    </function>
+
+    <function>
+        <name>getUserProfileType</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.lang.String getUserProfileType(javax.servlet.http.HttpServletRequest)</function-signature>
+    </function>
+
+    <function>
+        <name>reverseDomains</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>com.orpheus.game.persistence.Domain[] reverseDomains(com.orpheus.game.persistence.Domain[])</function-signature>
+    </function>
+
+    <function>
+        <name>reverseSlots</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>com.orpheus.game.persistence.HostingSlot[] reverseSlots(com.orpheus.game.persistence.HostingSlot[])</function-signature>
+    </function>
+
+    <function>
+        <name>joinProfiles</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>java.util.List joinProfiles(com.topcoder.user.profile.UserProfile[],com.topcoder.user.profile.UserProfile[])</function-signature>
+    </function>
+
+    <function>
+        <name>isInList</name>
+        <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
+        <function-signature>boolean isInList(com.topcoder.user.profile.UserProfile,com.topcoder.user.profile.UserProfile[])</function-signature>
+    </function>
+</taglib>
+

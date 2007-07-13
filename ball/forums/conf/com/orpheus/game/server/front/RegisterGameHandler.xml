@@ -1,0 +1,61 @@
+<action name="RegPlayerToGame" type="default" url-pattern="/server/player/joinGame.do" priority="10">
+    <handler type="SessionValidationHandler">
+        <login_page_result>login</login_page_result>
+    </handler>
+    <handler type="form_validation">
+        <form-name>joinGameForm</form-name>
+    </handler>
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>player</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <handler type="RegisterGameHandler">
+        <game_id_param_key>gameId</game_id_param_key>
+        <templateSource>classpath</templateSource>
+        <templateName>com/orpheus/game/server/template/PlayerGameRegistration.txt</templateName>
+    </handler>
+    <handler type="UserMessageHandler">
+        <messenger_plugin_key>OrpheusMessagePlugin</messenger_plugin_key>
+        <message_param_keys>
+            <value>subject</value>
+            <value>to</value>
+            <value>body</value>
+            <value>from</value>
+        </message_param_keys>
+    </handler>
+    <handler type="game_detail">
+        <game_id_param_key>gameId</game_id_param_key>
+        <game_detail_key>game</game_detail_key>
+    </handler>
+    <result name="success" type="dbLoggingForward">
+        <forward-url>/WEB-INF/player/join-confirm.jsp</forward-url>
+        <log-message>accepted game rules and registered to game {0}</log-message>
+        <parameters>gameId</parameters>
+        <category>WEB SITE</category>
+        <action-code>7</action-code>
+    </result>
+    <result name="auth_failed" type="dbLoggingForward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+        <log-message>attempted to register to game {0} without PLAYER role assigned</log-message>
+        <parameters>gameId</parameters>
+        <category>WEB SITE</category>
+        <action-code>12</action-code>
+    </result>
+    <result name="validation-error" type="dbLoggingForward">
+        <forward-url>/WEB-INF/player/join.jsp</forward-url>
+        <log-message>failed to register to game {0} due to not accepting the game rules</log-message>
+        <parameters>gameId</parameters>
+        <category>WEB SITE</category>
+        <action-code>72</action-code>
+    </result>
+    <result name="login" type="dbLoggingForward">
+        <forward-url>/public/timeout.jsp</forward-url>
+        <log-message>failed to register to game {0} due to session timeout or is not authenticated to server
+        </log-message>
+        <parameters>gameId</parameters>
+        <category>WEB SITE</category>
+        <action-code>73</action-code>
+    </result>
+</action>

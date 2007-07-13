@@ -1,0 +1,8 @@
+
+Congratulations!!! You have won Game %GAME_NAME% of The Ball.  We will
+be contacting you within 10 business days to follow up on prize payment
+details.
+
+Regards,
+The Ball Team
+

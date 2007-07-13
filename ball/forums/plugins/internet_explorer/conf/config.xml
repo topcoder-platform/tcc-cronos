@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ConfigManager>
+    <namespace name="Orpheus.Plugin.Toolbar">
+	    <!-- The URL of the application -->
+        <property name="context">
+            <value>http://www.theball.com</value>
+		</property>
+	    
+	    <!-- The login URL -->
+        <property name="login_url">
+            <value>/plugin/login.jsp</value>
+		</property>
+	    <!-- The logout URL -->
+        <property name="logout_url">
+            <value>/server/plugin/logout.do</value>
+		</property>
+	    <!-- The Games page URL -->
+        <property name="games_url">
+            <value>/server/plugin/activeGames.do</value>
+		</property>
+	    <!-- The unlocked sites URL -->
+        <property name="unlocked_url">
+            <value>/server/plugin/unlockedDomains.do?gameId={0}</value>
+		</property>
+	    
+	    <!-- The upcoming sites URL -->
+        <property name="upcoming_url">
+            <value>/server/plugin/upcomingDomains.do?gameId={0}</value>
+		</property>
+		
+		<!-- The leaderboard URL -->
+        <property name="leaderboard_url">
+            <value>/server/plugin/leaders.do?gameId={0}</value>
+		</property>
+	</namespace>
+
+<namespace name="default_bitArraySerializer">
+    <property name="Java">
+      <value>DefaultArraySerializer</value>
+    </property>
+    <property name=".Net">
+      <value>Orpheus.Plugin.InternetExplorer.BloomFilter.CustomBitArraySerializer,Orpheus.Plugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=25404110f0acce22</value>
+    </property>
+  </namespace>
+
+  <namespace name="default_hashFunctionFamily">
+    <property name="Java">
+      <value>DefaultHashFunctions</value>
+    </property>
+    <property name=".Net">
+      <value>Orpheus.Plugin.InternetExplorer.BloomFilter.CustomHashFunctionFamily,Orpheus.Plugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=25404110f0acce22</value>
+    </property>
+  </namespace>
+
+  <namespace name="binary_bitArraySerializer">
+    <property name="Java">
+      <value>BinaryArraySerializer</value>
+    </property>
+    <property name=".Net">
+      <value>TopCoder.Util.BloomFilter.BinaryBitArraySerializer</value>
+    </property>
+  </namespace>
+
+
+<namespace name="TopCoder.Util.ObjectFactory.default">
+        <property name="type_name">
+            <value>TopCoder.Util.ObjectFactory.ConfigurationObjectFactory</value>
+        </property>
+    </namespace>
+    <namespace name="TopCoder.Util.ObjectFactory.default.parameters">
+        <property name="string">
+            <value>TopCoder.Util.ObjectFactory</value>
+        </property>
+    </namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.bloom_filter">
+        <property name="type_name">
+            <value>TopCoder.Util.BloomFilter.BloomFilter,TopCoder.Util.BloomFilter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b7567367622062c6</value>
+        </property>
+    </namespace>
+    <namespace name="TopCoder.Util.ObjectFactory.bloom_filter.parameters">
+        <property name="string">
+            <value>default_hashFunctionFamily|function_number=1,seed=-1155484576|2:0|default_bitArraySerializer</value>
+        </property>
+	</namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.window_navigator">
+        <property name="type_name">
+            <value>Orpheus.Plugin.InternetExplorer.WindowNavigators.DefaultWebBrowserWindowNavigator,Orpheus.Plugin.InternetExplorer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=25404110f0acce22</value>
+        </property>
+    </namespace>
+    <namespace name="TopCoder.Util.ObjectFactory.window_navigator.parameters">
+        <property name="ns:string">
+            <value>Orpheus.Plugin.InternetExplorer.WindowNavigators</value>
+        </property>
+    </namespace>
+    
+    <!-- This namespace contains configuration of the popup window appearance -->
+    <namespace name="Orpheus.Plugin.InternetExplorer.WindowNavigators">
+        <property name="window_width"><value>800</value></property>
+        <property name="window_height"><value>500</value></property>
+        <property name="toolbar"><value>0</value></property>
+        <property name="statusbar"><value>false</value></property>
+        <property name="menubar"><value>false</value></property>
+        <property name="addressbar"><value>false</value></property>
+        <property name="allow_window_close"><value>true</value></property>
+    </namespace>
+    
+    
+
+    <namespace name="TopCoder.Util.ObjectFactory.persistence">
+        <property name="type_name">
+            <value>Orpheus.Plugin.InternetExplorer.Persistence.RegistryPersistence,Orpheus.Plugin.InternetExplorer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=25404110f0acce22</value>
+        </property>
+    </namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.extension_events_manager">
+        <property name="type_name">
+            <value>Orpheus.Plugin.InternetExplorer.EventsManagers.DefaultExtensionEventsManager,Orpheus.Plugin.InternetExplorer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=25404110f0acce22</value>
+        </property>
+    </namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.doc_host_ui_handler">
+        <property name="type_name">
+            <value>Orpheus.Plugin.InternetExplorer.DefaultDocHostUIHandler,Orpheus.Plugin.InternetExplorer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=25404110f0acce22</value>
+        </property>
+    </namespace>
+    <namespace name="TopCoder.Util.ObjectFactory.doc_host_ui_handler.parameters">
+        <property name="object">
+            <value>null</value>
+        </property>
+	</namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.scripting_object">
+        <property name="type_name">
+            <value>Orpheus.Plugin.InternetExplorer.OrpheusScriptingObject,Orpheus.Plugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=25404110f0acce22</value>
+        </property>
+    </namespace>
+    <namespace name="TopCoder.Util.ObjectFactory.scripting_object.parameters">
+        <property name="object">
+            <value>null</value>
+        </property>
+	</namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.event_handlers_factory">
+        <property name="type_name">
+            <value>Orpheus.Plugin.InternetExplorer.EventsManagers.Factories.DefaultExtensionEventHandlerFactory,Orpheus.Plugin.InternetExplorer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=25404110f0acce22</value>
+        </property>
+    </namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.poll">
+        <property name="type_name">
+            <value>Orpheus.Plugin.InternetExplorer.Handler.CustomPollingEventHandler,Orpheus.Plugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=25404110f0acce22</value>
+        </property>
+    </namespace>
+    
+    <namespace name="TopCoder.Util.ObjectFactory.test_object">
+        <property name="type_name">
+            <value>Orpheus.Plugin.InternetExplorer.Handlers.OrpheusTestObjectEventHandler,Orpheus.Plugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=25404110f0acce22</value>
+        </property>
+    </namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.page_changed">
+        <property name="type_name">
+            <value>Orpheus.Plugin.InternetExplorer.Handler.DomainTestEventHandler,Orpheus.Plugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=25404110f0acce22</value>
+        </property>
+    </namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.test_domain">
+        <property name="type_name">
+            <value>Orpheus.Plugin.InternetExplorer.Handler.ForcedDominTestEventHandler,Orpheus.Plugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=25404110f0acce22</value>
+        </property>
+    </namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.hash_algorithm">
+        <property name="type_name">
+            <value>TopCoder.Util.Hash.Algorithm.SHA1Algorithm, TopCoder.Util.Hash, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b7567367622062c6</value>
+        </property>
+    </namespace>
+
+    <namespace name="TopCoder.Util.ObjectFactory.rssparser">
+        <property name="type_name">
+            <value>TopCoder.Util.RSS.Atom.IO.Atom10Parser,TopCoder.Util.RSS, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b7567367622062c6</value>
+        </property>
+    </namespace>
+
+
+
+    <namespace name="Orpheus.Plugin.InternetExplorer">
+	    <!-- Required The Object Factory key where the BloomFilter is configured. -->
+        <property name="bloom_filter">
+            <value>bloom_filter</value>
+		</property>
+		
+	    <!-- Required The Object Factory key where the IWebBrowserWindowNavigator implementation to use is configured. -->
+        <property name="window_navigator">
+            <value>window_navigator</value>
+		</property>
+	    
+	    <!-- Required The Object Factory key where the IPersistence implementation to use is configured. -->
+        <property name="persistence">
+            <value>persistence</value>
+		</property>
+	    
+	    <!-- Required The Object Factory key where the IExtensionEventsManager  implementation to use is configured. -->
+        <property name="extension_events_manager">
+            <value>extension_events_manager</value>
+		</property>
+	    
+	    <!-- Required The Object Factory key where the IDocHostUIHandler implementation to use is configured. -->
+        <property name="doc_host_ui_handler">
+            <value>doc_host_ui_handler</value>
+		</property>
+	    
+	    <!-- Required The Object Factory key where the scripting object to create is configured. -->
+        <property name="scripting_object">
+            <value>scripting_object</value>
+		</property>
+	    
+	    <!-- Required The interval in minutes to poll for updates. -->
+        <property name="poll_interval">
+            <value>1</value>
+		</property>
+	</namespace>
+
+    <namespace name="Orpheus.Plugin.InternetExplorer.EventsManagers">
+	    <!-- Required The Object Factory key where the IExtensionEventHandlerFactory  implementation to use is configured. -->
+		<property name="event_handlers_factory">
+            <value>event_handlers_factory</value>
+		</property>
+		
+	    <!-- Required Represents a list of events. Based on the event name the configured handlers are retrieved. 
+		Event names (ex: DocumentCompleted, LogIn, LogOut) should be added here.-->
+		<property name="events">
+            <value>PollUpdates</value>
+            <value>TestObject</value>
+            <value>PageChanged</value>
+            <value>TestDomain</value>
+		</property>
+	</namespace>
+
+    <namespace name="Orpheus.Plugin.InternetExplorer.EventsManagers.Factories">
+	    <!-- Required The name of the handlers configured to be invoked for the event. 
+		For each handler name there is another property: <handler name>_handler. Any number of handlers can be added here. -->
+        <property name="PollUpdates_handlers">
+            <value>poll_handler</value>
+		</property>
+		<!-- Required The Object Factory key where the  IExtensionEventHandler implementation to use is configured. -->
+        <property name="poll_handler_handler">
+            <value>poll</value>
+		</property>
+		
+		<property name="TestObject_handlers">
+            <value>TestObject</value>
+		</property>
+		<property name="TestObject_handler">
+            <value>test_object</value>
+		</property>
+
+        <property name="PageChanged_handlers">
+            <value>page_changed</value>
+		</property>
+		
+		<property name="page_changed_handler">
+            <value>page_changed</value>
+		</property>
+		
+		<property name="TestDomain_handlers">
+            <value>test_domain</value>
+		</property>
+		<property name="test_domain_handler">
+            <value>test_domain</value>
+		</property>
+
+	</namespace>
+
+
+    <!-- HttpRequestUserInterfaceEventHandler -->
+    <namespace name="Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers">
+        <!-- for WebBrowserDocumentCompletedEventHandler -->
+		<!-- Required The url to make the request to. The host parameter will be placed in string as {0}
+		Ex:www.tc.com/?host={0}-->
+        <property name="document_completed_url">
+              <value>http://www.theball.com/server/plugin/testDomain.do?domain={0}</value>
+		</property>
+		<!-- Required The url to make the request to. The host parameter will be placed in string as {0}.
+		ExEx:www.tc.com/?host={0}-->
+        <property name="document_completed_0_responce_url">
+             <value>http://www.theball.com/server/plugin/testedDomainGames.do?domain={0}</value>
+		</property>
+
+        <!-- for PoolingEventHandler -->
+		<!-- Required The Object Factory key of the IRSSParser implementation to use. Atom1.0 parser should be configured.-->
+        <property name="rss_parser">
+            <value>rssparser</value>
+		</property>
+		<!-- Required The polling url.The timestamp parameter will be placed in string as {0}.-->
+        <property name="polling_url">
+             <value>http://www.theball.com/server/plugin/poll.do?timestamp={0}</value>
+		</property>
+		
+		<!-- format of the rss message -->
+		<property name="message_template"><value><![CDATA[
+		    <table cellpadding="0" cellspacing="0" style=" background-color: #EBEEFB;width: 100%; border-color: #D6D6D6; border-width: 1px; border-style: solid; line-height: 20px;">
+		    <tr><th style="color: #697CC0; text-align: left; font-weight: bold; padding: 1px 5px 1px 5px;">title</th>
+		    <th style="color: #697CC0; text-align: right; font-size:12px;" ><i>date</i></td></tr>
+		    <tr><td colspan="3" style="font-size: 12px;font-weight: normal; font-family: Arial, Helvetica, Geneva, Verdana, sans-serif;" >msg_body</td>
+		    </tr></table>
+		]]></value>
+		</property>
+		<!-- date format of the rss message -->
+		<property name="date_format"><value>G</value> </property>
+	</namespace>
+	
+	<namespace name="Orpheus.Plugin.InternetExplorer.Handlers">
+
+        <!-- for TestObjectEventHandler -->
+	    <!-- Required  The Object Factory key of the HashAlgorithm implementation to use. -->
+        <property name="hash_algorithm">
+            <value>hash_algorithm</value>
+        </property>
+		<!-- Required The test object request url.The parameters will be placed in string as {0}, {1} -->
+        <property name="test_object_url">
+            <value><![CDATA[http://www.theball.com/server/plugin/testTarget.do?gameId={0}&domain={1}&seq={2}&hash={3}&url={4}]]></value> 
+        </property>
+	</namespace>
+
+    <namespace name="Orpheus.Plugin.InternetExplorer.ErrorHandler">
+        <!-- Indicates if error messages shoule be presented to user. -->
+        <property name="enabled"><value>true</value></property>
+    </namespace>
+
+</ConfigManager>

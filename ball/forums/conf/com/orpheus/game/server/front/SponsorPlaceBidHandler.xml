@@ -1,0 +1,72 @@
+<action name="PlaceNewBid" type="default" url-pattern="/server/sponsor/placeBid.do" priority="10">
+    <handler type="SessionValidationHandler">
+        <login_page_result>login</login_page_result>
+    </handler>
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>sponsor</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <handler type="SponsorEligibilityHandler">
+        <sponsor_approved_property>sponsor-is-approved</sponsor_approved_property>
+        <sponsor_approved_property_value>Y</sponsor_approved_property_value>
+        <sponsor_unapproved_result>sponsorUnapprovedResult</sponsor_unapproved_result>
+    </handler>
+    <handler type="form_validation">
+        <form-name>placeBidForm</form-name>
+    </handler>
+    <handler type="game_detail">
+        <game_id_param_key>gameId</game_id_param_key>
+        <game_detail_key>game</game_detail_key>
+    </handler>
+    <handler type="PlaceBid">
+        <auction_id_param_key>auctionId</auction_id_param_key>
+        <image_id_param_key>imageId</image_id_param_key>
+        <max_amount_param_key>maxBid</max_amount_param_key>
+    </handler>
+    <result name="success" type="dbLoggingForward">
+        <forward-url>/WEB-INF/sponsor/bid-success.jsp</forward-url>
+        <log-message>confrimed and placed a new bid for game {0}, auction {1} with image {2}, max bid amount {3}
+        </log-message>
+        <parameters>gameId,auctionId,imageId,maxBid</parameters>
+        <category>AUCTION</category>
+        <action-code>50</action-code>
+    </result>
+    <result name="auth_failed" type="dbLoggingForward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+        <log-message>attempted to place a new bid for game {0}, block {1}, auction {2} with domain {3}, image {4}, max
+            bid amount {5} without SPONSOR role assigned
+        </log-message>
+        <parameters>gameId,blockId,auctionId,domainId,imageId,maxBid</parameters>
+        <category>AUCTION</category>
+        <action-code>11</action-code>
+    </result>
+    <result name="validation-error" type="dbLoggingForward">
+        <forward-url>/server/sponsor/startBid.do</forward-url>
+        <log-message>failed to pass the validation for the confirmed Place New Bid form with game {0}, block {1},
+            auction {2} with domain {3}, image {4}, max bid amount {5}
+        </log-message>
+        <parameters>gameId,blockId,auctionId,domainId,imageId,maxBid</parameters>
+        <category>AUCTION</category>
+        <action-code>69</action-code>
+    </result>
+    <result name="sponsorUnapprovedResult" type="dbLoggingForward">
+        <forward-url>/WEB-INF/sponsor/unapproved.jsp</forward-url>
+        <log-message>attempted to confirm and place a new bid for game {0}, block {1}, auction {2} with domain {3},
+            image {4}, max bid amount {5} without account approval by Administrator
+        </log-message>
+        <parameters>gameId,blockId,auctionId,domainId,imageId,maxBid</parameters>
+        <category>AUCTION</category>
+        <action-code>8</action-code>
+    </result>
+    <result name="login" type="dbLoggingForward">
+        <forward-url>/public/timeout.jsp</forward-url>
+        <log-message>failed to confirm and place a new bid for game {0}, block {1}, auction {2} with domain {3}, image
+            {4}, max bid amount {5} due to session timeout or is not authenticated to server
+        </log-message>
+        <parameters>gameId,blockId,auctionId,domainId,imageId,maxBid</parameters>
+        <category>AUCTION</category>
+        <action-code>51</action-code>
+    </result>
+</action>
