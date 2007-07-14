@@ -3,13 +3,9 @@
  */
 package com.cronos.onlinereview.phases;
 
-import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.topcoder.management.phase.PhaseHandlingException;
 
 import com.topcoder.project.phases.Phase;
-import com.topcoder.util.log.Level;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
 
 
 /**
@@ -39,11 +35,6 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
     /** constant for appeals phase type. */
     private static final String PHASE_TYPE_APPEALS = "Appeals";
 
-    /**
-     * The logger instance.
-     */
-    private static final Log logger = LogFactory.getLog(AppealsPhaseHandler.class.getName());
-    
     /**
      * Create a new instance of AppealsPhaseHandler using the default namespace for loading configuration settings.
      *
@@ -100,15 +91,8 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
             //return true if all dependencies have stopped and start time has been reached.
             return PhasesHelper.canPhaseStart(phase);
         } else {
-        	boolean met = PhasesHelper.arePhaseDependenciesMet(phase, false);
-            if (!met) {
-            	logger.log(Level.WARN, "Can not execute Appeals phase because the phase dependencies have not been met.");
-            }
-            boolean reached = PhasesHelper.reachedPhaseEndTime(phase);
-            if (!reached) {
-            	logger.log(Level.WARN, "Can not execute Appeals phase because the phase end time is not reached.");
-            }
-            return reached && met;
+            return (PhasesHelper.arePhaseDependenciesMet(phase, false)
+                    && PhasesHelper.reachedPhaseEndTime(phase));
         }
     }
 
@@ -130,8 +114,7 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkString(operator, "operator");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_APPEALS);
         PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
-        logger.log(Level.INFO, new LogMessage(new Long(phase.getId()), operator, 
-        		"execute Appeals phase with some phase operation."));
+
         sendEmail(phase);
     }
 }

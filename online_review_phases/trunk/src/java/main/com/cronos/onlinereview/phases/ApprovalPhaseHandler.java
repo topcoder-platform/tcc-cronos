@@ -6,15 +6,11 @@ package com.cronos.onlinereview.phases;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.data.Review;
 
 import com.topcoder.project.phases.Phase;
-import com.topcoder.util.log.Level;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
 
 
 /**
@@ -45,11 +41,6 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
 
     /** constant for Approval phase type. */
     private static final String PHASE_TYPE_APPROVAL = "Approval";
-    
-    /**
-     * The logger instance.
-     */
-    private static final Log logger = LogFactory.getLog(ApprovalPhaseHandler.class.getName());
 
     /**
      * Create a new instance of ApprovalPhaseHandler using the default namespace for loading configuration settings.
@@ -115,22 +106,14 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
                 Resource[] approver = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
                         conn, new String[] {"Approver"}, phase.getId());
 
-                if (approver.length != 1) {
-                	logger.log(Level.WARN, new LogMessage(new Long(phase.getId()), null, 
-                			"Can not start the Approval phase because there is no approver."));
-                }
                 //return true if there is an approver
                 return (approver.length == 1);
             } finally {
                 PhasesHelper.closeConnection(conn);
             }
         } else {
-        	boolean met = PhasesHelper.arePhaseDependenciesMet(phase, false);
-            if (!met) {
-            	logger.log(Level.WARN, new LogMessage(new Long(phase.getId()), null,
-            			"Can not end/cancel Approval phase because the phase dependencies have not been met."));
-            }
-            return checkScorecards(phase) && met;
+            return (PhasesHelper.arePhaseDependenciesMet(phase, false)
+                    && checkScorecards(phase));
         }
     }
 
@@ -151,10 +134,6 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
-        
-        logger.log(Level.INFO, new LogMessage(new Long(phase.getId()), operator, 
-        		"execute Approval phase with some phase operation."));
-        
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_APPROVAL);
         PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
@@ -180,8 +159,6 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
                 phase.getId(), new String[] { "Approver" }, null);
 
             if (approveReviews.length == 0) {
-            	logger.log(Level.WARN, new LogMessage(new Long(phase.getId()), null, 
-            			"can not end/cancel Approval phase because no approve review can be found."));
                 return false;
             }
 
@@ -193,23 +170,16 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
             //also Check passing score
             for (int i = 0; i < approveReviews.length; i++) {
                 if (!approveReviews[i].isCommitted()) {
-                	logger.log(Level.WARN, new LogMessage(new Long(phase.getId()), null, 
-                			"can not end/cancel Approval phase because the approve review is not committed."));
                     return false;
                 }
 
                 if (approveReviews[i].getScore().floatValue() < minScore) {
-                	logger.log(Level.WARN, new LogMessage(new Long(phase.getId()), null, 
-                			"can not end/cancel Approval phase because the approve review can not be passed, its score is:"
-                			+ approveReviews[i].getScore().floatValue()));
                     return false;
                 }
             }
 
             return true;
         } catch (SQLException e) {
-        	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
-        			"Fail to check the scorecards for Approval phase.", e));
             throw new PhaseHandlingException("Problem when looking up ids.", e);
         } finally {
             PhasesHelper.closeConnection(conn);

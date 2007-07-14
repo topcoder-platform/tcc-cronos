@@ -16,7 +16,6 @@ import java.util.Set;
 
 import com.cronos.onlinereview.autoscreening.management.ScreeningTask;
 import com.cronos.onlinereview.autoscreening.management.ScreeningTaskDoesNotExistException;
-import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtility;
 import com.cronos.onlinereview.phases.lookup.SubmissionStatusLookupUtility;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
@@ -58,9 +57,6 @@ import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
-import com.topcoder.util.log.Level;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
 
 
 /**
@@ -87,10 +83,6 @@ final class PhasesHelper {
     /** an array of comment types which denote that a comment is a reviewer comment.  */
     private static final String[] REVIEWER_COMMENT_TYPES = new String[] {"Comment", "Required", "Recommended"};
 
-    /** Logger instance using the class name as category */
-    private static final Log logger = LogFactory.getLog(PhasesHelper.class.getName()); 
-    
-    
     /**
      * private to prevent instantiation.
      */
@@ -159,17 +151,11 @@ final class PhasesHelper {
             String value = configManager.getString(namespace, propertyName);
 
             if (isRequired && isStringNullOrEmpty(value)) {
-            	logger.log(Level.FATAL, "Configuration parameter ["
-                        + propertyName + "] under namespace [" + namespace
-                        + "] is not specified.");
                 throw new ConfigurationException("Property '" + propertyName + "' must have a value.");
             }
-            logger.log(Level.INFO, "Read propery[" + propertyName + "] which is "
-            		+ (isRequired?" required ": " optional ")
-            		+ " with value[" + value + "] from namespace [" + namespace +"].");
+
             return value;
         } catch (UnknownNamespaceException ex) {
-        	logger.log(Level.FATAL, "Namespace '" + namespace + "' does not exist.");
             throw new ConfigurationException("Namespace '" + namespace + "' does not exist.", ex);
         }
     }
@@ -219,7 +205,6 @@ final class PhasesHelper {
             }
             return false;
         } catch (UnknownNamespaceException e) {
-        	logger.log(Level.FATAL, "Namespace '" + namespace + "' does not exist.");
             throw new ConfigurationException("Namespace '" + namespace + "' does not exist.", e);
         }
     }
@@ -244,12 +229,8 @@ final class PhasesHelper {
         try {
             return new DBConnectionFactoryImpl(connectionFactoryNS);
         } catch (UnknownConnectionException ex) {
-        	logger.log(Level.FATAL, "Fail to create DBConnectionFactory from configuration. \n"
-        			+ LogMessage.getExceptionStackTrace(ex));
             throw new ConfigurationException("Could not instantiate DBConnectionFactoryImpl", ex);
         } catch (com.topcoder.db.connectionfactory.ConfigurationException ex) {
-        	logger.log(Level.FATAL, "Fail to create DBConnectionFactory from configuration. \n"
-        			+ LogMessage.getExceptionStackTrace(ex));
             throw new ConfigurationException("Could not instantiate DBConnectionFactoryImpl", ex);
         }
     }
@@ -266,8 +247,6 @@ final class PhasesHelper {
         throws PhaseNotSupportedException {
         String givenPhaseType = phase.getPhaseType().getName();
         if (!type.equals(givenPhaseType)) {
-        	logger.log(Level.ERROR, "Phase must be of type " + type
-                    + ". It is of type " + givenPhaseType);
             throw new PhaseNotSupportedException("Phase must be of type " + type
                     + ". It is of type " + givenPhaseType);
         }
@@ -292,8 +271,6 @@ final class PhasesHelper {
         } else if (isPhaseToEnd(phaseStatus)) {
             return false;
         } else {
-        	logger.log(Level.ERROR,
-        			"Phase status '" + phaseStatus.getName() + "' is not valid, it sould be 'Scheduled' or 'Open'.");
             throw new PhaseHandlingException("Phase status '" + phaseStatus.getName() + "' is not valid.");
         }
     }
@@ -433,15 +410,8 @@ final class PhasesHelper {
      * @return true if a phase can start, false otherwise.
      */
     static boolean canPhaseStart(Phase phase) {
-    	boolean met = PhasesHelper.arePhaseDependenciesMet(phase, true);
-    	if (!met) {
-    		logger.log(Level.WARN, "The phase can not started, as the phase dependencies have not been met");
-    	}
-    	boolean reached = PhasesHelper.reachedPhaseStartTime(phase);
-    	if (!reached) {
-    		logger.log(Level.WARN, "The phase can not started, as the start time has not been reached.");
-    	}
-    	return met && reached;
+        return (PhasesHelper.arePhaseDependenciesMet(phase, true)
+            && PhasesHelper.reachedPhaseStartTime(phase));
     }
 
     /**
@@ -454,11 +424,8 @@ final class PhasesHelper {
     static void closeConnection(Connection conn) throws PhaseHandlingException {
         if (conn != null) {
             try {
-            	logger.log(Level.INFO, "close the connection.");
                 conn.close();
             } catch (SQLException ex) {
-            	logger.log(Level.ERROR,
-            			"can not close the connection. \n" + LogMessage.getExceptionStackTrace(ex));
                 throw new PhaseHandlingException("Could not close connection", ex);
             }
         }
@@ -508,7 +475,6 @@ final class PhasesHelper {
 
         //could not find phase with desired type...
         if (required) {
-        	logger.log(Level.ERROR, "Could not find nearest phase of type " + phaseType);
             throw new PhaseHandlingException("Could not find nearest phase of type " + phaseType);
         } else {
             return null;
@@ -564,13 +530,13 @@ final class PhasesHelper {
 
             return managerHelper.getReviewManager().searchReviews(fullReviewFilter, true);
         } catch (SearchBuilderConfigurationException e) {
-        	throw new PhaseHandlingException("Problem with search builder configuration", e);
+            throw new PhaseHandlingException("Problem with search builder configuration", e);
         } catch (ResourcePersistenceException e) {
-        	throw new PhaseHandlingException("Problem with resource retrieval", e);
+            throw new PhaseHandlingException("Problem with resource retrieval", e);
         } catch (SearchBuilderException e) {
-        	throw new PhaseHandlingException("Problem with search builder", e);
+            throw new PhaseHandlingException("Problem with search builder", e);
         } catch (ReviewManagementException e) {
-        	throw new PhaseHandlingException("Problem with review retrieval", e);
+            throw new PhaseHandlingException("Problem with review retrieval", e);
         }
     }
 
@@ -591,14 +557,13 @@ final class PhasesHelper {
         try {
             Scorecard[] scoreCards = scorecardManager.getScorecards(new long[]{scorecardId}, false);
             if (scoreCards.length == 0) {
-            	logger.log(Level.ERROR, "No scorecards found for scorecard id: " + scorecardId);
                 throw new PhaseHandlingException("No scorecards found for scorecard id: " + scorecardId);
             }
             Scorecard scoreCard = scoreCards[0];
 
             return scoreCard.getMinScore();
         } catch (PersistenceException e) {
-        	throw new PhaseHandlingException("Problem with scorecard retrieval", e);
+            throw new PhaseHandlingException("Problem with scorecard retrieval", e);
         }
     }
 
@@ -619,9 +584,9 @@ final class PhasesHelper {
         try {
             return uploadManager.searchSubmissions(submissionFilter);
         } catch (UploadPersistenceException e) {
-        	throw new PhaseHandlingException("There was a submission retrieval error", e);
+            throw new PhaseHandlingException("There was a submission retrieval error", e);
         } catch (SearchBuilderException e) {
-        	throw new PhaseHandlingException("There was a search builder error", e);
+            throw new PhaseHandlingException("There was a search builder error", e);
         }
     }
 
@@ -653,16 +618,13 @@ final class PhasesHelper {
 
             return managerHelper.getResourceManager().searchResources(fullFilter);
         } catch (SQLException e) {
-        	logger.log(Level.ERROR,
-        			"Fail to search resources for role names in the phase:" + phaseId
-        			+" \n" + LogMessage.getExceptionStackTrace(e));
             throw new PhaseHandlingException("There was a database connection error", e);
         } catch (SearchBuilderConfigurationException e) {
-        	throw new PhaseHandlingException("Problem with search builder configuration", e);
+            throw new PhaseHandlingException("Problem with search builder configuration", e);
         } catch (ResourcePersistenceException e) {
-        	throw new PhaseHandlingException("There was a resource retrieval error", e);
+            throw new PhaseHandlingException("There was a resource retrieval error", e);
         } catch (SearchBuilderException e) {
-        	throw new PhaseHandlingException("Problem with search builder", e);
+            throw new PhaseHandlingException("Problem with search builder", e);
         }
     }
 
@@ -682,14 +644,12 @@ final class PhasesHelper {
         String sValue = (String) phase.getAttribute(attrName);
 
         if (sValue == null) {
-        	logger.log(Level.ERROR, "Phase attribute '" + attrName + "' was null.");
             throw new PhaseHandlingException("Phase attribute '" + attrName + "' was null.");
         }
 
         try {
             return Integer.parseInt(sValue);
         } catch (NumberFormatException e) {
-        	logger.log(Level.ERROR, "Phase attribute '" + attrName + "' was non-integer:" + sValue);
             throw new PhaseHandlingException("Phase attribute '" + attrName + "' was non-integer:" + sValue, e);
         }
     }
@@ -769,7 +729,6 @@ final class PhasesHelper {
                 return statuses[i];
             }
         }
-        logger.log(Level.ERROR, "Could not find submission status with name: " + statusName);
         throw new PhaseHandlingException("Could not find submission status with name: " + statusName);
     }
 
@@ -798,12 +757,8 @@ final class PhasesHelper {
         try {
             return uploadManager.searchSubmissions(fullFilter);
         } catch (UploadPersistenceException e) {
-        	logger.log(Level.ERROR, "Fail to search active submission for the project:"
-        			+ projectId + ",\n " + LogMessage.getExceptionStackTrace(e));
             throw new PhaseHandlingException("There was a submission retrieval error", e);
         } catch (SearchBuilderException e) {
-        	logger.log(Level.ERROR, "Fail to search active submission for the project:"
-        			+ projectId + ",\n " + LogMessage.getExceptionStackTrace(e));
             throw new PhaseHandlingException("There was a search builder error", e);
         }
     }
@@ -831,7 +786,6 @@ final class PhasesHelper {
         } else if (reviews.length == 1) {
             return reviews[0];
         } else {
-        	logger.log(Level.ERROR, "Cannot have multiple aggregation scorecards.");
             throw new PhaseHandlingException("Cannot have multiple aggregation scorecards.");
         }
     }
@@ -1007,8 +961,6 @@ final class PhasesHelper {
         } catch (com.topcoder.management.project.PersistenceException e) {
         	throw new PhaseHandlingException("Problem retrieving project id: " + projectId, e);
 		} catch (SQLException e) {
-			logger.log(Level.ERROR,
-					new LogMessage(null, null, "Fail to find the winning submission for the project:" + projectId));
 			throw new PhaseHandlingException("Problem when looking up id", e);
 		} catch (SearchBuilderConfigurationException e) {
 			throw new PhaseHandlingException("Problem with search builder configuration", e);

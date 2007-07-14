@@ -10,7 +10,6 @@ import java.util.Map;
 import com.cronos.onlinereview.autoscreening.management.ScreeningManager;
 import com.cronos.onlinereview.autoscreening.management.ScreeningManagerFactory;
 import com.cronos.onlinereview.external.UserRetrieval;
-import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.management.deliverable.UploadManager;
 import com.topcoder.management.deliverable.persistence.UploadPersistence;
@@ -34,9 +33,6 @@ import com.topcoder.util.datavalidator.StringValidator;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.idgenerator.IDGenerator;
 import com.topcoder.util.idgenerator.IDGeneratorFactory;
-import com.topcoder.util.log.Level;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
 
 
 /**
@@ -297,9 +293,6 @@ public class ManagerHelper {
      */
     private static final Class[] MANAGER_PARAM_TYPES = new Class[] {String.class};
 
-    /** Logger instance using the class name as category */
-    private static final Log logger = LogFactory.getLog(ManagerHelper.class.getName()); 
-    
     /**
      * Represents the ProjectManager instance. It is initialized in the constructor and never changed after
      * that. It is never null.
@@ -381,8 +374,6 @@ public class ManagerHelper {
     public ManagerHelper(String namespace) throws ConfigurationException {
         PhasesHelper.checkString(namespace, "namespace");
 
-        logger.log(Level.INFO, "create ManagerHelper with namespace:" + namespace);
-        
         this.projectManager = (ProjectManager) initManager(namespace, PROP_PROJECT_MGR_CLASS_NAME,
                 PROP_PROJECT_MGR_NAMESPACE, ProjectManager.class, false);
         this.phaseManager = (PhaseManager) initManager(namespace, PROP_PHASE_MGR_CLASS_NAME,
@@ -493,8 +484,8 @@ public class ManagerHelper {
      */
     private ScreeningManager initScreeningManager(String namespace)
         throws ConfigurationException {
-    	logger.log(Level.INFO, "int ScreeningManager.");
         String mgrNamespace = PhasesHelper.getPropertyValue(namespace, PROP_SCREENING_MGR_NAMESPACE, false);
+
         try {
             if (PhasesHelper.isStringNullOrEmpty(mgrNamespace)) {
                 return ScreeningManagerFactory.createScreeningManager();
@@ -502,8 +493,7 @@ public class ManagerHelper {
                 return ScreeningManagerFactory.createScreeningManager(mgrNamespace);
             }
         } catch (com.cronos.onlinereview.autoscreening.management.ConfigurationException ex) {
-        	logger.log(Level.FATAL, "Fail to create object.\n" + LogMessage.getExceptionStackTrace(ex));
-        	throw new ConfigurationException("Could not instantiate ScreeningManager", ex);
+            throw new ConfigurationException("Could not instantiate ScreeningManager", ex);
         }
     }
 
@@ -521,8 +511,7 @@ public class ManagerHelper {
      */
     private UploadManager initUploadManager(String namespace)
         throws ConfigurationException {
-    	logger.log(Level.INFO, "init UploadManager with namespace:" + namespace);
-    	//get all the property values
+        //get all the property values
         String uploadManagerClassName = PhasesHelper.getPropertyValue(namespace,
                 PROP_UPLOAD_MGR_CLASS_NAME, true);
         String uploadSearchBundleName = PhasesHelper.getPropertyValue(namespace,
@@ -567,7 +556,6 @@ public class ManagerHelper {
             submissionIdGenerator = IDGeneratorFactory.getIDGenerator(submissionIdGeneratorName);
             submissionStatusIdGenerator = IDGeneratorFactory.getIDGenerator(submissionStatusIdGeneratorName);
         } catch (IDGenerationException e) {
-        	logger.log(Level.ERROR, "Fail to create IdGenerators.\n" + LogMessage.getExceptionStackTrace(e));
             throw new ConfigurationException("Could not instantiate IDGenerator", e);
         }
 
@@ -598,8 +586,7 @@ public class ManagerHelper {
      */
     private ResourceManager initResourceManager(String namespace)
         throws ConfigurationException {
-    	logger.log(Level.INFO, "int ResourceManager.");
-    	//get all the property values
+        //get all the property values
         String resourceManagerClassName = PhasesHelper.getPropertyValue(namespace,
                 PROP_RESOURCE_MGR_CLASS_NAME, true);
         String resourceSearchBundleName = PhasesHelper.getPropertyValue(namespace,
@@ -646,11 +633,8 @@ public class ManagerHelper {
             resourceIdGenerator = IDGeneratorFactory.getIDGenerator(resourceIdGeneratorName);
             resourceRoleIdGenerator = IDGeneratorFactory.getIDGenerator(resourceRoleIdGeneratorName);
             notificationTypeIdGenerator = IDGeneratorFactory.getIDGenerator(notificationIdGeneratorName);
-            logger.log(Level.INFO, "create IDGenerators:" + resourceIdGeneratorName + ", "
-            		+ resourceRoleIdGeneratorName + "," + notificationIdGeneratorName);
         } catch (IDGenerationException e) {
-        	logger.log(Level.FATAL, "Fail to IDGenerators.\n" + LogMessage.getExceptionStackTrace(e));
-        	throw new ConfigurationException("Could not instantiate IDGenerator", e);
+            throw new ConfigurationException("Could not instantiate IDGenerator", e);
         }
 
         //create ResourceManager instance using reflection...
@@ -736,14 +720,12 @@ public class ManagerHelper {
      */
     private SearchBundleManager createSearchBundleManager(String namespace)
         throws ConfigurationException {
-    	logger.log(Level.INFO, "create SearchBundleManager instance.");
-    	String searchBundleManagerNS = PhasesHelper.getPropertyValue(namespace, PROP_SEARCH_BUNDLE_MGR_NS, true);
+        String searchBundleManagerNS = PhasesHelper.getPropertyValue(namespace, PROP_SEARCH_BUNDLE_MGR_NS, true);
 
         try {
             return new SearchBundleManager(searchBundleManagerNS);
         } catch (SearchBuilderConfigurationException e) {
-        	logger.log(Level.FATAL, "Fail to create object.\n" + LogMessage.getExceptionStackTrace(e));
-        	throw new ConfigurationException("Could not instantiate SearchBundleManager.", e);
+            throw new ConfigurationException("Could not instantiate SearchBundleManager.", e);
         }
     }
 
@@ -792,16 +774,14 @@ public class ManagerHelper {
      * @throws ConfigurationException if instantiation fails.
      */
     private ReviewScoreAggregator initScorecardAggregator(String namespace) throws ConfigurationException {
-    	logger.log(Level.INFO, "init ScorecardAggregator.");
-    	String scoreAggregatorNS = PhasesHelper.getPropertyValue(namespace, PROP_SCORE_AGGREGATOR_NAMESPACE, false);
+        String scoreAggregatorNS = PhasesHelper.getPropertyValue(namespace, PROP_SCORE_AGGREGATOR_NAMESPACE, false);
         if (PhasesHelper.isStringNullOrEmpty(scoreAggregatorNS)) {
             return new ReviewScoreAggregator();
         } else {
             try {
                 return new ReviewScoreAggregator(scoreAggregatorNS);
             } catch (ReviewScoreAggregatorConfigException e) {
-            	logger.log(Level.FATAL, "Fail to create object.\n" + LogMessage.getExceptionStackTrace(e));
-            	throw new ConfigurationException("could not instantiate ReviewScoreAggregator", e);
+                throw new ConfigurationException("could not instantiate ReviewScoreAggregator", e);
             }
         }
     }
@@ -824,8 +804,7 @@ public class ManagerHelper {
     private Object initManager(String namespace, String classPropName, String nsPropName, Class expectedType,
             boolean nsPropertyReqd)
         throws ConfigurationException {
-    	logger.log(Level.INFO, "Init Manager, read manger class name and it's namespace from namespace:" + namespace);
-    	String mgrClassName = PhasesHelper.getPropertyValue(namespace, classPropName, true);
+        String mgrClassName = PhasesHelper.getPropertyValue(namespace, classPropName, true);
         String mgrNamespace = PhasesHelper.getPropertyValue(namespace, nsPropName, nsPropertyReqd);
 
         Object[] params = null;
@@ -859,31 +838,23 @@ public class ManagerHelper {
             Class clazz = Class.forName(className);
 
             if (!expectedType.isAssignableFrom(clazz)) {
-            	logger.log(Level.FATAL, className + " must be of type " + expectedType.getName());
-            	throw new ConfigurationException(className + " must be of type " + expectedType.getName());
+                throw new ConfigurationException(className + " must be of type " + expectedType.getName());
             }
 
             return clazz.getConstructor(paramTypes).newInstance(params);
         } catch (ClassNotFoundException e) {
-        	logger.log(Level.FATAL, "Fail to create object.\n" + LogMessage.getExceptionStackTrace(e));
             throw new ConfigurationException("Could not find class:" + className, e);
         } catch (IllegalArgumentException e) {
-        	logger.log(Level.FATAL, "Fail to create object.\n" + LogMessage.getExceptionStackTrace(e));
             throw new ConfigurationException("The object could not be instantiated.", e);
         } catch (SecurityException e) {
-        	logger.log(Level.FATAL, "Fail to create object.\n" + LogMessage.getExceptionStackTrace(e));
             throw new ConfigurationException("The object could not be instantiated.", e);
         } catch (InstantiationException e) {
-        	logger.log(Level.FATAL, "Fail to create object.\n" + LogMessage.getExceptionStackTrace(e));
             throw new ConfigurationException("The object could not be instantiated.", e);
         } catch (IllegalAccessException e) {
-        	logger.log(Level.FATAL, "Fail to create object.\n" + LogMessage.getExceptionStackTrace(e));
             throw new ConfigurationException("The object could not be instantiated.", e);
         } catch (InvocationTargetException e) {
-        	logger.log(Level.FATAL, "Fail to create object.\n" + LogMessage.getExceptionStackTrace(e));
             throw new ConfigurationException("The object could not be instantiated.", e);
         } catch (NoSuchMethodException e) {
-        	logger.log(Level.FATAL, "Fail to create object.\n" + LogMessage.getExceptionStackTrace(e));
             throw new ConfigurationException("The object could not be instantiated.", e);
         }
     }

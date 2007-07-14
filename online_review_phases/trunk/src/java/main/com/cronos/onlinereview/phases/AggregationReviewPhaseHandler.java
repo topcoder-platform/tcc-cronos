@@ -3,7 +3,6 @@
  */
 package com.cronos.onlinereview.phases;
 
-import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.resource.Resource;
@@ -15,8 +14,6 @@ import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.PhaseType;
 import com.topcoder.project.phases.Project;
 import com.topcoder.util.log.Level;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -45,7 +42,9 @@ import java.sql.SQLException;
  * @version 1.0
  */
 public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
-	/**
+	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
+			.getLog(AggregationReviewPhaseHandler.class.getName());
+    /**
      * Represents the default namespace of this class. It is used in the default constructor to load
      * configuration settings.
      */
@@ -54,11 +53,6 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
     /** constant for aggregation Review phase type. */
     private static final String PHASE_TYPE_AGGREGATION_REVIEW = "Aggregation Review";
 
-    /**
-	 * The logger.
-	 */
-	private static final Log log = LogFactory.getLog(AggregationReviewPhaseHandler.class.getName());
-	
     /**
      * Create a new instance of AggregationReviewPhaseHandler using the default namespace for loading configuration
      * settings.
@@ -122,15 +116,10 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
             //return true if all dependencies have stopped and start time has been reached.
             return PhasesHelper.canPhaseStart(phase);
         } else {
-        	boolean met = PhasesHelper.arePhaseDependenciesMet(phase, false);
-            if (!met) {
-            	log.log(Level.WARN, "Can not execute Aggregation Review phase because the phase dependencies have not been met.");
-            }
-            boolean done = aggregationReviewDone(phase);
-            if (!done) {
-            	log.log(Level.WARN, "Can not execute Aggregation Review phase because the aggregation review is not done.");
-            }
-            return done && met;
+        	boolean ret = (PhasesHelper.arePhaseDependenciesMet(phase, false)
+                    && aggregationReviewDone(phase));
+        	log.log(Level.DEBUG, "ret: " + ret);
+        	return ret;
         }
     }
 
@@ -159,9 +148,6 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkString(operator, "operator");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_AGGREGATION_REVIEW);
 
-        log.log(Level.INFO, new LogMessage(new Long(phase.getId()), operator,
-        		"execute Aggregation review phase with some phase operation."));
-        
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         if (!toStart) {
@@ -207,8 +193,6 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
 
                         break;
                     } else {
-                    	log.log(Level.ERROR,
-                    			new LogMessage(new Long(phase.getId()), operator, "Comment can either be Approved or Rejected."));
                         throw new PhaseHandlingException("Comment can either be Approved or Rejected.");
                     }
                 }
@@ -248,10 +232,6 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                 //get the id of the newly created aggregation phase
                 long newAggPhaseId = allPhases[currentPhaseIndex + 1].getId();
 
-                log.log(Level.INFO, new LogMessage(new Long(phase.getId()), operator,
-                		"The aggregation review phase is rejected and new aggregation/agg review cycle is added."));
-                log.log(Level.INFO, new LogMessage(new Long(newAggPhaseId), operator,
-                		"new aggregation phase id is created and aggregator and final reviewer will be created."));
                 PhasesHelper.createAggregatorOrFinalReviewer(allPhases[currentPhaseIndex - 1],
                         getManagerHelper(), conn, "Aggregator", newAggPhaseId, operator);
             }
@@ -280,7 +260,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
         Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review", false, false);
         Phase aggregationPhase = PhasesHelper.locatePhase(phase, "Aggregation", false, false);
         if (reviewPhase == null || aggregationPhase == null) {
-        	log.log(Level.INFO, "Can't execute aggregation review phase: reviewPhase == null || aggregationPhase == null");
+        	log.log(Level.INFO, "Can't start phase: reviewPhase == null || aggregationPhase == null");
             return false;
         }
         Connection conn = null;
@@ -294,7 +274,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
             Resource[] aggregators = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
                     new String[] { "Aggregator" }, aggregationPhase.getId());
             if (aggregators.length == 0) {
-            	log.log(Level.ERROR, "No Aggregator resource found for phase: " + aggregationPhase.getId());
+            	log.log(Level.DEBUG, "No Aggregator resource found for phase: " + aggregationPhase.getId());
                 throw new PhaseHandlingException("No Aggregator resource found for phase: " + aggregationPhase.getId());
             }
             String aggregatorUserId = (String) aggregators[0].getProperty("External Reference ID");
@@ -311,17 +291,14 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                     continue;
                 }
                 if (!doesCommentExist(comments, reviewers[i].getId(), "Aggregation Review Comment")) {
-                	log.log(Level.INFO,
-                			"cant't execute aggregation review phase: not exists comment type 'Aggregation Review Comment' for reviewer: "
-                			+ reviewers[i].getId());
+                	log.log(Level.INFO, "cant't start phase: not exists comment type 'Aggregation Review Comment' for reviewer: " + reviewers[i].getId());
                     return false;
                 }
             }
             if (doesCommentExist(comments, winningSubmitter.getId(), "Submitter Comment")) {
             	return true;
             } 
-            log.log(Level.INFO, "cant't execute aggregation review phase: not exists comment type 'Submitter Comment' for reviewer: "
-            		+ winningSubmitter.getId());
+            log.log(Level.INFO, "cant't start phase: not exists comment type 'Submitter Comment' for reviewer: " + winningSubmitter.getId());
             return false;
         } finally {
             PhasesHelper.closeConnection(conn);
@@ -348,14 +325,10 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
             Review aggWorksheet = PhasesHelper.getAggregationWorksheet(conn, getManagerHelper(), aggPhase.getId());
 
             if (aggWorksheet == null) {
-            	log.log(Level.ERROR,
-            			new LogMessage(new Long(phase.getId()), null, "aggregation worksheet does not exist."));
                 throw new PhaseHandlingException("aggregation worksheet does not exist.");
             }
             return aggWorksheet;
         } catch (SQLException e) {
-        	log.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
-        			"Fail to retrieve the aggregation worksheet for review."));
             throw new PhaseHandlingException("Problem when looking up ids.", e);
         } finally {
             PhasesHelper.closeConnection(conn);

@@ -3,7 +3,6 @@
  */
 package com.cronos.onlinereview.phases;
 
-import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.review.data.Comment;
@@ -13,9 +12,6 @@ import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.PhaseType;
 import com.topcoder.project.phases.Project;
-import com.topcoder.util.log.Level;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -45,11 +41,6 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
     /** constant for final review phase type. */
     private static final String PHASE_TYPE_FINAL_REVIEW = "Final Review";
 
-    /**
-     * The logger instance.
-     */
-    private static final Log logger = LogFactory.getLog(FinalReviewPhaseHandler.class.getName());
-    
     /**
      * Create a new instance of FinalReviewPhaseHandler using the default namespace for loading configuration settings.
      *
@@ -98,15 +89,8 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
             //return true if all dependencies have stopped and start time has been reached
             return PhasesHelper.canPhaseStart(phase);
         } else {
-        	boolean met = PhasesHelper.arePhaseDependenciesMet(phase, false);
-            if (!met) {
-            	logger.log(Level.WARN, "Can not end final review phase because the phase dependencies have not been met.");
-            }
-            boolean committed = isFinalWorksheetCommitted(phase);
-            if (!committed) {
-            	logger.log(Level.WARN, "Can not end final review phase because the final review worksheet is not committed.");
-            }
-            return committed && met;
+            return (PhasesHelper.arePhaseDependenciesMet(phase, false)
+                    && isFinalWorksheetCommitted(phase));
         }
     }
 
@@ -131,9 +115,6 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkString(operator, "operator");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_FINAL_REVIEW);
 
-        logger.log(Level.INFO, new LogMessage(new Long(phase.getId()), operator, 
-        		"execute Final review phase with some phase operation."));
-        
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         if (!toStart) {
@@ -159,8 +140,6 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
             Review finalWorksheet = PhasesHelper.getFinalReviewWorksheet(conn, getManagerHelper(), phase.getId());
             return ((finalWorksheet != null) && finalWorksheet.isCommitted());
         } catch (SQLException e) {
-        	logger.log(Level.ERROR,
-        			new LogMessage(new Long(phase.getId()), null, "Fail to check final review worksheet committed.", e));
             throw new PhaseHandlingException("Problem when looking up ids.", e);
         } finally {
             PhasesHelper.closeConnection(conn);
@@ -198,8 +177,6 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
 
                         break;
                     } else {
-                    	logger.log(Level.ERROR,
-                    			new LogMessage(new Long(phase.getId()), operator, "Comment can either be Approved or Rejected."));
                         throw new PhaseHandlingException("Comment can either be Approved or Rejected.");
                     }
                 }
@@ -235,16 +212,10 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
                 //get the id of the newly created final review phase
                 long finalReviewPhaseId = currentPrj.getAllPhases()[currentPhaseIndex + 2].getId();
 
-                logger.log(Level.INFO, new LogMessage(new Long(phase.getId()), operator,
-                		"The final fix is rejected and new final fix/final review cycle is created."));
-                logger.log(Level.INFO, new LogMessage(new Long(finalReviewPhaseId), operator, 
-                		"new Final fix/final review cycle will be start and final reviewer resource will be located."));
                 PhasesHelper.createAggregatorOrFinalReviewer(phase,
                         getManagerHelper(), conn, "Final Reviewer", finalReviewPhaseId, operator);
             }
         } catch (SQLException e) {
-        	logger.log(Level.ERROR,
-        			new LogMessage(new Long(phase.getId()), operator, "Fail to update final review result.", e));
             throw new PhaseHandlingException("Problem when connecting to database", e);
         } catch (PhaseManagementException e) {
             throw new PhaseHandlingException("Problem when persisting phases", e);

@@ -6,7 +6,6 @@ package com.cronos.onlinereview.phases;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtility;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.Resource;
@@ -19,9 +18,6 @@ import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.SearchBundle;
 import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.util.log.Level;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
 
 
 /**
@@ -53,11 +49,6 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
     /** constant for registration phase type. */
     private static final String PHASE_TYPE_REGISTRATION = "Registration";
 
-    /**
-     * The logger instance.
-     */
-    private static final Log logger = LogFactory.getLog(RegistrationPhaseHandler.class.getName());
-    
     /**
      * Create a new instance of RegistrationPhaseHandler using the default namespace for loading configuration settings.
      *
@@ -112,19 +103,9 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
             //return true if all dependencies have stopped and start time has been reached.
             return PhasesHelper.canPhaseStart(phase);
         } else {
-        	boolean met = PhasesHelper.arePhaseDependenciesMet(phase, false);
-            if (!met) {
-            	logger.log(Level.WARN, "Can not execute register phase because the phase dependencies have not been met.");
-            }
-            boolean reached = PhasesHelper.reachedPhaseEndTime(phase);
-            if (!reached) {
-            	logger.log(Level.WARN, "Can not execute register phase because the phase end time is not reached.");
-            }
-            boolean enough = areRegistrationsEnough(phase);
-            if (!enough) {
-            	logger.log(Level.WARN, "Can not execute register phase because there is not enough registerations.");
-            }
-            return met&&reached&&enough;
+            return (PhasesHelper.arePhaseDependenciesMet(phase, false)
+                    && PhasesHelper.reachedPhaseEndTime(phase)
+                    && areRegistrationsEnough(phase));
         }
     }
 
@@ -147,8 +128,7 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkString(operator, "operator");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_REGISTRATION);
         PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
-        logger.log(Level.INFO, new LogMessage(new Long(phase.getId()), operator, 
-        		"execute registion phase with some phase operation."));
+
         sendEmail(phase);
     }
 
@@ -197,8 +177,6 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
         } catch (SearchBuilderException e) {
             throw new PhaseHandlingException("search builder error", e);
         } catch (SQLException e) {
-        	logger.log(Level.ERROR,
-        			new LogMessage(new Long(phase.getId()), null, "Fail to search resources.", e));
             throw new PhaseHandlingException("error when looking up resource id.", e);
         } finally {
             PhasesHelper.closeConnection(conn);

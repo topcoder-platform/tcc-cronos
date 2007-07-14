@@ -3,7 +3,6 @@
  */
 package com.cronos.onlinereview.phases;
 
-import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.cronos.onlinereview.phases.lookup.UploadStatusLookupUtility;
 import com.cronos.onlinereview.phases.lookup.UploadTypeLookupUtility;
 
@@ -22,9 +21,6 @@ import com.topcoder.project.phases.Phase;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.SearchBundle;
 import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.util.log.Level;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -60,11 +56,6 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
         "Required", "Recommended", "Appeal", "Appeal Response", "Aggregation Comment", "Aggregation Review Comment",
         "Submitter Comment", "Final Fix Comment", "Final Review Comment", "Manager Comment"};
 
-    /**
-     * The logger instance.
-     */
-    private static final Log logger = LogFactory.getLog(FinalFixPhaseHandler.class.getName());
-    
     /**
      * Create a new instance of FinalFixPhaseHandler using the default namespace for loading configuration settings.
      *
@@ -119,8 +110,6 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
             //Get nearest Final Review phase
             Phase finalReviewPhase = PhasesHelper.locatePhase(phase, "Final Review", true, false);
             if (finalReviewPhase == null) {
-            	logger.log(Level.WARN, new LogMessage(new Long(phase.getId()), null,
-            			"Can not start final fix because can not get the nearest final review phase."));
                 return false;
             }
             Connection conn = null;
@@ -131,10 +120,6 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                 Resource[] finalReviewer = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
                         conn, new String[] {"Final Reviewer"}, finalReviewPhase.getId());
 
-                if ( finalReviewer.length != 1) {
-                	logger.log(Level.WARN, new LogMessage(new Long(phase.getId()), null,
-                			"Can not start final fix because can not found the final reviewer."));
-                }
                 //return true if there is a final reviewer
                 return (finalReviewer.length == 1);
             } finally {
@@ -142,15 +127,8 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
             }
         } else {
             //return true if all dependencies have stopped and final fix exists.
-        	boolean met = PhasesHelper.arePhaseDependenciesMet(phase, false);
-            if (!met) {
-            	logger.log(Level.WARN, "Can not end final fix phase because the phase dependencies have not been met.");
-            }
-            boolean isFixed = getFinalFix(phase) != null;
-            if (!isFixed) {
-            	logger.log(Level.WARN, "Can not end final fix phase because no final fix can be found.");
-            }
-            return isFixed && met;
+            return (PhasesHelper.arePhaseDependenciesMet(phase, false)
+                    && (getFinalFix(phase) != null));
         }
     }
 
@@ -177,9 +155,6 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkString(operator, "operator");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_FINAL_FIX);
 
-        logger.log(Level.INFO, new LogMessage(new Long(phase.getId()), operator, 
-        		"execute Final fix phase with some phase operation."));
-        
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         if (toStart) {
@@ -215,8 +190,6 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                     new String[] { "Final Reviewer" }, finalReviewPhase.getId());
 
             if (resources.length == 0) {
-            	logger.log(Level.ERROR,
-            			new LogMessage(new Long(phase.getId()), operator, "No Final Reviewer found for phase: " + finalReviewPhase.getId()));
                 throw new PhaseHandlingException("No Final Reviewer found for phase: " + finalReviewPhase.getId());
             }
 
@@ -243,8 +216,6 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                     Review aggWorksheet = PhasesHelper.getAggregationWorksheet(conn, getManagerHelper(), aggPhase.getId());
 
                     if (aggWorksheet == null) {
-                    	logger.log(Level.ERROR,
-                    			new LogMessage(new Long(phase.getId()), operator, "aggregation worksheet does not exist."));
                         throw new PhaseHandlingException("aggregation worksheet does not exist.");
                     }
 
@@ -272,9 +243,6 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                     Filter filter = SubmissionFilterBuilder.createResourceIdFilter(winningSubmitter.getId());
                     Submission[] submissions = getManagerHelper().getUploadManager().searchSubmissions(filter);
                     if (submissions == null || submissions.length != 1) {
-                    	logger.log(Level.ERROR,
-                    			new LogMessage(new Long(phase.getId()), operator, "No winning submission for project with id"
-                                        + phase.getProject().getId()));
                         throw new PhaseHandlingException("No winning submission for project with id"
                                 + phase.getProject().getId());
                     }
@@ -291,8 +259,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                         PhasesHelper.copyReviewItems(reviews[r], finalWorksheet, COMMENT_TYPES_TO_COPY);
                     }
                 }
-                logger.log(Level.INFO, new LogMessage(new Long(phase.getId()), operator, "create final review worksheet."));
-                
+
                 //persist the review
                 getManagerHelper().getReviewManager().createReview(finalWorksheet, operator);
             } else {
@@ -315,8 +282,6 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
         } catch (ReviewManagementException e) {
             throw new PhaseHandlingException("Problem when persisting review", e);
         } catch (SQLException e) {
-        	logger.log(Level.ERROR,
-        			new LogMessage(new Long(phase.getId()), operator, "Fail to get final review worksheet.", e));
             throw new PhaseHandlingException("Problem when looking up id", e);
         } catch (UploadPersistenceException e) {
             throw new PhaseHandlingException("Problem when persisting upload", e);
@@ -361,13 +326,9 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
             } else if (uploads.length == 1) {
                 return uploads[0];
             } else {
-            	logger.log(Level.ERROR,
-            			new LogMessage(new Long(phase.getId()), null, "There cannot be multiple final fix uploads"));
                 throw new PhaseHandlingException("There cannot be multiple final fix uploads");
             }
         } catch (SQLException e) {
-        	logger.log(Level.ERROR,
-        			new LogMessage(new Long(phase.getId()), null, "Fail to get final fix submission.", e));
             throw new PhaseHandlingException("Problem when looking up id", e);
         } catch (UploadPersistenceException e) {
             throw new PhaseHandlingException("Problem when retrieving upload", e);

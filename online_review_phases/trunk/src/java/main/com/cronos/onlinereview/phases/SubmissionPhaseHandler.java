@@ -7,15 +7,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import com.cronos.onlinereview.autoscreening.management.ScreeningTask;
-import com.cronos.onlinereview.phases.logging.LogMessage;
 
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.review.data.Review;
 
 import com.topcoder.project.phases.Phase;
-import com.topcoder.util.log.Level;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
 
 
 /**
@@ -52,11 +48,6 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
     /** constant for appeals phase type. */
     private static final String PHASE_TYPE_SUBMISSION = "Submission";
 
-    /**
-     * The logger instance.
-     */
-    private static final Log logger = LogFactory.getLog(SubmissionPhaseHandler.class.getName());
-    
     /**
      * Create a new instance of SubmissionPhaseHandler using the default namespace for loading configuration settings.
      *
@@ -114,19 +105,9 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
         if (toStart) {
             return PhasesHelper.canPhaseStart(phase);
         } else {
-            boolean met = PhasesHelper.arePhaseDependenciesMet(phase, false);
-            if (!met) {
-            	logger.log(Level.WARN, "Can not execute submission phase because the phase dependencies have not been met.");
-            }
-            boolean reached = PhasesHelper.reachedPhaseEndTime(phase);
-            if (!reached) {
-            	logger.log(Level.WARN, "Can not execute submission phase because the phase end time is not reached.");
-            }
-            boolean enough = arePassedSubmissionsEnough(phase);
-            if (!enough) {
-            	logger.log(Level.WARN, "Can not execute submission phase because there is not enough passed submissions.");
-            }
-            return met&&reached&&enough;
+            return (PhasesHelper.arePhaseDependenciesMet(phase, false)
+                    && PhasesHelper.reachedPhaseEndTime(phase)
+                    && arePassedSubmissionsEnough(phase));
         }
     }
 
@@ -150,8 +131,6 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_SUBMISSION);
         PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
-        logger.log(Level.INFO, new LogMessage(new Long(phase.getId()), operator, 
-        		"execute submission phase with some phase operation."));
         sendEmail(phase);
     }
 
@@ -176,12 +155,8 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
 
         if (bManual) {
             passedNum = getManualScreeningPasses(phase);
-            logger.log(Level.INFO,
-            		passedNum + " submissions pass the manual screening phase .");
         } else {
             passedNum = getAutoScreeningPasses(phase);
-            logger.log(Level.INFO,
-            		passedNum + " submissions pass the auto screening phase .");
         }
         return (passedNum >= submissionNum);
     }
@@ -225,8 +200,6 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
 
             return passedNum;
         } catch (SQLException e) {
-        	logger.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
-        			"Fail to get mannual screening phases passed number.", e));
             throw new PhaseHandlingException("Problem when looking up ids.", e);
         } finally {
             PhasesHelper.closeConnection(conn);
