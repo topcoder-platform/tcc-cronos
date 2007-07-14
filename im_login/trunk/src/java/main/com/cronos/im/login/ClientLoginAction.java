@@ -255,15 +255,19 @@ public class ClientLoginAction extends LoginAction {
         String category = request.getParameter(IMLoginHelper.CATEGORY);
         String type = request.getParameter(IMLoginHelper.TYPE);
 
-        if (!checkChattable(category)) {
-            doLog(user, ACTION_NAME, "", "The requested category is unchattable", Level.WARN);
-            return mapping.findForward(unchattableForwardName);
-        }
         if ("unreg".equals(type)) {
+            if (!checkChattable(category)) {
+                doLog(user, ACTION_NAME, "", "The requested category is unchattable", Level.WARN);
+                return mapping.findForward(unchattableForwardName);
+            }
             unregisteredClientLogin(request);
             return mapping.findForward(getLoginSucceedForwardName());
         } else if ("reg".equals(type)) {
             if (registeredClientLogin(request)) {
+                if (!checkChattable(category)) {
+                    doLog(user, ACTION_NAME, "", "The requested category is unchattable", Level.WARN);
+                    return mapping.findForward(unchattableForwardName);
+                }
                 return mapping.findForward(getLoginSucceedForwardName());
             }
         }
