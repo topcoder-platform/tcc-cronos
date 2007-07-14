@@ -11,6 +11,7 @@ import com.topcoder.management.deliverable.UploadStatus;
 import com.topcoder.management.deliverable.SubmissionStatus;
 import com.topcoder.management.deliverable.Upload;
 import com.topcoder.management.deliverable.Submission;
+import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 
 import java.util.Map;
@@ -1275,5 +1276,13 @@ public class MockUploadPersistence implements UploadPersistence {
      */
     public static void init() {
     }
+
+	public Submission[] loadSubmissions(CustomResultSet resultSet) throws UploadPersistenceException {
+		throw new IllegalStateException("not implemented");
+	}
+
+	public Upload[] loadUploads(CustomResultSet resultSet) throws UploadPersistenceException {
+		throw new IllegalStateException("not implemented");
+	}
 
 }

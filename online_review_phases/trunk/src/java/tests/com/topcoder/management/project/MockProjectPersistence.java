@@ -3,6 +3,8 @@
  */
 package com.topcoder.management.project;
 
+import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
+
 /**
  * This a mock class implements ProjectPersistence.
  *
@@ -152,4 +154,7 @@ public class MockProjectPersistence implements ProjectPersistence {
             new ProjectPropertyType(2, "propertyType2")
         };
     }
+	public Project[] getProjects(CustomResultSet result) throws PersistenceException {
+		throw new IllegalStateException("not implemented");
+	}
 }
