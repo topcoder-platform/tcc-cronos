@@ -603,81 +603,54 @@ public class InformixInvoiceDAO implements InvoiceDAO {
      *             if the audit is failed
      */
     private void audit(Invoice oldInvoice, Invoice newInvoice) throws InvoiceDataAccessException {
-        long entityId = -1;
-        String creationUser = "";
-        Date creationDate = null;
-        int auditType = 0;
-        long projectId = -1;
-        entityId = newInvoice.getId();
-        // on update, the value is modificationUser, on insert, creation and modification should be same, so
-        // using modificationUser is generic solution
-        creationUser = newInvoice.getModificationUser();
-        creationDate = newInvoice.getModificationDate();
-        if (oldInvoice == null) {
-            auditType = AuditType.INSERT;
-        } else {
-            auditType = AuditType.UPDATE;
-        }
-        projectId = newInvoice.getProjectId();
-
         AuditHeader header = new AuditHeader();
+        final int auditType = (oldInvoice == null) ? AuditType.INSERT : AuditType.UPDATE;
+
         header.setApplicationArea(ApplicationArea.TT_INVOICE);
         header.setTableName("invoice");
-
-        header.setEntityId(entityId);
-        header.setCreationUser(creationUser);
-        header.setCreationDate(new Timestamp(creationDate.getTime()));
+        header.setEntityId(newInvoice.getId());
+        header.setCreationUser(newInvoice.getModificationUser());
+        header.setCreationDate(new Timestamp(newInvoice.getModificationDate().getTime()));
         header.setActionType(auditType);
         header.setCompanyId(newInvoice.getCompanyId());
-        header.setProjectId(projectId);
+        header.setProjectId(newInvoice.getProjectId());
+        if (newInvoice.getModificationUserId() > 0) {
+            header.setResourceId(newInvoice.getModificationUserId());
+        }
 
-        AuditDetail[] details = new AuditDetail[15];
+        AuditDetail[] details = new AuditDetail[12];
 
-        details[0] =
-            createAuditDetail("invoice_id", oldInvoice == null ? null : oldInvoice.getId() + "", ""
-                + newInvoice.getId());
-        details[1] =
-            createAuditDetail("project_id", oldInvoice == null ? null : oldInvoice.getProjectId() + "", ""
-                + newInvoice.getProjectId());
-        details[2] =
-            createAuditDetail("creation_date", oldInvoice == null ? null : formatTimestamp(oldInvoice.getCreationDate()),
-                    formatTimestamp(newInvoice.getCreationDate()));
-        details[3] =
-            createAuditDetail("creation_user", oldInvoice == null ? null : oldInvoice.getCreationUser(),
-                newInvoice.getCreationUser());
-        details[4] = createAuditDetail("modification_date",
+        details[0] = createAuditDetail("invoice_id",
+                (oldInvoice != null) ? String.valueOf(oldInvoice.getId()) : null, String.valueOf(newInvoice.getId()));
+        details[1] = createAuditDetail("project_id",
+                (oldInvoice != null) ? String.valueOf(oldInvoice.getProjectId()) : null,
+                String.valueOf(newInvoice.getProjectId()));
+        details[2] = createAuditDetail("modification_date",
                 (oldInvoice != null) ? formatTimestamp(oldInvoice.getModificationDate()) : null,
                 formatTimestamp(newInvoice.getModificationDate()));
-        details[5] =
-            createAuditDetail("modification_user", oldInvoice == null ? null : oldInvoice.getModificationUser(),
-                newInvoice.getModificationUser());
-        details[6] =
-            createAuditDetail("salesTax", oldInvoice == null ? null : oldInvoice.getSalesTax() + "", ""
-                + newInvoice.getSalesTax());
-        details[7] =
-            createAuditDetail("payment_terms_id", oldInvoice == null ? null : oldInvoice.getPaymentTerm().getId()
-                + "", newInvoice.getPaymentTerm().getId() + "");
-        details[8] =
-            createAuditDetail("invoice_number", oldInvoice == null ? null : oldInvoice.getInvoiceNumber(),
+        details[3] = createAuditDetail("modification_user",
+                (oldInvoice != null) ? oldInvoice.getModificationUser() : null, newInvoice.getModificationUser());
+        details[4] = createAuditDetail("salesTax",
+                (oldInvoice != null) ? String.valueOf(oldInvoice.getSalesTax()) : null,
+                String.valueOf(newInvoice.getSalesTax()));
+        details[5] = createAuditDetail("payment_terms_id",
+                (oldInvoice != null) ? String.valueOf(oldInvoice.getPaymentTerm().getId()) : null,
+                String.valueOf(newInvoice.getPaymentTerm().getId()));
+        details[6] = createAuditDetail("invoice_number", (oldInvoice != null) ? oldInvoice.getInvoiceNumber() : null,
                 newInvoice.getInvoiceNumber());
-        details[9] =
-            createAuditDetail("po_number", oldInvoice == null ? null : oldInvoice.getPurchaseOrderNumber(),
+        details[6] = createAuditDetail("po_number", (oldInvoice != null) ? oldInvoice.getPurchaseOrderNumber() : null,
                 newInvoice.getPurchaseOrderNumber());
-        details[10] = createAuditDetail("invoice_date",
+        details[7] = createAuditDetail("invoice_date",
                 (oldInvoice != null) ? formatDate(oldInvoice.getInvoiceDate()) : null,
                 formatDate(newInvoice.getInvoiceDate()));
-        details[11] = createAuditDetail("due_date",
+        details[8] = createAuditDetail("due_date",
                 (oldInvoice != null) ? formatDate(oldInvoice.getDueDate()) : null,
                 formatDate(newInvoice.getDueDate()));
-        details[12] =
-            createAuditDetail("paid", oldInvoice == null ? null : oldInvoice.isPaid() + "", ""
-                + newInvoice.isPaid());
-        details[13] =
-            createAuditDetail("company_id", oldInvoice == null ? null : oldInvoice.getCompanyId() + "", ""
-                + newInvoice.getCompanyId());
-        details[14] =
-            createAuditDetail("invoice_status_id", oldInvoice == null ? null : ""
-                + oldInvoice.getInvoiceStatus().getId(), newInvoice.getInvoiceStatus().getId() + "");
+        details[10] = createAuditDetail("paid", (oldInvoice != null) ? (oldInvoice.isPaid() ? "1" : "0") : null,
+                (newInvoice.isPaid()) ? "1" : "0");
+        details[11] = createAuditDetail("invoice_status_id",
+                (oldInvoice != null) ? String.valueOf(oldInvoice.getInvoiceStatus().getId()) : null,
+                String.valueOf(newInvoice.getInvoiceStatus().getId()));
 
         header.setDetails(details);
 
@@ -770,6 +743,8 @@ public class InformixInvoiceDAO implements InvoiceDAO {
                         + "invoice_number=?, po_number=?, invoice_date=?, due_date=?, paid=?, company_id=?, "
                         + "invoice_status_id=? " + "WHERE invoice_id=?");
 
+            Invoice oldInvoice = (audit) ? getInvoice(invoice.getId()) : null;
+
             DBUtil.execute(statement, new Object[] {new Long(invoice.getProjectId()), invoice.getCreationDate(),
                 invoice.getCreationUser(), invoice.getModificationDate(), invoice.getModificationUser(),
                 invoice.getSalesTax(), new Long(invoice.getPaymentTerm().getId()), invoice.getInvoiceNumber(),
@@ -778,7 +753,7 @@ public class InformixInvoiceDAO implements InvoiceDAO {
                 new Long(invoice.getInvoiceStatus().getId()), new Long(invoice.getId())}, 1);
 
             if (audit) {
-                audit(getInvoice(invoice.getId()), invoice);
+                audit(oldInvoice, invoice);
             }
 
             invoice.setChanged(false);

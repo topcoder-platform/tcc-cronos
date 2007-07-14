@@ -363,6 +363,11 @@ public class Invoice extends TimeTrackerBean {
     private InvoiceServiceDetail[] serviceDetails;
 
     /**
+     * ID of the user who modified this invoice.
+     */
+    private long modificationUserId;
+
+    /**
      * <p>
      * Construct an empty Invoice.
      * </p>
@@ -685,9 +690,7 @@ public class Invoice extends TimeTrackerBean {
     }
 
     /**
-     * <p>
      * Set the invoice date.
-     * </p>
      *
      * @param invoiceDate
      *            the given date of the invoice
@@ -695,6 +698,25 @@ public class Invoice extends TimeTrackerBean {
     public void setInvoiceDate(Date invoiceDate) {
         this.invoiceDate = invoiceDate;
         setChanged(true);
+    }
+
+    /**
+     * Return ID of the user who modified this invoice.
+     *
+     * @return ID of the user who modified this invoice.
+     */
+    public long getModificationUserId() {
+        return this.modificationUserId;
+    }
+
+    /**
+     * Set ID of the user who modified this invoice.
+     *
+     * @param modificationUserId
+     *            ID of the user who modified this invoice.
+     */
+    public void setModificationUserId(long modificationUserId) {
+        this.modificationUserId = modificationUserId;
     }
 
     /**
