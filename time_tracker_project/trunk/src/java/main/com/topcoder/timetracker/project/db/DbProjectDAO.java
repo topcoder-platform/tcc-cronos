@@ -14,6 +14,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.topcoder.db.connectionfactory.DBConnectionException;
+import com.topcoder.db.connectionfactory.DBConnectionFactory;
+import com.topcoder.search.builder.SearchBuilderException;
+import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.timetracker.audit.ApplicationArea;
+import com.topcoder.timetracker.audit.AuditDetail;
+import com.topcoder.timetracker.audit.AuditHeader;
+import com.topcoder.timetracker.audit.AuditManager;
+import com.topcoder.timetracker.audit.AuditManagerException;
+import com.topcoder.timetracker.audit.AuditType;
+import com.topcoder.timetracker.common.CommonManagementException;
+import com.topcoder.timetracker.common.CommonManager;
 import com.topcoder.timetracker.contact.Address;
 import com.topcoder.timetracker.contact.AddressManager;
 import com.topcoder.timetracker.contact.AddressType;
@@ -27,23 +39,11 @@ import com.topcoder.timetracker.project.ConfigurationException;
 import com.topcoder.timetracker.project.DataAccessException;
 import com.topcoder.timetracker.project.Project;
 import com.topcoder.timetracker.project.ProjectDAO;
+import com.topcoder.timetracker.project.ProjectFilterFactory;
 import com.topcoder.timetracker.project.UnrecognizedEntityException;
-import com.topcoder.db.connectionfactory.DBConnectionException;
-import com.topcoder.db.connectionfactory.DBConnectionFactory;
-import com.topcoder.search.builder.SearchBuilderException;
-import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
-import com.topcoder.timetracker.common.CommonManagementException;
-import com.topcoder.timetracker.common.CommonManager;
-import com.topcoder.timetracker.project.ProjectFilterFactory;
-import com.topcoder.timetracker.audit.ApplicationArea;
-import com.topcoder.timetracker.audit.AuditDetail;
-import com.topcoder.timetracker.audit.AuditHeader;
-import com.topcoder.timetracker.audit.AuditManager;
-import com.topcoder.timetracker.audit.AuditManagerException;
-import com.topcoder.timetracker.audit.AuditType;
 
 /**
  * <p>
@@ -298,10 +298,10 @@ public class DbProjectDAO extends BaseDAO implements ProjectDAO {
             contactManager.addContacts(contacts, audit);
             addressManager.addAddresses(addresses, audit);
 
-            // add the payment terms
+/*            // add the payment terms
             for (int i = 0; i < projects.length; i++) {
                 termManager.addPaymentTerm(projects[i].getTerms());
-            }
+            }*/
 
             List[] params = new List[projects.length];
             List[] clientProjectParams = new List[projects.length];
@@ -337,8 +337,8 @@ public class DbProjectDAO extends BaseDAO implements ProjectDAO {
             throw new DataAccessException("Exception occurs in database operation.", e);
         } catch (AuditManagerException e) {
             throw new DataAccessException("Failed to audit the project.", e);
-        } catch (CommonManagementException e) {
-            throw new DataAccessException("Failed to handle the payment terms relationship.", e);
+/*        } catch (CommonManagementException e) {
+            throw new DataAccessException("Failed to handle the payment terms relationship.", e);*/
         } finally {
             Util.closeConnection(conn);
         }
@@ -660,7 +660,7 @@ public class DbProjectDAO extends BaseDAO implements ProjectDAO {
             updateClients(conn, projects, clientIds);
 
             for (int i = 0; i < projects.length; i++) {
-                termManager.updatePaymentTerm(projects[i].getTerms());
+//                termManager.updatePaymentTerm(projects[i].getTerms());
                 // update the contact relation if necessary
                 long contactId = getContactId(conn, projectIds[i]);
                 long addressId = getAddressId(conn, projectIds[i]);
