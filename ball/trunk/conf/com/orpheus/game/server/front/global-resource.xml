@@ -171,6 +171,7 @@
         <handler-def name="SetSoundHandler">com.orpheus.game.server.handler.account.SetSoundHandler</handler-def>
         <handler-def name="CreateBallColorHandler">com.orpheus.game.server.handler.admin.util.CreateBallColorHandler</handler-def>
         <handler-def name="PersonalizedBallHandler">com.orpheus.game.server.handler.PersonalizedBallHandler</handler-def>
+        <handler-def name="AdminAddTargetHandler">com.orpheus.game.server.handler.admin.AdminAddTargetHandler</handler-def>
     </handlers-def>
 
     <!-- mappings from result type name to full qualified handler result names -->

@@ -99,6 +99,30 @@
             clearElement(buttonsCell);
             addLink(buttonsCell, 'Replace', 'showReplaceForm(' + index +', ' + seq + ', "' + text + '", "' + url + '")');
         }
+        function addNewTarget() {
+            var form = document.getElementById('ReplaceTargetForm');
+            var newText = form.newText.value;
+            var newUrl = form.newUrl.value;
+            if (newText.length == 0) {
+                alert('Target text is required!');
+                return;
+            }
+            if (newUrl.length == 0) {
+                alert('Target url is required!');
+                return;
+            }
+            if (newUrl.substring(0, domainName.length + 7) != 'http://' + domainName) {
+                alert('New URL is not from same domain as original URL');
+                return;
+            }
+            if (confirm('Are you sure you want to add the specified target?')) {
+                form.text.value = newText;
+                form.url.value = newUrl;
+                form.action = '${ctx}/server/admin/addTarget.do';
+                form.submit();
+            }
+            return false;
+        }
     </script>
 
 </head>
@@ -169,6 +193,20 @@
                 </td>
             </tr>
         </c:forEach>
+        <tr>
+            <td>NEW</td>
+            <td>
+                <input type="text" name="newText" size="20" maxlength="20"/>
+            </td>
+            <td colspan="2">
+                <input type="text" name="newUrl" size="40" maxlength="255"/>
+            </td>
+            <td colspan="4">
+                <a href="#" onclick="return addNewTarget();">
+                    Add New Target
+                </a>
+            </td>
+        </tr>
     </table>
     </form>
 </body>

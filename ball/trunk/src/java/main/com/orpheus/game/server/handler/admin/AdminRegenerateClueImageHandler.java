@@ -9,9 +9,6 @@ import com.orpheus.game.persistence.DomainTarget;
 import com.orpheus.game.persistence.HostingSlot;
 import com.orpheus.game.server.handler.AbstractGameServerHandler;
 import com.orpheus.game.server.util.GameDataEJBAdapter;
-import com.topcoder.randomstringimg.Configuration;
-import com.topcoder.randomstringimg.ObfuscationAlgorithm;
-import com.topcoder.randomstringimg.RandomStringImage;
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
@@ -19,9 +16,6 @@ import org.w3c.dom.Element;
 
 import javax.naming.Context;
 import javax.servlet.http.HttpServletRequest;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 
 /**
  * <p>A custom {@link Handler} implementation to be used for regenerating the cluen image for the desired target from
@@ -98,12 +92,7 @@ public class AdminRegenerateClueImageHandler extends AbstractGameServerHandler i
             DomainTarget[] targets = slot.getDomainTargets();
             for (int i = 0; i < targets.length; i++) {
                 if (targets[i].getSequenceNumber() == seqNumber) {
-                    RandomStringImage stringImage
-                        = getRandomStringImage(getString(RANDOM_STRING_IMAGE_NS_VALUE_CONFIG));
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    stringImage.generate(targets[i].getIdentifierText(), stream);
-                    long imageId = gameDataEJBAdapter.recordBinaryObject("clue_image.png", "image/png",
-                                                                         stream.toByteArray());
+                    long imageId = generateClueImage(targets[i], gameDataEJBAdapter);
                     request.setAttribute("imageId", new Long(imageId));
                     updatedTarget = new DomainTargetImpl();
                     updatedTarget.setClueImageId(imageId);
@@ -135,34 +124,6 @@ public class AdminRegenerateClueImageHandler extends AbstractGameServerHandler i
             return null;
         } catch (Exception e) {
             throw new HandlerExecutionException("Could not prepare the puzzle data for rendering", e);
-        }
-    }
-
-    /**
-     * 
-     * @param namespace a <code>String</code> providing the name of configuration file to initialize the <code>Random
-     *        String Image</code> component. 
-     * @return a <code>RandomStringImage</code> to be used for generating images.
-     * @throws HandlerExecutionException if an unexpected error occurs.
-     */
-    private RandomStringImage getRandomStringImage(String namespace) throws HandlerExecutionException {
-        try {
-            RandomStringImage randomStringImage = new RandomStringImage(namespace);
-            Configuration config = randomStringImage.getConfiguration();
-            config.clearAlgorithms();
-            config.addAlgorithm(new ObfuscationAlgorithm() {
-                    public int getType() {
-                        return ObfuscationAlgorithm.AFTER_TEXT;
-                    }
-
-                    public void obfuscate(BufferedImage image, Color textColor,
-                        Color backgroundColor) {
-                        /* does nothing */
-                    }
-                });
-            return randomStringImage;
-        } catch (Exception ice) {
-            throw new HandlerExecutionException("Could not obtain a RandomStringImage instance", ice);
         }
     }
 }

@@ -14,6 +14,7 @@
         <target_param_key>target</target_param_key>
         <text_param_key>text</text_param_key>
         <url_param_key>url</url_param_key>
+        <random_string_image_ns>/var/opt/orpheus/conf/RandomStringImage.xml</random_string_image_ns>
         <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
         <jndi_context_name>default</jndi_context_name>
         <use_remote_interface>true</use_remote_interface>

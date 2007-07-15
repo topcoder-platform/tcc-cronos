@@ -14,6 +14,8 @@ import com.orpheus.auction.KeyConstants;
 import com.orpheus.game.GameDataConfigurationException;
 import com.orpheus.game.GameDataException;
 import com.orpheus.game.GameDataManager;
+import com.orpheus.game.GameDataUtility;
+import com.orpheus.game.GameDataManagerConfigurationException;
 import com.orpheus.game.persistence.Domain;
 import com.orpheus.game.persistence.Game;
 import com.orpheus.game.persistence.GameData;
@@ -24,6 +26,7 @@ import com.orpheus.game.persistence.HostingBlock;
 import com.orpheus.game.persistence.HostingSlot;
 import com.orpheus.game.persistence.PersistenceException;
 import com.orpheus.game.persistence.SlotCompletion;
+import com.orpheus.game.persistence.DomainTarget;
 import com.orpheus.game.server.GamePlayInfo;
 import com.orpheus.game.server.OrpheusFunctions;
 import com.orpheus.game.server.util.GameDataEJBAdapter;
@@ -39,10 +42,23 @@ import com.topcoder.util.generator.guid.UUIDType;
 import com.topcoder.util.generator.guid.UUIDUtility;
 import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
+import com.topcoder.util.web.sitestatistics.TextStatistics;
+import com.topcoder.util.web.sitestatistics.SiteStatistics;
+import com.topcoder.util.web.sitestatistics.StatisticsException;
+import com.topcoder.util.net.httputility.HttpUtility;
+import com.topcoder.util.net.httputility.HttpException;
+import com.topcoder.util.algorithm.hash.HashException;
+import com.topcoder.util.algorithm.hash.HashAlgorithmManager;
+import com.topcoder.util.algorithm.hash.algorithm.HashAlgorithm;
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
 import com.topcoder.web.user.LoginHandler;
+import com.topcoder.randomstringimg.RandomStringImage;
+import com.topcoder.randomstringimg.Configuration;
+import com.topcoder.randomstringimg.ObfuscationAlgorithm;
+import com.topcoder.randomstringimg.InvalidConfigException;
+import com.topcoder.randomstringimg.ObfuscationException;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -57,6 +73,10 @@ import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.awt.image.BufferedImage;
+import java.awt.Color;
 
 /**
  * <p>An abstract base class for custom {@link Handler} implementations provided by <code>Orpheus Game Server</code>
@@ -109,6 +129,18 @@ public class AbstractGameServerHandler {
      * name of request parameter to get the domain from.</p>
      */
     protected static final String DOMAIN_PARAM_NAME_CONFIG = "domain_param_key";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of request parameter to get the domain target text from.</p>
+     */
+    protected static final String TEXT_PARAM_NAME_CONFIG = "text_param_key";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of request parameter to get the domain target URL from.</p>
+     */
+    protected static final String URL_PARAM_NAME_CONFIG = "url_param_key";
 
     /**
      * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
@@ -900,6 +932,144 @@ public class AbstractGameServerHandler {
             plugin.sendMessage(msg);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * <p>Checks whether target text exists in the provided statistics information.</p>
+     *
+     * @param textStatistics text statistics collected from some page of a hosting site. Used to check for the presence
+     *        of the target text.
+     * @param targetText target text to check its presence in the provided statistics information.
+     * @return <code>true</code> if target text has been found in the provided statistics information, <code>false
+     *        </code> if it has not.
+     */
+    protected static boolean checkForTextExistence(TextStatistics[] textStatistics, String targetText) {
+        for (int i = 0; i < textStatistics.length; ++i)
+            if (textStatistics[i].getText().equals(targetText))
+                return true;
+
+        return false;
+    }
+
+    /**
+     * <p>Checks if specified target text exists on specified page and the specified page is accessible.</p>
+     *
+     * @param targetText a <code>String</code> providing the target text to check.
+     * @param targetUrl a <code>String</code> providing the URL for the page to check.
+     * @return a <code>Boolean</code> indicating whether target exists on specified page or <code>null</code> if the
+     *         content of the specified page could not be retrieved and the status of the target is not known.
+     */
+    protected static Boolean isTargetValid(String targetText, String targetUrl) {
+        HttpUtility http = new HttpUtility(HttpUtility.GET);
+        http.setFollowRedirects(true);
+        http.setDepthLimit(10);
+        SiteStatistics siteStatistics;
+        try {
+            String contents = http.execute(targetUrl);
+            siteStatistics = GameDataUtility.getConfiguredSiteStatisticsInstance("SiteStatistics");
+            siteStatistics.accumulateFrom(contents, "document1");
+        } catch (IOException ioe) {
+            System.err.println("IOException while trying to check address: " + targetUrl);
+            System.err.println("Message says: " + ioe.getMessage());
+            return null;
+        } catch (HttpException httpe) {
+            System.err.println("HttpException while trying to check address: " + targetUrl);
+            System.err.println("Message says: " + httpe.getMessage());
+            return null;
+        } catch (GameDataManagerConfigurationException gdmce) {
+            System.err.println("Unable to obtain SiteStatistics object. Exception information follows.");
+            gdmce.printStackTrace(System.err);
+            return null;
+        } catch (StatisticsException se) {
+            System.err.println("Unable to accumulate statistics information from document located at: " + targetUrl);
+            se.printStackTrace(System.err);
+            return null;
+        }
+        // Check if target exists on a page
+        TextStatistics[] stats = siteStatistics.getElementContentStatistics();
+        if (!checkForTextExistence(stats, targetText)) {
+            return Boolean.FALSE;
+        } else {
+            return Boolean.TRUE;
+        }
+    }
+
+    /**
+     * <p>Gets the <code>SHA-1</code> hash value for specified text.</p>
+     *
+     * @param text a <code>String</code> providing the text to get hash value for.
+     * @return a <code>String</code> providing the hash code for the specified text.
+     * @throws com.topcoder.util.algorithm.hash.ConfigurationException if a configuration error occurs.
+     * @throws HashException if a hash value can not be evaluated.
+     */
+    protected static String getHash(String text)
+        throws com.topcoder.util.algorithm.hash.ConfigurationException, HashException {
+        HashAlgorithmManager hashAlgManager = HashAlgorithmManager.getInstance();
+        HashAlgorithm hasher = hashAlgManager.getAlgorithm("SHA-1");
+        return hasher.hashToHexString(text.replaceAll("[\n\r \t\f\u00a0\u200b]+", ""), "UTF-8");
+    }
+
+    /**
+     * 
+     * @param text
+     * @return
+     */
+    protected static String normalize(String text) {
+        String newText = text.replaceAll("[ \t\f\r\n\u200b]+", " ");
+        newText = newText.replaceFirst("^ +", "");
+        newText = newText.replaceFirst(" +$", "");
+        newText = newText.toLowerCase();
+        return newText;
+    }
+
+    /**
+     * <p>Generates the clue image for the specified target, persists it to persistent data store and returns the ID of
+     * just generated image.</p>
+     *
+     * @param target a <code>DomainTarget</code> providing the details for the target to generate the clue image for. 
+     * @param gameDataEJBAdapter a <code>GameDataEJBAdapter</code> to be used to access <code>Game Data EJB</code>.
+     * @return a <code>long</code> providing the ID of a generated clue image.
+     * @throws HandlerExecutionException if an unexpected error occurs.
+     * @throws InvalidConfigException if an unexpected error occurs.
+     * @throws IOException if an unexpected error occurs.
+     * @throws ObfuscationException if an unexpected error occurs.
+     * @throws PersistenceException if an unexpected error occurs.
+     */
+    protected long generateClueImage(DomainTarget target, GameDataEJBAdapter gameDataEJBAdapter)
+        throws HandlerExecutionException, InvalidConfigException, IOException, ObfuscationException, PersistenceException {
+        RandomStringImage stringImage = getRandomStringImage(getString(RANDOM_STRING_IMAGE_NS_VALUE_CONFIG));
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        stringImage.generate(target.getIdentifierText(), stream);
+        return gameDataEJBAdapter.recordBinaryObject("clue_image.png", "image/png", stream.toByteArray());
+    }
+
+    /**
+     * <p>Gets the <code>RandomStringImage</code> implementation which could be utilized for image generation.</p>
+     *
+     * @param namespace a <code>String</code> providing the name of configuration file to initialize the <code>Random
+     *        String Image</code> component.
+     * @return a <code>RandomStringImage</code> to be used for generating images.
+     * @throws HandlerExecutionException if an unexpected error occurs.
+     */
+    private RandomStringImage getRandomStringImage(String namespace) throws HandlerExecutionException {
+        try {
+            RandomStringImage randomStringImage = new RandomStringImage(namespace);
+            Configuration config = randomStringImage.getConfiguration();
+            config.clearAlgorithms();
+            config.addAlgorithm(new ObfuscationAlgorithm() {
+                    public int getType() {
+                        return ObfuscationAlgorithm.AFTER_TEXT;
+                    }
+
+                    public void obfuscate(BufferedImage image, Color textColor,
+                        Color backgroundColor) {
+                        /* does nothing */
+                    }
+                });
+            return randomStringImage;
+        } catch (Exception ice) {
+            throw new HandlerExecutionException("Could not obtain a RandomStringImage instance", ice);
         }
     }
 }
