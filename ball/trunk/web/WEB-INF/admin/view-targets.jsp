@@ -105,15 +105,15 @@
             var newUrl = form.newUrl.value;
             if (newText.length == 0) {
                 alert('Target text is required!');
-                return;
+                return false;
             }
             if (newUrl.length == 0) {
                 alert('Target url is required!');
-                return;
+                return false;
             }
             if (newUrl.substring(0, domainName.length + 7) != 'http://' + domainName) {
-                alert('New URL is not from same domain as original URL');
-                return;
+                alert('New URL is not from ' + domainName + ' domain.\nAlso, please, check if http:// protocol is specified');
+                return false;
             }
             if (confirm('Are you sure you want to add the specified target?')) {
                 form.text.value = newText;
