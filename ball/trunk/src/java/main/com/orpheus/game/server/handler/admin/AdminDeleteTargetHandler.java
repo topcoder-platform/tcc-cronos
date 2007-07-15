@@ -150,8 +150,8 @@ public class AdminDeleteTargetHandler extends AbstractGameServerHandler implemen
                                                                         deletedTarget.getIdentifierText()});
                     broadcastGameMessage(game, message);
                 }
-                // If first target deleted then re-generate a brainteaser for the slot
-                if (firstTargetDeleted) {
+                // If first target deleted and there are other targets left then re-generate a brainteaser for the slot
+                if (firstTargetDeleted && (targets.length > 1)) {
                     gameManager.regenerateBrainTeaser(slotId);
                 }
             }
