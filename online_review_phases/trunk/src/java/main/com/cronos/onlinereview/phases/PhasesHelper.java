@@ -1096,7 +1096,8 @@ final class PhasesHelper {
         Resource newResource = new Resource();
         newResource.setProject(oldResource.getProject());
         newResource.setResourceRole(oldResource.getResourceRole());
-        newResource.setSubmission(oldResource.getSubmission());
+        // OrChange - modified to set the submissions
+        newResource.setSubmissions(oldResource.getSubmissions());
         Map properties = oldResource.getAllProperties();
         if (properties != null && !properties.isEmpty()) {
             Set entries = properties.entrySet();
