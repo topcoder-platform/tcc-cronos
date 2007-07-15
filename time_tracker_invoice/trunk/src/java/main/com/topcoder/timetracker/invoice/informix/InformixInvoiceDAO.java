@@ -638,12 +638,12 @@ public class InformixInvoiceDAO implements InvoiceDAO {
                 String.valueOf(newInvoice.getPaymentTerm().getId()));
         details[6] = createAuditDetail("invoice_number", (oldInvoice != null) ? oldInvoice.getInvoiceNumber() : null,
                 newInvoice.getInvoiceNumber());
-        details[6] = createAuditDetail("po_number", (oldInvoice != null) ? oldInvoice.getPurchaseOrderNumber() : null,
+        details[7] = createAuditDetail("po_number", (oldInvoice != null) ? oldInvoice.getPurchaseOrderNumber() : null,
                 newInvoice.getPurchaseOrderNumber());
-        details[7] = createAuditDetail("invoice_date",
+        details[8] = createAuditDetail("invoice_date",
                 (oldInvoice != null) ? formatDate(oldInvoice.getInvoiceDate()) : null,
                 formatDate(newInvoice.getInvoiceDate()));
-        details[8] = createAuditDetail("due_date",
+        details[9] = createAuditDetail("due_date",
                 (oldInvoice != null) ? formatDate(oldInvoice.getDueDate()) : null,
                 formatDate(newInvoice.getDueDate()));
         details[10] = createAuditDetail("paid", (oldInvoice != null) ? (oldInvoice.isPaid() ? "1" : "0") : null,
