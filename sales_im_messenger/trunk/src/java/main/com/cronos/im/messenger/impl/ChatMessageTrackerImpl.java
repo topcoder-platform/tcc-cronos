@@ -119,6 +119,24 @@ public class ChatMessageTrackerImpl implements MessageTracker {
 
         ChatMessage chatMessage = (ChatMessage) msg;
         int index;
+        
+        // start of changes ================
+        // @since 2007-07-15, for TCIM-8882, we only need to Insert to session_user_message for the
+        // Sender of the Message
+        // thus, we replace the userIds[] array to contain only one ID which is 
+        // the sender's ID
+        Object senderID = msg.getSender();
+        // check the object type
+        Long longUserID;
+        if (senderID != null && senderID instanceof Long) {
+            longUserID = (Long) senderID;
+        } else {
+            throw new IllegalArgumentException("Sender's ID is not of type java.lang.Long");
+        }
+        // set the new Array of User ID's, set only the sender's ID
+        userIds = new long[]{longUserID.longValue()};
+        // end of changes ================
+        
         // Verify if there are duplicate elements in userIds array.
         for (index = 0; index < userIds.length; index++) {
             for (int i = index + 1; i < userIds.length; i++) {
