@@ -28,7 +28,6 @@
     <div id="pluginTitle">PERSONALIZED <span class="main">BALL FOR ${game.name} </span></div>
 
     <div id="wrapPlugin">
-        <div class="tabletop"></div>
 
         <div id="plugin-table" style="text-align:center;">
             <img src="${ctx}/server/player/getPersonalizedBallImage.do" alt="Personalized Ball for Game"
@@ -62,7 +61,6 @@
                 </c:forEach>
             </map>
         </div>
-        <div class="tablebot"></div>
     </div>
 </div>
 <script type="text/javascript" xml:space="preserve">
