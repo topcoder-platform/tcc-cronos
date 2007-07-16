@@ -127,6 +127,8 @@ public class ChatMessageFormatterImpl implements ChatMessageFormatter {
             formattedChatText =
                 chatTextFormatter.format(new Token(formattedChatText, TokenType.FORMAT)).getFullText();
 
+            formattedChatText = formattedChatText.replaceAll("\\n", " <br />");
+
             // Build the result
             StringBuffer sb = new StringBuffer();
             sb.append("[").append(formattedUserName).append("]");
