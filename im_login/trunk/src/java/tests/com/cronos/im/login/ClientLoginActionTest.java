@@ -179,11 +179,33 @@ public class ClientLoginActionTest extends BasicActionTestCaseAdapter {
      * </p>
      *
      * <p>
-     * The category is unchattable.
+     * The category is unchattable. Forwards to Unchattable before authentication.
      * </p>
      */
     public void testExecuteFailure1() {
+        getActionMockObjectFactory().getMockRequest().setupAddParameter("type", "unreg");
         getActionMockObjectFactory().getMockRequest().setupAddParameter("cat", "10");
+        actionPerform(ClientLoginAction.class);
+        verifyNoActionErrors();
+        verifyNoActionMessages();
+        verifyForward(TestHelper.UNCHATTABLE);
+    }
+
+    /**
+     * <p>
+     * Failure test of <code>{@link ClientLoginAction#execute(ActionMapping mapping, ActionForm form,
+     * HttpServletRequest request, HttpServletResponse response)}</code>
+     * method.
+     * </p>
+     *
+     * <p>
+     * Registered user. Unchattable category.
+     * </p>
+     */
+    public void testExecuteFailure2() {
+        getActionMockObjectFactory().getMockRequest().setupAddParameter("type", "reg");
+        getActionMockObjectFactory().getMockRequest().setupAddParameter("cat", "10");
+        getActionMockObjectFactory().getMockRequest().setupAddParameter("user", "junit_user");
         actionPerform(ClientLoginAction.class);
         verifyNoActionErrors();
         verifyNoActionMessages();
@@ -201,7 +223,7 @@ public class ClientLoginActionTest extends BasicActionTestCaseAdapter {
      * Unknown registered user.
      * </p>
      */
-    public void testExecuteFailure2() {
+    public void testExecuteFailure3() {
         getActionMockObjectFactory().getMockRequest().setupAddParameter("type", "reg");
         getActionMockObjectFactory().getMockRequest().setupAddParameter("user", "unknown_user");
         actionPerform(ClientLoginAction.class);
