@@ -21,8 +21,8 @@
 <div id="container">
     <c:set var="subbar" value="faq" scope="page"/>
     <%@ include file="header.jsp" %>
-    <div id="wrap">
-        <h1><img src="${ctx}/i/h/title_gamedetails.gif" alt="Game Details" width="135" height="16"/></h1><br/>
+    <div id="wrap" style="text-align:center;">
+        <h3>PERSONALIZED <span class="main">BALL FOR ${game.name} </span></h3><br/>
         <img src="${ctx}/server/player/getPersonalizedBallImage.do" alt="Personalized Ball for Game"
              usemap="#PersonalizedBall" width="${imageWidth}" height="${imageHeight}"/>
         <map id="PersonalizedBall" name="PersonalizedBall">

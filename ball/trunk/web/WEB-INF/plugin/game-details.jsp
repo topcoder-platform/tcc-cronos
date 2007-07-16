@@ -52,7 +52,11 @@
         </tr>
         <tr>
             <td class="bold">My Standing:</td>
-            <td>${orpheus:getPlayerRankFromList(leaderProfiles, user_profile)}</td>
+            <td>
+                <a href="${ctx}/server/plugin/showPesonalizedBall.do?gameId=${game.id}">
+                    ${orpheus:getPlayerRankFromList(leaderProfiles, user_profile)}
+                </a>
+            </td>
         </tr>
         <tr>
             <td colspan="2">
