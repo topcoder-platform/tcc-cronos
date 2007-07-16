@@ -9,7 +9,7 @@
     <property name="package" value="com.topcoder.management.deliverable.persistence" />
     <property name="packagedir" value="com/topcoder/management/deliverable/persistence" />
     <property name="distfilename" value="deliverable_management_persistence" />
-    <property name="component_version" value="1.0.2" />
+    <property name="component_version" value="1.0.3" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
@@ -75,7 +75,7 @@
     <property name="configmanager.path" value="configuration_manager/${configmanager.version}"/>
     <property name="configmanager.jar" value="${tcs_libdir}/${configmanager.path}/${configmanager.jar.name}"/>
     
-    <property name="search_builder.version" value="1.3"/>
+    <property name="search_builder.version" value="1.3.1"/>
     <property name="search_builder.jar.name" value="search_builder.jar"/>
     <property name="search_builder.path" value="search_builder/${search_builder.version}"/>
     <property name="search_builder.jar" value="${tcs_libdir}/${search_builder.path}/${search_builder.jar.name}"/>
@@ -100,7 +100,7 @@
     <property name="object_factory.path" value="object_factory/${object_factory.version}"/>
     <property name="object_factory.jar" value="${tcs_libdir}/${object_factory.path}/${object_factory.jar.name}"/>
 
-    <property name="deliverable_management.version" value="1.0.1"/>
+    <property name="deliverable_management.version" value="1.0.3"/>
     <property name="deliverable_management.jar.name" value="deliverable_management.jar"/>
     <property name="deliverable_management.path" value="deliverable_management/${deliverable_management.version}"/>
     <property name="deliverable_management.jar" value="${tcs_libdir}/${deliverable_management.path}/${deliverable_management.jar.name}"/>
