@@ -1704,9 +1704,10 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
             conn = ExpenseEntryHelper.createConnection(connectionFactory, connectionName);
 
             for (int i = 0; i < entryIds.length; i++) {
-                if (!this.deleteEntry(conn, entryIds[i], auditFlag)) {
+                deleteEntry(conn, entryIds[i], auditFlag);
+/*                if (!this.deleteEntry(conn, entryIds[i], auditFlag)) {
                     throw new PersistenceException("No records for " + entryIds[i] + " exists.");
-                }
+                }*/
             }
         } finally {
             ExpenseEntryHelper.releaseConnection(conn);
