@@ -66,7 +66,7 @@
                     <tr>
                         <td width="23%">Game:</td>
                         <td width="77%" colspan="2">
-                            <select name="gameId" class="inputBox">
+                            <select name="gameId" class="inputBox" style="height: 20px;">
                                 <option value="">All Games</option>
                                 <c:forEach items="${games}" var="game">
                                     <option value="${game.id}">${game.name}</option>
@@ -77,7 +77,7 @@
                     <tr>
                         <td>Start Date:</td>
                         <td colspan="2">
-                            <select name="month" class="inputBox">
+                            <select name="month" class="inputBox" style="height: 20px;">
                                 <option
                                     value="01" ${admin:selectIfMonthMatches(currentTime, 0, request, 'startDate', dateFormat)}>
                                     Jan
@@ -127,13 +127,13 @@
                                     Dec
                                 </option>
                             </select>
-                            <select name="day" class="inputBox">
+                            <select name="day" class="inputBox" style="height: 20px;">
                                 <c:forEach begin="1" end="31" var="n">
                                     <option
                                         value="${n < 10 ? ('0' + n) : n}" ${admin:selectIfDayMatches(currentTime, n, request, 'startDate', dateFormat)}>${n}</option>
                                 </c:forEach>
                             </select>
-                            <select name="year" class="inputBox">
+                            <select name="year" class="inputBox" style="height: 20px;">
                                 <c:forEach begin="2006" end="2010" var="n">
                                     <option
                                         value="${n}" ${admin:selectIfYearMatches(currentTime, n, request, 'startDate', dateFormat)}>${n}</option>
@@ -144,19 +144,19 @@
                     <tr>
                         <td>Start Time:</td>
                         <td colspan="2">
-                            <select name="hour" class="inputBox">
+                            <select name="hour" class="inputBox" style="height: 20px;">
                                 <c:forEach begin="1" end="12" var="n">
                                     <option
                                         value="${n < 10 ? ('0' + n) : n}" ${admin:selectIfHourMatches(currentTime, n, request, 'startDate', dateFormat, true)}>${n}</option>
                                 </c:forEach>
                             </select>:
-                            <select name="minute" class="inputBox">
+                            <select name="minute" class="inputBox" style="height: 20px;">
                                 <c:forEach begin="0" end="59" var="n">
                                     <option
                                         value="${n < 10 ? ('0' + n) : n}" ${admin:selectIfMinuteMatches(currentTime, n, request, 'startDate', dateFormat)}>${n < 10 ? ('0' + n) : n}</option>
                                 </c:forEach>
                             </select>
-                            <select name="ampm" class="inputBox">
+                            <select name="ampm" class="inputBox" style="height: 20px;">
                                 <option
                                     value="am" ${admin:selectIfAMPMMatches(currentTime, 0, request, 'startDate', dateFormat)}>
                                     am
@@ -173,7 +173,7 @@
                     <tr>
                         <td>End Date:</td>
                         <td colspan="2">
-                            <select name="month2" class="inputBox">
+                            <select name="month2" class="inputBox" style="height: 20px;">
                                 <option
                                     value="01" ${admin:selectIfMonthMatches(currentTime, 0, request, 'endDate', dateFormat)}>
                                     Jan
@@ -223,13 +223,13 @@
                                     Dec
                                 </option>
                             </select>
-                            <select name="day2" class="inputBox">
+                            <select name="day2" class="inputBox" style="height: 20px;">
                                 <c:forEach begin="1" end="31" var="n">
                                     <option
                                         value="${n < 10 ? ('0' + n) : n}" ${admin:selectIfDayMatches(currentTime, n, request, 'endDate', dateFormat)}>${n}</option>
                                 </c:forEach>
                             </select>
-                            <select name="year2" class="inputBox">
+                            <select name="year2" class="inputBox" style="height: 20px;">
                                 <c:forEach begin="2006" end="2010" var="n">
                                     <option
                                         value="${n}" ${admin:selectIfYearMatches(currentTime, n, request, 'endDate', dateFormat)}>${n}</option>
@@ -240,19 +240,19 @@
                     <tr>
                         <td>End Time:</td>
                         <td colspan="2">
-                            <select name="hour2" class="inputBox">
+                            <select name="hour2" class="inputBox" style="height: 20px;">
                                 <c:forEach begin="1" end="12" var="n">
                                     <option
                                         value="${n < 10 ? ('0' + n) : n}" ${admin:selectIfHourMatches(currentTime, n, request, 'endDate', dateFormat, true)}>${n}</option>
                                 </c:forEach>
                             </select>:
-                            <select name="minute2" class="inputBox">
+                            <select name="minute2" class="inputBox" style="height: 20px;">
                                 <c:forEach begin="0" end="59" var="n">
                                     <option
                                         value="${n < 10 ? ('0' + n) : n}" ${admin:selectIfMinuteMatches(currentTime, n, request, 'endDate', dateFormat)}>${n < 10 ? ('0' + n) : n}</option>
                                 </c:forEach>
                             </select>
-                            <select name="ampm2" class="inputBox">
+                            <select name="ampm2" class="inputBox" style="height: 20px;">
                                 <option
                                     value="am" ${admin:selectIfAMPMMatches(currentTime, 0, request, 'endDate', dateFormat)}>
                                     am

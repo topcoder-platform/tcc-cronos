@@ -149,7 +149,7 @@ public class ViewLogResult implements Result {
             if (handlePos > 0) {
                 ps.setString(handlePos, handle);
             }
-            DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
+            DateFormat df = new SimpleDateFormat(request.getParameter("dateFormat"));
             if (startDatePos > 0) {
                 ps.setTimestamp(startDatePos, new Timestamp(df.parse(startDate).getTime()));
             }

@@ -86,6 +86,11 @@
                                         View <a href="${ctx}/server/admin/report/showLogForm.do">log</a>.
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        View <a href="${ctx}/server/admin/online/listUsers.do">online status</a>.
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                     </td>

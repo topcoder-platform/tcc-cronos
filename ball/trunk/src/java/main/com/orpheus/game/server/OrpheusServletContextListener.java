@@ -86,6 +86,10 @@ public class OrpheusServletContextListener implements ServletContextListener {
             // Put RSS DataStore to context
             servletContext.setAttribute(rssDataStoreAttributeName, createRSSDataStore());
 
+            // Put the online user status tracker to context
+            servletContext.setAttribute(OrpheusOnlineStatusTracker.CONTEXT_ATTRIBUTE_NAME,
+                                        new OrpheusOnlineStatusTracker());
+
             // Put a map keeping track of games completed by players
             servletContext.setAttribute("CompletedGames", new HashMap());
 
