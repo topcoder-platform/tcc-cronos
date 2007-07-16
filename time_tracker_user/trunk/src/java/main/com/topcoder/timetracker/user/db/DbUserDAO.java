@@ -167,6 +167,26 @@ public class DbUserDAO implements UserDAO {
     private static final String DELETE_USER_ACCOUNT = "delete from user_account where user_account_id = ?";
 
     /**
+     * Represents the SQL script to update user name on time entries if the name of a user has been
+     * changed.
+     */
+    private static final String UPDATE_TIME_ENTRIES = "UPDATE time_entry SET creation_user = ? WHERE creation_user = ?";
+
+    /**
+     * Represents the SQL script to update user name on expense entries if the name of a user has
+     * been changed.
+     */
+    private static final String UPDATE_EXPENSE_ENTRIES =
+        "UPDATE expense_entry SET creation_user = ? WHERE creation_user = ?";
+
+    /**
+     * Represents the SQL script to update user name on fixed billing entries if the name of a user
+     * has been changed.
+     */
+    private static final String UPDATE_FIXED_BILLING_ENTRIES =
+        "UPDATE fix_bill_entry SET creation_user = ? WHERE creation_user = ?";
+
+    /**
      * <p>
      * Represents the sql script for selecting the contact id for the given user id.
      * </p>
@@ -843,9 +863,8 @@ public class DbUserDAO implements UserDAO {
 
             for (int i = 0; i < users.length; i++) {
                 try {
-                    long userId = users[i].getId();
-
-                    User oldUser = getSimpleUser(conn, userId);
+                    final long userId = users[i].getId();
+                    final User oldUser = getSimpleUser(conn, userId);
 
                     // update user_account set company_id = ?, account_status_id = ?,
                     // user_name = ?, password = ?, creation_date = ?, creation_user = ?,
@@ -869,8 +888,17 @@ public class DbUserDAO implements UserDAO {
                     contactManager.updateContact(users[i].getContact(), audit);
                     addressManager.updateAddress(users[i].getAddress(), audit);
 
-                    // update the principal if the user name is modified
                     if (!oldUser.getUsername().equals(users[i].getUsername())) {
+                        List params = new ArrayList();
+
+                        params.add(users[i].getUsername());
+                        params.add(oldUser.getUsername());
+
+                        executeUpdate(conn, UPDATE_TIME_ENTRIES, params);
+                        executeUpdate(conn, UPDATE_EXPENSE_ENTRIES, params);
+                        executeUpdate(conn, UPDATE_FIXED_BILLING_ENTRIES, params);
+
+                        // update the principal
                         removePrincipal(oldUser.getUsername());
                         addPrincipal(users[i]);
                     }
