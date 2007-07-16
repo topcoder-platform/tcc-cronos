@@ -1342,10 +1342,18 @@ public class SqlUploadPersistence implements UploadPersistence {
     private Submission loadSubmission(CustomResultSet resultSet) throws InvalidCursorStateException {
         Submission submission = new Submission();
         
-        submission.setScreeningScore(resultSet.getDouble("screening_score"));
-        submission.setIntialScore(resultSet.getDouble("initial_score"));
-        submission.setFinalScore(resultSet.getDouble("final_score"));
-        submission.setPlacement(resultSet.getLong("placement"));
+        if (resultSet.getObject("screening_score") != null) {
+        	submission.setScreeningScore(resultSet.getDouble("screening_score"));        
+        }
+        if (resultSet.getObject("initial_score") != null) {
+        	submission.setIntialScore(resultSet.getDouble("initial_score"));
+        }
+        if (resultSet.getObject("final_score") != null) {
+        	submission.setFinalScore(resultSet.getDouble("final_score"));
+        }
+        if (resultSet.getObject("placement") != null) {
+        	submission.setPlacement(resultSet.getLong("placement"));
+        }
 
         submission.setId(resultSet.getLong("submission_id"));
         submission.setCreationUser(resultSet.getString("submission_create_user"));
