@@ -44,6 +44,11 @@ namespace Orpheus.Plugin.InternetExplorer
         public const string KEY_TIMESTAMP = "timestamp";
 
         /// <summary>
+        /// The registry key name for targets hash code.
+        /// </summary>
+        public const string KEY_TARGET_URL = "url_hash";
+
+        /// <summary>
         /// The event name used in DocumentCompleted.
         /// </summary>
         public const string EVENT_PAGE_CHANGED = "PageChanged";
@@ -67,6 +72,16 @@ namespace Orpheus.Plugin.InternetExplorer
         /// The event name used in ScriptingObject.SetWorkingGame
         /// </summary>
         public const string EVENT_GAME_CHANGED = "WorkingGameChanged";
+
+        /// <summary>
+        /// The name of 'correct page loaded' event.
+        /// </summary>
+        public const string EVENT_CORRECT_PAGE_LOADED = "CORRECT_PAGE_LOADED";
+
+        /// <summary>
+        /// The name of 'incorrect page loaded' event.
+        /// </summary>
+        public const string EVENT_INCORRECT_PAGE_LOADED = "INCORRECT_PAGE_LOADED";
 
         /// <summary>
         /// Gets the url content by xml http.

@@ -137,27 +137,30 @@ namespace Orpheus.Plugin.InternetExplorer
 
         /// <summary>
         /// This method will allow for JavaScript code to set the SHA-1 hash of the text
-        /// of the current target identifier, in the form of a 40-character string of
+        /// of the current target identifier, the hash of the targets URL in the form of a 40-character string of
         /// hexadecimal digits, and in integer sequence number.
         /// </summary>
         ///
-        /// <param name="hash">Target hash.</param>
+        /// <param name="targetHash">Tha hash code of the target object.</param>
+        /// <param name="urlHash">The hash code of the target object URL.</param>
         /// <param name="sequence">Sequence number.</param>
         ///
         /// <exception cref="ArgumentNullException">if parameter is null.</exception>
         /// <exception cref="ArgumentException">if parameter is empty string.</exception>
         /// <exception cref="PersistenceException">propagated from the
         /// <c>IPersistence</c> instance used.</exception>
-        public virtual void SetCurrentTarget(string hash, int sequence)
+        public virtual void SetCurrentTarget(string targetHash, string urlHash, int sequence)
         {
-            Validator.ValidateNullOrEmptyString(hash, "hash");
+            Validator.ValidateNullOrEmptyString(targetHash, "targetHash");
+            Validator.ValidateNullOrEmptyString(urlHash, "urlHash");
 
             // Uses the IPersistence from the context object to store the string representation
             // of these values, using arbitrary keys.
-            context.Persistence[Helper.KEY_HASH] = hash;
+            context.Persistence[Helper.KEY_HASH] = targetHash;
+            context.Persistence[Helper.KEY_TARGET_URL] = urlHash.ToUpper();
             context.Persistence[Helper.KEY_SEQUENCE] = sequence.ToString();
         }
-
+        
         /// <summary>
         /// This method will allow for JavaScript code to force the poll for updates on the server.
         /// </summary>
