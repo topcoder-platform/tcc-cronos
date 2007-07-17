@@ -9,8 +9,8 @@
     <property name="package" value="com.orpheus.plugin.firefox" />
     <property name="packagedir" value="com/orpheus/plugin/firefox" />
     <property name="distfilename" value="client_logic_for_firefox" />
-	<property name="distfilename_xpi" value="the_ball_game_plugin.xpi" />
-    <property name="component_version" value="1.0.36" />
+	<property name="distfilename_xpi" value="orpheus.xpi" />
+    <property name="component_version" value="1.0.25" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
@@ -117,21 +117,25 @@
     <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.jar.name}"/>
 	
 	<property name="base64_codec.version" value="1.0"/>
-    <property name="base64_codec.jar.name" value="base64_codec.jar"/>
-    <property name="base64_codec.path" value="base64_codec/${base64_codec.version}"/>
-    <property name="base64_codec.jar" value="${tcs_libdir}/${base64_codec.path}/${base64_codec.jar.name}"/>
-
-    <property name="lightweight_xml_parser.version" value="1.1"/>
-    <property name="lightweight_xml_parser.jar.name" value="lightweight_xml_parser.jar"/>
-    <property name="lightweight_xml_parser.path" value="lightweight_xml_parser/${lightweight_xml_parser.version}"/>
-    <property name="lightweight_xml_parser.jar"
-              value="${tcs_libdir}/${lightweight_xml_parser.path}/${lightweight_xml_parser.jar.name}"/>
-
-    <property name="string_class.version" value="1.0"/>
+	    <property name="base64_codec.jar.name" value="base64_codec.jar"/>
+	    <property name="base64_codec.path" value="base64_codec/${base64_codec.version}"/>
+	    <property name="base64_codec.jar" value="${tcs_libdir}/${base64_codec.path}/${base64_codec.jar.name}"/>
+	
+	<property name="lightweight_xml_parser.version" value="1.1"/>
+	    <property name="lightweight_xml_parser.jar.name" value="lightweight_xml_parser.jar"/>
+	    <property name="lightweight_xml_parser.path" value="lightweight_xml_parser/${lightweight_xml_parser.version}"/>
+	    <property name="lightweight_xml_parser.jar" value="${tcs_libdir}/${lightweight_xml_parser.path}/${lightweight_xml_parser.jar.name}"/>
+	
+	<property name="string_class.version" value="1.0"/>
     <property name="string_class.jar.name" value="string_class.jar"/>
     <property name="string_class.path" value="string_class/${string_class.version}"/>
     <property name="string_class.jar" value="${tcs_libdir}/${string_class.path}/${string_class.jar.name}"/>
 	
+	<!-- <property name="client_logic_for_firefox.version" value="1.0"/>
+    <property name="client_logic_for_firefox.jar.name" value="client_logic_for_firefox.jar"/>
+    <property name="client_logic_for_firefox.path" value="client_logic_for_firefox/${client_logic_for_firefox.version}"/>
+    <property name="client_logic_for_firefox.jar" value="${tcs_libdir}/${client_logic_for_firefox.path}/${client_logic_for_firefox.jar.name}"/>
+-->
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
 
