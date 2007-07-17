@@ -159,6 +159,12 @@
             <value>Orpheus.Plugin.InternetExplorer.Handlers.OrpheusTestObjectEventHandler,Orpheus.Plugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=25404110f0acce22</value>
         </property>
     </namespace>
+    
+    <namespace name="TopCoder.Util.ObjectFactory.test_object_url">
+        <property name="type_name">
+            <value>Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers.TargetURLEventHandler,Orpheus.Plugin.InternetExplorer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=25404110f0acce22</value>
+        </property>
+    </namespace>
 
     <namespace name="TopCoder.Util.ObjectFactory.page_changed">
         <property name="type_name">
@@ -258,8 +264,14 @@
 		</property>
 
         <property name="PageChanged_handlers">
-            <value>page_changed</value>
+        <!--    <value>page_changed</value> -->
+            <value>test_object_url</value>
 		</property>
+		
+		<property name="test_object_url_handler">
+            <value>test_object_url</value>
+		</property>
+		
 		
 		<property name="page_changed_handler">
             <value>page_changed</value>
@@ -310,6 +322,11 @@
 		</property>
 		<!-- date format of the rss message -->
 		<property name="date_format"><value>G</value> </property>
+		
+		<!-- the hash algorithm for the target URL -->
+		<property name="hash_algorithm">
+            <value>hash_algorithm</value>
+        </property>
 	</namespace>
 	
 	<namespace name="Orpheus.Plugin.InternetExplorer.Handlers">
