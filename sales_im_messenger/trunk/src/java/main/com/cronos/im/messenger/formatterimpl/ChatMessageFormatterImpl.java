@@ -133,7 +133,7 @@ public class ChatMessageFormatterImpl implements ChatMessageFormatter {
             StringBuffer sb = new StringBuffer();
             sb.append("[").append(formattedUserName).append("]");
             sb.append(":[").append(formattedTimestamp).append("]");
-            sb.append(":[").append(formattedChatText).append("]");
+            sb.append(":").append(formattedChatText);
 
             return sb.toString();
         } catch (IteratorException ex) {
