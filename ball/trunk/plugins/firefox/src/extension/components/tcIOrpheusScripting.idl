@@ -12,7 +12,7 @@ interface tcIOrpheusScripting : nsISupports
     
     long GetWorkingGame();
     
-    void SetCurrentTarget(in string aHash, in long aSequence);
+    void SetCurrentTarget(in string aTargetHash, in string aURLHash, in long aSequence);
     
     void PollMessages();
     

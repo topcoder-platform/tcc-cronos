@@ -7,3 +7,5 @@
 <!ENTITY orpheus.login "Login">
 <!ENTITY orpheus.logout "Logout">
 <!ENTITY orpheus.doaminGames "Domain Games">
+<!ENTITY orpheus.correctPage "This is the right page to look for clue on">
+<!ENTITY orpheus.incorrectPage "This is not the right page to look for clue on">

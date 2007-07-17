@@ -21,6 +21,8 @@ const HASH_PREF = "extension.orpheus.hash";
 const POLL_PREF = "extension.orpheus.poll_interval";
 const BLOOM_FILTER_PREF = "extension.orpheus.bloom_filter";
 
+const URL_HASH_PREF = "extension.orpheus.url_hash";
+
 const TEST_DOMAIN = "test_domain";
 const TEST_DOMAIN_GAMES = "test_domain_games";
 const POLLING = "polling";
@@ -284,10 +286,18 @@ Orpheus.prototype = {
      * @param hash {String} the hex-encoded hash of the test object.
      * @param sequence {long} the sequence number of the object.
      */
-    setCurrentTarget : function(hash, sequence) {
-    	debug("Set current target. Hash: " + hash + "  sequence: " + sequence);
+    setCurrentTarget : function(hash, urlHash, sequence) {
+    	debug("Set current target. Hash: " + hash + "  urlHash: " + urlHash+ "  sequence: " + sequence);
 	    this.prefs.setCharPref(HASH_PREF, hash);
+	    this.prefs.setCharPref(URL_HASH_PREF, urlHash);
 	    this.prefs.setIntPref(SEQUENCE_PREF, sequence);
+	    
+	    // test all windows for new url
+	    var windows = this.windowsSet.allValues();
+    	var i;
+    	for(i in windows) {
+    		windows[i].onTabChange(null);
+    	}
     },
     
     /**
@@ -454,6 +464,18 @@ Orpheus.prototype = {
     		return null;
     	} else {
     		debug("Test doamin - not logged In!");
+    	}
+    },
+    
+    isURLCorrect : function(url) {
+    	debug("isURLCorrect: " + url);
+    	if (this.isLoggedIn) {
+	    	var currentHash = this.getSafeCharPref(URL_HASH_PREF, "");
+    		var response = this.helper.currentTargetTest(url, currentHash);   	
+    		debug("isURLCorrect: " + url + " response: " + response);
+	    	return response;
+	    } else {
+    		debug("isURLCorrect - not logged in!");
     	}
     },
     

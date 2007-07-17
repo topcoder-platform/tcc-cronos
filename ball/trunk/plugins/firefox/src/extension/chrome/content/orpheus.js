@@ -52,12 +52,13 @@ orpheus.load = function (){
 	orpheus.service.registerToolbar(orpheus);
 	orpheus.window.addEventListener("unload", function(e){orpheus.unload();}, false);
 	document.getElementById("appcontent").addEventListener("load", orpheus.onPageLoad, true); 
-	
+	gBrowser.mPanelContainer.addEventListener("select", orpheus.onTabChange, false);
 };
 
 /** This method is called  on unload event. It unregister window from the Orpheus service. */
 orpheus.unload = function () {
 	orpheus.service.unregisterToolbar(orpheus);
+	gBrowser.mPanelContainer.removeEventListener("select", orpheus.onTabChange, false);
 };
 
 /** Implements the Login button action. */
@@ -98,7 +99,7 @@ orpheus.leaderboardClick = function leaderboardClick() {
 
 
 orpheus.testDomainClick = function() {
-	var window = null;
+   	var window = null;
 	if (orpheus.window.content.name != POPUP_NAME) {
    		window = orpheus.window.content;
    	} else if (orpheus.parent) {
@@ -111,6 +112,7 @@ orpheus.testDomainClick = function() {
    			orpheus.openPopupURL(result);
    		}
    	}
+   	
 };
 
 /** Implements the Test Object context menu action. */		
@@ -246,18 +248,32 @@ orpheus.disableButtons = function(val) {
  * @param event the page load event.
  */
 orpheus.onPageLoad = function (event)  {
-	//alert("test: " + orpheus.window.content.name);
 	// if window is popup - set the parent to main window
 	if (orpheus.window.content.name == POPUP_NAME) {
 		orpheus.parent = window.content.opener;// orpheus.window.content.arguments[0];
 	}
 	// ignore the plug-in alert window
-//	if (orpheus.window.content.name != POPUP_NAME) {
-//   		var result = orpheus.service.domainTest(orpheus.window.content.location.hostname);
-//   		if (result) {
-//   			orpheus.openPopupURL(result);
-//   		}
-//   	}
+	if (orpheus.window.content.name != POPUP_NAME) {
+   		var result = orpheus.service.isURLCorrect(orpheus.window.content.location);
+   		orpheus.targetPageStatusChage(result);
+   	}
+}
+
+orpheus.onTabChange = function (event) {
+	var browser = gBrowser.getBrowserAtIndex(gBrowser.mTabContainer.selectedIndex);
+	var result = orpheus.service.isURLCorrect(browser.contentDocument.location);
+	orpheus.targetPageStatusChage(result);
+ }
+
+orpheus.targetPageStatusChage = function (isPageCorrect) {
+  		var doc = orpheus.window.document;
+   		if (isPageCorrect) {
+   			hideElement("oPageIncorrect", true, doc);
+			hideElement("oPageCorrect", false, doc);
+   		} else {
+   			hideElement("oPageIncorrect", false, doc);
+			hideElement("oPageCorrect", true, doc);
+   		}
 }
 
 /**
@@ -288,6 +304,7 @@ function disableElement(id, value) {
 
 // window events
 window.addEventListener("load", orpheus.load, false);
+
 /*window.addEventListener("unload", orpheus.unload, false);
 // the page load event
 document.getElementById("appcontent").addEventListener("load", orpheus.onPageLoad, true); 

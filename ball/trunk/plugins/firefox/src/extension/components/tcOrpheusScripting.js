@@ -37,8 +37,8 @@ OrpheusScripting.prototype = {
     	return this.service.getWorkingGame();
     },
     
-    SetCurrentTarget : function(aHash, aSequence) {
-    	this.service.setCurrentTarget(aHash, aSequence);
+    SetCurrentTarget : function(aTargetHash, aURLHash, aSequence) {
+    	this.service.setCurrentTarget(aTargetHash, aURLHash, aSequence);
     },
     
     PollMessages : function() {
