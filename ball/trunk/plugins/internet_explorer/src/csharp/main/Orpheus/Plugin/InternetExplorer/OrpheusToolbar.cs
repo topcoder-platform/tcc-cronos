@@ -95,6 +95,10 @@ namespace Orpheus.Plugin.InternetExplorer
         private System.Windows.Forms.Button btnLeaderboard;
         private System.Windows.Forms.Panel gamePanel;
         private System.Windows.Forms.Button btnTestDomain;
+        private System.Windows.Forms.PictureBox correctPageImage;
+        private System.Windows.Forms.PictureBox incorrectPageImage;
+        private System.Windows.Forms.ToolTip toolTip;
+        private System.ComponentModel.IContainer components;
         #endregion
 
         /// <summary>
@@ -141,17 +145,27 @@ namespace Orpheus.Plugin.InternetExplorer
         /// The game changed event handler delegate. Initialized in the constructor.
         /// </summary>
         private ExtensionEventHandlerDelegate gameChangedDelegate = null;
+
+        /// <summary>
+        /// The CORRECT_PAGE_LOADED event handler delegate.
+        /// </summary>
+        private ExtensionEventHandlerDelegate correctPageLoadedDelegate = null;
+
+        /// <summary>
+        /// The INCORRECT_PAGE_LOADED event handler delegate.
+        /// </summary>
+        private ExtensionEventHandlerDelegate incorrectPageLoadedDelegate = null;
+
+        /// <summary>
+        /// The full URL of the loaded page.
+        /// </summary>
+        private string currentPageURL = null;
         
         /// <summary>
         /// The MsieClientLogic instance used by the toolbar.
         /// </summary>
         private MsieClientLogic clientLogic = null;
         
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.Container components = null;
-
         /// <summary>
         /// This static property indicates if the user is logged to server or not.
         /// </summary>
@@ -194,6 +208,13 @@ namespace Orpheus.Plugin.InternetExplorer
                 clientLogic.EventsManager.AddEventHandler(Helper.EVENT_LOGGEDIN, loginDelegate);
                 clientLogic.EventsManager.AddEventHandler(Helper.EVENT_LOGGEDOUT, loginDelegate);
                 clientLogic.EventsManager.AddEventHandler(Helper.EVENT_GAME_CHANGED, gameChangedDelegate);
+
+                correctPageLoadedDelegate = new ExtensionEventHandlerDelegate(CorrectPageEventHandler);
+                incorrectPageLoadedDelegate = new ExtensionEventHandlerDelegate(IncorrectPageEventHandler);
+
+                clientLogic.EventsManager.AddEventHandler(Helper.EVENT_CORRECT_PAGE_LOADED, correctPageLoadedDelegate);
+                clientLogic.EventsManager.AddEventHandler(Helper.EVENT_INCORRECT_PAGE_LOADED, 
+                    incorrectPageLoadedDelegate);
 
             }
             catch (Exception ex) 
@@ -239,6 +260,8 @@ namespace Orpheus.Plugin.InternetExplorer
             clientLogic.EventsManager.RemoveEventHandler(Helper.EVENT_LOGGEDIN, loginDelegate);
             clientLogic.EventsManager.RemoveEventHandler(Helper.EVENT_LOGGEDOUT, loginDelegate);
             clientLogic.EventsManager.RemoveEventHandler(Helper.EVENT_GAME_CHANGED, gameChangedDelegate);
+            clientLogic.EventsManager.RemoveEventHandler(Helper.EVENT_CORRECT_PAGE_LOADED, correctPageLoadedDelegate);
+            clientLogic.EventsManager.RemoveEventHandler(Helper.EVENT_INCORRECT_PAGE_LOADED, incorrectPageLoadedDelegate);
         }
 
         #region Component Designer generated code
@@ -248,6 +271,7 @@ namespace Orpheus.Plugin.InternetExplorer
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(OrpheusToolbar));
             this.logoImg = new System.Windows.Forms.PictureBox();
             this.btnLogout = new System.Windows.Forms.Button();
@@ -258,6 +282,9 @@ namespace Orpheus.Plugin.InternetExplorer
             this.btnUpcoming = new System.Windows.Forms.Button();
             this.btnUnlocked = new System.Windows.Forms.Button();
             this.btnGames = new System.Windows.Forms.Button();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.correctPageImage = new System.Windows.Forms.PictureBox();
+            this.incorrectPageImage = new System.Windows.Forms.PictureBox();
             this.gamePanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -304,11 +331,14 @@ namespace Orpheus.Plugin.InternetExplorer
             this.btnLogin.TabStop = false;
             this.btnLogin.Text = "Login";
             this.btnLogin.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip.SetToolTip(this.btnLogin, "Dupa");
             this.btnLogin.Click += new System.EventHandler(this.LoingClick);
             // 
             // gamePanel
             // 
             this.gamePanel.BackColor = System.Drawing.Color.Transparent;
+            this.gamePanel.Controls.Add(this.incorrectPageImage);
+            this.gamePanel.Controls.Add(this.correctPageImage);
             this.gamePanel.Controls.Add(this.btnTestDomain);
             this.gamePanel.Controls.Add(this.btnLeaderboard);
             this.gamePanel.Controls.Add(this.btnUpcoming);
@@ -316,7 +346,7 @@ namespace Orpheus.Plugin.InternetExplorer
             this.gamePanel.Controls.Add(this.btnGames);
             this.gamePanel.Location = new System.Drawing.Point(104, 0);
             this.gamePanel.Name = "gamePanel";
-            this.gamePanel.Size = new System.Drawing.Size(515, 24);
+            this.gamePanel.Size = new System.Drawing.Size(575, 24);
             this.gamePanel.TabIndex = 7;
             this.gamePanel.Visible = false;
             // 
@@ -401,6 +431,33 @@ namespace Orpheus.Plugin.InternetExplorer
             this.btnGames.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnGames.Click += new System.EventHandler(this.GamesClick);
             // 
+            // toolTip
+            // 
+            this.toolTip.ShowAlways = true;
+            // 
+            // correctPageImage
+            // 
+            this.correctPageImage.BackColor = System.Drawing.Color.Transparent;
+            this.correctPageImage.Image = ((System.Drawing.Image)(resources.GetObject("correctPageImage.Image")));
+            this.correctPageImage.Location = new System.Drawing.Point(536, 4);
+            this.correctPageImage.Name = "correctPageImage";
+            this.correctPageImage.Size = new System.Drawing.Size(16, 16);
+            this.correctPageImage.TabIndex = 7;
+            this.correctPageImage.TabStop = false;
+            this.toolTip.SetToolTip(this.correctPageImage, "This is the right page to look for clue on");
+            this.correctPageImage.Visible = false;
+            // 
+            // incorrectPageImage
+            // 
+            this.incorrectPageImage.BackColor = System.Drawing.Color.Transparent;
+            this.incorrectPageImage.Image = ((System.Drawing.Image)(resources.GetObject("incorrectPageImage.Image")));
+            this.incorrectPageImage.Location = new System.Drawing.Point(536, 4);
+            this.incorrectPageImage.Name = "incorrectPageImage";
+            this.incorrectPageImage.Size = new System.Drawing.Size(16, 16);
+            this.incorrectPageImage.TabIndex = 8;
+            this.incorrectPageImage.TabStop = false;
+            this.toolTip.SetToolTip(this.incorrectPageImage, "This is not the right page to look for clue on");
+            // 
             // OrpheusToolbar
             // 
             this.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -458,12 +515,13 @@ namespace Orpheus.Plugin.InternetExplorer
         {
             try 
             {
+                currentPageURL = url as string;
                 clientLogic.CustomizeWebBrowser(Host);
-                // ISV : The plugins should not auto-popup Found Trail page when the domain is changed
-//                if ((url != null) && (!"orpheus_popup".Equals(Host.GetProperty("window_name") + "" ) ))
-//                {
-//                    clientLogic.OnDocumentCompleted(pDisp, ref url);
-//                }
+                // fire the OnDocumentCompleted event if the current window is not popup
+                if ((url != null) && (!"orpheus_popup".Equals(Host.GetProperty("window_name") + "" ) ))
+                {
+                    clientLogic.OnDocumentCompleted(pDisp, ref url);
+                }
             } 
             catch (Exception ex)
             {
@@ -630,6 +688,38 @@ namespace Orpheus.Plugin.InternetExplorer
             ExtensionEventArgs args = new ExtensionEventArgs(TEST_DOMAIN_EVENT_NAME, clientLogic, 
                 new object[] {Host.LocationURL});
             clientLogic.EventsManager.FireEvent(TEST_DOMAIN_EVENT_NAME, this, args);
+        }
+
+        /// <summary>
+        /// The CORRECT_PAGE_LOADED event handler. It changes the icon of the image that indicates correct
+        /// page with target on it.
+        /// </summary>
+        /// <param name="sender">the event sender.</param>
+        /// <param name="args">the arguments of the event. The first parameter should be the URL
+        /// of the correct target site.</param>
+        private void CorrectPageEventHandler(object sender, ExtensionEventArgs args) 
+        {
+            if (currentPageURL.Equals(args.Parameters[0])) 
+            {
+                correctPageImage.Visible = true;
+                incorrectPageImage.Visible = false;
+            }
+        }
+
+        /// <summary>
+        /// The INCORRECT_PAGE_LOADED event handler. It changes the icon of the image that indicates incorrect
+        /// page.
+        /// </summary>
+        /// <param name="sender">the event sender.</param>
+        /// <param name="args">the arguments of the event. The first parameter should be the URL
+        /// of the correct target site.</param>
+        private void IncorrectPageEventHandler(object sender, ExtensionEventArgs args) 
+        {
+            if (currentPageURL.Equals(args.Parameters[0])) 
+            {
+                correctPageImage.Visible = false;
+                incorrectPageImage.Visible = true;
+            }
         }
 
         /// <summary>

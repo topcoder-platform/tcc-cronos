@@ -16,7 +16,7 @@ namespace Orpheus.Plugin.InternetExplorer
         /// <summary>
         /// The main client logic instance.
         /// </summary>
-        private MsieClientLogic logic;
+        private MsieClientLogic context;
 
         /// <summary>
         /// Constructor. Calls the base one.
@@ -24,7 +24,7 @@ namespace Orpheus.Plugin.InternetExplorer
         /// <param name="context">The client logic object used to handle requests.</param>
 		public OrpheusScriptingObject(MsieClientLogic context) : base(context)
 		{
-            this.logic = context;
+            this.context = context;
 		}
 
         /// <summary>
@@ -38,8 +38,8 @@ namespace Orpheus.Plugin.InternetExplorer
             TestObjectResult del = new TestObjectResult(TestObjectResult);
             // the current location of the test object
             string url = ((IHTMLDocument2) el.document).url;
-            ExtensionEventArgs args = new ExtensionEventArgs("TestObject", logic, new object[] {el, url, del});
-            ExtensionEventHandlerDelegate[] handlers = logic.EventsManager.GetEventHandlers("TestObject");
+            ExtensionEventArgs args = new ExtensionEventArgs("TestObject", context, new object[] {el, url, del});
+            ExtensionEventHandlerDelegate[] handlers = context.EventsManager.GetEventHandlers("TestObject");
             for (int i = 0; i < handlers.Length; i++)
             {
                 handlers[i](this, args);
@@ -60,5 +60,6 @@ namespace Orpheus.Plugin.InternetExplorer
                     MessageBoxIcon.Information);
             }
         }
+
 	}
 }
