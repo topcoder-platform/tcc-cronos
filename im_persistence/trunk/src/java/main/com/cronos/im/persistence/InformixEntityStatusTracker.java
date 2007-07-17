@@ -558,9 +558,9 @@ public class InformixEntityStatusTracker extends AbstractPersistenceWithValidato
                 ResultSet results = statement.executeQuery();
 
                 // make sure at least one instance of the type exists
-                if (exists && !results.next()) {
-                    throw new RecordNotFoundException("no status entry for '" + type + "'");
-                }
+//                if (exists && !results.next()) {
+//                    throw new RecordNotFoundException("no status entry for '" + type + "'");
+//                }
 
                 closeResults(results);
             } catch (SQLException ex) {
