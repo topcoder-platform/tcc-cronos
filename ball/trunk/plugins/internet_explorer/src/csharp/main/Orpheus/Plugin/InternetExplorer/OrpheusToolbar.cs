@@ -157,6 +157,11 @@ namespace Orpheus.Plugin.InternetExplorer
         private ExtensionEventHandlerDelegate incorrectPageLoadedDelegate = null;
 
         /// <summary>
+        /// The NEW_TARGET_SET event handler delegate.
+        /// </summary>
+        private ExtensionEventHandlerDelegate newTargetSetDelegate = null;
+
+        /// <summary>
         /// The full URL of the loaded page.
         /// </summary>
         private string currentPageURL = null;
@@ -211,11 +216,14 @@ namespace Orpheus.Plugin.InternetExplorer
 
                 correctPageLoadedDelegate = new ExtensionEventHandlerDelegate(CorrectPageEventHandler);
                 incorrectPageLoadedDelegate = new ExtensionEventHandlerDelegate(IncorrectPageEventHandler);
+                newTargetSetDelegate = new ExtensionEventHandlerDelegate(NewTargetSetEventHandler);
 
                 clientLogic.EventsManager.AddEventHandler(Helper.EVENT_CORRECT_PAGE_LOADED, correctPageLoadedDelegate);
                 clientLogic.EventsManager.AddEventHandler(Helper.EVENT_INCORRECT_PAGE_LOADED, 
                     incorrectPageLoadedDelegate);
-
+                clientLogic.EventsManager.AddEventHandler(Helper.EVENT_NEW_TARGET_SET,
+                    newTargetSetDelegate);
+                
             }
             catch (Exception ex) 
             {
@@ -262,6 +270,7 @@ namespace Orpheus.Plugin.InternetExplorer
             clientLogic.EventsManager.RemoveEventHandler(Helper.EVENT_GAME_CHANGED, gameChangedDelegate);
             clientLogic.EventsManager.RemoveEventHandler(Helper.EVENT_CORRECT_PAGE_LOADED, correctPageLoadedDelegate);
             clientLogic.EventsManager.RemoveEventHandler(Helper.EVENT_INCORRECT_PAGE_LOADED, incorrectPageLoadedDelegate);
+            clientLogic.EventsManager.RemoveEventHandler(Helper.EVENT_NEW_TARGET_SET, newTargetSetDelegate);
         }
 
         #region Component Designer generated code
@@ -701,8 +710,14 @@ namespace Orpheus.Plugin.InternetExplorer
         {
             if (currentPageURL.Equals(args.Parameters[0])) 
             {
-                correctPageImage.Visible = true;
-                incorrectPageImage.Visible = false;
+                if (InvokeRequired)
+                {
+                    Invoke(new ChangeLogoutStatus(SetPageCorrectIcon), new object[] {true});
+                } 
+                else 
+                {
+                    SetPageCorrectIcon(true);
+                }
             }
         }
 
@@ -717,9 +732,36 @@ namespace Orpheus.Plugin.InternetExplorer
         {
             if (currentPageURL.Equals(args.Parameters[0])) 
             {
-                correctPageImage.Visible = false;
-                incorrectPageImage.Visible = true;
+                if (InvokeRequired)
+                {
+                    Invoke(new ChangeLogoutStatus(SetPageCorrectIcon), new object[] {false});
+                } 
+                else 
+                {
+                    SetPageCorrectIcon(false);
+                }
             }
+        }
+        
+        /// <summary>
+        /// The is the handler for the NEW_TARGET_SET event. It will force the check of target page.
+        /// </summary>
+        /// <param name="sender">ignored</param>
+        /// <param name="args">ignored</param>
+        private void NewTargetSetEventHandler(object sender, ExtensionEventArgs args) 
+        {
+            object url = currentPageURL;
+            clientLogic.OnDocumentCompleted(null, ref url);
+        }
+
+        /// <summary>
+        /// This method will set the correct image depending on the <c>isCorrect</c> value.
+        /// </summary>
+        /// <param name="isCorrect">indicates if the loaded page is correct or not.</param>
+        private void SetPageCorrectIcon(bool isCorrect) 
+        {
+            correctPageImage.Visible = isCorrect;
+            incorrectPageImage.Visible = !isCorrect;
         }
 
         /// <summary>
