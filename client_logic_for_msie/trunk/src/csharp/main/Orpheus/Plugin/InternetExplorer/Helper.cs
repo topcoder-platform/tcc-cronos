@@ -84,6 +84,11 @@ namespace Orpheus.Plugin.InternetExplorer
         public const string EVENT_INCORRECT_PAGE_LOADED = "INCORRECT_PAGE_LOADED";
 
         /// <summary>
+        /// The name of 'new target' event.
+        /// </summary>
+        public const string EVENT_NEW_TARGET_SET = "NEW_TARGET_SET";
+
+        /// <summary>
         /// Gets the url content by xml http.
         /// </summary>
         /// <param name="url">the url to retrieve document content</param>

@@ -159,6 +159,10 @@ namespace Orpheus.Plugin.InternetExplorer
             context.Persistence[Helper.KEY_HASH] = targetHash;
             context.Persistence[Helper.KEY_TARGET_URL] = urlHash.ToUpper();
             context.Persistence[Helper.KEY_SEQUENCE] = sequence.ToString();
+
+            ExtensionEventArgs args = new ExtensionEventArgs(Helper.EVENT_NEW_TARGET_SET, context,
+                new object[] { targetHash, urlHash, sequence });
+            context.EventsManager.FireEvent(Helper.EVENT_NEW_TARGET_SET, this, args);
         }
         
         /// <summary>
