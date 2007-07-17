@@ -14,8 +14,11 @@ import com.topcoder.document.highlight.LineRegexIterator;
 import com.topcoder.document.highlight.Token;
 import com.topcoder.document.highlight.TokenIterator;
 import com.topcoder.document.highlight.TokenType;
+import com.topcoder.document.highlight.XmlTagFormatter;
 
 import java.io.StringReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
@@ -123,10 +126,37 @@ public class ChatMessageFormatterImpl implements ChatMessageFormatter {
             // and then format the output by chatTextFormatter.
             // Create the token iterator against the data.
             TokenIterator tokenIterator = new LineRegexIterator(pattern, new StringReader(chatText));
+            
+            // this is actually a "workaround" fix for TCIM-8808
+            // we are implicitly setting the "modified" boolean flag in XmlTagFormatter 
+            // so it would always get a "new" result for the dynamic fields,
+            // this basically bypasses the "caching" of the regex results.
+            XmlTagFormatter dynamicFormatter = ((XmlTagFormatter)contentHighlighter.getMatcher(0).getFormatter(0));
+            dynamicFormatter.setPattern(dynamicFormatter.getPattern());
+            // end - fix for TCIM-8808
+            
+            // the <a href=""></a> is being appended here
             String formattedChatText = contentHighlighter.format(tokenIterator);
+            
+            // this is another "workaround" fix for TCIM-8808
+            // we try to detect here the pattern '<a href="www.' which basically means that
+            // the "www" was matched and replaced with <a></a> to create a link,
+            // we then add the protocol "http://" inside the href so it would not append
+            // to the current context
+            Pattern pattern = Pattern.compile("(<a href=\"www)(\\.)(.*)");
+            Matcher matcher = pattern.matcher(formattedChatText);
+            // if matches, means a link was created for "www"
+            if(matcher.matches()) {
+                formattedChatText = "<a href=\"http://www." + 
+                    formattedChatText.substring(13, formattedChatText.length());
+            }
+            // end of TCIM-8808
+            
+            // the <font></font> tag is being appended here
             formattedChatText =
                 chatTextFormatter.format(new Token(formattedChatText, TokenType.FORMAT)).getFullText();
 
+            // fix for TCIM-8807
             formattedChatText = formattedChatText.replaceAll("\\n", " <br />");
 
             // Build the result
