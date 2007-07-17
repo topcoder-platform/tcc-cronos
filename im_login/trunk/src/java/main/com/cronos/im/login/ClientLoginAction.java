@@ -313,7 +313,7 @@ public class ClientLoginAction extends LoginAction {
         String userName = fName + " " + lName;
 
         // Initiate a new profile for this unregistered user
-        ChatUserProfile profile = new ChatUserProfile(userName, "Unregistered");
+        ChatUserProfile profile = new ChatUserProfile("-1", "Unregistered");
 
         profile.addProperty(getCategoryKey(), request.getParameter(IMLoginHelper.CATEGORY));
         profile.addProperty(getFamilyNameKey(), fName);
