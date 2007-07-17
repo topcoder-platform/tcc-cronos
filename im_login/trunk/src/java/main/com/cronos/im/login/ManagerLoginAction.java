@@ -140,6 +140,7 @@ public class ManagerLoginAction extends LoginAction {
             UnrecognizedDataSourceTypeException {
         String user = request.getParameter(IMLoginHelper.USER);
         String password = request.getParameter(IMLoginHelper.PASSWORD);
+        String category = request.getParameter(IMLoginHelper.CATEGORY);
 
         // authenticate using security manager
         TCSubject subject = null;
@@ -159,6 +160,7 @@ public class ManagerLoginAction extends LoginAction {
         if (getAuthorizationManager().authorize(principal, getAction(), getActionContext())) {
             // get the chat user profile and save it in session
             ChatUserProfile profile = getChatUserProfileManager().getProfile(user, "Registered");
+            profile.setProperty(getCategoryKey(), category);
             profile.setProperty(getRoleKey(), "manager");
             request.getSession().setAttribute(getUserProfileKey(), profile);
 
