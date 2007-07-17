@@ -69,12 +69,7 @@ public class ExpenseEntry extends BaseEntry {
     /**
       * Represents the invoice ID for of this expense. Can be -1 if the expense has not yet been invoiced.
       */
-    private long invoiceId = -1;
-
-    /**
-     * Represents ID of a user who modified this expense entry. This ID will be used for auditing.
-     */
-    private long modificationUserId = -1;
+    private long invoiceId = -1L;
 
     /**
      * <p>
@@ -277,27 +272,5 @@ public class ExpenseEntry extends BaseEntry {
      */
     public long getInvoiceId() {
         return this.invoiceId;
-    }
-
-    /**
-     * Gets an ID of the user who modified this expense entry.
-     *
-     * @return an ID of the user who modified this expense entry.
-     */
-    public long getModificationUserId() {
-        return this.modificationUserId;
-    }
-
-    /**
-     * Sets ID of the user who modified this expense entry.
-     *
-     * @param modificationUserId an ID of the user who modified this expense entry.
-     * @throws IllegalArgumentException if the <code>modificationUserId</code> is less than or equal to zero.
-     */
-    public void setModificationUserId(long modificationUserId) {
-        if (modificationUserId <= 0) {
-            throw new IllegalArgumentException("Modification user's ID is invalid:" + modificationUserId + ".");
-        }
-        this.modificationUserId = modificationUserId;
     }
 }

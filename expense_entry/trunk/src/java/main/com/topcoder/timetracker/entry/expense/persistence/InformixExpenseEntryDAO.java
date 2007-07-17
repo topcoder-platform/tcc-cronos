@@ -549,8 +549,8 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
         header.setClientId(entity.getClientId());
         header.setProjectId(entity.getProjectId());
         header.setTableName(EXPENSE_ENTRY_TABLE);
-        if (entity.getModificationUserId() > 0) {
-            header.setResourceId(entity.getModificationUserId());
+        if (entity.getResourceId() > 0) {
+            header.setResourceId(entity.getResourceId());
         }
 
         header.setCreationDate(new Timestamp((auditType == AuditType.INSERT)
