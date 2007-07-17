@@ -62,11 +62,18 @@ public abstract class BaseEntry extends TimeTrackerBean {
      */
     private long projectId;
 
-/**
+    /**
+     * This is an ID of the resource (user account) who owns the entry. This ID is only set on entry
+     * update for auditing purposes. It is never set when entry is being retrieved from the database
+     * to save processing time and power.
+     */
+    private long resourceId = -1L;
+
+    /**
      * Empty constructor.
      */
     protected BaseEntry() {
-        //does nothing
+        // does nothing
     }
 
     /**
@@ -220,5 +227,26 @@ public abstract class BaseEntry extends TimeTrackerBean {
 
         this.rejectReasons = tmp;
         setChanged(true);
+    }
+
+    /**
+     * Returns current value of the ID of resource (user account) who owns this entry. This value is
+     * used for auditing purposes only.
+     *
+     * @return current value of resource ID.
+     */
+    public long getResourceId() {
+        return this.resourceId;
+    }
+
+    /**
+     * Sets new value for resource (user account) ID. This ID will denote a user who currently own
+     * an entry.
+     *
+     * @param resourceId
+     *            new value of resource ID.
+     */
+    public void setResourceId(long resourceId) {
+        this.resourceId = resourceId;
     }
 }
