@@ -112,19 +112,6 @@ public class TimeEntry extends BaseEntry {
 
     /**
      * <p>
-     * This is ID of a user who modified a time entry. This ID will be used for auditing.
-     * </p>
-     * <p>
-     * It is <code>-1</code> initially and can be accessed by getter and setter.
-     * </p>
-     * <p>
-     * The value for this variable must be greater that zero.
-     * </p>
-     */
-    private long modificationUserId = -1;
-
-    /**
-     * <p>
      * Default constructor.
      * </p>
      */
@@ -274,28 +261,6 @@ public class TimeEntry extends BaseEntry {
             this.invoiceId = invoiceId;
             setChanged(true);
         }
-    }
-
-    /**
-     * Gets an ID of the user who modified this time entry.
-     *
-     * @return an ID of the user who modified this time entry.
-     */
-    public long getModificationUserId() {
-        return this.modificationUserId;
-    }
-
-    /**
-     * Sets ID of the user who modified this time entry.
-     *
-     * @param modificationUserId an ID of the user who modified this time entry.
-     * @throws IllegalArgumentException if the <code>modificationUserId</code> is less than or equal to zero.
-     */
-    public void setModificationUserId(long modificationUserId) {
-        if (modificationUserId <= 0) {
-            throw new IllegalArgumentException("Modification user's ID is invalid:" + modificationUserId + ".");
-        }
-        this.modificationUserId = modificationUserId;
     }
 
     /**

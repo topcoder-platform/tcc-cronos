@@ -429,8 +429,8 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
         header.setEntityId(timeEntry.getId());
         header.setCreationUser(timeEntry.getModificationUser());
         header.setCreationDate(new Timestamp(System.currentTimeMillis()));
-        if (timeEntry.getModificationUserId() > 0) {
-            header.setResourceId(timeEntry.getModificationUserId());
+        if (timeEntry.getResourceId() > 0) {
+            header.setResourceId(timeEntry.getResourceId());
         }
 
         List auditDetails = new ArrayList();
