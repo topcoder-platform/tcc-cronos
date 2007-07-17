@@ -159,8 +159,8 @@ public class ChatMessage extends XMLMessage {
             FormatterLoader formatterLoader = FormatterLoader.getInstance();
             String roleName = formatterLoader.getRolePropertyName();
             String userName = formatterLoader.getUserPropertyName();
-            ChatMessageFormatter cmf = formatterLoader.getChatMessageFormatter(roleName);
-            xmlStringBuffer.append(cmf.format(userName
+            ChatMessageFormatter cmf = formatterLoader.getChatMessageFormatter(((String[]) chatProfileProperties.get(roleName))[0]);
+            xmlStringBuffer.append(cmf.format(((String[]) chatProfileProperties.get(userName))[0]
                 , XMLMessageHelper.formatDate(context, getTimestamp()), chatText));
             xmlStringBuffer.append("]]></formatted_chat_text>");
 

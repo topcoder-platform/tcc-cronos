@@ -133,12 +133,12 @@ public class MessengerImpl implements Messenger {
                 }
             }
 
-            // Post the message into the message pool of the user.
-            pool.push(userId, msg);
-
             // Set the user with specified <c>userId</c> as one of the recipients of the message
             // if message's recipients set does not contain this user id.
             msg.addRecipient(new Long(userId));
+
+            // Post the message into the message pool of the user.
+            pool.push(userId, msg);
         } catch (PoolNotRegisteredException e) {
             throw new MessengerException("The message pool is not registered:", e);
         } catch (ChatContactManagementException e) {
@@ -187,15 +187,16 @@ public class MessengerImpl implements Messenger {
                     return;
                 }
             }
+            // Set the user with specified <c>userId</c> as one of the recipients of the message
+            // if message's recipients set does not contain this user id.
+            msg.addRecipient(new Long(userId));
+
             // Post the message into the the user's session message pool.
             pool.push(userId, sessionId, msg);
 
             // Track the message
             tracker.track(msg, new long[]{userId}, sessionId);
 
-            // Set the user with specified <c>userId</c> as one of the recipients of the message
-            // if message's recipients set does not contain this user id.
-            msg.addRecipient(new Long(userId));
         } catch (PoolNotRegisteredException e) {
             throw new MessengerException("The message pool is not registered:", e);
         } catch (ChatContactManagementException e) {
@@ -254,12 +255,12 @@ public class MessengerImpl implements Messenger {
             int userIdsIndex = 0;
             for (Iterator userIdsIterator = userIdsSet.iterator(); userIdsIterator.hasNext(); userIdsIndex++) {
                 userIds[userIdsIndex] = ((Long) userIdsIterator.next()).longValue();
-                // Post the message into the user's session message pool.
-                pool.push(userIds[userIdsIndex], sessionId, msg);
                 // Set the user with specified <c>userId</c> as one of the recipients of the message
                 // if message's recipients set does not contain this user id and set the user with
                 // specified <c>userIds[userIdsIndex]</c>.
                 msg.addRecipient(new Long(userIds[userIdsIndex]));
+                // Post the message into the user's session message pool.
+                pool.push(userIds[userIdsIndex], sessionId, msg);
             }
 
             // Track the message if there are any userIds to track.
@@ -353,12 +354,13 @@ public class MessengerImpl implements Messenger {
                     // Set the elements of the array with the values retrieved from userIdsSet
                     userIds[userIdsIndex] = ((Long) userIdsIterator.next()).longValue();
                 }
-                // Post the message into the user's session message pool.
-                pool.push(userIds[userIdsIndex], sessionId, msg);
                 // Set the user with specified <c>userId</c> as one of the recipients of the message
                 // if message's recipients set does not contain this user id and set the user with
                 // specified <c>userIds[userIdsIndex]</c>.
                 msg.addRecipient(new Long(userIds[userIdsIndex]));
+
+                // Post the message into the user's session message pool.
+                pool.push(userIds[userIdsIndex], sessionId, msg);
             }
 
             // Track the message.
