@@ -97,7 +97,7 @@ orpheus.leaderboardClick = function leaderboardClick() {
 	orpheus.openPopup("leaderboard", this.service.getWorkingGame());
 };
 
-
+/** Implements the Domain Test button action. */
 orpheus.testDomainClick = function() {
    	var window = null;
 	if (orpheus.window.content.name != POPUP_NAME) {
@@ -226,7 +226,9 @@ orpheus.show = function() {
 	orpheus.disableButtons(!orpheus.service.isWorkingGameSet());
 	
 	if (orpheus.window.content.name == POPUP_NAME) {
-		disableElement("oTestDoamin", true);		
+		disableElement("oTestDoamin", true);
+		hideElement("oPageCorrect", true, doc);
+		hideElement("oPageIncorrect", true, doc);		
 	}
 	
 };
@@ -258,13 +260,21 @@ orpheus.onPageLoad = function (event)  {
    		orpheus.targetPageStatusChage(result);
    	}
 }
-
+/**
+ * Event handler for tab change event. In response to this event the active tab is checked
+ * for clue.
+ * @param event never used.
+ */
 orpheus.onTabChange = function (event) {
 	var browser = gBrowser.getBrowserAtIndex(gBrowser.mTabContainer.selectedIndex);
 	var result = orpheus.service.isURLCorrect(browser.contentDocument.location);
 	orpheus.targetPageStatusChage(result);
  }
 
+/**
+ * This is a helper method that changes the icon status to 'green' if page is correct and 'red' if is not.
+ * @param isPageCorrect flag indicating if the loaded page contains target object.
+ */ 
 orpheus.targetPageStatusChage = function (isPageCorrect) {
   		var doc = orpheus.window.document;
    		if (isPageCorrect) {
