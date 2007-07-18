@@ -9,8 +9,10 @@ import com.topcoder.web.frontcontroller.HandlerExecutionException;
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.user.LoginHandler;
 import com.topcoder.user.profile.UserProfile;
+import com.orpheus.game.server.OrpheusOnlineStatusTracker;
 
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>A custom handler which is intended to verify if the current session hasn't expired. If so the handler will
@@ -63,11 +65,18 @@ public class SessionValidationHandler extends AbstractGameServerHandler implemen
         if (context == null) {
             throw new IllegalArgumentException("The parameter [context] is NULL");
         }
-        HttpSession session = context.getRequest().getSession(false);
+        HttpServletRequest request = context.getRequest();
+        HttpSession session = request.getSession(false);
         if (session != null) {
             UserProfile user = LoginHandler.getAuthenticatedUser(session);
             if (user != null) {
-                // Session is active and user is logged to application
+                // Session is active and user is logged to application, track the request if it is not already tracked
+                Object requestTrackedFlag = request.getAttribute("REQUEST_TRACKED");
+                if (requestTrackedFlag == null) {
+                    OrpheusOnlineStatusTracker tracker = getOnlineStatusTracker(session);
+                    tracker.requestArrived(user, session);
+                    request.setAttribute("REQUEST_TRACKED", Boolean.TRUE);
+                }
                 return null;
             }
         }

@@ -280,5 +280,11 @@
         <function-class>com.orpheus.game.server.admin.OrpheusAdminFunctions</function-class>
         <function-signature>java.lang.Long getLong(long)</function-signature>
     </function>
+
+    <function>
+        <name>convertTime</name>
+        <function-class>com.orpheus.game.server.admin.OrpheusAdminFunctions</function-class>
+        <function-signature>java.lang.String convertTime(long)</function-signature>
+    </function>
 </taglib>
 

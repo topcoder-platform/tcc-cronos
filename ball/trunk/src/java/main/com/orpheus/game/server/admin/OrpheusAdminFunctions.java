@@ -744,6 +744,36 @@ public class OrpheusAdminFunctions {
     }
 
     /**
+     * <p>Converts the specified time expressed in milliseconds to a textual presentation.</p>
+     *
+     * @param time a <code>long</code> providing the time to convert.
+     * @return a <code>String</code> providing the textual presentation of specified time.
+     */
+    public static String convertTime(long time) {
+        long days = time / (24 * 60 * 60 * 1000);
+        time %= (24 * 60 * 60 * 1000);
+        long hours = time / (60 * 60 * 1000);
+        time %= (60 * 60 * 1000);
+        long minutes = time / (60 * 1000);
+
+        StringBuffer buffer = new StringBuffer();
+        if (days > 0) {
+            buffer.append(" ");
+            buffer.append(days);
+            buffer.append("d");
+        }
+        if (hours > 0) {
+            buffer.append(" ");
+            buffer.append(hours);
+            buffer.append("h");
+        }
+        buffer.append(" ");
+        buffer.append(minutes);
+        buffer.append("m");
+        return buffer.toString();
+    }
+
+    /**
      * <p>Gets the approval status.</p>
      *
      * @param approved a <code>Boolean</code> providing the approval state.

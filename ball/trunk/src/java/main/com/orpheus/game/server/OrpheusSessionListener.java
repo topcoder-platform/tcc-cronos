@@ -50,9 +50,7 @@ public class OrpheusSessionListener implements HttpSessionListener, HttpSessionA
         HttpSession session = event.getSession();
         UserProfile user = LoginHandler.getAuthenticatedUser(session);
         if (user != null) {
-            ServletContext context = session.getServletContext();
-            OrpheusOnlineStatusTracker tracker
-                = (OrpheusOnlineStatusTracker) context.getAttribute(OrpheusOnlineStatusTracker.CONTEXT_ATTRIBUTE_NAME);
+            OrpheusOnlineStatusTracker tracker = getOnlineStatusTracker(session);
             tracker.userLoggedOut(user, session);
         }
     }
@@ -67,9 +65,7 @@ public class OrpheusSessionListener implements HttpSessionListener, HttpSessionA
         HttpSession session = event.getSession();
         if ("user_profile".equals(event.getName())) {
             UserProfile user = (UserProfile) event.getValue();
-            ServletContext context = session.getServletContext();
-            OrpheusOnlineStatusTracker tracker
-                = (OrpheusOnlineStatusTracker) context.getAttribute(OrpheusOnlineStatusTracker.CONTEXT_ATTRIBUTE_NAME);
+            OrpheusOnlineStatusTracker tracker = getOnlineStatusTracker(session);
             tracker.userLoggedIn(user, session);
         }
     }
@@ -88,5 +84,16 @@ public class OrpheusSessionListener implements HttpSessionListener, HttpSessionA
      * @param event a <code>HttpSessionBindingEvent</code> providing the details for the event.
      */
     public void attributeReplaced(HttpSessionBindingEvent event) {
+    }
+
+    /**
+     * <p>Gets the tracker for the online status of the users logged to server.</p>
+     *
+     * @param session an <code>HttpSession</code> representing the current session.
+     * @return a <code>OrpheusOnlineStatusTracker</code> to be used for tracking the online status of the users.
+     */
+    private OrpheusOnlineStatusTracker getOnlineStatusTracker(HttpSession session) {
+        ServletContext context = session.getServletContext();
+        return (OrpheusOnlineStatusTracker) context.getAttribute(OrpheusOnlineStatusTracker.CONTEXT_ATTRIBUTE_NAME);
     }
 }

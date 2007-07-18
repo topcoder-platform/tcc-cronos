@@ -1,4 +1,3 @@
-<%@ page import="java.util.Date" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="fmt" %>
@@ -62,94 +61,43 @@
 
 <body id="page" onload="setTimeout('updateList()', 60 * 1000)">
 <div id="container">
-<c:set var="subbar" value="games" scope="page"/>
-<%@ include file="header.jsp" %>
-<div id="wrap">
-<div id="breadcrumb-admin">
-    &raquo; Game Management &nbsp; <span class="active"> &raquo; Online Status</span>
-    </div>
+    <c:set var="subbar" value="games" scope="page"/>
+    <%@ include file="header.jsp" %>
+    <div id="wrap">
+        <div id="breadcrumb-admin">
+            &raquo; Game Management &nbsp; <span class="active"> &raquo; Online Status</span>
+        </div>
 
-<div id="data-table-admin">
-    <form action="${ctx}/server/admin/report/showLog.do" name="LogForm" id="LogForm" method="POST"
-          target="OrpheusLog">
-        <input type="hidden" name="startDate" value=""/>
-        <input type="hidden" name="endDate" value=""/>
-        <input type="hidden" name="dateFormat" value="${dateFormat}"/>
-        <input type="hidden" name="handle" value=""/>
-        <ul>
-            <!-- Players Block Start -->
-            <li class="open" id="blockHeader0">
-                <a href="#" onclick="clickBlock(0);return false;">Players</a>
-            </li>
-            <li class="admin-block" id="blockDetails0">
-                <table border="0" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <th width="50%">Handle</th>
-                        <th width="50%"></th>
-                    </tr>
-                    <c:forEach items="${activePlayers}" var="user">
-                        <tr>
-                            <td>
-                                <a href="#" onclick="submitLogForm('${admin:getHandle(user)}');return false;">
-                                        ${admin:getHandle(user)}
-                                </a>
-                            </td>
-                            <td>&nbsp;</td>
-                        </tr>
-                    </c:forEach>
-                </table>
-            </li>
-            <!-- Players Block End -->
-            <!-- Sponsors Block Start -->
-            <li class="open" id="blockHeader1">
-                <a href="#" onclick="clickBlock(1);return false;">Sponsors</a>
-            </li>
-            <li class="admin-block" id="blockDetails1">
-                <table border="0" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <th width="50%">Handle</th>
-                        <th width="50%"></th>
-                    </tr>
-                    <c:forEach items="${activeSponsors}" var="user">
-                        <tr>
-                            <td>
-                                <a href="#" onclick="submitLogForm('${admin:getHandle(user)}');return false;">
-                                        ${admin:getHandle(user)}
-                                </a>
-                            </td>
-                            <td>&nbsp;</td>
-                        </tr>
-                    </c:forEach>
-                </table>
-            </li>
-            <!-- Sponsors Block End -->
-            <!-- Admins Block Start -->
-            <li class="open" id="blockHeader2">
-                <a href="#" onclick="clickBlock(2);return false;">Administrators</a>
-            </li>
-            <li class="admin-block" id="blockDetails2">
-                <table border="0" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <th width="50%">Handle</th>
-                        <th width="50%"></th>
-                    </tr>
-                    <c:forEach items="${activeAdmins}" var="user">
-                        <tr>
-                            <td>
-                                <a href="#" onclick="submitLogForm('${admin:getHandle(user)}');return false;">
-                                        ${admin:getHandle(user)}
-                                </a>
-                            </td>
-                            <td>&nbsp;</td>
-                        </tr>
-                    </c:forEach>
-                </table>
-            </li>
-            <!-- Sponsors Block End -->
-        </ul>
-    </form>
-  </div>
-</div>
+        <div id="data-table-admin">
+            <form action="${ctx}/server/admin/report/showLog.do" name="LogForm" id="LogForm" method="POST"
+                  target="OrpheusLog">
+                <input type="hidden" name="startDate" value=""/>
+                <input type="hidden" name="endDate" value=""/>
+                <input type="hidden" name="dateFormat" value="${dateFormat}"/>
+                <input type="hidden" name="handle" value=""/>
+                <ul>
+                    <!-- Players Block Start -->
+                    <c:set var="groupName" value="Players" scope="request"/>
+                    <c:set var="blockNum" value="0" scope="request"/>
+                    <c:set var="activeSessions" value="${activePlayers}" scope="request"/>
+                    <%@ include file="includes/online-status-group.jsp" %>
+                    <!-- Players Block End -->
+                    <!-- Sponsors Block Start -->
+                    <c:set var="groupName" value="Sponsors" scope="request"/>
+                    <c:set var="blockNum" value="1" scope="request"/>
+                    <c:set var="activeSessions" value="${activeSponsors}" scope="request"/>
+                    <%@ include file="includes/online-status-group.jsp" %>
+                    <!-- Sponsors Block End -->
+                    <!-- Admins Block Start -->
+                    <c:set var="groupName" value="Administrators" scope="request"/>
+                    <c:set var="blockNum" value="2" scope="request"/>
+                    <c:set var="activeSessions" value="${activeAdmins}" scope="request"/>
+                    <%@ include file="includes/online-status-group.jsp" %>
+                    <!-- Admins Block End -->
+                </ul>
+            </form>
+        </div>
+    </div>
 </div>
 <%@ include file="footer.jsp" %>
 </body>

@@ -29,6 +29,7 @@ import com.orpheus.game.persistence.SlotCompletion;
 import com.orpheus.game.persistence.DomainTarget;
 import com.orpheus.game.server.GamePlayInfo;
 import com.orpheus.game.server.OrpheusFunctions;
+import com.orpheus.game.server.OrpheusOnlineStatusTracker;
 import com.orpheus.game.server.util.GameDataEJBAdapter;
 import com.orpheus.game.server.util.AdminDataEJBAdapter;
 import com.topcoder.message.messenger.MessageAPI;
@@ -1042,6 +1043,17 @@ public class AbstractGameServerHandler {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         stringImage.generate(target.getIdentifierText(), stream);
         return gameDataEJBAdapter.recordBinaryObject("clue_image.png", "image/png", stream.toByteArray());
+    }
+
+    /**
+     * <p>Gets the tracker for the online status of the users logged to server.</p>
+     *
+     * @param session an <code>HttpSession</code> representing the current session.
+     * @return a <code>OrpheusOnlineStatusTracker</code> to be used for tracking the online status of the users.
+     */
+    protected OrpheusOnlineStatusTracker getOnlineStatusTracker(HttpSession session) {
+        ServletContext context = session.getServletContext();
+        return (OrpheusOnlineStatusTracker) context.getAttribute(OrpheusOnlineStatusTracker.CONTEXT_ATTRIBUTE_NAME);
     }
 
     /**
