@@ -3,11 +3,10 @@
  */
 package com.cronos.im.logic;
 
+import com.topcoder.chat.message.pool.MessagePool;
+import com.topcoder.chat.status.ChatStatusEventListener;
 import com.topcoder.database.statustracker.Entity;
 import com.topcoder.database.statustracker.Status;
-import com.topcoder.chat.status.ChatStatusEventListener;
-import com.topcoder.chat.status.ChatUserStatusTracker;
-import com.topcoder.chat.message.pool.MessagePool;
 import com.topcoder.util.log.Level;
 
 /**
@@ -32,13 +31,6 @@ public class UserStatusEventListener implements ChatStatusEventListener {
 
     /**
      * <p>
-     * Represents the ChatUserStatusTracker where this event listener belongs to. It is not null.
-     * </p>
-     */
-    private final ChatUserStatusTracker chatUserStatusTracker;
-
-    /**
-     * <p>
      * Represents the message pool used to register or un-register the user. It is not null.
      * </p>
      */
@@ -55,23 +47,18 @@ public class UserStatusEventListener implements ChatStatusEventListener {
      * <p>
      * Constructor to create UserStatusEventListener with given parameters.
      * </p>
-     * 
-     * 
-     * @param userStatusTracker
-     *            ChatUserStatusTracker instance where this event listener belongs to. Can't be null.
      * @param messagePool
      *            message pool instance used to register or un-register the message pool. Can't be null.
      * @param logger
      *            logger instance used to log the operations. Can be null.
+     * 
+     * 
      * @exception IllegalArgumentException
      *                If the messagePool or userStatusTracker is null.
      */
-    public UserStatusEventListener(ChatUserStatusTracker userStatusTracker, MessagePool messagePool,
-            IMLogger logger) {
-        IMHelper.checkNull(userStatusTracker, "userStatusTracker");
+    public UserStatusEventListener(MessagePool messagePool, IMLogger logger) {
         IMHelper.checkNull(messagePool, "messagePool");
 
-        this.chatUserStatusTracker = userStatusTracker;
         this.logger = logger;
         this.messagePool = messagePool;
     }
@@ -106,17 +93,25 @@ public class UserStatusEventListener implements ChatStatusEventListener {
         IMHelper.checkNull(entity, "entity");
         IMHelper.checkNull(newStatus, "newStatus");
         if (entity.getId() != IMHelper.ENTITY_USER) {
-            throw new IllegalArgumentException("The entity is not user entity.");
+            return;
         }
+        
+        logger.log(Level.DEBUG, "user status changed [" + id + "] to  [" + newStatus.getName() + "].");
 
         try {
-            if (oldStatus != null && oldStatus.getId() == IMHelper.USER_STATUS_OFFLINE
-                    && newStatus.getId() == IMHelper.USER_STATUS_ONLINE) {
+            if (oldStatus == null && newStatus.getId() == IMHelper.USER_STATUS_ONLINE) {
                 // 1. If oldStatus is "OFFLINE" and the newStatus is "ONLINE".
                 messagePool.register(id);
                 if (logger != null) {
                     logger.log(Level.INFO, "Register Message Pool for User", new String[] { "User - " + id });
                 }
+            } else if ((oldStatus.getId() == IMHelper.USER_STATUS_OFFLINE
+                    && newStatus.getId() == IMHelper.USER_STATUS_ONLINE)) {
+                    // 1. If oldStatus is "OFFLINE" and the newStatus is "ONLINE".
+                    messagePool.register(id);
+                    if (logger != null) {
+                        logger.log(Level.INFO, "Register Message Pool for User", new String[] { "User - " + id });
+                    }
             } else if (newStatus.getId() == IMHelper.USER_STATUS_OFFLINE) {
                 // 2. If newStatus is "OFFLINE".
                 messagePool.unregister(id);
@@ -147,18 +142,4 @@ public class UserStatusEventListener implements ChatStatusEventListener {
         return this.messagePool;
     }
 
-    /**
-     * <p>
-     * Gets the ChatUserStatusTracker where this event listener belongs to.
-     * </p>
-     * <p>
-     * The return value will never be null.
-     * </p>
-     * 
-     * 
-     * @return ChatUserStatusTracker where this event listener belongs to.
-     */
-    public ChatUserStatusTracker getChatUserStatusTracker() {
-        return this.chatUserStatusTracker;
-    }
 }

@@ -458,12 +458,11 @@ public class IMServiceHandler implements ServiceHandler {
     public void onServiced(ServiceEvent serviceEvent) throws ServiceHandleException {
         IMHelper.checkNull(serviceEvent, "serviceEvent");
 
+        // get sessionId, requesterUserId
+        long sessionId = ((Long) serviceEvent.getRequester().getProperty(SESSION_ID_KEY)).longValue();
+        long requesterUserId = ((Long) serviceEvent.getRequester().getProperty(USER_ID_KEY)).longValue();
+
         try {
-            // get sessionId, requesterUserId
-            long sessionId = ((Long) serviceEvent.getRequester().getProperty(SESSION_ID_KEY))
-                .longValue();
-            long requesterUserId = ((Long) serviceEvent.getRequester().getProperty(USER_ID_KEY))
-                .longValue();
 
             // get chat session
             ChatSession chatSession = chatSessionManager.getSession(sessionId);
@@ -481,19 +480,6 @@ public class IMServiceHandler implements ServiceHandler {
                         new String[] {"User - " + requesterUserId});
                 }
 
-                chatSessionManager.removeUserFromSession(chatSession, requesterUserId);
-                if (logger != null) {
-                    logger.log(Level.INFO, "Remove User From Session", new String[] {"User - "
-                        + requesterUserId});
-                }
-
-                // 103 - OFFLINE.
-                Status offlineStatus = new Status(IMHelper.USER_STATUS_OFFLINE);
-                chatUserStatusTracker.setStatus(requesterUserId, offlineStatus);
-                if (logger != null) {
-                    logger.log(Level.INFO, "Change User Status to OFFLINE", new String[] {"User - "
-                        + requesterUserId});
-                }
             } else {
                 // get responderUserId
                 long responderUserId = ((Long) serviceEvent.getResponder().getProperty(USER_ID_KEY))
@@ -501,16 +487,9 @@ public class IMServiceHandler implements ServiceHandler {
                 logger.log(Level.INFO, "IMServiceHandler.onServiced", new long[] {requesterUserId,
                     responderUserId}, new long[] {sessionId});
 
-                ServiceElement key = new ServiceElement();
-                key.setProperty(USER_ID_KEY, new Long(requesterUserId));
-                key.setProperty(CATEGORY_KEY, serviceEvent.getCategory());
-                // if the responder is not the same with that in responderMap, throw
-                // IllegalArgumentException.
-                if (responderUserId != ((Long) ((ServiceElement) this.responderMap.get(key))
-                    .getProperty(USER_ID_KEY)).longValue()) {
-                    throw new IllegalArgumentException(
-                        "The responder user id is not the same as that passed to the onToBeServiced method.");
-                }
+                
+                ServiceElement key = createKey(serviceEvent, requesterUserId);
+                responderMap.put(key, serviceEvent.getResponder());
 
                 chatSessionManager.addUserToSession(chatSession, responderUserId);
                 if (logger != null) {
@@ -530,16 +509,17 @@ public class IMServiceHandler implements ServiceHandler {
                         new String[] {"Session - " + sessionId});
                 }
 
-                long[] requestedUsers = chatSession.getRequestedUsers();
-                for (int i = 0; i < requestedUsers.length; i++) {
-                    SessionUnavailableMessage unavailableMsg2 = new SessionUnavailableMessage();
-                    unavailableMsg2.setSender(new Long(-1));
-                    unavailableMsg2.setChatSessionId(sessionId);
-                    messenger.postMessage(unavailableMsg2, requestedUsers[i]);
-                    if (logger != null) {
-                        logger.log(Level.INFO, "Post SessionUnavailableMessage to User",
-                            new String[] {"User - " + requestedUsers[i]});
-                    }
+            }
+            
+            long[] requestedUsers = chatSession.getRequestedUsers();
+            for (int i = 0; i < requestedUsers.length; i++) {
+                SessionUnavailableMessage unavailableMsg2 = new SessionUnavailableMessage();
+                unavailableMsg2.setSender(new Long(-1));
+                unavailableMsg2.setChatSessionId(sessionId);
+                messenger.postMessage(unavailableMsg2, requestedUsers[i]);
+                if (logger != null) {
+                    logger.log(Level.INFO, "Post SessionUnavailableMessage to User",
+                        new String[] {"User - " + requestedUsers[i]});
                 }
             }
         } catch (IllegalArgumentException e) {
@@ -555,6 +535,13 @@ public class IMServiceHandler implements ServiceHandler {
             // wrap it
             throw new ServiceHandleException("Fail to perform the onServiced operation.", e);
         }
+    }
+
+    private ServiceElement createKey(ServiceEvent serviceEvent, long requesterUserId) {
+        ServiceElement key = new ServiceElement();
+        key.setProperty(USER_ID_KEY, new Long(requesterUserId));
+        key.setProperty(CATEGORY_KEY, serviceEvent.getCategory());
+        return key;
     }
 
     /**

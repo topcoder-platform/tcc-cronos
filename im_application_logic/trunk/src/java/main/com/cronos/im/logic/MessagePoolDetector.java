@@ -268,13 +268,18 @@ public class MessagePoolDetector {
             // Remove the user as requester and responder from the service engine
             ServiceElement user = new ServiceElement();
             user.setProperty(IMServiceHandler.USER_ID_KEY, new Long(result[i].getUser()));
-            serviceEngine.removeRequester(user);
-            if (logger != null) {
-                logger.log(Level.INFO, "Remove Requester", new String[] { "User - " + result[i].getUser() });
+            try {
+                serviceEngine.removeRequester(user);
+                if (logger != null) {
+                    logger.log(Level.INFO, "Remove Requester", new String[] { "User - " + result[i].getUser() });
+                }
+            } catch (Exception e) {
+                // TODO: handle exception
             }
-            serviceEngine.removeResponder(user);
-            if (logger != null) {
-                logger.log(Level.INFO, "Remove Responder", new String[] { "User - " + result[i].getUser() });
+            try {
+                serviceEngine.removeResponder(user);
+            } catch (Exception e) {
+                // TODO: handle exception
             }
             // Remove user from all sessions
             sessionManager.removeUserFromSessions(result[i].getUser());

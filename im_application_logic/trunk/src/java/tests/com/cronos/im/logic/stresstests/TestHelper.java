@@ -3,8 +3,6 @@
  */
 package com.cronos.im.logic.stresstests;
 
-import java.util.Iterator;
-
 import com.topcoder.util.config.ConfigManager;
 
 /**
@@ -75,11 +73,19 @@ final class TestHelper {
      * The path of configuration files for this test case.
      */
     private static final String[] CONFIG_FILES = new String[] {
-            "test_files/stress_test_files/ChatSessionStatusTracker.xml",
-            "test_files/stress_test_files/ChatUserStatusTracker.xml",
-            "test_files/stress_test_files/ChatStatusTracker.xml", "test_files/stress_test_files/Logging.xml",
-            "test_files/stress_test_files/ObjectFactory.xml", "test_files/stress_test_files/MessagePoolDetector.xml",
-            "test_files/stress_test_files/Scheduler.xml", "test_files/stress_test_files/ServiceEngine.xml" };
+            "stress_test_files/ChatSessionStatusTracker.xml",
+            "stress_test_files/ChatUserStatusTracker.xml",
+            "stress_test_files/ChatStatusTracker.xml", "stress_test_files/Logging.xml",
+            "stress_test_files/ObjectFactory.xml", "stress_test_files/MessagePoolDetector.xml",
+            "stress_test_files/Scheduler.xml" };
+
+    /**
+     * The namespaces in the above configuration files.
+     */
+    private static final String[] NAMESPACES = new String[] { "com.cronos.im.logic.objectfactory",
+            "com.topcoder.util.log", "com.cronos.im.logic.MessagePoolDetector", "com.cronos.im.logic.IMServiceHandler",
+            "com.topcoder.chat.status", "com.topcoder.chat.status.session", "com.topcoder.chat.status.user",
+            "com.cronos.im.logic.UserSessionEventListener", "com.topcoder.util.scheduler" };
 
     /**
      * Private constructor to prevent creation.
@@ -106,9 +112,10 @@ final class TestHelper {
      */
     static void clearConfig() throws Exception {
         ConfigManager cm = ConfigManager.getInstance();
-        for (Iterator it = cm.getAllNamespaces(); it.hasNext();) {
-            String ns = (String) it.next();
-            cm.removeNamespace(ns);
+        for (int loop = 0; loop < NAMESPACES.length; loop++) {
+            if (cm.existsNamespace(NAMESPACES[loop])) {
+                cm.removeNamespace(NAMESPACES[loop]);
+            }
         }
     }
 

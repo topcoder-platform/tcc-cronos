@@ -4,7 +4,6 @@
 package com.cronos.im.logic;
 
 import com.topcoder.util.config.ConfigManager;
-import java.util.Iterator;
 
 /**
  * Helper class for the unit tests.
@@ -18,12 +17,35 @@ final class TestHelper {
      * The path of configuration files for this test case.
      */
     private static final String[] CONFIG_FILES = new String[] {
-        "test_files/ChatUserStatusTracker.xml",
-        "test_files/ChatStatusTracker.xml", "test_files/ChatSessionStatusTracker.xml",
-        "test_files/IMServiceHandler.xml", "test_files/Logging.xml", "test_files/ObjectFactory.xml",
-        "test_files/UserSessionEventListener.xml", "test_files/MessagePoolDetector.xml",
-        "test_files/Scheduler.xml", "test_files/ServiceEngine.xml"};
+        "ChatUserStatusTracker.xml",
+        "ChatStatusTracker.xml", "ChatSessionStatusTracker.xml",
+        "IMServiceHandler.xml", "Logging.xml", "ObjectFactory.xml",
+        "UserSessionEventListener.xml", "MessagePoolDetector.xml",
+        "Scheduler.xml"};
 
+    /**
+     * The namespaces in the above configuration files.
+     */
+    private static final String[] NAMESPACES = new String[] {
+        "com.cronos.im.logic.objectfactory",
+        "com.topcoder.util.log", "com.cronos.im.logic.MessagePoolDetector",
+        "com.cronos.im.logic.MessagePoolDetector.Invalid1",
+        "com.cronos.im.logic.MessagePoolDetector.Invalid2",
+        "com.cronos.im.logic.MessagePoolDetector.Invalid3",
+        "com.cronos.im.logic.MessagePoolDetector.Invalid4",
+        "com.cronos.im.logic.MessagePoolDetector.Invalid5",
+        "com.cronos.im.logic.MessagePoolDetector.Invalid6",
+        "com.cronos.im.logic.MessagePoolDetector.Invalid7",
+        "com.cronos.im.logic.MessagePoolDetector.Invalid8",
+        "com.cronos.im.logic.MessagePoolDetector.Invalid9",
+        "com.cronos.im.logic.MessagePoolDetector.Invalid10", "com.cronos.im.logic.IMServiceHandler",
+        "com.cronos.im.logic.IMServiceHandler.Invalid1", "com.cronos.im.logic.IMServiceHandler.Invalid2",
+        "com.cronos.im.logic.IMServiceHandler.Invalid3", "com.cronos.im.logic.IMServiceHandler.Invalid4",
+        "com.topcoder.chat.status", "com.topcoder.chat.status.session", "com.topcoder.chat.status.user",
+        "com.cronos.im.logic.UserSessionEventListener",
+        "com.cronos.im.logic.UserSessionEventListener.Invalid1",
+        "com.cronos.im.logic.UserSessionEventListener.Invalid2",
+        "com.cronos.im.logic.UserSessionEventListener.Invalid3", "com.topcoder.util.scheduler"};
 
     /**
      * Private constructor to prevent creation.
@@ -52,9 +74,10 @@ final class TestHelper {
      */
     static void clearConfig() throws Exception {
         ConfigManager cm = ConfigManager.getInstance();
-        for (Iterator it = cm.getAllNamespaces(); it.hasNext();) {
-            String ns = (String) it.next();
-            cm.removeNamespace(ns);
+        for (int loop = 0; loop < NAMESPACES.length; loop++) {
+            if (cm.existsNamespace(NAMESPACES[loop])) {
+                cm.removeNamespace(NAMESPACES[loop]);
+            }
         }
     }
 

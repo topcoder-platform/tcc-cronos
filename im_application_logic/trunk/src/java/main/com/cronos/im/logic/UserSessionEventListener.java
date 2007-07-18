@@ -11,26 +11,34 @@ import com.topcoder.chat.session.ChatSessionEventListener;
 import com.topcoder.chat.session.ChatSessionManager;
 import com.cronos.im.messenger.Messenger;
 import com.topcoder.chat.status.ChatSessionStatusTracker;
+import com.topcoder.chat.user.profile.ChatUserProfile;
+import com.topcoder.chat.user.profile.ChatUserProfileManager;
+import com.topcoder.chat.user.profile.ChatUserProfilePersistenceException;
+import com.topcoder.chat.user.profile.ProfileKeyManagerPersistenceException;
+import com.topcoder.chat.user.profile.ProfileKeyNotFoundException;
+import com.topcoder.chat.user.profile.ProfileNotFoundException;
+import com.topcoder.chat.user.profile.UnrecognizedDataSourceTypeException;
 import com.topcoder.util.log.Level;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
- * This class implements ChatSessionEventListener. It is used to deal with the change event of user session.
- * Here's its logic:
+ * This class implements ChatSessionEventListener. It is used to deal with the change event of user session. Here's its
+ * logic:
  * </p>
  * <p>
  * When a user is requested, post the Ask For Chat Message directly to the user.
  * </p>
  * <p>
- * When a user is added to session, and if the session status is OPEN, register a session message pool for the
- * user. Post Presence Message of other users to this user, and post Presence Message of this user to other
- * users.
+ * When a user is added to session, and if the session status is OPEN, register a session message pool for the user.
+ * Post Presence Message of other users to this user, and post Presence Message of this user to other users.
  * </p>
  * <p>
- * When a user is removed from session, and if the session status is OPEN, unregister the session message pool
- * for the user. Post Presence Message of this user to other users. For any session status, if the removed
- * user is the last user of the session, change the session status to CLOSE.
+ * When a user is removed from session, and if the session status is OPEN, unregister the session message pool for the
+ * user. Post Presence Message of this user to other users. For any session status, if the removed user is the last user
+ * of the session, change the session status to CLOSE.
  * </p>
  * <p>
  * Thread-safety: This class is immutable and thread safe.
@@ -44,8 +52,8 @@ public class UserSessionEventListener implements ChatSessionEventListener {
 
     /**
      * <p>
-     * Represents the default namespace to load the acknowledgeTime configuration if namespace is not provided
-     * in the constructor.
+     * Represents the default namespace to load the acknowledgeTime configuration if namespace is not provided in the
+     * constructor.
      * </p>
      */
     public static final String DEFAULT_NAMESPACE = "com.cronos.im.logic.UserSessionEventListener";
@@ -59,6 +67,13 @@ public class UserSessionEventListener implements ChatSessionEventListener {
 
     /**
      * <p>
+     * Represents the ChatSessionManager where this event listener belongs to. It is not null.
+     * </p>
+     */
+    private final ChatUserProfileManager chatUserProfileManager;
+
+    /**
+     * <p>
      * Messagr used to send messages in this class. It is not null.
      * </p>
      */
@@ -66,8 +81,7 @@ public class UserSessionEventListener implements ChatSessionEventListener {
 
     /**
      * <p>
-     * Chat session status tracker used to get the session status or change the session status. It is not
-     * null.
+     * Chat session status tracker used to get the session status or change the session status. It is not null.
      * </p>
      */
     private final ChatSessionStatusTracker chatSessionStatusTracker;
@@ -92,21 +106,18 @@ public class UserSessionEventListener implements ChatSessionEventListener {
      * </p>
      * 
      * 
-     * @param sessionManager
-     *            ChatSessionManager instance where this event listener belongs to. Can't be null.
-     * @param messenger
-     *            message pool instance used to send messages. Can't be null.
-     * @param sessionStatusTracker
-     *            chat session status tracker used to retrieve/change the session status. Can't be null.
-     * @param acknowledgeTime
-     *            acknowledge time value in the AskForChatMessage.
-     * @param logger
-     *            logger instance used to log the operations. Can be null.
-     * @exception IllegalArgumentException
-     *                if any of the arguments except the logger is null, or the acknowledge is negative.
+     * @param sessionManager ChatSessionManager instance where this event listener belongs to. Can't be null.
+     * @param messenger message pool instance used to send messages. Can't be null.
+     * @param sessionStatusTracker chat session status tracker used to retrieve/change the session status. Can't be
+     *            null.
+     * @param acknowledgeTime acknowledge time value in the AskForChatMessage.
+     * @param logger logger instance used to log the operations. Can be null.
+     * @param userManager TODO
+     * @exception IllegalArgumentException if any of the arguments except the logger is null, or the acknowledge is
+     *                negative.
      */
     public UserSessionEventListener(ChatSessionManager sessionManager, Messenger messenger,
-            ChatSessionStatusTracker sessionStatusTracker, long acknowledgeTime, IMLogger logger) {
+        ChatSessionStatusTracker sessionStatusTracker, long acknowledgeTime, IMLogger logger, ChatUserProfileManager userManager) {
         IMHelper.checkNull(sessionManager, "sessionManager");
         IMHelper.checkNull(messenger, "messenger");
         IMHelper.checkNull(sessionStatusTracker, "sessionStatusTracker");
@@ -116,6 +127,7 @@ public class UserSessionEventListener implements ChatSessionEventListener {
 
         this.acknowledgeTime = acknowledgeTime;
         this.chatSessionManager = sessionManager;
+        this.chatUserProfileManager = userManager;
         this.chatSessionStatusTracker = sessionStatusTracker;
         this.logger = logger;
         this.messenger = messenger;
@@ -123,64 +135,51 @@ public class UserSessionEventListener implements ChatSessionEventListener {
 
     /**
      * <p>
-     * Constructor create UserSessionEventListener with given parameters. The acknowledgeTime is initialized
-     * from the configuration with property "acknowledge_time" in the default namespace.
+     * Constructor create UserSessionEventListener with given parameters. The acknowledgeTime is initialized from the
+     * configuration with property "acknowledge_time" in the default namespace.
      * </p>
      * 
-     * @param sessionManager
-     *            ChatSessionManager instance where this event listener belongs to. Can't be null.
-     * @param messenger
-     *            message pool instance used to send messages. Can't be null.
-     * @param sessionStatusTracker
-     *            chat session status tracker used to retrieve/change the session status. Can't be null.
-     * @param logger
-     *            logger instance used to log the operations. Can be null.
-     * @exception IllegalArgumentException
-     *                if any of the arguments except the logger is null.
-     * @throws IMConfigurationException
-     *             if the configuration is incorrect.
+     * @param sessionManager ChatSessionManager instance where this event listener belongs to. Can't be null.
+     * @param messenger message pool instance used to send messages. Can't be null.
+     * @param sessionStatusTracker chat session status tracker used to retrieve/change the session status. Can't be
+     *            null.
+     * @param logger logger instance used to log the operations. Can be null.
+     * @exception IllegalArgumentException if any of the arguments except the logger is null.
+     * @throws IMConfigurationException if the configuration is incorrect.
      */
     public UserSessionEventListener(ChatSessionManager sessionManager, Messenger messenger,
-            ChatSessionStatusTracker sessionStatusTracker, IMLogger logger) throws IMConfigurationException {
-        this(sessionManager, messenger, sessionStatusTracker, logger, DEFAULT_NAMESPACE);
+        ChatSessionStatusTracker sessionStatusTracker, IMLogger logger, ChatUserProfileManager userManager) throws IMConfigurationException {
+        this(sessionManager, messenger, sessionStatusTracker, logger, DEFAULT_NAMESPACE, userManager);
     }
 
     /**
      * <p>
-     * Constructor create UserSessionEventListener with given parameters. The acknowledgeTime is initialized
-     * from the configuration with property "acknowledge_time" in the given namespace.
+     * Constructor create UserSessionEventListener with given parameters. The acknowledgeTime is initialized from the
+     * configuration with property "acknowledge_time" in the given namespace.
      * </p>
      * 
      * 
-     * @param sessionManager
-     *            ChatSessionManager instance where this event listener belongs to. Can't be null.
-     * @param messenger
-     *            message pool instance used to send messages. Can't be null.
-     * @param sessionStatusTracker
-     *            chat session status tracker used to retrieve/change the session status. Can't be null.
-     * @param logger
-     *            logger instance used to log the operations. Can be null.
-     * @param namespace
-     *            namespace used to load the acknowledge time value. Can't be null or empty.
-     * @exception IllegalArgumentException
-     *                if any of the arguments except the logger is null, or the namespace is empty.
-     * @throws IMConfigurationException
-     *             if the configuration is incorrect.
+     * @param sessionManager ChatSessionManager instance where this event listener belongs to. Can't be null.
+     * @param messenger message pool instance used to send messages. Can't be null.
+     * @param sessionStatusTracker chat session status tracker used to retrieve/change the session status. Can't be
+     *            null.
+     * @param logger logger instance used to log the operations. Can be null.
+     * @param namespace namespace used to load the acknowledge time value. Can't be null or empty.
+     * @exception IllegalArgumentException if any of the arguments except the logger is null, or the namespace is empty.
+     * @throws IMConfigurationException if the configuration is incorrect.
      */
     public UserSessionEventListener(ChatSessionManager sessionManager, Messenger messenger,
-            ChatSessionStatusTracker sessionStatusTracker, IMLogger logger, String namespace)
-            throws IMConfigurationException {
-        this(sessionManager, messenger, sessionStatusTracker, getAckTime(namespace), logger);
+        ChatSessionStatusTracker sessionStatusTracker, IMLogger logger, String namespace, ChatUserProfileManager userManager)
+        throws IMConfigurationException {
+        this(sessionManager, messenger, sessionStatusTracker, getAckTime(namespace), logger, userManager);
     }
 
     /**
      * Get acknowledge time from given namespace.
      * 
-     * @param namespace
-     *            namespace to get acknowledage time
+     * @param namespace namespace to get acknowledage time
      * @return acknowledge time from given namespace
-     * @throws IMConfigurationException
-     *             if it fail to get the time
+     * @throws IMConfigurationException if it fail to get the time
      */
     private static long getAckTime(String namespace) throws IMConfigurationException {
         IMHelper.checkString(namespace, "namespace");
@@ -204,15 +203,13 @@ public class UserSessionEventListener implements ChatSessionEventListener {
      * Any exception except IllegalArgumentException are ignored.
      * </p>
      * 
-     * @param session
-     *            ChatSession instance, null impossible
-     * @param user
-     *            user id, any possible long value
-     * @throws IllegalArgumentException
-     *             if the session is null.
+     * @param session ChatSession instance, null impossible
+     * @param user user id, any possible long value
+     * @throws IllegalArgumentException if the session is null.
      */
     public void userRequested(ChatSession session, long user) {
         IMHelper.checkNull(session, "session");
+        logger.log(Level.DEBUG, "requested session [" + session.getId() + "],  user  [" + user + "].");
 
         try {
             AskForChatMessage msg = new AskForChatMessage();
@@ -220,17 +217,36 @@ public class UserSessionEventListener implements ChatSessionEventListener {
             // set chat session id.
             msg.setChatSessionId(session.getId());
             // set the sender of the message to be system.
+            
+            long createdUser = session.getCreatedUser();
+            Map properties = getProperties(createdUser);
+            msg.setAuthorProfileProperties(properties);
+            msg.setRequestUserId(createdUser);
+            
             msg.setSender(new Long(-1));
             // set session creation time.
             msg.setSessionCreationTime(new Date());
             // set acknowledge time.
             msg.setAcknowledgeTime(new Date(System.currentTimeMillis() + acknowledgeTime));
             messenger.postMessage(msg, user);
+            
         } catch (Exception e) {
             if (logger != null) {
+                e.printStackTrace();
                 logger.log(Level.ERROR, "Fail to handle the user requested event: " + e.getMessage());
             }
         }
+    }
+
+    private Map getProperties(long createdUser) throws ProfileNotFoundException, ProfileKeyNotFoundException, ProfileKeyManagerPersistenceException, ChatUserProfilePersistenceException, UnrecognizedDataSourceTypeException {
+        ChatUserProfile profile = chatUserProfileManager.getProfile(createdUser);
+        Map properties = new HashMap();
+        String[] propertyNames = profile.getPropertyNames();
+        for (int i = 0; i < propertyNames.length; i++) {
+            String propertyName = propertyNames[i];
+            properties.put(propertyName, profile.getPropertyValue(propertyName));
+        }
+        return properties;
     }
 
     /**
@@ -247,22 +263,20 @@ public class UserSessionEventListener implements ChatSessionEventListener {
      * Any exception except IllegalArgumentException are ignored.
      * </p>
      * 
-     * @param session
-     *            ChatSession instance, null impossible
-     * @param user
-     *            user id, any possible long value
-     * @throws IllegalArgumentException
-     *             if the session is null.
+     * @param session ChatSession instance, null impossible
+     * @param user user id, any possible long value
+     * @throws IllegalArgumentException if the session is null.
      */
     public void userAdded(ChatSession session, long user) {
         IMHelper.checkNull(session, "session");
-
+        logger.log(Level.DEBUG, "userAdded session [" + session.getId() + "],  user  [" + user + "].");
+        
         try {
             if (chatSessionStatusTracker.getStatus(session.getId()).getId() == IMHelper.SESSION_STATUS_OPEN) {
                 messenger.getMessagePool().register(user, session.getId());
                 if (logger != null) {
-                    logger.log(Level.INFO, "Register MessagePool for User", new String[] { "User - " + user,
-                            "Session - " + session.getId() });
+                    logger.log(Level.INFO, "Register MessagePool for User", new String[] {"User - " + user,
+                        "Session - " + session.getId()});
                 }
 
                 // post user presence message to other users in this session.
@@ -271,12 +285,15 @@ public class UserSessionEventListener implements ChatSessionEventListener {
                 presenceMsg.setPresent(true);
                 // set sender to be the current user.
                 presenceMsg.setSender(new Long(user));
+                Map properties = getProperties(user);
+                presenceMsg.setChatProfileProperties(properties);
+                presenceMsg.setChatSessionId(session.getId());
                 // timestamp is initialized in the constructor automatically.
                 // send message to others in the session.
                 messenger.postMessageToOthers(presenceMsg, session);
                 if (logger != null) {
                     logger.log(Level.INFO, "Send PresenceMessage of this User to Others", new String[] {
-                            "User - " + user, "Session - " + session.getId() });
+                        "User - " + user, "Session - " + session.getId()});
                 }
 
                 // send presence message of other users in this session to the newly added user.
@@ -287,18 +304,23 @@ public class UserSessionEventListener implements ChatSessionEventListener {
                         // set presence to be true.
                         presenceMsg.setPresent(true);
                         // set sender to be the current userId.
+                        properties = getProperties(users[i]);
+                        presenceMsg.setChatProfileProperties(properties);
                         presenceMsg.setSender(new Long(users[i]));
+                        presenceMsg.setChatSessionId(session.getId());
                         // send message to user.
                         messenger.postMessage(presenceMsg, user, session.getId());
                     }
                 }
+                
                 if (logger != null) {
                     logger.log(Level.INFO, "Send PresenceMessage of Other Users to this User", new String[] {
-                            "User - " + user, "Session - " + session.getId() });
+                        "User - " + user, "Session - " + session.getId()});
                 }
             }
         } catch (Exception e) {
             if (logger != null) {
+                e.printStackTrace();
                 logger.log(Level.ERROR, "Fail to handle the user added event: " + e.getMessage());
             }
         }
@@ -319,15 +341,13 @@ public class UserSessionEventListener implements ChatSessionEventListener {
      * </p>
      * 
      * 
-     * @param session
-     *            ChatSession instance, null impossible
-     * @param user
-     *            user id, any possible long value
-     * @throws IllegalArgumentException
-     *             if the session is null.
+     * @param session ChatSession instance, null impossible
+     * @param user user id, any possible long value
+     * @throws IllegalArgumentException if the session is null.
      */
     public void userRemoved(ChatSession session, long user) {
         IMHelper.checkNull(session, "session");
+        logger.log(Level.DEBUG, "userRemoved session [" + session.getId() + "],  user  [" + user + "].");
 
         try {
             long[] users = session.getActiveUsers();
@@ -335,20 +355,23 @@ public class UserSessionEventListener implements ChatSessionEventListener {
             if (chatSessionStatusTracker.getStatus(session.getId()).getId() == IMHelper.SESSION_STATUS_OPEN) {
                 messenger.getMessagePool().unregister(user, session.getId());
                 if (logger != null) {
-                    logger.log(Level.INFO, "Un-register MessagePool for User", new String[] {
-                            "User - " + user, "Session - " + session.getId() });
+                    logger.log(Level.INFO, "Un-register MessagePool for User", new String[] {"User - " + user,
+                        "Session - " + session.getId()});
                 }
 
                 // post user not-presence message to other users.
                 PresenceMessage presenceMsg = new PresenceMessage();
                 presenceMsg.setPresent(false);
                 presenceMsg.setSender(new Long(user));
+                Map properties = getProperties(user);
+                presenceMsg.setChatProfileProperties(properties);
+                presenceMsg.setChatSessionId(session.getId());
                 for (int i = 0; i < users.length; i++) {
                     messenger.postMessage(presenceMsg, users[i], session.getId());
                 }
                 if (logger != null) {
                     logger.log(Level.INFO, "Send Not-PresenceMessage of this User to Others", new String[] {
-                            "User - " + user, "Session - " + session.getId() });
+                        "User - " + user, "Session - " + session.getId()});
                 }
             }
 
@@ -360,17 +383,17 @@ public class UserSessionEventListener implements ChatSessionEventListener {
             // is performed to set the session to be CLOSE.
             // Then if we consider the "user requested", when the "user requested"
             // is removed from the session, the session will never change to CLOSE.
-            if (users.length == 0) {
+            if (session.getActiveUsers().length == 0) {
                 // 204 - CLOSE
                 Status closeStatus = new Status(IMHelper.SESSION_STATUS_CLOSE);
                 chatSessionStatusTracker.setStatus(session.getId(), closeStatus);
                 if (logger != null) {
-                    logger.log(Level.INFO, "Close the ChatSession", new String[] { "Session - "
-                            + session.getId() });
+                    logger.log(Level.INFO, "Close the ChatSession", new String[] {"Session - " + session.getId()});
                 }
             }
         } catch (Exception e) {
             if (logger != null) {
+                e.printStackTrace();
                 logger.log(Level.ERROR, "Fail to handle the user removed event: " + e.getMessage());
             }
         }

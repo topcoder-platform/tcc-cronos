@@ -11,7 +11,6 @@ import com.topcoder.service.ServiceEngine;
 import com.topcoder.service.ServiceEvent;
 import com.topcoder.service.ServiceElement;
 import com.topcoder.service.Category;
-import com.topcoder.service.ServiceStatus;
 
 import junit.framework.TestCase;
 
@@ -87,7 +86,7 @@ public class IMServiceHandlerUnitTests extends TestCase {
         ServiceElement responder = new ServiceElement();
         responder.setProperty(IMServiceHandler.USER_ID_KEY, new Long(2));
         Category category = new Category(123, "cacegory");
-        serviceEvent = new ServiceEvent(serviceEngine, requester, responder, category, ServiceStatus.STARTED);
+        serviceEvent = new ServiceEvent(serviceEngine, requester, responder, category, null);
     }
 
     /**
@@ -641,7 +640,7 @@ public class IMServiceHandlerUnitTests extends TestCase {
         requester.setProperty(IMServiceHandler.USER_ID_KEY, new Long(1));
         requester.setProperty(IMServiceHandler.SESSION_ID_KEY, new Long(1));
         Category category = new Category(123, "cacegory");
-        serviceEvent = new ServiceEvent(serviceEngine, requester, null, category, ServiceStatus.STARTED);
+        serviceEvent = new ServiceEvent(serviceEngine, requester, null, category, null);
 
         handler.onServiced(serviceEvent);
 

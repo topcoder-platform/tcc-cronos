@@ -3,16 +3,25 @@
  */
 package com.cronos.im.logic;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.cronos.im.messenger.EnterChatMessage;
+import com.cronos.im.messenger.Messenger;
 import com.cronos.im.messenger.PresenceMessage;
 import com.topcoder.chat.message.pool.MessagePool;
 import com.topcoder.chat.session.ChatSession;
+import com.topcoder.chat.session.ChatSessionManager;
+import com.topcoder.chat.status.ChatStatusEventListener;
+import com.topcoder.chat.user.profile.ChatUserProfile;
+import com.topcoder.chat.user.profile.ChatUserProfileManager;
+import com.topcoder.chat.user.profile.ChatUserProfilePersistenceException;
+import com.topcoder.chat.user.profile.ProfileKeyManagerPersistenceException;
+import com.topcoder.chat.user.profile.ProfileKeyNotFoundException;
+import com.topcoder.chat.user.profile.ProfileNotFoundException;
+import com.topcoder.chat.user.profile.UnrecognizedDataSourceTypeException;
 import com.topcoder.database.statustracker.Entity;
 import com.topcoder.database.statustracker.Status;
-import com.topcoder.chat.status.ChatStatusEventListener;
-import com.topcoder.chat.status.ChatSessionStatusTracker;
-import com.topcoder.chat.session.ChatSessionManager;
-import com.cronos.im.messenger.Messenger;
 import com.topcoder.util.log.Level;
 
 /**
@@ -41,12 +50,6 @@ import com.topcoder.util.log.Level;
  */
 public class SessionStatusEventListener implements ChatStatusEventListener {
 
-    /**
-     * <p>
-     * Represents the ChatSessionStatusTracker where this event listener belongs to. It is not null.
-     * </p>
-     */
-    private final ChatSessionStatusTracker chatSessionStatusTracker;
 
     /**
      * <p>
@@ -54,6 +57,13 @@ public class SessionStatusEventListener implements ChatStatusEventListener {
      * </p>
      */
     private final ChatSessionManager chatSessionManager;
+
+    /**
+     * <p>
+     * Chat session manager instance used to deal with the change of session status. It is not null.
+     * </p>
+     */
+    private final ChatUserProfileManager chatUserProfileManager;
 
     /**
      * <p>
@@ -74,26 +84,23 @@ public class SessionStatusEventListener implements ChatStatusEventListener {
      * <p>
      * Constructor to create SessionStatusEventListener with given arguments.
      * </p>
-     * 
-     * @param sessionStatusTracker
-     *            ChatSessionStatusTracker instance that this event listener belongs to. Can't be null.
      * @param sessionManager
      *            Instance of chat session manager used to deal with the status change. Can't be null.
      * @param messenger
      *            messenger used to send the messages. Can't be null.
      * @param logger
      *            logger instance used to log the operations. Can be null.
+     * 
      * @throws IllegalArgumentException
      *             If any arguments except the logger is null.
      */
-    public SessionStatusEventListener(ChatSessionStatusTracker sessionStatusTracker,
-            ChatSessionManager sessionManager, Messenger messenger, IMLogger logger) {
-        IMHelper.checkNull(sessionStatusTracker, "sessionStatusTracker");
+    public SessionStatusEventListener(ChatSessionManager sessionManager,
+            Messenger messenger, IMLogger logger, ChatUserProfileManager chatUserProfileManager) {
         IMHelper.checkNull(sessionManager, "sessionManager");
         IMHelper.checkNull(messenger, "messenger");
 
+        this.chatUserProfileManager = chatUserProfileManager;
         this.chatSessionManager = sessionManager;
-        this.chatSessionStatusTracker = sessionStatusTracker;
         this.messenger = messenger;
         this.logger = logger;
     }
@@ -129,8 +136,9 @@ public class SessionStatusEventListener implements ChatStatusEventListener {
         IMHelper.checkNull(entity, "entity");
         IMHelper.checkNull(newStatus, "newStatus");
         if (entity.getId() != IMHelper.ENTITY_SESSION) {
-            throw new IllegalArgumentException("The entity is not session entity.");
+            return;
         }
+        logger.log(Level.DEBUG, "session status changed [" + id + "] to  [" + newStatus.getId() + "].");
 
         try {
             ChatSession chatSession = chatSessionManager.getSession(id);
@@ -170,6 +178,10 @@ public class SessionStatusEventListener implements ChatStatusEventListener {
                     presenceMsg.setPresent(true);
                     // set sender to the current user.
                     presenceMsg.setSender(new Long(users[i]));
+                    Map properties = getProperties(users[i]);
+                    presenceMsg.setChatProfileProperties(properties);
+                    presenceMsg.setChatSessionId(chatSession.getId());
+                    
                     // timestamp is initialized in the constructor automatically.
                     // send message to others in the session.
                     messenger.postMessageToOthers(presenceMsg, chatSession);
@@ -186,6 +198,17 @@ public class SessionStatusEventListener implements ChatStatusEventListener {
         }
     }
 
+    private Map getProperties(long createdUser) throws ProfileNotFoundException, ProfileKeyNotFoundException, ProfileKeyManagerPersistenceException, ChatUserProfilePersistenceException, UnrecognizedDataSourceTypeException {
+        ChatUserProfile profile = chatUserProfileManager.getProfile(createdUser);
+        Map properties = new HashMap();
+        String[] propertyNames = profile.getPropertyNames();
+        for (int i = 0; i < propertyNames.length; i++) {
+            String propertyName = propertyNames[i];
+            properties.put(propertyName, profile.getPropertyValue(propertyName));
+        }
+        return properties;
+    }
+    
     /**
      * <p>
      * Gets messenger used in this listener.
@@ -218,18 +241,4 @@ public class SessionStatusEventListener implements ChatStatusEventListener {
         return this.chatSessionManager;
     }
 
-    /**
-     * <p>
-     * Gets ChatSessionStatusTracker that this event listener belongs to.
-     * </p>
-     * <p>
-     * The return value will never be null.
-     * </p>
-     * 
-     * 
-     * @return chat profile manager used in this listener.
-     */
-    public ChatSessionStatusTracker getChatSessionStatusTracker() {
-        return this.chatSessionStatusTracker;
-    }
 }
