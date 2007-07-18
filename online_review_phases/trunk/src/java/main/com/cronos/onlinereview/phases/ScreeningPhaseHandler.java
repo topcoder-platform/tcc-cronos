@@ -317,8 +317,8 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
                 SubmissionStatus subStatus = PhasesHelper.getSubmissionStatus(getManagerHelper().getUploadManager(),
                         SUBMISSION_STATUS_FAILED_SCREENING);
                 submission.setSubmissionStatus(subStatus);
-                getManagerHelper().getUploadManager().updateSubmission(submission, operator);
             }
+            getManagerHelper().getUploadManager().updateSubmission(submission, operator);
             // } catch (ResourcePersistenceException e) {
             // throw new PhaseHandlingException("There was a resource persistence error", e);
         } catch (UploadPersistenceException e) {
