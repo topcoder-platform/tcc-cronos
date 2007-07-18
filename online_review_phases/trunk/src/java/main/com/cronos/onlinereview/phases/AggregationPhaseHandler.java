@@ -237,23 +237,42 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                 Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
                         PhasesHelper.REVIEWER_ROLE_NAMES, reviewPhase.getId());
 
-                //find winning submitter.
-                Resource winningSubmitter = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(), getManagerHelper().getProjectManager(),
-                        conn, phase.getProject().getId());
+                // find winning submitter.
+                Resource winningSubmitter = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(),
+                        getManagerHelper().getProjectManager(), conn, phase.getProject().getId());
                 if (winningSubmitter == null) {
-                    throw new PhaseHandlingException("No winner for project with id" + phase.getProject().getId());
+                    throw new PhaseHandlingException("No winner for project[Winner id not set] with id : "
+                            + phase.getProject().getId());
                 }
 
                 // find the winning submission
                 Filter filter = SubmissionFilterBuilder.createResourceIdFilter(winningSubmitter.getId());
                 Submission[] submissions = getManagerHelper().getUploadManager().searchSubmissions(filter);
-                if (submissions == null || submissions.length != 1) {
-                    throw new PhaseHandlingException("No winning submission for project with id"
-                            + phase.getProject().getId());
-                }
-                Long winningSubmissionId = new Long(submissions[0].getId());
 
-                //Search all review scorecard from review phase for the winning submitter
+                // OrChange - Modified to handle multiple submissions for a single resource
+                Long winningSubmissionId = null;
+                if (submissions == null || submissions.length == 0) {
+                    throw new PhaseHandlingException("No winning submission for project[Winner id search"
+                            + " returned empty result for submission] with id : " + phase.getProject().getId());
+                } else if (submissions.length >= 1) {
+                    // loop through the submissions and find out the one with the placement as first
+                    for (int i = 0; i < submissions.length; i++) {
+                        Submission submission = submissions[i];
+                        if (submission.getPlacement() == 1) {
+                            winningSubmissionId = new Long(submission.getId());
+                            break;
+                        }
+                    }
+                } else {
+                    winningSubmissionId = new Long(submissions[0].getId());
+                }
+                // No winner id set at this point means, none of the submissions have placement as 1
+                if (winningSubmissionId == null) {
+                    throw new PhaseHandlingException("No winning submission for project[Submissions from the"
+                            + " winner id does not have placement 1] with id : " + phase.getProject().getId());
+                }
+
+                // Search all review scorecard from review phase for the winning submitter
                 Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(),
                     reviewPhase.getId(), PhasesHelper.REVIEWER_ROLE_NAMES, winningSubmissionId);
 
