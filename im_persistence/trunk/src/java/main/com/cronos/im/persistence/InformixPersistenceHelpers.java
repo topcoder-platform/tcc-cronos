@@ -143,7 +143,11 @@ class InformixPersistenceHelpers {
         profile.setProperty(UserDefinedAttributeNames.EMAIL, email);
 
         // name
-        profile.setProperty(UserDefinedAttributeNames.NAME, profile.getUsername());
+        if("Registered".equals(profile.getType())) {
+            profile.setProperty(UserDefinedAttributeNames.NAME, profile.getUsername());
+        } else {
+            profile.setProperty(UserDefinedAttributeNames.NAME, firstName + " " + lastName);
+        }
 
         // title
         String title = results.getString((String) columnMap.get(UserDefinedAttributeNames.TITLE));
