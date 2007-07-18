@@ -51,7 +51,7 @@ class InformixPersistenceHelpers {
 
         if (value instanceof String) {
             query.append(column);
-            query.append(" = ? AND ");
+            query.append(" LIKE ? AND ");
             args.add(value);
         } else {
             // the value must be a list
@@ -69,7 +69,7 @@ class InformixPersistenceHelpers {
                     query.append(" OR ");
                 }
 
-                query.append(column + " = ?");
+                query.append(column + " LIKE ?");
                 args.add(it.next());
             }
             query.append(") AND ");
