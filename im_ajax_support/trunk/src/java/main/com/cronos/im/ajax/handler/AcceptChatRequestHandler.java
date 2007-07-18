@@ -74,9 +74,7 @@ public class AcceptChatRequestHandler extends AbstractRequestHandler {
             // not used: String[] roleNames =
             // profile.getPropertyValue(IMAjaxSupportUtility.getRolePropertyKey());
             // 5. get the user id from user profile, and create a responder
-            long userId = profile.getId();
-            ServiceElement responder = new ServiceElement();
-            responder.setId(userId);
+            
             // 6. get the session id and user id from xmlRequest element and create a requester
             long sessionId = Long.parseLong(IMHelper.getSubElementContent(xmlRequest, "session_id"));
             long uId = Long.parseLong(IMHelper.getSubElementContent(xmlRequest, "user_id"));
@@ -95,6 +93,11 @@ public class AcceptChatRequestHandler extends AbstractRequestHandler {
             // 9. get the serviceEngine
             ServiceEngine engine = (ServiceEngine) req.getSession().getServletContext().getAttribute(
                     IMAjaxSupportUtility.getServiceEngineKey());
+            
+            long userId = profile.getId();
+            ServiceElement responder = new ServiceElement();
+            responder.setProperty("user_id", new Long(userId));
+
             engine.startService(requester, responder, category);
             // 10. construct success xml response, and set it on the http response
             res.getWriter().write("<response><success>the chat request is accepted</success></response>");

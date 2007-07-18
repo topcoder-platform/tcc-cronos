@@ -13,6 +13,11 @@ import com.topcoder.chat.message.pool.Message;
 import com.topcoder.chat.session.ChatSession;
 import com.topcoder.chat.session.ChatSessionManager;
 import com.topcoder.chat.user.profile.ChatUserProfile;
+import com.topcoder.chat.user.profile.ChatUserProfilePersistenceException;
+import com.topcoder.chat.user.profile.ProfileKeyManagerPersistenceException;
+import com.topcoder.chat.user.profile.ProfileKeyNotFoundException;
+import com.topcoder.chat.user.profile.ProfileNotFoundException;
+import com.topcoder.chat.user.profile.UnrecognizedDataSourceTypeException;
 import com.topcoder.util.log.Level;
 import com.cronos.im.messenger.ChatMessage;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +26,8 @@ import org.w3c.dom.Element;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -84,11 +91,14 @@ public class PostTextMessageHandler extends AbstractRequestHandler {
             // timestamp --> current time
             // sessiondId --> session id (in step 4)
             // chat text -- chat text (in step 5)
+            
             ChatMessage chatMsg = new ChatMessage();
+            chatMsg.setChatProfileProperties(getProperties(profile));
             chatMsg.setSender(new Long(userId));
             chatMsg.setTimestamp(new Date());
             chatMsg.setChatSessionId(sessionId);
             chatMsg.setChatText(chatText);
+            
             // 7. get the chatSessionManager
             String chatSessionMgrKey = IMAjaxSupportUtility.getChatSessionManagerKey();
             ChatSessionManager chatSessionMgr = (ChatSessionManager) req.getSession().getServletContext()
@@ -123,5 +133,16 @@ public class PostTextMessageHandler extends AbstractRequestHandler {
                     "<response><failure>Error occured during handling the request</failure></response>");
         }
     }
+    
+    private Map getProperties(ChatUserProfile profile) {
+        Map properties = new HashMap();
+        String[] propertyNames = profile.getPropertyNames();
+        for (int i = 0; i < propertyNames.length; i++) {
+            String propertyName = propertyNames[i];
+            properties.put(propertyName, profile.getPropertyValue(propertyName));
+        }
+        return properties;
+    }
+
 
 }

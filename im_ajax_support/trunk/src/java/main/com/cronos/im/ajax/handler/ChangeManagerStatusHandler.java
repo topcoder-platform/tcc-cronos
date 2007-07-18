@@ -108,22 +108,26 @@ public class ChangeManagerStatusHandler extends AbstractRequestHandler {
                         "<response><failure>status must be Online, Busy or Offline</failure></response>");
                 return;
             }
-            tracker.setStatus(userId, new Status(statusId));
+            Status status2 = new Status(statusId);
+            status2.setName(status);
+            tracker.setStatus(userId, status2);
             // 7. get the serviceEngine
             ServiceEngine engine = (ServiceEngine) req.getSession().getServletContext().getAttribute(
                     IMAjaxSupportUtility.getServiceEngineKey());
             // 8. get the category array from http session
+            Category[] categories = (Category[]) req.getSession().getAttribute("selectedCategories");
             ServiceElement responder = new ServiceElement();
-            responder.setId(userId);
-            Category[] categories = engine.getCategories();
-            // process each category
-            for (int i = 0; i < categories.length; i++) {
-                if (statusId == 101) {
-                    // online
-                    engine.addResponder(responder, categories[i]);
-                } else if (statusId == 102) {
-                    // busy
-                    engine.removeResponder(responder, categories[i]);
+            responder.setProperty("user_id", new Long(userId));
+            if (categories != null) {
+                // process each category
+                for (int i = 0; i < categories.length; i++) {
+                    if (statusId == 101) {
+                        // online
+                        engine.addResponder(responder, categories[i]);
+                    } else if (statusId == 102) {
+                        // busy
+                        engine.removeResponder(responder, categories[i]);
+                    }
                 }
             }
             // return success message
