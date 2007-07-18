@@ -24,30 +24,32 @@
     <div id="wrap" style="text-align:center;">
         <h3>PERSONALIZED <span class="main">BALL FOR ${game.name} </span></h3><br/>
         <img src="${ctx}/server/player/getPersonalizedBallImage.do" alt="Personalized Ball for Game"
+             title="Personalized Ball for Game ${game.name}"
              usemap="#PersonalizedBall" width="${imageWidth}" height="${imageHeight}"/>
         <map id="PersonalizedBall" name="PersonalizedBall">
             <c:forEach items="${gameSlots}" var="slot" varStatus="slotIndex">
                 <c:if test="${slot.hostingStart ne null}">
                     <c:if test="${completedSlots[slot.id] ne null}">
                         <area alt="Unlocked by you: ${slot.domain.domainName}" shape="circle"
+                              title="Unlocked by you: ${slot.domain.domainName}"
                               coords="${slotCenters[slotIndex.index].x},${slotCenters[slotIndex.index].y},${circleRadius}"
                               target="OrpheusUnlockedSlot" href="http://${slot.domain.domainName}"/>
                     </c:if>
                     <c:if test="${completedSlots[slot.id] eq null}">
                         <c:if test="${slot.hostingEnd ne null}">
-                            <area alt="Unlocked by another player" shape="circle"
+                            <area alt="Unlocked by another player" shape="circle" title="Unlocked by another player"
                                   coords="${slotCenters[slotIndex.index].x},${slotCenters[slotIndex.index].y},${circleRadius}"
                                   href="#"/>
                         </c:if>
                         <c:if test="${slot.hostingEnd eq null}">
-                            <area alt="The Ball is here" shape="circle"
+                            <area alt="The Ball is here" shape="circle" title="The Ball is here"
                                   coords="${slotCenters[slotIndex.index].x},${slotCenters[slotIndex.index].y},${circleRadius}"
                                   href="#"/>
                         </c:if>
                     </c:if>
                 </c:if>
                 <c:if test="${slot.hostingStart eq null}">
-                    <area alt="Upcoming site" shape="circle"
+                    <area alt="Upcoming site" shape="circle" title="Upcoming site"
                           coords="${slotCenters[slotIndex.index].x},${slotCenters[slotIndex.index].y},${circleRadius}"
                           href="#"/>
                 </c:if>
