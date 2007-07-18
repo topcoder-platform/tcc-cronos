@@ -320,6 +320,8 @@ public class ClientLoginAction extends LoginAction {
         profile.addProperty(getLastNameKey(), lName);
         profile.addProperty(getRoleKey(), CLIENT);
         profile.addProperty(getEmailKey(), request.getParameter("email"));
+        // fix for TCIM-8834
+        profile.addProperty("Name", fName + " " + lName);
         // company and title are optional
         String company = request.getParameter("company");
 
