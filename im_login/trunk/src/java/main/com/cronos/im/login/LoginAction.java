@@ -136,6 +136,19 @@ abstract class LoginAction extends Action {
 
     /**
      * <p>
+     * Represents the property name which can be used to load a forward name from the config manager, the forward name
+     * is used to find forward when login (Authorization) fails.
+     * </p>
+     * <p>
+     * It is initialized in constructor by being loaded from config manager, and never changed later. It cannot be
+     * <code>null</code> or empty, and if failed to be loaded then a default value "loginAuthFail" will be used. Can be
+     * accessed by getter.
+     * </p>
+     */
+    private final String loginAuthFailForwardName;
+    
+    /**
+     * <p>
      * Represents the name of property "category" used when creating chat user profile.
      * </p>
      * <p>
@@ -227,6 +240,7 @@ abstract class LoginAction extends Action {
         // load the required values from the configuration file
         loginSucceedForwardName = IMLoginHelper.getConfig(LOGIN_ACTION_NS, "loginSucceedForward", "loginSucceed");
         loginFailForwardName = IMLoginHelper.getConfig(LOGIN_ACTION_NS, "loginFailForward", "loginFail");
+        loginAuthFailForwardName = IMLoginHelper.getConfig(LOGIN_ACTION_NS, "loginAuthFailForward", "loginAuthFail");
 
         userProfileKey = IMLoginHelper.getConfig(LOGIN_ACTION_NS, "userProfileKey", "userProfile");
         categoryKey = IMLoginHelper.getConfig(LOGIN_ACTION_NS, "categoryKey", "category");
@@ -287,6 +301,18 @@ abstract class LoginAction extends Action {
     protected String getLoginFailForwardName() {
         return loginFailForwardName;
     }
+    
+    /**
+     * <p>
+     * Gets the loginAuthFailForwardName.
+     * </p>
+     *
+     * @return the forward name when login (Authorization) fail
+     */
+    protected String getLoginAuthFailForwardName() {
+        return loginAuthFailForwardName;
+    }
+    
 
     /**
      * <p>

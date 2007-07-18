@@ -132,7 +132,7 @@ public class AdminLoginAction extends LoginAction {
             return mapping.findForward(getLoginSucceedForwardName());
         } else {
             doLog(user, ACTION_NAME, "" + subject.getUserId(), "Failed to authorize the admin user", Level.WARN);
-            return mapping.findForward(getLoginFailForwardName());
+            return mapping.findForward(getLoginAuthFailForwardName());
         }
     }
 

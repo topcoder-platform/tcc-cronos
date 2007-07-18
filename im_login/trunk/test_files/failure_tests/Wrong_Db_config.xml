@@ -10,6 +10,9 @@
 		<Property name="loginFailForward">
 			<Value>loginFail</Value>
 		</Property>
+        <Property name="loginAuthFailForward">
+            <Value>loginAuthFail</Value>
+        </Property>
 		<Property name="categoryKey">
 			<Value>category</Value>
 		</Property>

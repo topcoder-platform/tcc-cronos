@@ -35,7 +35,7 @@
 			<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
 		</Property>
 		<Property name="connectionName">
-			<Value>informix_connect</Value>
+			<Value>informix</Value>
 		</Property>
 		<Property name="unchattableForward">
 			<Value>unchattableConfig</Value>
@@ -118,9 +118,9 @@
 	<Config name="com.topcoder.chat.user.profile.database.DatabaseChatUserProfilePersistence">
 		<Property name="connections">
 			<Property name="default">
-				<Value>informix_connect</Value>
+				<Value>informix</Value>
 			</Property>
-			<Property name="informix_connect">
+			<Property name="informix">
 				<Property name="producer">
 					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
 				</Property>
@@ -129,13 +129,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-			                        <Value>jdbc:informix-sqli://59.66.77.226:1527/test:informixserver=test</Value>
+			                        <Value>jdbc:informix-sqli://192.168.2.60:1526/test_sales_im:informixserver=informix</Value>
 			                    </Property>
 			                    <Property name="user">
 			                        <Value>informix</Value>
 			                    </Property>
 			                    <Property name="password">
-			                        <Value>123456</Value>
+			                        <Value>topcoder</Value>
 			                    </Property>
 				</Property>
 			</Property>
@@ -145,9 +145,9 @@
 	<Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
 		<Property name="connections">
 			<Property name="default">
-				<Value>informix_connect</Value>
+				<Value>informix</Value>
 			</Property>
-			<Property name="informix_connect">
+			<Property name="informix">
 				<Property name="producer">
 					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
 				</Property>
@@ -156,13 +156,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-			                        <Value>jdbc:informix-sqli://59.66.77.226:1527/test:informixserver=test</Value>
+			                        <Value>jdbc:informix-sqli://192.168.2.60:1526/test_sales_im:informixserver=informix</Value>
 			                    </Property>
 			                    <Property name="user">
 			                        <Value>informix</Value>
 			                    </Property>
 			                    <Property name="password">
-			                        <Value>123456</Value>
+			                        <Value>topcoder</Value>
 			                    </Property>
 				</Property>
 			</Property>
@@ -207,7 +207,7 @@
 				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
 			</Property>
 			<Property name="connection_name">
-				<Value>informix_connect</Value>
+				<Value>informix</Value>
 			</Property>
 	    </Property>
     
