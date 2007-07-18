@@ -933,7 +933,7 @@ it when you do. Once you've unlocked The Ball, you'll win the prize...
 
 But before you get started, we need you to activate your account. It's easy - just go here:
 
-http://63.118.154.235:8080/public/registration.jsp?a=%%%confirm_email%%%&amp;u=%%%confirm_unlock_code%%%
+http://www.theball.com/public/registration.jsp?a=%%%confirm_email%%%&amp;u=%%%confirm_unlock_code%%%
 
             </Value>
         </Property>
