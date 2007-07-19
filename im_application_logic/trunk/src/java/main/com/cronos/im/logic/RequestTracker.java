@@ -14,6 +14,15 @@ public class RequestTracker {
             this.userId = userId;
             this.categoryId = categoryId;
         }
+        
+        public boolean equals(Object obj) {
+            UserKey a = (UserKey) obj;
+            return a.categoryId == this.categoryId && a.userId == this.userId;
+        }
+        
+        public int hashCode() {
+            return (int) (categoryId + userId);
+        }        
     }
     
     private static RequestTracker instance = new RequestTracker();
