@@ -147,6 +147,13 @@ public class EmailNotificationSender implements NotificationSender {
         collectEmails(notification, notification.getToResources(), ContactType.USER, emails);
 
         sendToEmails(notification, emails);
+        
+        notification.setLastTimeSent(new Date());
+        try {
+            notificationManager.updateNotification(notification, false);
+        } catch (NotificationPersistenceException npe) {
+            throw new NotificationSendingException("Error updating the notification in the database.", npe);
+        }
     }
 
     /**

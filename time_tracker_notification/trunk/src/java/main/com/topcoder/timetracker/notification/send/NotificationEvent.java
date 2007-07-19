@@ -3,6 +3,8 @@
  */
 package com.topcoder.timetracker.notification.send;
 
+import java.util.Date;
+
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.timetracker.notification.Helper;
 import com.topcoder.timetracker.notification.Notification;
@@ -12,7 +14,10 @@ import com.topcoder.timetracker.notification.NotificationManager;
 import com.topcoder.timetracker.notification.StringMatchType;
 
 import com.topcoder.util.file.fieldconfig.NodeList;
+import com.topcoder.util.scheduler.scheduling.Job;
 import com.topcoder.util.scheduler.scheduling.ScheduledEnable;
+import com.topcoder.util.scheduler.scheduling.Scheduler;
+import com.topcoder.util.scheduler.scheduling.persistence.DBScheduler;
 
 /**
  * <p>
@@ -116,6 +121,14 @@ public class NotificationEvent implements ScheduledEnable {
 
                 // defer to the manager to send the notification
                 this.manager.sendNotification(notifications[0].getId());
+
+                Scheduler scheduler = new DBScheduler(DBScheduler.class.getName());
+                Job job = scheduler.getJob(this.jobName);
+
+                notifications[0].setLastTimeSent(new Date());
+                notifications[0].setNextTimeToSend(job.getNextRun().getTime());
+
+                this.manager.updateNotification(notifications[0], false);
             } catch (Exception e) {
                 this.cachedException = e;
             }
