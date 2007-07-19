@@ -3,23 +3,23 @@
  */
 package com.cronos.im.logic;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.cronos.im.messenger.Messenger;
 import com.cronos.im.messenger.SessionUnavailableMessage;
 import com.topcoder.chat.session.ChatSession;
-import com.topcoder.database.statustracker.Status;
-import com.topcoder.service.Category;
-import com.topcoder.service.ServiceEvent;
-import com.topcoder.service.ServiceElement;
-import com.topcoder.service.ServiceHandler;
-import com.topcoder.service.ServiceHandleException;
-import com.topcoder.service.ServiceEngine;
 import com.topcoder.chat.session.ChatSessionManager;
-import com.topcoder.util.log.Level;
-import com.cronos.im.messenger.Messenger;
 import com.topcoder.chat.status.ChatSessionStatusTracker;
 import com.topcoder.chat.status.ChatUserStatusTracker;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Collections;
+import com.topcoder.database.statustracker.Status;
+import com.topcoder.service.Category;
+import com.topcoder.service.ServiceElement;
+import com.topcoder.service.ServiceEvent;
+import com.topcoder.service.ServiceHandleException;
+import com.topcoder.service.ServiceHandler;
+import com.topcoder.util.log.Level;
 
 /**
  * <p>
@@ -351,15 +351,16 @@ public class IMServiceHandler implements ServiceHandler {
                     .longValue();
                 logger.log(Level.INFO, "IMServiceHandler.onToBeServiced", new long[] {
                     requesterUserId, responderUserId}, new long[] {sessionId});
+                
                 ServiceElement key = new ServiceElement();
                 key.setProperty(USER_ID_KEY, new Long(requesterUserId));
                 key.setProperty(CATEGORY_KEY, serviceEvent.getCategory());
+                long categoryId = serviceEvent.getCategory().getId();
 
                 // get current time
                 long beginTime = System.currentTimeMillis();
                 // get chat session
                 ChatSession chatSession = chatSessionManager.getSession(sessionId);
-                long[] requestedUsers = chatSession.getRequestedUsers();
                 // Ignore any exception in this step, which may come from the unavilable of
                 // responder.
                 try {
@@ -372,10 +373,10 @@ public class IMServiceHandler implements ServiceHandler {
                             Thread.sleep(checkResponseInterval);
                         }
                         first = false;
-                        // check whether responderUserId is in the chatSession.getRequesterUsers
-                        // lists.
-                        if (IMHelper.contains(requestedUsers, responderUserId)) {
-                            // responder is found, then return
+                        
+                        
+                        if (!RequestTracker.getInstance().isRequesterPresent(requesterUserId, categoryId)) {
+                            // user has accepted
                             return;
                         }
                     } while (System.currentTimeMillis() - beginTime < responderWaitTime);
@@ -410,14 +411,19 @@ public class IMServiceHandler implements ServiceHandler {
                     first = false;
 
                     // Check whether the responder exists in the responderMap
-                    if (responderMap.containsKey(key)) {
-                        // the responder is found, just return
+                    if (!RequestTracker.getInstance().isRequesterPresent(requesterUserId, categoryId)) {
+                        // requester has left or request has been served.
                         return;
                     }
+                   
                 } while (System.currentTimeMillis() - beginTime < responderWaitTime);
-                // If there is no responder.
-                serviceEvent.getServiceEngine().startService(serviceEvent.getRequester(), null,
-                    serviceEvent.getCategory());
+
+                if (RequestTracker.getInstance().isRequesterPresent(requesterUserId, categoryId)) {
+                    // requester is still waiting but no reponse from all managers.
+                    serviceEvent.getServiceEngine().startService(serviceEvent.getRequester(), null,
+                        serviceEvent.getCategory());
+                }
+                
             } catch (Exception e) {
                 // log the exception
                 if (logger != null) {
@@ -522,6 +528,8 @@ public class IMServiceHandler implements ServiceHandler {
                         new String[] {"User - " + requestedUsers[i]});
                 }
             }
+            
+            RequestTracker.getInstance().removeRequester(requesterUserId, serviceEvent.getCategory().getId());
         } catch (IllegalArgumentException e) {
             if (logger != null) {
                 logger.log(Level.ERROR, e.getMessage());
