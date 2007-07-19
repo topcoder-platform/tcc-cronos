@@ -1,10 +1,11 @@
 package com.cronos.im.logic;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
-public class RequestTracker {
+public class RequestTracker implements Serializable {
     
-    private class UserKey {
+    private class UserKey  implements Serializable {
         private final long userId;
         
         private final long categoryId;
@@ -27,7 +28,7 @@ public class RequestTracker {
     
     private static RequestTracker instance = new RequestTracker();
     
-    private static HashSet requesters = new HashSet();
+    private HashSet requesters = new HashSet();
 
     private RequestTracker() {}
 

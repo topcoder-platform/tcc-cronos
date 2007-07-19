@@ -467,6 +467,7 @@ public class IMServiceHandler implements ServiceHandler {
         // get sessionId, requesterUserId
         long sessionId = ((Long) serviceEvent.getRequester().getProperty(SESSION_ID_KEY)).longValue();
         long requesterUserId = ((Long) serviceEvent.getRequester().getProperty(USER_ID_KEY)).longValue();
+        RequestTracker.getInstance().removeRequester(requesterUserId, serviceEvent.getCategory().getId());
 
         try {
 
@@ -529,7 +530,6 @@ public class IMServiceHandler implements ServiceHandler {
                 }
             }
             
-            RequestTracker.getInstance().removeRequester(requesterUserId, serviceEvent.getCategory().getId());
         } catch (IllegalArgumentException e) {
             if (logger != null) {
                 logger.log(Level.ERROR, e.getMessage());
