@@ -298,9 +298,9 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                 // Old Code Ends
 
                 // if failed review, then update the status
-                if (aggScore < minScore) {
+                // Only if the status of the current submission is "Active", since "Failed Screening" should not be updated.
+                if (aggScore < minScore && submission.getSubmissionStatus().getDescription().equals("Active")) {
                     submission.setSubmissionStatus(failedStatus);
-                    getManagerHelper().getUploadManager().updateSubmission(submission, operator);
                 } else {
                     // cache winning submitter.
                     if (placement == 1) {
