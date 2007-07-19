@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,11 @@ import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.SearchBundle;
 import com.topcoder.search.builder.SearchBundleManager;
+import com.topcoder.search.builder.filter.AndFilter;
+import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.search.builder.filter.InFilter;
+import com.topcoder.search.builder.filter.NullFilter;
 import com.topcoder.timetracker.audit.ApplicationArea;
 import com.topcoder.timetracker.audit.AuditDetail;
 import com.topcoder.timetracker.audit.AuditHeader;
@@ -33,11 +38,16 @@ import com.topcoder.timetracker.entry.base.BaseEntry;
 import com.topcoder.timetracker.entry.expense.ExpenseEntry;
 import com.topcoder.timetracker.entry.expense.ExpenseEntryManager;
 import com.topcoder.timetracker.entry.expense.InsufficientDataException;
+import com.topcoder.timetracker.entry.expense.criteria.CompositeCriteria;
 import com.topcoder.timetracker.entry.expense.criteria.Criteria;
 import com.topcoder.timetracker.entry.expense.criteria.FieldMatchCriteria;
+import com.topcoder.timetracker.entry.expense.criteria.FieldNullCriteria;
 import com.topcoder.timetracker.entry.expense.persistence.PersistenceException;
 import com.topcoder.timetracker.entry.fixedbilling.FixedBillingEntry;
 import com.topcoder.timetracker.entry.fixedbilling.FixedBillingEntryManager;
+import com.topcoder.timetracker.entry.time.TimeEntry;
+import com.topcoder.timetracker.entry.time.TimeEntryManager;
+import com.topcoder.timetracker.entry.time.db.DbTimeEntryFilterFactory;
 import com.topcoder.timetracker.invoice.ArgumentCheckUtil;
 import com.topcoder.timetracker.invoice.ConfigUtil;
 import com.topcoder.timetracker.invoice.Invoice;
@@ -51,9 +61,6 @@ import com.topcoder.timetracker.invoice.servicedetail.DataAccessException;
 import com.topcoder.timetracker.invoice.servicedetail.InvoiceServiceDetail;
 import com.topcoder.timetracker.invoice.servicedetail.ServiceDetailManager;
 import com.topcoder.timetracker.invoice.servicedetail.TransactionCreationException;
-import com.topcoder.timetracker.project.EntryType;
-import com.topcoder.timetracker.project.ProjectUtility;
-import com.topcoder.timetracker.project.UnrecognizedEntityException;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.idgenerator.IDGenerator;
 import com.topcoder.util.idgenerator.IDGeneratorFactory;
@@ -84,6 +91,9 @@ public class InformixInvoiceDAO implements InvoiceDAO {
     /** Represents the property name of id generator key in the object factory. */
     private static final String ID_GENERATOR_KEY = "idGeneratorKey";
 
+    /** Represents the property name of time manager key in the object factory. */
+    private static final String TIME_MANAGER_KEY = "timeManagerKey";
+
     /** Represents the property name of expense manager key in the object factory. */
     private static final String EXPENSE_MANAGER_KEY = "expenseManagerKey";
 
@@ -92,9 +102,6 @@ public class InformixInvoiceDAO implements InvoiceDAO {
 
     /** Represents the property name of database connection factory key in the object factory. */
     private static final String DB_CONNECTION_FACTORY_KEY = "dbConnectionFactoryKey";
-
-    /** Represents the property name of project utility key in the object factory. */
-    private static final String PROJECT_UTILITY_KEY = "projectUtilityKey";
 
     /** Represents the property name of service detail manager key in the object factory. */
     private static final String SERVICE_DETAIL_MANAGER_KEY = "serviceDetailManagerKey";
@@ -215,6 +222,29 @@ public class InformixInvoiceDAO implements InvoiceDAO {
 
     /**
      * <p>
+     * This is the TimeManager from the Time Entry component for perform all operations upon the
+     * tables involved with this component.
+     * </p>
+     * <p>
+     * Initial Value: Initialized in Constructor
+     * </p>
+     * <p>
+     * Accessed In: Not Accessed
+     * </p>
+     * <p>
+     * Modified In: Not Modified.
+     * </p>
+     * <p>
+     * Utilized In: addInvoice
+     * </p>
+     * <p>
+     * Valid Values: Non-null.
+     * </p>
+     */
+    private final TimeEntryManager timeManager;
+
+    /**
+     * <p>
      * This is the ExpenseManager from the Time Tracker Expense component for perform all operations upon the
      * tables involved with this component.
      * </p>
@@ -258,29 +288,6 @@ public class InformixInvoiceDAO implements InvoiceDAO {
      * </p>
      */
     private final FixedBillingEntryManager fixedBillingEntryManager;
-
-    /**
-     * <p>
-     * This is the manager instance that is used to retrieve information about a project. It's used for retrieve
-     * all entries.
-     * </p>
-     * <p>
-     * Initial Value: From the constructor
-     * </p>
-     * <p>
-     * Accessed In: No Access
-     * </p>
-     * <p>
-     * Modified In: Not Modified
-     * </p>
-     * <p>
-     * Utilized In: canCreateInvoice
-     * </p>
-     * <p>
-     * Valid Values: Non-Null
-     * </p>
-     */
-    private final ProjectUtility projectUtility;
 
     /**
      * <p>
@@ -396,6 +403,8 @@ public class InformixInvoiceDAO implements InvoiceDAO {
         } catch (IDGenerationException e) {
             throw new InvoiceConfigurationException("Error creating id generator", e);
         }
+        timeManager =
+            (TimeEntryManager) ConfigUtil.createObject(of, namespace, TIME_MANAGER_KEY, TimeEntryManager.class);
         expenseManager =
             (ExpenseEntryManager) ConfigUtil.createObject(of, namespace, EXPENSE_MANAGER_KEY,
                 ExpenseEntryManager.class);
@@ -405,8 +414,6 @@ public class InformixInvoiceDAO implements InvoiceDAO {
         connectionFactory =
             (DBConnectionFactory) ConfigUtil.createObject(of, namespace, DB_CONNECTION_FACTORY_KEY,
                 DBConnectionFactory.class);
-        projectUtility =
-            (ProjectUtility) ConfigUtil.createObject(of, namespace, PROJECT_UTILITY_KEY, ProjectUtility.class);
         serviceDetailManager =
             (ServiceDetailManager) ConfigUtil.createObject(of, namespace, SERVICE_DETAIL_MANAGER_KEY,
                 ServiceDetailManager.class);
@@ -993,76 +1000,82 @@ public class InformixInvoiceDAO implements InvoiceDAO {
     public boolean canCreateInvoice(long projectId) throws InvoiceDataAccessException {
         ArgumentCheckUtil.checkNotNegative("projectId", projectId);
 
+        final Long projectIdObj = new Long(projectId);
+
         try {
             // get all fixed billing entries for the project
-            long[] fixedBillingEntryIds =
-                projectUtility.retrieveEntriesForProject(projectId, EntryType.FIXED_BILLING_ENTRY);
-            BaseEntry[] fixedBillingEntries = (fixedBillingEntryIds.length != 0) ?
-                    fixedBillingEntryManager.getFixedBillingEntries(fixedBillingEntryIds) : new FixedBillingEntry[0];
+            Filter fbProjectFilter = new EqualToFilter("PROJECT_ID_COLUMN_NAME", projectIdObj);
+            Filter fbStatusFilter = new InFilter("FIXED_BILLING_STATUS_NAME",
+                    Arrays.asList(new String[] { "Pending", "Approved", "Rejected" }));
+            Filter fbInvoiceFilter = new NullFilter("INVOICE_ID_COLUMN_NAME");
+            Filter fbCompositeFilter =
+                new AndFilter(Arrays.asList(new Filter[] { fbProjectFilter, fbStatusFilter, fbInvoiceFilter }));
+            FixedBillingEntry[] fixedBillingEntries = fixedBillingEntryManager.searchFixedBillingEntries(fbCompositeFilter);
 
             // if there is a pending entries, return false
-            if (checkPending(fixedBillingEntries)) {
+            if (checkEntries(fixedBillingEntries)) {
                 return false;
             }
 
             // get all expense entries for the project
-            long[] expenseEntryIds = projectUtility.retrieveEntriesForProject(projectId, EntryType.EXPENSE_ENTRY);
-            ExpenseEntry[] expenseEntries = (expenseEntryIds.length != 0) ?
-                    expenseManager.retrieveEntries(expenseEntryIds) : new ExpenseEntry[0];
+            Criteria expenseProjectCriteria = new FieldMatchCriteria("expense_entry.project_id", projectIdObj);
+            Criteria expenseStatusPendingCriteria = new FieldMatchCriteria("expense_status.description", "Pending");
+            Criteria expenseStatusApprovedCriteria = new FieldMatchCriteria("expense_status.description", "Approved");
+            Criteria expenseStatusRejectedCriteria = new FieldMatchCriteria("expense_status.description", "Rejected");
+            Criteria expenseStatusCriteria = new CompositeCriteria(
+                    "OR", new Criteria[] { expenseStatusPendingCriteria, expenseStatusApprovedCriteria, expenseStatusRejectedCriteria });
+            Criteria expenseInvoiceCriteria = new FieldNullCriteria("expense_entry.invoice_id");
+            Criteria expenseCompositeCriteria =
+                new CompositeCriteria("AND", new Criteria[] { expenseProjectCriteria, expenseStatusCriteria, expenseInvoiceCriteria });
+            ExpenseEntry[] expenseEntries = expenseManager.searchEntries(expenseCompositeCriteria);
 
             // if there is a pending entries, return false
-            if (checkPending(expenseEntries)) {
+            if (checkEntries(expenseEntries)) {
                 return false;
             }
 
             // get all time entries for the project
-            long[] timeEntryIds = projectUtility.retrieveEntriesForProject(projectId, EntryType.TIME_ENTRY);
-            List timeEntryIdList = new ArrayList();
-            for (int i = 0; i < timeEntryIds.length; i++) {
-                timeEntryIdList.add(new Long(timeEntryIds[i]));
-            }
-            List timeEntryList = new ArrayList();
-            InvoiceServiceDetail[] allServiceDetails = serviceDetailManager.retrieveAllServiceDetails();
-            for (int i = 0; i < allServiceDetails.length; i++) {
-                if (timeEntryIdList.contains(new Long(allServiceDetails[i].getTimeEntry().getId()))) {
-                    timeEntryList.add(allServiceDetails[i].getTimeEntry());
-                }
-            }
+            Filter timeProjectFilter = new EqualToFilter(DbTimeEntryFilterFactory.PROJECT_ID_COLUMN_NAME, projectIdObj);
+            Filter timeStatusFilter =
+                new InFilter("TIME_STATUS_NAME", Arrays.asList(new String[] { "Pending", "Approved", "Rejected" }));
+            Filter timeInvoiceFilter = new NullFilter(DbTimeEntryFilterFactory.INVOICE_ID_COLUMN_NAME);
+            Filter timeCombinedFilter =
+                new AndFilter(Arrays.asList(new Filter[] { timeProjectFilter, timeStatusFilter, timeInvoiceFilter }));
+            TimeEntry[] timeEntries = timeManager.searchTimeEntries(timeCombinedFilter);
 
             // if there is a pending entries, return false
-            if (checkPending((BaseEntry[]) timeEntryList.toArray(new BaseEntry[timeEntryList.size()]))) {
+            if (checkEntries(timeEntries)) {
+                return false;
+            }
+
+            // If there are no entries to make up an invoice found, return false
+            if (timeEntries.length == 0 && expenseEntries.length == 0 && fixedBillingEntries.length == 0) {
                 return false;
             }
 
             // otherwise the invoice for the project is ready to be created
             return true;
-
         } catch (PersistenceException e) {
             throw new InvoiceDataAccessException("Exception when retrieving expense entries", e);
         } catch (com.topcoder.timetracker.entry.fixedbilling.DataAccessException e) {
             throw new InvoiceDataAccessException("Exception when retrieving fixed billing entries", e);
-        } catch (DataAccessException e) {
-            throw new InvoiceDataAccessException("Exception when retrieving time entries", e);
-        } catch (TransactionCreationException e) {
-            throw new InvoiceDataAccessException("Exception when retrieving time entries", e);
-        } catch (UnrecognizedEntityException e) {
-            throw new InvoiceUnrecognizedEntityException(projectId, "There is no such project id");
-        } catch (com.topcoder.timetracker.project.DataAccessException e) {
-            throw new InvoiceDataAccessException("Exception when retrieving entries", e);
+        } catch (com.topcoder.timetracker.entry.time.DataAccessException dae) {
+            throw new InvoiceDataAccessException("Exception when retrieving entries", dae);
         }
     }
 
     /**
-     * Checks if there is still a Pending entry in the array of entries.
+     * Checks if there is still a Pending or Rejected entry in the array of entries.
      *
+     * @return <code>true</code> if there is at least one PENDING or REJECTED entry,
+     *         <code>false</code> otherwise.
      * @param entries
      *            the given array of entries
-     *
-     * @return true if there is a PENDING entry, false otherwise
      */
-    private boolean checkPending(BaseEntry[] entries) {
-        for (int i = 0; i < entries.length; i++) {
-            if ("Pending".equalsIgnoreCase(entries[i].getDescription())) {
+    private static boolean checkEntries(BaseEntry[] entries) {
+        for (int i = 0; i < entries.length; ++i) {
+            final String entryStatus = entries[i].getDescription();
+            if ("Pending".equalsIgnoreCase(entryStatus) || "Rejected".equalsIgnoreCase(entryStatus)) {
                 return true;
             }
         }
