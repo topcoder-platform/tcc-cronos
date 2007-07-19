@@ -73,16 +73,16 @@ function setCurrentGame(gameId) {
 
 
 // Notifies the Orpheus Plugin on current target for the currently viewed domain
-function setCurrentTarget(hash, sequence) {
+function setCurrentTarget(hash, url, sequence) {
     if (isIE()) {
         // For IE
         if (window.external) {
-            window.external.SetCurrentTarget(hash, sequence);
+            window.external.SetCurrentTarget(hash, url, sequence);
         }
     } else {
         // For FF
         if (window.external) {
-            window.external.SetCurrentTarget(hash, sequence);
+            window.external.SetCurrentTarget(hash, url, sequence);
         }
     }
 }

@@ -4,6 +4,7 @@
 <c:set var="user" value="${sessionScope['user_profile']}"/>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="page"/>
 <c:set var="nextHuntTarget" value="${requestScope['nextHuntTarget']}" scope="page"/>
+<c:set var="nextHuntPage" value="${requestScope['nextHuntUrl']}" scope="page"/>
 <c:set var="s" value="${orpheus:getPreferredSound(user)}" scope="page"/>
 <c:set var="soundFile"
        value="${s eq 1 ? 'default' : (s eq 2 ? 'days' : (s eq 3 ? 'klasik' : (s eq 4 ? 'march' : (s eq 5 ? 's1' : (s eq 6 ? 'studio' : 'nosound')))))}"
@@ -33,7 +34,7 @@
 </head>
 
 <body id="pagePlugin"
-      onload="setCurrentTarget('${nextHuntTarget.identifierHash}', ${nextHuntTarget.sequenceNumber});setCurrentGame(${param['gameId']});">
+      onload="setCurrentTarget('${nextHuntTarget.identifierHash}', '${nextHuntPage}', ${nextHuntTarget.sequenceNumber});setCurrentGame(${param['gameId']});">
 <div id="containerPlugin">
     <div id="mastHead" style="height:100px">
         <div align="center">

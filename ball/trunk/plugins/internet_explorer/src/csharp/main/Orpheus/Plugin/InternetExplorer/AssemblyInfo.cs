@@ -54,5 +54,6 @@ using System.Runtime.CompilerServices;
 //       documentation for more information on this.
 //
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile(@"F:\orpheus\plugins\ie\orpheus.snk")]
+//[assembly: AssemblyKeyFile(@"F:\orpheus\plugins\ie\orpheus.snk")]
+[assembly: AssemblyKeyFile(@"c:\TopCoder\SVNRepository\Applications\TheBall\plugins\internet_explorer\orpheus.snk")]
 [assembly: AssemblyKeyName("")]

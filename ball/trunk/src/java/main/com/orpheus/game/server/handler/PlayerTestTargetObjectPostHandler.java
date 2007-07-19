@@ -233,6 +233,7 @@ public class PlayerTestTargetObjectPostHandler extends AbstractGameServerHandler
                 // The player should find next hunt target for the slot/domain
                 DomainTarget nextHuntTarget = gamePlayInfo.getNextHuntTarget(hostingSlot);
                 request.setAttribute("nextHuntTarget", nextHuntTarget);
+                request.setAttribute("nextHuntUrl", getHash(nextHuntTarget.getUriPath()));
                 return "foundObjectResult";
             }
         } catch (Exception e) {

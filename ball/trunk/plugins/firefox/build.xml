@@ -9,8 +9,8 @@
     <property name="package" value="com.orpheus.plugin.firefox" />
     <property name="packagedir" value="com/orpheus/plugin/firefox" />
     <property name="distfilename" value="client_logic_for_firefox" />
-	<property name="distfilename_xpi" value="orpheus.xpi" />
-    <property name="component_version" value="1.0.25" />
+	<property name="distfilename_xpi" value="the_ball_game_plugin.xpi" />
+    <property name="component_version" value="1.0.43" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->

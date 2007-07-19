@@ -4,6 +4,7 @@
 package com.orpheus.game.server.handler;
 
 import com.orpheus.game.persistence.HostingSlot;
+import com.orpheus.game.persistence.DomainTarget;
 import com.orpheus.game.server.GamePlayInfo;
 import com.orpheus.game.server.util.GameDataEJBAdapter;
 import com.topcoder.web.frontcontroller.ActionContext;
@@ -149,9 +150,9 @@ public class ShowBrainteaserHandler extends AbstractGameServerHandler implements
             request.setAttribute(getString(MEDIA_TYPE_ATTR_NAME_CONFIG), getString(MEDIA_TYPE_VALUE_CONFIG));
 
             // Put the hash and sequence number for the first hunt target which is associated with brainuteaser
-            request.setAttribute("huntTargetHash", hostingSlot.getDomainTargets()[0].getIdentifierHash());
-            request.setAttribute("huntTargetSequence",
-                                 new Integer(hostingSlot.getDomainTargets()[0].getSequenceNumber()));
+            DomainTarget domainTarget = hostingSlot.getDomainTargets()[0];
+            request.setAttribute("nextHuntTarget", domainTarget);
+            request.setAttribute("nextHuntUrl", getHash(domainTarget.getUriPath()));
 
             // If there are next brainteasers available for displaying then put the request attributes indicating on
             // that and providing the 

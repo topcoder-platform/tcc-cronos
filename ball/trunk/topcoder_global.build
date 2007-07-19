@@ -20,14 +20,14 @@
     <property name="NDoc" value="C:\Program Files\NDoc\1.2\bin\.net-1.1\NDocConsole.exe"/>
     
     <!-- Base directory for all third party components. -->
-    <property name="ext_bin" value="lib\third_party"/>
 <!--
-    <property name="ext_bin" value="c:\TopCoder\SVNRepository\Applications\TheBall\lib\third_party"/>
+    <property name="ext_bin" value="lib\third_party"/>
 -->
+    <property name="ext_bin" value="c:\TopCoder\SVNRepository\Applications\TheBall\lib\third_party"/>
 
     <!-- Base directory for all TCS components. -->
-    <property name="tcs_bin" value="f:\orpheus\lib\tcs"/>
 <!--
-    <property name="tcs_bin" value="c:\TopCoder\SVNRepository\Applications\TheBall\lib\tcs"/>
+    <property name="tcs_bin" value="f:\orpheus\lib\tcs"/>
 -->
+    <property name="tcs_bin" value="c:\TopCoder\SVNRepository\Applications\TheBall\lib\tcs"/>
 </project>

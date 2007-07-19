@@ -3,6 +3,8 @@
 <%@ taglib uri="/paging" prefix="p" %>
 <%@ taglib uri="/orpheus" prefix="orpheus" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<c:set var="nextHuntTarget" value="${requestScope['nextHuntTarget']}" scope="page"/>
+<c:set var="nextHuntPage" value="${requestScope['nextHuntUrl']}" scope="page"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -33,7 +35,7 @@
 </head>
 
 <body id="pagePlugin"
-      onload="setBrainteaserUpdatePeriod();setCurrentTarget('${requestScope['huntTargetHash']}', ${requestScope['huntTargetSequence']});setCurrentGame(${param['gameId']});"
+      onload="setBrainteaserUpdatePeriod();setCurrentTarget('${nextHuntTarget.identifierHash}', '${nextHuntPage}', ${nextHuntTarget.sequenceNumber});setCurrentGame(${param['gameId']});"
       onunload="unsetBrainteaserUpdatePeriod();">
 <div id="containerPlugin">
     <div id="mastHead" style="height:100px">

@@ -135,6 +135,7 @@ public class StartGamePlayHandler extends AbstractGameServerHandler implements H
                     } else {
                         // Otherwise present player with a clue for the next target to hunt
                         request.setAttribute("nextHuntTarget", domainTarget);
+                        request.setAttribute("nextHuntUrl", getHash(domainTarget.getUriPath()));
                         return "nextClueResult";
                     }
                 }
