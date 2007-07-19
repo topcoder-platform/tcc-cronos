@@ -143,12 +143,11 @@ public class ChatMessageFormatterImpl implements ChatMessageFormatter {
             // the "www" was matched and replaced with <a></a> to create a link,
             // we then add the protocol "http://" inside the href so it would not append
             // to the current context
-            Pattern pattern = Pattern.compile("(<a href=\"www)(\\.)(.*)");
+            Pattern pattern = Pattern.compile("<a href=\"www\\.");
             Matcher matcher = pattern.matcher(formattedChatText);
             // if matches, means a link was created for "www"
-            if(matcher.matches()) {
-                formattedChatText = "<a href=\"http://www." + 
-                    formattedChatText.substring(13, formattedChatText.length());
+            while(matcher.find()) {
+                formattedChatText = matcher.replaceAll("<a href=\"http://www.");
             }
             // end of TCIM-8808
             
