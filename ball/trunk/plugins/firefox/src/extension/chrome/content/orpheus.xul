@@ -57,10 +57,10 @@
                  <toolbarseparator  /> -->
                  <toolbarspacer/>
                  	<hbox>
-                 	<image id="oPageIncorrect" src="chrome://orpheus/skin/red.png" tooltiptext="&orpheus.incorrectPage;"
-                 	width="23"/>
-                 	<image id="oPageCorrect" src="chrome://orpheus/skin/green.png" tooltiptext="&orpheus.correctPage;"
-                 	width="23" hidden="true"/>
+                 	<image id="oPageIncorrect" src="chrome://orpheus/skin/red.gif" tooltiptext="&orpheus.incorrectPage;"
+                 	/>
+                 	<image id="oPageCorrect" src="chrome://orpheus/skin/green.gif" tooltiptext="&orpheus.correctPage;"
+                 	hidden="true"/>
                  	</hbox>
                 </hbox>
                 <toolbarspring/>
