@@ -89,6 +89,7 @@ public class ViewLogResult implements Result {
         String endDate = request.getParameter("endDate");
         String domain = request.getParameter("domain");
         String handle = request.getParameter("handle");
+        String session = request.getParameter("session");
 
         Connection connection = null;
         PreparedStatement ps = null;
@@ -110,6 +111,7 @@ public class ViewLogResult implements Result {
             int handlePos = 0;
             int startDatePos = 0;
             int endDatePos = 0;
+            int sessionPos = 0;
             if (gameId != null && gameId.trim().length() > 0) {
                 query.append("AND le.id IN (SELECT le2.id " +
                                            "FROM log_event le2 " +
@@ -138,6 +140,12 @@ public class ViewLogResult implements Result {
                 query.append("AND le.time<=? ");
                 endDatePos = Math.max(Math.max(Math.max(gameIdPos, domainPos), handlePos), startDatePos) + 1;
             }
+            if (session != null && session.trim().length() > 0) {
+                query.append("AND s.session_id=? ");
+                sessionPos
+                    = Math.max(Math.max(Math.max(Math.max(gameIdPos, domainPos), handlePos), startDatePos), endDatePos)
+                      + 1;
+            }
             query.append("ORDER BY le.time,le.id,letp.sequence_number");
             ps = connection.prepareStatement(query.toString());
             if (gameIdPos > 0) {
@@ -155,6 +163,9 @@ public class ViewLogResult implements Result {
             }
             if (endDatePos > 0) {
                 ps.setTimestamp(endDatePos, new Timestamp(df.parse(endDate).getTime()));
+            }
+            if (sessionPos > 0) {
+                ps.setString(sessionPos, session);
             }
 
             DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");

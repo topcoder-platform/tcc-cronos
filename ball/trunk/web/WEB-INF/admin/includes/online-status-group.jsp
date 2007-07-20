@@ -17,9 +17,9 @@
         <tr>
             <th width="10%">Handle</th>
             <th width="20%">Session ID</th>
-            <th width="20%">Start Time</th>
-            <th width="10%">Requests #</th>
-            <th width="20%">Last Request Sent</th>
+            <th width="15%">Start Time</th>
+            <th width="15%">Last Request Sent</th>
+            <th width="20%">Requests # / Freq.</th>
             <th width="10%">Duration</th>
             <th width="10%">Inactive</th>
         </tr>
@@ -27,14 +27,17 @@
             <c:set var="user" value="${session.user}" scope="page"/>
             <tr>
                 <td>
-                    <a href="#" onclick="submitLogForm('${admin:getHandle(user)}');return false;">
+                    <a href="#" onclick="submitLogForm('${admin:getHandle(user)}', '${session.sessionId}');return false;">
                             ${admin:getHandle(user)}
                     </a>
                 </td>
                 <td>${session.sessionId}</td>
                 <td><fmt:formatDate value="${session.creationTime}" pattern="MM/dd/yyyy HH:mm:ss"/></td>
-                <td>${session.requestsCount}</td>
                 <td><fmt:formatDate value="${session.lastAccessedTime}" pattern="MM/dd/yyyy HH:mm:ss"/></td>
+                <td>
+                    ${session.requestsCount} /
+                    <fmt:formatNumber value="${session.requestsAverageFrequency}" pattern="############0.0##"/>s
+                </td>
                 <td>
                     ${admin:convertTime(currentTime.time - session.creationTime.time)}
                 </td>

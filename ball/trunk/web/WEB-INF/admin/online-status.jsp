@@ -35,9 +35,10 @@
         }
     </script>
     <script type="text/javascript">
-        function submitLogForm(handle) {
+        function submitLogForm(handle, sid) {
             var form = document.LogForm;
             form.handle.value = handle;
+            form.session.value = sid;
 
             var e = new Date();
             var s = new Date();
@@ -75,6 +76,7 @@
                 <input type="hidden" name="endDate" value=""/>
                 <input type="hidden" name="dateFormat" value="${dateFormat}"/>
                 <input type="hidden" name="handle" value=""/>
+                <input type="hidden" name="session" value=""/>
                 <ul>
                     <!-- Players Block Start -->
                     <c:set var="groupName" value="Players" scope="request"/>

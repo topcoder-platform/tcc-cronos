@@ -122,4 +122,20 @@ public class OrpheusSession implements Serializable {
     public synchronized Date getLastAccessedTime() {
         return this.lastAccessedTime;
     }
+
+    /**
+     * <p>Gets the average frequency for the requests issued in context of this session.</p>
+     *
+     * @return a <code>double</code> providing the average freguency (in seconds) for the requests issued in context of
+     *         this session.
+     */
+    public synchronized double getRequestsAverageFrequency() {
+        if (this.requestsCount != 0) {
+            if (this.lastAccessedTime != null) {
+                long duration = this.lastAccessedTime.getTime() - this.creationTime.getTime();
+                return duration * 1.00 / this.requestsCount / 1000.00; 
+            }
+        }
+        return 0;
+    }
 }
