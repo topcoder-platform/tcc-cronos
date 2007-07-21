@@ -1230,10 +1230,22 @@ public class SqlUploadPersistence implements UploadPersistence {
             int index = loadSubmissionFieldsSequentially(submission, row, 0);
             
             // load the submission values.
-            submission.setScreeningScore(((Double)row[index++]).doubleValue());
-            submission.setIntialScore(((Double)row[index++]).doubleValue());
-            submission.setFinalScore(((Double)row[index++]).doubleValue());
-            submission.setPlacement(((Long)row[index++]).longValue());
+            Object aux = row[index++];  
+            if (aux != null) {
+            	submission.setScreeningScore(((Double) aux).doubleValue());
+            }
+            aux = row[index++];  
+            if (aux != null) {
+            	submission.setIntialScore(((Double) aux).doubleValue());
+            }
+            aux = row[index++];  
+            if (aux != null) {
+            	submission.setFinalScore(((Double) aux).doubleValue());
+            }
+            aux = row[index++];  
+            if (aux != null) {
+            	submission.setPlacement(((Long) aux).longValue());
+            }
 
             // assign it to the array
             submissions[i] = submission;
