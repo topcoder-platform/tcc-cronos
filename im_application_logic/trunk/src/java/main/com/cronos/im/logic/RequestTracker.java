@@ -1,7 +1,9 @@
 package com.cronos.im.logic;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 public class RequestTracker implements Serializable {
     
@@ -28,7 +30,7 @@ public class RequestTracker implements Serializable {
     
     private static RequestTracker instance = new RequestTracker();
     
-    private HashSet requesters = new HashSet();
+    private Set requesters = Collections.synchronizedSet(new HashSet());
 
     private RequestTracker() {}
 
