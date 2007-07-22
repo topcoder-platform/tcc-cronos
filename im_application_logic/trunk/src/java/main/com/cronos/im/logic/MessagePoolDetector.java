@@ -262,24 +262,39 @@ public class MessagePoolDetector {
         // not pulled for long time
         result = messagePool.searchLastUserPoolActivity(false, System.currentTimeMillis() - timeInterval,
                 true);
+        
         // for each inactive user message pool
         for (int i = 0; i < result.length; i++) {
             // result[i] is inactive user message pool
             // Remove the user as requester and responder from the service engine
             ServiceElement user = new ServiceElement();
             user.setProperty(IMServiceHandler.USER_ID_KEY, new Long(result[i].getUser()));
-            try {
-                serviceEngine.removeRequester(user);
-                if (logger != null) {
-                    logger.log(Level.INFO, "Remove Requester", new String[] { "User - " + result[i].getUser() });
+            SearchResult[] userSessions = messagePool.searchLastSessionPoolActivity(false, result[i].getUser(), System
+                .currentTimeMillis() - timeInterval, true);
+
+            // remove requester from all his sessions
+            for (int j = 0; j < userSessions.length; j++) {
+                user.setProperty(IMServiceHandler.SESSION_ID_KEY, new Long(userSessions[j].getSession()));
+                try {
+                    serviceEngine.removeRequester(user);
+                    if (logger != null) {
+                        logger.log(Level.INFO, "Remove Requester ", new String[] { "User - " + result[i].getUser() });
+                    }
+                } catch (Exception e) {
+                    if (logger != null) {
+                        logger.log(Level.ERROR, e.getMessage());
+                    }
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                // TODO: handle exception
             }
+            
             try {
                 serviceEngine.removeResponder(user);
             } catch (Exception e) {
-                // TODO: handle exception
+                if (logger != null) {
+                    logger.log(Level.ERROR, e.getMessage());
+                }
+                e.printStackTrace();
             }
             // Remove user from all sessions
             sessionManager.removeUserFromSessions(result[i].getUser());
