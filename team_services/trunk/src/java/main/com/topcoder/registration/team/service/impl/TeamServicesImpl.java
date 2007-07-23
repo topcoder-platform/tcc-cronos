@@ -2283,6 +2283,7 @@ public class TeamServicesImpl implements TeamServices {
         logDebug("Finished calling TeamManager#getPosition method.");
 
         // not from TC and position.filled should be false, position.published should be true
+        // FIX BUG TCRT-8530
         if ((offer.getFromUserId() != captId) && (position.getFilled() || !position.getPublished())) {
             operationResult.setSuccessful(false);
             operationResult
