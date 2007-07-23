@@ -1359,14 +1359,15 @@ public class TeamServicesImpl implements TeamServices {
         TeamPosition[] teamPos = team.getPositions();
 
         // represents the ResourcePosition array to be returned
-        ResourcePosition[] rp = new ResourcePosition[teamPos.length];
-        for (int i = 0; i < rp.length; i++) {
+        // FIX BUG TCRT-8531
+		ResourcePosition[] rp = new ResourcePosition[teamPos.length];
+        for (int i = 0; i < teamPos.length; i++) {
             try {
                 // gets the Resource associated with this position
-                logDebug("Starts calling ResourceManager#getResource method.");
-                long memberResourceId = teamPos[i].getMemberResourceId();
-                if (memberResourceId > -1) {
-                    Resource resource = resourceManager.getResource(memberResourceId);
+                if (teamPos[i].getFilled()) {
+	                logDebug("Starts calling ResourceManager#getResource method.");
+                    Resource resource = resourceManager.getResource(teamPos[i]
+                        .getMemberResourceId());
                     rp[i] = new ResourcePositionImpl(resource, teamPos[i]);
                 } else {
                     rp[i] = new ResourcePositionImpl();
