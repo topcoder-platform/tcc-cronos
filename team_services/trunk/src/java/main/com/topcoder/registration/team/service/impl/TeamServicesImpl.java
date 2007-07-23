@@ -1436,6 +1436,7 @@ public class TeamServicesImpl implements TeamServices {
             }
         }
         
+        // FIX BUG TCRT-8524
         // remove team captains
         TeamHeader[] teams = fullProjectData.getTeams();
         for (int i = 0; i < teams.length; i++) {
