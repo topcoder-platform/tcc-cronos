@@ -5,6 +5,7 @@ package com.topcoder.registration.team.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import com.cronos.onlinereview.external.ExternalUser;
@@ -26,19 +27,25 @@ import com.topcoder.management.team.Team;
 import com.topcoder.management.team.TeamFilterFactory;
 import com.topcoder.management.team.TeamHeader;
 import com.topcoder.management.team.TeamManager;
+import com.topcoder.management.team.TeamManagerException;
 import com.topcoder.management.team.TeamPersistenceException;
 import com.topcoder.management.team.TeamPosition;
 import com.topcoder.management.team.UtilityFilterFactory;
+import com.topcoder.management.team.offer.InvalidOfferDataException;
 import com.topcoder.management.team.offer.Offer;
 import com.topcoder.management.team.offer.OfferFilterFactory;
 import com.topcoder.management.team.offer.OfferManager;
+import com.topcoder.management.team.offer.OfferManagerException;
 import com.topcoder.management.team.offer.OfferStatusType;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectServices;
+import com.topcoder.project.service.ProjectServicesException;
 import com.topcoder.registration.contactmember.service.ContactMemberService;
+import com.topcoder.registration.contactmember.service.ContactMemberServiceException;
 import com.topcoder.registration.contactmember.service.Message;
+import com.topcoder.registration.contactmember.service.MessagePersistenceException;
 import com.topcoder.registration.team.service.OperationResult;
 import com.topcoder.registration.team.service.ResourcePosition;
 import com.topcoder.registration.team.service.TeamServiceConfigurationException;
@@ -74,69 +81,69 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * </p>
  * <p>
  * Here is the sample configuration for this class:
- * 
+ *
  * <pre>
- *        &lt;Config name=&quot;com.topcoder.registration.team.service.impl.TeamServicesImpl&quot;&gt;
- *          &lt;Property name=&quot;specNamespace&quot;&gt;
- *              &lt;Value&gt;com.topcoder.util.objectfactory&lt;/Value&gt;
- *          &lt;/Property&gt;
- *          &lt;Property name=&quot;userRetrievalKey&quot;&gt;
- *              &lt;Value&gt;userRetrievalKey&lt;/Value&gt;
- *          &lt;/Property&gt;
- *          &lt;Property name=&quot;resourceManagerKey&quot;&gt;
- *              &lt;Value&gt;resourceManagerKey&lt;/Value&gt;
- *          &lt;/Property&gt;
- *          &lt;Property name=&quot;projectServicesKey&quot;&gt;
- *              &lt;Value&gt;projectServicesKey&lt;/Value&gt;
- *          &lt;/Property&gt;
- *          &lt;Property name=&quot;phaseManagerKey&quot;&gt;
- *              &lt;Value&gt;phaseManagerKey&lt;/Value&gt;
- *          &lt;/Property&gt;
- *          &lt;Property name=&quot;projectManagerKey&quot;&gt;
- *              &lt;Value&gt;projectManagerKey&lt;/Value&gt;
- *          &lt;/Property&gt;
- *          &lt;Property name=&quot;teamManagerKey&quot;&gt;
- *              &lt;Value&gt;teamManagerKey&lt;/Value&gt;
- *          &lt;/Property&gt;
- *          &lt;Property name=&quot;offerManagerKey&quot;&gt;
- *              &lt;Value&gt;offerManagerKey&lt;/Value&gt;
- *          &lt;/Property&gt;
- *          &lt;Property name=&quot;contactMemberServiceKey&quot;&gt;
- *              &lt;Value&gt;contactMemberServiceKey&lt;/Value&gt;
- *          &lt;/Property&gt;
- *          &lt;Property name=&quot;loggerName&quot;&gt;
- *              &lt;Value&gt;defaultLogger&lt;/Value&gt;
- *          &lt;/Property&gt;
- *          &lt;Property name=&quot;registrationPhaseId&quot;&gt;
- *              &lt;Value&gt;1&lt;/Value&gt;
- *          &lt;/Property&gt;
- *          &lt;Property name=&quot;freeAgentRoleId&quot;&gt;
- *              &lt;Value&gt;1&lt;/Value&gt;
- *          &lt;/Property&gt;
- *          &lt;Property name=&quot;teamCaptainRoleId&quot;&gt;
- *              &lt;Value&gt;2&lt;/Value&gt;
- *          &lt;/Property&gt;
- *          &lt;Property name=&quot;submitterRoleId&quot;&gt;
- *              &lt;Value&gt;3&lt;/Value&gt;
- *          &lt;/Property&gt;
- *          &lt;Property name=&quot;removeTeamMessageTemplateName&quot;&gt;
- *              &lt;Value&gt;test_files/doc_gen_files/remove_team_template&lt;/Value&gt;
- *          &lt;/Property&gt;
- *          &lt;Property name=&quot;sendOfferTemplateName&quot;&gt;
- *              &lt;Value&gt;test_files/doc_gen_files/offer_template&lt;/Value&gt;
- *          &lt;/Property&gt;
- *          &lt;Property name=&quot;acceptOfferTemplateName&quot;&gt;
- *              &lt;Value&gt;test_files/doc_gen_files/offer_template&lt;/Value&gt;
- *          &lt;/Property&gt;
- *          &lt;Property name=&quot;rejectOfferTemplateName&quot;&gt;
- *              &lt;Value&gt;test_files/doc_gen_files/offer_template&lt;/Value&gt;
- *          &lt;/Property&gt;
- *          &lt;Property name=&quot;removeMemberMessageTemplateName&quot;&gt;
- *              &lt;Value&gt;test_files/doc_gen_files/remove_member_template&lt;/Value&gt;
- *          &lt;/Property&gt;
- *        &lt;/Config&gt;
+ *    &lt;Config name=&quot;com.topcoder.registration.team.service.impl.TeamServicesImpl&quot;&gt;
+ *      &lt;Property name=&quot;specNamespace&quot;&gt;
+ *          &lt;Value&gt;com.topcoder.util.objectfactory&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;userRetrievalKey&quot;&gt;
+ *          &lt;Value&gt;userRetrievalKey&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;resourceManagerKey&quot;&gt;
+ *          &lt;Value&gt;resourceManagerKey&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;projectServicesKey&quot;&gt;
+ *          &lt;Value&gt;projectServicesKey&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;phaseManagerKey&quot;&gt;
+ *          &lt;Value&gt;phaseManagerKey&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;projectManagerKey&quot;&gt;
+ *          &lt;Value&gt;projectManagerKey&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;teamManagerKey&quot;&gt;
+ *          &lt;Value&gt;teamManagerKey&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;offerManagerKey&quot;&gt;
+ *          &lt;Value&gt;offerManagerKey&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;contactMemberServiceKey&quot;&gt;
+ *          &lt;Value&gt;contactMemberServiceKey&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;loggerName&quot;&gt;
+ *          &lt;Value&gt;defaultLogger&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;registrationPhaseId&quot;&gt;
+ *          &lt;Value&gt;1&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;freeAgentRoleId&quot;&gt;
+ *          &lt;Value&gt;1&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;teamCaptainRoleId&quot;&gt;
+ *          &lt;Value&gt;2&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;submitterRoleId&quot;&gt;
+ *          &lt;Value&gt;3&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;removeTeamMessageTemplateName&quot;&gt;
+ *          &lt;Value&gt;test_files/doc_gen_files/remove_team_template&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;sendOfferTemplateName&quot;&gt;
+ *          &lt;Value&gt;test_files/doc_gen_files/offer_template&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;acceptOfferTemplateName&quot;&gt;
+ *          &lt;Value&gt;test_files/doc_gen_files/offer_template&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;rejectOfferTemplateName&quot;&gt;
+ *          &lt;Value&gt;test_files/doc_gen_files/offer_template&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;removeMemberMessageTemplateName&quot;&gt;
+ *          &lt;Value&gt;test_files/doc_gen_files/remove_member_template&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *    &lt;/Config&gt;
  * </pre>
- * 
+ *
  * </p>
  * <p>
  * Thread Safety: This class is immutable but operates on non thread safe objects, thus making it
@@ -300,7 +307,7 @@ public class TeamServicesImpl implements TeamServices {
      * Represents the external reference id property of Resource.
      * </p>
      */
-    private static final String EXTERNAL_REFERENCE_ID = "External reference ID";
+    private static final String EXTERNAL_REFERENCE_ID = "External Reference ID";
 
     /**
      * <p>
@@ -829,23 +836,28 @@ public class TeamServicesImpl implements TeamServices {
         boolean create, OperationResultImpl operationResult) {
         // checks whether team name is legal
         for (int i = 0; i < fullProjectDatas.length; i++) {
+            if (fullProjectDatas[i].getProjectHeader().getId() != team.getProjectId()) {
+                continue;
+            }
+
             // gets all teams in this project
             TeamHeader[] teams = fullProjectDatas[i].getTeams();
-
+            
             for (int j = 0; j < teams.length; j++) {
                 TeamHeader teamHeader = teams[j];
                 // if this is updating and this team's id equals to given team's, skip it
                 if (!create && teamHeader.getTeamId() == team.getTeamId()) {
-                    continue;
+                    // do nothing
+                } else {
+                    // check team.name does not equal to teamHeader.name
+                    if (teamHeader.getName().equals(team.getName())) {
+                        operationResult.setSuccessful(false);
+                        operationResult.setErrors(new String[] {"Name of given team "
+                            + "should not be equal to that of any existing team."});
+                        return false;
+                    }
                 }
 
-                // check team.name does not equal to teamHeader.name
-                if (teamHeader.getName().equals(team.getName())) {
-                    operationResult.setSuccessful(false);
-                    operationResult.setErrors(new String[] {"Name of given team "
-                        + "should not be equal to that of any existing team."});
-                    return false;
-                }
 
                 try {
                     // gets complete team information of this teamHeader
@@ -858,6 +870,10 @@ public class TeamServicesImpl implements TeamServices {
                     for (int k = 0; k < positions.length; k++) {
                         // gets the resource associated with this position
                         logDebug("Starts calling ResourceManager#getResource method.");
+                        // no sense processing unfilled positions
+                        if (!positions[k].getFilled()) {
+                            continue;
+                        }
                         Resource resource = resourceManager.getResource(positions[k]
                             .getMemberResourceId());
                         logDebug("Finished calling ResourceManager#getResource method.");
@@ -983,7 +999,9 @@ public class TeamServicesImpl implements TeamServices {
         // adds ids of team members
         TeamPosition[] members = team.getPositions();
         for (int i = 0; i < members.length; i++) {
-            ids.add(new Long(members[i].getMemberResourceId()));
+            if (members[i].getFilled()) {
+                ids.add(new Long(members[i].getMemberResourceId()));
+            }
         }
 
         // represents the Resource array
@@ -1017,12 +1035,12 @@ public class TeamServicesImpl implements TeamServices {
      * Here is the sample XML template data format:
      * 
      * <pre>
-     *         &lt;DATA&gt;
-     *           &lt;TEAM_NAME&gt;name&lt;/TEAM_NAME&gt;
-     *           &lt;TEAM_DESCRIPTION&gt;description&lt;/TEAM_DESCRIPTION&gt;
-     *           &lt;PROJECT_NAME&gt;project name&lt;/PROJECT_NAME&gt;
-     *           &lt;CAPTAIN_HANDLE&gt;handle&lt;/CAPTAIN_HANDLE&gt;
-     *         &lt;/DATA&gt;
+     *     &lt;DATA&gt;
+     *       &lt;TEAM_NAME&gt;name&lt;/TEAM_NAME&gt;
+     *       &lt;TEAM_DESCRIPTION&gt;description&lt;/TEAM_DESCRIPTION&gt;
+     *       &lt;PROJECT_NAME&gt;project name&lt;/PROJECT_NAME&gt;
+     *       &lt;CAPTAIN_HANDLE&gt;handle&lt;/CAPTAIN_HANDLE&gt;
+     *     &lt;/DATA&gt;
      * </pre>
      * 
      * </p>
@@ -1091,13 +1109,18 @@ public class TeamServicesImpl implements TeamServices {
 
         try {
             for (int i = 0; i < ids.length; i++) {
+                // ignore unfilled positions
+                if (ids[i] == -1) {
+                    continue;
+                }
+                
                 // gets the Resource instance of this member
                 logDebug("Starts calling ResourceManager#getResource method.");
                 Resource resource = resourceManager.getResource(ids[i]);
                 logDebug("Finished calling ResourceManager#getResource method.");
 
                 // gets the External reference ID property of this Resource
-                userIds[i] = ((Long) resource.getProperty(EXTERNAL_REFERENCE_ID)).longValue();
+                userIds[i] = Long.parseLong(resource.getProperty(EXTERNAL_REFERENCE_ID).toString());
                 // gets the Handle property of this Resource
                 handles[i] = (String) resource.getProperty(HANDLE);
 
@@ -1108,8 +1131,11 @@ public class TeamServicesImpl implements TeamServices {
                 logDebug("Starts calling ResourceManager#updateResource method.");
                 resourceManager.updateResource(resource, operator.getHandle());
                 logDebug("Starts calling ResourceManager#updateResource method.");
+                
+                teamManager.removeTeam(teamId, userId);
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             log(Level.ERROR, "Exception occurred in TeamServicesImpl#removeTeam method.");
             // error occurred, set unsuccessful flag to OperationResult and return
             operationResult.setSuccessful(false);
@@ -1121,42 +1147,61 @@ public class TeamServicesImpl implements TeamServices {
         // expires all pending offers sent by the Team Captain
         expireOffers(userIds[0], team.getTeamHeader());
 
-        // sends messages to team members
-        Message message = new Message();
-
-        try {
-            // gets name of this project
-            logDebug("Starts calling ProjectManager#getProject method.");
-            String projectName = (String) projectManager.getProject(
-                team.getTeamHeader().getProjectId()).getProperty(PROJECT_NAME);
-            logDebug("Finished calling ProjectManager#getProject method.");
-
-            // gets instance of DocumentGenerator
-            DocumentGenerator docGen = DocumentGenerator.getInstance();
-            // gets the Template for removing team
-            Template template = docGen.getTemplate(removeTeamMessageTemplateName);
-            // builds the XML template data
-            String templateData = buildsTemplateDataForRemovingTeam(team.getTeamHeader().getName(),
-                team.getTeamHeader().getDescription(), projectName, handles[0]);
-            // generates message text
-            String msgText = docGen.applyTemplate(template, templateData);
-
-            // sets up the Message
-            setUpMessage(message, msgText, handles, operator.getHandle(), team.getTeamHeader()
-                .getProjectId(), projectName);
-        } catch (Exception ex) {
-            // error occurred, set operationResult to unsuccessful, and return
-            operationResult.setSuccessful(false);
-            operationResult.setErrors(new String[] {ex.getMessage()});
-            log(Level.INFO, "Exits TeamServicesImpl#removeTeam method.");
-            return operationResult;
+        if (members.length > 0) {
+            
+           // sends messages to team members
+            Message message = new Message();
+    
+            try {
+                // gets name of this project
+                logDebug("Starts calling ProjectManager#getProject method.");
+                String projectName = (String) projectManager.getProject(
+                    team.getTeamHeader().getProjectId()).getProperty(PROJECT_NAME);
+                logDebug("Finished calling ProjectManager#getProject method.");
+    
+                // gets instance of DocumentGenerator
+                DocumentGenerator docGen = DocumentGenerator.getInstance();
+                // gets the Template for removing team
+                Template template = docGen.getTemplate(removeTeamMessageTemplateName);
+                // builds the XML template data
+                String templateData = buildsTemplateDataForRemovingTeam(team.getTeamHeader().getName(),
+                    team.getTeamHeader().getDescription(), projectName, handles[0]);
+                // generates message text
+                String msgText = docGen.applyTemplate(template, templateData);
+    
+                // gets the destination handles
+                String[] toHandles = new String[members.length];
+                List toHandlesList = new ArrayList();
+                if(handles != null) {
+                	for (int i = 0; i < handles.length; i++) {
+						if(handles[i] != null) {
+							toHandlesList.add(handles[i]);
+						}
+					}
+                }
+                toHandles = (String[]) toHandlesList.toArray(new String[0]);
+                
+                //System.arraycopy(handles, 1, toHandles, 0, members.length);
+                // sets up the Message
+                setUpMessage(message, msgText, toHandles, handles[0], team.getTeamHeader()
+                    .getProjectId(), projectName);
+            } catch (Exception ex) {
+                // error occurred, set operationResult to unsuccessful, and return
+                operationResult.setSuccessful(false);
+                operationResult.setErrors(new String[] {ex.getMessage()});
+                log(Level.INFO, "Exits TeamServicesImpl#removeTeam method.");
+                return operationResult;
+            }
+            // sends the message
+            
+            logDebug("Starts calling ContactMemberServices#sendMessage method.");
+            
+            contactMemberService.sendMessage(message);
+            logDebug("Finished calling ContactMemberServices#sendMessage method.");
         }
-        // sends the message
-        logDebug("Starts calling ContactMemberServices#sendMessage method.");
-        contactMemberService.sendMessage(message);
-        logDebug("Finished calling ContactMemberServices#sendMessage method.");
-
+ 
         log(Level.INFO, "Exits TeamServicesImpl#removeTeam method.");
+        
         return operationResult;
     }
 
@@ -1207,12 +1252,6 @@ public class TeamServicesImpl implements TeamServices {
      */
     private void setUpMessage(Message message, String text, String[] toHandles, String fromHandle,
         long projectId, String projectName) {
-        // if toHandles has null, then sets it to NULL
-        for (int i = 0; i < toHandles.length; i++) {
-            if (toHandles[i] == null) {
-                toHandles[i] = "NULL";
-            }
-        }
         message.setFromHandle(fromHandle);
         message.setProjectId(projectId);
         message.setProjectName(projectName);
@@ -1264,13 +1303,11 @@ public class TeamServicesImpl implements TeamServices {
      */
     private void expireOffers(long captainId, TeamHeader teamHeader) {
         // constructs a filter to retrieve all pending offers
-        Filter filter = OfferFilterFactory.createSenderIdFilter(captainId);
-        Filter statusFilter = OfferFilterFactory
-            .createOfferStatusTypeFilter(OfferStatusType.OFFERED);
-        Filter theFilter = OfferFilterFactory.createAndFilter(filter, statusFilter);
+        Filter filter = OfferFilterFactory.createAndFilter(OfferFilterFactory.createSenderIdFilter(captainId),
+        		OfferFilterFactory.createOfferStatusTypeFilter(OfferStatusType.OFFERED));
         // find offers using above filter
         logDebug("Starts calling OfferManager#findOffers method.");
-        Offer[] offers = offerManager.findOffers(theFilter);
+        Offer[] offers = offerManager.findOffers(filter);
         logDebug("Finished calling OfferManager#findOffers method.");
 
         // gets all free agents in this project
@@ -1279,8 +1316,7 @@ public class TeamServicesImpl implements TeamServices {
         // handles each offer, if it has a corresponding Free Agent, then expire it
         for (int i = 0; i < offers.length; i++) {
             for (int j = 0; j < freeAgents.length; j++) {
-                if (offers[i].getToUserId() == ((Long) freeAgents[j]
-                    .getProperty(EXTERNAL_REFERENCE_ID)).longValue()) {
+                if (offers[i].getToUserId() == Long.parseLong(freeAgents[j].getProperty(EXTERNAL_REFERENCE_ID).toString())) {
                     // Free Agent found, expire this offer
                     logDebug("Starts calling OfferManager#expireOffer method.");
                     offerManager.expireOffer(offers[i].getOfferId());
@@ -1323,18 +1359,21 @@ public class TeamServicesImpl implements TeamServices {
         TeamPosition[] teamPos = team.getPositions();
 
         // represents the ResourcePosition array to be returned
-        // FIX BUG TCRT-8531
-        List resoucePositions = new ArrayList();
-        for (int i = 0; i < teamPos.length; i++) {
+        ResourcePosition[] rp = new ResourcePosition[teamPos.length];
+        for (int i = 0; i < rp.length; i++) {
             try {
-                if (teamPos[i].getFilled()) {
-                    // gets the Resource associated with this position
-                    logDebug("Starts calling ResourceManager#getResource method.");
-                    Resource resource = resourceManager.getResource(teamPos[i]
-                        .getMemberResourceId());
-                    logDebug("Finished calling ResourceManager#getResource method.");
-                    resoucePositions.add(new ResourcePositionImpl(resource, teamPos[i]));
+                // gets the Resource associated with this position
+                logDebug("Starts calling ResourceManager#getResource method.");
+                long memberResourceId = teamPos[i].getMemberResourceId();
+                if (memberResourceId > -1) {
+                    Resource resource = resourceManager.getResource(memberResourceId);
+                    rp[i] = new ResourcePositionImpl(resource, teamPos[i]);
+                } else {
+                    rp[i] = new ResourcePositionImpl();
+                    rp[i].setPosition(teamPos[i]);
                 }
+                logDebug("Finished calling ResourceManager#getResource method.");
+
             } catch (ResourcePersistenceException ex) {
                 log(Level.ERROR,
                     "TeamServicesException occurred in TeamServicesImpl#getTeamPositionsDetails method.");
@@ -1343,8 +1382,6 @@ public class TeamServicesImpl implements TeamServices {
             }
         }
 
-        ResourcePosition[] rp = (ResourcePosition[]) resoucePositions
-            .toArray(new ResourcePosition[0]);
         log(Level.INFO, "Exits TeamServicesImpl#getTeamPositionsDetails method.");
         return rp;
     }
@@ -1392,11 +1429,21 @@ public class TeamServicesImpl implements TeamServices {
             TeamPosition[] positions = teamManager.findPositions(filter);
             logDebug("Finished calling TeamManager#findPositions method.");
 
-            // FIX BUG TCRT-8524
             // if no positions found, add this resource to Free Agents list
-            if (positions.length == 0
-                && resources[i].getResourceRole().getId() != teamCaptainRoleId) {
+            if (positions.length == 0) {
                 freeAgents.add(resources[i]);
+            }
+        }
+        
+        // remove team captains
+        TeamHeader[] teams = fullProjectData.getTeams();
+        for (int i = 0; i < teams.length; i++) {
+            TeamHeader team = teams[i];
+            for (Iterator iter = freeAgents.iterator(); iter.hasNext();) {
+                Resource resource = (Resource) iter.next();
+                if (resource.getId() == team.getCaptainResourceId()) {
+                    iter.remove();
+                }
             }
         }
 
@@ -1479,6 +1526,13 @@ public class TeamServicesImpl implements TeamServices {
                     log(Level.INFO, "Exits TeamServicesImpl#createOrUpdatePosition method.");
                     return operationResult;
                 }
+                // position's resource should not have been registered for this project before
+                // sum of payment percentage should not exceed 100
+                if (!checkPaymentSumValid(team, position, operationResult)) {
+                    log(Level.INFO, "Enters TeamServicesImpl#acceptOffer method.");
+                    return operationResult;
+                }
+
                 // position is filled already, continue checking
                 if (position.getFilled()) {
                     // position's resource should be a Free Agent
@@ -1491,8 +1545,9 @@ public class TeamServicesImpl implements TeamServices {
                         log(Level.INFO, "Exits TeamServicesImpl#createOrUpdatePosition method.");
                         return operationResult;
                     }
+
                 }
-                // adds the position the given team
+
                 logDebug("Starts calling TeamManager#addPosition method.");
                 teamManager.addPosition(teamId, position, userId);
                 logDebug("Finished calling TeamManager#addPosition method.");
@@ -1508,6 +1563,12 @@ public class TeamServicesImpl implements TeamServices {
                     // if position has a new memberResourceId, then this id should not been already
                     // registered for this project
                     if (hasNewId(position, team)) {
+                        // position's resource should be a Free Agent
+                        if (!checkResourceFreeAgent(position, team, operationResult)) {
+                            log(Level.INFO, "Exits TeamServicesImpl#createOrUpdatePosition method.");
+                            return operationResult;
+                        }
+
                         // position's resource should not have been registered for this project
                         // before
                         if (!checkResourceNotRegisteredBefore(position, team, operationResult)) {
@@ -1531,14 +1592,14 @@ public class TeamServicesImpl implements TeamServices {
             return operationResult;
         } catch (TeamPersistenceException ex) {
             log(Level.ERROR,
-                "TeamPersistenceException occurred in TeamServicesImpl#createOrUpdatePosition method.");
+            "TeamPersistenceException occurred in TeamServicesImpl#createOrUpdatePosition method.");
             operationResult.setSuccessful(false);
             operationResult.setErrors(new String[] {ex.getMessage()});
             log(Level.INFO, "Exits TeamServicesImpl#createOrUpdatePosition method.");
             return operationResult;
         } catch (com.topcoder.management.team.UnknownEntityException ex) {
             log(Level.ERROR,
-                "UnknownEntityException occurred in TeamServicesImpl#createOrUpdatePosition method.");
+            "UnknownEntityException occurred in TeamServicesImpl#createOrUpdatePosition method.");
             operationResult.setSuccessful(false);
             operationResult.setErrors(new String[] {ex.getMessage()});
             log(Level.INFO, "Exits TeamServicesImpl#createOrUpdatePosition method.");
@@ -1759,6 +1820,13 @@ public class TeamServicesImpl implements TeamServices {
                 "IllegalArgumentException occurred in TeamServicesImpl#removePosition method.");
             throw ex;
         }
+        Offer[] offers = getOffers(userId);
+        for (int i = 0; i < offers.length; i++) {
+            Offer offer = offers[i];
+            if (offer.getPositionId() == positionId && offer.getStatus().getStatusType() == OfferStatusType.OFFERED) {
+                offerManager.expireOffer(offer.getOfferId());
+            }
+        }
 
         // check whether position exists
         logDebug("Starts calling TeamManager#getPosition method.");
@@ -1773,20 +1841,6 @@ public class TeamServicesImpl implements TeamServices {
 
         OperationResultImpl operationResult = new OperationResultImpl();
         try {
-            // finds all offers associated with this position
-            Filter filter1 = OfferFilterFactory.createPositionIdFilter(positionId);
-            Filter filter2 = OfferFilterFactory
-                .createOfferStatusTypeFilter(OfferStatusType.OFFERED);
-            Offer[] offers = offerManager.findOffers(OfferFilterFactory.createAndFilter(filter1,
-                filter2));
-
-            // expires all offers
-            for (int i = 0; i < offers.length; i++) {
-                logDebug("Starts calling OfferManager#expireOffer method.");
-                offerManager.expireOffer(offers[i].getOfferId());
-                logDebug("Finished calling OfferManager#expireOffer method.");
-            }
-
             logDebug("Starts calling TeamManager#removePosition method.");
             teamManager.removePosition(positionId, userId);
             logDebug("Finished calling TeamManager#removePosition method.");
@@ -1858,19 +1912,19 @@ public class TeamServicesImpl implements TeamServices {
             log(Level.INFO, "Exits TeamServicesImpl#validateFinalization method.");
             return operationResult;
         }
-        // given userId should match team.captainResourceId
-        if (userId != team.getTeamHeader().getCaptainResourceId()) {
-            operationResult.setSuccessful(false);
-            operationResult
-                .setErrors(new String[] {"Given userId should match team.captainResourceId"});
-            log(Level.INFO, "Exits TeamServicesImpl#validateFinalization method.");
-            return operationResult;
-        }
+//        // given userId should match team.captainResourceId
+//        if (userId != team.getTeamHeader().getCaptainResourceId()) {
+//            operationResult.setSuccessful(false);
+//            operationResult
+//                .setErrors(new String[] {"Given userId should match team.captainResourceId"});
+//            log(Level.INFO, "Exits TeamServicesImpl#validateFinalization method.");
+//            return operationResult;
+//        }
         // all positions' memberResourceId should match Free Agents
-        if (!checkMembersFree(team, operationResult)) {
-            log(Level.INFO, "Exits TeamServicesImpl#validateFinalization method.");
-            return operationResult;
-        }
+//        if (!checkMembersFree(team, operationResult)) {
+//            log(Level.INFO, "Exits TeamServicesImpl#validateFinalization method.");
+//            return operationResult;
+//        }
         // team's captain should be a project resource with a role "Team Captain"
         if (!checkTeamCaptainValid(team, operationResult)) {
             log(Level.INFO, "Exits TeamServicesImpl#validateFinalization method.");
@@ -1943,8 +1997,8 @@ public class TeamServicesImpl implements TeamServices {
 
             Phase[] phases = phaseProject.getAllPhases();
             for (int i = 0; i < phases.length; i++) {
-                if (phases[i].getId() == this.registrationPhaseId
-                    && phases[i].getPhaseStatus() == PhaseStatus.OPEN) {
+                if (phases[i].getPhaseType().getId() == this.registrationPhaseId
+                    && phases[i].getPhaseStatus().getId() == PhaseStatus.OPEN.getId()) {
                     return true;
                 }
             }
@@ -2015,7 +2069,7 @@ public class TeamServicesImpl implements TeamServices {
         // teamCaptainRole id
         logDebug("Starts calling ProjectServices#getFullProjectData method.");
         Resource[] resources = projectServices.getFullProjectData(
-            team.getTeamHeader().getCaptainResourceId()).getResources();
+            team.getTeamHeader().getProjectId()).getResources();
         logDebug("Finished calling ProjectServices#getFullProjectData method.");
 
         boolean match = false;
@@ -2110,6 +2164,8 @@ public class TeamServicesImpl implements TeamServices {
 
         // updates role of captain to submitter
         try {
+            teamManager.updateTeam(team.getTeamHeader(), userId);
+
             // gets resource of captain
             logDebug("Starts calling ResourceManager#getResource method.");
             Resource captain = resourceManager.getResource(team.getTeamHeader()
@@ -2123,9 +2179,15 @@ public class TeamServicesImpl implements TeamServices {
             logDebug("Starts calling ResourceManager#updateResource method.");
             resourceManager.updateResource(captain, operator.getHandle());
             logDebug("Finished calling ResourceManager#updateResource method.");
+            
 
         } catch (ResourcePersistenceException ex) {
             log(Level.ERROR, "ResourcePersistenceException occurred.");
+            // error occurred, return a unsuccessful OperationResult
+            operationResult.setSuccessful(false);
+            operationResult.setErrors(new String[] {ex.getMessage()});
+        } catch (TeamManagerException ex) {
+            log(Level.ERROR, "TeamManagerException occurred.");
             // error occurred, return a unsuccessful OperationResult
             operationResult.setSuccessful(false);
             operationResult.setErrors(new String[] {ex.getMessage()});
@@ -2147,17 +2209,17 @@ public class TeamServicesImpl implements TeamServices {
      * Here is the sample XML template data format:
      * 
      * <pre>
-     *        &lt;DATA&gt;
-     *           &lt;OFFER&gt;
-     *               &lt;FROM&gt;joe&lt;/FROM &gt;
-     *               &lt;TO&gt;jim&lt;/TO&gt;
-     *               &lt;POSITION&gt;futile&lt;/POSITION&gt;
-     *               &lt;STATUS&gt;offered&lt;/STATUS&gt;
-     *               &lt;PERCENTAGE&gt;25&lt;/PERCENTAGE&gt;
-     *               &lt;MESSAGE&gt;Please accept&lt;/MESSAGE&gt;
-     *               &lt;REJECTION&gt;Because I can&lt;/REJECTION&gt;
-     *           &lt;/OFFER&gt;
-     *        &lt;/DATA&gt;
+     *    &lt;DATA&gt;
+     *       &lt;OFFER&gt;
+     *           &lt;FROM&gt;joe&lt;/FROM &gt;
+     *           &lt;TO&gt;jim&lt;/TO&gt;
+     *           &lt;POSITION&gt;futile&lt;/POSITION&gt;
+     *           &lt;STATUS&gt;offered&lt;/STATUS&gt;
+     *           &lt;PERCENTAGE&gt;25&lt;/PERCENTAGE&gt;
+     *           &lt;MESSAGE&gt;Please accept&lt;/MESSAGE&gt;
+     *           &lt;REJECTION&gt;Because I can&lt;/REJECTION&gt;
+     *       &lt;/OFFER&gt;
+     *    &lt;/DATA&gt;
      * </pre>
      * 
      * </p>
@@ -2203,51 +2265,30 @@ public class TeamServicesImpl implements TeamServices {
             log(Level.INFO, "Exits TeamServicesImpl#sendOffer method.");
             return operationResult;
         }
+        
+        // gets the capt user id
+        long captId = -1;
+        try {
+        captId = Long.parseLong((String)resourceManager.getResource(
+                team.getTeamHeader().getCaptainResourceId()).getProperty(EXTERNAL_REFERENCE_ID));
+        } catch(Exception e) {
+        	// handle quitely
+        	logDebug("exception occured while getting Captain's ID");
+        }
+        
         // gets the position instance
         logDebug("Starts calling TeamManager#getPosition method.");
         TeamPosition position = teamManager.getPosition(offer.getPositionId());
         logDebug("Finished calling TeamManager#getPosition method.");
 
-        // position.filled should be false, position.published should be true
-        // FIX BUG TCRT-8530
-        if (position.getFilled()) {
+        // not from TC and position.filled should be false, position.published should be true
+        if ((offer.getFromUserId() != captId) && (position.getFilled() || !position.getPublished())) {
             operationResult.setSuccessful(false);
             operationResult
                 .setErrors(new String[] {"The position associated with given offer should"
-                    + " be not filled."});
+                    + " be published and not filled."});
             log(Level.INFO, "Exits TeamServicesImpl#sendOffer method.");
             return operationResult;
-        }
-
-        if (!position.getPublished()) {
-
-            Resource resource = null;
-            try {
-                resource = this.resourceManager.getResource(position.getMemberResourceId());
-            } catch (ResourcePersistenceException e) {
-                operationResult.setSuccessful(false);
-                operationResult
-                    .setErrors(new String[] {"ResourcePersistenceException occurred in TeamServicesImpl#sendOffer method."});
-                log(Level.INFO, "Exits TeamServicesImpl#sendOffer method.");
-                return operationResult;
-            }
-
-            if (resource == null) {
-                operationResult.setSuccessful(false);
-                operationResult
-                    .setErrors(new String[] {"The resource associated with given offer does not exist."});
-                log(Level.INFO, "Exits TeamServicesImpl#sendOffer method.");
-                return operationResult;
-            }
-
-            if (resource.getResourceRole().getId() != this.teamCaptainRoleId) {
-                operationResult.setSuccessful(false);
-                operationResult
-                    .setErrors(new String[] {"The position associated with given offer should"
-                        + " be published."});
-                log(Level.INFO, "Exits TeamServicesImpl#sendOffer method.");
-                return operationResult;
-            }
         }
         // the project should be in registration phase
         if (!checkProjectOfTeamInRegistration(team, operationResult)) {
@@ -2432,8 +2473,8 @@ public class TeamServicesImpl implements TeamServices {
         try {
             // gets the captains user id
             logDebug("Starts calling ResourceManager#getResource method.");
-            Long captainId = (Long) resourceManager.getResource(
-                team.getTeamHeader().getCaptainResourceId()).getProperty(EXTERNAL_REFERENCE_ID);
+            Long captainId = Long.valueOf(resourceManager.getResource(
+                team.getTeamHeader().getCaptainResourceId()).getProperty(EXTERNAL_REFERENCE_ID).toString());
             logDebug("Finished calling ResourceManager#getResource method.");
 
             // gets all free agents
@@ -2442,7 +2483,7 @@ public class TeamServicesImpl implements TeamServices {
             // if sender is the team's captain, then receiver should be a free agent
             if (offer.getFromUserId() == captainId.longValue()) {
                 for (int i = 0; i < freeAgents.length; i++) {
-                    if (((Long) freeAgents[i].getProperty(EXTERNAL_REFERENCE_ID)).longValue() == offer
+                    if (Long.parseLong(freeAgents[i].getProperty(EXTERNAL_REFERENCE_ID).toString()) == offer
                         .getToUserId()) {
                         return true;
                     }
@@ -2457,7 +2498,7 @@ public class TeamServicesImpl implements TeamServices {
                 // sender should be some free agent
                 boolean free = false;
                 for (int i = 0; i < freeAgents.length; i++) {
-                    if (((Long) freeAgents[i].getProperty(EXTERNAL_REFERENCE_ID)).longValue() == offer
+                    if (Long.parseLong(freeAgents[i].getProperty(EXTERNAL_REFERENCE_ID).toString()) == offer
                         .getFromUserId()) {
                         free = true;
                         break;
@@ -2533,17 +2574,17 @@ public class TeamServicesImpl implements TeamServices {
      * Here is the sample XML template data format:
      * 
      * <pre>
-     *        &lt;DATA&gt;
-     *            &lt;OFFER&gt;
-     *                &lt;FROM&gt;joe&lt;/FROM &gt;
-     *                &lt;TO&gt;jim&lt;/TO&gt;
-     *                &lt;POSITION&gt;futile&lt;/POSITION&gt;
-     *                &lt;STATUS&gt;offered&lt;/STATUS&gt;
-     *                &lt;PERCENTAGE&gt;25&lt;/PERCENTAGE&gt;
-     *                &lt;MESSAGE&gt;Please accept&lt;/MESSAGE&gt;
-     *                &lt;REJECTION&gt;Because I can&lt;/REJECTION&gt;
-     *            &lt;/OFFER&gt;
-     *        &lt;/DATA&gt;
+     *    &lt;DATA&gt;
+     *        &lt;OFFER&gt;
+     *            &lt;FROM&gt;joe&lt;/FROM &gt;
+     *            &lt;TO&gt;jim&lt;/TO&gt;
+     *            &lt;POSITION&gt;futile&lt;/POSITION&gt;
+     *            &lt;STATUS&gt;offered&lt;/STATUS&gt;
+     *            &lt;PERCENTAGE&gt;25&lt;/PERCENTAGE&gt;
+     *            &lt;MESSAGE&gt;Please accept&lt;/MESSAGE&gt;
+     *            &lt;REJECTION&gt;Because I can&lt;/REJECTION&gt;
+     *        &lt;/OFFER&gt;
+     *    &lt;/DATA&gt;
      * </pre>
      * 
      * </p>
@@ -2627,7 +2668,17 @@ public class TeamServicesImpl implements TeamServices {
         logDebug("Finished calling OfferManager#accepteOffer method.");
 
         // sets the position with offer
-        position.setMemberResourceId(offer.getToUserId());
+        FullProjectData fullProjectData = projectServices.getFullProjectData(team.getTeamHeader().getProjectId());
+        Resource[] projectResources = fullProjectData.getResources();
+        long toResource = getResourceIdForUser(projectResources, offer.getToUserId());
+        long fromResource = getResourceIdForUser(projectResources, offer.getFromUserId());
+        
+        if (team.getTeamHeader().getCaptainResourceId() == toResource) {
+            position.setMemberResourceId(fromResource);
+        } else {
+            position.setMemberResourceId(toResource);
+        }
+
         position.setPaymentPercentage(offer.getPercentageOffered());
         position.setFilled(true);
         try {
@@ -2669,6 +2720,16 @@ public class TeamServicesImpl implements TeamServices {
 
         log(Level.INFO, "Enters TeamServicesImpl#acceptOffer method.");
         return operationResult;
+    }
+
+    private long getResourceIdForUser(Resource[] projectResources, long resourceUserId) {
+        for (int i = 0; i < projectResources.length; i++) {
+            Resource resource = projectResources[i];
+            if (resourceUserId == Long.parseLong(resource.getProperty(EXTERNAL_REFERENCE_ID).toString())) {
+                return resource.getId();
+            }
+        }
+        return -1;
     }
 
     /**
@@ -2724,7 +2785,37 @@ public class TeamServicesImpl implements TeamServices {
         if (sum > 100) {
             operationResult.setSuccessful(false);
             operationResult
-                .setErrors(new String[] {"Sum of payments percentage should not exceed 100."});
+            .setErrors(new String[] {"Sum of payments percentage should not exceed 100."});
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * <p>
+     * Checks the sum of payment percentage not exceeds 100.
+     * </p>
+     * @param team
+     *            the team associated with offer
+     * @param offer
+     *            the offer
+     * @param operationResult
+     *            the operationResult
+     * @return true if sum does not exceed 100, false otherwise
+     */
+    private boolean checkPaymentSumValid(Team team, TeamPosition position, OperationResultImpl operationResult) {
+        int sum = 0;
+        sum += team.getTeamHeader().getCaptainPaymentPercentage();
+        sum += position.getPaymentPercentage();
+        TeamPosition[] positions = team.getPositions();
+        for (int i = 0; i < positions.length; i++) {
+            sum += positions[i].getPaymentPercentage();
+        }
+        
+        if (sum > 100) {
+            operationResult.setSuccessful(false);
+            operationResult
+            .setErrors(new String[] {"Sum of payments percentage should not exceed 100."});
             return false;
         }
         return true;
@@ -2790,17 +2881,17 @@ public class TeamServicesImpl implements TeamServices {
      * Here is the sample XML template data format:
      * 
      * <pre>
-     *        &lt;DATA&gt;
-     *            &lt;OFFER&gt;
-     *                &lt;FROM&gt;joe&lt;/FROM &gt;
-     *                &lt;TO&gt;jim&lt;/TO&gt;
-     *                &lt;POSITION&gt;futile&lt;/POSITION&gt;
-     *                &lt;STATUS&gt;offered&lt;/STATUS&gt;
-     *                &lt;PERCENTAGE&gt;25&lt;/PERCENTAGE&gt;
-     *                &lt;MESSAGE&gt;Please accept&lt;/MESSAGE&gt;
-     *                &lt;REJECTION&gt;Because I can&lt;/REJECTION&gt;
-     *            &lt;/OFFER&gt;
-     *        &lt;/DATA&gt;
+     *    &lt;DATA&gt;
+     *        &lt;OFFER&gt;
+     *            &lt;FROM&gt;joe&lt;/FROM &gt;
+     *            &lt;TO&gt;jim&lt;/TO&gt;
+     *            &lt;POSITION&gt;futile&lt;/POSITION&gt;
+     *            &lt;STATUS&gt;offered&lt;/STATUS&gt;
+     *            &lt;PERCENTAGE&gt;25&lt;/PERCENTAGE&gt;
+     *            &lt;MESSAGE&gt;Please accept&lt;/MESSAGE&gt;
+     *            &lt;REJECTION&gt;Because I can&lt;/REJECTION&gt;
+     *        &lt;/OFFER&gt;
+     *    &lt;/DATA&gt;
      * </pre>
      * 
      * </p>
@@ -2888,13 +2979,13 @@ public class TeamServicesImpl implements TeamServices {
      * Here is the sample XML template data format:
      * 
      * <pre>
-     *        &lt;DATA&gt;
-     *            &lt;HANDLE&gt;removed&lt;/HANDLE&gt;
-     *            &lt;POSITION_NAME&gt;position name&lt;/POSITION_NAME&gt;
-     *            &lt;TEAM_NAME&gt;name&lt;/TEAM_NAME&gt;
-     *            &lt;PROJECT_NAME&gt;project name&lt;/PROJECT_NAME&gt;
-     *            &lt;CAPTAIN_HANDLE&gt;handle&lt;/CAPTAIN_HANDLE&gt;
-     *        &lt;/DATA&gt;
+     *    &lt;DATA&gt;
+     *        &lt;HANDLE&gt;removed&lt;/HANDLE&gt;
+     *        &lt;POSITION_NAME&gt;position name&lt;/POSITION_NAME&gt;
+     *        &lt;TEAM_NAME&gt;name&lt;/TEAM_NAME&gt;
+     *        &lt;PROJECT_NAME&gt;project name&lt;/PROJECT_NAME&gt;
+     *        &lt;CAPTAIN_HANDLE&gt;handle&lt;/CAPTAIN_HANDLE&gt;
+     *    &lt;/DATA&gt;
      * </pre>
      * 
      * </p>
@@ -2953,11 +3044,19 @@ public class TeamServicesImpl implements TeamServices {
                 return operationResult;
             }
         } else {
-            positions[0].setMemberResourceId(-1);
+            
+            TeamPosition pos = new TeamPosition();
+            pos.setDescription(positions[0].getDescription());
+            pos.setName(positions[0].getName());
+            pos.setFilled(false);
+            pos.setPaymentPercentage(positions[0].getPaymentPercentage());
+            pos.setPositionId(positions[0].getPositionId());
+            pos.setPublished(positions[0].getPublished());
+            
             try {
                 // updates this position
                 logDebug("Starts calling TeamManager#updatePosition method.");
-                teamManager.updatePosition(positions[0], userId);
+                teamManager.updatePosition(pos, userId);
                 logDebug("Finished calling TeamManager#updatePosition method.");
             } catch (InvalidPositionException ex) {
                 // error occurred, return false
@@ -3006,10 +3105,10 @@ public class TeamServicesImpl implements TeamServices {
             // generate the message text
             String msgText = docGen.applyTemplate(template, data);
 
+            message.setProjectId(team.getTeamHeader().getProjectId());
             message.setText(msgText);
             message.setToHandles(new String[] {captainHandle});
             message.setFromHandle(operatorHandle);
-            message.setProjectId(team.getTeamHeader().getProjectId());
             message.setProjectName(projectName);
             message.setTimeStamp(new Date());
         } catch (Exception ex) {
