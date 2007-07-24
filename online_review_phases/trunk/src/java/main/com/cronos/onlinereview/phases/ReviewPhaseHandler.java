@@ -24,6 +24,7 @@ import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.SearchBundle;
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.util.log.Level;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -58,6 +59,8 @@ import java.util.List;
  * @version 1.0
  */
 public class ReviewPhaseHandler extends AbstractPhaseHandler {
+	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
+			.getLog(ReviewPhaseHandler.class.getName());
     /**
      * Represents the default namespace of this class. It is used in the default constructor to load configuration
      * settings.
@@ -148,7 +151,13 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                 PhasesHelper.closeConnection(conn);
             }
         } else {
-            return (PhasesHelper.arePhaseDependenciesMet(phase, false) && allReviewsDone(phase) && allTestCasesUploaded(phase));
+        	boolean deps = PhasesHelper.arePhaseDependenciesMet(phase, false); 
+        	boolean reviews = allReviewsDone(phase); 
+        	boolean tests = allTestCasesUploaded(phase);
+        	log.log(Level.INFO, "pid: " + phase.getProject().getId() + " - PhasesHelper.arePhaseDependenciesMet(phase, false): " + deps);
+        	log.log(Level.INFO, "pid: " + phase.getProject().getId() + " - allReviewsDone(phase): " + reviews);
+        	log.log(Level.INFO, "pid: " + phase.getProject().getId() + " - allTestCasesUploaded(phase): " + tests);
+            return deps && reviews && tests;
         }
     }
 
@@ -314,7 +323,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
             conn = createConnection();
 
             Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn, phase
-                    .getProject().getId());
+                    .getProject().getId());       
 
             // Search the reviewIds
             Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
@@ -324,7 +333,23 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
             Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(), phase.getId(),
                     PhasesHelper.REVIEWER_ROLE_NAMES, null);
 
+            if (log.isEnabled(Level.DEBUG)) {
+            	for (int i = 0; i < subs.length; i++) {
+            		log.log(Level.DEBUG, "submission: " + subs[i].getId());
+				}
+            	
+            	for (int i = 0; i < reviewers.length; i++) {
+					log.log(Level.DEBUG, "reviwer: " + reviewers[i].getId() + ", " + reviewers[i].getProperty("Handle") +  ", " + reviewers[i].getResourceRole().getName());
+				}
+            	
+            	for (int i = 0; i < reviews.length; i++) {
+            		log.log(Level.DEBUG, "review: " + reviews[i].getId() + ", " + reviews[i].getSubmission() 
+            				+ ", " + reviews[i].getAuthor() + ", " + reviews[i].isCommitted());
+				}
+            }
+            
             if (reviewers.length == 0) {
+            	log.log(Level.INFO, "no reviewrs for project: " + phase.getProject().getId());
                 return false;
             }
 
@@ -332,6 +357,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                 int reviewerNum = PhasesHelper.getIntegerAttribute(phase, "Reviewer Number");
 
                 if (reviewers.length < reviewerNum) {
+                	log.log(Level.INFO, "can't end phase because: reviewers.length < reviewerNum, projectId: " + phase.getProject().getId());
                     return false;
                 }
             }
@@ -362,6 +388,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
 
                 // if no. of reviews do not match no. of reviews return false.
                 if (noReviews != reviewers.length) {
+                	log.log(Level.INFO, "can't end phase because: numReviews != reviewers.length, projectId: " + phase.getProject().getId());
                     return false;
                 }
             }
@@ -388,6 +415,12 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
         // get test case reviewers for phase id
         Resource[] reviewers = getReviewers(phase);
 
+        if (log.isEnabled(Level.DEBUG)) {      	
+        	for (int i = 0; i < reviewers.length; i++) {
+				log.log(Level.DEBUG, "projectId: " + phase.getProject().getId() + "reviwer: " + reviewers[i].getId() + ", " + reviewers[i].getProperty("Handle") +  ", " + reviewers[i].getResourceRole().getName());
+			}
+        }
+        
         // if there are no test case reviewers,
         // no need to check if all uploads have been uploaded
         if (reviewers.length == 0) {
@@ -417,6 +450,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
 
                 // if a test case upload is not found, return false
                 if (!found) {
+                	log.log(Level.INFO, "can't end phase. cant find upload for reviewer: " + reviewers[i].getId() + ", " + reviewers[i].getProperty("Handle") +  ", " + reviewers[i].getResourceRole().getName());
                     return false;
                 }
             }
