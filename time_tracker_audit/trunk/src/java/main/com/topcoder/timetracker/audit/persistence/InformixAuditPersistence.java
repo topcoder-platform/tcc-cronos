@@ -73,10 +73,6 @@ public class InformixAuditPersistence implements AuditPersistence {
         + "FROM audit a";
 
     /** Possible SQL statement used to obtain all audit details from DB given their audit header id. */
-    private static final String SQL_SELECT_DETAILS = "SELECT audit_detail_id, old_value, new_value, column_name "
-        + "FROM audit_detail WHERE audit_id = ?";
-
-    /** Possible SQL statement used to obtain all audit details from DB given their audit header id. */
     private static final String SQL_SELECT_DETAILS_FOR_HEADERS =
         "SELECT audit_id,audit_detail_id,old_value,new_value,column_name" +
         " FROM audit_detail WHERE audit_id IN";
@@ -141,13 +137,6 @@ public class InformixAuditPersistence implements AuditPersistence {
 
     /**
      * <p>
-     * Represents the property name to retrieve the defaultValueNamespace value.
-     * </p>
-     */
-    private static final String DEFAULT_VALUE_NAMESPACE_PROPERTY = "defaultValueNamespace";
-
-    /**
-     * <p>
      * Represents the name of the connection to obtain from the connection factory that is used for performing CRUD
      * operations.
      * </p>
@@ -170,20 +159,6 @@ public class InformixAuditPersistence implements AuditPersistence {
      * </p>
      */
     private final DBConnectionFactory connectionFactory;
-
-    /**
-     * <p>
-     * Represents the container storing default values to use if any audit details read are missing any values (i.e.
-     * have nulls in some columns).
-     * </p>
-     *
-     * <p>
-     * This is set on construction using a configured namespace parameter. It is immutable afterwards, its setXXX
-     * methods are not called while its getXXX methods are called each time an audit detail with a null value is
-     * loaded.
-     * </p>
-     */
-    private final DefaultValuesContainer defaultValues;
 
     /**
      * <p>
@@ -252,8 +227,6 @@ public class InformixAuditPersistence implements AuditPersistence {
                 true);
         String searchBundleNamespace = TimeTrackerAuditHelper.getStringPropertyValue(namespace,
                 SEARCH_BUNDLE_NAMESPACE_PROPERTY, true);
-        String defaultValueNamespace = TimeTrackerAuditHelper.getStringPropertyValue(namespace,
-                DEFAULT_VALUE_NAMESPACE_PROPERTY, true);
 
         // create log instance
         log = (logName == null) ? LogManager.getLog() : LogManager.getLog(logName);
@@ -290,9 +263,6 @@ public class InformixAuditPersistence implements AuditPersistence {
         } catch (SearchBuilderConfigurationException e) {
             throw new AuditConfigurationException("Fail to get the searchBundle.", e);
         }
-
-        // create the defaultValuesContainer
-        this.defaultValues = new DefaultValuesContainer(defaultValueNamespace);
     }
 
     /**
@@ -816,62 +786,9 @@ public class InformixAuditPersistence implements AuditPersistence {
             throw new AuditPersistenceException("Fails to retrieve the data from the ResultSet.", e);
         }
 
-//        header.setDetails(loadDetails(conn, header.getId()));
         header.setPersisted(true);
 
         return header;
-    }
-
-    /**
-     * <p>
-     * Reads in all the details attached to a given audit ID.
-     * </p>
-     *
-     * @param conn the connection to the database.
-     * @param auditId The Audit ID whose details are to be obtained.
-     *
-     * @return An array (non-null, possibly empty) of details matching the given audit ID.
-     *
-     * @throws AuditPersistenceException If there are any problems to load the audit details.
-     */
-    private AuditDetail[] loadDetails(Connection conn, long auditId) throws AuditPersistenceException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        try {
-            ps = conn.prepareStatement(SQL_SELECT_DETAILS);
-            ps.setLong(1, auditId);
-            rs = ps.executeQuery();
-
-            List details = new ArrayList();
-
-            while (rs.next()) {
-                AuditDetail detail = new AuditDetail();
-
-                long id = rs.getLong("audit_detail_id");
-
-                detail.setId(rs.wasNull() ? this.defaultValues.getId() : id);
-
-                String oldValue = rs.getString("old_value");
-                detail.setOldValue((oldValue == null) ? this.defaultValues.getOldValue() : oldValue);
-
-                String newValue = rs.getString("new_value");
-                detail.setNewValue((newValue == null) ? this.defaultValues.getNewValue() : newValue);
-
-                String columnName = rs.getString("column_name");
-                detail.setColumnName((columnName == null) ? this.defaultValues.getColumnName() : columnName);
-
-                detail.setPersisted(true);
-
-                details.add(detail);
-            }
-
-            return (AuditDetail[]) details.toArray(new AuditDetail[details.size()]);
-        } catch (SQLException e) {
-            throw new AuditPersistenceException("Something wrong in the database related operations.", e);
-        } finally {
-            releaseResource(rs, ps);
-        }
     }
 
     /**
@@ -967,12 +884,18 @@ public class InformixAuditPersistence implements AuditPersistence {
      * @throws AuditPersistenceException If can't get connection.
      */
     private Connection createConnection() throws AuditPersistenceException {
+        Connection con = null;
         try {
             // create a DB connection
-            return (connectionName == null) ? connectionFactory.createConnection()
+            con = (connectionName == null) ? connectionFactory.createConnection()
                                             : connectionFactory.createConnection(connectionName);
+            con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            return con;
         } catch (DBConnectionException e) {
             throw new AuditPersistenceException("Can't get the connection from database.", e);
+        } catch (SQLException e) {
+            releaseConnection(con);
+            throw new AuditPersistenceException("Can't set transaction isolation for the connection.", e);
         }
     }
 
