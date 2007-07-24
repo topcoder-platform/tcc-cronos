@@ -4,27 +4,23 @@
 
 package com.cronos.im.persistence;
 
-import com.topcoder.db.connectionfactory.DBConnectionException;
-import com.topcoder.db.connectionfactory.DBConnectionFactory;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.topcoder.database.statustracker.Entity;
 import com.topcoder.database.statustracker.EntityKey;
 import com.topcoder.database.statustracker.EntityStatus;
 import com.topcoder.database.statustracker.Status;
-
 import com.topcoder.database.statustracker.persistence.EntityStatusTracker;
 import com.topcoder.database.statustracker.persistence.RecordNotFoundException;
 import com.topcoder.database.statustracker.persistence.StatusTrackerPersistenceException;
-
+import com.topcoder.db.connectionfactory.DBConnectionException;
+import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.util.datavalidator.ObjectValidator;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <p>An implementation of <code>EntityStatusTracker</code> that uses an Informix database as the backing
@@ -206,6 +202,85 @@ public class InformixEntityStatusTracker extends AbstractPersistenceWithValidato
         }
     }
 
+    /**
+     * Retrieves the current status of the specified entity keys from the database. The current status will be the
+     * only entry in the table with no <i>end_date</i>.
+     *
+     * @param keys the entity key whose current status should be retrieved
+     * @return the current entity status for the specified entity
+     * @throws IllegalArgumentException if <code>key</code> is <code>null</code>
+     * @throws RecordNotFoundException if the entity does not exist or has no status
+     * @throws StatusTrackerPersistenceException if some other database error occurs
+     */
+    public EntityStatus[] getCurrentStatuses(EntityKey[] keys) throws StatusTrackerPersistenceException {
+        ParameterHelpers.checkParameter(keys, "entity key");
+
+        Connection connection = getConnection();
+        EntityKey key = keys[0];
+        String type = key.getType().getName();
+        String statusTable = getStatusTable(type);
+        String historyTable = getStatusHistoryTable(type);
+        String statusID = getStatusIDColumn(type);
+
+        try {
+            String sql = "SELECT * FROM " + statusTable + ", " + historyTable + " WHERE "
+                    + "end_date IS NULL AND " + statusTable + "." + statusID + " = "
+                    + historyTable + "." + statusID + " AND " + historyTable + "." +
+                    type + "_id IN (IN_CLAUSE)";
+            
+            StringBuffer questionMarks = new StringBuffer();
+            for (int i = 0; i < keys.length; i++) {
+                if (i != 0) {
+                    questionMarks.append(", ");
+                }
+                questionMarks.append("?");
+            }
+            // replace with question marks
+            sql = sql.replaceFirst("IN_CLAUSE", questionMarks.toString());
+            // instantiate the preparedstatement
+            PreparedStatement statement = connection.prepareStatement(sql);
+            try {
+                for(int i = 0; i < keys.length; i++) {
+                    statement.setLong((i+1), getPrimaryId(keys[i]));
+                }
+
+                ResultSet results = statement.executeQuery();
+
+                try {
+                    List statuses = new ArrayList();
+                    int count = 0;
+                    while (results.next()) {
+                        Long resultId = results.getLong(type + "_id");
+                        EntityKey locKey = null;
+                        for (int i = 0; i < keys.length; i++) {
+                            if(resultId != null && resultId.longValue() ==  getPrimaryId(keys[i])) {
+                                locKey = keys[i];
+                                break;
+                            }
+                        }
+                        if(locKey != null) {
+                            statuses.add(createStatus(locKey, results, type));
+                        }
+                    }
+                    if(count == 0) {
+                        throw new RecordNotFoundException("no status found");
+                    }
+                    // return the statuses
+                    return (EntityStatus[]) statuses.toArray(new EntityStatus[statuses.size()]);
+                } finally {
+                    closeResults(results);
+                }
+            } finally {
+                closeStatement(statement);
+            }
+        } catch (SQLException ex) {
+            throw new StatusTrackerPersistenceException("SQL error: " + ex.getMessage(), ex);
+        } finally {
+            closeConnection(connection);
+        }
+        
+    }
+    
     /**
      * Retrieves the status history for the specified entity instance. The status history consists of all status
      * entries in ascending chronological order, with the last element being the current status.
