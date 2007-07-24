@@ -18,6 +18,8 @@ import com.topcoder.management.resource.persistence.ResourcePersistenceException
 import com.topcoder.management.resource.search.ResourceFilterBuilder;
 import com.topcoder.management.team.TeamHeader;
 import com.topcoder.management.team.TeamManager;
+import com.topcoder.management.team.TeamPersistenceException;
+import com.topcoder.project.phases.Phase;
 import com.topcoder.project.service.ConfigurationException;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectServices;
@@ -563,6 +565,10 @@ public class ProjectServicesImpl implements ProjectServices {
             // creates an instance of FullProjectData with phaseProject
             fullProjectData = new FullProjectData(phaseProject.getStartDate(), phaseProject
                 .getWorkdays());
+            Phase[] allPhases = phaseProject.getAllPhases();
+            for (int i = 0; i < allPhases.length; i++) {
+                fullProjectData.addPhase(allPhases[i]);
+            }
 
             // gets the project header
             logDebug("Starts calling ProjectManager#getProject method.");
