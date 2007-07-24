@@ -10,6 +10,7 @@ import com.topcoder.util.idgenerator.IDGenerator;
 import com.topcoder.util.idgenerator.IDGeneratorFactory;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import com.topcoder.timetracker.audit.AuditManager;
 import com.topcoder.timetracker.project.ConfigurationException;
@@ -220,7 +221,13 @@ public abstract class BaseDAO {
      * @throws DBConnectionException if unable to create a database connection
      */
     protected Connection getConnection() throws DBConnectionException {
-        return (connName == null) ? connFactory.createConnection() : connFactory.createConnection(connName);
+        Connection con = (connName == null) ? connFactory.createConnection() : connFactory.createConnection(connName);
+        try {
+            con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+        } catch (SQLException e) {
+            throw new DBConnectionException("Error setting transaction isolation for connection.", e);
+        }
+        return con;
     }
 
     /**
