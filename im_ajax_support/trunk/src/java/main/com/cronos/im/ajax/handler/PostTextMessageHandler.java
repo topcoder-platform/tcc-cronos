@@ -106,7 +106,7 @@ public class PostTextMessageHandler extends AbstractRequestHandler {
             // fix for TCIM-9226
             // the message should be pulled from User's Session's Pool
             MessagePool pool = messenger.getMessagePool();
-            Message[] msgs = pool.pull(userId); //,sessionId);
+            Message[] msgs = pool.pull(userId,sessionId);
             StringBuffer responseTextSB = new StringBuffer();
             responseTextSB.append("<response><success>the text is posted</success><messages>");
             DateFormatContext formatContext = new DateFormatContext();
