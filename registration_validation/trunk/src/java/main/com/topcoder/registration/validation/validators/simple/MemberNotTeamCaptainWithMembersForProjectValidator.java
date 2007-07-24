@@ -197,16 +197,15 @@ public class MemberNotTeamCaptainWithMembersForProjectValidator extends
 
             ValidationInfo validationInfo = (ValidationInfo) obj;
 
-            // Gets the roleId that a member is registered with.
-            long registrationRoleId = validationInfo.getRegistration()
-                    .getRoleId();
-
+            Resource currReg = RegistrationValidationHelper.findResource(
+                validationInfo, logger);
+            
             // Initializes the message to be null.
             // The message will be filled if the validation is failed.
             String message = null;
 
             // Proceeds to validate if the member is registered with this.roleId
-            if (registrationRoleId == this.teamCaptainRoleId) {
+            if (currReg != null && currReg.getResourceRole().getId() == this.teamCaptainRoleId) {
 
                 // Find resource in validationInfo.project.resources whose
                 // custom property &quot;External Reference ID&quot; is equal to

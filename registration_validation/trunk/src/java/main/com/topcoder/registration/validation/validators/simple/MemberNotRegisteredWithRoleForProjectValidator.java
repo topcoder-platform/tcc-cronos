@@ -3,6 +3,8 @@
  */
 package com.topcoder.registration.validation.validators.simple;
 
+import com.topcoder.management.resource.Resource;
+import com.topcoder.project.service.FullProjectData;
 import com.topcoder.registration.validation.AbstractConfigurableValidator;
 import com.topcoder.registration.validation.ValidationProcessingException;
 import com.topcoder.registration.validation.RegistrationValidationHelper;
@@ -197,13 +199,23 @@ public class MemberNotRegisteredWithRoleForProjectValidator extends
                     "Object to validate");
 
             ValidationInfo validationInfo = (ValidationInfo) obj;
-            // Gets the roleId that the member is registered with.
-            long registrationRoleId = validationInfo.getRegistration()
-                    .getRoleId();
 
             // Initializes the message to be null.
             // The message will be filled if the validation is failed.
             String message = null;
+            
+            FullProjectData project = validationInfo.getProject();
+            Resource[] resources = project.getResources();
+
+            // Gets the roleId that the member is registered with.
+            long registrationRoleId = -1;
+            for (int i = 0; i < resources.length; i++) {
+                Resource resource = resources[i];
+                long userId = Long.parseLong(resource.getProperty("External Reference ID").toString());
+                if (validationInfo.getUser().getId() == userId) {
+                    registrationRoleId = resource.getResourceRole().getId();
+                }
+            }
 
             // Fills the message if the member is registered with this.roleId
             if (registrationRoleId == this.roleId) {

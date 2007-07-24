@@ -297,8 +297,7 @@ public final class RegistrationValidationHelper {
 
         Resource resource = null;
         for (int i = 0; i < resources.length; i++) {
-            Long externalReferenceID = (Long) resources[i]
-                    .getProperty("External Reference ID");
+            Long externalReferenceID = Long.valueOf(resources[i].getProperty("External Reference ID").toString());
 
             // Log variable value
             RegistrationValidationHelper.log(logger, Level.DEBUG,
