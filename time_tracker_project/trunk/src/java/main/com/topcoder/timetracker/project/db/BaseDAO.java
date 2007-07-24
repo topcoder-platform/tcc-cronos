@@ -225,6 +225,7 @@ public abstract class BaseDAO {
         try {
             con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
         } catch (SQLException e) {
+            Util.closeConnection(con);
             throw new DBConnectionException("Error setting transaction isolation for connection.", e);
         }
         return con;
