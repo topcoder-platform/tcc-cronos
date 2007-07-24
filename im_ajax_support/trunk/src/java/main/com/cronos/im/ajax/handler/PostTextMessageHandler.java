@@ -76,7 +76,6 @@ public class PostTextMessageHandler extends AbstractRequestHandler {
             // 2. get the messenger and message pool
             Messenger messenger = (Messenger) req.getSession().getServletContext().getAttribute(
                     IMAjaxSupportUtility.getIMMessengerKey());
-            MessagePool pool = messenger.getMessagePool();
             // 3. get the user id from user profile
             long userId = profile.getId();
             // 4. get the session id from xmlRequest element
@@ -106,7 +105,8 @@ public class PostTextMessageHandler extends AbstractRequestHandler {
             // 9. pull the messages from the messagePool
             // fix for TCIM-9226
             // the message should be pulled from User's Session's Pool
-            Message[] msgs = pool.pull(userId,sessionId);
+            MessagePool pool = messenger.getMessagePool();
+            Message[] msgs = pool.pull(userId); //,sessionId);
             StringBuffer responseTextSB = new StringBuffer();
             responseTextSB.append("<response><success>the text is posted</success><messages>");
             DateFormatContext formatContext = new DateFormatContext();
