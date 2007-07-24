@@ -884,18 +884,12 @@ public class InformixAuditPersistence implements AuditPersistence {
      * @throws AuditPersistenceException If can't get connection.
      */
     private Connection createConnection() throws AuditPersistenceException {
-        Connection con = null;
         try {
             // create a DB connection
-            con = (connectionName == null) ? connectionFactory.createConnection()
+            return (connectionName == null) ? connectionFactory.createConnection()
                                             : connectionFactory.createConnection(connectionName);
-            con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-            return con;
         } catch (DBConnectionException e) {
             throw new AuditPersistenceException("Can't get the connection from database.", e);
-        } catch (SQLException e) {
-            releaseConnection(con);
-            throw new AuditPersistenceException("Can't set transaction isolation for the connection.", e);
         }
     }
 
