@@ -749,14 +749,14 @@ final class PhasesHelper {
         // OrChange - Modified to take all submissions for the placement calculation
         //first get submission status id for "Active" status
         long activeStatusId = SubmissionStatusLookupUtility.lookUpId(conn, "Active");
-        long failedScreening = SubmissionStatusLookupUtility.lookUpId(conn, "Failed Screening");
+        //long failedScreening = SubmissionStatusLookupUtility.lookUpId(conn, "Failed Screening");
         //then search for submissions
         Filter projectIdFilter = SubmissionFilterBuilder.createProjectIdFilter(projectId);
         Filter submissionActiveStatusFilter = SubmissionFilterBuilder.createSubmissionStatusIdFilter(activeStatusId);
-        Filter submissionFailedScreeningStatusFilter = SubmissionFilterBuilder.createSubmissionStatusIdFilter(failedScreening);
+        //Filter submissionFailedScreeningStatusFilter = SubmissionFilterBuilder.createSubmissionStatusIdFilter(failedScreening);
         // build the status OR filter
-        Filter submissionStatusFilter = SearchBundle.buildOrFilter(submissionActiveStatusFilter, submissionFailedScreeningStatusFilter);
-        Filter fullFilter = SearchBundle.buildAndFilter(projectIdFilter, submissionStatusFilter);
+        //Filter submissionStatusFilter = SearchBundle.buildOrFilter(submissionActiveStatusFilter, submissionFailedScreeningStatusFilter);
+        Filter fullFilter = SearchBundle.buildAndFilter(projectIdFilter, submissionActiveStatusFilter);
 
         try {
             return uploadManager.searchSubmissions(fullFilter);
