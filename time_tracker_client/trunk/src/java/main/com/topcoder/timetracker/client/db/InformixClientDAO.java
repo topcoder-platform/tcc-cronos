@@ -963,18 +963,19 @@ public class InformixClientDAO implements ClientDAO {
      * @throws ClientPersistenceException if any exception prevents creating the Connection successfully
      */
     private Connection createConnection() throws ClientPersistenceException {
+        Connection con = null;
         try {
             if (connectionName != null) {
                 return connectionFactory.createConnection(connectionName);
             }
 
-            Connection con = connectionFactory.createConnection();
-
+            con = connectionFactory.createConnection();
             con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             return con;
         } catch (DBConnectionException dbce) {
             throw new ClientPersistenceException("Error getting the connection.", dbce);
         } catch (SQLException e) {
+            releaseConnection(con);
             throw new ClientPersistenceException("Error setting transaction isolation level for connection.", e);
         }
     }
