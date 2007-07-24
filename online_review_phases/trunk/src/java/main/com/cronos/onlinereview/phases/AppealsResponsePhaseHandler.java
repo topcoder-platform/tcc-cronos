@@ -214,7 +214,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
             conn = createConnection();
 
             // Search all "Active" submissions for current project
-            Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn, phase
+            Submission[] subs = PhasesHelper.searchAllUndeletedSubmissions(getManagerHelper().getUploadManager(), conn, phase
                     .getProject().getId());
 
             // locate previous review phase

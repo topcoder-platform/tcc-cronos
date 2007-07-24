@@ -746,6 +746,35 @@ final class PhasesHelper {
      */
     static Submission[] searchActiveSubmissions(UploadManager uploadManager, Connection conn, long projectId)
         throws PhaseHandlingException, SQLException {
+        //first get submission status id for "Active" status
+        long activeStatusId = SubmissionStatusLookupUtility.lookUpId(conn, "Active");
+        //then search for submissions
+        Filter projectIdFilter = SubmissionFilterBuilder.createProjectIdFilter(projectId);
+        Filter submissionActiveStatusFilter = SubmissionFilterBuilder.createSubmissionStatusIdFilter(activeStatusId);
+        Filter fullFilter = SearchBundle.buildAndFilter(projectIdFilter, submissionActiveStatusFilter);
+        try {
+            return uploadManager.searchSubmissions(fullFilter);
+        } catch (UploadPersistenceException e) {
+            throw new PhaseHandlingException("There was a submission retrieval error", e);
+        } catch (SearchBuilderException e) {
+            throw new PhaseHandlingException("There was a search builder error", e);
+        }
+    }
+
+    /**
+     * retrieves all active/failed screening submissions for the given project id.
+     *
+     * @param uploadManager UploadManager instance to use for searching.
+     * @param conn the connection.
+     * @param projectId project id.
+     *
+     * @return all active submissions for the given project id.
+     *
+     * @throws PhaseHandlingException if an error occurs during retrieval.
+     * @throws SQLException if an error occured when looking up id.
+     */
+    static Submission[] searchAllUndeletedSubmissions(UploadManager uploadManager, Connection conn, long projectId)
+        throws PhaseHandlingException, SQLException {
         // OrChange - Modified to take all submissions for the placement calculation
         //first get submission status id for "Active" status
         long activeStatusId = SubmissionStatusLookupUtility.lookUpId(conn, "Active");
