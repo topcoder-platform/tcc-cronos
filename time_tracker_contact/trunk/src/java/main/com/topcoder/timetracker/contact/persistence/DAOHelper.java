@@ -297,14 +297,20 @@ class DAOHelper {
      */
     static Connection createConnection(DBConnectionFactory connectionFactory, String connectionName,
         String operation) throws PersistenceException {
+        Connection con = null;
         try {
             if (connectionName == null || connectionName.trim().length() == 0) {
-                return connectionFactory.createConnection();
+                con = connectionFactory.createConnection();
+            } else {
+                con = connectionFactory.createConnection(connectionName);
             }
-            return connectionFactory.createConnection(connectionName);
+            con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            return con;
         } catch (DBConnectionException e) {
-            throw new PersistenceException(
-                "Unable to create the database connection while " + operation, e);
+            throw new PersistenceException("Unable to create the database connection while " + operation, e);
+        } catch (SQLException e) {
+            realeaseJDBCResource(null, null, con);
+            throw new PersistenceException("Unable to set transaction isolation while " + operation, e);
         }
     }
 
@@ -333,7 +339,7 @@ class DAOHelper {
             // Ignore
         }
         try {
-            if (con != null) {
+            if (con != null && !con.isClosed()) {
                 con.close();
             }
         } catch (SQLException e) {
