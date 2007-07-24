@@ -86,6 +86,11 @@ public class ReadClientSessionMessageHandler extends AbstractRequestHandler {
             StringBuffer responseTextSB = new StringBuffer();
             responseTextSB.append("<response><success>successfully</success><messages>");
             DateFormatContext formatContext = new DateFormatContext();
+            // fix for TCIM-9226
+            // result is being ignored here
+            // the purpose is to have the last update time to be "Updated"
+            pool.pull(userId); 
+            // continue pulling the message with sessionId
             Message[] msgs = pool.pull(userId, sessionId);
             for (int i = 0; i < msgs.length; i++) {
                 responseTextSB.append(((XMLMessage) msgs[i]).toXMLString(formatContext));

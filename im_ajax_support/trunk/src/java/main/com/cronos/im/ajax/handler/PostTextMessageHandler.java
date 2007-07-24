@@ -3,31 +3,28 @@
  */
 package com.cronos.im.ajax.handler;
 
-import com.cronos.im.ajax.IMAjaxSupportUtility;
-import com.cronos.im.ajax.IMHelper;
-import com.cronos.im.messenger.Messenger;
-import com.cronos.im.messenger.XMLMessage;
-import com.cronos.im.messenger.DateFormatContext;
-import com.topcoder.chat.message.pool.MessagePool;
-import com.topcoder.chat.message.pool.Message;
-import com.topcoder.chat.session.ChatSession;
-import com.topcoder.chat.session.ChatSessionManager;
-import com.topcoder.chat.user.profile.ChatUserProfile;
-import com.topcoder.chat.user.profile.ChatUserProfilePersistenceException;
-import com.topcoder.chat.user.profile.ProfileKeyManagerPersistenceException;
-import com.topcoder.chat.user.profile.ProfileKeyNotFoundException;
-import com.topcoder.chat.user.profile.ProfileNotFoundException;
-import com.topcoder.chat.user.profile.UnrecognizedDataSourceTypeException;
-import com.topcoder.util.log.Level;
-import com.cronos.im.messenger.ChatMessage;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.w3c.dom.Element;
-
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.w3c.dom.Element;
+
+import com.cronos.im.ajax.IMAjaxSupportUtility;
+import com.cronos.im.ajax.IMHelper;
+import com.cronos.im.messenger.ChatMessage;
+import com.cronos.im.messenger.DateFormatContext;
+import com.cronos.im.messenger.Messenger;
+import com.cronos.im.messenger.XMLMessage;
+import com.topcoder.chat.message.pool.Message;
+import com.topcoder.chat.message.pool.MessagePool;
+import com.topcoder.chat.session.ChatSession;
+import com.topcoder.chat.session.ChatSessionManager;
+import com.topcoder.chat.user.profile.ChatUserProfile;
+import com.topcoder.util.log.Level;
 
 /**
  * <p>
@@ -107,7 +104,9 @@ public class PostTextMessageHandler extends AbstractRequestHandler {
             ChatSession chatSession = chatSessionMgr.getSession(sessionId);
             messenger.postMessageToAll(chatMsg, chatSession);
             // 9. pull the messages from the messagePool
-            Message[] msgs = pool.pull(userId);
+            // fix for TCIM-9226
+            // the message should be pulled from User's Session's Pool
+            Message[] msgs = pool.pull(userId,sessionId);
             StringBuffer responseTextSB = new StringBuffer();
             responseTextSB.append("<response><success>the text is posted</success><messages>");
             DateFormatContext formatContext = new DateFormatContext();
