@@ -3,6 +3,8 @@
  */
 package com.topcoder.registration.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -741,14 +743,15 @@ public class RegistrationServicesImpl implements RegistrationServices {
         // if validation successful, then do registering
         if (result.isSuccessful()) {
             try {
+                Resource previousRegistration = result.getPreviousRegistration();
                 // removes previous registration resource if necessary
-                if (result.getPreviousRegistration() != null) {
-                    logBefore("Starts calling RegistrationServicesImpl#removeRegistration in RegistrationServicesImpl#"
-                        + "registerForProject.");
-                    // FIX BUG TCRT-8529
-                    this.removeRegistration(registrationInfo, 0, false);
-                    //resourceManager.removeResource(result.getPreviousRegistration(), operatorName);
-                    logAfter("Finished calling RegistrationServicesImpl#removeRegistration in RegistrationServicesImpl#"
+                if (previousRegistration != null) {
+                    RegistrationInfo prevInfo = new RegistrationInfoImpl();
+                    prevInfo.setProjectId(previousRegistration.getProject().longValue());
+                    prevInfo.setRoleId(previousRegistration.getResourceRole().getId());
+                    prevInfo.setUserId(Long.parseLong(previousRegistration.getProperty("External Reference ID").toString()));
+                    removeRegistration(prevInfo, 0);
+                    logAfter("Finished calling ResourceManager#removeResource in RegistrationServicesImpl#"
                         + "registerForProject.");
                 }
                 // creates an instance of ResourceRole
@@ -777,7 +780,8 @@ public class RegistrationServicesImpl implements RegistrationServices {
                 resource.setProperty(CustomResourceProperties.EMAIL, user.getEmail());
 
                 // gets the email addressses the registration data
-                resource.setProperty(CustomResourceProperties.REGISTRATION_DATE, new Date());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss.SSS");
+                resource.setProperty(CustomResourceProperties.REGISTRATION_DATE, sdf.format(new Date()));
 
                 // add this Resource instance into ResourceManager
                 logBefore("Starts calling ResourceManager#updateResource in RegistrationServicesImpl#"
@@ -900,7 +904,7 @@ public class RegistrationServicesImpl implements RegistrationServices {
         try {
             for (int i = 0; i < resources.length; i++) {
                 Resource resource = resources[i];
-                if (!((new Long(user.getId())).equals(resource
+                if (!(Long.toString(user.getId()).equals(resource
                     .getProperty(CustomResourceProperties.EXTERNAL_REFERENCE_ID)))) {
                     continue;
                 }
@@ -911,8 +915,9 @@ public class RegistrationServicesImpl implements RegistrationServices {
                 if (!(user.getEmail().equals(resource.getProperty(CustomResourceProperties.EMAIL)))) {
                     continue;
                 }
-                if (!((Date) resource.getProperty(CustomResourceProperties.REGISTRATION_DATE))
-                    .before(new Date())) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss.SSS");
+                String strDate = (String) resource.getProperty(CustomResourceProperties.REGISTRATION_DATE);
+                if (!(sdf.parse(strDate).before(new Date()))) {
                     continue;
                 }
                 // found it, adds it to the list
@@ -924,6 +929,9 @@ public class RegistrationServicesImpl implements RegistrationServices {
         } catch (NullPointerException ex) {
             throw new RegistrationValidationException(
                 "Instance of Resource missed some properties.", ex);
+        } catch (ParseException ex) {
+        	throw new RegistrationValidationException(
+                    "Instance of Resource has invalid property value type.", ex);
         }
 
         // there should be at most one result
@@ -1055,7 +1063,7 @@ public class RegistrationServicesImpl implements RegistrationServices {
             // gets all projects' ids
             long[] ids = new long[fullProjects.length];
             for (int i = 0; i < ids.length; i++) {
-                ids[i] = fullProjects[i].getId();
+                ids[i] = fullProjects[i].getProjectHeader().getId();
             }
 
             // gets all phases
@@ -1100,8 +1108,8 @@ public class RegistrationServicesImpl implements RegistrationServices {
         if (project != null) {
             Phase[] phases = project.getAllPhases();
             for (int i = 0; i < phases.length; i++) {
-                if (phases[i].getId() == registrationPhaseId) {
-                    if (phases[i].getPhaseStatus().equals(PhaseStatus.OPEN)) {
+                if (phases[i].getPhaseType().getId() == registrationPhaseId) {
+                    if (phases[i].getPhaseStatus().getId() == PhaseStatus.OPEN.getId()) {
                         return phases[i];
                     }
                     break;
@@ -1164,7 +1172,170 @@ public class RegistrationServicesImpl implements RegistrationServices {
             throw ex;
         }
 
-        RemovalResult result = this.removeRegistration(registrationInfo, banDays, true);
+        RemovalResultImpl result = null;
+        try {
+            // gets the external user corresponding to specific user id
+            logBefore("Starts calling UserRetrieval#retrieveUser in RegistrationServicesImpl#removeRegistration.");
+            ExternalUser user = userRetrieval.retrieveUser(registrationInfo.getUserId());
+            logAfter("Finished calling UserRetrieval#retrieveUser in RegistrationServicesImpl#removeRegistration.");
+
+            // gets the FullProjectData
+            logBefore("Starts calling ProjectServices#getFullProjectData in RegistrationServicesImpl#"
+                + "removeRegistration.");
+            FullProjectData fullProjectData = projectServices.getFullProjectData(registrationInfo
+                .getProjectId());
+            logAfter("Finished calling ProjectServices#getFullProjectData in RegistrationServicesImpl#"
+                + "removeRegistration.");
+
+            // gets the Resource instance corresponding to specific user
+            Resource resource = getSpecificResource(user, fullProjectData);
+
+            OperationResult operationResult = null;
+            if (resource != null) {
+                if (resource.getResourceRole().getId() != registrationInfo.getRoleId()) {
+                    log(Level.ERROR,
+                        "InvalidRoleException occurred in RegistrationServicesImpl#removeRegistration.");
+                    throw new InvalidRoleException("The role in the passed RegistrationInfo "
+                        + "does not match the role in the resource for this user in the project.",
+                        registrationInfo.getRoleId());
+                }
+                // represents the team name and team description
+                String teamName = null;
+                String teamDescription = null;
+
+                if (resource.getResourceRole().getId() == teamCaptainRoleId) {
+                    // gets the team of team header whose captainResourceId matches the
+                    // resourceID
+                    TeamHeader team = getTeam(fullProjectData, resource.getId());
+                    // gets the team name and team description
+                    teamName = team.getName();
+                    teamDescription = team.getDescription();
+
+                    // removes the team by TeamServices
+                    logBefore("Starts calling TeamServices#removeTeam in RegistrationServicesImpl#removeRegistration.");
+                    operationResult = teamServices.removeTeam(team.getTeamId(), operator);
+                    logAfter("Finished calling TeamServices#removeTeam in RegistrationServicesImpl#"
+                        + "removeRegistration.");
+                    
+                    // removes the resource from persistence
+                    logBefore("Starts calling ResourceManager#removeResource in RegistrationServicesImpl#"
+                        + "removeRegistration.");
+                    resourceManager.removeResource(resource, operatorName);
+                    logAfter("Finished calling ResourceManager#removeResource in RegistrationServicesImpl#"
+                        + "removeRegistration.");                    
+                } else {
+                    // get the team header of which team this resource has registered
+                    TeamHeader team = getTeamHeaderFromMemberResourceId(resource.getId(),
+                        registrationInfo.getProjectId());
+                    // gets the team name and team description
+                    teamName = team == null? "" : team.getName();
+                    teamName = team == null? "" : team.getDescription();
+
+                    if (team != null) {
+                        // removes the resource from team
+                        logBefore("Starts calling TeamServices#removeMember in RegistrationServicesImpl#"
+                            + "removeRegistration.");
+                        operationResult = teamServices.removeMember(resource.getId(), operator);
+                        logAfter("Finished calling TeamServices#removeTeam in RegistrationServicesImpl#"
+                            + "removeRegistration.");
+                    }
+
+                    // removes the resource from persistence
+                    logBefore("Starts calling ResourceManager#removeResource in RegistrationServicesImpl#"
+                        + "removeRegistration.");
+                    resourceManager.removeResource(resource, operatorName);
+                    logAfter("Finished calling ResourceManager#removeResource in RegistrationServicesImpl#"
+                        + "removeRegistration.");
+                }
+
+                // prepare contact message
+                // gets instance of DocumentGenerator
+                DocumentGenerator docGen = DocumentGenerator.getInstance();
+                // gets the template
+                Template template = docGen.getTemplate(removalMessageTemplateName);
+                // builds the template data
+                String templateData = buildTemplateData(teamName, teamDescription,
+                    (String) fullProjectData.getProjectHeader().getProperty(PROJECT_NAME), user
+                        .getHandle(), resource.getResourceRole().getName());
+                // generates message text
+                String msgText = docGen.applyTemplate(template, templateData);
+
+                // populates a new Message instance
+                Message msg = new Message();
+                msg.setText(msgText);
+                msg.setFromHandle(operatorName);
+                msg.setToHandles(new String[] {user.getHandle()});
+                msg.setProjectId(registrationInfo.getProjectId());
+                msg.setProjectName((String) fullProjectData.getProjectHeader().getProperty(
+                    PROJECT_NAME));
+                msg.setTimeStamp(new Date());
+
+                // sends message
+                logBefore("Starts calling ContactMemberServices#sendMessage in RegistrationServicesImpl#"
+                    + "removeRegistration.");
+                contactMemberServices.sendMessage(msg);
+                logAfter("Finished calling ContactMemberServices#sendMessage in RegistrationServicesImpl#"
+                    + "removeRegistration.");
+            }
+            // bans the user for a few days
+            logBefore("Starts calling BanManager#banUser in RegistrationServicesImpl#removeRegistration.");
+            if (banDays > 0) {
+                banManager.banUser(registrationInfo.getUserId(), banDays);
+            }
+            logAfter("Finished calling BanManager#banUser in RegistrationServicesImpl#removeRegistration.");
+
+            result = new RemovalResultImpl();
+            if (operationResult != null) {
+                result.setSuccessful(operationResult.isSuccessful());
+                result.setErrors(operationResult.getErrors());
+            }
+
+        } catch (RetrievalException ex) {
+            log(Level.ERROR,
+                "RegistrationServiceException occurred in RegistrationServicesImpl#removeRegistration.");
+            throw new RegistrationServiceException("Error occurred when retrieving external user.",
+                ex);
+        } catch (RegistrationValidationException ex) {
+            log(Level.ERROR,
+                "RegistrationServiceException occurred in RegistrationServicesImpl#removeRegistration.");
+            throw new RegistrationServiceException(
+                "Error occurred when retrieving the Resource for specific user.", ex);
+        } catch (UnknownEntityException ex) {
+            log(Level.ERROR,
+                "UnknownEntityException occurred in RegistrationServicesImpl#removeRegistration.");
+            throw ex;
+        } catch (ResourcePersistenceException ex) {
+            log(Level.ERROR,
+                "RegistrationServiceException occurred in RegistrationServicesImpl#removeRegistration.");
+            throw new RegistrationServiceException("Error occurred removing Resource.", ex);
+        } catch (ConfigManagerException ex) {
+            log(Level.ERROR,
+                "RegistrationServiceException occurred in RegistrationServicesImpl#removeRegistration.");
+            throw new RegistrationServiceException(
+                "Error occurred when retrieving instance of DocumentGenerator.", ex);
+        } catch (InvalidConfigException ex) {
+            log(Level.ERROR,
+                "RegistrationServiceException occurred in RegistrationServicesImpl#removeRegistration.");
+            throw new RegistrationServiceException(
+                "Error occurred when retrieving instance of DocumentGenerator.", ex);
+        } catch (TemplateFormatException ex) {
+            log(Level.ERROR,
+                "RegistrationServiceException occurred in RegistrationServicesImpl#removeRegistration.");
+            throw new RegistrationServiceException("Error occurred when retrieving template.", ex);
+        } catch (TemplateSourceException ex) {
+            log(Level.ERROR,
+                "RegistrationServiceException occurred in RegistrationServicesImpl#removeRegistration.");
+            throw new RegistrationServiceException("Error occurred when retrieving template.", ex);
+        } catch (TemplateDataFormatException ex) {
+            log(Level.ERROR,
+                "RegistrationServiceException occurred in RegistrationServicesImpl#removeRegistration.");
+            throw new RegistrationServiceException("Error occurred when generating message text.",
+                ex);
+        } catch (ProjectServicesException ex) {
+            log(Level.ERROR,
+                "ProjectServicesException occurred in RegistrationServicesImpl#removeRegistration.");
+            throw ex;
+        }
 
         log(Level.INFO, "Exits RegistrationServicesImpl#removeRegistration method.");
         return result;
@@ -1392,194 +1563,5 @@ public class RegistrationServicesImpl implements RegistrationServices {
 
         log(Level.INFO, "Exits RegistrationServicesImpl#getRegisteredProjects method.");
         return (Project[]) projectList.toArray(new Project[projectList.size()]);
-    }
-
-    /**
-     * <p>
-     * Helper method for removeRegistration and registerForProject method.
-     * </p>
-     *
-     * @param registrationInfo
-     *            RegistrationInfo containing the user, project, and role to remove.
-     * @param banDays
-     *            The number of days the resource should be banned
-     * @param validate
-     *            The flag indicate whether check the role of resouce is same with the s role
-     *            of the registrationInfo.
-     * @return The result of the removal attempt
-     * @throws IllegalArgumentException
-     *             if registrationInfo is null or contains negative IDs, or banDays is negative
-     * @throws InvalidRoleException
-     *             if the role in the passed RegistrationInfo does not match the role in the
-     *             resource for this user in the project
-     * @throws RegistrationServiceException
-     *             if any unexpected error occurs
-     * @throws UnknownEntityException
-     *             if error occurred when operating TeamServices
-     * @throws ProjectServicesException
-     *             if error occurred when operating ProjectServices instance
-     */
-    private RemovalResult removeRegistration(RegistrationInfo registrationInfo, int banDays, boolean validate) {
-        RemovalResultImpl result = null;
-        try {
-            // gets the external user corresponding to specific user id
-            logBefore("Starts calling UserRetrieval#retrieveUser in RegistrationServicesImpl#removeRegistration.");
-            ExternalUser user = userRetrieval.retrieveUser(registrationInfo.getUserId());
-            logAfter("Finished calling UserRetrieval#retrieveUser in RegistrationServicesImpl#removeRegistration.");
-
-            // gets the FullProjectData
-            logBefore("Starts calling ProjectServices#getFullProjectData in RegistrationServicesImpl#"
-                + "removeRegistration.");
-            FullProjectData fullProjectData = projectServices.getFullProjectData(registrationInfo
-                .getProjectId());
-            logAfter("Finished calling ProjectServices#getFullProjectData in RegistrationServicesImpl#"
-                + "removeRegistration.");
-
-            // gets the Resource instance corresponding to specific user
-            Resource resource = getSpecificResource(user, fullProjectData);
-
-            OperationResult operationResult = null;
-            if (resource != null) {
-                if (validate) {
-                    if (resource.getResourceRole().getId() != registrationInfo.getRoleId()) {
-                        log(Level.ERROR,
-                            "InvalidRoleException occurred in RegistrationServicesImpl#removeRegistration.");
-                        throw new InvalidRoleException("The role in the passed RegistrationInfo "
-                            + "does not match the role in the resource for this user in the project.",
-                            registrationInfo.getRoleId());
-                    }
-                }
-                // represents the team name and team description
-                String teamName = null;
-                String teamDescription = null;
-
-                if (resource.getResourceRole().getId() == teamCaptainRoleId) {
-                    // gets the team of team header whose captainResourceId matches the
-                    // resourceID
-                    TeamHeader team = getTeam(fullProjectData, resource.getId());
-                    if (team != null) {
-                        // gets the team name and team description
-                        teamName = team.getName();
-                        teamDescription = team.getDescription();
-    
-                        // removes the team by TeamServices
-                        logBefore("Starts calling TeamServices#removeTeam in RegistrationServicesImpl#removeRegistration.");
-                        operationResult = teamServices.removeTeam(team.getTeamId(), operator);
-                        logAfter("Finished calling TeamServices#removeTeam in RegistrationServicesImpl#"
-                            + "removeRegistration.");
-                    }
-                } else {
-                    // get the team header of which team this resource has registered
-                    TeamHeader team = getTeamHeaderFromMemberResourceId(resource.getId(),
-                        registrationInfo.getProjectId());
-                    // gets the team name and team description
-                    if (team != null) {
-                        teamName = team.getName();
-                        teamDescription = team.getDescription();
-                    }
-
-                    // removes the resource from persistence
-                    logBefore("Starts calling ResourceManager#removeResource in RegistrationServicesImpl#"
-                        + "removeRegistration.");
-
-                    resourceManager.removeResource(resource, operatorName);
-                    logAfter("Finished calling ResourceManager#removeResource in RegistrationServicesImpl#"
-                        + "removeRegistration.");
-
-                    // removes the resource from team
-                    logBefore("Starts calling TeamServices#removeMember in RegistrationServicesImpl#"
-                        + "removeRegistration.");
-                    operationResult = teamServices.removeMember(resource.getId(), operator);
-                    logAfter("Finished calling TeamServices#removeTeam in RegistrationServicesImpl#"
-                        + "removeRegistration.");
-                }
-
-                // prepare contact message
-                // gets instance of DocumentGenerator
-                DocumentGenerator docGen = DocumentGenerator.getInstance();
-                // gets the template
-                Template template = docGen.getTemplate(removalMessageTemplateName);
-                // builds the template data
-                String templateData = buildTemplateData(teamName, teamDescription,
-                    (String) fullProjectData.getProjectHeader().getProperty(PROJECT_NAME), user
-                        .getHandle(), resource.getResourceRole().getName());
-                // generates message text
-                String msgText = docGen.applyTemplate(template, templateData);
-
-                // populates a new Message instance
-                Message msg = new Message();
-                msg.setText(msgText);
-                msg.setFromHandle(operatorName);
-                msg.setToHandles(new String[] {user.getHandle()});
-                msg.setProjectId(registrationInfo.getProjectId());
-                msg.setProjectName((String) fullProjectData.getProjectHeader().getProperty(
-                    PROJECT_NAME));
-                msg.setTimeStamp(new Date());
-
-                // sends message
-                logBefore("Starts calling ContactMemberServices#sendMessage in RegistrationServicesImpl#"
-                    + "removeRegistration.");
-                contactMemberServices.sendMessage(msg);
-                logAfter("Finished calling ContactMemberServices#sendMessage in RegistrationServicesImpl#"
-                    + "removeRegistration.");
-            }
-            // bans the user for a few days
-            logBefore("Starts calling BanManager#banUser in RegistrationServicesImpl#removeRegistration.");
-            banManager.banUser(registrationInfo.getUserId(), banDays);
-            logAfter("Finished calling BanManager#banUser in RegistrationServicesImpl#removeRegistration.");
-
-            result = new RemovalResultImpl();
-            if (operationResult != null) {
-                result.setSuccessful(operationResult.isSuccessful());
-                result.setErrors(operationResult.getErrors());
-            }
-
-        } catch (RetrievalException ex) {
-            log(Level.ERROR,
-                "RegistrationServiceException occurred in RegistrationServicesImpl#removeRegistration.");
-            throw new RegistrationServiceException("Error occurred when retrieving external user.",
-                ex);
-        } catch (RegistrationValidationException ex) {
-            log(Level.ERROR,
-                "RegistrationServiceException occurred in RegistrationServicesImpl#removeRegistration.");
-            throw new RegistrationServiceException(
-                "Error occurred when retrieving the Resource for specific user.", ex);
-        } catch (UnknownEntityException ex) {
-            log(Level.ERROR,
-                "UnknownEntityException occurred in RegistrationServicesImpl#removeRegistration.");
-            throw ex;
-        } catch (ResourcePersistenceException ex) {
-            log(Level.ERROR,
-                "RegistrationServiceException occurred in RegistrationServicesImpl#removeRegistration.");
-            throw new RegistrationServiceException("Error occurred removing Resource.", ex);
-        } catch (ConfigManagerException ex) {
-            log(Level.ERROR,
-                "RegistrationServiceException occurred in RegistrationServicesImpl#removeRegistration.");
-            throw new RegistrationServiceException(
-                "Error occurred when retrieving instance of DocumentGenerator.", ex);
-        } catch (InvalidConfigException ex) {
-            log(Level.ERROR,
-                "RegistrationServiceException occurred in RegistrationServicesImpl#removeRegistration.");
-            throw new RegistrationServiceException(
-                "Error occurred when retrieving instance of DocumentGenerator.", ex);
-        } catch (TemplateFormatException ex) {
-            log(Level.ERROR,
-                "RegistrationServiceException occurred in RegistrationServicesImpl#removeRegistration.");
-            throw new RegistrationServiceException("Error occurred when retrieving template.", ex);
-        } catch (TemplateSourceException ex) {
-            log(Level.ERROR,
-                "RegistrationServiceException occurred in RegistrationServicesImpl#removeRegistration.");
-            throw new RegistrationServiceException("Error occurred when retrieving template.", ex);
-        } catch (TemplateDataFormatException ex) {
-            log(Level.ERROR,
-                "RegistrationServiceException occurred in RegistrationServicesImpl#removeRegistration.");
-            throw new RegistrationServiceException("Error occurred when generating message text.",
-                ex);
-        } catch (ProjectServicesException ex) {
-            log(Level.ERROR,
-                "ProjectServicesException occurred in RegistrationServicesImpl#removeRegistration.");
-            throw ex;
-        }
-        return result;
     }
 }
