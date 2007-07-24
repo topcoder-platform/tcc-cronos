@@ -24,7 +24,7 @@ public class CustomResourceProperties {
      * ID.
      * </p>
      */
-    public static final String EXTERNAL_REFERENCE_ID = "External reference ID";
+    public static final String EXTERNAL_REFERENCE_ID = "External Reference ID";
 
     /**
      * <p>
