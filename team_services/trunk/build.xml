@@ -9,7 +9,7 @@
     <property name="package" value="com.topcoder.registration.team.service" />
     <property name="packagedir" value="com/topcoder/registration/team/service" />
     <property name="distfilename" value="team_services" />
-    <property name="component_version" value="1.0" />
+    <property name="component_version" value="1.0.1" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
