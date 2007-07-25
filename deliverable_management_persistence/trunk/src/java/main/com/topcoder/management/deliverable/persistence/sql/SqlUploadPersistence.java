@@ -44,7 +44,7 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * @author aubergineanode
  * @author urtks
  * @author George1
- * @version 1.0.2
+ * @version 1.0.3
  */
 public class SqlUploadPersistence implements UploadPersistence {
     /**
