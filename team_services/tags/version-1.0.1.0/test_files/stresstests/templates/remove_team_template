@@ -1,0 +1,5 @@
+One Team has been removed.
+Team Name\: %TEAM_NAME{the team name}%,
+Team description\: %TEAM_DESCRIPTION{the team description}%,
+Project name\: %PROJECT_NAME{the project name}%,
+Captain Handle\: %CAPTAIN_HANDLE{the captain handle}%
