@@ -4,13 +4,17 @@
 package com.topcoder.timetracker.client;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.timetracker.common.CommonManagementException;
-import com.topcoder.timetracker.common.CommonManagerConfigurationException;
 import com.topcoder.timetracker.common.CommonManager;
+import com.topcoder.timetracker.common.CommonManagerConfigurationException;
 import com.topcoder.timetracker.common.SimpleCommonManager;
 import com.topcoder.timetracker.contact.Address;
 import com.topcoder.timetracker.contact.AddressFilterFactory;
@@ -22,6 +26,7 @@ import com.topcoder.timetracker.contact.Contact;
 import com.topcoder.timetracker.contact.ContactFilterFactory;
 import com.topcoder.timetracker.contact.ContactManager;
 import com.topcoder.timetracker.contact.ContactType;
+import com.topcoder.timetracker.contact.EntityNotFoundException;
 import com.topcoder.timetracker.contact.InvalidPropertyException;
 import com.topcoder.timetracker.contact.PersistenceException;
 import com.topcoder.timetracker.contact.ejb.AddressManagerLocalDelegate;
@@ -462,25 +467,56 @@ public class ClientUtilityImpl implements ClientUtility {
         List list = new ArrayList();
 
         for (int i = 0; i < clients.length; i++) {
-            if (clients[i].isChanged()) {
+            if (clients[i].isChanged() || clients[i].getAddress().isChanged() || clients[i].getContact().isChanged()) {
                 list.add(clients[i]);
             }
         }
+        if (list.isEmpty()) {
+            return;
+        }
 
         clients = (Client[]) list.toArray(new Client[list.size()]);
+        long[] clientIds = new long[clients.length];
 
-        for (int i = 0; i < clients.length; i++) {
-            // remove from the address manager, contact manager
-            // remove the projects
-            removeAssociation(clients[i], doAudit);
+        for (int i = 0; i < clients.length; ++i) {
+            clientIds[i] = clients[i].getId();
         }
+
+        Client[] oldClients = retrieveClients(clientIds);
 
         dao.updateClients(clients, doAudit);
 
-        for (int i = 0; i < clients.length; i++) {
-            // add to the address manager, contact manager
-            // add the projects.
-            addAssociation(clients[i], doAudit);
+        for (int i = 0; i < clients.length; ++i) {
+            Set oldProjectIds = new HashSet();
+            Map newProjectIds = new HashMap();
+            Project[] oldProjects = oldClients[i].getProjects();
+            Project[] newProjects = clients[i].getProjects();
+
+            for (int j = 0; j < oldProjects.length; ++j) {
+                oldProjectIds.add(new Long(oldProjects[j].getId()));
+            }
+            for (int j = 0; j < newProjects.length; ++j) {
+                final Long projectId = new Long(newProjects[j].getId());
+                if (!newProjectIds.containsKey(projectId)) {
+                    newProjectIds.put(projectId, newProjects[j]);
+                }
+            }
+
+            for (Iterator iter = oldProjectIds.iterator(); iter.hasNext(); ) {
+                final Long projectId = (Long) iter.next();
+                if (!newProjectIds.containsKey(projectId)) {
+                    dao.removeProjectFromClient(clients[i], projectId.longValue(), doAudit);
+                }
+            }
+            for (Iterator iter = newProjectIds.keySet().iterator(); iter.hasNext(); ) {
+                final Long projectId = (Long) iter.next();
+                if (!oldProjectIds.contains(projectId)) {
+                    dao.addProjectToClient(clients[i], (Project) newProjectIds.get(projectId), doAudit);
+                }
+            }
+
+            updateAddress(clients[i], doAudit);
+            updateContact(clients[i], doAudit);
             clients[i].setChanged(false);
         }
     }
@@ -644,14 +680,6 @@ public class ClientUtilityImpl implements ClientUtility {
 
         // add the the database
         dao.addProjectToClient(client, project, doAudit);
-
-        // add the project to the client's project list.
-        Project[] projects = client.getProjects();
-        Arrays.asList(projects);
-
-        List list = new ArrayList(Arrays.asList(projects));
-
-        list.add(project);
 
         client.setProjects(getAllProjectsOfClient(client.getId()));
     }
@@ -865,6 +893,41 @@ public class ClientUtilityImpl implements ClientUtility {
     }
 
     /**
+     * Updates contact information for the given client of needed.
+     *
+     * @param client client to update contact information for.
+     * @param doAudit audit flag
+     *
+     * @throws ClientPersistenceException if there is error when store the data
+     * @throws ClientAuditException when there is error doing audit
+     */
+    private void updateContact(Client client, boolean doAudit)
+        throws ClientPersistenceException, ClientAuditException {
+        try {
+            boolean unsuccessfullUpdate = false;
+            try {
+                contactManager.updateContact(client.getContact(), doAudit);
+            } catch (EntityNotFoundException enfe) {
+                unsuccessfullUpdate = true;
+            }
+            if (unsuccessfullUpdate) {
+                contactManager.addContact(client.getContact(), doAudit);
+                contactManager.associate(client.getContact(), client.getId(), doAudit);
+            }
+        } catch (AssociationException ae) {
+            throw new ClientPersistenceException("Error associating contact information.", ae);
+        } catch (PersistenceException pe) {
+            throw new ClientPersistenceException("Error store the data.", pe);
+        } catch (InvalidPropertyException ipe) {
+            throw new ClientPersistenceException("The property of the client is invalid.", ipe);
+        } catch (com.topcoder.timetracker.contact.IDGenerationException ipe) {
+            throw new ClientPersistenceException("Error generating the id.");
+        } catch (AuditException ae) {
+            throw new ClientAuditException("Error auditing.", ae);
+        }
+    }
+
+    /**
      * Delete the client from the Contact Manager.
      *
      * @param client the client to be added
@@ -908,6 +971,41 @@ public class ClientUtilityImpl implements ClientUtility {
 
             // associate the address
             addressManager.associate(client.getAddress(), client.getId(), doAudit);
+        } catch (AssociationException ae) {
+            throw new ClientPersistenceException("Error associating address information.", ae);
+        } catch (PersistenceException pe) {
+            throw new ClientPersistenceException("Error store the data.", pe);
+        } catch (InvalidPropertyException ipe) {
+            throw new ClientPersistenceException("The property of the client is invalid.", ipe);
+        } catch (com.topcoder.timetracker.contact.IDGenerationException ipe) {
+            throw new ClientPersistenceException("Error generating the id.");
+        } catch (AuditException ae) {
+            throw new ClientAuditException("Error auditing.", ae);
+        }
+    }
+
+    /**
+     * Updates address for the given client if needed.
+     *
+     * @param client the client to have its address updated.
+     * @param doAudit audit flag
+     *
+     * @throws ClientPersistenceException if there is error when store the data
+     * @throws ClientAuditException when there is error doing audit
+     */
+    private void updateAddress(Client client, boolean doAudit)
+        throws ClientPersistenceException, ClientAuditException {
+        try {
+            boolean unsuccessfullUpdate = false;
+            try {
+                addressManager.updateAddress(client.getAddress(), doAudit);
+            } catch (EntityNotFoundException enfe) {
+                unsuccessfullUpdate = true;
+            }
+            if (unsuccessfullUpdate) {
+                addressManager.addAddress(client.getAddress(), doAudit);
+                addressManager.associate(client.getAddress(), client.getId(), doAudit);
+            }
         } catch (AssociationException ae) {
             throw new ClientPersistenceException("Error associating address information.", ae);
         } catch (PersistenceException pe) {
