@@ -546,7 +546,7 @@ public class Project extends TimeTrackerBean {
      * @throws IllegalArgumentException if clientId is &lt;= 0.
      */
     public void setClientId(long clientId) {
-        Util.checkIdValue(clientId, "client");
+//        Util.checkIdValue(clientId, "client");
 
         if (clientId != this.clientId) {
             this.clientId = clientId;

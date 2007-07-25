@@ -134,10 +134,10 @@ public class DbProjectDAO extends BaseDAO implements ProjectDAO {
      * Represents the sql script to select records from project table.
      * </p>
      */
-    private static final String SELECT_PROJECT = "select project.project_id, name, company_id, client_id, active, "
-        + "description, sales_tax, po_box_number, payment_terms_id, start_date, end_date, project.creation_date, "
-        + "project.creation_user, project.modification_date, project.modification_user from project, client_project "
-        + "where project.project_id = client_project.project_id";
+    private static final String SELECT_PROJECT = "select project.project_id, name, company_id, client_project.client_id, "
+        + "active, description, sales_tax, po_box_number, payment_terms_id, start_date, end_date, project.creation_date, "
+        + "project.creation_user, project.modification_date, project.modification_user from project "
+        + "LEFT JOIN client_project ON project.project_id = client_project.project_id";
 
     /**
      * <p>
@@ -1035,7 +1035,7 @@ public class DbProjectDAO extends BaseDAO implements ProjectDAO {
         ResultSet rs = null;
 
         try {
-            pstmt = conn.prepareStatement(SELECT_PROJECT + " AND " + Util.buildInClause("project.project_id", projectIds));
+            pstmt = conn.prepareStatement(SELECT_PROJECT + " WHERE " + Util.buildInClause("project.project_id", projectIds));
 
             rs = pstmt.executeQuery();
 
@@ -1087,7 +1087,12 @@ public class DbProjectDAO extends BaseDAO implements ProjectDAO {
         project.setId(rs.getLong(index++));
         project.setName(rs.getString(index++));
         project.setCompanyId(rs.getLong(index++));
-        project.setClientId(rs.getLong(index++));
+        if (rs.getObject(index) != null) {
+            project.setClientId(rs.getLong(index++));
+        } else {
+            project.setClientId(-1L);
+            ++index;
+        }
         project.setActive(rs.getLong(index++) == 1);
         project.setDescription(rs.getString(index++));
         project.setSalesTax(rs.getDouble(index++));
