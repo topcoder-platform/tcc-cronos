@@ -210,13 +210,13 @@ public class InformixRatePersistence implements RatePersistence {
         ParameterCheck.checkArray("rates", rates);
 
         Connection conn = null;
+        PreparedStatement pstmt = null;
 
         int i = 0;
 
         try {
             conn = getConnection();
-
-            PreparedStatement pstmt = conn.prepareStatement(SQL_INSERT_RATE);
+            pstmt = conn.prepareStatement(SQL_INSERT_RATE);
             final Date now = new Date(System.currentTimeMillis());
 
             for (; i < rates.length; ++i) {
@@ -253,6 +253,7 @@ public class InformixRatePersistence implements RatePersistence {
             logErr(msg + " msg: " + e.getMessage());
             throw new RatePersistenceException(msg, e);
         } finally {
+            closeStatement(pstmt);
             closeConnection(conn);
         }
     }
@@ -274,12 +275,12 @@ public class InformixRatePersistence implements RatePersistence {
         ParameterCheck.checkArray("rates", rates);
 
         Connection conn = null;
+        PreparedStatement pstmt = null;
         int i = 0;
 
         try {
             conn = getConnection();
-
-            PreparedStatement pstmt = conn.prepareStatement(SQL_DELETE_RATE);
+            pstmt = conn.prepareStatement(SQL_DELETE_RATE);
 
             for (; i < rates.length; i++) {
                 Company comp = rates[i].getCompany();
@@ -312,6 +313,7 @@ public class InformixRatePersistence implements RatePersistence {
             logErr(msg + " msg: " + e.getMessage());
             throw new RatePersistenceException(msg, e);
         } finally {
+            closeStatement(pstmt);
             closeConnection(conn);
         }
     }
@@ -365,15 +367,17 @@ public class InformixRatePersistence implements RatePersistence {
         ParameterCheck.checkNull("description", description);
 
         Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
         try {
             conn = getConnection();
+            pstmt = conn.prepareStatement(SQL_SELECT_BY_DESC);
 
-            PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_BY_DESC);
             pstmt.setLong(1, companyId);
             pstmt.setString(2, description);
 
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
 
             if (rs.next()) {
                 return parseRate(rs);
@@ -385,6 +389,8 @@ public class InformixRatePersistence implements RatePersistence {
             logErr(msg + " msg: " + e.getMessage());
             throw new RatePersistenceException(msg, e);
         } finally {
+            closeResultSet(rs);
+            closeStatement(pstmt);
             closeConnection(conn);
         }
     }
@@ -402,14 +408,16 @@ public class InformixRatePersistence implements RatePersistence {
      */
     public Rate[] retrieveRates(long companyId) throws RatePersistenceException {
         Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
         try {
             conn = getConnection();
+            pstmt = conn.prepareStatement(SQL_SELECT_RATES);
 
-            PreparedStatement pstmt = conn.prepareStatement(SQL_SELECT_RATES);
             pstmt.setLong(1, companyId);
 
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
             List list = new ArrayList();
 
             while (rs.next()) {
@@ -422,6 +430,8 @@ public class InformixRatePersistence implements RatePersistence {
             logErr(msg + " msg: " + e.getMessage());
             throw new RatePersistenceException(msg, e);
         } finally {
+            closeResultSet(rs);
+            closeStatement(pstmt);
             closeConnection(conn);
         }
     }
@@ -444,6 +454,7 @@ public class InformixRatePersistence implements RatePersistence {
         ParameterCheck.checkArray("rates", rates);
 
         Connection conn = null;
+        PreparedStatement pstmt = null;
         int i = 0;
 
         try {
@@ -451,7 +462,7 @@ public class InformixRatePersistence implements RatePersistence {
 
             Rate[] oldRates = getOldRates(conn, rates); //retrieves the old rates, for audit purpose
 
-            PreparedStatement pstmt = conn.prepareStatement(SQL_UPDATE_RATE);
+            pstmt = conn.prepareStatement(SQL_UPDATE_RATE);
 
             for (; i < rates.length; i++) {
                 Company comp = rates[i].getCompany();
@@ -490,6 +501,7 @@ public class InformixRatePersistence implements RatePersistence {
             logErr(msg + " msg: " + e.getMessage());
             throw new RatePersistenceException(msg, e);
         } finally {
+            closeStatement(pstmt);
             closeConnection(conn);
         }
     }
@@ -500,9 +512,39 @@ public class InformixRatePersistence implements RatePersistence {
      * @param conn Connection to close
      */
     private static void closeConnection(Connection conn) {
-        if (conn != null) {
-            try {
+        try {
+            if (conn != null && !conn.isClosed()) {
                 conn.close();
+            }
+        } catch (SQLException e) {
+            //does nothing
+        }
+    }
+
+    /**
+     * Close the statement if it's not null.
+     *
+     * @param pstmt Statement to close.
+     */
+    private static void closeStatement(PreparedStatement pstmt) {
+        if (pstmt != null) {
+            try {
+                pstmt.close();
+            } catch (SQLException e) {
+                //does nothing
+            }
+        }
+    }
+
+    /**
+     * Close the result set if it's not null.
+     *
+     * @param rs Result set to close.
+     */
+    private static void closeResultSet(ResultSet rs) {
+        if (rs != null) {
+            try {
+                rs.close();
             } catch (SQLException e) {
                 //does nothing
             }
@@ -640,21 +682,27 @@ public class InformixRatePersistence implements RatePersistence {
      * @param companyId company id
      *
      * @return the Rate retrieved from persistence
-     *
      * @throws SQLException if any error occurs in persistence
      */
-    private Rate getRate(Connection connection, long rateId, long companyId)
-        throws SQLException {
-        PreparedStatement pstmt = connection.prepareStatement(SQL_SELECT_BY_ID);
-        pstmt.setLong(1, companyId);
-        pstmt.setLong(2, rateId);
+    private Rate getRate(Connection connection, long rateId, long companyId) throws SQLException {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
-        ResultSet rs = pstmt.executeQuery();
+        try {
+            pstmt = connection.prepareStatement(SQL_SELECT_BY_ID);
+            pstmt.setLong(1, companyId);
+            pstmt.setLong(2, rateId);
 
-        if (rs.next()) {
-            return parseRate(rs);
-        } else {
-            return null;
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return parseRate(rs);
+            } else {
+                return null;
+            }
+        } finally {
+            closeResultSet(rs);
+            closeStatement(pstmt);
         }
     }
 
