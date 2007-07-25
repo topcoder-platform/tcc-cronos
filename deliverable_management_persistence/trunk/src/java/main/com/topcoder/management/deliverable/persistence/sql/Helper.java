@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -195,7 +196,11 @@ class Helper {
             Helper.assertObjectNotNull(preparedStatement, "statement");
             Helper.assertObjectNullOrIsInstance(value, String.class, "value " + index);
 
-            preparedStatement.setString(index, (String) value);
+            if (value != null) {
+            	preparedStatement.setString(index, (String) value);
+            } else {
+            	preparedStatement.setNull(index, Types.VARCHAR);
+            }
         }
     }
 
@@ -252,8 +257,12 @@ class Helper {
             throws SQLException {
             Helper.assertObjectNotNull(preparedStatement, "statement");
             Helper.assertObjectNullOrIsInstance(value, Long.class, "value " + index);
-
-            preparedStatement.setLong(index, ((Long) value).longValue());
+            
+            if (value != null) {
+            	preparedStatement.setLong(index, ((Long) value).longValue());
+            } else {
+            	preparedStatement.setNull(index, Types.INTEGER);
+            }
         }
     }
 
@@ -311,7 +320,11 @@ class Helper {
             Helper.assertObjectNotNull(preparedStatement, "statement");
             Helper.assertObjectNullOrIsInstance(value, Double.class, "value " + index);
 
-            preparedStatement.setDouble(index, ((Double) value).doubleValue());
+            if (value != null) {
+            	preparedStatement.setDouble(index, ((Double) value).doubleValue());
+            } else {
+            	preparedStatement.setNull(index, Types.DOUBLE);
+            }
         }
     }
 
@@ -369,7 +382,11 @@ class Helper {
             Helper.assertObjectNotNull(preparedStatement, "preparedStatement");
             Helper.assertObjectNullOrIsInstance(value, Boolean.class, "value " + index);
 
-            preparedStatement.setBoolean(index, ((Boolean) value).booleanValue());
+            if (value != null) {
+            	preparedStatement.setBoolean(index, ((Boolean) value).booleanValue());
+            } else {
+            	preparedStatement.setNull(index, Types.BOOLEAN);
+            }
         }
     }
 
@@ -430,8 +447,11 @@ class Helper {
             Helper.assertObjectNotNull(preparedStatement, "statement");
             Helper.assertObjectNullOrIsInstance(value, Date.class, "value" + index);
 
-            preparedStatement.setTimestamp(index, value == null ? null : new Timestamp(
-                ((Date) value).getTime()));
+            if (value != null) {
+            	preparedStatement.setTimestamp(index, new Timestamp(((Date) value).getTime()));
+            } else {
+            	preparedStatement.setNull(index, Types.TIMESTAMP);
+            }
         }
     }
 
