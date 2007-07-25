@@ -1015,10 +1015,10 @@ public class SqlUploadPersistence implements UploadPersistence {
             submission.getModificationUser(), submission.getModificationTimestamp(),
             new Long(submission.getUpload().getId()),
             new Long(submission.getSubmissionStatus().getId()),
-            new Double(submission.getScreeningScore()),
-            new Double(submission.getInitialScore()),
-            new Double(submission.getFinalScore()),
-            new Long(submission.getPlacement())};
+            submission.getScreeningScore(),
+            submission.getInitialScore(),
+            submission.getFinalScore(),
+            submission.getPlacement()};
 
         try {
             // add submission to database
@@ -1053,8 +1053,8 @@ public class SqlUploadPersistence implements UploadPersistence {
         Object[] queryArgs = new Object[] {submission.getModificationUser(),
             submission.getModificationTimestamp(),
                 new Long(submission.getUpload().getId()), new Long(submission.getSubmissionStatus().getId()),
-                new Double(submission.getScreeningScore()), new Double(submission.getInitialScore()),
-                new Double(submission.getFinalScore()), new Long(submission.getPlacement()),
+                submission.getScreeningScore(), submission.getInitialScore(),
+                submission.getFinalScore(), submission.getPlacement(),
                 new Long(submission.getId()) };
 
         try {
@@ -1232,19 +1232,19 @@ public class SqlUploadPersistence implements UploadPersistence {
             // load the submission values.
             Object aux = row[index++];  
             if (aux != null) {
-            	submission.setScreeningScore(((Double) aux).doubleValue());
+            	submission.setScreeningScore(((Double) aux));
             }
             aux = row[index++];  
             if (aux != null) {
-            	submission.setIntialScore(((Double) aux).doubleValue());
+            	submission.setIntialScore(((Double) aux));
             }
             aux = row[index++];  
             if (aux != null) {
-            	submission.setFinalScore(((Double) aux).doubleValue());
+            	submission.setFinalScore(((Double) aux));
             }
             aux = row[index++];  
             if (aux != null) {
-            	submission.setPlacement(((Long) aux).longValue());
+            	submission.setPlacement(((Long) aux));
             }
 
             // assign it to the array
@@ -1355,16 +1355,16 @@ public class SqlUploadPersistence implements UploadPersistence {
         Submission submission = new Submission();
         
         if (resultSet.getObject("screening_score") != null) {
-        	submission.setScreeningScore(resultSet.getDouble("screening_score"));        
+        	submission.setScreeningScore(new Double(resultSet.getDouble("screening_score")));        
         }
         if (resultSet.getObject("initial_score") != null) {
-        	submission.setIntialScore(resultSet.getDouble("initial_score"));
+        	submission.setIntialScore(new Double(resultSet.getDouble("initial_score")));
         }
         if (resultSet.getObject("final_score") != null) {
-        	submission.setFinalScore(resultSet.getDouble("final_score"));
+        	submission.setFinalScore(new Double(resultSet.getDouble("final_score")));
         }
         if (resultSet.getObject("placement") != null) {
-        	submission.setPlacement(resultSet.getLong("placement"));
+        	submission.setPlacement(new Long(resultSet.getLong("placement")));
         }
 
         submission.setId(resultSet.getLong("submission_id"));
