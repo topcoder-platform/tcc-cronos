@@ -1,0 +1,114 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<!-- a valid Namespace Validator class -->
+	<Config name="util.Good">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+		<Property name="innerValidator1">
+			<Value>myInnerValidator1</Value>
+		</Property>
+		<Property name="innerValidator2">
+			<Value>myInnerValidator2</Value>
+		</Property>
+		<Property name="innerValidator3">
+			<Value>myInnerValidator3</Value>
+		</Property>
+		<Property name="shortCircuited">
+			<Value>false</Value>
+		</Property>
+	</Config>
+	<!-- a valid Namespace for Validator class -->
+	<Config name="util.NoInnerValidator">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+		<Property name="NoInnerValidator">
+			<Value>InvalidInnerValidator</Value>
+		</Property>
+		<Property name="shortCircuited">
+			<Value>not int</Value>
+		</Property>
+	</Config>
+
+	<!-- an invalid Namespace for Validator class -->
+	<Config name="util.BadSpecify">
+        <Property name="specNamespace">
+            <Value>com.topcoder.BadSpecify</Value>
+        </Property>
+		<Property name="innerValidator1">
+			<Value>myInnerValidator1</Value>
+		</Property>
+		<Property name="innerValidator2">
+			<Value>myInnerValidator2</Value>
+		</Property>
+		<Property name="innerValidator3">
+			<Value>myInnerValidator3</Value>
+		</Property>
+		<Property name="shortCircuited">
+			<Value>false</Value>
+		</Property>
+	</Config>
+
+	<!-- an invalid Namespace for Validator class -->
+	<Config name="util.UnknownObjectFactorySpecify">
+        <Property name="specNamespace">
+            <Value>com.topcoder.UnknownObjectFactorySpecify</Value>
+        </Property>
+		<Property name="innerValidator1">
+			<Value>myInnerValidator1</Value>
+		</Property>
+		<Property name="innerValidator2">
+			<Value>myInnerValidator2</Value>
+		</Property>
+		<Property name="innerValidator3">
+			<Value>myInnerValidator3</Value>
+		</Property>
+		<Property name="shortCircuited">
+			<Value>false</Value>
+		</Property>
+	</Config>
+
+	<!-- an invalid Namespace for Validator class -->
+	<Config name="util.InvalidInnerValidator">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+		<Property name="innerValidator1">
+			<Value>InvalidInnerValidator</Value>
+		</Property>
+		<Property name="shortCircuited">
+			<Value>not int</Value>
+		</Property>
+	</Config>
+
+	<!-- an invalid Namespace for Validator class -->
+	<Config name="util.InvalidValidatorInfo">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+		<Property name="innerValidator">
+			<Value>myValidator</Value>
+		</Property>
+		<Property name="shortCircuited">
+			<Value>InvalidValidatorInfo</Value>
+		</Property>
+	</Config>
+
+
+	<!-- an invalid Namespace for Validator class -->
+	<Config name="util.MissingValidatorInfo">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+		<Property name="innerValidator">
+			<Value>myValidator</Value>
+		</Property>
+		<Property name="MissingShortCircuited">
+			<Value>false</Value>
+		</Property>
+	</Config>
+</CMConfig>
+
+
+

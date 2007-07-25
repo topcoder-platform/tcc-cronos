@@ -1,0 +1,19 @@
+2007-6-29
+FIX Bug TCRT-8497
+In MemberNotTeamMemberForProjectValidator#getMessage
+find resource by teamService, like this:
+
+Resource resource = null;
+long userId = validationInfo.getRegistration().getUserId();
+TeamHeader[] teamHeaders = validationInfo.getProject().getTeams();
+TeamServices teamServices = new TeamServicesImpl();
+for (int i = 0; i < teamHeaders.length; ++i) {
+Resource[] resources = teamServices.getTeamMembers(teamHeaders[i].getTeamId());
+for (int j = 0; j < resources.length; ++j) {
+    Long externalReferenceID = (Long) resources[j].getProperty("External Reference ID");
+    if ((new Long(userId)).compareTo(externalReferenceID) == 0) {
+        resource = resources[j];
+        break;
+    }
+}
+}

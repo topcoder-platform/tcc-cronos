@@ -1,0 +1,10 @@
+# This is a sample template.
+# my errors message
+
+Hello user %loop:USER% %HANDLE{The handle of the coder}%,
+%endloop%
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software

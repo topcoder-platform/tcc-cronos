@@ -1,0 +1,57 @@
+<CMConfig>
+    <!-- a valid Namespace Validator class -->
+	<Config name="simple.GoodInnerValidator">
+		<Property name="ratingType">
+			<Value>Design</Value>
+		</Property>
+		<Property name="minimumNumRatings">
+			<Value>3</Value>
+		</Property>
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+	<!-- a valid Namespace Validator class -->
+	<Config name="simple.BadDefaultMessageInnerValidator">
+		<Property name="ratingType">
+			<Value>Design</Value>
+		</Property>
+		<Property name="minimumNumRatings">
+			<Value>3</Value>
+		</Property>
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myBadTemplate.txt</Value>
+		</Property>
+	</Config>
+</CMConfig>

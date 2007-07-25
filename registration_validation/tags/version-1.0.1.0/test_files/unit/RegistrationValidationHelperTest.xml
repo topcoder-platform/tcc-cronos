@@ -1,0 +1,660 @@
+<?xml version="1.0" ?>
+<CMConfig>
+    <!-- Namespace for test getString getInteger getLong getBoolean methods -->
+	<Config name="test.RegistrationValidationHelper">
+		<Property name="bad">
+			<Value>bad</Value>
+		</Property>
+		<Property name="trueProperty">
+			<Value>True</Value>
+		</Property>
+		<Property name="falseProperty">
+			<Value>False</Value>
+		</Property>
+	    
+	    <Property name="negative">
+			<Value>-1</Value>
+		</Property>
+		
+		<Property name="aDoubleProperty">
+			<Value>1</Value>
+		</Property>
+			
+		<Property name="aLongProperty">
+			<Value>1</Value>
+		</Property>
+				
+		<Property name="aIntegerProperty">
+			<Value>1</Value>
+		</Property>
+			
+		<Property name="aStringProperty">
+			<Value>myStringPropertyValue</Value>
+		</Property>
+	</Config>
+
+    <!-- Namespace for test CreateObjectFromObjectFactory method -->
+    <Config name="test.CreateObjectFromObjectFactory">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+        <Property name="teamManagerKey">
+            <Value>myTeamManager</Value>
+        </Property>
+        <Property name="projectServicesKey">
+            <Value>myProjectServices</Value>
+        </Property>
+        <Property name="banManagerKey">
+            <Value>myBanManager</Value>
+        </Property>
+        <Property name="loggerName">
+            <Value>myLog</Value>
+        </Property>
+    </Config>
+    <!-- Namespace for test CreateObjectFromObjectFactory method -->
+    <Config name="test.CreateObjectFromObjectFactory.MisingKeyProperty">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+        <Property name="MisingKeyPropertyr">
+            <Value>myValidator</Value>
+        </Property>
+    </Config>
+
+    <!-- Namespace for test CreateObjectFromObjectFactory method -->
+    <Config name="test.CreateObjectFromObjectFactory.EmptyKeyPropertyValue">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+        <Property name="banManagerKey">
+            <Value>  </Value>
+        </Property>
+        <Property name="EmptyKeyPropertyValue">
+            <Value>  </Value>
+        </Property>
+        <Property name="EmptyKeyPropertyValues">
+            <Value> myBanManager </Value>
+            <Value>  </Value>
+        </Property>		
+    </Config>
+
+    <!-- Namespace for test CreateObjectFromObjectFactory method -->
+	<Config name="test.CreateObjectFromObjectFactory.EmptyKeyPropertyValues">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+        <Property name="banManagerKey">
+            <Value>myBanManager</Value>
+            <Value>  </Value>
+        </Property>
+    </Config>
+
+	<!-- Namespace for test  CreateObjectFromObjectFactory method -->
+    <Config name="test.CreateObjectFromObjectFactory.NoLoggerName">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+        <Property name="teamManagerKey">
+            <Value>myTeamManager</Value>
+        </Property>
+        <Property name="projectServicesKey">
+            <Value>myProjectServices</Value>
+        </Property>
+        <Property name="banManagerKey">
+            <Value>myBanManager</Value>
+        </Property>
+        <Property name="NoLoggerName">
+            <Value>myLog</Value>
+        </Property>
+    </Config>
+
+    
+    <!-- Namespace for test CreateObjectFromObjectFactory method -->
+    <Config name="test.CreateObjectFromObjectFactory.UnknownObjectFactorySpecify">
+        <Property name="specNamespace">
+            <Value>com.topcoder.UnknownObjectFactorySpecify</Value>
+        </Property>
+        <Property name="validatorKey">
+            <Value>myValidator</Value>
+        </Property>
+        <Property name="teamManagerKey">
+            <Value>myTeamManager</Value>
+        </Property>
+        <Property name="projectServicesKey">
+            <Value>myProjectServices</Value>
+        </Property>
+        <Property name="banManagerKey">
+            <Value>myBanManager</Value>
+        </Property>
+        <Property name="loggerName">
+            <Value>myLog</Value>
+        </Property>
+    </Config>
+  
+    <!-- Namespace for test CreateObjectFromObjectFactory method -->
+    <Config name="test.CreateObjectFromObjectFactory.BadSpecify">
+        <Property name="specNamespace">
+            <Value>com.topcoder.BadSpecify</Value>
+        </Property>
+        <Property name="validatorKey">
+            <Value>myValidator</Value>
+        </Property>
+        <Property name="teamManagerKey">
+            <Value>myTeamManager</Value>
+        </Property>
+        <Property name="projectServicesKey">
+            <Value>myProjectServices</Value>
+        </Property>
+        <Property name="banManagerKey">
+            <Value>myBadSpecifyBanManager</Value>
+        </Property>
+        <Property name="loggerName">
+            <Value>myLog</Value>
+        </Property>
+    </Config>    
+    
+
+    <!-- Namespace for test  CreateArrayFromObjectFactory method -->
+    <Config name="test.CreateArrayFromObjectFactory">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+        <Property name="teamManagerKey">
+            <Value>myTeamManager</Value>
+        </Property>
+        <Property name="projectServicesKey">
+            <Value>myProjectServices</Value>
+        </Property>
+        <Property name="banManagerKey">
+            <Value>myBanManager</Value>
+        </Property>
+        <Property name="loggerName">
+            <Value>myLog</Value>
+        </Property>
+    </Config>
+ 
+	<!-- Namespace for test  CreateArrayFromObjectFactory method -->
+    <Config name="test.CreateArrayFromObjectFactory.NoLoggerName">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+        <Property name="teamManagerKey">
+            <Value>myTeamManager</Value>
+        </Property>
+        <Property name="projectServicesKey">
+            <Value>myProjectServices</Value>
+        </Property>
+        <Property name="banManagerKey">
+            <Value>myBanManager</Value>
+        </Property>
+        <Property name="NoLoggerName">
+            <Value>myLog</Value>
+        </Property>
+    </Config>
+
+    <!-- Namespace for test CreateArrayFromObjectFactory method -->
+    <Config name="test.CreateArrayFromObjectFactory.MisingKeyProperty">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+        <Property name="MisingKeyPropertyr">
+            <Value>myValidator</Value>
+        </Property>
+    </Config>
+
+    <!-- Namespace for test CreateArrayFromObjectFactory method -->
+    <Config name="test.CreateArrayFromObjectFactory.EmptyKeyPropertyValue">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+        <Property name="banManagerKey">
+            <Value>  </Value>
+        </Property>
+        <Property name="EmptyKeyPropertyValue">
+            <Value>  </Value>
+        </Property>
+        <Property name="EmptyKeyPropertyValues">
+            <Value> myBanManager </Value>
+            <Value>  </Value>
+        </Property>		
+    </Config>
+
+    <!-- Namespace for test CreateArrayFromObjectFactory method -->
+	<Config name="test.CreateArrayFromObjectFactory.EmptyKeyPropertyValues">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+        <Property name="banManagerKey">
+            <Value>myBanManager</Value>
+            <Value>  </Value>
+        </Property>
+    </Config>
+
+    
+    <!-- Namespace for test CreateArrayFromObjectFactory method -->
+    <Config name="test.CreateArrayFromObjectFactory.UnknownObjectFactorySpecify">
+        <Property name="specNamespace">
+            <Value>com.topcoder.UnknownObjectFactorySpecify</Value>
+        </Property>
+        <Property name="validatorKey">
+            <Value>myValidator</Value>
+        </Property>
+        <Property name="teamManagerKey">
+            <Value>myTeamManager</Value>
+        </Property>
+        <Property name="projectServicesKey">
+            <Value>myProjectServices</Value>
+        </Property>
+        <Property name="banManagerKey">
+            <Value>myBanManager</Value>
+        </Property>
+        <Property name="loggerName">
+            <Value>myLog</Value>
+        </Property>
+    </Config>
+  
+    <!-- Namespace for test CreateArrayFromObjectFactory method -->
+    <Config name="test.CreateArrayFromObjectFactory.BadSpecify">
+        <Property name="specNamespace">
+            <Value>com.topcoder.BadSpecify</Value>
+        </Property>
+        <Property name="validatorKey">
+            <Value>myValidator</Value>
+        </Property>
+        <Property name="teamManagerKey">
+            <Value>myTeamManager</Value>
+        </Property>
+        <Property name="projectServicesKey">
+            <Value>myProjectServices</Value>
+        </Property>
+        <Property name="banManagerKey">
+            <Value>myBadSpecifyBanManager</Value>
+        </Property>
+        <Property name="loggerName">
+            <Value>myLog</Value>
+        </Property>
+    </Config>    
+    
+
+
+	<!-- a Namespace for BundleInfo class -->
+	<Config name="test.BundleInfo.NonBundleLocaleLanguage">
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="NonBundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+	<!-- a Namespace for BundleInfo class -->
+	<Config name="test.BundleInfo.EmptyBundleLocaleLanguage">
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>  </Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+	<!-- a Namespace for BundleInfo class -->
+	<Config name="test.BundleInfo.UnknownBundleLocaleLanguage">
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>unknown</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+	<!-- a Namespace for BundleInfo class -->
+	<Config name="test.BundleInfo.NonBundleLocaleCountry">
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="NonBundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+	<!-- a Namespace for BundleInfo class -->
+	<Config name="test.BundleInfo.EmptyBundleLocaleCountry">
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>
+			</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+	<!-- a Namespace for BundleInfo class -->
+	<Config name="test.BundleInfo.UnknownBundleLocaleCountry">
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>unknown</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+	<!-- a Namespace for BundleInfo class -->
+	<Config name="test.BundleInfo.NonBundleLocaleVariant">
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="NonBundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+	<!-- a Namespace for BundleInfo class -->
+	<Config name="test.BundleInfo.EmptyBundleLocaleVariant">
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>
+			</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+	<!-- a Namespace for BundleInfo class -->
+	<Config name="test.BundleInfo.UnknownBundleLocaleVariant">
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>unKnown</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+
+	<!-- a Namespace for BundleInfo class -->
+	<Config name="test.BundleInfo.MissingBundleName">
+		<Property name="MissingBundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+	
+	<!-- a Namespace for BundleInfo class -->
+	<Config name="test.BundleInfo.MissingBundleNameAndDefaultMessage">
+		<Property name="MissingBundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="MissingDefaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+	<!-- a Namespace for BundleInfo class -->
+	<Config name="test.BundleInfo.EmptyBundleName">
+		<Property name="bundleName">
+			<Value>
+			</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+	<!-- a Namespace for BundleInfo class -->
+	<Config name="test.BundleInfo.MissingMessageKey">
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="MissingMessageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+	<!-- a Namespace for BundleInfo class -->
+	<Config name="test.BundleInfo.EmptyMessageKey">
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="MessageKey">
+			<Value>
+			</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+
+	<!-- a Namespace for BundleInfo class -->
+	<Config name="test.BundleInfo.MissingDefaultMessage">
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="MissingDefaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+
+	<!-- a Namespace for BundleInfo class -->
+	<Config name="test.BundleInfo.EmptyDefaultMessage">
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+	<!-- a Namespace for BundleInfo class -->
+	<Config name="test.BundleInfo.BundleNotFound">
+		<Property name="bundleName">
+			<Value>bundleNotFound</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+</CMConfig>
