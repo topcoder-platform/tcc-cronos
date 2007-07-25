@@ -289,8 +289,8 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                 Resource submitter = getManagerHelper().getResourceManager().getResource(submitterId);
 
                 // OrChange - update the final score and the placement into the submission table.
-                submission.setFinalScore(Double.valueOf(aggScore + "").doubleValue());
-                submission.setPlacement(placement);
+                submission.setFinalScore(Double.valueOf(aggScore + ""));
+                submission.setPlacement(new Long(placement));
 
                 // Old Code Begins
                 // submitter.setProperty("Final Score", String.valueOf(aggScore));

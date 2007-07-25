@@ -281,7 +281,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                 float aggScore = aggregations[iSub].getAggregatedScore();
 
                 // OrChange - Modified to update the submissions table instead of the resource_info table
-                submission.setIntialScore(Double.valueOf(String.valueOf(aggScore)).doubleValue());
+                submission.setIntialScore(Double.valueOf(String.valueOf(aggScore)));
                 getManagerHelper().getUploadManager().updateSubmission(submission, operator);
 
                 // Old Code Begins

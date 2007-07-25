@@ -309,7 +309,7 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
             // Old Code Ends
             
             // OrChange - Set the screening score to the submission instead of the resource
-            submission.setScreeningScore(Double.valueOf(String.valueOf(screeningScore)).doubleValue());
+            submission.setScreeningScore(Double.valueOf(String.valueOf(screeningScore)));
 
             // If screeningScore < screening minimum score, Set submission status to "Failed Screening"
             if (screeningScore.floatValue() < minScore) {

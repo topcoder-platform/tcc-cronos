@@ -258,7 +258,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                     // loop through the submissions and find out the one with the placement as first
                     for (int i = 0; i < submissions.length; i++) {
                         Submission submission = submissions[i];
-                        if (submission.getPlacement() == 1) {
+                        if (submission.getPlacement() != null && submission.getPlacement().longValue() == 1) {
                             winningSubmissionId = new Long(submission.getId());
                             break;
                         }
