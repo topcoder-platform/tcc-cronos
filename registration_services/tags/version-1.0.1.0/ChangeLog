@@ -1,0 +1,13 @@
+2007-6-19
+RegistrationInfo
+RegistrationPosition
+RegistrationResult
+RemovalResult
+
+are made serializable.
+
+2007-6-29
+Fix bug TCRT-8529
+In RegistrationSerivcesImpl#registerForProject
+use 
+removeRegistration method instead of removing the resource by ResourceManager directly.
