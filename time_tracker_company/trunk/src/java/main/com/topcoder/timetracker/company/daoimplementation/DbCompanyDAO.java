@@ -1534,17 +1534,11 @@ public class DbCompanyDAO implements CompanyDAO {
      * @throws CompanyDAOException If can't get connection.
      */
     private Connection createConnection() throws CompanyDAOException {
-        Connection con = null;
         try {
             // create a DB connection
-            con = connectionFactory.createConnection(connectionName);
-            con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-            return con;
+            return connectionFactory.createConnection(connectionName);
         } catch (DBConnectionException e) {
             throw new CompanyDAOException("Can't get the connection from database.", e, null);
-        } catch (SQLException e) {
-            releaseConnection(con);
-            throw new CompanyDAOException("Can't set transaction isolation for connection.", e, null);
         }
     }
 
