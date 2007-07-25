@@ -410,7 +410,6 @@ public class DatabasePaymentTermDAO implements PaymentTermDAO {
                 connection.setAutoCommit(autoCommit);
             }
 
-            connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             return connection;
         } catch (DBConnectionException e) {
             throw new PaymentTermDAOException(
@@ -446,7 +445,7 @@ public class DatabasePaymentTermDAO implements PaymentTermDAO {
      */
     private void closeConnection(Connection con) {
         try {
-            if (con != null && !con.isClosed()) {
+            if (con != null) {
                 con.close();
             }
         } catch (SQLException e) {
