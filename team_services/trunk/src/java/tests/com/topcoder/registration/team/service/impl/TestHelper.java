@@ -77,7 +77,7 @@ public final class TestHelper {
 
         Resource resource = new Resource();
         resource.setId(1);
-        resource.setProperty("External reference ID", new Long(1));
+        resource.setProperty("External Reference ID", new Long(1));
         resource.setProperty("Handle", "argolite");
         resource.setProperty("Email", "argolite@topcoder.com");
         resource.setProperty("Registration Date", new Date());
@@ -87,7 +87,7 @@ public final class TestHelper {
 
         Resource resource1 = new Resource();
         resource1.setId(2);
-        resource1.setProperty("External reference ID", new Long(1));
+        resource1.setProperty("External Reference ID", new Long(1));
         resource1.setProperty("Handle", "argolite");
         resource1.setProperty("Email", "argolite@topcoder.com");
         resource1.setProperty("Registration Date", new Date());

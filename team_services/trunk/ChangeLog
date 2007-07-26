@@ -34,3 +34,24 @@ in
 TeamServicesImpl#sendOffer
 if the position is not published, it will check whether it is team caption, if it is, the
 position is valid.
+
+2007-7-26
+
+FIX BUG TCRT-9210
+in
+Add a private method checkPaymentPercentages(Team team, OperationResultImpl operationResult)
+This method will check whether sum of payment percentage of members and captain is 100%, used in
+finalizeTeam method.
+
+in
+TeamServicesImpl#validateFinalization, it will invoke checkPaymentPercentages method to ensure that
+percentage is 100%.
+
+New Test case is also added to reflect the modification.
+
+TeamServicesImpl#removeTeam:
+remove the
+ex.printStackTrace().
+
+Document of TeamServicesImpl#validateFinalization, TeamServices#validateFinalization
+are all updated.(comment)

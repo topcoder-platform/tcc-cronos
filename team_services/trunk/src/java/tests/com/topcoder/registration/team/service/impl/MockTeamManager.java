@@ -371,6 +371,8 @@ public class MockTeamManager implements TeamManager {
 
         TeamPosition pos = new TeamPosition();
         pos.setMemberResourceId(2);
+        pos.setPaymentPercentage(0);
+        pos.setPositionId(1);
         return new TeamPosition[] {pos};
     }
 

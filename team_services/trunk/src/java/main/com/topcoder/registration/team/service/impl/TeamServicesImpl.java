@@ -1135,7 +1135,6 @@ public class TeamServicesImpl implements TeamServices {
                 teamManager.removeTeam(teamId, userId);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
             log(Level.ERROR, "Exception occurred in TeamServicesImpl#removeTeam method.");
             // error occurred, set unsuccessful flag to OperationResult and return
             operationResult.setSuccessful(false);
@@ -1872,7 +1871,8 @@ public class TeamServicesImpl implements TeamServices {
      * calling user must be the team&rsquo;s captain. The project must be currently in the
      * registration phase. All team members must be registered to the project as Free Agents. Team
      * captain must be registered as a resource to the project with the Team Captain ResourceRole.
-     * All positions must be already filled. Team must not be already finalized.
+     * All positions must be already filled. Team must not be already finalized. Sum of payment percentages
+     * of team members and captain should be equal to 1.
      * </p>
      * @return OperationResult with the results of the operation
      * @param teamId
@@ -1937,6 +1937,13 @@ public class TeamServicesImpl implements TeamServices {
             log(Level.INFO, "Exits TeamServicesImpl#validateFinalization method.");
             return operationResult;
         }
+        
+        // Sum of payment percentages of team members and captain should be equal to 1.
+        if (!checkPaymentPercentages(team, operationResult)) {
+            log(Level.INFO, "Exits TeamServicesImpl#validateFinalization method.");
+            return operationResult;
+        }
+
         // team should not be finalized before
         if (team.getTeamHeader().isFinalized()) {
             operationResult.setSuccessful(false);
@@ -2049,6 +2056,34 @@ public class TeamServicesImpl implements TeamServices {
                     .setErrors(new String[] {"Some member resources of given team are not free agents."});
                 return false;
             }
+        }
+        return true;
+    }
+
+    /**
+     * <p>
+     * Check sum of payment percentage of members and captain is equal to 100%.
+     * </p>
+     *
+     * @param team
+     *              the full team info
+     * @param operationResult
+     *              the operation result
+     * @return true if sum is equal to 100%, otherwise false.
+     */
+    private boolean checkPaymentPercentages(Team team, OperationResultImpl operationResult) {
+        // gets all TeamPositions
+        TeamPosition[] positions = team.getPositions();
+        int sum = 0;
+        for (int i = 0; i < positions.length; ++i) {
+            sum += positions[i].getPaymentPercentage();
+        }
+        sum += team.getTeamHeader().getCaptainPaymentPercentage();
+        if (sum < 100) {
+            operationResult.setSuccessful(false);
+            operationResult.setErrors(new String[] {"Sum of payment percentage of members and " +
+                    "captain is not equal to 100%."});
+            return false;
         }
         return true;
     }

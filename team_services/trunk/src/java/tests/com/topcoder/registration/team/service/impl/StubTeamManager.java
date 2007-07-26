@@ -103,6 +103,9 @@ public class StubTeamManager implements TeamManager {
         TeamHeader team = new TeamHeader();
         team.setCaptainPaymentPercentage(0);
         team.setTeamId(teamId);
+        if (teamId == 19) {
+            team.setCaptainPaymentPercentage(40);
+        }
         team.setName("Robot Team");
         team.setDescription("A strong team.");
         team.setCaptainResourceId(1);
@@ -120,6 +123,9 @@ public class StubTeamManager implements TeamManager {
         pos.setName("Good Position");
         pos.setFilled(true);
         pos.setPaymentPercentage(0);
+        if (teamId == 19) {
+            pos.setPaymentPercentage(30);
+        }
 
         TeamPosition pos1 = new TeamPosition();
         pos1.setPositionId(3);
@@ -127,6 +133,9 @@ public class StubTeamManager implements TeamManager {
         pos1.setName("Good Position");
         pos1.setFilled(true);
         pos1.setPaymentPercentage(0);
+        if (teamId == 19) {
+            pos1.setPaymentPercentage(30);
+        }
         if (teamId == 18) {
             team.setFinalized(true);
         } else {

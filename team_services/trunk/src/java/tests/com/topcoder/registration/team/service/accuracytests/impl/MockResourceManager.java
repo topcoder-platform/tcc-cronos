@@ -110,7 +110,7 @@ public class MockResourceManager implements ResourceManager {
     public Resource getResource(long id) throws ResourcePersistenceException {
         Resource resource = new Resource();
         resource.setId(1);
-        resource.setProperty("External reference ID", new Long(1));
+        resource.setProperty("External Reference ID", new Long(1));
         resource.setProperty("Handle", "argolite");
         resource.setProperty("Email", "argolite@topcoder.com");
         resource.setProperty("Registration Date", new Date());

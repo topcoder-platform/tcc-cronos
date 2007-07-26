@@ -103,6 +103,7 @@ public class MockTeamManager implements TeamManager {
         team.setCaptainResourceId(1);
         if (teamId == 19 || teamId == 18) {
             team.setProjectId(5);
+            team.setCaptainPaymentPercentage(40);
         } else if (teamId == 15) {
             team.setProjectId(10);
         } else {
@@ -115,6 +116,9 @@ public class MockTeamManager implements TeamManager {
         pos.setMemberResourceId(2);
         pos.setName("Good Position");
 
+        if (teamId == 19) {
+            pos.setPaymentPercentage(30); 
+        }
         TeamPosition pos1 = new TeamPosition();
         pos1.setPositionId(3);
         pos1.setFilled(true);
@@ -124,6 +128,9 @@ public class MockTeamManager implements TeamManager {
             team.setFinalized(true);
         }
 
+        if (teamId == 19) {
+            pos1.setPaymentPercentage(30); 
+        }
         theTeam.setTeamHeader(team);
         theTeam.setPositions(new TeamPosition[]{pos, pos1});
 

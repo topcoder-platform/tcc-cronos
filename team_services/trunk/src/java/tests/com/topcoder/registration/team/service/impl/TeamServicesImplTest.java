@@ -745,6 +745,7 @@ public class TeamServicesImplTest extends TestCase {
     public void testCreateOrUpdateTeamWithDupTeamName() throws Exception {
         TeamHeader team = new TeamHeader();
         team.setName("Robot Team");
+        team.setProjectId(1);
         OperationResult result = services.createOrUpdateTeam(team, 1);
         assertFalse("Result should be unsuccessful.", result.isSuccessful());
     }
@@ -763,6 +764,7 @@ public class TeamServicesImplTest extends TestCase {
     public void testCreateOrUpdateTeamWithTeamNameMatchResourceHandle() throws Exception {
         TeamHeader team = new TeamHeader();
         team.setName("argolite");
+        team.setProjectId(1);
         OperationResult result = services.createOrUpdateTeam(team, 1);
         assertFalse("Result should be unsuccessful.", result.isSuccessful());
     }
@@ -823,6 +825,7 @@ public class TeamServicesImplTest extends TestCase {
     public void testCreateOrUpdateTeamWithPositiveTeamIdAndDupName() throws Exception {
         TeamHeader team = new TeamHeader();
         team.setTeamId(2);
+        team.setProjectId(1);
         team.setName("argolite");
         OperationResult result = services.createOrUpdateTeam(team, 1);
         assertFalse("Result should be unsuccessful.", result.isSuccessful());
@@ -1867,6 +1870,21 @@ public class TeamServicesImplTest extends TestCase {
 
         OperationResult result = services.finalizeTeam(19, 1);
         assertTrue("Result should be successful.", result.isSuccessful());
+    }
+
+    /**
+     * <p>
+     * Test for <code>finalizeTeam(teamId, userId)</code> method.
+     * </p>
+     * <p>
+     * Tests it with teamId=18,userId=1, expects unsuccessful operation result.
+     * </p>
+     * @throws Exception
+     *             to JUnit
+     */
+    public void testFinalizeTeamAccuracy3() throws Exception {
+        OperationResult result = services.finalizeTeam(18, 1);
+        assertFalse("Result should be unsuccessful.", result.isSuccessful());
     }
 
     /**

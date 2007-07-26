@@ -3,6 +3,7 @@ package com.topcoder.registration.team.service.failuretests;
 import com.topcoder.management.team.offer.Offer;
 import com.topcoder.management.team.offer.OfferManager;
 import com.topcoder.management.team.offer.OfferManagerException;
+import com.topcoder.management.team.offer.OfferStatus;
 import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.search.builder.filter.NullFilter;
@@ -50,6 +51,7 @@ public class MockOfferManager implements OfferManager {
         Offer offer = new Offer();
         offer.setOfferId(1);
         offer.setPositionId(1002);
+        offer.setStatus(new OfferStatus());
         
         return new Offer[]{offer};
     }

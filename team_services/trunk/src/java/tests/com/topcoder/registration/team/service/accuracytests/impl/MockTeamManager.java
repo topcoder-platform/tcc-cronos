@@ -121,7 +121,7 @@ public class MockTeamManager implements TeamManager {
         pos.setMemberResourceId(2);
         pos.setName("Good Position");
         pos.setPaymentPercentage(0);
-        if (teamId != 1) {
+        if (teamId != 2) {
             pos.setFilled(true);
         }
 
@@ -130,7 +130,7 @@ public class MockTeamManager implements TeamManager {
         pos1.setMemberResourceId(2);
         pos1.setName("Good Position");
         pos1.setPaymentPercentage(0);
-        if (teamId != 1) {
+        if (teamId != 2) {
             pos1.setFilled(true);
         }
 
@@ -190,7 +190,7 @@ public class MockTeamManager implements TeamManager {
     public TeamHeader[] findTeams(Filter filter) {
     	TeamHeader team = new TeamHeader();
         team.setCaptainPaymentPercentage(0);
-        team.setTeamId(1);
+        team.setTeamId(2);
         return new TeamHeader[] {team};
     }
 

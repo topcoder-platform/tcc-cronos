@@ -194,6 +194,7 @@ public interface TeamServices {
      * <li>Team captain must be registered as a resource to the project with the Team Captain
      * ResourceRole.</li>
      * <li>All positions must be already filled</li>
+     * <li>Sum of payment percentages of team members and captain should be equal to 1.</li>
      * <li>Team must not be already finalized</li>
      * </ul>
      * @return OperationResult with the results of the operation

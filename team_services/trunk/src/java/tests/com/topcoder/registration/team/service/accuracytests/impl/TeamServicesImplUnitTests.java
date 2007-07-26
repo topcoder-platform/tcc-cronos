@@ -85,6 +85,7 @@ public class TeamServicesImplUnitTests extends TestCase {
     public void testCreateOrUpdateTeam_AccuracyWithDuplicatedTeamName() throws Exception {
         TeamHeader team = new TeamHeader();
         team.setName("Robot Team");
+        team.setProjectId(1);
         OperationResult result = services.createOrUpdateTeam(team, 1);
         assertFalse("Result should be unsuccessful.", result.isSuccessful());
     }
@@ -103,6 +104,7 @@ public class TeamServicesImplUnitTests extends TestCase {
     public void testCreateOrUpdateTeam_AccuracyTeamNameMatchResourceHandle() throws Exception {
         TeamHeader team = new TeamHeader();
         team.setName("argolite");
+        team.setProjectId(1);
         OperationResult result = services.createOrUpdateTeam(team, 1);
         assertFalse("Result should be unsuccessful.", result.isSuccessful());
     }
@@ -141,6 +143,7 @@ public class TeamServicesImplUnitTests extends TestCase {
     public void testCreateOrUpdateTeam_AccuracyPositiveTeamIdAndDupName() throws Exception {
         TeamHeader team = new TeamHeader();
         team.setTeamId(2);
+        team.setProjectId(1);
         team.setName("argolite");
         OperationResult result = services.createOrUpdateTeam(team, 1);
         assertFalse("Result should be unsuccessful.", result.isSuccessful());

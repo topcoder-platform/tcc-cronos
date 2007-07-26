@@ -69,6 +69,7 @@ public class MockPhaseManager implements PhaseManager {
         Phase phase = new Phase(project, 1000000);
         phase.setId(1);
         phase.setPhaseStatus(PhaseStatus.OPEN);
+        phase.setPhaseType(new PhaseType(1, "test"));
 
         project.addPhase(phase);
         return project;
@@ -93,6 +94,7 @@ public class MockPhaseManager implements PhaseManager {
         Phase phase = new Phase(project, 1000000);
         phase.setId(1);
         phase.setPhaseStatus(PhaseStatus.OPEN);
+        phase.setPhaseType(new PhaseType(1, "test"));
 
         project.addPhase(phase);
 
