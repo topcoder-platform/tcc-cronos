@@ -123,7 +123,14 @@ public class AdminLoginAction extends LoginAction {
         // Get the principal from persistence.
         AuthorizationPersistence persistence = getAuthorizationManager().getPersistence();
         Collection temp = persistence.searchPrincipals(user);
-        Principal principal = (Principal) temp.iterator().next();
+        Principal principal = null;
+        
+        if(temp != null && temp.iterator().hasNext()) {
+            principal = (Principal) temp.iterator().next();
+        } else {
+            doLog(user, ACTION_NAME, "" + subject.getUserId(), "Failed to authorize the admin user, no Principal found!", Level.WARN);
+            return mapping.findForward(getLoginAuthFailForwardName());
+        }
 
         // authorize the user
         if (getAuthorizationManager().authorize(principal, getAction(), getActionContext())) {
