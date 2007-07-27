@@ -30,12 +30,12 @@ final class DBUtil {
      *            the given connection
      */
     static void closeConnection(Connection connection) {
-        if (connection != null) {
-            try {
+        try {
+            if (connection != null && !connection.isClosed()) {
                 connection.close();
-            } catch (SQLException e) {
-                // ignore
             }
+        } catch (SQLException e) {
+            // ignore
         }
     }
 

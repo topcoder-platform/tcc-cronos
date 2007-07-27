@@ -693,8 +693,8 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
             }
             return auditDetails;
         } finally {
-            DBUtil.closeStatement(statement);
             DBUtil.closeResultSet(set);
+            DBUtil.closeStatement(statement);
         }
     }
 
@@ -729,9 +729,9 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
         } catch (SQLException e) {
             throw new DataAccessException("An exception happens when accessing database", e);
         } finally {
-            DBUtil.closeConnection(connection);
             DBUtil.closeResultSet(set);
             DBUtil.closeStatement(statement);
+            DBUtil.closeConnection(connection);
         }
     }
 
@@ -901,9 +901,9 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
         } catch (com.topcoder.timetracker.entry.time.DataAccessException e) {
             throw new DataAccessException("An exception happens when getting time entry", e);
         } finally {
-            DBUtil.closeConnection(connection);
             DBUtil.closeResultSet(set);
             DBUtil.closeStatement(statement);
+            DBUtil.closeConnection(connection);
         }
     }
 
@@ -981,9 +981,9 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
         } catch (com.topcoder.timetracker.entry.time.DataAccessException e) {
             throw new DataAccessException("An exception happens when getting time entry", e);
         } finally {
-            DBUtil.closeConnection(connection);
             DBUtil.closeResultSet(set);
             DBUtil.closeStatement(statement);
+            DBUtil.closeConnection(connection);
         }
     }
 
@@ -1025,9 +1025,9 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
         } catch (com.topcoder.timetracker.entry.time.DataAccessException e) {
             throw new DataAccessException("An exception happens when getting time entry", e);
         } finally {
-            DBUtil.closeConnection(connection);
             DBUtil.closeResultSet(set);
             DBUtil.closeStatement(statement);
+            DBUtil.closeConnection(connection);
         }
     }
 
@@ -1142,8 +1142,8 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
             } catch (SQLException e) {
                 throw new DataAccessException("An exception happens when accessing database", e);
             } finally {
-                DBUtil.closeConnection(connection);
                 DBUtil.closeStatement(insertStatement);
+                DBUtil.closeConnection(connection);
             }
         }
     }
@@ -1272,8 +1272,8 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
             } catch (SQLException e) {
                 throw new DataAccessException("An exception happens when accessing database", e);
             } finally {
-                DBUtil.closeConnection(connection);
                 DBUtil.closeStatement(deleteStatement);
+                DBUtil.closeConnection(connection);
             }
         }
     }
@@ -1438,10 +1438,10 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
             } catch (SQLException e) {
                 throw new DataAccessException("An exception happens when accessing database", e);
             } finally {
-                DBUtil.closeConnection(connection);
-                DBUtil.closeStatement(updateStatement);
-                DBUtil.closeStatement(statement);
                 DBUtil.closeResultSet(set);
+                DBUtil.closeStatement(statement);
+                DBUtil.closeStatement(updateStatement);
+                DBUtil.closeConnection(connection);
             }
         }
     }
@@ -1521,9 +1521,9 @@ public class ServiceDetailDAOImpl implements ServiceDetailDAO {
         } catch (com.topcoder.timetracker.entry.time.DataAccessException e) {
             throw new DataAccessException("An exception happens when getting time entry", e);
         } finally {
-            DBUtil.closeConnection(connection);
-            DBUtil.closeStatement(statement);
             DBUtil.closeResultSet(set);
+            DBUtil.closeStatement(statement);
+            DBUtil.closeConnection(connection);
         }
     }
 }
