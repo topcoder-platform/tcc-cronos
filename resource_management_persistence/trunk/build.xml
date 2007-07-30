@@ -9,7 +9,7 @@
     <property name="package" value="com.topcoder.management.resource.persistence" />
     <property name="packagedir" value="com/topcoder/management/resource/persistence" />
     <property name="distfilename" value="resource_management_persistence" />
-    <property name="component_version" value="1.0" />
+    <property name="component_version" value="1.2" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
@@ -94,7 +94,7 @@
     <property name="object_factory.path" value="object_factory/${object_factory.version}"/>
     <property name="object_factory.jar" value="${tcs_libdir}/${object_factory.path}/${object_factory.jar.name}"/>
     
-    <property name="resource_management.version" value="1.0"/>
+    <property name="resource_management.version" value="1.1"/>
     <property name="resource_management.jar.name" value="resource_management.jar"/>
     <property name="resource_management.path" value="resource_management/${resource_management.version}"/>
     <property name="resource_management.jar" value="${tcs_libdir}/${resource_management.path}/${resource_management.jar.name}"/>
