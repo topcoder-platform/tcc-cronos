@@ -171,7 +171,7 @@ public class InformixCutoffTimeDao extends BaseDao implements CutoffTimeDao {
         } catch (IdGenerationException e) {
             throw new PersistenceException("failed to generate id for CutoffTimeBean", e);
         } finally {
-            releaseResource(conn, pstmt);
+            releaseResource(conn, pstmt, null);
         }
     }
 
@@ -221,7 +221,7 @@ public class InformixCutoffTimeDao extends BaseDao implements CutoffTimeDao {
         } catch (SQLException e) {
             throw new PersistenceException("failed to delete CutoffTimeBean, id:" + id, e);
         } finally {
-            releaseResource(conn, pstmt);
+            releaseResource(conn, pstmt, null);
         }
     }
 
@@ -250,7 +250,7 @@ public class InformixCutoffTimeDao extends BaseDao implements CutoffTimeDao {
         } catch (SQLException e) {
             throw new PersistenceException("failed to fetch CutoffTimeBean with companyId:" + companyId, e);
         } finally {
-            releaseResource(conn, null);
+            releaseResource(conn, null, null);
         }
 
         return result;
@@ -280,7 +280,7 @@ public class InformixCutoffTimeDao extends BaseDao implements CutoffTimeDao {
         } catch (SQLException e) {
             throw new PersistenceException("failed to fetch CutoffTimeBean, id:" + cutoffTimeId, e);
         } finally {
-            releaseResource(conn, null);
+            releaseResource(conn, null, null);
         }
 
         return result;
@@ -351,7 +351,7 @@ public class InformixCutoffTimeDao extends BaseDao implements CutoffTimeDao {
         } catch (SQLException e) {
             throw new PersistenceException("failed to update CutoffTimeBean, id:" + id, e);
         } finally {
-            releaseResource(conn, pstmt);
+            releaseResource(conn, pstmt, null);
         }
     }
 
@@ -361,7 +361,15 @@ public class InformixCutoffTimeDao extends BaseDao implements CutoffTimeDao {
      * @param conn connection to be closed
      * @param pstmt statement to be closed
      */
-    private static void releaseResource(Connection conn, PreparedStatement pstmt) {
+    private static void releaseResource(Connection conn, PreparedStatement pstmt, ResultSet rs) {
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                //does nothing
+            }
+        }
+
         if (pstmt != null) {
             try {
                 pstmt.close();
@@ -370,12 +378,12 @@ public class InformixCutoffTimeDao extends BaseDao implements CutoffTimeDao {
             }
         }
 
-        if (conn != null) {
-            try {
+        try {
+            if (conn != null && !conn.isClosed()) {
                 conn.close();
-            } catch (SQLException e) {
-                //does nothing
             }
+        } catch (SQLException e) {
+            //does nothing
         }
     }
 
@@ -487,16 +495,17 @@ public class InformixCutoffTimeDao extends BaseDao implements CutoffTimeDao {
     private CutoffTimeBean getCutoffTimeBeanByCompId(Connection conn, long compId)
         throws SQLException {
         PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
         try {
             pstmt = conn.prepareStatement(SQL_SELECT_BY_COMP_ID);
             pstmt.setLong(1, compId);
 
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
 
             return extractRS(rs);
         } finally {
-            releaseResource(null, pstmt);
+            releaseResource(null, pstmt, rs);
         }
     }
 
@@ -513,16 +522,17 @@ public class InformixCutoffTimeDao extends BaseDao implements CutoffTimeDao {
     private CutoffTimeBean getCutoffTimeByID(Connection conn, long id)
         throws SQLException {
         PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
         try {
             pstmt = conn.prepareStatement(SQL_SELECT_BY_ID);
             pstmt.setLong(1, id);
 
-            ResultSet rs = pstmt.executeQuery();
+            rs = pstmt.executeQuery();
 
             return extractRS(rs);
         } finally {
-            releaseResource(null, pstmt);
+            releaseResource(null, pstmt, rs);
         }
     }
 
