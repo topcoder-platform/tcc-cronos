@@ -5,6 +5,7 @@ package com.topcoder.management.project.persistence;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,6 +30,8 @@ import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.idgenerator.IDGenerator;
 import com.topcoder.util.idgenerator.IDGeneratorFactory;
+import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
+import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 
 /**
  * <p>
@@ -67,10 +70,11 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
  * @author tuenm, urtks, bendlund, fuyun
  * @version 1.1
  */
-public abstract class AbstractInformixProjectPersistence implements
-        ProjectPersistence {
+public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
+	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
+			.getLog(AbstractInformixProjectPersistence.class.getName());
 
-    /**
+	/**
      * <p>
      * Represents the default value for Project Id sequence name. It is used to
      * create id generator for project. This value will be overridden by
@@ -204,6 +208,16 @@ public abstract class AbstractInformixProjectPersistence implements
             + "ON info.project_info_type_id=info_type.project_info_type_id "
             + "WHERE info.project_id IN ";
 
+    /**
+     * Represents the sql statement to query project properties.
+     */
+    private static final String QUERY_ONE_PROJECT_PROPERTIES_SQL = "SELECT "
+            + "info.project_id, info_type.name, info.value "
+            + "FROM project_info AS info "
+            + "JOIN project_info_type_lu AS info_type "
+            + "ON info.project_info_type_id=info_type.project_info_type_id "
+            + "WHERE info.project_id = ?";
+    
     /**
      * Represents the column types for the result set which is returned by
      * executing the sql statement to query project properties.
@@ -945,7 +959,56 @@ public abstract class AbstractInformixProjectPersistence implements
 
         return propertyTypes;
     }
+    
+    public Project[] getProjects(CustomResultSet result) throws PersistenceException {
+    	Connection conn = null;
+        try {
+        	conn = openConnection();
+        	PreparedStatement ps = conn.prepareStatement(QUERY_ONE_PROJECT_PROPERTIES_SQL);
+			int size = result.getRecordCount();
+			Project[] projects = new Project[size];
+			for (int i = 0; i < size; i++) {
+				result.absolute(i + 1);
+				
+				// create the ProjectStatus object
+			    ProjectStatus status = new ProjectStatus(result.getLong(2), result.getString(3));
 
+			    // create the ProjectType object
+			    ProjectType type = new ProjectType(result.getLong(6), result.getString(7));
+
+			    // create the ProjectCategory object
+			    ProjectCategory category = new ProjectCategory(result.getLong(4), result.getString(5), type);
+
+			    // create a new instance of ProjectType class
+			    projects[i] = new Project(result.getLong(1), category, status);
+
+			    // assign the audit information
+			    projects[i].setCreationUser(result.getString(8));
+			    projects[i].setCreationTimestamp(result.getDate(9));
+			    projects[i].setModificationUser(result.getString(10));
+			    projects[i].setModificationTimestamp(result.getDate(11));
+			    
+			    ps.setLong(1, projects[i].getId());
+			    ResultSet rs = ps.executeQuery();
+			    while (rs.next()) {
+//			    	String key = rs.getString(2);
+//			    	String value = rs.getString(3);
+//			    	log.log(Level.INFO, "projectID: " + projects[i].getId() + ": " + key + "=" + value); 
+			    	projects[i].setProperty(rs.getString(2), rs.getString(3));
+			    }			    
+			}
+			return projects;
+		} catch (InvalidCursorStateException icse) {
+            throw new PersistenceException("cursor state is invalid.", icse);
+		} catch (SQLException e) {
+			throw new PersistenceException(e.getMessage(), e);
+		} finally {
+			if (conn != null) {
+				closeConnection(conn);
+			}
+		}
+	}
+    
     /**
      * <p>
      * Retrieves an array of project instance from the persistence given their

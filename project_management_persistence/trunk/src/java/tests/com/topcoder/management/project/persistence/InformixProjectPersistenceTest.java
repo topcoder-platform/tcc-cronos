@@ -1471,7 +1471,7 @@ public class InformixProjectPersistenceTest extends TestCase {
             "InformixProjectPersistence.CustomNamespace");
 
         try {
-            persistence.getProjects(null);
+            persistence.getProjects((long[]) null);
         } catch (IllegalArgumentException e) {
             assertEquals("ids should not be null.", e.getMessage());
         }

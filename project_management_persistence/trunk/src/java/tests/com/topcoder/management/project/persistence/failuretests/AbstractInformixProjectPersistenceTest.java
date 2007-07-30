@@ -472,7 +472,7 @@ public abstract class AbstractInformixProjectPersistenceTest extends TestCase {
      */
     public void testGetProjects_long_ids_null() {
         try {
-            this.testedInstance.getProjects(null);
+            this.testedInstance.getProjects((long[]) null);
             Assert.fail("IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {
             // expected behavior
