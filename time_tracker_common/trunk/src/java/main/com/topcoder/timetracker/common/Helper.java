@@ -148,6 +148,22 @@ public final class Helper {
 
     /**
      * <p>
+     * Validate the given id is positive.
+     * </p>
+     *
+     * @param id The id to validate.
+     * @param name What the id represents.
+     *
+     * @throws IllegalArgumentException If the given id is not positive.
+     */
+    public static void validatePositiveOrZero(long id, String name) {
+        if (id < 0) {
+            throw new IllegalArgumentException(name + " should not be negative, but is '" + id + "'.");
+        }
+    }
+
+    /**
+     * <p>
      * Validate the given ids array is not null and contains positive values.
      * </p>
      *
@@ -297,7 +313,7 @@ public final class Helper {
     public static void validatePaymentTerm(PaymentTerm paymentTerm, String usage,
             boolean validateId, boolean validateModificationUser) {
         validateNotNull(paymentTerm, usage);
-        validatePositive(paymentTerm.getTerm(), "The term of " + usage);
+        validatePositiveOrZero(paymentTerm.getTerm(), "The term of " + usage);
         if (validateId) {
             validatePositive(paymentTerm.getId(), "The id of " + usage);
         }

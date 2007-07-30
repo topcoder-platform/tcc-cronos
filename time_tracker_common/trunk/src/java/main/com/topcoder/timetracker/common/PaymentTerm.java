@@ -137,10 +137,10 @@ public class PaymentTerm extends TimeTrackerBean {
      * @see TimeTrackerBean#setChanged(boolean)
      */
     public void setTerm(int term) {
-        if (Helper.checkPositive(term) && term != this.term) {
+        if (term >= 0 && term != this.term) {
+            this.term = term;
             setChanged(true);
         }
-        this.term = term;
     }
 
     /**
@@ -180,9 +180,9 @@ public class PaymentTerm extends TimeTrackerBean {
      */
     public void setDescription(String description) {
         if (Helper.checkStringWithMaxLength(description) && !description.equals(this.description)) {
+            this.description = description;
             setChanged(true);
         }
-        this.description = description;
     }
 
     /**
