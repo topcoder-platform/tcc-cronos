@@ -14,7 +14,10 @@ import com.topcoder.util.objectfactory.impl.IllegalReferenceException;
 import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
 
 import javax.servlet.http.HttpServletResponse;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -42,6 +45,11 @@ import java.util.Date;
  */
 public final class AjaxSupportHelper {
 
+	/**
+     * The logger.
+     */
+    private static final Log logger = LogFactory.getLog(AjaxSupportHelper.class.getName());
+    
     /**
      * Represents the namespace to create the object factory.
      */
@@ -74,6 +82,7 @@ public final class AjaxSupportHelper {
             // create an object factory that uses only the specification
             ObjectFactory factory = new ObjectFactory(specFactory, ObjectFactory.SPECIFICATION_ONLY);
 
+            logger.log(Level.INFO, "Create objectfactory instance from namespace:" + NAMESPACE);
             return factory;
         } catch (SpecificationConfigurationException e) {
             throw new ConfigurationException("Can't create object factory.", e);
@@ -279,5 +288,19 @@ public final class AjaxSupportHelper {
         DateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
 
         return formatter.format(date);
+    }
+    /**
+     * Return the exception stack trace string.
+     *
+     * @param cause the exception to be recorded
+     *
+     * @return stack strace
+     */
+    public static String getExceptionStackTrace(Throwable cause) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        cause.printStackTrace(new PrintStream(out));
+
+        return out.toString();
     }
 }
