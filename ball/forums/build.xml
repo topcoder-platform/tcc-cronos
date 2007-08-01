@@ -14,6 +14,7 @@
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src"/>
+	<property name="tc_libdir" value="lib/tc"/>
     <property name="tcs_libdir" value="lib/tcs"/>
     <property name="ext_libdir" value="lib/third_party"/>
     <property name="docsdir" value="docs"/>
@@ -39,10 +40,13 @@
     <property name="build_webdir" value="${builddir}/${webdir}"/>
     <property name="build_lib" value="${builddir}/lib"/>
     <property name="build_tcsdistdir" value="${build_distdir}/${distfilename}-${component_version}"/>
+	<property name="build_ejbjarsdir" value="${builddir}/ejb_jars"/>
 
     <!-- Server installation directories -->
     <property name="jboss.home" value="C:/java/servers/jboss-4.0.4GA"/>
-    <property name="deploy-dir" value="${jboss.home}/server/default/deploy"/>
+    <property name="jboss_deploy" value="${jboss.home}/server/default/deploy"/>
+	<property name="jboss_lib" value="${jboss.home}/server/default/lib"/>
+	<property name="jboss_conf" value="${jboss.home}/server/default/conf"/>
     <property name="global_conf_dir" value="c:/orpheus"/>
 
     <!-- EXECUTION TAGS -->
@@ -62,6 +66,7 @@
     <property name="javadoc.jar" value="${builddir}/javadocs.jar"/>
     <property name="component.tests.jar" value="${dist_lib}/${distfilename}_tests.jar"/>
     <property name="component.war" value="${build_distdir}/${distfilename}.war"/>
+	<property name="forums.war" value="${build_distdir}/forums.war"/>
     <property name="component.ear" value="${build_distdir}/${distfilename}.ear"/>
 
     <!-- TCS Dependencies -->
@@ -127,6 +132,12 @@
     <property name="compression_utility.path" value="compression_utility/${compression_utility.version}"/>
     <property name="compression_utility.jar"
               value="${tcs_libdir}/${compression_utility.path}/${compression_utility.jar.name}"/>
+	
+    <property name="configuration_manager.version" value="2.1.5"/>
+    <property name="configuration_manager.jar.name" value="configuration_manager.jar"/>
+    <property name="configuration_manager.path" value="configuration_manager/${configuration_manager.version}"/>
+    <property name="configuration_manager.jar"
+              value="${tcs_libdir}/${configuration_manager.path}/${configuration_manager.jar.name}"/>
 
     <property name="credit_card_validation.version" value="1.0"/>
     <property name="credit_card_validation.jar.name" value="credit_card_validation.jar"/>
@@ -191,6 +202,11 @@
     <property name="encryption.path" value="encryption/${encryption.version}"/>
     <property name="encryption.jar" value="${tcs_libdir}/${encryption.path}/${encryption.jar.name}"/>
 
+	<property name="file_system_server.version" value="1.0"/>
+	<property name="file_system_server.jar.name" value="file_system_server.jar"/>
+	<property name="file_system_server.path" value="file_system_server/${file_system_server.version}"/>
+	<property name="file_system_server.jar" value="${tcs_libdir}/${file_system_server.path}/${file_system_server.jar.name}"/>
+	
     <property name="file_upload.version" value="2.0"/>
     <property name="file_upload.jar.name" value="file_upload.jar"/>
     <property name="file_upload.path" value="file_upload/${file_upload.version}"/>
@@ -241,10 +257,30 @@
     <property name="generic_event_manager.jar"
               value="${tcs_libdir}/${generic_event_manager.path}/${generic_event_manager.jar.name}"/>
 
+    <property name="guid_generator.version" value="1.0"/>
+    <property name="guid_generator.jar.name" value="guid_generator.jar"/>
+    <property name="guid_generator.path" value="guid_generator/${guid_generator.version}"/>
+    <property name="guid_generator.jar" value="${tcs_libdir}/${guid_generator.path}/${guid_generator.jar.name}"/>
+
+    <property name="hashing_utility.version" value="1.0"/>
+    <property name="hashing_utility.jar.name" value="hashing_utility.jar"/>
+    <property name="hashing_utility.path" value="hashing_utility/${hashing_utility.version}"/>
+    <property name="hashing_utility.jar" value="${tcs_libdir}/${hashing_utility.path}/${hashing_utility.jar.name}"/>
+	
+	<property name="heartbeat.version" value="1.0"/>
+	<property name="heartbeat.jar.name" value="heartbeat.jar"/>
+	<property name="heartbeat.path" value="heartbeat/${heartbeat.version}"/>
+	<property name="heartbeat.jar" value="${tcs_libdir}/${heartbeat.path}/${heartbeat.jar.name}"/>
+	
     <property name="html_parser.version" value="1.0"/>
     <property name="html_parser.jar.name" value="html_parser.jar"/>
     <property name="html_parser.path" value="html_parser/${html_parser.version}"/>
     <property name="html_parser.jar" value="${tcs_libdir}/${html_parser.path}/${html_parser.jar.name}"/>
+	
+    <property name="http_utility.version" value="1.1"/>
+    <property name="http_utility.jar.name" value="http_utility.jar"/>
+    <property name="http_utility.path" value="http_utility/${http_utility.version}"/>
+    <property name="http_utility.jar" value="${tcs_libdir}/${http_utility.path}/${http_utility.jar.name}"/>
 
     <property name="id_generator.version" value="3.0"/>
     <property name="id_generator.jar.name" value="id_generator.jar"/>
@@ -256,27 +292,11 @@
     <property name="image_manipulation.path" value="image_manipulation/${image_manipulation.version}"/>
     <property name="image_manipulation.jar"
               value="${tcs_libdir}/${image_manipulation.path}/${image_manipulation.jar.name}"/>
-
-    <property name="configuration_manager.version" value="2.1.5"/>
-    <property name="configuration_manager.jar.name" value="configuration_manager.jar"/>
-    <property name="configuration_manager.path" value="configuration_manager/${configuration_manager.version}"/>
-    <property name="configuration_manager.jar"
-              value="${tcs_libdir}/${configuration_manager.path}/${configuration_manager.jar.name}"/>
-
-    <property name="guid_generator.version" value="1.0"/>
-    <property name="guid_generator.jar.name" value="guid_generator.jar"/>
-    <property name="guid_generator.path" value="guid_generator/${guid_generator.version}"/>
-    <property name="guid_generator.jar" value="${tcs_libdir}/${guid_generator.path}/${guid_generator.jar.name}"/>
-
-    <property name="hashing_utility.version" value="1.0"/>
-    <property name="hashing_utility.jar.name" value="hashing_utility.jar"/>
-    <property name="hashing_utility.path" value="hashing_utility/${hashing_utility.version}"/>
-    <property name="hashing_utility.jar" value="${tcs_libdir}/${hashing_utility.path}/${hashing_utility.jar.name}"/>
-
-    <property name="http_utility.version" value="1.1"/>
-    <property name="http_utility.jar.name" value="http_utility.jar"/>
-    <property name="http_utility.path" value="http_utility/${http_utility.version}"/>
-    <property name="http_utility.jar" value="${tcs_libdir}/${http_utility.path}/${http_utility.jar.name}"/>
+	
+	<property name="ip_server.version" value="2.0.1"/>
+    <property name="ip_server.jar.name" value="ip_server.jar"/>
+    <property name="ip_server.path" value="ip_server/${ip_server.version}"/>
+    <property name="ip_server.jar" value="${tcs_libdir}/${ip_server.path}/${ip_server.jar.name}"/>
 
     <property name="jndi_utility.version" value="1.0"/>
     <property name="jndi_utility.jar.name" value="jndi_utility.jar"/>
@@ -410,6 +430,11 @@
     <property name="search_builder.path" value="search_builder/${search_builder.version}"/>
     <property name="search_builder.jar" value="${tcs_libdir}/${search_builder.path}/${search_builder.jar.name}"/>
 
+    <property name="string_class.version" value="1.0"/>
+    <property name="string_class.jar.name" value="string_class.jar"/>
+    <property name="string_class.path" value="string_class/${string_class.version}"/>
+    <property name="string_class.jar" value="${tcs_libdir}/${string_class.path}/${string_class.jar.name}"/>
+	
     <property name="string_distance.version" value="1.0"/>
     <property name="string_distance.jar.name" value="string_distance.jar"/>
     <property name="string_distance.path" value="string_distance/${string_distance.version}"/>
@@ -482,12 +507,7 @@
     <property name="xsl_engine.jar.name" value="xsl_engine.jar"/>
     <property name="xsl_engine.path" value="xsl_engine/${xsl_engine.version}"/>
     <property name="xsl_engine.jar" value="${tcs_libdir}/${xsl_engine.path}/${xsl_engine.jar.name}"/>
-
-    <property name="string_class.version" value="1.0"/>
-    <property name="string_class.jar.name" value="string_class.jar"/>
-    <property name="string_class.path" value="string_class/${string_class.version}"/>
-    <property name="string_class.jar" value="${tcs_libdir}/${string_class.path}/${string_class.jar.name}"/>
-
+	
     <!-- 3rd Party Dependencies  -->
     <property name="servlet.jar" value="${ext_libdir}/j2ee/1.4/javax.servlet.jar"/>
     <property name="jsp.jar" value="${ext_libdir}/j2ee/1.4/javax.servlet.jsp.jar"/>
@@ -499,6 +519,10 @@
     <property name="jai-codec.jar" value="${ext_libdir}/jai/1.1.3/jai_codec.jar"/>
     <property name="jtidy.jar" value="${ext_libdir}/jtidy/1.3/Tidy.jar"/>
     <property name="mssql.jar" value="${ext_libdir}/mssql/1.1/sqljdbc.jar"/>
+	
+	<!-- TC Dependencies  -->
+	<property name="shared.jar" value="${tc_libdir}/shared.jar"/>
+	<property name="tcwebcommon.jar" value="${tc_libdir}/tcwebcommon.jar"/>
 
     <!-- The libraries to be used in production -->
     <path id="buildlibs">
@@ -526,6 +550,7 @@
         <pathelement location="${email_confirmation.jar}"/>
         <pathelement location="${email_engine.jar}"/>
         <pathelement location="${encryption.jar}"/>
+    	<pathelement location="${file_system_server.jar}"/>
         <pathelement location="${file_upload.jar}"/>
         <pathelement location="${form_validator.jar}"/>
         <pathelement location="${front_controller.jar}"/>
@@ -535,12 +560,14 @@
         <pathelement location="${game_interface_logic.jar}"/>
         <pathelement location="${game_persistence.jar}"/>
         <pathelement location="${generic_event_manager.jar}"/>
+    	<pathelement location="${heartbeat.jar}"/>
         <pathelement location="${html_parser.jar}"/>
         <pathelement location="${id_generator.jar}"/>
         <pathelement location="${image_manipulation.jar}"/>
         <pathelement location="${guid_generator.jar}"/>
         <pathelement location="${hashing_utility.jar}"/>
         <pathelement location="${http_utility.jar}"/>
+    	<pathelement location="${ip_server.jar}"/>
         <pathelement location="${jndi_utility.jar}"/>
         <pathelement location="${json_object.jar}"/>
         <pathelement location="${jigsaw_puzzle.jar}"/>
@@ -589,6 +616,9 @@
         <pathelement location="${jtidy.jar}"/>
         <pathelement location="${jai-core.jar}"/>
         <pathelement location="${jai-codec.jar}"/>
+    	
+    	<pathelement location="${shared.jar}"/>
+    	<pathelement location="${tcwebcommon.jar}"/>
     </path>
 
     <!-- The additional libraries for JWebUnit 1.3 framework utilized for testing purposes -->
@@ -650,9 +680,109 @@
             <classpath refid="test.build.classpath"/>
         </javac>
     </target>
+	
+	<!-- Compile forums code -->
+	<target name="compile_forums">
+        <javac srcdir="${javamain}" destdir="${build_classdir}" debug="true" verbose="${verbose}">
+        	<classpath refid="buildlibs"/>
+        	<include name="com/topcoder/web/forums/**"/>
+            <include name="com/topcoder/web/ejb/forums/**"/>
+            <include name="com/topcoder/web/ejb/messagehistory/**"/>
+        </javac>
+    </target>
+	
+	<!-- JBoss EJBs -->
+    <target name="package_EJB_MessageHistoryBean" depends="compile_forums">
+        <jar jarfile="${build_ejbjarsdir}/messagehistory.jar">
+            <zipfileset dir="${build_classdir}" includes="com/topcoder/web/ejb/BaseEJB.class"/>
+            <zipfileset dir="${build_classdir}" includes="com/topcoder/web/ejb/messagehistory/*.class"/>
+            <metainf dir="${javamain}/com/topcoder/web/ejb/messagehistory" includes="*.xml"/>
+        </jar>
+    </target>
 
+    <target name="package_EJB_ForumsBean" depends="compile_forums">
+        <jar jarfile="${build_ejbjarsdir}/forums.jar">
+            <zipfileset dir="${build_classdir}" includes="com/topcoder/web/ejb/BaseEJB.class"/>
+            <zipfileset dir="${build_classdir}" includes="com/topcoder/web/ejb/forums/*.class"/>
+            <metainf dir="${javamain}/com/topcoder/web/ejb/forums" includes="*.xml"/>
+        </jar>
+    </target>
+
+    <target name="package_TCJive" depends="compile_forums">
+        <jar jarfile="${build_ejbjarsdir}/tcjive.jar">
+            <fileset dir="${build_classdir}/">
+                <include name="com/topcoder/web/forums/model/TCUser.class"/>
+                <include name="com/topcoder/web/forums/model/TCUserManager.class"/>
+                <include name="com/topcoder/web/forums/model/Common.class"/>
+                <include name="com/topcoder/web/forums/model/TCAuthFactory.class"/>
+                <include name="com/topcoder/web/forums/model/TCAuthToken.class"/>
+                <include name="com/topcoder/web/forums/util/filter/*.class"/>
+            </fileset>
+            <fileset dir="${configdir}/forums/filter">
+                <include name="**/*.properties"/>
+            </fileset>
+        </jar>
+    </target>
+    <!-- End JBoss EJBs -->
+	
+	<target name="war_forums" depends="compile_forums">
+		<delete file="${forums.war}" failonerror="false"/>
+        <war destfile="${forums.war}" webxml="${configdir}/forums/WEB-INF/web.xml">
+            <fileset dir="${javamain}/com/topcoder/web/forums/view">
+                <include name="*.*"/>
+            </fileset>
+            <fileset dir="${javamain}/com/topcoder/web/jsp">
+                <include name="body_top.jsp"/>
+                <include name="calendar.jsp"/>
+                <include name="date_time.jsp"/>
+                <include name="errorPage.jsp"/>
+                <include name="foot.jsp"/>
+                <include name="menu.jsp"/>
+                <include name="page_title.jsp"/>
+                <include name="public_right.jsp"/>
+                <include name="script.jsp"/>
+                <include name="style.jsp"/>
+                <include name="top.jsp"/>
+                <include name="includes/global_left.jsp"/>
+                <include name="includes/modules/simpleSearch.jsp"/>
+            </fileset>
+            <classes dir="${build_classdir}">
+                <include name="com/topcoder/web/forums/**/*.class"/>
+            </classes>
+            <webinf dir="${configdir}/forums/taglib">
+                <include name="tc-webtags.tld"/>
+                <include name="nav.tld"/>
+            </webinf>
+            <webinf dir="${configdir}/forums/WEB-INF">
+                <include name="jboss-web.xml"/>
+            </webinf>
+            <!-- <lib dir="${jars.dir}">
+                <include name="object_formatter.jar"/>
+            </lib> // not needed? -->
+        </war>
+    </target>
+
+	<!-- Deploy forum files -->
+	<!-- Create forums.war.	 
+	
+		 // LoginHandler.xml: vaildateUserProfile()
+		 request.getSession(true).setAttribute(PROFILE_SESSION_KEY, userProfile);	// "user_profile"
+		
+		 Confirm cache.properties is needed. -->
+    <target name="dist_forums" depends="">
+    	<antcall target="war_forums"/>
+    	<antcall target="package_TCJive"/>
+    	<antcall target="package_EJB_MessageHistoryBean"/>
+    	<antcall target="package_EJB_ForumsBean"/>
+    	
+        <copy todir="${jboss_conf}" file="${configdir}/forums/*"/>
+
+    	<!-- <copy todir="${jboss_lib}" file="${build_ejbjarsdir}/tcjive.jar"/> // trying to keep it in EAR temporarily - change if needed -->
+        <!-- <copy todir="${jboss_deploy}" file="${ear.dir}/security.ear"/> // not needed? -->
+    </target>
+	
     <!-- Build Orpheus Game Server application's WAR archive -->
-    <target name="dist" depends="clean,compile">
+    <target name="dist" depends="clean,compile,dist_forums">
         <!-- Build the JAR with Game Server classes -->
         <mkdir dir="${build_distdir}"/>
         <delete file="${build_distdir}/${distfilename}.jar" failonerror="false"/>
@@ -661,7 +791,7 @@
             excludes="com/orpheus/game/server/front/**"/>
         <jar basedir="${configdir}" jarfile="${build_distdir}/${distfilename}.jar" update="true"
              includes="BloomFilterEnvConfig.xml"/>
-
+    	
         <!-- Update EJB JARs with manifest specific to Auction Module -->
         <jar basedir="${configdir}/ejb" jarfile="${tcs_libdir}/game_persistence/1.0/GameDataEJB.jar" update="true"
              manifest="${configdir}/ejb/manifest.mf" excludes="**"/>
@@ -673,8 +803,8 @@
              manifest="${configdir}/ejb/manifest.mf" excludes="**"/>
         <jar basedir="${configdir}/ejb" jarfile="${tcs_libdir}/auction_persistence/1.0/AuctionEJB.jar" update="true"
              manifest="${configdir}/ejb/manifest.mf" excludes="**"/>
-
-        <!-- Build Game Server WAR archive -->
+    	
+        <!-- Build Game Server WAR archive -->		
         <delete file="${component.war}" failonerror="false"/>
         <war destfile="${component.war}" webxml="${webdir}/WEB-INF/web.xml">
             <webinf dir="${webdir}/WEB-INF" includes="*.tld,*.xml" excludes="web.xml"/>
@@ -693,8 +823,11 @@
             <fileset dir="${ext_libdir}" includes="**/jai_core.jar"/>
             <fileset dir="${ext_libdir}" includes="**/jai_codec.jar"/>
         </copy>
-        <ear destfile="${component.ear}" appxml="${configdir}/application.xml" basedir="${build_distdir}" update="false"
+        <ear destfile="${component.ear}" appxml="${configdir}/application.xml" update="false"
              duplicate="fail" filesonly="true">
+        	<fileset dir="${build_distdir}" includes="*.jar,*.war"/>
+        	<fileset dir="${ext_libdir}/jive/4.2.5" includes="*.jar,*.war"/> <!-- TODO: Move to dist-forums -->
+        	<fileset dir="${build_ejbjarsdir}" includes="*.jar,*.war"/>
         </ear>
     </target>
 
@@ -728,7 +861,7 @@
         <copy file="${configdir}/com/orpheus/game/server/RandomStringImage.xml" todir="${global_conf_dir}" flatten="false"/>
         <copy file="${configdir}/com/orpheus/game/server/wordlist1.txt" todir="${global_conf_dir}" flatten="false"/>
         <copy file="${configdir}/com/orpheus/game/server/Colors.xml" todir="${global_conf_dir}" flatten="false"/>
-        <copy file="${component.ear}" todir="${deploy-dir}" overwrite="true" flatten="true"/>
+        <copy file="${component.ear}" todir="${jboss_deploy}" overwrite="true" flatten="true"/>
     </target>
 	
 	<!-- Deploy Orpheus Game Server application to JBoss in development; explode game_server.ear -->
@@ -743,9 +876,11 @@
         <copy file="${configdir}/com/orpheus/game/server/RandomStringImage.xml" todir="${global_conf_dir}" flatten="false"/>
         <copy file="${configdir}/com/orpheus/game/server/wordlist1.txt" todir="${global_conf_dir}" flatten="false"/>
         <copy file="${configdir}/com/orpheus/game/server/Colors.xml" todir="${global_conf_dir}" flatten="false"/>
-    	<unwar src="${component.ear}" dest="${deploy-dir}/${distfilename}.ear" overwrite="true"/>
-    	<delete file="${deploy-dir}/${distfilename}.ear/${distfilename}.war" failonerror="false"/>
-    	<unwar src="${component.war}" dest="${deploy-dir}/${distfilename}.ear/${distfilename}.war" overwrite="true"/>
+    	<unwar src="${component.ear}" dest="${jboss_deploy}/${distfilename}.ear" overwrite="true"/>
+    	<delete file="${jboss_deploy}/${distfilename}.ear/${distfilename}.war" failonerror="false"/>
+    	<unwar src="${component.war}" dest="${jboss_deploy}/${distfilename}.ear/${distfilename}.war" overwrite="true"/>
+    	<delete file="${jboss_deploy}/${distfilename}.ear/forums.war" failonerror="false"/>
+    	<unwar src="${forums.war}" dest="${jboss_deploy}/${distfilename}.ear/forums.war" overwrite="true"/>
     </target>
 
     <target name="main" depends="deploy">

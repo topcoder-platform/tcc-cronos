@@ -77,7 +77,7 @@
         <!--
          This initial parameter value defines the level of Logging to be performed and can take one of the
          following values: ("OFF", "WARN", "DEBUG" or "ERROR"). Any invalid value specified will result in defaulting
-         to the value of "OFF". These values will be matched to the corresponding eneumeration value defined by the
+         to the value of "OFF". These values will be matched to the corresponding enumeration value defined by the
          Level enumeration from the Logging Wrapper 1.2 component.
         -->
         <init-param>
@@ -91,7 +91,7 @@
         <servlet-name>front</servlet-name>
         <url-pattern>/server/*</url-pattern>
     </servlet-mapping>
-
+    
     <listener>
         <listener-class>com.orpheus.game.server.OrpheusServletContextListener</listener-class>
     </listener>
@@ -133,4 +133,3 @@
         </taglib>
     </jsp-config>
 </web-app>
-
