@@ -3,6 +3,10 @@
  */
 package com.cronos.onlinereview.phases;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
@@ -12,14 +16,10 @@ import com.topcoder.management.review.ReviewManagementException;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.CommentType;
 import com.topcoder.management.review.data.Review;
-
 import com.topcoder.project.phases.Phase;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.util.log.Level;
-
-import java.sql.Connection;
-import java.sql.SQLException;
 
 
 /**
@@ -252,6 +252,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                 // OrChange - Modified to handle multiple submissions for a single resource
                 Long winningSubmissionId = null;
                 if (submissions == null || submissions.length == 0) {
+                log.log(Level.ERROR, "No winner for project with id" + phase.getProject().getId());
                     throw new PhaseHandlingException("No winning submission for project[Winner id search"
                             + " returned empty result for submission] with id : " + phase.getProject().getId());
                 } else if (submissions.length >= 1) {
@@ -329,9 +330,12 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                 aggWorksheet = PhasesHelper.cloneReview(aggWorksheet);
                 getManagerHelper().getReviewManager().createReview(aggWorksheet, operator);
             }
+            log.log(Level.INFO, new LogMessage(new Long(phase.getId()), operator, "create aggregate worksheet."));
         } catch (ReviewManagementException e) {
             throw new PhaseHandlingException("Problem when persisting review", e);
         } catch (SQLException e) {
+        	log.log(Level.ERROR,
+        			new LogMessage(new Long(phase.getId()), operator, "Fail to create aggregate worksheet.", e));
             throw new PhaseHandlingException("Problem when looking up ids.", e);
         } catch (UploadPersistenceException e) {
             throw new PhaseHandlingException("Problem when retrieving winning submission.", e);
@@ -357,6 +361,8 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
             Review review = PhasesHelper.getAggregationWorksheet(conn, getManagerHelper(), phase.getId());
             return (review != null && review.isCommitted());
         } catch (SQLException e) {
+        	log.log(Level.ERROR,
+        			new LogMessage(new Long(phase.getId()), null, "Fail to check if aggregate worksheet present.", e));
             throw new PhaseHandlingException("Problem when looking up ids.", e);
         } finally {
             PhasesHelper.closeConnection(conn);
