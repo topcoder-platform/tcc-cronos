@@ -24,6 +24,8 @@ import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceRole;
 import com.topcoder.management.resource.persistence.ResourcePersistence;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
+import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
+import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 
 /**
  * <p>
@@ -60,8 +62,13 @@ import com.topcoder.management.resource.persistence.ResourcePersistenceException
  * concern.
  * </p>
  *
- * @author aubergineanode, Chenhong, bendlund, mittu, AleaActaEst, TCSDEVELOPER
- * @version 1.2
+ * @author aubergineanode
+ * @author Chenhong
+ * @author bendlund
+ * @author mittu
+ * @author AleaActaEst
+ * @author George1
+ * @version 1.2.1
  * @since 1.1
  */
 public abstract class AbstractResourcePersistence implements ResourcePersistence {
@@ -84,7 +91,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     private static final String SQL_SELECT_NOTIFICATION_TYPES =
         "SELECT notification_type_id, name, description,"
             + " create_user, create_date, modify_user, modify_date"
-            + " FROM notification_type_lu WHERE notification_type_id  IN (";
+            + " FROM notification_type_lu WHERE notification_type_id IN (";
 
     /**
      * <p>
@@ -1027,6 +1034,52 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     }
 
     /**
+     * Construct a Resource instance from given CustomResultSet instance.
+     *
+     * @param rs
+     *            the CustomResultSet instance
+     * @return The Resource instance
+     * @throws ResourcePersistenceException
+     *             if failed to construct the Resource instance.
+     */
+    private Resource constructResource(CustomResultSet rs, Connection connection) throws ResourcePersistenceException {
+        try {
+            Resource resource = new Resource();
+
+            resource.setId(rs.getLong("resource_id"));
+            ResourceRole role = this.loadResourceRole(rs.getLong("resource_role_id"));
+
+            resource.setResourceRole(role);
+
+            if (rs.getObject("project_id") != null) {
+                resource.setProject(new Long(rs.getLong("project_id")));
+            } else {
+                resource.setProject(null);
+            }
+
+            if (rs.getObject("project_phase_id") != null) {
+                resource.setPhase(new Long(rs.getLong("project_phase_id")));
+            } else {
+                resource.setPhase(null);
+            }
+
+            resource.setCreationUser(rs.getString("create_user"));
+            resource.setCreationTimestamp(rs.getTimestamp("create_date"));
+            resource.setModificationUser(rs.getString("modify_user"));
+            resource.setModificationTimestamp(rs.getTimestamp("modify_date"));
+
+            // add submissions into resource
+            resource.setSubmissions(getSubmissionEntry(connection, resource));
+
+            return resource;
+        } catch (InvalidCursorStateException icse) {
+            throw new ResourcePersistenceException("Failed to load the Resource from ResultSet.", icse);
+        } catch (SQLException e) {
+            throw new ResourcePersistenceException("Failed to load the Resource from ResultSet.", e);
+        }
+    }
+
+    /**
      * <p>
      * Adds a notification to the persistence store. A notification type with the given ID must already exist
      * in the persistence store, as must a project.
@@ -1203,6 +1256,36 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
         } catch (SQLException e) {
             throw new ResourcePersistenceException("Failed to construct Notification instance.", e);
+        }
+    }
+
+    /**
+     *
+     * Construct the Notification instance from the ResultSet instance.
+     *
+     * @param connection
+     *            the connection to the db.
+     * @param rs
+     *            the ResultSet instance
+     * @return the constructed Notification instance.
+     * @throws ResourcePersistenceException
+     *             if failed to get the Notification instance from database.
+     */
+    private Notification consructNotification(Connection connection, CustomResultSet rs) throws ResourcePersistenceException {
+        try {
+            NotificationType type = loadNotificationType(connection, rs.getLong("notification_type_id"));
+            Notification notification = new Notification(rs.getLong("project_id"), type, rs.getLong("external_ref_id"));
+
+            notification.setCreationUser(rs.getString("create_user"));
+            notification.setCreationTimestamp(rs.getTimestamp("create_date"));
+            notification.setModificationUser(rs.getString("modify_user"));
+            notification.setModificationTimestamp(rs.getTimestamp("modify_date"));
+
+            return notification;
+        } catch (SQLException e) {
+            throw new ResourcePersistenceException("Failed to construct Notification instance.", e);
+        } catch (InvalidCursorStateException icse) {
+            throw new ResourcePersistenceException("Failed to construct Notification instance.", icse);
         }
     }
 
@@ -1581,6 +1664,36 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     }
 
     /**
+     * Construct the ResourceRole instance from the given ResultSet instance.
+     *
+     * @param rs
+     *            the ResultSet instance
+     * @return the ResourceRole instance
+     * @throws InvalidCursorStateException
+     *             if failed to get the ResourceRole instance from the ResultSet.
+     */
+    private ResourceRole constructResourceRole(CustomResultSet rs) throws InvalidCursorStateException {
+        ResourceRole role = new ResourceRole();
+
+        role.setId(rs.getLong("resource_role_id"));
+
+        if (rs.getObject("phase_type_id") == null) {
+            role.setPhaseType(null);
+        } else {
+            role.setPhaseType(new Long(rs.getLong("phase_type_id")));
+        }
+
+        role.setName(rs.getString("name"));
+        role.setDescription(rs.getString("description"));
+        role.setCreationUser(rs.getString("create_user"));
+        role.setCreationTimestamp(rs.getTimestamp("create_date"));
+        role.setModificationUser(rs.getString("modify_user"));
+        role.setModificationTimestamp(rs.getTimestamp("modify_date"));
+
+        return role;
+    }
+
+    /**
      * <p>
      * Loads the resources from the persistence with the given ids. May return a 0-length array.
      * </p>
@@ -1646,6 +1759,67 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     }
 
     /**
+     * Loads the resources from the result of the SELECT operation. May return an empty array.
+     *
+     * @return The loaded resources
+     * @param resultSet
+     *            The result of the SELECT operation.
+     * @throws IllegalArgumentException
+     *             If any id is <= 0 or the array is null
+     * @throws ResourcePersistenceException
+     *             If there is an error loading the Resources
+     */
+    public Resource[] loadResources(CustomResultSet resultSet) throws ResourcePersistenceException {
+        Util.checkNull(resultSet, "resultSet");
+
+        if (resultSet.getRecordCount() == 0) {
+            return new Resource[0];
+        }
+
+        Connection connection = openConnection();
+
+        try {
+            List list = new ArrayList();
+
+            while (resultSet.next()) {
+                list.add(constructResource(resultSet, connection));
+            }
+
+            Resource[] resources = (Resource[]) list.toArray(new Resource[list.size()]);
+            long[] resourceIds = new long[resources.length];
+
+            for (int i = 0; i < resources.length; ++i) {
+                resourceIds[i] = resources[i].getId();
+            }
+
+            // select all the external properties once and add the matching properties into resource instances
+            Map map = getAllExternalProperties(connection, resourceIds);
+
+            for (int i = 0; i < resources.length; ++i) {
+                Resource resource = resources[i];
+                Map properties = (Map) map.get(new Long(resource.getId()));
+
+                if (properties == null) {
+                    continue;
+                }
+
+                for (Iterator iter = properties.entrySet().iterator(); iter.hasNext();) {
+                    Map.Entry entry = (Entry) iter.next();
+
+                    resource.setProperty(entry.getKey().toString(), entry.getValue().toString());
+                }
+            }
+
+            return resources;
+        } catch (ResourcePersistenceException rpe) {
+            closeConnectionOnError(connection);
+            throw rpe;
+        } finally {
+            closeConnection(connection);
+        }
+    }
+
+    /**
      * Builds a select sql query with an argument contains many long values. The structure of the result
      * string looks like this: ... in ( id, id, id, id...).
      *
@@ -1685,7 +1859,6 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         Map resourcesProperties = new HashMap();
 
         PreparedStatement statement = null;
-
         ResultSet rs = null;
 
         int index;
@@ -1758,13 +1931,53 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
         } catch (SQLException e) {
             closeConnectionOnError(connection);
-            throw new ResourcePersistenceException("Failed to load NotificationTypes instances.", e);
+            throw new ResourcePersistenceException("Failed to load NotificationType instances.", e);
         } finally {
             Util.closeStatement(statement);
             Util.closeResultSet(rs);
             closeConnection(connection);
         }
 
+    }
+
+    /**
+     * Loads the notification types from the result of the SELECT operation. This method may return a
+     * zero-length array. It is designed to keep the amount of SQL queries to a minimum when
+     * searching notification types.
+     *
+     * @param resultSet
+     *            The result of the SELECT operation. This result should have the following columns:
+     *            <ul>
+     *            <li>notification_type_id</li>
+     *            <li>name</li>
+     *            <li>description</li>
+     *            <li>as create_user</li>
+     *            <li>as create_date</li>
+     *            <li>as modify_user</li>
+     *            <li>as modify_date</li>
+     *            </ul>
+     * @return The loaded notification types
+     * @throws IllegalArgumentException If any id is &lt;= 0 or the array is null
+     * @throws ResourcePersistenceException If there is an error loading from persistence
+     */
+    public NotificationType[] loadNotificationTypes(CustomResultSet resultSet) throws ResourcePersistenceException {
+        Util.checkNull(resultSet, "resultSet");
+
+        if (resultSet.getRecordCount() == 0) {
+            return new NotificationType[0];
+        }
+
+        try {
+            List list = new ArrayList();
+
+            while (resultSet.next()) {
+                list.add(constructNotificationType(resultSet));
+            }
+
+            return (NotificationType[]) list.toArray(new NotificationType[list.size()]);
+        } catch (InvalidCursorStateException icse) {
+            throw new ResourcePersistenceException("Failed to load NotificationType instances.", icse);
+        }
     }
 
     /**
@@ -1785,6 +1998,26 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         type.setCreationTimestamp(rs.getTimestamp(index++));
         type.setModificationUser(rs.getString(index++));
         type.setModificationTimestamp(rs.getTimestamp(index));
+        return type;
+    }
+
+    /**
+     * Constructs the <code>NotificationType</code> instance from the given <code>CustomResultSet</code>
+     * instance.
+     *
+     * @param rs the <code>CustomResultSet</code> instance
+     * @return NotifcationType instance.
+     * @throws InvalidCursorStateException if failed to load the notificationType instance from the database.
+     */
+    private NotificationType constructNotificationType(CustomResultSet rs) throws InvalidCursorStateException {
+        NotificationType type = new NotificationType();
+        type.setId(rs.getLong("notification_type_id"));
+        type.setName(rs.getString("name"));
+        type.setDescription(rs.getString("description"));
+        type.setCreationUser(rs.getString("create_user"));
+        type.setCreationTimestamp(rs.getTimestamp("create_date"));
+        type.setModificationUser(rs.getString("modify_user"));
+        type.setModificationTimestamp(rs.getTimestamp("modify_date"));
         return type;
     }
 
@@ -1831,6 +2064,37 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             Util.closeStatement(statement);
             Util.closeResultSet(rs);
             closeConnection(connection);
+        }
+    }
+
+    /**
+     * Loads the resource roles from the result of the SELECT operation. May return an empty array.
+     *
+     * @return The loaded resource roles
+     * @param resultSet
+     *            The result of the SELECT operation.
+     * @throws IllegalArgumentException
+     *             If any id is <= 0 or the array is null
+     * @throws ResourcePersistenceException
+     *             If there is an error loading from persistence
+     */
+    public ResourceRole[] loadResourceRoles(CustomResultSet resultSet) throws ResourcePersistenceException {
+        Util.checkNull(resultSet, "resultSet");
+
+        if (resultSet.getRecordCount() == 0) {
+            return new ResourceRole[0];
+        }
+
+        try {
+            List roles = new ArrayList();
+
+            while (resultSet.next()) {
+                roles.add(constructResourceRole(resultSet));
+            }
+
+            return (ResourceRole[]) roles.toArray(new ResourceRole[roles.size()]);
+        } catch (InvalidCursorStateException icse) {
+            throw new ResourcePersistenceException("Failed to load nResourceRole instance.", icse);
         }
     }
 
@@ -1903,6 +2167,43 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         } finally {
             Util.closeStatement(statement);
             Util.closeResultSet(rs);
+            closeConnection(connection);
+        }
+    }
+
+    /**
+     * Load Notifications from the result of the SELECT operation. May return an empty array.
+     *
+     * @return The loaded notifications
+     * @param resultSet
+     *            The result of the SELECT operation.
+     * @throws IllegalArgumentException
+     *             If the three arrays don't all have the same number of elements (or any array is null) or all three
+     *             arrays do not have the same length, any id is <= 0
+     * @throws ResourcePersistenceException
+     *             If there is an error loading from the persistence
+     */
+    public Notification[] loadNotifications(CustomResultSet resultSet) throws ResourcePersistenceException {
+        Util.checkNull(resultSet, "resultSet");
+
+        if (resultSet.getRecordCount() == 0) {
+            return new Notification[0];
+        }
+
+        Connection connection = openConnection();
+
+        try {
+            List notifications = new ArrayList();
+
+            while (resultSet.next()) {
+                notifications.add(consructNotification(connection, resultSet));
+            }
+
+            return (Notification[]) notifications.toArray(new Notification[notifications.size()]);
+        } catch (ResourcePersistenceException rpe) {
+            closeConnectionOnError(connection);
+            throw rpe;
+        } finally {
             closeConnection(connection);
         }
     }

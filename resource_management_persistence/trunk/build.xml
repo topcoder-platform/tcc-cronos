@@ -9,7 +9,7 @@
     <property name="package" value="com.topcoder.management.resource.persistence" />
     <property name="packagedir" value="com/topcoder/management/resource/persistence" />
     <property name="distfilename" value="resource_management_persistence" />
-    <property name="component_version" value="1.2" />
+    <property name="component_version" value="1.2.1" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
@@ -79,6 +79,11 @@
     <property name="search_builder.path" value="search_builder/${search_builder.version}"/>
     <property name="search_builder.jar" value="${tcs_libdir}/${search_builder.path}/${search_builder.jar.name}"/>
     
+    <property name="database_abstraction.version" value="1.1"/>
+    <property name="database_abstraction.jar.name" value="database_abstraction.jar"/>
+    <property name="database_abstraction.path" value="database_abstraction/${database_abstraction.version}"/>
+    <property name="database_abstraction.jar" value="${tcs_libdir}/${database_abstraction.path}/${database_abstraction.jar.name}"/>
+    
     <property name="db_connection_factory.version" value="1.0"/>
     <property name="db_connection_factory.jar.name" value="db_connection_factory.jar"/>
     <property name="db_connection_factory.path" value="db_connection_factory/${db_connection_factory.version}"/>
@@ -94,7 +99,7 @@
     <property name="object_factory.path" value="object_factory/${object_factory.version}"/>
     <property name="object_factory.jar" value="${tcs_libdir}/${object_factory.path}/${object_factory.jar.name}"/>
     
-    <property name="resource_management.version" value="1.1"/>
+    <property name="resource_management.version" value="1.1.1"/>
     <property name="resource_management.jar.name" value="resource_management.jar"/>
     <property name="resource_management.path" value="resource_management/${resource_management.version}"/>
     <property name="resource_management.jar" value="${tcs_libdir}/${resource_management.path}/${resource_management.jar.name}"/>
@@ -114,6 +119,7 @@
         <pathelement location="${junit.jar}" />
         <pathelement location="${configmanager.jar}" />
         <pathelement location="${search_builder.jar}" />
+        <pathelement location="${database_abstraction.jar}" />
         <pathelement location="${db_connection_factory.jar}" />
         <pathelement location="${id_generator.jar}" />
         <pathelement location="${object_factory.jar}" />
