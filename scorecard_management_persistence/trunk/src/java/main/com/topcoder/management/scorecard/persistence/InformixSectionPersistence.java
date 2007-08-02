@@ -19,6 +19,10 @@ import com.topcoder.management.scorecard.data.NamedScorecardStructure;
 import com.topcoder.management.scorecard.data.Question;
 import com.topcoder.management.scorecard.data.Scorecard;
 import com.topcoder.management.scorecard.data.Section;
+import com.topcoder.management.scorecard.persistence.logging.LogMessage;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * This class contains operations to create and update section instances into the Informix database. It is package
@@ -32,6 +36,9 @@ import com.topcoder.management.scorecard.data.Section;
  */
 class InformixSectionPersistence {
 
+	/** Logger instance using the class name as category */
+    private static final Log logger = LogFactory.getLog(InformixSectionPersistence.class.getName());
+    
     /**
      * Select sections by parent group id.
      */
@@ -118,10 +125,15 @@ class InformixSectionPersistence {
             throw new IllegalArgumentException("operator cannot be empty String.");
         }
 
+        logger.log(Level.INFO, new LogMessage("Section", null, operator,
+        		"create new Section with order:" + order + " and parentId:" + parentId));
+        
         PreparedStatement pstmt = null;
         long id = DBUtils.nextId(IdGeneratorUtility.getSectionIdGenerator());
         Timestamp time = new Timestamp(System.currentTimeMillis());
         try {
+        	logger.log(Level.INFO, "insert record into scorecard_section with group_id:" + id);
+        	
             pstmt = connection.prepareStatement(INSERT_SCORECARD_SECTION);
             // set the scorecard section data
             pstmt.setLong(1, id);
@@ -140,6 +152,7 @@ class InformixSectionPersistence {
             InformixQuestionPersistence questionPersistence = new InformixQuestionPersistence(connection);
             questionPersistence.createQuestions(section.getAllQuestions(), operator, id);
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR, new LogMessage("Section", new Long(id), operator, "Fail to create Section.", ex));
             throw new PersistenceException("Error occurs while creating sections.", ex);
         } finally {
             DBUtils.close(pstmt);
@@ -157,6 +170,9 @@ class InformixSectionPersistence {
      * @throws PersistenceException if database error occurs.
      */
     void createSections(Section[] sections, String operator, long parentId) throws PersistenceException {
+    	logger.log(Level.INFO,
+    			new LogMessage("Section", null, operator, "create new Sections with parentId:" + parentId));
+    	
         PreparedStatement pstmt = null;
         long[] ids = DBUtils.generateIdsArray(sections.length, IdGeneratorUtility.getSectionIdGenerator());
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -179,9 +195,13 @@ class InformixSectionPersistence {
 
                 pstmt.executeUpdate();
 
+                logger.log(Level.INFO, "insert record into scorecard_section table with groupId:" + ids[i]);
+                
                 questionPersistence.createQuestions(sections[i].getAllQuestions(), operator, ids[i]);
             }
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR,
+        			new LogMessage("Section", null, operator, "create new Sections with parentId:" + parentId, ex));
             throw new PersistenceException("Error occurs while creating sections.", ex);
         } finally {
             DBUtils.close(pstmt);
@@ -232,6 +252,10 @@ class InformixSectionPersistence {
             throw new IllegalArgumentException("deletedQuestionIds cannot be null.");
         }
 
+        logger.log(Level.INFO, new LogMessage("Section", new Long(section.getId()), operator,
+        		"create new section with order:" + order + " ,parentId:" + parentId
+        		+ ", oldScorecard:" + oldScorecard.getId()));
+        
         Set oldSectionIds = getQuestionsIds(section, oldScorecard, parentId);
         // add all old questions to be deleted
         deletedQuestionIds.addAll(oldSectionIds);
@@ -279,10 +303,13 @@ class InformixSectionPersistence {
             pstmt.setLong(7, section.getId());
 
             if (pstmt.executeUpdate() != 1) {
+            	logger.log(Level.ERROR, "No section with id = " + section.getId());
                 throw new PersistenceException("No section with id = " + section.getId());
             }
         } catch (SQLException ex) {
-            throw new PersistenceException("Error occurs while updating the group.", ex);
+        	logger.log(Level.ERROR, new LogMessage("Section", new Long(section.getId()), operator,
+        			"Error occurs while updating the Section.", ex));
+            throw new PersistenceException("Error occurs while updating the section.", ex);
         } finally {
             DBUtils.close(pstmt);
         }
@@ -333,12 +360,18 @@ class InformixSectionPersistence {
     public void deleteSections(long[] ids) throws PersistenceException {
         DBUtils.checkIdsArray(ids, "ids");
 
+        logger.log(Level.INFO, new LogMessage("Section", null, null,
+        		"Delete Section with ids:" + InformixPersistenceHelper.generateIdString(ids)));
+        
         PreparedStatement pstmt = null;
         PreparedStatement pstmt2 = null;
         ResultSet rs = null;
         try {
             // create the statement to select the questions ids first
             pstmt = connection.prepareStatement(SELECT_QUESTION_IDS + DBUtils.createQuestionMarks(ids.length));
+            logger.log(Level.INFO, "delete record from scorecard_sections with ids:"
+            		+ InformixPersistenceHelper.generateIdString(ids));
+            
             // create the staement to delete the sections
             pstmt2 = connection.prepareStatement(DELETE_SCORECARD_SECTIONS
                     + DBUtils.createQuestionMarks(ids.length));
@@ -365,6 +398,8 @@ class InformixSectionPersistence {
 
             pstmt2.executeUpdate();
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR, new LogMessage("Section", null, null,
+            		"Failed to Delete Sections with ids:" + InformixPersistenceHelper.generateIdString(ids), ex));
             throw new PersistenceException("Error occurs while deleting the sections.", ex);
         } finally {
             DBUtils.close(rs);
@@ -386,7 +421,7 @@ class InformixSectionPersistence {
         if (id <= 0) {
             throw new IllegalArgumentException("The section id must be positive. Id = " + id);
         }
-
+        logger.log(Level.INFO, new LogMessage("Section", new Long(id), null, "retrieve Section"));
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
@@ -403,6 +438,7 @@ class InformixSectionPersistence {
                 return section;
             }
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR, new LogMessage("Section", new Long(id), null, "Failed to retrieve Section", ex));
             throw new PersistenceException("Error occurs while retrieving the section.", ex);
         } finally {
             DBUtils.close(rs);
@@ -438,6 +474,8 @@ class InformixSectionPersistence {
 
             return (Section[]) result.toArray(new Section[result.size()]);
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR, new LogMessage("Section", null, null,
+        			"Failed to retrieve Section with parentId:" + parentId , ex));
             throw new PersistenceException("Error occurs while retrieving the section.", ex);
         } finally {
             DBUtils.close(rs);

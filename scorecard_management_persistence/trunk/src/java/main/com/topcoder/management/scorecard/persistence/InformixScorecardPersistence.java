@@ -28,10 +28,14 @@ import com.topcoder.management.scorecard.data.QuestionType;
 import com.topcoder.management.scorecard.data.Scorecard;
 import com.topcoder.management.scorecard.data.ScorecardStatus;
 import com.topcoder.management.scorecard.data.ScorecardType;
+import com.topcoder.management.scorecard.persistence.logging.LogMessage;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * This class contains operations to create and update scorecard instances into the Informix database. It
@@ -50,7 +54,9 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * @version 1.0.1
  */
 public class InformixScorecardPersistence implements ScorecardPersistence {
-
+	/** Logger instance using the class name as category */
+    private static final Log logger = LogFactory.getLog(InformixScorecardPersistence.class.getName());
+    
     /**
      * Selects the scorecards ids that are in use.
      */
@@ -139,14 +145,24 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
         try {
             ConfigManager cm = ConfigManager.getInstance();
             String factoryNs = cm.getString(namespace, "ConnectionFactoryNS");
+            logger.log(Level.INFO,
+            		"read property ConnectionFactoryNS[" + factoryNs +"] from the namespace :" + namespace);
             factory = new DBConnectionFactoryImpl(factoryNs);
             connectionName = cm.getString(namespace, "ConnectionName");
+            logger.log(Level.INFO,
+            		"read property ConnectionName[" + connectionName +"] from the namespace :" + namespace);
             IdGeneratorUtility.loadIdGenerators(namespace);
         } catch (ConfigManagerException ex) {
+        	logger.log(Level.FATAL,
+        			"Fails to create InformixScorecardPersistence.\n" + LogMessage.getExceptionStackTrace(ex));
             throw new ConfigurationException("Error occur while reading the configuration.", ex);
         } catch (com.topcoder.db.connectionfactory.ConfigurationException ex) {
+        	logger.log(Level.FATAL,
+        			"Fails to create InformixScorecardPersistence.\n" + LogMessage.getExceptionStackTrace(ex));
             throw new ConfigurationException("Error occur while creating the DbConnectionFactory.", ex);
         } catch (UnknownConnectionException ex) {
+        	logger.log(Level.FATAL,
+        			"Fails to create InformixScorecardPersistence.\n" + LogMessage.getExceptionStackTrace(ex));
             throw new PersistenceException("Error occur while creating the DbConnectionFactory.", ex);
         }
     }
@@ -165,11 +181,18 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
             Connection conn = (connectionName == null) ? factory.createConnection() : factory
                     .createConnection(connectionName);
 
+            if ( connectionName == null) {
+            	logger.log(Level.INFO, "create db connection with default connect name");
+            } else {
+            	logger.log(Level.INFO, "create db connection with connect name:" + connectionName);
+            }
             conn.setAutoCommit(false);
             return conn;
         } catch (DBConnectionException ex) {
+        	logger.log(Level.ERROR, "fail to create db connection.\n" + LogMessage.getExceptionStackTrace(ex));
             throw new PersistenceException("Error occur while creating database connection.", ex);
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR, "fail to create db connection.\n" + LogMessage.getExceptionStackTrace(ex));
             throw new PersistenceException("Error occur while creating database connection.", ex);
         }
     }
@@ -198,6 +221,8 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
             throw new IllegalArgumentException("operator cannot be empty String.");
         }
 
+        logger.log(Level.INFO, new LogMessage("Scorecard", null, operator, "Create new Scorecard."));
+        
         Connection conn = createConnection();
         // generate the id first
         long scorecardId = DBUtils.nextId(IdGeneratorUtility.getScorecardIdGenerator());
@@ -218,12 +243,15 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
             scorecard.setCreationUser(operator);
             scorecard.setModificationUser(operator);
 
+            logger.log(Level.INFO, "commit the transaction.");
             conn.commit();
         } catch (SQLException ex) {
             DBUtils.rollback(conn);
+            logger.log(Level.ERROR, new LogMessage("Scorecard", null, operator, "Fail to create Scorecard.", ex));
             throw new PersistenceException("Error occur during create operation.", ex);
         } catch (PersistenceException ex) {
             DBUtils.rollback(conn);
+            logger.log(Level.ERROR, new LogMessage("Scorecard", null, operator, "Fail to create Scorecard."));
             throw ex;
         } finally {
             DBUtils.close(conn);
@@ -243,7 +271,8 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      */
     private static void createScorecard(Connection conn, Scorecard scorecard, long id, String operator,
             Timestamp time) throws SQLException {
-        PreparedStatement pstmt = null;
+    	logger.log(Level.INFO, "insert record into scorecard with id:" + id);
+    	PreparedStatement pstmt = null;
 
         try {
             pstmt = conn.prepareStatement(INSERT_SCORECARD);
@@ -295,11 +324,15 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
         if (operator.trim().length() == 0) {
             throw new IllegalArgumentException("operator cannot be empty String.");
         }
+        logger.log(Level.INFO,
+        		new LogMessage("Scorecard", new Long(scorecard.getId()), operator, "update Scorecard."));
+        
         Connection conn = createConnection();
         try {
             // get the old scorcard
             Scorecard oldScorecard = getScorecard(scorecard.getId(), true);
             if (oldScorecard.isInUse()) {
+            	logger.log(Level.ERROR, new LogMessage("Scorecard", null, operator, "The scorecard is in use."));
                 throw new PersistenceException("The scorecard is in use. Id: " + scorecard.getId());
             }
 
@@ -349,6 +382,7 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
                 new InformixQuestionPersistence(conn).deleteQuestions(DBUtils.listToArray(deletedQuestionsIds));
             }
 
+            logger.log(Level.INFO, "commit the transaction.");
             // commit transaction and set the modification user and date
             conn.commit();
             scorecard.setVersion(version);
@@ -357,9 +391,8 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
         } catch (SQLException ex) {
             DBUtils.rollback(conn);
             String errMsg = scorecard + " op:" + operator ;
-            try
-            {
-            errMsg = "Scorecard Status: " + scorecard.getScorecardStatus().getId() +
+            try {
+            	errMsg = "Scorecard Status: " + scorecard.getScorecardStatus().getId() +
                             " - Scorecard Type: " + scorecard.getScorecardType().getId() +
                             " - Scorecard Category: " + scorecard.getCategory() +
                              " - Scorecard Name: " + scorecard.getName() +
@@ -368,16 +401,18 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
                              " - Scorecard Max Score: " + scorecard.getMaxScore() +
                              " - Operator: " + operator +
                              " - Scorecard ID: " + scorecard.getId();
+            } catch(Exception e) {
+            	logger.log(Level.ERROR, new LogMessage("Scorecard",
+                		new Long(scorecard.getId()), operator, "Failed to update Scorecard." + errMsg, ex));
+            	throw new PersistenceException("Couldn't format error output:" + errMsg);
             }
-            catch(Exception e)
-            {
-              throw new PersistenceException("Couldn't format error output:" + errMsg);
-            }
+            logger.log(Level.ERROR, new LogMessage("Scorecard",
+            		new Long(scorecard.getId()), operator, "Failed to update Scorecard." + errMsg, ex));
             throw new PersistenceException("Error occurs while deleting the scorecard: " + errMsg, ex);
-
-
         } catch (PersistenceException ex) {
             DBUtils.rollback(conn);
+            logger.log(Level.ERROR,
+            		new LogMessage("Scorecard", new Long(scorecard.getId()), operator, "Fail to update Scorecard."));
             throw ex;
         } finally {
             DBUtils.close(conn);
@@ -412,7 +447,7 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      */
     private static void updateScorecard(Connection conn, Scorecard scorecard, String operator, Timestamp time,
             String version) throws SQLException {
-
+    	logger.log(Level.INFO, "update scorecard with id : " + scorecard.getId());
         PreparedStatement pstmt = null;
         try {
             pstmt = conn.prepareStatement(UPDATE_SCORECARD);
@@ -462,7 +497,7 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      * @throws PersistenceException if error occurred while accessing the database.
      */
     public Scorecard getScorecard(long id, boolean complete) throws PersistenceException {
-        Scorecard[] result = getScorecards(new long[] {id}, complete);
+    	Scorecard[] result = getScorecards(new long[] {id}, complete);
         if (result.length > 0) {
             return result[0];
         }
@@ -477,7 +512,8 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      * @throws PersistenceException if error occurred while accessing the database.
      */
     public ScorecardType[] getAllScorecardTypes() throws PersistenceException {
-        Connection conn = createConnection();
+    	logger.log(Level.INFO, "get all scorecard types.");	
+    	Connection conn = createConnection();
         Statement stmt = null;
         ResultSet rs = null;
 
@@ -496,6 +532,8 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
             // convert the list to array
             return (ScorecardType[]) result.toArray(new ScorecardType[result.size()]);
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR,
+        			"Failed to get all scorecard types. \n" + LogMessage.getExceptionStackTrace(ex));
             throw new PersistenceException("Error occur during database operation.", ex);
         } finally {
             DBUtils.close(rs);
@@ -511,7 +549,8 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      * @throws PersistenceException if error occurred while accessing the database.
      */
     public QuestionType[] getAllQuestionTypes() throws PersistenceException {
-        Connection conn = createConnection();
+    	logger.log(Level.INFO, "get all question types.");	
+    	Connection conn = createConnection();
         Statement stmt = null;
         ResultSet rs = null;
 
@@ -530,6 +569,8 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
             // convert the list to array
             return (QuestionType[]) result.toArray(new QuestionType[result.size()]);
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR,
+        			"Failed to get all question types. \n" + LogMessage.getExceptionStackTrace(ex));
             throw new PersistenceException("Error occur during database operation.", ex);
         } finally {
             DBUtils.close(rs);
@@ -544,7 +585,8 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      * @return An array of scorecard status instances.
      * @throws PersistenceException if error occurred while accessing the database.
      */
-    public ScorecardStatus[] getAllScorecardStatuses() throws PersistenceException {
+    public ScorecardStatus[] getAllScorecardStatuses() throws PersistenceException {	
+    	logger.log(Level.INFO, "get all scorecard status.");	
         Connection conn = createConnection();
         Statement stmt = null;
         ResultSet rs = null;
@@ -564,6 +606,8 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
             // convert the list to array
             return (ScorecardStatus[]) result.toArray(new ScorecardStatus[result.size()]);
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR,
+        			"Failed to get all scorecard status. \n" + LogMessage.getExceptionStackTrace(ex));
             throw new PersistenceException("Error occur during database operation.", ex);
         } finally {
             DBUtils.close(rs);
@@ -587,6 +631,10 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      */
     public Scorecard[] getScorecards(long[] ids, boolean complete) throws PersistenceException {
         DBUtils.checkIdsArray(ids, "ids");
+        
+        logger.log(Level.INFO, new LogMessage("Scorecard", null, null, "retrieve scorecard with ids:"
+        		+ InformixPersistenceHelper.generateIdString(ids) + ", and is " + (complete?"complete":"incomplete")));
+        
         Connection conn = createConnection();
 
         try {
@@ -710,6 +758,8 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
 
             return result;
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR, new LogMessage("ScoreCard", null, null,
+        			"Fails to retrieve scorecards:" + InformixPersistenceHelper.generateIdString(ids) + ".", ex));
             throw new PersistenceException("Error occurs while retrieving scorecards.", ex);
         } finally {
             DBUtils.close(rs);
@@ -773,6 +823,8 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
             }
             return result;
         } catch (SQLException ex) {
+        	logger.log(Level.ERROR, new LogMessage("ScoreCard", null, null,"Fails to check if the scorecards:"
+        			+ InformixPersistenceHelper.generateIdString(ids) + " in use or not.", ex));
             throw new PersistenceException("Error occurs during database operation.", ex);
         } finally {
             DBUtils.close(rs);
