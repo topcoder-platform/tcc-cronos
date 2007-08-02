@@ -69,7 +69,7 @@
     <property name="docpackage.jar" value="${distfilename}_docs.jar" />
     
     <!-- TCS Dependencies -->
-    <property name="configmanager.version" value="2.1.4"/>
+    <property name="configmanager.version" value="2.1.5"/>
     <property name="configmanager.jar.name" value="configuration_manager.jar"/>
     <property name="configmanager.path" value="configuration_manager/${configmanager.version}"/>
     <property name="configmanager.jar" value="${tcs_libdir}/${configmanager.path}/${configmanager.jar.name}"/>
@@ -104,7 +104,7 @@
     <property name="scorecard_data_structure.path" value="scorecard_data_structure/${scorecard_data_structure.version}"/>
     <property name="scorecard_data_structure.jar" value="${tcs_libdir}/${scorecard_data_structure.path}/${scorecard_data_structure.jar.name}"/>
     
-    <property name="scorecard_management.version" value="1.0"/>
+    <property name="scorecard_management.version" value="1.0.1"/>
     <property name="scorecard_management.jar.name" value="scorecard_management.jar"/>
     <property name="scorecard_management.path" value="scorecard_management/${scorecard_management.version}"/>
     <property name="scorecard_management.jar" value="${tcs_libdir}/${scorecard_management.path}/${scorecard_management.jar.name}"/>
