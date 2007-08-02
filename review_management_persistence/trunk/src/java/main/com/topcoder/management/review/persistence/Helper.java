@@ -15,6 +15,8 @@ import com.topcoder.management.review.ConfigurationException;
 import com.topcoder.management.review.ReviewPersistenceException;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
 
 /**
  * Helper class for this component.
@@ -448,9 +450,10 @@ class Helper {
      * @throws ReviewPersistenceException
      *             if error occurs when closing the connection
      */
-    static void closeConnection(Connection conn) throws ReviewPersistenceException {
+    static void closeConnection(Connection conn, Log logger) throws ReviewPersistenceException {
         if (conn != null) {
             try {
+            	logger.log(Level.INFO, "close the connection.");
                 conn.close();
             } catch (SQLException e) {
                 throw new ReviewPersistenceException("Error occurs when closing the connection.", e);
@@ -500,9 +503,10 @@ class Helper {
      * @throws ReviewPersistenceException
      *             error occurs when doing commit
      */
-    static void commitTransaction(Connection conn) throws ReviewPersistenceException {
-        if (conn != null) {
+    static void commitTransaction(Connection conn, Log logger) throws ReviewPersistenceException {
+    	if (conn != null) {
             try {
+            	logger.log(Level.INFO, "commit the transaction.");
                 conn.commit();
             } catch (SQLException e) {
                 throw new ReviewPersistenceException("Error occurs when doing commit.", e);
@@ -517,9 +521,10 @@ class Helper {
      * @throws ReviewPersistenceException
      *             error occurs when doing rollback
      */
-    static void rollBackTransaction(Connection conn) throws ReviewPersistenceException {
+    static void rollBackTransaction(Connection conn, Log logger) throws ReviewPersistenceException {
         if (conn != null) {
             try {
+            	logger.log(Level.INFO, "rollback the transaction.");
                 conn.rollback();
             } catch (SQLException e) {
                 throw new ReviewPersistenceException("Error occurs when doing rollback.", e);
@@ -647,6 +652,7 @@ class Helper {
      *            configuration namespace
      * @param name
      *            the parameter name
+     * @param logger the log
      * @return A String that represents the parameter value
      * @throws IllegalArgumentException
      *             if any parameter is null, or namespace or name is empty
@@ -655,7 +661,7 @@ class Helper {
      *             if the namespace does not exist, or the value is not
      *             specified, or the value is empty (trimmed).
      */
-    static String getConfigurationParameterValue(ConfigManager cm, String namespace, String name)
+    static String getConfigurationParameterValue(ConfigManager cm, String namespace, String name, Log logger)
         throws ConfigurationException {
         Helper.assertObjectNotNull(cm, "cm");
         Helper.assertStringNotNullNorEmpty(namespace, "namespace");
@@ -666,18 +672,26 @@ class Helper {
         try {
             value = cm.getString(namespace, name);
         } catch (UnknownNamespaceException e) {
+        	logger.log(Level.FATAL, "Configuration namespace [" + namespace + "] does not exist.");
             throw new ConfigurationException("Configuration namespace [" + namespace
                 + "] does not exist.", e);
         }
 
         if (value == null) {
+        	logger.log(Level.FATAL, "Configuration parameter ["
+                    + name + "] under namespace [" + namespace
+                    + "] is not specified.");
             throw new ConfigurationException("Configuration parameter [" + name
                 + "] under namespace [" + namespace + "] is not specified.");
         } else if (value.trim().length() == 0) {
+        	logger.log(Level.FATAL, "Configuration parameter [" + name
+                    + "] under namespace [" + namespace
+                    + "] is empty (trimmed).");
             throw new ConfigurationException("Configuration parameter [" + name
                 + "] under namespace [" + namespace + "] is empty (trimmed).");
         }
-
+        logger.log(Level.INFO, "Read required propery[" + name + "] with value["
+        		+ value + "] from namespace [" + namespace +"].");
         return value;
     }
 }
