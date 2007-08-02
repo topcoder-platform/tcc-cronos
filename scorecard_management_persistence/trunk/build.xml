@@ -99,6 +99,11 @@
     <property name="data_validation.path" value="data_validation/${data_validation.version}"/>
     <property name="data_validation.jar" value="${tcs_libdir}/${data_validation.path}/${data_validation.jar.name}"/>
 
+    <property name="logging_wrapper.version" value="1.2" />
+    <property name="logging_wrapper.jar.name" value="logging_wrapper.jar" />
+    <property name="logging_wrapper.path" value="logging_wrapper/${logging_wrapper.version}" />
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/${logging_wrapper.path}/${logging_wrapper.jar.name}" />
+
     <property name="scorecard_data_structure.version" value="1.0"/>
     <property name="scorecard_data_structure.jar.name" value="scorecard_data_structure.jar"/>
     <property name="scorecard_data_structure.path" value="scorecard_data_structure/${scorecard_data_structure.version}"/>
@@ -123,6 +128,7 @@
         <pathelement location="${id_generator.jar}" />
         <pathelement location="${base_exception.jar}" />
         <pathelement location="${data_validation.jar}" />
+    	<pathelement location="${logging_wrapper.jar}" />
         <pathelement location="${scorecard_data_structure.jar}" />
         <pathelement location="${scorecard_management.jar}" />
         <pathelement location="${configdir}" />
