@@ -1,0 +1,40 @@
+<action name="PluginWelcome" type="default" url-pattern="/server/plugin/welcome.do" priority="10">
+    <handler type="SessionValidationHandler">
+        <login_page_result>login</login_page_result>
+    </handler>
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>player</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <handler type="welcome_page">
+        <profile_types>
+            <value>player</value>
+        </profile_types>
+        <results>
+            <value>player_result</value>
+        </results>
+    </handler>
+    <result name="player_result" type="dbLoggingForward">
+        <forward-url>/server/plugin/activeGames.do</forward-url>
+        <log-message>presented with Player Home page</log-message>
+        <action-code>129</action-code>
+    </result>
+    <result name="success" type="dbLoggingForward">
+        <forward-url>/server/plugin/activeGames.do</forward-url>
+        <log-message>presented with Player Home page</log-message>
+        <action-code>129</action-code>
+    </result>
+    <result name="auth_failed" type="dbLoggingForward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+        <log-message>attempted to view Player Home page without PLAYER role assigned</log-message>
+        <action-code>40</action-code>
+    </result>
+    <result name="login" type="dbLoggingForward">
+        <forward-url>/plugin/timeout.jsp</forward-url>
+        <log-message>failed to view Player Home page due to session timeout or is not authenticated to server
+        </log-message>
+        <action-code>94</action-code>
+    </result>
+</action>

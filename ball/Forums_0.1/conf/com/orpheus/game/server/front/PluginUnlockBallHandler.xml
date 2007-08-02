@@ -1,0 +1,114 @@
+<action name="PluginUnlockBall" type="default" url-pattern="/server/plugin/unlockBall.do" priority="10">
+    <handler type="SessionValidationHandler">
+        <login_page_result>login</login_page_result>
+    </handler>
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>player</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <handler type="DuplicateRequestHandler">
+    </handler>
+    <handler type="PlayerGameAuthorizationHandler">
+        <game_id_param_key>gameId</game_id_param_key>
+        <game_play_key>gamePlayInfo</game_play_key>
+        <game_registration_post_url_key>gameRegistrationPostURL</game_registration_post_url_key>
+        <raise_error>true</raise_error>
+        <error_result>gameError</error_result>
+        <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
+        <jndi_context_name>default</jndi_context_name>
+        <use_remote_interface>true</use_remote_interface>
+    </handler>
+    <handler type="game_detail">
+        <game_id_param_key>gameId</game_id_param_key>
+        <game_detail_key>game</game_detail_key>
+    </handler>
+    <handler type="upcoming_domains">
+        <game_id_param_key>gameId</game_id_param_key>
+        <domains_key>upcomingDomains</domains_key>
+    </handler>
+    <handler type="PlayerKeySubmissionPreHandler">
+        <game_id_param_key>gameId</game_id_param_key>
+        <domain_param_key>domain</domain_param_key>
+        <game_play_key>gamePlayInfo</game_play_key>
+        <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
+        <jndi_context_name>default</jndi_context_name>
+        <use_remote_interface>true</use_remote_interface>
+    </handler>
+    <handler type="KeySubmissionHandler">
+        <game_id_param_key>gameId</game_id_param_key>
+        <submission_param_key>ballKey</submission_param_key>
+        <max_failure_count>2</max_failure_count>
+        <success_result>success</success_result>
+        <inactive_game_result>gameInactive</inactive_game_result>
+        <failure_count_exceeded_result>allAttemptsFailed</failure_count_exceeded_result>
+        <failure_count_not_met_result>currentAttemptFailed</failure_count_not_met_result>
+    </handler>
+    <handler type="PlayerMoveBallHandler">
+        <game_id_param_key>gameId</game_id_param_key>
+        <domain_param_key>domain</domain_param_key>
+        <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
+        <jndi_context_name>default</jndi_context_name>
+        <use_remote_interface>true</use_remote_interface>
+    </handler>
+    <result name="gameInactive" type="dbLoggingForward">
+        <forward-url>/WEB-INF/plugin/alert-foundball.jsp?inactive=true</forward-url>
+        <log-message>failed to unlock The Ball for game {0} and domain {1} as the game is no longer active</log-message>
+        <parameters>gameId,domain</parameters>
+        <action-code>85</action-code>
+    </result>
+    <result name="currentAttemptFailed" type="successiveRequestForward">
+        <forward-url>/WEB-INF/plugin/alert-foundball.jsp?failed=true</forward-url>
+        <log-message>failed to unlock The Ball for game {0} and domain {1} due to incorrect keys [{2}] submitted
+        </log-message>
+        <parameters>gameId,domain,ballKey</parameters>
+        <action-code>86</action-code>
+    </result>
+    <result name="success" type="successiveRequestForward">
+        <forward-url>/server/plugin/gameWinPuzzle.do</forward-url>
+        <log-message>unlocked The Ball for game {0} and domain {1} with keys [{2}]</log-message>
+        <parameters>gameId,domain,ballKey</parameters>
+        <action-code>150</action-code>
+    </result>
+    <result name="ballMovedResult" type="successiveRequestForward">
+        <forward-url>/WEB-INF/plugin/alert-keysincorrect.jsp</forward-url>
+        <log-message>failed to unlock The Ball for game {0} and domain {1} due to incorrect keys [{2}] submitted and has
+            reached the limit of failed attempts
+        </log-message>
+        <parameters>gameId,domain,ballKey</parameters>
+        <action-code>87</action-code>
+    </result>
+    <result name="auth_failed" type="dbLoggingForward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+        <log-message>attempted to unlock The Ball for game {0} and domain {1} without PLAYER role assigned</log-message>
+        <parameters>gameId,domain</parameters>
+        <action-code>23</action-code>
+    </result>
+    <result name="login" type="dbLoggingForward">
+        <forward-url>/plugin/timeout.jsp</forward-url>
+        <log-message>failed to unlock The Ball for game {0} and domain {1} due to session timeout or is not
+            authenticated to server
+        </log-message>
+        <parameters>gameId,domain</parameters>
+        <action-code>88</action-code>
+    </result>
+    <result name="gameError" type="successiveRequestForward">
+        <forward-url>/WEB-INF/plugin/gameAuthorizationError.jsp</forward-url>
+        <log-message>is not registered to game {0} for domain {1} while attempting to unlock The Ball</log-message>
+        <parameters>gameId,domain</parameters>
+        <action-code>108</action-code>
+    </result>
+    <result name="duplicateRequestResult" type="duplicateRequestForward">
+        <forward-url>UNUSED</forward-url>
+        <log-message>Duplicate request for unlocking The Ball. Responding with response to original request
+        </log-message>
+    </result>
+    <result name="mustFindAllClues" type="successiveRequestForward">
+        <forward-url>/server/plugin/startGamePlay.do</forward-url>
+        <log-message>attempted to unlock The Ball for game {0} and domain {1} without having all clues for domain found
+        </log-message>
+        <parameters>gameId,domain</parameters>
+        <action-code>24</action-code>
+    </result>
+</action>

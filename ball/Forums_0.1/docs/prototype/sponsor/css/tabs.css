@@ -1,0 +1,118 @@
+/* Orange Flip Tabs ---------------------------------------- */
+
+#tabcontentcontainer
+{
+	width: 375px;
+	background-color: #FFF;
+	float: right;
+	padding: 0px;
+	margin: 0px;
+	font-size: 11px;
+}
+
+#tablist
+{
+	font-size: 10px;
+	line-height: normal;
+	background-color: #FFF;
+	list-style: none;
+	width:100%;
+	padding: 0px;
+	margin: 0 0 0 0;
+	display: inline;
+}
+
+#tablist ul
+{
+	float: right;
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+
+#tablist li
+{
+	float: left;
+	margin: 0px;
+	display: inline;
+	padding: 0 0 0 2px;
+	background-image: url(../i/t/left_off.gif);
+	background-repeat: no-repeat;
+	background-position: left top;
+}
+
+#tablist a
+{
+	display: block;
+	padding: 1px 8px 0px 5px;
+	text-decoration: none;
+	font-weight: bold;
+	color: #fff;
+	background-image: url(../i/t/right_off.gif);
+	background-repeat: no-repeat;
+	background-position: right top;
+}
+
+#tablist a:hover { color: #fff; text-decoration: underline; }
+#tablist #current { background-image: url(../i/t/left_on.gif); }
+
+#tablist #current a
+{
+	background-image: url(../i/t/right_on.gif);
+	color: #fff;
+	padding-bottom: 0px;
+}
+.tabcontent{
+display:none;
+}
+
+/* Blue Static Tabs ---------------------------------------- */
+
+#tablistBlue
+{
+	font-size: 10px;
+	line-height: normal;
+	background-color: #FFF;
+	list-style: none;
+	width:100%;
+	padding: 0px;
+	margin: 0 0 0 0;
+	display: inline;
+}
+
+#tablistBlue ul
+{
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+
+#tablistBlue li
+{
+	float: left;
+	margin: 0px;
+	display: inline;
+	padding: 0 0 0 2px;
+}
+
+#tablistBlue a
+{
+	display: block;
+	padding: 1px 8px 0px 5px;
+	text-decoration: none;
+	font-weight: bold;
+	color: #fff;
+	background-image: url(../i/t/blue_right_on.gif);
+	background-repeat: no-repeat;
+	background-position: right top;
+}
+
+#tablistBlue a:hover { color: #fff; cursor: text; }
+#tablistBlue #current { background-image: url(../i/t/blue_left_on.gif);	cursor: text; }
+
+#tablistBlue #current a
+{
+	background-image: url(../i/t/blue_right_on.gif);
+	color: #fff;
+	padding-bottom: 0px;
+}

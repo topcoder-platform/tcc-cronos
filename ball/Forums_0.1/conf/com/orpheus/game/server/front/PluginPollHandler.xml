@@ -1,0 +1,21 @@
+<action name="Polling" type="default" url-pattern="/server/plugin/poll.do" priority="10">
+    <handler type="SessionValidationHandler">
+        <login_page_result>login</login_page_result>
+    </handler>
+    <handler type="LoggingHandler">
+        <log-message>polled for messages with timestamp {0}</log-message>
+        <parameters>timestamp</parameters>
+    </handler>
+    <result name="success" type="poll">
+        <date_param_key>timestamp</date_param_key>
+        <catetory_names>BloomFilter</catetory_names>
+    </result>
+    <result name="login" type="dbLoggingForward">
+        <forward-url>/plugin/http401.jsp</forward-url>
+        <log-message>failed to poll the messages with timestamp {0} due to session timeout or is not authenticated to
+            server
+        </log-message>
+        <parameters>timestamp</parameters>
+        <action-code>71</action-code>
+    </result>
+</action>

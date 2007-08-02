@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<!--
+    Global settings file for TopCoder Software .NET component builds.  You should place this file in the parent directory
+    of the component sources.  By default, these settings will override the same settings in the component build file.
+ -->
+     
+<!--
+    This file will only work with newer TopCoder Software NAnt build files.  If you wish to use it with an older component,
+    you will need to add the following line *below* all the lines that set the properties listed in this file.
+     
+    <include buildfile="../topcoder_global.build" failonerror="false" />
+ -->
+
+<project>
+    <!-- NUnit reference. -->
+    <property name="Nunit" value="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll"/>
+    
+    <!-- NDoc reference. -->
+    <property name="NDoc" value="C:\Program Files\NDoc\1.2\bin\.net-1.1\NDocConsole.exe"/>
+    
+    <!-- Base directory for all third party components. -->
+<!--
+    <property name="ext_bin" value="lib\third_party"/>
+-->
+    <property name="ext_bin" value="c:\TopCoder\SVNRepository\Applications\TheBall\lib\third_party"/>
+
+    <!-- Base directory for all TCS components. -->
+<!--
+    <property name="tcs_bin" value="f:\orpheus\lib\tcs"/>
+-->
+    <property name="tcs_bin" value="c:\TopCoder\SVNRepository\Applications\TheBall\lib\tcs"/>
+</project>

@@ -1,0 +1,14 @@
+Hello %credentials-handle%,
+
+We regret to inform you that one of the domains you registered for
+The Ball has been rejected by the administrator.  The following
+explanation was provided\:
+
+Reject reason\: %reject-reason%
+
+Reject message\: %reject-message%
+
+Regards,
+
+The Ball Administration Team
+

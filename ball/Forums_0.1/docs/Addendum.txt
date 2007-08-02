@@ -1,0 +1,4 @@
+ADDENDUM
+========
+
+After the completion of architecture and well into component production, a new requirement was placed on the application: that it must store players' discovered keys on their behalf, and provide a mechanism for presenting them back to players later.  This does not require any change to the data model, but it does require addition of a method to the GameData EJB by which to retrieve the information (presumably in the form of a SlotCompletion[]).  It also requires an update to the 'Unlocked Domains Handler' of the Game Handlers Logic component to store the information in a manner accessible to the JSP that will implement the view.  It the assembly teams' responsibility to make these changes; the prototype already models change at the web layer.

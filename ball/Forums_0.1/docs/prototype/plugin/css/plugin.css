@@ -1,0 +1,620 @@
+/* Main Styles ---------------------------------------- */
+html, body {
+	padding: 0;
+	border: 0;
+	margin: 0;
+}
+
+body {
+	color: #666666;
+	font-family: Arial, Helvetica, Geneva, Verdana, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	background-image: url("../i/g/grad1.gif");
+	background-repeat: repeat-x;
+	background-color: #CFCFCF;
+}
+
+
+/* --------------- Universals -------------------- */
+img { border-width: 0; }
+
+h1 {
+	color: #A74600;
+	font-size: 24px;
+	text-transform: uppercase;
+}
+
+h2 {
+	color: #697CCO;
+	font-size: 20px;
+	text-transform: uppercase;
+}
+
+a {
+	font-size: 11px;
+	line-height: 16px;
+	color: #697CC0;
+	text-decoration: none;
+}
+
+a:hover { text-decoration: underline; }
+p { line-height: 18px; }
+
+
+
+
+/* ------------------- Page Layout -------------------- */
+
+#page {
+	width: 748px;
+	margin: 13px auto 0 auto;
+}
+#pagePlugin {
+	width: 675px;
+	margin: 13px auto 0 auto;
+}
+#container {
+	float: left;
+	background-color: #FFFFFF;
+	padding: 13px 13px 13px 13px;
+	border-color: #CCC;
+	border-width: 1px 1px 1px 1px;
+	border-style: solid;
+}
+#containerPlugin {
+	float: left;
+	background-color: #FFFFFF;
+	border: #CCC solid 1px;
+}
+
+#header { float: left; }
+
+.links {
+	float: right;
+	color: #5A70DB;
+}
+
+/* ---------------- Homepage Items--------------------- */
+
+
+#home-flash {
+	clear: both;
+	border-color: #E0E1E2;
+	border-width: 1px;
+	border-style: solid;
+}
+
+#action {
+	margin: 1px 0 22px 0;
+	width: 722px;
+}
+
+#home-wrap { width: 722px; }
+
+#login {
+	float: left;
+	background-image: url("../i/home/back_login.gif");
+	background-repeat: no-repeat;
+	width: 175px;
+	height: 331px;
+	font-size: 10px;
+	color: #454545;
+	line-height: 20px;
+}
+
+#login a { font-size: 10px; }
+
+#login p {
+	text-align: center;
+	margin: 11px 0 11px 0;
+}
+
+#login .login-table {
+	background-image: url("../i/home/back_login2.gif");
+	background-repeat: no-repeat;
+	width: 157px;
+	height: 193px;
+	margin: 0 0 0 9px;
+}
+
+#login td { padding: 2px 12px 2px 12px; }
+
+#login .input {
+	width: 128px;
+	border-color: #CCCCCC;
+	border-width: 1px;
+	border-style: solid;
+	background-color: #FAFAFA;
+}
+
+#home-content {
+	width: 517px;
+	float: left;
+	margin: 0 0 0 30px;
+}
+
+#home-content h1 {
+	padding: 0;
+	margin: 0;
+}
+
+#home-content .play {
+	float: right;
+	padding: 0 0 0 5px;
+}
+
+#home-content .game-table {
+	background-color: #EBEEFB;
+	background-image: url("../i/g/grad2.gif");
+	background-repeat: repeat-x;
+	width: 100%;
+	border-color: #D6D6D6;
+	border-width: 1px;
+	border-style: solid;
+	line-height: 20px;
+}
+
+#home-content th {
+	color: #697CC0;
+	text-align: left;
+	padding: 1px 5px 1px 5px;
+}
+
+#home-content th.right { text-align: right; }
+#home-content td { padding: 1px 5px 1px 5px; }
+
+
+
+
+/* ------------------ Secondary Page Items ----------------------- */
+#mastHead {
+	background: url(../i/plugin_stripes_bkg.jpg) repeat-x;
+	height: 62px;
+}
+
+#navPlugin {
+	background: url(../i/plugin_bkg.gif) repeat-x;
+	height: 29px;
+}
+#pluginTitle {
+	padding: 5px 0 5px 15px;
+	font-size: 20px;
+	color: #697cc0;	
+	letter-spacing: -1px;
+}
+#pluginTitle .main { 
+	color: #94a4de;
+	letter-spacing: -1px;
+}
+
+#nav {
+	float: left;
+	width: 722px;
+}
+
+#nav ul {
+	clear: both;
+	padding: 0;
+	margin: 0;
+}
+
+#nav li {
+	float: left;
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+}
+
+#nav a {
+	float: left;
+	padding: 0;
+	margin: 0;
+}
+
+#nav .subbar {
+	height: 20px;
+	width: 722px;
+	background-image: url("../i/nav/sub_bar.gif");
+	background-repeat: no-repeat;
+	text-transform: uppercase;
+	margin: 0;
+	padding: 0;
+}
+
+#nav .subbar a {
+	padding: 2px 5px 0 5px;
+	color: #455486;
+	font-size: 10px;
+}
+
+#nav .sponsor {
+	background-color: #B6C2ED;
+	color: #455486;
+}
+#nav .player {
+	background-color: #B6C2ED;
+	color: #455486;
+}
+
+#nav .admin 	 {
+	background-color: #f4e5af;
+	color: #a5861b;
+}
+#nav .admin a {
+	background-color: #f4e5af;
+	color: #a5861b;
+}
+#nav .public {
+	background-color: #ec903e;
+	color: #ffffff;
+}
+#nav .public a {
+	background-color: #ec903e;
+	color: #ffffff;
+}
+
+
+/* ----------------- Page Wrap ------------------------ */
+
+#wrapPlugin {
+	width: 646px;
+	padding: 0 13px 13px 13px;
+	float: clear;
+}
+#wrap {
+	width: 722px;
+	margin: 13px 0 0 0;
+	float: clear;
+}
+
+#wrap h1 {
+	padding: 0;
+	margin: 0;
+}
+
+
+
+
+/* --------------------- Data Table ------------------------ */
+
+div#plugin-table { width: 100%; }
+
+#plugin-table ul {
+	margin: 0;
+	padding: 0;
+}
+
+#plugin-table li {
+	margin: 0;
+	padding: 10px 0 10px 30px;
+	list-style-type: none;
+	background-color: #EBEEFB;
+	border-right: #CCCCCC;
+	border-bottom: #CCCCCC;
+	border-left: #CCCCCC;
+	border-width: 0 1px 1px 1px;
+	border-style: none solid solid solid;
+}
+
+#plugin-table li.open {
+	background-image: url("../i/b/minus.gif");
+	background-position: 10px 14px;
+	background-repeat: no-repeat;
+}
+
+#plugin-table li.closed {
+	background-image: url("../i/b/plus.gif");
+	background-position: 10px 14px;
+	background-repeat: no-repeat;
+}
+
+#plugin-table li.auction-block {
+	padding: 0;
+	margin: 0;
+	border-bottom: #CCCCCC;
+	border-width: 0 0 1px 0;
+	border-style: none none solid none;
+	background-color: #FFFFFF;
+} 
+#plugin-table li.auction-block span {
+	font-size: 16px;
+	color: #d26004;
+	font-weight: bold;
+	text-align: center;
+}
+#plugin-table li.auction-block span a{
+	font-size: 16px;
+	color: #d26004;
+	font-weight: bold;
+	text-align: center;
+	text-decoration: none;
+}
+
+#plugin-table tr {
+	<tr style="cursor: pointer;" onClick="window.location='game-details.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#ffffff';"
+}
+
+#plugin-table table {
+	width: 647px;
+	border-right: #CCCCCC;
+	border-left: #CCCCCC;
+	border-bottom: #CCCCCC;
+	border-width: 0 1px 1px 1px;
+	border-style: none solid solid solid;
+	background-color: #FFFFFF;
+}
+
+#plugin-table th {
+	color: #FFF;
+	background-color: #697cc0;
+	text-align: left;
+	padding: 5px;
+}
+
+#plugin-table th a { color: #FFF; }
+
+#plugin-table td {
+	padding: 5px;
+	border-bottom: #EBEEFB;
+	border-width: 0 0 1px 0;
+	border-style: none none solid none;
+	vertical-align: top;
+}
+
+.spot { color: #993333; }
+.bid { color: #669966; }
+#plugin-table tr.alt { background-color: #F4F4F4; }
+#plugin-table tr.altOrange { background-color: #fff999; }
+#plugin-table tr.altHeader { 
+	background-color: #697cc0; 
+	color: #FFF;
+}
+#plugin-table tr.altHeader .right{ 
+	text-align: right;
+	padding-right: 6px;
+}
+#plugin-table tr.altPink {
+	background-color: #fef1c4; 
+}
+
+#plugin-table li a {
+	color: #FFF;
+	text-decoration: underline;
+}
+#plugin-table .link a {
+	color: #666;
+	text-decoration: underline;
+}
+#plugin-table .link a:hover {
+	color: #666;
+	text-decoration: none;
+}
+
+#plugin-table li a:hover { color: #FFF; text-decoration: underline;}
+
+.tabletop {
+	background: url(../i/tabletop.gif) no-repeat;
+	width: 647px;
+	height: 13px;
+	padding: 0;
+	margin: 0;
+	background-position: left bottom;
+}
+
+.tablebot {
+	background: url(../i/tablebot.gif) no-repeat;
+	width: 647px;
+	height: 8px;
+	background-position: left top;
+	padding: 0;
+	margin: 0;
+}
+
+
+
+
+
+/* --------------------- Pagination ------------------------- */
+.pagination {
+	padding: 3px 2px 2px;
+	background-color: #94A4DE;
+	color: #FFFFFF;
+}
+
+.pagination table { width: 100%; }
+.pagination td { padding: 0 5px 0 5px; }
+
+.pagination ul {
+	text-align: right;
+	margin: 0;
+	padding: 0;
+}
+
+.pagination li {
+	list-style-type: none;
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+
+.pagination a {
+	text-decoration: none;
+	color: #FFF;
+	border-color: #94A4DE;
+	border-style: solid;
+	border-width: 1px;
+	padding: 0 3px 0 3px;
+}
+
+.pagination a:hover, .pagination a.active {
+	color: FFF;
+	background-color: #697CC0;
+	border-color: #32437D;
+	border-style: solid;
+	border-width: 1px;
+	padding: 0 3px 0 3px;
+}
+
+
+/* Orange Flip Tabs ---------------------------------------- */
+
+#tabcontentcontainer
+{
+	width: 375px;
+	background-color: #FFF;
+	float: right;
+	padding: 0px;
+	margin: 0px;
+	font-size: 11px;
+}
+
+#tablist
+{
+	font-size: 10px;
+	line-height: normal;
+	background-color: #FFF;
+	list-style: none;
+	width:100%;
+	padding: 0px;
+	margin: 0 0 0 0;
+	display: inline;
+}
+
+#tablist ul
+{
+	float: right;
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+
+#tablist li
+{
+	float: left;
+	margin: 0px;
+	display: inline;
+	padding: 0 0 0 2px;
+	background-image: url(../i/t/left_off.gif);
+	background-repeat: no-repeat;
+	background-position: left top;
+}
+
+#tablist a
+{
+	display: block;
+	padding: 1px 8px 0px 5px;
+	text-decoration: none;
+	font-weight: bold;
+	color: #fff;
+	background-image: url(../i/t/right_off.gif);
+	background-repeat: no-repeat;
+	background-position: right top;
+}
+
+#tablist a:hover { color: #fff; text-decoration: underline; }
+#tablist #current { background-image: url(../i/t/left_on.gif); }
+
+#tablist #current a
+{
+	background-image: url(../i/t/right_on.gif);
+	color: #fff;
+	padding-bottom: 0px;
+}
+.tabcontent{
+display:none;
+}
+
+/* Blue Static Tabs ---------------------------------------- */
+
+#tablistBlue
+{
+	font-size: 10px;
+	line-height: normal;
+	background-color: #FFF;
+	list-style: none;
+	width:100%;
+	padding: 0px;
+	margin: 0 0 0 0;
+	display: inline;
+}
+
+#tablistBlue ul
+{
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+
+#tablistBlue li
+{
+	float: left;
+	margin: 0px;
+	display: inline;
+	padding: 0 0 0 2px;
+}
+
+#tablistBlue a
+{
+	display: block;
+	padding: 1px 8px 0px 5px;
+	text-decoration: none;
+	font-weight: bold;
+	color: #fff;
+	background-image: url(../i/t/blue_right_on.gif);
+	background-repeat: no-repeat;
+	background-position: right top;
+}
+
+#tablistBlue a:hover { color: #fff; cursor: text; }
+#tablistBlue #current { background-image: url(../i/t/blue_left_on.gif);	cursor: text; }
+
+#tablistBlue #current a
+{
+	background-image: url(../i/t/blue_right_on.gif);
+	color: #fff;
+	padding-bottom: 0px;
+}
+
+#table-form
+{
+	width: 313px;
+	border: 1px solid #ccc;
+	background-color: #f7f7f7;
+}
+
+#table-form th
+{
+	color: #FFF;
+	background-color: #697cc0;
+	text-align: left;
+	padding: 5px;
+}
+ 
+ 
+#table-form td
+{
+	padding: 5px 5px 5px 5px;
+	border-bottom: #EBEEFB;
+	border-bottom-style:dotted;
+	border-width: 1px 0 0px 0;
+	border-style: none none solid none;
+	vertical-align: top;
+}
+#table-form .tdTop
+{ 
+	height: 8px;
+	padding: 0px;
+}
+
+
+.cGray {
+	color: #999;
+}
+#formWrap
+{
+	horizontal-align: center;
+}
+

@@ -1,0 +1,24 @@
+<action name="TestSlidingTilePuzzle" type="default" url-pattern="/server/puzzle/tile.do" priority="10">
+    <handler type="TemporaryShowGameWinPuzzleForTestHandler">
+        <puzzle_name>Sliding Tile Puzzle</puzzle_name>
+        <puzzle_db_name>sliding-tile</puzzle_db_name>
+        <puzzle_id_param_key>puzzleId</puzzle_id_param_key>
+        <puzzle_id_request_attribute_key>puzzleId</puzzle_id_request_attribute_key>
+        <media_type_request_attribute_key>mediaType</media_type_request_attribute_key>
+        <media_type>DHTML</media_type>
+        <game_play_key>gamePlayInfo</game_play_key>
+        <url_pattern_suffix>tile.do</url_pattern_suffix>
+    </handler>
+    <handler type="PuzzleRenderingHandler">
+        <puzzle_id_request_attribute_key>puzzleId</puzzle_id_request_attribute_key>
+        <media_type_request_attribute_key>mediaType</media_type_request_attribute_key>
+        <puzzle_string_request_attribute_key>puzzle</puzzle_string_request_attribute_key>
+        <solutiontester_base_name>puzzleSolutionTester</solutiontester_base_name>
+    </handler>
+    <result name="success" type="dbLoggingForward">
+        <forward-url>/public/testPuzzle.jsp</forward-url>
+        <log-message>[TESTING MODE] presented with SLIDING TILE Game Win puzzle for game {0} and slot {1}</log-message>
+        <parameters>gameId,slotId</parameters>
+        <action-code>5</action-code>
+    </result>
+</action>

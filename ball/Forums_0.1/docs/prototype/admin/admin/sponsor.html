@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title></title>
+		<link rel="stylesheet" type="text/css" media="all" href="../css/styles.css" />		
+		<script type="text/javascript">
+		function SwapImage1() {
+		  document.image1.src="../i/nav/admin_home_on.gif"
+		}
+		function SwapImage1Back() {
+		  document.image1.src="../i/nav/admin_home_off.gif"
+		}
+		function SwapImage2() {
+		  document.image2.src="../i/nav/admin_sponsorapp_on.gif"
+		}
+		function SwapImage2Back() {
+		  document.image2.src="../i/nav/admin_sponsorapp_off.gif"
+		}		
+		function SwapImage3() {
+		  document.image3.src="../i/nav/admin_winnerapp_on.gif"
+		}
+		function SwapImage3Back() {
+		  document.image3.src="../i/nav/admin_winnerapp_off.gif"
+		}
+		function SwapImage4() {
+		  document.image4.src="../i/nav/admin_game_on.gif"
+		}
+		function SwapImage4Back() {
+		  document.image4.src="../i/nav/admin_game_off.gif"
+		}		
+		</script>
+		
+</head>
+	
+<body id="page">
+	<div id="container">
+<!-- Header	 -->
+		<div id="header">
+			<span class="links"><a href="../logout.html" title="Logout">Logout</a></span>
+			<a href="../index.html" title="Home"><img src="../i/logo.jpg" alt="Logo" width="202" height="65" /></a>
+		</div>
+<!-- Navigation Admin -->
+		<div id="nav">
+			<ul>
+				<li><a href="index.html" title="Admin Home"><img src="../i/nav/admin_home_off.gif" name="image1" border="0" onMouseOver="SwapImage1()" onMouseOut="SwapImage1Back()" alt="Home" /></a></li>
+				<li><a href="sponsor.html" title="Sponsor Approval"><img src="../i/nav/admin_sponsorapp_on.gif" alt="Sponsor Approval" /></a></li>
+				<li><a href="winners.html" title="Winner Approval"><img src="../i/nav/admin_winnerapp_off.gif" name="image3" border="0" onMouseOver="SwapImage3()" onMouseOut="SwapImage3Back()" alt="Winner Approval" /></a></li>
+				<li><a href="games.html" title="Game Management"><img src="../i/nav/admin_game_off.gif" name="image4" border="0" onMouseOver="SwapImage4()" onMouseOut="SwapImage4Back()" alt="Game Management" /></a></li>
+				<li>
+				<img border="0" src="../i/nav/admin_endbar.gif" width="208" height="30" /></li>
+			</ul>
+		</div>		
+		<div id="wrap">
+					<div id="breadcrumb-admin"><span class="active"> &raquo; Sponsor Approval &nbsp;</span></div>
+					<p>Select a row to view Ball progress and alter the hosting Order of a game.</p>
+					<div id="data-table-admin">
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<th><a href="#">Sponsor</a></th>
+							<th><a href="#">Contact</a></th>
+							<th><a href="#">Details</a></th>
+							<th><a href="#">Domain Approval</a></th>
+							<th><a href="#">Sponsor Approval</a></th>
+						</tr>
+						<tr>
+							<td>Calvin Klein</td>
+							<td>Anne Klein<br /><a href="mailto:anne@calvinklein.com">anne@calvinklein.com</a></td>
+							<td class="center">
+							<!-- contact popup box -->
+								<a class="popup" href="#"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /><span>
+								123 Main Street<br />
+								Suite 21<br />
+								Minneapolis, MN 34343<br />
+								Phone: 555.454.3223<br />
+								Fax:1-800-222-3333</span></a>
+							<!-- END contact popup box --></td>
+							<td>
+							<li class="domain-block">
+							<table border="0" cellpadding="0" cellspacing="0" width="400">
+								<tr class="active" style="cursor: pointer;" onClick="window.location='view-domain.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#f5dd89';">
+									<td class="center">
+									<img border="0" src="../i/error.gif" width="16" height="16" /></td>
+									<td><a href="http://www.calvinklein.com">www.calvinklein.com</a></td>
+									<td>unapproved</td>
+								</tr>
+								<tr class="active" style="cursor: pointer;" onClick="window.location='view-domain.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#f5dd89';">
+									<td class="center">
+									<img border="0" src="../i/error.gif" width="16" height="16" /></td>
+									<td><a href="http://www.ck1.com">www.ck1.com</a></td>
+									<td>unapproved</td>
+								</tr>
+								<tr style="cursor: pointer;" onClick="window.location='view-domain.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#ffffff';">
+									<td class="center">
+									<img border="0" src="../i/approved.gif" width="16" height="16" /></td>
+									<td><a href="http://www.ckjeans.com">www.ckjeans.com</a></td>
+									<td>approved</td>
+								</tr>
+								</table>
+						</li>
+						</td>
+							<td class="center">
+							<a href="#"><img border="0" src="../i/b/btn_admin_approve.gif" width="50" height="15" /></a>
+							<a href="reject-sponsor.html">
+							<img border="0" src="../i/b/btn_admin_reject.gif" width="41" height="15" class="btn" /></a></td>
+						</tr>
+						<tr class="alt" >
+							<td>Penthouse Magazine</td>
+							<td>Hugh Hefner<br /><a href="mailto:hugh@hotmail.com">hugh@hotmail.com</a></td>
+							<td class="center">
+							<!-- contact popup box -->
+							<a class="popup" href="#"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /><span>
+								123 Main Street<br />
+								Suite 21<br />
+								Minneapolis, MN 34343 <br />
+								Phone: 555.454.3223<br />
+								Fax:1-800-222-3333</span></a>
+							<!-- END contact popup box --></td>
+							<td><li class="domain-block">
+							<table border="0" cellpadding="0" cellspacing="0" width="400">
+								<tr class="strike" style="cursor: pointer;" onClick="window.location='view-domain.html'" >
+									<td class="center">
+									<img border="0" src="../i/rejected.gif" width="16" height="16" /></td>
+									<td><a href="http://www.calvinklein.com">www.penthouse.com</a></td>
+									<td>rejected</td>
+								</tr>
+								<tr class="strike" style="cursor: pointer;" onClick="window.location='view-domain.html'" >
+									<td class="center">
+									<img border="0" src="../i/rejected.gif" width="16" height="16" /></td>
+									<td><a href="http://www.ck1.com">www.hughhefner.com</a></td>
+									<td>rejected</td>
+								</tr>
+								</table>
+							</li>
+							</td>
+							<td class="center">
+							<a href="#"><img border="0" src="../i/b/btn_admin_approve.gif" width="50" height="15" class="btn" /></a>
+							<a href="reject-sponsor.html">
+							<img border="0" src="../i/b/btn_admin_reject.gif" width="41" height="15" class="btn" /></a></td>
+						</tr>
+						<tr>
+							<td>Amazon.com</td>
+							<td>Jerry Johnson<br /><a href="mailto:admin@amazon.com">
+							admin@amazon.com</a></td>
+							<td class="center">
+							<!-- contact popup box -->
+								<a class="popup" href="#"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /><span>
+								123 Main Street<br />
+								Suite 21<br />
+								Minneapolis, MN 34343 <br />
+								Phone: 555.454.3223<br />
+								Fax:1-800-222-3333</span> </a>
+							<!-- END contact popup box --></td>
+							<td><li class="domain-block">
+							<table border="0" cellpadding="0" cellspacing="0" width="400">
+								<tr class="active" style="cursor: pointer;" onClick="window.location='view-domain.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#f5dd89';">
+									<td class="center">
+									<img border="0" src="../i/error.gif" width="16" height="16" /></td>
+									<td><a href="http://www.calvinklein.com">www.amazon.com</a></td>
+									<td>unapproved</td>
+								</tr>
+								<tr class="active" style="cursor: pointer;" onClick="window.location='view-domain.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#f5dd89';">
+									<td class="center">
+									<img border="0" src="../i/error.gif" width="16" height="16" /></td>
+									<td><a href="http://www.ck1.com">www.half.com</a></td>
+									<td>unapproved</td>
+								</tr>
+								<tr style="cursor: pointer;" onClick="window.location='view-domain.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#ffffff';">
+									<td class="center">
+									<img border="0" src="../i/approved.gif" width="16" height="16" /></td>
+									<td><a href="http://www.ckjeans.com">www.bookstore.com</a></td>
+									<td>approved</td>
+								</tr>
+								<tr style="cursor: pointer;" onClick="window.location='view-domain.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#ffffff';">
+									<td class="center">
+									<img border="0" src="../i/approved.gif" width="16" height="16" /></td>
+									<td><a href="http://www.ebay.com">www.ebay.com</a></td>
+									<td>approved</td>
+								</tr>
+								<tr style="cursor: pointer;" onClick="window.location='view-domain.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#ffffff';">
+									<td class="center">
+									<img border="0" src="../i/approved.gif" width="16" height="16" /></td>
+									<td><a href="http://www.book.somc">www.book.somc</a></td>
+									<td>approved</td>
+								</tr>
+								</table>
+							</li>
+							</td>
+							<td class="center">
+							<a href="#"><img border="0" src="../i/b/btn_admin_approve.gif" width="50" height="15" class="btn" /></a>
+							<a href="reject-sponsor.html">
+							<img border="0" src="../i/b/btn_admin_reject.gif" width="41" height="15" class="btn" /></a></td>
+						</tr>
+						<tr class="alt" >
+							<td>Penguins 4 Pets</td>
+							<td>Tina Jones<br /><a href="mailto:penguins@toysrus.com">penguins@toysrus.com</a></td>
+							<td class="center">
+							<!-- contact popup box -->
+								<a class="popup" href="#"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /><span>
+								123 Main Street<br />
+								Suite 21<br />
+								Minneapolis, MN 34343 <br />
+								Phone: 555.454.3223<br />
+								Fax:1-800-222-3333	</span> </a>
+								<!-- END contact popup box --></td>
+							<td><li class="domain-block">
+							<table border="0" cellpadding="0" cellspacing="0" width="400">
+								<tr style="cursor: pointer;" onClick="window.location='view-domain.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#ffffff';">
+									<td class="center">
+									<img border="0" src="../i/approved.gif" width="16" height="16" /></td>
+									<td><a href="http://www.ckjeans.com">www.penguins.com</a></td>
+									<td>approved</td>
+								</tr>
+								</table>
+							</li>
+							</td>
+							<td class="center">
+							<a href="#"><img border="0" src="../i/b/btn_admin_approve.gif" width="50" height="15" class="btn" /></a>
+							<a href="reject-sponsor.html">
+							<img border="0" src="../i/b/btn_admin_reject.gif" width="41" height="15" class="btn" /></a></td>
+						</tr>
+						<tr>
+							<td>Red Lobster</td>
+							<td>Gary Shandling<br /><a href="mailto:redlobster@peta.org">redlobster@peta.org</a></td>
+							<td class="center">
+							<!-- contact popup box -->
+								<a class="popup" href="#"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /><span>
+								123 Main Street<br />
+								Suite 21<br />
+								Minneapolis, MN 34343 <br />
+								Phone: 555.454.3223<br />
+								Fax:1-800-222-3333</span></a>
+							<!-- END contact popup box --></td>
+							<td><li class="domain-block">
+							<table border="0" cellpadding="0" cellspacing="0" width="400">
+								<tr class="active" style="cursor: pointer;" onClick="window.location='view-domain.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#f5dd89';">
+									<td class="center">
+									<img border="0" src="../i/error.gif" width="16" height="16" /></td>
+									<td><a href="http://www.calvinklein.com">www.calvinklein.com</a></td>
+									<td>unapproved</td>
+								</tr>
+								<tr class="strike" style="cursor: pointer;" onClick="window.location='view-domain.html'" >
+									<td class="center">
+									<img border="0" src="../i/rejected.gif" width="16" height="16" /></td>
+									<td><a href="http://www.ckjeans.com">www.peta.org</a></td>
+									<td>rejected</td>
+								</tr>
+								</table>
+							</li>
+							</td>
+							<td class="center">
+							<a href="#"><img border="0" src="../i/b/btn_admin_approve.gif" width="50" height="15" class="btn" /></a>
+							<a href="reject-sponsor.html">
+							<img border="0" src="../i/b/btn_admin_reject.gif" width="41" height="15" class="btn" /></a></td>
+						</tr>
+						</table>
+				</div>
+				
+				<div class="pagination">
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td>Showing Games 1-5 of 15</td>
+							<td>
+								<ul>Page:
+									<li><a href="#">&laquo;</a></li>
+									<li><a href="#" class="active">1</a></li>
+									<li><a href="#">2</a></li>
+									<li><a href="#">3</a></li>
+									<li><a href="#">&raquo;</a></li>
+								</ul> 
+							</td>
+						</tr>
+					</table>
+				</div>
+		</div>
+
+				
+		</div>
+
+		
+	
+<!-- Footer -->
+	<div id="footer">
+		<p>&copy; Copyright 2006 TopCoder, Inc.</p>
+	</div>
+</body>
+</html>

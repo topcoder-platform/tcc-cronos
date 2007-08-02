@@ -1,0 +1,9 @@
+<action name="PluginLogout" type="default" url-pattern="/server/plugin/logout.do" priority="10">
+    <handler type="LoggingHandler">
+        <log-message>logged out</log-message>
+    </handler>
+    <handler type="logout"/>
+    <result name="success" type="forward">
+        <forward-url>/WEB-INF/plugin/logout.jsp</forward-url>
+    </result>
+</action>
