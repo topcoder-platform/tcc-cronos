@@ -12,6 +12,7 @@ import junit.framework.TestCase;
 import com.topcoder.management.project.ConfigurationException;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.persistence.AbstractInformixProjectPersistence;
+import com.topcoder.util.log.Log;
 
 /**
  * Failure test cases for {@link AbstractInformixProjectPersistence} constructor. Most of the test cases are from
@@ -299,6 +300,16 @@ public class AbstractInformixProjectPersistenceCtorTest extends TestCase {
         public Connection openConnection() throws PersistenceException {
             return null;
         }
+        /**
+         * <p>
+         * Returns null always.
+         * </p>
+         *
+         * @return null always.
+         */
+		protected Log getLogger() {
+			return null;
+		}
 
     }
 }

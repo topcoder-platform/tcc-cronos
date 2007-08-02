@@ -17,6 +17,8 @@ import com.topcoder.management.project.ConfigurationException;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
 
 /**
  * <p>
@@ -607,7 +609,7 @@ class Helper {
      *             empty (trimmed) when not null.
      */
     static String getConfigurationParameterValue(ConfigManager cm,
-            String namespace, String name, boolean required)
+            String namespace, String name, boolean required, Log logger)
         throws ConfigurationException {
         Helper.assertObjectNotNull(cm, "cm");
         Helper.assertStringNotNullNorEmpty(namespace, "namespace");
@@ -618,22 +620,32 @@ class Helper {
         try {
             value = cm.getString(namespace, name);
         } catch (UnknownNamespaceException e) {
+        	logger.log(Level.FATAL, "Configuration namespace [" + namespace + "] does not exist.");
             throw new ConfigurationException("Configuration namespace ["
                     + namespace + "] does not exist.", e);
         }
 
         if (value == null) {
             if (required) {
+            	logger.log(Level.FATAL, "Configuration parameter ["
+                        + name + "] under namespace [" + namespace
+                        + "] is not specified.");
                 throw new ConfigurationException("Configuration parameter ["
                         + name + "] under namespace [" + namespace
                         + "] is not specified.");
             }
         } else if (value.trim().length() == 0) {
+        	logger.log(Level.FATAL, "Configuration parameter [" + name
+                    + "] under namespace [" + namespace
+                    + "] is empty (trimmed).");
             throw new ConfigurationException("Configuration parameter [" + name
                     + "] under namespace [" + namespace
                     + "] is empty (trimmed).");
         }
 
+        logger.log(Level.INFO, "Read propery[" + name + "] which is " + (required?" required ": " optional ")
+        		+ " with value[" + value + "] from namespace [" + namespace +"].");
+        
         return value;
     }
 

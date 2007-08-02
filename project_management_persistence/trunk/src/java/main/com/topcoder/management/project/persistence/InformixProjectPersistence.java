@@ -8,6 +8,10 @@ import java.sql.SQLException;
 
 import com.topcoder.management.project.ConfigurationException;
 import com.topcoder.management.project.PersistenceException;
+import com.topcoder.management.project.persistence.logging.LogMessage;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -41,6 +45,10 @@ import com.topcoder.management.project.PersistenceException;
 public class InformixProjectPersistence extends
         AbstractInformixProjectPersistence {
 
+	/** Logger instance using the class name as category */
+    private static final Log LOGGER = LogFactory.getLog(InformixProjectPersistence.class.getName()); 
+
+    
     /**
      * <p>
      * Creates a new instance of <code>InformixProjectPersistence</code> from
@@ -118,6 +126,11 @@ public class InformixProjectPersistence extends
     protected Connection openConnection() throws PersistenceException {
 
         String connectionName = getConnectionName();
+        if ( connectionName == null){
+        	LOGGER.log(Level.INFO, new LogMessage(null, null, "creating db connection using default connection"));
+        } else {
+        	LOGGER.log(Level.INFO, new LogMessage(null, null, "creating db connection using connection name: " + connectionName));
+        }
         Connection conn = Helper.createConnection(getConnectionFactory(),
                 connectionName);
         try {
@@ -148,6 +161,7 @@ public class InformixProjectPersistence extends
         throws PersistenceException {
         Helper.assertObjectNotNull(connection, "connection");
         try {
+        	LOGGER.log(Level.INFO, "committing transaction");
             Helper.commitTransaction(connection);
         } finally {
             Helper.closeConnection(connection);
@@ -171,10 +185,18 @@ public class InformixProjectPersistence extends
         throws PersistenceException {
         Helper.assertObjectNotNull(connection, "connection");
         try {
+        	LOGGER.log(Level.INFO, "rollback transaction");
             Helper.rollBackTransaction(connection);
         } finally {
             Helper.closeConnection(connection);
         }
     }
 
+    /**
+     * <p>Return the logger.</p>
+     * @return the <code>Log</code> instance used to take the log message
+     */
+	protected Log getLogger() {
+		return LOGGER;
+	}
 }
