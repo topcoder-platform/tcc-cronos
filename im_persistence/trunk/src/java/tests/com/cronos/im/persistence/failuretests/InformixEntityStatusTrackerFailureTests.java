@@ -8,6 +8,7 @@ import com.cronos.im.persistence.EntityStatusValidationException;
 import com.cronos.im.persistence.InformixEntityStatusTracker;
 
 import com.topcoder.database.statustracker.Entity;
+import com.topcoder.database.statustracker.EntityKey;
 import com.topcoder.database.statustracker.Status;
 import com.topcoder.database.statustracker.persistence.RecordNotFoundException;
 import com.topcoder.database.statustracker.persistence.StatusTrackerPersistenceException;
@@ -386,6 +387,47 @@ public class InformixEntityStatusTrackerFailureTests extends BasePersistenceSupp
         }
     }
 
+    /**
+     * <p>
+     * Test getCurrentStatuses(EntityKey[]) method. The instance is null, iae expected.
+     * </p>
+     *
+     * @throws Exception into Junit
+     */
+    public void testGetCurrentStatuses_nullValue() throws Exception {
+        statusTracker = new InformixEntityStatusTracker(TestHelper.INFORMIX_ENTRY_STATUS_TRAKER_NAMESPACE);
+
+        try {
+            this.statusTracker.getCurrentStatuses(null);
+            fail("The EntityKey[] instance to get is null.");
+        } catch (IllegalArgumentException e) {
+            //good
+        }
+    }
+
+
+    /**
+     * <p>
+     * Test getCurrentStatuses(EntityKey[]) method. The instance does not exist in storage,
+     * RecordNotFoundException expected.
+     * </p>
+     *
+     * @throws Exception into Junit
+     */
+    public void testGetCurrentStatuses_notExistInstance()
+        throws Exception {
+        statusTracker = new InformixEntityStatusTracker(TestHelper.INFORMIX_ENTRY_STATUS_TRAKER_NAMESPACE);
+
+        try {
+            statusTracker.getCurrentStatuses(new EntityKey[]{TestHelper.createEntityKey("entity")});
+            // good
+            // since we don't throw exception when no record is found,
+            // we insert null to Status[] instead
+        } catch (RecordNotFoundException e) {
+            fail("The EntityKey[] instance to get does not exist in persistence storage.");
+        }
+    }
+    
     /**
      * Test getStatusHistory(EntityKey key) method with null value key, iae expected.
      *

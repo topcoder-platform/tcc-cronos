@@ -444,6 +444,35 @@ public class InformixEntityStatusTrackerTests extends TestCase {
     }
 
     /**
+     * Tests that the <code>getCurrentStatuses</code> method throws <code>IllegalArgumentException</code> when passed
+     * a <code>null</code> key.
+     *
+     * @throws Exception if an unexpected exception occurs
+     */
+    public void test_getCurrentStatuses_null_arg1() throws Exception {
+        try {
+            tracker.getCurrentStatuses(null);
+            fail("should have thrown IllegalArgumentException");
+        } catch (IllegalArgumentException ex) {
+            // pass
+        }
+    }
+
+    /**
+     * Tests the <code>getCurrentStatuses</code> method.
+     *
+     * @throws Exception if an unexpected exception occurs
+     */
+    public void test_getCurrentStatuses() throws Exception {
+        EntityKey key = new EntityKey(ENTITY, createValues());
+        Status status = new Status(2);
+        tracker.setStatus(key, status, "user");
+
+        EntityStatus[] newStatus = tracker.getCurrentStatuses(new EntityKey[]{key});
+        assertEquals("the returned status should equal the set status", status, newStatus[0].getStatus());
+    }
+    
+    /**
      * Tests that the <code>getStatusHistory</code> method throws <code>IllegalArgumentException</code> when passed
      * a <code>null</code> entity key.
      *

@@ -173,6 +173,50 @@ public class InformixEntityStatusTrackerAccuracyTests extends BaseTestCase {
 
         assertEquals("incorrect status.", 2, entityStatus.getStatus().getId());
     }
+    
+    /**
+     * <p>
+     * Accuracy test for <code>{@link InformixEntityStatusTracker#getCurrentStatuses(EntityKey[])}</code> method.
+     * </p>
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
+     */
+    public void testGetCurrentStatusesAccuracy() throws Exception {
+        // type
+        Entity entity = new Entity(2, "entity", new String[] {"column"}, new Status[] {new Status(1), new Status(2),
+            new Status(3)});
+        EntityKey entityKey = new EntityKey(entity, createValues());
+
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        stmt.executeUpdate("INSERT INTO entity_status (entity_status_id, name, description, create_date, "
+            + "create_user, modify_date, modify_user) VALUES (1, 'name', 'description', "
+            + " CURRENT, USER, CURRENT, USER)");
+
+        stmt.executeUpdate("INSERT INTO entity_status (entity_status_id, name, description, create_date, "
+            + "create_user, modify_date, modify_user) VALUES (2, 'name', 'description', "
+            + " CURRENT, USER, CURRENT, USER)");
+
+        stmt.executeUpdate("INSERT INTO entity_status_history (entity_id, entity_status_id, "
+            + "start_date, end_date, create_date, modify_date, create_user, modify_user) "
+            + "VALUES (12345, 1, CURRENT, CURRENT, CURRENT, CURRENT, USER, USER)");
+
+        Thread.sleep(1000);
+
+        stmt.executeUpdate("INSERT INTO entity_status_history (entity_id, entity_status_id, "
+            + "start_date, create_date, modify_date, create_user, modify_user) "
+            + "VALUES (12345, 2, CURRENT, CURRENT, CURRENT, USER, USER)");
+        Thread.sleep(1000);
+        stmt.executeUpdate("INSERT INTO entity_status_history (entity_id, entity_status_id, "
+            + "start_date, create_date, modify_date, create_user, modify_user) "
+            + "VALUES (1, 1, CURRENT, CURRENT, CURRENT, USER, USER)");
+
+        EntityStatus[] entityStatus = informixEntityStatusTracker.getCurrentStatuses(new EntityKey[]{entityKey});
+
+        assertNotNull(entityStatus);
+
+        assertEquals("incorrect status.", 2, entityStatus[0].getStatus().getId());
+    }    
 
     /**
      * <p>
