@@ -248,7 +248,6 @@ public class InformixEntityStatusTracker extends AbstractPersistenceWithValidato
 
                 try {
                     List statuses = new ArrayList();
-                    int count = 0;
                     while (results.next()) {
                         Long resultId = results.getLong(type + "_id");
                         EntityKey locKey = null;
@@ -260,10 +259,9 @@ public class InformixEntityStatusTracker extends AbstractPersistenceWithValidato
                         }
                         if(locKey != null) {
                             statuses.add(createStatus(locKey, results, type));
+                        } else {
+                            statuses.add(null);
                         }
-                    }
-                    if(count == 0) {
-                        throw new RecordNotFoundException("no status found");
                     }
                     // return the statuses
                     return (EntityStatus[]) statuses.toArray(new EntityStatus[statuses.size()]);
