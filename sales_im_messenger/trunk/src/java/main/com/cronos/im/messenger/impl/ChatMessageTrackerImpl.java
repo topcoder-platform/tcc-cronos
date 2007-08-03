@@ -150,6 +150,8 @@ public class ChatMessageTrackerImpl implements MessageTracker {
         Connection conn = null;
         PreparedStatement userSessionIdPS = null;
         PreparedStatement messagePS = null;
+        PreparedStatement locks = null;
+        ResultSet rs = null;
 
         try {
             // Create connection
@@ -171,12 +173,17 @@ public class ChatMessageTrackerImpl implements MessageTracker {
 
             // The insertion of the new messages is made into a transactional manner
             conn.setAutoCommit(false);
+            conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            locks = conn.prepareStatement("SET LOCK MODE TO WAIT 5");
+            locks.executeUpdate();
+            
+            
 
             for (index = 0; index < userIds.length; index++) {
                 // Set userId and sessionId for userSessionIdPS
                 userSessionIdPS.setLong(1, userIds[index]);
                 userSessionIdPS.setLong(2, sessionId);
-                ResultSet rs = userSessionIdPS.executeQuery();
+                rs = userSessionIdPS.executeQuery();
 
                 long sessionUserId;
                 if (rs.next()) {
@@ -215,6 +222,12 @@ public class ChatMessageTrackerImpl implements MessageTracker {
             throw new MessageTrackerException("Exception occured during the tracking: "
                 + e.getMessage(), e, msg, userIds[index], sessionId);
         } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                } // Nothing we can do.
+            }
             // Release JDBC resources.
             if (userSessionIdPS != null) {
                 try {
@@ -225,6 +238,12 @@ public class ChatMessageTrackerImpl implements MessageTracker {
             if (messagePS != null) {
                 try {
                     messagePS.close();
+                } catch (SQLException e) {
+                } // Nothing we can do.
+            }
+            if (locks != null) {
+                try {
+                    locks.close();
                 } catch (SQLException e) {
                 } // Nothing we can do.
             }
