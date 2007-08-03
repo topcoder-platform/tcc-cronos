@@ -158,6 +158,12 @@ public class ManagerLoginAction extends LoginAction {
 
         // authorize the user
         if (getAuthorizationManager().authorize(principal, getAction(), getActionContext())) {
+            // when the user passed authorization, check if there is already an existing
+            // profile in session, if it does, redirect to error page
+            if(request.getSession().getAttribute(getUserProfileKey()) != null) {
+                doLog(user, ACTION_NAME, "" + subject.getUserId(), "Failed login, User profile already exists in Session", Level.INFO);
+                return mapping.findForward(getLoginSessionExistsFailureForwardName());
+            }
             // get the chat user profile and save it in session
             ChatUserProfile profile = getChatUserProfileManager().getProfile(user, "Registered");
             profile.setProperty(getCategoryKey(), category);

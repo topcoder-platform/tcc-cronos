@@ -260,9 +260,21 @@ public class ClientLoginAction extends LoginAction {
                 doLog(user, ACTION_NAME, "", "The requested category is unchattable", Level.WARN);
                 return mapping.findForward(unchattableForwardName);
             }
+            // check if there is already an existing
+            // profile in session, if it does, redirect to error page
+            if(request.getSession().getAttribute(getUserProfileKey()) != null) {
+                doLog(user, ACTION_NAME, user, "Failed login, User profile already exists in Session", Level.INFO);
+                return mapping.findForward(getLoginSessionExistsFailureForwardName());
+            }
             unregisteredClientLogin(request);
             return mapping.findForward(getLoginSucceedForwardName());
         } else if ("reg".equals(type)) {
+            // check if there is already an existing
+            // profile in session, if it does, redirect to error page
+            if(request.getSession().getAttribute(getUserProfileKey()) != null) {
+                doLog(user, ACTION_NAME, user, "Failed login, User profile already exists in Session", Level.INFO);
+                return mapping.findForward(getLoginSessionExistsFailureForwardName());
+            }
             if (registeredClientLogin(request)) {
                 if (!checkChattable(category)) {
                     doLog(user, ACTION_NAME, "", "The requested category is unchattable", Level.WARN);

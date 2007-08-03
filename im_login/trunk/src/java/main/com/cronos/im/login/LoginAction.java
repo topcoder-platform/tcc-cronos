@@ -146,6 +146,19 @@ abstract class LoginAction extends Action {
      * </p>
      */
     private final String loginAuthFailForwardName;
+
+    /**
+     * <p>
+     * Represents the property name which can be used to load a forward name from the config manager, the forward name
+     * is used to find forward when a profile already exists in "session" meaning login fails.
+     * </p>
+     * <p>
+     * It is initialized in constructor by being loaded from config manager, and never changed later. It cannot be
+     * <code>null</code> or empty, and if failed to be loaded then a default value "loginSessionExistsFailure" will be used. Can be
+     * accessed by getter.
+     * </p>
+     */
+    private final String loginSessionExistsFailureForwardName;
     
     /**
      * <p>
@@ -241,6 +254,7 @@ abstract class LoginAction extends Action {
         loginSucceedForwardName = IMLoginHelper.getConfig(LOGIN_ACTION_NS, "loginSucceedForward", "loginSucceed");
         loginFailForwardName = IMLoginHelper.getConfig(LOGIN_ACTION_NS, "loginFailForward", "loginFail");
         loginAuthFailForwardName = IMLoginHelper.getConfig(LOGIN_ACTION_NS, "loginAuthFailForward", "loginAuthFail");
+        loginSessionExistsFailureForwardName = IMLoginHelper.getConfig(LOGIN_ACTION_NS, "loginSessionExistsFailForward", "loginSessionExistsFail");
 
         userProfileKey = IMLoginHelper.getConfig(LOGIN_ACTION_NS, "userProfileKey", "userProfile");
         categoryKey = IMLoginHelper.getConfig(LOGIN_ACTION_NS, "categoryKey", "category");
@@ -311,6 +325,17 @@ abstract class LoginAction extends Action {
      */
     protected String getLoginAuthFailForwardName() {
         return loginAuthFailForwardName;
+    }
+
+    /**
+     * <p>
+     * Gets the loginSessionExistsFailureForwardName.
+     * </p>
+     *
+     * @return the forward name when session already exists failure page before login
+     */
+    protected String getLoginSessionExistsFailureForwardName() {
+        return loginSessionExistsFailureForwardName;
     }
     
 

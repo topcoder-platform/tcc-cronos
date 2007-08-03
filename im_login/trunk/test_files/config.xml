@@ -13,6 +13,9 @@
         <Property name="loginAuthFailForward">
             <Value>loginAuthFail</Value>
         </Property>
+        <Property name="loginSessionExistsFailForward">
+            <Value>loginSessionExistsFail</Value>
+        </Property>
         <Property name="categoryKey">
             <Value>category</Value>
         </Property>
