@@ -98,12 +98,13 @@ public class ReadManagerSessionMessageHandler extends AbstractRequestHandler {
             // Log the handler, see algorithm section.
             StringBuffer logMsgSB = new StringBuffer();
             logMsgSB.append(IMHelper.getLoggingHeader(userId));
-            logMsgSB.append(" action:PostTextMessage");
+            logMsgSB.append(" action:ReadManagerSessionMessage");
             logMsgSB.append("affected entityIDs: sessionId ");
             logMsgSB.append(sessionId);
             String logMsg = logMsgSB.toString();
             this.getLog().log(Level.INFO, logMsg);
         } catch (Exception e) {
+            e.printStackTrace();
             res.getWriter().write(
                     "<response><failure>Error occured during handling the request</failure></response>");
         }

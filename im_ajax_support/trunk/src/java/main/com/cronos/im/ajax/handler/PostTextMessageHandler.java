@@ -128,6 +128,7 @@ public class PostTextMessageHandler extends AbstractRequestHandler {
             String logMsg = logMsgSB.toString();
             this.getLog().log(Level.INFO, logMsg);
         } catch (Exception e) {
+            e.printStackTrace();
             res.getWriter().write(
                     "<response><failure>Error occured during handling the request</failure></response>");
         }
