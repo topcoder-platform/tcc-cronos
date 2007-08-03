@@ -1,0 +1,21 @@
+<action name="PluginDownload" type="default" url-pattern="/server/downloadPlugin.do" priority="10">
+    <handler type="PluginDownloadHandler">
+        <plugin_name_param_key>pluginId</plugin_name_param_key>
+    </handler>
+    <handler type="LoggingHandler">
+        <log-message>started downloading {0} plugin</log-message>
+        <parameters>pluginId</parameters>
+        <category>WEB SITE</category>
+    </handler>
+    <result name="success" type="download">
+        <download-source className="com.topcoder.web.frontcontroller.results.download.XMLBasedFileDownloadSource"/>
+        <download-id-generator
+            className="com.topcoder.web.frontcontroller.results.download.RequestBasedDownloadIDGenerator"/>
+        <download-source-param>
+            <config-file url="com/orpheus/game/server/DownloadData.xml"/>
+        </download-source-param>
+        <download-id-generator-param>
+            <request-param name="pluginId" />
+        </download-id-generator-param>
+    </result>
+</action>

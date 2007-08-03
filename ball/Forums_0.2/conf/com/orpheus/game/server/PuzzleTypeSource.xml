@@ -1,0 +1,20 @@
+<puzzle-type-source>
+    <puzzle-type-list objectFactoryNameSpace="com.orpheus.game.server.PuzzleTypeObjectFactory">
+        <puzzle-type>
+            <type-name>jigsaw</type-name>
+            <object-factory-token>JigsawPuzzle</object-factory-token>
+        </puzzle-type>
+        <puzzle-type>
+            <type-name>missing-letter</type-name>
+            <object-factory-token>MissingLetterPuzzle</object-factory-token>
+        </puzzle-type>
+        <puzzle-type>
+            <type-name>letter-scramble</type-name>
+            <object-factory-token>LetterScramblePuzzle</object-factory-token>
+        </puzzle-type>
+        <puzzle-type>
+            <type-name>sliding-tile</type-name>
+            <object-factory-token>SlidingTilePuzzle</object-factory-token>
+        </puzzle-type>
+    </puzzle-type-list>
+</puzzle-type-source>

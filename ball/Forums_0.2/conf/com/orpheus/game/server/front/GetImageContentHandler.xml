@@ -1,0 +1,19 @@
+<action name="GetImageContent" type="default" url-pattern="/server/getImage.do" priority="10">
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>admin</value>
+            <value>player</value>
+            <value>sponsor</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <result name="auth_failed" type="forward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+    </result>
+    <result name="success" type="image">
+        <image_param_key>downloadId</image_param_key>
+        <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
+        <jndi_context_name>default</jndi_context_name>
+        <use_remote_interface>true</use_remote_interface>
+    </result>
+</action>

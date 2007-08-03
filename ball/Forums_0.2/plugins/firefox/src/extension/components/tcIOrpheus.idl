@@ -1,0 +1,35 @@
+#include "nsISupports.idl"
+#include "domstubs.idl"
+
+[scriptable, uuid(a7e28a7b-f3aa-445a-860e-7e155f1288ff)]
+interface tcIOrpheus : nsISupports
+{
+//	attribute boolean isLoggedIn;
+	
+//    void registerToolbar(in nsIDOMWindow aToolbarWindow);
+    
+//    void unregisterToolbar(in nsIDOMWindow aToolbarWindow);
+    
+//    boolean currentTargetTest(in nsIDOMElement aElement);
+    
+//    void domainTest(in string aURL);
+    
+//    long getWorkingGame();
+    
+//    string getFeedTimestamp();
+    
+//    long getTargetSequence();
+    
+    // these method are exposed for scripting
+//    void loggedIn();
+    
+//    void loggedOut();
+    
+//    void setWorkingGame(in long aGameId);
+    
+//    void setCurrentTarget(in string aHash, in long aSequence);
+    
+  //  void pollMessages();
+    
+  //  boolean isPopup(in nsISupports aWindow);
+};

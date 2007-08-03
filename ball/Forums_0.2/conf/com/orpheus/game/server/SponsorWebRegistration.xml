@@ -1,0 +1,429 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <!-- Here is the configuration for the Web Registration component. For sponsors-->
+    <Config name="com.topcoder.web.registration.sponsor">
+        <Property name="user_profile_manager_namespace">
+            <Value>com.topcoder.user.profile.manager</Value>
+        </Property>
+        <Property name="user_profile_type_names">
+            <Value>base</Value>
+            <Value>credentials</Value>
+            <Value>address</Value>
+            <Value>sponsor</Value>
+        </Property>
+        <Property name="user_profile_email_address_key">
+            <Value>email_address</Value>
+        </Property>
+        <Property name="user_profile_id_generator">
+            <Property name="name">
+                <Value>web_registration_generator</Value>
+            </Property>
+            <Property name="class">
+                <Value>com.topcoder.util.idgenerator.IDGeneratorImpl</Value>
+            </Property>
+        </Property>
+        <Property name="email_confirmation_namespace">
+            <Value>com.topcoder.validation.emailconfirmation.sponsor</Value>
+        </Property>
+        <Property name="form_input_manager_parser_namespace">
+            <Value>com.topcoder.web.registration.parsers.sponsor</Value>
+        </Property>
+        <Property name="start_phase">
+            <Property name="name">
+                <Value>start</Value>
+            </Property>
+            <Property name="error_page">
+                <Value>/server/activeGames.do</Value>
+            </Property>
+        </Property>
+        <Property name="question_phases">
+            <Property name="question_phase_names">
+                <Value>step1</Value>
+                <Value>step2</Value>
+                <Value>step3</Value>
+            </Property>
+            <Property name="step1">
+                <Property name="page">
+                    <Value>/public/sponsor-signup.jsp</Value>
+                </Property>
+                <Property name="error_page">
+                    <Value>/public/sponsor-signup.jsp</Value>
+                </Property>
+                <Property name="validation_set_name">
+                    <Value>tos_acceptance_rules</Value>
+                </Property>
+                <Property name="parser_set_name">
+                    <Value>tos_parser_set</Value>
+                </Property>
+                <Property name="content_required">
+                    <Value>true</Value>
+                </Property>
+            </Property>
+            <Property name="step2">
+                <Property name="page">
+                    <Value>/public/sponsor-signup-step2.jsp</Value>
+                </Property>
+                <Property name="error_page">
+                    <Value>/public/sponsor-signup-step2.jsp</Value>
+                </Property>
+                <Property name="validation_set_name">
+                    <Value>sponsor_info_validation_rules</Value>
+                </Property>
+                <Property name="parser_set_name">
+                    <Value>sponsor_info_parser_set</Value>
+                </Property>
+                <Property name="content_required">
+                    <Value>true</Value>
+                </Property>
+            </Property>
+            <Property name="step3">
+                <Property name="page">
+                    <Value>/public/sponsor-signup-step3.jsp</Value>
+                </Property>
+                <Property name="error_page">
+                    <Value>/public/sponsor-signup-step3.jsp</Value>
+                </Property>
+                <Property name="validation_set_name">
+                    <Value>sponsor_domains_validation_rules</Value>
+                </Property>
+                <Property name="parser_set_name">
+                    <Value>sponsor_domains_parser_set</Value>
+                </Property>
+                <Property name="content_required">
+                    <Value>true</Value>
+                </Property>
+            </Property>
+        </Property>
+
+        <Property name="email_validation_request_phase">
+            <Property name="name">
+                <Value>step4</Value>
+            </Property>
+            <Property name="page">
+                <Value>/server/sponsor/submitDomains.do</Value>
+            </Property>
+            <Property name="error_page">
+                <Value>/public/sponsor-signup-step4.jsp</Value>
+            </Property>
+        </Property>
+        <Property name="email_confirmation_request_phase">
+            <!-- The name of the phase. -->
+            <Property name="name">
+                <Value>step5</Value>
+            </Property>
+            <Property name="page">
+                <Value>/public/login.jsp</Value>
+            </Property>
+            <Property name="error_page">
+                <Value>/public/error.jsp</Value>
+            </Property>
+        </Property>
+    </Config>
+    <!-- Here is the configuration for the FormInputParserManager class. -->
+    <Config name="com.topcoder.web.registration.parsers.sponsor">
+        <Property name="tos_parser_set">
+            <Property name="tos_parser">
+                <Property name="class">
+                    <Value>com.topcoder.web.registration.parsers.FormInputParser</Value>
+                </Property>
+                <Property name="namespace">
+                    <Value>com.orpheus.game.server.TOSParser</Value>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="sponsor_info_parser_set">
+            <Property name="username_parser">
+                <Property name="class">
+                    <Value>com.topcoder.web.registration.parsers.FormInputParser</Value>
+                </Property>
+                <Property name="namespace">
+                    <Value>com.orpheus.game.server.UsernameParser</Value>
+                </Property>
+            </Property>
+            <Property name="password_parser">
+                <Property name="class">
+                    <Value>com.topcoder.web.registration.parsers.FormInputParser</Value>
+                </Property>
+                <Property name="namespace">
+                    <Value>com.orpheus.game.server.PasswordParser</Value>
+                </Property>
+            </Property>
+            <Property name="email_address_parser">
+                <Property name="class">
+                    <Value>com.topcoder.web.registration.parsers.FormInputParser</Value>
+                </Property>
+                <Property name="namespace">
+                    <Value>com.orpheus.game.server.EmailAddressParser</Value>
+                </Property>
+            </Property>
+            <Property name="firstName_parser">
+                <Property name="class">
+                    <Value>com.topcoder.web.registration.parsers.FormInputParser</Value>
+                </Property>
+                <Property name="namespace">
+                    <Value>com.orpheus.game.server.SponsorFirstNameParser</Value>
+                </Property>
+            </Property>
+            <Property name="lastName_parser">
+                <Property name="class">
+                    <Value>com.topcoder.web.registration.parsers.FormInputParser</Value>
+                </Property>
+                <Property name="namespace">
+                    <Value>com.orpheus.game.server.SponsorLastNameParser</Value>
+                </Property>
+            </Property>
+            <Property name="address1_parser">
+                <Property name="class">
+                    <Value>com.topcoder.web.registration.parsers.FormInputParser</Value>
+                </Property>
+                <Property name="namespace">
+                    <Value>com.orpheus.game.server.SponsorAddress1Parser</Value>
+                </Property>
+            </Property>
+            <Property name="address2_parser">
+                <Property name="class">
+                    <Value>com.topcoder.web.registration.parsers.FormInputParser</Value>
+                </Property>
+                <Property name="namespace">
+                    <Value>com.orpheus.game.server.SponsorAddress2Parser</Value>
+                </Property>
+            </Property>
+            <Property name="city_parser">
+                <Property name="class">
+                    <Value>com.topcoder.web.registration.parsers.FormInputParser</Value>
+                </Property>
+                <Property name="namespace">
+                    <Value>com.orpheus.game.server.SponsorCityParser</Value>
+                </Property>
+            </Property>
+            <Property name="state_parser">
+                <Property name="class">
+                    <Value>com.topcoder.web.registration.parsers.FormInputParser</Value>
+                </Property>
+                <Property name="namespace">
+                    <Value>com.orpheus.game.server.SponsorStateParser</Value>
+                </Property>
+            </Property>
+            <Property name="country_parser">
+                <Property name="class">
+                    <Value>com.topcoder.web.registration.parsers.FormInputParser</Value>
+                </Property>
+                <Property name="namespace">
+                    <Value>com.orpheus.game.server.SponsorCountryParser</Value>
+                </Property>
+            </Property>
+            <Property name="zipCode_parser">
+                <Property name="class">
+                    <Value>com.topcoder.web.registration.parsers.FormInputParser</Value>
+                </Property>
+                <Property name="namespace">
+                    <Value>com.orpheus.game.server.SponsorZipCodeParser</Value>
+                </Property>
+            </Property>
+            <Property name="phone_parser">
+                <Property name="class">
+                    <Value>com.topcoder.web.registration.parsers.FormInputParser</Value>
+                </Property>
+                <Property name="namespace">
+                    <Value>com.orpheus.game.server.SponsorPhoneParser</Value>
+                </Property>
+            </Property>
+            <Property name="fax_parser">
+                <Property name="class">
+                    <Value>com.topcoder.web.registration.parsers.FormInputParser</Value>
+                </Property>
+                <Property name="namespace">
+                    <Value>com.orpheus.game.server.SponsorFaxParser</Value>
+                </Property>
+            </Property>
+            <Property name="paymentMethod_parser">
+                <Property name="class">
+                    <Value>com.topcoder.web.registration.parsers.FormInputParser</Value>
+                </Property>
+                <Property name="namespace">
+                    <Value>com.orpheus.game.server.SponsorPaymentPrefParser</Value>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="sponsor_domains_parser_set">
+            <Property name="domain_1_parser">
+                <Property name="class">
+                    <Value>com.topcoder.web.registration.parsers.FormInputParser</Value>
+                </Property>
+                <Property name="namespace">
+                    <Value>com.orpheus.game.server.DomainsInfoParser</Value>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="com.orpheus.game.server.SponsorFirstNameParser">
+        <Property name="form_input_keys">
+            <Value>firstName</Value>
+        </Property>
+        <Property name="result_keys">
+            <Value>first_name</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.orpheus.game.server.SponsorLastNameParser">
+        <Property name="form_input_keys">
+            <Value>lastName</Value>
+        </Property>
+        <Property name="result_keys">
+            <Value>last_name</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.orpheus.game.server.SponsorAddress1Parser">
+        <Property name="form_input_keys">
+            <Value>address1</Value>
+        </Property>
+        <Property name="result_keys">
+            <Value>address-street1</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.orpheus.game.server.SponsorAddress2Parser">
+        <Property name="form_input_keys">
+            <Value>address2</Value>
+        </Property>
+        <Property name="result_keys">
+            <Value>address-street2</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.orpheus.game.server.SponsorCityParser">
+        <Property name="form_input_keys">
+            <Value>city</Value>
+        </Property>
+        <Property name="result_keys">
+            <Value>address-city</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.orpheus.game.server.SponsorStateParser">
+        <Property name="form_input_keys">
+            <Value>state</Value>
+        </Property>
+        <Property name="result_keys">
+            <Value>address-state</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.orpheus.game.server.SponsorCountryParser">
+        <Property name="form_input_keys">
+            <Value>country</Value>
+        </Property>
+        <Property name="result_keys">
+            <Value>address-country</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.orpheus.game.server.SponsorZipCodeParser">
+        <Property name="form_input_keys">
+            <Value>zipCode</Value>
+        </Property>
+        <Property name="result_keys">
+            <Value>address-postal-code</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.orpheus.game.server.SponsorPhoneParser">
+        <Property name="form_input_keys">
+            <Value>phone</Value>
+        </Property>
+        <Property name="result_keys">
+            <Value>address-phone-number</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.orpheus.game.server.SponsorFaxParser">
+        <Property name="form_input_keys">
+            <Value>fax</Value>
+        </Property>
+        <Property name="result_keys">
+            <Value>sponsor-fax-number</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.orpheus.game.server.SponsorPaymentPrefParser">
+        <Property name="form_input_keys">
+            <Value>paymentMethod</Value>
+        </Property>
+        <Property name="result_keys">
+            <Value>sponsor-payment-pref</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.orpheus.game.server.DomainsInfoParser">
+        <Property name="form_input_keys">
+            <Value>domain_1</Value>
+<!--
+            <Value>domain_2</Value>
+            <Value>domain_3</Value>
+            <Value>domain_4</Value>
+            <Value>domain_5</Value>
+-->
+        </Property>
+        <Property name="result_keys">
+            <Value>domain_1</Value>
+<!--
+            <Value>domain_2</Value>
+            <Value>domain_3</Value>
+            <Value>domain_4</Value>
+            <Value>domain_5</Value>
+-->
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.validation.emailconfirmation.sponsor">
+        <Property name="dynamicContentDelimiter">
+            <Value>%%%</Value>
+        </Property>
+        <Property name="unlockCodeLength">
+            <Value>8</Value>
+        </Property>
+        <Property name="unlockCodeAlphabet">
+            <Value>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789</Value>
+        </Property>
+        <Property name="addressValidationLevel">
+            <Value>syntax</Value>
+        </Property>
+        <Property name="expirationInterval">
+            <Value>0</Value>
+        </Property>
+        <Property name="fromAddress">
+            <Value>do-not-reply@theball.com</Value>
+        </Property>
+        <Property name="defaultMessageSubject">
+            <Value>The Ball Sponsor Account Activation</Value>
+        </Property>
+        <Property name="defaultMessageBody">
+            <Value>Hello,
+
+Thank you for registering to be a sponsor of The Ball.  The next step is
+to confirm your e-mail address by browsing to this URL:
+
+http://www.theball.com/public/sponsorRegistration.jsp?a=%%%confirm_email%%%&amp;u=%%%confirm_unlock_code%%%
+
+After that, an administrator must review and approve your account before
+you can bid to host the Ball on your web site.  Please expect to be
+contacted within ten business days in connection with the review.
+
+Good Luck,
+The Ball Team
+</Value>
+        </Property>
+        <Property name="callbackClass">
+            <Value>com.orpheus.game.server.util.OrpheusEmailConfirmationCallbackSupport</Value>
+        </Property>
+        <Property name="customizerClass">
+            <Value>com.orpheus.game.server.util.OrpheusEmailContentCustomizer</Value>
+        </Property>
+        <Property name="localStorageClass">
+            <Value>com.orpheus.user.persistence.RemoteOrpheusPendingConfirmationStorage</Value>
+        </Property>
+    </Config>
+
+</CMConfig>

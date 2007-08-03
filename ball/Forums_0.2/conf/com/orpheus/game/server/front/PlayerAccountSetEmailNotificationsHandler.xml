@@ -1,0 +1,30 @@
+<action name="PlayerAccountSetEmailNotifications" type="default" url-pattern="/server/player/myAccount-setEmailNotifications.do" priority="10">
+    <handler type="SessionValidationHandler">
+        <login_page_result>login</login_page_result>
+    </handler>
+    <handler type="SetEmailNotificationsHandler">
+    	<email_general_notifications_param>general</email_general_notifications_param>
+    	<object_factory_ns>com.orpheus.game.server.ObjectFactory</object_factory_ns>
+    </handler>
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>player</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <result name="auth_failed" type="loggingForward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+        <log-message>attempted to view Player Account - Set Email Notifications page without PLAYER role assigned</log-message>
+        <category>WEB SITE</category>
+    </result>
+    <result name="success" type="loggingForward">
+        <forward-url>/WEB-INF/player/myaccount-setemailnotifications.jsp</forward-url>
+        <log-message>presented with Player Account - Set Email Notifications page</log-message>
+        <category>WEB SITE</category>
+    </result>
+    <result name="login" type="loggingForward">
+        <forward-url>/public/timeout.jsp</forward-url>
+        <log-message>failed to open Player Account - Set Email Notifications page due to session timeout or is not authenticated to server</log-message>
+        <category>WEB SITE</category>
+    </result>
+</action>

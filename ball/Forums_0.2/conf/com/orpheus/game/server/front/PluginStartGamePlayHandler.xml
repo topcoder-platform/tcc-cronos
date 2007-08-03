@@ -1,0 +1,67 @@
+<action name="PluginStartGamePlay" type="default" url-pattern="/server/plugin/startGamePlay.do" priority="10">
+    <handler type="SessionValidationHandler">
+        <login_page_result>login</login_page_result>
+    </handler>
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>player</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <handler type="StartGamePlayHandler">
+        <domain_param_key>domain</domain_param_key>
+        <game_id_param_key>gameId</game_id_param_key>
+        <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
+        <jndi_context_name>default</jndi_context_name>
+        <use_remote_interface>true</use_remote_interface>
+        <game_play_key>gamePlayInfo</game_play_key>
+    </handler>
+    <result name="success" type="dbLoggingForward">
+        <forward-url>UNUSED</forward-url>
+        <log-message>ERROR IN APPLICATION'S LOGIC - SHOULD NOT REACH THAT FORWARD</log-message>
+        <action-code>2</action-code>
+    </result>
+    <result name="nextClueResult" type="dbLoggingForward">
+        <forward-url>/WEB-INF/plugin/alert-foundobject.jsp?notitle=true</forward-url>
+        <log-message>resumed the game play for game {0} and domain {1} and has to find next target in sequence
+        </log-message>
+        <parameters>gameId,domain</parameters>
+        <action-code>141</action-code>
+    </result>
+    <result name="brainTeaserResult" type="dbLoggingForward">
+        <forward-url>/server/plugin/brainteaser.do</forward-url>
+        <log-message>starting the game play for game {0} and domain {1}</log-message>
+        <parameters>gameId,domain</parameters>
+        <action-code>146</action-code>
+    </result>
+    <result name="foundKeyResult" type="dbLoggingForward">
+        <forward-url>/WEB-INF/plugin/alert-foundkey.jsp</forward-url>
+        <log-message>resumed the game play for game {0} and domain {1} while already having all targets found and found
+            a key for domain
+        </log-message>
+        <parameters>gameId,domain</parameters>
+        <action-code>143</action-code>
+    </result>
+    <result name="foundBallResult" type="dbLoggingForward">
+        <forward-url>/WEB-INF/plugin/alert-foundball.jsp</forward-url>
+        <log-message>resumed the game play for game {0} and domain {1} while already having all targets found and found
+            The Ball
+        </log-message>
+        <parameters>gameId,domain</parameters>
+        <action-code>142</action-code>
+    </result>
+    <result name="auth_failed" type="dbLoggingForward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+        <log-message>attempted to start game play for game {0} and domain {1} without PLAYER role assigned</log-message>
+        <parameters>gameId,domain</parameters>
+        <action-code>14</action-code>
+    </result>
+    <result name="login" type="dbLoggingForward">
+        <forward-url>/plugin/http401.jsp</forward-url>
+        <log-message>had failed to start game play for game {0} and domain {1} due to session timeout or is not
+            authenticated to server
+        </log-message>
+        <parameters>gameId,domain</parameters>
+        <action-code>105</action-code>
+    </result>
+</action>

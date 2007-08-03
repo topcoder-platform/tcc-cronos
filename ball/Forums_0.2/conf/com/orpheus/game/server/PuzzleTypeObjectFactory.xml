@@ -1,0 +1,432 @@
+<?xml version="1.0" ?>
+<CMConfig>
+    <!-- Configuration parameters for Object Factory used to instantiate the puzzle types -->
+    <Config name="com.orpheus.game.server.PuzzleTypeObjectFactory">
+        <Property name="MissingLetterMediaTypesArray">
+            <Property name="arrayType">
+                <Value>String</Value>
+            </Property>
+            <Property name="dimension">
+                <Value>1</Value>
+            </Property>
+            <Property name="values">
+                <Value>{DHTML}</Value>
+            </Property>
+        </Property>
+        <Property name="MissingLetterRendererKeysArray">
+            <Property name="arrayType">
+                <Value>String</Value>
+            </Property>
+            <Property name="dimension">
+                <Value>1</Value>
+            </Property>
+            <Property name="values">
+                <Value>{MissingLetterDHTMLRenderer}</Value>
+            </Property>
+        </Property>
+        <Property name="MissingLetterDHTMLRenderer">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+            <Property name="params">
+                <!-- Generator Key -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>MissingLetterDHTMLRenderer</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="DHTML">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>DHTML</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="LetterScrambleMediaTypesArray">
+            <Property name="arrayType">
+                <Value>String</Value>
+            </Property>
+            <Property name="dimension">
+                <Value>1</Value>
+            </Property>
+            <Property name="values">
+                <Value>{DHTML}</Value>
+            </Property>
+        </Property>
+        <Property name="LetterScrambleRendererKeysArray">
+            <Property name="arrayType">
+                <Value>String</Value>
+            </Property>
+            <Property name="dimension">
+                <Value>1</Value>
+            </Property>
+            <Property name="values">
+                <Value>{LetterScrambleDHTMLRenderer}</Value>
+            </Property>
+        </Property>
+        <Property name="LetterScrambleDHTMLRenderer">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+            <Property name="params">
+                <!-- Generator Key -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>LetterScrambleDHTMLRenderer</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <!-- Jigsaw Puzzle -->
+        <Property name="JigsawPuzzle">
+            <Property name="type">
+                <Value>com.topcoder.util.puzzle.jigsaw.JigsawPuzzleType</Value>
+            </Property>
+        </Property>
+        <!-- Missing Letter puzzle -->
+        <Property name="MissingLetterPuzzle">
+            <Property name="type">
+                <Value>com.topcoder.util.puzzle.missingletter.MissingLetterPuzzleType</Value>
+            </Property>
+            <Property name="params">
+                <!-- Generator Key -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>generator</Value>
+                    </Property>
+                </Property>
+                <!-- Renderer Media Types -->
+                <Property name="param2">
+                    <Property name="name">
+                        <Value>MissingLetterMediaTypesArray</Value>
+                    </Property>
+                </Property>
+                <!-- Renderer Keys -->
+                <Property name="param3">
+                    <Property name="name">
+                        <Value>MissingLetterRendererKeysArray</Value>
+                    </Property>
+                </Property>
+                <!-- Namespace -->
+                <Property name="param4">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.util.puzzle.missingletter.MissingLetterPuzzleType</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <!-- Letter Scramble puzzle -->
+        <Property name="LetterScramblePuzzle">
+            <Property name="type">
+                <Value>com.topcoder.util.puzzle.letterscramble.LetterScramblePuzzleType</Value>
+            </Property>
+            <Property name="params">
+                <!-- Generator Key -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>generator</Value>
+                    </Property>
+                </Property>
+                <!-- Renderer Media Types -->
+                <Property name="param2">
+                    <Property name="name">
+                        <Value>LetterScrambleMediaTypesArray</Value>
+                    </Property>
+                </Property>
+                <!-- Renderer Keys -->
+                <Property name="param3">
+                    <Property name="name">
+                        <Value>LetterScrambleRendererKeysArray</Value>
+                    </Property>
+                </Property>
+                <!-- Namespace -->
+                <Property name="param4">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.util.puzzle.letterscramble.LetterScramblePuzzleType</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <!-- Sliding Tile puzzle -->
+        <Property name="SlidingTilePuzzle">
+            <Property name="type">
+                <Value>com.topcoder.util.puzzle.slidingtile.SlidingTilePuzzleType</Value>
+            </Property>
+        </Property>
+
+        <!-- URL Formatter for Jigsaw puzzle -->
+        <Property name="com/orpheus/game/server/util/PuzzleResourceFormatter:Jigsaw">
+            <Property name="type">
+                <Value>com.orpheus.game.server.util.PuzzleResourceFormatter</Value>
+            </Property>
+        </Property>
+
+
+        <!-- BMP Image Encoder for Sliding Tile Puzzle -->
+        <Property name="com/topcoder/util/image/manipulation/ImageEncoder:BMPKey">
+            <Property name="type">
+                <Value>com.topcoder.util.image.manipulation.encoder.BMPImageEncoder</Value>
+            </Property>
+        </Property>
+        <!-- JPEG Image Encoder for Sliding Tile Puzzle -->
+        <Property name="com/topcoder/util/image/manipulation/ImageEncoder:jpegKey">
+            <Property name="type">
+                <Value>com.topcoder.util.image.manipulation.encoder.JPEGImageEncoder</Value>
+            </Property>
+        </Property>
+        <!-- GIF Image Encoder for Sliding Tile Puzzle -->
+        <Property name="com/topcoder/util/image/manipulation/ImageEncoder:GIFKey">
+            <Property name="type">
+                <Value>com.topcoder.util.image.manipulation.encoder.GIFImageEncoder</Value>
+            </Property>
+        </Property>
+        <!-- Renderer for Sliding Tile Puzzle -->
+        <Property name="com/topcoder/util/puzzle/PuzzleRenderer:SlidingTileRenderer">
+            <Property name="type">
+                <Value>com.topcoder.util.puzzle.slidingtile.renderer.SlidingTileDHTMLPuzzleRenderer</Value>
+            </Property>
+        </Property>
+
+        <Property name="com/topcoder/util/puzzle/slidingtile/renderer/PuzzleResourceURLProvider:URLProvider">
+            <Property name="type">
+                <Value>com.orpheus.game.server.util.OrpheusPuzzleResourceURLProvider</Value>
+            </Property>
+        </Property>
+
+        <Property name="com/topcoder/util/puzzle/slidingtile/renderer/SlidingTilePuzzleRandomizer:SlidingTilePuzzleRandomizer">
+            <Property name="type">
+                <Value>com.topcoder.util.puzzle.slidingtile.renderer.randomizer.ScrambleSlidingTilePuzzleRandomizer</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>int</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>30</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <!-- Configuration for sliding tile puzzle type -->
+    <Config name="com.topcoder.util.puzzle.slidingtile">
+        <Property name="GeneratorNamespace">
+            <Value>com.topcoder.util.puzzle.slidingtile.generator</Value>
+        </Property>
+        <Property name="Renderers">
+            <Property name="ObjectFactoryNamespace">
+                <Value>com.orpheus.game.server.PuzzleTypeObjectFactory</Value>
+            </Property>
+            <Property name="RendererKeys">
+                <Value>SlidingTileRenderer</Value>
+            </Property>
+        </Property>
+    </Config>
+
+    <!-- Encoder configuration. -->
+    <Config name="com.topcoder.util.puzzle.slidingtile.encoders">
+        <Property name="Encoders">
+            <Property name="EncoderNames">
+                <Value>BMP</Value>
+                <Value>GIF</Value>
+                <Value>jpeg</Value>
+            </Property>
+            <Property name="ObjectFactoryNamespace">
+                <Value>com.orpheus.game.server.PuzzleTypeObjectFactory</Value>
+            </Property>
+        </Property>
+    </Config>
+
+    <!-- Base renderer configuration. -->
+    <Config name="com.topcoder.util.puzzle.slidingtile.renderer.config">
+        <Property name="PuzzleResourceURLProvider">
+            <Property name="ObjectFactoryNamespace">
+                <Value>com.orpheus.game.server.PuzzleTypeObjectFactory</Value>
+            </Property>
+            <Property name="PuzzleResourceURLProviderKey">
+                <Value>URLProvider</Value>
+            </Property>
+        </Property>
+        <Property name="SlidingTilePuzzleRandomizer">
+            <Property name="ObjectFactoryNamespace">
+                <Value>com.orpheus.game.server.PuzzleTypeObjectFactory</Value>
+            </Property>
+            <Property name="SlidingTilePuzzleRandomizerKey">
+                <Value>SlidingTilePuzzleRandomizer</Value>
+            </Property>
+        </Property>
+    </Config>
+
+    <!-- DHTML renderer configuration. -->
+    <Config name="com.topcoder.util.puzzle.slidingtile.renderer.dhtml">
+        <Property name="SlidingTilePuzzleRendererConfigNamespace">
+            <Value>com.topcoder.util.puzzle.slidingtile.renderer.config</Value>
+        </Property>
+        <Property name="SolutionSubmissionURL">
+            <Value>http://www.theball.com/server/plugin/testPuzzle.do</Value>
+        </Property>
+    </Config>
+
+    <!-- Puzzle generator configuration. -->
+    <Config name="com.topcoder.util.puzzle.slidingtile.generator">
+    </Config>
+
+    <!-- Configuration for DHTML Renderer for Jigsaw puzzle -->
+    <Config name="com.topcoder.util.puzzle.jigsaw.dhtml.DHTMLPuzzleRenderer">
+        <Property name="objectFactoryNamespace">
+            <Value>com.orpheus.game.server.PuzzleTypeObjectFactory</Value>
+        </Property>
+        <Property name="urlFormatter">
+            <Property name="classname">
+                <Value>com.orpheus.game.server.util.PuzzleResourceFormatter</Value>
+            </Property>
+            <Property name="identifier">
+                <Value>Jigsaw</Value>
+            </Property>
+        </Property>
+        <Property name="solutionUrl">
+            <Value>http://www.theball.com/server/plugin/testPuzzle.do</Value>
+        </Property>
+        <Property name="jsLocation">
+            <Value>/js/jigsawPuzzle.js</Value>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Missing Letter puzzle type -->
+    <Config name="com.topcoder.util.puzzle.missingletter.MissingLetterPuzzleType">
+        <Property name="generator">
+            <Property name="type">
+                <Value>com.topcoder.util.puzzle.missingletter.MissingLetterPuzzleGenerator</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>instanceCoverer</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="instanceCoverer">
+            <Property name="type">
+                <Value>com.topcoder.util.puzzle.missingletter.coverers.GradedLetterInstanceCoverer</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>grade</Value>
+                    </Property>
+                </Property>
+                <Property name="param2">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>_</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="grade">
+            <Property name="type">
+                <Value>com.topcoder.util.puzzle.missingletter.coverers.Grade</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <!-- Allowed values: easy, random, hard -->
+                        <Value>easy</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="MissingLetterDHTMLRenderer">
+            <Property name="type">
+                <Value>com.topcoder.util.puzzle.missingletter.MissingLetterPuzzleRenderer</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>DHTMLDisplayFormatter</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="DHTMLDisplayFormatter">
+            <Property name="type">
+                <Value>com.topcoder.util.puzzle.missingletter.displayformatters.HtmlDisplayFormatter</Value>
+            </Property>
+        </Property>
+    </Config>
+
+    <!-- Configuration for Letter Scramble puzzle type -->
+    <Config name="com.topcoder.util.puzzle.letterscramble.LetterScramblePuzzleType">
+        <Property name="com/topcoder/util/puzzle/PuzzleGenerator:generator">
+            <Property name="type">
+                <Value>com.topcoder.util.puzzle.letterscramble.LetterScramblePuzzleGenerator</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>GradedLetterScrambler</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="GradedLetterScrambler">
+            <Property name="type">
+                <Value>com.topcoder.util.puzzle.letterscramble.letterscramblers.GradedLetterScrambler</Value>
+            </Property>
+        </Property>
+        <Property name="com/topcoder/util/puzzle/PuzzleRenderer:LetterScrambleDHTMLRenderer">
+            <Property name="type">
+                <Value>com.topcoder.util.puzzle.letterscramble.LetterScramblePuzzleRenderer</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>DHTMLDisplayFormatter</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="DHTMLDisplayFormatter">
+            <Property name="type">
+                <Value>com.topcoder.util.puzzle.letterscramble.displayformatters.HtmlDisplayFormatter</Value>
+            </Property>
+        </Property>
+    </Config>
+
+</CMConfig>

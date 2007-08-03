@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<RESTConfiguration>
+    <ContextDefinitions>
+        <ContextDefinition name="LoginHandler" displayName="AccountName">
+            <RESTElement name="Parent" scope="request-param" scopeId="parents">
+                <RESTAttribute name="sex" scope="request-param" scopeId="sex"/>
+                <RESTAttribute name="age" scope="request-param" scopeId="age"/>
+                <RESTElement name="Child" scope="request-param" scopeId="Children">
+                    <RESTAttribute name="sex" scope="request-param" scopeId="childSex"/>
+                    <RESTAttribute name="age" scope="request-param" scopeId="childAge"/>
+                </RESTElement>
+            </RESTElement>
+        </ContextDefinition>
+    </ContextDefinitions>
+
+    <UrlDefinitions>
+        <UrlDefinition name="LoginHandler" baseURL="http://64.14.82.74/RESTFrontController/SimpleServlet">
+            <RESTSubstitutionPattern name="userName" scope="request-param" scopeId="name" pattern="ACCOUNT"/>
+        </UrlDefinition>
+    </UrlDefinitions>
+</RESTConfiguration>

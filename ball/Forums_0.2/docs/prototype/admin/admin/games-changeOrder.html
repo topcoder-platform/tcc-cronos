@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title></title>
+		<link rel="stylesheet" type="text/css" media="all" href="../css/styles.css" />		
+		<script language="javascript" src="../js/popup.js" type="text/javascript"></script>
+		<script type="text/javascript">
+		function SwapImage1() {
+		  document.image1.src="../i/nav/admin_home_on.gif"
+		}
+		function SwapImage1Back() {
+		  document.image1.src="../i/nav/admin_home_off.gif"
+		}
+		function SwapImage2() {
+		  document.image2.src="../i/nav/admin_sponsorapp_on.gif"
+		}
+		function SwapImage2Back() {
+		  document.image2.src="../i/nav/admin_sponsorapp_off.gif"
+		}		
+		function SwapImage3() {
+		  document.image3.src="../i/nav/admin_winnerapp_on.gif"
+		}
+		function SwapImage3Back() {
+		  document.image3.src="../i/nav/admin_winnerapp_off.gif"
+		}
+		function SwapImage4() {
+		  document.image4.src="../i/nav/admin_game_on.gif"
+		}
+		function SwapImage4Back() {
+		  document.image4.src="../i/nav/admin_game_off.gif"
+		}		
+		</script>
+		
+</head>
+	
+<body id="page">
+	<div id="container">
+<!-- Header	 -->
+		<div id="header"><span class="links"><a href="../logout.html" title="Logout">Logout</a>
+</span>
+			<a href="../index.html" title="Home"><img src="../i/logo.jpg" alt="Logo" width="202" height="65" /></a>
+		</div>
+<!-- Navigation Admin -->
+		<div id="nav">
+			<ul>
+				<li><a href="index.html" title="Admin Home"><img src="../i/nav/admin_home_off.gif" name="image1" border="0" onMouseOver="SwapImage1()" onMouseOut="SwapImage1Back()" alt="Home" /></a></li>
+				<li><a href="sponsor.html" title="Sponsor Approval"><img src="../i/nav/admin_sponsorapp_off.gif" name="image2" border="0" onMouseOver="SwapImage2()" onMouseOut="SwapImage2Back()" alt="Sponsor Approval" /></a></li>
+				<li><a href="winners.html" title="Winner Approval"><img src="../i/nav/admin_winnerapp_off.gif" name="image3" border="0" onMouseOver="SwapImage3()" onMouseOut="SwapImage3Back()" alt="Winner Approval" /></a></li>
+				<li><a href="games.html" title="Game Management"><img src="../i/nav/admin_game_on.gif" alt="Game Management" /></a></li>
+				<li>
+				<img border="0" src="../i/nav/admin_endbar.gif" width="208" height="30" /></li>
+			</ul>
+			<ul class="subbar admin">
+				<li><a href="games.html">View All Games</a></li>
+				<li><a href="games-new.html">Create New Game</a></li>
+			</ul>
+		</div>		
+		<div id="wrap">
+					<div id="breadcrumb-admin">&raquo; Game Management &nbsp; &raquo; View All Games &nbsp;<span class="active"> &raquo; Change Hosting Order</span></div>
+					<p>Select a row to view Ball progress and alter the hosting Order of a game.</p>
+				<div id="data-table-admin">
+					<ul>
+						<li class="open"><a href="#">BLOCK 1</a></li>
+						<li class="admin-block">
+							<table border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<th width="76">&nbsp;</th>
+									<th width="14%">URL</th>
+									<th width="5%">Sponsor</th>
+									<th align="center" width="20%">Max Duration</th>
+									<th width="11%">Brainteaser</th>
+									<th width="7%" nowrap>Puzzle</th>
+									<th width="7%">Reorder</th>
+									<th width="16%">Remove</th>
+								</tr>
+								<tr class="strike">
+									<td class="center">&nbsp;</td>
+									<td class="strike">www.americanexchange.com</td>
+									<td nowrap>American Exchange</td>
+									<td class="center">0h 00m</td>
+									<td class="center"><a href="view-brainteaser.html" onclick="NewWindow(this.href,'Detail','500','500','yes');return false"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /></a></td>
+									<td class="center"><a href="view-puzzle.html" onclick="NewWindow(this.href,'Detail','500','500','yes');return false"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /></a></td>
+									<td class="center">&nbsp;</td>
+									<td align="center">&nbsp;</td>
+								</tr>
+								<tr class="strike">
+									<td class="center">&nbsp;</td>
+									<td>www.bankofamerica.com</td>
+									<td>Bank of America</td>
+									<td class="center">0h 00m</td>
+									<td class="center">
+									<a href="view-brainteaser.html" onclick="NewWindow(this.href,'Detail','500','500','yes');return false"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /></a></td>
+									<td class="center">
+									<a href="view-puzzle.html" onclick="NewWindow(this.href,'Detail','500','500','yes');return false"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /></a></td>
+									<td class="center">&nbsp;</td>
+									<td align="center">&nbsp;</td>
+								</tr>
+								<tr class="strike">
+									<td class="center">&nbsp;</td>
+									<td>www.plantronics.com</td>
+									<td>Plantronics</td>
+									<td class="center">0h 00m</td>
+									<td class="center">
+									<a href="view-brainteaser.html" onclick="NewWindow(this.href,'Detail','500','500','yes');return false"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /></a></td>
+									<td class="center">
+									<a href="view-puzzle.html" onclick="NewWindow(this.href,'Detail','500','500','yes');return false"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /></a></td>
+									<td class="center">&nbsp;</td>
+									<td align="center">&nbsp;</td>
+								</tr>
+								<tr class="strike">
+									<td class="center">&nbsp;</td>
+									<td><strike>www.americanexchange.com</strike></td>
+									<td>American Exchange</td>
+									<td class="center">0h 00m</td>
+									<td class="center">
+									<a href="view-brainteaser.html" onclick="NewWindow(this.href,'Detail','500','500','yes');return false"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /></a></td>
+									<td class="center">
+									<a href="view-puzzle.html" onclick="NewWindow(this.href,'Detail','500','500','yes');return false"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /></a></td>
+									<td class="center">&nbsp;</td>
+									<td align="center">&nbsp;</td>
+								</tr>
+								<tr class="active">
+									<td class="center"><input type="radio" value="V1" checked name="R1" /></td>
+									<td><a href="http://www.plantronics.com">www.plantronics.com</a></td>
+									<td>Plantronics</td>
+									<td class="center">3h 30m</td>
+									<td class="center">
+									<a href="view-brainteaser.html" onclick="NewWindow(this.href,'Detail','500','500','yes');return false"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /></a></td>
+									<td class="center">
+									<a href="view-puzzle.html" onclick="NewWindow(this.href,'Detail','500','500','yes');return false"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /></a></td>
+									<td class="center">
+									<img border="0" src="../i/movedown.gif" width="8" height="10" alt="Move Down" />
+									<img border="0" src="../i/moveupdis.gif" width="8" height="10" alt="Move Up" /></td>
+									<td align="center">
+									<a href="remove-url.html" onclick="NewWindow(this.href,'Detail','400','110','yes');return false"><img border="0" src="../i/b/btn_admin_remove.gif" width="49" height="15"  class="btn" /></a></td>
+								</tr>
+								<tr class="alt">
+									<td class="center"><input type="radio" value="V1" name="R1" /></td>
+									<td>
+									<a href="http://www.americanexchange.com">
+									www.americanexchange.com</a></td>
+									<td>American Exchange</td>
+									<td class="center">3h 30m</td>
+									<td class="center">
+									<a href="view-brainteaser.html" onclick="NewWindow(this.href,'Detail','500','500','yes');return false"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /></a></td>
+									<td class="center">
+									<a href="view-puzzle.html" onclick="NewWindow(this.href,'Detail','500','500','yes');return false"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /></a></td>
+									<td class="center">
+									<img border="0" src="../i/movedown.gif" width="8" height="10" alt="Move Down" />
+									<img border="0" src="../i/moveup.gif" width="8" height="10" alt="Move Up" /></td>
+									<td class="center">
+									<a href="remove-url.html" onclick="NewWindow(this.href,'Detail','400','110','yes');return false"><img border="0" src="../i/b/btn_admin_remove.gif" width="49" height="15"  class="btn" /></a></td>
+								</tr>
+								<tr>
+									<td class="center"><input type="radio" value="V1" name="R1" /></td>
+									<td><a href="http://www.plantronics.com">
+									www.plantronics.com</a></td>
+									<td>Plantronics</td>
+									<td class="center">3h 30m</td>
+									<td class="center">
+									<a href="view-brainteaser.html" onclick="NewWindow(this.href,'Detail','500','500','yes');return false"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /></a></td>
+									<td class="center">
+									<a href="view-puzzle.html" onclick="NewWindow(this.href,'Detail','500','500','yes');return false"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /></a></td>
+									<td class="center">
+									<img border="0" src="../i/movedown.gif" width="8" height="10" alt="Move Down" />
+									<img border="0" src="../i/moveup.gif" width="8" height="10" alt="Move Up" /></td>
+									<td align="center">
+									<a href="remove-url.html" onclick="NewWindow(this.href,'Detail','400','110','yes');return false"><img border="0" src="../i/b/btn_admin_remove.gif" width="49" height="15" style="cursor:pointer;" /></a></td>
+								</tr>
+								<tr class="alt">
+									<td class="center"><input type="radio" value="V1" name="R1" /></td>
+									<td><a href="http://www.bluetooth.com">
+									www.bluetooth.com</a></td>
+									<td>Bluetooth</td>
+									<td class="center">3h 30m</td>
+									<td class="center">
+									<a href="view-brainteaser.html" onclick="NewWindow(this.href,'Detail','500','500','yes');return false"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /></a></td>
+									<td class="center">
+									<a href="remove-url.html" onclick="NewWindow(this.href,'Detail','500','500','yes');return false"><img border="0" src="../i/b/btn_admin_view.gif" width="36" height="15" class="btn" /></a></td>
+									<td class="center">
+									<img border="0" src="../i/movedowndis.gif" width="8" height="10" alt="Move Down" />
+									<img border="0" src="../i/moveup.gif" width="8" height="10" alt="Move Up" /></td>
+									<td align="center">
+									<a href="remove-url.html" onclick="NewWindow(this.href,'Detail','400','110','yes');return false"><img border="0" src="../i/b/btn_admin_remove.gif" width="49" height="15" style="cursor:pointer;" /></a></td>
+								</tr>
+							</table>
+						</li>
+						<li class="closed"><a href="#">BLOCK 2</a></li>
+						<li class="closed"><a href="#">BLOCK 3</a></li>
+					</ul>
+				</div>
+		</div>
+
+				
+		</div>
+
+		
+	
+<!-- Footer -->
+	<div id="footer">
+		<p>&copy; Copycenter 2006 TopCoder, Inc.</p>
+	</div>
+</body>
+</html>

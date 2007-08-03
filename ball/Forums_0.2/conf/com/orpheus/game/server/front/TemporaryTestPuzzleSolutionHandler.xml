@@ -1,0 +1,13 @@
+<action name="Test" type="default" url-pattern="/server/plugin/testPuzzleForTest.do" priority="10">
+    <handler type="TemporaryTestPuzzleSolutionHandler">
+        <puzzle_id_param_key>puzzleId</puzzle_id_param_key>
+        <game_play_key>gamePlayInfo</game_play_key>
+        <solutiontester_base_name>puzzleSolutionTester</solutiontester_base_name>
+    </handler>
+    <result name="success" type="dbLoggingForward">
+        <forward-url>/public/testPuzzleSubmission.jsp</forward-url>
+        <log-message>[TESTING MODE] submitted solution for Game Win puzzle for game {0} and slot {1}</log-message>
+        <parameters>gameId,slotId</parameters>
+        <action-code>6</action-code>
+    </result>
+</action>
