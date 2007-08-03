@@ -6,4 +6,3 @@
         <jndi-name>java:orpheus/MSSQLDS</jndi-name>
     </resource-ref>
 </jboss-web>
-
