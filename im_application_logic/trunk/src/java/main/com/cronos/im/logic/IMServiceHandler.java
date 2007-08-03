@@ -495,15 +495,22 @@ public class IMServiceHandler implements ServiceHandler {
                 }
             }
 
+            long resp = -1;
+            if (serviceEvent.getResponder() != null) {
+                resp = ((Long) serviceEvent.getResponder().getProperty(USER_ID_KEY)).longValue();
+            }
+        
             long[] requestedUsers = chatSession.getRequestedUsers();
             for (int i = 0; i < requestedUsers.length; i++) {
                 SessionUnavailableMessage unavailableMsg2 = new SessionUnavailableMessage();
                 unavailableMsg2.setSender(new Long(-1));
                 unavailableMsg2.setChatSessionId(sessionId);
-                messenger.postMessage(unavailableMsg2, requestedUsers[i]);
-                if (logger != null) {
-                    logger.log(Level.INFO, "Post SessionUnavailableMessage to User", new String[] { "User - "
-                        + requestedUsers[i] });
+                if (resp != requestedUsers[i]) {
+                    messenger.postMessage(unavailableMsg2, requestedUsers[i]);
+                    if (logger != null) {
+                        logger.log(Level.INFO, "Post SessionUnavailableMessage to User", new String[] { "User - "
+                            + requestedUsers[i] });
+                    }
                 }
             }
 
