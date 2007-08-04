@@ -81,6 +81,10 @@ CREATE PROCEDURE CreateGame
     ,@ballColorId bigint
     ,@keyCount int
     ,@startDate datetime
+    ,@endDate datetime
+    ,@bounceCalcType int
+    ,@prizeCalcType int
+    ,@completionType int
     ,@ID bigint OUTPUT
 AS
 BEGIN
@@ -88,13 +92,13 @@ BEGIN
     -- if the gameId is not null,use it or auto increment the id.
     IF @gameId != null
     BEGIN
-        INSERT INTO game(id,ball_color_id,start_date,keys_required)
-        VALUES(@gameId,@ballColorId,@startDate,@keyCount)
+        INSERT INTO game(id,ball_color_id,start_date,keys_required,end_date,bounce_calc_type,prize_calc_type,completion_type)
+        VALUES(@gameId,@ballColorId,@startDate,@keyCount,@endDate,@bounceCalcType,@prizeCalcType,@completionType)
     END
     ELSE
     BEGIN
-        INSERT INTO game(ball_color_id,start_date,keys_required)
-        VALUES(@ballColorId,@startDate,@keyCount)
+        INSERT INTO game(ball_color_id,start_date,keys_required,end_date,bounce_calc_type,prize_calc_type,completion_type)
+        VALUES(@ballColorId,@startDate,@keyCount,@endDate,@bounceCalcType,@prizeCalcType,@completionType)
     END
 
     -- return the ID

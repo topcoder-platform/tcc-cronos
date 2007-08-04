@@ -18,19 +18,6 @@ CREATE TABLE contact_info (
   PRIMARY KEY(id)
 );
 
--- ------------------------------------------------------------
--- Player_preferences entities represent the information for preferences
--- selected by players
--- ------------------------------------------------------------
-
-CREATE TABLE player_preferences (
-  player_id BIGINT NOT NULL,
-  sound_option INT NOT NULL,
-  notification_general BIT NOT NULL,
-  PRIMARY KEY(player_id),
-  FOREIGN KEY(player_id) REFERENCES player(any_user_id)
-    ON DELETE CASCADE
-);
 
 -- ------------------------------------------------------------
 -- Represents a generic message with category, update timestamp,
@@ -192,6 +179,10 @@ CREATE TABLE game (
   ball_color_id BIGINT NOT NULL,
   start_date DATETIME NOT NULL,
   keys_required INTEGER NOT NULL,
+  end_date DATETIME NOT NULL,
+  bounce_calc_type INTEGER NOT NULL,
+  prize_calc_type INTEGER NOT NULL,
+  completion_type INTEGER NOT NULL,
   PRIMARY KEY(id),
   FOREIGN KEY(ball_color_id) REFERENCES ball_color(id)
     ON DELETE NO ACTION
@@ -344,7 +335,7 @@ CREATE TABLE auction (
 
 CREATE TABLE domain (
   id BIGINT IDENTITY NOT NULL,
-  sponsor_id BIGINT NOT NULL,
+  sponsor_id BIGINT,
   base_url VARCHAR(255) NOT NULL,
   is_approved BIT NULL,
   PRIMARY KEY(id),
@@ -437,15 +428,31 @@ CREATE INDEX bid_auction_inx on bid(auction_id);
 
 CREATE TABLE hosting_slot (
   id BIGINT IDENTITY NOT NULL,
-  bid_id BIGINT NOT NULL,
   sequence_number INTEGER NOT NULL,
   hosting_start DATETIME NULL,
   hosting_end DATETIME NULL,
   is_deleted BIT NOT NULL,
+  hosting_block_id BIGINT NOT NULL,
+  image_id BIGINT NOT NULL,
+  hosting_payment INTEGER NOT NULL,
   PRIMARY KEY(id),
+  FOREIGN KEY(hosting_block_id) REFERENCES hosting_block(id)
+    ON DELETE CASCADE,
+  FOREIGN KEY(image_id) REFERENCES image(id)
+    ON DELETE NO ACTION
+);
+
+-- ------------------------------------------------------------
+-- This tables links the records from hosting_slot and bid
+-- tables
+-- ------------------------------------------------------------
+CREATE TABLE bid_for_slot (
+  bid_id BIGINT NOT NULL,
+  hosting_slot_id BIGINT NOT NULL,
+  FOREIGN KEY(hosting_slot_id) REFERENCES hosting_slot(id)
+    ON DELETE CASCADE,
   FOREIGN KEY(bid_id) REFERENCES bid(id)
-    ON DELETE NO ACTION,
-  UNIQUE (bid_id)
+    ON DELETE CASCADE
 );
 
 -- ------------------------------------------------------------
@@ -545,3 +552,16 @@ CREATE TABLE plyr_compltd_slot (
     ON DELETE NO ACTION
 );
 
+-- ------------------------------------------------------------
+-- Player_preferences entities represent the information for preferences
+-- selected by players
+-- ------------------------------------------------------------
+
+CREATE TABLE player_preferences (
+  player_id BIGINT NOT NULL,
+  sound_option INT NOT NULL,
+  notification_general BIT NOT NULL,
+  PRIMARY KEY(player_id),
+  FOREIGN KEY(player_id) REFERENCES player(any_user_id)
+    ON DELETE CASCADE
+);

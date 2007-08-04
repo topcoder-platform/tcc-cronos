@@ -23,6 +23,10 @@
         <start-date-session-attr>startDate</start-date-session-attr>
         <auction-mgr-app-attr>OrpheusAuctionManager</auction-mgr-app-attr>
         <minimum-auction-bid>5</minimum-auction-bid>
+        <end-date-session-attr>endDate</end-date-session-attr>
+        <bounce-calc-type-session-attr>bounceType</bounce-calc-type-session-attr>
+        <prize-calc-type-session-attr>prizeType</prize-calc-type-session-attr>
+        <game-completion-type-session-attr>completionType</game-completion-type-session-attr>
         <fail-result>createGameFailure</fail-result>
         <fail-request-attribute>failureHandlerResult</fail-request-attribute>
     </handler>
