@@ -1,0 +1,49 @@
+<action name="CreateGameManual" type="default" url-pattern="/server/admin/finishGameCreationManual.do" priority="10">
+    <handler type="SessionValidationHandler">
+        <login_page_result>login</login_page_result>
+    </handler>
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>admin</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <handler type="CreateGameManualHandler">
+        <ball_color_key>colorId</ball_color_key>
+        <key_count_key>keyCount</key_count_key>
+        <block_count_key>blockCount</block_count_key>
+        <game_start_date_key>startDate</game_start_date_key>
+        <game_end_date_key>endDate</game_end_date_key>
+        <game_bounce_type_key>bounceType</game_bounce_type_key>
+        <game_prize_type_key>prizeType</game_prize_type_key>
+        <game_completion_type_key>completionType</game_completion_type_key>
+        <block_info_param_key>blockInfo</block_info_param_key>
+        <max_slot_time_json_prop>maxBlockTime</max_slot_time_json_prop>
+        <slot_count_json_prop>slotCount</slot_count_json_prop>
+        <minimum_bid>5</minimum_bid>
+        <random_string_image_ns>c:/var/opt/orpheus/conf/RandomStringImage.xml</random_string_image_ns>
+        <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
+        <jndi_context_name>default</jndi_context_name>
+        <use_remote_interface>true</use_remote_interface>
+    </handler>
+    <result name="success" type="loggingForward">
+        <forward-url>/WEB-INF/admin/games-new-step3.jsp</forward-url>
+        <log-message>created new game from scratch</log-message>
+        <category>ADMIN</category>
+    </result>
+    <result name="uploadImages" type="loggingForward">
+        <forward-url>/WEB-INF/admin/games-new-step2-manual-images.jsp</forward-url>
+        <log-message>has to upload missing images for game to be created from scratch</log-message>
+        <category>ADMIN</category>
+    </result>
+    <result name="auth_failed" type="loggingForward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+        <log-message>attempted to create new game from scratch without ADMIN role assigned</log-message>
+        <category>ADMIN</category>
+    </result>
+    <result name="login" type="loggingForward">
+        <forward-url>/public/timeout.jsp</forward-url>
+        <log-message>failed to create new game from scratch due to session timeout or is not authenticated to server</log-message>
+        <category>ADMIN</category>
+    </result>
+</action>
