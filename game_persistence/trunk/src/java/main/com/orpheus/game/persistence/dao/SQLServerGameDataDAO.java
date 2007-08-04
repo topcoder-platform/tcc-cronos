@@ -60,6 +60,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.LinkedHashMap;
+import java.util.Date;
 
 
 /**
@@ -119,6 +120,7 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      * A String constant containing an SQL prepared statement for retrieving the IDs of the games in which a specified domain is
      * a current or past Ball host in a slot that the specified player has not yet completed
      */
+/*
     private static final String SQL_PS_SELECT_PLAYER_GAMES_BY_DOMAIN = "SELECT DISTINCT t1.game_id AS gameId " +
         "FROM ((hosting_block t1 LEFT JOIN plyr_won_game t2 ON (t1.game_id = t2.game_id)) " +
         "LEFT JOIN plyr_compltd_game t3 ON (t1.game_id = t3.game_id AND t3.player_id = ?)) " +
@@ -127,19 +129,45 @@ public class SQLServerGameDataDAO implements GameDataDAO {
         "INNER JOIN domain t8 ON (t7.domain_id = t8.id AND t8.base_url = ?)) " + "ON (t1.id = t6.auction_id) " +
         "WHERE (t2.player_id IS NULL AND t3.sequence_number IS NULL " +
         "AND t5.timestamp IS NULL AND t4.hosting_start IS NOT NULL AND t4.is_deleted=0)";
+*/
+    private static final String SQL_PS_SELECT_PLAYER_GAMES_BY_DOMAIN
+        = "SELECT DISTINCT t1.game_id AS gameId " +
+          "FROM (hosting_block t1 " +
+                "INNER JOIN game g ON t1.game_id = g.id " +
+                "LEFT JOIN plyr_compltd_game t3 ON (t1.game_id = t3.game_id AND t3.player_id = ?)) " +
+          "INNER JOIN (hosting_slot t4 " +
+                       "LEFT JOIN plyr_compltd_slot t5 ON (t4.id = t5.hosting_slot_id AND t5.player_id = ?) " +
+                       "INNER JOIN [image] t7 ON (t4.image_id = t7.id) " +
+                       "INNER JOIN domain t8 ON (t7.domain_id = t8.id AND t8.base_url = ?)) " +
+          "ON (t1.id = t4.hosting_block_id) " +
+          "WHERE (g.start_Date <= GETDATE() AND (g.end_date IS NULL OR g.end_date > GETDATE()) " +
+          "AND t3.sequence_number IS NULL " +
+          "AND t5.timestamp IS NULL " +
+          "AND t4.hosting_start IS NOT NULL " +
+          "AND t4.is_deleted=0)";
 
     /** Constant represents the sql clause to get complete slot for a game. */
     private static final String SQL_SELECT_COMPLETE_SLOT_IN_GAME =
         "SELECT t4.hosting_slot_id AS id, MIN(t1.sequence_number) s1, MIN(t3.sequence_number) s2 " +
-        "FROM plyr_compltd_slot t4 " + "INNER JOIN hosting_slot t3 ON (t4.hosting_slot_id = t3.id AND t3.is_deleted=0) " +
-        "INNER JOIN bid t2 ON (t3.bid_id = t2.id) " + "INNER JOIN hosting_block t1 ON (t2.auction_id = t1.id) " +
-        "WHERE t1.game_id = ? " + "GROUP BY t4.hosting_slot_id ORDER BY s1, s2";
+        "FROM plyr_compltd_slot t4 " +
+        "INNER JOIN hosting_slot t3 ON (t4.hosting_slot_id = t3.id AND t3.is_deleted=0) " +
+        "INNER JOIN hosting_block t1 ON (t3.hosting_block_id = t1.id) " +
+        "WHERE t1.game_id = ? " +
+        "GROUP BY t4.hosting_slot_id ORDER BY s1, s2";
 
     /** Constant represents the sql clause get all complete slot with game and slot id. */
+/*
     private static final String SQL_SELECT_COMPLETE_SLOT =
         "SELECT t5.* FROM hosting_block t2 INNER JOIN bid t3 ON (t2.game_id = ? AND t2.id = t3.auction_id) " +
         "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id AND t4.id = ? AND t4.is_deleted=0) " +
         "INNER JOIN plyr_compltd_slot t5 ON (t4.id = t5.hosting_slot_id) " + "ORDER BY t5.timestamp";
+*/
+    private static final String SQL_SELECT_COMPLETE_SLOT =
+        "SELECT t5.* " +
+        "FROM hosting_block t2 " +
+        "INNER JOIN hosting_slot t4 ON (t2.game_id = ? AND t2.id = t4.hosting_block_id AND t4.id = ? AND t4.is_deleted=0) " +
+        "INNER JOIN plyr_compltd_slot t5 ON (t4.id = t5.hosting_slot_id) " +
+        "ORDER BY t5.timestamp";
 
     /** Constant represents the field name. */
     private static final String FIELD_TIMESTAMP = "timestamp";
@@ -151,24 +179,44 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     private static final String FIELD_HOSTING_SLOT_ID = "hosting_slot_id";
 
     /** Constant represents the sql clause to check if the slot id exists with the game id. */
+/*
     private static final String SQL_SELECT_CHECK_GAME_ID_SLOT_ID = "SELECT t4.id FROM " +
         "hosting_block t2 INNER JOIN bid t3 ON (t2.id = t3.auction_id AND t2.game_id = ?) " +
         "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id AND t4.id = ? AND t4.is_deleted=0) ";
+*/
+    private static final String SQL_SELECT_CHECK_GAME_ID_SLOT_ID
+        = "SELECT t3.id " +
+          "FROM hosting_block t2 " +
+          "INNER JOIN hosting_slot t3 ON (t2.id = t3.hosting_block_id AND t2.game_id = ?) " +
+          "WHERE t3.id = ? AND t3.is_deleted=0";
 
     /**
      * Constant represents the sql clause to get unstarted games. Games are judged to have not been started if none of their
      * slots have been started
      */
+/*
     private static final String SQL_SELECT_NOT_START_GAME = "SELECT t2.game_id AS id, COUNT(t4.hosting_start) " +
         "FROM hosting_block t2 " + "INNER JOIN bid t3 ON (t2.id = t3.auction_id) " +
         "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id AND t4.is_deleted=0) " +
        	"GROUP BY t2.game_id " + "HAVING (COUNT(t4.hosting_start) = 0)";
+*/
+    private static final String SQL_SELECT_NOT_START_GAME
+        = "SELECT t2.game_id AS id, COUNT(t4.hosting_start) " +
+          "FROM hosting_block t2 " +
+          "INNER JOIN hosting_slot t4 ON (t2.id = t4.hosting_block_id AND t4.is_deleted=0) " +
+          "GROUP BY t2.game_id " +
+          "HAVING (COUNT(t4.hosting_start) = 0)";
 
     /** Constant represents the sql clause to get started games that have no winner. */
+/*
     private static final String SQL_SELECT_START_NOT_END_GAME = "SELECT DISTINCT t2.game_id AS id " + "FROM plyr_won_game t1 " +
         "RIGHT JOIN hosting_block t2 ON (t1.game_id = t2.game_id) " + "INNER JOIN bid t3 ON (t2.id = t3.auction_id) " +
         "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id) " +
        	"WHERE (t4.hosting_start IS NOT NULL AND t1.player_id IS NULL AND t4.is_deleted=0)";
+*/
+    private static final String SQL_SELECT_START_NOT_END_GAME
+        = "SELECT t1.id AS id FROM game t1 " +
+          "WHERE t1.start_date <= GETDATE() AND (t1.end_date IS NULL OR t1.end_date > GETDATE())";
 
     /**
      * <p>
@@ -181,27 +229,47 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      * this version tests both start and end.
      * </p>
      */
-    private static final String SQL_SELECT_START_END_GAME = "SELECT DISTINCT t1.game_id AS id " + "FROM plyr_won_game t1 " +
-        "INNER JOIN hosting_block t2 ON (t1.game_id = t2.game_id) " + "INNER JOIN bid t3 ON (t2.id = t3.auction_id) " +
-        "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id) " + "WHERE (t4.hosting_start IS NOT NULL AND t4.is_deleted=0)";
+/*
+    private static final String SQL_SELECT_START_END_GAME
+        = "SELECT DISTINCT t1.game_id AS id " +
+          "FROM plyr_won_game t1 " +
+          "INNER JOIN hosting_block t2 ON (t1.game_id = t2.game_id) " +
+          "INNER JOIN bid t3 ON (t2.id = t3.auction_id) " +
+          "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id) " +
+          "WHERE (t4.hosting_start IS NOT NULL AND t4.is_deleted=0)";
+*/
+    private static final String SQL_SELECT_START_END_GAME
+        = "SELECT t1.id AS id FROM game t1 WHERE (t1.start_date <= GETDATE() AND t1.end_date <= GETDATE())";
 
     /** Constant represents the sql clause to get games that have started. */
+/*
     private static final String SQL_SELECT_START_GAME = "SELECT DISTINCT t2.game_id AS id " + "FROM hosting_block t2 " +
         "INNER JOIN bid t3 ON (t2.id = t3.auction_id) " + "INNER JOIN hosting_slot t4 ON (t3.id = t4.bid_id) " +
         "WHERE (t4.hosting_start IS NOT NULL AND t4.is_deleted=0)";
+*/
+    private static final String SQL_SELECT_START_GAME
+        = "SELECT t1.id AS id FROM game t1 WHERE t1.start_date <= GETDATE()";
 
     /** Constant represents the sql clause to get games that have no winner. */
-    private static final String SQL_SELECT_NOT_END_GAME = "SELECT DISTINCT t1.id FROM game t1 " +
-        "LEFT JOIN plyr_won_game t2 ON (t2.game_id = t1.id) " + "WHERE (t2.player_id IS NULL)";
+/*
+    private static final String SQL_SELECT_NOT_END_GAME
+        = "SELECT DISTINCT t1.id FROM game t1 " +
+          "LEFT JOIN plyr_won_game t2 ON (t2.game_id = t1.id) " +
+          "WHERE (t2.player_id IS NULL)";
+*/
+    private static final String SQL_SELECT_NOT_END_GAME
+        = "SELECT t1.id FROM game t1 WHERE t1.end_date IS NULL OR t1.end_date > GETDATE()";
 
     /** Constant represents the sql clause to get games that have a winner. */
-    private static final String SQL_SELECT_END_GAME = "SELECT DISTINCT game_id AS id FROM plyr_won_game";
+//    private static final String SQL_SELECT_END_GAME = "SELECT DISTINCT game_id AS id FROM plyr_won_game";
+    private static final String SQL_SELECT_END_GAME
+        = "SELECT g.id AS id FROM game g WHERE g.end_date <= GETDATE()";
 
     /** Constant represents the sql clause to get all the game id. */
     private static final String SQL_SELECT_GAME = "SELECT id FROM game";
 
     /** Constant represents the sql clause game has winner. */
-    private static final String SQL_SELECT_PLYR_WON_GAME = "SELECT t1.game_id FROM plyr_won_game t1";
+//    private static final String SQL_SELECT_PLYR_WON_GAME = "SELECT t1.game_id FROM plyr_won_game t1";
 
     /** Constant represents the field name. */
     private static final String FIELD_GAME_ID = "gameId";
@@ -210,35 +278,48 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     private static final String FIELD_DOMAINID = "domainId";
 
     /** Constant represents the sql clause get the IDs of all active domain entities. */
-    private static final String SQL_SELECT_ACTIVE_DOMAINS = "SELECT DISTINCT t3.id AS domainId " +
-        "FROM hosting_block t5 LEFT JOIN plyr_won_game t6 ON (t5.game_id = t6.game_id) " +
-        "INNER JOIN bid t1 ON (t5.id = t1.auction_id) " + "INNER JOIN [image] t2 ON (t1.image_id = t2.id) " +
-        "INNER JOIN domain t3 ON (t2.domain_id = t3.id) " +
-        "INNER JOIN hosting_slot t4 ON (t1.id = t4.bid_id AND t4.hosting_start IS NOT NULL AND t4.is_deleted=0) " +
-       	"WHERE (t6.player_id IS NULL)";
+/*
+    private static final String SQL_SELECT_ACTIVE_DOMAINS
+        = "SELECT DISTINCT t3.id AS domainId " +
+          "FROM hosting_block t5 LEFT JOIN plyr_won_game t6 ON (t5.game_id = t6.game_id) " +
+          "INNER JOIN bid t1 ON (t5.id = t1.auction_id) " + "INNER JOIN [image] t2 ON (t1.image_id = t2.id) " +
+          "INNER JOIN domain t3 ON (t2.domain_id = t3.id) " +
+          "INNER JOIN hosting_slot t4 ON (t1.id = t4.bid_id AND t4.hosting_start IS NOT NULL AND t4.is_deleted=0) " +
+          "WHERE (t6.player_id IS NULL)";
+*/
+    private static final String SQL_SELECT_ACTIVE_DOMAINS
+        = "SELECT DISTINCT t3.id AS domainId " +
+          "FROM hosting_block t5 " +
+          "INNER JOIN game t6 ON (t5.game_id = t6.id) " +
+          "INNER JOIN hosting_slot t4 ON (t5.id = t4.hosting_block_id AND t4.hosting_start IS NOT NULL AND t4.is_deleted=0) " +
+          "INNER JOIN [image] t2 ON (t4.image_id = t2.id) " +
+          "INNER JOIN domain t3 ON (t2.domain_id = t3.id) " +
+          "WHERE (t6.start_date <= GETDATE() AND (t6.end_date IS NULL OR t6.end_date > GETDATE()))";
 
     /** Constant represents the sql clause to delete slot with the id. */
     private static final String SQL_DELETE_HOSTING_SLOT = "UPDATE hosting_slot SET is_deleted=1 WHERE id = ?";
 
+    /** Constant represents the sql clause to complete the game with date and with the id. */
+    private static final String SQL_COMPLETE_GAME = "UPDATE game SET end_date=? WHERE id = ?";
+
     /** Constant represents the field name. */
     private static final String FIELD_KEY_IMAGE_ID = "key_image_id";
-    /** Constant represents the field name. */
-    private static final String FIELD_CLUE_IMAGE_ID = "clue_img_id";
 
     /** Constant represents the sql clause to call stored procedure. */
     private static final String SP_CREATE_DOMAIN_TARGET = "{Call CreateDomainTarget(?,?,?,?,?,?,?,?)}";
 
     /** Constant represents the sql clause insert record into brn_tsr_for_slot. */
-    private static final String SQL_INSERT_BRN_TSR_FOR_SLOT = "INSERT INTO brn_tsr_for_slot(hosting_slot_id,sequence_number,puzzle_id)VALUES(?,?,?)";
+    private static final String SQL_INSERT_BRN_TSR_FOR_SLOT
+        = "INSERT INTO brn_tsr_for_slot (hosting_slot_id,sequence_number,puzzle_id) VALUES (?,?,?)";
 
     /** Constant represents the sql clause. */
-    private static final String SQL_SELECT_BRN_TSR_FOR_SLOT = "SELECT * FROM brn_tsr_for_slot WHERE hosting_slot_id = ? AND puzzle_id = ?";
+//    private static final String SQL_SELECT_BRN_TSR_FOR_SLOT = "SELECT * FROM brn_tsr_for_slot WHERE hosting_slot_id = ? AND puzzle_id = ?";
 
     /** Constant represents the sql clause insert record into puzzle_for_slot. */
     private static final String SQL_INSERT_PUZZLE_FOR_SLOT = "INSERT INTO puzzle_for_slot(hosting_slot_id,puzzle_id) VALUES(?,?) ";
 
     /** Constant represents the sql clause get slot for puzzle. */
-    private static final String SQL_SELECT_PUZZLE_FOR_SLOT = "SELECT * FROM puzzle_for_slot WHERE hosting_slot_id = ? AND puzzle_id = ?";
+//    private static final String SQL_SELECT_PUZZLE_FOR_SLOT = "SELECT * FROM puzzle_for_slot WHERE hosting_slot_id = ? AND puzzle_id = ?";
 
     /** Constant represents the sql clause update slot. */
     private static final String SQL_UPDATE_HOSTING_SLOT = "UPDATE hosting_slot SET sequence_number = ? , hosting_start = ? , hosting_end = ? WHERE id = ?";
@@ -297,8 +378,9 @@ public class SQLServerGameDataDAO implements GameDataDAO {
         "WHERE brn_tsr_for_slot.hosting_slot_id = ? ORDER BY sequence_number";
 
     /** Constant represents the sql clause get current amount. */
-    private static final String SQL_SELECT_WINNING_BID = "SELECT current_amount FROM effective_bid t1, bid t2, hosting_slot t3 " +
-        "WHERE t3.bid_id = t2.id AND t1.bid_id = t2.id AND t3.id = ";
+//    private static final String SQL_SELECT_WINNING_BID
+//        = "SELECT current_amount FROM effective_bid t1, bid t2, hosting_slot t3 " +
+//        "WHERE t3.bid_id = t2.id AND t1.bid_id = t2.id AND t3.id = ";
 
     /** Constant represents the sql clause insert record into image. */
     private static final String SQL_INSERT_IMAGE = "INSERT INTO image(domain_id,download_obj_id,is_approved,description) VALUES(?,?,?,?)";
@@ -316,11 +398,13 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     private static final String SP_RECORD_BINARY_OBJECT = "{Call RecordBinaryObject(?,?,?,?)}";
 
     /** Constant represents the sql clause insert record into plyr_compltd_slot. */
-    private static final String SQL_INSERT_PLYR_COMPLTD_SLOT = "INSERT INTO plyr_compltd_slot(hosting_slot_id,player_id,timestamp,key_text,key_image_id)VALUES(?,?,?,?,?)";
+    private static final String SQL_INSERT_PLYR_COMPLTD_SLOT
+        = "INSERT INTO plyr_compltd_slot(hosting_slot_id,player_id,timestamp,key_text,key_image_id)VALUES(?,?,?,?,?)";
 
     /** Constant represents the sql clause get puzzle resource with id. */
-    private static final String SQL_SELECT_PUZZLE_RESOURCE_WITH_ID = "SELECT  t1.name,t2.suggested_name, t2.media_type, t2.content " +
-        "FROM puzzle_resource t1 left outer join download_obj t2 ON t1.download_obj_id = t2.id WHERE t1.puzzle_id= ";
+    private static final String SQL_SELECT_PUZZLE_RESOURCE_WITH_ID
+        = "SELECT  t1.name,t2.suggested_name, t2.media_type, t2.content " +
+          "FROM puzzle_resource t1 left outer join download_obj t2 ON t1.download_obj_id = t2.id WHERE t1.puzzle_id= ";
 
     /** Constant represents the sql clause get puzzle with id. */
     private static final String SQL_SELECT_PUZZLE_WITH_ID = "SELECT * FROM puzzle WHERE id = ";
@@ -329,7 +413,8 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     private static final String FIELD_ATTRIBUTE_VALUE = "value";
 
     /** Constant represents the sql clause get puzzle attribute with id. */
-    private static final String SQL_SELECT_PUZZLE_ATTRIBUTE_WITH_ID = "SELECT * FROM puzzle_attribute WHERE puzzle_id = ";
+    private static final String SQL_SELECT_PUZZLE_ATTRIBUTE_WITH_ID
+        = "SELECT * FROM puzzle_attribute WHERE puzzle_id = ";
 
     /** Constant represents the field name. */
     private static final String FIELD_CONTENT = "content";
@@ -353,9 +438,14 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     private static final String FIELD_SPONSOR_ID = "sponsor_id";
 
     /** Constant represents the sql clause get image with slot id. */
+/*
     private static final String SQL_SELECT_IMAGE_DOMAIN =
-        "SELECT t1.id as image_id, t1.domain_id as domain_id FROM [image] t1, bid t2, hosting_slot t3 " +
+        "SELECT t1.id as image_id, t1.domain_id as domain_id " +
+        "FROM [image] t1, bid t2, hosting_slot t3 " +
         "WHERE t3.bid_id = t2.id AND t2.image_id = t1.id AND t3.id = ";
+*/
+    private static final String SQL_SELECT_IMAGE_DOMAIN =
+        "SELECT t1.id as image_id, t1.domain_id as domain_id FROM [image] t1 WHERE t1.id = ";
 
     /** Constant represents the field name. */
     private static final String FIELD_HOSTING_END = "hosting_end";
@@ -363,10 +453,17 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     /** Constant represents the field name. */
     private static final String FIELD_HOSTING_START = "hosting_start";
 
+    /** Constant represents the field name. */
+    private static final String FIELD_HOSTING_BLOCK_ID = "hosting_block_id";
+
     /** Constant represents the sql clause get slot for a block. */
+/*
     private static final String SQL_SELECT_HOSTING_SLOT_WITH_BLOCK_ID = "SELECT hosting_slot.id as id "
 	    + "FROM hosting_slot INNER JOIN bid ON hosting_slot.bid_id = bid.id AND hosting_slot.is_deleted=0 "
 	    + "WHERE bid.auction_id =";
+*/
+    private static final String SQL_SELECT_HOSTING_SLOT_WITH_BLOCK_ID = "SELECT hosting_slot.id as id "
+	    + "FROM hosting_slot WHERE hosting_slot.is_deleted=0 AND hosting_slot.hosting_block_id =";
 
     /** Constant representing the SQL clause for ordering hosting slots by their sequence numbers */
     private static final String SQL_ORDER_SLOTS_BY_SEQUENCE = " ORDER BY hosting_slot.sequence_number";
@@ -385,6 +482,15 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
     /** Constant represents the field name. */
     private static final String FIELD_KEY_REQUIRED = "keys_required";
+
+    /** Constant represents the field name. */
+    private static final String FIELD_BOUNCE_CALC_TYPE = "bounce_calc_type";
+
+    /** Constant represents the field name. */
+    private static final String FIELD_PRIZE_CALC_TYPE = "prize_calc_type";
+
+    /** Constant represents the field name. */
+    private static final String FIELD_COMPLETION_TYPE = "completion_type";
 
     /** Constant represents the sql clause. */
     private static final String SQL_START_DATE = "start_date";
@@ -416,6 +522,9 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     /** Constant represents the field name. */
     private static final String FIELD_IMAGE_ID = "image_id";
 
+    /** Constant represents the field name. */
+    private static final String FIELD_HOSTING_PAYMENT = "hosting_payment";
+
     /** Constant represents the sql clause. */
     private static final String SQL_SELECT_BID_WITH_ID_AND_AUTION_ID = "SELECT * FROM bid WHERE id = ? and auction_id = ?";
 
@@ -440,6 +549,9 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     /** Constant represents the sql clause get domain for a sponsor. */
     private static final String SQL_SELECT_DOMAIN_WITH_SPONSOR_ID = "SELECT * FROM domain WHERE sponsor_id = ";
 
+    /** Constant represents the sql clause get domain for a sponsor. */
+    private static final String SQL_SELECT_APPROVED_DOMAINS = "SELECT * FROM domain WHERE is_approved = 1";
+
     /** Constant represents the sql clause get slot has complete player. */
     private static final String SQL_SELECT_PLYR_COMPLTD_SLOT = "SELECT * FROM plyr_compltd_slot WHERE hosting_slot_id  = ? AND player_id = ?";
 
@@ -448,8 +560,26 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      * game, subject to the constraints that the specified domain be assigned to the slot and that the slot not have been
      * completed by the specified player
      */
-    private static final String SQL_PS_SELECT_SLOT_FOR_DOMAIN = "SELECT TOP (1) t5.id FROM hosting_block t1 "
-	    + "INNER JOIN bid t2 ON (t1.game_id = ? AND t1.id = t2.auction_id) " + "INNER JOIN [image] t3 ON (t2.image_id = t3.id) " + "INNER JOIN domain t4 ON (t4.base_url = ? AND t3.domain_id = t4.id) " + "INNER JOIN hosting_slot t5 ON (t5.is_deleted = 0 AND t2.id = t5.bid_id) " + "LEFT JOIN plyr_compltd_slot t6 ON (t5.id = t6.hosting_slot_id AND t6.player_id = ?) " + "WHERE (t6.timestamp IS NULL) " + "ORDER BY t1.sequence_number, t5.sequence_number";
+/*
+    private static final String SQL_PS_SELECT_SLOT_FOR_DOMAIN
+        = "SELECT TOP (1) t5.id FROM hosting_block t1 " +
+	    "INNER JOIN bid t2 ON (t1.game_id = ? AND t1.id = t2.auction_id) " +
+        "INNER JOIN [image] t3 ON (t2.image_id = t3.id) " +
+        "INNER JOIN domain t4 ON (t4.base_url = ? AND t3.domain_id = t4.id) " +
+        "INNER JOIN hosting_slot t5 ON (t5.is_deleted = 0 AND t2.id = t5.bid_id) " +
+        "LEFT JOIN plyr_compltd_slot t6 ON (t5.id = t6.hosting_slot_id AND t6.player_id = ?) " +
+        "WHERE (t6.timestamp IS NULL) " +
+        "ORDER BY t1.sequence_number, t5.sequence_number";
+*/
+    private static final String SQL_PS_SELECT_SLOT_FOR_DOMAIN
+        = "SELECT TOP (1) t5.id " +
+          "FROM hosting_block t1 " +
+          "INNER JOIN hosting_slot t5 ON (t1.game_id = ? AND t5.is_deleted = 0 AND t1.id = t5.hosting_block_id) " +
+          "INNER JOIN [image] t3 ON (t5.image_id = t3.id) " +
+          "INNER JOIN domain t4 ON (t4.base_url = ? AND t3.domain_id = t4.id) " +
+          "LEFT JOIN plyr_compltd_slot t6 ON (t5.id = t6.hosting_slot_id AND t6.player_id = ?) " +
+          "WHERE (t6.timestamp IS NULL) " +
+          "ORDER BY t1.sequence_number, t5.sequence_number";
 
     /** Constant represents the field name. */
     private static final String FIELD_DOWNLOAD_OBJ_ID = "download_obj_id";
@@ -458,7 +588,7 @@ public class SQLServerGameDataDAO implements GameDataDAO {
     private static final String FIELD_NAME = "name";
 
     /** Constant represents the sql clause get domain with name. */
-    private static final String SQL_SELECT_DOMAIN_WITH_NAME = "SELECT * FROM domain WHERE base_url = ? ";
+//    private static final String SQL_SELECT_DOMAIN_WITH_NAME = "SELECT * FROM domain WHERE base_url = ? ";
 
     /** Constant represents the sql clause get slot with id. */
     private static final String SQL_SELECT_HOSTING_SLOT_WITH_ID = "SELECT * FROM hosting_slot WHERE id = ";
@@ -483,7 +613,7 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      * SQL Clause to call the stored procedure : CreateGame.
      * </p>
      */
-    private static final String SP_CREATE_GAME = "{Call CreateGame(?,?,?,?,?)}";
+    private static final String SP_CREATE_GAME = "{Call CreateGame(?,?,?,?,?,?,?,?,?)}";
 
     /**
      * <p>
@@ -511,8 +641,11 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      * SQL clause to query the game table with id.
      * </p>
      */
+/*
     private static final String SQL_SELECT_GAME_WITH_ID = "SELECT t1.*, t2.player_id AS winner_id, t2.date AS end_date " +
         "FROM game t1 LEFT JOIN plyr_won_game t2 ON (t1.id = t2.game_id) " + "WHERE t1.id = ";
+*/
+    private static final String SQL_SELECT_GAME_WITH_ID = "SELECT t1.* FROM game t1 WHERE t1.id = ";
 
     /**
      * <p>
@@ -649,7 +782,7 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      * @throws PersistenceException If there is any problem in the persistence layer
      * @throws IllegalArgumentException If game is null
      */
-    public Game createGame(Game game) throws PersistenceException {
+    public Game createGame(final Game game) throws PersistenceException {
         Helper.checkNotNull(game, "Game");
 
         try {
@@ -674,10 +807,13 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                 stmt = callableStatement(SP_CREATE_GAME,
                         new Object[] {
                             game.getId(), game.getBallColor().getId(), new Integer(game.getKeyCount()),
-                            toSQLDate(game.getStartDate()), FIELD_ID
+                            toSQLDate(game.getStartDate()), toSQLDate(game.getEndDate()),
+                            new Integer(game.getBouncePointCalculationType()),
+                            new Integer(game.getPrizeCalculationType()), new Integer(game.getCompletionType()),
+                            FIELD_ID
                         }, conn);
 
-                gameId = stmt.getLong(5);
+                gameId = stmt.getLong(9);
                 close(stmt);
 
                 // get the next sequence_number of the table hosting_block
@@ -701,7 +837,8 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
                 // return the updated game instance
                 return new GameImpl(new Long(gameId), game.getBallColor(), game.getKeyCount(), game.getStartDate(),
-                    game.getEndDate(), updatedBlocks);
+                    game.getEndDate(), updatedBlocks, game.getBouncePointCalculationType(),
+                    game.getPrizeCalculationType(), game.getCompletionType());
             } finally {
                 close(conn);
             }
@@ -751,21 +888,22 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                 int sequenceNumber = getNextSequenceNumber(conn, TABLE_HOSTING_SLOT);
 
                 for (int i = 0; i < bidIds.length; i++) {
+                    Long bidId = new Long(bidIds[i]);
                     // checks if earch bid exists in the 'bid' table
                     if (!exist(conn, SQL_SELECT_BID_WITH_ID + bidIds[i], null)) {
                         throw new EntryNotFoundException("The bid with the id: " + bidIds[i] + " does not exist.",
-                            new Long(bidIds[i]));
+                                                         bidId);
                     } else {
                         long imageId = 0;
 
                         // checks if the 'bid.auction_id' matches the blockId
                         ResultSet rs = query(conn, SQL_SELECT_BID_WITH_ID_AND_AUTION_ID,
-                                new Object[] { new Long(bidIds[i]), new Long(blockId) });
+                                             new Object[]{bidId, new Long(blockId) });
 
                         try {
                             if (!rs.next()) {
-                                throw new InvalidEntryException("The bid to persistence is illegal, " +
-                                    "its blockID id and the auction_id in database does not match.", new Long(bidIds[i]));
+                                throw new InvalidEntryException("The bid to persistence is illegal, its blockID id and "
+                                                                + "the auction_id in database does not match.", bidId);
                             } else {
                                 imageId = rs.getLong(FIELD_IMAGE_ID);
                             }
@@ -800,23 +938,21 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                         }
 
                         // persist the hosting slot
-                        this.update(conn,
-                            "INSERT INTO hosting_slot(bid_id,sequence_number,hosting_start,hosting_end,is_deleted)" +
-                            "values(?,?,null,null,0)", new Object[] { new Long(bidIds[i]), new Long(sequenceNumber) });
-
-                        Long id;
-                        rs = query(conn, "SELECT id FROM hosting_slot WHERE bid_id = ? AND sequence_number = ?",
-                                new Object[] { new Long(bidIds[i]), new Long(sequenceNumber) });
-
-                        try {
-                            id = (rs.next() ? new Long(rs.getLong("id")) : null);
-                        } finally {
-                            close(rs);
-                        }
+                        long id = this.insert(conn,
+                                              "INSERT INTO hosting_slot (hosting_block_id,sequence_number," +
+                                              "hosting_start,hosting_end,is_deleted,image_id,hosting_payment) " +
+                                              "values(?,?,null,null,0,?,?)",
+                                              new Object[] {new Long(blockId), new Long(sequenceNumber),
+                                                            new Long(imageId), new Integer(currentAmount)});
+                        // insert a record for relation between
+                        update(conn,
+                               "INSERT INTO bid_for_slot (bid_id,hosting_slot_id) VALUES (?,?)",
+                               new Object[] {bidId, new Long(id)});
 
                         // create the HostingSlotImpl instance
-                        slots[i] = new HostingSlotImpl(id, domain, imageId, new long[0], null, sequenceNumber++,
-                                new DomainTarget[0], currentAmount, null, null);
+                        slots[i] = new HostingSlotImpl(new Long(id), domain, imageId, new long[0], null,
+                                                       sequenceNumber++, new DomainTarget[0], currentAmount, null, null,
+                                                       blockId);
                     }
                 }
 
@@ -865,19 +1001,29 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                 }
 
                 // checks if the domain's sponsorId exists or not
-                if (!exist(conn, SQL_SELECT_SPONSOR_WITH_ID + domain.getSponsorId(), null)) {
-                    throw new EntryNotFoundException("The dmain.sponsorId does not exist.", new Long(domain.getSponsorId()));
+                if (domain.getSponsorId() != null) {
+                    if (!exist(conn, SQL_SELECT_SPONSOR_WITH_ID + domain.getSponsorId(), null)) {
+                        throw new EntryNotFoundException("The dmain.sponsorId does not exist.", domain.getSponsorId());
+                    }
                 }
 
                 //checks if the (sponsor_id,base_url) are unique
-                if ( exist(conn,"SELECT * FROM domain WHERE sponsor_id =" + domain.getSponsorId() + " and base_url = ?" , new Object[]{domain.getDomainName()})){
-                    throw new DuplicateEntryException("The sponsor_id and the base_url should be combind as unique.",domain.getId());
+                if (domain.getSponsorId() != null) {
+                    if ( exist(conn,"SELECT * FROM domain WHERE sponsor_id =" + domain.getSponsorId() + " and base_url = ?" , new Object[]{domain.getDomainName()})){
+                        throw new DuplicateEntryException("The sponsor_id and the base_url should be combind as unique.",domain.getId());
+                    }
+                } else {
+                    if ( exist(conn,"SELECT * FROM domain WHERE sponsor_id IS NULL AND base_url = ?" ,
+                               new Object[]{domain.getDomainName()})){
+                        throw new DuplicateEntryException("The the base_url should be combined as unique.",
+                                                          domain.getId());
+                    }
                 }
-                    
+
                 // persist the Domain into the 'domain' table
                 CallableStatement stmt = callableStatement(SP_CREATE_DOMAIN,
                         new Object[] {
-                            domain.getId(), new Long(domain.getSponsorId()), domain.getDomainName(), domain.isApproved(), FIELD_ID
+                            domain.getId(), domain.getSponsorId(), domain.getDomainName(), domain.isApproved(), FIELD_ID
                         }, conn);
 
                 long domainId = stmt.getLong(5);
@@ -995,6 +1141,9 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                 Timestamp startDate;
                 Timestamp endDate;
                 int keyCount;
+                int bounceCalcType;
+                int prizeCalcType;
+                int gameCompletionType;
 
                 // query the game record, if not exist, throw exception
                 ResultSet rs = query(conn, SQL_SELECT_GAME_WITH_ID + gameId, null);
@@ -1008,6 +1157,9 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                         startDate = rs.getTimestamp(SQL_START_DATE);
                         endDate = rs.getTimestamp(SQL_END_DATE);
                         keyCount = rs.getInt(FIELD_KEY_REQUIRED);
+                        bounceCalcType = rs.getInt(FIELD_BOUNCE_CALC_TYPE);
+                        prizeCalcType = rs.getInt(FIELD_PRIZE_CALC_TYPE);
+                        gameCompletionType = rs.getInt(FIELD_COMPLETION_TYPE);
                     }
                 } finally {
                     close(rs);
@@ -1042,7 +1194,8 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
                 // return the game instance with the retrieved data
                 return new GameImpl(new Long(gameId), color, keyCount, startDate, endDate,
-                    (HostingBlock[]) blocks.toArray(new HostingBlock[blocks.size()]));
+                    (HostingBlock[]) blocks.toArray(new HostingBlock[blocks.size()]), bounceCalcType, prizeCalcType,
+                    gameCompletionType);
             } finally {
                 close(conn);
             }
@@ -1142,10 +1295,13 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                 int sequenceNumber;
                 Timestamp hostingStart;
                 Timestamp hostingEnd;
+                long blockId;
+                long imageId;
+                int winningBid;
 
-                long bidId;
+//                long bidId;
                 // query the hosting_slot record, if not exist, throw exception
-                ResultSet rs = query(conn, SQL_SELECT_HOSTING_SLOT_WITH_ID + slotId, null);
+                ResultSet rs = query(conn, SQL_SELECT_HOSTING_SLOT_WITH_ID + slotId + " AND is_deleted = 0", null);
 
                 try {
                     if (!rs.next()) {
@@ -1155,7 +1311,9 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                         sequenceNumber = rs.getInt(FIELD_SEQUENCE_NUMBER);
                         hostingStart = rs.getTimestamp(FIELD_HOSTING_START);
                         hostingEnd = rs.getTimestamp(FIELD_HOSTING_END);
-                        bidId = rs.getLong("bid_id");
+                        blockId = rs.getLong(FIELD_HOSTING_BLOCK_ID);
+                        imageId = rs.getLong(FIELD_IMAGE_ID);
+                        winningBid = rs.getInt(FIELD_HOSTING_PAYMENT);
                     }
                 } finally {
                     close(rs);
@@ -1163,27 +1321,10 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
                 // get the domain and the imageId
                 Domain domain = null;
-                long imageId = -1;
-
-                rs = query(conn, SQL_SELECT_IMAGE_DOMAIN + slotId, null);
-
+                rs = query(conn, SQL_SELECT_IMAGE_DOMAIN + imageId, null);
                 try {
                     if (rs.next()) {
-                        imageId = rs.getLong(FIELD_IMAGE_ID);
                         domain = getDomain(rs.getLong(FIELD_DOMAIN_ID));
-                    }
-                } finally {
-                    close(rs);
-                }
-
-                // get the winningBid, if not exist, its default value is 0
-                int winningBid = 0;
-
-                rs = query(conn, SQL_SELECT_WINNING_BID + slotId, null);
-
-                try {
-                    if (rs.next()) {
-                        winningBid = rs.getInt(FIELD_CURRENT_AMOUNT);
                     }
                 } finally {
                     close(rs);
@@ -1239,7 +1380,8 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
                 // return the HostingBlock instance with the retrieved data
                 return new HostingSlotImpl(new Long(slotId), domain, imageId, btids, puzzleId, sequenceNumber,
-                    (DomainTarget[]) targets.toArray(new DomainTarget[targets.size()]), winningBid, hostingStart, hostingEnd);
+                    (DomainTarget[]) targets.toArray(new DomainTarget[targets.size()]), winningBid, hostingStart,
+                    hostingEnd, blockId);
                 
             } finally {
                 close(conn);
@@ -1321,7 +1463,7 @@ public class SQLServerGameDataDAO implements GameDataDAO {
             Connection conn = this.getConnection();
 
             try {
-                long sponsorId;
+                Long sponsorId;
                 String domainName;
                 Boolean approved;
 
@@ -1333,7 +1475,12 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                         throw new EntryNotFoundException("The domain record with the id: " + domainId + " does not exist",
                             new Long(domainId));
                     } else {
-                        sponsorId = rs.getLong(FIELD_SPONSOR_ID);
+                        long sid = rs.getLong(FIELD_SPONSOR_ID);
+                        if (rs.wasNull()) {
+                            sponsorId = null;
+                        } else {
+                            sponsorId = new Long(sid);
+                        }
                         domainName = rs.getString(FIELD_BASE_URL);
                         approved = (Boolean) rs.getObject(FIELD_IS_APPROVED);
                     }
@@ -1862,7 +2009,8 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
                     updatedSlots[i] = new HostingSlotImpl(slots[i].getId(), slots[i].getDomain(), slots[i].getImageId(),
                             slots[i].getBrainTeaserIds(), slots[i].getPuzzleId(), slots[i].getSequenceNumber(), updatedTargets,
-                            slots[i].getWinningBid(), slots[i].getHostingStart(), slots[i].getHostingEnd());
+                            slots[i].getWinningBid(), slots[i].getHostingStart(), slots[i].getHostingEnd(),
+                            slots[i].getHostingBlockId());
                 }
 
                 return updatedSlots;
@@ -2005,9 +2153,11 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                 checkDomainNotExist(domain, conn);
 
                 // if domain.sponsorId does not exist, throw EntryNotFoundException
-                if (!exist(conn, SQL_SELECT_SPONSOR_WITH_ID + domain.getSponsorId(), null)) {
-                    throw new EntryNotFoundException("The sponsorId in the domain does not exist.",
-                        new Long(domain.getSponsorId()));
+                if (domain.getSponsorId() != null) {
+                    if (!exist(conn, SQL_SELECT_SPONSOR_WITH_ID + domain.getSponsorId(), null)) {
+                        throw new EntryNotFoundException("The sponsorId in the domain does not exist.",
+                                                         domain.getSponsorId());
+                    }
                 }
 
                 // update domain table
@@ -2091,12 +2241,11 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
     /**
      * <p>
-     * Looks up all distinct domains hosting any slot in any active game, and returns an array of Domain objects representing the
-     * results.
+     * Looks up all distinct domains hosting any slot in any active game, and returns an array of Domain objects
+     * representing the results.
      * </p>
      *
-     * @return array of active domains
-     *
+     * @return array of active domains.
      * @throws PersistenceException If there is any problem in the persistence layer.
      */
     public Domain[] findActiveDomains() throws PersistenceException {
@@ -2271,7 +2420,8 @@ public class SQLServerGameDataDAO implements GameDataDAO {
                 checkSlotNotExist(slotId, conn);
 
                 // checks if the slot is related to the game
-                ResultSet rs = query(conn, SQL_SELECT_CHECK_GAME_ID_SLOT_ID, new Object[] { new Long(gameId), new Long(slotId) });
+                ResultSet rs = query(conn, SQL_SELECT_CHECK_GAME_ID_SLOT_ID,
+                                     new Object[] { new Long(gameId), new Long(slotId) });
 
                 try {
                     if (!rs.next()) {
@@ -2341,22 +2491,22 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
                 if (isStarted == null) {
                     if (isEnded == null) {
-                        sql = SQL_SELECT_GAME;
+                        sql = SQL_SELECT_GAME; // Revised
                     } else if (isEnded.booleanValue()) {
-                        sql = SQL_SELECT_END_GAME;
+                        sql = SQL_SELECT_END_GAME; // Revised
                     } else {
-                        sql = SQL_SELECT_NOT_END_GAME;
+                        sql = SQL_SELECT_NOT_END_GAME; // Revised
                     }
                 } else if (isStarted.booleanValue()) {
                     if (isEnded == null) {
-                        sql = SQL_SELECT_START_GAME;
+                        sql = SQL_SELECT_START_GAME; // Revised
                     } else if (isEnded.booleanValue()) {
-                        sql = SQL_SELECT_START_END_GAME;
+                        sql = SQL_SELECT_START_END_GAME; // Revised
                     } else {
-                        sql = SQL_SELECT_START_NOT_END_GAME;
+                        sql = SQL_SELECT_START_NOT_END_GAME; // Revised
                     }
                 } else {
-                    sql = SQL_SELECT_NOT_START_GAME;
+                    sql = SQL_SELECT_NOT_START_GAME; // Revised
                 }
 
                 // query the database
@@ -2670,6 +2820,39 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
     /**
      * <p>
+     * Sets the time of completion of the specified game to specified date.
+     * </p>
+     *
+     * @param gameId the ID of a game to complete.
+     * @param endDate the time of game completion.
+     * @throws EntryNotFoundException if specified game does not exist.
+     * @throws PersistenceException if there is any problem in the persistence layer.
+     * @throws IllegalArgumentException If game completion date is null.
+     */
+    public void completeGame(long gameId, Date endDate) throws PersistenceException {
+        Helper.checkNotNull(endDate, "End Date");
+
+        try {
+            Connection conn = this.getConnection();
+
+            try {
+                checkGameNotExist(gameId, conn);
+                Object[] param = new Object[] {toSQLDate(endDate), new Long(gameId)};
+                update(conn, SQL_COMPLETE_GAME, param);
+            } finally {
+                close(conn);
+            }
+        } catch (DBConnectionException e) {
+            throw new PersistenceException("Error create the connection from db connection factory.", e);
+        } catch (SQLException e) {
+            throw new PersistenceException("Error in operation the database while delete the slot.", e);
+        } catch (Exception e) {
+            throw new PersistenceException("Error in delete the slot.", e);
+        }
+    }
+
+    /**
+     * <p>
      * checks if the domain with the name exist, if not throw exception.
      * </p>
      *
@@ -2679,12 +2862,12 @@ public class SQLServerGameDataDAO implements GameDataDAO {
      * @throws SQLException fails to query database
      * @throws EntryNotFoundException if the domain with the name does not exist
      */
-    private void checkDomainNotExist(String domain, Connection conn)
-        throws SQLException, EntryNotFoundException {
-        if (!exist(conn, SQL_SELECT_DOMAIN_WITH_NAME, new Object[] { domain })) {
-            throw new EntryNotFoundException("The domain with the name:" + domain + " does not exist.", domain);
-        }
-    }
+//    private void checkDomainNotExist(String domain, Connection conn)
+//        throws SQLException, EntryNotFoundException {
+//        if (!exist(conn, SQL_SELECT_DOMAIN_WITH_NAME, new Object[] { domain })) {
+//            throw new EntryNotFoundException("The domain with the name:" + domain + " does not exist.", domain);
+//        }
+//    }
 
     /**
      * <p>
@@ -2952,6 +3135,41 @@ public class SQLServerGameDataDAO implements GameDataDAO {
 
     /**
      * <p>
+     * Inserts a new record into the database and returns the auto-generated key.
+     * </p>
+     *
+     * @param conn Connection instance
+     * @param sql the sql to insert into the database
+     * @param parameters the param to check
+     * @return update result
+     * @throws SQLException If fail to update database, it gets thrown.
+     */
+    private long insert(Connection conn, String sql, Object[] parameters) throws SQLException {
+        PreparedStatement statement = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+        if (parameters != null) {
+            for (int i = 0; i < parameters.length; ++i) {
+                if (parameters[i] == null) {
+                    statement.setNull(i + 1, Types.TIMESTAMP);
+                } else {
+                    statement.setObject(i + 1, parameters[i]);
+                }
+            }
+        }
+
+        ResultSet keys = null;
+        try {
+            statement.executeUpdate();
+            keys = statement.getGeneratedKeys();
+            keys.next();
+            return keys.getLong(1);
+        } finally {
+            close(keys);
+            close(statement);
+        }
+    }
+
+    /**
+     * <p>
      * Insert a column into the database.
      * </p>
      *
@@ -3062,5 +3280,188 @@ public class SQLServerGameDataDAO implements GameDataDAO {
         }
     }
 
-	
+    /**
+     * <p>
+     * Creates specified hosting slots. This method will persist the slots in hosting_slot table and return the
+     * appropiate hosting slots. The domain targets provided with the specified slots will be persisted in target_object
+     * table.
+     * </p>
+     *
+     * @param slots a list of slots to create.
+     * @return array of hosting slots.
+     * @throws EntryNotFoundException if blockId or any bidId doesn't exist in the persistence
+     * @throws InvalidEntryException if any bidId does not belong to the blockId
+     * @throws PersistenceException if there is any problem in the persistence layer.
+     * @throws IllegalArgumentException if bidIds is null
+     */
+    public HostingSlot[] createSlots(HostingSlot[] slots) throws PersistenceException {
+        Helper.checkNotNull(slots, "slots");
+        HostingSlot[] createdSlots = new HostingSlot[slots.length];
+        try {
+            Connection conn = this.getConnection();
+            ResultSet rs = null;
+            try {
+                for (int i = 0; i < slots.length; i++) {
+                    HostingSlot slot = slots[i];
+                    long blockId = slot.getHostingBlockId();
+                    long imageId = slot.getImageId();
+                    int currentAmount = slot.getWinningBid();
+                    // checks if the blockId exists in the 'hosting_block' table
+                    if (!exist(conn, SQL_SELECT_HOSTING_BLOCK_WITH_ID + blockId, null)) {
+                        throw new EntryNotFoundException("The block with the id: " + blockId + " does not exist.",
+                                                         new Long(blockId));
+                    }
+                    // get the next sequenceNumber of the hosting_slot table
+                    int sequenceNumber = getNextSequenceNumber(conn, TABLE_HOSTING_SLOT);
+                    // retrieve the domain_id from the 'image' table
+                    Domain domain = null;
+                    rs = query(conn, SQL_SELECT_IMAGE_WITH_ID + imageId, null);
+                    try {
+                        if (rs.next()) {
+                            // will throw an exception if no such domain is found:
+                            domain = getDomain(rs.getLong(FIELD_DOMAIN_ID));
+                        }
+                    } finally {
+                        close(rs);
+                    }
+                    // persist the hosting slot
+                    long id = this.insert(conn,
+                                          "INSERT INTO hosting_slot (hosting_block_id,sequence_number," +
+                                          "hosting_start,hosting_end,is_deleted,image_id,hosting_payment) " +
+                                          "values(?,?,null,null,0,?,?)",
+                                          new Object[] {new Long(blockId), new Long(sequenceNumber),
+                                                        new Long(imageId), new Integer(currentAmount)});
+                    // Persist domain targets
+                    DomainTarget[] targets = slot.getDomainTargets();
+                    DomainTarget[] createdTargets = new DomainTarget[targets.length];
+                    for (int j = 0; j < targets.length; j++) {
+                        CallableStatement stmt = callableStatement(SP_CREATE_DOMAIN_TARGET,
+                                new Object[] {
+                                    null, new Long(id), new Integer(targets[j].getSequenceNumber()),
+                                    targets[j].getUriPath(), targets[j].getIdentifierText(),
+                                    targets[j].getIdentifierHash(), new Long(targets[j].getClueImageId()), FIELD_ID
+                                }, conn);
+
+                        try {
+                            createdTargets[j] = new DomainTargetImpl(new Long(stmt.getLong(8)),
+                                                                     targets[j].getSequenceNumber(),
+                                                                     targets[j].getUriPath(),
+                                                                     targets[j].getIdentifierText(),
+                                                                     targets[j].getIdentifierHash(),
+                                                                     targets[j].getClueImageId());
+                        } finally {
+                            close(stmt);
+                        }
+                    }
+                    // create the HostingSlotImpl instance
+                    createdSlots[i] = new HostingSlotImpl(new Long(id), domain, imageId, new long[0], null,
+                                                          sequenceNumber++, createdTargets, currentAmount, null,
+                                                          null, blockId);
+                }
+                return createdSlots;
+            } finally {
+                close(rs);
+                close(conn);
+            }
+        } catch(PersistenceException e){
+            throw e;
+        } catch (DBConnectionException e) {
+            throw new PersistenceException("Error in create connection from database factory.", e);
+        } catch (SQLException e) {
+            throw new PersistenceException("Error in query/update database when creating HostingSlot.", e);
+        } catch (Exception e) {
+            throw new PersistenceException("Error in creating Slot.", e);
+        }
+    }
+
+    /**
+     * <p>
+     * Retrieves a ImageInfo object representing the image corresponding to the specified ID.
+     * </p>
+     *
+     * @param imageId the image id.
+     * @return the image.
+     * @throws EntryNotFoundException If imageId is not in persistence.
+     * @throws PersistenceException If there is any problem in the persistence layer.
+     */
+    public ImageInfo getImage(long imageId) throws PersistenceException {
+        try {
+            Connection conn = this.getConnection();
+
+            try {
+                long downloadId;
+                String description;
+                Boolean approved;
+
+                // checks if the image id exist or not, if not , throw exception
+                ResultSet rs = query(conn, SQL_SELECT_IMAGE_WITH_ID + imageId, null);
+
+                try {
+                    if (!rs.next()) {
+                        throw new EntryNotFoundException("The image record with the id: " + imageId + " does not exist",
+                            new Long(imageId));
+                    } else {
+                        downloadId = rs.getLong(FIELD_DOWNLOAD_OBJ_ID);
+                        description = rs.getString(FIELD_DESCRIPTION);
+                        approved = (Boolean) rs.getObject(FIELD_IS_APPROVED);
+                    }
+                } finally {
+                    close(rs);
+                }
+
+                return new ImageInfoImpl(new Long(imageId), downloadId, description, approved);
+            } finally {
+                close(conn);
+            }
+        } catch(PersistenceException e){
+            throw e;
+        } catch (DBConnectionException e) {
+            throw new PersistenceException("Error create the connection from db connection factory.", e);
+        } catch (SQLException e) {
+            throw new PersistenceException("Error in query the database while get the image.", e);
+        } catch (Exception e) {
+            throw new PersistenceException("Error in get image with the id:" + imageId, e);
+        }
+    }
+
+    /**
+     * <p>
+     * Looks up all approved domains and returns an array of Domain objects representing them.
+     * </p>
+     *
+     * @return array of domains.
+     * @throws EntryNotFoundException If sponsorId is not in persistence
+     * @throws PersistenceException If there is any problem in the persistence layer.
+     */
+    public Domain[] getApprovedDomains() throws PersistenceException {
+        try {
+            Connection conn = getConnection();
+
+            try {
+                // query domain with the sponsorId
+                List domains = new ArrayList();
+                ResultSet rs = this.query(conn, SQL_SELECT_APPROVED_DOMAINS, null);
+
+                try {
+                    while (rs.next()) {
+                        domains.add(getDomain(rs.getLong(FIELD_ID)));
+                    }
+                } finally {
+                    close(rs);
+                }
+
+                return (Domain[]) domains.toArray(new Domain[domains.size()]);
+            } finally {
+                close(conn);
+            }
+        } catch(PersistenceException e){
+            throw e;
+        } catch (DBConnectionException e) {
+            throw new PersistenceException("Error create the connection from db connection factory.", e);
+        } catch (SQLException e) {
+            throw new PersistenceException("Error in query the database while find the approved domains", e);
+        } catch (Exception e) {
+            throw new PersistenceException("Error in get domains with the sponsor:", e);
+        }
+    }
 }

@@ -3,14 +3,21 @@
  */
 package com.orpheus.game.persistence;
 
-import com.orpheus.game.persistence.dao.SQLServerGameDataDAOCtorUnitTests;
-import com.orpheus.game.persistence.dao.SQLServerGameDataDAOUnitTests;
-import com.orpheus.game.persistence.ejb.GameDataBeanUnitTests;
-import com.orpheus.game.persistence.entities.*;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import com.orpheus.game.persistence.entities.DomainTargetImplUnitTests;
+import com.orpheus.game.persistence.entities.SlotCompletionImplUnitTests;
+import com.orpheus.game.persistence.entities.ImageInfoImplUnitTests;
+import com.orpheus.game.persistence.entities.DownloadDataImplUnitTests;
+import com.orpheus.game.persistence.entities.GameImplUnitTests;
+import com.orpheus.game.persistence.entities.DomainImplUnitTests;
+import com.orpheus.game.persistence.entities.BallColorImplUnitTests;
+import com.orpheus.game.persistence.entities.HostingSlotImplUnitTests;
+import com.orpheus.game.persistence.entities.HostingBlockImplTests;
+import com.orpheus.game.persistence.ejb.GameDataBeanUnitTests;
+import com.orpheus.game.persistence.dao.SQLServerGameDataDAOUnitTests;
+import com.orpheus.game.persistence.dao.SQLServerGameDataDAOCtorUnitTests;
 
 
 /**

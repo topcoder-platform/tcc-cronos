@@ -89,4 +89,34 @@ public interface Game extends Serializable {
      * @return the array of HostingBlock objects
      */
     HostingBlock[] getBlocks();
+
+    /**
+     * <p>
+     * Retrieves the ID of bounce point calculation schema. Such schema provides the rules to be used for calculating
+     * the bounce points to be awarded to players playing this game. 
+     * </p>
+     *
+     * @return the reference to bounce point calculation schema.
+     */
+    int getBouncePointCalculationType();
+
+    /**
+     * <p>
+     * Retrieves the ID of prize amount calculation schema. Such schema provides the rules to be used for calculating
+     * the prize amounts to be awarded to players winning this game.
+     * </p>
+     *
+     * @return the reference to prize amount calculation schema.
+     */
+    int getPrizeCalculationType();
+
+    /**
+     * <p>
+     * Retrieves the ID of game completion schema. Such schema provides the rules to be used for determining when the
+     * game has to be completed.
+     * </p>
+     *
+     * @return the reference to game completion schema.
+     */
+    int getCompletionType();
 }

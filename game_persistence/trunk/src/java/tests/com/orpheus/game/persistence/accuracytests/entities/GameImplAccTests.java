@@ -67,7 +67,7 @@ public class GameImplAccTests extends TestCase {
         blocks = new HostingBlock[]{block};
 
         game = new GameImpl(new Long(1), color, 1, AccuracyHelper.convertStringToDate("2006/1/1"),
-                AccuracyHelper.convertStringToDate("2006/2/2"), blocks);
+                AccuracyHelper.convertStringToDate("2006/2/2"), blocks, 1, 2, 3);
     }
 
     /**
@@ -102,7 +102,7 @@ public class GameImplAccTests extends TestCase {
      */
     public void testGetId() throws Exception {
         game = new GameImpl(new Long(2), color, 1, AccuracyHelper.convertStringToDate("2006/1/1"),
-                AccuracyHelper.convertStringToDate("2006/2/2"), blocks);
+                AccuracyHelper.convertStringToDate("2006/2/2"), blocks, 1, 2, 3);
         assertEquals("Not the expected id.", 2, game.getId().longValue());
     }
 
@@ -116,7 +116,7 @@ public class GameImplAccTests extends TestCase {
     public void testGetBallColor() throws Exception {
         color = new BallColorImpl(new Long(2), "color_name", 1);
         game = new GameImpl(new Long(2), color, 1, AccuracyHelper.convertStringToDate("2006/1/1"),
-                AccuracyHelper.convertStringToDate("2006/2/2"), blocks);
+                AccuracyHelper.convertStringToDate("2006/2/2"), blocks, 1, 2, 3);
         assertEquals("Not the expected color id.", 2, game.getBallColor().getId().longValue());
     }
 

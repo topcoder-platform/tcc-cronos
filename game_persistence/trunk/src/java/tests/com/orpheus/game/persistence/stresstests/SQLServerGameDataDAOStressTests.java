@@ -3,18 +3,6 @@
  */
 package com.orpheus.game.persistence.stresstests;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import junit.framework.TestCase;
-
 import com.orpheus.game.persistence.BallColor;
 import com.orpheus.game.persistence.Domain;
 import com.orpheus.game.persistence.Game;
@@ -31,6 +19,17 @@ import com.orpheus.game.persistence.entities.ImageInfoImpl;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.util.config.ConfigManager;
+import junit.framework.TestCase;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -698,7 +697,7 @@ public class SQLServerGameDataDAOStressTests extends TestCase {
      */
     private Domain getDomain(long sponsorId, String domainName, Boolean isApproved,
         ImageInfo[] images) {
-        return new DomainImpl(null, sponsorId, domainName, isApproved, images);
+        return new DomainImpl(null, new Long(sponsorId), domainName, isApproved, images);
     }
 
     /**
@@ -713,7 +712,7 @@ public class SQLServerGameDataDAOStressTests extends TestCase {
      */
     private Game getGameImplInstance(BallColor color, int keyCount, Date startDate,
         HostingBlock[] blocks) {
-        return new GameImpl(null, color, keyCount, startDate, null, blocks);
+        return new GameImpl(null, color, keyCount, startDate, null, blocks, 1, 2, 3);
     }
 
     /**

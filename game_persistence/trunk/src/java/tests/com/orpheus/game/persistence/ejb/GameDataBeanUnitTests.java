@@ -4,7 +4,6 @@
 package com.orpheus.game.persistence.ejb;
 
 import com.mockrunner.mock.ejb.MockUserTransaction;
-
 import com.orpheus.game.persistence.BallColor;
 import com.orpheus.game.persistence.Domain;
 import com.orpheus.game.persistence.DomainTarget;
@@ -25,30 +24,22 @@ import com.orpheus.game.persistence.entities.DomainImpl;
 import com.orpheus.game.persistence.entities.DomainTargetImpl;
 import com.orpheus.game.persistence.entities.HostingBlockImplTests;
 import com.orpheus.game.persistence.entities.HostingSlotImpl;
-
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.puzzle.PuzzleData;
-
 import com.topcoder.web.frontcontroller.results.DownloadData;
-
 import junit.framework.TestCase;
-
+import junit.framework.Assert;
 import org.mockejb.MockContainer;
 import org.mockejb.SessionBeanDescriptor;
-
 import org.mockejb.jndi.MockContextFactory;
-
-import java.io.InputStream;
-
-import java.rmi.RemoteException;
-
-import java.util.Date;
-import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
-
 import javax.rmi.PortableRemoteObject;
+import java.io.InputStream;
+import java.rmi.RemoteException;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -218,7 +209,7 @@ public class GameDataBeanUnitTests extends TestCase {
             gameData.createGame(null);
             fail("The game to create is null.");
         } catch (RemoteException e) {
-            assertTrue("IllegalArgumentException should be thrown.", e.detail instanceof IllegalArgumentException);
+            assertTrue("IllegalArgumentException should be thrown.", e.getCause() instanceof IllegalArgumentException);
         }
 
         ///////
@@ -292,6 +283,8 @@ public class GameDataBeanUnitTests extends TestCase {
         assertEquals("The size of the game.blocks is wrong.", 2, game.getBlocks().length);
         assertEquals("The game.block.perSlot is not the same.", blocks[0].getMaxHostingTimePerSlot(),
             game.getBlocks()[0].getMaxHostingTimePerSlot());
+        assertEquals("The game.bounceCalcType is not the same.", 1, game.getBouncePointCalculationType());
+        assertEquals("The game.prizeCalcType is not the same.", 2, game.getPrizeCalculationType());
     }
 
     /**
@@ -344,7 +337,7 @@ public class GameDataBeanUnitTests extends TestCase {
         ImageInfo[] images = TestHelper.getImages((BallColor[]) colors.toArray(new BallColor[0]));
         Domain toPersist = TestHelper.getDomain(sponsorId, "domainName", new Boolean(true), images);
         Domain persisted = gameData.createDomain(toPersist);
-        assertEquals("The sponsorId is not the one set.", sponsorId, persisted.getSponsorId());
+        assertEquals("The sponsorId is not the one set.", sponsorId, persisted.getSponsorId().longValue());
         assertEquals("The domain name is not the one set.", "domainName", persisted.getDomainName());
         assertEquals("The images length is wrong.", images.length, persisted.getImages().length);
     }
@@ -368,7 +361,7 @@ public class GameDataBeanUnitTests extends TestCase {
 
         //verify the result
         assertEquals("The domain Name is not the one saved.", "domainName", getValue.getDomainName());
-        assertEquals("The domain.sponsorId is not the one saved.", sponsorId, getValue.getSponsorId());
+        assertEquals("The domain.sponsorId is not the one saved.", sponsorId, getValue.getSponsorId().longValue());
         assertEquals("The domain.images's size is invalid.", images.length, getValue.getImages().length);
         assertEquals("the domain.images.0.downloadId is invalid.", persisted.getImages()[0].getDownloadId(),
             getValue.getImages()[0].getDownloadId());
@@ -389,7 +382,8 @@ public class GameDataBeanUnitTests extends TestCase {
         Domain persisted = gameData.createDomain(toPersist);
 
         //create a domain with the persited id and two new images
-        Domain toUpdate = new DomainImpl(persisted.getId(), sponsorId, "domainName", new Boolean(false), images);
+        Domain toUpdate
+            = new DomainImpl(persisted.getId(), new Long(sponsorId), "domainName", new Boolean(false), images);
 
         //update the domain
         gameData.updateDomain(toUpdate);
@@ -476,7 +470,7 @@ public class GameDataBeanUnitTests extends TestCase {
         //persist the slot
         int sequenceNumber = 1;
         Date hostingStart = new Date();
-        long slotId = TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId);
+        long slotId = TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId, blockId, imageId);
 
         HostingSlot slot = gameData.getSlot(slotId);
 
@@ -491,7 +485,7 @@ public class GameDataBeanUnitTests extends TestCase {
         assertEquals("The imageId is not the one to set.", imageId, slot.getImageId());
 
         //verify the domain
-        assertEquals("The domain. sponsorId is not the one set.", sponsorId, slot.getDomain().getSponsorId());
+        assertEquals("The domain. sponsorId is not the one set.", sponsorId, slot.getDomain().getSponsorId().longValue());
 
         //verify the domainTarget
         assertEquals("The size of domainTarget is wrong.", 1, slot.getDomainTargets().length);
@@ -538,7 +532,7 @@ public class GameDataBeanUnitTests extends TestCase {
         //persist the slot
         int sequenceNumber = 1;
         Date hostingStart = new Date();
-        long slotId = TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId);
+        long slotId = TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId, blockId, imageId);
 
         slots = gameData.findCompletedSlots(game.getId().longValue());
         assertEquals("The slots is not empty.", 0, slots.length);
@@ -585,7 +579,7 @@ public class GameDataBeanUnitTests extends TestCase {
         //persist the slot
         int sequenceNumber = 1;
         Date hostingStart = new Date();
-        long slotId = TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId);
+        long slotId = TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId, blockId, imageId);
 
         //find completions
         SlotCompletion[] completions = gameData.findSlotCompletions(game.getId().longValue(), slotId);
@@ -630,12 +624,12 @@ public class GameDataBeanUnitTests extends TestCase {
         //persist the slot
         int sequenceNumber = 1;
         Date hostingStart = new Date();
-        long slotId = TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId);
+        long slotId = TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId, blockId, imageId);
 
         gameData.deleteSlot(slotId);
 
         try {
-            gameData.getSlot(slotId);
+            HostingSlot slot = gameData.getSlot(slotId);
             fail("The slot does not exist.");
         } catch (EntryNotFoundException e) {
             //good
@@ -676,7 +670,7 @@ public class GameDataBeanUnitTests extends TestCase {
         //persist the slot
         int sequenceNumber = 1;
         Date hostingStart = new Date();
-        long slotId = TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId);
+        long slotId = TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId, blockId, imageId);
 
         //get slot
         HostingSlot slot = gameData.getSlot(slotId);
@@ -688,7 +682,7 @@ public class GameDataBeanUnitTests extends TestCase {
         //create a slot to be updated
         HostingSlot toUpdate = new HostingSlotImpl(slot.getId(), slot.getDomain(), slot.getImageId(),
                 slot.getBrainTeaserIds(), slot.getPuzzleId(), slot.getSequenceNumber() + 1, targets,
-                slot.getWinningBid(), slot.getHostingStart(), slot.getHostingEnd());
+                slot.getWinningBid(), slot.getHostingStart(), slot.getHostingEnd(), slot.getHostingBlockId());
 
         //update the slot
         HostingSlot[] updated = gameData.updateSlots(new HostingSlot[] { toUpdate });
@@ -733,13 +727,15 @@ public class GameDataBeanUnitTests extends TestCase {
         //persist the slot
         int sequenceNumber = 1;
         Date hostingStart = new Date();
-        TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId);
+        TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId, blockId, imageId);
 
         //get game instance
         Game toGet = gameData.getGame(game.getId().longValue());
 
         //verify the game's attribute
         assertEquals("The game's keyCount is not the same.", keyCount, toGet.getKeyCount());
+        assertEquals("The game's bounceCalcType is not the same.", 1, toGet.getBouncePointCalculationType());
+        assertEquals("The game's prizeCalcType is not the same.", 2, toGet.getPrizeCalculationType());
         assertNull("The endDate is not null.", toGet.getEndDate());
         assertEquals("The ballColor's name is not the same.", game.getBallColor().getName(),
             toGet.getBallColor().getName());
@@ -761,7 +757,7 @@ public class GameDataBeanUnitTests extends TestCase {
                 assertEquals("The imageId is not the one to set.", imageId, slot.getImageId());
 
                 //verify the domain
-                assertEquals("The domain. sponsorId is not the one set.", sponsorId, slot.getDomain().getSponsorId());
+                assertEquals("The domain. sponsorId is not the one set.", sponsorId, slot.getDomain().getSponsorId().longValue());
 
                 //verify the domainTarget
                 assertEquals("The size of domainTarget is wrong.", 1, slot.getDomainTargets().length);
@@ -808,7 +804,7 @@ public class GameDataBeanUnitTests extends TestCase {
         assertEquals("The attribute size is invalid.", 2, data.getAllAttributes().size());
         assertEquals("The attribute att1 does not exist.", "value1", data.getAttribute("att1"));
         assertEquals("The resource size is invalid.", 1, data.getAllResources().size());
-        assertEquals("The resource'name is invalid.", "html", data.getResource("resource1").getName());
+        assertEquals("The resource'name is invalid.", "resource1", data.getResource("resource1").getName());
     }
 
     /**
@@ -847,7 +843,7 @@ public class GameDataBeanUnitTests extends TestCase {
         //persist the slot
         int sequenceNumber = 1;
         Date hostingStart = new Date();
-        long slotId = TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId);
+        long slotId = TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId, blockId, imageId);
 
         //get the keys
         String[] keyTexts = gameData.getKeysForPlayer(playerId, new long[] { slotId });
@@ -895,7 +891,7 @@ public class GameDataBeanUnitTests extends TestCase {
         //persist the slot
         int sequenceNumber = 1;
         Date hostingStart = new Date();
-        long slotId = TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId);
+        long slotId = TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId, blockId, imageId);
 
         //record the slot completion
         SlotCompletion slotCompltd = gameData.recordSlotCompletion(playerId, slotId, new Date());
@@ -988,7 +984,7 @@ public class GameDataBeanUnitTests extends TestCase {
         //persist the slot
         int sequenceNumber = 1;
         Date hostingStart = new Date();
-        long slotId = TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId);
+        long slotId = TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId, blockId, imageId);
 
         //find the slot for domain
         HostingSlot slot = gameData.findSlotForDomain(game.getId().longValue(), playerId, "domainName");
@@ -1026,7 +1022,7 @@ public class GameDataBeanUnitTests extends TestCase {
         domains = gameData.findDomainsForSponsor(sponsorId);
 
         assertEquals("The size of domain's length is invalid.", 1, domains.length);
-        assertEquals("The sponsorId is not the one set.", sponsorId, domains[0].getSponsorId());
+        assertEquals("The sponsorId is not the one set.", sponsorId, domains[0].getSponsorId().longValue());
         assertEquals("The domain name is not the one set.", "domainName", domains[0].getDomainName());
         assertEquals("The images length is wrong.", images.length, domains[0].getImages().length);
     }
@@ -1136,7 +1132,7 @@ public class GameDataBeanUnitTests extends TestCase {
         //persist the slot
         int sequenceNumber = 1;
         Date hostingStart = new Date();
-        long slotId = TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId);
+        long slotId = TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId, blockId, imageId);
 
         //find again
         games = gameData.findGamesByDomain("domainName", playerId);
@@ -1182,11 +1178,29 @@ public class GameDataBeanUnitTests extends TestCase {
         //persist the slot
         int sequenceNumber = 1;
         Date hostingStart = new Date();
-        TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId);
+        TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId, blockId, imageId);
 
         //find again
         domains = gameData.findActiveDomains();
         assertEquals("The domain array is empty.", 1, domains.length);
+    }
+
+    /**
+     * test the completeGame method. it is an accuracy test case.
+     *
+     * @throws Exception into Junit
+     */
+    public void testCompleteGame() throws Exception {
+        //persist the game
+        HostingBlock[] blocks = TestHelper.getBlocks();
+        Game game = gameData.createGame(TestHelper.getGameImplInstance((BallColor) colors.get(0), keyCount,
+                    gameStartDate, blocks));
+
+        Date completionDate = new Date();
+        gameData.completeGame(game.getId().longValue(), completionDate);
+
+        Game updatedGame = gameData.getGame(game.getId().longValue());
+        Assert.assertEquals("The game completion date is not correct", completionDate, updatedGame.getEndDate());
     }
 
     /**

@@ -21,13 +21,19 @@
                     <Value>com.microsoft.sqlserver.jdbc.SQLServerDriver</Value>
                 </Property>
                 <Property name="jdbc_url">
-                    <Value>jdbc:sqlserver://localhost\\SQLEXPRESS;databaseName=tcsdev</Value>
+                    <Value>jdbc:sqlserver://127.0.0.1:1433</Value>
                 </Property>
                 <Property name="user">
                     <Value>sa</Value>
                 </Property>
                 <Property name="password">
-                    <Value>test</Value>
+                    <Value>topcoder</Value>
+                </Property>
+                <Property name="databaseName">
+                    <Value>orpheus_test</Value>
+                </Property>
+                <Property name="selectMethod">
+                    <Value>cursor</Value>
                 </Property>
             </Property>
         </Property>

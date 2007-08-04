@@ -83,6 +83,30 @@ public class GameImpl implements Game {
 
     /**
      * <p>
+     * The ID of bounce point calculation schema. Such schema provides the rules to be used for calculating the bounce
+     * points to be awarded to players playing this game.
+     * </p>
+     */
+    private final int bouncePointCalculationType;
+
+    /**
+     * <p>
+     * The ID of prize amount calculation schema. Such schema provides the rules to be used for calculating the prize
+     * amounts to be awarded to players winning this game.
+     * </p>
+     */
+    private final int prizeCalculationType;
+
+    /**
+     * <p>
+     * The ID of game completion schema. Such schema provides the rules to be used for determining when the game has to
+     * be completed.
+     * </p>
+     */
+    private final int gameCompletionType;
+
+    /**
+     * <p>
      * Constructor.  Set name to the concatenation of the name of the associated BallColor with the ID of this game.
      * If this game does not have an ID or BallColor yet assigned then that part of the name is represented by a
      * single question. Make a shallow copy of the blocks array.
@@ -94,11 +118,15 @@ public class GameImpl implements Game {
      * @param startDate the start date
      * @param endDate the end date
      * @param blocks the array of HostingBlock objects
+     * @param bouncePointCalculationType a reference to bounce point calculation schema.
+     * @param prizeCalculationType a reference to prize calculation schema. 
+     * @param gameCompletionType a reference to game completion schema.
      *
      * @throws IllegalArgumentException If id, if given, is not positive, or if keyCount is negative, or if startDate
      *         is null, or if blocks is null or contans null elements, or stareDate early endDate if both provided.
      */
-    public GameImpl(Long id, BallColor ballColor, int keyCount, Date startDate, Date endDate, HostingBlock[] blocks) {
+    public GameImpl(Long id, BallColor ballColor, int keyCount, Date startDate, Date endDate, HostingBlock[] blocks,
+                    int bouncePointCalculationType, int prizeCalculationType, int gameCompletionType) {
         if (id != null) {
             Helper.checkNotPositive(id.longValue(), "Id");
         }
@@ -126,6 +154,10 @@ public class GameImpl implements Game {
 
         //shallow copy the block
         this.blocks = (HostingBlock[]) blocks.clone();
+
+        this.bouncePointCalculationType = bouncePointCalculationType;
+        this.prizeCalculationType = prizeCalculationType;
+        this.gameCompletionType = gameCompletionType;
     }
 
     /**
@@ -206,5 +238,41 @@ public class GameImpl implements Game {
      */
     public HostingBlock[] getBlocks() {
         return (HostingBlock[]) this.blocks.clone();
+    }
+
+    /**
+     * <p>
+     * Retrieves the ID of bounce point calculation schema. Such schema provides the rules to be used for
+     * calculating the bounce points to be awarded to players playing this game.
+     * </p>
+     *
+     * @return the reference to bounce point calculation schema.
+     */
+    public int getBouncePointCalculationType() {
+        return this.bouncePointCalculationType;
+    }
+
+    /**
+     * <p>
+     * Retrieves the ID of prize amount calculation schema. Such schema provides the rules to be used for
+     * calculating the prize amounts to be awarded to players winning this game.
+     * </p>
+     *
+     * @return the reference to prize amount calculation schema.
+     */
+    public int getPrizeCalculationType() {
+        return this.prizeCalculationType;
+    }
+
+    /**
+     * <p>
+     * Retrieves the ID of game completion schema. Such schema provides the rules to be used for determining when the
+     * game has to be completed.
+     * </p>
+     *
+     * @return the reference to game completion schema.
+     */
+    public int getCompletionType() {
+        return this.gameCompletionType;
     }
 }

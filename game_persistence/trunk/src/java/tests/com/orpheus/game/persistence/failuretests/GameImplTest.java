@@ -4,12 +4,11 @@
 
 package com.orpheus.game.persistence.failuretests;
 
-import java.util.Date;
-
 import com.orpheus.game.persistence.HostingBlock;
 import com.orpheus.game.persistence.entities.GameImpl;
-
 import junit.framework.TestCase;
+
+import java.util.Date;
 
 /**
  * Test case for <code>GameImplTest</code>.
@@ -34,7 +33,7 @@ public class GameImplTest extends TestCase {
     public void testGameImpl_ZeroId() {
         try {
             new GameImpl(new Long(0), null, 1, new Date(System.currentTimeMillis()),
-                    new Date(System.currentTimeMillis()), new HostingBlock[0]);
+                    new Date(System.currentTimeMillis()), new HostingBlock[0], 1, 2, 3);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -56,7 +55,7 @@ public class GameImplTest extends TestCase {
     public void testGameImpl_NegativeId() {
         try {
             new GameImpl(new Long(-1), null, 1, new Date(System.currentTimeMillis()),
-                    new Date(System.currentTimeMillis()), new HostingBlock[0]);
+                    new Date(System.currentTimeMillis()), new HostingBlock[0], 1, 2, 3);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -78,7 +77,7 @@ public class GameImplTest extends TestCase {
     public void testGameImpl_NegativeKeyCount() {
         try {
             new GameImpl(new Long(1), null, -1, new Date(System.currentTimeMillis()),
-                    new Date(System.currentTimeMillis()), new HostingBlock[0]);
+                    new Date(System.currentTimeMillis()), new HostingBlock[0], 1, 2, 3);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -100,7 +99,7 @@ public class GameImplTest extends TestCase {
     public void testGameImpl_NullStartDate() {
         try {
             new GameImpl(new Long(1), null, 1, null, //new Date(System.currentTimeMillis()),
-                    new Date(System.currentTimeMillis()), new HostingBlock[0]);
+                    new Date(System.currentTimeMillis()), new HostingBlock[0], 1, 2, 3);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -122,7 +121,7 @@ public class GameImplTest extends TestCase {
     public void testGameImpl_InvalidStartDate() {
         try {
             new GameImpl(new Long(1), null, 1, new Date(100),
-                    new Date(10), new HostingBlock[0]);
+                    new Date(10), new HostingBlock[0], 1, 2, 3);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -144,7 +143,7 @@ public class GameImplTest extends TestCase {
     public void testGameImpl_NullBlocks() {
         try {
             new GameImpl(new Long(1), null, 1, new Date(10),
-                    new Date(100), null);
+                    new Date(100), null, 1, 2, 3);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -166,7 +165,7 @@ public class GameImplTest extends TestCase {
     public void testGameImpl_NullInBlocks() {
         try {
             new GameImpl(new Long(1), null, 1, new Date(10),
-                    new Date(100), new HostingBlock[1]);
+                    new Date(100), new HostingBlock[1], 1, 2, 3);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here

@@ -218,6 +218,7 @@ public final class TestHelper {
         conn.createStatement().execute("DELETE FROM plyr_compltd_slot");
         conn.createStatement().execute("DELETE FROM plyr_compltd_game");
         conn.createStatement().execute("DELETE FROM plyr_regstrd_game");
+        conn.createStatement().execute("DELETE FROM bid_for_slot");
         conn.createStatement().execute("DELETE FROM hosting_slot");
         conn.createStatement().execute("DELETE FROM effective_bid");
         conn.createStatement().execute("DELETE FROM bid");
@@ -253,8 +254,8 @@ public final class TestHelper {
     public static long persistContactInfo(Connection conn) throws Exception {
         // insert a record into the contact_info table
         PreparedStatement stmt = conn
-                .prepareStatement("INSERT INTO contact_info(first_name,last_name,address_1,city,state,postal_code, telephone)"
-                        + " VALUES(?,?,?,?,?,?,?)");
+                .prepareStatement("INSERT INTO contact_info(first_name,last_name,address_1,city,state,postal_code, telephone,id,country)"
+                        + " VALUES(?,?,?,?,?,?,?,?,?)");
         stmt.setString(1, "javier");
         stmt.setString(2, "invern");
         stmt.setString(3, "Topcoder");
@@ -262,6 +263,8 @@ public final class TestHelper {
         stmt.setString(5, "MM");
         stmt.setString(6, "93823-234");
         stmt.setString(7, "02928-2383");
+        stmt.setLong(8, 1);
+        stmt.setString(9, "USA");
         stmt.execute();
 
         stmt.close();
@@ -494,6 +497,7 @@ public final class TestHelper {
             // insert into the ball_Color table
             results.add(persistColor(conn, downloadId));
 
+            results.add(downloadId);
             return results;
         } finally {
             if (conn != null) {
@@ -534,14 +538,13 @@ public final class TestHelper {
             DBConnectionFactory dbFactory = new DBConnectionFactoryImpl(DB_FACTORY_NAMESPACE);
             conn = dbFactory.createConnection();
             stmt = conn
-                    .prepareStatement("INSERT INTO auction(hosting_block_id,start_time,end_time,min_bid,bid_increment,item_count)"
-                            + " VALUES(?,?,?,?,?,?)");
+                    .prepareStatement("INSERT INTO auction(hosting_block_id,start_time,end_time,min_bid,item_count)"
+                            + " VALUES(?,?,?,?,?)");
             stmt.setLong(1, blockId);
             stmt.setDate(2, new java.sql.Date(date.getTime()));
             stmt.setDate(3, new java.sql.Date(date.getTime()));
             stmt.setInt(4, 1);
             stmt.setInt(5, 1);
-            stmt.setInt(6, 1);
             stmt.execute();
             stmt.close();
 
@@ -689,23 +692,18 @@ public final class TestHelper {
     /**
      * insert a record into 'hosting_slot' table.
      * 
-     * @param bidId
-     *            bid_id
-     * @param sequenceNumber
-     *            sequence_number
-     * @param date
-     *            hosting_start
-     * @param puzzleId
-     *            puzzle_id
-     * @param downloadId
-     *            download_id
-     * 
+     * @param bidId bid_id
+     * @param sequenceNumber sequence_number
+     * @param date hosting_start
+     * @param puzzleId puzzle_id
+     * @param downloadId download_id
+     * @param blockId hosting_block_id
+     * @param imageId image_id
      * @return slot_id
-     * 
-     * @throws Exception
-     *             fails to update database
+     * @throws Exception fails to update database
      */
-    public static long persistSlot(long bidId, int sequenceNumber, java.util.Date date, long puzzleId, long downloadId)
+    public static long persistSlot(long bidId, int sequenceNumber, java.util.Date date, long puzzleId, long downloadId,
+                                   long blockId, long imageId)
             throws Exception {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -717,11 +715,13 @@ public final class TestHelper {
             DBConnectionFactory dbFactory = new DBConnectionFactoryImpl(DB_FACTORY_NAMESPACE);
             conn = dbFactory.createConnection();
             // insert a record into the puzzle table
-            stmt = conn
-                    .prepareStatement("INSERT INTO hosting_slot(bid_id,sequence_number,hosting_start) VALUES(?,?,?)");
-            stmt.setLong(1, bidId);
-            stmt.setInt(2, 1);
+            stmt = conn.prepareStatement("INSERT INTO hosting_slot (hosting_block_id,sequence_number,hosting_start,is_deleted,image_id,hosting_payment) " +
+                                         "VALUES (?,?,?,0,?,?)");
+            stmt.setLong(1, blockId);
+            stmt.setInt(2, sequenceNumber);
             stmt.setTimestamp(3, new Timestamp(date.getTime()));
+            stmt.setLong(4, imageId);
+            stmt.setInt(5, 2);
 
             stmt.execute();
             stmt.close();
@@ -735,6 +735,13 @@ public final class TestHelper {
             if (rs.next()) {
                 slotId = rs.getLong("id");
             }
+
+            // insert a record into 'bid_for_slot' table
+            stmt = conn.prepareStatement("INSERT INTO bid_for_slot(bid_id,hosting_slot_id)VALUES(?,?)");
+            stmt.setLong(1, bidId);
+            stmt.setLong(2, slotId);
+            stmt.execute();
+            stmt.close();
 
             // insert a record into 'effective_bid' table
             stmt = conn.prepareStatement("INSERT INTO effective_bid(bid_id,current_amount)VALUES(?,?)");
@@ -785,8 +792,6 @@ public final class TestHelper {
     /**
      * Return the ids of the table name.
      * 
-     * @param conn
-     *            Connection
      * @param tableName
      *            table name
      * @return the id of the table name
@@ -850,7 +855,7 @@ public final class TestHelper {
      * @return instance of domain
      */
     public static Domain getDomain(long sponsorId, String domainName, Boolean isApproved, ImageInfo[] images) {
-        return new DomainImpl(null, sponsorId, domainName, isApproved, images);
+        return new DomainImpl(null, new Long(sponsorId), domainName, isApproved, images);
     }
 
     /**
@@ -884,6 +889,6 @@ public final class TestHelper {
      * @return instance of game
      */
     public static Game getGameImplInstance(BallColor color, int keyCount, Date startDate, HostingBlock[] blocks) {
-        return new GameImpl(null, color, keyCount, startDate, null, blocks);
+        return new GameImpl(null, color, keyCount, startDate, null, blocks, 1, 2, 3);
     }
 }

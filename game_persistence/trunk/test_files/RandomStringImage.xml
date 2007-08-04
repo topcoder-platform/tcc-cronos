@@ -10,9 +10,9 @@
 			<Value>Colors.xml</Value>
   		</Property>
     	<Property name="dictionaries">
-			<Value>wordlist1.txt</Value>
-			<Value>wordlist2.txt</Value>
-			<Value>wordlist3.txt</Value>
+			<Value>test_files/wordlist1.txt</Value>
+			<Value>test_files/wordlist2.txt</Value>
+			<Value>test_files/wordlist3.txt</Value>
 		</Property>
     		<Property name="algorithms">
 			<Value>com.topcoder.randomstringimg.algorithms.BlurObfuscator</Value>

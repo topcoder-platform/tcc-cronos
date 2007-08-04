@@ -4,11 +4,6 @@
 
 package com.orpheus.game.persistence.failuretests;
 
-import java.util.Date;
-
-import junit.framework.TestCase;
-
-import com.orpheus.game.persistence.BallColor;
 import com.orpheus.game.persistence.Domain;
 import com.orpheus.game.persistence.DuplicateEntryException;
 import com.orpheus.game.persistence.EntryNotFoundException;
@@ -23,6 +18,9 @@ import com.orpheus.game.persistence.entities.DomainImpl;
 import com.orpheus.game.persistence.entities.GameImpl;
 import com.orpheus.game.persistence.entities.ImageInfoImpl;
 import com.topcoder.util.config.ConfigManager;
+import junit.framework.TestCase;
+
+import java.util.Date;
 
 /**
  * Test case for <code>SQLServerGameDataDAO</code>.
@@ -177,7 +175,7 @@ public class SQLServerGameDataDAOTest extends TestCase {
             GameImpl game = new GameImpl(
                     new Long(1),
                     new BallColorImpl(new Long(100), "test", 1),
-                    1, new Date(10), new Date(100), new HostingBlock[0]);
+                    1, new Date(10), new Date(100), new HostingBlock[0], 1, 2, 3);
             dao.createGame(game);
             fail("EntryNotFoundException expected.");
         } catch (EntryNotFoundException e) {
@@ -196,7 +194,7 @@ public class SQLServerGameDataDAOTest extends TestCase {
             GameImpl game = new GameImpl(
                     new Long(1),
                     new BallColorImpl(new Long(ballid), "test", 1),
-                    1, new Date(10), new Date(100), new HostingBlock[0]);
+                    1, new Date(10), new Date(100), new HostingBlock[0], 1, 2, 3);
             Game g = dao.createGame(game);
             dao.createGame(g);
             fail("DuplicateEntryException expected.");
@@ -240,7 +238,7 @@ public class SQLServerGameDataDAOTest extends TestCase {
      */
     public void testCreateDomain_NoImageInfo() throws Exception {
         try {
-            Domain dom = new DomainImpl(new Long(1), 1, "test", Boolean.FALSE,
+            Domain dom = new DomainImpl(new Long(1), new Long(1), "test", Boolean.FALSE,
                     new ImageInfo[] {new ImageInfoImpl(new Long(1), 1, "test", Boolean.FALSE)});
             dao.createDomain(dom);
             fail("EntryNotFoundException expeced");

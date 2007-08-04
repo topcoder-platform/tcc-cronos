@@ -7,12 +7,12 @@
             <Value>100</Value>
         </Property>
             <Property name="colorfiles">
-            <Value>C:/TCS/workspace/submission-9920-24482665_2006-11-02-06-33-26-239/test_files/stress/Colors.xml</Value>
+            <Value>test_files/stress/Colors.xml</Value>
           </Property>
         <Property name="dictionaries">
-            <Value>C:/TCS/workspace/submission-9920-24482665_2006-11-02-06-33-26-239/test_files/stress/wordlist1.txt</Value>
-            <Value>C:/TCS/workspace/submission-9920-24482665_2006-11-02-06-33-26-239/test_files/stress/wordlist2.txt</Value>
-            <Value>C:/TCS/workspace/submission-9920-24482665_2006-11-02-06-33-26-239/test_files/stress/wordlist3.txt</Value>
+            <Value>test_files/stress/wordlist1.txt</Value>
+            <Value>test_files/stress/wordlist2.txt</Value>
+            <Value>test_files/stress/wordlist3.txt</Value>
         </Property>
             <Property name="algorithms">
             <Value>com.topcoder.randomstringimg.algorithms.BlurObfuscator</Value>

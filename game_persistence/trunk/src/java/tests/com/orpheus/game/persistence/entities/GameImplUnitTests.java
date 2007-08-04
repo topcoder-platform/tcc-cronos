@@ -37,6 +37,15 @@ public class GameImplUnitTests extends TestCase {
     /** the endDate. */
     private Date endDate = null;
 
+    /** the prizeCalculation. */
+    private int prizeCalcSchema = 1;
+
+    /** the bounceCalculation. */
+    private int bouncePointCalcSchema = 5;
+
+    /** the gameCompletion. */
+    private int gameCompletionSchema = 3;
+
     /** GameImpl  instance to test against. */
     private Game game = null;
 
@@ -87,11 +96,11 @@ public class GameImplUnitTests extends TestCase {
                 DomainTargetImplUnitTests.IDENTIFIER_TEXT, DomainTargetImplUnitTests.IDENTIFIER_HASH,
                 DomainTargetImplUnitTests.CULE_IMAGE_ID);
 
-        //create the HostingSlotImpl array 
+        //create the HostingSlotImpl array
         slots = new HostingSlotImpl[1];
         this.slots[0] = new HostingSlotImpl(HostingSlotImplUnitTests.ID, domain, HostingSlotImplUnitTests.IMAGE_ID,
                 brainTeaserIds, HostingSlotImplUnitTests.PUZZLE_ID, HostingSlotImplUnitTests.SEQUENCE_NUMBER,
-                domainTarget, HostingSlotImplUnitTests.WINING_BID, null, null);
+                domainTarget, HostingSlotImplUnitTests.WINING_BID, null, null, HostingBlockImplTests.ID.longValue());
 
         //HostingBlock instance
         this.blocks = new HostingBlock[1];
@@ -100,7 +109,7 @@ public class GameImplUnitTests extends TestCase {
 
         startDate = new Date();
         //create GameImpl instance
-        game = new GameImpl(ID, color, KEY_COUNT, startDate, endDate, blocks);
+        game = new GameImpl(ID, color, KEY_COUNT, startDate, endDate, blocks, bouncePointCalcSchema, prizeCalcSchema, gameCompletionSchema);
     }
 
     /**
@@ -115,7 +124,7 @@ public class GameImplUnitTests extends TestCase {
      */
     public void testCtor_nullId() {
         try {
-            new GameImpl(null, color, KEY_COUNT, startDate, endDate, blocks);
+            new GameImpl(null, color, KEY_COUNT, startDate, endDate, blocks, bouncePointCalcSchema, prizeCalcSchema, gameCompletionSchema);
         } catch (Exception e) {
             fail("The id can be null.");
         }
@@ -126,7 +135,7 @@ public class GameImplUnitTests extends TestCase {
      */
     public void testCtor_notPositiveId() {
         try {
-            new GameImpl(new Long(0), color, KEY_COUNT, startDate, endDate, blocks);
+            new GameImpl(new Long(0), color, KEY_COUNT, startDate, endDate, blocks, bouncePointCalcSchema, prizeCalcSchema, gameCompletionSchema);
             fail("The id should be positive.");
         } catch (IllegalArgumentException e) {
             //good
@@ -138,7 +147,7 @@ public class GameImplUnitTests extends TestCase {
      */
     public void testCtor_negativeSequenceNumber() {
         try {
-            new GameImpl(null, color, -1, startDate, endDate, blocks);
+            new GameImpl(null, color, -1, startDate, endDate, blocks, bouncePointCalcSchema, prizeCalcSchema, gameCompletionSchema);
             fail("The keyCount is negative.");
         } catch (IllegalArgumentException e) {
             //good
@@ -150,7 +159,7 @@ public class GameImplUnitTests extends TestCase {
      */
     public void testCtor_nullBlockArray() {
         try {
-            new GameImpl(null, color, KEY_COUNT, startDate, endDate, null);
+            new GameImpl(null, color, KEY_COUNT, startDate, endDate, null, bouncePointCalcSchema, prizeCalcSchema, gameCompletionSchema);
             fail("The HostingBlock is null.");
         } catch (IllegalArgumentException e) {
             //good
@@ -162,7 +171,7 @@ public class GameImplUnitTests extends TestCase {
      */
     public void testCtor_nullColor() {
         try {
-            new GameImpl(ID, null, KEY_COUNT, startDate, endDate, blocks);
+            new GameImpl(ID, null, KEY_COUNT, startDate, endDate, blocks, bouncePointCalcSchema, prizeCalcSchema, gameCompletionSchema);
             fail("The BolorColor is null.");
         } catch (IllegalArgumentException e) {
             //good
@@ -177,7 +186,7 @@ public class GameImplUnitTests extends TestCase {
             this.blocks = new HostingBlock[1];
             this.blocks[0] = null;
 
-            new GameImpl(null, color, KEY_COUNT, startDate, endDate, blocks);
+            new GameImpl(null, color, KEY_COUNT, startDate, endDate, blocks, bouncePointCalcSchema, prizeCalcSchema, gameCompletionSchema);
             fail("The HostingBlock contains null element.");
         } catch (IllegalArgumentException e) {
             //good
@@ -195,7 +204,7 @@ public class GameImplUnitTests extends TestCase {
             Thread.sleep(1000);
             startDate = new Date();
 
-            new GameImpl(null, color, KEY_COUNT, startDate, endDate, blocks);
+            new GameImpl(null, color, KEY_COUNT, startDate, endDate, blocks, bouncePointCalcSchema, prizeCalcSchema, gameCompletionSchema);
             fail("The startDate is later than endDate.");
         } catch (IllegalArgumentException e) {
             //good
@@ -260,5 +269,29 @@ public class GameImplUnitTests extends TestCase {
         HostingBlock[] insides = (HostingBlock[]) TestHelper.getPrivateField(GameImpl.class, game, "blocks");
         assertFalse("not the same array.", this.game.getBlocks() == insides);
         assertEquals("Shallow copy.", this.game.getBlocks()[0], insides[0]);
+    }
+
+    /**
+     * simply verify the getBouncePointCalculationType method.
+     */
+    public void testGetBouncePointCalculationType() {
+        assertEquals("The bounce point calculation schema to set is the not one get.",
+                     this.bouncePointCalcSchema, game.getBouncePointCalculationType());
+    }
+
+    /**
+     * simply verify the getPrizeCalculationType method.
+     */
+    public void testGetPrizeCalculationType() {
+        assertEquals("The prize calculation schema to set is the not one get.",
+                     this.prizeCalcSchema, game.getPrizeCalculationType());
+    }
+
+    /**
+     * simply verify the getCompletionType method.
+     */
+    public void testGetCompletionType() {
+        assertEquals("The game completion schema to set is the not one get.",
+                     this.gameCompletionSchema, game.getCompletionType());
     }
 }

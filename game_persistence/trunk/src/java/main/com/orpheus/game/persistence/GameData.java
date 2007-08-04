@@ -9,6 +9,7 @@ import com.topcoder.web.frontcontroller.results.DownloadData;
 import javax.ejb.EJBObject;
 import java.rmi.RemoteException;
 import java.util.Map;
+import java.util.Date;
 
 
 /**
@@ -526,4 +527,60 @@ public interface GameData extends EJBObject {
      * @throws RemoteException if a communication error occurs between client and EJB container
      */
     Map getPluginDownloadStats() throws RemoteException, PersistenceException;
+
+    /**
+     * <p>
+     * Sets the time of completion of the specified game to specified date.
+     * </p>
+     *
+     * @param gameId the ID of a game to complete.
+     * @param endDate the time of game completion.
+     * @throws EntryNotFoundException if specified game does not exist.
+     * @throws PersistenceException if there is any problem in the persistence layer.
+     * @throws RemoteException if a communication error occurs between client and EJB container
+     * @throws IllegalArgumentException if game completion date is null.
+     */
+    void completeGame(long gameId, Date endDate) throws RemoteException, PersistenceException;
+    
+    /**
+     * <p>
+     * Creates specified hosting slots. This method will persist the slots in hosting_slot table and return the
+     * appropiate hosting slots. The domain targets provided with the specified slots will be persisted in target_object
+     * table.
+     * </p>
+     *
+     * @param slots a list of slots to create.
+     * @return array of hosting slots.
+     * @throws EntryNotFoundException if blockId or any bidId doesn't exist in the persistence
+     * @throws InvalidEntryException if any bidId does not belong to the blockId
+     * @throws PersistenceException if there is any problem in the persistence layer.
+     * @throws RemoteException if a communication error occurs between client and EJB container
+     * @throws IllegalArgumentException if bidIds is null
+     */
+    HostingSlot[] createSlots(HostingSlot[] slots) throws RemoteException, PersistenceException;
+
+    /**
+     * <p>
+     * Retrieves a ImageInfo object representing the image corresponding to the specified ID.
+     * </p>
+     *
+     * @param imageId the image id.
+     * @return the image.
+     * @throws EntryNotFoundException If imageId is not in persistence.
+     * @throws RemoteException if a communication error occurs between client and EJB container
+     * @throws PersistenceException If there is any problem in the persistence layer.
+     */
+    ImageInfo getImage(long imageId) throws RemoteException, PersistenceException;
+
+    /**
+     * <p>
+     * Looks up all approved domains and returns an array of Domain objects representing them.
+     * </p>
+     *
+     * @return array of domains.
+     * @throws EntryNotFoundException If sponsorId is not in persistence
+     * @throws PersistenceException If there is any problem in the persistence layer.
+     * @throws RemoteException if a communication error occurs between client and EJB container
+     */
+    Domain[] getApprovedDomains() throws RemoteException, PersistenceException;
 }

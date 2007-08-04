@@ -111,7 +111,7 @@ public class GameDataBeanAccTests extends TestCase {
 
         assertNotNull("Cannot retrieve domain.", domain);
         assertEquals("Not the expected id.", 1, domain.getId().longValue());
-        assertEquals("Not the expected sponsor id.", 2, domain.getSponsorId());
+        assertEquals("Not the expected sponsor id.", 2, domain.getSponsorId().longValue());
         assertEquals("Not the expected domain name.", "url", domain.getDomainName());
     }
 
@@ -216,7 +216,7 @@ public class GameDataBeanAccTests extends TestCase {
      * @throws Exception into JUnit.
      */
     public void testCreateDomain() throws Exception {
-        Domain domain = new DomainImpl(new Long(2), 2, "test", new Boolean(false), new ImageInfo[]{});
+        Domain domain = new DomainImpl(new Long(2), new Long(2), "test", new Boolean(false), new ImageInfo[]{});
 
         // create the instance
         domain = gameData.createDomain(domain);
@@ -226,7 +226,7 @@ public class GameDataBeanAccTests extends TestCase {
 
         assertNotNull("Cannot retrieve domain.", result);
         assertEquals("Not the expected id.", domain.getId().longValue(), result.getId().longValue());
-        assertEquals("Not the expected sponsor id.", 2, result.getSponsorId());
+        assertEquals("Not the expected sponsor id.", 2, result.getSponsorId().longValue());
         assertEquals("Not the expected domain name.", "test", result.getDomainName());
     }
 
@@ -242,7 +242,7 @@ public class GameDataBeanAccTests extends TestCase {
         HostingBlock[] blocks = new HostingBlock[]{block};
 
         Game game = new GameImpl(new Long(3), color, 1, AccuracyHelper.convertStringToDate("2006/1/1"),
-                AccuracyHelper.convertStringToDate("2006/2/2"), blocks);
+                AccuracyHelper.convertStringToDate("2006/2/2"), blocks, 1, 2, 3);
 
         // create the instance
         game = gameData.createGame(game);

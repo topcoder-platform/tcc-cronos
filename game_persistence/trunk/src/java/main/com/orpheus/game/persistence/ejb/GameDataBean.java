@@ -17,12 +17,14 @@ import com.orpheus.game.persistence.InstantiationException;
 import com.orpheus.game.persistence.InvalidEntryException;
 import com.orpheus.game.persistence.PersistenceException;
 import com.orpheus.game.persistence.SlotCompletion;
+import com.orpheus.game.persistence.ImageInfo;
 import com.topcoder.util.puzzle.PuzzleData;
 import com.topcoder.web.frontcontroller.results.DownloadData;
 
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
 import java.util.Map;
+import java.util.Date;
 
 
 /**
@@ -797,6 +799,84 @@ public class GameDataBean implements SessionBean {
     public Map getPluginDownloadStats() throws PersistenceException {
         try {
             return getDAO().getPluginDownloadStats();
+        } catch (PersistenceException e) {
+            sessionContext.setRollbackOnly();
+            throw e;
+        }
+    }
+
+    /**
+     * <p>Sets the time of completion of the specified game to specified date.</p>
+     *
+     * @param gameId the ID of a game to complete.
+     * @param endDate the time of game completion.
+     * @throws EntryNotFoundException if specified game does not exist.
+     * @throws PersistenceException if there is any problem in the persistence layer.
+     * @throws IllegalArgumentException If game completion date is null.
+     */
+    public void completeGame(long gameId, Date endDate) throws PersistenceException {
+        try {
+            getDAO().completeGame(gameId, endDate);
+        } catch (PersistenceException e) {
+            sessionContext.setRollbackOnly();
+            throw e;
+        }
+    }
+    
+    /**
+     * <p>
+     * Creates specified hosting slots. This method will persist the slots in hosting_slot table and return the
+     * appropiate hosting slots. The domain targets provided with the specified slots will be persisted in target_object
+     * table.
+     * </p>
+     *
+     * @param slots a list of slots to create.
+     * @return array of hosting slots.
+     * @throws EntryNotFoundException if blockId or any bidId doesn't exist in the persistence
+     * @throws InvalidEntryException if any bidId does not belong to the blockId
+     * @throws PersistenceException if there is any problem in the persistence layer.
+     * @throws IllegalArgumentException if bidIds is null
+     */
+    public HostingSlot[] createSlots(HostingSlot[] slots) throws PersistenceException {
+        try {
+            return getDAO().createSlots(slots);
+        } catch (PersistenceException e) {
+            sessionContext.setRollbackOnly();
+            throw e;
+        }
+    }
+
+    /**
+     * <p>
+     * Retrieves a ImageInfo object representing the image corresponding to the specified ID.
+     * </p>
+     *
+     * @param imageId the image id.
+     * @return the image.
+     * @throws EntryNotFoundException If imageId is not in persistence.
+     * @throws PersistenceException If there is any problem in the persistence layer.
+     */
+    public ImageInfo getImage(long imageId) throws PersistenceException {
+        try {
+            return getDAO().getImage(imageId);
+        } catch (PersistenceException e) {
+            sessionContext.setRollbackOnly();
+            throw e;
+        }
+    }
+
+    /**
+     * <p>
+     * Looks up all approved domains and returns an array of Domain objects representing them.
+     * </p>
+     *
+     * @return array of domains.
+     * @throws EntryNotFoundException If sponsorId is not in persistence
+     * @throws PersistenceException If there is any problem in the persistence layer.
+     */
+    public Domain[] getApprovedDomains() throws PersistenceException {
+        try {
+            return getDAO().getApprovedDomains();
         } catch (PersistenceException e) {
             sessionContext.setRollbackOnly();
             throw e;
