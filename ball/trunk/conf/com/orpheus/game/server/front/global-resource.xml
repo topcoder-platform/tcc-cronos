@@ -172,6 +172,13 @@
         <handler-def name="CreateBallColorHandler">com.orpheus.game.server.handler.admin.util.CreateBallColorHandler</handler-def>
         <handler-def name="PersonalizedBallHandler">com.orpheus.game.server.handler.PersonalizedBallHandler</handler-def>
         <handler-def name="AdminAddTargetHandler">com.orpheus.game.server.handler.admin.AdminAddTargetHandler</handler-def>
+        <handler-def name="AdminCompleteGameHandler">com.orpheus.game.server.handler.admin.AdminCompleteGameHandler</handler-def>
+        <handler-def name="StartGameCreationWizardHandler">com.orpheus.game.server.handler.admin.StartGameCreationWizardHandler</handler-def>
+        <handler-def name="CreatePrivateAuctionHandler">com.orpheus.game.server.handler.admin.CreatePrivateAuctionHandler</handler-def>
+        <handler-def name="PrivateAuctionDataHandler">com.orpheus.game.server.handler.admin.PrivateAuctionDataHandler</handler-def>
+        <handler-def name="TestTargetHandler">com.orpheus.game.server.handler.admin.TestTargetHandler</handler-def>
+        <handler-def name="CreateGameManualHandler">com.orpheus.game.server.handler.admin.CreateGameManualHandler</handler-def>
+        <handler-def name="ManualGameDataHandler">com.orpheus.game.server.handler.admin.ManualGameDataHandler</handler-def>
     </handlers-def>
 
     <!-- mappings from result type name to full qualified handler result names -->

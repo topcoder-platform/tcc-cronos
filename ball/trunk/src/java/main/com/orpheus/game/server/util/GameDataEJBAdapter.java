@@ -14,6 +14,7 @@ import com.orpheus.game.persistence.Game;
 import com.orpheus.game.persistence.Domain;
 import com.orpheus.game.persistence.BallColor;
 import com.orpheus.game.persistence.InvalidEntryException;
+import com.orpheus.game.persistence.ImageInfo;
 import com.topcoder.web.frontcontroller.results.DownloadData;
 
 import java.rmi.RemoteException;
@@ -335,6 +336,27 @@ public class GameDataEJBAdapter {
     }
 
     /**
+     * <p>
+     * Updates the persistent domain information for the specified Domain object to match the Domain object, where
+     * the appropriate persistent record is identified by the Domain's ID.
+     * </p>
+     *
+     * @param domain domain to update
+     *
+     * @throws RemoteException if a communication error occurs between client and EJB container
+     * @throws PersistenceException If there is any problem in the persistence layer.
+     * @throws IllegalArgumentException If domain is null
+     * @throws EntryNotFoundException If Domain.id or ImageInfo.id, if not null, is not in persistence
+     */
+    public void updateDomain(Domain domain) throws RemoteException, PersistenceException {
+        if (this.remoteInterface) {
+            this.gameDataRemote.updateDomain(domain);
+        } else {
+            this.gameDataLocal.updateDomain(domain);
+        }
+    }
+
+    /**
      * <p>Returns the statistics for downloaded plugins. </p>
      *
      * @return a mapping from plugin name to number of plugin downloads.
@@ -363,6 +385,187 @@ public class GameDataEJBAdapter {
             return this.gameDataRemote.getDownloadData(downloadId);
         } else {
             return this.gameDataLocal.getDownloadData(downloadId);
+        }
+    }
+
+    /**
+     * <p>Sets the time of completion of the specified game to specified date. </p>
+     *
+     * @param gameId the ID of a game to complete.
+     * @param endDate the time of game completion.
+     * @throws EntryNotFoundException if specified game does not exist.
+     * @throws PersistenceException if there is any problem in the persistence layer.
+     * @throws RemoteException if a communication error occurs between client and EJB container
+     */
+    public void completeGame(long gameId, Date endDate) throws PersistenceException, RemoteException {
+        if (this.remoteInterface) {
+            this.gameDataRemote.completeGame(gameId, endDate);
+        } else {
+            this.gameDataLocal.completeGame(gameId, endDate);
+        }
+    }
+
+    /**
+     * <p> Looks up all domains associated with the specified sponsor and returns an array of Domain objects
+     * representing them.</p>
+     *
+     * @param sponsorId the sponsor id.
+     * @return array of domains.
+     * @throws RemoteException if a communication error occurs between client and EJB container.
+     * @throws PersistenceException If there is any problem in the persistence layer.
+     * @throws EntryNotFoundException If sponsorId is not in persistence.
+     */
+    public Domain[] findDomainsForSponsor(long sponsorId) throws PersistenceException, RemoteException {
+        if (this.remoteInterface) {
+            return this.gameDataRemote.findDomainsForSponsor(sponsorId);
+        } else {
+            return this.gameDataLocal.findDomainsForSponsor(sponsorId);
+        }
+    }
+
+    /**
+     * <p>Creates a new game entity in the persistent store, along with associated hosting blocks. Any game or block IDs
+     * that are null will be automatically assigned acceptable values. No hosting slots are created for the game at
+     * this time. The returned Game object will represent the persisted data, including any IDs assigned to the game
+     * and blocks.</p>
+     *
+     * @param game the game.
+     * @return the game with the id.
+     * @throws RemoteException if a communication error occurs between client and EJB container.
+     * @throws PersistenceException if there is any problem in the persistence layer.
+     * @throws EntryNotFoundException if game.ballColor.id is not found in persistence.
+     * @throws IllegalArgumentException if game is null.
+     * @throws DuplicateEntryException if game.id is not null but already exists in persistence.
+     */
+    public Game createGame(Game game) throws PersistenceException, RemoteException {
+        if (this.remoteInterface) {
+            return this.gameDataRemote.createGame(game);
+        } else {
+            return this.gameDataLocal.createGame(game);
+        }
+    }
+
+    /**
+     * <p>Creates hosting slots associates with the specified Bid IDs in the specified hosting block. </p>
+     *
+     * @param blockId the block id.
+     * @param bidIds the bid ids.
+     * @return array of hosting slots,
+     * @throws RemoteException if a communication error occurs between client and EJB container,
+     * @throws PersistenceException if there is any problem in the persistence layer.
+     * @throws EntryNotFoundException if blockId or any bidId doesn't exist in the persistence.
+     * @throws InvalidEntryException if any bidId does not belong to the blockId.
+     * @throws IllegalArgumentException if bidIds is null.
+     */
+    public HostingSlot[] createSlots(long blockId, long[] bidIds) throws PersistenceException, RemoteException {
+        if (this.remoteInterface) {
+            return this.gameDataRemote.createSlots(blockId, bidIds);
+        } else {
+            return this.gameDataLocal.createSlots(blockId, bidIds);
+        }
+    }
+
+    /**
+     * <p>
+     * Creates specified hosting slots. This method will persist the slots in hosting_slot table and return the
+     * appropiate hosting slots. The domain targets provided with the specified slots will be persisted in target_object
+     * table.
+     * </p>
+     *
+     * @param slots a list of slots to create.
+     * @return array of hosting slots.
+     * @throws EntryNotFoundException if blockId or any bidId doesn't exist in the persistence
+     * @throws InvalidEntryException if any bidId does not belong to the blockId
+     * @throws PersistenceException if there is any problem in the persistence layer.
+     * @throws RemoteException if a communication error occurs between client and EJB container
+     * @throws IllegalArgumentException if bidIds is null
+     */
+    public HostingSlot[] createSlots(HostingSlot[] slots) throws PersistenceException, RemoteException {
+        if (this.remoteInterface) {
+            return this.gameDataRemote.createSlots(slots);
+        } else {
+            return this.gameDataLocal.createSlots(slots);
+        }
+    }
+
+    /**
+     * <p>
+     * Creates a new persistent domain representation with the data from the provided Domain object and its nested
+     * ImageInfo objects. Any null Domain or ImageIndo IDs are assigned appropriate values. The returned Domain will
+     * reflect the persistent representation, including any automatically assigned IDs.
+     * </p>
+     *
+     * @param domain the domain.
+     * @return the domain with id.
+     * @throws RemoteException if a communication error occurs between client and EJB container
+     * @throws PersistenceException If there is any problem in the persistence layer.
+     * @throws EntryNotFoundException If imageInfo.downloadId doesn't exist in persistence
+     * @throws DuplicateEntryException If id or imageInfo.id is not null but already exists in persistence
+     * @throws IllegalArgumentException If domain is null
+     */
+    public Domain createDomain(Domain domain) throws PersistenceException, RemoteException {
+        if (this.remoteInterface) {
+            return this.gameDataRemote.createDomain(domain);
+        } else {
+            return this.gameDataLocal.createDomain(domain);
+        }
+    }
+
+    /**
+     * <p>
+     * Retrieves a Domain object representing the domain corresponding to the specified ID.
+     * </p>
+     *
+     * @param domainId the domain id
+     *
+     * @return the domain
+     *
+     * @throws RemoteException if a communication error occurs between client and EJB container
+     * @throws PersistenceException If there is any problem in the persistence layer.
+     * @throws EntryNotFoundException If domainId is not in persistence
+     */
+    public Domain getDomain(long domainId) throws PersistenceException, RemoteException {
+        if (this.remoteInterface) {
+            return this.gameDataRemote.getDomain(domainId);
+        } else {
+            return this.gameDataLocal.getDomain(domainId);
+        }
+    }
+
+    /**
+     * <p>
+     * Retrieves a ImageInfo object representing the image corresponding to the specified ID.
+     * </p>
+     *
+     * @param imageId the image id.
+     * @return the image.
+     * @throws EntryNotFoundException If imageId is not in persistence.
+     * @throws RemoteException if a communication error occurs between client and EJB container
+     * @throws PersistenceException If there is any problem in the persistence layer.
+     */
+    public ImageInfo getImage(long imageId) throws PersistenceException, RemoteException {
+        if (this.remoteInterface) {
+            return this.gameDataRemote.getImage(imageId);
+        } else {
+            return this.gameDataLocal.getImage(imageId);
+        }
+    }
+
+    /**
+     * <p>
+     * Looks up all approved domains and returns an array of Domain objects representing them.
+     * </p>
+     *
+     * @return array of domains.
+     * @throws EntryNotFoundException If sponsorId is not in persistence
+     * @throws PersistenceException If there is any problem in the persistence layer.
+     * @throws RemoteException if a communication error occurs between client and EJB container
+     */
+    public Domain[] getApprovedDomains() throws PersistenceException, RemoteException {
+        if (this.remoteInterface) {
+            return this.gameDataRemote.getApprovedDomains();
+        } else {
+            return this.gameDataLocal.getApprovedDomains();
         }
     }
 }
