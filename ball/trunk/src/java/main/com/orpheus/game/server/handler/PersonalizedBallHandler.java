@@ -40,6 +40,8 @@ public class PersonalizedBallHandler extends AbstractGameServerHandler implement
     private static final Color LARGE_CIRCLE = new Color(0xEEF0F0);
     private static final Color LARGE_CIRCLE_BORDER = new Color(0xC7C7C7);
 
+    private static final Color CONECTING_LINE = new Color(0xC7C7C7);
+
     private static final Color UPCOMING_SLOT = new Color(0xE2E3E4);
     private static final Color UPCOMING_SLOT_BORDER = new Color(0xC7C7C7);
 
@@ -129,148 +131,14 @@ public class PersonalizedBallHandler extends AbstractGameServerHandler implement
             request.setAttribute(getString(GAME_DETIALS_ATTR_NAME_CONFIG), game);
             request.setAttribute(getString(SLOT_COMPLETIONS_ATTR_NAME_CONFIG), completedSlots);
             // Prepare data to be used for rendering the image
-            generateImage1(request, game, gameDateEjbAdapter);
+            generateImage(request, game);
             return null;
         } catch (Exception e) {
             throw new HandlerExecutionException("Failed to get data for personalized ball", e);
         }
     }
 
-    private void generateImage2(HttpServletRequest request, Game game, GameDataEJBAdapter gameDateEjbAdapter) {
-        HttpSession session = request.getSession(false);
-        Map completedSlots = (Map) request.getAttribute(getString(SLOT_COMPLETIONS_ATTR_NAME_CONFIG));
-        if (isEmpty(game)) {
-            return;
-        }
-        // A radius for circles representing the game slots
-        final int radius = 23;
-        // A distance between the circles
-        final double d = 2 * radius + 10;
-        try {
-            //
-            List slotCenters = new ArrayList();
-            List gameSlots = new ArrayList();
-            // The collectors for minimum, maximum coordinates of the centers of the circles to be drawn
-            int xmin = 0;
-            int ymin = 0;
-            int xmax = 0;
-            int ymax = 0;
-            double angle = 0;
-            double r = d;
-            boolean centerFound = false;
-            Point mainCenter = new Point(0, 0);
-            Point center = new Point(0, 0);
-            HostingBlock[] blocks = game.getBlocks();
-            for (int i = 0; i < blocks.length; i++) {
-                HostingSlot[] slots = blocks[i].getSlots();
-                for (int j = 0; j < slots.length; j++) {
-                    gameSlots.add(slots[j]);
-                    if (centerFound) {
-                        angle += 2 * Math.asin(d / 2 / r);
-                        if (angle > Math.PI * 2) {
-                            r += d;
-                            angle %= (Math.PI * 2);
-                        }
-                        System.out.println("R = " + r + ", angle = " + angle);
-                        xmin = Math.min(xmin, (int) center.getX() - radius - 5);
-                        ymin = Math.min(ymin, (int) center.getY() - radius - 5);
-                        xmax = Math.max(xmax, (int) center.getX());
-                        ymax = Math.max(ymax, (int) center.getY());
-                        center = new Point((int) (mainCenter.getX() + r * Math.cos(angle)),
-                                           (int) (mainCenter.getY() + r * Math.sin(angle)));
-
-                    } else {
-                        centerFound = true;
-                    }
-                    slotCenters.add(center);
-                }
-            }
-            int imageWidth = xmax - xmin + radius * 2 + 10;
-            int imageHeight = ymax - ymin + radius * 2 + 10;
-            if (imageWidth < imageHeight) {
-                imageWidth = imageHeight;
-            } else {
-                imageHeight = imageWidth;
-            }
-            int dx = imageWidth / 2;
-            int dy = imageHeight / 2;
-            if ((xmin + dx) < 0) {
-                dx += Math.abs(xmin + dx);
-            }
-            if ((ymin + dy) < 0) {
-                dy += Math.abs(ymin + dy); 
-            }
-            imageWidth = dx * 2;
-            imageHeight = dy * 2;
-            if (imageWidth < imageHeight) {
-                imageWidth = imageHeight;
-            } else {
-                imageHeight = imageWidth;
-            }
-            dx = imageWidth / 2;
-            dy = imageHeight / 2;
-
-            BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
-            Graphics2D graphics = (Graphics2D) image.getGraphics();
-            graphics.setStroke(new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-            graphics.setColor(Color.WHITE);
-            graphics.fillRect(0, 0, imageWidth, imageHeight);
-            graphics.setColor(LARGE_CIRCLE);
-            graphics.fillOval(0, 0, imageWidth, imageHeight);
-            graphics.setColor(LARGE_CIRCLE_BORDER);
-            graphics.drawOval(0, 0, imageWidth, imageHeight);
-            for (int i = 0; i < slotCenters.size(); i++) {
-                center = (Point) slotCenters.get(i);
-                int x = (int) center.getX();
-                int y = (int) center.getY();
-                x += dx;
-                y += dy;
-                center.setLocation(x, y);
-                Color ovalColor;
-                Color borderColor;
-                HostingSlot slot = (HostingSlot) gameSlots.get(i);
-                if (slot.getHostingStart() == null) {
-                    ovalColor = UPCOMING_SLOT;
-                    borderColor = UPCOMING_SLOT_BORDER;
-                } else {
-                    if (slot.getHostingEnd() != null) {
-                        if (completedSlots.get(slot.getId()) != null) {
-                            ovalColor = COMPLETED_SLOT;
-                            borderColor = COMPLETED_SLOT_BORDER;
-                        } else {
-                            ovalColor = UNLOCKED_SLOT;
-                            borderColor = UNLOCKED_SLOT_BORDER;
-                        }
-                    } else {
-                        ovalColor = CURRENT_SLOT;
-                        borderColor = CURRENT_SLOT_BORDER;
-                    }
-                }
-                graphics.setColor(ovalColor);
-                graphics.fillOval(x - radius, y - radius, radius * 2, radius * 2);
-                graphics.setColor(borderColor);
-                graphics.drawOval(x - radius, y - radius, radius * 2, radius * 2);
-            }
-            // Convert image to JPEG format
-            MutableMemoryImage mutableImage = new MutableMemoryImage(image);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            JPEGImageEncoder imageEncoder = new JPEGImageEncoder(1.00F);
-            imageEncoder.encode(mutableImage, baos, null);
-            // Bind data to request and session
-            request.setAttribute("gameSlots", gameSlots);
-            request.setAttribute("slotCenters", slotCenters);
-            request.setAttribute("circleRadius", new Integer(radius));
-            request.setAttribute("imageWidth", new Integer(imageWidth));
-            request.setAttribute("imageHeight", new Integer(imageHeight));
-            session.setAttribute("personalizedBallImage", baos.toByteArray());
-            session.setAttribute("personalizedBallImageType", "image/jpeg");
-        } catch (Exception e) {
-            // The error is caught and not propagated so the image simply is not rendered on a page
-            e.printStackTrace();
-        }
-    }
-
-    private void generateImage1(HttpServletRequest request, Game game, GameDataEJBAdapter gameDateEjbAdapter) {
+    private void generateImage(HttpServletRequest request, Game game) {
         HttpSession session = request.getSession(false);
         Map completedSlots = (Map) request.getAttribute(getString(SLOT_COMPLETIONS_ATTR_NAME_CONFIG));
         // A radius for circles representing the game slots
@@ -342,21 +210,20 @@ public class PersonalizedBallHandler extends AbstractGameServerHandler implement
             graphics.fillOval(0, 0, imageWidth, imageHeight);
             graphics.setColor(LARGE_CIRCLE_BORDER);
             graphics.drawOval(0, 0, imageWidth, imageHeight);
-            for (int i = 0; i < slotCenters.size(); i++) {
+            int slotsCount = slotCenters.size();
+            for (int i = 0; i < slotsCount; i++) {
                 center = (Point) slotCenters.get(i);
                 int x = (int) center.getX();
                 int y = (int) center.getY();
                 x += dx;
                 y += dy;
-/*
-                if (xmin < 0) {
-                    x += Math.abs(xmin);
-                }
-                if (ymin < 0) {
-                    y += Math.abs(ymin);
-                }
-*/
                 center.setLocation(x, y);
+                if (i < (slotsCount - 1)) {
+                    Point nextCenter = (Point) slotCenters.get(i + 1);
+                    graphics.setColor(CONECTING_LINE);
+                    graphics.drawLine((int) center.getX(), (int) center.getY(),
+                                      (int) nextCenter.getX() + dx, (int) nextCenter.getY() + dy);
+                }
                 Color ovalColor;
                 Color borderColor;
                 HostingSlot slot = (HostingSlot) gameSlots.get(i);
@@ -399,17 +266,5 @@ public class PersonalizedBallHandler extends AbstractGameServerHandler implement
             // The error is caught and not propagated so the image simply is not rendered on a page
             e.printStackTrace();
         }
-    }
-
-    private boolean isEmpty(Game game) {
-        HostingBlock[] blocks = game.getBlocks();
-        for (int i = 0; i < blocks.length; i++) {
-            HostingBlock block = blocks[i];
-            HostingSlot[] slots = block.getSlots();
-            if (slots.length > 0) {
-                return false;
-            }
-        }
-        return true;
     }
 }

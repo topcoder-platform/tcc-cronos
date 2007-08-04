@@ -58,7 +58,13 @@
                                     onmouseout="this.style.backgroundColor='${item.rowNumberOnPage mod 2 eq 0 ? '#ffffff' : '#f4f4f4'}';"
                                 </c:if>
                                 >
-                                <td>${row.name}</td>
+                                <td>
+                                    ${row.name}&nbsp;
+                                    <a href="${ctx}/server/player/showPesonalizedBall.do?gameId=${row.id}"
+                                       title="Personalized Ball">
+                                        <img src="${ctx}/i/favicon.png" alt="Personalized Ball" width="16" height="16"/>
+                                    </a>
+                                </td>
                                 <td><fmt:formatDate value="${row.startDate}" pattern="MMM. dd, hh:mmaa"/></td>
                                 <td>${orpheus:getPluginGameStatus(row)}</td>
                                 <td>
