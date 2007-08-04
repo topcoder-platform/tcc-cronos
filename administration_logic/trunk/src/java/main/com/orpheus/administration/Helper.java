@@ -3,19 +3,6 @@
  */
 package com.orpheus.administration;
 
-import java.rmi.RemoteException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Date;
-
-import javax.ejb.CreateException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 import com.orpheus.administration.entities.HandlerResult;
 import com.orpheus.administration.entities.HostingSlotImpl;
 import com.orpheus.administration.entities.ResultCode;
@@ -37,6 +24,17 @@ import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
 import com.topcoder.util.objectfactory.impl.IllegalReferenceException;
 import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import javax.ejb.CreateException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.rmi.RemoteException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
 
 /**
  * This is a common utility class used in this component.
@@ -910,6 +908,7 @@ public class Helper {
         newSlot.setHostingStart(oldSlot.getHostingStart());
         newSlot.setHostingEnd(oldSlot.getHostingEnd());
         newSlot.setSequenceNumber(sequenceNumber);
+        newSlot.setHostingBlockId(oldSlot.getHostingBlockId());
         return newSlot;
     }
 

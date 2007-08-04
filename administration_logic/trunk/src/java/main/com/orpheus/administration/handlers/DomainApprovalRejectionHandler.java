@@ -3,10 +3,6 @@
  */
 package com.orpheus.administration.handlers;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.w3c.dom.Element;
-
 import com.orpheus.administration.Helper;
 import com.orpheus.administration.persistence.AdminData;
 import com.orpheus.game.persistence.Domain;
@@ -16,6 +12,9 @@ import com.topcoder.user.profile.manager.UserProfileManager;
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
+import org.w3c.dom.Element;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Provides an abstract base handler implementation that approves or rejects a
@@ -230,7 +229,7 @@ abstract class DomainApprovalRejectionHandler implements Handler {
         String approved = (String) sponsor.getProperty("sponsor-is-approved");
         if (approved == null || approved.trim().length() == 0) {
             Helper.processFailureApprovalNotPending(request,
-                    failRequestAttrName, domain.getSponsorId());
+                    failRequestAttrName, domain.getSponsorId().longValue());
         }
         // Create the AdminData
         AdminData adminData = null;
@@ -273,14 +272,14 @@ abstract class DomainApprovalRejectionHandler implements Handler {
         if (sponsorId == null) {
             return null;
         }
-        if (domain.getSponsorId() != sponsorId.longValue()) {
+        if (domain.getSponsorId().longValue() != sponsorId.longValue()) {
             Helper.processFailureSponsorNotBelongToDomain(request,
                     failRequestAttrName, sponsorId.longValue(), domain.getId()
                             .longValue());
             return null;
         }
 
-        return Helper.getSponsor(domain.getSponsorId(), request,
+        return Helper.getSponsor(domain.getSponsorId().longValue(), request,
                 userProfileManager, failRequestAttrName);
     }
 

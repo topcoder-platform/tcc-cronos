@@ -3,10 +3,6 @@
  */
 package com.orpheus.administration.handlers;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.w3c.dom.Element;
-
 import com.orpheus.administration.Helper;
 import com.orpheus.game.persistence.Domain;
 import com.orpheus.game.persistence.GameData;
@@ -15,6 +11,9 @@ import com.topcoder.user.profile.manager.UserProfileManager;
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
+import org.w3c.dom.Element;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Provides a handler implementation that loads detail data about a given
@@ -221,7 +220,7 @@ public class PendingSponsorDomainHandler implements Handler {
             return failedResult;
         }
         // Search for domain¡¯s associated sponsor
-        UserProfile sponsor = Helper.getSponsor(domain.getSponsorId(), request,
+        UserProfile sponsor = Helper.getSponsor(domain.getSponsorId().longValue(), request,
                 userProfileManager, failRequestAttrName);
 
         // Set the domain and sponsor as request attributes

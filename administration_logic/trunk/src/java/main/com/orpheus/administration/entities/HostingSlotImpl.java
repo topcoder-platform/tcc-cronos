@@ -3,11 +3,11 @@
  */
 package com.orpheus.administration.entities;
 
-import java.util.Date;
-
 import com.orpheus.game.persistence.Domain;
 import com.orpheus.game.persistence.DomainTarget;
 import com.orpheus.game.persistence.HostingSlot;
+
+import java.util.Date;
 
 /**
  * The implementation of HostingSlot interface representing the persistent
@@ -98,7 +98,11 @@ public class HostingSlotImpl implements HostingSlot {
      *
      */
     private Date hostingEnd;
-    
+
+    /**
+     * The ID of a hosting block which this slot belongs to.
+     */
+    private long hostingBlockId;
     
     /**
      * Empty constructor.
@@ -323,4 +327,21 @@ public class HostingSlotImpl implements HostingSlot {
         this.winningBid = winningBid;
     }
 
+    /**
+     * Returns the ID of a hosting block which this slot belongs to.
+     *
+     * @return the ID of hosting block which this slot belongs to.
+     */
+    public long getHostingBlockId() {
+        return this.hostingBlockId;
+    }
+
+    /**
+     * Sets the ID of a hosting block which this slot belongs to.
+     *
+     * @param hostingBlockId the ID of hosting block which this slot belongs to.
+     */
+    public void setHostingBlockId(long hostingBlockId) {
+        this.hostingBlockId = hostingBlockId;
+    }
 }
