@@ -38,7 +38,7 @@
     <function>
         <name>getMinimumPayout</name>
         <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
-        <function-signature>double getMinimumPayout(com.orpheus.game.persistence.Game)</function-signature>
+        <function-signature>double getMinimumPayout(com.orpheus.game.persistence.Game,javax.servlet.ServletContext)</function-signature>
     </function>
 
     <function>
@@ -86,13 +86,13 @@
     <function>
         <name>getPlayerActiveGamesComparator</name>
         <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
-        <function-signature>com.orpheus.game.server.comparator.ActiveGamesComparator getPlayerActiveGamesComparator(com.orpheus.game.persistence.Game[])</function-signature>
+        <function-signature>com.orpheus.game.server.comparator.ActiveGamesComparator getPlayerActiveGamesComparator(com.orpheus.game.persistence.Game[],javax.servlet.ServletContext)</function-signature>
     </function>
 
     <function>
         <name>getPluginAllGamesComparator</name>
         <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
-        <function-signature>com.orpheus.game.server.comparator.plugin.AllGamesListSorter getPluginAllGamesComparator(com.orpheus.game.persistence.Game[])</function-signature>
+        <function-signature>com.orpheus.game.server.comparator.plugin.AllGamesListSorter getPluginAllGamesComparator(com.orpheus.game.persistence.Game[],javax.servlet.ServletContext)</function-signature>
     </function>
 
     <function>
@@ -104,7 +104,7 @@
     <function>
         <name>getPlayerGamesComparator</name>
         <function-class>com.orpheus.game.server.OrpheusFunctions</function-class>
-        <function-signature>com.orpheus.game.server.comparator.MyGamesComparator getPlayerGamesComparator()</function-signature>
+        <function-signature>com.orpheus.game.server.comparator.MyGamesComparator getPlayerGamesComparator(javax.servlet.ServletContext)</function-signature>
     </function>
 
     <function>

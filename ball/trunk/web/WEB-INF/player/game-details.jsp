@@ -3,6 +3,7 @@
 <%@ taglib uri="/paging" prefix="p" %>
 <%@ taglib uri="/orpheus" prefix="orpheus" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<c:set var="servletContext" value="${pageContext.request.session.servletContext}"/>
 <c:set var="leaderProfiles" value="${orpheus:joinProfiles(winnerProfiles, leaders)}" scope="page"/>
 <fmt:setLocale value="en_US"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -39,7 +40,7 @@
         <tr>
             <td class="bold">Minimum Payout:</td>
             <td>
-                $<fmt:formatNumber value="${orpheus:getMinimumPayout(game)}" pattern="#,##0.00"/>
+                $<fmt:formatNumber value="${orpheus:getMinimumPayout(game, servletContext)}" pattern="#,##0.00"/>
             </td>
         </tr>
         <tr>

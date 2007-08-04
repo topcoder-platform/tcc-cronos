@@ -3,6 +3,7 @@
 <%@ taglib uri="/paging" prefix="p" %>
 <%@ taglib uri="/orpheus" prefix="orpheus" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<c:set var="servletContext" value="${pageContext.request.session.servletContext}"/>
 <fmt:setLocale value="en_US"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -37,7 +38,7 @@
                     <ul>
                         <li class="auction-block">
                             <p:table border="0" cellpadding="0" cellspacing="0"
-                                     comparator="${orpheus:getPluginAllGamesComparator(playerRegisteredGames)}">
+                                     comparator="${orpheus:getPluginAllGamesComparator(playerRegisteredGames, servletContext)}">
                                 <p:header styleClass="altHeader">
                                     <p:column width="127" index="1" name="Game"/>
                                     <p:column width="85" index="2" name="Start Date"/>
@@ -64,7 +65,16 @@
                                             onmouseout="this.style.backgroundColor='${item.rowNumberOnPage mod 2 eq 0 ? '#ffffff' : '#f4f4f4'}';"
                                         </c:if>
                                         >
-                                        <td>${row.name}</td>
+                                        <td>
+                                            ${row.name}&nbsp;
+                                            <c:if test="${playerStatus eq 'Player'}">
+                                                <a href="${ctx}/server/player/showPesonalizedBall.do?gameId=${row.id}"
+                                                   title="Personalized Ball">
+                                                    <img src="${ctx}/i/favicon.png" alt="Personalized Ball"
+                                                         width="16" height="16"/>
+                                                </a>
+                                            </c:if>
+                                        </td>
                                         <td><fmt:formatDate value="${row.startDate}" pattern="MM/dd/yyyy"/></td>
                                         <td>${orpheus:getStartingUrl(row)}&nbsp;</td>
                                         <td>
@@ -76,7 +86,7 @@
                                             </c:if>
                                         </td>
                                         <td align="right">
-                                            $<fmt:formatNumber value="${orpheus:getMinimumPayout(row)}"
+                                            $<fmt:formatNumber value="${orpheus:getMinimumPayout(row, servletContext)}"
                                                                pattern="#,##0.00"/>
                                         </td>
                                         <td align="center">

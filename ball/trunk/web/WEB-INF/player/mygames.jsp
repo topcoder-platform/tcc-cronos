@@ -3,6 +3,7 @@
 <%@ taglib uri="/paging" prefix="p" %>
 <%@ taglib uri="/orpheus" prefix="orpheus" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<c:set var="servletContext" value="${pageContext.request.session.servletContext}"/>
 <fmt:setLocale value="en_US"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -28,7 +29,7 @@
     <p:dataPaging pageSize="10" data="${orpheus:convertToList(playerRegisteredGames)}" id="pager"
                   requestURL="${ctx}/server/player/myGames.do">
     <p:page>
-    <p:table border="0" cellpadding="0" cellspacing="0" comparator="${orpheus:getPlayerGamesComparator()}">
+    <p:table border="0" cellpadding="0" cellspacing="0" comparator="${orpheus:getPlayerGamesComparator(servletContext)}">
         <p:header>
             <p:column width="15%" index="1" name="Start Date"/>
             <p:column width="15%" index="2" name="Start Time"/>
@@ -43,9 +44,14 @@
                 onmouseout="this.style.backgroundColor='${item.rowNumberOnPage mod 2 eq 0 ? '#ffffff' : '#f4f4f4'}';">
                 <td><fmt:formatDate value="${row.startDate}" pattern="MM/dd/yyyy"/></td>
                 <td><fmt:formatDate value="${row.startDate}" pattern="hh:mm aa"/></td>
-                <td><a href="${ctx}/server/player/unlockedDomains.do?tab=1&gameId=${row.id}">${row.name}</a></td>
+                <td>
+                    <a href="${ctx}/server/player/unlockedDomains.do?tab=1&gameId=${row.id}">${row.name}</a>&nbsp;
+                    <a href="${ctx}/server/player/showPesonalizedBall.do?gameId=${row.id}" title="Personalized Ball">
+                        <img src="${ctx}/i/favicon.png" alt="Personalized Ball" width="16" height="16"/>
+                    </a>
+                </td>
                 <td class="right">
-                    $<fmt:formatNumber value="${orpheus:getMinimumPayout(row)}" pattern="#,##0.00"/>
+                    $<fmt:formatNumber value="${orpheus:getMinimumPayout(row, servletContext)}" pattern="#,##0.00"/>
                 </td>
                 <td>${orpheus:getGameStatus(row)}</td>
             </tr>

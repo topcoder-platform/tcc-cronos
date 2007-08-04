@@ -4,6 +4,7 @@
 <%@ taglib uri="/paging" prefix="p" %>
 <%@ taglib uri="/orpheus_admin" prefix="admin" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<c:set var="servletContext" value="${pageContext.request.session.servletContext}"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -46,7 +47,7 @@
                                 </tr>
                                 <tr>
                                     <td class="bold">Prize Payout:</td>
-                                    <td>$${admin:getMinimumPayout(game)}</td>
+                                    <td>$${admin:getMinimumPayout(game, servletContext)}</td>
                                 </tr>
                                 <tr>
                                     <td class="bold">Player Nickname:</td>

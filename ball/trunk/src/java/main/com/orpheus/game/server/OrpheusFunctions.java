@@ -12,6 +12,14 @@ import com.orpheus.game.server.comparator.ActiveGamesComparator;
 import com.orpheus.game.server.comparator.MyGamesComparator;
 import com.orpheus.game.server.comparator.plugin.AllGamesListSorter;
 import com.orpheus.game.server.comparator.plugin.MyGamesListSorter;
+import com.orpheus.game.server.framework.prize.PrizeCalculatorType;
+import com.orpheus.game.server.framework.prize.PrizeCalculatorTypeSource;
+import com.orpheus.game.server.framework.prize.PrizeException;
+import com.orpheus.game.server.framework.bounce.BouncePointCalculatorType;
+import com.orpheus.game.server.framework.bounce.BouncePointCalculatorTypeSource;
+import com.orpheus.game.server.framework.bounce.BouncePointException;
+import com.orpheus.game.server.admin.OrpheusGameServerAdminException;
+import com.orpheus.game.server.util.GameCreationType;
 import com.orpheus.user.persistence.UserConstants;
 import com.topcoder.formvalidator.validator.Message;
 import com.topcoder.user.profile.BaseProfileType;
@@ -19,6 +27,7 @@ import com.topcoder.user.profile.UserProfile;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.Property;
 import com.topcoder.util.config.UnknownNamespaceException;
+import com.topcoder.util.collection.typesafeenum.Enum;
 import com.topcoder.web.registration.RegistrationManager;
 import com.topcoder.web.registration.WebRegistrationConfigurationException;
 import com.topcoder.web.tag.paging.DataPagingTag;
@@ -28,6 +37,7 @@ import com.topcoder.lang.StringUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspTagException;
+import javax.servlet.ServletContext;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -182,10 +192,16 @@ public class OrpheusFunctions {
      * <p>Gets the minimum payout for the specified game.</p>
      *
      * @param game a <code>Game</code> providing the details for game to get minimum payout for.
+     * @param context a <code>ServletContext</code> providing the application's context.
      * @return a <code>double</code> providing the minimum payout for the game.
      */
-    public static double getMinimumPayout(Game game) {
-        // TODO : For Beta testing stage the winners will be paid a fixed amount of money with $75 minimum as per Sarah
+    public static double getMinimumPayout(Game game, ServletContext context) {
+        PrizeCalculatorType prizeCalculatorType = getPrizeType(game, context);
+        try {
+            return prizeCalculatorType.getCalculator().getMinimumPayout(game);
+        } catch (Exception e) {
+            throw new OrpheusGameServerException("Could not evaluate the minimum payout", e);
+        }
 /*
         double payment = 0.00;
         HostingBlock[] blocks = game.getBlocks();
@@ -209,7 +225,7 @@ public class OrpheusFunctions {
             throw new OrpheusGameServerException("The administration fee can not be read from configuration", e);
         }
 */
-        return 75.00;
+//        return 75.00;
     }
 
     /**
@@ -436,28 +452,30 @@ public class OrpheusFunctions {
      * <p>Gets the comparator to be used for sorting the list of active games displayed to player.</p>
      *
      * @param playerGames a <code>Game</code> array providing the games which the player is registered to.
+     * @param context a <code>ServletContext</code> providing the context surrounding the <code>Data Paging Tag</code>.
      * @return a <code>ActiveGamesComparator</code> to be used for sorting the list of active games displayed to player.
      * @throws IllegalArgumentException if specified <code>playerGames</code> array is <code>null</code>.
      */
-    public static ActiveGamesComparator getPlayerActiveGamesComparator(Game[] playerGames) {
+    public static ActiveGamesComparator getPlayerActiveGamesComparator(Game[] playerGames, ServletContext context) {
         if (playerGames == null) {
             throw new IllegalArgumentException("The parameter [playerGames] is NULL");
         }
-        return new ActiveGamesComparator(playerGames);
+        return new ActiveGamesComparator(playerGames, context);
     }
 
     /**
      * <p>Gets the comparator to be used for sorting the list of games displayed to player in plugin window.</p>
      *
      * @param playerGames a <code>Game</code> array providing the games which the player is registered to.
+     * @param context a <code>ServletContext</code> providing the context surrounding the <code>Data Paging Tag</code>.
      * @return a <code>AllGamesListSorter</code> to be used for sorting the list of games displayed to player.
      * @throws IllegalArgumentException if specified <code>playerGames</code> array is <code>null</code>.
      */
-    public static AllGamesListSorter getPluginAllGamesComparator(Game[] playerGames) {
+    public static AllGamesListSorter getPluginAllGamesComparator(Game[] playerGames, ServletContext context) {
         if (playerGames == null) {
             throw new IllegalArgumentException("The parameter [playerGames] is NULL");
         }
-        return new AllGamesListSorter(playerGames);
+        return new AllGamesListSorter(playerGames, context);
     }
 
     /**
@@ -474,9 +492,10 @@ public class OrpheusFunctions {
      * <p>Gets the comparator to be used for sorting the list of registered games displayed to player.</p>
      *
      * @return a <code>MyGamesComparator</code> to be used for sorting the list of registered games displayed to player.
+     * @param context a <code>ServletContext</code> providing the context surrounding the <code>Data Paging Tag</code>.
      */
-    public static MyGamesComparator getPlayerGamesComparator() {
-        return new MyGamesComparator();
+    public static MyGamesComparator getPlayerGamesComparator(ServletContext context) {
+        return new MyGamesComparator(context);
     }
 
     /**
@@ -1178,6 +1197,38 @@ public class OrpheusFunctions {
             return cm.getString(NAMESPACE, "RSSDataStore.NameSpace");
         } catch (UnknownNamespaceException e) {
             throw new OrpheusGameServerException(e);
+        }
+    }
+
+    public static PrizeCalculatorType getPrizeType(Game game, ServletContext context) {
+        if (game == null) {
+            throw new IllegalArgumentException("The parameter [game] is NULL");
+        }
+        if (context == null) {
+            throw new IllegalArgumentException("The parameter [context] is NULL");
+        }
+        try {
+            PrizeCalculatorTypeSource typeSource
+                = (PrizeCalculatorTypeSource) context.getAttribute("PrizeCalcTypeSource");
+            return typeSource.getPrizeCalculatorType(game.getPrizeCalculationType());
+        } catch (PrizeException e) {
+            throw new OrpheusGameServerAdminException("Could not obtain the prize calculation type", e);
+        }
+    }
+
+    public static BouncePointCalculatorType getBouncePointType(Game game, ServletContext context) {
+        if (game == null) {
+            throw new IllegalArgumentException("The parameter [game] is NULL");
+        }
+        if (context == null) {
+            throw new IllegalArgumentException("The parameter [context] is NULL");
+        }
+        try {
+            BouncePointCalculatorTypeSource typeSource
+                = (BouncePointCalculatorTypeSource) context.getAttribute("BouncePointCalcTypeSource");
+            return typeSource.getBouncePointCalculatorType(game.getBouncePointCalculationType());
+        } catch (BouncePointException e) {
+            throw new OrpheusGameServerAdminException("Could not obtain the bounce point calculation type", e);
         }
     }
 

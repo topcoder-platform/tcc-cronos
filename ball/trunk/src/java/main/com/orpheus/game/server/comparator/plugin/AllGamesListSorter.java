@@ -7,6 +7,7 @@ import com.topcoder.web.tag.paging.SortListListComparator;
 import com.orpheus.game.persistence.Game;
 import com.orpheus.game.server.OrpheusFunctions;
 
+import javax.servlet.ServletContext;
 import java.io.Serializable;
 
 /**
@@ -24,19 +25,28 @@ public class AllGamesListSorter extends SortListListComparator implements Serial
      */
     private final Game[] playerGames;
 
+    /**
+     * <p>A <code>ServletContext</code> providing the context surrounding the <code>Data Paging Tag</code>.</p>
+     */
+    private final ServletContext context;
 
     /**
      * <p>Constructs new <code>AllGamesListSorter</code> instance with specified list of games which the current player
      * is registered to.</p>
      *
      * @param playerGames a <code>Game</code> array listing the games which the current player is registered to.
+     * @param context a <code>ServletContext</code> providing the context surrounding the <code>Data Paging Tag</code>.
      * @throws IllegalArgumentException if any of specified arguments is <code>null</code>.
      */
-    public AllGamesListSorter(Game[] playerGames) {
+    public AllGamesListSorter(Game[] playerGames, ServletContext context) {
         if (playerGames == null) {
             throw new IllegalArgumentException("The parameter [playerGames] is NULL");
         }
+        if (context == null) {
+            throw new IllegalArgumentException("The parameter [context] is NULL");
+        }
         this.playerGames = playerGames;
+        this.context = context;
     }
 
     /**
@@ -74,8 +84,8 @@ public class AllGamesListSorter extends SortListListComparator implements Serial
                 break;
             }
             case (4) : { // Minimum payout
-                comparisonResult = new Double(OrpheusFunctions.getMinimumPayout(g1)).compareTo(
-                    new Double(OrpheusFunctions.getMinimumPayout(g2)));
+                comparisonResult = new Double(OrpheusFunctions.getMinimumPayout(g1, this.context)).compareTo(
+                    new Double(OrpheusFunctions.getMinimumPayout(g2, this.context)));
                 break;
             }
             case (5) : { // User Status

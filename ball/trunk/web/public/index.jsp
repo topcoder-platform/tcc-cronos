@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="fmt" %>
 <%@ taglib uri="/orpheus" prefix="orpheus" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<c:set var="servletContext" value="${pageContext.request.session.servletContext}"/>
 <c:set var="user" value="${sessionScope['user_profile']}"/>
 <fmt:setLocale value="en_US"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -162,7 +163,7 @@
                                 </a>
                             </td>
                             <td align="right">
-                                $<fmt:formatNumber value="${orpheus:getMinimumPayout(game)}" pattern="#,##0.00"/>
+                                $<fmt:formatNumber value="${orpheus:getMinimumPayout(game, servletContext)}" pattern="#,##0.00"/>
                             </td>
                         </tr>
                     </c:if>
