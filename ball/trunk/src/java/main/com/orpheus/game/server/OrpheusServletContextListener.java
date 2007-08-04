@@ -13,6 +13,9 @@ import com.orpheus.game.GameDataManager;
 import com.orpheus.game.GameDataManagerImpl;
 import com.orpheus.game.server.auction.OrpheusAuctionListener;
 import com.orpheus.game.server.util.LogEventWriter;
+import com.orpheus.game.server.util.game.completion.DefaultGameCompletionTypeSource;
+import com.orpheus.game.server.util.prize.DefaultPrizeCalculatorTypeSource;
+import com.orpheus.game.server.util.bounce.DefaultBouncePointCalculatorTypeSource;
 import com.topcoder.util.auction.AuctionManager;
 import com.topcoder.util.auction.impl.AuctionManagerImpl;
 import com.topcoder.util.config.ConfigManager;
@@ -95,6 +98,11 @@ public class OrpheusServletContextListener implements ServletContextListener {
 
             // Put a queue collecting the log events
             servletContext.setAttribute("LogEventQueue", Collections.synchronizedList(new LinkedList()));
+
+            // Put the bounce point and prize amount calculator type sources to context
+            servletContext.setAttribute("BouncePointCalcTypeSource", new DefaultBouncePointCalculatorTypeSource());
+            servletContext.setAttribute("PrizeCalcTypeSource", new DefaultPrizeCalculatorTypeSource());
+            servletContext.setAttribute("GameCompletionTypeSource", new DefaultGameCompletionTypeSource());
 
             // Start the thread monitoring the log event queue
             Map paramMapping = new HashMap();

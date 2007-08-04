@@ -286,5 +286,29 @@
         <function-class>com.orpheus.game.server.admin.OrpheusAdminFunctions</function-class>
         <function-signature>java.lang.String convertTime(long)</function-signature>
     </function>
+
+    <function>
+        <name>getBouncePointType</name>
+        <function-class>com.orpheus.game.server.admin.OrpheusAdminFunctions</function-class>
+        <function-signature>com.orpheus.game.server.framework.bounce.BouncePointCalculatorType getBouncePointType(com.orpheus.game.persistence.Game,javax.servlet.ServletContext)</function-signature>
+    </function>
+
+    <function>
+        <name>getPrizeType</name>
+        <function-class>com.orpheus.game.server.admin.OrpheusAdminFunctions</function-class>
+        <function-signature>com.orpheus.game.server.framework.prize.PrizeCalculatorType getPrizeType(com.orpheus.game.persistence.Game,javax.servlet.ServletContext)</function-signature>
+    </function>
+
+    <function>
+        <name>getCompletionType</name>
+        <function-class>com.orpheus.game.server.admin.OrpheusAdminFunctions</function-class>
+        <function-signature>com.orpheus.game.server.framework.game.completion.GameCompletionType getCompletionType(com.orpheus.game.persistence.Game,javax.servlet.ServletContext)</function-signature>
+    </function>
+
+    <function>
+        <name>getGameCreationTypes</name>
+        <function-class>com.orpheus.game.server.admin.OrpheusAdminFunctions</function-class>
+        <function-signature>java.util.List getGameCreationTypes()</function-signature>
+    </function>
 </taglib>
 

@@ -10,16 +10,25 @@ import com.orpheus.game.persistence.HostingBlock;
 import com.orpheus.game.persistence.HostingSlot;
 import com.orpheus.game.persistence.ImageInfo;
 import com.orpheus.game.server.comparator.admin.AdminAllGamesListComparator;
+import com.orpheus.game.server.framework.bounce.BouncePointCalculatorType;
+import com.orpheus.game.server.framework.bounce.BouncePointCalculatorTypeSource;
+import com.orpheus.game.server.framework.game.completion.GameCompletionType;
+import com.orpheus.game.server.framework.game.completion.GameCompletionTypeSource;
+import com.orpheus.game.server.framework.prize.PrizeCalculatorType;
+import com.orpheus.game.server.framework.prize.PrizeCalculatorTypeSource;
+import com.orpheus.game.server.util.GameCreationType;
 import com.orpheus.user.persistence.UserConstants;
 import com.topcoder.formvalidator.validator.Message;
 import com.topcoder.user.profile.BaseProfileType;
 import com.topcoder.user.profile.UserProfile;
 import com.topcoder.util.auction.Auction;
 import com.topcoder.util.auction.Bid;
+import com.topcoder.util.collection.typesafeenum.Enum;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.web.tag.paging.DataPagingTag;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -399,7 +408,11 @@ public class OrpheusAdminFunctions {
      * @return a <code>String</code> providing the handle for specified account.
      */
     public static String getHandle(UserProfile account) {
-        return (String) account.getProperty(UserConstants.CREDENTIALS_HANDLE);
+        if (account == null) {
+            return null;
+        } else {
+            return (String) account.getProperty(UserConstants.CREDENTIALS_HANDLE);
+        }
     }
 
     /**
@@ -771,6 +784,63 @@ public class OrpheusAdminFunctions {
         buffer.append(minutes);
         buffer.append("m");
         return buffer.toString();
+    }
+
+    public static PrizeCalculatorType getPrizeType(Game game, ServletContext context) {
+        if (game == null) {
+            throw new IllegalArgumentException("The parameter [game] is NULL");
+        }
+        if (context == null) {
+            throw new IllegalArgumentException("The parameter [context] is NULL");
+        }
+        try {
+            PrizeCalculatorTypeSource typeSource = (PrizeCalculatorTypeSource) context.getAttribute("PrizeCalcTypeSource");
+            return typeSource.getPrizeCalculatorType(game.getPrizeCalculationType());
+        } catch (Exception e) {
+            throw new OrpheusGameServerAdminException("Could not obtain the prize calculation type", e);
+        }
+    }
+
+    public static BouncePointCalculatorType getBouncePointType(Game game, ServletContext context) {
+        if (game == null) {
+            throw new IllegalArgumentException("The parameter [game] is NULL");
+        }
+        if (context == null) {
+            throw new IllegalArgumentException("The parameter [context] is NULL");
+        }
+        try {
+            BouncePointCalculatorTypeSource typeSource
+                = (BouncePointCalculatorTypeSource) context.getAttribute("BouncePointCalcTypeSource");
+            return typeSource.getBouncePointCalculatorType(game.getBouncePointCalculationType());
+        } catch (Exception e) {
+            throw new OrpheusGameServerAdminException("Could not obtain the bounce point calculation type", e);
+        }
+    }
+
+    public static GameCompletionType getCompletionType(Game game, ServletContext context) {
+        if (game == null) {
+            throw new IllegalArgumentException("The parameter [game] is NULL");
+        }
+        if (context == null) {
+            throw new IllegalArgumentException("The parameter [context] is NULL");
+        }
+        try {
+            GameCompletionTypeSource typeSource
+                = (GameCompletionTypeSource) context.getAttribute("GameCompletionTypeSource");
+            return typeSource.getGameCompletionType(game.getCompletionType());
+        } catch (Exception e) {
+            throw new OrpheusGameServerAdminException("Could not obtain the game completion type", e);
+        }
+    }
+
+    /**
+     * <p>Gets the list of supported game creation types.</p>
+     *
+     * @return a <code>List</code> containing the <code>GameCreationType</code> instances representing the game creation
+     *         types currently supported.
+     */
+    public static List getGameCreationTypes() {
+        return Enum.getEnumList(GameCreationType.class);
     }
 
     /**

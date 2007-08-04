@@ -40,7 +40,16 @@
     &raquo; Game Management &nbsp; &raquo; View All Games &nbsp;<span class="active"> &raquo;
     Change Hosting Order</span></div>
 
-<p>Select a row to view Ball progress and alter the hosting Order of a game.</p>
+<p>Select a row to view Ball progress and alter the hosting Order of a game.
+   Click <a href="${ctx}/server/admin/showStopGameDialog.do?gameId=${game.id}"
+            onclick="NewWindow(this.href, 'Detail', '400', '110', 'yes');return false">Stop</a> to finish the game.
+</p>
+
+<p>
+    Prize calculation schema: <b>${admin:getPrizeType(game, pageContext.request.session.servletContext).name}</b><br/>
+    Bounce points calculation schema: <b>${admin:getBouncePointType(game, pageContext.request.session.servletContext).name}</b><br/>
+    Completion schema: <b>${admin:getCompletionType(game, pageContext.request.session.servletContext).name}</b> 
+</p>
 
 <div id="data-table-admin">
 <ul>
