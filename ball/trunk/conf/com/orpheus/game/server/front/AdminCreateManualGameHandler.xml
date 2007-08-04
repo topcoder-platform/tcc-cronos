@@ -21,7 +21,7 @@
         <max_slot_time_json_prop>maxBlockTime</max_slot_time_json_prop>
         <slot_count_json_prop>slotCount</slot_count_json_prop>
         <minimum_bid>5</minimum_bid>
-        <random_string_image_ns>c:/var/opt/orpheus/conf/RandomStringImage.xml</random_string_image_ns>
+        <random_string_image_ns>/var/opt/orpheus/conf/RandomStringImage.xml</random_string_image_ns>
         <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
         <jndi_context_name>default</jndi_context_name>
         <use_remote_interface>true</use_remote_interface>
