@@ -72,6 +72,11 @@ class HostingSlotImpl implements HostingSlot {
     private Date hostingEnd;
 
     /**
+     * The ID of a hosting block which this slot belongs to.
+     */
+    private long hostingBlockId;
+
+    /**
      * Empty constructor.
      *
      */
@@ -257,4 +262,21 @@ class HostingSlotImpl implements HostingSlot {
         this.winningBid = winningBid;
     }
 
+    /**
+     * Returns the ID of a hosting block which this slot belongs to.
+     *
+     * @return the ID of hosting block which this slot belongs to.
+     */
+    public long getHostingBlockId() {
+        return this.hostingBlockId;
+    }
+
+    /**
+     * Sets the ID of a hosting block which this slot belongs to.
+     *
+     * @param hostingBlockId the ID of hosting block which this slot belongs to.
+     */
+    public void setHostingBlockId(long hostingBlockId) {
+        this.hostingBlockId = hostingBlockId;
+    }
 }

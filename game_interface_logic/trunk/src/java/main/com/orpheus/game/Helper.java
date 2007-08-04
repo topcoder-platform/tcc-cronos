@@ -334,6 +334,7 @@ final class Helper {
         copy.setWinningBid(slot.getWinningBid());
         copy.setHostingStart(slot.getHostingStart());
         copy.setHostingEnd(slot.getHostingEnd());
+        copy.setHostingBlockId(slot.getHostingBlockId());
         return copy;
     }
 }
