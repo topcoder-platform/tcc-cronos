@@ -3,19 +3,17 @@
  */
 package com.orpheus.administration.handlers;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.w3c.dom.Element;
-
 import com.orpheus.administration.Helper;
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
+import org.w3c.dom.Element;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Provides a Handler implementation that accepts general information about a
@@ -119,6 +117,72 @@ public class GameParameterHandler implements Handler {
     private final String startDateAttrName;
 
     /**
+     * This holds the name of the request parameter which will contain the game
+     * end date. The value should be able to be parsed into a java.util.Date
+     * object. It should have day,month,year and time of day data. The format of
+     * the date string will also be taken as request parameter.<br/> It is
+     * initialized in the constructor and does not change after that.<br/> It
+     * will never be null or empty.<br/>
+     */
+    private final String endDateParamName;
+
+    /**
+     * This holds the name of the session attribute which will contain the
+     * parsed game end Date. It will be stored as java.util.Date.<br/> It is
+     * initialized in the constructor and does not change after that.<br/> It
+     * will never be null or empty.<br/>
+     */
+    private final String endDateAttrName;
+
+    /**
+     * This holds the name of the request parameter which will contain the bounce
+     * point calculation type. The value should be able to be parsed into an int value.<br/> It
+     * is initialized in the constructor and does not change after that.<br/>
+     * It will never be null or empty.<br/>
+     */
+    private final String bounceCalcTypeParamName;
+
+    /**
+     * This holds the name of the session attribute which will contain the
+     * parsed game bounce point calculation type. It will be stored as
+     * java.lang.Integer.<br/> It is initialized in the constructor and does
+     * not change after that.<br/> It will never be null or empty.<br/>
+     */
+    private final String bounceCalcTypeAttrName;
+
+    /**
+     * This holds the name of the request parameter which will contain the prize
+     * amount calculation type. The value should be able to be parsed into an int value.<br/> It
+     * is initialized in the constructor and does not change after that.<br/>
+     * It will never be null or empty.<br/>
+     */
+    private final String prizeCalcTypeParamName;
+
+    /**
+     * This holds the name of the session attribute which will contain the
+     * parsed game prize amount calculation type. It will be stored as
+     * java.lang.Integer.<br/> It is initialized in the constructor and does
+     * not change after that.<br/> It will never be null or empty.<br/>
+     */
+    private final String prizeCalcTypeAttrName;
+
+    /**
+     * This holds the name of the request parameter which will contain the game
+     * completion type. The value should be able to be parsed into an int value.<br/> It
+     * is initialized in the constructor and does not change after that.<br/>
+     * It will never be null or empty.<br/>
+     */
+    private final String gameCompletionTypeParamName;
+
+    /**
+     * This holds the name of the session attribute which will contain the
+     * parsed game game completion type. It will be stored as
+     * java.lang.Integer.<br/> It is initialized in the constructor and does
+     * not change after that.<br/> It will never be null or empty.<br/>
+     */
+    private final String gameCompletionTypeAttrName;
+
+    /**
      * This holds the name of the result (as configured in Front Controller
      * component) which should execute in case of execution failure.<br/> It is
      * initialized in the constructor and does not change after that.<br/> It
@@ -197,6 +261,22 @@ public class GameParameterHandler implements Handler {
                 "/handler/date-format-request-param");
         startDateAttrName = Helper.getValue(handlerElement,
                 "/handler/start-date-session-attr");
+        endDateParamName = Helper.getValue(handlerElement,
+                "/handler/end-date-request-param");
+        endDateAttrName = Helper.getValue(handlerElement,
+                "/handler/end-date-session-attr");
+        bounceCalcTypeParamName = Helper.getValue(handlerElement,
+                "/handler/bounce-calc-type-request-param");
+        bounceCalcTypeAttrName = Helper.getValue(handlerElement,
+                "/handler/bounce-calc-type-session-attr");
+        prizeCalcTypeParamName = Helper.getValue(handlerElement,
+                "/handler/prize-calc-type-request-param");
+        prizeCalcTypeAttrName = Helper.getValue(handlerElement,
+                "/handler/prize-calc-type-session-attr");
+        gameCompletionTypeParamName = Helper.getValue(handlerElement,
+                "/handler/game-completion-type-request-param");
+        gameCompletionTypeAttrName = Helper.getValue(handlerElement,
+                "/handler/game-completion-type-session-attr");
         failedResult = Helper.getValue(handlerElement, "/handler/fail-result");
         failRequestAttrName = Helper.getValue(handlerElement,
                 "/handler/fail-request-attribute");
@@ -243,9 +323,19 @@ public class GameParameterHandler implements Handler {
         // Get key count from request parameter
         String keyCountString = Helper.getRequestParameter(request,
                 keyCountParamName, failRequestAttrName);
+        // Get end date from request parameter
+        String endDtString = request.getParameter(endDateParamName);
+        // Get bounce point calculation type from request parameter
+        String bounceTypeString = Helper.getRequestParameter(request, bounceCalcTypeParamName, failRequestAttrName);
+        // Get prize calculation type from request parameter
+        String prizeTypeString = Helper.getRequestParameter(request, prizeCalcTypeParamName, failRequestAttrName);
+        // Get game completion type from request parameter
+        String gameCompletionTypeString
+            = Helper.getRequestParameter(request, gameCompletionTypeParamName, failRequestAttrName);
         if (ballColorIdString == null || startDtString == null
                 || dtFormat == null || blockCountString == null
-                || keyCountString == null) {
+                || keyCountString == null || bounceTypeString == null || prizeTypeString == null
+                || gameCompletionTypeString == null) {
             return failedResult;
         }
         // Parse it into Long value
@@ -268,11 +358,30 @@ public class GameParameterHandler implements Handler {
                 || blockCount == null) {
             return failedResult;
         }
+        // Parse it into Integer value
+        Integer bounceType = Helper.parseInteger(request, bounceTypeString,
+                "bounceType", failRequestAttrName);
+        // Parse it into Integer value
+        Integer prizeType = Helper.parseInteger(request, prizeTypeString,
+                "prizeType", failRequestAttrName);
+        // Parse it into Integer value
+        Integer completionType = Helper.parseInteger(request, gameCompletionTypeString,
+                "completionType", failRequestAttrName);
+        // Parse optional end date into java.util.Date using dtFormat
+        Date endDate = null;
+        if ((endDtString != null) && (endDtString.trim().length() != 0)) {
+            endDate = Helper.parseDate(request, dateFormat, endDtString, "endDate", failRequestAttrName);
+        }
+
         // set attributes to session
         session.setAttribute(ballColorIdAttrName, ballColorId);
         session.setAttribute(keyCountAttrName, keyCount);
         session.setAttribute(blockCountAttrName, blockCount);
         session.setAttribute(startDateAttrName, startDate);
+        session.setAttribute(endDateAttrName, endDate);
+        session.setAttribute(bounceCalcTypeAttrName, bounceType);
+        session.setAttribute(prizeCalcTypeAttrName, prizeType);
+        session.setAttribute(gameCompletionTypeAttrName, completionType);
 
         // return null for successful execution.
         return null;

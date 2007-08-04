@@ -54,7 +54,6 @@ public class CreateGameHandler implements Handler {
      * This holds the JNDI name to use to look up the GameDataHome service.<br/>
      * This variable is initialized in the constructor and does not change after
      * that.<br/> It will never be null or empty.<br/>
-     * 
      */
     private final String gameDataJndiName;
 
@@ -68,7 +67,6 @@ public class CreateGameHandler implements Handler {
      * as configuration parameters. Also, the date format will be accepted as
      * request parameter.<br/> It is initialized in the constructor and does
      * not change after that.<br/> It will never be null or empty.<br/>
-     * 
      */
     private final String blockInfoParamName;
 
@@ -77,7 +75,6 @@ public class CreateGameHandler implements Handler {
      * per slot. The value should be able to be parsed into an integer value.<br/>
      * It is initialized in the constructor and does not change after that.<br/>
      * It will never be null or empty.<br/>
-     * 
      */
     private final String maxSlotTimePropName;
 
@@ -86,7 +83,6 @@ public class CreateGameHandler implements Handler {
      * Count. The value should be able to be parsed into an integer value.<br/>
      * It is initialized in the constructor and does not change after that.<br/>
      * It will never be null or empty.<br/>
-     * 
      */
     private final String slotCountPropName;
 
@@ -97,7 +93,6 @@ public class CreateGameHandler implements Handler {
      * the date string will also be taken as request parameter.<br/> It is
      * initialized in the constructor and does not change after that.<br/> It
      * will never be null or empty.<br/>
-     * 
      */
     private final String auctionStartTimePropName;
 
@@ -108,7 +103,6 @@ public class CreateGameHandler implements Handler {
      * the date string will also be taken as request parameter.<br/> It is
      * initialized in the constructor and does not change after that.<br/> It
      * will never be null or empty.<br/>
-     * 
      */
     private final String auctionEndTimePropName;
 
@@ -117,7 +111,6 @@ public class CreateGameHandler implements Handler {
      * parsed ball color id. It will be stored as a Long value.<br/> It is
      * initialized in the constructor and does not change after that.<br/> It
      * will never be null or empty.<br/>
-     * 
      */
     private final String ballColorIdAttrName;
 
@@ -126,7 +119,6 @@ public class CreateGameHandler implements Handler {
      * parsed key count. It will be stored as an Integer value.<br/> It is
      * initialized in the constructor and does not change after that.<br/> It
      * will never be null or empty.<br/>
-     * 
      */
     private final String keyCountAttrName;
 
@@ -135,7 +127,6 @@ public class CreateGameHandler implements Handler {
      * parsed block count. It will be stored as an Integer value.<br/> It is
      * initialized in the constructor and does not change after that.<br/> It
      * will never be null or empty.<br/>
-     * 
      */
     private final String blockCountAttrName;
 
@@ -144,7 +135,6 @@ public class CreateGameHandler implements Handler {
      * format to use to parse a string date value into a java.util.Date object.<br/>
      * It is initialized in the constructor and does not change after that.<br/>
      * It will never be null or empty.<br/>
-     * 
      */
     private final String dtFormatParamName;
 
@@ -153,7 +143,6 @@ public class CreateGameHandler implements Handler {
      * parsed game start Date. It will be stored as java.util.Date.<br/> It is
      * initialized in the constructor and does not change after that.<br/> It
      * will never be null or empty.<br/>
-     * 
      */
     private final String startDateAttrName;
 
@@ -161,7 +150,6 @@ public class CreateGameHandler implements Handler {
      * This holds the name of the application attribute which will contain the
      * AuctionManager instance.<br/> It is initialized in the constructor and
      * does not change after that.<br/> It will never be null or empty.<br/>
-     * 
      */
     private final String auctionMgrAttrName;
 
@@ -171,7 +159,6 @@ public class CreateGameHandler implements Handler {
      * added to the UI and handled via a request parameter<br/> It is
      * initialized in the constructor and does not change after that.<br/> May
      * be zero or positive.<br/>
-     * 
      */
     private final int minimumBid;
 
@@ -180,7 +167,6 @@ public class CreateGameHandler implements Handler {
      * component) which should execute in case of execution failure.<br/> It is
      * initialized in the constructor and does not change after that.<br/> It
      * will never be null or empty.<br/>
-     * 
      */
     private final String failedResult;
 
@@ -189,9 +175,40 @@ public class CreateGameHandler implements Handler {
      * instance should be assigned to, in case of execution failure.<br/> It is
      * initialized in the constructor and does not change after that.<br/> It
      * will never be null or empty.<br/>
-     * 
      */
     private final String failRequestAttrName;
+
+    /**
+     * This holds the name of the session attribute which will contain the
+     * parsed game end Date. It will be stored as java.util.Date.<br/> It is
+     * initialized in the constructor and does not change after that.<br/> It
+     * will never be null or empty.<br/>
+     */
+    private final String endDateAttrName;
+
+    /**
+     * This holds the name of the session attribute which will contain the
+     * parsed game bounce point calculation type. It will be stored as
+     * java.lang.Integer.<br/> It is initialized in the constructor and does
+     * not change after that.<br/> It will never be null or empty.<br/>
+     */
+    private final String bounceCalcTypeAttrName;
+
+    /**
+     * This holds the name of the session attribute which will contain the
+     * parsed game prize amount calculation type. It will be stored as
+     * java.lang.Integer.<br/> It is initialized in the constructor and does
+     * not change after that.<br/> It will never be null or empty.<br/>
+     */
+    private final String prizeCalcTypeAttrName;
+
+    /**
+     * This holds the name of the session attribute which will contain the
+     * parsed game completion type. It will be stored as
+     * java.lang.Integer.<br/> It is initialized in the constructor and does
+     * not change after that.<br/> It will never be null or empty.<br/>
+     */
+    private final String gameCompletionTypeAttrName;
 
     /**
      * Creates a GameParameterHandler instance configured from the given xml
@@ -269,6 +286,14 @@ public class CreateGameHandler implements Handler {
                 "/handler/start-date-session-attr");
         auctionMgrAttrName = Helper.getValue(handlerElement,
                 "/handler/auction-mgr-app-attr");
+        endDateAttrName = Helper.getValue(handlerElement,
+                "/handler/end-date-session-attr");
+        bounceCalcTypeAttrName = Helper.getValue(handlerElement,
+                "/handler/bounce-calc-type-session-attr");
+        prizeCalcTypeAttrName = Helper.getValue(handlerElement,
+                "/handler/prize-calc-type-session-attr");
+        gameCompletionTypeAttrName = Helper.getValue(handlerElement,
+                "/handler/game-completion-type-session-attr");
         String minimunBidString = Helper.getValue(handlerElement,
                 "/handler/minimum-auction-bid");
         int tmp;
@@ -321,8 +346,13 @@ public class CreateGameHandler implements Handler {
         Integer keyCount = (Integer) session.getAttribute(keyCountAttrName);
         // Get the block count
         Integer blockCount = (Integer) session.getAttribute(blockCountAttrName);
-        // Get the game start date
+        // Get the game start and end dates
         Date gameStartDate = (Date) session.getAttribute(startDateAttrName);
+        Date gameEndDate = (Date) session.getAttribute(endDateAttrName);
+        // Get the bounce points and prize amounts calculation types
+        Integer bounceCalcType = (Integer) session.getAttribute(bounceCalcTypeAttrName);
+        Integer prizeCalcType = (Integer) session.getAttribute(prizeCalcTypeAttrName);
+        Integer completionType = (Integer) session.getAttribute(gameCompletionTypeAttrName);
         // Get the information about the blocks
         String[] blocks = request.getParameterValues(blockInfoParamName);
         if (!Helper.checkArrayNullEmptyContainsNullEmpty(blocks)) {
@@ -381,6 +411,10 @@ public class CreateGameHandler implements Handler {
         game.setBallColor(ballColor);
         game.setKeyCount(keyCount.intValue());
         game.setStartDate(gameStartDate);
+        game.setEndDate(gameEndDate);
+        game.setBouncePointCalculationType(bounceCalcType.intValue());
+        game.setPrizeCalculationType(prizeCalcType.intValue());
+        game.setCompletionType(completionType.intValue());
         // Set hosting blocks for the game
         HostingBlock[] hBlocks = new HostingBlock[blockObjs.length];
         // for every [obj] in blockObjs

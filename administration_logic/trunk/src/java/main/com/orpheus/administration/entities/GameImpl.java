@@ -3,11 +3,11 @@
  */
 package com.orpheus.administration.entities;
 
-import java.util.Date;
-
 import com.orpheus.game.persistence.BallColor;
 import com.orpheus.game.persistence.Game;
 import com.orpheus.game.persistence.HostingBlock;
+
+import java.util.Date;
 
 /**
  * The implementation of Game interface which represents a BarookaBall game. It
@@ -74,6 +74,30 @@ public class GameImpl implements Game {
      *
      */
     private HostingBlock[] blocks;
+
+    /**
+     * <p>
+     * The ID of bounce point calculation schema. Such schema provides the rules to be used for calculating the bounce
+     * points to be awarded to players playing this game.
+     * </p>
+     */
+    private int bouncePointCalculationType;
+
+    /**
+     * <p>
+     * The ID of prize amount calculation schema. Such schema provides the rules to be used for calculating the prize
+     * amounts to be awarded to players winning this game.
+     * </p>
+     */
+    private int prizeCalculationType;
+
+    /**
+     * <p>
+     * The ID of game complettion schema. Such schema provides the rules to be used for determining when this game must
+     * be completed.
+     * </p>
+     */
+    private int completionType;
 
     /**
      * Empty constructor.
@@ -230,5 +254,77 @@ public class GameImpl implements Game {
      */
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    /**
+     * <p>
+     * Retrieves the ID of bounce point calculation schema. Such schema provides the rules to be used for calculating
+     * the bounce points to be awarded to players playing this game.
+     * </p>
+     *
+     * @return the reference to bounce point calculation schema.
+     */
+    public int getBouncePointCalculationType() {
+        return this.bouncePointCalculationType;
+    }
+
+    /**
+     * <p>
+     * Sets the ID of bounce point calculation schema. Such schema provides the rules to be used for calculating
+     * the bounce points to be awarded to players playing this game.
+     * </p>
+     *
+     * @param bouncePointCalculationType the reference to bounce point calculation schema.
+     */
+    public void setBouncePointCalculationType(int bouncePointCalculationType) {
+        this.bouncePointCalculationType = bouncePointCalculationType;
+    }
+
+    /**
+     * <p>
+     * Retrieves the ID of prize amount calculation schema. Such schema provides the rules to be used for calculating
+     * the prize amounts to be awarded to players winning this game.
+     * </p>
+     *
+     * @return the reference to prize amount calculation schema.
+     */
+    public int getPrizeCalculationType() {
+        return this.prizeCalculationType;
+    }
+
+    /**
+     * <p>
+     * Sets the ID of prize amount calculation schema. Such schema provides the rules to be used for calculating
+     * the prize amounts to be awarded to players winning this game.
+     * </p>
+     *
+     * @param prizeCalculationType the reference to prize amount calculation schema.
+     */
+    public void setPrizeCalculationType(int prizeCalculationType) {
+        this.prizeCalculationType = prizeCalculationType;
+    }
+
+    /**
+     * <p>
+     * Retrieves the ID of game completion schema. Such schema provides the rules to be used for determining when
+     * the game has to be completed.
+     * </p>
+     *
+     * @return the reference to game completion schema.
+     */
+    public int getCompletionType() {
+        return this.completionType;
+    }
+
+    /**
+     * <p>
+     * Sets the ID of game completion schema. Such schema provides the rules to be used for determining when
+     * the game has to be completed.
+     * </p>
+     *
+     * @param completionType the reference to game completion schema.
+     */
+    public void setCompletionType(int completionType) {
+        this.completionType = completionType;
     }
 }
