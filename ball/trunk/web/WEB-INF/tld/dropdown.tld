@@ -40,11 +40,13 @@
         <attribute>
             <name>id</name>
             <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
             <description>the id of the resulted select tag</description>
         </attribute>
         <attribute>
             <name>name</name>
             <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
             <description>the name of the resulted select tag</description>
         </attribute>
         <attribute>

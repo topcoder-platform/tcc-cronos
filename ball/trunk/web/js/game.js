@@ -1,3 +1,7 @@
+var PUBLIC_AUCTION = 1;
+var PRIVATE_AUCTION = 2;
+var MANUAL = 3;
+
 function submitGameBlocksForm(gameStart) {
     var form = document.GameForm;
     var elems = form.elements;
@@ -15,21 +19,68 @@ function submitGameBlocksForm(gameStart) {
                     errors += '\nNo slots for block ' + (i + 1) + ' have been set'; 
                 }
                 // auction start date
-                var start = new Date();
-                start.setTime(AUCTION_START_TIMES[i]);
-                v += ', "auctionStartTime" : "' + (start.getMonth() + 1) + '/' + start.getDate() + '/' + start.getFullYear() + ' '
-                                                + start.getHours() + ':' + start.getMinutes() + ':' + start.getSeconds() + '"';
+                if (AUCTION_TYPE == PUBLIC_AUCTION) {
+                    var start = new Date();
+                    start.setTime(AUCTION_START_TIMES[i]);
+                    v += ',"auctionStartTime" : "' + (start.getMonth() + 1) + '/' + start.getDate() + '/' + start.getFullYear() + ' '
+                        + start.getHours() + ':' + start.getMinutes() + ':' + start.getSeconds() + '"';
+                }
                 // auction end date
-                var end = new Date();
-                end.setTime(AUCTION_END_TIMES[i]);
-                v += ', "auctionEndTime" : "' + (end.getMonth() + 1) + '/' + end.getDate() + '/' + end.getFullYear() + ' '
-                                                + end.getHours() + ':' + end.getMinutes() + ':' + end.getSeconds() + '"';
+                if (AUCTION_TYPE == PUBLIC_AUCTION) {
+                    var end = new Date();
+                    end.setTime(AUCTION_END_TIMES[i]);
+                    v += ',"auctionEndTime" : "' + (end.getMonth() + 1) + '/' + end.getDate() + '/' + end.getFullYear() + ' '
+                        + end.getHours() + ':' + end.getMinutes() + ':' + end.getSeconds() + '"';
+                }
                 // check if auction end date does not exceed the game start time
-                if (end.getTime() >= gameStart.getTime()) {
-                    warnings += '\nThe auction end time for block ' + (i + 1) + ' is greater or equal to game start time';
+                if (AUCTION_TYPE == PUBLIC_AUCTION) {
+                    if (end.getTime() >= gameStart.getTime()) {
+                        warnings += '\nThe auction end time for block ' + (i + 1) + ' is greater or equal to game start time';
+                    }
+                }
+                // block slots (for private auctions)
+                if (AUCTION_TYPE == PRIVATE_AUCTION) {
+                    v += ',"slots":[';
+                    var slots = BLOCK_SLOTS[i];
+                    for (var k = 0; k < slots.length; k++) {
+                        if (k > 0) {
+                            v += ',';
+                        }
+                        v += '{';
+                        v += slots[k];
+                        v += '}';
+                    }
+                    v += ']'
+                }
+                // block slots (for manual)
+                if (AUCTION_TYPE == MANUAL) {
+                    v += ',"slots":[';
+                    var slots = BLOCK_SLOTS[i];
+                    for (var k = 0; k < slots.length; k++) {
+                        if (k > 0) {
+                            v += ',';
+                        }
+                        v += '{';
+                        v += slots[k];
+                        v += ',"targets":[';
+                        if (SLOT_TARGETS[i][k].length == 0) {
+                            errors += '\nNo targets for slot ' + (k + 1) + ' from block ' + (i + 1) + ' have been set'; 
+                        }
+                        for (var m = 0; m < SLOT_TARGETS[i][k].length; m++) {
+                            if (m > 0) {
+                                v += ',';
+                            }
+                            v += '{';
+                            v += SLOT_TARGETS[i][k][m];
+                            v += '}';
+                        }
+                        v += ']';
+                        v += '}';
+                    }
+                    v += ']'
                 }
                 // block duration
-                v += ', "maxBlockTime" : ' + Math.floor(BLOCK_DURATIONS[i] / 60);
+                v += ',"maxBlockTime" : ' + Math.floor(BLOCK_DURATIONS[i] / 60);
                 v += '}';
                 // Save the JSON string as form input value
                 elems[j].value = v;
@@ -306,3 +357,4 @@ function parseIntValue(v) {
     }
     return parseInt(v);
 }
+

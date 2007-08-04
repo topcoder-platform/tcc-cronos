@@ -10,6 +10,7 @@ import com.orpheus.administration.persistence.AdminDataLocal;
 import com.orpheus.administration.persistence.AdminDataHome;
 import com.orpheus.administration.persistence.AdminDataLocalHome;
 import com.orpheus.administration.persistence.impl.AdminMessage;
+import com.orpheus.administration.AdministrationManager;
 import com.orpheus.auction.KeyConstants;
 import com.orpheus.game.GameDataConfigurationException;
 import com.orpheus.game.GameDataException;
@@ -97,6 +98,12 @@ public class AbstractGameServerHandler {
 
     /**
      * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of request parameter to get the details for game blocks from.</p>
+     */
+    protected static final String BLOCK_INFO_PARAM_NAME_CONFIG = "block_info_param_key";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
      * name of request parameter to get the game ID from.</p>
      */
     protected static final String GAME_ID_PARAM_NAME_CONFIG = "game_id_param_key";
@@ -176,6 +183,12 @@ public class AbstractGameServerHandler {
 
     /**
      * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * value of minimum bid for bidding for slots.</p>
+     */
+    protected static final String MINIMUM_BID_VALUE_CONFIG = "minimum_bid";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
      * configuration namespace for object factory.</p>
      */
     protected static final String OBJECT_FACTORY_NS_VALUE_CONFIG = "object_factory_ns";
@@ -243,9 +256,63 @@ public class AbstractGameServerHandler {
 
     /**
      * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of request attribute to bind the details for selected images.</p>
+     */
+    protected static final String IMAGES_ATTR_NAME_CONFIG = "images_key";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
      * name of request attribute to bind the list of ball colors.</p>
      */
     protected static final String BALL_COLORS_ATTR_NAME_CONFIG = "ball_colors_key";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of request/session attribute to bind the number of keys per game.</p>
+     */
+    protected static final String KEY_COUNT_ATTR_NAME_CONFIG = "key_count_key";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of request/session attribute to bind the selected ball color.</p>
+     */
+    protected static final String BALL_COLOR_ATTR_NAME_CONFIG = "ball_color_key";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of request/session attribute to bind the number of blocks in the game.</p>
+     */
+    protected static final String BLOCK_COUNT_ATTR_NAME_CONFIG = "block_count_key";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of request/session attribute to bind the start date for the game.</p>
+     */
+    protected static final String GAME_START_DATE_ATTR_NAME_CONFIG = "game_start_date_key";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of request/session attribute to bind the end date for the game.</p>
+     */
+    protected static final String GAME_END_DATE_ATTR_NAME_CONFIG = "game_end_date_key";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of request/session attribute to bind the bounce point type for the game.</p>
+     */
+    protected static final String GAME_BOUNCE_TYPE_ATTR_NAME_CONFIG = "game_bounce_type_key";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of request/session attribute to bind the prize amount type for the game.</p>
+     */
+    protected static final String GAME_PRIZE_TYPE_ATTR_NAME_CONFIG = "game_prize_type_key";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of request/session attribute to bind the game completion type for the game.</p>
+     */
+    protected static final String GAME_COMPLETION_TYPE_ATTR_NAME_CONFIG = "game_completion_type_key";
 
     /**
      * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
@@ -273,6 +340,12 @@ public class AbstractGameServerHandler {
 
     /**
      * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of request attribute to bind the list of details for sponsors.</p>
+     */
+    protected static final String SPONSORS_ATTR_NAME_CONFIG = "sponsors_key";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
      * name of request attribute to bind the game play history.</p>
      */
     protected static final String GAME_PLAY_ATTR_NAME_CONFIG = "game_play_key";
@@ -294,6 +367,18 @@ public class AbstractGameServerHandler {
      * name of request attribute to bind the puzzle ID.</p>
      */
     protected static final String PUZZLE_ID_ATTR_NAME_CONFIG = "puzzle_id_request_attribute_key";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of JSON object property to get the maximum time per slot from.</p>
+     */
+    public static final String MAX_SLOT_TIME_JSON_PROP_CONFIG = "max_slot_time_json_prop";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of JSON object property to get the slots number from.</p>
+     */
+    public static final String SLOT_COUNT_JSON_PROP_CONFIG = "slot_count_json_prop";
 
     /**
      * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
@@ -921,7 +1006,6 @@ public class AbstractGameServerHandler {
      * @param subject a <code>String</code> providing the email message subject.
      */
     protected void sendEmail(ActionContext context, String to, String body, String subject) {
-        System.out.println("ISV : Sending email : TO = " + to + ", SUBJECT = " + subject);
         try {
             String pluginName = (String) context.getAttribute("OrpheusMessagePlugin");
             MessengerPlugin plugin = Messenger.createInstance().getPlugin(pluginName);
@@ -1054,6 +1138,14 @@ public class AbstractGameServerHandler {
     protected OrpheusOnlineStatusTracker getOnlineStatusTracker(HttpSession session) {
         ServletContext context = session.getServletContext();
         return (OrpheusOnlineStatusTracker) context.getAttribute(OrpheusOnlineStatusTracker.CONTEXT_ATTRIBUTE_NAME);
+    }
+
+    protected AdministrationManager getAdministrationManager(ActionContext context) {
+        if (context == null) {
+            throw new IllegalArgumentException("The parameter [context] is NULL");
+        }
+        ServletContext servletContext = getServletContext(context);
+        return (AdministrationManager) servletContext.getAttribute(KeyConstants.ADMINISTRATION_MANAGER_KEY);
     }
 
     /**

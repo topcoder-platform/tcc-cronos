@@ -13,12 +13,17 @@
 <head>
     <title>The Ball :: Create New Game</title>
     <link rel="stylesheet" type="text/css" media="all" href="${ctx}/css/styles.css"/>
+
+    <script type="text/javascript" src="${ctx}/js/forms.js"></script>
+    <script type="text/javascript" src="${ctx}/js/game.js"></script>
+    
     <script type="text/javascript">
         var BLOCK_COUNT = ${blockCount};
         var BLOCK_DURATIONS = new Array();
         var BLOCK_SLOT_COUNTS = new Array();
         var AUCTION_START_TIMES = new Array();
         var AUCTION_END_TIMES = new Array();
+        var AUCTION_TYPE = PUBLIC_AUCTION;
         for (var i = 0; i < ${blockCount}; i++) {
             BLOCK_DURATIONS[i] = 0;
             BLOCK_SLOT_COUNTS[i] = 0;
@@ -27,8 +32,6 @@
         }
     </script>
 
-    <script type="text/javascript" src="${ctx}/js/forms.js"></script>
-    <script type="text/javascript" src="${ctx}/js/game.js"></script>
 
     <script type="text/javascript">
         function recalcAllStartDates() {
