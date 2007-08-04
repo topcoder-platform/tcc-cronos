@@ -119,6 +119,7 @@ public class AdminRegenerateClueImageHandler extends AbstractGameServerHandler i
                 updatedSlot.setHostingStart(slot.getHostingStart());
                 updatedSlot.setHostingEnd(slot.getHostingEnd());
                 updatedSlot.setDomainTargets(targets);
+                updatedSlot.setHostingBlockId(slot.getHostingBlockId());
                 gameDataEJBAdapter.updateSlots(new HostingSlot[] {updatedSlot});
             }
             return null;

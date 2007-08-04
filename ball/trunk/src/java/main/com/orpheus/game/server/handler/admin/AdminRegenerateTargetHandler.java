@@ -141,6 +141,7 @@ public class AdminRegenerateTargetHandler extends AbstractGameServerHandler impl
                 updatedSlot.setHostingStart(slot.getHostingStart());
                 updatedSlot.setHostingEnd(slot.getHostingEnd());
                 updatedSlot.setDomainTargets(targets);
+                updatedSlot.setHostingBlockId(slot.getHostingBlockId());
                 gameDataEJBAdapter.updateSlots(new HostingSlot[] {updatedSlot});
                 if (slot.getHostingStart() != null) {
                     // Broadcast a message notifying players on regenerated target

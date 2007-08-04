@@ -142,6 +142,7 @@ public class AdminDeleteTargetHandler extends AbstractGameServerHandler implemen
                 updatedSlot.setHostingStart(slot.getHostingStart());
                 updatedSlot.setHostingEnd(slot.getHostingEnd());
                 updatedSlot.setDomainTargets((DomainTarget[]) leftTargets.toArray(new DomainTarget[leftTargets.size()]));
+                updatedSlot.setHostingBlockId(slot.getHostingBlockId());
                 gameDataEJBAdapter.updateSlots(new HostingSlot[] {updatedSlot});
                 if (slot.getHostingStart() != null) {
                     // Broadcast a message notifying players on deleted target

@@ -202,7 +202,7 @@ public class SponsorRegistrationHandler implements Handler {
                         // This error is ignored as we have no other way to check if the file exists in FileUpload
                     }
                 }
-                domains.add(new DomainImpl(null, sponsorId.longValue(), request.getParameter("domain_" + i),
+                domains.add(new DomainImpl(null, sponsorId, request.getParameter("domain_" + i),
                                            null, (ImageInfo[]) images.toArray(new ImageInfoImpl[images.size()])));
             }
         }

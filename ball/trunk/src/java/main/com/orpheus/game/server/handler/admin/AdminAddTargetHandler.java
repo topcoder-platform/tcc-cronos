@@ -134,6 +134,7 @@ public class AdminAddTargetHandler extends AbstractGameServerHandler implements 
             updatedSlot.setHostingStart(slot.getHostingStart());
             updatedSlot.setHostingEnd(slot.getHostingEnd());
             updatedSlot.setDomainTargets((DomainTarget[]) targets.toArray(new DomainTarget[targets.size()]));
+            updatedSlot.setHostingBlockId(slot.getHostingBlockId());
             gameDataEJBAdapter.updateSlots(new HostingSlot[] {updatedSlot});
             // If first target added then re-generate a brainteaser for the slot
             if (firstTargetAdded) {

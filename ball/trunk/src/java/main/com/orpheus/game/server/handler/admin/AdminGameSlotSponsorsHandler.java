@@ -89,11 +89,13 @@ public class AdminGameSlotSponsorsHandler extends AbstractGameServerHandler impl
             for (int i = 0; i < blocks.length; i++) {
                 HostingSlot[] slots = blocks[i].getSlots();
                 for (int j = 0; j < slots.length; j++) {
-                    Long sponsorId = new Long(slots[j].getDomain().getSponsorId());
-                    if (!sponsors.containsKey(sponsorId)) {
-                        sponsors.put(sponsorId, this.userProfileManager.getUserProfile(sponsorId.longValue()));
+                    Long sponsorId = slots[j].getDomain().getSponsorId();
+                    if (sponsorId != null) {
+                        if (!sponsors.containsKey(sponsorId)) {
+                            sponsors.put(sponsorId, this.userProfileManager.getUserProfile(sponsorId.longValue()));
+                        }
+                        slotSponsors.put(slots[j].getId(), sponsors.get(sponsorId));
                     }
-                    slotSponsors.put(slots[j].getId(), sponsors.get(sponsorId));
                 }
             }
 
