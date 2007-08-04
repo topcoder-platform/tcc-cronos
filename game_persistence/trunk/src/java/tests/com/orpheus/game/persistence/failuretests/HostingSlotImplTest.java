@@ -4,14 +4,13 @@
 
 package com.orpheus.game.persistence.failuretests;
 
-import java.util.Date;
-
 import com.orpheus.game.persistence.DomainTarget;
 import com.orpheus.game.persistence.ImageInfo;
 import com.orpheus.game.persistence.entities.DomainImpl;
 import com.orpheus.game.persistence.entities.HostingSlotImpl;
-
 import junit.framework.TestCase;
+
+import java.util.Date;
 
 /**
  * Test case for <code>HostingSlotImpl</code>.
@@ -40,7 +39,7 @@ public class HostingSlotImplTest extends TestCase {
         try {
             new HostingSlotImpl(
                     new Long(0),
-                    new DomainImpl(new Long(1), 1, "test", null, new ImageInfo[0]),
+                    new DomainImpl(new Long(1), new Long(1), "test", null, new ImageInfo[0]),
                     1,
                     new long[0],
                     new Long(1),
@@ -48,7 +47,8 @@ public class HostingSlotImplTest extends TestCase {
                     new DomainTarget[0],
                     1,
                     new Date(10),
-                    new Date(100)
+                    new Date(100),
+                    100
                     );
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
@@ -75,7 +75,7 @@ public class HostingSlotImplTest extends TestCase {
         try {
             new HostingSlotImpl(
                     new Long(-1),
-                    new DomainImpl(new Long(1), 1, "test", null, new ImageInfo[0]),
+                    new DomainImpl(new Long(1), new Long(1), "test", null, new ImageInfo[0]),
                     1,
                     new long[0],
                     new Long(1),
@@ -83,7 +83,8 @@ public class HostingSlotImplTest extends TestCase {
                     new DomainTarget[0],
                     1,
                     new Date(10),
-                    new Date(100)
+                    new Date(100),
+                    100
                     );
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
@@ -110,7 +111,7 @@ public class HostingSlotImplTest extends TestCase {
         try {
             new HostingSlotImpl(
                     new Long(1),
-                    null, //new DomainImpl(new Long(1), 1, "test", null, new ImageInfo[0]),
+                    null, //new DomainImpl(new Long(1), new Long(1), "test", null, new ImageInfo[0]),
                     1,
                     new long[0],
                     new Long(1),
@@ -118,7 +119,8 @@ public class HostingSlotImplTest extends TestCase {
                     new DomainTarget[0],
                     1,
                     new Date(10),
-                    new Date(100)
+                    new Date(100),
+                    100
                     );
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
@@ -145,7 +147,7 @@ public class HostingSlotImplTest extends TestCase {
         try {
             new HostingSlotImpl(
                     new Long(1),
-                    new DomainImpl(new Long(1), 1, "test", null, new ImageInfo[0]),
+                    new DomainImpl(new Long(1), new Long(1), "test", null, new ImageInfo[0]),
                     0,
                     new long[0],
                     new Long(1),
@@ -153,7 +155,8 @@ public class HostingSlotImplTest extends TestCase {
                     new DomainTarget[0],
                     1,
                     new Date(10),
-                    new Date(100)
+                    new Date(100),
+                    100
                     );
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
@@ -180,7 +183,7 @@ public class HostingSlotImplTest extends TestCase {
         try {
             new HostingSlotImpl(
                     new Long(1),
-                    new DomainImpl(new Long(1), 1, "test", null, new ImageInfo[0]),
+                    new DomainImpl(new Long(1), new Long(1), "test", null, new ImageInfo[0]),
                     -1,
                     new long[0],
                     new Long(1),
@@ -188,7 +191,8 @@ public class HostingSlotImplTest extends TestCase {
                     new DomainTarget[0],
                     1,
                     new Date(10),
-                    new Date(100)
+                    new Date(100),
+                    100
                     );
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
@@ -215,7 +219,7 @@ public class HostingSlotImplTest extends TestCase {
         try {
             new HostingSlotImpl(
                     new Long(0),
-                    new DomainImpl(new Long(1), 1, "test", null, new ImageInfo[0]),
+                    new DomainImpl(new Long(1), new Long(1), "test", null, new ImageInfo[0]),
                     1,
                     null, //new long[0],
                     new Long(1),
@@ -223,7 +227,8 @@ public class HostingSlotImplTest extends TestCase {
                     new DomainTarget[0],
                     1,
                     new Date(10),
-                    new Date(100)
+                    new Date(100),
+                    100
                     );
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
@@ -250,7 +255,7 @@ public class HostingSlotImplTest extends TestCase {
         try {
             new HostingSlotImpl(
                     new Long(0),
-                    new DomainImpl(new Long(1), 1, "test", null, new ImageInfo[0]),
+                    new DomainImpl(new Long(1), new Long(1), "test", null, new ImageInfo[0]),
                     1,
                     new long[] {0},
                     new Long(1),
@@ -258,7 +263,8 @@ public class HostingSlotImplTest extends TestCase {
                     new DomainTarget[0],
                     1,
                     new Date(10),
-                    new Date(100)
+                    new Date(100),
+                    100
                     );
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
@@ -285,7 +291,7 @@ public class HostingSlotImplTest extends TestCase {
         try {
             new HostingSlotImpl(
                     new Long(0),
-                    new DomainImpl(new Long(1), 1, "test", null, new ImageInfo[0]),
+                    new DomainImpl(new Long(1), new Long(1), "test", null, new ImageInfo[0]),
                     1,
                     new long[] {-1},
                     new Long(1),
@@ -293,7 +299,8 @@ public class HostingSlotImplTest extends TestCase {
                     new DomainTarget[0],
                     1,
                     new Date(10),
-                    new Date(100)
+                    new Date(100),
+                    100
                     );
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
@@ -320,7 +327,7 @@ public class HostingSlotImplTest extends TestCase {
         try {
             new HostingSlotImpl(
                     new Long(0),
-                    new DomainImpl(new Long(1), 1, "test", null, new ImageInfo[0]),
+                    new DomainImpl(new Long(1), new Long(1), "test", null, new ImageInfo[0]),
                     1,
                     new long[] {1},
                     new Long(0),
@@ -328,7 +335,8 @@ public class HostingSlotImplTest extends TestCase {
                     new DomainTarget[0],
                     1,
                     new Date(10),
-                    new Date(100)
+                    new Date(100),
+                    100
                     );
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
@@ -355,7 +363,7 @@ public class HostingSlotImplTest extends TestCase {
         try {
             new HostingSlotImpl(
                     new Long(0),
-                    new DomainImpl(new Long(1), 1, "test", null, new ImageInfo[0]),
+                    new DomainImpl(new Long(1), new Long(1), "test", null, new ImageInfo[0]),
                     1,
                     new long[] {1},
                     new Long(-1),
@@ -363,7 +371,8 @@ public class HostingSlotImplTest extends TestCase {
                     new DomainTarget[0],
                     1,
                     new Date(10),
-                    new Date(100)
+                    new Date(100),
+                    100
                     );
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
@@ -390,7 +399,7 @@ public class HostingSlotImplTest extends TestCase {
         try {
             new HostingSlotImpl(
                     new Long(0),
-                    new DomainImpl(new Long(1), 1, "test", null, new ImageInfo[0]),
+                    new DomainImpl(new Long(1), new Long(1), "test", null, new ImageInfo[0]),
                     1,
                     new long[] {1},
                     new Long(1),
@@ -398,7 +407,8 @@ public class HostingSlotImplTest extends TestCase {
                     new DomainTarget[0],
                     1,
                     new Date(10),
-                    new Date(100)
+                    new Date(100),
+                    100
                     );
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
@@ -425,7 +435,7 @@ public class HostingSlotImplTest extends TestCase {
         try {
             new HostingSlotImpl(
                     new Long(0),
-                    new DomainImpl(new Long(1), 1, "test", null, new ImageInfo[0]),
+                    new DomainImpl(new Long(1), new Long(1), "test", null, new ImageInfo[0]),
                     1,
                     new long[] {1},
                     new Long(1),
@@ -433,7 +443,8 @@ public class HostingSlotImplTest extends TestCase {
                     null, //new DomainTarget[0],
                     1,
                     new Date(10),
-                    new Date(100)
+                    new Date(100),
+                    100
                     );
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
@@ -460,7 +471,7 @@ public class HostingSlotImplTest extends TestCase {
         try {
             new HostingSlotImpl(
                     new Long(0),
-                    new DomainImpl(new Long(1), 1, "test", null, new ImageInfo[0]),
+                    new DomainImpl(new Long(1), new Long(1), "test", null, new ImageInfo[0]),
                     1,
                     new long[] {1},
                     new Long(1),
@@ -468,7 +479,8 @@ public class HostingSlotImplTest extends TestCase {
                     new DomainTarget[1],
                     1,
                     new Date(10),
-                    new Date(100)
+                    new Date(100),
+                    100
                     );
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
@@ -495,7 +507,7 @@ public class HostingSlotImplTest extends TestCase {
         try {
             new HostingSlotImpl(
                     new Long(0),
-                    new DomainImpl(new Long(1), 1, "test", null, new ImageInfo[0]),
+                    new DomainImpl(new Long(1), new Long(1), "test", null, new ImageInfo[0]),
                     1,
                     new long[] {1},
                     new Long(1),
@@ -503,7 +515,8 @@ public class HostingSlotImplTest extends TestCase {
                     new DomainTarget[0],
                     0,
                     new Date(10),
-                    new Date(100)
+                    new Date(100),
+                    100
                     );
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
@@ -530,7 +543,7 @@ public class HostingSlotImplTest extends TestCase {
         try {
             new HostingSlotImpl(
                     new Long(0),
-                    new DomainImpl(new Long(1), 1, "test", null, new ImageInfo[0]),
+                    new DomainImpl(new Long(1), new Long(1), "test", null, new ImageInfo[0]),
                     1,
                     new long[] {1},
                     new Long(1),
@@ -538,7 +551,8 @@ public class HostingSlotImplTest extends TestCase {
                     new DomainTarget[0],
                     -1,
                     new Date(10),
-                    new Date(100)
+                    new Date(100),
+                    100
                     );
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
@@ -565,7 +579,7 @@ public class HostingSlotImplTest extends TestCase {
         try {
             new HostingSlotImpl(
                     new Long(0),
-                    new DomainImpl(new Long(1), 1, "test", null, new ImageInfo[0]),
+                    new DomainImpl(new Long(1), new Long(1), "test", null, new ImageInfo[0]),
                     1,
                     new long[] {1},
                     new Long(1),
@@ -573,7 +587,8 @@ public class HostingSlotImplTest extends TestCase {
                     new DomainTarget[0],
                     1,
                     new Date(100),
-                    new Date(10)
+                    new Date(10),
+                    100
                     );
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {

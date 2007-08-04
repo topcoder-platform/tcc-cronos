@@ -76,7 +76,7 @@ public class HostingBlockImplTests extends TestCase {
         slots = new HostingSlotImpl[1];
         this.slots[0] = new HostingSlotImpl(HostingSlotImplUnitTests.ID, domain, HostingSlotImplUnitTests.IMAGE_ID,
                 brainTeaserIds, HostingSlotImplUnitTests.PUZZLE_ID, HostingSlotImplUnitTests.SEQUENCE_NUMBER,
-                domainTarget, HostingSlotImplUnitTests.WINING_BID, null, null);
+                domainTarget, HostingSlotImplUnitTests.WINING_BID, null, null, ID.longValue());
 
         this.hostingBlock = new HostingBlockImpl(ID, SEQUENCE_NUMBER, slots, MAX_HOSTING_TIME_PER_SLOT);
     }

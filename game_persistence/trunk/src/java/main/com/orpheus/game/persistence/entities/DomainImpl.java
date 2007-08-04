@@ -31,10 +31,10 @@ public class DomainImpl implements Domain {
     /**
      * <p>
      * Represents the user ID number of the sponsor to whom this domain is assigned. Set in the constructor, can be
-     * any positive number, and will not change.
+     * any positive number, and will not change. Will be null if domain is not associated with any sponsor.
      * </p>
      */
-    private final long sponsorId;
+    private final Long sponsorId;
 
     /**
      * <p>
@@ -64,7 +64,7 @@ public class DomainImpl implements Domain {
      * Constructor. It will make a shallow copy of images array.
      *
      * @param id the id
-     * @param sponsorId the sponsor id
+     * @param sponsorId the sponsor id or null if domain is not associated with any sponsor.
      * @param domainName the domain name
      * @param approved true if approved, false otherwise, or null of not decided yet.
      * @param images the array of ImageInfo objects
@@ -72,12 +72,14 @@ public class DomainImpl implements Domain {
      * @throws IllegalArgumentException If id, if given, is not positive, or if sponsorId is not positive, or if
      *         domain name is null/empty, or images is null or contains null elements
      */
-    public DomainImpl(Long id, long sponsorId, String domainName, Boolean approved, ImageInfo[] images) {
+    public DomainImpl(Long id, Long sponsorId, String domainName, Boolean approved, ImageInfo[] images) {
         if (id != null) {
             Helper.checkNotPositive(id.longValue(), "Id");
         }
 
-        Helper.checkNotPositive(sponsorId, "sponsorId");
+        if (sponsorId != null) {
+            Helper.checkNotPositive(sponsorId.longValue(), "sponsorId");
+        }
         Helper.checkNotNullOrEmpty(domainName, "domainName");
         Helper.checkNotNullOrContainNullElement(images, "images");
 
@@ -106,9 +108,9 @@ public class DomainImpl implements Domain {
      * Returns the user ID number of the sponsor to whom this domain is assigned.
      * </p>
      *
-     * @return the sponsor id
+     * @return the sponsor id or null if domain is not associated with any sponsor.
      */
-    public long getSponsorId() {
+    public Long getSponsorId() {
         return this.sponsorId;
     }
 

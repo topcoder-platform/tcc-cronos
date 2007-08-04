@@ -58,6 +58,9 @@ public class HostingSlotImplUnitTests extends TestCase {
     /** the hostingEnd date. */
     private Date hostingEnd = null;
 
+    /** the hostingEnd date. */
+    private long hostingBlockId = 0;
+
     /**
      * create instances.
      */
@@ -84,10 +87,11 @@ public class HostingSlotImplUnitTests extends TestCase {
         //create the date
         hostingStart = new Date();
         hostingEnd = new Date();
+        hostingBlockId = 100;
 
         //create the HostingSlotImpl instance
         this.hostingSlot = new HostingSlotImpl(ID, domain, IMAGE_ID, brainTeaserIds, PUZZLE_ID, SEQUENCE_NUMBER,
-                domainTarget, WINING_BID, hostingStart, hostingEnd);
+                domainTarget, WINING_BID, hostingStart, hostingEnd, hostingBlockId);
     }
 
     /**
@@ -103,7 +107,7 @@ public class HostingSlotImplUnitTests extends TestCase {
     public void testCtor_nullId() {
         try {
             new HostingSlotImpl(null, domain, IMAGE_ID, brainTeaserIds, PUZZLE_ID, SEQUENCE_NUMBER, domainTarget,
-                WINING_BID, hostingStart, hostingEnd);
+                WINING_BID, hostingStart, hostingEnd, hostingBlockId);
         } catch (Exception e) {
             fail("The id can be null.");
         }
@@ -115,7 +119,7 @@ public class HostingSlotImplUnitTests extends TestCase {
     public void testCtor_notPositiveId() {
         try {
             new HostingSlotImpl(new Long(0), domain, IMAGE_ID, brainTeaserIds, PUZZLE_ID, SEQUENCE_NUMBER,
-                domainTarget, WINING_BID, hostingStart, hostingEnd);
+                domainTarget, WINING_BID, hostingStart, hostingEnd, hostingBlockId);
             fail("The id should be positive.");
         } catch (IllegalArgumentException e) {
             //good
@@ -128,7 +132,7 @@ public class HostingSlotImplUnitTests extends TestCase {
     public void testCtor_notPositivePuzzleId() {
         try {
             new HostingSlotImpl(null, domain, IMAGE_ID, brainTeaserIds, new Long(0), SEQUENCE_NUMBER, domainTarget,
-                WINING_BID, hostingStart, hostingEnd);
+                WINING_BID, hostingStart, hostingEnd, hostingBlockId);
             fail("The puzzleId should be positive.");
         } catch (IllegalArgumentException e) {
             //good
@@ -141,7 +145,7 @@ public class HostingSlotImplUnitTests extends TestCase {
     public void testCtor_notPositiveImageId() {
         try {
             new HostingSlotImpl(null, domain, 0, brainTeaserIds, PUZZLE_ID, SEQUENCE_NUMBER, domainTarget, WINING_BID,
-                hostingStart, hostingEnd);
+                hostingStart, hostingEnd, hostingBlockId);
             fail("The imageId should be positive.");
         } catch (IllegalArgumentException e) {
             //good
@@ -154,7 +158,7 @@ public class HostingSlotImplUnitTests extends TestCase {
     public void testCtor_notPositiveWinningId() {
         try {
             new HostingSlotImpl(null, domain, IMAGE_ID, brainTeaserIds, PUZZLE_ID, SEQUENCE_NUMBER, domainTarget, -1,
-                hostingStart, hostingEnd);
+                hostingStart, hostingEnd, hostingBlockId);
             fail("The winningId should be positive.");
         } catch (IllegalArgumentException e) {
             //good
@@ -167,7 +171,7 @@ public class HostingSlotImplUnitTests extends TestCase {
     public void testCtor_negativeSequenceNumber() {
         try {
             new HostingSlotImpl(null, domain, IMAGE_ID, brainTeaserIds, PUZZLE_ID, -1, domainTarget, WINING_BID,
-                hostingStart, hostingEnd);
+                hostingStart, hostingEnd, hostingBlockId);
             fail("The SequenceNumber is negative.");
         } catch (IllegalArgumentException e) {
             //good
@@ -180,7 +184,7 @@ public class HostingSlotImplUnitTests extends TestCase {
     public void testCtor_nullDomain() {
         try {
             new HostingSlotImpl(null, null, IMAGE_ID, brainTeaserIds, PUZZLE_ID, SEQUENCE_NUMBER, domainTarget,
-                WINING_BID, hostingStart, hostingEnd);
+                WINING_BID, hostingStart, hostingEnd, hostingBlockId);
             fail("The domain is null.");
         } catch (IllegalArgumentException e) {
             //good
@@ -193,7 +197,7 @@ public class HostingSlotImplUnitTests extends TestCase {
     public void testCtor_nullBrainTeaserIds() {
         try {
             new HostingSlotImpl(null, domain, IMAGE_ID, null, PUZZLE_ID, SEQUENCE_NUMBER, domainTarget, WINING_BID,
-                hostingStart, hostingEnd);
+                hostingStart, hostingEnd, hostingBlockId);
             fail("The brainTeaserIds is null.");
         } catch (IllegalArgumentException e) {
             //good
@@ -209,7 +213,7 @@ public class HostingSlotImplUnitTests extends TestCase {
             brainTeaserIds[0] = 2L;
             brainTeaserIds[1] -= 2L;
             new HostingSlotImpl(null, domain, IMAGE_ID, brainTeaserIds, PUZZLE_ID, SEQUENCE_NUMBER, domainTarget,
-                WINING_BID, hostingStart, hostingEnd);
+                WINING_BID, hostingStart, hostingEnd, hostingBlockId);
             fail("The brainTeaserIds contains not positive element.");
         } catch (IllegalArgumentException e) {
             //good
@@ -222,7 +226,7 @@ public class HostingSlotImplUnitTests extends TestCase {
     public void testCtor_nullDomainTargetArray() {
         try {
             new HostingSlotImpl(null, domain, IMAGE_ID, brainTeaserIds, PUZZLE_ID, SEQUENCE_NUMBER, null, WINING_BID,
-                hostingStart, hostingEnd);
+                hostingStart, hostingEnd, hostingBlockId);
             fail("The domainTarget array is null.");
         } catch (IllegalArgumentException e) {
             //good
@@ -237,7 +241,7 @@ public class HostingSlotImplUnitTests extends TestCase {
             this.domainTarget = new DomainTarget[1];
             domainTarget[0] = null;
             new HostingSlotImpl(null, domain, IMAGE_ID, brainTeaserIds, PUZZLE_ID, SEQUENCE_NUMBER, domainTarget,
-                WINING_BID, hostingStart, hostingEnd);
+                WINING_BID, hostingStart, hostingEnd, hostingBlockId);
             fail("The DomainTarget array contains null element.");
         } catch (IllegalArgumentException e) {
             //good
@@ -254,8 +258,22 @@ public class HostingSlotImplUnitTests extends TestCase {
 
             hostingStart = new Date();
             new HostingSlotImpl(null, domain, IMAGE_ID, brainTeaserIds, PUZZLE_ID, SEQUENCE_NUMBER, domainTarget,
-                WINING_BID, hostingStart, hostingEnd);
+                WINING_BID, hostingStart, hostingEnd, hostingBlockId);
             fail("The hostingStart is later than hostingEnd.");
+        } catch (IllegalArgumentException e) {
+            //good
+        }
+    }
+
+    /**
+     * test the ctor, the hostingStart is later than hostingEnd, iae expected.
+     * @throws Exception into Junit
+     */
+    public void testCtor_hostingBlockNegative() throws Exception {
+        try {
+            new HostingSlotImpl(null, domain, IMAGE_ID, brainTeaserIds, PUZZLE_ID, SEQUENCE_NUMBER, domainTarget,
+                WINING_BID, hostingStart, hostingEnd, -1);
+            fail("The hostingBlockId is negative.");
         } catch (IllegalArgumentException e) {
             //good
         }

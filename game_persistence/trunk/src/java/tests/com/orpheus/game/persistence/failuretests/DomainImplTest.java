@@ -26,7 +26,7 @@ public class DomainImplTest extends TestCase {
      */
     public void testDomainImpl_ZeroId() {
         try {
-            new DomainImpl(new Long(0), 1, "name", Boolean.TRUE, new ImageInfo[0]);
+            new DomainImpl(new Long(0), new Long(1), "name", Boolean.TRUE, new ImageInfo[0]);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -42,7 +42,7 @@ public class DomainImplTest extends TestCase {
      */
     public void testDomainImpl_NegativeId() {
         try {
-            new DomainImpl(new Long(-1), 1, "name", Boolean.TRUE, new ImageInfo[0]);
+            new DomainImpl(new Long(-1), new Long(1), "name", Boolean.TRUE, new ImageInfo[0]);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -58,7 +58,7 @@ public class DomainImplTest extends TestCase {
      */
     public void testDomainImpl_ZeroImageId() {
         try {
-            new DomainImpl(new Long(1), 0, "name", Boolean.TRUE, new ImageInfo[0]);
+            new DomainImpl(new Long(1), new Long(0), "name", Boolean.TRUE, new ImageInfo[0]);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -74,7 +74,7 @@ public class DomainImplTest extends TestCase {
      */
     public void testDomainImpl_NegativeImageId() {
         try {
-            new DomainImpl(new Long(1), -1, "name", Boolean.TRUE, new ImageInfo[0]);
+            new DomainImpl(new Long(1), new Long(-1), "name", Boolean.TRUE, new ImageInfo[0]);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -90,7 +90,7 @@ public class DomainImplTest extends TestCase {
      */
     public void testDomainImpl_NullName() {
         try {
-            new DomainImpl(new Long(1), 1, null, Boolean.TRUE, new ImageInfo[0]);
+            new DomainImpl(new Long(1), new Long(1), null, Boolean.TRUE, new ImageInfo[0]);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -106,7 +106,7 @@ public class DomainImplTest extends TestCase {
      */
     public void testDomainImpl_EmptyName() {
         try {
-            new DomainImpl(new Long(1), 1, " ", Boolean.TRUE, new ImageInfo[0]);
+            new DomainImpl(new Long(1), new Long(1), " ", Boolean.TRUE, new ImageInfo[0]);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -122,7 +122,7 @@ public class DomainImplTest extends TestCase {
      */
     public void testDomainImpl_NullImageInfo() {
         try {
-            new DomainImpl(new Long(1), 1, "name", Boolean.TRUE, null);
+            new DomainImpl(new Long(1), new Long(1), "name", Boolean.TRUE, null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here
@@ -138,7 +138,7 @@ public class DomainImplTest extends TestCase {
      */
     public void testDomainImpl_NullInImageInfo() {
         try {
-            new DomainImpl(new Long(1), 1, "name", Boolean.TRUE, new ImageInfo[1]);
+            new DomainImpl(new Long(1), new Long(1), "name", Boolean.TRUE, new ImageInfo[1]);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // should land here

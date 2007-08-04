@@ -25,7 +25,7 @@ public class DomainImplUnitTests extends TestCase {
     public static final String DOMAIN_NAME = "www.topcoder.com";
 
     /** represents the sponsorId constants for testing. */
-    public static final long SPONSOR_ID = 1000L;
+    public static final Long SPONSOR_ID = new Long(1000L);
 
     /** respresents the approved constants for testing. */
     public static final Boolean APPROVED = new Boolean(true);
@@ -82,7 +82,7 @@ public class DomainImplUnitTests extends TestCase {
      */
     public void testCtor_notPositiveSponsorId() {
         try {
-            new DomainImpl(null, 0, DOMAIN_NAME, APPROVED, images);
+            new DomainImpl(null, new Long(0), DOMAIN_NAME, APPROVED, images);
             fail("The sponsorId should be positive.");
         } catch (IllegalArgumentException e) {
             //good

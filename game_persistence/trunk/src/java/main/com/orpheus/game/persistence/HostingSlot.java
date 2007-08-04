@@ -93,4 +93,11 @@ public interface HostingSlot extends Serializable {
      * @return the end date of the hosting
      */
     Date getHostingEnd();
+
+    /**
+     * Returns the ID of a hosting block which this slot belongs to.
+     *
+     * @return the ID of hosting block which this slot belongs to
+     */
+    long getHostingBlockId();
 }

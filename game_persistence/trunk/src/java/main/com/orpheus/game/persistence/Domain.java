@@ -33,9 +33,9 @@ public interface Domain extends Serializable {
     /**
      * Returns the user ID number of the sponsor to whom this domain is assigned.
      *
-     * @return the sponsor id
+     * @return the sponsor id or null if domain is not associated with any sponsor.
      */
-    long getSponsorId();
+    Long getSponsorId();
 
     /**
      * Returns the name of this domain -- i.e. the DNS name of the host -- as a String

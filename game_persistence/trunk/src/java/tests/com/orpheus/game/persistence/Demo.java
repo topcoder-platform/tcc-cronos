@@ -4,30 +4,22 @@
 package com.orpheus.game.persistence;
 
 import com.mockrunner.mock.ejb.MockUserTransaction;
-
 import com.orpheus.game.persistence.ejb.GameDataBean;
 import com.orpheus.game.persistence.entities.DomainImpl;
 import com.orpheus.game.persistence.entities.DomainTargetImpl;
 import com.orpheus.game.persistence.entities.HostingSlotImpl;
-
 import com.topcoder.util.puzzle.PuzzleData;
-
 import com.topcoder.web.frontcontroller.results.DownloadData;
-
 import junit.framework.TestCase;
-
 import org.mockejb.MockContainer;
 import org.mockejb.SessionBeanDescriptor;
-
 import org.mockejb.jndi.MockContextFactory;
-
-import java.util.Date;
-import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
-
 import javax.rmi.PortableRemoteObject;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -169,7 +161,7 @@ public class Demo extends TestCase {
         //persist the slot for testing.//TODO, it would be removed as it should be created in the createSlot method
         int sequenceNumber = 1;
         Date hostingStart = new Date();
-        long slotId = TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId);
+        long slotId = TestHelper.persistSlot(bidIds[0], sequenceNumber, hostingStart, puzzleId, downloadId, blockId, imageId);
 
         //we get a game
         Game getGame = gameDataAdmin.getGame(createdGame.getId().longValue());
@@ -229,7 +221,7 @@ public class Demo extends TestCase {
 
         HostingSlot toUpdate = new HostingSlotImpl(slot.getId(), slot.getDomain(), slot.getImageId(),
                 slot.getBrainTeaserIds(), slot.getPuzzleId(), slot.getSequenceNumber() + 1, targets,
-                slot.getWinningBid(), slot.getHostingStart(), slot.getHostingEnd());
+                slot.getWinningBid(), slot.getHostingStart(), slot.getHostingEnd(), block.getId().longValue());
 
         HostingSlot[] slots = new HostingSlot[] {toUpdate};
 
@@ -237,8 +229,8 @@ public class Demo extends TestCase {
         HostingSlot[] updatedSlots = gameDataAdmin.updateSlots(slots);
 
         //update domain
-        Domain toUpdatedDomain = new DomainImpl(createdDomain.getId(), sponsorId, "domainName", new Boolean(false),
-                images);
+        Domain toUpdatedDomain = new DomainImpl(createdDomain.getId(), new Long(sponsorId), "domainName",
+                                                new Boolean(false), images);
         gameDataAdmin.updateDomain(domain);
 
         //find active domains

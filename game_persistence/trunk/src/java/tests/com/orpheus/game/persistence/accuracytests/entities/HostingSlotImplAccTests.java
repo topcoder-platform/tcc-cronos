@@ -72,7 +72,7 @@ public class HostingSlotImplAccTests extends TestCase {
 
         slot = new HostingSlotImpl(new Long(1), domain, 1, new long[]{1}, new Long(1), 1,
                 new DomainTarget[]{target}, 1, AccuracyHelper.convertStringToDate("2006/1/1"),
-                AccuracyHelper.convertStringToDate("2006/2/2"));
+                AccuracyHelper.convertStringToDate("2006/2/2"), 100);
     }
 
     /**
@@ -111,7 +111,7 @@ public class HostingSlotImplAccTests extends TestCase {
     public void testGetId() throws Exception {
         slot = new HostingSlotImpl(new Long(2), domain, 2, new long[]{2}, new Long(2), 2,
                 new DomainTarget[]{target}, 2, AccuracyHelper.convertStringToDate("2006/1/1"),
-                AccuracyHelper.convertStringToDate("2006/2/2"));
+                AccuracyHelper.convertStringToDate("2006/2/2"), 100);
         assertEquals("Not the expected id.", 2, slot.getId().longValue());
     }
 
@@ -125,7 +125,7 @@ public class HostingSlotImplAccTests extends TestCase {
     public void testGetSequenceNumber() throws Exception {
         slot = new HostingSlotImpl(new Long(2), domain, 2, new long[]{2}, new Long(2), 2,
                 new DomainTarget[]{target}, 2, AccuracyHelper.convertStringToDate("2006/1/1"),
-                AccuracyHelper.convertStringToDate("2006/2/2"));
+                AccuracyHelper.convertStringToDate("2006/2/2"), 100);
         assertEquals("Not the expected sequence number.", 2, slot.getSequenceNumber());
     }
 
@@ -139,7 +139,7 @@ public class HostingSlotImplAccTests extends TestCase {
     public void testGetImageId() throws Exception {
         slot = new HostingSlotImpl(new Long(2), domain, 2, new long[]{2}, new Long(2), 2,
                 new DomainTarget[]{target}, 2, AccuracyHelper.convertStringToDate("2006/1/1"),
-                AccuracyHelper.convertStringToDate("2006/2/2"));
+                AccuracyHelper.convertStringToDate("2006/2/2"), 100);
         assertEquals("Not the expected image id.", 2, slot.getImageId());
     }
 
@@ -153,7 +153,7 @@ public class HostingSlotImplAccTests extends TestCase {
     public void testGetPuzzleId() throws Exception {
         slot = new HostingSlotImpl(new Long(2), domain, 2, new long[]{2}, new Long(2), 2,
                 new DomainTarget[]{target}, 2, AccuracyHelper.convertStringToDate("2006/1/1"),
-                AccuracyHelper.convertStringToDate("2006/2/2"));
+                AccuracyHelper.convertStringToDate("2006/2/2"), 100);
         assertEquals("Not the expected puzzle id.", 2, slot.getPuzzleId().longValue());
     }
 

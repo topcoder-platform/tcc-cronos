@@ -36,7 +36,7 @@ public class DomainImplAccTests extends TestCase {
         images[0] = new ImageInfoImpl(new Long(1), 1,
                 "desc", new Boolean(true));
 
-        this.domain = new DomainImpl(new Long(1), 1, "domain", new Boolean(true), images);
+        this.domain = new DomainImpl(new Long(1), new Long(1), "domain", new Boolean(true), images);
     }
 
     /**
@@ -60,7 +60,7 @@ public class DomainImplAccTests extends TestCase {
      * @throws Exception into JUnit
      */
     public void testGetId() throws Exception {
-        this.domain = new DomainImpl(new Long(2), 1, "test", new Boolean(false), images);
+        this.domain = new DomainImpl(new Long(2), new Long(1), "test", new Boolean(false), images);
 
         assertEquals("Not the expected id.", 2, domain.getId().longValue());
     }
@@ -73,7 +73,7 @@ public class DomainImplAccTests extends TestCase {
      * @throws Exception into JUnit
      */
     public void testGetName() throws Exception {
-        this.domain = new DomainImpl(new Long(2), 1, "test", new Boolean(false), images);
+        this.domain = new DomainImpl(new Long(2), new Long(1), "test", new Boolean(false), images);
         assertEquals("Not the expected name.", "test", domain.getDomainName());
     }
 
@@ -85,7 +85,7 @@ public class DomainImplAccTests extends TestCase {
      * @throws Exception into JUnit
      */
     public void testGetImages() throws Exception {
-        this.domain = new DomainImpl(new Long(2), 1, "test", new Boolean(false), images);
+        this.domain = new DomainImpl(new Long(2), new Long(1), "test", new Boolean(false), images);
         assertEquals("Not the expected image length.", 1, domain.getImages().length);
         assertEquals("Not the expected image id.", 1, domain.getImages()[0].getId().longValue());
     }

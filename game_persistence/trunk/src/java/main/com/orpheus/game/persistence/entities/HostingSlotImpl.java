@@ -102,7 +102,14 @@ public class HostingSlotImpl implements HostingSlot {
      * </p>
      */
     private final Domain domain;
-    
+
+    /**
+     * <p>
+     * Represents the ID of a hosting block this slot belongs to. Set in the constructor, can be any
+     * non-negative value, and will not change.
+     * </p>
+     */
+    private final long hostingBlockId;
 
     /**
      * <p>
@@ -119,14 +126,17 @@ public class HostingSlotImpl implements HostingSlot {
      * @param winningBid the amount of the winning bid
      * @param hostingStart the start date of the hosting
      * @param hostingEnd the end date of the hosting
+     * @param hostingBlockId the ID of a hosting block this slot belongs to
      *
      * @throws IllegalArgumentException If id, if given, is not positive, or if domain is null, or if imageId is not
      *         positive, OR if brainTeaserIds is null or any of its elements are not positive, OR if puzzleId, if
      *         given, is not positive,OR if sequenceNumber is negative, OR if domainTargets is null or its elements
-     *         is null, OR if winningBid is negative, or if hostingStart &gt hostingEnd if both not null.
+     *         is null, OR if winningBid is negative, or if hostingStart &gt hostingEnd if both not null or
+     *         hostingBlockId is negative.
      */
     public HostingSlotImpl(Long id, Domain domain, long imageId, long[] brainTeaserIds, Long puzzleId,
-        int sequenceNumber, DomainTarget[] domainTargets, int winningBid, Date hostingStart, Date hostingEnd) {
+        int sequenceNumber, DomainTarget[] domainTargets, int winningBid, Date hostingStart, Date hostingEnd,
+        long hostingBlockId) {
         if (id != null) {
             Helper.checkNotPositive(id.longValue(), "Id");
         }
@@ -138,6 +148,7 @@ public class HostingSlotImpl implements HostingSlot {
         Helper.checkNotNull(domain, "Domain");
         Helper.checkNegative(winningBid, "winningBid");
         Helper.checkNotPositive(imageId, "imageId");
+        Helper.checkNotPositive(hostingBlockId, "hostingBlockId");
         Helper.checkNegative(sequenceNumber, "sequenceNumber");
 
         //brainTeaserIds should not be null and its elements are not positive
@@ -163,6 +174,7 @@ public class HostingSlotImpl implements HostingSlot {
         this.hostingStart = hostingStart;
         this.hostingEnd = hostingEnd;
         this.puzzleId = puzzleId;
+        this.hostingBlockId = hostingBlockId;
 
         //shallow copy  brainTeaserIds
         this.brainTeaserIds = (long[]) brainTeaserIds.clone();
@@ -284,4 +296,14 @@ public class HostingSlotImpl implements HostingSlot {
         return this.hostingEnd;
     }
 
+    /**
+     * <p>
+     * Returns the ID of a hosting block which this slot belongs to.
+     * </p>
+     *
+     * @return the ID of hosting block which this slot belongs to.
+     */
+    public long getHostingBlockId() {
+        return this.hostingBlockId;
+    }
 }
