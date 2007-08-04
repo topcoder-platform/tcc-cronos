@@ -16,6 +16,9 @@ import com.topcoder.util.file.fieldconfig.TemplateFields;
 import com.orpheus.game.server.handler.AbstractGameServerHandler;
 import com.orpheus.game.server.util.GameDataEJBAdapter;
 import com.orpheus.game.server.OrpheusFunctions;
+import com.orpheus.game.server.framework.game.completion.GameCompletionTypeSource;
+import com.orpheus.game.server.framework.game.completion.GameCompletionType;
+import com.orpheus.game.server.framework.game.completion.GameCompletion;
 import com.orpheus.game.persistence.Game;
 import com.orpheus.administration.entities.HandlerResult;
 import com.orpheus.administration.entities.ResultCode;
@@ -23,7 +26,9 @@ import com.orpheus.user.persistence.UserConstants;
 import org.w3c.dom.Element;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletContext;
 import javax.naming.Context;
+import java.util.Date;
 
 /**
  * <p>A custom implementation of {@link Handler} interface which is to be used in conjunction with <code>
@@ -132,6 +137,25 @@ public class AdminWinnerApprovalPostHandler extends AbstractGameServerHandler im
 
             GameDataEJBAdapter gameDataEJBAdapter = getGameDataEJBAdapter(this.jndiContext);
             Game game = gameDataEJBAdapter.getGame(gameId);
+            // Complete the game if it must be completed based on game's current status
+            try {
+                int gameCompletionTypeId = game.getCompletionType();
+                ServletContext servletContext = getServletContext(context);
+                GameCompletionTypeSource gameCompletionTypeSource
+                    = (GameCompletionTypeSource) servletContext.getAttribute("GameCompletionTypeSource");
+                GameCompletionType gameCompletionType
+                    = gameCompletionTypeSource.getGameCompletionType(gameCompletionTypeId);
+                GameCompletion gameCompletion = gameCompletionType.getGameCompletion();
+                if (gameCompletion.mustCompleteGame(game)) {
+                    if (game.getEndDate() == null) {
+                        gameDataEJBAdapter.completeGame(game.getId().longValue(), new Date());
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("Failed to complete the game [" + game.getId() + "] due to unexpected error");
+                e.printStackTrace();
+            }
+
             // Send an email to game winner
             UserProfile userProfile = this.userProfileManager.getUserProfile(userId);
             String emailAddress = (String) userProfile.getProperty(BaseProfileType.EMAIL_ADDRESS);

@@ -6,6 +6,7 @@ package com.orpheus.game.server.util;
 import com.orpheus.administration.persistence.AdminData;
 import com.orpheus.administration.persistence.AdminDataLocal;
 import com.orpheus.administration.persistence.PersistenceException;
+import com.orpheus.administration.persistence.PendingWinner;
 import com.topcoder.util.puzzle.PuzzleData;
 
 import java.rmi.RemoteException;
@@ -105,6 +106,22 @@ public class AdminDataEJBAdapter {
             return this.adminDataRemote.createBallColor(colorName, imageId);
         } else {
             return this.adminDataLocal.createBallColor(colorName, imageId);
+        }
+    }
+
+    /**
+     * <p>Retrieves the currently-pending winners' information. Will return an empty array of there are no pending
+     * winners.</p>
+     *
+     * @return the pending winners in all games.
+     * @throws PersistenceException if any persistence error occurs.
+     * @throws RemoteException if there is a network issue.
+     */
+    public PendingWinner[] getPendingWinners() throws RemoteException, PersistenceException {
+        if (this.remoteInterface) {
+            return this.adminDataRemote.getPendingWinners();
+        } else {
+            return this.adminDataLocal.getPendingWinners();
         }
     }
 }
