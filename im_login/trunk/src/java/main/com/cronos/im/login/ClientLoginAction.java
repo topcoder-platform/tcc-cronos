@@ -74,7 +74,7 @@ public class ClientLoginAction extends LoginAction {
     /**
      * Represents the role used to store in session.
      */
-    private static final String CLIENT = "client";
+    private static final String CLIENT = "Client";
 
     /**
      * <p>
