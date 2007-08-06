@@ -167,7 +167,7 @@ public class ManagerLoginAction extends LoginAction {
             // get the chat user profile and save it in session
             ChatUserProfile profile = getChatUserProfileManager().getProfile(user, "Registered");
             profile.setProperty(getCategoryKey(), category);
-            profile.setProperty(getRoleKey(), "manager");
+            profile.setProperty(getRoleKey(), "Manager");
             request.getSession().setAttribute(getUserProfileKey(), profile);
 
             doLog(user, ACTION_NAME, "" + subject.getUserId(), "Logged in the user as manager", Level.INFO);
