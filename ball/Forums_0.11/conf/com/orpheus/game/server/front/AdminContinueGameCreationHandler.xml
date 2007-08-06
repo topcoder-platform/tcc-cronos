@@ -1,0 +1,98 @@
+<action name="StartGameCreation" type="default" url-pattern="/server/admin/continueGameCreation.do" priority="10">
+    <handler type="SessionValidationHandler">
+        <login_page_result>login</login_page_result>
+    </handler>
+    <!-- TODO : Add form validation logic -->
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>admin</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <handler type="form_validation">
+        <form-name>createGameStep1</form-name>
+    </handler>
+    <handler type="GameParameters">
+        <ballcolor-id-request-param>colorId</ballcolor-id-request-param>
+        <ballcolor-id-session-attr>colorId</ballcolor-id-session-attr>
+        <key-count-request-param>keyCount</key-count-request-param>
+        <key-count-session-attr>keyCount</key-count-session-attr>
+        <block-count-request-param>blockCount</block-count-request-param>
+        <block-count-session-attr>blockCount</block-count-session-attr>
+        <start-date-request-param>startDate</start-date-request-param>
+        <start-date-session-attr>startDate</start-date-session-attr>
+        <date-format-request-param>dateFormat</date-format-request-param>
+        <end-date-request-param>endDate</end-date-request-param>
+        <end-date-session-attr>endDate</end-date-session-attr>
+        <bounce-calc-type-request-param>bounceType</bounce-calc-type-request-param>
+        <bounce-calc-type-session-attr>bounceType</bounce-calc-type-session-attr>
+        <prize-calc-type-request-param>prizeType</prize-calc-type-request-param>
+        <prize-calc-type-session-attr>prizeType</prize-calc-type-session-attr>
+        <game-completion-type-request-param>completionType</game-completion-type-request-param>
+        <game-completion-type-session-attr>completionType</game-completion-type-session-attr>
+        <fail-result>createGameFailure</fail-result>
+        <fail-request-attribute>failureHandlerResult</fail-request-attribute>
+    </handler>
+    <handler type="StartGameCreationWizardHandler">
+        <game_creation_type_param_key>creationType</game_creation_type_param_key>
+        <creation-types>1,2,3</creation-types>
+        <creation-type-wizard-entries>publicAuction,hiddenAuction,manual</creation-type-wizard-entries>
+    </handler>
+    <result name="createGameFailure" type="loggingForward">
+        <forward-url>/public/error.jsp</forward-url>
+        <log-message>failed to start creation of game with color {0}, key count {1}, block count {2}, start date {3}
+            and date format {4} due to unexpected error</log-message>
+        <parameters>colorId,keyCount,blockCount,startDate,dateFormat</parameters>
+        <category>ADMIN</category>
+    </result>
+    <result name="success" type="loggingForward">
+        <forward-url>/should-not-reach-there.jsp</forward-url>
+        <log-message>ERROR IN APPLICATION'S LOGIC !!! started creation of game with color {0}, key count {1}, block
+            count {2}, start date {3} and date format {4} ad presented with Manage Game Blocks page - SHOULD HAVE NOT
+            REACH THIS FORWARD!!!</log-message>
+        <parameters>colorId,keyCount,blockCount,startDate,dateFormat</parameters>
+        <category>ADMIN</category>
+    </result>
+    <result name="publicAuction" type="loggingForward">
+        <forward-url>/WEB-INF/admin/games-new-step2.jsp</forward-url>
+        <log-message>started creation of game with color {0}, key count {1}, block count {2}, start date {3}
+            and date format {4} with Public Auction style</log-message>
+        <parameters>colorId,keyCount,blockCount,startDate,dateFormat,creationType,prizeType,bounceType,completionType</parameters>
+        <category>ADMIN</category>
+    </result>
+    <result name="hiddenAuction" type="loggingForward">
+        <forward-url>/server/admin/continuePrivateAuction.do</forward-url>
+        <log-message>started creation of game with color {0}, key count {1}, block count {2}, start date {3}
+            and date format {4} with Private Auction style</log-message>
+        <parameters>colorId,keyCount,blockCount,startDate,dateFormat,creationType,prizeType,bounceType,completionType</parameters>
+        <category>ADMIN</category>
+    </result>
+    <result name="manual" type="loggingForward">
+        <forward-url>/server/admin/continueManual.do</forward-url>
+        <log-message>started creation of game with color {0}, key count {1}, block count {2}, start date {3}
+            and date format {4} with Manual style</log-message>
+        <parameters>colorId,keyCount,blockCount,startDate,dateFormat,creationType,prizeType,bounceType,completionType</parameters>
+        <category>ADMIN</category>
+    </result>
+    <result name="auth_failed" type="loggingForward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+        <log-message>attempted to start creation of game with color {0}, key count {1}, block count {2}, start date {3}
+            and date format {4} without ADMIN role assigned</log-message>
+        <parameters>colorId,keyCount,blockCount,startDate,dateFormat,creationType,prizeType,bounceType,completionType</parameters>
+        <category>ADMIN</category>
+    </result>
+    <result name="validation-error" type="loggingForward">
+        <forward-url>/WEB-INF/admin/games-new.jsp</forward-url>
+        <log-message>failed to pass validation for Create Game form with with color {0}, key count {1}, block count {2},
+            start date {3} and date format {4}</log-message>
+        <parameters>colorId,keyCount,blockCount,startDate,dateFormat,creationType,prizeType,bounceType,completionType</parameters>
+        <category>ADMIN</category>
+    </result>
+    <result name="login" type="loggingForward">
+        <forward-url>/public/timeout.jsp</forward-url>
+        <log-message>failed to start creation of game with color {0}, key count {1}, block count {2}, start date {3}
+            and date format {4} due to session timeout or is not authenticated to server</log-message>
+        <parameters>colorId,keyCount,blockCount,startDate,dateFormat,creationType,prizeType,bounceType,completionType</parameters>
+        <category>ADMIN</category>
+    </result>
+</action>

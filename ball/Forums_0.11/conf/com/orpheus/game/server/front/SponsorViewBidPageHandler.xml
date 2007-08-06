@@ -1,0 +1,71 @@
+<action name="StartNewBid" type="default" url-pattern="/server/sponsor/startBid.do" priority="10">
+    <handler type="SessionValidationHandler">
+        <login_page_result>login</login_page_result>
+    </handler>
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>sponsor</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <handler type="SponsorEligibilityHandler">
+        <sponsor_approved_property>sponsor-is-approved</sponsor_approved_property>
+        <sponsor_approved_property_value>Y</sponsor_approved_property_value>
+        <sponsor_unapproved_result>sponsorUnapprovedResult</sponsor_unapproved_result>
+    </handler>
+    <handler type="LeadingBids">
+        <auction_id_param_key>auctionId</auction_id_param_key>
+        <leading_bids_key>leaders</leading_bids_key>
+    </handler>
+    <handler type="game_detail">
+        <game_id_param_key>gameId</game_id_param_key>
+        <game_detail_key>game</game_detail_key>
+    </handler>
+    <handler type="SponsorPlaceBidPreHandler">
+        <auction_id_param_key>auctionId</auction_id_param_key>
+        <block_id_param_key>blockId</block_id_param_key>
+        <domain_id_param_key>domainId</domain_id_param_key>
+        <image_id_param_key>imageId</image_id_param_key>
+        <auction_key>auction</auction_key>
+        <block_key>block</block_key>
+        <domains_key>domains</domains_key>
+        <images_key>images</images_key>
+        <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
+        <jndi_context_name>default</jndi_context_name>
+        <use_remote_interface>true</use_remote_interface>
+    </handler>
+    <result name="success" type="dbLoggingForward">
+        <forward-url>/WEB-INF/sponsor/bid.jsp</forward-url>
+        <log-message>presented with Place New Bid page for game {0}, block {1}, auction {2}</log-message>
+        <parameters>gameId,blockId,auctionId</parameters>
+        <category>AUCTION</category>
+        <action-code>125</action-code>
+    </result>
+    <result name="auth_failed" type="dbLoggingForward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+        <log-message>attempted to view Place New Bid page for game {0}, block {1}, auction {2} without SPONSOR role
+            assigned
+        </log-message>
+        <parameters>gameId,blockId,auctionId</parameters>
+        <category>AUCTION</category>
+        <action-code>35</action-code>
+    </result>
+    <result name="sponsorUnapprovedResult" type="dbLoggingForward">
+        <forward-url>/WEB-INF/sponsor/unapproved.jsp</forward-url>
+        <log-message>attempted to view Place New Bid page for game {0}, block {1}, auction {2} without account approval
+            by Administrator
+        </log-message>
+        <parameters>gameId,blockId,auctionId</parameters>
+        <category>AUCTION</category>
+        <action-code>36</action-code>
+    </result>
+    <result name="login" type="dbLoggingForward">
+        <forward-url>/public/timeout.jsp</forward-url>
+        <log-message>failed to open Place New Bid page for game {0}, block {1}, auction {2} due to session timeout or is
+            not authenticated to server
+        </log-message>
+        <parameters>gameId,blockId,auctionId</parameters>
+        <category>AUCTION</category>
+        <action-code>57</action-code>
+    </result>
+</action>

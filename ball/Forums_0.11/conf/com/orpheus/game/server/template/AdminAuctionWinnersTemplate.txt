@@ -1,0 +1,9 @@
+Hello,
+
+Following are the winners for the slots from auction #%AUCTION_ID%
+
+EMAIL   FIRST NAME  LAST NAME   BID #   BID VALUE   URL PHONE   PAYMENT PREF
+%loop:WINNER%
+%EMAIL%   %FIRST%   %LAST%    %BIDID%   %BIDAMNT%   %URL%   %PHONE% %PREF%    
+%endloop%
+

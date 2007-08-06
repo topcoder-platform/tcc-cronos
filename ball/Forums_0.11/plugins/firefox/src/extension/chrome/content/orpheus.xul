@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay [
+    <!ENTITY % overlayDTD SYSTEM "chrome://orpheus/locale/orpheus.dtd"> %overlayDTD;
+    ]>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://orpheus/skin/orpheus-toolbar.css" type="text/css"?>
+
+
+<overlay id="toolbarContainerOverlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+         xmlns:html="http://www.w3.org/1999/xhtml">
+
+    <script type="application/x-javascript"
+            src="chrome://orpheus/content/orpheus.js"/>
+
+    <!-- extends the main window -->
+    <window id="main-window">
+
+        <!-- toolbar -->
+        <toolbox id="navigator-toolbox">
+            <toolbar id="orphuesTbr" class="otb-background"
+                     iconsize="small" context="toolbar-context-menu"
+                     toolbarname="&orpheus.toolbarname;" crop="end">
+
+                <!-- logo -->
+                <image id="oLogo" src="chrome://orpheus/skin/logo_plugin.gif"/>
+                <toolbarspacer/>
+                <hbox id="bbox" hidden="true">
+                    <!-- games button -->
+                    <toolbarbutton id="oGames" image="chrome://orpheus/skin/icon_games.png" label="&orpheus.games;"
+                                   class="otb-button" oncommand="orpheus.gamesClick();"/>
+
+
+                    <!-- unlocked sites -->
+                    <toolbarbutton id="oUnlockedSites" image="chrome://orpheus/skin/icon_unlockedsites.png"
+                                   label="&orpheus.unlocked;" class="otb-button" oncommand="orpheus.unlockedClick();"/>
+
+                    <!-- upcoming sites -->
+                    <toolbarbutton id="oUpcomingSites" image="chrome://orpheus/skin/icon_upcomingsites.png"
+                                   label="&orpheus.upcoming;" class="otb-button" oncommand="orpheus.upcomingClick();"/>
+
+                    <!-- test domains -->
+                    <toolbarbutton id="oTestDoamin" image="chrome://orpheus/skin/icon_domaingames.jpg"
+                                   label="&orpheus.doaminGames;" class="otb-button"
+                                   oncommand="orpheus.testDomainClick();"/>
+
+                    <!-- separator -->
+                    <toolbarseparator/>
+
+                    <!-- leaderboard -->
+                    <toolbarbutton id="oLeaderboard" image="chrome://orpheus/skin/icon_leaderboard.png"
+                                   label="&orpheus.leaderboard;" class="otb-button"
+                                   oncommand="orpheus.leaderboardClick();"/>
+
+                    <!-- separator -->
+                    <!-- <toolbarspring />
+                 <toolbarseparator  /> -->
+                 <toolbarspacer/>
+                 	<hbox>
+                 	<image id="oPageIncorrect" src="chrome://orpheus/skin/red.gif" tooltiptext="&orpheus.incorrectPage;"
+                 	/>
+                 	<image id="oPageCorrect" src="chrome://orpheus/skin/green.gif" tooltiptext="&orpheus.correctPage;"
+                 	hidden="true"/>
+                 	</hbox>
+                </hbox>
+                <toolbarspring/>
+
+                <!-- login -->
+                <toolbarbutton id="oLogIn" image="chrome://orpheus/skin/icon_login.png"
+                               label="&orpheus.login;" class="otb-button" oncommand="orpheus.logInClick();"/>
+
+                <!-- logout -->
+                <toolbarbutton id="oLogOut" image="chrome://orpheus/skin/icon_logout.png" label="&orpheus.logout;"
+                               hidden="true" class="otb-button" oncommand="orpheus.logOutClick();"/>
+                <toolbarspacer/>
+
+            </toolbar>
+        </toolbox>
+
+    </window>
+    <!-- context menu -->
+    <popup id="contentAreaContextMenu">
+        <menuseparator id="ctx-separator" hidden="true"/>
+        <menuitem id="context-testobject" label="The Ball - Test object"
+                  oncommand="orpheus.testObject();" hidden="true"/>
+
+    </popup>
+
+</overlay>

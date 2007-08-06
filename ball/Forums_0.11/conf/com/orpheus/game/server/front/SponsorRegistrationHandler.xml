@@ -1,0 +1,11 @@
+<action name="SponsorRegistrationHandler" type="default" url-pattern="/server/sponsor/submitDomains.do" priority="10">
+    <handler type="SponsorRegistrationHandler">
+        <object_factory>
+            <namespace>com.orpheus.game.server.ObjectFactory</namespace>
+            <user_profile_manager_key>OrpheusUserProfileManager</user_profile_manager_key>
+        </object_factory>
+    </handler>
+    <result name="success" type="forward">
+        <forward-url>/public/sponsor-signup-step4.jsp</forward-url>
+    </result>
+</action>

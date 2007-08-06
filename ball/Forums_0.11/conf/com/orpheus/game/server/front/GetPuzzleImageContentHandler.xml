@@ -1,0 +1,22 @@
+<action name="GetPuzzleImageContent" type="default" url-pattern="/server/getPuzzleImage.do" priority="10">
+    <handler type="FallThroughHandler">
+    </handler>
+<!--
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>admin</value>
+            <value>player</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <result name="auth_failed" type="forward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+    </result>
+-->
+    <result name="success" type="puzzleImage">
+        <puzzle_resource_param_key>puzzleResource</puzzle_resource_param_key>
+        <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
+        <jndi_context_name>default</jndi_context_name>
+        <use_remote_interface>true</use_remote_interface>
+    </result>
+</action>

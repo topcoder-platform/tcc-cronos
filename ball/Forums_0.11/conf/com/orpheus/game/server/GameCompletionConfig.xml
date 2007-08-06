@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+<CMConfig>
+    <!-- Configuration parameters for Object Factory used to instantiate the game complemtion types -->
+    <Config name="com.orpheus.game.server.GameCompletionTypeObjectFactory">
+        <!-- Last Winner Approved game completion type  -->
+        <Property name="LastWinnerApproved">
+            <Property name="type">
+                <Value>com.orpheus.game.server.util.game.completion.LastWinnerApprovedGameCompletionType</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>int</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>1</Value>
+                    </Property>
+                </Property>
+                <Property name="param2">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>When Last Winner is Approved by Administrator</Value>
+                    </Property>
+                </Property>
+                <Property name="param3">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>default</Value>
+                    </Property>
+                </Property>
+                <Property name="param4">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>orpheus/AdminData</Value>
+                    </Property>
+                </Property>
+                <Property name="param5">
+                    <Property name="type">
+                        <Value>boolean</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>true</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <!-- Fixed Date game completion type  -->
+        <Property name="FixedGameCompletionDate">
+            <Property name="type">
+                <Value>com.orpheus.game.server.util.game.completion.FixedDateGameCompletionType</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>int</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>2</Value>
+                    </Property>
+                </Property>
+                <Property name="param2">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>Fixed Date of Game Completion</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <!-- Configuration for game completion types source -->
+    <Config name="com.orpheus.game.server.util.game.completion.DefaultGameCompletionTypeSource">
+        <Property name="ObjectFactoryNamespace">
+            <Value>com.orpheus.game.server.GameCompletionTypeObjectFactory</Value>
+        </Property>
+        <Property name="TypeKeys">
+            <Value>LastWinnerApproved</Value>
+            <Value>FixedGameCompletionDate</Value>
+        </Property>
+    </Config>
+</CMConfig>

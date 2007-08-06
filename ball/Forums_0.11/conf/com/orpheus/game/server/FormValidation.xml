@@ -1,0 +1,357 @@
+<?xml version="1.0" ?>
+<!DOCTYPE validation SYSTEM "ValidationConfiguration.dtd">
+<validation>
+    <global/>
+    <formset>
+        <form name="loginForm">
+            <formLevelValidation validator="Username"/>
+            <formLevelValidation validator="Password"/>
+            <associativeValidators>
+                <validator name="Username" relationship="AND">
+                    <component name="username"/>
+                    <associativeMessage nlsid="Username is required" isKey="false"/>
+                </validator>
+                <validator name="Password" relationship="AND">
+                    <component name="password"/>
+                    <associativeMessage nlsid="Password is required" isKey="false"/>
+                </validator>
+            </associativeValidators>
+            <elements>
+                <element name="username" pattern="[[\w]*[\W]*]+">
+                    <message nlsid="Username is required" isKey="false"/>
+                </element>
+                <element name="password" pattern="[[\w]*[\W]*]+">
+                    <message nlsid="Password is required" isKey="false"/>
+                </element>
+            </elements>
+        </form>
+        <form name="retrievePasswordForm">
+            <formLevelValidation validator="Email"/>
+            <associativeValidators>
+                <validator name="Email" relationship="AND">
+                    <component name="email"/>
+                    <associativeMessage nlsid="Email address is required" isKey="false"/>
+                </validator>
+            </associativeValidators>
+            <elements>
+                <element name="email" pattern="[[\w]*[\W]*]+">
+                    <message nlsid="Email address is required" isKey="false"/>
+                </element>
+            </elements>
+        </form>
+        <form name="joinGameForm">
+            <formLevelValidation validator="TOS"/>
+            <associativeValidators>
+                <validator name="TOS" relationship="AND">
+                    <component name="agree"/>
+                    <associativeMessage nlsid="You must accept terms and conditions defined above" isKey="false"/>
+                </validator>
+            </associativeValidators>
+            <elements>
+                <element name="agree" pattern="[[\w]*[\W]*]+">
+                    <message nlsid="You must accept terms and conditions defined above" isKey="false"/>
+                </element>
+            </elements>
+        </form>
+        <form name="rejectForm">
+            <formLevelValidation validator="Reason"/>
+            <formLevelValidation validator="Message"/>
+            <associativeValidators>
+                <validator name="Reason" relationship="AND">
+                    <component name="rejectReason"/>
+                    <associativeMessage nlsid="Reason is required" isKey="false"/>
+                </validator>
+                <validator name="Message" relationship="AND">
+                    <component name="rejectMessage"/>
+                    <associativeMessage nlsid="Message is required" isKey="false"/>
+                </validator>
+            </associativeValidators>
+            <elements>
+                <element name="rejectReason" pattern="[[\w]*[\W]*]+">
+                    <message nlsid="Reason is required" isKey="false"/>
+                </element>
+                <element name="rejectMessage" pattern="[[\w]*[\W]*]+">
+                    <message nlsid="Message is required" isKey="false"/>
+                </element>
+            </elements>
+        </form>
+        <form name="createGameStep1">
+            <formLevelValidation validator="Keys"/>
+            <formLevelValidation validator="Blocks"/>
+            <associativeValidators>
+                <validator name="Keys" relationship="AND">
+                    <component name="keyCount"/>
+                    <associativeMessage nlsid="Number of keys is either missing or does not represent a number" isKey="false"/>
+                </validator>
+                <validator name="Blocks" relationship="AND">
+                    <component name="blockCount"/>
+                    <associativeMessage nlsid="Number of blocks is either missing or does not represent a number" isKey="false"/>
+                </validator>
+            </associativeValidators>
+            <elements>
+                <element name="keyCount" pattern="[\d]+">
+                    <message nlsid="Number of keys is either missing or does not represent a number" isKey="false"/>
+                </element>
+                <element name="blockCount" pattern="[\d]+">
+                    <message nlsid="Number of blocks is either missing or does not represent a number" isKey="false"/>
+                </element>
+            </elements>
+        </form>
+        <form name="placeBidForm">
+            <formLevelValidation validator="MaxAmount"/>
+            <formLevelValidation validator="Image"/>
+            <formLevelValidation validator="Auction"/>
+            <associativeValidators>
+                <validator name="MaxAmount" relationship="AND">
+                    <component name="maxBid"/>
+                    <associativeMessage nlsid="Max bid amount must be numeric value" isKey="false"/>
+                </validator>
+                <validator name="Image" relationship="AND">
+                    <component name="imageId"/>
+                    <associativeMessage nlsid="Image is required" isKey="false"/>
+                </validator>
+                <validator name="Auction" relationship="AND">
+                    <component name="auctionId"/>
+                    <associativeMessage nlsid="Auction is required" isKey="false"/>
+                </validator>
+            </associativeValidators>
+            <elements>
+                <element name="maxBid" pattern="[\d]+">
+                    <message nlsid="Max bid amount is required" isKey="false"/>
+                </element>
+                <element name="imageId" pattern="[\d]+">
+                    <message nlsid="Image is required" isKey="false"/>
+                </element>
+                <element name="auctionId" pattern="[\d]+">
+                    <message nlsid="Auction is required" isKey="false"/>
+                </element>
+            </elements>
+        </form>
+        <form name="placeBidConfirmForm">
+            <formLevelValidation validator="MaxAmount"/>
+            <formLevelValidation validator="Domain"/>
+            <formLevelValidation validator="Image"/>
+            <formLevelValidation validator="Auction"/>
+            <associativeValidators>
+                <validator name="MaxAmount" relationship="AND">
+                    <component name="maxBid"/>
+                    <associativeMessage nlsid="Max bid amount must be numeric value" isKey="false"/>
+                </validator>
+                <validator name="Domain" relationship="AND">
+                    <component name="domainId"/>
+                    <associativeMessage nlsid="Domain is required" isKey="false"/>
+                </validator>
+                <validator name="Image" relationship="AND">
+                    <component name="imageId"/>
+                    <associativeMessage nlsid="Image is required" isKey="false"/>
+                </validator>
+                <validator name="Auction" relationship="AND">
+                    <component name="auctionId"/>
+                    <associativeMessage nlsid="Auction is required" isKey="false"/>
+                </validator>
+            </associativeValidators>
+            <elements>
+                <element name="maxBid" pattern="[\d]+">
+                    <message nlsid="Max bid amount is required" isKey="false"/>
+                </element>
+                <element name="domainId" pattern="[\d]+">
+                    <message nlsid="Domain is required" isKey="false"/>
+                </element>
+                <element name="imageId" pattern="[\d]+">
+                    <message nlsid="Image is required" isKey="false"/>
+                </element>
+                <element name="auctionId" pattern="[\d]+">
+                    <message nlsid="Auction is required" isKey="false"/>
+                </element>
+            </elements>
+        </form>
+        <form name="updateBidForm">
+            <formLevelValidation validator="MaxAmount"/>
+            <formLevelValidation validator="Bid"/>
+            <formLevelValidation validator="Auction"/>
+            <associativeValidators>
+                <validator name="MaxAmount" relationship="AND">
+                    <component name="maxBid"/>
+                    <associativeMessage nlsid="Max bid amount must be numeric value" isKey="false"/>
+                </validator>
+                <validator name="Bid" relationship="AND">
+                    <component name="bidId"/>
+                    <associativeMessage nlsid="Bid is required" isKey="false"/>
+                </validator>
+                <validator name="Auction" relationship="AND">
+                    <component name="auctionId"/>
+                    <associativeMessage nlsid="Auction is required" isKey="false"/>
+                </validator>
+            </associativeValidators>
+            <elements>
+                <element name="maxBid" pattern="[\d]+">
+                    <message nlsid="Max bid amount is required" isKey="false"/>
+                </element>
+                <element name="bidId" pattern="[\d]+">
+                    <message nlsid="Bid is required" isKey="false"/>
+                </element>
+                <element name="auctionId" pattern="[\d]+">
+                    <message nlsid="Auction is required" isKey="false"/>
+                </element>
+            </elements>
+        </form>
+        <form name="updateBidConfirmForm">
+            <formLevelValidation validator="MaxAmount"/>
+            <formLevelValidation validator="Bid"/>
+            <formLevelValidation validator="Domain"/>
+            <formLevelValidation validator="Image"/>
+            <formLevelValidation validator="Auction"/>
+            <associativeValidators>
+                <validator name="MaxAmount" relationship="AND">
+                    <component name="maxBid"/>
+                    <associativeMessage nlsid="Max bid amount must be numeric value" isKey="false"/>
+                </validator>
+                <validator name="Bid" relationship="AND">
+                    <component name="bidId"/>
+                    <associativeMessage nlsid="Bid is required" isKey="false"/>
+                </validator>
+                <validator name="Domain" relationship="AND">
+                    <component name="domainId"/>
+                    <associativeMessage nlsid="Domain is required" isKey="false"/>
+                </validator>
+                <validator name="Image" relationship="AND">
+                    <component name="imageId"/>
+                    <associativeMessage nlsid="Image is required" isKey="false"/>
+                </validator>
+                <validator name="Auction" relationship="AND">
+                    <component name="auctionId"/>
+                    <associativeMessage nlsid="Auction is required" isKey="false"/>
+                </validator>
+            </associativeValidators>
+            <elements>
+                <element name="maxBid" pattern="[\d]+">
+                    <message nlsid="Max bid amount is required" isKey="false"/>
+                </element>
+                <element name="domainId" pattern="[\d]+">
+                    <message nlsid="Domain is required" isKey="false"/>
+                </element>
+                <element name="imageId" pattern="[\d]+">
+                    <message nlsid="Image is required" isKey="false"/>
+                </element>
+                <element name="auctionId" pattern="[\d]+">
+                    <message nlsid="Auction is required" isKey="false"/>
+                </element>
+                <element name="bidId" pattern="[\d]+">
+                    <message nlsid="Bid is required" isKey="false"/>
+                </element>
+            </elements>
+        </form>
+        <form name="winnerForm">
+            <formLevelValidation validator="FirstName"/>
+            <formLevelValidation validator="LastName"/>
+            <formLevelValidation validator="Address1"/>
+            <formLevelValidation validator="Country"/>
+            <formLevelValidation validator="City"/>
+<!--
+            <formLevelValidation validator="State"/>
+-->
+            <formLevelValidation validator="PostalCode"/>
+            <formLevelValidation validator="Phone"/>
+            <associativeValidators>
+                <validator name="FirstName" relationship="AND">
+                    <component name="firstName"/>
+                    <associativeMessage nlsid="First name is required" isKey="false"/>
+                </validator>
+                <validator name="LastName" relationship="AND">
+                    <component name="lastName"/>
+                    <associativeMessage nlsid="Last name is required" isKey="false"/>
+                </validator>
+                <validator name="Address1" relationship="AND">
+                    <component name="address1"/>
+                    <associativeMessage nlsid="Address line 1 is required" isKey="false"/>
+                </validator>
+                <validator name="City" relationship="AND">
+                    <component name="city"/>
+                    <associativeMessage nlsid="City is required" isKey="false"/>
+                </validator>
+<!--
+                <validator name="State" relationship="AND">
+                    <component name="state"/>
+                    <associativeMessage nlsid="State is required" isKey="false"/>
+                </validator>
+-->
+                <validator name="PostalCode" relationship="AND">
+                    <component name="postalCode"/>
+                    <associativeMessage nlsid="Postal code is required" isKey="false"/>
+                </validator>
+                <validator name="Phone" relationship="AND">
+                    <component name="phone"/>
+                    <associativeMessage nlsid="Phone is required" isKey="false"/>
+                </validator>
+                <validator name="Country" relationship="AND">
+                    <component name="country"/>
+                    <associativeMessage nlsid="Country is required" isKey="false"/>
+                </validator>
+            </associativeValidators>
+            <elements>
+                <element name="firstName" pattern="[[\w]*[\W]*]+">
+                    <message nlsid="First name is required" isKey="false"/>
+                </element>
+                <element name="lastName" pattern="[[\w]*[\W]*]+">
+                    <message nlsid="Last name is required" isKey="false"/>
+                </element>
+                <element name="address1" pattern="[[\w]*[\W]*]+">
+                    <message nlsid="Address line 1 is required" isKey="false"/>
+                </element>
+                <element name="city" pattern="[[\w]*[\W]*]+">
+                    <message nlsid="City is required" isKey="false"/>
+                </element>
+<!--
+                <element name="state" pattern="[[\w]*[\W]*]+">
+                    <message nlsid="State is required" isKey="false"/>
+                </element>
+-->
+                <element name="postalCode" pattern="[[\w]*[\W]*]+">
+                    <message nlsid="Postal code is required" isKey="false"/>
+                </element>
+                <element name="phone" pattern="[[\w]*[\W]*]+">
+                    <message nlsid="Phone is required" isKey="false"/>
+                </element>
+                <element name="country" pattern="[[\w]*[\W]*]+">
+                    <message nlsid="Country is required" isKey="false"/>
+                </element>
+            </elements>
+        </form>
+        <form name="practicePuzzleForm">
+            <formLevelValidation validator="Width"/>
+            <formLevelValidation validator="Height"/>
+            <associativeValidators>
+                <validator name="Width" relationship="AND">
+                    <component name="puzzleWidth"/>
+                    <associativeMessage nlsid="Width must be numeric value" isKey="false"/>
+                </validator>
+                <validator name="Height" relationship="AND">
+                    <component name="puzzleHeight"/>
+                    <associativeMessage nlsid="Height must be numeric value" isKey="false"/>
+                </validator>
+            </associativeValidators>
+            <elements>
+                <element name="puzzleWidth" pattern="[\d]+">
+                    <message nlsid="Width is required" isKey="false"/>
+                </element>
+                <element name="puzzleHeight" pattern="[\d]+">
+                    <message nlsid="Height is required" isKey="false"/>
+                </element>
+            </elements>
+        </form>
+        <form name="ballColorForm">
+            <formLevelValidation validator="ColorName"/>
+            <associativeValidators>
+                <validator name="ColorName" relationship="AND">
+                    <component name="colorName"/>
+                    <associativeMessage nlsid="Color name is required" isKey="false"/>
+                </validator>
+            </associativeValidators>
+            <elements>
+                <element name="colorName" pattern="[[\w]*[\W]*]+">
+                    <message nlsid="Color name is required" isKey="false"/>
+                </element>
+            </elements>
+        </form>
+    </formset>
+</validation>

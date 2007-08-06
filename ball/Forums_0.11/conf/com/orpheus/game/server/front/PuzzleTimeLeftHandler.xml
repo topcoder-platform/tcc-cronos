@@ -1,0 +1,17 @@
+<action name="PluginDomainBrainteaser" type="default" url-pattern="/server/getPuzzleTimeLeft.do" priority="10">
+    <handler type="GetPuzzleTimeLeftServerHandler">
+        <game_id_param_key>gameId</game_id_param_key>
+        <slot_id_param_key>slotId</slot_id_param_key>
+        <slot_completion_request_attribute_key>slotCompletion</slot_completion_request_attribute_key>
+        <game_play_key>gamePlayInfo</game_play_key>
+        <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
+        <jndi_context_name>default</jndi_context_name>
+        <use_remote_interface>true</use_remote_interface>
+    </handler>
+    <result name="success" type="dbLoggingForward">
+        <forward-url>/plugin/puzzleTimeLeft.jsp</forward-url>
+        <log-message>got the time left for solving the puzzle for game {0} and slot {1}</log-message>
+        <parameters>gameId,slotId</parameters>
+        <action-code>103</action-code>
+    </result>
+</action>
