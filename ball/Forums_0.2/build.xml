@@ -670,8 +670,13 @@
         <path refid="buildlibs"/>
     </path>
 
+	<target name="init">
+		<mkdir dir="${build_distdir}"/>
+		<mkdir dir="${build_ejbjarsdir}"/>
+    </target>
+	
     <!-- Compile production code -->
-    <target name="compile">
+    <target name="compile" depends="init">
         <mkdir dir="${build_classdir}"/>
         <javac srcdir="${javamain}" destdir="${build_classdir}" includes="orpheus/**/*.java" debug="true" verbose="${verbose}">
             <classpath refid="buildlibs"/>
@@ -749,7 +754,6 @@
     <!-- End JBoss EJBs -->
 	
 	<target name="war_forums" depends="compile_forums">
-    	<mkdir dir="${build_distdir}"/>
 		<delete file="${forums.war}" failonerror="false"/>
         <war destfile="${forums.war}" webxml="${configdir}/forums/WEB-INF/web.xml">
             <fileset dir="${javamain}/com/topcoder/web/forums/view">
@@ -808,7 +812,6 @@
     <!-- Build Orpheus Game Server application's WAR archive -->
     <target name="dist" depends="clean,compile,dist_forums">
         <!-- Build the JAR with Game Server classes -->
-        <mkdir dir="${build_distdir}"/>
         <delete file="${build_distdir}/${distfilename}.jar" failonerror="false"/>
         <jar jarfile="${build_distdir}/${distfilename}.jar" basedir="${build_classdir}"/>
         <jar basedir="${configdir}" jarfile="${build_distdir}/${distfilename}.jar" update="true" includes="com/**"
