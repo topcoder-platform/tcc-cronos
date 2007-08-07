@@ -17,6 +17,7 @@
 	<property name="tc_libdir" value="lib/tc"/>
     <property name="tcs_libdir" value="lib/tcs"/>
     <property name="ext_libdir" value="lib/third_party"/>
+	<property name="jive_libdir" value="${ext_libdir}/jive/4.2.5"/>
     <property name="docsdir" value="docs"/>
     <property name="configdir" value="conf"/>
     <property name="testlogdir" value="log"/>
@@ -619,6 +620,11 @@
     	
     	<pathelement location="${shared.jar}"/>
     	<pathelement location="${tcwebcommon.jar}"/> 
+    	
+    	<pathelement location="${jive_libdir}/jivebase.jar"/>
+    	<pathelement location="${jive_libdir}/jiveforums.jar"/>
+    	<pathelement location="${jive_libdir}/xwork.jar"/>
+    	<pathelement location="${jive_libdir}/htmlparser.jar"/>
     </path>
 
     <!-- The additional libraries for JWebUnit 1.3 framework utilized for testing purposes -->
@@ -843,7 +849,7 @@
         <ear destfile="${component.ear}" appxml="${configdir}/application.xml" update="false"
              duplicate="fail" filesonly="true">
         	<fileset dir="${build_distdir}" includes="*.jar,*.war"/>
-        	<fileset dir="${ext_libdir}/jive/4.2.5" includes="*.jar,*.war"/> <!-- TODO: Move to dist-forums -->
+        	<fileset dir="${jive_libdir}" includes="*.jar,*.war"/> <!-- TODO: Move to dist-forums -->
         	<fileset dir="${build_ejbjarsdir}" includes="*.jar,*.war"/>
         </ear>
     </target>
