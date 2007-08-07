@@ -232,8 +232,11 @@ class Helper {
          */
         protected Object getValue(ResultSet resultSet, int index) throws SQLException {
             Helper.assertObjectNotNull(resultSet, "resultSet");
-
-            return resultSet.wasNull() ? null : new Long(resultSet.getLong(index));
+            long ret = resultSet.getLong(index);
+            if (resultSet.wasNull()) {
+            	return null;
+            }
+            return new Long(ret);
         }
 
         /**
@@ -295,7 +298,11 @@ class Helper {
         protected Object getValue(ResultSet resultSet, int index) throws SQLException {
             Helper.assertObjectNotNull(resultSet, "resultSet");
 
-            return resultSet.wasNull() ? null : new Double(resultSet.getDouble(index));
+            double ret = resultSet.getDouble(index);
+            if (resultSet.wasNull()) {
+            	return null;
+            }
+            return new Double(ret);
         }
 
         /**
@@ -356,8 +363,11 @@ class Helper {
          */
         protected Object getValue(ResultSet resultSet, int index) throws SQLException {
             Helper.assertObjectNotNull(resultSet, "resultSet");
-
-            return resultSet.wasNull() ? null : new Boolean(resultSet.getBoolean(index));
+            boolean ret = resultSet.getBoolean(index);
+            if (resultSet.wasNull()) {
+            	return null;
+            }
+            return new Boolean(ret);
         }
 
         /**
