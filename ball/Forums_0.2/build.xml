@@ -521,10 +521,8 @@
     <property name="mssql.jar" value="${ext_libdir}/mssql/1.1/sqljdbc.jar"/>
 	
 	<!-- TC Dependencies  -->
-	<!--
 	<property name="shared.jar" value="${tc_libdir}/shared.jar"/>
 	<property name="tcwebcommon.jar" value="${tc_libdir}/tcwebcommon.jar"/>
-	-->
 
     <!-- The libraries to be used in production -->
     <path id="buildlibs">
@@ -619,10 +617,8 @@
         <pathelement location="${jai-core.jar}"/>
         <pathelement location="${jai-codec.jar}"/>
     	
-    	<!-- 
     	<pathelement location="${shared.jar}"/>
     	<pathelement location="${tcwebcommon.jar}"/> 
-    	-->
     </path>
 
     <!-- The additional libraries for JWebUnit 1.3 framework utilized for testing purposes -->
@@ -701,9 +697,9 @@
 	<target name="compile_forums">
         <javac srcdir="${javamain}" destdir="${build_classdir}" debug="true" verbose="${verbose}">
         	<classpath refid="buildlibs"/>
-        	<include name="com/topcoder/shared/**"/>
+        	<!-- <include name="com/topcoder/shared/**"/>
         	<include name="com/topcoder/common/**"/>
-        	<include name="com/topcoder/web/common/**"/>
+        	<include name="com/topcoder/web/common/**"/> -->
         	<include name="com/topcoder/web/forums/**"/>
             <include name="com/topcoder/web/ejb/forums/**"/>
             <include name="com/topcoder/web/ejb/messagehistory/**"/>
