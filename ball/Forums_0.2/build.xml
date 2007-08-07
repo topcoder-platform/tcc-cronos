@@ -710,8 +710,8 @@
             <include name="com/topcoder/web/ejb/forums/**"/>
             <include name="com/topcoder/web/ejb/messagehistory/**"/>
         </javac>
-		<rmic classname="com.topcoder.shared.distCache.CacheClientImpl" base="${build_classdir}"/>
-		<rmic classname="com.topcoder.shared.distCache.CacheServerSyncImpl" base="${build_classdir}"/>
+		<!-- <rmic classname="com.topcoder.shared.distCache.CacheClientImpl" base="${build_classdir}"/>
+		<rmic classname="com.topcoder.shared.distCache.CacheServerSyncImpl" base="${build_classdir}"/> -->
     </target>
 	
 	<!-- JBoss EJBs -->
