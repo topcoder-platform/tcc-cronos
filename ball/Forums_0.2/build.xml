@@ -803,7 +803,11 @@
     	<antcall target="package_EJB_MessageHistoryBean"/>
     	<antcall target="package_EJB_ForumsBean"/>
     	
-        <copy todir="${jboss_conf}" file="${configdir}/forums/*"/>
+        <copy todir="${jboss_conf}">
+        	<fileset dir="${configdir}/forums">
+        		<include name="*.*"/>
+        	</fileset>
+        </copy>  
 
     	<!-- <copy todir="${jboss_lib}" file="${build_ejbjarsdir}/tcjive.jar"/> // trying to keep it in EAR temporarily - change if needed -->
         <!-- <copy todir="${jboss_deploy}" file="${ear.dir}/security.ear"/> // not needed? -->
