@@ -749,6 +749,7 @@
     <!-- End JBoss EJBs -->
 	
 	<target name="war_forums" depends="compile_forums">
+    	<mkdir dir="${build_distdir}"/>
 		<delete file="${forums.war}" failonerror="false"/>
         <war destfile="${forums.war}" webxml="${configdir}/forums/WEB-INF/web.xml">
             <fileset dir="${javamain}/com/topcoder/web/forums/view">
