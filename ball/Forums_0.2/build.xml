@@ -831,11 +831,8 @@
             <fileset dir="${ext_libdir}" includes="**/jai_core.jar"/>
             <fileset dir="${ext_libdir}" includes="**/jai_codec.jar"/>
         </copy>
-        <ear destfile="${component.ear}" appxml="${configdir}/application.xml" update="false"
+    	<ear destfile="${component.ear}" appxml="${configdir}/application.xml" basedir="${build_distdir}" update="false"
              duplicate="fail" filesonly="true">
-        	<fileset dir="${build_distdir}" includes="*.jar,*.war"/>
-        	<fileset dir="${jive_libdir}" includes="*.jar,*.war"/> <!-- TODO: Move to dist-forums -->
-        	<fileset dir="${build_ejbjarsdir}" includes="*.jar,*.war"/>
         </ear>
     </target>
 
@@ -860,8 +857,9 @@
 
     	<ear destfile="${component.ear}" appxml="${configdir}/application.xml" update="true"
              duplicate="fail" filesonly="true">
-        	<fileset dir="${jive_libdir}" includes="*.jar,*.war"/>
     		<fileset dir="${tc_libdir}" includes="*.jar,*.war"/>
+        	<fileset dir="${jive_libdir}" includes="*.jar,*.war"/>
+    		<fileset dir="${build_ejbjarsdir}" includes="*.jar,*.war"/>
         </ear>
     	
     	<!-- <copy todir="${jboss_lib}" file="${build_ejbjarsdir}/tcjive.jar"/> // trying to keep it in EAR temporarily - change if needed -->
