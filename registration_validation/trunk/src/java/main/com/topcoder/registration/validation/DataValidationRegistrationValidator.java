@@ -3,21 +3,22 @@
  */
 package com.topcoder.registration.validation;
 
-import com.topcoder.registration.service.RegistrationValidator;
-import com.topcoder.util.objectfactory.ObjectFactory;
-import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
-import com.topcoder.util.objectfactory.impl.IllegalReferenceException;
-import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
 import com.cronos.onlinereview.external.ExternalUser;
 import com.topcoder.management.ban.BanManager;
+import com.topcoder.management.resource.ResourceManager;
 import com.topcoder.management.team.TeamManager;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectServices;
 import com.topcoder.registration.service.RegistrationInfo;
+import com.topcoder.registration.service.RegistrationValidator;
 import com.topcoder.registration.team.service.OperationResult;
-import com.topcoder.util.log.Log;
 import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogManager;
+import com.topcoder.util.objectfactory.ObjectFactory;
+import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
+import com.topcoder.util.objectfactory.impl.IllegalReferenceException;
+import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
 
 /**
  * <p>
@@ -156,6 +157,19 @@ public class DataValidationRegistrationValidator implements
 
     /**
      * <p>
+     * Name of the property that stores the resource manager key to pass to the
+     * object factory.
+     * </p>
+     * <p>
+     * This property is required. The value of this property should be any valid
+     * object factory key.
+     * </p>
+     *
+     */
+    private static final String RESOURCE_MANAGER_KEY_PROPERTYNAME = "resourceManagerKey";
+
+    /**
+     * <p>
      * Name of the property that stores the name of the log to get from the
      * LogManager.
      * </p>
@@ -201,6 +215,19 @@ public class DataValidationRegistrationValidator implements
      *
      */
     private final BanManager banManager;
+
+    
+    /**
+     * <p>
+     * Represents the ResourceManager instance that is used to obtain
+     * the resources projects.
+     * </p>
+     * <p>
+     * It is set in the constructor to a non-null value, and will never change.
+     * </p>
+     *
+     */
+    private final ResourceManager resourceManager;
 
     /**
      * <p>
@@ -274,6 +301,11 @@ public class DataValidationRegistrationValidator implements
                             BAN_MANAGER_KEY_PROPERTYNAME, factory,
                             BanManager.class, true);
 
+            this.resourceManager = (ResourceManager) RegistrationValidationHelper
+            .createObjectFromObjectFactory(namespace,
+                    RESOURCE_MANAGER_KEY_PROPERTYNAME, factory,
+                    ResourceManager.class, true);
+
             this.projectServices = (ProjectServices) RegistrationValidationHelper
                     .createObjectFromObjectFactory(namespace,
                             PROJECT_SERVICES_KEY_PROPERTYNAME, factory,
@@ -340,7 +372,7 @@ public class DataValidationRegistrationValidator implements
      */
     public DataValidationRegistrationValidator(TeamManager teamManager,
             ProjectServices projectServices, BanManager banManager, Log logger,
-            ConfigurableValidator validator) {
+            ResourceManager resourceManager, ConfigurableValidator validator) {
         RegistrationValidationHelper
                 .validateNotNull(teamManager, "teamManager");
         RegistrationValidationHelper.validateNotNull(projectServices,
@@ -349,6 +381,7 @@ public class DataValidationRegistrationValidator implements
         RegistrationValidationHelper.validateNotNull(validator, "validator");
         this.teamManager = teamManager;
         this.projectServices = projectServices;
+        this.resourceManager = resourceManager;
         this.banManager = banManager;
         this.logger = logger;
         this.validator = validator;
@@ -432,6 +465,15 @@ public class DataValidationRegistrationValidator implements
      */
     public BanManager getBanManager() {
         return banManager;
+    }
+
+    /**
+     * Gets the BanManager instance. Will not be null.
+     *
+     * @return the BanManager instance
+     */
+    public ResourceManager getResourceManager() {
+        return resourceManager;
     }
 
     /**
