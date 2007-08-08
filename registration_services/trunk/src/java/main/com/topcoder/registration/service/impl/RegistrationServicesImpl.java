@@ -22,6 +22,7 @@ import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceManager;
 import com.topcoder.management.resource.ResourceRole;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
+import com.topcoder.management.resource.search.ResourceFilterBuilder;
 import com.topcoder.management.team.PositionFilterFactory;
 import com.topcoder.management.team.Team;
 import com.topcoder.management.team.TeamHeader;
@@ -48,6 +49,7 @@ import com.topcoder.registration.service.RemovalResult;
 import com.topcoder.registration.team.service.OperationResult;
 import com.topcoder.registration.team.service.TeamServices;
 import com.topcoder.registration.team.service.UnknownEntityException;
+import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
@@ -948,6 +950,76 @@ public class RegistrationServicesImpl implements RegistrationServices {
 
     /**
      * <p>
+     * Gets the Resource instance that matches given external user.
+     * </p>
+     * @param user
+     *            the external user
+     * @param fullProjectData
+     *            the FullProjectData instance
+     * @return an instance of Resource or null
+     * @throws RegistrationValidationException
+     *             if more than one Resource instance matching given external user or some property
+     *             values are invalid
+     */
+    private Resource getSpecificResource(ExternalUser user, Project projectHeader) {
+        List list = new ArrayList();
+
+        // gets all resources in this project
+        long projectId=projectHeader.getId(); 
+        try {
+            Resource[] resources = resourceManager.searchResources(ResourceFilterBuilder.createProjectIdFilter(projectId));
+            for (int i = 0; i < resources.length; i++) {
+                Resource resource = resources[i];
+                if (!(Long.toString(user.getId()).equals(resource
+                    .getProperty(CustomResourceProperties.EXTERNAL_REFERENCE_ID)))) {
+                    continue;
+                }
+                if (!(user.getHandle()
+                    .equals(resource.getProperty(CustomResourceProperties.HANDLE)))) {
+                    continue;
+                }
+                if (!(user.getEmail().equals(resource.getProperty(CustomResourceProperties.EMAIL)))) {
+                    continue;
+                }
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss.SSS");
+                String strDate = (String) resource.getProperty(CustomResourceProperties.REGISTRATION_DATE);
+                if (!(sdf.parse(strDate).before(new Date()))) {
+                    continue;
+                }
+                // found it, adds it to the list
+                list.add(resource);
+            }
+        } catch (ClassCastException ex) {
+            throw new RegistrationValidationException(
+                "Instance of Resource has invalid property value type.", ex);
+        } catch (NullPointerException ex) {
+            throw new RegistrationValidationException(
+                "Instance of Resource missed some properties.", ex);
+        } catch (ParseException ex) {
+        	throw new RegistrationValidationException(
+                    "Instance of Resource has invalid property value type.", ex);
+		} catch (SearchBuilderException ex) {
+        	throw new RegistrationValidationException(
+                    "Runtime error when finding the resources of the project.", ex);
+		} catch (ResourcePersistenceException ex) {
+        	throw new RegistrationValidationException(
+                    "Runtime error when finding the resources of the project.", ex);
+		}
+
+        // there should be at most one result
+        if (list.size() > 1) {
+            throw new RegistrationValidationException(
+                "There should be at most one Resource corresponding to given user.");
+        }
+
+        if (list.size() == 0) {
+            return null;
+        }
+        return (Resource) list.get(0);
+    }
+
+    /**
+     * <p>
      * Obtains the registration information for the user in the given project. In essence, it
      * retrieves the role the user has in the given project. It is possible that the user is not
      * registered in this project, upon which a null will be returned.
@@ -1057,13 +1129,13 @@ public class RegistrationServicesImpl implements RegistrationServices {
         try {
             // finds full projects
             logBefore("Starts calling ProjectServices#findFullProjects method.");
-            FullProjectData[] fullProjects = projectServices.findFullProjects(filter);
+            Project[] projects = projectServices.findProjectsHeaders(filter);
             logAfter("Finished calling ProjectServices#findFullProjects method.");
 
             // gets all projects' ids
-            long[] ids = new long[fullProjects.length];
+            long[] ids = new long[projects.length];
             for (int i = 0; i < ids.length; i++) {
-                ids[i] = fullProjects[i].getProjectHeader().getId();
+                ids[i] = projects[i].getId();
             }
 
             // gets all phases
@@ -1074,7 +1146,7 @@ public class RegistrationServicesImpl implements RegistrationServices {
             for (int i = 0; i < ids.length; i++) {
                 Phase phase = getProjectRegistrationPhase(phaseProjects[i]);
                 if (phase != null) {
-                    positions.add(new RegistrationPositionImpl(fullProjects[i].getProjectHeader(),
+                    positions.add(new RegistrationPositionImpl(projects[i],
                         phase, (ResourceRole[]) availableRoles.clone()));
                 }
             }
@@ -1464,12 +1536,19 @@ public class RegistrationServicesImpl implements RegistrationServices {
         try {
             // gets the resources in given project
             logBefore("Starts calling ProjectServices#getFullProjectData method.");
-            resources = projectServices.getFullProjectData(projectId).getResources();
+            resourceManager.searchResources(ResourceFilterBuilder.createProjectIdFilter(projectId));
+            //resources = projectServices.getFullProjectData(projectId).getResources();
             logAfter("Finished calling ProjectServices#getFullProjectData method.");
-        } catch (ProjectServicesException ex) {
-            log(Level.ERROR, "ProjectServicesException occurred when retrieving full project data.");
-            throw ex;
-        }
+//        } catch (ProjectServicesException ex) {
+//            log(Level.ERROR, "ProjectServicesException occurred when retrieving full project data.");
+//            throw ex;
+        } catch (ResourcePersistenceException e) {
+            log(Level.ERROR, "ProjectServicesException occurred when retrieving resources of project:" + projectId);
+            throw new RegistrationServiceException("ResourcePersistenceException occurred when retrieving resources of project: " + projectId,e);
+		} catch (SearchBuilderException e) {
+            log(Level.ERROR, "SearchBuilderException occurred when retrieving resources of project:." + projectId);
+            throw new RegistrationServiceException("SearchBuilderException occurred when retrieving resources of project: " + projectId,e);
+		}
         // represents the result resource list
         List resultList = new ArrayList();
         for (int i = 0; i < resources.length; i++) {
@@ -1535,15 +1614,16 @@ public class RegistrationServicesImpl implements RegistrationServices {
             // gets all active projects
             logBefore("Starts calling ProjectServices#findActiveProjects in RegistrationServicesImpl#"
                 + "getRegisteredProjects.");
-            FullProjectData[] projects = projectServices.findActiveProjects();
+            //FullProjectData[] projects = projectServices.findActiveProjects();
+            Project[] projectHeaders = projectServices.findActiveProjectsHeaders();
             logAfter("Finished calling ProjectServices#findActiveProjects in RegistrationServicesImpl#"
                 + "getRegisteredProjects.");
 
-            for (int i = 0; i < projects.length; i++) {
+            for (int i = 0; i < projectHeaders.length; i++) {
                 try {
-                    Resource resource = getSpecificResource(user, projects[i]);
+                    Resource resource = getSpecificResource(user, projectHeaders[i]);
                     if (resource != null) {
-                        projectList.add(projects[i].getProjectHeader());
+                        projectList.add(projectHeaders[i]);
                     }
                 } catch (RegistrationValidationException ex) {
                     // ignore it
