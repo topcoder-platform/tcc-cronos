@@ -3,6 +3,12 @@
  */
 package com.topcoder.project.service.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import sun.font.EAttribute;
+
 import com.cronos.onlinereview.external.ExternalProject;
 import com.cronos.onlinereview.external.ProjectRetrieval;
 import com.cronos.onlinereview.external.RetrievalException;
@@ -165,6 +171,13 @@ public class ProjectServicesImpl implements ProjectServices {
 
     /**
      * <p>
+     * Represents the <b>activeProjectStatusId</b> property key.
+     * </p>
+     */
+    private static final String ACTIVE_PROJECT_CATEGORY_ID = "activeProjectCategoryId";
+
+    /**
+     * <p>
      * Represents the <b>externalReferenceID</b> property key.
      * </p>
      */
@@ -235,6 +248,16 @@ public class ProjectServicesImpl implements ProjectServices {
 
     /**
      * <p>
+     * Represents the ids of the active project categories.
+     * </p>
+     * <p>
+     * It is set in the constructor to non-negative values, and will never change.
+     * </p>
+     */
+    List<Long> activeCategoriesList=new ArrayList<Long>();
+
+    /**
+     * <p>
      * Default constructor.
      * </p>
      * @throws ConfigurationException
@@ -300,6 +323,31 @@ public class ProjectServicesImpl implements ProjectServices {
             }
             this.activeProjectStatusId = theActiveProjectStatusId;
 
+
+            // Nuevo parametro
+            log(Level.DEBUG, "Looking for activeCategoryIds");
+            int categoryEntryNumber = 0;            
+            while (true) {
+                // increase the innerValidatorNumber to get the key for the next innerValidator.
+            	categoryEntryNumber++;
+                String keyPropertyName = ACTIVE_PROJECT_CATEGORY_ID + categoryEntryNumber;
+                // Creates innerValidator using the ObjectFactory
+
+                String categoryIdStr = cm.getString(namespace, keyPropertyName);
+                if (categoryIdStr == null) {
+                    break;
+                } else {
+                    long categoryId = Long.parseLong(categoryIdStr);
+                	if (categoryId < 0) {
+	                    throw new ConfigurationException(
+	                        "Value of [" + ACTIVE_PROJECT_CATEGORY_ID + categoryEntryNumber + "] should not be negative.");
+	                }
+                    log(Level.DEBUG, "Adding activeCategoryId: " + categoryId);					
+                	this.activeCategoriesList.add(categoryId);
+                }
+            }
+            // Hasta aca 
+            
         } catch (UnknownNamespaceException ex) {
             throw new ConfigurationException(
                 "Given namespace can't be recognized by ConfigManager.", ex);
@@ -456,8 +504,18 @@ public class ProjectServicesImpl implements ProjectServices {
         try {
             // find all projects
             logDebug("Starts calling ProjectManager#searchProjects method.");
-            projects = projectManager.searchProjects(ProjectFilterUtility
-                .buildStatusIdEqualFilter(activeProjectStatusId));
+
+    	    Filter filter = ProjectFilterUtility
+	        .buildStatusIdEqualFilter(activeProjectStatusId);
+
+            for (long categoryId : activeCategoriesList) {
+                Filter filterForCategory = ProjectFilterUtility
+                .buildCategoryIdEqualFilter(categoryId);
+        	    filter = ProjectFilterUtility.buildAndFilter(filterForCategory, filter);
+            }
+    	
+            projects = projectManager.searchProjects(filter);
+
             logDebug("Finished calling ProjectManager#searchProjects method.");
 
         } catch (PersistenceException ex) {
@@ -596,17 +654,20 @@ public class ProjectServicesImpl implements ProjectServices {
             logDebug("Finished calling TeamManager#findTeams method.");
             // sets the teams to fullProjectData
             fullProjectData.setTeams(teams);
-
-            // retrieves the external project with given project id
-            logDebug("Starts calling ProjectRetrieval#retrieveProject method.");
-            long externalProjectId =
-                Long.parseLong((String) projectHeader.getProperty(EXTERNAL_REFERENCE_ID));
-            ExternalProject externalProject = projectRetrieval.retrieveProject(externalProjectId);
-            logDebug("Finished calling ProjectRetrieval#retrieveProject method.");
-
-            // gets the technologies associated with give project and sets them to fullProjectData
-            fullProjectData.setTechnologies(externalProject.getTechnologies());
-
+            
+            String externalProjectIdStr = (String) projectHeader.getProperty(EXTERNAL_REFERENCE_ID);
+            if (externalProjectIdStr!=null) {
+                long externalProjectId =
+                    Long.parseLong(externalProjectIdStr);
+                // retrieves the external project with given project id
+                logDebug("Starts calling ProjectRetrieval#retrieveProject method.");
+                ExternalProject externalProject = projectRetrieval.retrieveProject(externalProjectId);            	
+                logDebug("Finished calling ProjectRetrieval#retrieveProject method.");
+                // gets the technologies associated with give project and sets them to fullProjectData
+                fullProjectData.setTechnologies(externalProject.getTechnologies());
+            } else {
+            	logDebug("Project " + projectId + " is missing external reference");
+            }
         } catch (NumberFormatException ex) {
             log(Level.ERROR,
             "ProjectServicesException occurred in ProjectServicesImpl#getFullProjectData method.");
