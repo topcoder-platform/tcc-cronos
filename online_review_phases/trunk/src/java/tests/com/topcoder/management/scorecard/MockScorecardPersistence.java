@@ -8,6 +8,7 @@ import com.topcoder.management.scorecard.data.QuestionType;
 import com.topcoder.management.scorecard.data.Scorecard;
 import com.topcoder.management.scorecard.data.ScorecardStatus;
 import com.topcoder.management.scorecard.data.ScorecardType;
+import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 
 /**
  * A simple mock instance of ScorecardPersistence. Nothing will be done in this class, except some parameters will be
@@ -116,4 +117,8 @@ public class MockScorecardPersistence implements ScorecardPersistence {
         }
         return null;
     }
+
+	public Scorecard[] getScorecards(CustomResultSet resultSet, boolean complete) throws PersistenceException {
+		throw new IllegalStateException("not implemented");
+	}
 }
