@@ -789,32 +789,9 @@
             </lib> // not needed? -->
         </war>
     </target>
-
-	<!-- Deploy forum files -->
-	<!-- Create forums.war.	 
-	
-		 // LoginHandler.xml: vaildateUserProfile()
-		 request.getSession(true).setAttribute(PROFILE_SESSION_KEY, userProfile);	// "user_profile"
-		
-		 Confirm cache.properties is needed. -->
-    <target name="dist_forums" depends="">
-    	<antcall target="war_forums"/>
-    	<antcall target="package_TCJive"/>
-    	<antcall target="package_EJB_MessageHistoryBean"/>
-    	<antcall target="package_EJB_ForumsBean"/>
-    	
-        <copy todir="${jboss_conf}">
-        	<fileset dir="${configdir}/forums">
-        		<include name="*.*"/>
-        	</fileset>
-        </copy>  
-
-    	<!-- <copy todir="${jboss_lib}" file="${build_ejbjarsdir}/tcjive.jar"/> // trying to keep it in EAR temporarily - change if needed -->
-        <!-- <copy todir="${jboss_deploy}" file="${ear.dir}/security.ear"/> // not needed? -->
-    </target>
 	
     <!-- Build Orpheus Game Server application's WAR archive -->
-    <target name="dist" depends="clean,compile,dist_forums">
+    <target name="dist" depends="clean,compile">
         <!-- Build the JAR with Game Server classes -->
         <delete file="${build_distdir}/${distfilename}.jar" failonerror="false"/>
         <jar jarfile="${build_distdir}/${distfilename}.jar" basedir="${build_classdir}"/>
@@ -862,6 +839,35 @@
         </ear>
     </target>
 
+	<!-- Deploy forum files -->
+	<!-- Create forums.war.	 
+	
+		 // LoginHandler.xml: vaildateUserProfile()
+		 request.getSession(true).setAttribute(PROFILE_SESSION_KEY, userProfile);	// "user_profile"
+		
+		 Confirm cache.properties is needed. -->
+    <target name="dist_forums" depends="">
+    	<antcall target="war_forums"/>
+    	<antcall target="package_TCJive"/>
+    	<antcall target="package_EJB_MessageHistoryBean"/>
+    	<antcall target="package_EJB_ForumsBean"/>
+    	
+        <copy todir="${jboss_conf}">
+        	<fileset dir="${configdir}/forums">
+        		<include name="*.*"/>
+        	</fileset>
+        </copy>  
+
+    	<ear destfile="${component.ear}" appxml="${configdir}/application.xml" update="true"
+             duplicate="fail" filesonly="true">
+        	<fileset dir="${jive_libdir}" includes="*.jar,*.war"/>
+    		<fileset dir="${tc_libdir}" includes="*.jar,*.war"/>
+        </ear>
+    	
+    	<!-- <copy todir="${jboss_lib}" file="${build_ejbjarsdir}/tcjive.jar"/> // trying to keep it in EAR temporarily - change if needed -->
+        <!-- <copy todir="${jboss_deploy}" file="${ear.dir}/security.ear"/> // not needed? -->
+    </target>
+
     <!-- Generate Javadoc documentation -->
     <target name="javadoc" depends="compile">
         <mkdir dir="${dist_javadocs}"/>
@@ -881,7 +887,7 @@
     </target>
 
     <!-- Deploy Orpheus Game Server application to JBoss -->
-    <target name="deploy" depends="clean,dist">
+    <target name="deploy" depends="clean,dist,dist_forums">
         <mkdir dir="${global_conf_dir}" description="Create a directory for global configuration files"/>
         <delete dir="${global_conf_dir}/com" failonerror="true"/>
         <copydir src="${configdir}/com/orpheus/game/server/front" dest="${global_conf_dir}/com/orpheus/game/server/front"/>
@@ -896,7 +902,7 @@
     </target>
 	
 	<!-- Deploy Orpheus Game Server application to JBoss in development; explode game_server.ear -->
-    <target name="deploy-dev" depends="clean,dist">
+    <target name="deploy-dev" depends="clean,dist,dist_forums">
         <mkdir dir="${global_conf_dir}" description="Create a directory for global configuration files"/>
         <delete dir="${global_conf_dir}/com" failonerror="true"/>
         <copydir src="${configdir}/com/orpheus/game/server/front" dest="${global_conf_dir}/com/orpheus/game/server/front"/>
