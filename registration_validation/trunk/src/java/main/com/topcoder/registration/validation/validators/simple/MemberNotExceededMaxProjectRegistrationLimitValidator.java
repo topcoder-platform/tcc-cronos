@@ -5,11 +5,16 @@ package com.topcoder.registration.validation.validators.simple;
 
 import com.topcoder.project.service.ProjectServices;
 import com.topcoder.project.service.FullProjectData;
+import com.topcoder.project.service.ProjectServicesException;
+import com.topcoder.management.project.Project;
 import com.topcoder.management.resource.Resource;
+import com.topcoder.management.resource.persistence.ResourcePersistenceException;
+import com.topcoder.management.resource.search.ResourceFilterBuilder;
 import com.topcoder.registration.validation.AbstractConfigurableValidator;
 import com.topcoder.registration.validation.ValidationProcessingException;
 import com.topcoder.registration.validation.RegistrationValidationHelper;
 import com.topcoder.registration.validation.ValidationInfo;
+import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.util.datavalidator.BundleInfo;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.Level;
@@ -229,6 +234,8 @@ public class MemberNotExceededMaxProjectRegistrationLimitValidator extends Abstr
      * @param resource the resource used to count the project registration
      * @param logger the logger to log nothing
      * @return the number of the registration
+     * @throws SearchBuilderException 
+     * @throws ResourcePersistenceException 
      * @throws IllegalArgumentException If obj is null or not a ValidationInfo object
      * @throws ValidationProcessingException If an unexpected system error occurs
      */
@@ -237,28 +244,42 @@ public class MemberNotExceededMaxProjectRegistrationLimitValidator extends Abstr
         // Calls projectServices.findActiveProjects() to get the activeProjects
         ProjectServices projectServices = getRegistrationValidator().getProjectServices();
         RegistrationValidationHelper.log(logger, Level.DEBUG, "Starts calling ProjectServices#findActiveProjects()");
-        FullProjectData[] projects = projectServices.findActiveProjects();
+        Project[] projectHeaders = projectServices.findActiveProjectsHeaders();
         RegistrationValidationHelper.log(logger, Level.DEBUG, "Finishes calling ProjectServices#findActiveProjects()");
 
         // Counts all projects whose activeProject.resources contains this
         // resource.id
         int registrationCount = 1; // this project 
-        if (projects != null) {
-            for (int i = 0; i < projects.length; i++) {
+        if (projectHeaders != null) {
+            for (int i = 0; i < projectHeaders.length; i++) {
                 // ignore current project (re-registrations)
-                if (projects[i].getProjectHeader().getId() == projectId) {
+                if (projectHeaders[i].getId() == projectId) {
                     continue;
                 }
-
-                Resource[] projectResources = projects[i].getResources();
-                for (int j = 0; j < projectResources.length; j++) {
-                    long projectUserId = Long.parseLong(projectResources[j].getProperty("External Reference ID")
-                        .toString());
-                    if (projectUserId == userId) {
-                        registrationCount++;
-                        break;
-                    }
-                }
+                Resource[] projectResources;
+				try {
+					projectResources = getRegistrationValidator().getResourceManager().searchResources(ResourceFilterBuilder.createProjectIdFilter(projectHeaders[i].getId()));
+	                //Resource[] projectResources = projects[i].getResources();
+					for (int j = 0; j < projectResources.length; j++) {
+	                    long projectUserId = Long.parseLong(projectResources[j].getProperty("External Reference ID")
+	                        .toString());
+	                    if (projectUserId == userId) {
+	                        registrationCount++;
+	                        break;
+	                    }
+	                }
+				} catch (ResourcePersistenceException e) {
+					RegistrationValidationHelper.log(logger, Level.ERROR,
+	                "ResourcePersistenceException occurred while getting the resources of the project: " + projectHeaders[i].getId());
+	            throw new ValidationProcessingException(
+	            	"ResourcePersistenceException occurred while getting the resources of the project: " + projectHeaders[i].getId(), e);
+				} catch (SearchBuilderException e) {
+					RegistrationValidationHelper.log(logger, Level.ERROR,
+			                "SearchBuilderException occurred while getting the resources of the project: " + projectHeaders[i].getId());
+			            throw new ValidationProcessingException(
+			            	"SearchBuilderException occurred while getting the resources of the project: " + projectHeaders[i].getId(), e);
+				}
+                
             }
         }
         RegistrationValidationHelper.log(logger, Level.DEBUG, "There are [" + registrationCount + "] for user : ["
