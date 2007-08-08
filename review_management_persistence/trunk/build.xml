@@ -67,7 +67,7 @@
     <!-- DOCUMENT PACKAGE -->
     <property name="dist_docpackage" value="${builddir}/doc_package" />
     <property name="docpackage.jar" value="${distfilename}_docs.jar" />
-    
+
     <!-- TCS Dependencies -->
     <property name="base_exception.version" value="1.0"/>
     <property name="base_exception.jar.name" value="base_exception.jar"/>
@@ -78,18 +78,18 @@
     <property name="configuration_manager.jar.name" value="configuration_manager.jar"/>
     <property name="configuration_manager.path" value="configuration_manager/${configuration_manager.version}"/>
     <property name="configuration_manager.jar" value="${tcs_libdir}/${configuration_manager.path}/${configuration_manager.jar.name}"/>
-    
+
     <property name="db_connection_factory.version" value="1.0"/>
     <property name="db_connection_factory.jar.name" value="db_connection_factory.jar"/>
     <property name="db_connection_factory.path" value="db_connection_factory/${db_connection_factory.version}"/>
     <property name="db_connection_factory.jar" value="${tcs_libdir}/${db_connection_factory.path}/${db_connection_factory.jar.name}"/>
-    
+
     <property name="id_generator.version" value="3.0"/>
     <property name="id_generator.jar.name" value="id_generator.jar"/>
     <property name="id_generator.path" value="id_generator/${id_generator.version}"/>
     <property name="id_generator.jar" value="${tcs_libdir}/${id_generator.path}/${id_generator.jar.name}"/>
 
-	<property name="logging_wrapper.version" value="1.2" />
+    <property name="logging_wrapper.version" value="1.2" />
     <property name="logging_wrapper.jar.name" value="logging_wrapper.jar" />
     <property name="logging_wrapper.path" value="logging_wrapper/${logging_wrapper.version}" />
     <property name="logging_wrapper.jar" value="${tcs_libdir}/${logging_wrapper.path}/${logging_wrapper.jar.name}" />
@@ -98,27 +98,27 @@
     <property name="search_builder.jar.name" value="search_builder.jar"/>
     <property name="search_builder.path" value="search_builder/${search_builder.version}"/>
     <property name="search_builder.jar" value="${tcs_libdir}/${search_builder.path}/${search_builder.jar.name}"/>
-    
+
     <property name="data_validation.version" value="1.0"/>
     <property name="data_validation.jar.name" value="data_validation.jar"/>
     <property name="data_validation.path" value="data_validation/${data_validation.version}"/>
     <property name="data_validation.jar" value="${tcs_libdir}/${data_validation.path}/${data_validation.jar.name}"/>
-    
+
     <property name="database_abstraction.version" value="1.1"/>
     <property name="database_abstraction.jar.name" value="database_abstraction.jar"/>
     <property name="database_abstraction.path" value="database_abstraction/${database_abstraction.version}"/>
     <property name="database_abstraction.jar" value="${tcs_libdir}/${database_abstraction.path}/${database_abstraction.jar.name}"/>
-    
+
     <property name="review_data_structure.version" value="1.0"/>
     <property name="review_data_structure.jar.name" value="review_data_structure.jar"/>
     <property name="review_data_structure.path" value="review_data_structure/${review_data_structure.version}"/>
     <property name="review_data_structure.jar" value="${tcs_libdir}/${review_data_structure.path}/${review_data_structure.jar.name}"/>
-    
+
     <property name="review_management.version" value="1.0"/>
     <property name="review_management.jar.name" value="review_management.jar"/>
     <property name="review_management.path" value="review_management/${review_management.version}"/>
     <property name="review_management.jar" value="${tcs_libdir}/${review_management.path}/${review_management.jar.name}"/>
-    
+
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
 
@@ -137,7 +137,7 @@
         <pathelement location="${database_abstraction.jar}" />
         <pathelement location="${review_data_structure.jar}" />
         <pathelement location="${review_management.jar}" />
-   
+
         <pathelement location="${configdir}" />
         <pathelement location="${testfiles}" />
     </path>
@@ -218,7 +218,7 @@
           </fileset>
           <report format="frames" todir="${reports}"/>
         </junitreport>
-        
+
         <echo>The execution of reports is complete.  Reports are available in /${reports}</echo>
     </target>
 
@@ -303,15 +303,15 @@
         <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml" />
         <copy file="README" tofile="${build_tcsdistdir}/README" />
         <jar jarfile="${component.dist.jar}" basedir="${build_distdir}" excludes="*.jar"/>
-        
+
         <antcall target="move_to_tcs"/>
     </target>
 
     <target name="package_docs" depends="javadoc">
         <mkdir dir="${dist_docpackage}" />
-    
+
         <jar jarfile="${dist_docpackage}/${javadoc.jar}" basedir="${build_tcsdistdir}/${javadocsdir}" />
-        
+
         <copy todir="${dist_docpackage}" >
             <fileset dir="${docsdir}">
                 <include name="${component}_Class_Diagram*"/>
@@ -321,10 +321,10 @@
                 <include name="${component}_Component_Specification.pdf"/>
             </fileset>
         </copy>
-        
+
         <jar jarfile="${builddir}/${docpackage.jar}" basedir="${dist_docpackage}" />
     </target>
-    
+
     <target name="move_to_tcs">
         <mkdir dir="${tcs_libdir}/${component_path}"/>
         <mkdir dir="${tcs_libdir}/${component_path}/dist"/>
@@ -359,7 +359,7 @@
         <copy file="${db_connection_factory.jar}" todir="${jar_tcs_libdir}/${db_connection_factory.path}" />
         <mkdir dir="${jar_tcs_libdir}/${id_generator.path}"/>
         <copy file="${id_generator.jar}" todir="${jar_tcs_libdir}/${id_generator.path}" />
-        
+
         <jar jarfile="${dev_dist.jar}"
              basedir="."
              includes="build.xml,
