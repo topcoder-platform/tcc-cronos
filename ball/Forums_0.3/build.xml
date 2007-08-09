@@ -17,6 +17,7 @@
 	<property name="tc_libdir" value="lib/tc"/>
     <property name="tcs_libdir" value="lib/tcs"/>
     <property name="ext_libdir" value="lib/third_party"/>
+	<property name="jive_libdir" value="${ext_libdir}/jive/4.2.5"/>
     <property name="docsdir" value="docs"/>
     <property name="configdir" value="conf"/>
     <property name="testlogdir" value="log"/>
@@ -329,7 +330,7 @@
     <property name="logging_wrapper.path" value="logging_wrapper/${logging_wrapper.version}"/>
     <property name="logging_wrapper.jar" value="${tcs_libdir}/${logging_wrapper.path}/${logging_wrapper.jar.name}"/>
 
-    <property name="memory_usage.version" value="1.0"/>
+    <property name="memory_usage.version" value="2.0"/>
     <property name="memory_usage.jar.name" value="memory_usage.jar"/>
     <property name="memory_usage.path" value="memory_usage/${memory_usage.version}"/>
     <property name="memory_usage.jar" value="${tcs_libdir}/${memory_usage.path}/${memory_usage.jar.name}"/>
@@ -404,7 +405,7 @@
     <property name="rest_service.path" value="rest_service/${rest_service.version}"/>
     <property name="rest_service.jar" value="${tcs_libdir}/${rest_service.path}/${rest_service.jar.name}"/>
 
-    <property name="simple_cache.version" value="2.0"/>
+    <property name="simple_cache.version" value="2.0.1"/>
     <property name="simple_cache.jar.name" value="simple_cache.jar"/>
     <property name="simple_cache.path" value="simple_cache/${simple_cache.version}"/>
     <property name="simple_cache.jar" value="${tcs_libdir}/${simple_cache.path}/${simple_cache.jar.name}"/>
@@ -618,7 +619,12 @@
         <pathelement location="${jai-codec.jar}"/>
     	
     	<pathelement location="${shared.jar}"/>
-    	<pathelement location="${tcwebcommon.jar}"/>
+    	<pathelement location="${tcwebcommon.jar}"/> 
+    	
+    	<pathelement location="${jive_libdir}/jivebase.jar"/>
+    	<pathelement location="${jive_libdir}/jiveforums.jar"/>
+    	<pathelement location="${jive_libdir}/xwork.jar"/>
+    	<pathelement location="${jive_libdir}/htmlparser.jar"/>
     </path>
 
     <!-- The additional libraries for JWebUnit 1.3 framework utilized for testing purposes -->
@@ -664,10 +670,16 @@
         <path refid="buildlibs"/>
     </path>
 
+	<target name="init">
+		<mkdir dir="${build_distdir}"/>
+		<mkdir dir="${build_ejbjarsdir}"/>
+    </target>
+	
     <!-- Compile production code -->
-    <target name="compile">
+    <target name="compile" depends="init">
         <mkdir dir="${build_classdir}"/>
-        <javac srcdir="${javamain}" destdir="${build_classdir}" includes="**/*.java" debug="true" verbose="${verbose}">
+        <javac srcdir="${javamain}" destdir="${build_classdir}" includes="**/*.java" excludes="com/topcoder/**/*.java" 
+        	debug="true" verbose="${verbose}">
             <classpath refid="buildlibs"/>
         </javac>
     </target>
@@ -681,14 +693,31 @@
         </javac>
     </target>
 	
-	<!-- Compile forums code -->
+	<!-- Compile forums code
+		 TODO: Replace /common, /shared, and /web/common with shared.jar, tcwebcommon.jar when 1.5 is supported. -->
+	<!--
+	<target name="compile_shared">
+		<javac srcdir="${javamain}" destdir="${build_classdir}" debug="true" verbose="${verbose}">
+			<classpath refid="buildlibs"/>
+			<include name="com/topcoder/shared/**"/>
+        </javac>
+        <rmic classname="com.topcoder.shared.distCache.CacheClientImpl" base="${build_classdir}"/>
+        <rmic classname="com.topcoder.shared.distCache.CacheServerSyncImpl" base="${build_classdir}"/>
+    </target>
+    -->
+	
 	<target name="compile_forums">
         <javac srcdir="${javamain}" destdir="${build_classdir}" debug="true" verbose="${verbose}">
         	<classpath refid="buildlibs"/>
+        	<!-- <include name="com/topcoder/shared/**"/>
+        	<include name="com/topcoder/common/**"/>
+        	<include name="com/topcoder/web/common/**"/> -->
         	<include name="com/topcoder/web/forums/**"/>
             <include name="com/topcoder/web/ejb/forums/**"/>
             <include name="com/topcoder/web/ejb/messagehistory/**"/>
         </javac>
+		<!-- <rmic classname="com.topcoder.shared.distCache.CacheClientImpl" base="${build_classdir}"/>
+		<rmic classname="com.topcoder.shared.distCache.CacheServerSyncImpl" base="${build_classdir}"/> -->
     </target>
 	
 	<!-- JBoss EJBs -->
@@ -699,7 +728,7 @@
             <metainf dir="${javamain}/com/topcoder/web/ejb/messagehistory" includes="*.xml"/>
         </jar>
     </target>
-
+	
     <target name="package_EJB_ForumsBean" depends="compile_forums">
         <jar jarfile="${build_ejbjarsdir}/forums.jar">
             <zipfileset dir="${build_classdir}" includes="com/topcoder/web/ejb/BaseEJB.class"/>
@@ -761,30 +790,10 @@
             </lib> // not needed? -->
         </war>
     </target>
-
-	<!-- Deploy forum files -->
-	<!-- Create forums.war.	 
-	
-		 // LoginHandler.xml: vaildateUserProfile()
-		 request.getSession(true).setAttribute(PROFILE_SESSION_KEY, userProfile);	// "user_profile"
-		
-		 Confirm cache.properties is needed. -->
-    <target name="dist_forums" depends="">
-    	<antcall target="war_forums"/>
-    	<antcall target="package_TCJive"/>
-    	<antcall target="package_EJB_MessageHistoryBean"/>
-    	<antcall target="package_EJB_ForumsBean"/>
-    	
-        <copy todir="${jboss_conf}" file="${configdir}/forums/*"/>
-
-    	<!-- <copy todir="${jboss_lib}" file="${build_ejbjarsdir}/tcjive.jar"/> // trying to keep it in EAR temporarily - change if needed -->
-        <!-- <copy todir="${jboss_deploy}" file="${ear.dir}/security.ear"/> // not needed? -->
-    </target>
 	
     <!-- Build Orpheus Game Server application's WAR archive -->
-    <target name="dist" depends="clean,compile,dist_forums">
+    <target name="dist" depends="clean,compile">
         <!-- Build the JAR with Game Server classes -->
-        <mkdir dir="${build_distdir}"/>
         <delete file="${build_distdir}/${distfilename}.jar" failonerror="false"/>
         <jar jarfile="${build_distdir}/${distfilename}.jar" basedir="${build_classdir}"/>
         <jar basedir="${configdir}" jarfile="${build_distdir}/${distfilename}.jar" update="true" includes="com/**"
@@ -823,12 +832,39 @@
             <fileset dir="${ext_libdir}" includes="**/jai_core.jar"/>
             <fileset dir="${ext_libdir}" includes="**/jai_codec.jar"/>
         </copy>
-        <ear destfile="${component.ear}" appxml="${configdir}/application.xml" update="false"
+    	<ear destfile="${component.ear}" appxml="${configdir}/application.xml" basedir="${build_distdir}" update="false"
              duplicate="fail" filesonly="true">
-        	<fileset dir="${build_distdir}" includes="*.jar,*.war"/>
-        	<fileset dir="${ext_libdir}/jive/4.2.5" includes="*.jar,*.war"/> <!-- TODO: Move to dist-forums -->
-        	<fileset dir="${build_ejbjarsdir}" includes="*.jar,*.war"/>
         </ear>
+    </target>
+
+	<!-- Deploy forum files -->
+	<!-- Create forums.war.	 
+	
+		 // LoginHandler.xml: vaildateUserProfile()
+		 request.getSession(true).setAttribute(PROFILE_SESSION_KEY, userProfile);	// "user_profile"
+		
+		 Confirm cache.properties is needed. -->
+    <target name="dist_forums" depends="">
+    	<antcall target="war_forums"/>
+    	<antcall target="package_TCJive"/>
+    	<antcall target="package_EJB_MessageHistoryBean"/>
+    	<antcall target="package_EJB_ForumsBean"/>
+    	
+        <copy todir="${jboss_conf}">
+        	<fileset dir="${configdir}/forums">
+        		<include name="*.*"/>
+        	</fileset>
+        </copy>  
+
+    	<ear destfile="${component.ear}" appxml="${configdir}/application.xml" update="true"
+             duplicate="fail" filesonly="true">
+    		<fileset dir="${tc_libdir}" includes="*.jar,*.war"/>
+        	<fileset dir="${jive_libdir}" includes="*.jar,*.war"/>
+    		<fileset dir="${build_ejbjarsdir}" includes="*.jar,*.war"/>
+        </ear>
+    	
+    	<!-- <copy todir="${jboss_lib}" file="${build_ejbjarsdir}/tcjive.jar"/> // trying to keep it in EAR temporarily - change if needed -->
+        <!-- <copy todir="${jboss_deploy}" file="${ear.dir}/security.ear"/> // not needed? -->
     </target>
 
     <!-- Generate Javadoc documentation -->
@@ -850,7 +886,7 @@
     </target>
 
     <!-- Deploy Orpheus Game Server application to JBoss -->
-    <target name="deploy" depends="clean,dist">
+    <target name="deploy" depends="clean,dist,dist_forums">
         <mkdir dir="${global_conf_dir}" description="Create a directory for global configuration files"/>
         <delete dir="${global_conf_dir}/com" failonerror="true"/>
         <copydir src="${configdir}/com/orpheus/game/server/front" dest="${global_conf_dir}/com/orpheus/game/server/front"/>
@@ -865,7 +901,7 @@
     </target>
 	
 	<!-- Deploy Orpheus Game Server application to JBoss in development; explode game_server.ear -->
-    <target name="deploy-dev" depends="clean,dist">
+    <target name="deploy-dev" depends="clean,dist,dist_forums">
         <mkdir dir="${global_conf_dir}" description="Create a directory for global configuration files"/>
         <delete dir="${global_conf_dir}/com" failonerror="true"/>
         <copydir src="${configdir}/com/orpheus/game/server/front" dest="${global_conf_dir}/com/orpheus/game/server/front"/>
