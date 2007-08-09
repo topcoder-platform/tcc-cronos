@@ -1,0 +1,11 @@
+<action name="ActiveGames" type="default" url-pattern="/server/activeGames.do" priority="10">
+    <handler type="active_games">
+        <games_key>pendingGames</games_key>
+    </handler>
+    <result name="success" type="dbLoggingForward">
+        <forward-url>/public/index.jsp</forward-url>
+        <log-message>presented with Main page</log-message>
+        <category>WEB SITE</category>
+        <action-code>122</action-code>
+    </result>
+</action>

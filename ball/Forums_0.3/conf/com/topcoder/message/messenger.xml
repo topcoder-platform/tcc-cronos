@@ -1,0 +1,6 @@
+<CMConfig>
+    <Property name="plugins">
+        <Value>OrpheusMessagePlugin:com.topcoder.message.messenger.plugins.EmailPlugin</Value>
+    </Property>
+</CMConfig>
+

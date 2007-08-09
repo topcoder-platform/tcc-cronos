@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+<taglib>
+	<tlib-version>1.0</tlib-version>
+	<jsp-version>1.2</jsp-version>
+	<short-name>reports</short-name>
+	<uri>/reports</uri>
+	<display-name>QuestionReports</display-name>
+	<description>Web Registration tag library</description>
+	<tag>
+		<name>registration</name>
+		<tag-class>com.topcoder.web.registration.jsptags.RegistrationTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>The registration tag.</description>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<description>The id of the tag</description>
+		</attribute>
+		<attribute>
+			<name>registrationManager</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>The RegistrationManager instance.</description>
+		</attribute>
+		<attribute>
+			<name>phase</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>The phase to be processed.</description>
+		</attribute>
+		<attribute>
+			<name>nextPhase</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>The next phase to be processed.</description>
+		</attribute>
+	</tag>
+	<tag>
+		<name>doAfterPhase</name>
+		<tag-class>com.topcoder.web.registration.jsptags.DoAfterPhaseTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>This tg¡¯s body is processed after processing a phase.</description>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<description>The id of the tag</description>
+		</attribute>
+		<attribute>
+			<name>type</name>
+			<required>true</required>
+			<description>The type: "Start", "NextQuestionsPage",
+				"EmailValidationRequest" and
+				"EmailConfirmationRequest".</description>
+		</attribute>
+	</tag>
+	<tag>
+		<name>success</name>
+		<tag-class>com.topcoder.web.registration.jsptags.SuccessTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>The tag¡¯s body is processed if the phase was successful.</description>
+		<variable>
+    		<name-given>nextPage</name-given>
+		    <variable-class>java.lang.String</variable-class>
+		    <declare>true</declare>
+		    <scope>NESTED</scope>
+		</variable>
+		<variable>
+    		<name-given>userProfile</name-given>
+		    <variable-class>com.topcoder.user.profile.UserProfile</variable-class>
+		    <declare>true</declare>
+		    <scope>NESTED</scope>
+		</variable>		
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<description>The id of the tag</description>
+		</attribute>
+	</tag>
+	<tag>
+		<name>error</name>
+		<tag-class>com.topcoder.web.registration.jsptags.ErrorTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>The tag¡¯s body is processed if the phase had no errors.</description>
+		<variable>
+    		<name-given>exception</name-given>
+		    <variable-class>com.topcoder.web.registration.WebRegistrationException</variable-class>
+		    <declare>true</declare>
+		    <scope>NESTED</scope>
+		</variable>
+		<variable>
+    		<name-given>errorPage</name-given>
+		    <variable-class>java.lang.String</variable-class>
+		    <declare>true</declare>
+		    <scope>NESTED</scope>
+		</variable>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<description>The id of the tag</description>
+		</attribute>
+	</tag>
+	<!-- tag lib definition introduced in version 1.1 -->
+    <tag>
+        <name>route</name>
+        <tag-class>com.topcoder.web.registration.jsptags.RouteTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+          <name>autoRoute</name>
+          <required>false</required>
+        </attribute>
+    </tag>
+    
+    <tag>
+    <name>if</name>
+        <tag-class>com.topcoder.web.registration.jsptags.IfTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+          <name>path</name>
+          <required>true</required>
+          <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>condition</name>
+        <tag-class>com.topcoder.web.registration.jsptags.ConditionTag</tag-class>
+        <body-content>none</body-content>
+        <attribute>
+            <name>key</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>value</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+	
+</taglib>

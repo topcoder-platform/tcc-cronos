@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<CMConfig>
+    <Config name="com.topcoder.randomstringimg">
+        <Property name="width">
+            <Value>400</Value>
+        </Property>
+        <Property name="height">
+            <Value>100</Value>
+        </Property>
+        <Property name="colorfiles">
+            <Value>/var/opt/orpheus/conf/Colors.xml</Value>
+        </Property>
+        <Property name="dictionaries">
+            <Value>/var/opt/orpheus/conf/wordlist1.txt</Value>
+        </Property>
+        <Property name="algorithms">
+            <Value>com.orpheus.game.server.util.OrpheusImageObfuscator</Value>
+        </Property>
+        <Property name="minlength">
+            <Value>4</Value>
+        </Property>
+        <Property name="maxlength">
+            <Value>10</Value>
+        </Property>
+        <Property name="format">
+            <Value>JPEG</Value>
+        </Property>
+        <Property name="minfontsize">
+            <Value>10</Value>
+        </Property>
+        <Property name="maxfontsize">
+            <Value>22</Value>
+        </Property>
+    </Config>
+</CMConfig>

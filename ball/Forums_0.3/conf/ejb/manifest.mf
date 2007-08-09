@@ -1,0 +1,19 @@
+Class-Path: game_server.jar game_persistence.jar base_exception.jar puzzle_framework.jar front_controller.jar
+            administration_persistence.jar user_logic_persistence.jar user_profile.jar
+            user_profile_manager.jar db_connection_factory.jar authorization.jar administration_logic.jar
+            auction_persistence.jar auction_logic.jar auction_framework.jar bloom_filter.jar class_associations.jar
+            command_line_utility.jar compression_utility.jar configuration_manager.jar credit_card_validation.jar
+            data_validation.jar database_abstraction.jar document_generator.jar email_address_validator.jar
+            email_confirmation.jar email_engine.jar encryption.jar file_upload.jar form_validator.jar
+            forgot_password.jar game_handlers_logic.jar game_operation_logic.jar game_interface_logic.jar
+            generic_event_manager.jar html_parser.jar id_generator.jar image_manipulation.jar guid_generator.jar
+            hashing_utility.jar jndi_utility.jar json_object.jar jigsaw_puzzle.jar letter_scramble_puzzle.jar
+            logging_wrapper.jar lightweight_xml_parser.jar memory_usage.jar messenger_framework.jar
+            missing_letter_puzzle.jar object_factory.jar object_formatter.jar password_validator.jar
+            random_string_generator.jar random_string_image.jar rss_generator.jar registration_data_validation.jar
+            rest_context_builder.jar rest_service.jar simple_cache.jar site_validation.jar sliding_tile_puzzle.jar
+            spell_check.jar search_builder.jar string_distance.jar stoppable_thread.jar typesafe_enum.jar
+            url_loader.jar web_application_user_logic.jar web_site_statistics.jar web_registration.jar web_spider.jar
+            xsl_engine.jar Tidy.jar data_paging_tag.jar jai_codec.jar jai_core.jar drop_down_manager.jar
+            http_utility.jar base64_codec.jar string_class.jar sync_proc_wrapper.jar
+            

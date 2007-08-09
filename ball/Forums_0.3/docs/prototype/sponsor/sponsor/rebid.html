@@ -1,0 +1,266 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Orpheus :: Prototype</title>
+		<link rel="stylesheet" type="text/css" media="all" href="../css/styles.css" />	
+		<link rel="stylesheet" type="text/css" media="all" href="../css/tabs.css" />		
+		<!-- NAVIGATION JS -->
+		<script type="text/javascript">
+		function SwapImage1() {
+		  document.image1.src="../i/nav/player_home_on.gif"
+		}
+		function SwapImage1Back() {
+		  document.image1.src="../i/nav/player_home_off.gif"
+		}
+		function SwapImage2() {
+		  document.image2.src="../i/nav/player_active_on.gif"
+		}
+		function SwapImage2Back() {
+		  document.image2.src="../i/nav/player_active_off.gif"
+		}		
+		function SwapImage3() {
+		  document.image3.src="../i/nav/player_mygames_on.gif"
+		}
+		function SwapImage3Back() {
+		  document.image3.src="../i/nav/player_mygames_off.gif"
+		}
+		function SwapImage4() {
+		  document.image4.src="../i/nav/player_faq_on.gif"
+		}
+		function SwapImage4Back() {
+		  document.image4.src="../i/nav/player_faq_off.gif"
+		}		
+	</script>		
+	<!-- TABS JS -->
+		<script type="text/javascript">
+		
+		//Set tab to intially be selected when page loads:
+		//[which tab (1=first tab), ID of tab content to display]:
+		var initialtab=[1, "sc1"]
+		
+		function cascadedstyle(el, cssproperty, csspropertyNS){
+		if (el.currentStyle)
+		return el.currentStyle[cssproperty]
+		else if (window.getComputedStyle){
+		var elstyle=window.getComputedStyle(el, "")
+		return elstyle.getPropertyValue(csspropertyNS)
+		}
+		}
+		
+		var previoustab=""
+		
+		function expandcontent(cid, aobject){
+		if (document.getElementById){
+		highlighttab(aobject)
+		detectSourceindex(aobject)
+		if (previoustab!="")
+		document.getElementById(previoustab).style.display="none"
+		document.getElementById(cid).style.display="block"
+		previoustab=cid
+		if (aobject.blur)
+		aobject.blur()
+		return false
+		}
+		else
+		return true
+		}
+		
+		function highlighttab(aobject){
+		if (typeof tabobjlinks=="undefined")
+		collecttablinks()
+		for (i=0; i<tabobjlinks.length; i++)
+		tabobjlinks[i].style.backgroundColor=initTabcolor
+		var themecolor=aobject.getAttribute("theme")? aobject.getAttribute("theme") : initTabpostcolor
+		aobject.style.backgroundColor=document.getElementById("tabcontentcontainer").style.backgroundColor=themecolor
+		}
+		
+		function collecttablinks(){
+		var tabobj=document.getElementById("tablist")
+		tabobjlinks=tabobj.getElementsByTagName("A")
+		}
+		
+		function detectSourceindex(aobject){
+		for (i=0; i<tabobjlinks.length; i++){
+		if (aobject==tabobjlinks[i]){
+		tabsourceindex=i //source index of tab bar relative to other tabs
+		break
+		}
+		}
+		}
+		
+		function do_onload(){
+		var cookiename=(typeof persisttype!="undefined" && persisttype=="sitewide")? "tabcontent" : window.location.pathname
+		var cookiecheck=window.get_cookie && get_cookie(cookiename).indexOf("|")!=-1
+		collecttablinks()
+		initTabcolor=cascadedstyle(tabobjlinks[1], "backgroundColor", "background-color")
+		initTabpostcolor=cascadedstyle(tabobjlinks[0], "backgroundColor", "background-color")
+		if (typeof enablepersistence!="undefined" && enablepersistence && cookiecheck){
+		var cookieparse=get_cookie(cookiename).split("|")
+		var whichtab=cookieparse[0]
+		var tabcontentid=cookieparse[1]
+		expandcontent(tabcontentid, tabobjlinks[whichtab])
+		}
+		else
+		expandcontent(initialtab[1], tabobjlinks[initialtab[0]-1])
+		}
+		
+		if (window.addEventListener)
+		window.addEventListener("load", do_onload, false)
+		else if (window.attachEvent)
+		window.attachEvent("onload", do_onload)
+		else if (document.getElementById)
+		window.onload=do_onload
+		</script>
+		<!-- END TABS JS -->  	
+</head>
+	
+<body id="page">
+	<div id="container">
+<!-- Header	 -->
+		<div id="header"><span class="links"><a href="../logout.html" title="Logout">Logout</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="../help.html" title="Help">Help</a></span>
+			<a href="../index.html" title="Home"><img src="../i/logo.jpg" alt="Logo" width="202" height="65" /></a>
+		</div>
+<!-- Navigation Sponsor -->
+		<div id="nav">
+			<ul>
+				<li><a href="../index.html" title="Home"><img src="../i/nav/sponsor_home_off.gif" name="image1" border="0" onMouseOver="SwapImage1()" onMouseOut="SwapImage1Back()" alt="Home" /></a></li>
+				<li><a href="auctions.html" title="Open Auctions"><img src="../i/nav/sponsor_auctions_on.gif"  alt="Open Auctions" /></a></li>
+				<li><a href="sponsor-faq.html" title="Bidding FAQ"><img src="../i/nav/sponsor_faq_off.gif" name="image3" border="0" onMouseOver="SwapImage3()" onMouseOut="SwapImage3Back()" alt="Bidding FAQ" /></a></li>
+				<li><img border="0" src="../i/nav/sponsor_endbar.gif" width="446" height="30" /></li>
+			</ul>
+		</div>
+		<div id="wrap">
+			<h1><img src="../i/h/title_increaseyourbid.gif" alt="Increse your Bid" /></h1>
+				<div id="breadcrumb">&raquo; 1. View Games with Available Timeslots &nbsp; &raquo; 2. Bid on a Timeslot &nbsp; <span class="active">&raquo; 3. Bid Confirmation</span></div>
+				
+				Winning Bidders will receive a timeslot where their website will be host to the Ball during this game. Because a ball could end before the ball makes it to this timeslot, payment will not be collected until the ball has arrived at your website. For more information on how the auctions work, visit our <a href="sponsor-faq.html">Bidding FAQ.</a><br /><br />
+				
+				<div id="table-details">
+					<table border="0" cellpadding="0" cellspacing="0" width="313">
+						<tr>
+							<th colspan="2">Auction #4235634-D</th>
+						</tr>
+						<tr>
+							<td class="bold" width="55%">Game:</td>
+							<td width="45%">The Super Ball</td>
+						</tr>
+						<tr>
+							<td class="bold">Block Length:</td>
+							<td>24 Hours (maximum)</td>
+						</tr>
+						<tr>
+							<td class="bold">Auction Ends:</td>
+							<td>4h 22m</td>
+						</tr>
+						<tr>
+							<td class="bold">Game Status:</td>
+							<td>Active</td>
+						</tr>
+					</table>
+					<table border="0" cellpadding="0" cellspacing="0" width="313">
+						<tr>
+							<th colspan="2">Place Your Bid</th>
+						</tr>
+						<tr>
+							<td class="bold">Select a Website: </td>
+							<td>
+								<select name="website" class="dropDown" style="width:150px;">
+								<option>Select</option>
+								<option value="">www.website.com</option>
+								<option value="">www.topcoder.com</option>
+								<option value="">www.toronto.com</option>
+								<option value="">www.dancingpaul.com</option>
+								<option value="">www.calvinklein.com</option>
+								</select></td>
+						</tr>
+						<tr>
+							<td class="bold">Select an Image: </td>
+							<td>
+								<select name="image" class="dropDown" style="width:150px;">
+								<option>Select</option>
+								<option value="">Promo Image</option>
+								<option value="">Promo Image </option>
+								<option value="">Logo</option>
+								<option value="">July NYtimes AD</option>
+								</select></td>
+						</tr>
+						<tr>
+							<td class="bold">*Specify Max Bid:</td>
+							<td>
+								<input name="maxBid" type="text" id="maxBid" class="inputBox" style="width:143px;" /> &nbsp;<span class="fItalic subcontent"><br />(min. $371)</span></td>						
+						</tr>
+					</table>
+				<div class="buttons"><a href="bid-confirm.html" title="Submit Bid"><img src="../i/b/btn_submitbid.gif" width="71" height="15" /></a></div>
+					<div class="subcontent">
+						* Your bid will be automatically incremented up to your maximum bid until you have reached the minimum amount to secure a slot.
+					</div>
+				</div>
+
+			<div id="tabcontentcontainer">
+			
+			<!-- COMPETING BIDS TAB -->
+			<div id="sc1" class="tabcontent">
+			<ul id="tablist">
+				<li id="current"><a href="#tabs" onClick="return expandcontent('sc1', this)">Competing Bids</a></li>
+				<li><a href="#tabs" onClick="return expandcontent('sc2', this)">Jackpot</a></li>
+			</ul><div style="clear:both;"></div>
+				<div id="table-tabs">
+					<table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td>
+								<p>There are 5 slots available in this timeblock. You must bid at least as high as the lowest competing bid to be eligible for a winning bid.</p>
+							</td>
+						</tr>
+						<tr>
+							<td class="bold">COMPETING BIDS</td>
+						</tr>
+						<tr class="alt">
+							<td>1. $623.00</td>
+						</tr>
+						<tr class="alt2">
+							<td>2. $500.00</td>
+						</tr>
+						<tr class="alt">
+							<td>3. $475.00</td>
+						</tr>
+						<tr class="alt2">
+							<td>4. %400.00</td>
+						</tr>
+						<tr class="alt">
+							<td>5. $370.00</td>
+						</tr>
+						</table>
+					</div>
+				</div>
+
+<!-- JACKPOT TAB -->
+			<div id="sc2" class="tabcontent">
+			<ul id="tablist">
+				<li><a href="#tabs" onClick="return expandcontent('sc1', this)">Competing Bids</a></li>
+				<li id="current"><a href="#tabs" onClick="return expandcontent('sc2', this)">Jackpot</a></li>
+			</ul>
+			<div style="clear:both;"></div>
+				<div id="table-tabs">
+					<table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td>
+								<p>** The game Jackpot is determined by how long it takes for players to find the ball. Every jackpot starts at a minimal amount, but the more sponsors host the ball, and the higher the winning bids of an auction, the higher the jackpot.</p>
+								<p>&hellip;And naturally, the higher the payout, the more players will swarm to hosting websites.</p>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+			
+			
+</div>
+<!-- Footer -->
+	<div id="footer">
+		<span class="links"><a href="../privacy-policy.html">Privacy Policy</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="../contact-us.html">Contact Us</a></span>
+		<p>&copy; Copyright 2006 TopCoder, Inc.</p>
+	</div>
+</body>
+</html>

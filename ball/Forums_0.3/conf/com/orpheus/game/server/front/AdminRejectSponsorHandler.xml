@@ -1,0 +1,75 @@
+<action name="SponsorRejection" type="default" url-pattern="/server/admin/rejectSponsor.do" priority="10">
+    <handler type="SessionValidationHandler">
+        <login_page_result>login</login_page_result>
+    </handler>
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>admin</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <handler type="form_validation">
+        <form-name>rejectForm</form-name>
+    </handler>
+    <handler type="SponsorRejection">
+        <object-factory-ns>com.orpheus.game.server.ObjectFactory</object-factory-ns>
+        <sponsor-id-request-param>sponsorId</sponsor-id-request-param>
+        <fail-result>sponsorRejectionFailure</fail-result>
+        <fail-request-attribute>failureHandlerResult</fail-request-attribute>
+    </handler>
+    <handler type="UserMessagePreHandler">
+        <object_factory_ns>com.orpheus.game.server.ObjectFactory</object_factory_ns>
+        <user-id-request-param>sponsorId</user-id-request-param>
+        <template-file>com/orpheus/game/server/template/RejectSponsorTemplate.txt</template-file>
+        <message-subject>Sponsor Account Rejected</message-subject>
+        <reject-reason-param>rejectReason</reject-reason-param>
+        <reject-message-param>rejectMessage</reject-message-param>
+        <fail-result>messagePreHandlerFailure</fail-result>
+        <fail-request-attribute>failureHandlerResult</fail-request-attribute>
+    </handler>
+    <handler type="UserMessageHandler">
+        <messenger_plugin_key>OrpheusMessagePlugin</messenger_plugin_key>
+        <message_param_keys>
+            <value>subject</value>
+            <value>to</value>
+            <value>body</value>
+            <value>from</value>
+        </message_param_keys>
+    </handler>
+    <result name="sponsorRejectionFailure" type="loggingForward">
+        <forward-url>/public/error.jsp</forward-url>
+        <log-message>failed to reject sponsor {0} with reason {1} and message {2} due to unexpected error</log-message>
+        <parameters>sponsorId,rejectReason,rejectMessage</parameters>
+        <category>ADMIN</category>
+    </result>
+    <result name="success" type="loggingForward">
+        <forward-url>/server/admin/pendingSponsors.do</forward-url>
+        <log-message>rejected sponsor {0} with reason {1} and message {2}</log-message>
+        <parameters>sponsorId,rejectReason,rejectMessage</parameters>
+        <category>ADMIN</category>
+    </result>
+    <result name="auth_failed" type="loggingForward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+        <log-message>attempted to reject sponsor {0} with reason {1} and message {2} without ADMIN role assigned</log-message>
+        <parameters>sponsorId,rejectReason,rejectMessage</parameters>
+        <category>ADMIN</category>
+    </result>
+    <result name="validation-error" type="loggingForward">
+        <forward-url>/WEB-INF/admin/reject-sponsor.jsp</forward-url>
+        <log-message>failed to pass validation for Reject Sponsor form for sponsor {0} with reason {1} and message {2}</log-message>
+        <parameters>sponsorId,rejectReason,rejectMessage</parameters>
+        <category>ADMIN</category>
+    </result>
+    <result name="messagePreHandlerFailure" type="loggingForward">
+        <forward-url>/public/error.jsp</forward-url>
+        <log-message>failed to send notifications after rejecting the sponsor {0} with reason {1} and message {2}</log-message>
+        <parameters>sponsorId,rejectReason,rejectMessage</parameters>
+        <category>ADMIN</category>
+    </result>
+    <result name="login" type="loggingForward">
+        <forward-url>/public/timeout.jsp</forward-url>
+        <log-message>failed to reject sponsor {0} with reason {1} and message {2} due to session timeout or is not authenticated to server</log-message>
+        <parameters>sponsorId,rejectReason,rejectMessage</parameters>
+        <category>ADMIN</category>
+    </result>
+</action>

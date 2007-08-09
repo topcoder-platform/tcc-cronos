@@ -1,0 +1,9 @@
+Hello,
+
+You have successfully registered for the %GAME_NAME% game of The Ball.
+
+The game starts on %START_DATE% at %FIRST_DOMAIN%.
+
+Happy Hunting,
+The Ball Team
+

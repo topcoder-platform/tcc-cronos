@@ -1,0 +1,95 @@
+<action name="PluginDomainBrainteaser" type="default" url-pattern="/server/plugin/testPuzzle.do" priority="10">
+    <handler type="SessionValidationHandler">
+        <login_page_result>login</login_page_result>
+    </handler>
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>player</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <handler type="DuplicateRequestHandler">
+    </handler>
+    <handler type="PlayerGameAuthorizationHandler">
+        <game_id_param_key>gameId</game_id_param_key>
+        <game_play_key>gamePlayInfo</game_play_key>
+        <game_registration_post_url_key>gameRegistrationPostURL</game_registration_post_url_key>
+        <raise_error>true</raise_error>
+        <error_result>gameError</error_result>
+        <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
+        <jndi_context_name>default</jndi_context_name>
+        <use_remote_interface>true</use_remote_interface>
+    </handler>
+    <handler type="PlayerPuzzleSolutionPreHandler">
+        <game_id_param_key>gameId</game_id_param_key>
+        <slot_id_param_key>slotId</slot_id_param_key>
+        <slot_completion_request_attribute_key>slotCompletion</slot_completion_request_attribute_key>
+        <game_play_key>gamePlayInfo</game_play_key>
+        <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
+        <jndi_context_name>default</jndi_context_name>
+        <use_remote_interface>true</use_remote_interface>
+    </handler>
+    <handler type="PuzzleSolutionHandler">
+        <game_id_param_key>gameId</game_id_param_key>
+        <slot_id_param_key>slotId</slot_id_param_key>
+        <slot_completion_request_attribute_key>slotCompletion</slot_completion_request_attribute_key>
+        <solutiontester_base_name>puzzleSolutionTester</solutiontester_base_name>
+        <incorrect_solution_result>incorrect_solution</incorrect_solution_result>
+    </handler>
+    <handler type="PlayerPuzzleSolutionPostHandler">
+        <game_id_param_key>gameId</game_id_param_key>
+        <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
+        <jndi_context_name>default</jndi_context_name>
+        <use_remote_interface>true</use_remote_interface>
+        <email_recipients>service@theball.com</email_recipients>
+        <email_subject>Game completed by player</email_subject>
+    </handler>
+    <result name="success" type="successiveRequestForward">
+        <forward-url>/WEB-INF/plugin/puzzle_solved.jsp</forward-url>
+        <log-message>solved Game Win puzzle for game {0} and slot {1} within the configured period and presented with
+            Game Winner Registration form
+        </log-message>
+        <parameters>gameId,slotId</parameters>
+        <action-code>145</action-code>
+    </result>
+    <result name="auth_failed" type="dbLoggingForward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+        <log-message>attempted to submit solution for Game Win puzzle for game {0} and slot {1} without PLAYER role
+            assigned
+        </log-message>
+        <parameters>gameId,slotId</parameters>
+        <action-code>19</action-code>
+    </result>
+    <result name="incorrect_solution" type="successiveRequestForward">
+        <forward-url>/WEB-INF/plugin/alert-puzzlenotsolved.jsp</forward-url>
+        <log-message>failed to solve Game Win puzzle for game {0} and slot {1} correctly</log-message>
+        <parameters>gameId,slotId</parameters>
+        <action-code>78</action-code>
+    </result>
+    <result name="puzzleSolutionPeriodExpiredResult" type="successiveRequestForward">
+        <forward-url>/WEB-INF/plugin/alert-puzzleexpired.jsp</forward-url>
+        <log-message>failed to solve Game Win puzzle for game {0} and slot {1} within the configured period
+        </log-message>
+        <parameters>gameId,slotId</parameters>
+        <action-code>79</action-code>
+    </result>
+    <result name="login" type="dbLoggingForward">
+        <forward-url>/plugin/timeout.jsp</forward-url>
+        <log-message>failed to test puzzle solution for game {0} and slot {1} due to session timeout or is not
+            authenticated to server
+        </log-message>
+        <parameters>gameId,slotId</parameters>
+        <action-code>83</action-code>
+    </result>
+    <result name="gameError" type="successiveRequestForward">
+        <forward-url>/WEB-INF/plugin/gameAuthorizationError.jsp</forward-url>
+        <log-message>is not registered to game {0} while attempting to submit solution for Game Win puzzle</log-message>
+        <parameters>gameId</parameters>
+        <action-code>111</action-code>
+    </result>
+    <result name="duplicateRequestResult" type="duplicateRequestForward">
+        <forward-url>UNUSED</forward-url>
+        <log-message>Duplicate request for testing the puzzle. Responding with response to original request
+        </log-message>
+    </result>
+</action>

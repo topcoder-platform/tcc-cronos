@@ -1,0 +1,10 @@
+<action name="Logout" type="default" url-pattern="/server/logout.do" priority="10">
+    <handler type="LoggingHandler">
+        <log-message>logged out</log-message>
+        <category>WEB SITE</category>
+    </handler>
+    <handler type="logout"/>
+    <result name="success" type="forward">
+        <forward-url>/public/logout.jsp</forward-url>
+    </result>
+</action>

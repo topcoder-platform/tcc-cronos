@@ -1,0 +1,125 @@
+<action name="TestTargetObject" type="default" url-pattern="/server/plugin/testTarget.do" priority="10">
+    <handler type="SessionValidationHandler">
+        <login_page_result>login</login_page_result>
+    </handler>
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>player</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <handler type="DuplicateRequestHandler">
+    </handler>
+    <handler type="PlayerGameAuthorizationHandler">
+        <game_id_param_key>gameId</game_id_param_key>
+        <game_play_key>gamePlayInfo</game_play_key>
+        <game_registration_post_url_key>gameRegistrationPostURL</game_registration_post_url_key>
+        <raise_error>true</raise_error>
+        <error_result>gameError</error_result>
+        <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
+        <jndi_context_name>default</jndi_context_name>
+        <use_remote_interface>true</use_remote_interface>
+    </handler>
+    <handler type="test_target_object">
+        <game_id_param_key>gameId</game_id_param_key>
+        <domain_name_param_key>domain</domain_name_param_key>
+        <sequence_number_param_key>seq</sequence_number_param_key>
+        <text_param_key>hash</text_param_key>
+        <triggered_url_param_key>url</triggered_url_param_key>
+        <not_logged_in_result_code>notLoggedResult</not_logged_in_result_code>
+        <test_failed_result_code>testFailedResult</test_failed_result_code>
+        <url_change_result_code>testUrlFailedResult</url_change_result_code>
+    </handler>
+    <handler type="PlayerTestTargetObjectPostHandler">
+        <game_id_param_key>gameId</game_id_param_key>
+        <domain_param_key>domain</domain_param_key>
+        <sequence_number_param_key>seq</sequence_number_param_key>
+        <game_play_key>gamePlayInfo</game_play_key>
+        <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
+        <jndi_context_name>default</jndi_context_name>
+        <use_remote_interface>true</use_remote_interface>
+        <bloom_filter_category>BloomFilter</bloom_filter_category>
+        <bloom_filter_capacity>100</bloom_filter_capacity>
+        <bloom_filter_error_rate>0.01</bloom_filter_error_rate>
+        <messenger_namespace>com.orpheus.game.server.RSSDataStore</messenger_namespace>
+    </handler>
+    <result name="notLoggedResult" type="dbLoggingForward">
+        <forward-url>/plugin/login.jsp</forward-url>
+        <log-message>failed to test target "{0}" from URL {1} for game {2} and domain {3} due to session timeout or is
+            not authenticated to server
+        </log-message>
+        <parameters>hash,url,gameId,domain</parameters>
+        <action-code>84</action-code>
+    </result>
+    <result name="testFailedResult" type="successiveRequestForward">
+        <forward-url>/WEB-INF/plugin/alert-notquite.jsp</forward-url>
+        <log-message>failed to pass test for target "{0}" from URL {1} for game {2} and domain {3}</log-message>
+        <parameters>hash,url,gameId,domain</parameters>
+        <action-code>63</action-code>
+    </result>
+    <result name="testUrlFailedResult" type="successiveRequestForward">
+        <forward-url>/WEB-INF/plugin/alert-notquite-url.jsp</forward-url>
+        <log-message>failed to pass test for target "{0}" from URL {1} for game {2} and domain {3} due to incorrect URL
+        </log-message>
+        <parameters>hash,url,gameId,domain</parameters>
+        <action-code>64</action-code>
+    </result>
+    <result name="foundObjectResult" type="successiveRequestForward">
+        <forward-url>/WEB-INF/plugin/alert-foundobject.jsp</forward-url>
+        <log-message>passed test for target "{0}" from URL {1} for game {2} and domain {3} and has to find next target
+            in sequence
+        </log-message>
+        <parameters>hash,url,gameId,domain</parameters>
+        <action-code>116</action-code>
+    </result>
+    <result name="foundKeyResult" type="successiveRequestForward">
+        <forward-url>/WEB-INF/plugin/alert-foundkey.jsp</forward-url>
+        <log-message>passed test for target "{0}" from URL {1} for game {2} and domain {3} and found a key for domain
+        </log-message>
+        <parameters>hash,url,gameId,domain</parameters>
+        <action-code>115</action-code>
+    </result>
+    <result name="foundBallResult" type="successiveRequestForward">
+        <forward-url>/WEB-INF/plugin/alert-foundball.jsp</forward-url>
+        <log-message>passed test for target "{0}" from URL {1} for game {2} and domain {3} and found The Ball
+        </log-message>
+        <parameters>hash,url,gameId,domain</parameters>
+        <action-code>114</action-code>
+    </result>
+    <result name="success" type="dbLoggingForward">
+        <forward-url>/should-not-reach-there.jsp</forward-url>
+        <log-message>ERROR IN APPLICATION'S LOGIC !!! Passed test for target "{0}" from URL {1} for game {2} and domain
+            {3} - SHOULD HAVE NOT REACH THIS FORWARD!!!
+        </log-message>
+        <parameters>hash,url,gameId,domain</parameters>
+        <action-code>1</action-code>
+    </result>
+    <result name="login" type="dbLoggingForward">
+        <forward-url>/plugin/timeout.jsp</forward-url>
+        <log-message>failed to test target "{0}" from URL {1} for game {2} and domain {3} due to session timeout or is
+            not authenticated to server
+        </log-message>
+        <parameters>hash,url,gameId,domain</parameters>
+        <action-code>84</action-code>
+    </result>
+    <result name="gameError" type="successiveRequestForward">
+        <forward-url>/WEB-INF/plugin/gameAuthorizationError.jsp</forward-url>
+        <log-message>is not registered to game {0} while attempting to test target "{1}" from URL {2} for domain {3}
+        </log-message>
+        <parameters>gameId,hash,url,domain</parameters>
+        <action-code>112</action-code>
+    </result>
+    <result name="auth_failed" type="dbLoggingForward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+        <log-message>attempted to test target "{0}" from URL {1} for game {2} and domain {3} without PLAYER role
+            assigned
+        </log-message>
+        <parameters>hash,url,gameId,domain</parameters>
+        <action-code>22</action-code>
+    </result>
+    <result name="duplicateRequestResult" type="duplicateRequestForward">
+        <forward-url>UNUSED</forward-url>
+        <log-message>Duplicate request for testing the target object. Responding with response to original request
+        </log-message>
+    </result>
+</action>

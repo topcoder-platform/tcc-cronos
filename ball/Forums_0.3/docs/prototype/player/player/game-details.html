@@ -1,0 +1,413 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Orpheus :: Prototype</title>
+		<link rel="stylesheet" type="text/css" media="all" href="../css/styles.css" />	
+		<link rel="stylesheet" type="text/css" media="all" href="../css/tabs.css" />		
+		<!-- NAVIGATION JS -->
+		<script type="text/javascript">
+		function SwapImage1() {
+		  document.image1.src="../i/nav/player_home_on.gif"
+		}
+		function SwapImage1Back() {
+		  document.image1.src="../i/nav/player_home_off.gif"
+		}
+		function SwapImage2() {
+		  document.image2.src="../i/nav/player_active_on.gif"
+		}
+		function SwapImage2Back() {
+		  document.image2.src="../i/nav/player_active_off.gif"
+		}		
+		function SwapImage3() {
+		  document.image3.src="../i/nav/player_mygames_on.gif"
+		}
+		function SwapImage3Back() {
+		  document.image3.src="../i/nav/player_mygames_off.gif"
+		}
+		function SwapImage4() {
+		  document.image4.src="../i/nav/player_faq_on.gif"
+		}
+		function SwapImage4Back() {
+		  document.image4.src="../i/nav/player_faq_off.gif"
+		}		
+	</script>		
+	<!-- TABS JS -->
+		<script type="text/javascript">
+		
+		//Set tab to intially be selected when page loads:
+		//[which tab (1=first tab), ID of tab content to display]:
+		var initialtab=[1, "sc1"]
+		
+		function cascadedstyle(el, cssproperty, csspropertyNS){
+		if (el.currentStyle)
+		return el.currentStyle[cssproperty]
+		else if (window.getComputedStyle){
+		var elstyle=window.getComputedStyle(el, "")
+		return elstyle.getPropertyValue(csspropertyNS)
+		}
+		}
+		
+		var previoustab=""
+		
+		function expandcontent(cid, aobject){
+		if (document.getElementById){
+		highlighttab(aobject)
+		detectSourceindex(aobject)
+		if (previoustab!="")
+		document.getElementById(previoustab).style.display="none"
+		document.getElementById(cid).style.display="block"
+		previoustab=cid
+		if (aobject.blur)
+		aobject.blur()
+		return false
+		}
+		else
+		return true
+		}
+		
+		function highlighttab(aobject){
+		if (typeof tabobjlinks=="undefined")
+		collecttablinks()
+		for (i=0; i<tabobjlinks.length; i++)
+		tabobjlinks[i].style.backgroundColor=initTabcolor
+		var themecolor=aobject.getAttribute("theme")? aobject.getAttribute("theme") : initTabpostcolor
+		aobject.style.backgroundColor=document.getElementById("tabcontentcontainer").style.backgroundColor=themecolor
+		}
+		
+		function collecttablinks(){
+		var tabobj=document.getElementById("tablist")
+		tabobjlinks=tabobj.getElementsByTagName("A")
+		}
+		
+		function detectSourceindex(aobject){
+		for (i=0; i<tabobjlinks.length; i++){
+		if (aobject==tabobjlinks[i]){
+		tabsourceindex=i //source index of tab bar relative to other tabs
+		break
+		}
+		}
+		}
+		
+		function do_onload(){
+		var cookiename=(typeof persisttype!="undefined" && persisttype=="sitewide")? "tabcontent" : window.location.pathname
+		var cookiecheck=window.get_cookie && get_cookie(cookiename).indexOf("|")!=-1
+		collecttablinks()
+		initTabcolor=cascadedstyle(tabobjlinks[1], "backgroundColor", "background-color")
+		initTabpostcolor=cascadedstyle(tabobjlinks[0], "backgroundColor", "background-color")
+		if (typeof enablepersistence!="undefined" && enablepersistence && cookiecheck){
+		var cookieparse=get_cookie(cookiename).split("|")
+		var whichtab=cookieparse[0]
+		var tabcontentid=cookieparse[1]
+		expandcontent(tabcontentid, tabobjlinks[whichtab])
+		}
+		else
+		expandcontent(initialtab[1], tabobjlinks[initialtab[0]-1])
+		}
+		
+		if (window.addEventListener)
+		window.addEventListener("load", do_onload, false)
+		else if (window.attachEvent)
+		window.attachEvent("onload", do_onload)
+		else if (document.getElementById)
+		window.onload=do_onload
+		</script>
+		<!-- END TABS JS -->  	
+</head>
+	
+<body id="page">
+	<div id="container">
+<!-- Header	 -->
+		<div id="header"><span class="links"><a href="../logout.html" title="Logout">Logout</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="../help.html" title="Help">Help</a></span>
+			<a href="../index.html" title="Home"><img src="../i/logo.jpg" alt="Logo" width="202" height="65" /></a>
+		</div>
+<!-- Navigation Player -->
+		<div id="nav">
+			<ul>
+				<li><a href="../index.html" title="Home"><img src="../i/nav/player_home_off.gif" name="image1" border="0" onMouseOver="SwapImage1()" onMouseOut="SwapImage1Back()" alt="Home"  /></a></li>
+				<li><a href="active.html" title="Active Games"><img src="../i/nav/player_active_off.gif" name="image2" border="0" onMouseOver="SwapImage2()" onMouseOut="SwapImage2Back()" alt="Active Games" /></a></li>
+				<li><a href="mygames.html" title="My Games"><img src="../i/nav/player_mygames_off.gif" name="image3" border="0" onMouseOver="SwapImage3()" onMouseOut="SwapImage3Back()" alt="My Games"  /></a></li>
+				<li><a href="player-faq.html" title="Player FAQ"><img src="../i/nav/player_faq_off.gif" name="image4" border="0" onMouseOver="SwapImage4()" onMouseOut="SwapImage4Back()" alt="Player FAQ"  /></a></li>
+				<li>
+				<img border="0" src="../i/nav/player_endbar.gif" width="349" height="30" /></li>
+			</ul>
+		</div>
+		<div id="wrap">
+			<h1><img src="../i/h/title_gamedetails.gif" alt="Game Details" width="135" height="16" /></h1><br />
+				
+				<div id="table-details">
+					<table border="0" cellpadding="0" cellspacing="0" width="313">
+						<tr>
+							<th colspan="2">Game Details: Super Ball</th>
+						</tr>
+						<tr>
+							<td class="bold" width="55%">Start Date:</td>
+							<td width="45%">11/14/2006 1:54 AM</td>
+						</tr>
+						<tr>
+							<td class="bold">Status:</td>
+							<td>In Progress</td>
+						</tr>
+						<tr>
+							<td class="bold">Last Unlocked Domain:</td>
+							<td>www.website.com</td>
+						</tr>
+						<tr>
+							<td class="bold">Minimum Payout:</td>
+							<td>$1200.00</td>
+						</tr>
+						<tr>
+							<td class="bold">Players:</td>
+							<td>532</td>
+						</tr>
+						<tr>
+							<td class="bold">My Standing:</td>
+							<td>234</td>
+						</tr>
+					</table>
+				</div>
+				
+			<div id="tabcontentcontainer">
+			
+			<!-- UNLOCKED DOMAINS TAB -->
+			<div id="sc1" class="tabcontent">
+			<ul id="tablist">
+				<li id="current"><a href="#tabs" onClick="return expandcontent('sc1', this)">Unlocked Domains</a></li>
+				<li><a href="#tabs" onClick="return expandcontent('sc2', this)">Upcoming Domains</a></li>
+				<li><a href="#tabs" onClick="return expandcontent('sc3', this)">Leaderboard</a></li>
+			</ul><div style="clear:both;"></div>
+				<div id="table-tabs">
+					<table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<th>Domain</th>
+							<th>Date Unlocked</th>
+						</tr>
+						<tr class="alt">
+							<td><a href="#">www.website.com</a></td>
+							<td>Today, 1:45 AM</td>
+						</tr>
+						<tr class="alt2">
+							<td><a href="#">www.topcoder.com</a></td>
+							<td>Yesterday, 9:42 PM</td>
+						</tr>
+						<tr class="alt">
+							<td><a href="#">www.bored.com</a></td>
+							<td>Yesterday, 2:45 PM</td>
+						</tr>
+						<tr class="alt2">
+							<td><a href="#">www.rathergood.org</a></td>
+							<td>Yesterday, 8:45 AM</td>
+						</tr>
+						<tr class="alt">
+							<td><a href="#">www.theonion.com</a></td>
+							<td>08.03/2006, 6:45 PM</td>
+						</tr>
+						<tr class="alt2">
+							<td><a href="#">www.heavy.com</a></td>
+							<td>08/03/2006, 10:58 AM</td>
+						</tr>
+						<tr class="alt">
+							<td><a href="#">www.buy-me-a-beer.com</a></td>
+							<td>08/02/2006, 9:45 PM</td>
+						</tr>
+						<tr class="alt2">
+							<td><a href="#">www.topcoder.com</a></td>
+							<td>08/02/2006, 2:05 PM</td>
+						</tr>
+						<tr class="alt">
+							<td><a href="#">www.mynameischrisdotson.com</a></td>
+							<td>08/01/2006, 7:25 AM</td>
+						</tr>
+						<tr class="alt2">
+							<td><a href="#">www.theonion.com</a></td>
+							<td>07/28/2006, 2:45 PM</td>
+						</tr>
+						<tr>
+							<td class="pagination" colspan="2">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td>Showing Games 1-10 of 41</td>
+											<td>
+												<ul>Page:
+													<li><a href="#">&laquo;</a></li>
+													<li><a href="#" class="active">1</a></li>
+													<li><a href="#">2</a></li>
+													<li><a href="#">3</a></li>
+													<li><a href="#">&raquo;</a></li>
+												</ul> 
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+
+<!-- UPCOMING DOMAINS TAB -->
+			<div id="sc2" class="tabcontent">
+			<ul id="tablist">
+				<li><a href="#tabs" onClick="return expandcontent('sc1', this)">Unlocked Domains</a></li>
+				<li id="current"><a href="#tabs" onClick="return expandcontent('sc2', this)">Upcoming Domains</a></li>
+				<li><a href="#tabs" onClick="return expandcontent('sc3', this)">Leaderboard</a></li>
+			</ul>
+			<div style="clear:both;"></div>
+				<div id="table-tabs">
+					<table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<th>Upcoming Domains for The Super Ball (listed in random order)</th>
+						</tr>
+						<tr class="alt">
+							<td><a href="#">www.theonion.com</a></td>
+						</tr>
+						<tr class="alt2">
+							<td><a href="#">www.website.com</a></td>
+						</tr>
+						<tr class="alt">
+							<td><a href="#">www.topcoder.com</a></td>
+						</tr>
+						<tr class="alt2">
+							<td><a href="#">www.bored.com</a></td>
+						</tr>
+						<tr class="alt">
+							<td><a href="#">www.rathergood.org</a></td>
+						</tr>
+						<tr class="alt2">
+							<td><a href="#">www.theonion.com</a></td>
+						</tr>
+						<tr class="alt">
+							<td><a href="#">www.heavy.com</a></td>
+						</tr>
+						<tr class="alt2">
+							<td><a href="#">www.buy-me-a-beer.com</a></td>
+						</tr>
+						<tr class="alt">
+							<td><a href="#">www.topcoder.com</a></td>
+						</tr>
+						<tr class="alt2">
+							<td><a href="#">www.mynameischrisdotson.com</a></td>
+						</tr>
+						<tr>
+							<td class="pagination">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td>Showing Games 1-10 of 41</td>
+											<td>
+												<ul>Page:
+													<li><a href="#">&laquo;</a></li>
+													<li><a href="#" class="active">1</a></li>
+													<li><a href="#">2</a></li>
+													<li><a href="#">3</a></li>
+													<li><a href="#">&raquo;</a></li>
+												</ul> 
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+
+<!-- LEADERBOARD TAB -->
+			<div id="sc3" class="tabcontent">
+			<ul id="tablist">
+				<li><a href="#tabs" onClick="return expandcontent('sc1', this)">Unlocked Domains</a></li>
+				<li><a href="#tabs" onClick="return expandcontent('sc2', this)">Upcoming Domains</a></li>
+				<li id="current"><a href="#tabs" onClick="return expandcontent('sc3', this)">Leaderboard</a></li>
+			</ul>
+			<div style="clear:both;"></div>
+				<div id="table-tabs">
+					<table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<th>Player</th>
+							<th>Ranking</th>
+							<th>Domains Unlocked</th>
+						</tr>
+						<tr class="alt">
+							<td>Bandit</td>
+							<td>1</td>
+							<td><a href="#">www.website.com</a><br />
+								<a href="#">www.pandora.com</a><br />
+								<a href="#">www.flaminglipsmusic.com</a><br />
+							</td>
+						</tr>
+						<tr class="alt2">
+							<td>BillyJoel</td>
+							<td>2</td>
+							<td><a href="#">www.topcoder.com</a><br />
+								<a href#>www.toronto.com</a></td>
+						</tr>
+						<tr class="alt">
+							<td>Rock4Evr</td>
+							<td>3</td>
+							<td><a href="#">www.bored.com</a></td>
+						</tr>
+						<tr class="alt2">
+							<td>Stussy2323</td>
+							<td>4</td>
+							<td><a href="#">www.rathergood.org</a></td>
+						</tr>
+						<tr class="alt">
+							<td>BigGuy23</td>
+							<td>5</td>
+							<td><a href="#">www.theonion.com</a></td>
+						</tr>
+						<tr class="alt2">
+							<td>Dave8846</td>
+							<td>6</td>
+							<td><a href="#">www.heavy.com</a></td>
+						</tr>
+						<tr class="alt">
+							<td>SiteHuntr</td>
+							<td>7</td>
+							<td><a href="#">www.buy-me-a-beer.com</a></td>
+						</tr>
+						<tr class="alt2">
+							<td>BalookaPalooka</td>
+							<td>8</td>
+							<td><a href="#">www.topcoder.com</a></td>
+						</tr>
+						<tr class="alt">
+							<td>TopcoderAce</td>
+							<td>9</td>
+							<td><a href="#">www.mynameischrisdotson.com</a></td>
+						</tr>
+						<tr class="alt2">
+							<td>DancingPaul</td>
+							<td>10</td>
+							<td><a href="#">www.theonion.com</a></td>
+						</tr>
+						<tr>
+							<td class="pagination" colspan="3">
+									<table border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td>Showing Games 1-10 of 41</td>
+											<td>
+												<ul>Page:
+													<li><a href="#">&laquo;</a></li>
+													<li><a href="#" class="active">1</a></li>
+													<li><a href="#">2</a></li>
+													<li><a href="#">3</a></li>
+													<li><a href="#">&raquo;</a></li>
+												</ul> 
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+			
+			
+</div>
+<!-- Footer -->
+	<div id="footer">
+		<span class="links"><a href="../privacy-policy.html">Privacy Policy</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="../contact-us.html">Contact Us</a></span>
+		<p>&copy; Copyright 2006 TopCoder, Inc.</p>
+	</div>
+</body>
+</html>

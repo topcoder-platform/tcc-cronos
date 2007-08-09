@@ -1,0 +1,46 @@
+<action name="PluginUnlockedDomains" type="default" url-pattern="/server/plugin/unlockedDomains.do" priority="10">
+    <handler type="SessionValidationHandler">
+        <login_page_result>login</login_page_result>
+    </handler>
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>player</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <handler type="unlocked_domains">
+        <game_id_param_key>gameId</game_id_param_key>
+        <domains_key>unlockedDomains</domains_key>
+    </handler>
+    <handler type="game_detail">
+        <game_id_param_key>gameId</game_id_param_key>
+        <game_detail_key>game</game_detail_key>
+    </handler>
+    <handler type="UnlockedDomainDetailsHandler">
+        <game_detail_key>game</game_detail_key>
+        <unlocked_domains_details_key>unlockedDomainsDetails</unlocked_domains_details_key>
+        <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
+        <jndi_context_name>default</jndi_context_name>
+        <use_remote_interface>true</use_remote_interface>
+    </handler>
+    <result name="success" type="dbLoggingForward">
+        <forward-url>/WEB-INF/plugin/unlocked.jsp</forward-url>
+        <log-message>presented with list of unlocked domains for game {0}</log-message>
+        <parameters>gameId</parameters>
+        <action-code>138</action-code>
+    </result>
+    <result name="auth_failed" type="dbLoggingForward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+        <log-message>attempted to view list of unlocked domains for game {0} without PLAYER role assigned</log-message>
+        <parameters>gameId</parameters>
+        <action-code>46</action-code>
+    </result>
+    <result name="login" type="dbLoggingForward">
+        <forward-url>/plugin/timeout.jsp</forward-url>
+        <log-message>failed to view list of unlocked domains for game {0} due to session timeout or is not authenticated
+            to server
+        </log-message>
+        <parameters>gameId</parameters>
+        <action-code>100</action-code>
+    </result>
+</action>

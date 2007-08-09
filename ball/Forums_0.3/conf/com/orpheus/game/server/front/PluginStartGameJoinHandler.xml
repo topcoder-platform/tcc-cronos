@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<action name="PluginStartGameJoin" type="default" url-pattern="/server/plugin/startGameJoin.do" priority="10">
+    <handler type="SessionValidationHandler">
+        <login_page_result>login</login_page_result>
+    </handler>
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>player</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <result name="auth_failed" type="dbLoggingForward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+        <log-message>attempted to view Game Registration page for game {0} without PLAYER role assigned</log-message>
+        <parameters>gameId</parameters>
+    <action-code>29</action-code></result>
+    <result name="success" type="dbLoggingForward">
+        <forward-url>/WEB-INF/plugin/join.jsp</forward-url>
+        <log-message>presented with Game Registration page for game {0}</log-message>
+        <parameters>gameId</parameters>
+    <action-code>120</action-code></result>
+    <result name="login" type="dbLoggingForward">
+        <forward-url>/plugin/timeout.jsp</forward-url>
+        <log-message>failed to view Game Registration page for game {0} due to session timeout or is not authenticated to server</log-message>
+        <parameters>gameId</parameters>
+    <action-code>89</action-code></result>
+</action>

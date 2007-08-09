@@ -1,0 +1,17 @@
+<action name="GetPersonalizedBallImageContent" type="default" url-pattern="/server/player/getPersonalizedBallImage.do"
+        priority="10">
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>player</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <result name="auth_failed" type="forward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+    </result>
+    <result name="success" type="binaryContent">
+        <content_key>personalizedBallImage</content_key>
+        <content_type_key>personalizedBallImageType</content_type_key>
+        <scope>session</scope>
+    </result>
+</action>
