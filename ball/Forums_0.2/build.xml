@@ -678,7 +678,7 @@
     <!-- Compile production code -->
     <target name="compile" depends="init">
         <mkdir dir="${build_classdir}"/>
-        <javac srcdir="${javamain}" destdir="${build_classdir}" includes="**/*.java" excludes="topcoder/**/*.java" 
+        <javac srcdir="${javamain}" destdir="${build_classdir}" includes="**/*.java" excludes="com/topcoder/**/*.java" 
         	debug="true" verbose="${verbose}">
             <classpath refid="buildlibs"/>
         </javac>
