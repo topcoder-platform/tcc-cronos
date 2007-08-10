@@ -19,5 +19,20 @@
        <type-mapping>MS SQLSERVER2000</type-mapping>
     </metadata>
   </local-tx-datasource>
+  
+  <no-tx-datasource>
+    <jndi-name>JiveDS</jndi-name>
+    <connection-url>jdbc:sqlserver://63.118.154.203:1433;DatabaseName=jive;selectMethod=cursor</connection-url>
+    <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+    <user-name>badmin1</user-name>
+    <password>topcoder1</password>
+	<min-pool-size>4</min-pool-size>
+    <max-pool-size>20</max-pool-size>
+    <idle-timeout-minutes>10</idle-timeout-minutes>
+    <check-valid-connection-sql>SELECT HOST_ID()</check-valid-connection-sql>
+    <metadata>
+       <type-mapping>MS SQLSERVER2000</type-mapping>
+    </metadata>
+  </no-tx-datasource>
 </datasources>
 
