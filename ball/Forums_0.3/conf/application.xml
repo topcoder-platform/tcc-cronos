@@ -30,10 +30,6 @@
             <web-uri>game_server.war</web-uri>
             <context-root />
         </web>
-        <web>
-            <web-uri>forums.war</web-uri>
-            <context-root />
-        </web>
     </module>
     
     <module>
