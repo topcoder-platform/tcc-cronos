@@ -1,0 +1,73 @@
+<action name="PluginLogin" type="default" url-pattern="/server/plugin/login.do" priority="10">
+    <handler type="LoginPreHandler">
+        <warning_result>login_warning_result</warning_result>
+    </handler>
+    <handler type="form_validation">
+        <form-name>loginForm</form-name>
+    </handler>
+    <handler type="SetParameterHandler">
+        <parameter_name>notfound</parameter_name>
+        <parameter_value>true</parameter_value>
+    </handler>
+    <handler type="SetParameterHandler">
+        <parameter_name>orpheus.user-is-active</parameter_name>
+        <parameter_value>Y</parameter_value>
+    </handler>
+    <handler type="login">
+        <object_factory>
+            <namespace>com.orpheus.game.server.ObjectFactory</namespace>
+            <user_profile_manager_key>OrpheusUserProfileManager</user_profile_manager_key>
+        </object_factory>
+        <request_param_keys>
+            <value>username</value>
+            <value>password</value>
+            <value>orpheus.user-is-active</value>
+        </request_param_keys>
+        <profile_keys>
+            <value type="search">credentials-handle</value>
+            <value type="credential">credentials-password</value>
+            <value type="credential">credentials-is-active</value>
+        </profile_keys>
+        <failure_results>
+            <value type="no_such_profile">no_matched_profile</value>
+            <value type="incorrect_credential">incorrect_credential</value>
+        </failure_results>
+    </handler>
+    <handler type="SetParameterHandler">
+        <parameter_name>notfound</parameter_name>
+        <parameter_value>false</parameter_value>
+    </handler>
+    <handler type="SetParameterHandler">
+        <parameter_name>logged</parameter_name>
+        <parameter_value>true</parameter_value>
+    </handler>
+    <result name="no_matched_profile" type="dbLoggingForward">
+        <forward-url>/plugin/login.jsp?notfound=true</forward-url>
+        <log-message>failed to login as {0} due to unknown profile</log-message>
+        <parameters>username</parameters>
+        <action-code>54</action-code>
+    </result>
+    <result name="incorrect_credential" type="dbLoggingForward">
+        <forward-url>/plugin/login.jsp?notfound=true</forward-url>
+        <log-message>failed to login as {0} due to invalid credentials</log-message>
+        <parameters>username</parameters>
+        <action-code>53</action-code>
+    </result>
+    <result name="success" type="dbLoggingForward">
+        <forward-url>/server/plugin/welcome.do</forward-url>
+        <log-message>logged in</log-message>
+        <action-code>113</action-code>
+    </result>
+    <result name="validation-error" type="dbLoggingForward">
+        <forward-url>/plugin/login.jsp</forward-url>
+        <log-message>failed to pass the validation for the Login form with username {0}</log-message>
+        <parameters>username</parameters>
+        <action-code>65</action-code>
+    </result>
+    <result name="login_warning_result" type="dbLoggingForward">
+        <forward-url>/plugin/login-warning.jsp</forward-url>
+        <log-message>attempted to login as {0} while already being logged to server</log-message>
+        <parameters>username</parameters>
+        <action-code>10</action-code>
+    </result>
+</action>

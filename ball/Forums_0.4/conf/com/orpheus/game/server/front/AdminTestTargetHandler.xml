@@ -1,0 +1,34 @@
+<action name="TestTarget" type="default" url-pattern="/server/admin/testTarget.do" priority="10">
+    <handler type="SessionValidationHandler">
+        <login_page_result>login</login_page_result>
+    </handler>
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>admin</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <handler type="TestTargetHandler">
+        <text_param_key>text</text_param_key>
+        <url_param_key>url</url_param_key>
+    </handler>
+    <result name="success" type="loggingForward">
+        <forward-url>/WEB-INF/admin/test-target.jsp</forward-url>
+        <log-message>tested the target {0} from URL {1} for validity</log-message>
+        <parameters>text,url</parameters>
+        <category>ADMIN</category>
+    </result>
+    <result name="auth_failed" type="loggingForward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+        <log-message>attempted to test target {0} from URL {1} for validity without ADMIN role assigned</log-message>
+        <parameters>text,url</parameters>
+        <category>ADMIN</category>
+    </result>
+    <result name="login" type="loggingForward">
+        <forward-url>/public/timeout.jsp</forward-url>
+        <log-message>failed to test the target {0} from URL {1} for validity due to session timeout or is not
+            authenticated to server</log-message>
+        <parameters>text,url</parameters>
+        <category>ADMIN</category>
+    </result>
+</action>

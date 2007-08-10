@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+    "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+<taglib>
+    <tlib-version>1.0</tlib-version>
+    <jsp-version>1.2</jsp-version>
+    <short-name>DropDownManagerTag</short-name>
+    <uri>http://www.topcoder.com/web/dropdown/dropdownmanager</uri>
+    <display-name>Drop Down Manager: Tag Library</display-name>
+    <description>A Tag Library that will enable drop down tags.</description>
+    <tag>
+        <name>dropdownlist</name>
+        <tag-class>com.topcoder.web.dropdown.DropDownListTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>displays a connected list of select tags in the html page.</description>
+        <attribute>
+            <name>id</name>
+            <required>false</required>
+            <description>the id of the tag</description>
+        </attribute>
+        <attribute>
+            <name>classStyle</name>
+            <required>false</required>
+            <description>the default class style of the enclosed drop down tags</description>
+        </attribute>
+        <attribute>
+            <name>onchange</name>
+            <required>false</required>
+            <description>
+                the onchange event for the enclosed drop down tags.
+                if present, there will be no client side pre-population of data.
+            </description>
+        </attribute>
+    </tag>
+    <tag>
+        <name>dropdown</name>
+        <tag-class>com.topcoder.web.dropdown.DropDownTag</tag-class>
+        <body-content>empty</body-content>
+        <description>displays a select in the html page.</description>
+        <attribute>
+            <name>id</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>the id of the resulted select tag</description>
+        </attribute>
+        <attribute>
+            <name>name</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>the name of the resulted select tag</description>
+        </attribute>
+        <attribute>
+            <name>size</name>
+            <required>false</required>
+            <description>the size of the resulted select tag</description>
+        </attribute>
+        <attribute>
+            <name>prompt</name>
+            <required>false</required>
+            <description>the text of the first option of the resulted select tag</description>
+        </attribute>
+        <attribute>
+            <name>classStyle</name>
+            <required>false</required>
+            <description>the class style of the resulted select tag</description>
+        </attribute>
+        <attribute>
+            <name>data</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <description>the data object to be rendered; data or dataRef should be present
+            </description>
+        </attribute>
+        <attribute>
+            <name>dataRef</name>
+            <required>false</required>
+            <description>the data reference in the page context fo the data object</description>
+        </attribute>
+    </tag>
+</taglib>
+  

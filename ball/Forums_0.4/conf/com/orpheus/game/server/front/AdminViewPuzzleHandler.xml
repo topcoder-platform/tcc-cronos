@@ -1,0 +1,46 @@
+<action name="AdminViewPuzzle" type="default" url-pattern="/server/admin/viewPuzzle.do" priority="10">
+    <handler type="SessionValidationHandler">
+        <login_page_result>login</login_page_result>
+    </handler>
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>admin</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <handler type="AdminViewPuzzleHandler">
+        <slot_id_param_key>slotId</slot_id_param_key>
+        <game_id_param_key>gameId</game_id_param_key>
+        <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
+        <jndi_context_name>default</jndi_context_name>
+        <use_remote_interface>true</use_remote_interface>
+        <puzzle_id_request_attribute_key>puzzleId</puzzle_id_request_attribute_key>
+        <media_type_request_attribute_key>mediaType</media_type_request_attribute_key>
+        <media_type>DHTML</media_type>
+        <game_play_key>gamePlayInfo</game_play_key>
+    </handler>
+    <handler type="PuzzleRenderingHandler">
+      <puzzle_id_request_attribute_key>puzzleId</puzzle_id_request_attribute_key>
+      <media_type_request_attribute_key>mediaType</media_type_request_attribute_key>
+      <puzzle_string_request_attribute_key>puzzle</puzzle_string_request_attribute_key>
+      <solutiontester_base_name>puzzleSolutionTester</solutiontester_base_name>
+    </handler>
+    <result name="success" type="loggingForward">
+        <forward-url>/WEB-INF/admin/view-puzzle.jsp</forward-url>
+        <log-message>presented with puzzle for slot {0} and game {1}</log-message>
+        <parameters>slotId,gameid</parameters>
+        <category>ADMIN</category>
+    </result>
+    <result name="auth_failed" type="loggingForward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+        <log-message>attempted to view puzzle for slot {0} and game {1} without ADMIN role assigned</log-message>
+        <parameters>slotId,gameid</parameters>
+        <category>ADMIN</category>
+    </result>
+    <result name="login" type="loggingForward">
+        <forward-url>/public/timeout.jsp</forward-url>
+        <log-message>failed to view puzzle for slot {0} and game {1} due to session timeout or is not authenticated to server</log-message>
+        <parameters>slotId,gameid</parameters>
+        <category>ADMIN</category>
+    </result>
+</action>

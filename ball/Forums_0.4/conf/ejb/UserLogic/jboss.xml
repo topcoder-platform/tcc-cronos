@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jboss>
+    <enterprise-beans>
+        <session>
+            <ejb-name>PendingConfirmationEJB</ejb-name>
+            <jndi-name>orpheus/PendingConfirmation</jndi-name>
+            <local-jndi-name>orpheus/PendingConfirmationLocal</local-jndi-name>
+            <resource-ref>
+                <res-ref-name>orpheus/MSSQLDS</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <jndi-name>java:orpheus/MSSQLDS</jndi-name>
+            </resource-ref>
+        </session>
+        <session>
+            <ejb-name>UserProfileEJB</ejb-name>
+            <jndi-name>orpheus/UserProfile</jndi-name>
+            <local-jndi-name>orpheus/UserProfileLocal</local-jndi-name>
+            <resource-ref>
+                <res-ref-name>orpheus/MSSQLDS</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <jndi-name>java:orpheus/MSSQLDS</jndi-name>
+            </resource-ref>
+        </session>
+    </enterprise-beans>
+</jboss>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4"
+         xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+    <display-name>The Ball Game Server</display-name>
+
+    <context-param>
+        <description>A configuration namespace for Object Factory to be used for obtaining user profile manager</description>
+        <param-name>ObjectFactoryNamespace</param-name>
+        <param-value>com.orpheus.game.server.ObjectFactory</param-value>
+    </context-param>
+
+    <context-param>
+        <description>A key identifying the user profile manager in object factory</description>
+        <param-name>UserProfileManagerID</param-name>
+        <param-value>OrpheusUserProfileManager</param-value>
+    </context-param>
+
+    <context-param>
+        <description>The email address of a Game Server administrator to be notified on auction winners</description>
+        <param-name>AdminEmailAddress</param-name>
+        <param-value>sramkissoon@topcoder.com</param-value>
+    </context-param>
+
+    <context-param>
+        <description>The name of Messenger Plugin to be used for sending emails to winning sponsors</description>
+        <param-name>OrpheusMessagePlugin</param-name>
+        <param-value>OrpheusMessagePlugin</param-value>
+    </context-param>
+
+    <context-param>
+        <description>The FROM email address for emails sent on auction completion</description>
+        <param-name>FromEmailAddress</param-name>
+        <param-value>do-not-reply@theball.com</param-value>
+    </context-param>
+
+    <filter>
+        <description>
+            NoCacheFilter sets the response headers causing the client to disable caching the response
+        </description>
+        <filter-name>NoCacheFilter</filter-name>
+        <filter-class>com.orpheus.game.server.OrpheusNoCacheFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>NoCacheFilter</filter-name>
+        <url-pattern>/server/plugin/*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>front</servlet-name>
+        <servlet-class>com.orpheus.game.server.GameServerFrontController</servlet-class>
+
+        <!--
+         This initial parameter provides the configuration namespace to be used for configuring the Front Controller
+         component.
+        -->
+        <init-param>
+            <description>Namespace for Front Controller Servlet</description>
+            <param-name>front_controller_namespace</param-name>
+            <param-value>com.topcoder.web.frontcontroller</param-value>
+        </init-param>
+
+        <!--
+         This following initial parameters values define the name of the Logger to be used for performing the
+         logging using the Logging Wrapper 1.2 component and the level of the Logging to be performed.
+         Note that the following properties are optional and if not present, no logging will be performed.
+         This is to maintain compatibality with version 2.0 of the component.
+        -->
+        <init-param>
+            <description>The name of the Logger to be used for Logging in the Front Controller Servlet</description>
+            <param-name>loggerName</param-name>
+            <param-value>FrontControllerLogger</param-value>
+        </init-param>
+
+        <!--
+         This initial parameter value defines the level of Logging to be performed and can take one of the
+         following values: ("OFF", "WARN", "DEBUG" or "ERROR"). Any invalid value specified will result in defaulting
+         to the value of "OFF". These values will be matched to the corresponding eneumeration value defined by the
+         Level enumeration from the Logging Wrapper 1.2 component.
+        -->
+        <init-param>
+            <description>The Level of Logging to be done using the Logger.</description>
+            <param-name>loggingLevel</param-name>
+            <param-value>DEBUG</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>front</servlet-name>
+        <url-pattern>/server/*</url-pattern>
+    </servlet-mapping>
+
+    <listener>
+        <listener-class>com.orpheus.game.server.OrpheusServletContextListener</listener-class>
+        <listener-class>com.orpheus.game.server.OrpheusSessionListener</listener-class>
+    </listener>
+
+    <welcome-file-list>
+        <welcome-file>/index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <resource-ref>
+        <res-ref-name>orpheus/MSSQLDS</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
+
+    <jsp-config>
+        <taglib>
+            <taglib-uri>/orpheus</taglib-uri>
+            <taglib-location>/WEB-INF/tld/orpheus_functions.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>/orpheus_auction</taglib-uri>
+            <taglib-location>/WEB-INF/tld/orpheus_auction_functions.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>/orpheus_admin</taglib-uri>
+            <taglib-location>/WEB-INF/tld/orpheus_admin_functions.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>/registration</taglib-uri>
+            <taglib-location>/WEB-INF/tld/registration.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>/paging</taglib-uri>
+            <taglib-location>/WEB-INF/tld/data_paging.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>/dropdown</taglib-uri>
+            <taglib-location>/WEB-INF/tld/dropdown.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+</web-app>
+

@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+<CMConfig>
+    <!-- Configuration parameters for Object Factory used to instantiate the bounce point calculator types -->
+    <Config name="com.orpheus.game.server.BouncePointCalcTypeObjectFactory">
+        <!-- No Bounce Points Calculator type  -->
+        <Property name="NoBouncePoint">
+            <Property name="type">
+                <Value>com.orpheus.game.server.util.bounce.NoBouncePointCalculatorType</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>int</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>1</Value>
+                    </Property>
+                </Property>
+                <Property name="param2">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>No Bounce Points Awarded</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <!-- Beach Bounce Points Calculator type  -->
+        <Property name="BeachBouncePoint">
+            <Property name="type">
+                <Value>com.orpheus.game.server.util.bounce.NoBouncePointCalculatorType</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>int</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>2</Value>
+                    </Property>
+                </Property>
+                <Property name="param2">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>Beach Bounce Points Awarded</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <!-- Configuration for bounce point calculator types source -->
+    <Config name="com.orpheus.game.server.util.bounce.DefaultBouncePointCalculatorTypeSource">
+        <Property name="ObjectFactoryNamespace">
+            <Value>com.orpheus.game.server.BouncePointCalcTypeObjectFactory</Value>
+        </Property>
+        <Property name="TypeKeys">
+            <Value>NoBouncePoint</Value>
+            <Value>BeachBouncePoint</Value>
+        </Property>
+    </Config>
+
+</CMConfig>

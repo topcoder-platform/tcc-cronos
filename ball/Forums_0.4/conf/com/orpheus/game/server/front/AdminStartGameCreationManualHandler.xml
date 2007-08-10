@@ -1,0 +1,39 @@
+<action name="GameCreationManual" type="default" url-pattern="/server/admin/continueManual.do" priority="10">
+    <handler type="SessionValidationHandler">
+        <login_page_result>login</login_page_result>
+    </handler>
+    <handler type="authorization">
+        <allowed_profile_types>
+            <value>admin</value>
+        </allowed_profile_types>
+        <failure_result>auth_failed</failure_result>
+    </handler>
+    <handler type="ManualGameDataHandler">
+        <domains_key>domains</domains_key>
+        <images_key>images</images_key>
+        <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
+        <jndi_context_name>default</jndi_context_name>
+        <use_remote_interface>true</use_remote_interface>
+    </handler>
+    <result name="success" type="loggingForward">
+        <forward-url>/WEB-INF/admin/games-new-step2-manual.jsp</forward-url>
+        <log-message>started creation of game with color {0}, key count {1}, block
+            count {2}, start date {3} and date format {4} using Manual style and presented with Manage Game Blocks page</log-message>
+        <parameters>colorId,keyCount,blockCount,startDate,dateFormat</parameters>
+        <category>ADMIN</category>
+    </result>
+    <result name="auth_failed" type="loggingForward">
+        <forward-url>/public/authorizationError.jsp</forward-url>
+        <log-message>attempted to start creation of game with color {0}, key count {1}, block count {2}, start date {3}
+            and date format {4} without ADMIN role assigned</log-message>
+        <parameters>colorId,keyCount,blockCount,startDate,dateFormat,creationType,prizeType,bounceType,completionType</parameters>
+        <category>ADMIN</category>
+    </result>
+    <result name="login" type="loggingForward">
+        <forward-url>/public/timeout.jsp</forward-url>
+        <log-message>failed to start creation of game with color {0}, key count {1}, block count {2}, start date {3}
+            and date format {4} due to session timeout or is not authenticated to server</log-message>
+        <parameters>colorId,keyCount,blockCount,startDate,dateFormat,creationType,prizeType,bounceType,completionType</parameters>
+        <category>ADMIN</category>
+    </result>
+</action>

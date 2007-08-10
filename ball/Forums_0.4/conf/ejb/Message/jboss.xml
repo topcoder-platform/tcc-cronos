@@ -1,0 +1,14 @@
+<jboss>
+    <enterprise-beans>
+        <session>
+            <ejb-name>MessageEJB</ejb-name>
+            <jndi-name>orpheus/Message</jndi-name>
+            <local-jndi-name>orpheus/MessageLocal</local-jndi-name>
+            <resource-ref>
+                <res-ref-name>orpheus/MSSQLDS</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <jndi-name>java:orpheus/MSSQLDS</jndi-name>
+            </resource-ref>
+        </session>
+    </enterprise-beans>
+</jboss>

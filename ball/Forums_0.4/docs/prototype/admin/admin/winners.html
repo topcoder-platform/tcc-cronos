@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title></title>
+		<link rel="stylesheet" type="text/css" media="all" href="../css/styles.css" />		
+		<script type="text/javascript">
+		function SwapImage1() {
+		  document.image1.src="../i/nav/admin_home_on.gif"
+		}
+		function SwapImage1Back() {
+		  document.image1.src="../i/nav/admin_home_off.gif"
+		}
+		function SwapImage2() {
+		  document.image2.src="../i/nav/admin_sponsorapp_on.gif"
+		}
+		function SwapImage2Back() {
+		  document.image2.src="../i/nav/admin_sponsorapp_off.gif"
+		}		
+		function SwapImage3() {
+		  document.image3.src="../i/nav/admin_winnerapp_on.gif"
+		}
+		function SwapImage3Back() {
+		  document.image3.src="../i/nav/admin_winnerapp_off.gif"
+		}
+		function SwapImage4() {
+		  document.image4.src="../i/nav/admin_game_on.gif"
+		}
+		function SwapImage4Back() {
+		  document.image4.src="../i/nav/admin_game_off.gif"
+		}		
+		</script>
+		
+</head>
+	
+<body id="page">
+	<div id="container">
+<!-- Header	 -->
+		<div id="header"><span class="links"><a href="../logout.html" title="Logout">Logout</a>
+</span>
+			<a href="../index.html" title="Home"><img src="../i/logo.jpg" alt="Logo" width="202" height="65" /></a>
+		</div>
+<!-- Navigation Admin -->
+		<div id="nav">
+			<ul>
+				<li><a href="index.html" title="Admin Home"><img src="../i/nav/admin_home_off.gif" name="image1" border="0" onMouseOver="SwapImage1()" onMouseOut="SwapImage1Back()" alt="Home" /></a></li>
+				<li><a href="sponsor.html" title="Sponsor Approval"><img src="../i/nav/admin_sponsorapp_off.gif" name="image2" border="0" onMouseOver="SwapImage2()" onMouseOut="SwapImage2Back()" alt="Sponsor Approval" /></a></li>
+				<li><a href="winners.html" title="Winner Approval"><img src="../i/nav/admin_winnerapp_on.gif" alt="Winner Approval" /></a></li>
+				<li><a href="games.html" title="Game Management"><img src="../i/nav/admin_game_off.gif" name="image4" border="0" onMouseOver="SwapImage4()" onMouseOut="SwapImage4Back()" alt="Game Management" /></a></li>
+				<li>
+				<img border="0" src="../i/nav/admin_endbar.gif" width="208" height="30" /></li>
+			</ul>
+		</div>		
+		<div id="wrap">
+			<div id="breadcrumb-admin"><span class="active">&raquo; Pending Winners &nbsp; </span><span class="next">&raquo; Approve/Reject Game Winners</span></div>
+			<p>Select a row to view winner details and approve or unapprove the payout. </p>
+				<div id="data-table-admin">
+				<table border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<th><a href="#">Game ID</a></th>
+						<th><a href="#">Player</a></th>
+						<th><a href="#">End Date</a></th>
+						<th><a href="#">End Time</a></th>
+						<th><a href="#">Payout</a></th>
+					</tr>
+					<tr style="cursor: pointer;" onClick="window.location='winner-approve.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#ffffff';">
+						<td><a href="../player/game_details.html">The Turkey Ball</a></td>
+						<td><a href="winner-approve.html">BillyJoel</a></td>
+						<td>08/11/2006</td>
+						<td>4:23 PM</td>
+						<td class="right">$1200.00</td>
+					</tr>
+					<tr class="alt" style="cursor: pointer;" onClick="window.location='winner-approve.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#f4f4f4';">
+						<td><a href="../player/game_details.html">Beach Ball</a></td>
+						<td><a href="winner-approve.html">Rock4Evr</a></td>
+						<td>11/23/2006</td>
+						<td>11:13 PM</td>
+						<td class="right">$500.00</td>
+					</tr>
+					<tr style="cursor: pointer;" onClick="window.location='winner-approve.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#ffffff';">
+						<td><a href="../player/game_details.html">Super Ball</a></td>
+						<td><a href="winner-approve.html">BigGuy223</a></td>
+						<td>11/30/2006</td>
+						<td>10:30 PM</td>
+						<td class="right">$250.00</td>
+					</tr>
+					<tr class="alt" style="cursor: pointer;" onClick="window.location='winner-approve.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#f4f4f4';">
+						<td><a href="../player/game_details.html">Onion Ball</a></td>
+						<td><a href="winner-approve.html">Stussy22234</a></td>
+						<td>11/30/2006</td>
+						<td>12:30 PM</td>
+						<td class="right">$100.00</td>
+					</tr>
+					<tr style="cursor: pointer;" onClick="window.location='winner-approve.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#ffffff';">
+						<td><a href="../player/game_details.html">Purple Ball</a></td>
+						<td><a href="winner-approve.html">TopCoder124</a></td>
+						<td>01/10/2007</td>
+						<td>4:15 AM</td>
+						<td class="right">$750.00</td>
+					</tr>
+					<tr class="alt" style="cursor: pointer;" onClick="window.location='winner-approve.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#f4f4f4';">
+						<td><a href="../player/game_details.html">Beach Ball</a></td>
+						<td><a href="winner-approve.html">BallWinner345</a></td>
+						<td>01/11/2007</td>
+						<td>3:25 AM</td>
+						<td class="right">$150.00</td>
+					</tr>
+					<tr style="cursor: pointer;" onClick="window.location='winner-approve.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#ffffff';">
+						<td><a href="../player/game_details.html">Yule Ball</a></td>
+						<td><a href="winner-approve.html">TBallGuy123</a></td>
+						<td>01/23/2007</td>
+						<td>6:15 PM</td>
+						<td class="right">$750.00</td>
+					</tr>
+					<tr class="alt" style="cursor: pointer;" onClick="window.location='winner-approve.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#f4f4f4';">
+						<td>><a href="../player/game_details.html">The Big Ball</a></td>
+						<td><a href="winner-approve.html">BallWinner345</a></td>
+						<td>01/28/2007</td>
+						<td>12:15 AM</td>
+						<td class="right">$350.00</td>
+					</tr>
+					<tr style="cursor: pointer;" onClick="window.location='winner-approve.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#ffffff';">
+						<td>><a href="../player/game_details.html">Rainbow Ball</a></td>
+						<td><a href="winner-approve.html">FindIt102</a></td>
+						<td>01/31/2007</td>
+						<td>2:45 AM</td>
+						<td class="right">$250.00</td>
+					</tr>
+					<tr class="alt" style="cursor: pointer;" onClick="window.location='winner-approve.html'" onmouseover="this.style.backgroundColor='#FEF1C4';" onmouseout="this.style.backgroundColor='#f4f4f4';">
+						<td>><a href="../player/game_details.html">Orange Ball</a></td>
+						<td><a href="winner-approve.html">BallWinner345</a></td>
+						<td>02/01/2007</td>
+						<td>12:00 AM</td>
+						<td class="right">$150.00</td>
+					</tr>
+				</table>
+			</div>
+			
+			<div class="pagination">
+				<table border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td>Showing Games 1-10 of 12</td>
+						<td>
+							<ul>Page:
+								<li><a href="#">&laquo;</a></li>
+								<li><a href="#" class="active">1</a></li>
+								<li><a href="#">2</a></li>
+								<li><a href="#">&raquo;</a></li>
+							</ul> 
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+
+				
+		</div>
+
+		
+	
+<!-- Footer -->
+	<div id="footer">
+		<p>&copy; Copyright 2006 TopCoder, Inc.</p>
+	</div>
+</body>
+</html>

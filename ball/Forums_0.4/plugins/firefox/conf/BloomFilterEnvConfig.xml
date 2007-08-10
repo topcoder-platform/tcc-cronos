@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CMConfig>
+  <Config name ="default_bitArraySerializer">
+    <Property name="Java">
+      <Value>com.topcoder.bloom.serializers.DefaultBitSetSerializer</Value>
+    </Property>
+    <Property name=".Net">
+      <Value>TopCoder.Util.BloomFilter.DefaultBitArraySerializer</Value>
+    </Property>
+  </Config>
+  <Config name="default_hashFunctionFamily">
+		<Property name="Java">
+			<Value>com.topcoder.bloom.hashfamily.DefaultHashFunctionFamily</Value>
+		</Property>
+	  <Property name=".Net">
+	    <Value>TopCoder.Util.BloomFilter.HashFunctionFamily.DefaultHashFunctionFamily</Value>
+	  </Property>
+  </Config>
+  
+</CMConfig> 

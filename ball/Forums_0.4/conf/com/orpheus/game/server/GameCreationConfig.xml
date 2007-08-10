@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<CMConfig>
+    <Config name="com.orpheus.game.server.GameCreationTypes">
+        <Property name="1">
+            <Value>Public auction</Value>
+        </Property>
+        <Property name="2">
+            <Value>Private auction</Value>
+        </Property>
+        <Property name="3">
+            <Value>Manual</Value>
+        </Property>
+    </Config>
+</CMConfig>

@@ -1,0 +1,14 @@
+Hello %credentials-handle%,
+
+We regret to inform you that your registration as a sponsor for The Ball
+The Ball has been rejected by the administrator.  The following
+explanation was provided\:
+
+Reject reason\: %reject-reason%
+
+Reject message\: %reject-message%
+
+Regards,
+
+The Ball Administration Team
+
