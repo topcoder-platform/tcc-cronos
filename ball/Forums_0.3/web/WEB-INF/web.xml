@@ -94,6 +94,7 @@
     
     <listener>
         <listener-class>com.orpheus.game.server.OrpheusServletContextListener</listener-class>
+        <listener-class>com.orpheus.game.server.OrpheusSessionListener</listener-class>
     </listener>
 
     <welcome-file-list>
