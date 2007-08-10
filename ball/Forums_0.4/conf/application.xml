@@ -35,7 +35,7 @@
     <module>
      	<web>
             <web-uri>jive4.war</web-uri>
-            <context-root />
+            <context-root>jive4</context-root>
         </web>
     </module>
     
