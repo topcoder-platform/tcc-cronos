@@ -34,6 +34,13 @@
     
     <module>
      	<web>
+            <web-uri>jive4.war</web-uri>
+            <context-root />
+        </web>
+    </module>
+    
+    <module>
+     	<web>
             <web-uri>forums.war</web-uri>
             <context-root>forums</context-root>
         </web>
