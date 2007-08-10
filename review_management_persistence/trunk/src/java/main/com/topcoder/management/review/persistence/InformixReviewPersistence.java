@@ -548,7 +548,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
                 + sbmNamespace + "].");
         }
 
-        // create the searchable fields map.
+/*        // create the searchable fields map.
         Map fieldsMap = new HashMap();
         ObjectValidator notNullValidator = new NotValidator(new NullValidator());
         fieldsMap.put("scorecardType", notNullValidator);
@@ -558,7 +558,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
         fieldsMap.put("committed", notNullValidator);
 
         // set the fields map to search bundle.
-        sb.setSearchableFields(getSearchableFields());
+        sb.setSearchableFields(getSearchableFields());*/
         return sb;
     }
 
