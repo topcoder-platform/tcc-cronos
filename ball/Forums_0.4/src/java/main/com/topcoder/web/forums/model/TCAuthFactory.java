@@ -42,6 +42,9 @@ public class TCAuthFactory extends AuthFactory {
         }
 
         UserProfile userProfile = (UserProfile)session.getAttribute("user_profile");
+        if (userProfile == null) {
+            throw new UnauthorizedException();
+        }
         long userID = Long.parseLong((String)userProfile.getIdentifier());
         
         authToken = new TCAuthToken(userID);
