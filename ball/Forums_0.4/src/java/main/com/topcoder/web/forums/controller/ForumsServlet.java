@@ -16,6 +16,7 @@ import com.topcoder.web.common.error.RequestRateExceededException;
 import com.topcoder.web.ejb.forums.ForumsLocal;
 import com.topcoder.web.ejb.forums.ForumsLocalHome;
 import com.topcoder.web.forums.controller.request.ForumsProcessor;
+import com.topcoder.web.user.LoginHandler;
 
 import javax.naming.Context;
 import javax.servlet.ServletConfig;
@@ -79,8 +80,8 @@ public class ForumsServlet extends BaseServlet {
                 TCRequest tcRequest = HttpObjectFactory.createRequest(request);
                 TCResponse tcResponse = HttpObjectFactory.createResponse(response);
 
-                UserProfile userProfile = (UserProfile)request.getSession(true).getAttribute("user_profile");
-                String username = OrpheusFunctions.getHandle(userProfile);
+                UserProfile userProfile = LoginHandler.getAuthenticatedUser(request.getSession(false));
+                String username = (userProfile == null) ? "anonymous" : OrpheusFunctions.getHandle(userProfile);
                 
                 String servletPath = request.getContextPath() + request.getServletPath();
                 String query = request.getQueryString();
