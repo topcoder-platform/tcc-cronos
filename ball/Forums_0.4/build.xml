@@ -838,12 +838,6 @@
     </target>
 
 	<!-- Deploy forum files -->
-	<!-- Create forums.war.	 
-	
-		 // LoginHandler.xml: vaildateUserProfile()
-		 request.getSession(true).setAttribute(PROFILE_SESSION_KEY, userProfile);	// "user_profile"
-		
-		 Confirm cache.properties is needed. -->
     <target name="dist_forums" depends="">
     	<antcall target="war_forums"/>
     	<antcall target="package_TCJive"/>
@@ -855,15 +849,19 @@
         		<include name="*.*"/>
         	</fileset>
         </copy>  
+    	
+    	<copy todir="${jboss_lib}">
+        	<fileset dir="${tc_libdir}">
+        		<include name="*.*"/>
+        	</fileset>
+        </copy> 
 
     	<ear destfile="${component.ear}" appxml="${configdir}/application.xml" update="true"
              duplicate="fail" filesonly="true">
-    		<fileset dir="${tc_libdir}" includes="*.jar,*.war"/>
         	<fileset dir="${jive_libdir}" includes="*.jar,*.war"/>
     		<fileset dir="${build_ejbjarsdir}" includes="*.jar,*.war"/>
         </ear>
-    	
-    	<!-- <copy todir="${jboss_lib}" file="${build_ejbjarsdir}/tcjive.jar"/> // trying to keep it in EAR temporarily - change if needed -->
+
         <!-- <copy todir="${jboss_deploy}" file="${ear.dir}/security.ear"/> // not needed? -->
     </target>
 

@@ -25,6 +25,14 @@
         <ejb>MessageEJB.jar</ejb>
     </module>
 
+	<module>
+        <ejb>forums.jar</ejb>
+    </module>
+    
+    <module>
+        <ejb>messagehistory.jar</ejb>
+    </module>
+
     <module>
         <web>
             <web-uri>game_server.war</web-uri>
