@@ -67,11 +67,11 @@ public class TCUser extends SimpleUserAdapter {
         
         final String FIND_BY_ID =
                 QUERY +
-                        " and u.id = ? ";
+                        " where u.id = ? ";
 
         final String FIND_BY_HANDLE =
                 QUERY +
-                        " and lower(u.handle) = ? ";
+                        " where lower(u.handle) = ? ";
 
         Connection con = null;
         PreparedStatement pstmt = null;
