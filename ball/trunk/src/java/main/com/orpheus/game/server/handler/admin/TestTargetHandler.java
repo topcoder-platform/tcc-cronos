@@ -7,6 +7,7 @@ import com.orpheus.game.server.handler.AbstractGameServerHandler;
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
+import com.topcoder.lang.StringUtil;
 import org.w3c.dom.Element;
 
 import javax.servlet.http.HttpServletRequest;
@@ -64,21 +65,36 @@ public class TestTargetHandler extends AbstractGameServerHandler implements Hand
             // Get text and URL for the new target from request parameters
             String newText = normalize(request.getParameter(getString(TEXT_PARAM_NAME_CONFIG)));
             String newURL = request.getParameter(getString(URL_PARAM_NAME_CONFIG)).trim();
+            String newTextXml = xmlEncode(newText);
+            String newURLXml = xmlEncode(newURL);
             // Verify if new target is accessible on specified page.
             Boolean targetCheckResult = isTargetValid(newText, newURL);
             if (targetCheckResult == null) {
                 // Could not retrieve the desired page or could not gather statistics from that page
                 request.setAttribute("targetTestResult",
-                                     "Could not verify validity of target [" + newText + "] for URL\n[" + newURL + "] "
-                                     + "due to unexpected error");
+                                     "Could not verify validity of target [" + newTextXml + "] for URL\n["
+                                     + newURLXml + "] due to unexpected error");
             } else if (!targetCheckResult.booleanValue()) {
                 // Target does not exist on the specified page
                 request.setAttribute("targetTestResult",
-                                     "The target [" +newText + "] is not valid for URL\n[" + newURL + "]");
+                                     "The target [" + newTextXml + "] is not valid for URL\n[" + newURLXml + "]");
             }
             return null;
         } catch (Exception e) {
             throw new HandlerExecutionException("Could not test the target for validity", e);
         }
+    }
+
+    /**
+     * <p>Encodes the specified text in accordance with XML specification.</p>
+     *
+     * @param text a <code>String</code> providing the text to be encoded.
+     * @return a <code>String</code> providing the specified text encoded in accordance with XML specification.
+     */
+    private String xmlEncode(String text) {
+        String xmlText = StringUtil.replace(text, "&", "&amp;");
+        xmlText = StringUtil.replace(xmlText, "<", "&lt;");
+        xmlText = StringUtil.replace(xmlText, ">", "&gt;");
+        return xmlText;
     }
 }
