@@ -54,7 +54,7 @@
             var s1, s2, s3;
 
             // End Date
-            var tr1 = table.insertRow(10);
+            var tr1 = table.insertRow(table.rows.length - 1);
             td1 = tr1.insertCell(0);
             td2 = tr1.insertCell(1);
             td2.colSpan = 2;
@@ -109,7 +109,7 @@
             td2.appendChild(s3);
 
             // End Time
-            var tr2 = table.insertRow(11);
+            var tr2 = table.insertRow(table.rows.length - 1);
             td1 = tr2.insertCell(0);
             td2 = tr2.insertCell(1);
             td2.colSpan = 2;
@@ -165,10 +165,8 @@
 
         function removeEndTimeForm() {
             var table = document.getElementById('GameDetailsTable');
-            if (table.rows.length > 11) {
-                table.deleteRow(10);
-                table.deleteRow(10);
-            }
+            table.deleteRow(table.rows.length - 2);
+            table.deleteRow(table.rows.length - 2);
         }
 
         function gameCompletionSelected(list) {
@@ -219,7 +217,8 @@
                         <td width="77%" colspan="2">
                             <select name="colorId" class="inputBox" style="height: 20px;">
                                 <c:forEach items="${colors}" var="color">
-                                    <option value="${color.id}">${color.name}</option>
+                                    <option value="${color.id}" ${param['colorId'] eq color.id ? 'selected="selected"' : ''}
+                                        >${color.name}</option>
                                 </c:forEach>
                             </select>
                         </td>
@@ -322,14 +321,16 @@
                     <tr>
                         <td nowrap colspan="2"># of Keys Needed when Ball is Found:</td>
                         <td>
-                            <input name="keyCount" type="text" id="maxBid10" class="inputBox" style="width:43px;"/>
+                            <input name="keyCount" type="text" id="maxBid10" class="inputBox" style="width:43px;"
+                                   value="${param['keyCount']}"/>
                         </td>
                     </tr>
                     ${admin:error('blockCount', validationErrors, 3)}
                     <tr>
                         <td nowrap colspan="2">Number of Blocks in the Game:</td>
                         <td>
-                            <input name="blockCount" type="text" id="maxBid9" class="inputBox" style="width:43px;"/>
+                            <input name="blockCount" type="text" id="maxBid9" class="inputBox" style="width:43px;"
+                                   value="${param['blockCount']}"/>
                         </td>
                     </tr>
                     <tr>
@@ -337,7 +338,9 @@
                         <td>
                             <select name="creationType" class="inputBox" style="height: 20px;">
                                 <c:forEach items="${admin:getGameCreationTypes()}" var="creationType">
-                                    <option value="${creationType.id}">${creationType.description}</option>
+                                    <option value="${creationType.id}" ${param['creationType'] eq creationType.id ? 'selected="selected"' : ''}>
+                                        ${creationType.description}
+                                    </option>
                                 </c:forEach>
                             </select>
                         </td>
@@ -348,7 +351,9 @@
                             <c:set var="prizeTypeSource" value="${applicationScope['PrizeCalcTypeSource']}" scope="page"/>
                             <select name="prizeType" class="inputBox" style="height: 20px;">
                                 <c:forEach items="${prizeTypeSource.allTypes}" var="prizeType">
-                                    <option value="${prizeType.id}">${prizeType.name}</option>
+                                    <option value="${prizeType.id}" ${param['prizeType'] eq prizeType.id ? 'selected="selected"' : ''}>
+                                        ${prizeType.name}
+                                    </option>
                                 </c:forEach>
                             </select>
                         </td>
@@ -359,7 +364,9 @@
                             <c:set var="bouncePointTypeSource" value="${applicationScope['BouncePointCalcTypeSource']}" scope="page"/>
                             <select name="bounceType" class="inputBox" style="height: 20px;">
                                 <c:forEach items="${bouncePointTypeSource.allTypes}" var="bounceType">
-                                    <option value="${bounceType.id}">${bounceType.name}</option>
+                                    <option value="${bounceType.id}" ${param['bounceType'] eq bounceType.id ? 'selected="selected"' : ''}>
+                                        ${bounceType.name}
+                                    </option>
                                 </c:forEach>
                             </select>
                         </td>
@@ -371,11 +378,109 @@
                             <select name="completionType" class="inputBox" style="height: 20px;"
                                     onchange="gameCompletionSelected(this);">
                                 <c:forEach items="${gameCompletionTypeSource.allTypes}" var="completionType">
-                                    <option value="${completionType.id}">${completionType.name}</option>
+                                    <option value="${completionType.id}"  ${param['completionType'] eq completionType.id ? 'selected="selected"' : ''}>
+                                        ${completionType.name}
+                                    </option>
                                 </c:forEach>
                             </select>                                           
                         </td>
                     </tr>
+                    <c:if test="${param['completionType'] eq '2'}">
+                        <tr>
+                            <td>End Date:</td>
+                            <td colspan="2">
+                                <select name="month_e" id="hour0_" class="inputBox" style="height: 20px;">
+                                    <option
+                                        value="01" ${admin:selectIfMonthMatches(currentTime, 0, request, 'endDate', dateFormat)}>
+                                        Jan
+                                    </option>
+                                    <option
+                                        value="02" ${admin:selectIfMonthMatches(currentTime, 1, request, 'endDate', dateFormat)}>
+                                        Feb
+                                    </option>
+                                    <option
+                                        value="03" ${admin:selectIfMonthMatches(currentTime, 2, request, 'endDate', dateFormat)}>
+                                        March
+                                    </option>
+                                    <option
+                                        value="04" ${admin:selectIfMonthMatches(currentTime, 3, request, 'endDate', dateFormat)}>
+                                        April
+                                    </option>
+                                    <option
+                                        value="05" ${admin:selectIfMonthMatches(currentTime, 4, request, 'endDate', dateFormat)}>
+                                        May
+                                    </option>
+                                    <option
+                                        value="06" ${admin:selectIfMonthMatches(currentTime, 5, request, 'endDate', dateFormat)}>
+                                        June
+                                    </option>
+                                    <option
+                                        value="07" ${admin:selectIfMonthMatches(currentTime, 6, request, 'endDate', dateFormat)}>
+                                        July
+                                    </option>
+                                    <option
+                                        value="08" ${admin:selectIfMonthMatches(currentTime, 7, request, 'endDate', dateFormat)}>
+                                        Aug
+                                    </option>
+                                    <option
+                                        value="09" ${admin:selectIfMonthMatches(currentTime, 8, request, 'endDate', dateFormat)}>
+                                        Sept
+                                    </option>
+                                    <option
+                                        value="10" ${admin:selectIfMonthMatches(currentTime, 9, request, 'endDate', dateFormat)}>
+                                        Oct
+                                    </option>
+                                    <option
+                                        value="11" ${admin:selectIfMonthMatches(currentTime, 10, request, 'endDate', dateFormat)}>
+                                        Nov
+                                    </option>
+                                    <option
+                                        value="12" ${admin:selectIfMonthMatches(currentTime, 11, request, 'endDate', dateFormat)}>
+                                        Dec
+                                    </option>
+                                </select>
+                                <select name="day_e" id="hour1_" class="inputBox" style="height: 20px;">
+                                    <c:forEach begin="1" end="31" var="n">
+                                        <option
+                                            value="${n < 10 ? ('0' + n) : n}" ${admin:selectIfDayMatches(currentTime, n, request, 'endDate', dateFormat)}>${n}</option>
+                                    </c:forEach>
+                                </select>
+                                <select name="year_e" id="year_" class="inputBox" style="height: 20px;">
+                                    <c:forEach begin="2006" end="2010" var="n">
+                                        <option
+                                            value="${n}" ${admin:selectIfYearMatches(currentTime, n, request, 'endDate', dateFormat)}>${n}</option>
+                                    </c:forEach>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>End Time:</td>
+                            <td colspan="2">
+                                <select name="hour_e" id="hour_" class="inputBox" style="height: 20px;">
+                                    <c:forEach begin="1" end="12" var="n">
+                                        <option
+                                            value="${n < 10 ? ('0' + n) : n}" ${admin:selectIfHourMatches(currentTime, n, request, 'endDate', dateFormat, true)}>${n}</option>
+                                    </c:forEach>
+                                </select>:
+                                <select name="minute_e" id="minute_" class="inputBox" style="height: 20px;">
+                                    <c:forEach begin="0" end="59" var="n">
+                                        <option
+                                            value="${n < 10 ? ('0' + n) : n}" ${admin:selectIfMinuteMatches(currentTime, n, request, 'endDate', dateFormat)}>${n < 10 ? ('0' + n) : n}</option>
+                                    </c:forEach>
+                                </select>
+                                <select name="ampm_e" id="ampm_" class="inputBox" style="height: 20px;">
+                                    <option
+                                        value="am" ${admin:selectIfAMPMMatches(currentTime, 0, request, 'endDate', dateFormat)}>
+                                        am
+                                    </option>
+                                    <option
+                                        value="pm" ${admin:selectIfAMPMMatches(currentTime, 1, request, 'endDate', dateFormat)}>
+                                        pm
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                    </c:if>
                     <tr>
                         <td nowrap colspan="2">&nbsp;</td>
                         <td class="buttons">
