@@ -182,7 +182,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     private static final String QUERY_PROJECTS_SQL = "SELECT "
             + "project.project_id, status.project_status_id, status.name, "
             + "category.project_category_id, category.name, type.project_type_id, type.name, "
-            + "project.create_user, project.create_date, project.modify_user, project.modify_date "
+            + "project.create_user, project.create_date, project.modify_user, project.modify_date, category.description "
             + "FROM project JOIN project_status_lu AS status "
             + "ON project.project_status_id=status.project_status_id "
             + "JOIN project_category_lu AS category "
@@ -199,7 +199,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
         Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE,
         Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
-        Helper.STRING_TYPE, Helper.DATE_TYPE };
+        Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE};
 
     /**
      * Represents the sql statement to query project properties.
@@ -1092,7 +1092,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             // create the ProjectCategory object
             ProjectCategory category = new ProjectCategory(((Long) row[3])
                     .longValue(), (String) row[4], type);
-
+            category.setDescription((String) row[11]);
             // create a new instance of ProjectType class
             projects[i] = new Project(((Long) row[0]).longValue(), category,
                     status);
