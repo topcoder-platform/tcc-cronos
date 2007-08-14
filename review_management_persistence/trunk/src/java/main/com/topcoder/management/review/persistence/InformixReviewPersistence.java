@@ -159,7 +159,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
     private static final String CREATE_REVIEW_SQL = "INSERT INTO " + REVIEW_TABLE
         + " (review_id, resource_id, submission_id, scorecard_id, committed, score, initial_score,"
         + " create_user, create_date, modify_user, modify_date)"
-        + " values (?,?,?,?,?,?,?,CURRENT,?,CURRENT)";
+        + " values (?,?,?,?,?,?,?,?,CURRENT,?,CURRENT)";
 
     /**
      * Represents the sql statement to create review comment.
