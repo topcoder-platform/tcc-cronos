@@ -71,8 +71,8 @@ public class BallColorListHandler extends AbstractGameServerHandler implements H
         }
         try {
             GameDataEJBAdapter gameDataEJBAdapter = getGameDataEJBAdapter(this.jndiContext);
-            context.getRequest().setAttribute(getString(BALL_COLORS_ATTR_NAME_CONFIG),
-                                              gameDataEJBAdapter.findAllBallColors());
+            context.getRequest().getSession().setAttribute(getString(BALL_COLORS_ATTR_NAME_CONFIG),
+                                                           gameDataEJBAdapter.findAllBallColors());
             return null;
         } catch (Exception e) {
             throw new HandlerExecutionException("Failed to get all ball colors.", e);
