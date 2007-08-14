@@ -394,7 +394,7 @@
                                 maxlength="9" value="${param['maxBid']}"
                                 onkeypress="return acceptDigit(event);"/>&nbsp;&nbsp;&nbsp;
                         <b>Block:</b>
-                        <select name="blockNum" id="blcokNum" class="inputBox">
+                        <select name="blockNum" id="blcokNum" class="inputBox" style="width:20px">
                             <c:forEach begin="1" end="${param['blockCount']}" step="1" var="b">
                                 <option value="${b}">${b}</option>
                             </c:forEach>
