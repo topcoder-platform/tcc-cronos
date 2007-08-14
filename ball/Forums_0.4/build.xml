@@ -722,7 +722,7 @@
 	
 	<!-- JBoss EJBs -->
     <target name="package_EJB_MessageHistoryBean" depends="compile_forums">
-        <jar jarfile="${build_ejbjarsdir}/messagehistory.jar">
+        <jar jarfile="${build_ejbjarsdir}/messagehistory.jar" manifest="${configdir}/ejb/manifest.mf">
             <zipfileset dir="${build_classdir}" includes="com/topcoder/web/ejb/BaseEJB.class"/>
             <zipfileset dir="${build_classdir}" includes="com/topcoder/web/ejb/messagehistory/*.class"/>
             <metainf dir="${javamain}/com/topcoder/web/ejb/messagehistory" includes="*.xml"/>
@@ -730,7 +730,7 @@
     </target>
 
     <target name="package_EJB_ForumsBean" depends="compile_forums">
-        <jar jarfile="${build_ejbjarsdir}/forums.jar">
+        <jar jarfile="${build_ejbjarsdir}/forums.jar" manifest="${configdir}/ejb/manifest.mf">
             <zipfileset dir="${build_classdir}" includes="com/topcoder/web/ejb/BaseEJB.class"/>
             <zipfileset dir="${build_classdir}" includes="com/topcoder/web/ejb/forums/*.class"/>
             <metainf dir="${javamain}/com/topcoder/web/ejb/forums" includes="*.xml"/>
@@ -738,7 +738,7 @@
     </target>
 
     <target name="package_TCJive" depends="compile_forums">
-        <jar jarfile="${build_ejbjarsdir}/tcjive.jar">
+        <jar jarfile="${build_ejbjarsdir}/tcjive.jar" manifest="${configdir}/ejb/manifest.mf">
             <fileset dir="${build_classdir}/">
                 <include name="com/topcoder/web/forums/model/TCUser.class"/>
                 <include name="com/topcoder/web/forums/model/TCUserManager.class"/>

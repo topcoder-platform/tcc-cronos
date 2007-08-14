@@ -15,5 +15,5 @@ Class-Path: game_server.jar game_persistence.jar base_exception.jar puzzle_frame
             spell_check.jar search_builder.jar string_distance.jar stoppable_thread.jar typesafe_enum.jar
             url_loader.jar web_application_user_logic.jar web_site_statistics.jar web_registration.jar web_spider.jar
             xsl_engine.jar Tidy.jar data_paging_tag.jar jai_codec.jar jai_core.jar drop_down_manager.jar
-            http_utility.jar base64_codec.jar string_class.jar sync_proc_wrapper.jar
+            http_utility.jar base64_codec.jar string_class.jar sync_proc_wrapper.jar jivebase.jar jiveforums.jar
             
