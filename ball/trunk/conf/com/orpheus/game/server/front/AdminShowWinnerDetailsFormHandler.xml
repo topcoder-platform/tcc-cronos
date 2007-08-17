@@ -16,6 +16,7 @@
         <pending_winner_key>pendingWinner</pending_winner_key>
         <object_factory_ns>com.orpheus.game.server.ObjectFactory</object_factory_ns>
         <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
+        <admin_data_jndi_name>orpheus/AdminData</admin_data_jndi_name>
         <jndi_context_name>default</jndi_context_name>
         <use_remote_interface>true</use_remote_interface>
     </handler>

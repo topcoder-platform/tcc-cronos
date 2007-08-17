@@ -71,6 +71,7 @@ public class AdminWinnerDetailsHandler extends AbstractGameServerHandler impleme
         readAsString(element, PROFILE_ATTR_NAME_CONFIG, true);
         readAsString(element, PROFILE_ID_PARAM_NAME_CONFIG, true);
         readAsString(element, GAME_EJB_JNDI_NAME_CONFIG, true);
+        readAsString(element, ADMIN_EJB_JNDI_NAME_CONFIG, true);
         readAsString(element, PENDING_WINNER_ATTR_NAME_CONFIG, true);
         readAsBoolean(element, USER_REMOTE_INTERFACE_CONFIG, true);
         this.jndiContext = getJNDIContext(element);
