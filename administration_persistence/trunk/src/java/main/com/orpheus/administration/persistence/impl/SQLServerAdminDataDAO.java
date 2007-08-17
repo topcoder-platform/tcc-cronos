@@ -63,10 +63,16 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
     /**
      * The query used to determine the pre-fee payout for a specified game.
      */
+/*
     private static final String PAYOUT_QUERY =
         "SELECT SUM(current_amount) FROM hosting_block, auction, hosting_slot, bid, effective_bid WHERE "
         + "hosting_block.game_id = ? AND auction.hosting_block_id = hosting_block.id AND bid.auction_id = "
         + "auction.hosting_block_id AND hosting_slot.bid_id = bid.id AND hosting_slot.bid_id = effective_bid.bid_id "
+        + "AND hosting_slot.hosting_start IS NOT NULL";
+*/
+    private static final String PAYOUT_QUERY =
+        "SELECT SUM(hosting_slot.hosting_payment) FROM hosting_block, hosting_slot WHERE "
+        + "hosting_block.game_id = ? AND hosting_slot.hosting_block_id = hosting_block.id "
         + "AND hosting_slot.hosting_start IS NOT NULL";
 
     /**
@@ -395,6 +401,8 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
                         List ret = new ArrayList();
                         while (results.next()) {
                             long gameID = results.getLong(2);
+                            // TODO : The winner payout must be calculated based on prize calculation schema for the
+                            // game
                             ret.add(new PendingWinnerImpl(results.getLong(1), gameID, calculatePayout(gameID)));
                         }
 
@@ -438,11 +446,13 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
             try {
                 long gameID = winner.getGameId();
                 long playerID = winner.getPlayerId();
+                int prize = winner.getPayout();
                 // According to latest requirements there may be several winners per game so the check is checking
                 // against player ID also
                 checkForExistingWinner(connection, gameID, playerID);
                 setWinnerHandled(connection, winner, gameID, playerID);
-                insertPlayerWonGame(connection, gameID, playerID, date, calculatePayout(gameID));
+//                insertPlayerWonGame(connection, gameID, playerID, date, calculatePayout(gameID));
+                insertPlayerWonGame(connection, gameID, playerID, date, prize);
             } finally {
                 connection.close();
             }
