@@ -256,6 +256,12 @@ public class AbstractGameServerHandler {
 
     /**
      * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of request attribute to bind the details for selected pending winner.</p>
+     */
+    protected static final String PENDING_WINNER_ATTR_NAME_CONFIG = "pending_winner_key";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
      * name of request attribute to bind the details for selected images.</p>
      */
     protected static final String IMAGES_ATTR_NAME_CONFIG = "images_key";

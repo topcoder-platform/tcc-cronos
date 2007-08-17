@@ -47,7 +47,7 @@
                                 </tr>
                                 <tr>
                                     <td class="bold">Prize Payout:</td>
-                                    <td>$${admin:getMinimumPayout(game, servletContext)}</td>
+                                    <td>$${pendingWinner.payout}</td>
                                 </tr>
                                 <tr>
                                     <td class="bold">Player Nickname:</td>

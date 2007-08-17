@@ -13,6 +13,7 @@
         <game_id_param_key>gameId</game_id_param_key>
         <profile_key>winner</profile_key>
         <profile_id_param_key>playerId</profile_id_param_key>
+        <pending_winner_key>pendingWinner</pending_winner_key>
         <object_factory_ns>com.orpheus.game.server.ObjectFactory</object_factory_ns>
         <game_data_jndi_name>orpheus/GameData</game_data_jndi_name>
         <jndi_context_name>default</jndi_context_name>

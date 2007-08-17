@@ -5,6 +5,8 @@ package com.orpheus.game.server.handler.admin;
 
 import com.orpheus.game.server.handler.AbstractGameServerHandler;
 import com.orpheus.game.server.util.GameDataEJBAdapter;
+import com.orpheus.game.server.util.AdminDataEJBAdapter;
+import com.orpheus.administration.persistence.PendingWinner;
 import com.topcoder.user.profile.manager.UserProfileManager;
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
@@ -69,6 +71,7 @@ public class AdminWinnerDetailsHandler extends AbstractGameServerHandler impleme
         readAsString(element, PROFILE_ATTR_NAME_CONFIG, true);
         readAsString(element, PROFILE_ID_PARAM_NAME_CONFIG, true);
         readAsString(element, GAME_EJB_JNDI_NAME_CONFIG, true);
+        readAsString(element, PENDING_WINNER_ATTR_NAME_CONFIG, true);
         readAsBoolean(element, USER_REMOTE_INTERFACE_CONFIG, true);
         this.jndiContext = getJNDIContext(element);
         this.userProfileManager = getUserProfileManager(element);
@@ -94,9 +97,18 @@ public class AdminWinnerDetailsHandler extends AbstractGameServerHandler impleme
             long profileId = getLong(PROFILE_ID_PARAM_NAME_CONFIG, request);
 
             GameDataEJBAdapter gameDataEJBAdapter = getGameDataEJBAdapter(this.jndiContext);
+            AdminDataEJBAdapter adminDataEJBAdapter = getAdminDataEJBAdapter(this.jndiContext);
+            PendingWinner[] pendingWinners = adminDataEJBAdapter.getPendingWinners();
+            PendingWinner pendingWinner = null;
+            for (int i = 0; (pendingWinner == null) && (i < pendingWinners.length); i++) {
+                if (pendingWinners[i].getPlayerId() == profileId) {
+                    pendingWinner = pendingWinners[i];
+                }
+            }
             request.setAttribute(getString(PROFILE_ATTR_NAME_CONFIG),
                                  this.userProfileManager.getUserProfile(profileId));
             request.setAttribute(getString(GAME_DETIALS_ATTR_NAME_CONFIG), gameDataEJBAdapter.getGame(gameId));
+            request.setAttribute(getString(PENDING_WINNER_ATTR_NAME_CONFIG), pendingWinner);
             return null;
         } catch (Exception e) {
             throw new HandlerExecutionException("Failed to get all winners.", e);
