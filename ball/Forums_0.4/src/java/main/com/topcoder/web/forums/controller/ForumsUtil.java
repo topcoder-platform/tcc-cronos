@@ -702,6 +702,7 @@ public class ForumsUtil {
         ForumsLocal forumsBean = getForumsBean();
         Cookie[] ca = request.getCookies();
         for (int i = 0; ca != null && i < ca.length; i++) {
+            log.info("*** Cookie name: " + ca[i].getName());
             if (ca[i].getName().equals(cookieName)) {
                 log.info("--> cookie name match ");
                 try {
