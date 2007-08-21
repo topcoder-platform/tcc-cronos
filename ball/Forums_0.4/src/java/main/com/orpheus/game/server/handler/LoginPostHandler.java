@@ -78,6 +78,7 @@ public class LoginPostHandler extends AbstractGameServerHandler implements Handl
                     String hash = AuthenticationSupport.hashPassword(uid + password);
                     Cookie c = new Cookie("Ball_" + USER_COOKIE_NAME, "" + uid + "|" + handle + "|" + hash);
                     System.out.println("*** Saving cookie with value: " + c.getValue());
+                    c.setPath("/");
                     c.setMaxAge(Integer.MAX_VALUE);  // if the user's "Remember Me" option is not enabled, this should be -1
                     context.getResponse().addCookie(c);
                 }
