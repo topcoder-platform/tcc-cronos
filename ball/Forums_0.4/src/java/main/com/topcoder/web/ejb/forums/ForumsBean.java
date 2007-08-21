@@ -11,6 +11,7 @@ import com.topcoder.web.forums.model.TCAuthToken;
 import javax.ejb.EJBException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -102,6 +103,31 @@ public class ForumsBean extends BaseEJB {
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         } finally {
+            close(ps);
+            close(conn);
+        }
+    }
+    
+    public String getUserPassword(long userID) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DBMS.getConnection(DBMS.FORUMS_DATASOURCE_NAME);
+            ps = conn.prepareStatement(
+                    "select passwordhash from jiveuser where userid = ?");
+            ps.setLong(1, userID);
+            rs = ps.executeQuery();
+            rs.next();
+            return rs.getString(1);
+        } catch (SQLException e) {
+            DBMS.printSqlException(true, e);
+            throw new EJBException(e.getMessage());
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        } finally {
+            close(rs);
             close(ps);
             close(conn);
         }

@@ -7,6 +7,7 @@ import com.topcoder.shared.security.SimpleUser;
 import com.topcoder.shared.util.logging.Logger;
 import com.topcoder.user.profile.UserProfile;
 import com.topcoder.web.common.BaseProcessor;
+import com.topcoder.web.forums.controller.ForumsUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,11 +42,8 @@ public class TCAuthFactory extends AuthFactory {
             return authToken;
         }
 
-        UserProfile userProfile = (UserProfile)session.getAttribute("user_profile");
-        if (userProfile == null) {
-            throw new UnauthorizedException();
-        }
-        long userID = Long.parseLong((String)userProfile.getIdentifier());
+        // TODO: support username/password login (for Jive admin console)
+        long userID = ForumsUtil.checkLoginCookie(httpServletRequest, "Ball_user_id").getId();
         
         authToken = new TCAuthToken(userID);
         log.debug("authToken placed into session: " + authToken.getUserID());

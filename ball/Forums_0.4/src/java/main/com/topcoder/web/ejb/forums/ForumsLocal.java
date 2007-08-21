@@ -27,4 +27,6 @@ public interface ForumsLocal extends EJBLocalObject {
     public void deleteCategoryWatch(long userID, long categoryID) throws EJBException, ForumCategoryNotFoundException, UnauthorizedException, UserNotFoundException;
     
     public void deleteOrphanedAttachments() throws EJBException;
+    
+    public String getUserPassword(long userID) throws EJBException;
 }

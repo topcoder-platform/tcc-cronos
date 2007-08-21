@@ -7,16 +7,13 @@ import com.jivesoftware.base.AuthFactory;
 import com.jivesoftware.base.AuthToken;
 import com.jivesoftware.base.UnauthorizedException;
 import com.jivesoftware.forum.ForumFactory;
-import com.orpheus.game.server.OrpheusFunctions;
 import com.topcoder.shared.util.TCContext;
 import com.topcoder.shared.util.logging.Logger;
-import com.topcoder.user.profile.UserProfile;
 import com.topcoder.web.common.*;
 import com.topcoder.web.common.error.RequestRateExceededException;
 import com.topcoder.web.ejb.forums.ForumsLocal;
 import com.topcoder.web.ejb.forums.ForumsLocalHome;
 import com.topcoder.web.forums.controller.request.ForumsProcessor;
-import com.topcoder.web.user.LoginHandler;
 
 import javax.naming.Context;
 import javax.servlet.ServletConfig;
@@ -80,9 +77,7 @@ public class ForumsServlet extends BaseServlet {
                 TCRequest tcRequest = HttpObjectFactory.createRequest(request);
                 TCResponse tcResponse = HttpObjectFactory.createResponse(response);
 
-                UserProfile userProfile = LoginHandler.getAuthenticatedUser(request.getSession(false));
-                String username = (userProfile == null) ? "anonymous" : OrpheusFunctions.getHandle(userProfile);
-                
+                String username = ForumsUtil.checkLoginCookie(tcRequest, "Ball_user_id").getUserName();                
                 String servletPath = request.getContextPath() + request.getServletPath();
                 String query = request.getQueryString();
                 String queryString = (query == null) ? ("") : ("?" + query);

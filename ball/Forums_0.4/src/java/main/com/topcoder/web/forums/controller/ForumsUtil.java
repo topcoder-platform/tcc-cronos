@@ -14,10 +14,14 @@ import com.jivesoftware.forum.*;
 import com.jivesoftware.forum.database.DbForumFactory;
 import com.jivesoftware.forum.database.DbForumMessage;
 import com.jivesoftware.util.StringUtils;
+import com.orpheus.game.server.util.AuthenticationSupport;
+import com.topcoder.shared.security.SimpleUser;
 import com.topcoder.shared.util.ApplicationServer;
+import com.topcoder.shared.util.TCContext;
 import com.topcoder.shared.util.logging.Logger;
 import com.topcoder.web.common.BaseProcessor;
 import com.topcoder.web.ejb.forums.ForumsLocal;
+import com.topcoder.web.ejb.forums.ForumsLocalHome;
 import com.topcoder.web.forums.ForumConstants;
 import com.topcoder.web.forums.model.TCAuthToken;
 import com.topcoder.web.forums.util.filter.TCHTMLFilter;
@@ -31,9 +35,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.StringTokenizer;
+
+import javax.naming.Context;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author mtong
@@ -686,6 +694,43 @@ public class ForumsUtil {
         } catch (NumberFormatException nfe) {
             return defaultVal;
         }
+    }
+    
+    // Checks for the presence of a login cookie with the specified name in the specified request.
+    public static com.topcoder.shared.security.User checkLoginCookie(HttpServletRequest request, String cookieName) {
+        ForumsLocal forumsBean = getForumsBean();
+        Cookie[] ca = request.getCookies();
+        for (int i = 0; ca != null && i < ca.length; i++) {
+            if (ca[i].getName().equals(cookieName)) {
+                try {
+                    StringTokenizer st = new StringTokenizer(ca[i].getValue(), "|");
+                    long uid = Long.parseLong(st.nextToken());
+                    if (uid < 1) continue;
+                    String username = st.nextToken();
+                    String hash = st.nextToken();
+                    String pwd = forumsBean.getUserPassword(uid);
+                    String hashCheck = AuthenticationSupport.hashPassword(uid + pwd);
+                    if (hash.equals(hashCheck)) {
+                        return new SimpleUser(uid, username, "");
+                    }
+                } catch (Exception e) {
+                    log.error("exception parsing cookie", e);
+                }
+            }
+        }
+        return SimpleUser.createGuest();
+    }
+    
+    private static ForumsLocal getForumsBean() {
+        ForumsLocal forumsBean = null;
+        try {
+            Context context = TCContext.getInitial();
+            ForumsLocalHome forumsLocalHome = (ForumsLocalHome) context.lookup(ForumsLocalHome.EJB_REF_NAME);
+            forumsBean = forumsLocalHome.create();
+        } catch (Exception e) {
+            log.error(e);
+        }
+        return forumsBean;
     }
 }
 

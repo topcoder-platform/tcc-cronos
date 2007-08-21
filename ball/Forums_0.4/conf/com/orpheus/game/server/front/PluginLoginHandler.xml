@@ -33,6 +33,7 @@
             <value type="incorrect_credential">incorrect_credential</value>
         </failure_results>
     </handler>
+    <handler type="LoginPostHandler"></handler>
     <handler type="SetParameterHandler">
         <parameter_name>notfound</parameter_name>
         <parameter_value>false</parameter_value>
