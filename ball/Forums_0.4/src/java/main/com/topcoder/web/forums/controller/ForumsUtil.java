@@ -698,10 +698,12 @@ public class ForumsUtil {
     
     // Checks for the presence of a login cookie with the specified name in the specified request.
     public static com.topcoder.shared.security.User checkLoginCookie(HttpServletRequest request, String cookieName) {
+        log.info("--> in ForumsUtil.checkLoginCookie() ");
         ForumsLocal forumsBean = getForumsBean();
         Cookie[] ca = request.getCookies();
         for (int i = 0; ca != null && i < ca.length; i++) {
             if (ca[i].getName().equals(cookieName)) {
+                log.info("--> cookie name match ");
                 try {
                     StringTokenizer st = new StringTokenizer(ca[i].getValue(), "|");
                     long uid = Long.parseLong(st.nextToken());
@@ -710,6 +712,7 @@ public class ForumsUtil {
                     String hash = st.nextToken();
                     String pwd = forumsBean.getUserPassword(uid);
                     String hashCheck = AuthenticationSupport.hashPassword(uid + pwd);
+                    log.info("--> username: " + username + " | pwd: " + pwd + " | hash: " + hash + " | hashCheck: " + hashCheck);
                     if (hash.equals(hashCheck)) {
                         return new SimpleUser(uid, username, "");
                     }

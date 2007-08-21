@@ -77,6 +77,7 @@ public class ForumsServlet extends BaseServlet {
                 TCRequest tcRequest = HttpObjectFactory.createRequest(request);
                 TCResponse tcResponse = HttpObjectFactory.createResponse(response);
 
+                log.info("--> in ForumsServlet.process() ");
                 String username = ForumsUtil.checkLoginCookie(tcRequest, "Ball_user_id").getUserName();                
                 String servletPath = request.getContextPath() + request.getServletPath();
                 String query = request.getQueryString();

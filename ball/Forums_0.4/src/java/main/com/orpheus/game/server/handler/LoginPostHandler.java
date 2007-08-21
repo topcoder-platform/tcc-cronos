@@ -60,6 +60,7 @@ public class LoginPostHandler extends AbstractGameServerHandler implements Handl
      * @throws HandlerExecutionException if un unrecoverable error prevents the successful request processing.
      */
     public String execute(ActionContext context) throws HandlerExecutionException {
+        System.out.println("*** in LoginPostHandler.execute()");
         if (context == null) {
             throw new IllegalArgumentException("The parameter [context] is NULL");
         }
@@ -67,6 +68,7 @@ public class LoginPostHandler extends AbstractGameServerHandler implements Handl
             HttpServletRequest request = context.getRequest();
             HttpSession session = request.getSession(false);
             if (session != null) {
+                System.out.println("*** session is non-null");
                 UserProfile authenticatedUser = LoginHandler.getAuthenticatedUser(session);
                 if (authenticatedUser != null) {
                     long uid = ((Long)authenticatedUser.getIdentifier()).longValue();
@@ -75,6 +77,7 @@ public class LoginPostHandler extends AbstractGameServerHandler implements Handl
                     
                     String hash = AuthenticationSupport.hashPassword(uid + password);
                     Cookie c = new Cookie("Ball_" + USER_COOKIE_NAME, "" + uid + "|" + handle + "|" + hash);
+                    System.out.println("*** Saving cookie with value: " + c.getValue());
                     c.setMaxAge(Integer.MAX_VALUE);  // if the user's "Remember Me" option is not enabled, this should be -1
                     context.getResponse().addCookie(c);
                 }
