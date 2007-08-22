@@ -5,7 +5,7 @@
     <link type="image/x-icon" rel="shortcut icon" href="/i/favicon.ico"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <title>TopCoder Forums - Search Tips</title>
+    <title>The Ball: Forums - Search Tips</title>
     <style type="text/css">
     * {
         font-family : arial, helvetica, sans-serif;

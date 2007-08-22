@@ -12,7 +12,7 @@ import com.topcoder.web.forums.controller.ForumsUtil;
 /**
  * @author mtong
  *         <p/>
- *         Forwards to the TopCoder Forums change log. Currently restricted to admins.
+ *         Forwards to the Ball Forums change log. Currently restricted to admins.
  */
 public class ChangeLog extends ForumsProcessor {
     protected static Logger log = Logger.getLogger(BaseProcessor.class);

@@ -27,10 +27,11 @@
 
 <html>
 <head>
-    <link type="image/x-icon" rel="shortcut icon" href="/i/favicon.ico"/>
+
+    <link rel="icon" type="image/png" href="../i/favicon.png">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <title>TopCoder Forums</title>
+    <title>The Ball: Forums</title>
     <jsp:include page="script.jsp"/>
     <jsp:include page="/style.jsp">
         <jsp:param name="key" value="tc_forums"/>
@@ -39,6 +40,10 @@
 </head>
 
 <body>
+
+<jsp:include page="top.jsp">
+    <jsp:param name="level1" value=""/>
+</jsp:include>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
 <tr valign="top">
