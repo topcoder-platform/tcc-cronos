@@ -9,5 +9,8 @@
         <a href="${ctx}/public/bug_report.jsp">Report Bugs</a>
 --%>
     </span>
-    <p><img src="${ctx}/i/home/bbtc2.gif" width="103" height="28" align="absmiddle" alt="Built by TopCoder"/> &copy; Copyright 2007 TopCoder, Inc.</p>
+    <p>
+        <a href="http://www.topcoder.com" target="ParentSite">
+            <img src="${ctx}/i/home/bbtc2.gif" width="103" height="28" align="absmiddle" alt="Built by TopCoder"/>
+        </a> &copy; Copyright 2007 TopCoder, Inc.</p>
 </div>
