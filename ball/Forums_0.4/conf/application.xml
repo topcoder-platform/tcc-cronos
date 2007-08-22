@@ -50,7 +50,7 @@
     <module>
      	<web>
             <web-uri>forums.war</web-uri>
-            <context-root>forums</context-root>
+            <context-root />
         </web>
     </module>
 </application>
