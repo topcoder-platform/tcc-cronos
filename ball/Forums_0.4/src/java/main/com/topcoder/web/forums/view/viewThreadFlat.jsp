@@ -247,13 +247,6 @@ background: #6363E3 url(/i/survey/bar_bg.gif) center left repeat-x;
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
    <tr valign="top">
-<!-- Left Column Begins-->
-      <td width="180">
-          <jsp:include page="includes/global_left.jsp">
-             <jsp:param name="node" value="forums"/>
-          </jsp:include>
-      </td>
-<!-- Left Column Ends -->
 
 <!-- Center Column Begins -->
         <td width="99%" class="rtBody">

@@ -11,6 +11,8 @@ import com.topcoder.shared.util.TCContext;
 import com.topcoder.shared.util.logging.Logger;
 import com.topcoder.web.common.*;
 import com.topcoder.web.common.error.RequestRateExceededException;
+import com.topcoder.web.common.security.BasicAuthentication;
+import com.topcoder.web.common.security.SessionPersistor;
 import com.topcoder.web.ejb.forums.ForumsLocal;
 import com.topcoder.web.ejb.forums.ForumsLocalHome;
 import com.topcoder.web.forums.controller.request.ForumsProcessor;
@@ -22,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashSet;
 
 /**
  * @author mtong
@@ -60,6 +63,7 @@ public class ForumsServlet extends BaseServlet {
             throws IOException, ServletException {
 
         RequestProcessor rp = null;
+        SessionInfo info = null;
 
         try {
             try {
@@ -76,6 +80,11 @@ public class ForumsServlet extends BaseServlet {
 
                 TCRequest tcRequest = HttpObjectFactory.createRequest(request);
                 TCResponse tcResponse = HttpObjectFactory.createResponse(response);
+                
+                BasicAuthentication auth = new BasicAuthentication(new SessionPersistor(request.getSession()), 
+                        tcRequest, tcResponse);
+                info = createSessionInfo(tcRequest, auth, new HashSet());
+                tcRequest.setAttribute(SESSION_INFO_KEY, info);
 
                 log.info("--> in ForumsServlet.process() ");
                 String username = ForumsUtil.checkLoginCookie(tcRequest, "Ball_user_id").getUserName();                

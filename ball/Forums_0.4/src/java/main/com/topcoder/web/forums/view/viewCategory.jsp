@@ -112,15 +112,6 @@
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr valign="top">
 
-        <!-- Left Column Begins-->
-        <td width="180">
-            <jsp:include page="includes/global_left.jsp">
-                <jsp:param name="node" value="forums"/>
-            </jsp:include>
-        </td>
-        <!-- Left Column Ends -->
-
-
         <!-- Center Column Begins -->
         <td width="100%" class="rtBody">
 
@@ -145,12 +136,6 @@
         					<A href="?module=CreateForum&<%=ForumConstants.CATEGORY_ID%>=<%=forumCategory.getID()%>&<%=ForumConstants.POST_MODE%>=New" class="rtbcLink">Create Forum</A>&#160; |&#160; 
         			<%	} %>
                     <A href="?module=History" class="rtbcLink">My Post History</A>&#160;&#160;|&#160;&#160;<A href="?module=Watches" class="rtbcLink">My Watches</A>&#160;&#160;|&#160;&#160;<A href="?module=Settings" class="rtbcLink">User Settings</A><br/>
-                    <%	if (forumFactory.getRootForumCategory().equals(forumCategory) ||
-                    		forumFactory.getRootForumCategory().equals(forumCategory.getParentCategory())) { %>
-	                    <div style="float:right; margin: 30px 0px 10px 10px;">
-	                        <A href="http://<%=ApplicationServer.STUDIO_SERVER_NAME%>/forums"><img src="/i/roundTables/studioForums.png" alt="TopCoder Studio Forums" /></A>
-	                    </div>
-                    <%	} %>
                 </td>
             </tr>
             <tr>

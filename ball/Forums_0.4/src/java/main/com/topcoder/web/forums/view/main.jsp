@@ -28,7 +28,7 @@
 <html>
 <head>
 
-    <link rel="icon" type="image/png" href="../i/favicon.png">
+    <link rel="icon" type="image/png" href="/i/favicon.png">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
     <title>The Ball: Forums</title>
