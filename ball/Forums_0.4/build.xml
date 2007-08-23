@@ -626,8 +626,6 @@
     	<pathelement location="${jive_libdir}/jiveforums.jar"/>
     	<pathelement location="${jive_libdir}/xwork.jar"/>
     	<pathelement location="${jive_libdir}/htmlparser.jar"/>
-    	
-    	<pathelement location="${jboss_libdir}/jboss-cache.jar"/>
     </path>
 
     <!-- The additional libraries for JWebUnit 1.3 framework utilized for testing purposes -->
@@ -858,7 +856,7 @@
         		<include name="*.*"/>
         	</fileset>
     		<fileset dir="${jboss_libdir}">
-    		    <include name="jboss-cache.jar"/>
+    		    <include name="*.*"/>
     		</fileset>
         </copy> 
 
