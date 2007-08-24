@@ -55,8 +55,14 @@
 <ul>
 <c:forEach items="${game.blocks}" var="block" varStatus="n">
 <!-- Block Start -->
-<li class="${n.index == 0 ? 'open' : 'closed'}" id="blockHeader${n.index}">
-    <a href="#" onclick="javascript:clickBlock(${n.index});return false;">BLOCK ${n.index + 1}</a>
+<li class="${admin:isHostingBall(block) ? 'open' : 'closed'}" id="blockHeader${n.index}">
+    <a href="#" onclick="clickBlock(${n.index});return false;">BLOCK ${n.index + 1}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    <c:if test="${admin:canAddSlot(game, block.id)}">
+        <a href="${ctx}/server/admin/showAddSlotForm.do?gameId=${gameId}&blockId=${block.id}" title="Add Slot"
+           target="OrpheusAddSlot">
+            <img src="${ctx}/i/b/btn_admin_addslot.gif" alt="Add Slot" width="55" height="15"/>
+        </a>
+    </c:if>
 </li>
 <li class="admin-block" ${n.index == 0 ? '' : 'style="display:none"'} id="blockDetails${n.index}">
 <table border="0" cellpadding="0" cellspacing="0">

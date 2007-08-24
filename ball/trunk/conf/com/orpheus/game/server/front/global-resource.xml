@@ -179,6 +179,7 @@
         <handler-def name="TestTargetHandler">com.orpheus.game.server.handler.admin.TestTargetHandler</handler-def>
         <handler-def name="CreateGameManualHandler">com.orpheus.game.server.handler.admin.CreateGameManualHandler</handler-def>
         <handler-def name="ManualGameDataHandler">com.orpheus.game.server.handler.admin.ManualGameDataHandler</handler-def>
+        <handler-def name="AdminAddSlotHandler">com.orpheus.game.server.handler.admin.AdminAddSlotHandler</handler-def>
     </handlers-def>
 
     <!-- mappings from result type name to full qualified handler result names -->

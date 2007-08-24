@@ -844,6 +844,91 @@ public class OrpheusAdminFunctions {
     }
 
     /**
+     * <p>Checks if the specified block is exhausted, i.e. there are no slots in the block which hasn't started hosting
+     * yet.</p>
+     *
+     * @param block a <code>HostingBlock</code> representing a block to check. 
+     * @return <code>true</code> if specified block is exhausted; <code>false</code> otherwise.
+     */
+    public static boolean isBlockExhausted(HostingBlock block) {
+        if (block == null) {
+            throw new IllegalArgumentException("The parameter [block] is NULL");
+        }
+        HostingSlot[] slots = block.getSlots();
+        for (int i = 0; i < slots.length; i++) {
+            HostingSlot slot = slots[i];
+            if (slot.getHostingStart() == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * <p>Checks if it is allowed to add a new slot to specified block from specified game.</p>
+     *
+     * @param game a <code>Game</code> providing the details for the agem.
+     * @param blockId a <code>long</code> providing the ID of a block to check.
+     * @return <code>true</code> if new slot can be added to specified block; <code>false</code> otherwise.
+     * @throws IllegalArgumentException if any of specified arguments is <code>null</code>.
+     */
+    public static boolean canAddSlot(Game game, long blockId) {
+        if (game == null) {
+            throw new IllegalArgumentException("The parameter [game] is NULL");
+        }
+        boolean isHostingAfter = false;
+        boolean targetBlockFound = false;
+        HostingBlock[] blocks = game.getBlocks();
+        for (int i = 0; i < blocks.length; i++) {
+            HostingBlock block = blocks[i];
+            if (block.getId().longValue() == blockId) {
+                targetBlockFound = true;
+                HostingSlot[] slots = block.getSlots();
+                for (int j = 0; j < slots.length; j++) {
+                    HostingSlot slot = slots[j];
+                    if (slot.getHostingStart() != null && slot.getHostingEnd() == null) {
+                        if (j < (slots.length - 1)) {
+                            return true;
+                        }
+                    }
+                }
+            } else {
+                HostingSlot[] slots = block.getSlots();
+                for (int j = 0; j < slots.length; j++) {
+                    HostingSlot slot = slots[j];
+                    if (slot.getHostingStart() != null && slot.getHostingEnd() == null) {
+                        if (targetBlockFound) {
+                            isHostingAfter = true;
+                        }
+                    }
+                }
+            }
+        }
+        return !isHostingAfter;
+    }
+
+    /**
+     * <p>Checks if specified block is hosting The Ball currently.</p>
+     *
+     * @param block a <code>HostingBlock</code> to check.
+     * @return <code>true</code> if specified block is hosting the ball; <code>false</code> otherwise.
+     * @throws IllegalArgumentException if any of specified arguments is <code>null</code>.
+     */
+    public static boolean isHostingBall(HostingBlock block) {
+        if (block == null) {
+            throw new IllegalArgumentException("The parameter [block] is NULL");
+        }
+        HostingSlot[] slots = block.getSlots();
+        for (int j = 0; j < slots.length; j++) {
+            HostingSlot slot = slots[j];
+            if ((slot.getHostingStart() != null) && (slot.getHostingEnd() == null)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * <p>Gets the approval status.</p>
      *
      * @param approved a <code>Boolean</code> providing the approval state.

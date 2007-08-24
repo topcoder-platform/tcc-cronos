@@ -110,6 +110,30 @@ public class AbstractGameServerHandler {
 
     /**
      * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of request parameter to get the game block ID from.</p>
+     */
+    protected static final String BLOCK_ID_PARAM_NAME_CONFIG = "block_id_param_key";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of request parameter to get the domai ID from.</p>
+     */
+    protected static final String DOMAIN_ID_PARAM_NAME_CONFIG = "domain_id_param_key";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of request parameter to get the image ID from.</p>
+     */
+    protected static final String IMAGE_ID_PARAM_NAME_CONFIG = "image_id_param_key";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * name of request parameter to get the payment amount from.</p>
+     */
+    protected static final String PAYMENT_PARAM_NAME_CONFIG = "payment_param_key";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
      * name of request parameter to get the user profile ID from.</p>
      */
     protected static final String PROFILE_ID_PARAM_NAME_CONFIG = "profile_id_param_key";

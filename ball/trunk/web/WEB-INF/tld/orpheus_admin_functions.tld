@@ -310,5 +310,23 @@
         <function-class>com.orpheus.game.server.admin.OrpheusAdminFunctions</function-class>
         <function-signature>java.util.List getGameCreationTypes()</function-signature>
     </function>
+
+    <function>
+        <name>isBlockExhausted</name>
+        <function-class>com.orpheus.game.server.admin.OrpheusAdminFunctions</function-class>
+        <function-signature>boolean isBlockExhausted(com.orpheus.game.persistence.HostingBlock)</function-signature>
+    </function>
+
+    <function>
+        <name>canAddSlot</name>
+        <function-class>com.orpheus.game.server.admin.OrpheusAdminFunctions</function-class>
+        <function-signature>boolean canAddSlot(com.orpheus.game.persistence.Game,long)</function-signature>
+    </function>
+
+    <function>
+        <name>isHostingBall</name>
+        <function-class>com.orpheus.game.server.admin.OrpheusAdminFunctions</function-class>
+        <function-signature>boolean isHostingBall(com.orpheus.game.persistence.HostingBlock)</function-signature>
+    </function>
 </taglib>
 
