@@ -3,17 +3,6 @@
  */
 package com.orpheus.game;
 
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import javax.naming.NamingException;
-import javax.servlet.http.HttpServletRequest;
-
-import org.w3c.dom.Element;
-
 import com.orpheus.game.persistence.Game;
 import com.orpheus.game.persistence.GameData;
 import com.orpheus.game.persistence.GameDataLocal;
@@ -25,6 +14,15 @@ import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
 import com.topcoder.web.user.LoginHandler;
+import org.w3c.dom.Element;
+
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -208,7 +206,9 @@ public class KeySubmissionHandler implements Handler {
                         ? gameDataLocal.getGame(gameId)
                         : gameData.getGame(gameId);
 
-                if ((game.getEndDate() != null) || game.getStartDate().after(new Date())) {
+//                if ((game.getEndDate() != null) || game.getStartDate().after(new Date())) {
+                if ((game.getEndDate() != null) && (game.getEndDate().compareTo(new Date()) <= 0)
+                    || game.getStartDate().after(new Date())) {
                     //specified game is not active
                     return this.inactiveGameResult;
                 }
