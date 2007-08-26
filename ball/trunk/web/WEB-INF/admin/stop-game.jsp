@@ -17,7 +17,7 @@
     <p align="center">
         <img border="0" src="${ctx}/i/b/btn_admin_ok.gif" width="26" height="15"
              onClick="window.open('${ctx}/server/admin/stopGame.do?gameId=${param['gameId']}', 'Orpheus');window.close();"
-             alt="Move Ball To Next Slot" style="cursor:pointer;"/>
+             alt="Stop the Game" style="cursor:pointer;"/>
         <img border="0" src="${ctx}/i/b/btn_admin_cancel.gif" width="42" height="15" onClick="window.close();"
              alt="Cancel" style="cursor:pointer;"/>
     </p>
