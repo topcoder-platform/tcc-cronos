@@ -79,13 +79,11 @@ public class AdminCompleteGameHandler extends AbstractGameServerHandler implemen
             long gameId = getLong(GAME_ID_PARAM_NAME_CONFIG, request);
             GameDataEJBAdapter gameDataEJBAdapter = getGameDataEJBAdapter(this.jndiContext);
             Game game = gameDataEJBAdapter.getGame(gameId);
-            if (game.getEndDate() == null) {
-                Date completionTime = new Date();
-                if (completionTime.compareTo(game.getStartDate()) < 0) {
-                    completionTime = game.getStartDate();
-                }
-                gameDataEJBAdapter.completeGame(gameId, completionTime);
+            Date completionTime = new Date();
+            if (completionTime.compareTo(game.getStartDate()) < 0) {
+                completionTime = game.getStartDate();
             }
+            gameDataEJBAdapter.completeGame(gameId, completionTime);
             return null;
         } catch (Exception e) {
             throw new HandlerExecutionException("Could not complete the game", e);
