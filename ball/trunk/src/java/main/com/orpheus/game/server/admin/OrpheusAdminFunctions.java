@@ -305,10 +305,11 @@ public class OrpheusAdminFunctions {
             return GAME_STATUS_NOT_STARTED;
         } else {
             if (endDate != null) {
-                return GAME_STATUS_COMPLETED;
-            } else {
-                return GAME_STATUS_IN_PROGRESS;
+                if (endDate.compareTo(currentTime) <= 0) {
+                    return GAME_STATUS_COMPLETED;
+                }
             }
+            return GAME_STATUS_IN_PROGRESS;
         }
     }
 

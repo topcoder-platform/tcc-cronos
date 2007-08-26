@@ -205,14 +205,15 @@ public class OrpheusAuctionFunctions {
         Date startDate = game.getStartDate();
         Date endDate = game.getEndDate();
         Date currentTime = new Date();
-        if (currentTime.compareTo(startDate) < 0) {
+        if ((startDate == null) || (currentTime.compareTo(startDate) < 0)) {
             return GAME_STATUS_NOT_STARTED;
         } else {
-            if (endDate == null) {
-                return GAME_STATUS_IN_PROGRESS;
-            } else {
-                return GAME_STATUS_COMPLETED;
+            if (endDate != null) {
+                if (endDate.compareTo(currentTime) <= 0) {
+                    return GAME_STATUS_COMPLETED;
+                }
             }
+            return GAME_STATUS_IN_PROGRESS;
         }
     }
 

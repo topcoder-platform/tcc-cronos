@@ -8,42 +8,40 @@ import com.orpheus.game.persistence.Game;
 import com.orpheus.game.persistence.HostingBlock;
 import com.orpheus.game.persistence.HostingSlot;
 import com.orpheus.game.persistence.ImageInfo;
+import com.orpheus.game.server.admin.OrpheusGameServerAdminException;
 import com.orpheus.game.server.comparator.ActiveGamesComparator;
 import com.orpheus.game.server.comparator.MyGamesComparator;
 import com.orpheus.game.server.comparator.plugin.AllGamesListSorter;
 import com.orpheus.game.server.comparator.plugin.MyGamesListSorter;
-import com.orpheus.game.server.framework.prize.PrizeCalculatorType;
-import com.orpheus.game.server.framework.prize.PrizeCalculatorTypeSource;
-import com.orpheus.game.server.framework.prize.PrizeException;
 import com.orpheus.game.server.framework.bounce.BouncePointCalculatorType;
 import com.orpheus.game.server.framework.bounce.BouncePointCalculatorTypeSource;
 import com.orpheus.game.server.framework.bounce.BouncePointException;
-import com.orpheus.game.server.admin.OrpheusGameServerAdminException;
-import com.orpheus.game.server.util.GameCreationType;
+import com.orpheus.game.server.framework.prize.PrizeCalculatorType;
+import com.orpheus.game.server.framework.prize.PrizeCalculatorTypeSource;
+import com.orpheus.game.server.framework.prize.PrizeException;
 import com.orpheus.user.persistence.UserConstants;
 import com.topcoder.formvalidator.validator.Message;
+import com.topcoder.lang.StringUtil;
 import com.topcoder.user.profile.BaseProfileType;
 import com.topcoder.user.profile.UserProfile;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.Property;
 import com.topcoder.util.config.UnknownNamespaceException;
-import com.topcoder.util.collection.typesafeenum.Enum;
 import com.topcoder.web.registration.RegistrationManager;
 import com.topcoder.web.registration.WebRegistrationConfigurationException;
 import com.topcoder.web.tag.paging.DataPagingTag;
 import com.topcoder.web.user.LoginHandler;
-import com.topcoder.lang.StringUtil;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspTagException;
-import javax.servlet.ServletContext;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.LinkedHashMap;
-import java.util.ArrayList;
 
 /**
  * <p>An utility class providing the static functions to be utilized by JSPs when rendering the details for various
@@ -243,10 +241,11 @@ public class OrpheusFunctions {
             return GAME_STATUS_NOT_STARTED;
         } else {
             if (endDate != null) {
-                return GAME_STATUS_COMPLETED;
-            } else {
-                return GAME_STATUS_IN_PROGRESS;
+                if (endDate.compareTo(currentTime) <= 0) {
+                    return GAME_STATUS_COMPLETED;
+                }
             }
+            return GAME_STATUS_IN_PROGRESS;
         }
     }
 
