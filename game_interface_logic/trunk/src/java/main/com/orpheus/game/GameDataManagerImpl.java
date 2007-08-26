@@ -1322,7 +1322,7 @@ public class GameDataManagerImpl extends BaseGameDataManager {
         if (game == null) {
             throw new GameDataException("No Game can be retrieved with the id.");
         }
-        if (game.getEndDate() != null) {
+        if ((game.getEndDate() != null) && (game.getEndDate().compareTo(new Date()) <= 0)) {
             // Game has already ended; return without doing anything. in the future, this should be logged
             System.out.println("ISV : GameDataManagerImpl.advanceHostingSlot : the game [" + gameId
                                + "] is already completed" );
