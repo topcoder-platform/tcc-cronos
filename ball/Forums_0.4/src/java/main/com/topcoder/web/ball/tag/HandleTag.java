@@ -25,7 +25,7 @@ public class HandleTag extends TagSupport {
     public int doStartTag() throws JspException {
         try {
             StringBuffer output = new StringBuffer();
-            CachedDataAccess da = new CachedDataAccess("orpheus/MSSQLDS");
+            CachedDataAccess da = new CachedDataAccess("java:orpheus/MSSQLDS");
             
             Request r = new Request();
             r.setContentHandle("user_handle");
