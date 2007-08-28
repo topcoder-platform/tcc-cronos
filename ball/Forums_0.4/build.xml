@@ -778,6 +778,7 @@
             </fileset>
             <classes dir="${build_classdir}">
                 <include name="com/topcoder/web/forums/**/*.class"/>
+            	<include name="com/topcoder/web/ball/tag/**/*.class"/>
             </classes>
             <webinf dir="${configdir}/forums/taglib">
                 <include name="tc-webtags.tld"/>
