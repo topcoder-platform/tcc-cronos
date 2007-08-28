@@ -98,7 +98,7 @@
     <title>The Ball: Forums</title>
     <jsp:include page="script.jsp"/>
     <jsp:include page="/style.jsp">
-        <jsp:param name="key" value="tc_forums"/>
+        <jsp:param name="key" value="ball_forums"/>
     </jsp:include>
 
 </head>
@@ -211,7 +211,7 @@
             </td>
             <% if (message.getUser() != null) { %>
             <td class="rtThreadCell" style="width: 100px;">
-            	<tc-webtag:handle coderId="<%=message.getUser().getID()%>"/>
+            	<tc-webtag:handle id="<%=message.getUser().getID()%>"/>
             </td>
             <% } else { %>
             <td class="rtThreadCell" style="width: 100px;">&nbsp;</td>
@@ -259,7 +259,7 @@
             </td>
             <% if (message.getUser() != null) { %>
             <td class="rtThreadCell" style="width: 100px;">
-            	<tc-webtag:handle coderId="<%=message.getUser().getID()%>"/>
+            	<tc-webtag:handle id="<%=message.getUser().getID()%>"/>
             </td>
             <% } else { %>
             <td class="rtThreadCell" style="width: 100px;">&nbsp;</td>

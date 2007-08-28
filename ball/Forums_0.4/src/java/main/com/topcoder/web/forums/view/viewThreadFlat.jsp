@@ -64,7 +64,7 @@
 <title>The Ball: Forums</title>
     <jsp:include page="script.jsp" />
         <jsp:include page="/style.jsp">
-          <jsp:param name="key" value="tc_forums"/>
+          <jsp:param name="key" value="ball_forums"/>
         </jsp:include>
 
 </head>
@@ -358,7 +358,7 @@ background: #6363E3 url(/i/survey/bar_bg.gif) center left repeat-x;
             	<%=message.getSubject()%>
          	<%  } %>
          	<%  if (message.getParentMessage() != null) { %>
-         		(response to <A href="?module=Message&<%=ForumConstants.MESSAGE_ID%>=<%=message.getParentMessage().getID()%><%if (!threadView.equals("")) { %>&<%=ForumConstants.THREAD_VIEW%>=<%=threadView%><% } %>" class="rtbcLink">post</A><%if (message.getParentMessage().getUser() != null) {%> by <tc-webtag:handle coderId="<%=message.getParentMessage().getUser().getID()%>"/><%}%>)
+         		(response to <A href="?module=Message&<%=ForumConstants.MESSAGE_ID%>=<%=message.getParentMessage().getID()%><%if (!threadView.equals("")) { %>&<%=ForumConstants.THREAD_VIEW%>=<%=threadView%><% } %>" class="rtbcLink">post</A><%if (message.getParentMessage().getUser() != null) {%> by <tc-webtag:handle id="<%=message.getParentMessage().getUser().getID()%>"/><%}%>)
          	<%  } %>
          	<%  if (ratingManager.isRatingsEnabled() && user != null && ForumsUtil.showRatings(user)) {
 					int[] ratings = ForumsUtil.getRatings(ratingManager, message);
@@ -397,7 +397,7 @@ background: #6363E3 url(/i/survey/bar_bg.gif) center left repeat-x;
             <%  if (ForumsUtil.displayMemberPhoto(user, message.getUser())) { %>
             <img src="<%=message.getUser().getProperty("imagePath")%>" width="55" height="61" border="0" class="rtPhoto" /><br>
             <%  } %>
-            <span class="bodyText"><%if (message.getUser() != null) {%><tc-webtag:handle coderId="<%=message.getUser().getID()%>"/><%}%></span><br><%if (message.getUser() != null) {%><A href="?module=History&<%=ForumConstants.USER_ID%>=<%=message.getUser().getID()%>"><%=ForumsUtil.display(forumFactory.getUserMessageCount(message.getUser()), "post")%></A><%}%>
+            <span class="bodyText"><%if (message.getUser() != null) {%><tc-webtag:handle id="<%=message.getUser().getID()%>"/><%}%></span><br><%if (message.getUser() != null) {%><A href="?module=History&<%=ForumConstants.USER_ID%>=<%=message.getUser().getID()%>"><%=ForumsUtil.display(forumFactory.getUserMessageCount(message.getUser()), "post")%></A><%}%>
          </div>
       </td>
 	  <%   if (pollManager.getPollCount(JiveConstants.MESSAGE, message.getID()) > 0) { %>

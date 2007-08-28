@@ -26,7 +26,7 @@
     <title>The Ball: Forums</title>
     <jsp:include page="script.jsp"/>
     <jsp:include page="/style.jsp">
-        <jsp:param name="key" value="tc_forums"/>
+        <jsp:param name="key" value="ball_forums"/>
     </jsp:include>
 </head>
 
@@ -86,14 +86,14 @@
                                 <a href="?module=Message&<%=ForumConstants.MESSAGE_ID%>=<%=rootMessage.getID()%>" class="<%=trackerClass%>"><%=thread.getName()%></a>
                             </td>
                             <td class="rtThreadCell"><%if (rootMessage.getUser() != null) {%>
-                                <tc-webtag:handle coderId="<%=rootMessage.getUser().getID()%>"/><%}%></td>
+                                <tc-webtag:handle id="<%=rootMessage.getUser().getID()%>"/><%}%></td>
                             <td class="rtThreadCell" align="right"><%=thread.getMessageCount() - 1%></td>
                             <td class="rtThreadCell" align="right"><%=ViewCountManager.getInstance().getThreadCount(thread)%></td>
                             <td class="rtThreadCell"><b>
                                 <tc-webtag:format object="${thread.modificationDate}" format="MMM d, yyyy h:mm a z" timeZone="${sessionInfo.timezone}"/></b>
                             </td>
                             <td class="rtThreadCell"><%if (latestMessage.getUser() != null) {%>
-                                <tc-webtag:handle coderId="<%=latestMessage.getUser().getID()%>"/><%}%></td>
+                                <tc-webtag:handle id="<%=latestMessage.getUser().getID()%>"/><%}%></td>
                             <td class="rtThreadCell" align="center">
                                 <input name="<%=ForumConstants.STATUS_SAVE%><%=thread.getID()%>" value="<%=thread.getID()%>" type="checkbox"
                                         <%= (watchManager.getWatch(user, thread).isExpirable()) ? "" : "checked" %> onclick="Javascript:document.form1.<%=ForumConstants.STATUS_DELETE%><%=thread.getID()%>.checked=false;"/>

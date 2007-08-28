@@ -74,7 +74,7 @@ function AllowTabCharacter() {
 <link type="image/x-icon" rel="shortcut icon" href="/i/favicon.ico"/>
     <jsp:include page="script.jsp" />
         <jsp:include page="/style.jsp">
-          <jsp:param name="key" value="tc_forums"/>
+          <jsp:param name="key" value="ball_forums"/>
         </jsp:include>
 
 </head>
@@ -129,7 +129,7 @@ function AllowTabCharacter() {
             </div>
             <%=message.getSubject()%>
          <%   if (parentMessage != null) { %>
-               (response to <A href="?module=Message&<%=ForumConstants.MESSAGE_ID%>=<%=parentMessage.getID()%>" class="rtbcLink">post</A> by <tc-webtag:handle coderId="<%=parentMessage.getUser().getID()%>"/>)
+               (response to <A href="?module=Message&<%=ForumConstants.MESSAGE_ID%>=<%=parentMessage.getID()%>" class="rtbcLink">post</A> by <tc-webtag:handle id="<%=parentMessage.getUser().getID()%>"/>)
          <%   } %>
         </td>
     </tr>
@@ -151,7 +151,7 @@ function AllowTabCharacter() {
        <%  if (ForumsUtil.displayMemberPhoto(user, user)) { %>
           <img src="<%=user.getProperty("imagePath")%>" width="55" height="61" border="0" class="rtPhoto" /><br/>
        <%  } %>
-       <span class="bodyText"><tc-webtag:handle coderId="<%=user.getID()%>"/></span><br/><A href="?module=History&<%=ForumConstants.USER_ID%>=<%=user.getID()%>"><%=ForumsUtil.display(forumFactory.getUserMessageCount(user), "post")%></A></div></td>
+       <span class="bodyText"><tc-webtag:handle id="<%=user.getID()%>"/></span><br/><A href="?module=History&<%=ForumConstants.USER_ID%>=<%=user.getID()%>"><%=ForumsUtil.display(forumFactory.getUserMessageCount(user), "post")%></A></div></td>
        <td class="rtTextCell100"><%=message.getBody()%></td>
     </tr>
 </table>
@@ -184,7 +184,7 @@ function AllowTabCharacter() {
 <%  if (ForumsUtil.displayMemberPhoto(user, user)) { %>
    <img src="<%=user.getProperty("imagePath")%>" width="55" height="61" border="0" class="rtPhoto" /><br/>
 <%  } %>
-<span class="bodyText"><tc-webtag:handle coderId="<%=user.getID()%>"/></span><br/><A href="?module=History&<%=ForumConstants.USER_ID%>=<%=user.getID()%>"><%=ForumsUtil.display(forumFactory.getUserMessageCount(user), "post")%></A></div></td>
+<span class="bodyText"><tc-webtag:handle id="<%=user.getID()%>"/></span><br/><A href="?module=History&<%=ForumConstants.USER_ID%>=<%=user.getID()%>"><%=ForumsUtil.display(forumFactory.getUserMessageCount(user), "post")%></A></div></td>
 <td class="rtTextCell100">
 <%     if (errors.get(ForumConstants.ATTACHMENT_ERROR) != null) { %>
         <span class="bigRed"><tc-webtag:errorIterator id="err" name="<%=ForumConstants.ATTACHMENT_ERROR%>"><%=err%><br/></tc-webtag:errorIterator></span>

@@ -85,7 +85,7 @@
     <title>The Ball: Forums</title>
     <jsp:include page="script.jsp"/>
     <jsp:include page="/style.jsp">
-        <jsp:param name="key" value="tc_forums"/>
+        <jsp:param name="key" value="ball_forums"/>
     </jsp:include>
 
 </head>
@@ -183,14 +183,14 @@
                     <A href="?module=Announcement&<%=ForumConstants.ANNOUNCEMENT_ID%>=<%=announcement.getID()%>" class="rtLinkBold"><img src="/i/interface/announcement.gif" alt="" border="0"/> <%=announcement.getSubject()%>
                     </A></div>
             </td>
-            <td class="rtThreadCell"><tc-webtag:handle coderId="<%=announcement.getUser().getID()%>"/></td>
+            <td class="rtThreadCell"><tc-webtag:handle id="<%=announcement.getUser().getID()%>"/></td>
             <td class="rtThreadCell">&nbsp;</td>
             <td class="rtThreadCell">&nbsp;</td>
             <td class="rtThreadCell">
                 <b><A href="?module=Announcement&<%=ForumConstants.ANNOUNCEMENT_ID%>=<%=announcement.getID()%>" class="rtLinkNew">
                     <tc-webtag:format object="${announcement.startDate}" format="EEE, MMM d yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/></A></b>
             </td>
-            <td class="rtThreadCell"><tc-webtag:handle coderId="<%=announcement.getUser().getID()%>"/></td>
+            <td class="rtThreadCell"><tc-webtag:handle id="<%=announcement.getUser().getID()%>"/></td>
         </tr>
     </tc-webtag:iterator>
     <% } %>
@@ -243,7 +243,7 @@
                 <% } %>
                 <% } %></td>
             <% if (thread.getRootMessage().getUser() != null) { %>
-            <td class="rtThreadCell"><tc-webtag:handle coderId="<%=thread.getRootMessage().getUser().getID()%>"/></td>
+            <td class="rtThreadCell"><tc-webtag:handle id="<%=thread.getRootMessage().getUser().getID()%>"/></td>
             <% } else { %>
             <td class="rtThreadCell">&nbsp;</td>
             <% } %>
@@ -254,7 +254,7 @@
                     <tc-webtag:format object="${thread.modificationDate}" format="MMM d, yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/></A></b>
             </td>
             <% if (lastPost.getUser() != null) { %>
-            <td class="rtThreadCell"><tc-webtag:handle coderId="<%=lastPost.getUser().getID()%>"/></td>
+            <td class="rtThreadCell"><tc-webtag:handle id="<%=lastPost.getUser().getID()%>"/></td>
             <% } else { %>
             <td class="rtThreadCell">&nbsp;</td>
             <% } %>

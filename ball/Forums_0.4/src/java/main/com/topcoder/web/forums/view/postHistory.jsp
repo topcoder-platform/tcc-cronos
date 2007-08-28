@@ -71,7 +71,7 @@
     <title>The Ball: Forums</title>
     <jsp:include page="/script.jsp"/>
     <jsp:include page="/style.jsp">
-        <jsp:param name="key" value="tc_forums"/>
+        <jsp:param name="key" value="ball_forums"/>
     </jsp:include>
 
 </head>
@@ -98,7 +98,7 @@
         <tr>
             <div class="topLinksL">
                 <strong><a href="?module=Main" class="rtbcLink">Forums</a> <img src="/i/interface/exp_w.gif" align="absmiddle"/> Post History:
-                    <tc-webtag:handle coderId="<%=historyUser.getID()%>"/>
+                    <tc-webtag:handle id="<%=historyUser.getID()%>"/>
                     (<%=ForumsUtil.display(forumFactory.getUserMessageCount(historyUser), "post")%>)</strong>
             </div>
 
@@ -162,7 +162,7 @@
                 <% if (message.getParentMessage() != null) { %>
                 (response to
                 <A href="?module=Message&<%=ForumConstants.MESSAGE_ID%>=<%=message.getParentMessage().getID()%>" class="rtbcLink">post</A><%if (message.getParentMessage().getUser() != null) {%>
-                by <tc-webtag:handle coderId="<%=message.getParentMessage().getUser().getID()%>"/>
+                by <tc-webtag:handle id="<%=message.getParentMessage().getUser().getID()%>"/>
                 (<A href="?module=History&<%=ForumConstants.USER_ID%>=<%=message.getParentMessage().getUser().getID()%>" alt="Post history for <%=message.getParentMessage().getUser().getUsername()%>" class="rtbcLink"/>history</A>))
                 <%}%>
     <% } %></td>

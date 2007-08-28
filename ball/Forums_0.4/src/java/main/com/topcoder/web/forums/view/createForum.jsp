@@ -56,7 +56,7 @@ function AllowTabCharacter() {
 <title>The Ball: Forums</title>
     <jsp:include page="script.jsp" />
         <jsp:include page="/style.jsp">
-          <jsp:param name="key" value="tc_forums"/>
+          <jsp:param name="key" value="ball_forums"/>
         </jsp:include>
 
 </head>

@@ -61,7 +61,7 @@
 <title>The Ball: Forums</title>
     <jsp:include page="script.jsp" />
         <jsp:include page="/style.jsp">
-          <jsp:param name="key" value="tc_forums"/>
+          <jsp:param name="key" value="ball_forums"/>
         </jsp:include>
 
 </head>
@@ -228,7 +228,7 @@ function displayVotes(messageID, posVotes, negVotes, userRating) {
 
          <%=activeMessage.getSubject()%></a>
          <%  if (activeMessage.getParentMessage() != null) { %>
-         (response to <A href="?module=Message&<%=ForumConstants.MESSAGE_ID%>=<%=activeMessage.getParentMessage().getID()%><%if (!threadView.equals("")) { %>&<%=ForumConstants.THREAD_VIEW%>=<%=threadView%><% } %>" class="rtbcLink">post</A><%if (activeMessage.getParentMessage().getUser() != null) {%> by <tc-webtag:handle coderId="<%=activeMessage.getParentMessage().getUser().getID()%>"/><%}%>)
+         (response to <A href="?module=Message&<%=ForumConstants.MESSAGE_ID%>=<%=activeMessage.getParentMessage().getID()%><%if (!threadView.equals("")) { %>&<%=ForumConstants.THREAD_VIEW%>=<%=threadView%><% } %>" class="rtbcLink">post</A><%if (activeMessage.getParentMessage().getUser() != null) {%> by <tc-webtag:handle id="<%=activeMessage.getParentMessage().getUser().getID()%>"/><%}%>)
          <%  } %>
          <%  if (ratingManager.isRatingsEnabled() && user != null && ForumsUtil.showRatings(user)) {
                 int[] ratings = ForumsUtil.getRatings(ratingManager, activeMessage);
@@ -264,7 +264,7 @@ function displayVotes(messageID, posVotes, negVotes, userRating) {
          <%  if (ForumsUtil.displayMemberPhoto(user, activeMessage.getUser())) { %>
             <img src="<%=activeMessage.getUser().getProperty("imagePath")%>" width="55" height="61" border="0" class="rtPhoto" /><br>
          <%  } %>
-         <span class="bodyText"><%if (activeMessage.getUser() != null) {%><tc-webtag:handle coderId="<%=activeMessage.getUser().getID()%>"/><%}%></span><br><%if (activeMessage.getUser() != null) {%><A href="?module=History&<%=ForumConstants.USER_ID%>=<%=activeMessage.getUser().getID()%>"><%=ForumsUtil.display(forumFactory.getUserMessageCount(activeMessage.getUser()), "post")%></A><%}%>
+         <span class="bodyText"><%if (activeMessage.getUser() != null) {%><tc-webtag:handle id="<%=activeMessage.getUser().getID()%>"/><%}%></span><br><%if (activeMessage.getUser() != null) {%><A href="?module=History&<%=ForumConstants.USER_ID%>=<%=activeMessage.getUser().getID()%>"><%=ForumsUtil.display(forumFactory.getUserMessageCount(activeMessage.getUser()), "post")%></A><%}%>
       </div>
    </td>
    <%   double pct = ratingCount<=0 ? 0 : 100*(double)(posRatings)/(double)(ratingCount);  %>
@@ -296,7 +296,7 @@ function displayVotes(messageID, posVotes, negVotes, userRating) {
       <% } else { %>
          <A href="?module=Message&<%=ForumConstants.MESSAGE_ID%>=<%=message.getID()%><%if (!threadView.equals("")) { %>&<%=ForumConstants.THREAD_VIEW%>=<%=threadView%><% } %>" class="rtbcLink"><%=message.getSubject()%></A></td>
       <% } %>
-         <td class="rtThreadCell"><%if (message.getUser() != null) {%><tc-webtag:handle coderId="<%=message.getUser().getID()%>"/><%}%></td>
+         <td class="rtThreadCell"><%if (message.getUser() != null) {%><tc-webtag:handle id="<%=message.getUser().getID()%>"/><%}%></td>
          <td class="rtThreadCell"><strong><tc-webtag:format object="${message.creationDate}" format="MMM d, yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/></strong></td>
     </tr>
    </tc-webtag:iterator>

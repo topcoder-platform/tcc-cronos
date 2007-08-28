@@ -111,7 +111,7 @@
 	            </td>
 	            <% if (message.getUser() != null) { %>
 		            <td class="rtThreadCell" style="width: 100px;">
-		            	<tc-webtag:handle coderId="<%=message.getUser().getID()%>"/>
+		            	<tc-webtag:handle id="<%=message.getUser().getID()%>"/>
 		            </td>
 	            <% } else { %>
 	            	<td class="rtThreadCell" style="width: 100px;">&nbsp;</td>

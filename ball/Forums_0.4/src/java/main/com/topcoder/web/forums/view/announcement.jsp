@@ -31,7 +31,7 @@
 <title>The Ball: Forums</title>
     <jsp:include page="script.jsp" />
         <jsp:include page="/style.jsp">
-          <jsp:param name="key" value="tc_forums"/>
+          <jsp:param name="key" value="ball_forums"/>
         </jsp:include>
 
 </head>
@@ -107,7 +107,7 @@
             <%  if (ForumsUtil.displayMemberPhoto(user, announcement.getUser())) { %>
                 <img src="<%=announcement.getUser().getProperty("imagePath")%>" width="55" height="61" border="0" class="rtPhoto" /><br/>
             <%  } %>
-             <span class="bodyText"><%if (announcement.getUser() != null) {%><tc-webtag:handle coderId="<%=announcement.getUser().getID()%>"/><%}%></span><br/><%if (announcement.getUser() != null) {%><A href="?module=History&<%=ForumConstants.USER_ID%>=<%=announcement.getUser().getID()%>"><%=ForumsUtil.display(forumFactory.getUserMessageCount(announcement.getUser()), "post")%></A><%}%>
+             <span class="bodyText"><%if (announcement.getUser() != null) {%><tc-webtag:handle id="<%=announcement.getUser().getID()%>"/><%}%></span><br/><%if (announcement.getUser() != null) {%><A href="?module=History&<%=ForumConstants.USER_ID%>=<%=announcement.getUser().getID()%>"><%=ForumsUtil.display(forumFactory.getUserMessageCount(announcement.getUser()), "post")%></A><%}%>
          </div>
       </td>
       <td class="rtTextCell" width="100%"><%=announcement.getBody()%>

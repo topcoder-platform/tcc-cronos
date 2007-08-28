@@ -94,7 +94,7 @@
         <%  ForumMessage message = result.getMessage(); %>
         <tr>
             <td class="rtThreadCellWrap"><a href="?module=Message&messageID=<%=message.getID()%>" class="rtbcLink"><%=ForumsUtil.getMessageSubjectPreview(message, query.getQueryString())%></a><br><div class="rtDescIndent"><%=ForumsUtil.getMessageBodyPreview(message, query.getQueryString())%> <a href="?module=Thread&threadID=<%=message.getForumThread().getID()%>" class="rtbcLink">(view thread)</a></div></td>
-            <td class="rtThreadCell"><%if (message.getUser() != null) {%><tc-webtag:handle coderId="<%=message.getUser().getID()%>"/><%}%></td>
+            <td class="rtThreadCell"><%if (message.getUser() != null) {%><tc-webtag:handle id="<%=message.getUser().getID()%>"/><%}%></td>
             <td class="rtThreadCell" align="right"><%=message.getForumThread().getTreeWalker().getChildCount(message)%></td>
             <td class="rtThreadCell" align="right"><%=ViewCountManager.getInstance().getThreadCount(message.getForumThread())%></td>
         	<td class="rtThreadCell"><b><tc-webtag:format object="${result.message.modificationDate}" format="EEE, MMM d yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/></b></td>

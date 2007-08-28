@@ -22,7 +22,7 @@
 <title>The Ball: Forums</title>
 <jsp:include page="script.jsp" />
     <jsp:include page="/style.jsp">
-      <jsp:param name="key" value="tc_forums"/>
+      <jsp:param name="key" value="ball_forums"/>
     </jsp:include>
 
 
@@ -71,7 +71,7 @@
       <td class="rtTextCell100">
         <%  while (itOnline.hasNext()) { %>
             <%  User u = (User)itOnline.next(); %>
-            <tc-webtag:handle coderId="<%=u.getID()%>"/><%  if (itOnline.hasNext()) { %>, <% } %>
+            <tc-webtag:handle id="<%=u.getID()%>"/><%  if (itOnline.hasNext()) { %>, <% } %>
         <%  } %>
       </td>
    </tr>

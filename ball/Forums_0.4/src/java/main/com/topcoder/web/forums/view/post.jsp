@@ -76,7 +76,7 @@ function AllowTabCharacter() {
 <title>The Ball: Forums</title>
     <jsp:include page="script.jsp" />
         <jsp:include page="/style.jsp">
-          <jsp:param name="key" value="tc_forums"/>
+          <jsp:param name="key" value="ball_forums"/>
         </jsp:include>
 
 </head>
@@ -188,7 +188,7 @@ function AllowTabCharacter() {
 <%  if (ForumsUtil.displayMemberPhoto(user, user)) { %>
    <img src="<%=user.getProperty("imagePath")%>" width="55" height="61" border="0" class="rtPhoto" /><br/>
 <%  } %>
-<span class="bodyText"><tc-webtag:handle coderId="<%=user.getID()%>"/></span><br/><A href="?module=History&<%=ForumConstants.USER_ID%>=<%=user.getID()%>"><%=ForumsUtil.display(forumFactory.getUserMessageCount(user), "post")%></A></div></td>
+<span class="bodyText"><tc-webtag:handle id="<%=user.getID()%>"/></span><br/><A href="?module=History&<%=ForumConstants.USER_ID%>=<%=user.getID()%>"><%=ForumsUtil.display(forumFactory.getUserMessageCount(user), "post")%></A></div></td>
 <td class="rtTextCell100">
 <%  if (errors.get(ForumConstants.ATTACHMENT_ERROR) != null) { %>
     <span class="bigRed"><tc-webtag:errorIterator id="err" name="<%=ForumConstants.ATTACHMENT_ERROR%>"><%=err%><br/></tc-webtag:errorIterator></span>
@@ -230,7 +230,7 @@ function AllowTabCharacter() {
         <table cellpadding="0" cellspacing="0" class="rtTable">
         <tr><td class="rtHeader" colspan="2"><a name=<%=message.getID()%>><tc-webtag:format object="${message.modificationDate}" format="MMM d, yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/> | <%=message.getSubject()%>
         <%  if (message.getParentMessage() != null) { %>
-            (response to <A href="?module=Message&<%=ForumConstants.MESSAGE_ID%>=<%=message.getParentMessage().getID()%>" class="rtbcLink">post</A> by <tc-webtag:handle coderId="<%=message.getParentMessage().getUser().getID()%>"/>)
+            (response to <A href="?module=Message&<%=ForumConstants.MESSAGE_ID%>=<%=message.getParentMessage().getID()%>" class="rtbcLink">post</A> by <tc-webtag:handle id="<%=message.getParentMessage().getUser().getID()%>"/>)
         <%  } %>
         </a></td></tr>
         <%     if (message.getAttachmentCount() > 0) { %>
@@ -251,7 +251,7 @@ function AllowTabCharacter() {
         <%  if (ForumsUtil.displayMemberPhoto(user, message.getUser())) { %>
             <img src="<%=message.getUser().getProperty("imagePath")%>" width="55" height="61" border="0" class="rtPhoto" /><br/>
         <%  } %>
-        <span class="bodyText"><tc-webtag:handle coderId="<%=message.getUser().getID()%>"/></span><br/><A href="?module=History&<%=ForumConstants.USER_ID%>=<%=message.getUser().getID()%>"><%=ForumsUtil.display(forumFactory.getUserMessageCount(message.getUser()), "post")%></A></div></td>
+        <span class="bodyText"><tc-webtag:handle id="<%=message.getUser().getID()%>"/></span><br/><A href="?module=History&<%=ForumConstants.USER_ID%>=<%=message.getUser().getID()%>"><%=ForumsUtil.display(forumFactory.getUserMessageCount(message.getUser()), "post")%></A></div></td>
         <td class="rtTextCell100"><%=message.getBody()%></td>
         </tr>
         </table>
