@@ -193,6 +193,7 @@ public class ForumsServlet extends BaseServlet {
         /* forward to the login page 
          * TODO: redirect back to the original page */
         StringBuffer nextPage = new StringBuffer("http://").append(serverName).append(LOGIN_SERVLET).append(LOGIN_PROCESSOR);
+        log.info("--> in handleLogin; nextPage = " + nextPage.toString());
         fetchRegularPage(request, response, nextPage.toString(), false);
     }
 
