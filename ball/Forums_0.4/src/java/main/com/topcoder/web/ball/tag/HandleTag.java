@@ -12,7 +12,7 @@ import java.util.Map;
 public class HandleTag extends TagSupport {
     private static final Logger log = Logger.getLogger(HandleTag.class);
     private long userId = 0;
-    private String cssclass = "cDef";
+    private String cssclass = "coderTextBlack";
 
     public void setId(long userId) {
         this.userId = userId;
@@ -39,7 +39,7 @@ public class HandleTag extends TagSupport {
             } else {
                 output.append("<span class=\"");
                 if (rsc.getIntItem(0, "is_admin") == 1) {
-                    output.append("cOrange");
+                    output.append("coderTextOrange");
                 } else {
                     output.append(cssclass);
                 }
@@ -62,7 +62,7 @@ public class HandleTag extends TagSupport {
      */
     public int doEndTag() throws JspException {
         userId = 0;
-        cssclass = "cDef";
+        cssclass = "coderTextBlack";
         return super.doEndTag();
     }
 

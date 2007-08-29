@@ -197,7 +197,6 @@ public class ForumsServlet extends BaseServlet {
             nextPage.append(":").append(request.getServerPort());
         }
         nextPage.append(LOGIN_SERVLET).append(LOGIN_PROCESSOR);
-        log.info("--> in handleLogin; nextPage = " + nextPage.toString());
         fetchRegularPage(request, response, nextPage.toString(), false);
     }
 
