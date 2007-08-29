@@ -13,6 +13,7 @@ import com.topcoder.web.common.*;
 import com.topcoder.web.common.error.RequestRateExceededException;
 import com.topcoder.web.common.security.BasicAuthentication;
 import com.topcoder.web.common.security.SessionPersistor;
+import com.topcoder.web.common.security.WebAuthentication;
 import com.topcoder.web.ejb.forums.ForumsLocal;
 import com.topcoder.web.ejb.forums.ForumsLocalHome;
 import com.topcoder.web.forums.controller.request.ForumsProcessor;
@@ -148,7 +149,7 @@ public class ForumsServlet extends BaseServlet {
                         log.debug("creating request processor for " + processorName);
                     }
                     try {
-                        rp = callProcess(processorName, request, response, tcRequest, tcResponse, authToken, forumUser, forumFactory);
+                        rp = callProcess(processorName, request, response, tcRequest, tcResponse, auth, authToken, forumUser, forumFactory);
                     } catch (ClassNotFoundException e) {
                         throw new NavigationException("Invalid request", e);
                     }
@@ -197,13 +198,14 @@ public class ForumsServlet extends BaseServlet {
 
     protected RequestProcessor callProcess(String processorName, HttpServletRequest httpRequest,
                                            HttpServletResponse httpResponse, TCRequest request, TCResponse response,
-                                           AuthToken authToken, com.jivesoftware.base.User user,
+                                           WebAuthentication authentication, AuthToken authToken, com.jivesoftware.base.User user,
                                            ForumFactory factory) throws Exception {
         ForumsProcessor rp = null;
 
         rp = (ForumsProcessor) Class.forName(processorName).newInstance();
         rp.setRequest(request);
         rp.setResponse(response);
+        rp.setAuthentication(authentication);
         rp.setAuthToken(authToken);
         rp.setUser(user);
         rp.setForumFactory(factory);
