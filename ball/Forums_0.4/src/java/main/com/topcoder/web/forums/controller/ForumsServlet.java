@@ -156,7 +156,7 @@ public class ForumsServlet extends BaseServlet {
                 } catch (PermissionException pe) {
                     if (authToken.isAnonymous()) {
                         log.info(username + " does not have access to " + pe.getResource().getName() + " sending to login");
-                        handleLogin(request, response, request.getServerName());
+                        handleLogin(request, response);
                         return;
                     } else {
                         log.info(username + " does not have access to " + pe.getResource().getName() + " sending to error");
@@ -189,10 +189,14 @@ public class ForumsServlet extends BaseServlet {
         }
     }
 
-    protected void handleLogin(HttpServletRequest request, HttpServletResponse response, String serverName) throws Exception {
+    protected void handleLogin(HttpServletRequest request, HttpServletResponse response) throws Exception {
         /* forward to the login page 
          * TODO: redirect back to the original page */
-        StringBuffer nextPage = new StringBuffer("http://").append(serverName).append(LOGIN_SERVLET).append(LOGIN_PROCESSOR);
+        StringBuffer nextPage = new StringBuffer("http://").append(request.getServerName());
+        if (request.getRequestURL().indexOf(":") != -1) {
+            nextPage.append(":").append(request.getServerPort());
+        }
+        nextPage.append(LOGIN_SERVLET).append(LOGIN_PROCESSOR);
         log.info("--> in handleLogin; nextPage = " + nextPage.toString());
         fetchRegularPage(request, response, nextPage.toString(), false);
     }
