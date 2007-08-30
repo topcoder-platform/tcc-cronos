@@ -93,30 +93,27 @@
         <jsp:param name="title" value="Forum Post History"/>
     </jsp:include>
 
+    <div class="topLinksL">
+        <strong><a href="?module=Main" class="rtbcLink">Forums</a> <img src="/i/interface/exp_w.gif" align="absmiddle"/> Post History:
+            <tc-webtag:handle id="<%=historyUser.getID()%>"/>
+            (<%=ForumsUtil.display(forumFactory.getUserMessageCount(historyUser), "post")%>)</strong>
+    </div>
 
-    <table cellpadding="0" cellspacing="0" class="rtbcTable">
-        <tr>
-            <div class="topLinksL">
-                <strong><a href="?module=Main" class="rtbcLink">Forums</a> <img src="/i/interface/exp_w.gif" align="absmiddle"/> Post History:
-                    <tc-webtag:handle id="<%=historyUser.getID()%>"/>
-                    (<%=ForumsUtil.display(forumFactory.getUserMessageCount(historyUser), "post")%>)</strong>
-            </div>
-
-            <div class="topLinksR">
-                <% if (user.getUsername() == historyUser.getUsername()) { %>
-                <b>My Post History</b>&#160;&#160;|&#160;&#160;<A href="?module=Watches" class="rtbcLink">My
-                Watches</A>&#160;&#160;|&#160;&#160;<A href="?module=Settings" class="rtbcLink">User
-                Settings</A><br>
-                <% } else { %>
-                <A href="?module=History" class="rtbcLink">My Post
-                    History</A>&#160;&#160;|&#160;&#160;<A href="?module=Watches" class="rtbcLink">My
-                Watches</A>&#160;&#160;|&#160;&#160;<A href="?module=Settings" class="rtbcLink">User
-                Settings</A><br>
-                <% } %>
-            </div>
-        </tr>
-    </table>
-    <br>
+    <div class="topLinksR">
+        <% if (user.getUsername() == historyUser.getUsername()) { %>
+        <b>My Post History</b>&#160;&#160;|&#160;&#160;<A href="?module=Watches" class="rtbcLink">My
+        Watches</A>&#160;&#160;|&#160;&#160;<A href="?module=Settings" class="rtbcLink">User
+        Settings</A><br>
+        <% } else { %>
+        <A href="?module=History" class="rtbcLink">My Post
+            History</A>&#160;&#160;|&#160;&#160;<A href="?module=Watches" class="rtbcLink">My
+        Watches</A>&#160;&#160;|&#160;&#160;<A href="?module=Settings" class="rtbcLink">User
+        Settings</A><br>
+        <% } %>
+    </div>
+    
+    <br><br>        
+    
     <% if (paginator.getNumPages() > 1) { %>
     <table cellpadding="0" cellspacing="0" class="rtbcTable">
         <tr>
