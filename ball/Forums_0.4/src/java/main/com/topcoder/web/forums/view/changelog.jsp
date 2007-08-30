@@ -38,7 +38,7 @@
 <!-- Links to versions -->
 
 <p>
-	<b>1.0 - 2007.08.xx</b>
+	<b>1.0 - 2007.09.xx</b>
 	<ul>
 		<li>Initial deployment.</li>
 	</ul>

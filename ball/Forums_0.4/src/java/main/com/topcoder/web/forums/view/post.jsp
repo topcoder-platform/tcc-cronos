@@ -147,8 +147,7 @@ function AllowTabCharacter() {
 </table>
 
 <br><div id="Options">Allowed tags: <%=ForumsUtil.getAllowedTagsDisplay()%>. Allowed attributes: <%=ForumsUtil.getAllowedAttributesDisplay()%>. Syntax highlighting is applied to text within [code][/code], [cpp][/cpp], [java][/java], [c#][/c#], [vb][/vb], and [py][/py] blocks. Usernames within [handle][/handle] and [h][/h] blocks are converted into color-coded links.</div>
-<p><b>Please do not cross post, most people read all posts and will not appreciate reading yours twice.</b></p>
-            <table cellpadding="0" cellspacing="0" class="rtTable">
+<table cellpadding="0" cellspacing="0" class="rtTable">
 <form name="form1" method="post" action="<%=sessionInfo.getServletPath()%>">
 <tc-webtag:hiddenInput name="module"/>
 <tc-webtag:hiddenInput name="<%=ForumConstants.FORUM_ID%>"/>
