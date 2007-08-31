@@ -785,6 +785,9 @@
                 <include name="tc-webtags.tld"/>
                 <include name="nav.tld"/>
             </webinf>
+        	<webinf dir="${webdir}/WEB-INF/tld">
+        		<include name="orpheus_functions.tld"/>
+        	</webinf>
             <webinf dir="${configdir}/forums/WEB-INF">
                 <include name="jboss-web.xml"/>
             </webinf>
