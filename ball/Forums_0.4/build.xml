@@ -788,6 +788,8 @@
             <webinf dir="${configdir}/forums/WEB-INF">
                 <include name="jboss-web.xml"/>
             </webinf>
+        	<lib file="${jstl.jar}"/>
+        	<lib file="${jstl-standard.jar}"/>
             <!-- <lib dir="${jars.dir}">
                 <include name="object_formatter.jar"/>
             </lib> // not needed? -->
