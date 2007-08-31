@@ -154,7 +154,7 @@ Maximum file size: <%=ForumsUtil.getFileSizeStr(attachManager.getMaxAttachmentSi
     </tr>
 </table>
 
-<jsp:include page="foot.jsp" />
+<%@ include file="foot.jsp" %>
 
 </body>
 

@@ -184,7 +184,7 @@ function AllowTabCharacter() {
     </tr>
 </table>
 
-<jsp:include page="foot.jsp" />
+<%@ include file="foot.jsp" %>
 
 </body>
 

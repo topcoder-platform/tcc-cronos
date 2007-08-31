@@ -16,6 +16,7 @@
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
 <%@ page contentType="text/html;charset=utf-8" %>
 <c:set var="ctx" value=""/>
+<%@ taglib uri="/orpheus" prefix="orpheus" %>
 
 <tc-webtag:useBean id="forumFactory" name="forumFactory" type="com.jivesoftware.forum.ForumFactory" toScope="request"/>
 <tc-webtag:useBean id="categories" name="categories" type="java.util.ArrayList" toScope="request"/>
@@ -229,7 +230,7 @@
 </tr>
 </table>
 
-<jsp:include page="../includes/footer.jsp"/>
+<%@ include file="foot.jsp" %>
 
 </body>
 

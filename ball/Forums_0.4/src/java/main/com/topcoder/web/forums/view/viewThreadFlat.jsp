@@ -574,7 +574,7 @@ background: #6363E3 url(/i/survey/bar_bg.gif) center left repeat-x;
     </tr>
 </table>
 
-<jsp:include page="foot.jsp" />
+<%@ include file="foot.jsp" %>
 
 </body>
 
