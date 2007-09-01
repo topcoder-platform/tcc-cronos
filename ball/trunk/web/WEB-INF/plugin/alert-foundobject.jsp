@@ -80,7 +80,9 @@
 
                                 <p>&nbsp;</p>
 
-                                <p>&nbsp;</p>
+                                <p>
+                                    <img src="${ctx}/i/logo.gif" alt="Logo" width="130" height="65"/>
+                                </p>
                             </td>
                         </tr>
                     </table>
