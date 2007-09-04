@@ -3,11 +3,9 @@
  */
 package com.orpheus.game.server.handler;
 
-import com.topcoder.user.profile.UserProfile;
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
-import com.topcoder.web.user.LoginHandler;
 import org.w3c.dom.Element;
 
 import javax.servlet.http.Cookie;
@@ -55,7 +53,7 @@ public class LogoutPreHandler extends AbstractGameServerHandler implements Handl
      * @throws HandlerExecutionException if un unrecoverable error prevents the successful request processing.
      */
     public String execute(ActionContext context) throws HandlerExecutionException {
-        System.out.println("*** in LogoutPostHandler.execute()");
+        System.out.println("*** in LogoutPreHandler.execute()");
         if (context == null) {
             throw new IllegalArgumentException("The parameter [context] is NULL");
         }
@@ -63,15 +61,11 @@ public class LogoutPreHandler extends AbstractGameServerHandler implements Handl
             HttpServletRequest request = context.getRequest();
             HttpSession session = request.getSession(false);
             if (session != null) {
-                System.out.println("*** session is non-null");
-                UserProfile authenticatedUser = LoginHandler.getAuthenticatedUser(session);
-                if (authenticatedUser != null) {
-                    System.out.println("*** removing cookie....");
-                    Cookie c = new Cookie("Ball_" + USER_COOKIE_NAME, "");
-                    c.setPath("/");
-                    c.setMaxAge(0);
-                    context.getResponse().addCookie(c);
-                }
+                System.out.println("*** removing cookie....");
+                Cookie c = new Cookie("Ball_" + USER_COOKIE_NAME, "");
+                c.setPath("/");
+                c.setMaxAge(0);
+                context.getResponse().addCookie(c);
             }
             return null;
         } catch (Exception e) {
