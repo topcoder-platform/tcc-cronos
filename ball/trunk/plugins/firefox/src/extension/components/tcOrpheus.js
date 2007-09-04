@@ -468,8 +468,17 @@ Orpheus.prototype = {
     },
     
     isURLCorrect : function(url) {
-    	debug("isURLCorrect: " + url);
+    	debug("isURLCorrect#: " + url);
     	if (this.isLoggedIn) {
+    		// convert to string
+    		url = "" + url;
+	    	// check if has fragment indetifier
+	    	var idx = url.indexOf("#");
+	    	// if so, remove it
+	    	if (idx > 0) {
+	    		url = url.substring(0, idx);
+	    	}
+	    	debug("isURLCorrect: " + url);
 	    	var currentHash = this.getSafeCharPref(URL_HASH_PREF, "");
     		var response = this.helper.currentTargetTest(url, currentHash);   	
     		debug("isURLCorrect: " + url + " response: " + response);
