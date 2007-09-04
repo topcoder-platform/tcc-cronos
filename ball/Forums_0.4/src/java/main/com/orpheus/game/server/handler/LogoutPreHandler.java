@@ -9,8 +9,6 @@ import com.topcoder.web.frontcontroller.HandlerExecutionException;
 import org.w3c.dom.Element;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  * <p>A custom {@link Handler} implementation to be used in conjunction with <code>LogoutHandler</code> to perform the
@@ -58,15 +56,11 @@ public class LogoutPreHandler extends AbstractGameServerHandler implements Handl
             throw new IllegalArgumentException("The parameter [context] is NULL");
         }
         try {
-            HttpServletRequest request = context.getRequest();
-            HttpSession session = request.getSession(false);
-            if (session != null) {
-                System.out.println("*** removing cookie....");
-                Cookie c = new Cookie("Ball_" + USER_COOKIE_NAME, "");
-                c.setPath("/");
-                c.setMaxAge(0);
-                context.getResponse().addCookie(c);
-            }
+            System.out.println("*** removing cookie....");
+            Cookie c = new Cookie("Ball_" + USER_COOKIE_NAME, "");
+            c.setPath("/");
+            c.setMaxAge(0);
+            context.getResponse().addCookie(c);
             return null;
         } catch (Exception e) {
             throw new HandlerExecutionException("Could not perform Logout request post-processing", e);
