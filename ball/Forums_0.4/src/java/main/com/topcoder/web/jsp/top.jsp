@@ -16,9 +16,9 @@
     <div style="float: right; margin: 5px 0px 0px 0px;">
         <% if (user != null) { %>
             Hello,&nbsp;<tc-webtag:handle id='<%=user.getID()%>' />
-            | <a class="gMetal" href="http://<%=ApplicationServer.SERVER_NAME%>/tc?module=Logout">Logout</a>
+            | <a class="gMetal" href="/server/logout.do">Logout</a>
         <% } else { %>
-           	<a class="gMetal" href="http://<%=ApplicationServer.SERVER_NAME%>/tc?&amp;module=Login">Login</a>
+           	<a class="gMetal" href="/public/login.jsp">Login</a>
         <% } %>
     </div>
 </div>
