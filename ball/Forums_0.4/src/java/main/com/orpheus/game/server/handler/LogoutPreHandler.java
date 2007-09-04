@@ -56,16 +56,11 @@ public class LogoutPreHandler extends AbstractGameServerHandler implements Handl
             throw new IllegalArgumentException("The parameter [context] is NULL");
         }
         try {
-            System.out.println("*** removing cookies....");
+            System.out.println("*** removing cookie....");
             Cookie c = new Cookie("Ball_" + USER_COOKIE_NAME, "");
             c.setPath("/");
             c.setMaxAge(0);
-            context.getResponse().addCookie(c);
-            
-            c = new Cookie("JSESSIONID", "");
-            c.setPath("/");
-            c.setMaxAge(0);
-            context.getResponse().addCookie(c);
+            context.getResponse().addCookie(c);            
             return null;
         } catch (Exception e) {
             throw new HandlerExecutionException("Could not perform Logout request post-processing", e);

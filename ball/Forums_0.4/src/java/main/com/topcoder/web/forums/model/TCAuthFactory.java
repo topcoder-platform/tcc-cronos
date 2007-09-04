@@ -34,20 +34,10 @@ public class TCAuthFactory extends AuthFactory {
      */
     public AuthToken createAuthToken(HttpServletRequest httpServletRequest,
                                      HttpServletResponse httpServletResponse) throws UnauthorizedException {        
-        HttpSession session = httpServletRequest.getSession();
-        AuthToken authToken = (AuthToken) session.getAttribute(SESSION_AUTHORIZATION);
-        if (authToken != null && !authToken.isAnonymous()) {
-            log.debug("authToken pulled from session: " + authToken.getUserID());
-            return authToken;
-        }
-
         // TODO: support username/password login (for Jive admin console)
-        log.info("--> in TCAuthFactory.createAuthToken() ");
         long userID = ForumsUtil.checkLoginCookie(httpServletRequest, "Ball_user_id").getId();
         
-        authToken = new TCAuthToken(userID);
-        log.debug("authToken placed into session: " + authToken.getUserID());
-        session.setAttribute(SESSION_AUTHORIZATION, authToken);
+        AuthToken authToken = new TCAuthToken(userID);
         return authToken;
     }
 
