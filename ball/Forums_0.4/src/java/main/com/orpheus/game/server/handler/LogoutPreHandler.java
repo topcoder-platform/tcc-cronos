@@ -3,9 +3,6 @@
  */
 package com.orpheus.game.server.handler;
 
-import com.orpheus.game.server.OrpheusFunctions;
-import com.orpheus.game.server.util.AuthenticationSupport;
-import com.orpheus.user.persistence.UserConstants;
 import com.topcoder.user.profile.UserProfile;
 import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
@@ -18,18 +15,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
- * <p>A custom {@link Handler} implementation to be used in conjunction with <code>LoginHandler</code> to perform the
+ * <p>A custom {@link Handler} implementation to be used in conjunction with <code>LogoutHandler</code> to perform the
  * post-handling of <code>Logout</code> request. Removes the user's login cookie. </p>
  *
  * @author mtong
  * @version 1.0
  */
-public class LogoutPostHandler extends AbstractGameServerHandler implements Handler {
+public class LogoutPreHandler extends AbstractGameServerHandler implements Handler {
 
     private static final String USER_COOKIE_NAME = "user_id";
     
     /**
-     * <p>Constructs new <code>LoginPreHandler</code> instance initialized based on the configuration parameters
+     * <p>Constructs new <code>LogoutPreHandler</code> instance initialized based on the configuration parameters
      * provided by the specified <code>XML</code> element.</p>
      *
      * <p>
@@ -44,7 +41,7 @@ public class LogoutPostHandler extends AbstractGameServerHandler implements Hand
      * @throws IllegalArgumentException if the argument is <code>null</code> or the values configured in xml element are
      *         missing or invalid.
      */
-    public LogoutPostHandler(Element element) {
+    public LogoutPreHandler(Element element) {
         if (element == null) {
             throw new IllegalArgumentException("The parameter [element] is NULL");
         }

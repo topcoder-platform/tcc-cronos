@@ -3,8 +3,8 @@
         <log-message>logged out</log-message>
         <category>WEB SITE</category>
     </handler>
+    <handler type="LogoutPreHandler"/>
     <handler type="logout"/>
-    <handler type="LogoutPostHandler"/>
     <result name="success" type="forward">
         <forward-url>/public/logout.jsp</forward-url>
     </result>

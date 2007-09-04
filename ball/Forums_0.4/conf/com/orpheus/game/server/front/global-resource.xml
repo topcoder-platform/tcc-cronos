@@ -146,7 +146,7 @@
         <handler-def name="AdminMoveBallHandler">com.orpheus.game.server.handler.admin.AdminMoveBallHandler</handler-def>
         <handler-def name="LoginPreHandler">com.orpheus.game.server.handler.LoginPreHandler</handler-def>
         <handler-def name="LoginPostHandler">com.orpheus.game.server.handler.LoginPostHandler</handler-def>
-        <handler-def name="LogoutPostHandler">com.orpheus.game.server.handler.LogoutPostHandler</handler-def>
+        <handler-def name="LogoutPreHandler">com.orpheus.game.server.handler.LogoutPreHandler</handler-def>
         <handler-def name="AdminDeleteSlotPreHandler">com.orpheus.game.server.handler.admin.AdminDeleteSlotPreHandler</handler-def>
         <handler-def name="AdminDeleteSlotPostHandler">com.orpheus.game.server.handler.admin.AdminDeleteSlotPostHandler</handler-def>
         <handler-def name="SetParameterHandler">com.orpheus.game.server.handler.SetParameterHandler</handler-def>
