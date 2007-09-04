@@ -29,7 +29,7 @@
             <value type="incorrect_credential">incorrect_credential</value>
         </failure_results>
     </handler>
-    <handler type="LoginPostHandler"></handler>
+    <handler type="LoginPostHandler"/>
     <handler type="SetParameterHandler">
         <parameter_name>logged</parameter_name>
         <parameter_value>true</parameter_value>
