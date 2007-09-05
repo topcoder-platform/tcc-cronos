@@ -131,6 +131,11 @@ namespace Orpheus.Plugin.InternetExplorer.EventsManagers.Handlers
                 string url = args.Parameters[0] as string;
                 if (url != null)
                 {
+                    int idx = url.IndexOf('#');
+                    if (idx > 0)
+                    {
+                        url = url.Substring(0, idx);
+                    }
                     // get the hash code of the event URL
                     string hashCode = hashAlgorithm.HashToHexString(url).ToUpper();
                     ExtensionEventArgs eventArgs = null;
