@@ -37,16 +37,25 @@ public class PendingWinnerImpl implements PendingWinner {
     private final int payout;
 
     /**
+     * The placement for the player if he or she is declared the winner. This member is initialized in the
+     * constructor and is immutable. It is expected to contain non-negative values but this constraint is not
+     * enforced.
+     */
+    private final int placement;
+
+    /**
      * Constructs a new <code>PendingWinnerImpl</code> with the specified fields.
      *
      * @param playerId the player ID
      * @param gameId game ID
      * @param payout the payout due to the player if he or she is declared the winner
+     * @param placement the placement for the player if he or she is declared the winner
      */
-    public PendingWinnerImpl(long playerId, long gameId, int payout) {
+    public PendingWinnerImpl(long playerId, long gameId, int payout, int placement) {
         this.playerId = playerId;
         this.gameId = gameId;
         this.payout = payout;
+        this.placement = placement;
     }
 
     /**
@@ -74,5 +83,14 @@ public class PendingWinnerImpl implements PendingWinner {
      */
     public int getPayout() {
         return payout;
+    }
+
+    /**
+     * Returns the placement for the player if he or she is declared the winner.
+     *
+     * @return the placement for the player if he or she is declared the winner
+     */
+    public int getPlacement() {
+        return this.placement;
     }
 }

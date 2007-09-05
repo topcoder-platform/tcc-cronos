@@ -37,6 +37,13 @@ public interface PendingWinner extends Serializable {
      * @return the payout due to the player if he or she is declared the winner
      */
     public int getPayout();
+
+    /**
+     * Returns the placement for the player if he or she is declared the winner.
+     *
+     * @return the placement for the player if he or she is declared the winner
+     */
+    public int getPlacement();
 }
 
 

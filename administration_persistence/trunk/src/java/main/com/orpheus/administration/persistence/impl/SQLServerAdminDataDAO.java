@@ -13,16 +13,31 @@ import com.orpheus.administration.persistence.InvalidEntryException;
 import com.orpheus.administration.persistence.ParameterHelpers;
 import com.orpheus.administration.persistence.PendingWinner;
 import com.orpheus.administration.persistence.PersistenceException;
+import com.orpheus.game.server.framework.prize.PrizeCalculatorTypeSource;
+import com.orpheus.game.server.framework.prize.PrizeException;
+import com.orpheus.game.server.framework.prize.PrizeCalculatorType;
+import com.orpheus.game.server.framework.prize.PrizeCalculator;
+import com.orpheus.game.persistence.Game;
+import com.orpheus.game.persistence.GameDataLocalHome;
+import com.orpheus.game.persistence.GameDataHome;
+import com.orpheus.game.persistence.GameData;
+import com.orpheus.game.persistence.GameDataLocal;
 
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
+import com.topcoder.util.config.ConfigManagerException;
 
 import com.topcoder.util.puzzle.PuzzleData;
 import com.topcoder.util.puzzle.PuzzleResource;
+import com.topcoder.naming.jndiutility.JNDIUtils;
 
+import javax.naming.Context;
+import javax.naming.NamingException;
+import javax.rmi.PortableRemoteObject;
+import javax.ejb.CreateException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,6 +51,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+import java.rmi.RemoteException;
 
 /**
  * <p>An implementation of <code>AdminDataDAO</code> that uses SQL Server as the persistent storage.
@@ -79,7 +96,13 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
      * The query used to retrieve the set of pending winners.
      */
     private static final String PENDING_WINNER_QUERY =
-        "SELECT t1.player_id, t1.game_id FROM plyr_compltd_game t1 WHERE t1.is_handled = 0 ORDER BY t1.sequence_number";
+//        "SELECT t1.player_id, t1.game_id FROM plyr_compltd_game t1 WHERE t1.is_handled = 0 ORDER BY t1.sequence_number";
+        "SELECT t1.player_id, t1.game_id, t1.sequence_number, count(t2.game_id) " +
+        "FROM plyr_compltd_game t1 " +
+        "LEFT JOIN plyr_won_game t2 ON t1.game_id = t2.game_id " +
+        "WHERE t1.is_handled = 0 " +
+        "GROUP BY t1.player_id, t1.game_id, t1.sequence_number " +
+        "ORDER BY t1.game_id,t1.sequence_number";
 /*
     private static final String PENDING_WINNER_QUERY = "SELECT t1.player_id, t1.game_id "
         + "FROM plyr_compltd_game t1 INNER JOIN "
@@ -186,6 +209,30 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
     private final float adminFee;
 
     /**
+     * <p>A <code>PrizeCalculatorTypeSource</code> to be used for obtaining the prize calculation types based on the
+     * game settings.</p>
+     */
+    private final PrizeCalculatorTypeSource prizeTypeSource;
+
+    /**
+     * <p>A <code>String</code> providing the name referencing the <code>Game Data EJB</code> in <code>JNDI</code>
+     * context.</p>
+     */
+    private final String gameDataEJBName;
+
+    /**
+     * <p>A <code>boolean</code> indicating whether remote or local interface must be usef for communicating to <code>
+     * Game Data EJB</code>.</p> 
+     */
+    private final boolean useRemote;
+
+    /**
+     * <p>A <code>String</code> providing the name referencing the <code>JNDI</code> context for locating the <code>
+     * Game Data EJB</code> .</p>
+     */
+    private final String jndiContextName;
+
+    /**
      * Creates a new <code>SQLServerAdminDAO</code> configured using the specified namespace. See the class
      * documentation for a description of the configuration parameters.
      *
@@ -199,10 +246,16 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
         connectionFactory = (DBConnectionFactory)
             ObjectFactoryHelpers.instantiateObject(namespace, "specNamespace", "factoryKey",
                                                    DBConnectionFactory.class);
-
+        this.prizeTypeSource
+            = (PrizeCalculatorTypeSource) ObjectFactoryHelpers.instantiateObject(namespace, "specNamespace",
+                                                                                 "prizeTypeSourceKey",
+                                                                                 PrizeCalculatorTypeSource.class);
         ConfigManager manager = ConfigManager.getInstance();
         try {
             connectionName = manager.getString(namespace, "name");
+            this.gameDataEJBName = manager.getString(namespace, "gameDataEJB.name");
+            this.jndiContextName = manager.getString(namespace, "gameDataEJB.context");
+            this.useRemote = Boolean.valueOf(manager.getString(namespace, "gameDataEJB.remote")).booleanValue();
             String fee = ObjectFactoryHelpers.getProperty(namespace, "adminFee");
             try {
                 this.adminFee = Float.parseFloat(fee);
@@ -399,11 +452,26 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
 
                     try {
                         List ret = new ArrayList();
+                        long currentGameId = -1;
+                        int placement = 0;
+                        Map gamesCache = new HashMap();
                         while (results.next()) {
-                            long gameID = results.getLong(2);
-                            // TODO : The winner payout must be calculated based on prize calculation schema for the
-                            // game
-                            ret.add(new PendingWinnerImpl(results.getLong(1), gameID, calculatePayout(gameID)));
+                            long playerId = results.getLong(1);
+                            Long gameID = new Long(results.getLong(2));
+                            if (gameID.longValue() != currentGameId) {
+                                placement = results.getInt(4);
+                                currentGameId = gameID.longValue();
+                            }
+                            if (!gamesCache.containsKey(gameID)) {
+                                gamesCache.put(gameID, getGame(gameID.longValue()));
+                            }
+                            Game game = (Game) gamesCache.get(gameID);
+                            placement++;
+                            PrizeCalculatorType prizeType
+                                = this.prizeTypeSource.getPrizeCalculatorType(game.getPrizeCalculationType());
+                            PrizeCalculator prizeCalc = prizeType.getCalculator();
+                            double payout = prizeCalc.calculatePrizeAmount(game, playerId, placement);
+                            ret.add(new PendingWinnerImpl(playerId, gameID.longValue(), (int) payout, placement));
                         }
 
                         return (PendingWinner[]) ret.toArray(new PendingWinner[ret.size()]);
@@ -418,6 +486,10 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
             }
         } catch (SQLException ex) {
             throw new PersistenceException("error querying pending winners: " + ex.getMessage(), ex);
+        } catch (PrizeException ex) {
+            throw new PersistenceException("error calculating prize payout: " + ex.getMessage(), ex);
+        } catch (Exception ex) {
+            throw new PersistenceException("error while obtaining game detailst: " + ex.getMessage(), ex);
         }
     }
 
@@ -537,7 +609,7 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
      * @return the payout for the specified game
      * @throws PersistenceException if a persistence exception occurs
      */
-    int calculatePayout(long gameId) throws PersistenceException {
+    private int calculatePayout(long gameId) throws PersistenceException {
         // note that this method was initially private in the design, but I made it package-private to allow it
         // to be unit tested
         Connection connection = getConnection();
@@ -808,6 +880,32 @@ public class SQLServerAdminDataDAO implements AdminDataDAO {
             }
         } catch (SQLException ex) {
             throw new PersistenceException("error storing puzzle name: " + ex.getMessage(), ex);
+        }
+    }
+
+    /**
+     * <p>Gets the details for the game referenced by the specified ID.</p>
+     *
+     * @param gameId a <code>long</code> providing the ID of a game.
+     * @return a <code>Game</code> referenced by the specified ID.
+     * @throws NamingException if an unexpected error occurs.
+     * @throws ConfigManagerException if an unexpected error occurs.
+     * @throws RemoteException if an unexpected error occurs.
+     * @throws CreateException if an unexpected error occurs.
+     * @throws com.orpheus.game.persistence.PersistenceException if an unexpected error occurs.
+     */
+    private Game getGame(long gameId) throws NamingException, ConfigManagerException, RemoteException, CreateException,
+                                             com.orpheus.game.persistence.PersistenceException {
+        Context context = JNDIUtils.getContext(this.jndiContextName);
+        Object obj = JNDIUtils.getObject(context, this.gameDataEJBName);
+        if (this.useRemote) {
+            GameDataHome home = (GameDataHome) PortableRemoteObject.narrow(obj, GameDataHome.class);
+            GameData gameDataEJB = home.create();
+            return gameDataEJB.getGame(gameId);
+        } else {
+            GameDataLocalHome home = (GameDataLocalHome) obj;
+            GameDataLocal gameDataEJB = home.create();
+            return gameDataEJB.getGame(gameId);
         }
     }
 }
