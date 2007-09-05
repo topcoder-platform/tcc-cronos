@@ -3,10 +3,6 @@
  */
 package com.orpheus.game;
 
-import java.util.Map;
-
-import org.w3c.dom.Element;
-
 import com.orpheus.game.persistence.DomainTarget;
 import com.orpheus.game.persistence.HostingSlot;
 import com.topcoder.user.profile.UserProfile;
@@ -14,6 +10,9 @@ import com.topcoder.web.frontcontroller.ActionContext;
 import com.topcoder.web.frontcontroller.Handler;
 import com.topcoder.web.frontcontroller.HandlerExecutionException;
 import com.topcoder.web.user.LoginHandler;
+import org.w3c.dom.Element;
+
+import java.util.Map;
 
 
 /**
@@ -102,6 +101,13 @@ public class TestTargetObjectHandler implements Handler {
      * </p>
      */
     private final String changedURLResultCode;
+
+    /**
+     * <p>A <code>boolean</code> indicating whether the URL comparison is strict or not. In latter case the document
+     * fragments in URLs are ignored.</p>
+     */
+    private final boolean strict;
+
     /**
      * <p>
      * Constructor with a Map of attributes, this constructor will extract values from the attributes Map, and then
@@ -124,6 +130,7 @@ public class TestTargetObjectHandler implements Handler {
         testFailedResultCode = ImplementationHelper.getString(attributes, "testFailedResultCode");
         textParamKey = ImplementationHelper.getString(attributes, "textParamKey");
         triggeredURLParamKey = ImplementationHelper.getString(attributes, "triggeredURLParamKey");
+        strict = Boolean.valueOf(ImplementationHelper.getString(attributes, "strict")).booleanValue();
     }
 
     /**
@@ -164,6 +171,7 @@ public class TestTargetObjectHandler implements Handler {
         testFailedResultCode = ImplementationHelper.getElement(element, "test_failed_result_code");
         textParamKey = ImplementationHelper.getElement(element, "text_param_key");
         triggeredURLParamKey = ImplementationHelper.getElement(element, "triggered_url_param_key");
+        strict = Boolean.valueOf(ImplementationHelper.getElement(element, "strict")).booleanValue();
     }
 
     /**
@@ -216,6 +224,7 @@ public class TestTargetObjectHandler implements Handler {
 
             String triggeredURL = context.getRequest().getParameter(triggeredURLParamKey);
             checkValidParam(triggeredURL,"triggeredURL");
+            triggeredURL = normalize(triggeredURL);
 
             String gameIdString = context.getRequest().getParameter(gameIdParamKey);
             checkValidParam(gameIdString, "game ID");
@@ -233,7 +242,8 @@ public class TestTargetObjectHandler implements Handler {
                     // if the sequence number, text, and URL all match then return null
                     if (Integer.parseInt(seqNum) == domainTargets[i].getSequenceNumber()) {
                         if (text.equals(domainTargets[i].getIdentifierText().replaceAll("[\n\r \t\f\u00a0\u200b]+", ""))) {
-                            if (triggeredURL.equalsIgnoreCase(domainTargets[i].getUriPath())) {
+                            String expectedURL = normalize(domainTargets[i].getUriPath());
+                            if (triggeredURL.equalsIgnoreCase(expectedURL)) {
                                 return null;
                             } else {
                                 return changedURLResultCode;
@@ -293,5 +303,23 @@ public class TestTargetObjectHandler implements Handler {
             throw new HandlerExecutionException("Failed to execute test target object handler, missing '" + name
                     + "' in request.");
         }
+    }
+
+    /**
+     * <p>Normalizes the specified URL based on the current settings. The method should be called prior to comparing
+     * the provided and expected URLs. This implementatin strips off the document fragment identifier part of the
+     * specified URL if the current value of <code>strict</code> flag is <code>false</code>.</p>
+     *
+     * @param url a <code>String</code> providing the URL to normalize.
+     * @return a <code>String</code> providing the specified URL normalized based on the current settings.
+     */
+    private String normalize(String url) {
+        if (!this.strict) {
+            int pos = url.indexOf('#');
+            if (pos >= 0) {
+                return url.substring(0, pos);
+            }
+        }
+        return url;
     }
 }
