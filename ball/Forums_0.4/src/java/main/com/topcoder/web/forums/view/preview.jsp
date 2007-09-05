@@ -123,7 +123,7 @@ function AllowTabCharacter() {
        </td>
     </tr>
 </table>
-<br/><div id="Options">Allowed tags: <%=ForumsUtil.getAllowedTagsDisplay()%>. Allowed attributes: <%=ForumsUtil.getAllowedAttributesDisplay()%>. Usernames within [handle][/handle] and [h][/h] blocks are converted into color-coded links.</div>
+<br/><div id="Options">Allowed tags: <%=ForumsUtil.getAllowedTagsDisplay()%>. Allowed attributes: <%=ForumsUtil.getAllowedAttributesDisplay()%>. </div>
 <br/>
 <span class="bodySubtitle">Message Preview</span><br/>
 <table cellpadding="0" cellspacing="0" class="rtTable">
