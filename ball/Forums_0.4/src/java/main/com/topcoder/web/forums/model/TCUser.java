@@ -125,16 +125,6 @@ public class TCUser extends SimpleUserAdapter {
     public boolean isPropertyEditSupported() {
         return true;
     }
-
-    /**
-     * Nope, nobody can see creation date.  Doesn't
-     * really make sense for us right now anyway.
-     *
-     * @return
-     */
-    public Date getCreationDate() {
-        throw new UnsupportedOperationException();
-    }
     
     /**
      * Nope, nobody can see modification date.  Doesn't
