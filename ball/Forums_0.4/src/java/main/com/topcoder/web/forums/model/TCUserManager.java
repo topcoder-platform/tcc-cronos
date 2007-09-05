@@ -54,7 +54,7 @@ public class TCUserManager extends UserManagerAdapter {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            con = ConnectionManager.getConnection();
+            con = dataSource.getConnection();
             pstmt = con.prepareStatement(USER_COUNT);
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -78,7 +78,7 @@ public class TCUserManager extends UserManagerAdapter {
         ResultSet rs = null;
 
         try {
-            con = ConnectionManager.getConnection();
+            con = dataSource.getConnection();
             pstmt = con.prepareStatement(ALL_USERS);
             rs = pstmt.executeQuery();
             ConnectionManager.setFetchSize(rs, 500);
@@ -102,7 +102,7 @@ public class TCUserManager extends UserManagerAdapter {
         ResultSet rs = null;
 
         try {
-            con = ConnectionManager.getConnection();
+            con = dataSource.getConnection();
             pstmt = con.prepareStatement(ALL_USERS);
             rs = pstmt.executeQuery();
             ConnectionManager.setFetchSize(rs, startIndex + numResults);
