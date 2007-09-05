@@ -862,6 +862,9 @@
         	<fileset dir="${tc_libdir}">
         		<include name="*.*"/>
         	</fileset>
+    		<fileset dir="${build_ejbjarsdir}">
+        		<include name="tcjive.jar"/>
+        	</fileset>
     		<fileset dir="${jboss_libdir}">
     		    <include name="*.*"/>
     		</fileset>
@@ -870,10 +873,8 @@
     	<ear destfile="${component.ear}" appxml="${configdir}/application.xml" update="true"
              duplicate="fail" filesonly="true">
         	<fileset dir="${jive_libdir}" includes="*.jar,*.war"/>
-    		<fileset dir="${build_ejbjarsdir}" includes="*.jar,*.war"/>
+    		<fileset dir="${build_ejbjarsdir}" includes="*.jar,*.war" excludes="tcjive.jar"/>
         </ear>
-
-        <!-- <copy todir="${jboss_deploy}" file="${ear.dir}/security.ear"/> // not needed? -->
     </target>
 
     <!-- Generate Javadoc documentation -->
