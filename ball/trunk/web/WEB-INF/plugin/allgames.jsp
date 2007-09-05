@@ -68,7 +68,7 @@
                                         <td>
                                             ${row.name}&nbsp;
                                             <c:if test="${playerStatus eq 'Player'}">
-                                                <a href="${ctx}/server/player/showPesonalizedBall.do?gameId=${row.id}"
+                                                <a href="${ctx}/server/plugin/showPesonalizedBall.do?gameId=${row.id}"
                                                    title="Personalized Ball">
                                                     <img src="${ctx}/i/favicon.png" alt="Personalized Ball"
                                                          width="16" height="16"/>
