@@ -51,12 +51,12 @@ public class LogoutPreHandler extends AbstractGameServerHandler implements Handl
      * @throws HandlerExecutionException if un unrecoverable error prevents the successful request processing.
      */
     public String execute(ActionContext context) throws HandlerExecutionException {
-        System.out.println("*** in LogoutPreHandler.execute()");
+        //System.out.println("*** in LogoutPreHandler.execute()");
         if (context == null) {
             throw new IllegalArgumentException("The parameter [context] is NULL");
         }
         try {
-            System.out.println("*** removing cookie....");
+            //System.out.println("*** removing cookie....");
             Cookie c = new Cookie("Ball_" + USER_COOKIE_NAME, "");
             c.setPath("/");
             c.setMaxAge(0);
