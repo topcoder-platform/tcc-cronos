@@ -29,6 +29,7 @@
         <not_logged_in_result_code>notLoggedResult</not_logged_in_result_code>
         <test_failed_result_code>testFailedResult</test_failed_result_code>
         <url_change_result_code>testUrlFailedResult</url_change_result_code>
+        <strict>false</strict>
     </handler>
     <handler type="PlayerTestTargetObjectPostHandler">
         <game_id_param_key>gameId</game_id_param_key>
@@ -42,6 +43,7 @@
         <bloom_filter_capacity>100</bloom_filter_capacity>
         <bloom_filter_error_rate>0.01</bloom_filter_error_rate>
         <messenger_namespace>com.orpheus.game.server.RSSDataStore</messenger_namespace>
+        <strict>false</strict>
     </handler>
     <result name="notLoggedResult" type="dbLoggingForward">
         <forward-url>/plugin/login.jsp</forward-url>

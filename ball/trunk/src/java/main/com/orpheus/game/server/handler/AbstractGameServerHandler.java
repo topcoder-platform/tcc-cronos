@@ -207,6 +207,12 @@ public class AbstractGameServerHandler {
 
     /**
      * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
+     * value of a flag indicating whether strict URL comparison must be used.</p>
+     */
+    protected static final String STRICT_VALUE_CONFIG = "strict";
+
+    /**
+     * <p>A <code>String</code> providing the name which could be used as name for configuration parameter providing the
      * value of minimum bid for bidding for slots.</p>
      */
     protected static final String MINIMUM_BID_VALUE_CONFIG = "minimum_bid";
@@ -1136,6 +1142,26 @@ public class AbstractGameServerHandler {
         newText = newText.replaceFirst(" +$", "");
         newText = newText.toLowerCase();
         return newText;
+    }
+
+    /**
+     * <p>Normalizes the specified URL based on the current settings. The method should be called prior to comparing
+     * the provided and expected URLs. This implementatin strips off the document fragment identifier part of the
+     * specified URL if the current value of <code>strict</code> flag is <code>false</code>.</p>
+     *
+     * @param url a <code>String</code> providing the URL to normalize.
+     * @param strict <code>true</code> if document fragment identifier must not be stripped off; <code>false</code>
+     *        otherwise.
+     * @return a <code>String</code> providing the specified URL normalized based on the current settings.
+     */
+    protected String normalizeURL(String url, boolean strict) {
+        if (!strict) {
+            int pos = url.indexOf('#');
+            if (pos >= 0) {
+                return url.substring(0, pos);
+            }
+        }
+        return url;
     }
 
     /**

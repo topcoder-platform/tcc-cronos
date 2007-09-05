@@ -15,6 +15,7 @@
         <jndi_context_name>default</jndi_context_name>
         <use_remote_interface>true</use_remote_interface>
         <game_play_key>gamePlayInfo</game_play_key>
+        <strict>false</strict>
     </handler>
     <result name="success" type="dbLoggingForward">
         <forward-url>UNUSED</forward-url>

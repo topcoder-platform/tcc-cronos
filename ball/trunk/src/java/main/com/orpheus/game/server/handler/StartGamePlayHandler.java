@@ -61,6 +61,7 @@ public class StartGamePlayHandler extends AbstractGameServerHandler implements H
         readAsString(element, GAME_ID_PARAM_NAME_CONFIG, true);
         readAsString(element, GAME_EJB_JNDI_NAME_CONFIG, true);
         readAsBoolean(element, USER_REMOTE_INTERFACE_CONFIG, true);
+        readAsBoolean(element, STRICT_VALUE_CONFIG, true);
         this.jndiContext = getJNDIContext(element);
     }
 
@@ -134,8 +135,10 @@ public class StartGamePlayHandler extends AbstractGameServerHandler implements H
                         return "brainTeaserResult";
                     } else {
                         // Otherwise present player with a clue for the next target to hunt
+                        String url
+                            = normalizeURL(domainTarget.getUriPath(), getBoolean(STRICT_VALUE_CONFIG).booleanValue());
                         request.setAttribute("nextHuntTarget", domainTarget);
-                        request.setAttribute("nextHuntUrl", getHash(domainTarget.getUriPath()));
+                        request.setAttribute("nextHuntUrl", getHash(url));
                         return "nextClueResult";
                     }
                 }

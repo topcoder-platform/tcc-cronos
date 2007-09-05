@@ -29,6 +29,7 @@
         <media_type>DHTML</media_type>
         <game_play_key>gamePlayInfo</game_play_key>
         <solutiontester_base_name>puzzleSolutionTester</solutiontester_base_name>
+        <strict>false</strict>
     </handler>
     <handler type="PuzzleRenderingHandler">
         <puzzle_id_request_attribute_key>puzzleId</puzzle_id_request_attribute_key>

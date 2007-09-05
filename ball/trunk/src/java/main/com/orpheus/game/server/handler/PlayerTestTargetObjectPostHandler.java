@@ -98,12 +98,7 @@ public class PlayerTestTargetObjectPostHandler extends AbstractGameServerHandler
         readAsString(element, GAME_PLAY_ATTR_NAME_CONFIG, true);
         readAsString(element, GAME_EJB_JNDI_NAME_CONFIG, true);
         readAsBoolean(element, USER_REMOTE_INTERFACE_CONFIG, true);
-/*
-        readAsString(element, BLOOM_FILTER_CATEGORY_CONFIG, true);
-        readAsInteger(element, BLOOM_FILTER_CAPACITY_CONFIG, true);
-        readAsFloat(element, BLOOM_FILTER_ERROR_RATE_CONFIG, true);
-        readAsString(element, MESSENGER_NAMESPACE_CONFIG, true);
-*/
+        readAsBoolean(element, STRICT_VALUE_CONFIG, true);
         this.jndiContext = getJNDIContext(element);
     }
 
@@ -232,8 +227,9 @@ public class PlayerTestTargetObjectPostHandler extends AbstractGameServerHandler
             } else {
                 // The player should find next hunt target for the slot/domain
                 DomainTarget nextHuntTarget = gamePlayInfo.getNextHuntTarget(hostingSlot);
+                String url = normalizeURL(nextHuntTarget.getUriPath(), getBoolean(STRICT_VALUE_CONFIG).booleanValue());
                 request.setAttribute("nextHuntTarget", nextHuntTarget);
-                request.setAttribute("nextHuntUrl", getHash(nextHuntTarget.getUriPath()));
+                request.setAttribute("nextHuntUrl", getHash(url));
                 return "foundObjectResult";
             }
         } catch (Exception e) {

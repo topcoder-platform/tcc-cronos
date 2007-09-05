@@ -71,6 +71,7 @@ public class ShowBrainteaserHandler extends AbstractGameServerHandler implements
         readAsString(element, GAME_PLAY_ATTR_NAME_CONFIG, true);
         readAsString(element, GAME_EJB_JNDI_NAME_CONFIG, true);
         readAsBoolean(element, USER_REMOTE_INTERFACE_CONFIG, true);
+        readAsBoolean(element, STRICT_VALUE_CONFIG, true);
         this.jndiContext = getJNDIContext(element);
     }
 
@@ -151,8 +152,9 @@ public class ShowBrainteaserHandler extends AbstractGameServerHandler implements
 
             // Put the hash and sequence number for the first hunt target which is associated with brainuteaser
             DomainTarget domainTarget = hostingSlot.getDomainTargets()[0];
+            String url = normalizeURL(domainTarget.getUriPath(), getBoolean(STRICT_VALUE_CONFIG).booleanValue());
             request.setAttribute("nextHuntTarget", domainTarget);
-            request.setAttribute("nextHuntUrl", getHash(domainTarget.getUriPath()));
+            request.setAttribute("nextHuntUrl", getHash(url));
 
             // If there are next brainteasers available for displaying then put the request attributes indicating on
             // that and providing the 
