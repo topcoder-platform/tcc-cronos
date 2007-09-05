@@ -18,7 +18,7 @@
 
         <p>The Ball is a little like baseball &ndash; there is no specified end date or time, so the game takes just as
             long as it takes for players to pursue clues, solve puzzles, and track The Ball across the Web. <br/>
-            <strong>Playing is easy. Just follow these steps: </strong></p>
+            <strong>Just follow these steps: </strong></p>
         <ol>
             <li>Download and install The Ball&rsquo;s plugin.&nbsp; Plugins come in two flavours: Internet Explorer and
                 Mozilla Firefox.

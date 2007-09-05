@@ -13,6 +13,7 @@
 <body id="page">
 <div id="container">
     <c:set var="subbar" value="howto" scope="page"/>
+    <c:set var="subbar2" value="help" scope="page"/>
     <%@ include file="../includes/header.jsp" %>
     <div id="wrap">
         <h1><img src="${ctx}/i/h/title_playerfaq.gif" alt="Player FAQ"/></h1>

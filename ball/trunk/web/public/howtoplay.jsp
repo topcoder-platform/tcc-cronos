@@ -19,7 +19,7 @@
         <h1><img src="${ctx}/i/h/title_howtoplay.gif" alt="How to Play"/></h1>
 
         <p>
-            Playing is easy. Just follow these steps:
+            Just follow these steps:
         </p>
         <ol>
             <li>Download and install The Ball's plugin. Plugins come in two flavours: Internet Explorer and Mozilla

@@ -13,6 +13,7 @@
 <body id="page">
 <div id="container">
 <c:set var="subbar" value="howto" scope="page"/>
+<c:set var="subbar2" value="help" scope="page"/>
     <%@ include file="../includes/header.jsp" %>
     <div id="wrap">
         <p><img src="${ctx}/i/help/img_playing.gif" alt="How to Play" width="220" height="18"/></p>
@@ -99,15 +100,28 @@
 
         <p align="center"><img src="${ctx}/i/help/playing_09.jpg" width="350" height="270" alt=""/></p>
         <ol start="10">
-            <li>Find the target on the site and repeat steps 5 and 6.&nbsp; We can give you up to five (5) targets to
-                find on a website, after which we give you a key or the present the Ball to unlock if the site happens
-                to be the one hosting the Ball.
+            <li>Find the target on the site and repeat steps 6 and 7 to test whether the target is the correct ball one.
+                If it is correct, you will be presented with the next clue on that site.  We can give you up to 5 clues
+                on one site to solve before you can move on to the next site.  If you have solved all of the clues on
+                one site, you will be presented with a key which is a random series of numbers or letters for that site.
+                The key will be displayed in the main plugin window and you can write it down on a piece of paper to
+                remember it, but can also be retrieved by you at any time by clicking on the "Unlocked Sites" button on
+                the ball's toolbar. In addition to the key information, you will be presented with the URL for the next
+                website in the ball game.  You can click on the URL and jump to the website to begin your hunt on that
+                site.
             </li>
-            <li>If you get a key, you can write it down to keep track of it.&nbsp; In addition, we will store the keys
-                for you, and you can access them at any time by using the &ldquo;Unlocked Sites&rdquo; feature off The
-                Ball&rsquo;s toolbar menu.&nbsp; Note that you must choose a game first, before using the Unlocked
-                Sites, to ensure that the keys presented are the keys for the specific game.&nbsp; Note that keys are
-                specific to an individual player
+            <li>Keys are presented when you have found all the clues on a particular sponsor site, and are the game's
+                way of checking that you are actively following the ball.  When you find the ball you will be asked to
+                enter a X keys (the number "X" differs from game to game) to "unlock" the ball.  These are the keys that
+                come from the last X sites that have hosted the ball.  Note that the last X sites that have hosted the
+                ball may not be the same as the last X sites on which you have found keys.  For example if you received
+                keys for the following sites: www.topcoder.com, www.equitrader.com and www.db.com, but the ball was
+                actually hosted in the order of: www.topcoder.com, software.topcoder.com, studio.topcoder.com,
+                www.db.com and www.equitrader.com  and you have to enter 3 keys to unlock the balll, you will need to
+                use keys from www.equitrader.com, www.db.com and studio.topcoder.com.  If you do not have a key from
+                studio.topcoder.com, in this case you will be unsuccessful in unlocking the ball.  To successfully
+                unlock the ball, you must get a key from studio.topcoder.com (but remember to hurry, as the ball can
+                move on to another sponsor site in the meantime, and so the keys needed to unlock it may change).
             </li>
         </ol>
         <p class="cOrange"><strong>Example 1: Finding Key at end of Mini-hunt on a site in Internet Explorer</strong>

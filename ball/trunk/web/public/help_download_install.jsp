@@ -14,6 +14,7 @@
 <body id="page">
 <div id="container">
     <c:set var="subbar" value="howto" scope="page"/>
+    <c:set var="subbar2" value="help" scope="page"/>
     <%@ include file="../includes/header.jsp" %>
     <div id="wrap">
         <p><img src="${ctx}/i/help/img_download.gif" alt="How to Play" width="239" height="18"/></p>
@@ -34,30 +35,26 @@
 
         <p class="cOrange"><strong>Install the Plugin in Internet Explorer:</strong></p>
         <ol>
-            <li>Click on the &ldquo;Download Now&rdquo; button.&nbsp; You will be prompted to &ldquo;Run&rdquo;
-                or &ldquo;Save&rdquo; the file.&nbsp; You may do either but &ldquo;Run&rdquo; is the simpler method to
-                perform the installation.
+            <li>Click on the "Download Now" button. You will be prompted to "Run" or "Save" the file. Click on the "Run"
+                button. 
             </li>
         </ol>
         <p align="center"><img src="${ctx}/i/help/download_03.jpg" width="350" height="270" alt=""/></p>
 
         <p>&nbsp;</p>
         <ol start="2">
-            <li>If you choose &ldquo;Run&rdquo; the installation process will automatically run the program to install
-                the plugin on your browser.
-            </li>
-            <li>If you choose &ldquo;Save&rdquo; you will need to save the file to somewhere on your desktop.&nbsp; You
-                will then need to &ldquo;Open File&rdquo; from the Main Menu in the browser and browse to the place on
-                your hard drive where you stored the saved file.&nbsp; Opening the file will trigger the installation
-                process.
+            <li>The installation process will run automatically.  Click the "next" button when prompted to and the
+                "finish" button at the end of the installation process.
             </li>
         </ol>
+<%--
         <p align="center"><img src="${ctx}/i/help/download_04.jpg" width="350" height="270" alt=""/></p>
+--%>
 
         <p align="left">
 
         </p>
-        <ol start="4">
+        <ol start="3">
             <li>Note: You will need to have the Microsoft .NET framework installed on your computer for the plugin to
                 install properly.&nbsp; In most cases your computer will already have this software installed, however
                 if you do not have .NET framework installed on your machine, the installer will prompt you to install it
@@ -69,15 +66,14 @@
                 of our Active Games.&nbsp; If you already have a player account, you can simply log into the plugin,
                 register for a game and begin playing.
             </li>
-            <li>If you have any difficulties, you can visit our <a href="faq-download.jsp">FAQ Section</a> for
+            <li>If you have any difficulties, you can visit our <a href="help_howtoplay.jsp">Help Section</a> for
                 trouble-shooting tips or assistance.
             </li>
         </ol>
         <p class="cOrange"><strong>Install the Plugin in Firefox:</strong></p>
         <ol>
-            <li>Click on the &ldquo;Download Now&rdquo; button.&nbsp; You will be prompted to &ldquo;Open With&rdquo;
-                or &ldquo;Save to Disk&rdquo;.&nbsp; You may choose either to continue with the installation, but the
-                installation process is slightly different for the two choices.
+            <li>Click on the "Download Now" button.  You will be prompted to "Open With" or "Save to Disk".  Choose the
+                "Save to Disk" option. 
             </li>
         </ol>
         <p align="center"><img src="${ctx}/i/help/download_06.jpg" width="350" height="270" alt=""/></p>
@@ -87,24 +83,29 @@
         </p>
         <ol start="2">
             <li>
-                <p>If you choose &ldquo;Open With&rdquo;, you will need to browse on your desktop until you find and
-                    choose the &ldquo;Firefox.exe&rdquo; file on your machine.</p>
+                <p>
+                    You will be prompted to save the file somewhere on your desktop.  Use the browse button to find a
+                    suitable place to save the file on your hard drive and then click the save button.                    
+                </p>
             </li>
         </ol>
+<%--
         <p align="center"><img src="${ctx}/i/help/download_05.jpg" width="350" height="270" alt=""/></p>
+--%>
 
         <p align="left">
 
         </p>
         <ol start="3">
-            <li> If you choose &ldquo;Save to Disk&rdquo; you will need to save the file to somewhere on your desktop.&nbsp;
-                You will then need to &ldquo;Open File&rdquo; from the Main Menu in the browser and browse to the place
-                on your hard drive where you stored the saved file.&nbsp; Opening the file will trigger the installation
-                process.
+            <li>Go the Main Menu on your open Firefox browser window and click on the "Open File" option.  Browse to the
+                place in your hard drive where you saved the ball installation files, and open that file.  Opening the
+                file will trigger the installation process.
             </li>
         </ol>
+<%--
         <p align="left"><img style="padding: 5px;" src="${ctx}/i/help/download_06.jpg" width="350" height="270" alt=""/><img
             style="padding: 5px;" src="${ctx}/i/help/download_07.jpg" width="350" height="270" alt=""/></p>
+--%>
 
         <p align="left">
 
@@ -117,7 +118,7 @@
                 of our Active Games.&nbsp; If you already have a player account, you can simply log into the plugin,
                 register for a game and begin playing.
             </li>
-            <li>If you have any difficulties, you can visit our <a href="faq-download.jsp">FAQ Section</a> for
+            <li>If you have any difficulties, you can visit our <a href="help_howtoplay.jsp">Help Section</a> for
                 trouble-shooting tips or assistance.
             </li>
         </ol>

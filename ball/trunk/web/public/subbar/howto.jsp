@@ -6,13 +6,13 @@
     <a href="${ctx}/public/howtoplay.jsp">Overview</a>
 </li>
 <li>
+    <a href="${ctx}/public/help_howtoplay.jsp">Help</a>
+</li>
+<li>
     <a href="${ctx}/public/rules.jsp">Rules</a>
 </li>
 <li>
     <a href="${ctx}/public/prizes.jsp">Prizes / Payouts</a>
-</li>
-<li>
-    <a href="${ctx}/public/faq-player.jsp">FAQ</a>
 </li>
 <li>
     <a href="${ctx}/public/registration.jsp?phase=start&nextPhase=step1">Sign Up Today!</a>

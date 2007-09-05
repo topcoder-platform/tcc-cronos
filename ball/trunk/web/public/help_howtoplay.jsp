@@ -12,13 +12,15 @@
 
 <body id="page">
 <div id="container">
+    <c:set var="subbar" value="howto" scope="page"/>
+    <c:set var="subbar2" value="help" scope="page"/>
     <%@ include file="../includes/header.jsp" %>
     <div id="wrap">
         <p><img src="${ctx}/i/h/title_howtoplay.gif" alt="Help" width="122" height="16"/></p>
 
         <p>The Ball is a little like baseball &ndash; there is no specified end date or time, so the game takes just as
             long as it takes for players to pursue clues, solve puzzles, and track The Ball across the Web. <br/>
-            <strong>Playing is easy. Just follow these steps: </strong></p>
+            <strong>Just follow these steps: </strong></p>
         <p class="cOrange"><strong>For Players: </strong></p>
         <ol>
             <li><a href="help_signup.jsp">Sign up and login</a></li>

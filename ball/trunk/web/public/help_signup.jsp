@@ -13,6 +13,7 @@
 <body id="page">
 <div id="container">
     <c:set var="subbar" value="howto" scope="page"/>
+    <c:set var="subbar2" value="help" scope="page"/>
     <%@ include file="../includes/header.jsp" %>
     <div id="wrap">
         <p><img src="${ctx}/i/help/img_sign_up.gif" alt="How to Play" width="220" height="18"/></p>
@@ -23,40 +24,53 @@
             </li>
         </ol>
 
+<%--
         <p align="center"><img src="${ctx}/i/help/signup_01.jpg" width="350" height="270" alt=""/></p>
+--%>
 
         <p align="center">
-        <ol>
+        <ol start="2">
             <li>Read through our Terms &amp; Conditions and click in the &ldquo;I agree&rdquo; box if you agree to them.&nbsp;
                 Note: You will not be allowed to play in the game if you do you not agree to the Terms &amp; Conditions.
             </li>
         </ol>
+<%--
         <p align="center"><img src="${ctx}/i/help/signup_02.jpg" width="350" height="270" alt=""/></p>
+--%>
 
-        <ol start="2">
+        <ol start="3">
             <li>Fill out the form including providing a &ldquo;Display Name&rdquo; i.e. a nick-name that you will be
                 known by to other players as well as being the user id that you will use to log into the website.
             </li>
         </ol>
+<%--
         <p align="center"><img src="${ctx}/i/help/signup_03.jpg" width="350" height="270" alt=""/></p>
-        <ol start="3">
+--%>
+        <ol start="4">
             <li>When you have filled out the form, click the orange submit button on the bottom of the screen.</li>
         </ol>
 
+<%--
         <p align="center"><img src="${ctx}/i/help/signup_04.jpg" width="350" height="270" alt=""/>
+--%>
         </p>
-        <ol start="4">
+        <ol start="5">
             <li>You will be notified whether you were successful in signing up for an account and will be given further
                 instructions on how to activate your account via the link to be sent in an email from
                 do-not-reply@theball.com
             </li>
         </ol>
+<%--
         <p align="center"><img src="${ctx}/i/help/signup_05.jpg" width="350" height="270" alt=""/></p>
+--%>
 
         <p class="cOrange"><strong>Logging Into the Website or the Plugin as a Player</strong></p>
         <ol>
             <li>After you have successfully downloaded and installed the plugin in either Internet Explorer or Firefox
-                as well as having set up a player account, you are ready to log into system.
+                as well as having set up a player account, you are ready to log into system.  Note: A plugin is a
+                special program that extends the functionality of IE or Firefox. The Ball plugin creates a special
+                toolbar that fits into your main browser screen and allows you to hunt for targets, see clues and solve
+                puzzles in the game.
             </li>
             <li>There are two options to log in as a player.&nbsp; You may log into the website directly or you may log
                 into the plugin.&nbsp; Logging into either option will automatically log you into the other place.
@@ -67,7 +81,9 @@
                 the top-right of the screen says &ldquo;Login&rdquo;.
             </li>
         </ol>
+<%--
         <p align="center"><img src="${ctx}/i/help/signup_06.jpg" width="350" height="270" alt=""/></p>
+--%>
 
         <p>
         </p>
@@ -76,7 +92,7 @@
                 reminder of game play and you will be shown any Active Games (i.e. games which are currently in progress
                 and which you may join to play).&nbsp; You can see the game status, the maximum jackpot possible, the
                 name of the game and game start details.&nbsp; Note the plugin status button in the top-right of the
-                screen says &ldquo;Logout&rdquo;.s
+                screen says &ldquo;Logout&rdquo;.
             </li>
         </ol>
         <p align="center"><img src="${ctx}/i/help/signup_07.jpg" width="350" height="270" alt=""/></p>
@@ -94,17 +110,20 @@
                 button in The Ball&rsquo;s toolbar on the top-right of the screen
             </li>
         </ol>
-        <p align="center"><img src="${ctx}/i/help/signup_09.jpg" width="350" height="270" alt=""/></p>
+        <p align="center"><img src="${ctx}/i/help/signup_11.jpg" width="350" height="270" alt=""/></p>
 
+<%--
         <p>&nbsp;</p>
         <ol start="7">
             <li>Alternately you may log into the plugin directly.&nbsp; To do so simply click on the &ldquo;Login&rdquo;
                 button in The Ball&rsquo;s toolbar on the top-right of the screen
             </li>
         </ol>
-        <p align="left"><img style="padding: 5px;" src="${ctx}/i/help/signup_10.jpg" width="350"
-                             height="270" alt=""/><img style="padding: 5px;" src="${ctx}/i/help/signup_11.jpg"
-                                                       width="350" height="270" alt=""/></p>
+        <p align="left">
+            <img style="padding: 5px;" src="${ctx}/i/help/signup_10.jpg" width="350" height="270" alt=""/>
+            <img style="padding: 5px;" src="${ctx}/i/help/signup_11.jpg" width="350" height="270" alt=""/>
+        </p>
+--%>
 
         <p align="center">&nbsp;</p>
 

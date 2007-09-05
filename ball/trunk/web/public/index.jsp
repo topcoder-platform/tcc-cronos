@@ -130,9 +130,9 @@
         <div id="home-content">
             <h1><img src="${ctx}/i/h/header1.gif" alt="What is This?" width="161" height="18"/></h1>
 
-            <p><span class="play"><a href="${ctx}/public/howtoplay.jsp"><img src="${ctx}/i/play_button.gif"
-                                                                             alt="Learn How To Play" width="111"
-                                                   height="107"/></a></span>The
+            <p><span class="play"><a href="${ctx}/public/howtoplay.jsp"><img src="${ctx}/i/howtoplay.bmp"
+                                                                             alt="Learn How To Play" width="151"
+                                                   height="151"/></a></span>The
                 Ball travels from site to site, across the Web. It's like an
                 online treasure hunt - but unlike an "X" on a treasure map, The
                 Ball doesn't sit still!<br/>

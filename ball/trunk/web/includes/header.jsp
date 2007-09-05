@@ -104,4 +104,9 @@
             <c:import url="/public/subbar/${subbar}.jsp"/>
         </ul>
     </c:if>
+    <c:if test="${not empty subbar2}">
+        <ul class="subbar public">
+            <c:import url="/public/subbar/${subbar2}.jsp"/>
+        </ul>
+    </c:if>
 </div>
