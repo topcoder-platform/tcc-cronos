@@ -10,22 +10,32 @@ import com.orpheus.game.server.framework.game.completion.GameCompletionException
 import com.orpheus.game.server.util.AdminDataEJBAdapter;
 
 /**
- * <p></p>
+ * <p>A game completion strategy which causes the game to be completed if there are no pending winners left for the
+ * game.</p>
  *
  * @author TCSDEVELOPER
  * @version 1.0
  */
 public class LastWinnerApprovedGameCompletion implements GameCompletion {
 
+    /**
+     * <p>An <code>AdminDataEJBAdapter</code> providing interface to underlying service layer.</p>
+     */
     private final AdminDataEJBAdapter adminData;
 
+    /**
+     * <p>Constructs new <code>LastWinnerApprovedGameCompletion</code> instance which will be using the specified
+     * interface to underlying service layer.</p>
+     *
+     * @param adminData an <code>AdminDataEJBAdapter</code> providing interface to underlying service layer.
+     */
     public LastWinnerApprovedGameCompletion(AdminDataEJBAdapter adminData) {
         this.adminData = adminData;
     }
 
     /**
      * <p>Tests whether the specified game must be completed at the current moment based on the current state of the
-     * game.</p>
+     * game. This implementation returns <code>true</code> if there are no pending winners left for the game.</p>
      *
      * @param game a <code>Game</code> providing the details for the game.
      * @return <code>true</code> if specified games must be completed immediately; <code>false</code> otherwise.

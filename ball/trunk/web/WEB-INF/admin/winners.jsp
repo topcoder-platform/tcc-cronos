@@ -33,6 +33,7 @@
                         <tr>
                             <th><a href="#">Game ID</a></th>
                             <th><a href="#">Player</a></th>
+                            <th><a href="#">Placement</a></th>
                             <th><a href="#">Payout</a></th>
                         </tr>
                         <p:rowData id="item" rowId="row" rowType="com.orpheus.administration.persistence.PendingWinner"
@@ -44,6 +45,9 @@
                                 onmouseout="this.style.backgroundColor='${item.rowNumberOnPage mod 2 eq 0 ? '#ffffff' : '#f4f4f4'}';">
                                 <td><a href="#">${games[admin:toLong(row.gameId)].name}</a></td>
                                 <td><a href="#">${admin:getHandle(winnerProfiles[admin:toLong(row.playerId)])}</a></td>
+                                <td>
+                                    ${row.placement}
+                                </td>
                                 <td class="right">
                                     $<fmt:formatNumber value="${row.payout}" pattern="#,##0.00"/>
                                 </td>
