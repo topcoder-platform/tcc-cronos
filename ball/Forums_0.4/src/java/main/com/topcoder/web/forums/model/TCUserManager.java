@@ -31,7 +31,7 @@ public class TCUserManager extends UserManagerAdapter {
                              " from any_user " +
                             " where is_active = 1";
     private static final String USER_COUNT =
-                            "select count(*) as member_count" +
+                            "select count(*) as member_count " +
                              " from any_user " +
                             " where is_active = 1";
 
@@ -71,26 +71,20 @@ public class TCUserManager extends UserManagerAdapter {
     }
 
     public Iterator users() {
-        Log.info("!!!!!!!!!! Entering users()");
         LongList users = new LongList(500);
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
         try {
-            Log.info("!!!!!!!!!! getting connection");
             con = ConnectionManager.getConnection();
             pstmt = con.prepareStatement(ALL_USERS);
-            Log.info("!!!!!!!!!! executing query");
             rs = pstmt.executeQuery();
-            Log.info("!!!!!!!!!! executed query");
             ConnectionManager.setFetchSize(rs, 500);
             while (rs.next()) {
-                Log.info("!!!!!!!!!! fetching user: " + rs.getLong(1));
                 users.add(rs.getLong(1));
             }
         } catch (SQLException e) {
-            Log.info("!!!!!!!!!! ERROR: " + e);
             Log.error(e);
         } finally {
             Common.close(rs);
@@ -101,19 +95,15 @@ public class TCUserManager extends UserManagerAdapter {
     }
 
     public Iterator users(int startIndex, int numResults) {
-        Log.info("!!!!!!!!!! Entering users(startIndex, numResults)");
         LongList users = new LongList();
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
         try {
-            Log.info("!!!!!!!!!! getting connection");
             con = ConnectionManager.getConnection();
             pstmt = con.prepareStatement(ALL_USERS);
-            Log.info("!!!!!!!!!! executing query");
             rs = pstmt.executeQuery();
-            Log.info("!!!!!!!!!! executed query");
             ConnectionManager.setFetchSize(rs, startIndex + numResults);
             // Move to start of index
             for (int i = 0; i < startIndex; i++) {
@@ -121,16 +111,13 @@ public class TCUserManager extends UserManagerAdapter {
             }
             // Now read in desired number of results (or stop if we run out of results).
             for (int i = 0; i < numResults; i++) {
-                Log.info("!!!!!!!!!! i = " + i);
                 if (rs.next()) {
-                    Log.info("!!!!!!!!!! fetching user: " + rs.getLong(1));
                     users.add(rs.getLong(1));
                 } else {
                     break;
                 }
             }
         } catch (SQLException e) {
-            Log.info("!!!!!!!!!! ERROR: " + e);
             Log.error(e);
         } finally {
             Common.close(rs);
@@ -152,7 +139,7 @@ public class TCUserManager extends UserManagerAdapter {
         return true;
     }
 
-    public boolean isUsersSupported() {
+    public boolean isUserListSupported() {
         return true;
     }
 }
