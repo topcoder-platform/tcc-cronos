@@ -54,7 +54,7 @@ public class TCHTMLFilter implements Filter {
     private String blockEnd = "</pre>";
 
     public static String[] DEFAULT_ALLOWED_TAGS = {"annot", "a", "abbr", "acronym", "blockquote", "b", "br", "em",
-            "font", "i", "img", "li", "ol", "p", "pre", "s", "strike", "sub", "sup", "strong", "table", "td", "tr",
+            "font", "i", "li", "ol", "p", "pre", "s", "strike", "sub", "sup", "strong", "table", "td", "tr",
             "tt", "u", "ul"};
     public static String[] DEFAULT_DISALLOWED_TAGS = {"o:~", "st1:~"};
     public static String[] DEFAULT_ALLOWED_ATTRIBUTES = {"a:href", "img:src,height,width"};
