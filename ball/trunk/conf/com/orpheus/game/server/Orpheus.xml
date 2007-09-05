@@ -214,6 +214,11 @@
                 </Property>
             </Property>
         </Property>
+        <Property name="com/orpheus/game/server/framework/prize/PrizeCalculatorTypeSource:OrpheusPrizeCalculationTypeSource">
+            <Property name="type">
+                <Value>com.orpheus.game.server.util.prize.DefaultPrizeCalculatorTypeSource</Value>
+            </Property>
+        </Property>
         <Property name="com/topcoder/db/connectionfactory/DBConnectionFactory:OrpheusDB">
             <Property name="type">
                 <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
@@ -1050,6 +1055,20 @@
         </Property>
         <Property name="adminFee">
             <Value>0.2</Value>
+        </Property>
+        <Property name="prizeTypeSourceKey">
+            <Value>OrpheusPrizeCalculationTypeSource</Value>
+        </Property>
+        <Property name="gameDataEJB">
+            <Property name="name">
+                <Value>orpheus/GameData</Value>
+            </Property>
+            <Property name="context">
+                <Value>default</Value>
+            </Property>
+            <Property name="remote">
+                <Value>true</Value>
+            </Property>
         </Property>
     </Config>
 
