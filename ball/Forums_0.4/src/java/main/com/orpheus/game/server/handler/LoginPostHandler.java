@@ -70,7 +70,9 @@ public class LoginPostHandler extends AbstractGameServerHandler implements Handl
             if (session != null) {
                 //System.out.println("*** session is non-null");
                 UserProfile authenticatedUser = LoginHandler.getAuthenticatedUser(session);
-                if (authenticatedUser != null) {
+                if (authenticatedUser != null && 
+                        (authenticatedUser.getProfileType(UserConstants.ADMIN_TYPE_NAME) != null ||
+                        authenticatedUser.getProfileType(UserConstants.PLAYER_TYPE_NAME) != null)) {
                     long uid = ((Long)authenticatedUser.getIdentifier()).longValue();
                     String handle = OrpheusFunctions.getHandle(authenticatedUser);
                     String password = (String) authenticatedUser.getProperty(UserConstants.CREDENTIALS_PASSWORD);

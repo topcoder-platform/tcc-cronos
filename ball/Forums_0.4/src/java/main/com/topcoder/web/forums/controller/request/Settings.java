@@ -42,8 +42,6 @@ public class Settings extends ForumsProcessor {
             String threadMode = getRequest().getParameter("threadMode");
             String flatMode = getRequest().getParameter("flatMode");
             String showPrevNextThreads = getRequest().getParameter("showPrevNextThreads");
-            String displayMemberPhoto = getRequest().getParameter("displayMemberPhoto");
-            String displayAllMemberPhotos = getRequest().getParameter("displayAllMemberPhotos");
             String autoWatchNewTopics = getRequest().getParameter("autoWatchNewTopics");
             String autoWatchReplies = getRequest().getParameter("autoWatchReplies");
             String markWatchesRead = getRequest().getParameter("markWatchesRead");
@@ -80,8 +78,6 @@ public class Settings extends ForumsProcessor {
 
             user.setProperty("jiveThreadMode", threadMode);
             user.setProperty("jiveFlatMode", flatMode);
-            user.setProperty("jiveDisplayMemberPhoto", displayMemberPhoto);
-            user.setProperty("jiveDisplayAllMemberPhotos", displayAllMemberPhotos);
             user.setProperty("jiveShowPrevNextThreads", showPrevNextThreads);
             user.setProperty("jiveAutoWatchNewTopics", autoWatchNewTopics);
             user.setProperty("jiveAutoWatchReplies", autoWatchReplies);
