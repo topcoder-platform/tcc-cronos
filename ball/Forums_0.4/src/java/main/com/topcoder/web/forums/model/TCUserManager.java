@@ -27,13 +27,17 @@ public class TCUserManager extends UserManagerAdapter {
     protected DataSource dataSource = null;
 
     private static final String ALL_USERS =
-                            "select id " +
-                             " from any_user " +
-                            " where is_active = 1";
+        "select id" +
+        "from any_user u left join player p on u.id = p.any_user_id" +
+        "left join admin a on u.id = a.any_user_id" +
+        "where a.any_user_id is not NULL or p.any_user_id is not NULL" +
+        "and u.is_active = 1";
     private static final String USER_COUNT =
-                            "select count(*) as member_count " +
-                             " from any_user " +
-                            " where is_active = 1";
+        "select count(*) as member_count" +
+        "from any_user u left join player p on u.id = p.any_user_id" +
+        "left join admin a on u.id = a.any_user_id" +
+        "where a.any_user_id is not NULL or p.any_user_id is not NULL" +
+        "and u.is_active = 1";
 
     public TCUserManager() {
         Context context = null;

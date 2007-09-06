@@ -57,7 +57,7 @@ function toggleTabs(id) {
         document.getElementById('tabRate'+i).style.display = rateStyle;
     }
 
-    for (i=2; i<=13; i++) {
+    for (i=2; i<=11; i++) {
         document.getElementById('bodyGen'+i).style.display = genStyle;
     }
     for (i=2; i<=5; i++) {
@@ -340,30 +340,6 @@ function toggleTabs(id) {
         <input name="showPrevNextThreads" value="false" id="showPrevNextThreadsNo" type="radio"
             <%= ("false".equals(user.getProperty("jiveShowPrevNextThreads"))) ? "checked" : ""%>>
         <label for="jiveShowPrevNextThreadsNo">No</label>
-      </td>
-   </tr>
-   <tr id="bodyGen12">
-      <td class="rtThreadCell" nowrap="nowrap"><strong>Display my member photo:</strong></td>
-      <td class="rtThreadCell">
-      <input name="displayMemberPhoto" value="true" id="displayMemberPhotoYes" type="radio"
-          <%= (user.getProperty("jiveDisplayMemberPhoto") == null || "true".equals(user.getProperty("jiveDisplayMemberPhoto"))) ? "checked" : ""%>>
-      <label for="jiveDisplayMemberPhotoYes">Yes</label>
-      &#160;
-      <input name="displayMemberPhoto" value="false" id="displayMemberPhotoNo" type="radio"
-          <%= ("false".equals(user.getProperty("jiveDisplayMemberPhoto"))) ? "checked" : ""%>>
-      <label for="jiveDisplayMemberPhotoNo">No</label>
-      </td>
-   </tr>
-   <tr id="bodyGen13">
-      <td class="rtThreadCell" nowrap="nowrap"><strong>Display member photos:</strong></td>
-      <td class="rtThreadCell">
-      <input name="displayAllMemberPhotos" value="true" id="displayAllMemberPhotosYes" type="radio"
-          <%= (user.getProperty("jiveDisplayAllMemberPhotos") == null || "true".equals(user.getProperty("jiveDisplayAllMemberPhotos"))) ? "checked" : ""%>>
-      <label for="jiveDisplayAllMemberPhotosYes">Yes</label>
-      &#160;
-      <input name="displayAllMemberPhotos" value="false" id="displayAllMemberPhotosNo" type="radio"
-          <%= ("false".equals(user.getProperty("jiveDisplayAllMemberPhotos"))) ? "checked" : ""%>>
-      <label for="jiveDisplayAllMemberPhotosNo">No</label>
       </td>
    </tr>
    <tr id="bodyWatch2">
