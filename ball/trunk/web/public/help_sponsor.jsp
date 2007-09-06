@@ -12,21 +12,18 @@
 
 <body id="page">
 <div id="container">
-    <c:set var="subbar" value="howto" scope="page"/>
-    <c:set var="subbar2" value="help" scope="page"/>
+    <c:set var="subbar" value="sponsor" scope="page"/>
+    <c:set var="subbar2" value="help-sponsor" scope="page"/>
     <%@ include file="../includes/header.jsp" %>
     <div id="wrap">
-        <p><img src="${ctx}/i/h/title_howtoplay.gif" alt="Help" width="122" height="16"/></p>
+        <h1><img src="${ctx}/i/h/title_sponsoragame.gif" alt="Sponsor a Game"/></h1>
 
         <p>The Ball is a little like baseball &ndash; there is no specified end date or time, so the game takes just as
             long as it takes for players to pursue clues, solve puzzles, and track The Ball across the Web. <br/>
             <strong>Just follow these steps: </strong></p>
         <ol>
-            <li><a href="help_signup.jsp">Sign up and login</a></li>
-            <li><a href="help_download_install.jsp">Download and install</a></li>
-            <li><a href="help_play_game.jsp">Play the game </a></li>
-            <li><a href="help_unlock.jsp">Unlock the Ball </a></li>
-            <li><a href="help_hints_and_tips.jsp">Hints and Tips </a></li>
+            <li><a href="help_create_sponsor.jsp">Creating sponsor account</a></li>
+            <li><a href="help_auction_bidding.jsp">Auction bidding instructions </a></li>
         </ol>
         <p>&nbsp;    </p>
     </div>

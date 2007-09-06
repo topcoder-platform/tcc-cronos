@@ -13,6 +13,7 @@
 <body id="page">
 <div id="container">
     <c:set var="subbar" value="sponsor" scope="page"/>
+    <c:set var="subbar2" value="help-sponsor" scope="page"/>
     <%@ include file="../includes/header.jsp" %>
     <div id="wrap">
         <h1><img src="${ctx}/i/h/title_biddingfaq.gif" alt="Bidding FAQ"/></h1>

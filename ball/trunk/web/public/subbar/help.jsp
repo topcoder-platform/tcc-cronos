@@ -18,11 +18,5 @@
     <a href="${ctx}/public/help_hints_and_tips.jsp">Hints &amp; tips</a>
 </li>
 <li>
-    <a href="${ctx}/public/help_create_sponsor.jsp">Create sponsor account</a>
-</li>
-<li>
-    <a href="${ctx}/public/help_auction_bidding.jsp">Sponsor Bidding</a>
-</li>
-<li>
     <a href="${ctx}/public/faq-player.jsp">FAQ</a>
 </li>
