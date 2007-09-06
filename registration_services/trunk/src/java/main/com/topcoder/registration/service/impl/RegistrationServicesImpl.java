@@ -27,6 +27,7 @@ import com.topcoder.management.team.PositionFilterFactory;
 import com.topcoder.management.team.Team;
 import com.topcoder.management.team.TeamHeader;
 import com.topcoder.management.team.TeamManager;
+import com.topcoder.management.team.TeamPersistenceException;
 import com.topcoder.management.team.TeamPosition;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
@@ -50,7 +51,9 @@ import com.topcoder.registration.team.service.OperationResult;
 import com.topcoder.registration.team.service.TeamServices;
 import com.topcoder.registration.team.service.UnknownEntityException;
 import com.topcoder.search.builder.SearchBuilderException;
+import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.search.builder.filter.OrFilter;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.config.UnknownNamespaceException;
@@ -1535,13 +1538,16 @@ public class RegistrationServicesImpl implements RegistrationServices {
         Resource[] resources = null;
         try {
             // gets the resources in given project
+            Filter projectIdFilter = ResourceFilterBuilder.createProjectIdFilter(projectId);
+            Filter rolesFilter=ResourceFilterBuilder.createResourceRoleIdFilter(availableRoles[0].getId());
+            for (int i = 1; i < availableRoles.length; i++) {
+            	Filter roleIdFilter = ResourceFilterBuilder.createResourceRoleIdFilter(availableRoles[i].getId());
+            	rolesFilter=new OrFilter(rolesFilter,roleIdFilter);
+			}
+            Filter resourcesFilter = new AndFilter(projectIdFilter,rolesFilter);
             logBefore("Starts calling ProjectServices#getFullProjectData method.");
-            resourceManager.searchResources(ResourceFilterBuilder.createProjectIdFilter(projectId));
-            //resources = projectServices.getFullProjectData(projectId).getResources();
-            logAfter("Finished calling ProjectServices#getFullProjectData method.");
-//        } catch (ProjectServicesException ex) {
-//            log(Level.ERROR, "ProjectServicesException occurred when retrieving full project data.");
-//            throw ex;
+			resources = resourceManager.searchResources(resourcesFilter);
+			logAfter("Finished calling ProjectServices#getFullProjectData method.");
         } catch (ResourcePersistenceException e) {
             log(Level.ERROR, "ProjectServicesException occurred when retrieving resources of project:" + projectId);
             throw new RegistrationServiceException("ResourcePersistenceException occurred when retrieving resources of project: " + projectId,e);
