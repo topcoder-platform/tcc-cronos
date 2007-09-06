@@ -102,7 +102,7 @@ public class AdminWinnerDetailsHandler extends AbstractGameServerHandler impleme
             PendingWinner[] pendingWinners = adminDataEJBAdapter.getPendingWinners();
             PendingWinner pendingWinner = null;
             for (int i = 0; (pendingWinner == null) && (i < pendingWinners.length); i++) {
-                if (pendingWinners[i].getPlayerId() == profileId) {
+                if ((pendingWinners[i].getPlayerId() == profileId) && (pendingWinners[i].getGameId() == gameId)) {
                     pendingWinner = pendingWinners[i];
                 }
             }
