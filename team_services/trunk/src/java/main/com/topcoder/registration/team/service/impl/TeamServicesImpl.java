@@ -5,8 +5,10 @@ package com.topcoder.registration.team.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import com.cronos.onlinereview.external.ExternalUser;
 import com.cronos.onlinereview.external.RetrievalException;
@@ -1430,24 +1432,11 @@ public class TeamServicesImpl implements TeamServices {
             logDebug("Finished calling TeamManager#findPositions method.");
 
             // if no positions found, add this resource to Free Agents list
-            if (positions.length == 0) {
+            if (positions.length == 0 && resources[i].getResourceRole().getId()==freeAgentRoleId) {
                 freeAgents.add(resources[i]);
             }
         }
         
-        // FIX BUG TCRT-8524
-        // remove team captains
-        TeamHeader[] teams = fullProjectData.getTeams();
-        for (int i = 0; i < teams.length; i++) {
-            TeamHeader team = teams[i];
-            for (Iterator iter = freeAgents.iterator(); iter.hasNext();) {
-                Resource resource = (Resource) iter.next();
-                if (resource.getId() == team.getCaptainResourceId()) {
-                    iter.remove();
-                }
-            }
-        }
-
         log(Level.INFO, "Exits TeamServicesImpl#findFreeAgents method.");
         return (Resource[]) freeAgents.toArray(new Resource[freeAgents.size()]);
     }
@@ -3320,7 +3309,7 @@ public class TeamServicesImpl implements TeamServices {
      *             if any error occurred when retrieving the full team
      */
     public OperationResult forceFinalization(long projectId, long userId) {
-        log(Level.INFO, "Enters TeamServicesImpl#forceFinalization method.");
+        log(Level.INFO, "Enters TeamServicesImpl#forceFinalization method. projectId: " + projectId);
         try {
             Util.checkIDNotNegative(projectId, "projectId");
             Util.checkIDNotNegative(userId, "userId");
@@ -3336,87 +3325,134 @@ public class TeamServicesImpl implements TeamServices {
         OperationResultImpl operationResult = new OperationResultImpl();
 
         // gets all free agents
-        Resource[] freeAgents = findFreeAgents(projectId);
+//        Resource[] freeAgents = findFreeAgents(projectId);
 
-        // gets all teams that are not finalized in the project
-        logDebug("Starts calling TeamManager#findTeams method.");
-        TeamHeader[] teams = teamManager.findTeams(TeamFilterFactory.createFinalizedFilter(false));
+        // gets all teams in the project
+        logDebug("Starts calling TeamManager#findTeams method.");        
+        TeamHeader[] teams = teamManager.findTeams(projectId);
         logDebug("Finished calling TeamManager#findTeams method.");
 
         for (int i = 0; i < teams.length; i++) {
-            // gets complete team info
-            Team team = teamManager.getTeam(teams[i].getTeamId());
-            // check all filled positions have memberResourceId in freeAgents
-            if (!checkFilledPositionsResourceFree(team, freeAgents, operationResult)) {
-                log(Level.INFO, "Exits TeamServicesImpl#forceFinalization method.");
-                return operationResult;
+            if (!teams[i].getFinalized()) {
+        	// gets complete team info
+	            Team team = teamManager.getTeam(teams[i].getTeamId());
+	            // checks team captain valid
+	            if (!checkTeamCaptainFree(team, operationResult)) {
+	                log(Level.INFO, "Exits TeamServicesImpl#forceFinalization method.");
+	                return operationResult;
+	            }
+	            // removes all unfilled positions, gets the sum of their payments
+	            int paymentsInc = 0;
+	            Set<Long> removedPositionsIds = new HashSet<Long>();
+	            TeamPosition[] positions = team.getPositions();
+	            int members = positions.length;
+	            int unassignedPayment = 100;
+	            
+	            for (int j = 0; j < positions.length; j++) {
+	            	unassignedPayment -= positions[j].getPaymentPercentage();
+	                if (!positions[j].getFilled()) {
+	                	if (positions[j].getPublished()) {
+	                		positions[j].setPublished(false);
+	                		try {
+	                            logDebug("Starts calling TeamManager#updatePosition method to unpublish it.");
+	                			teamManager.updatePosition(positions[j], userId);
+	                            logDebug("Finished calling TeamManager#updatePosition method to unpublish it.");
+							} catch (InvalidPositionException ex) {
+				                return populateFailedResult(operationResult, ex);
+							} catch (com.topcoder.management.team.UnknownEntityException ex) {
+				                return populateFailedResult(operationResult, ex);
+							} catch (TeamPersistenceException ex) {
+				                return populateFailedResult(operationResult, ex);
+							}
+	                	}
+	                    members--;
+	                    paymentsInc += positions[j].getPaymentPercentage();
+	                    try {
+	                        logDebug("Starts calling TeamManager#reomvePosition method.");
+	                        teamManager.removePosition(positions[j].getPositionId(), userId);
+	                        logDebug("Finished calling TeamManager#removePosition method.");
+	                        removedPositionsIds.add(positions[j].getPositionId());
+	                    } catch (com.topcoder.management.team.UnknownEntityException ex) {
+			                return populateFailedResult(operationResult, ex);
+	                    } catch (PositionRemovalException ex) {
+			                return populateFailedResult(operationResult, ex);
+	                    }
+	                }
+	            }
+	            // substract the captain's payment percentage to the unasinged payment persentage acc.
+	            unassignedPayment -= team.getTeamHeader().getCaptainPaymentPercentage();
+	            // distributes the payments to existing members and captain
+	            int inc = (paymentsInc + unassignedPayment) / (1 + members);
+	            int remainder = (paymentsInc + unassignedPayment) % (1 + members);
+	            positions = team.getPositions();
+	            for (int j = 0; j < positions.length; j++) {
+	            	if (!removedPositionsIds.contains(positions[j].getPositionId())) {
+		                positions[j].setPaymentPercentage(positions[j].getPaymentPercentage() + inc);
+		                try {
+		                    logDebug("Starts calling TeamManager#updatePosition method.");
+		                    teamManager.updatePosition(positions[j], userId);
+		                    logDebug("Finished calling TeamManager#updatePosition method.");
+		                } catch (InvalidPositionException ex) {
+			                return populateFailedResult(operationResult, ex);
+		                } catch (com.topcoder.management.team.UnknownEntityException ex) {
+			                return populateFailedResult(operationResult, ex);
+		                } catch (TeamPersistenceException ex) {
+			                return populateFailedResult(operationResult, ex);
+		                }
+	            	}
+	            }
+	            // add the payment inc to captain
+	            team.getTeamHeader().setCaptainPaymentPercentage(
+	                team.getTeamHeader().getCaptainPaymentPercentage() + inc + remainder);
+	            // sets team to be finalized
+	            team.getTeamHeader().setFinalized(true);
+	            try {
+					teamManager.updateTeam(team.getTeamHeader(), userId);
+		            // gets resource of captain
+		            logDebug("Starts calling ResourceManager#getResource method.");
+		            Resource captain = resourceManager.getResource(team.getTeamHeader()
+		                .getCaptainResourceId());
+		            logDebug("Finished calling ResourceManager#getResoruce method.");
+
+		            // sets its resource role to submitter
+		            captain.setResourceRole(new ResourceRole(submitterRoleId));
+
+		            ExternalUser operator = getOperator(userId, operationResult);
+		            if (operator == null) {
+		                operationResult.setSuccessful(false);
+		                operationResult.setErrors(new String[] {"Operator not found"});
+		            	log(Level.INFO, "Exits TeamServicesImpl#forceFinalization method.");
+		                return operationResult;
+		            }
+		            
+		            // updates the captain resource
+		            logDebug("Starts calling ResourceManager#updateResource method.");
+		            resourceManager.updateResource(captain, operator.getHandle());
+		            logDebug("Finished calling ResourceManager#updateResource method.");
+
+				} catch (InvalidTeamException ex) {
+	                return populateFailedResult(operationResult, ex);
+				} catch (com.topcoder.management.team.UnknownEntityException ex) {
+	                return populateFailedResult(operationResult, ex);
+				} catch (TeamPersistenceException ex) {
+	                return populateFailedResult(operationResult, ex);
+				} catch (ResourcePersistenceException ex) {
+	                return populateFailedResult(operationResult, ex);
+				}
             }
-            // checks team captain valid
-            if (!checkTeamCaptainFree(team, operationResult)) {
-                log(Level.INFO, "Exits TeamServicesImpl#forceFinalization method.");
-                return operationResult;
-            }
-            // removes all unfilled positions, gets the sum of their payments
-            int paymentsInc = 0;
-            TeamPosition[] positions = team.getPositions();
-            int members = positions.length;
-            for (int j = 0; j < positions.length; j++) {
-                if (!positions[j].getFilled()) {
-                    members--;
-                    paymentsInc += positions[j].getPaymentPercentage();
-                    try {
-                        logDebug("Starts calling TeamManager#reomvePosition method.");
-                        teamManager.removePosition(positions[j].getPositionId(), userId);
-                        logDebug("Finished calling TeamManager#removePosition method.");
-                    } catch (com.topcoder.management.team.UnknownEntityException ex) {
-                        operationResult.setSuccessful(false);
-                        operationResult.setErrors(new String[] {ex.getMessage()});
-                        log(Level.INFO, "Exits TeamServicesImpl#forceFinalization method.");
-                        return operationResult;
-                    } catch (PositionRemovalException ex) {
-                        operationResult.setSuccessful(false);
-                        operationResult.setErrors(new String[] {ex.getMessage()});
-                        log(Level.INFO, "Exits TeamServicesImpl#forceFinalization method.");
-                        return operationResult;
-                    }
-                }
-            }
-            // distributes the payments to existing members and captain
-            int inc = paymentsInc / (1 + members);
-            positions = team.getPositions();
-            for (int j = 0; j < positions.length; j++) {
-                positions[j].setPaymentPercentage(positions[j].getPaymentPercentage() + inc);
-                try {
-                    logDebug("Starts calling TeamManager#updatePosition method.");
-                    teamManager.updatePosition(positions[j], userId);
-                    logDebug("Finished calling TeamManager#updatePosition method.");
-                } catch (InvalidPositionException ex) {
-                    operationResult.setSuccessful(false);
-                    operationResult.setErrors(new String[] {ex.getMessage()});
-                    log(Level.INFO, "Exits TeamServicesImpl#forceFinalization method.");
-                    return operationResult;
-                } catch (com.topcoder.management.team.UnknownEntityException ex) {
-                    operationResult.setSuccessful(false);
-                    operationResult.setErrors(new String[] {ex.getMessage()});
-                    log(Level.INFO, "Exits TeamServicesImpl#forceFinalization method.");
-                    return operationResult;
-                } catch (TeamPersistenceException ex) {
-                    operationResult.setSuccessful(false);
-                    operationResult.setErrors(new String[] {ex.getMessage()});
-                    log(Level.INFO, "Exits TeamServicesImpl#forceFinalization method.");
-                    return operationResult;
-                }
-            }
-            // add the payment inc to captain
-            team.getTeamHeader().setCaptainPaymentPercentage(
-                team.getTeamHeader().getCaptainPaymentPercentage() + inc);
-            // sets team to be finalized
-            team.getTeamHeader().setFinalized(true);
         }
 
         log(Level.INFO, "Exits TeamServicesImpl#forceFinalization method.");
         return operationResult;
     }
+
+	private OperationResult populateFailedResult(OperationResultImpl operationResult, Exception ex) {
+		operationResult.setSuccessful(false);
+		operationResult.setErrors(new String[] {ex.getMessage()});
+		logger.log(Level.DEBUG,ex);
+		log(Level.INFO, "Exits TeamServicesImpl#forceFinalization method.");
+		return operationResult;
+	}
 
     /**
      * <p>
