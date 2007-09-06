@@ -772,10 +772,10 @@
                 <Value>223k</Value>
             </Property>
             <Property name="datePosted">
-                <Value>05/04/2007</Value>
+                <Value>09/06/2007</Value>
             </Property>
             <Property name="version">
-                <Value>1.0.34</Value>
+                <Value>1.0.45</Value>
             </Property>
             <Property name="language">
                 <Value>English</Value>
@@ -789,10 +789,10 @@
                 <Value>2084k</Value>
             </Property>
             <Property name="datePosted">
-                <Value>04/16/2007</Value>
+                <Value>09/06/2007</Value>
             </Property>
             <Property name="version">
-                <Value>1.0.78</Value>
+                <Value>1.0.57</Value>
             </Property>
             <Property name="language">
                 <Value>English</Value>
@@ -1407,7 +1407,7 @@
                 <Value>do-not-reply@theball.com</Value>
             </Property>
             <Property name="subject">
-                <Value>Updated Target for the Ball (Server T2)</Value>
+                <Value>Updated Target for the Ball (Production Server)</Value>
             </Property>
             <Property name="recipients">
                 <Value>sergeiistomin@mail.ru</Value>

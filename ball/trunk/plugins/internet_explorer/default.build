@@ -9,7 +9,7 @@
     <property name="namespace" value="Orpheus\Plugin\InternetExplorer" />
     <property name="namespace_file" value="Orpheus.Plugin" />
 
-    <property name="component_version" value="1.0.55" />
+    <property name="component_version" value="1.0.57" />
 
     <property name="copyright" value="Copyright (c) 2006, TopCoder, Inc. All rights reserved." />
 

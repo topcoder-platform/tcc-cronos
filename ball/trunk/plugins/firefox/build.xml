@@ -9,18 +9,18 @@
     <property name="package" value="com.orpheus.plugin.firefox" />
     <property name="packagedir" value="com/orpheus/plugin/firefox" />
     <property name="distfilename" value="client_logic_for_firefox" />
-	<property name="distfilename_xpi" value="the_ball_game_plugin.xpi" />
-    <property name="component_version" value="1.0.43" />
+    <property name="distfilename_xpi" value="the_ball_game_plugin.xpi" />
+    <property name="component_version" value="1.0.45" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src" />
-	<property name="srcdir_extension" value="${srcdir}/extension" />
-	<property name="srcdir_chrome" value="${srcdir_extension}/chrome" />
-	<property name="srcdir_components" value="${srcdir_extension}/components" />
-	<property name="srcdir_components_lib" value="${srcdir_components}/lib" />
-	<property name="srcdir_defaults" value="${srcdir_extension}/defaults" />
-	
+    <property name="srcdir_extension" value="${srcdir}/extension"/>
+    <property name="srcdir_chrome" value="${srcdir_extension}/chrome"/>
+    <property name="srcdir_components" value="${srcdir_extension}/components"/>
+    <property name="srcdir_components_lib" value="${srcdir_components}/lib"/>
+    <property name="srcdir_defaults" value="${srcdir_extension}/defaults"/>
+
     <property name="tcs_libdir" value="lib/tcs" />
     <property name="ext_libdir" value="lib" />
     <property name="jar_tcs_libdir" value="lib/tcs" />
@@ -46,11 +46,11 @@
     <property name="build_javadocsdir" value="${builddir}/${javadocsdir}" />
     <property name="build_webdir" value="${builddir}/${webdir}" />
     <property name="build_lib" value="${builddir}/lib" />
-	<property name="build_xpi" value="${builddir}/xpi" />
+        <property name="build_xpi" value="${builddir}/xpi" />
     <property name="build_tcsdistdir" value="${build_distdir}/${distfilename}-${component_version}" />
-	
-	<!-- deployment directory -->
-	<property name="deploydir" value="../../web/download" />
+        
+        <!-- deployment directory -->
+        <property name="deploydir" value="../../web/download" />
 
     <!-- EXECUTION TAGS -->
     <property name="debug" value="off" />
@@ -63,7 +63,7 @@
     <property name="dist_docs" value="${build_tcsdistdir}/${docsdir}" />
     <property name="dist_javadocs" value="${build_tcsdistdir}/${javadocsdir}" />
     <property name="dist_testfiles" value="${build_tcsdistdir}/${testfiles}" />
-	
+        
 
     <!-- NAME FOR .JAR AND .WAR FILES -->
     <property name="component.jar" value="${dist_lib}/${component_path}/${distfilename}.jar"/>
@@ -85,8 +85,8 @@
     <property name="configmanager.jar.name" value="configuration_manager.jar"/>
     <property name="configmanager.path" value="configuration_manager/${configmanager.version}"/>
     <property name="configmanager.jar" value="${tcs_libdir}/${configmanager.path}/${configmanager.jar.name}"/>
-	
-	<property name="object_factory.version" value="2.0.1"/>
+        
+        <property name="object_factory.version" value="2.0.1"/>
     <property name="object_factory.jar.name" value="object_factory.jar"/>
     <property name="object_factory.path" value="object_factory/${object_factory.version}"/>
     <property name="object_factory.jar" value="${tcs_libdir}/${object_factory.path}/${object_factory.jar.name}"/>
@@ -115,23 +115,24 @@
     <property name="typesafe_enum.jar.name" value="typesafe_enum.jar"/>
     <property name="typesafe_enum.path" value="typesafe_enum/${typesafe_enum.version}"/>
     <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.jar.name}"/>
-	
-	<property name="base64_codec.version" value="1.0"/>
-	    <property name="base64_codec.jar.name" value="base64_codec.jar"/>
-	    <property name="base64_codec.path" value="base64_codec/${base64_codec.version}"/>
-	    <property name="base64_codec.jar" value="${tcs_libdir}/${base64_codec.path}/${base64_codec.jar.name}"/>
-	
-	<property name="lightweight_xml_parser.version" value="1.1"/>
-	    <property name="lightweight_xml_parser.jar.name" value="lightweight_xml_parser.jar"/>
-	    <property name="lightweight_xml_parser.path" value="lightweight_xml_parser/${lightweight_xml_parser.version}"/>
-	    <property name="lightweight_xml_parser.jar" value="${tcs_libdir}/${lightweight_xml_parser.path}/${lightweight_xml_parser.jar.name}"/>
-	
-	<property name="string_class.version" value="1.0"/>
+
+    <property name="base64_codec.version" value="1.0"/>
+    <property name="base64_codec.jar.name" value="base64_codec.jar"/>
+    <property name="base64_codec.path" value="base64_codec/${base64_codec.version}"/>
+    <property name="base64_codec.jar" value="${tcs_libdir}/${base64_codec.path}/${base64_codec.jar.name}"/>
+
+    <property name="lightweight_xml_parser.version" value="1.1"/>
+    <property name="lightweight_xml_parser.jar.name" value="lightweight_xml_parser.jar"/>
+    <property name="lightweight_xml_parser.path" value="lightweight_xml_parser/${lightweight_xml_parser.version}"/>
+    <property name="lightweight_xml_parser.jar"
+              value="${tcs_libdir}/${lightweight_xml_parser.path}/${lightweight_xml_parser.jar.name}"/>
+
+    <property name="string_class.version" value="1.0"/>
     <property name="string_class.jar.name" value="string_class.jar"/>
     <property name="string_class.path" value="string_class/${string_class.version}"/>
     <property name="string_class.jar" value="${tcs_libdir}/${string_class.path}/${string_class.jar.name}"/>
-	
-	<!-- <property name="client_logic_for_firefox.version" value="1.0"/>
+        
+        <!-- <property name="client_logic_for_firefox.version" value="1.0"/>
     <property name="client_logic_for_firefox.jar.name" value="client_logic_for_firefox.jar"/>
     <property name="client_logic_for_firefox.path" value="client_logic_for_firefox/${client_logic_for_firefox.version}"/>
     <property name="client_logic_for_firefox.jar" value="${tcs_libdir}/${client_logic_for_firefox.path}/${client_logic_for_firefox.jar.name}"/>
@@ -149,14 +150,14 @@
         <pathelement location="${configmanager.jar}" />
         <pathelement location="${bloom_filter.jar}" />
         <pathelement location="${hashing_utility.jar}" />
-		<pathelement location="${base_exception.jar}" />
-		<pathelement location="${rss_generator.jar}" />
-		<pathelement location="${typesafe_enum.jar}" />
-    	<pathelement location="${base64_codec.jar}" />
-		<pathelement location="${plugin.jar}" />
+                <pathelement location="${base_exception.jar}" />
+                <pathelement location="${rss_generator.jar}" />
+                <pathelement location="${typesafe_enum.jar}" />
+        <pathelement location="${base64_codec.jar}" />
+                <pathelement location="${plugin.jar}" />
         <pathelement location="${configdir}" />
         <pathelement location="${testfiles}" />
-    	<pathelement location="${string_class.jar}"/>
+        <pathelement location="${string_class.jar}"/>
     </path>
 
     <path id="test.build.classpath">
@@ -199,75 +200,75 @@
             stylesheetfile="${javadocsdir}/stylesheet.css"
             verbose="${verbose}">
             <tag name="copyright" description="Copyright:" scope="types"/>
-		</javadoc>
+                </javadoc>
     </target>
 
     <target name="clean">
         <delete dir="${builddir}"/>
-    	<delete dir="${build_xpi}"/>
+        <delete dir="${build_xpi}"/>
     </target>
 
     <target name="deploy" depends="xpi">
-    	<copy todir="${deploydir}">
-    		<fileset file="${build_tcsdistdir}/${distfilename_xpi}"/>
-    	</copy>
+        <copy todir="${deploydir}">
+                <fileset file="${build_tcsdistdir}/${distfilename_xpi}"/>
+        </copy>
     </target>
 
     <target name="main" depends="xpi">
     </target>
-	
-	<!-- tasks for the plugin -->
-	<target name="prepare_xpi" depends="dist">
-		<mkdir dir="${build_xpi}"/>
-		
-		<copy todir="${build_xpi}/chrome/orpheus">
-			<fileset dir="${srcdir_chrome}" includes="**"/>
-		</copy>
-		
-		<copy todir="${build_xpi}/components">
-			<fileset dir="${srcdir_components}" includes="*.js"/>
-			<fileset dir="${srcdir_components}" includes="*.xpt"/>
-		</copy>
-		
-		<copy todir="${build_xpi}/defaults/preferences">
-					<fileset dir="${configdir}" includes="*.js"/>
-					<!-- <fileset file="${configdir}/config.xml"/> -->
-		</copy>
-		
-		<copy todir="${build_xpi}/components/lib">
-			<fileset file="${bloom_filter.jar}"/>
-			<fileset file="${typesafe_enum.jar}"/>
-			<fileset file="${rss_generator.jar}"/>
-			<fileset file="${component.jar}"/>
-			<fileset file="${base_exception.jar}"/>
-			<fileset file="${hashing_utility.jar}"/>
-			<fileset file="${configmanager.jar}"/>
-			<fileset file="${object_factory.jar}"/>
-			<fileset file="${lightweight_xml_parser.jar}"/>
-			<fileset file="${base64_codec.jar}"/>
-			<fileset file="${string_class.jar}"/>
-		</copy>
-		
-		<copy file="${srcdir_extension}/install.rdf" tofile="${build_xpi}/install.rdf">
-			<filterset>
-		            <filter token="version" value="${component_version}"/>
-		        </filterset>
-		</copy> 
-		<copy file="${srcdir_extension}/chrome.manifest" tofile="${build_xpi}/chrome.manifest"/> 
-		
-		<!-- pack configuration -->
-		<jar jarfile="${build_xpi}/components/lib/config.jar" basedir="${configdir}" excludes="*.js"/>
-		<!-- <copy file="${srcdir_extension}/chrome.manifest" tofile="${build_xpi}/chrome.manifest" /> -->
-		
-		<touch>
-			<fileset dir="${build_xpi}" />
-		</touch>
-	</target>
-	
-	
-	<target name="xpi" depends="prepare_xpi">
-		<mkdir dir="${build_tcsdistdir}"/>
-		<zip zipfile="${build_tcsdistdir}/${distfilename_xpi}" basedir="${build_xpi}" includes="**" />
-	</target>
+        
+        <!-- tasks for the plugin -->
+        <target name="prepare_xpi" depends="dist">
+                <mkdir dir="${build_xpi}"/>
+                
+                <copy todir="${build_xpi}/chrome/orpheus">
+                        <fileset dir="${srcdir_chrome}" includes="**"/>
+                </copy>
+                
+                <copy todir="${build_xpi}/components">
+                        <fileset dir="${srcdir_components}" includes="*.js"/>
+                        <fileset dir="${srcdir_components}" includes="*.xpt"/>
+                </copy>
+                
+                <copy todir="${build_xpi}/defaults/preferences">
+                                        <fileset dir="${configdir}" includes="*.js"/>
+                                        <!-- <fileset file="${configdir}/config.xml"/> -->
+                </copy>
+                
+                <copy todir="${build_xpi}/components/lib">
+                        <fileset file="${bloom_filter.jar}"/>
+                        <fileset file="${typesafe_enum.jar}"/>
+                        <fileset file="${rss_generator.jar}"/>
+                        <fileset file="${component.jar}"/>
+                        <fileset file="${base_exception.jar}"/>
+                        <fileset file="${hashing_utility.jar}"/>
+                        <fileset file="${configmanager.jar}"/>
+                        <fileset file="${object_factory.jar}"/>
+                        <fileset file="${lightweight_xml_parser.jar}"/>
+                        <fileset file="${base64_codec.jar}"/>
+                        <fileset file="${string_class.jar}"/>
+                </copy>
+                
+                <copy file="${srcdir_extension}/install.rdf" tofile="${build_xpi}/install.rdf">
+                        <filterset>
+                            <filter token="version" value="${component_version}"/>
+                        </filterset>
+                </copy> 
+                <copy file="${srcdir_extension}/chrome.manifest" tofile="${build_xpi}/chrome.manifest"/> 
+                
+                <!-- pack configuration -->
+                <jar jarfile="${build_xpi}/components/lib/config.jar" basedir="${configdir}" excludes="*.js"/>
+                <!-- <copy file="${srcdir_extension}/chrome.manifest" tofile="${build_xpi}/chrome.manifest" /> -->
+                
+                <touch>
+                        <fileset dir="${build_xpi}" />
+                </touch>
+        </target>
+        
+        
+        <target name="xpi" depends="prepare_xpi">
+                <mkdir dir="${build_tcsdistdir}"/>
+                <zip zipfile="${build_tcsdistdir}/${distfilename_xpi}" basedir="${build_xpi}" includes="**" />
+        </target>
 
 </project>
