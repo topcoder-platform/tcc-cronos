@@ -352,6 +352,9 @@ function toggleTabs(id) {
         	String timezone = ForumConstants.DEFAULT_TIMEZONE;
 	        try {
 	            timezone = user.getProperty("timezone");
+	            if (timezone == null) {
+	            	timezone = ForumConstants.DEFAULT_TIMEZONE;
+	            }
 	        } catch (Exception ignored) {}
 	        for (int i=0; i<timezones.size(); i++) {
 	            if (timezones.get(i).equals(timezone)) { %>
