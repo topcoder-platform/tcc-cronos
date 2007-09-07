@@ -347,18 +347,20 @@ function toggleTabs(id) {
    <tr id="bodyGen12">
       <td class="rtThreadCell" nowrap="nowrap"><strong>Time zone:</strong></td>
       <td class="rtThreadCell">
-        ArrayList<String> timezones = ForumsUtil.getTimezones();
-        String timezone = ForumConstants.DEFAULT_TIMEZONE;
-        try {
-            timezone = user.getProperty("timezone");
-        } catch (Exception ignored) {}
-        for (int i=0; i<timezones.length; i++) {
-            if (timezones[i].equals(timezone)) { %>
-              <option value="<%=timezones[i]%>" selected><%=timezones[i]%></option>
-        <%  } else { %>
-              <option value="<%=timezones[i]%>"><%=timezones[i]%></option>
-        <%  }
-        } %>
+      	<select size="1" name="timezone">
+        <%	ArrayList<String> timezones = ForumsUtil.getTimezones();
+        	String timezone = ForumConstants.DEFAULT_TIMEZONE;
+	        try {
+	            timezone = user.getProperty("timezone");
+	        } catch (Exception ignored) {}
+	        for (int i=0; i<timezones.size(); i++) {
+	            if (timezones.get(i).equals(timezone)) { %>
+	              <option value="<%=timezones.get(i)%>" selected><%=timezones.get(i)%></option>
+	        <%  } else { %>
+	              <option value="<%=timezones.get(i)%>"><%=timezones.get(i)%></option>
+	        <%  }
+        	} %>
+       	</select>
       </td>
    </tr>
    <tr id="bodyWatch2">

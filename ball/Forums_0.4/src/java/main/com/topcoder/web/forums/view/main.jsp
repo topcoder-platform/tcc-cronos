@@ -25,7 +25,7 @@
 <tc-webtag:useBean id="unreadCategories" name="unreadCategories" type="java.lang.String" toScope="request"/>
 
 <% 	User user = (User) request.getAttribute("user");
-    String timezone = request.getAttribute("timezone");
+    String timezone = (String) request.getAttribute("timezone");
     ResultFilter resultFilter = (ResultFilter) request.getAttribute("resultFilter");
     ReadTracker readTracker = forumFactory.getReadTracker();
     WatchManager watchManager = forumFactory.getWatchManager();
