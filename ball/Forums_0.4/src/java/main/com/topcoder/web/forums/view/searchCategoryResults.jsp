@@ -14,7 +14,8 @@
 <%@ taglib uri="tc-webtags.tld" prefix="tc-webtag" %>
 <jsp:useBean id="sessionInfo" class="com.topcoder.web.common.SessionInfo" scope="request" />
 
-<%  User user = (User) request.getAttribute("user");
+<%  String timezone = (String) request.getAttribute("timezone");
+	User user = (User) request.getAttribute("user");
 	Paginator paginator = (Paginator)request.getAttribute("categoriesPaginator");
     Query query = (Query)request.getAttribute("query");
     String searchScope = (String)request.getAttribute("searchScope"); 
@@ -107,7 +108,7 @@
             <% if (category.getLatestMessage() != null) { %>
 	            <tc-webtag:useBean id="message" name="category" type="com.jivesoftware.forum.ForumMessage" toScope="page" property="latestMessage"/>
 	            <td class="rtThreadCell" style="width: 220px;"><b>
-	                <tc-webtag:format object="${message.modificationDate}" format="EEE, MMM d yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/></b>
+	                <tc-webtag:format object="${message.modificationDate}" format="EEE, MMM d yyyy 'at' h:mm a z" timeZone="${timezone}"/></b>
 	            </td>
 	            <% if (message.getUser() != null) { %>
 		            <td class="rtThreadCell" style="width: 100px;">

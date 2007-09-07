@@ -31,7 +31,8 @@
 <tc-webtag:useBean id="paginator" name="paginator" type="com.jivesoftware.forum.action.util.Paginator" toScope="request"/>
 <tc-webtag:useBean id="unreadCategories" name="unreadCategories" type="java.lang.String" toScope="request"/>
 
-<% WatchManager watchManager = forumFactory.getWatchManager();
+<% 	String timezone = (String) request.getAttribute("timezone");
+	WatchManager watchManager = forumFactory.getWatchManager();
     ReadTracker readTracker = forumFactory.getReadTracker();
     User user = (User) request.getAttribute("user");
     String sortField = (String) request.getAttribute("sortField");
@@ -193,7 +194,7 @@
             <td class="rtThreadCell">&nbsp;</td>
             <td class="rtThreadCell">
                 <b><A href="?module=Announcement&<%=ForumConstants.ANNOUNCEMENT_ID%>=<%=announcement.getID()%>" class="rtLinkNew">
-                    <tc-webtag:format object="${announcement.startDate}" format="EEE, MMM d yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/></A></b>
+                    <tc-webtag:format object="${announcement.startDate}" format="EEE, MMM d yyyy 'at' h:mm a z" timeZone="${timezone}"/></A></b>
             </td>
             <td class="rtThreadCell"><tc-webtag:handle id="<%=announcement.getUser().getID()%>"/></td>
         </tr>
@@ -256,7 +257,7 @@
             <td class="rtThreadCell" align="right"><%=ViewCountManager.getInstance().getThreadCount(thread)%></td>
             <td class="rtThreadCell">
                 <b><A href="?module=Message&<%=ForumConstants.MESSAGE_ID%>=<%=lastPost.getID()%>" class="rtLinkNew">
-                    <tc-webtag:format object="${thread.modificationDate}" format="MMM d, yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/></A></b>
+                    <tc-webtag:format object="${thread.modificationDate}" format="MMM d, yyyy 'at' h:mm a z" timeZone="${timezone}"/></A></b>
             </td>
             <% if (lastPost.getUser() != null) { %>
             <td class="rtThreadCell"><tc-webtag:handle id="<%=lastPost.getUser().getID()%>"/></td>

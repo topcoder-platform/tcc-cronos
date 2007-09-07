@@ -32,7 +32,9 @@
         tempMessage = message;
     }
     ForumThread thread = (ForumThread)request.getAttribute("thread");
-    HashMap errors = (HashMap)request.getAttribute(BaseProcessor.ERRORS_KEY); %>
+    HashMap errors = (HashMap)request.getAttribute(BaseProcessor.ERRORS_KEY); 
+    
+    String timezone = (String) request.getAttribute("timezone"); %>
 
 <script type="text/javascript">
 function noenter(e)
@@ -233,7 +235,7 @@ function AllowTabCharacter() {
 <%  if (postMode.equals("Edit") || postMode.equals("Reply")) { %>
         <span class="bodySubtitle">Original Message</span><br/>
         <table cellpadding="0" cellspacing="0" class="rtTable">
-        <tr><td class="rtHeader" colspan="2"><a name=<%=message.getID()%>><tc-webtag:format object="${message.modificationDate}" format="MMM d, yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/> | <%=message.getSubject()%>
+        <tr><td class="rtHeader" colspan="2"><a name=<%=message.getID()%>><tc-webtag:format object="${message.modificationDate}" format="MMM d, yyyy 'at' h:mm a z" timeZone="${timezone}"/> | <%=message.getSubject()%>
         <%  if (message.getParentMessage() != null) { %>
             (response to <A href="?module=Message&<%=ForumConstants.MESSAGE_ID%>=<%=message.getParentMessage().getID()%>" class="rtbcLink">post</A> by <tc-webtag:handle id="<%=message.getParentMessage().getUser().getID()%>"/>)
         <%  } %>

@@ -29,7 +29,8 @@
 <tc-webtag:useBean id="paginator" name="paginator" type="com.jivesoftware.forum.action.util.Paginator" toScope="request"/>
 <tc-webtag:useBean id="unreadCategories" name="unreadCategories" type="java.lang.String" toScope="request"/>
 
-<%  HashMap errors = (HashMap)request.getAttribute(BaseProcessor.ERRORS_KEY);
+<%  String timezone = (String) request.getAttribute("timezone");
+	HashMap errors = (HashMap)request.getAttribute(BaseProcessor.ERRORS_KEY);
     User user = (User)request.getAttribute("user");
     String threadView = StringUtils.checkNull(request.getParameter(ForumConstants.THREAD_VIEW));
     RatingManager ratingManager = RatingManagerFactory.getInstance(authToken);
@@ -226,9 +227,9 @@ function displayVotes(messageID, posVotes, negVotes, userRating) {
             <%  int editCount = editCountTable.containsKey(String.valueOf(activeMessage.getID())) ? 
             		Integer.parseInt((String)editCountTable.get(String.valueOf(activeMessage.getID()))) : 0;
             if (editCount > 0) { %> 
-                <a href="?module=RevisionHistory&<%=ForumConstants.MESSAGE_ID%>=<%=activeMessage.getID()%>" class="rtbcLink" title="Last updated <tc-webtag:format object="${activeMessage.modificationDate}" format="EEE, MMM d, yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/>"><%=ForumsUtil.display(editCount, "edit")%></a> | 
+                <a href="?module=RevisionHistory&<%=ForumConstants.MESSAGE_ID%>=<%=activeMessage.getID()%>" class="rtbcLink" title="Last updated <tc-webtag:format object="${activeMessage.modificationDate}" format="EEE, MMM d, yyyy 'at' h:mm a z" timeZone="${timezone}"/>"><%=ForumsUtil.display(editCount, "edit")%></a> | 
             <%  } %>
-            <a name=<%=activeMessage.getID()%>><tc-webtag:format object="${activeMessage.creationDate}" format="EEE, MMM d, yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/>
+            <a name=<%=activeMessage.getID()%>><tc-webtag:format object="${activeMessage.creationDate}" format="EEE, MMM d, yyyy 'at' h:mm a z" timeZone="${timezone}"/>
          </div>
 
          <%=activeMessage.getSubject()%></a>
@@ -302,7 +303,7 @@ function displayVotes(messageID, posVotes, negVotes, userRating) {
          <A href="?module=Message&<%=ForumConstants.MESSAGE_ID%>=<%=message.getID()%><%if (!threadView.equals("")) { %>&<%=ForumConstants.THREAD_VIEW%>=<%=threadView%><% } %>" class="rtbcLink"><%=message.getSubject()%></A></td>
       <% } %>
          <td class="rtThreadCell"><%if (message.getUser() != null) {%><tc-webtag:handle id="<%=message.getUser().getID()%>"/><%}%></td>
-         <td class="rtThreadCell"><strong><tc-webtag:format object="${message.creationDate}" format="MMM d, yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/></strong></td>
+         <td class="rtThreadCell"><strong><tc-webtag:format object="${message.creationDate}" format="MMM d, yyyy 'at' h:mm a z" timeZone="${timezone}"/></strong></td>
     </tr>
    </tc-webtag:iterator>
 </table>

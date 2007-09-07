@@ -24,7 +24,8 @@
 <tc-webtag:useBean id="historyBean" name="historyBean" type="com.topcoder.web.ejb.messagehistory.MessageHistoryLocal" toScope="request"/>
 <tc-webtag:useBean id="unreadCategories" name="unreadCategories" type="java.lang.String" toScope="request"/>
 
-<%  String sortField = (String) request.getAttribute("sortField");
+<%  String timezone = (String) request.getAttribute("timezone");
+	String sortField = (String) request.getAttribute("sortField");
     String sortOrder = (String) request.getAttribute("sortOrder");
 
     StringBuffer linkBuffer = new StringBuffer("?module=History");
@@ -172,7 +173,7 @@
     <A href="?module=ThreadList&<%=ForumConstants.FORUM_ID%>=<%=message.getForum().getID()%>&mc=<%=message.getForum().getMessageCount()%>" class="rtbcLink"><%=message.getForum().getName()%></A>
 </td>
 <td class="rtThreadCell"><strong>
-    <tc-webtag:format object="${message.modificationDate}" format="MMM d, yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/></strong>
+    <tc-webtag:format object="${message.modificationDate}" format="MMM d, yyyy 'at' h:mm a z" timeZone="${timezone}"/></strong>
 </td>
 <td class="rtThreadCell" align="right"><%=message.getForumThread().getTreeWalker().getRecursiveChildCount(message)%></td>
 <td class="rtThreadCell" align="right">

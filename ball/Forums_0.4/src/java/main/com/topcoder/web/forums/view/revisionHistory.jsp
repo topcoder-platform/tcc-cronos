@@ -18,7 +18,8 @@
 <tc-webtag:useBean id="revisionList" name="revisionList" type="java.util.ArrayList" toScope="request"/>
 <tc-webtag:useBean id="unreadCategories" name="unreadCategories" type="java.lang.String" toScope="request"/>
 
-<%  String threadView = (String)request.getAttribute("threadView"); 
+<%  String timezone = (String) request.getAttribute("timezone");
+	String threadView = (String)request.getAttribute("threadView"); 
     User user = (User)request.getAttribute("user"); %>
 
 <html>
@@ -86,7 +87,7 @@
    <tr>
       <td class="rtHeader" colspan="2">
          <div style="float: right; padding-left: 5px; white-space: nowrap;">
-            <a name=<%=message.getID()%>><tc-webtag:format object="${message.modificationDate}" format="MMM d, yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/> 
+            <a name=<%=message.getID()%>><tc-webtag:format object="${message.modificationDate}" format="MMM d, yyyy 'at' h:mm a z" timeZone="${timezone}"/> 
          </div>
          <%=message.getSubject()%></a>
          <%  if (message.getParentMessage() != null) { %>
@@ -113,7 +114,7 @@
    <tr>
       <td class="rtHeader" colspan="2">
          <div style="float: right; padding-left: 5px; white-space: nowrap;">
-            <a name=<%=revision.getID()%>><tc-webtag:format object="${revision.modificationDate}" format="MMM d, yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/>
+            <a name=<%=revision.getID()%>><tc-webtag:format object="${revision.modificationDate}" format="MMM d, yyyy 'at' h:mm a z" timeZone="${timezone}"/>
          </div>
          <%=revision.getSubject()%></a>
          <%  if (message.getParentMessage() != null) { %>

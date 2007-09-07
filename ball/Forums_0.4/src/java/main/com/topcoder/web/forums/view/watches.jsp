@@ -21,7 +21,8 @@
 <tc-webtag:useBean id="unreadCategories" name="unreadCategories" type="java.lang.String" toScope="request"/>
 <jsp:useBean id="sessionInfo" class="com.topcoder.web.common.SessionInfo" scope="request"/>
 
-<% ReadTracker readTracker = forumFactory.getReadTracker(); %>
+<% 	String timezone = (String) request.getAttribute("timezone");
+	ReadTracker readTracker = forumFactory.getReadTracker(); %>
 
 <html>
 <head>
@@ -95,7 +96,7 @@
                             <td class="rtThreadCell" align="right"><%=thread.getMessageCount() - 1%></td>
                             <td class="rtThreadCell" align="right"><%=ViewCountManager.getInstance().getThreadCount(thread)%></td>
                             <td class="rtThreadCell"><b>
-                                <tc-webtag:format object="${thread.modificationDate}" format="MMM d, yyyy h:mm a z" timeZone="${sessionInfo.timezone}"/></b>
+                                <tc-webtag:format object="${thread.modificationDate}" format="MMM d, yyyy h:mm a z" timeZone="${timezone}"/></b>
                             </td>
                             <td class="rtThreadCell"><%if (latestMessage.getUser() != null) {%>
                                 <tc-webtag:handle id="<%=latestMessage.getUser().getID()%>"/><%}%></td>

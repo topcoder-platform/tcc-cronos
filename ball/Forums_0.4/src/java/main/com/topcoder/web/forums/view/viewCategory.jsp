@@ -30,7 +30,8 @@
 <tc-webtag:useBean id="paginator" name="paginator" type="com.jivesoftware.forum.action.util.Paginator" toScope="request"/>
 <tc-webtag:useBean id="unreadCategories" name="unreadCategories" type="java.lang.String" toScope="request"/>
 
-<%	User user = (User) request.getAttribute("user");
+<%	String timezone = (String) request.getAttribute("timezone");
+	User user = (User) request.getAttribute("user");
     ResultFilter resultFilter = (ResultFilter) request.getAttribute("resultFilter");
     ReadTracker readTracker = forumFactory.getReadTracker();
     WatchManager watchManager = forumFactory.getWatchManager();
@@ -212,7 +213,7 @@
             <% if (forum.getMessageCount() > 0) { %>
             <tc-webtag:useBean id="message" name="forum" type="com.jivesoftware.forum.ForumMessage" toScope="page" property="latestMessage"/>
             <td class="rtThreadCell" style="width: 220px;"><b>
-                <tc-webtag:format object="${message.modificationDate}" format="EEE, MMM d yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/></b>
+                <tc-webtag:format object="${message.modificationDate}" format="EEE, MMM d yyyy 'at' h:mm a z" timeZone="${timezone}"/></b>
             </td>
             <% if (message.getUser() != null) { %>
             <td class="rtThreadCell" style="width: 100px;">
@@ -260,7 +261,7 @@
             <% if (category.getLatestMessage() != null) { %>
             <tc-webtag:useBean id="message" name="category" type="com.jivesoftware.forum.ForumMessage" toScope="page" property="latestMessage"/>
             <td class="rtThreadCell" style="width: 220px;"><b>
-                <tc-webtag:format object="${message.modificationDate}" format="EEE, MMM d yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/></b>
+                <tc-webtag:format object="${message.modificationDate}" format="EEE, MMM d yyyy 'at' h:mm a z" timeZone="${timezone}"/></b>
             </td>
             <% if (message.getUser() != null) { %>
             <td class="rtThreadCell" style="width: 100px;">

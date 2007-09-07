@@ -13,7 +13,8 @@
 <%@ taglib uri="tc-webtags.tld" prefix="tc-webtag" %>
 <jsp:useBean id="sessionInfo" class="com.topcoder.web.common.SessionInfo" scope="request" />
 
-<%  Paginator paginator = (Paginator)request.getAttribute("paginator");
+<%  String timezone = (String) request.getAttribute("timezone");
+	Paginator paginator = (Paginator)request.getAttribute("paginator");
     Query query = (Query)request.getAttribute("query");
     String searchScope = (String)request.getAttribute("searchScope"); 
     String dateRange = (String)request.getAttribute("dateRange");
@@ -97,7 +98,7 @@
             <td class="rtThreadCell"><%if (message.getUser() != null) {%><tc-webtag:handle id="<%=message.getUser().getID()%>"/><%}%></td>
             <td class="rtThreadCell" align="right"><%=message.getForumThread().getTreeWalker().getChildCount(message)%></td>
             <td class="rtThreadCell" align="right"><%=ViewCountManager.getInstance().getThreadCount(message.getForumThread())%></td>
-        	<td class="rtThreadCell"><b><tc-webtag:format object="${result.message.modificationDate}" format="EEE, MMM d yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/></b></td>
+        	<td class="rtThreadCell"><b><tc-webtag:format object="${result.message.modificationDate}" format="EEE, MMM d yyyy 'at' h:mm a z" timeZone="${timezone}"/></b></td>
         </tr>
    </tc-webtag:iterator>
 </table>

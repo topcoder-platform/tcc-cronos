@@ -27,7 +27,8 @@
 <tc-webtag:useBean id="unreadCategories" name="unreadCategories" type="java.lang.String" toScope="request"/>
 <jsp:useBean id="sessionInfo" class="com.topcoder.web.common.SessionInfo" scope="request" />
 
-<%  ForumMessage parentMessage = (ForumMessage)request.getAttribute("parentMessage");
+<%  String timezone = (String) request.getAttribute("timezone");
+	ForumMessage parentMessage = (ForumMessage)request.getAttribute("parentMessage");
     ForumThread thread = (ForumThread)request.getAttribute("thread");
     HashMap errors = (HashMap)request.getAttribute(BaseProcessor.ERRORS_KEY); %>
 
@@ -130,7 +131,7 @@ function AllowTabCharacter() {
    <tr>
         <td class="rtHeader" colspan="2">
             <div valign="top" style="float: right; padding-left: 5px; white-space: nowrap;">
-               <a name=<%=message.getID()%>><tc-webtag:format object="${message.creationDate}" format="MMM d, yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/></a>
+               <a name=<%=message.getID()%>><tc-webtag:format object="${message.creationDate}" format="MMM d, yyyy 'at' h:mm a z" timeZone="${timezone}"/></a>
             </div>
             <%=message.getSubject()%>
          <%   if (parentMessage != null) { %>

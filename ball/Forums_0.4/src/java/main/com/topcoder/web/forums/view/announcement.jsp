@@ -22,6 +22,7 @@
 
 <%  Forum forum = (Forum)request.getAttribute("forum");
     User user = (User)request.getAttribute("user"); 
+    String timezone = (String) request.getAttribute("timezone");
     
     String level2val = "";
     if (forumCategory != null) {
@@ -98,7 +99,7 @@
    <tr>
       <td class="rtHeader" colspan="2">
          <div style="float: right; padding-left: 5px; white-space: nowrap;">
-            <a name=<%=announcement.getID()%>><tc-webtag:format object="${announcement.startDate}" format="MMM d, yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/> 
+            <a name=<%=announcement.getID()%>><tc-webtag:format object="${announcement.startDate}" format="MMM d, yyyy 'at' h:mm a z" timeZone="${timezone}"/> 
          </div>
          <%=announcement.getSubject()%></a>
          <%  if (announcement.getUser() != null && announcement.getUser().equals(user)) { %>

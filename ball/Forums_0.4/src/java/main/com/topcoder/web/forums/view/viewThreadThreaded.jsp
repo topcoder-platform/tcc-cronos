@@ -28,7 +28,8 @@
 <tc-webtag:useBean id="paginator" name="paginator" type="com.jivesoftware.forum.action.util.Paginator" toScope="request"/>
 <tc-webtag:useBean id="unreadCategories" name="unreadCategories" type="java.lang.String" toScope="request"/>
 
-<%  HashMap errors = (HashMap)request.getAttribute(BaseProcessor.ERRORS_KEY);
+<%  String timezone = (String) request.getAttribute("timezone");
+	HashMap errors = (HashMap)request.getAttribute(BaseProcessor.ERRORS_KEY);
     User user = (User)request.getAttribute("user");
     String threadView = StringUtils.checkNull(request.getParameter(ForumConstants.THREAD_VIEW));
     RatingManager ratingManager = RatingManagerFactory.getInstance(authToken);
@@ -231,9 +232,9 @@ function displayVotes(messageID, posVotes, negVotes, userRating) {
                   <%  int editCount = editCountTable.containsKey(String.valueOf(message.getID())) ? 
             			Integer.parseInt((String)editCountTable.get(String.valueOf(message.getID()))) : 0;
                   if (editCount > 0) { %> 
-                      <a href="?module=RevisionHistory&<%=ForumConstants.MESSAGE_ID%>=<%=message.getID()%>" class="rtbcLink" title="Last updated <tc-webtag:format object="${message.modificationDate}" format="EEE, MMM d, yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/>"><%=ForumsUtil.display(editCount, "edit")%></a> | 
+                      <a href="?module=RevisionHistory&<%=ForumConstants.MESSAGE_ID%>=<%=message.getID()%>" class="rtbcLink" title="Last updated <tc-webtag:format object="${message.modificationDate}" format="EEE, MMM d, yyyy 'at' h:mm a z" timeZone="${timezone}"/>"><%=ForumsUtil.display(editCount, "edit")%></a> | 
                   <%  } %>
-               <a name=<%=message.getID()%>><tc-webtag:format object="${message.creationDate}" format="EEE, MMM d, yyyy 'at' h:mm a z" timeZone="${sessionInfo.timezone}"/></a>
+               <a name=<%=message.getID()%>><tc-webtag:format object="${message.creationDate}" format="EEE, MMM d, yyyy 'at' h:mm a z" timeZone="${timezone}"/></a>
             </div>
             <%  if (ratingManager.isRatingsEnabled() && user != null && ForumsUtil.showRatings(user)) { %>
                 <a class="pointer" onMouseOver="this.style.color='#FF0000';" onMouseOut="this.style.color='#333333';" onclick="toggle('<%=msgBodyID%>');"><%=message.getSubject()%></a>
