@@ -132,6 +132,34 @@ public class ForumsBean extends BaseEJB {
             close(conn);
         }
     }
+    
+    public ArrayList<String> getTimezones() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DBMS.getConnection(DBMS.FORUMS_DATASOURCE_NAME);
+            ps = conn.prepareStatement(
+                    "select timezone_desc from timezone");
+            rs = ps.executeQuery();
+            
+            ArrayList<String> timezones = new ArrayList<String>();
+            while (rs.next()) {
+                timezones.add(rs.getString(1));
+            }
+            return timezones;
+        } catch (SQLException e) {
+            DBMS.printSqlException(true, e);
+            throw new EJBException(e.getMessage());
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        } finally {
+            close(rs);
+            close(ps);
+            close(conn);
+        }
+    }
 
     private void logException(Exception e, String msg) {
         log.info("*** " + msg + ": " + e);

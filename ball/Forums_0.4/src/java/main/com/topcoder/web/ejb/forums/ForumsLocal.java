@@ -1,5 +1,7 @@
 package com.topcoder.web.ejb.forums;
 
+import java.util.ArrayList;
+
 import javax.ejb.EJBException;
 import javax.ejb.EJBLocalObject;
 
@@ -29,4 +31,6 @@ public interface ForumsLocal extends EJBLocalObject {
     public void deleteOrphanedAttachments() throws EJBException;
     
     public String getUserPassword(long userID) throws EJBException;
+    
+    public ArrayList<String> getTimezones() throws EJBException;
 }

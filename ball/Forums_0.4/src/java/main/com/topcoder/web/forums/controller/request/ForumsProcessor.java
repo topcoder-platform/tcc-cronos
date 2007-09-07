@@ -4,6 +4,7 @@
 package com.topcoder.web.forums.controller.request;
 
 import com.jivesoftware.base.AuthToken;
+import com.jivesoftware.base.JiveGlobals;
 import com.jivesoftware.base.UnauthorizedException;
 import com.jivesoftware.base.User;
 import com.jivesoftware.forum.Forum;
@@ -31,11 +32,14 @@ public abstract class ForumsProcessor extends BaseProcessor {
      * Subclasses should do their work by implementing this method.
      */
     protected void businessProcessing() throws Exception {
-
         getRequest().setAttribute("authToken", authToken);
         getRequest().setAttribute("user", user);
         getRequest().setAttribute("forumFactory", forumFactory);
 
+        String timezone = user == null ? ForumConstants.DEFAULT_TIMEZONE :  
+            JiveGlobals.getJiveProperty(user.getProperty("timezone"), ForumConstants.DEFAULT_TIMEZONE);
+        getRequest().setAttribute("timezone", timezone);
+        
         setUnreadCategories();
     }
 

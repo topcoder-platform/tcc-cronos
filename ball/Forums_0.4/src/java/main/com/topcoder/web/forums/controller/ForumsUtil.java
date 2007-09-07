@@ -736,6 +736,14 @@ public class ForumsUtil {
         }
         return forumsBean;
     }
+    
+    public static ArrayList<String> getTimezones() {
+        log.info("*** in getTimezones()");
+        ForumsLocal forumsBean = getForumsBean();
+        ArrayList<String> timezones = forumsBean.getTimezones();
+        log.info("*** leaving getTimezones()");
+        return timezones;
+    }
 }
 
 class JiveCategoryComparator implements Comparator {

@@ -1,7 +1,9 @@
 <%@ page import="com.jivesoftware.base.JiveGlobals,
                  com.jivesoftware.forum.action.UserSettingsAction,
                  com.topcoder.web.forums.ForumConstants,
-                 com.topcoder.web.forums.controller.request.Settings"
+                 com.topcoder.web.forums.controller.request.Settings,
+                 com.topcoder.web.forums.controller.ForumsUtil,
+                 java.util.*"
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -340,6 +342,23 @@ function toggleTabs(id) {
         <input name="showPrevNextThreads" value="false" id="showPrevNextThreadsNo" type="radio"
             <%= ("false".equals(user.getProperty("jiveShowPrevNextThreads"))) ? "checked" : ""%>>
         <label for="jiveShowPrevNextThreadsNo">No</label>
+      </td>
+   </tr>
+   <tr id="bodyGen12">
+      <td class="rtThreadCell" nowrap="nowrap"><strong>Time zone:</strong></td>
+      <td class="rtThreadCell">
+        ArrayList<String> timezones = ForumsUtil.getTimezones();
+        String timezone = ForumConstants.DEFAULT_TIMEZONE;
+        try {
+            timezone = user.getProperty("timezone");
+        } catch (Exception ignored) {}
+        for (int i=0; i<timezones.length; i++) {
+            if (timezones[i].equals(timezone)) { %>
+              <option value="<%=timezones[i]%>" selected><%=timezones[i]%></option>
+        <%  } else { %>
+              <option value="<%=timezones[i]%>"><%=timezones[i]%></option>
+        <%  }
+        } %>
       </td>
    </tr>
    <tr id="bodyWatch2">

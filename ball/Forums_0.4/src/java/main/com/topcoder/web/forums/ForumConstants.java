@@ -140,6 +140,8 @@ public interface ForumConstants {
     public final static int DEFAULT_RATING_COLLAPSE_THRESHOLD = 40;
     public final static int DEFAULT_RATING_COLLAPSE_MIN_COUNT = 10;
     public final static int DEFAULT_RATING_COLLAPSE_MIN_MESSAGES = 50;
+    
+    public final static String DEFAULT_TIMEZONE = "America/New_York";
 
     // Maximums
     public final static int MAX_FORUMS_PER_PAGE = 50;
