@@ -4,7 +4,6 @@
 package com.topcoder.web.forums.controller.request;
 
 import com.jivesoftware.base.AuthToken;
-import com.jivesoftware.base.JiveGlobals;
 import com.jivesoftware.base.UnauthorizedException;
 import com.jivesoftware.base.User;
 import com.jivesoftware.forum.Forum;
@@ -36,8 +35,10 @@ public abstract class ForumsProcessor extends BaseProcessor {
         getRequest().setAttribute("user", user);
         getRequest().setAttribute("forumFactory", forumFactory);
 
-        String timezone = user == null ? ForumConstants.DEFAULT_TIMEZONE :  
-            JiveGlobals.getJiveProperty(user.getProperty("timezone"), ForumConstants.DEFAULT_TIMEZONE);
+        String timezone = ForumConstants.DEFAULT_TIMEZONE;
+        if (user != null && user.getProperty("timezone") != null) {
+            timezone = user.getProperty("timezone");
+        }
         getRequest().setAttribute("timezone", timezone);
         
         setUnreadCategories();
