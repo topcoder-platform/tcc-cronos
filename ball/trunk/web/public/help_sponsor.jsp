@@ -15,7 +15,7 @@
     <c:set var="subbar" value="sponsor" scope="page"/>
     <c:set var="subbar2" value="help-sponsor" scope="page"/>
     <%@ include file="../includes/header.jsp" %>
-    <div id="wrap">
+    <div id="wrap2">
         <h1><img src="${ctx}/i/h/title_sponsoragame.gif" alt="Sponsor a Game"/></h1>
 
         <p>The Ball is a little like baseball &ndash; there is no specified end date or time, so the game takes just as

@@ -15,7 +15,7 @@
     <c:set var="subbar" value="howto" scope="page"/>
     <c:set var="subbar2" value="help" scope="page"/>
     <%@ include file="../includes/header.jsp" %>
-    <div id="wrap">
+    <div id="wrap2">
         <p><img src="${ctx}/i/help/img_sign_up.gif" alt="How to Play" width="220" height="18"/></p>
 
         <ol>

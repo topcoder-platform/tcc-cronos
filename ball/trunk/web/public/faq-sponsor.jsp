@@ -15,7 +15,7 @@
     <c:set var="subbar" value="sponsor" scope="page"/>
     <c:set var="subbar2" value="help-sponsor" scope="page"/>
     <%@ include file="../includes/header.jsp" %>
-    <div id="wrap">
+    <div id="wrap2">
         <h1><img src="${ctx}/i/h/title_biddingfaq.gif" alt="Bidding FAQ"/></h1>
         <ol>
             <li><a href="#1">What are the benefits of sponsorship?</a></li>

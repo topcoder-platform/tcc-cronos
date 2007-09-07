@@ -15,7 +15,7 @@
     <c:set var="subbar" value="howto" scope="page"/>
     <c:set var="subbar2" value="help" scope="page"/>
     <%@ include file="../includes/header.jsp" %>
-    <div id="wrap">
+    <div id="wrap2">
         <h1><img src="${ctx}/i/h/title_playerfaq.gif" alt="Player FAQ"/></h1>
         <ol>
             <li><a href="#1">Why do I have to register for each game?</a></li>

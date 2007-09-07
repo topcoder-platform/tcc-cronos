@@ -15,7 +15,7 @@
     <c:set var="subbar" value="sponsor" scope="page"/>
     <c:set var="subbar2" value="help-sponsor" scope="page"/>
     <%@ include file="../includes/header.jsp" %>
-    <div id="wrap">
+    <div id="wrap2">
         <p><img src="${ctx}/i/help/img_auction_bidding.gif" alt="How to Play" width="320" height="18"/></p>
         <ol start="1" type="1">
             <li>Once you have been registered for an account, a member of the Ball&rsquo;s Team will contact you to

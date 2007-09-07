@@ -16,7 +16,7 @@
     <c:set var="subbar" value="howto" scope="page"/>
     <c:set var="subbar2" value="help" scope="page"/>
     <%@ include file="../includes/header.jsp" %>
-    <div id="wrap">
+    <div id="wrap2">
         <p><img src="${ctx}/i/help/img_download.gif" alt="How to Play" width="239" height="18"/></p>
 
         <p class="cOrange"><strong>Download the Plugin:</strong></p>

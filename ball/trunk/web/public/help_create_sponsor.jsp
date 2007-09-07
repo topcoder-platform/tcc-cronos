@@ -15,7 +15,7 @@
     <c:set var="subbar" value="sponsor" scope="page"/>
     <c:set var="subbar2" value="help-sponsor" scope="page"/>
     <%@ include file="../includes/header.jsp" %>
-    <div id="wrap">
+    <div id="wrap2">
         <p><img src="${ctx}/i/help/img_create.gif" alt="How to Play" width="320" height="18"/></p>
 
         <p>Note: You will need at least one domain on whose behalf you will be bidding and at least one image for each

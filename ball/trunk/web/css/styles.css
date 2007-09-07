@@ -352,6 +352,13 @@ p { line-height: 18px; }
         float: left;
 }
 
+#wrap2
+{
+        width: 722px;
+        margin: 16px 0 0 0;
+        float: left;
+}
+
 #wrap h1
 {
         padding: 0;
