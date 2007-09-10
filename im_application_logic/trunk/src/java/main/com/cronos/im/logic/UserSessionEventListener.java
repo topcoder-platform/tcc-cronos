@@ -353,7 +353,18 @@ public class UserSessionEventListener implements ChatSessionEventListener {
             long[] users = session.getActiveUsers();
 
             if (chatSessionStatusTracker.getStatus(session.getId()).getId() == IMHelper.SESSION_STATUS_OPEN) {
-                messenger.getMessagePool().unregister(user, session.getId());
+                // retry unregister operation for a few times,
+                // since other messages may be posted into the pool
+                for (int retry = 0;; retry++) {
+                    try {
+                        messenger.getMessagePool().unregister(user, session.getId());
+                        break;
+                    } catch (Exception e) {
+                        if (retry == 5) {
+                            throw e;
+                        }
+                    }
+                }
                 if (logger != null) {
                     logger.log(Level.INFO, "Un-register MessagePool for User", new String[] {"User - " + user,
                         "Session - " + session.getId()});

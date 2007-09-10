@@ -114,7 +114,18 @@ public class UserStatusEventListener implements ChatStatusEventListener {
                     }
             } else if (newStatus.getId() == IMHelper.USER_STATUS_OFFLINE) {
                 // 2. If newStatus is "OFFLINE".
-                messagePool.unregister(id);
+                // retry unregister operation for a few times,
+                // since other messages may be posted into the pool
+                for (int retry = 0;; retry++) {
+                    try {
+                        messagePool.unregister(id);
+                        break;
+                    } catch (Exception e) {
+                        if (retry == 5) {
+                            throw e;
+                        }
+                    }
+                }
                 if (logger != null) {
                     logger.log(Level.INFO, "Un-register Message Pool for User",
                             new String[] { "User - " + id });
