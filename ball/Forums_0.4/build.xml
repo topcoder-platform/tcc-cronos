@@ -777,6 +777,10 @@
                 <include name="includes/global_left.jsp"/>
                 <include name="includes/modules/simpleSearch.jsp"/>
             </fileset>
+        	<fileset dir="${webdir}">
+        		<include name="includes/*.jsp"/>
+        		<include name="js/*.js"/>
+        	</fileset>
             <classes dir="${build_classdir}">
                 <include name="com/topcoder/web/forums/**/*.class"/>
             	<include name="com/topcoder/web/ball/tag/**/*.class"/>
@@ -793,9 +797,6 @@
             </webinf>
         	<lib file="${jstl.jar}"/>
         	<lib file="${jstl-standard.jar}"/>
-            <!-- <lib dir="${jars.dir}">
-                <include name="object_formatter.jar"/>
-            </lib> // not needed? -->
         </war>
     </target>
 	
