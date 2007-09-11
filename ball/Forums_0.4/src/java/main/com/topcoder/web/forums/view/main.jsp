@@ -12,9 +12,8 @@
         %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<%@ taglib uri="tc-webtags.tld" prefix="tc-webtag" %>
 <%@ page contentType="text/html;charset=utf-8" %>
-
+<%@ taglib uri="tc-webtags.tld" prefix="tc-webtag" %>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="fmt" %>
 <%@ taglib uri="/orpheus" prefix="orpheus" %>
@@ -24,7 +23,7 @@
 <tc-webtag:useBean id="categories" name="categories" type="java.util.ArrayList" toScope="request"/>
 <tc-webtag:useBean id="unreadCategories" name="unreadCategories" type="java.lang.String" toScope="request"/>
 
-<% 	User user = (User) request.getAttribute("user");
+<%     User user = (User) request.getAttribute("user");
     String timezone = (String) request.getAttribute("timezone");
     ResultFilter resultFilter = (ResultFilter) request.getAttribute("resultFilter");
     ReadTracker readTracker = forumFactory.getReadTracker();
@@ -37,30 +36,20 @@
     <link rel="icon" type="image/png" href="/i/favicon.png">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <title>The Ball: Forums</title>
+    <title>The Ball :: Forums</title>
     <jsp:include page="script.jsp"/>
-    <jsp:include page="/style.jsp">
+    <jsp:include page="style.jsp">
         <jsp:param name="key" value="ball_forums"/>
     </jsp:include>
 
 </head>
 
-<body>
+<body id="page">
+<div id="container">
+    <c:set var="subbar" value="forums" scope="page"/>
+    <%@ include file="includes/header.jsp" %>
+    <div id="wrap">
 
-<jsp:include page="top.jsp">
-    <jsp:param name="level1" value=""/>
-</jsp:include>
-
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr valign="top">
-
-<!-- Center Column Begins -->
-<td width="100%" class="rtBody">
-
-<jsp:include page="page_title.jsp">
-    <jsp:param name="image" value="forums"/>
-    <jsp:param name="title" value="&#160;"/>
-</jsp:include>
 <table cellpadding="0" cellspacing="0" class="rtbcTable">
     <tr>
         <td class="categoriesBox" style="padding-right: 20px;">
@@ -88,7 +77,7 @@
        if (!"0".equals(limit)) {
         Iterator itCategories = (Iterator)request.getAttribute("categoriesIterator_"+category.getID());
         Iterator itForums = (Iterator)request.getAttribute("forumsIterator_"+category.getID());
-       	long numActiveCategories = ((Long)request.getAttribute("numActiveCategories_"+category.getID())).longValue();
+           long numActiveCategories = ((Long)request.getAttribute("numActiveCategories_"+category.getID())).longValue();
         long numActiveForums = ((Long)request.getAttribute("numActiveForums_"+category.getID())).longValue();
         if (numActiveCategories > 0) { %>
     <br>
@@ -112,9 +101,9 @@
                     <A href="?module=Category&<%=ForumConstants.CATEGORY_ID%>=<%=subcategory.getID()%>" class="<%=trackerClass%>"><%=subcategory.getName()%></A>
                     <% } %>
                     <% if (subcategory.getDescription() != null) { %><br/>
-						<div class="rtDescIndent"><%=subcategory.getDescription()%></div>
-					<% } %>
-				</td>
+                        <div class="rtDescIndent"><%=subcategory.getDescription()%></div>
+                    <% } %>
+                </td>
                 <td class="rtThreadCell" style="width: 80px;"><%=subcategory.getThreadCount()%>
                     &#160;/&#160;<%=subcategory.getMessageCount()%></td>
                 <% if (subcategory.getMessageCount() > 0) { %>
@@ -142,10 +131,10 @@
             } catch (Exception e) {
             }
             if (category.getForumCount() >= limitCNT) { %>
-        		<tr><td class="rtThreadCell" colspan="4">
-            		<A href="?module=Category&<%=ForumConstants.CATEGORY_ID%>=<%=category.getID()%>" class="rtLinkNew">...more</A>
-        		</td></tr>
-        	<% } %>
+                <tr><td class="rtThreadCell" colspan="4">
+                    <A href="?module=Category&<%=ForumConstants.CATEGORY_ID%>=<%=category.getID()%>" class="rtLinkNew">...more</A>
+                </td></tr>
+            <% } %>
         <% } %>
     </table>      
     <%  } else if (numActiveForums > 0 || ("true".equals(category.getProperty(ForumConstants.PROPERTY_SHOW_EMPTY_FORUMS_ON_MAIN)))) { %>
@@ -170,7 +159,7 @@
                     <A href="?module=ThreadList&<%=ForumConstants.FORUM_ID%>=<%=forum.getID()%>" class="<%=trackerClass%>"><%=forum.getName()%></A>
                     <% } %>
                     <% if (forum.getDescription() != null) { %><br/>
-                    	<div class="rtDescIndent"><%=forum.getDescription()%></div>
+                        <div class="rtDescIndent"><%=forum.getDescription()%></div>
                     <% } %>
                 </td>
                 <td class="rtThreadCell" style="width: 80px;"><%=forum.getThreadCount()%>
@@ -200,10 +189,10 @@
             } catch (Exception e) {
             }
             if (category.getForumCount() >= limitCNT) { %>
-        		<tr><td class="rtThreadCell" colspan="4">
-            		<A href="?module=Category&<%=ForumConstants.CATEGORY_ID%>=<%=category.getID()%>" class="rtLinkNew">...more</A>
-        		</td></tr>
-        	<% } %>
+                <tr><td class="rtThreadCell" colspan="4">
+                    <A href="?module=Category&<%=ForumConstants.CATEGORY_ID%>=<%=category.getID()%>" class="rtLinkNew">...more</A>
+                </td></tr>
+            <% } %>
         <% } %>
     </table>
     <% } %>
@@ -227,14 +216,8 @@
 
 <div style="clear:both;">&nbsp;</div>
 
-</td>
-<!-- Center Column Ends -->
-
-</tr>
-</table>
-
+    </div>
+</div>
 <%@ include file="foot.jsp" %>
-
 </body>
-
 </html>
