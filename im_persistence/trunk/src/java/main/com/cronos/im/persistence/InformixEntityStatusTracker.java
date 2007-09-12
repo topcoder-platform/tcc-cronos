@@ -9,7 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.topcoder.database.statustracker.Entity;
 import com.topcoder.database.statustracker.EntityKey;
@@ -247,24 +249,27 @@ public class InformixEntityStatusTracker extends AbstractPersistenceWithValidato
                 ResultSet results = statement.executeQuery();
 
                 try {
-                    List statuses = new ArrayList();
+                    Map resultMap = new HashMap();
                     while (results.next()) {
                         long resultId = results.getLong(type + "_id");
                         EntityKey locKey = null;
                         for (int i = 0; i < keys.length; i++) {
-                            if(resultId ==  getPrimaryId(keys[i])) {
+                            if(resultId == getPrimaryId(keys[i])) {
                                 locKey = keys[i];
                                 break;
                             }
                         }
                         if(locKey != null) {
-                            statuses.add(createStatus(locKey, results, type));
-                        } else {
-                            statuses.add(null);
+                            resultMap.put(new Long(resultId), createStatus(locKey, results, type));
                         }
                     }
-                    // return the statuses
-                    return (EntityStatus[]) statuses.toArray(new EntityStatus[statuses.size()]);
+                    
+                    EntityStatus[] ret = new EntityStatus[keys.length];
+                    for (int i = 0; i < ret.length; i++) {
+                        ret[i] = (EntityStatus) resultMap.get(new Long(getPrimaryId(keys[i])));
+                    }
+
+                    return ret;
                 } finally {
                     closeResults(results);
                 }
