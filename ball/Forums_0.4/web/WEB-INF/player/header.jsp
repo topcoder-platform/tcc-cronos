@@ -34,7 +34,13 @@ function SwapImage5() {
 }
 function SwapImage5Back() {
   document.image5.src="${ctx}/i/nav/player_myaccount_off.gif"
-}	
+}    
+function SwapImage6() {
+  document.image6.src="${ctx}/i/nav/player_forums_on.gif"
+}
+function SwapImage6Back() {
+  document.image6.src="${ctx}/i/nav/player_forums_off.gif"
+}
     -->
 </script>
 
@@ -107,7 +113,19 @@ function SwapImage5Back() {
             </a>
         </li>
         <li>
-            <img src="${ctx}/i/nav/player_endbar.gif" width="249" height="30" border="0"/>
+            <a href="${ctx}/forums" title="Forums">
+                <c:if test="${subbar eq 'forums'}">
+                    <img src="${ctx}/i/nav/player_forums_on.gif" name="image6" alt="Forums"
+                         onMouseOver="SwapImage6()" onMouseOut="SwapImage6()"/>
+                </c:if>
+                <c:if test="${subbar ne 'myaccount'}">
+                    <img src="${ctx}/i/nav/player_forums_off.gif" name="image6" border="0" alt="Forums"
+                         onMouseOver="SwapImage6()" onMouseOut="SwapImage6Back()"/>
+                </c:if>
+            </a>
+        </li>
+        <li>
+            <img src="${ctx}/i/nav/player_endbar.gif" border="0"/>
         </li>
     </ul>
 </div>
