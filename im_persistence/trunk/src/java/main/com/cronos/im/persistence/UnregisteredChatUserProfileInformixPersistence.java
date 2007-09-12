@@ -4,27 +4,24 @@
 
 package com.cronos.im.persistence;
 
-import com.topcoder.chat.user.profile.ChatUserProfile;
-import com.topcoder.chat.user.profile.ChatUserProfilePersistence;
-import com.topcoder.chat.user.profile.ChatUserProfilePersistenceException;
-import com.topcoder.chat.user.profile.DuplicateProfileException;
-import com.topcoder.chat.user.profile.ProfileNotFoundException;
-
-import com.topcoder.db.connectionfactory.DBConnectionException;
-import com.topcoder.db.connectionfactory.DBConnectionFactory;
-
-import com.topcoder.util.datavalidator.ObjectValidator;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import com.topcoder.chat.user.profile.ChatUserProfile;
+import com.topcoder.chat.user.profile.ChatUserProfilePersistence;
+import com.topcoder.chat.user.profile.ChatUserProfilePersistenceException;
+import com.topcoder.chat.user.profile.DuplicateProfileException;
+import com.topcoder.chat.user.profile.ProfileNotFoundException;
+import com.topcoder.db.connectionfactory.DBConnectionException;
+import com.topcoder.db.connectionfactory.DBConnectionFactory;
+import com.topcoder.util.datavalidator.ObjectValidator;
 
 /**
  * <p>An implementation of <code>ChatUserProfilePersistence</code> that uses an Informix database as the backing
@@ -294,35 +291,78 @@ public class UnregisteredChatUserProfileInformixPersistence extends AbstractPers
             ParameterHelpers.checkParameter(usernames[idx], "username");
         }
 
-        ChatUserProfile[] profiles = new ChatUserProfile[usernames.length];
-        boolean foundAny = false; // have we found any?
         Connection connection = getConnection();
+        ResultSet results = null;
+        PreparedStatement statement = null;
         try {
-            // call getProfile for each username
-            for (int idx = 0; idx < usernames.length; ++idx) {
-                long id;
+            String sql = "SELECT * FROM client WHERE client_id IN (IN_CLAUSE)";
+            int realCount = 0;
+            List validUsername = new ArrayList();
+            StringBuffer questionMarks = new StringBuffer();
+            for (int i = 0; i < usernames.length; i++) {
+                // check here first if the username is parseable
                 try {
-                    id = Long.parseLong(usernames[idx]);
+                    Long.parseLong(usernames[i]);
+                    validUsername.add(usernames[i]);
+                    if (realCount != 0) {
+                        questionMarks.append(", ");
+                    }
+                    questionMarks.append("?");
+                    realCount++;
                 } catch (NumberFormatException ex) {
                     continue;
                 }
+            }
+            // if the validUsername is empty, this means no valid Username was passed
+            if(validUsername.isEmpty()) {
+                throw new IllegalArgumentException("No valid Unregistered Client username was supplied!");
+            }
+            // replace with question marks
+            sql = sql.replaceFirst("IN_CLAUSE", questionMarks.toString());
+            // instantiate the preparedstatement
+            statement = connection.prepareStatement(sql);
+            // replace the question marks with real value
+            for(int i = 0; i < validUsername.size(); i++) {
+                statement.setLong((i+1), Long.parseLong((String) validUsername.get(i)));
+            }
+            // execute the query
+            results = statement.executeQuery();
+            // will hold profile results
+            Map resultMap = new HashMap();
+            while (results.next()) {
+                // get the handle
+                long handle = results.getLong("client_id");
+                // instantiate a registered profile
+                ChatUserProfile profile = new ChatUserProfile(Long.toString(handle), 
+                        InformixProfileKeyManager.TYPE_UNREGISTERED);
+                // populate the properties
+                InformixPersistenceHelpers.populateProperties(profile, results, COLUMN_NAME_MAPPING);
+                // add to profile List
+                resultMap.put(new Long(handle).toString(), profile);
+            }
 
-                try {
-                    profiles[idx] = getProfile(connection, usernames[idx], id);
-                    foundAny = true;
-                } catch (ProfileNotFoundException ex) {
-                    // do nothing
-                }
-            } // for idx [0..ids.length]
+            if (resultMap.isEmpty()) {
+                throw new ProfileNotFoundException("no profiles were found");
+            }
+            
+            ChatUserProfile[] ret = new ChatUserProfile[usernames.length];
+            for (int i = 0; i < ret.length; i++) {
+                ret[i] = (ChatUserProfile) resultMap.get(usernames[i]);
+            }
+
+            return ret;
+            
+        } catch(SQLException sqe) {
+            throw new ChatUserProfilePersistenceException("error retrieving profile: " + sqe.getMessage(), sqe);
         } finally {
+            if(results != null) {
+                InformixPersistenceHelpers.closeResults(results);
+            }
+            if(statement != null) {
+                InformixPersistenceHelpers.closeStatement(statement);
+            }
             InformixPersistenceHelpers.closeConnection(connection);
         }
-
-        if (!foundAny) {
-            throw new ProfileNotFoundException("none of the usernames could be located");
-        }
-
-        return profiles;
     }
 
     /**

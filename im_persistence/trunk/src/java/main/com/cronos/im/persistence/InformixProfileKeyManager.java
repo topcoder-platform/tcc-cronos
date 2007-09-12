@@ -24,7 +24,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -275,21 +277,57 @@ public class InformixProfileKeyManager extends AbstractPersistenceWithGenerator 
         }
 
         Connection connection = getConnection();
-        ProfileKey[] keys = new ProfileKey[ids.length];
+        ResultSet results = null;
+        PreparedStatement statement = null;
         try {
-            // keep track if we have found any
-            boolean found = false;
-            for (int idx = 0; idx < ids.length; ++idx) {
-                ProfileKey key = getProfileKey(ids[idx], connection);
-                if (key != null) {
-                    found = true;
-                    keys[idx] = key;
+            String sql = "SELECT user_id, registered_flag, username "
+                + "FROM all_user WHERE user_id in (";
+            for (int i = 0; i < ids.length; i++) {
+                if (i != 0) {
+                    sql += ", ";
                 }
+                sql += ids[i];
+            }
+            sql += ")";
+
+            // instantiate the preparedstatement
+            statement = connection.prepareStatement(sql);
+
+            results = statement.executeQuery();
+
+            // will hold profile results
+            Map resultMap = new HashMap();
+            while (results.next()) {
+                // get the handle
+                long id = results.getLong(1);
+                String type = (results.getString(2).equalsIgnoreCase("Y")
+                        ? TYPE_REGISTERED : TYPE_UNREGISTERED);
+                String username = results.getString(3);
+                // add to profile List
+                resultMap.put(new Long(id), new ProfileKey(id, username, type));
             }
 
-            // return null if we did not find any
-            return (found ? keys : null);
+            if (resultMap.isEmpty()) {
+                // return null if we did not find any
+                return null;
+            }
+
+            ProfileKey[] keys = new ProfileKey[ids.length];
+
+            for (int idx = 0; idx < ids.length; ++idx) {
+                keys[idx] = (ProfileKey) resultMap.get(new Long(ids[idx]));
+            }
+
+            return keys;
+        } catch (SQLException ex) {
+            throw new ProfileKeyManagerPersistenceException("error retrieving profile keys: " + ex.getMessage(), ex);
         } finally {
+            if(results != null) {
+                closeResults(results);
+            }
+            if(statement != null) {
+                closeStatement(statement);
+            }
             closeConnection(connection);
         }
     }

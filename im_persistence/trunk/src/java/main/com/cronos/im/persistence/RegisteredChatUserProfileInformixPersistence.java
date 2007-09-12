@@ -4,19 +4,10 @@
 
 package com.cronos.im.persistence;
 
-import com.topcoder.chat.user.profile.ChatUserProfile;
-import com.topcoder.chat.user.profile.ChatUserProfilePersistence;
-import com.topcoder.chat.user.profile.ChatUserProfilePersistenceException;
-import com.topcoder.chat.user.profile.ProfileNotFoundException;
-
-import com.topcoder.db.connectionfactory.DBConnectionException;
-import com.topcoder.db.connectionfactory.DBConnectionFactory;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,6 +15,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.topcoder.chat.user.profile.ChatUserProfile;
+import com.topcoder.chat.user.profile.ChatUserProfilePersistence;
+import com.topcoder.chat.user.profile.ChatUserProfilePersistenceException;
+import com.topcoder.chat.user.profile.ProfileNotFoundException;
+import com.topcoder.db.connectionfactory.DBConnectionException;
+import com.topcoder.db.connectionfactory.DBConnectionFactory;
 
 /**
  * <p>An implementation of <code>AbstractPersistence</code> that uses an Informix database. This implementation only
@@ -215,26 +213,66 @@ public class RegisteredChatUserProfileInformixPersistence extends AbstractPersis
         }
 
         Connection connection = getConnection();
+        ResultSet results = null;
+        PreparedStatement statement = null;
         try {
-            ChatUserProfile[] profiles = new ChatUserProfile[usernames.length];
-            boolean foundAny = false; // have we found any?
-
-            // just call getProfile for each username
-            for (int idx = 0; idx < usernames.length; ++idx) {
-                try {
-                    profiles[idx] = getProfile(connection, usernames[idx]);
-                    foundAny = true;
-                } catch (ProfileNotFoundException ex) {
-                    // do nothing
+            String sql = "select * from user join email " +
+                    " on user.user_id = email.user_id " + "left join " +
+                    " (contact LEFT JOIN company ON contact.company_id = " +
+                    " company.company_id) ON user.user_id = contact.contact_id " +
+                    " where user.handle IN (IN_CLAUSE)";
+    
+            StringBuffer questionMarks = new StringBuffer();
+            for (int i = 0; i < usernames.length; i++) {
+                if (i != 0) {
+                    questionMarks.append(", ");
                 }
+                questionMarks.append("?");
+            }
+            // replace with question marks
+            sql = sql.replaceFirst("IN_CLAUSE", questionMarks.toString());
+            // instantiate the preparedstatement
+            statement = connection.prepareStatement(sql);
+            
+            for(int i = 0; i < usernames.length; i++) {
+                statement.setString((i+1), usernames[i]);
             }
 
-            if (!foundAny) {
+            results = statement.executeQuery();
+            // will hold profile results
+            Map resultMap = new HashMap();
+            while (results.next()) {
+                // get the handle
+                String handle = results.getString("handle");
+                // instantiate a registered profile
+                ChatUserProfile profile = new ChatUserProfile(handle, 
+                        InformixProfileKeyManager.TYPE_REGISTERED);
+                // populate the properties
+                InformixPersistenceHelpers.populateProperties(profile, results, COLUMN_NAME_MAPPING);
+                // add to profile List
+                resultMap.put(handle, profile);
+            }
+
+            if (resultMap.isEmpty()) {
                 throw new ProfileNotFoundException("no profiles were found");
             }
+            
+            ChatUserProfile[] ret = new ChatUserProfile[usernames.length];
+            for (int i = 0; i < ret.length; i++) {
+                ret[i] = (ChatUserProfile) resultMap.get(usernames[i]);
+            }
 
-            return profiles;
+            return ret;
+            
+        } catch(SQLException sqe) {
+            throw new ChatUserProfilePersistenceException("error retrieving profile: " + sqe.getMessage(), sqe);
         } finally {
+            if(results != null) {
+                InformixPersistenceHelpers.closeResults(results);
+            }
+            if(statement != null) {
+                InformixPersistenceHelpers.closeStatement(statement);
+            }
             InformixPersistenceHelpers.closeConnection(connection);
         }
     }
