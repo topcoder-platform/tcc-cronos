@@ -387,21 +387,58 @@ public class InformixProfileKeyManager extends AbstractPersistenceWithGenerator 
         boolean registered = checkType(type);
 
         Connection connection = getConnection();
+        ResultSet results = null;
+        PreparedStatement statement = null;
         try {
-            boolean found = false;
-            ProfileKey[] keys = new ProfileKey[usernames.length];
-
-            // call getProfileKey(String) for each username
-            for (int idx = 0; idx < usernames.length; ++idx) {
-                ProfileKey key = getProfileKey(connection, usernames[idx], type, registered);
-                if (key != null) {
-                    keys[idx] = key;
-                    found = true;
+            String sql = "SELECT username, user_id FROM all_user WHERE "
+                + "registered_flag = ? AND username in (";
+            for (int i = 0; i < usernames.length; i++) {
+                if (i != 0) {
+                    sql += ", ";
                 }
+                sql += "?";
+            }
+            sql += ")";
+
+            // instantiate the preparedstatement
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, registered ? "Y" : "N");
+            for (int i = 0; i < usernames.length; i++) {
+                statement.setString(i + 2, usernames[i]);
             }
 
-            return (found ? keys : null);
+            results = statement.executeQuery();
+
+            // will hold profile results
+            Map resultMap = new HashMap();
+            while (results.next()) {
+                String username = results.getString(1);
+                long id = results.getLong(2);
+                // add to profile List
+                resultMap.put(username, new ProfileKey(id, username, type));
+            }
+
+            if (resultMap.isEmpty()) {
+                // return null if we did not find any
+                return null;
+            }
+
+            ProfileKey[] keys = new ProfileKey[usernames.length];
+
+            for (int idx = 0; idx < usernames.length; ++idx) {
+                keys[idx] = (ProfileKey) resultMap.get(usernames[idx]);
+            }
+
+            return keys;
+        } catch (SQLException ex) {
+            throw new ProfileKeyManagerPersistenceException("error retrieving profile keys: " + ex.getMessage(), ex);
         } finally {
+            if(results != null) {
+                closeResults(results);
+            }
+            if(statement != null) {
+                closeStatement(statement);
+            }
             closeConnection(connection);
         }
     }
