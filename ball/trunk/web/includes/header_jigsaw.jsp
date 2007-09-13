@@ -96,7 +96,7 @@
             </a>
         </li>
         <li>
-            <img src="${ctx}/i/nav/public_endbar.gif" height="30" width=100% alt="spacer"/>
+            <img src="${ctx}/i/nav/public_endbar.gif" height="30" width="559" />
         </li>
     </ul>
     <c:if test="${not empty subbar}">
