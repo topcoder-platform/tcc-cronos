@@ -4,6 +4,9 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<%  String puzzleName = (String) request.getAttribute("puzzleName"); %>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>The Ball :: TESTING MODE :: Puzzle</title>
@@ -77,12 +80,19 @@
     </c:if>
 
     <div id="pluginTestTitle">
-    	Practice: ${puzzleName}
+	    Practice:
+	    <%	String[] puzzleNames = {"Jigsaw Puzzle", "Sliding Tile Puzzle"}; 
+	    	String[] puzzleURLs = {"jigsaw.do", "tile.do"}; %>
+	    <select size="1" name="puzzleType" id="puzzleType" onchange="location = this.options[this.selectedIndex].value;">
+			<%	for (int i=0; i<puzzleNames.length; i++) { %>
+			<%		if (puzzleNames[i].equals(puzzleName)) { %>
+						<option value=<%=puzzleURLs[i]%> selected><%=puzzleNames[i]%></option>
+			<%		} else { %>
+						<option value=<%=puzzleURLs[i]%>><%=puzzleNames[i]%></option>
+			<%		} %>
+			<%	} %>
+		</select>
     	<form name="SelectPuzzleForm" id="SelectPuzzleForm">
-    		<!--<select size="1" name="puzzleType" id="puzzleType">
-    			<option value="Jigsaw">Jigsaw</option>
-    			<option value="Jigsaw">Sliding Tile</option>
-    		</select>-->
 	    	<select size="1" name="puzzleId" id="puzzleId">
 	    	   	<c:forEach items="${puzzleIDs}" var="puzzleID">
 	    	 		<c:if test="${puzzleID ne selPuzzleID}">

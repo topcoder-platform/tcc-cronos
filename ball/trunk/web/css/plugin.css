@@ -201,10 +201,13 @@ p { line-height: 18px; }
 }
 #pluginTestTitle .main { 
 	color: #94a4de;
-	letter-spacing: -1px;
 }
 #pluginTestTitle select {
-	vertical-align:top;
+	vertical-align:middle;
+	letter-spacing: 0px;
+}
+#pluginTestTitle input {
+	vertical-align:middle;
 }
 
 #nav {
