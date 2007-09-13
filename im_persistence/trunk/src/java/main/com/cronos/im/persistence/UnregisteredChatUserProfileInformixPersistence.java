@@ -315,7 +315,7 @@ public class UnregisteredChatUserProfileInformixPersistence extends AbstractPers
             }
             // if the validUsername is empty, this means no valid Username was passed
             if(validUsername.isEmpty()) {
-                throw new IllegalArgumentException("No valid Unregistered Client username was supplied!");
+                throw new ProfileNotFoundException("No valid Unregistered Client username was supplied!");
             }
             // replace with question marks
             sql = sql.replaceFirst("IN_CLAUSE", questionMarks.toString());
