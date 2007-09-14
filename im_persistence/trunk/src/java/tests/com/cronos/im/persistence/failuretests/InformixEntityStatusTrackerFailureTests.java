@@ -541,22 +541,4 @@ public class InformixEntityStatusTrackerFailureTests extends BasePersistenceSupp
             //good
         }
     }
-
-    /**
-     * Test findByStatus(Entity type, Status[] statuses) method with not exist entity type, RecordNotFoundException
-     * expected.
-     *
-     * @throws Exception into Junit
-     */
-    public void testFindByStatus_notExistEntity() throws Exception {
-        statusTracker = new InformixEntityStatusTracker(TestHelper.INFORMIX_ENTRY_STATUS_TRAKER_NAMESPACE);
-
-        try {
-            Entity type = TestHelper.createEntity("entity");
-            statusTracker.findByStatus(type, new Status[] { type.getValidStatuses()[0] });
-            fail("The entity type does not exist.");
-        } catch (RecordNotFoundException e) {
-            //good
-        }
-    }
 }
