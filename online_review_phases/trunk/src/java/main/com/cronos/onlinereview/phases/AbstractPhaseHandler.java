@@ -319,7 +319,20 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
     protected void sendEmail(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
 
-        //find if phase is starting or ending...
+        // Do not send any e-mails for phases whose duration is zero
+        if (phase.getLength() <= 0L) {
+            return;
+        }
+
+        final Date scheduledStartDate = phase.getScheduledStartDate();
+        final Date scheduledEndDate = phase.getScheduledEndDate();
+
+        // Check phase's scheduled start & end dates to be sure
+        if (scheduledStartDate != null && scheduledEndDate != null && !scheduledStartDate.before(scheduledEndDate)) {
+            return;
+        }
+
+        // Determine whether phase is starting or ending...
         PhaseStatus status = phase.getPhaseStatus();
 
         if (PhasesHelper.isPhaseToStart(status) && sendStartPhaseEmail) {
