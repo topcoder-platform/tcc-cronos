@@ -54,11 +54,7 @@ function noenter(e)
     <div id="wrap">
 
 <table cellpadding="0" cellspacing="0" class="rtbcTable">
-<tr>
-    <td class="categoriesBox" style="padding-right: 20px;">
-        <jsp:include page="categoriesHeader.jsp" />
-    </td>
-    <td nowrap="nowrap" valign="top" width="100%" style="padding-right: 20px;">
+<tr>        <td nowrap="nowrap" valign="top" width="100%" style="padding-right: 20px;">
         <jsp:include page="searchHeader.jsp" >
             <jsp:param name="queryTerms" value="<%=query.getQueryString()%>"/>
         </jsp:include>
