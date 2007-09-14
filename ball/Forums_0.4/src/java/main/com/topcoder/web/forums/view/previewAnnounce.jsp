@@ -6,10 +6,11 @@
                 java.util.HashMap"
 %>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<%@ taglib uri="tc-webtags.tld" prefix="tc-webtag" %>
-<%@ page contentType="text/html;charset=utf-8" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
+<%@ taglib uri="tc-webtags.tld" prefix="tc-webtag" %>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="fmt" %>
 <%@ taglib uri="/orpheus" prefix="orpheus" %>
@@ -32,6 +33,16 @@
         level2val = forumCategory.getProperty(ForumConstants.PROPERTY_LEFT_NAV_NAME);
     }   %>
 
+
+<html>
+<head>
+    <link rel="icon" type="image/png" href="/i/favicon.png">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>The Ball :: Forums</title>
+    <jsp:include page="script.jsp"/>
+    <jsp:include page="style.jsp">
+        <jsp:param name="key" value="ball_forums"/>
+    </jsp:include>
 <script type="text/javascript">
 function noenter(e)
 {
@@ -68,37 +79,13 @@ function AllowTabCharacter() {
     }
 }
 </script>
-
-<html>
-<head>
-    <link type="image/x-icon" rel="shortcut icon" href="/i/favicon.ico"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
-<title>The Ball: Forums</title>
-<link type="image/x-icon" rel="shortcut icon" href="/i/favicon.ico"/>
-    <jsp:include page="script.jsp" />
-        <jsp:include page="/style.jsp">
-          <jsp:param name="key" value="ball_forums"/>
-        </jsp:include>
-
 </head>
 
-<body>
-
-<jsp:include page="top.jsp" >
-    <jsp:param name="level1" value=""/>
-</jsp:include>
-
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-   <tr valign="top">
-
-<!-- Center Column Begins -->
-        <td width="100%" class="rtBody">
-
-            <jsp:include page="page_title.jsp" >
-                <jsp:param name="image" value="forums"/>
-                <jsp:param name="title" value="Announcement Preview"/>
-            </jsp:include>
+<body id="page">
+<div id="container">
+    <c:set var="subbar" value="forums" scope="page"/>
+    <%@ include file="includes/header.jsp" %>
+    <div id="wrap">
 
 <table cellpadding="0" cellspacing="0" class="rtbcTable">
     <tr>
@@ -163,7 +150,7 @@ function AllowTabCharacter() {
             <b>Subject:</b><br/><tc-webtag:textInput size="60" name="<%=ForumConstants.ANNOUNCEMENT_SUBJECT%>" escapeHtml="false" onKeyPress="return noenter(event)"/><br/><br/>
             <% if (errors.get(ForumConstants.ANNOUNCEMENT_BODY) != null) { %><span class="bigRed"><tc-webtag:errorIterator id="err" name="<%=ForumConstants.ANNOUNCEMENT_BODY%>"><%=err%></tc-webtag:errorIterator><br/></span><% } %>
             <b>Body:</b><font color="red"><span align="left" id="Warning" style="display: none"><br/>Warning: one or more &lt;pre&gt; tags is not closed.</span></font>
-            <br/><tc-webtag:textArea id="tcPreviewArea" rows="15" cols="72" name="<%=ForumConstants.ANNOUNCEMENT_BODY%>" onKeyDown="AllowTabCharacter()"/>
+            <br/><tc-webtag:textArea id="tcPreviewArea" rows="15" cols="60" name="<%=ForumConstants.ANNOUNCEMENT_BODY%>" onKeyDown="AllowTabCharacter()"/>
         </td>
     </tr>
     <tr>
@@ -184,14 +171,8 @@ function AllowTabCharacter() {
 
 <div style="clear:both;">&nbsp;</div>
 
-</td>
-<!-- Center Column Ends -->
-
-    </tr>
-</table>
-
-<%@ include file="foot.jsp" %>
-
+    </div>
+</div>
+<%@ include file="includes/footer.jsp" %>
 </body>
-
 </html>

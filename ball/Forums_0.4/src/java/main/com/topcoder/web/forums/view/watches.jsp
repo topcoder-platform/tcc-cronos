@@ -6,10 +6,11 @@
                  java.util.Iterator"
         %>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<%@ taglib uri="tc-webtags.tld" prefix="tc-webtag" %>
-<%@ page contentType="text/html;charset=utf-8" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
+<%@ taglib uri="tc-webtags.tld" prefix="tc-webtag" %>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="fmt" %>
 <%@ taglib uri="/orpheus" prefix="orpheus" %>
@@ -21,37 +22,25 @@
 <tc-webtag:useBean id="unreadCategories" name="unreadCategories" type="java.lang.String" toScope="request"/>
 <jsp:useBean id="sessionInfo" class="com.topcoder.web.common.SessionInfo" scope="request"/>
 
-<% 	String timezone = (String) request.getAttribute("timezone");
-	ReadTracker readTracker = forumFactory.getReadTracker(); %>
+<%     String timezone = (String) request.getAttribute("timezone");
+    ReadTracker readTracker = forumFactory.getReadTracker(); %>
 
 <html>
 <head>
-    <link type="image/x-icon" rel="shortcut icon" href="/i/favicon.ico"/>
+    <link rel="icon" type="image/png" href="/i/favicon.png">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    
-    <title>The Ball: Forums</title>
+    <title>The Ball :: Forums</title>
     <jsp:include page="script.jsp"/>
-    <jsp:include page="/style.jsp">
+    <jsp:include page="style.jsp">
         <jsp:param name="key" value="ball_forums"/>
     </jsp:include>
 </head>
 
-<body>
-
-<jsp:include page="top.jsp">
-    <jsp:param name="level1" value=""/>
-</jsp:include>
-
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-    <tr valign="top">
-
-        <!-- Center Column Begins -->
-        <td width="100%" class="rtBody">
-
-            <jsp:include page="page_title.jsp">
-                <jsp:param name="image" value="forums"/>
-                <jsp:param name="title" value="Watches"/>
-            </jsp:include>
+<body id="page">
+<div id="container">
+    <c:set var="subbar" value="forums" scope="page"/>
+    <%@ include file="includes/header.jsp" %>
+    <div id="wrap">
 
             <div class="topLinksL">
                 <span class="rtbc"><a href="?module=Main" class="rtbcLink">Forums</a> <img src="/i/interface/exp_w.gif" align="absmiddle"/> My Watches </span><br><br>
@@ -61,13 +50,13 @@
                 <A href="?module=History" class="rtbcLink">My Post History</A>&#160;&#160;|&#160;&#160;<b>My Watches</b>&#160;&#160;|&#160;&#160;<A href="?module=Settings" class="rtbcLink">User
                 Settings</A><br/>
             </div><br><br>
-	
+    
             All watch updates will be emailed to your email address: <b><%=user.getEmail()%></b>.
             Watches on content that hasn't been updated for more than 90 days will be automatically removed from your
             list.
             To prevent any watch from being automatically deleted, toggle the "Save" option.<br><br>
             
-            <%	if (watchManager.getTotalWatchCount(user, JiveConstants.THREAD) > 0) { %>
+            <%    if (watchManager.getTotalWatchCount(user, JiveConstants.THREAD) > 0) { %>
             <form name="form1" method="post" action="<%=sessionInfo.getServletPath()%>">
                 <tc-webtag:hiddenInput name="module" value="Watches"/>
                 <tc-webtag:hiddenInput name="<%=ForumConstants.WATCH_TYPE%>" value="<%=String.valueOf(JiveConstants.THREAD)%>"/>
@@ -116,15 +105,10 @@
                     <input type="image" src="/i/roundTables/update.gif" alt="Update" onclick="form1.<%=ForumConstants.STATUS%>.value='<%=ForumConstants.STATUS_UPDATE%>'"/>
                 </div>
             </form>
-            <%	} %>
-        </td>
-        <!-- Center Column Ends -->
+            <%    } %>
 
-    </tr>
-</table>
-
-<%@ include file="foot.jsp" %>
-
+    </div>
+</div>
+<%@ include file="includes/footer.jsp" %>
 </body>
-
 </html>

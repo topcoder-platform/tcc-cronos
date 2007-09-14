@@ -16,9 +16,10 @@
 <%@ page import="com.topcoder.web.forums.controller.ForumsUtil" %>
 <%@ page import="com.topcoder.web.forums.model.Paging" %>
 <%@ page import="java.util.Iterator" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <%@ taglib uri="tc-webtags.tld" prefix="tc-webtag" %>
-<%@ page contentType="text/html;charset=utf-8" %>
 
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="fmt" %>
@@ -96,22 +97,11 @@
 
 </head>
 
-<body>
-
-<jsp:include page="top.jsp">
-    <jsp:param name="level1" value=""/>
-</jsp:include>
-
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr valign="top">
-
-<!-- Center Column Begins -->
-<td width="100%" class="rtBody">
-
-<jsp:include page="page_title.jsp">
-    <jsp:param name="image" value="forums"/>
-    <jsp:param name="title" value="&#160;"/>
-</jsp:include>
+<body id="page">
+<div id="container">
+    <c:set var="subbar" value="forums" scope="page"/>
+    <%@ include file="includes/header.jsp" %>
+    <div id="wrap">
 
 <table cellpadding="0" cellspacing="0" class="rtbcTable" border="0">
     <tr valign="top">
@@ -268,7 +258,7 @@
     </tc-webtag:iterator>
 </table>
 
-<table cellpadding="0" cellspacing="0" class="rtbcTable">
+<table cellpadding="0" cellspacing="0" width="100%">
     <tr>
         <td>A thread with a <b>bold title</b> indicates it is either a new thread or has new
             postings. <%if (user != null) {%><A href="?module=ThreadList&<%=ForumConstants.FORUM_ID%>=<%=forum.getID()%>&<%=ForumConstants.MARK_READ%>=t" class="rtbcLink">(Mark
@@ -285,14 +275,8 @@
 
 <div style="clear:both;">&nbsp;</div>
 
-</td>
-<!-- Center Column Ends -->
-
-</tr>
-</table>
-
-<%@ include file="foot.jsp" %>
-
+    </div>
+</div>
+<%@ include file="includes/footer.jsp" %>
 </body>
-
 </html>

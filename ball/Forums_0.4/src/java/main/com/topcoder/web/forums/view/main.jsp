@@ -11,8 +11,9 @@
                  java.util.Iterator"
         %>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<%@ page contentType="text/html;charset=utf-8" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <%@ taglib uri="tc-webtags.tld" prefix="tc-webtag" %>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="fmt" %>
@@ -32,16 +33,13 @@
 
 <html>
 <head>
-
     <link rel="icon" type="image/png" href="/i/favicon.png">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
     <title>The Ball :: Forums</title>
     <jsp:include page="script.jsp"/>
     <jsp:include page="style.jsp">
         <jsp:param name="key" value="ball_forums"/>
     </jsp:include>
-
 </head>
 
 <body id="page">
@@ -200,24 +198,17 @@
 </tc-webtag:iterator>
 <% } %>
 
-<table cellpadding="0" cellspacing="0" class="rtbcTable">
-    <tr>
-        <td>A forum with a <b>bold title</b> indicates it either has a new thread or has a thread with new postings.</td>
-        <td align="right">
-            <a href="?module=RSS&<%=ForumConstants.CATEGORY_ID%>=1"><img alt="RSS" border="none" src="/i/interface/btn_rss.gif"/></a>
-        </td>
-    </tr>
-    <tr>
-        <td>The five most recent forums are displayed for each category other than Round Tables. Click a category's name
-            to view its complete forum list.</td>
-        <td></td>
-    </tr>
-</table>
+<div align="left">
+    <div style="float: right;">
+        <a href="?module=RSS&<%=ForumConstants.CATEGORY_ID%>=1"><img alt="RSS" border="none" src="/i/interface/btn_rss.gif"/></a>
+    </div>
+    A forum with a <b>bold title</b> indicates it either has a new thread or has a thread with new postings. The five most recent forums are displayed for each category other than Round Tables. Click a category's name to view its complete forum list.
+</div>
 
 <div style="clear:both;">&nbsp;</div>
 
     </div>
 </div>
-<%@ include file="foot.jsp" %>
+<%@ include file="includes/footer.jsp" %>
 </body>
 </html>

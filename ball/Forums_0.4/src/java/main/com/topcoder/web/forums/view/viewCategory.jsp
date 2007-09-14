@@ -15,9 +15,10 @@
 <%@ page import="com.topcoder.web.forums.controller.ForumsUtil" %>
 <%@ page import="java.util.Hashtable" %>
 <%@ page import="java.util.Iterator" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <%@ taglib uri="tc-webtags.tld" prefix="tc-webtag" %>
-<%@ page contentType="text/html;charset=utf-8" %>
 
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="fmt" %>
@@ -30,8 +31,8 @@
 <tc-webtag:useBean id="paginator" name="paginator" type="com.jivesoftware.forum.action.util.Paginator" toScope="request"/>
 <tc-webtag:useBean id="unreadCategories" name="unreadCategories" type="java.lang.String" toScope="request"/>
 
-<%	String timezone = (String) request.getAttribute("timezone");
-	User user = (User) request.getAttribute("user");
+<%    String timezone = (String) request.getAttribute("timezone");
+    User user = (User) request.getAttribute("user");
     ResultFilter resultFilter = (ResultFilter) request.getAttribute("resultFilter");
     ReadTracker readTracker = forumFactory.getReadTracker();
     WatchManager watchManager = forumFactory.getWatchManager();
@@ -97,10 +98,11 @@
 %>
 
 <html>
+
 <head>
     <link type="image/x-icon" rel="shortcut icon" href="/i/favicon.ico"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    
+
     <title>The Ball: Forums</title>
     <jsp:include page="script.jsp"/>
     <jsp:include page="/style.jsp">
@@ -109,22 +111,11 @@
 
 </head>
 
-<body>
-
-<jsp:include page="top.jsp">
-    <jsp:param name="level1" value=""/>
-</jsp:include>
-
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-    <tr valign="top">
-
-        <!-- Center Column Begins -->
-        <td width="100%" class="rtBody">
-
-            <jsp:include page="page_title.jsp">
-                <jsp:param name="image" value="forums"/>
-                <jsp:param name="title" value="&#160;"/>
-            </jsp:include>
+<body id="page">
+<div id="container">
+    <c:set var="subbar" value="forums" scope="page"/>
+    <%@ include file="includes/header.jsp" %>
+    <div id="wrap">
 
         <table cellpadding="0" cellspacing="0" class="rtbcTable">
             <tr>
@@ -135,24 +126,24 @@
                     <jsp:include page="searchHeader.jsp"/>
                 </td>
                 <td align="right" nowrap="nowrap" valign="top">
-                	<%	boolean isAuthorized = forumCategory.isAuthorized(Permissions.SYSTEM_ADMIN) || 
-        					forumCategory.isAuthorized(ForumPermissions.FORUM_CATEGORY_ADMIN);
-        				boolean canModifyForums = "true".equals(forumCategory.getProperty(ForumConstants.PROPERTY_MODIFY_FORUMS)) && isAuthorized;
-        				if (canModifyForums) {	%>
-        					<A href="?module=CreateForum&<%=ForumConstants.CATEGORY_ID%>=<%=forumCategory.getID()%>&<%=ForumConstants.POST_MODE%>=New" class="rtbcLink">Create Forum</A>&#160; |&#160; 
-        			<%	} %>
+                    <%    boolean isAuthorized = forumCategory.isAuthorized(Permissions.SYSTEM_ADMIN) || 
+                            forumCategory.isAuthorized(ForumPermissions.FORUM_CATEGORY_ADMIN);
+                        boolean canModifyForums = "true".equals(forumCategory.getProperty(ForumConstants.PROPERTY_MODIFY_FORUMS)) && isAuthorized;
+                        if (canModifyForums) {    %>
+                            <A href="?module=CreateForum&<%=ForumConstants.CATEGORY_ID%>=<%=forumCategory.getID()%>&<%=ForumConstants.POST_MODE%>=New" class="rtbcLink">Create Forum</A>&#160; |&#160; 
+                    <%    } %>
                     <A href="?module=History" class="rtbcLink">My Post History</A>&#160;&#160;|&#160;&#160;<A href="?module=Watches" class="rtbcLink">My Watches</A>&#160;&#160;|&#160;&#160;<A href="?module=Settings" class="rtbcLink">User Settings</A><br/>
                 </td>
             </tr>
             <tr>
-            	<%	int colspan = (paginator.getNumPages () > 1) ? 2 : 3; %>
-            	<td colspan="<%=colspan%>" style="padding-bottom:3px;"><b>
+                <%    int colspan = (paginator.getNumPages () > 1) ? 2 : 3; %>
+                <td colspan="<%=colspan%>" style="padding-bottom:3px;"><b>
                 <tc-webtag:iterator id="category" type="com.jivesoftware.forum.ForumCategory" iterator='<%=ForumsUtil.getCategoryTree(forumCategory)%>'>
                     <% if (category.getID() != forumCategory.getID()) { %>
-                    	<A href="?module=Category&<%=ForumConstants.CATEGORY_ID%>=<%=category.getID()%>" class="rtbcLink"><%=category.getName()%></A>
-                    	<img src="/i/interface/exp_w.gif" align="absmiddle"/>
+                        <A href="?module=Category&<%=ForumConstants.CATEGORY_ID%>=<%=category.getID()%>" class="rtbcLink"><%=category.getName()%></A>
+                        <img src="/i/interface/exp_w.gif" align="absmiddle"/>
                     <% } else { %>
-                    	<%=category.getName()%>
+                        <%=category.getName()%>
                     <% } %>
                 </tc-webtag:iterator>
             </b></td>
@@ -188,7 +179,7 @@
         <td class="rtHeader" width="100%"><a href="<%=forumLink%>" class="rtbcLink">Forum</a></td>
         <td class="rtHeader"><div style="width:80px;">T./M.</div></td>
         <td class="rtHeader" align="center" colspan="2" nowrap="nowrap">
-        	<div style="width:320px;"><a href="<%=dateLink%>" class="rtbcLink">Last Post</a></div>
+            <div style="width:320px;"><a href="<%=dateLink%>" class="rtbcLink">Last Post</a></div>
         </td>
     </tr>
     <tc-webtag:iterator id="forum" type="com.jivesoftware.forum.Forum" iterator='<%=(Iterator)request.getAttribute("forums")%>'>
@@ -202,11 +193,11 @@
                 <A href="?module=ThreadList&<%=ForumConstants.FORUM_ID%>=<%=forum.getID()%>" class="<%=trackerClass%>"><%=forum.getName()%></A>
                 <% } %>
                 <% if (forum.getDescription() != null) { %><br/>
-	                <div class="rtDescIndent"><%=forum.getDescription()%>
-	                	<%	if (canModifyForums) { %>
-	                	(<A href="?module=CreateForum&<%=ForumConstants.CATEGORY_ID%>=<%=forumCategory.getID()%>&<%=ForumConstants.FORUM_ID%>=<%=forum.getID()%>&<%=ForumConstants.POST_MODE%>=Edit" class="rtbcLink">Edit</A>)
-	                	<%	} %>
-	                </div>
+                    <div class="rtDescIndent"><%=forum.getDescription()%>
+                        <%    if (canModifyForums) { %>
+                        (<A href="?module=CreateForum&<%=ForumConstants.CATEGORY_ID%>=<%=forumCategory.getID()%>&<%=ForumConstants.FORUM_ID%>=<%=forum.getID()%>&<%=ForumConstants.POST_MODE%>=Edit" class="rtbcLink">Edit</A>)
+                        <%    } %>
+                    </div>
                 <% } %>
             </td>
             <td class="rtThreadCell" style="width: 80px;"><%=forum.getThreadCount()%>&#160;/&#160;<%=forum.getMessageCount()%></td>
@@ -217,7 +208,7 @@
             </td>
             <% if (message.getUser() != null) { %>
             <td class="rtThreadCell" style="width: 100px;">
-            	<tc-webtag:handle id="<%=message.getUser().getID()%>"/>
+                <tc-webtag:handle id="<%=message.getUser().getID()%>"/>
             </td>
             <% } else { %>
             <td class="rtThreadCell" style="width: 100px;">&nbsp;</td>
@@ -235,7 +226,7 @@
         <td class="rtHeader" width="100%"><a href="<%=forumLink%>" class="rtbcLink">Category</a></td>
         <td class="rtHeader"><div style="width:80px;"><% if (forumCategory.getID() != 1) { %>T./M.<% } %></div></td>
         <td class="rtHeader" align="center" colspan="2" nowrap="nowrap">
-        	<div style="width:320px;"><a href="<%=dateLink%>" class="rtbcLink">Last Post</a></div>
+            <div style="width:320px;"><a href="<%=dateLink%>" class="rtbcLink">Last Post</a></div>
         </td>
     </tr>
     <tc-webtag:iterator id="category" type="com.jivesoftware.forum.ForumCategory" iterator='<%=(Iterator)request.getAttribute("categories")%>'>
@@ -265,7 +256,7 @@
             </td>
             <% if (message.getUser() != null) { %>
             <td class="rtThreadCell" style="width: 100px;">
-            	<tc-webtag:handle id="<%=message.getUser().getID()%>"/>
+                <tc-webtag:handle id="<%=message.getUser().getID()%>"/>
             </td>
             <% } else { %>
             <td class="rtThreadCell" style="width: 100px;">&nbsp;</td>
@@ -279,10 +270,10 @@
 </table>
 <% } %>
 
-<%	if (paginator.getNumPages () > 1) { %> 
+<%    if (paginator.getNumPages () > 1) { %> 
 <table cellpadding="0" cellspacing="0" class="rtbcTable">
     <tr>
-    	<td colspan="<%=colspan%>" style="padding-bottom:3px;"><b>
+        <td colspan="<%=colspan%>" style="padding-bottom:3px;"><b>
         <tc-webtag:iterator id="category" type="com.jivesoftware.forum.ForumCategory" iterator='<%=ForumsUtil.getCategoryTree(forumCategory)%>'>
             <% if (category.getID() != forumCategory.getID()) { %>
             <A href="?module=Category&<%=ForumConstants.CATEGORY_ID%>=<%=category.getID()%>" class="rtbcLink"><%=category.getName()%></A>
@@ -313,43 +304,36 @@
             &#160;&#160;&#160;<A href="<%=nextLink%>" class="rtbcLink">NEXT ></A>
             <% } %>
         </b></td></tr>
-    	<% } %>
-    </tr>
-</table>
-<%	} %>
-
-<table cellpadding="0" cellspacing="0" class="rtbcTable">
-    <tr>
-        <% if (forumCategory.getID() != 1) { %>
-        <td>A forum with a <b>bold title</b> indicates it either has a new thread or has a thread with new
-            postings. <%if (user != null) {%><A href="?module=Category&<%=ForumConstants.CATEGORY_ID%>=<%=forumCategory.getID()%>&<%=ForumConstants.MARK_READ%>=t" class="rtbcLink">(Mark
-            all as read)</A><%}%></td>
-        <% } else { %>
-        <td>A category with a <b>bold title</b> in the left navigation indicates it has a forum with new
-            postings.</td>
         <% } %>
-        <td align="right">
-        	<%	if (paginator.getNumPages () > 1) { %> 
-        	<div style="margin: 2px 0px 0px 0px;">
-            	<a href="?module=RSS&<%=ForumConstants.CATEGORY_ID%>=<%=forumCategory.getID()%>"><img alt="RSS" border="none" src="/i/interface/btn_rss.gif"/></a>
-            </div>
-            <%	} else { %>
-            	<a href="?module=RSS&<%=ForumConstants.CATEGORY_ID%>=<%=forumCategory.getID()%>"><img alt="RSS" border="none" src="/i/interface/btn_rss.gif"/></a>
-            <% 	} %>
-        </td>
     </tr>
 </table>
+<%    } %>
+
+<div align="left">
+    <%    if (paginator.getNumPages () > 1) { %> 
+        <div style="float: right;">
+            <a href="?module=RSS&<%=ForumConstants.CATEGORY_ID%>=<%=forumCategory.getID()%>"><img alt="RSS" border="none" src="/i/interface/btn_rss.gif"/></a>
+        </div>
+    <%    } else { %>
+        <div style="float: right;">
+            <a href="?module=RSS&<%=ForumConstants.CATEGORY_ID%>=<%=forumCategory.getID()%>"><img alt="RSS" border="none" src="/i/interface/btn_rss.gif"/></a>
+        </div>
+    <%     } %>
+
+<% if (forumCategory.getID() != 1) { %>
+    A forum with a <b>bold title</b> indicates it either has a new thread or has a thread with new
+    postings. <%if (user != null) {%><A href="?module=Category&<%=ForumConstants.CATEGORY_ID%>=<%=forumCategory.getID()%>&<%=ForumConstants.MARK_READ%>=t">(Mark
+    all as read)</A><%}%>
+<% } else { %>
+    A category with a <b>bold title</b> in the left navigation indicates it has a forum with new
+    postings.
+<% } %>
+</div>
 
 <div style="clear:both;">&nbsp;</div>
 
-</td>
-<!-- Center Column Ends -->
-
-</tr>
-</table>
-
-<%@ include file="foot.jsp" %>
-
+    </div>
+</div>
+<%@ include file="includes/footer.jsp" %>
 </body>
-
 </html>

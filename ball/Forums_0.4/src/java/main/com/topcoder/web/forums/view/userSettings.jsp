@@ -6,10 +6,11 @@
                  java.util.*"
 %>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<%@ taglib uri="tc-webtags.tld" prefix="tc-webtag" %>
-<%@ page contentType="text/html;charset=utf-8" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
+<%@ taglib uri="tc-webtags.tld" prefix="tc-webtag" %>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="fmt" %>
 <%@ taglib uri="/orpheus" prefix="orpheus" %>
@@ -26,23 +27,13 @@
 
 <html>
 <head>
-    <link type="image/x-icon" rel="shortcut icon" href="/i/favicon.ico"/>
+    <link rel="icon" type="image/png" href="/i/favicon.png">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
-<title>The Ball: Forums</title>
-    <jsp:include page="script.jsp" />
-        <jsp:include page="/style.jsp">
-          <jsp:param name="key" value="ball_forums"/>
-        </jsp:include>
-
-</head>
-
-<body onload="toggleTabs('<%=section%>')">
-
-<jsp:include page="top.jsp" >
-    <jsp:param name="level1" value=""/>
-</jsp:include>
-
+    <title>The Ball :: Forums</title>
+    <jsp:include page="script.jsp"/>
+    <jsp:include page="style.jsp">
+        <jsp:param name="key" value="ball_forums"/>
+    </jsp:include>
 <script type="text/javascript">
 <!--
 var section;
@@ -72,17 +63,13 @@ function toggleTabs(id) {
 }
 //-->
 </script>
+</head>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-   <tr valign="top">
-
-<!-- Center Column Begins -->
-        <td width="100%" class="rtBody">
-
-            <jsp:include page="page_title.jsp" >
-                <jsp:param name="image" value="forums"/>
-                <jsp:param name="title" value="User Settings"/>
-            </jsp:include>
+<body id="page">
+<div id="container">
+    <c:set var="subbar" value="forums" scope="page"/>
+    <%@ include file="includes/header.jsp" %>
+    <div id="wrap">
 
 <table cellpadding="0" cellspacing="0" class="rtbcTable">
 <tr>
@@ -144,11 +131,11 @@ function toggleTabs(id) {
               forumRange = Integer.parseInt(user.getProperty("jiveForumRange"));
           } catch (Exception ignored) {}
           for (int i=0; i<forumCounts.length; i++) {
-	          if (forumCounts[i] == forumRange) { %>
-	              <option value="<%=forumCounts[i]%>" selected><%=forumCounts[i]%></option>
-	      <%  } else { %>
-	              <option value="<%=forumCounts[i]%>"><%=forumCounts[i]%></option>
-	      <%  }
+              if (forumCounts[i] == forumRange) { %>
+                  <option value="<%=forumCounts[i]%>" selected><%=forumCounts[i]%></option>
+          <%  } else { %>
+                  <option value="<%=forumCounts[i]%>"><%=forumCounts[i]%></option>
+          <%  }
           } %>
       </select>
       </td>
@@ -213,7 +200,7 @@ function toggleTabs(id) {
       </td>
    </tr>
    <tr id="bodyGen6">
-      <td class="rtThreadCell" nowrap="nowrap"><strong>Messages/Categories per Search page:</strong></td>
+      <td class="rtThreadCell" nowrap="nowrap"><strong>Messages/Categories<br />per Search page:</strong></td>
       <td class="rtThreadCell">
         <select size="1" name="resultsPerSearchPage">
         <%  int[] searchCounts = { 10, 20, 30, 50 };
@@ -284,53 +271,53 @@ function toggleTabs(id) {
       </td>
    </tr>
    <tr id="bodyGen9">
-	  <td class="rtThreadCell" nowrap="nowrap"><strong>Collapse read messages:</strong></td>
-	  <td class="rtThreadCell">
-	  	  <input name="collapseRead" value="true" id="collapseRead" type="checkbox"
-       		  <%= ("false".equals(user.getProperty("collapseRead"))) ? "" : "checked"%>
-       		  onclick="document.form1.collapseReadShowReplied.disabled=!this.checked;
-       		  		if (document.form1.collapseReadShowReplied.disabled) {
-       		  			document.form1.collapseReadShowReplied.checked=false};">
-		  > <select size="1" name="collapseReadDays">
-	      <%  int[] arrCollapseReadDays = {0,1,2,3,7,15,30};
-	          int collapseReadDays = ForumConstants.DEFAULT_COLLAPSE_READ_DAYS;
-	          try {
-	              collapseReadDays = Integer.parseInt(user.getProperty("collapseReadDays"));
-	          } catch (Exception ignored) {}
-	          for (int i=0; i<arrCollapseReadDays.length; i++) {
-	            if (arrCollapseReadDays[i] == collapseReadDays) { %>
-	               <option value="<%=arrCollapseReadDays[i]%>" selected><%=arrCollapseReadDays[i]%></option>
-	         <%   } else { %>
-	               <option value="<%=arrCollapseReadDays[i]%>"><%=arrCollapseReadDays[i]%></option>
-	         <%   }
-	         } %>
-	      </select>
-	      days old in threads with
-	      <select size="1" name="collapseReadPosts">
-	      <%  int[] arrCollapseReadPosts = {0,10,25,50,100,250,500};
-	          int collapseReadPosts = ForumConstants.DEFAULT_COLLAPSE_READ_POSTS;
-	          try {
-	             collapseReadPosts = Integer.parseInt(user.getProperty("collapseReadPosts"));
-	          } catch (Exception ignored) {}
-	          for (int i=0; i<arrCollapseReadPosts.length; i++) {
-	            if (arrCollapseReadPosts[i] == collapseReadPosts) { %>
-	               <option value="<%=arrCollapseReadPosts[i]%>" selected><%=arrCollapseReadPosts[i]%></option>
-	         <%   } else { %>
-	               <option value="<%=arrCollapseReadPosts[i]%>"><%=arrCollapseReadPosts[i]%></option>
-	         <%   }
-	         } %>
-	      </select>
-	      or more messages (threaded view only)
+      <td class="rtThreadCell" nowrap="nowrap"><strong>Collapse read messages:</strong></td>
+      <td class="rtThreadCell">
+            <input name="collapseRead" value="true" id="collapseRead" type="checkbox"
+                 <%= ("false".equals(user.getProperty("collapseRead"))) ? "" : "checked"%>
+                 onclick="document.form1.collapseReadShowReplied.disabled=!this.checked;
+                         if (document.form1.collapseReadShowReplied.disabled) {
+                             document.form1.collapseReadShowReplied.checked=false};">
+          > <select size="1" name="collapseReadDays">
+          <%  int[] arrCollapseReadDays = {0,1,2,3,7,15,30};
+              int collapseReadDays = ForumConstants.DEFAULT_COLLAPSE_READ_DAYS;
+              try {
+                  collapseReadDays = Integer.parseInt(user.getProperty("collapseReadDays"));
+              } catch (Exception ignored) {}
+              for (int i=0; i<arrCollapseReadDays.length; i++) {
+                if (arrCollapseReadDays[i] == collapseReadDays) { %>
+                   <option value="<%=arrCollapseReadDays[i]%>" selected><%=arrCollapseReadDays[i]%></option>
+             <%   } else { %>
+                   <option value="<%=arrCollapseReadDays[i]%>"><%=arrCollapseReadDays[i]%></option>
+             <%   }
+             } %>
+          </select>
+          days old in threads with
+          <select size="1" name="collapseReadPosts">
+          <%  int[] arrCollapseReadPosts = {0,10,25,50,100,250,500};
+              int collapseReadPosts = ForumConstants.DEFAULT_COLLAPSE_READ_POSTS;
+              try {
+                 collapseReadPosts = Integer.parseInt(user.getProperty("collapseReadPosts"));
+              } catch (Exception ignored) {}
+              for (int i=0; i<arrCollapseReadPosts.length; i++) {
+                if (arrCollapseReadPosts[i] == collapseReadPosts) { %>
+                   <option value="<%=arrCollapseReadPosts[i]%>" selected><%=arrCollapseReadPosts[i]%></option>
+             <%   } else { %>
+                   <option value="<%=arrCollapseReadPosts[i]%>"><%=arrCollapseReadPosts[i]%></option>
+             <%   }
+             } %>
+          </select>
+          or more messages (threaded view only)
       </td>
    </tr>
    <tr id="bodyGen10">
-	  <td class="rtThreadCell" nowrap="nowrap"></td>
-	  <td class="rtThreadCell">
-	  	  <input name="collapseReadShowReplied" value="true" id="collapseReadShowReplied" type="checkbox"
-        	  <%= ("false".equals(user.getProperty("collapseReadShowReplied"))) ? "" : "checked"%>
-        	  <%= ("false".equals(user.getProperty("collapseRead"))) ? "disabled" : "" %>>
-	  	  Do not collapse posts with new replies
-	  </td>
+      <td class="rtThreadCell" nowrap="nowrap">&nbsp;</td>
+      <td class="rtThreadCell">
+            <input name="collapseReadShowReplied" value="true" id="collapseReadShowReplied" type="checkbox"
+              <%= ("false".equals(user.getProperty("collapseReadShowReplied"))) ? "" : "checked"%>
+              <%= ("false".equals(user.getProperty("collapseRead"))) ? "disabled" : "" %>>
+            Do not collapse posts with new replies
+      </td>
    </tr>
    <tr id="bodyGen11">
       <td class="rtThreadCell" nowrap="nowrap"><strong>Show previous/next threads:</strong></td>
@@ -347,23 +334,23 @@ function toggleTabs(id) {
    <tr id="bodyGen12">
       <td class="rtThreadCell" nowrap="nowrap"><strong>Time zone:</strong></td>
       <td class="rtThreadCell">
-      	<select size="1" name="timezone">
-        <%	ArrayList<String> timezones = ForumsUtil.getTimezones();
-        	String timezone = ForumConstants.DEFAULT_TIMEZONE;
-	        try {
-	            timezone = user.getProperty("timezone");
-	            if (timezone == null) {
-	            	timezone = ForumConstants.DEFAULT_TIMEZONE;
-	            }
-	        } catch (Exception ignored) {}
-	        for (int i=0; i<timezones.size(); i++) {
-	            if (timezones.get(i).equals(timezone)) { %>
-	              <option value="<%=timezones.get(i)%>" selected><%=timezones.get(i)%></option>
-	        <%  } else { %>
-	              <option value="<%=timezones.get(i)%>"><%=timezones.get(i)%></option>
-	        <%  }
-        	} %>
-       	</select>
+          <select size="1" name="timezone">
+        <%    ArrayList<String> timezones = ForumsUtil.getTimezones();
+            String timezone = ForumConstants.DEFAULT_TIMEZONE;
+            try {
+                timezone = user.getProperty("timezone");
+                if (timezone == null) {
+                    timezone = ForumConstants.DEFAULT_TIMEZONE;
+                }
+            } catch (Exception ignored) {}
+            for (int i=0; i<timezones.size(); i++) {
+                if (timezones.get(i).equals(timezone)) { %>
+                  <option value="<%=timezones.get(i)%>" selected><%=timezones.get(i)%></option>
+            <%  } else { %>
+                  <option value="<%=timezones.get(i)%>"><%=timezones.get(i)%></option>
+            <%  }
+            } %>
+           </select>
       </td>
    </tr>
    <tr id="bodyWatch2">
@@ -450,7 +437,7 @@ function toggleTabs(id) {
          } %>
       </select>
       % or higher rating with
-      <select size="1" name="ratingHighlightMinCount">
+      <br /><select size="1" name="ratingHighlightMinCount">
       <%  int[] ratingHltCnts = { 1, 5, 10, 20, 50, 100 };
           int ratingHltCnt = ForumConstants.DEFAULT_RATING_HIGHLIGHT_MIN_COUNT;
           try {
@@ -485,7 +472,7 @@ function toggleTabs(id) {
          } %>
       </select>
       % or lower rating with
-      <select size="1" name="ratingCollapseMinCount">
+      <br /><select size="1" name="ratingCollapseMinCount">
       <%  int[] ratingCollapseCnts = { 0, 1, 5, 10, 20, 50, 100 };
           int ratingCollapseCnt = ForumConstants.DEFAULT_RATING_COLLAPSE_MIN_COUNT;
           try {
@@ -500,7 +487,7 @@ function toggleTabs(id) {
          } %>
       </select>
       or more votes in threads with
-      <select size="1" name="ratingCollapseMinMessages">
+      <br /><select size="1" name="ratingCollapseMinMessages">
       <%  int[] ratingCollapseMsgs = { 1, 5, 10, 25, 50, 100 };
           int ratingCollapseMsg = ForumConstants.DEFAULT_RATING_COLLAPSE_MIN_MESSAGES;
           try {
@@ -518,21 +505,16 @@ function toggleTabs(id) {
       </td>
    </tr>
 </table>
-<span id="infoRate">TopCoder provides the ability to rate posts.  You may click the [+] next to the thread title if you think it is of high quality.   Similarly, you may click the [-] if it is of low quality.  We recommend that you also post your comments if you agree or disagree with the content of a post. Also, when ratings are enabled, you may click on a post's subject to expand or collapse the post.</span>
 <div align="right">
 <input type="image" src="/i/roundTables/save.gif" alt="Save"/>
-</div></form>
+</div>
+<span id="infoRate">TopCoder provides the ability to rate posts.  You may click the [+] next to the thread title if you think it is of high quality.   Similarly, you may click the [-] if it is of low quality.  We recommend that you also post your comments if you agree or disagree with the content of a post. Also, when ratings are enabled, you may click on a post's subject to expand or collapse the post.</span>
+</form>
 
 <div style="clear:both;">&nbsp;</div>
 
-</td>
-<!-- Center Column Ends -->
-
-    </tr>
-</table>
-
-<%@ include file="foot.jsp" %>
-
+    </div>
+</div>
+<%@ include file="includes/footer.jsp" %>
 </body>
-
 </html>
