@@ -9,14 +9,14 @@
     <property name="package" value="com.cronos.onlinereview.phases" />
     <property name="packagedir" value="com/cronos/onlinereview/phases" />
     <property name="distfilename" value="online_review_phases" />
-    <property name="component_version" value="1.0.2" />
+    <property name="component_version" value="1.0.5" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src" />
     <property name="tcs_libdir" value="lib/tcs" />
     <property name="ext_libdir" value="lib" />
-    <property name="cronos_libdir" value="../lib" />
+    <property name="cronos_libdir" value="${tcs_libdir}" />
     <property name="jar_tcs_libdir" value="lib/tcs" />
     <property name="jar_ext_libdir" value="lib" />
     <property name="docsdir" value="docs" />
@@ -43,7 +43,7 @@
     <property name="build_tcsdistdir" value="${build_distdir}/${distfilename}-${component_version}" />
 
     <!-- EXECUTION TAGS -->
-    <property name="debug" value="off" />
+    <property name="debug" value="on" />
     <property name="verbose" value="no" />
 
     <!-- COMPONENT DISTRIBUTION STRUCTURE -->
@@ -70,6 +70,11 @@
     <property name="docpackage.jar" value="${distfilename}_docs.jar" />
     
     <!-- TCS Dependencies -->
+    <property name="logging_wrapper.version" value="1.2" />
+    <property name="logging_wrapper.jar.name" value="logging_wrapper.jar" />
+    <property name="logging_wrapper.path" value="logging_wrapper/${logging_wrapper.version}" />
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/${logging_wrapper.path}/${logging_wrapper.jar.name}" />
+	
     <property name="configmanager.version" value="2.1.5"/>
     <property name="configmanager.jar.name" value="configuration_manager.jar"/>
     <property name="configmanager.path" value="configuration_manager/${configmanager.version}"/>
@@ -115,12 +120,12 @@
     <property name="project_phases.path" value="project_phases/${project_phases.version}"/>
     <property name="project_phases.jar" value="${tcs_libdir}/${project_phases.path}/${project_phases.jar.name}"/>
 
-    <property name="phase_management.version" value="1.0.2"/>
+    <property name="phase_management.version" value="1.0.3"/>
     <property name="phase_management.jar.name" value="phase_management.jar"/>
     <property name="phase_management.path" value="phase_management/${phase_management.version}"/>
     <property name="phase_management.jar" value="${tcs_libdir}/${phase_management.path}/${phase_management.jar.name}"/>
     
-    <property name="resource_management.version" value="1.0.1"/>
+    <property name="resource_management.version" value="1.1.1"/>
     <property name="resource_management.jar.name" value="resource_management.jar"/>
     <property name="resource_management.path" value="resource_management/${resource_management.version}"/>
     <property name="resource_management.jar" value="${tcs_libdir}/${resource_management.path}/${resource_management.jar.name}"/>
@@ -130,7 +135,7 @@
     <property name="review_score_aggregator.path" value="review_score_aggregator/${review_score_aggregator.version}"/>
     <property name="review_score_aggregator.jar" value="${tcs_libdir}/${review_score_aggregator.path}/${review_score_aggregator.jar.name}"/>
     
-    <property name="deliverable_management.version" value="1.0"/>
+    <property name="deliverable_management.version" value="1.0.3"/>
     <property name="deliverable_management.jar.name" value="deliverable_management.jar"/>
     <property name="deliverable_management.path" value="deliverable_management/${deliverable_management.version}"/>
     <property name="deliverable_management.jar" value="${tcs_libdir}/${deliverable_management.path}/${deliverable_management.jar.name}"/>
@@ -140,12 +145,12 @@
     <property name="review_management.path" value="review_management/${review_management.version}"/>
     <property name="review_management.jar" value="${tcs_libdir}/${review_management.path}/${review_management.jar.name}"/>
     
-    <property name="project_management.version" value="1.0"/>
+    <property name="project_management.version" value="1.0.1"/>
     <property name="project_management.jar.name" value="project_management.jar"/>
     <property name="project_management.path" value="project_management/${project_management.version}"/>
     <property name="project_management.jar" value="${tcs_libdir}/${project_management.path}/${project_management.jar.name}"/>
     
-    <property name="scorecard_management.version" value="1.0"/>
+    <property name="scorecard_management.version" value="1.0.1"/>
     <property name="scorecard_management.jar.name" value="scorecard_management.jar"/>
     <property name="scorecard_management.path" value="scorecard_management/${scorecard_management.version}"/>
     <property name="scorecard_management.jar" value="${tcs_libdir}/${scorecard_management.path}/${scorecard_management.jar.name}"/>
@@ -185,13 +190,11 @@
     <property name="mail.jar" value="${ext_libdir}/javamail/1.3.2/mail.jar"/>
     <property name="activation.jar" value="${ext_libdir}/jaf/1.0.2/activation.jar"/>
 
-    <!-- Java Locations -->
-    <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar"/>
-
     <path id="buildlibs">
         <pathelement location="${junit.jar}" />
         <pathelement location="${mail.jar}" />
         <pathelement location="${activation.jar}" />
+    	<pathelement location="${logging_wrapper.jar}" />
         <pathelement location="${configmanager.jar}" />
         <pathelement location="${id_generator.jar}" />
         <pathelement location="${data_validation.jar}" />
@@ -231,13 +234,17 @@
 
     <target name="compile">
         <mkdir dir="${build_classdir}"/>
-        <javac srcdir="${javamain}" destdir="${build_classdir}" includes="${packagedir}/**" debug="true" verbose="${verbose}">
+        <javac srcdir="${javamain}"
+               destdir="${build_classdir}"
+               includes="${packagedir}/**"
+               debug="true"
+               verbose="${verbose}"
+               >
             <classpath refid="buildlibs" />
         </javac>
     </target>
 
     <target name="compile_targets">
-        <!-- test compile against 1.3 -->
         <mkdir dir="${build_targetclassdir}"/>
         <mkdir dir="${javatests}"/>
         <javac srcdir="${javamain}"
@@ -245,8 +252,6 @@
                includes="${packagedir}/**"
 	       debug="true"
                verbose="${verbose}"
-               target="1.3"
-               bootclasspath="${java_1_3_bootclasspath}"
                extdirs=""
                >
             <classpath refid="buildlibs" />
@@ -258,8 +263,6 @@
                includes="${packagedir}/**"
 	       debug="true"
                verbose="${verbose}"
-               target="1.3"
-               bootclasspath="${java_1_3_bootclasspath}"
                extdirs=""
                >
             <classpath refid="buildlibs" />
@@ -269,7 +272,12 @@
 
     <target name="compile_tests" depends="compile">
         <mkdir dir="${build_testclassdir}"/>
-        <javac srcdir="${javatests}" destdir="${build_testclassdir}" includes="${packagedir}/**" debug="true" verbose="${verbose}">
+        <javac srcdir="${javatests}"
+               destdir="${build_testclassdir}"
+               includes="${packagedir}/**"
+               debug="true"
+               verbose="${verbose}"
+               >
             <classpath refid="test.build.classpath" />
         </javac>
     </target>
@@ -298,7 +306,7 @@
         <echo>The execution of reports is complete.  Reports are available in /${reports}</echo>
     </target>
 
-    <target name="dist" depends="compile">
+    <target name="dist" depends="clean, compile">
         <mkdir dir="${dist_lib}/${component_path}"/>
         <jar jarfile="${component.jar}" basedir="${build_classdir}" />
     </target>

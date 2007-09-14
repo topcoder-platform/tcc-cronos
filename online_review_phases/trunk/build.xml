@@ -125,7 +125,7 @@
     <property name="phase_management.path" value="phase_management/${phase_management.version}"/>
     <property name="phase_management.jar" value="${tcs_libdir}/${phase_management.path}/${phase_management.jar.name}"/>
     
-    <property name="resource_management.version" value="1.1"/>
+    <property name="resource_management.version" value="1.1.1"/>
     <property name="resource_management.jar.name" value="resource_management.jar"/>
     <property name="resource_management.path" value="resource_management/${resource_management.version}"/>
     <property name="resource_management.jar" value="${tcs_libdir}/${resource_management.path}/${resource_management.jar.name}"/>
@@ -234,10 +234,12 @@
 
     <target name="compile">
         <mkdir dir="${build_classdir}"/>
-        <javac srcdir="${javamain}" destdir="${build_classdir}" includes="${packagedir}/**" 
-        		debug="true" verbose="${verbose}"
-        		source="1.5" target="1.5"
-        >
+        <javac srcdir="${javamain}"
+               destdir="${build_classdir}"
+               includes="${packagedir}/**"
+               debug="true"
+               verbose="${verbose}"
+               >
             <classpath refid="buildlibs" />
         </javac>
     </target>
@@ -250,7 +252,6 @@
                includes="${packagedir}/**"
 	       debug="true"
                verbose="${verbose}"
-               target="1.5" source="1.5"
                extdirs=""
                >
             <classpath refid="buildlibs" />
@@ -262,7 +263,6 @@
                includes="${packagedir}/**"
 	       debug="true"
                verbose="${verbose}"
-               target="1.5" source="1.5"
                extdirs=""
                >
             <classpath refid="buildlibs" />
@@ -272,7 +272,12 @@
 
     <target name="compile_tests" depends="compile">
         <mkdir dir="${build_testclassdir}"/>
-        <javac srcdir="${javatests}" destdir="${build_testclassdir}" includes="${packagedir}/**" debug="true" verbose="${verbose}">
+        <javac srcdir="${javatests}"
+               destdir="${build_testclassdir}"
+               includes="${packagedir}/**"
+               debug="true"
+               verbose="${verbose}"
+               >
             <classpath refid="test.build.classpath" />
         </javac>
     </target>
