@@ -19,6 +19,9 @@ import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.management.deliverable.AuditedDeliverableStructure;
 import com.topcoder.management.deliverable.NamedDeliverableStructure;
 import com.topcoder.management.deliverable.persistence.PersistenceException;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * Helper class for the package
@@ -73,6 +76,9 @@ class Helper {
      */
     static final DataType DATE_TYPE = new DateType();
 
+    /** Logger instance using the class name as category */
+    private static final Log logger = LogFactory.getLog(Helper.class.getName()); 
+    
     /**
      * <p>
      * This class is a wrapper for type safe getting of values from a ResultSet
@@ -744,6 +750,7 @@ class Helper {
     static void closeConnection(Connection conn) throws PersistenceException {
         if (conn != null) {
             try {
+            	logger.log(Level.INFO, "close the connection.");
                 conn.close();
             } catch (SQLException e) {
                 throw new PersistenceException("Error occurs when closing the connection.", e);
@@ -796,6 +803,7 @@ class Helper {
     static void commitTransaction(Connection conn) throws PersistenceException {
         if (conn != null) {
             try {
+            	logger.log(Level.INFO, "commit the transaction.");
                 conn.commit();
             } catch (SQLException e) {
                 throw new PersistenceException("Error occurs when doing commit.", e);
@@ -813,6 +821,7 @@ class Helper {
     static void rollBackTransaction(Connection conn) throws PersistenceException {
         if (conn != null) {
             try {
+            	logger.log(Level.INFO, "rollback the transaction.");
                 conn.rollback();
             } catch (SQLException e) {
                 throw new PersistenceException("Error occurs when doing rollback.", e);
@@ -845,6 +854,11 @@ class Helper {
             Connection conn = connectionName == null ? connectionFactory.createConnection()
                 : connectionFactory.createConnection(connectionName);
 
+            if ( connectionName == null) {
+            	logger.log(Level.INFO, "create db connection using default connection name");
+            } else {
+            	logger.log(Level.INFO, "create db connection using connection name:" + connectionName);
+            }
             conn.setAutoCommit(autoCommit);
             conn.setReadOnly(readOnly);
 
@@ -1097,4 +1111,21 @@ class Helper {
             throw new IllegalArgumentException("The entity [" + name + "] is not valid to persist.");
         }
     }
+    
+    /**
+     * Return the id string seperated by comma for the given long id array.
+     * 
+     * @param ids the id array
+     * @return string seperated by comma
+     */
+	static String getIdString(long[] ids) {
+		String idString = "";
+        for(int i = 0; i < ids.length; i++) {
+        	idString += ids[i];
+        	if ( i < ids.length -1) {
+        		idString += ",";
+        	}
+        }
+		return idString;
+	}
 }

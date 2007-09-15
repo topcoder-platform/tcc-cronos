@@ -11,6 +11,10 @@ import com.topcoder.management.deliverable.persistence.DeliverablePersistence;
 import com.topcoder.management.deliverable.persistence.DeliverablePersistenceException;
 import com.topcoder.management.deliverable.persistence.PersistenceException;
 import com.topcoder.management.deliverable.persistence.sql.Helper.DataType;
+import com.topcoder.management.deliverable.persistence.sql.logging.LogMessage;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -36,6 +40,9 @@ import com.topcoder.management.deliverable.persistence.sql.Helper.DataType;
  */
 public class SqlDeliverablePersistence implements DeliverablePersistence {
 
+	 /** Logger instance using the class name as category */
+    private static final Log logger = LogFactory.getLog(SqlDeliverablePersistence.class.getName()); 
+    
     /**
      * Represents the sql statement to load deliverables with submission.
      */
@@ -135,6 +142,9 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
         Helper.assertObjectNotNull(connectionFactory, "connectionFactory");
         Helper.assertStringNotEmpty(connectionName, "connectionName");
 
+        logger.log(Level.INFO,
+        		"Instantiate SqlDeliverablePersistence with connectionFactory and connectioName:" + connectionName);
+        
         this.connectionFactory = connectionFactory;
         this.connectionName = connectionName;
     }
@@ -165,6 +175,9 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
         Helper.assertIdNotUnset(resourceId, "resourceId");
         Helper.assertIdNotUnset(phaseId, "phaseId");
 
+        logger.log(Level.INFO, new LogMessage("Deliverable", new Long(deliverableId), null,
+        		"load Deliverables with resourceId:" + resourceId + " phaseId:" + phaseId
+        		+ ", delegate to loadDeliverables(long[] deliverableIds, long[] resourceIds, long[] phaseIds)."));
         return loadDeliverables(new long[] {deliverableId}, new long[] {resourceId}, new long[] {phaseId});
     }
 
@@ -198,6 +211,12 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
         Helper.assertIdNotUnset(phaseId, "phaseId");
         Helper.assertIdNotUnset(submissionId, "submissionId");
 
+        logger.log(Level.INFO, new LogMessage("Deliverable", new Long(deliverableId), null,
+        		"load Deliverable with resourceId:" + resourceId
+        		+ " phaseId:" + phaseId + " and submissionId:" + submissionId
+        		+ ", delegate to loadDeliverables(long[] deliverableIds,"
+        		+ " long[] resourceIds, long[] phaseIds, long[] submissionIds)."));
+        
         Deliverable[] deliverables = loadDeliverables(new long[] {deliverableId},
             new long[] {resourceId}, new long[] {phaseId}, new long[] {submissionId});
         return deliverables.length == 0 ? null : deliverables[0];
@@ -239,6 +258,10 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
             return new Deliverable[0];
         }
 
+        logger.log(Level.INFO, new LogMessage("Deliverable", null, null,
+        		"load Deliverables with deliverableIds:" + Helper.getIdString(deliverableIds)
+        		+ ", resourceId:" + Helper.getIdString(resourceIds) + " and phaseId:" + Helper.getIdString(phaseIds)));
+        		
         // build the match condition string.
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append('(');
@@ -291,6 +314,10 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
                 Helper.closeConnection(conn);
             }
         } catch (PersistenceException e) {
+        	logger.log(Level.ERROR,  new LogMessage("Deliverable", null, null,
+            		"Fail to load Deliverables with deliverableIds:" + Helper.getIdString(deliverableIds)
+            		+ ", resourceId:" + Helper.getIdString(resourceIds)
+            		+ " and phaseId:" + Helper.getIdString(phaseIds), e));
             // wrap PersistenceException
             throw new DeliverablePersistenceException(
                 "Unable to load deliverables without submission from the database.", e);
@@ -337,6 +364,11 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
         if (deliverableIds.length == 0) {
             return new Deliverable[0];
         }
+        
+        logger.log(Level.INFO, new LogMessage("Deliverable", null, null,
+        		"load Deliverables with deliverableIds:" + Helper.getIdString(deliverableIds)
+        		+ ", resourceId:" + Helper.getIdString(resourceIds) + ",phaseId:" + Helper.getIdString(phaseIds)
+        		+ " and submissionIds:" + Helper.getIdString(submissionIds)));
 
         // build the match condition string.
         StringBuffer stringBuffer = new StringBuffer();
@@ -373,6 +405,10 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
                 Helper.closeConnection(conn);
             }
         } catch (PersistenceException e) {
+        	logger.log(Level.ERROR, new LogMessage("Deliverable", null, null,
+            		"Failed to load Deliverables with deliverableIds:" + Helper.getIdString(deliverableIds)
+            		+ ", resourceId:" + Helper.getIdString(resourceIds) + ",phaseId:" + Helper.getIdString(phaseIds)
+            		+ " and submissionIds:" + Helper.getIdString(submissionIds), e));
             // wrap PersistenceException
             throw new DeliverablePersistenceException(
                 "Unable to load deliverables with submission from the database.", e);
