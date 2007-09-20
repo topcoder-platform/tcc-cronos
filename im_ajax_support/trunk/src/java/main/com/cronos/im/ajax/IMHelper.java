@@ -196,8 +196,6 @@ public final class IMHelper {
         StringBuffer logMsgSB = new StringBuffer();
         logMsgSB.append("User ID:");
         logMsgSB.append(userId);
-        logMsgSB.append(" timestamp:");
-        logMsgSB.append(IMHelper.getTimeStamp());
         return logMsgSB.toString();
     }
 

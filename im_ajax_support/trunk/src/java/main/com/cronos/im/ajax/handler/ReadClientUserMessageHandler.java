@@ -113,7 +113,7 @@ public class ReadClientUserMessageHandler extends AbstractRequestHandler {
             StringBuffer logMsgSB = new StringBuffer();
             logMsgSB.append(IMHelper.getLoggingHeader(userId));
             logMsgSB.append(" action:ReadClientUserMessage");
-            logMsgSB.append("affected entityIDs: sessionId ");
+            logMsgSB.append(" affected entityIDs: sessionId ");
             logMsgSB.append(sessionId);
             String logMsg = logMsgSB.toString();
             this.getLog().log(Level.INFO, logMsg);

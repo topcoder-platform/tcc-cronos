@@ -119,14 +119,16 @@ public class ChangeManagerStatusHandler extends AbstractRequestHandler {
             ServiceElement responder = new ServiceElement();
             responder.setProperty("user_id", new Long(userId));
             if (categories != null) {
-                // process each category
-                for (int i = 0; i < categories.length; i++) {
-                    if (statusId == 101) {
-                        // online
-                        engine.addResponder(responder, categories[i]);
-                    } else if (statusId == 102) {
-                        // busy
-                        engine.removeResponder(responder, categories[i]);
+                synchronized (ServiceEngine.class) {
+                    // process each category
+                    for (int i = 0; i < categories.length; i++) {
+                        if (statusId == 101) {
+                            // online
+                            engine.addResponder(responder, categories[i]);
+                        } else if (statusId == 102) {
+                            // busy
+                            engine.removeResponder(responder, categories[i]);
+                        }
                     }
                 }
             }
