@@ -191,12 +191,11 @@ public class MessengerImpl implements Messenger {
             // if message's recipients set does not contain this user id.
             msg.addRecipient(new Long(userId));
 
-            // Post the message into the the user's session message pool.
-            pool.push(userId, sessionId, msg);
-
             // Track the message
             tracker.track(msg, new long[]{userId}, sessionId);
 
+            // Post the message into the the user's session message pool.
+            pool.push(userId, sessionId, msg);
         } catch (PoolNotRegisteredException e) {
             throw new MessengerException("The message pool is not registered:", e);
         } catch (ChatContactManagementException e) {
@@ -259,14 +258,15 @@ public class MessengerImpl implements Messenger {
                 // if message's recipients set does not contain this user id and set the user with
                 // specified <c>userIds[userIdsIndex]</c>.
                 msg.addRecipient(new Long(userIds[userIdsIndex]));
-                // Post the message into the user's session message pool.
-                pool.push(userIds[userIdsIndex], sessionId, msg);
             }
 
             // Track the message if there are any userIds to track.
             if (userIds.length != 0) {
                 tracker.track(msg, userIds, sessionId);
             }
+
+            // Post the message into the user session message pool for all users.
+            pool.push(userIds, sessionId, msg);
         } catch (PoolNotRegisteredException e) {
             throw new MessengerException("The message pool is not registered:", e);
         } catch (ChatContactManagementException e) {
@@ -358,13 +358,13 @@ public class MessengerImpl implements Messenger {
                 // if message's recipients set does not contain this user id and set the user with
                 // specified <c>userIds[userIdsIndex]</c>.
                 msg.addRecipient(new Long(userIds[userIdsIndex]));
-
-                // Post the message into the user's session message pool.
-                pool.push(userIds[userIdsIndex], sessionId, msg);
             }
 
             // Track the message.
             tracker.track(msg, userIds, sessionId);
+
+            // Post the message into the user session message pool for all users.
+            pool.push(userIds, sessionId, msg);
         } catch (PoolNotRegisteredException e) {
             throw new MessengerException("The message pool is not registered:", e);
         } catch (ChatContactManagementException e) {
