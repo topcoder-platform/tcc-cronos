@@ -3,8 +3,13 @@
  */
 package com.cronos.im.logic;
 
+import com.cronos.im.messenger.Messenger;
+
+import com.topcoder.chat.message.pool.Message;
+import com.topcoder.chat.session.ChatSession;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
+import com.topcoder.util.log.Level;
 
 /**
  * <p>
@@ -163,4 +168,59 @@ final class IMHelper {
         return false;
     }
 
+    /**
+     * Post message to user message pool. If any error occurs, the error details will be logged.
+     *
+     * @param messenger the messenger used to post message.
+     * @param msg the message to post.
+     * @param userId the user id of the user pool.
+     * @param logger the logger to log the exception.
+     */
+    static void postMessage(Messenger messenger, Message msg, long userId, IMLogger logger) {
+        try {
+            messenger.postMessage(msg, userId);
+        } catch (Exception e) {
+            if (logger != null) {
+                logger.log(Level.WARN, e.toString());
+            }
+        }
+    }
+
+    /**
+     * Post message to user session message pool. If any error occurs, the error details will be logged.
+     *
+     * @param messenger the messenger used to post message.
+     * @param msg the message to post.
+     * @param userId the user id of the user session pool.
+     * @param sessionId the session id of the user session pool.
+     * @param logger the logger to log the exception.
+     */
+    static void postMessage(Messenger messenger, Message msg, long userId, long sessionId, IMLogger logger) {
+        try {
+            messenger.postMessage(msg, userId, sessionId);
+        } catch (Exception e) {
+            if (logger != null) {
+                logger.log(Level.WARN, e.toString());
+            }
+        }
+    }
+
+    /**
+     * Post message to other users of a session (not the message sender). If any error occurs, the error
+     * details will be logged.
+     *
+     * @param messenger the messenger used to post message.
+     * @param msg the message to post.
+     * @param session the chat session containing the other users.
+     * @param logger the logger to log the exception.
+     */
+    static void postMessageToOthers(Messenger messenger, Message msg, ChatSession session, IMLogger logger) {
+        try {
+            messenger.postMessageToOthers(msg, session);
+        } catch (Exception e) {
+            if (logger != null) {
+                logger.log(Level.WARN, e.toString());
+            }
+        }
+    }
 }

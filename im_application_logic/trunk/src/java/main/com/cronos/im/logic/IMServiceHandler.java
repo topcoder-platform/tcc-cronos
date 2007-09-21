@@ -446,7 +446,7 @@ public class IMServiceHandler implements ServiceHandler {
                 SessionUnavailableMessage unavailableMsg = new SessionUnavailableMessage();
                 unavailableMsg.setSender(new Long(-1));
                 unavailableMsg.setChatSessionId(sessionId);
-                messenger.postMessage(unavailableMsg, requesterUserId);
+                IMHelper.postMessage(messenger, unavailableMsg, requesterUserId, logger);
                 if (logger != null) {
                     logger.log(Level.INFO, "Post SessionUnavailableMessage to User", new String[] { "User - "
                         + requesterUserId });
@@ -506,7 +506,7 @@ public class IMServiceHandler implements ServiceHandler {
                 unavailableMsg2.setSender(new Long(-1));
                 unavailableMsg2.setChatSessionId(sessionId);
                 if (resp != requestedUsers[i]) {
-                    messenger.postMessage(unavailableMsg2, requestedUsers[i]);
+                    IMHelper.postMessage(messenger, unavailableMsg2, requestedUsers[i], logger);
                     if (logger != null) {
                         logger.log(Level.INFO, "Post SessionUnavailableMessage to User", new String[] { "User - "
                             + requestedUsers[i] });

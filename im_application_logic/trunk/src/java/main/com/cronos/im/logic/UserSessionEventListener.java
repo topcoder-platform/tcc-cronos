@@ -228,8 +228,8 @@ public class UserSessionEventListener implements ChatSessionEventListener {
             msg.setSessionCreationTime(new Date());
             // set acknowledge time.
             msg.setAcknowledgeTime(new Date(System.currentTimeMillis() + acknowledgeTime));
-            messenger.postMessage(msg, user);
-            
+
+            IMHelper.postMessage(messenger, msg, user, logger);            
         } catch (Exception e) {
             if (logger != null) {
                 e.printStackTrace();
@@ -290,7 +290,7 @@ public class UserSessionEventListener implements ChatSessionEventListener {
                 presenceMsg.setChatSessionId(session.getId());
                 // timestamp is initialized in the constructor automatically.
                 // send message to others in the session.
-                messenger.postMessageToOthers(presenceMsg, session);
+                IMHelper.postMessageToOthers(messenger, presenceMsg, session, logger);
                 if (logger != null) {
                     logger.log(Level.INFO, "Send PresenceMessage of this User to Others", new String[] {
                         "User - " + user, "Session - " + session.getId()});
@@ -309,7 +309,7 @@ public class UserSessionEventListener implements ChatSessionEventListener {
                         presenceMsg.setSender(new Long(users[i]));
                         presenceMsg.setChatSessionId(session.getId());
                         // send message to user.
-                        messenger.postMessage(presenceMsg, user, session.getId());
+                        IMHelper.postMessage(messenger, presenceMsg, user, session.getId(), logger);
                     }
                 }
                 
@@ -350,8 +350,6 @@ public class UserSessionEventListener implements ChatSessionEventListener {
         logger.log(Level.DEBUG, "userRemoved session [" + session.getId() + "],  user  [" + user + "].");
 
         try {
-            long[] users = session.getActiveUsers();
-
             if (chatSessionStatusTracker.getStatus(session.getId()).getId() == IMHelper.SESSION_STATUS_OPEN) {
                 // retry unregister operation for a few times,
                 // since other messages may be posted into the pool
@@ -377,9 +375,8 @@ public class UserSessionEventListener implements ChatSessionEventListener {
                 Map properties = getProperties(user);
                 presenceMsg.setChatProfileProperties(properties);
                 presenceMsg.setChatSessionId(session.getId());
-                for (int i = 0; i < users.length; i++) {
-                    messenger.postMessage(presenceMsg, users[i], session.getId());
-                }
+                IMHelper.postMessageToOthers(messenger, presenceMsg, session, logger);
+
                 if (logger != null) {
                     logger.log(Level.INFO, "Send Not-PresenceMessage of this User to Others", new String[] {
                         "User - " + user, "Session - " + session.getId()});

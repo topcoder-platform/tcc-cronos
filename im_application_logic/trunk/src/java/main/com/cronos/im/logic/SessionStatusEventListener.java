@@ -153,7 +153,7 @@ public class SessionStatusEventListener implements ChatStatusEventListener {
                     enterChatMessage.setChatSessionId(chatSession.getId());
                     // Note: messenger.postMessageToAll() doesn't support the EnterChatMessage.
                     for (int i = 0; i < users.length; i++) {
-                        messenger.postMessage(enterChatMessage, users[i]);
+                        IMHelper.postMessage(messenger, enterChatMessage, users[i], logger);
                     }
                     if (logger != null) {
                         logger.log(Level.INFO, "Send EnterChatMessage to All Users",
@@ -184,7 +184,7 @@ public class SessionStatusEventListener implements ChatStatusEventListener {
                     
                     // timestamp is initialized in the constructor automatically.
                     // send message to others in the session.
-                    messenger.postMessageToOthers(presenceMsg, chatSession);
+                    IMHelper.postMessageToOthers(messenger, presenceMsg, chatSession, logger);
                 }
                 if (logger != null) {
                     logger.log(Level.INFO, "Send PresenceMessage to Others", new String[] { "Session - "
