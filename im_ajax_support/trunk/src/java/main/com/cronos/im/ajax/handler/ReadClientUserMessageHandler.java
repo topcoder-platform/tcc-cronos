@@ -116,13 +116,10 @@ public class ReadClientUserMessageHandler extends AbstractRequestHandler {
             // Log the handler, see algorithm section.
             StringBuffer logMsgSB = new StringBuffer();
             logMsgSB.append(IMHelper.getLoggingHeader(userId));
-            logMsgSB.append(" action:ReadClientUserMessage");
-            logMsgSB.append(" affected entityIDs: sessionId ");
-            logMsgSB.append(sessionId);
             String logMsg = logMsgSB.toString();
             this.getLog().log(Level.DEBUG, logMsg);
         } catch (Exception e) {
-            e.printStackTrace();
+            getLog().log(Level.ERROR, e);
             IMHelper.writeFailureResponse(res);
         }
     }

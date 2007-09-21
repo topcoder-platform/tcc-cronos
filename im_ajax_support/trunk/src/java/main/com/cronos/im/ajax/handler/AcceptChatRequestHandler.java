@@ -108,7 +108,6 @@ public class AcceptChatRequestHandler extends AbstractRequestHandler {
             // Logging
             StringBuffer logMsgSB = new StringBuffer();
             logMsgSB.append(IMHelper.getLoggingHeader(userId));
-            logMsgSB.append(" action:AcceptChatRequest");
             logMsgSB.append(" affected entityIDs: requestUserId ");
             logMsgSB.append(uId);
             logMsgSB.append(" sessionId ");
@@ -118,7 +117,7 @@ public class AcceptChatRequestHandler extends AbstractRequestHandler {
             String logMsg = logMsgSB.toString();
             this.getLog().log(Level.DEBUG, logMsg);
         } catch (Exception e) {
-            e.printStackTrace();
+            getLog().log(Level.ERROR, e);
             IMHelper.writeFailureResponse(res);
         }
     }

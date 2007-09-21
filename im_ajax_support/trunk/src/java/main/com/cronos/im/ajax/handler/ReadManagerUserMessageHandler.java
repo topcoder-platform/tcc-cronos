@@ -28,7 +28,7 @@ import org.w3c.dom.Element;
  * </p>
  * 
  * <p>
- * This class is thread safe since it¡¯s immutable.
+ * This class is thread safe since it's immutable.
  * </p>
  * 
  * @author woodjhon, TCSDEVELOPER
@@ -94,7 +94,6 @@ public class ReadManagerUserMessageHandler extends AbstractRequestHandler {
             // Log the handler, see algorithm section.
             StringBuffer logMsgSB = new StringBuffer();
             logMsgSB.append(IMHelper.getLoggingHeader(userId));
-            logMsgSB.append(" action:ReadManagerUserMessage");
             String logMsg = logMsgSB.toString();
             this.getLog().log(Level.DEBUG, logMsg);
         } catch (Exception e) {

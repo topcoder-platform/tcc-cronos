@@ -142,7 +142,6 @@ public class ChangeManagerStatusHandler extends AbstractRequestHandler {
             // Logging
             StringBuffer logMsgSB = new StringBuffer();
             logMsgSB.append(IMHelper.getLoggingHeader(userId));
-            logMsgSB.append(" action:ChangeManagerStatus");
             logMsgSB.append(" affected entityIDs: statusId ");
             logMsgSB.append(statusId);
             logMsgSB.append(" category ids");
@@ -152,7 +151,7 @@ public class ChangeManagerStatusHandler extends AbstractRequestHandler {
             String logMsg = logMsgSB.toString();
             this.getLog().log(Level.DEBUG, logMsg);
         } catch (Exception e) {
-            e.printStackTrace();
+            getLog().log(Level.ERROR, e);
             IMHelper.writeFailureResponse(res);
         }
     }

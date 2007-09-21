@@ -14,7 +14,7 @@ import com.cronos.im.ajax.RequestHandler;
  * </p>
  *
  * <p>
- * This class is thread safe since it¡¯s immutable.
+ * This class is thread safe since it's immutable.
  * </p>
  *
  * @author woodjhon, TCSDEVELOPER
@@ -36,7 +36,7 @@ public abstract class AbstractRequestHandler implements RequestHandler {
      * @return the Log instance used for logging
      */
     protected Log getLog() {
-        return LogFactory.getLog("IMAjaxSupport");
+        return LogFactory.getLog(this.getClass().getName());
     }
 
 }

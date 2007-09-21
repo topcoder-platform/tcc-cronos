@@ -226,7 +226,7 @@ public final class IMHelper {
         try {
             messenger.postMessageToAll(chatMessage, chatSession);
         } catch (Exception e) {
-            logger.log(Level.WARN, e);
+            logger.log(Level.WARN, e.toString());
         }
     }
 
@@ -248,7 +248,7 @@ public final class IMHelper {
             try {
                 return pool.pull(userId, sessionId);
             } catch (Exception e) {
-                logger.log(Level.WARN, e);
+                logger.log(Level.WARN, e.toString());
                 return new Message[0];
             }
         }
