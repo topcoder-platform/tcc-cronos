@@ -3,15 +3,29 @@
  */
 package com.cronos.im.ajax;
 
+import com.cronos.im.messenger.ChatMessage;
+import com.cronos.im.messenger.Messenger;
+
+import com.topcoder.chat.message.pool.Message;
+import com.topcoder.chat.message.pool.MessagePool;
+import com.topcoder.chat.session.ChatSession;
+import com.topcoder.chat.user.profile.ChatUserProfile;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.Level;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.Calendar;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -199,4 +213,78 @@ public final class IMHelper {
         return logMsgSB.toString();
     }
 
+    /**
+     * Post a message to all users of a chat session.
+     *
+     * @param messenger the messenger used to post message.
+     * @param chatMessage the message to post.
+     * @param chatSession the chat session to post the message to.
+     * @param logger the logger used to log the exception.
+     */
+    public static void postMessageToAll(Messenger messenger, ChatMessage chatMessage, ChatSession chatSession,
+        Log logger) {
+        try {
+            messenger.postMessageToAll(chatMessage, chatSession);
+        } catch (Exception e) {
+            logger.log(Level.WARN, e);
+        }
+    }
+
+    /**
+     * Pull the messages from the user session pool. Note that the pulling action is locked for each
+     * user session to avoid blob error.
+     *
+     * @param req the request containing the lock object.
+     * @param pool the pool to pull the messages from.
+     * @param userId the user id.
+     * @param sessionId the session id.
+     * @param logger the logger used to log the exception.
+     * @return the messages from the user session pool.
+     */
+    public static Message[] pull(HttpServletRequest req, MessagePool pool, long userId, long sessionId, Log logger) {
+        Object lock = req.getSession().getAttribute(String.valueOf(sessionId));
+
+        synchronized (lock) {
+            try {
+                return pool.pull(userId, sessionId);
+            } catch (Exception e) {
+                logger.log(Level.WARN, e);
+                return new Message[0];
+            }
+        }
+    }
+
+    /**
+     * Retrieve the user profile object from session attribute. If profile cannot be found, ajax failure
+     * response will be written to the output.
+     *
+     * @param req the request containing the profile object.
+     * @param res the response to write the output to.
+     * @param logger the logger used to log the exception.
+     * @return the user profile object.
+     * @throws IMAjaxConfigurationException if there is any configuration error.
+     * @throws IOException if there is any I/O error.
+     */
+    public static ChatUserProfile getProfile(HttpServletRequest req, HttpServletResponse res, Log logger)
+        throws IMAjaxConfigurationException, IOException {
+        String profileKey = IMAjaxSupportUtility.getUserProfileSessionKey();
+        ChatUserProfile profile = (ChatUserProfile) req.getSession().getAttribute(profileKey);
+
+        if (profile == null) {
+            logger.log(Level.WARN, "No profile exists in session");
+            writeFailureResponse(res);
+        }
+        return profile;
+    }
+
+    /**
+     * Writes the ajax failure response to the output.
+     *
+     * @param res the response to write the output to.
+     * @throws IOException if there is any I/O error.
+     */
+    public static void writeFailureResponse(HttpServletResponse res) throws IOException {
+        res.getWriter().write(
+                    "<response><failure>Error occured during handling the request</failure></response>");
+    }
 }

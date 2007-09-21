@@ -29,7 +29,7 @@ import org.w3c.dom.Element;
  * </p>
  * 
  * <p>
- * This class is thread safe since it¡¯s immutable.
+ * This class is thread safe since it's immutable.
  * </p>
  * 
  * @author woodjhon, TCSDEVELOPER
@@ -65,8 +65,12 @@ public class ReadClientSessionMessageHandler extends AbstractRequestHandler {
         IMHelper.checkNull(res, "res");
         try {
             // 1. get user profile
-            String profileKey = IMAjaxSupportUtility.getUserProfileSessionKey();
-            ChatUserProfile profile = (ChatUserProfile) req.getSession().getAttribute(profileKey);
+            ChatUserProfile profile = IMHelper.getProfile(req, res, getLog());
+
+            if (profile == null) {
+                return;
+            }
+
             // 2. get the messenger and message pool
             Messenger messenger = (Messenger) req.getSession().getServletContext().getAttribute(
                     IMAjaxSupportUtility.getIMMessengerKey());
@@ -89,9 +93,10 @@ public class ReadClientSessionMessageHandler extends AbstractRequestHandler {
             // fix for TCIM-9226
             // result is being ignored here
             // the purpose is to have the last update time to be "Updated"
-            pool.pull(userId); 
-            // continue pulling the message with sessionId
-            Message[] msgs = pool.pull(userId, sessionId);
+            pool.pull(userId);
+
+            Message[] msgs = IMHelper.pull(req, pool, userId, sessionId, getLog());
+
             for (int i = 0; i < msgs.length; i++) {
                 responseTextSB.append(((XMLMessage) msgs[i]).toXMLString(formatContext));
             }
@@ -104,11 +109,10 @@ public class ReadClientSessionMessageHandler extends AbstractRequestHandler {
             logMsgSB.append(" Session ID:");
             logMsgSB.append(sessionId);
             String logMsg = logMsgSB.toString();
-            this.getLog().log(Level.INFO, logMsg);
+            this.getLog().log(Level.DEBUG, logMsg);
         } catch (Exception e) {
             e.printStackTrace();
-            res.getWriter().write(
-                    "<response><failure>Error occured during handling the request</failure></response>");
+            IMHelper.writeFailureResponse(res);
         }
     }
 

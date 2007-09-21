@@ -63,8 +63,12 @@ public class ReadManagerUserMessageHandler extends AbstractRequestHandler {
         IMHelper.checkNull(res, "res");
         try {
             // 1. get user profile
-            String profileKey = IMAjaxSupportUtility.getUserProfileSessionKey();
-            ChatUserProfile profile = (ChatUserProfile) req.getSession().getAttribute(profileKey);
+            ChatUserProfile profile = IMHelper.getProfile(req, res, getLog());
+
+            if (profile == null) {
+                return;
+            }
+
             long userId = profile.getId();
             // 2. get the messenger and message pool
             Messenger messenger = (Messenger) req.getSession().getServletContext().getAttribute(
@@ -92,12 +96,10 @@ public class ReadManagerUserMessageHandler extends AbstractRequestHandler {
             logMsgSB.append(IMHelper.getLoggingHeader(userId));
             logMsgSB.append(" action:ReadManagerUserMessage");
             String logMsg = logMsgSB.toString();
-            this.getLog().log(Level.INFO, logMsg);
+            this.getLog().log(Level.DEBUG, logMsg);
         } catch (Exception e) {
             e.printStackTrace();
-
-            res.getWriter().write(
-                    "<response><failure>Error occured during handling the request</failure></response>");
+            IMHelper.writeFailureResponse(res);
         }
     }
 

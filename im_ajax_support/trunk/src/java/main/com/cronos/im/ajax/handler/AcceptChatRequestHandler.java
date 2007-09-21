@@ -27,7 +27,7 @@ import java.io.IOException;
  * </p>
  * 
  * <p>
- * This class is thread safe since it¡¯s immutable.
+ * This class is thread safe since it's immutable.
  * </p>
  * 
  * @author woodjhon, TCSDEVELOPER
@@ -63,9 +63,13 @@ public class AcceptChatRequestHandler extends AbstractRequestHandler {
         IMHelper.checkNull(req, "req");
         IMHelper.checkNull(res, "res");
         try {
-            // 1. get the http session from the request, and get the user profile from session
-            String profileKey = IMAjaxSupportUtility.getUserProfileSessionKey();
-            ChatUserProfile profile = (ChatUserProfile) req.getSession().getAttribute(profileKey);
+            // 1. get user profile
+            ChatUserProfile profile = IMHelper.getProfile(req, res, getLog());
+
+            if (profile == null) {
+                return;
+            }
+
             // 2. get the messenger and message pool
             // not used: Messenger messenger = (Messenger) req.getSession().getServletContext().getAttribute(
             // IMAjaxSupportUtility.getIMMessengerKey());
@@ -112,12 +116,10 @@ public class AcceptChatRequestHandler extends AbstractRequestHandler {
             logMsgSB.append(" category id ");
             logMsgSB.append(categoryId);
             String logMsg = logMsgSB.toString();
-            this.getLog().log(Level.INFO, logMsg);
+            this.getLog().log(Level.DEBUG, logMsg);
         } catch (Exception e) {
             e.printStackTrace();
-
-            res.getWriter().write(
-                    "<response><failure>Error occured during handling the request</failure></response>");
+            IMHelper.writeFailureResponse(res);
         }
     }
 

@@ -34,7 +34,7 @@ import org.w3c.dom.Element;
  * 
  * 
  * <p>
- * This class is thread safe since it¡¯s immutable.
+ * This class is thread safe since it's immutable.
  * </p>
  * 
  * @author woodjhon, TCSDEVELOPER
@@ -70,9 +70,13 @@ public class ReadClientUserMessageHandler extends AbstractRequestHandler {
         IMHelper.checkNull(req, "req");
         IMHelper.checkNull(res, "res");
         try {
-            // 1. get the user profile
-            String profileKey = IMAjaxSupportUtility.getUserProfileSessionKey();
-            ChatUserProfile profile = (ChatUserProfile) req.getSession().getAttribute(profileKey);
+            // 1. get user profile
+            ChatUserProfile profile = IMHelper.getProfile(req, res, getLog());
+
+            if (profile == null) {
+                return;
+            }
+
             long userId = profile.getId();
             // 2. get the messenger and message pool
             Messenger messenger = (Messenger) req.getSession().getServletContext().getAttribute(
@@ -116,12 +120,10 @@ public class ReadClientUserMessageHandler extends AbstractRequestHandler {
             logMsgSB.append(" affected entityIDs: sessionId ");
             logMsgSB.append(sessionId);
             String logMsg = logMsgSB.toString();
-            this.getLog().log(Level.INFO, logMsg);
+            this.getLog().log(Level.DEBUG, logMsg);
         } catch (Exception e) {
             e.printStackTrace();
-
-            res.getWriter().write(
-                    "<response><failure>Error occured during handling the request</failure></response>");
+            IMHelper.writeFailureResponse(res);
         }
     }
 

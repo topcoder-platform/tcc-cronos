@@ -36,7 +36,7 @@ import com.topcoder.util.log.Level;
  * 
  * 
  * <p>
- * This class is thread safe since it¡¯s immutable.
+ * This class is thread safe since it's immutable.
  * </p>
  * 
  * @author woodjhon, TCSDEVELOPER
@@ -71,8 +71,12 @@ public class PostTextMessageHandler extends AbstractRequestHandler {
         IMHelper.checkNull(res, "res");
         try {
             // 1. get user profile
-            String profileKey = IMAjaxSupportUtility.getUserProfileSessionKey();
-            ChatUserProfile profile = (ChatUserProfile) req.getSession().getAttribute(profileKey);
+            ChatUserProfile profile = IMHelper.getProfile(req, res, getLog());
+
+            if (profile == null) {
+                return;
+            }
+
             // 2. get the messenger and message pool
             Messenger messenger = (Messenger) req.getSession().getServletContext().getAttribute(
                     IMAjaxSupportUtility.getIMMessengerKey());
@@ -82,6 +86,12 @@ public class PostTextMessageHandler extends AbstractRequestHandler {
             long sessionId = Long.parseLong(IMHelper.getSubElementContent(xmlRequest, "session_id"));
             // 5. get the chat text from xmlRequest element
             String chatText = IMHelper.getSubElementContent(xmlRequest, "chat_text");
+
+            // if there is no chat text, silently ignore the request
+            if (chatText == null || chatText.length() == 0) {
+                return;
+            }
+
             // 6. create ChatMessage, set the chat message fields as follow
             // sender --> new Long(userId) (in step 3)
             // timestamp --> current time
@@ -101,12 +111,15 @@ public class PostTextMessageHandler extends AbstractRequestHandler {
                     .getAttribute(chatSessionMgrKey);
             // 8. get the ChatSession
             ChatSession chatSession = chatSessionMgr.getSession(sessionId);
-            messenger.postMessageToAll(chatMsg, chatSession);
+
+            IMHelper.postMessageToAll(messenger, chatMsg, chatSession, getLog());
+
             // 9. pull the messages from the messagePool
             // fix for TCIM-9226
             // the message should be pulled from User's Session's Pool
             MessagePool pool = messenger.getMessagePool();
-            Message[] msgs = pool.pull(userId,sessionId);
+            Message[] msgs = IMHelper.pull(req, pool, userId, sessionId, getLog());
+
             StringBuffer responseTextSB = new StringBuffer();
             responseTextSB.append("<response><success>the text is posted</success><messages>");
             DateFormatContext formatContext = new DateFormatContext();
@@ -126,11 +139,10 @@ public class PostTextMessageHandler extends AbstractRequestHandler {
             logMsgSB.append(" affected entityIDs: sessionId ");
             logMsgSB.append(sessionId);
             String logMsg = logMsgSB.toString();
-            this.getLog().log(Level.INFO, logMsg);
+            this.getLog().log(Level.DEBUG, logMsg);
         } catch (Exception e) {
             e.printStackTrace();
-            res.getWriter().write(
-                    "<response><failure>Error occured during handling the request</failure></response>");
+            IMHelper.writeFailureResponse(res);
         }
     }
     

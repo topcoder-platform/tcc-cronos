@@ -30,7 +30,7 @@ import java.util.Arrays;
  * </p>
  * 
  * <p>
- * This class is thread safe since it¡¯s immutable.
+ * This class is thread safe since it's immutable.
  * </p>
  * 
  * @author woodjhon, TCSDEVELOPER
@@ -66,8 +66,12 @@ public class ReadManagerSessionMessageHandler extends AbstractRequestHandler {
         IMHelper.checkNull(res, "res");
         try {
             // 1. get user profile
-            String profileKey = IMAjaxSupportUtility.getUserProfileSessionKey();
-            ChatUserProfile profile = (ChatUserProfile) req.getSession().getAttribute(profileKey);
+            ChatUserProfile profile = IMHelper.getProfile(req, res, getLog());
+
+            if (profile == null) {
+                return;
+            }
+
             // 2. get the messenger and message pool
             Messenger messenger = (Messenger) req.getSession().getServletContext().getAttribute(
                     IMAjaxSupportUtility.getIMMessengerKey());
@@ -86,7 +90,8 @@ public class ReadManagerSessionMessageHandler extends AbstractRequestHandler {
             long userId = profile.getId();
             long sessionId = Long.parseLong(IMHelper.getSubElementContent(xmlRequest, "session_id"));
             // 6. pull the messages
-            Message[] msgs = pool.pull(userId, sessionId);
+            Message[] msgs = IMHelper.pull(req, pool, userId, sessionId, getLog());
+
             StringBuffer responseTextSB = new StringBuffer();
             responseTextSB.append("<response><success>successfully</success><messages>");
             DateFormatContext formatContext = new DateFormatContext();
@@ -102,11 +107,10 @@ public class ReadManagerSessionMessageHandler extends AbstractRequestHandler {
             logMsgSB.append("affected entityIDs: sessionId ");
             logMsgSB.append(sessionId);
             String logMsg = logMsgSB.toString();
-            this.getLog().log(Level.INFO, logMsg);
+            this.getLog().log(Level.DEBUG, logMsg);
         } catch (Exception e) {
             e.printStackTrace();
-            res.getWriter().write(
-                    "<response><failure>Error occured during handling the request</failure></response>");
+            IMHelper.writeFailureResponse(res);
         }
     }
 
