@@ -88,7 +88,7 @@ public class PostTextMessageHandler extends AbstractRequestHandler {
             String chatText = IMHelper.getSubElementContent(xmlRequest, "chat_text");
 
             // if there is no chat text, silently ignore the request
-            if (chatText == null || chatText.length() == 0) {
+            if (chatText == null || chatText.trim().length() == 0) {
                 return;
             }
 

@@ -102,7 +102,12 @@ public class AcceptChatRequestHandler extends AbstractRequestHandler {
             ServiceElement responder = new ServiceElement();
             responder.setProperty("user_id", new Long(userId));
 
-            engine.startService(requester, responder, category);
+            try {
+                engine.startService(requester, responder, category);
+            } catch (Exception ex) {
+                getLog().log(Level.WARN, ex.toString());
+            }
+
             // 10. construct success xml response, and set it on the http response
             res.getWriter().write("<response><success>the chat request is accepted</success></response>");
             // Logging
