@@ -277,6 +277,7 @@ public class ClientLoginAction extends LoginAction {
             }
             if (registeredClientLogin(request)) {
                 if (!checkChattable(category)) {
+                    request.getSession().removeAttribute(getUserProfileKey());
                     doLog(user, ACTION_NAME, "", "The requested category is unchattable", Level.WARN);
                     return mapping.findForward(unchattableForwardName);
                 }
