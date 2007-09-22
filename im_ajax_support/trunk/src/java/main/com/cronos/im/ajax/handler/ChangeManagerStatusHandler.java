@@ -151,7 +151,7 @@ public class ChangeManagerStatusHandler extends AbstractRequestHandler {
             String logMsg = logMsgSB.toString();
             this.getLog().log(Level.DEBUG, logMsg);
         } catch (Exception e) {
-            getLog().log(Level.ERROR, e);
+            e.printStackTrace();
             IMHelper.writeFailureResponse(res);
         }
     }
