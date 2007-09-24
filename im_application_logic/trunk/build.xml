@@ -146,6 +146,11 @@
     <property name="command_line_utility.path" value="command_line_utility/${command_line_utility.version}"/>
     <property name="command_line_utility.jar" value="${tcs_libdir}/${command_line_utility.path}/${command_line_utility.jar.name}"/>
 
+    <property name="db_connection_factory.version" value="1.0"/>
+    <property name="db_connection_factory.jar.name" value="db_connection_factory.jar"/>
+    <property name="db_connection_factory.path" value="db_connection_factory/${db_connection_factory.version}"/>
+    <property name="db_connection_factory.jar" value="${tcs_libdir}/${db_connection_factory.path}/${db_connection_factory.jar.name}"/>
+
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
     
@@ -169,6 +174,7 @@
         <pathelement location="${chat_status_tracker.jar}" />
         <pathelement location="${logging_wrapper.jar}" />
         <pathelement location="${command_line_utility.jar}" />
+        <pathelement location="${db_connection_factory.jar}" />
         
         <pathelement location="${configdir}" />
         <pathelement location="${testfiles}" />
