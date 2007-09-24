@@ -130,6 +130,9 @@ public class ServiceEngineCleaner {
 
             rs.close();
             pstmt.close();
+            if (sb.length() == 0) {
+                return;
+            }
             sb.setLength(sb.length() - 2);
 
             // remove the rows from the locked_category table
