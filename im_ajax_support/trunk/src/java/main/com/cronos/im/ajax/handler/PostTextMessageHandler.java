@@ -69,6 +69,8 @@ public class PostTextMessageHandler extends AbstractRequestHandler {
         IMHelper.checkNull(xmlRequest, "xmlRequest");
         IMHelper.checkNull(req, "req");
         IMHelper.checkNull(res, "res");
+        Date date = new Date();
+
         try {
             // 1. get user profile
             ChatUserProfile profile = IMHelper.getProfile(req, res, getLog());
@@ -137,10 +139,15 @@ public class PostTextMessageHandler extends AbstractRequestHandler {
             logMsgSB.append(IMHelper.getLoggingHeader(userId));
             logMsgSB.append(" affected entityIDs: sessionId ");
             logMsgSB.append(sessionId);
+            logMsgSB.append(" chat text: ");
+            logMsgSB.append(chatText);
+            logMsgSB.append(" processing time: ");
+            logMsgSB.append(new Date().getTime() - date.getTime());
+            logMsgSB.append("ms");
             String logMsg = logMsgSB.toString();
             this.getLog().log(Level.DEBUG, logMsg);
         } catch (Exception e) {
-            e.printStackTrace();
+            this.getLog().log(Level.ERROR, e.toString());
             IMHelper.writeFailureResponse(res);
         }
     }

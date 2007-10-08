@@ -3,6 +3,9 @@
  */
 package com.cronos.im.ajax;
 
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
+import com.topcoder.util.log.Level;
 import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.objectfactory.InvalidClassSpecificationException;
 import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
@@ -111,6 +114,17 @@ public class RequestHandlerManager {
             res.setContentType("text/xml");
             // get XML
             String xml = req.getParameter(IMAjaxSupportUtility.getXMLRequestParamKey());
+
+            if (xml == null) {
+                Log log = LogFactory.getLog(this.getClass().getName());
+                log.log(Level.WARN, "No request parameter");
+
+                // no request parameter found
+                res.getWriter().write(
+                        "<response><failure>No request parameter</failure></response>");
+                return;
+            }
+
             // parse it to an Element
             Element docElement = IMHelper.getElementFromString(xml);
             // get type

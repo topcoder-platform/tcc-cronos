@@ -5,6 +5,7 @@ package com.cronos.im.ajax.handler;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import com.cronos.im.ajax.IMAjaxSupportUtility;
@@ -61,6 +62,8 @@ public class ReadManagerUserMessageHandler extends AbstractRequestHandler {
         IMHelper.checkNull(xmlRequest, "xmlRequest");
         IMHelper.checkNull(req, "req");
         IMHelper.checkNull(res, "res");
+        Date date = new Date();
+
         try {
             // 1. get user profile
             ChatUserProfile profile = IMHelper.getProfile(req, res, getLog());
@@ -94,10 +97,13 @@ public class ReadManagerUserMessageHandler extends AbstractRequestHandler {
             // Log the handler, see algorithm section.
             StringBuffer logMsgSB = new StringBuffer();
             logMsgSB.append(IMHelper.getLoggingHeader(userId));
+            logMsgSB.append(" processing time: ");
+            logMsgSB.append(new Date().getTime() - date.getTime());
+            logMsgSB.append("ms");
             String logMsg = logMsgSB.toString();
             this.getLog().log(Level.DEBUG, logMsg);
         } catch (Exception e) {
-            e.printStackTrace();
+            this.getLog().log(Level.ERROR, e.toString());
             IMHelper.writeFailureResponse(res);
         }
     }

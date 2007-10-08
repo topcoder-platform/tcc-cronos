@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
 
@@ -108,6 +109,12 @@ public class IMAjaxSupportServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse res) throws IOException,
             ServletException {
         requestManager.handle(req, res);
+
+        PrintWriter writer = res.getWriter();
+
+        writer.flush();
+        res.flushBuffer();
+        writer.close();
     }
 
 }
