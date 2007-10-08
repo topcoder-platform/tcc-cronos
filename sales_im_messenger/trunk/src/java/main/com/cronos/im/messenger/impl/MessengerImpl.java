@@ -260,13 +260,13 @@ public class MessengerImpl implements Messenger {
                 msg.addRecipient(new Long(userIds[userIdsIndex]));
             }
 
-            // Track the message if there are any userIds to track.
             if (userIds.length != 0) {
+                // Track the message if there are any userIds to track.
                 tracker.track(msg, userIds, sessionId);
-            }
 
-            // Post the message into the user session message pool for all users.
-            pool.push(userIds, sessionId, msg);
+                // Post the message into the user session message pool for other users.
+                pool.push(userIds, sessionId, msg);
+            }
         } catch (PoolNotRegisteredException e) {
             throw new MessengerException("The message pool is not registered:", e);
         } catch (ChatContactManagementException e) {
@@ -360,11 +360,13 @@ public class MessengerImpl implements Messenger {
                 msg.addRecipient(new Long(userIds[userIdsIndex]));
             }
 
-            // Track the message.
-            tracker.track(msg, userIds, sessionId);
+            if (userIds.length != 0) {
+                // Track the message.
+                tracker.track(msg, userIds, sessionId);
 
-            // Post the message into the user session message pool for all users.
-            pool.push(userIds, sessionId, msg);
+                // Post the message into the user session message pool for all users.
+                pool.push(userIds, sessionId, msg);
+            }
         } catch (PoolNotRegisteredException e) {
             throw new MessengerException("The message pool is not registered:", e);
         } catch (ChatContactManagementException e) {
