@@ -146,12 +146,12 @@ public class ChatMessage extends XMLMessage {
             xmlStringBuffer.append("</chat_user_profile_properties>");
 
             // Add chat text for the message.
-            xmlStringBuffer.append("<chat_text>");
+            xmlStringBuffer.append("<chat_text><![CDATA[");
             if (chatText == null) {
                 throw new IllegalStateException("The chat text is not set for the message");
             }
             xmlStringBuffer.append(chatText);
-            xmlStringBuffer.append("</chat_text>");
+            xmlStringBuffer.append("]]></chat_text>");
 
             // Add formatted chat text for the message.We use CDATA selection to avoid
             // having problems when parsing the xml.
