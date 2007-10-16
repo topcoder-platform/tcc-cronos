@@ -190,19 +190,19 @@
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// get configuration string from config manager</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;91</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="keyword">try</span> {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;92</td>  <td class="nbHitsCovered">&nbsp;5620</td>  <td class="src"><pre class="src">&nbsp;            s = ConfigManager.getInstance().getString(ns, prop);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;92</td>  <td class="nbHitsCovered">&nbsp;5621</td>  <td class="src"><pre class="src">&nbsp;            s = ConfigManager.getInstance().getString(ns, prop);</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;93</td>  <td class="nbHitsCovered">&nbsp;18</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (UnknownNamespaceException e) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;94</td>  <td class="nbHitsCovered">&nbsp;18</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> IMAjaxConfigurationException(<span class="string">"The namespace "</span> + ns + <span class="string">" is unknown."</span>, e);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;95</td>  <td class="nbHitsCovered">&nbsp;5602</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;95</td>  <td class="nbHitsCovered">&nbsp;5603</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;96</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// check whether it is missing or empty</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;97</td>  <td class="nbHitsCovered">&nbsp;5602</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (s == <span class="keyword">null</span> || s.trim().length() == 0) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;97</td>  <td class="nbHitsCovered">&nbsp;5603</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (s == <span class="keyword">null</span> || s.trim().length() == 0) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;98</td>  <td class="nbHitsCovered">&nbsp;19</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> IMAjaxConfigurationException(<span class="string">"The property "</span> + prop + <span class="string">" is namespace "</span> + ns</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;99</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                    + <span class="string">" is missing or empty."</span>);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;100</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;101</td>  <td class="nbHitsCovered">&nbsp;5583</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> s;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;101</td>  <td class="nbHitsCovered">&nbsp;5584</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> s;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;102</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;103</td>  <td class="nbHits">&nbsp;</td>
@@ -285,11 +285,11 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;147</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> String getSubElementContent(Element e, String childName) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;148</td>  <td class="nbHitsCovered">&nbsp;2679</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">for</span> (Node n = e.getFirstChild(); n != <span class="keyword">null</span>; n = n.getNextSibling()) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;149</td>  <td class="nbHitsCovered">&nbsp;2679</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">if</span> (n <span class="keyword">instanceof</span> Element) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;150</td>  <td class="nbHitsCovered">&nbsp;1345</td>  <td class="src"><pre class="src">&nbsp;                Element child = (Element) n;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;151</td>  <td class="nbHitsCovered">&nbsp;1345</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">if</span> (child.getTagName().equals(childName)) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;152</td>  <td class="nbHitsCovered">&nbsp;1035</td>  <td class="src"><pre class="src">&nbsp;                    <span class="keyword">return</span> child.getFirstChild().getNodeValue();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;148</td>  <td class="nbHitsCovered">&nbsp;2682</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">for</span> (Node n = e.getFirstChild(); n != <span class="keyword">null</span>; n = n.getNextSibling()) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;149</td>  <td class="nbHitsCovered">&nbsp;2682</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">if</span> (n <span class="keyword">instanceof</span> Element) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;150</td>  <td class="nbHitsCovered">&nbsp;1348</td>  <td class="src"><pre class="src">&nbsp;                Element child = (Element) n;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;151</td>  <td class="nbHitsCovered">&nbsp;1348</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">if</span> (child.getTagName().equals(childName)) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;152</td>  <td class="nbHitsCovered">&nbsp;1037</td>  <td class="src"><pre class="src">&nbsp;                    <span class="keyword">return</span> child.getFirstChild().getNodeValue();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;153</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;154</td>  <td class="nbHits">&nbsp;</td>
@@ -347,8 +347,8 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;183</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> String getTimeStamp() {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;184</td>  <td class="nbHitsCovered">&nbsp;829</td>  <td class="src"><pre class="src">&nbsp;        Calendar c = Calendar.getInstance();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;185</td>  <td class="nbHitsCovered">&nbsp;829</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> c.get(Calendar.YEAR) + <span class="string">"-"</span> + (c.get(Calendar.MONTH) + 1) + <span class="string">"-"</span> + c.get(Calendar.DAY_OF_MONTH)</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;184</td>  <td class="nbHitsCovered">&nbsp;830</td>  <td class="src"><pre class="src">&nbsp;        Calendar c = Calendar.getInstance();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;185</td>  <td class="nbHitsCovered">&nbsp;830</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> c.get(Calendar.YEAR) + <span class="string">"-"</span> + (c.get(Calendar.MONTH) + 1) + <span class="string">"-"</span> + c.get(Calendar.DAY_OF_MONTH)</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;186</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                + <span class="string">" "</span> + c.get(Calendar.HOUR_OF_DAY) + <span class="string">":"</span> + c.get(Calendar.MINUTE) + <span class="string">":"</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;187</td>  <td class="nbHits">&nbsp;</td>
@@ -369,12 +369,12 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;195</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">static</span> String getLoggingHeader(<span class="keyword">long</span> userId) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;196</td>  <td class="nbHitsCovered">&nbsp;828</td>  <td class="src"><pre class="src">&nbsp;        StringBuffer logMsgSB = <span class="keyword">new</span> StringBuffer();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;197</td>  <td class="nbHitsCovered">&nbsp;828</td>  <td class="src"><pre class="src">&nbsp;        logMsgSB.append(<span class="string">"User ID:"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;198</td>  <td class="nbHitsCovered">&nbsp;828</td>  <td class="src"><pre class="src">&nbsp;        logMsgSB.append(userId);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;199</td>  <td class="nbHitsCovered">&nbsp;828</td>  <td class="src"><pre class="src">&nbsp;        logMsgSB.append(<span class="string">" timestamp:"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;200</td>  <td class="nbHitsCovered">&nbsp;828</td>  <td class="src"><pre class="src">&nbsp;        logMsgSB.append(IMHelper.getTimeStamp());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;201</td>  <td class="nbHitsCovered">&nbsp;828</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> logMsgSB.toString();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;196</td>  <td class="nbHitsCovered">&nbsp;829</td>  <td class="src"><pre class="src">&nbsp;        StringBuffer logMsgSB = <span class="keyword">new</span> StringBuffer();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;197</td>  <td class="nbHitsCovered">&nbsp;829</td>  <td class="src"><pre class="src">&nbsp;        logMsgSB.append(<span class="string">"User ID:"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;198</td>  <td class="nbHitsCovered">&nbsp;829</td>  <td class="src"><pre class="src">&nbsp;        logMsgSB.append(userId);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;199</td>  <td class="nbHitsCovered">&nbsp;829</td>  <td class="src"><pre class="src">&nbsp;        logMsgSB.append(<span class="string">" timestamp:"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;200</td>  <td class="nbHitsCovered">&nbsp;829</td>  <td class="src"><pre class="src">&nbsp;        logMsgSB.append(IMHelper.getTimeStamp());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;201</td>  <td class="nbHitsCovered">&nbsp;829</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> logMsgSB.toString();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;202</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;203</td>  <td class="nbHits">&nbsp;</td>
@@ -383,6 +383,6 @@
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 07-4-16 ÉÏÎç7:39.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.8 on 07-10-16 ÏÂÎç7:40.</div>
 </body>
 </html>
