@@ -52,6 +52,8 @@
     <property name="dist_docs" value="${build_tcsdistdir}/${docsdir}" />
     <property name="dist_javadocs" value="${build_tcsdistdir}/${javadocsdir}" />
     <property name="dist_testfiles" value="${build_tcsdistdir}/${testfiles}" />
+    <property name="dist_coverage" value="${dist_docs}/coverage" />
+    <property name="docs_coverage" value="${docsdir}/coverage" />
 
     <!-- NAME FOR .JAR AND .WAR FILES -->
     <property name="component.jar" value="${dist_lib}/${component_path}/${distfilename}.jar"/>
@@ -111,39 +113,11 @@
     <property name="chat_status_tracker.path" value="chat_status_tracker/${chat_status_tracker.version}"/>
     <property name="chat_status_tracker.jar" value="${tcs_libdir}/${chat_status_tracker.path}/${chat_status_tracker.jar.name}"/>
 
-    <property name="chat_session_manager.version" value="1.0"/>
-    <property name="chat_session_manager.jar.name" value="chat_session_manager.jar"/>
-    <property name="chat_session_manager.path" value="chat_session_manager/${chat_session_manager.version}"/>
-    <property name="chat_session_manager.jar" value="${tcs_libdir}/${chat_session_manager.path}/${chat_session_manager.jar.name}"/>
-
-    <property name="chat_user_profile.version" value="2.0"/>
-    <property name="chat_user_profile.jar.name" value="chat_user_profile.jar"/>
-    <property name="chat_user_profile.path" value="chat_user_profile/${chat_user_profile.version}"/>
-    <property name="chat_user_profile.jar" value="${tcs_libdir}/${chat_user_profile.path}/${chat_user_profile.jar.name}"/>
-
-    <property name="status_tracker.version" value="1.0"/>
-    <property name="status_tracker.jar.name" value="status_tracker.jar"/>
-    <property name="status_tracker.path" value="status_tracker/${status_tracker.version}"/>
-    <property name="status_tracker.jar" value="${tcs_libdir}/${status_tracker.path}/${status_tracker.jar.name}"/>
-
-    <property name="chat_message_pool.version" value="1.1"/>
-    <property name="chat_message_pool.jar.name" value="chat_message_pool.jar"/>
-    <property name="chat_message_pool.path" value="chat_message_pool/${chat_message_pool.version}"/>
-    <property name="chat_message_pool.jar" value="${tcs_libdir}/${chat_message_pool.path}/${chat_message_pool.jar.name}"/>
-
-    <property name="service_engine.version" value="1.0"/>
-    <property name="service_engine.jar.name" value="service_engine.jar"/>
-    <property name="service_engine.path" value="service_engine/${service_engine.version}"/>
-    <property name="service_engine.jar" value="${tcs_libdir}/${service_engine.path}/${service_engine.jar.name}"/>
-
-    <property name="sales_im_messenger.version" value="1.0"/>
-    <property name="sales_im_messenger.jar.name" value="sales_im_messenger.jar"/>
-    <property name="sales_im_messenger.path" value="sales_im_messenger/${sales_im_messenger.version}"/>
-    <property name="sales_im_messenger.jar" value="${tcs_libdir}/${sales_im_messenger.path}/${sales_im_messenger.jar.name}"/>
-
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
-    <property name="j2ee.jar" value="${ext_libdir}/j2ee.jar"/>
+    <property name="servlet-api.jar" value="${ext_libdir}/servlet-api/2.4/servlet-api.jar"/>
+
+    <property name="dependencies_mocks.jar" value="${testfiles}/dependencies_mocks.jar"/>
 
     <!-- Java Locations -->
     <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar"/>
@@ -151,24 +125,19 @@
    	<path id="buildlibs">
 		
         <pathelement location="${junit.jar}" />
-        <pathelement location="${j2ee.jar}" />
-        
+
         <pathelement location="${configmanager.jar}" />
         <pathelement location="${typesafe_enum.jar}" />
         <pathelement location="${object_factory.jar}" />
         <pathelement location="${base_exception.jar}" />
-        <pathelement location="${sales_im_messenger.jar}" />
-        <pathelement location="${service_engine.jar}" />
-        <pathelement location="${chat_message_pool.jar}" />
-        <pathelement location="${status_tracker.jar}" />
-        <pathelement location="${chat_user_profile.jar}" />
-        <pathelement location="${chat_session_manager.jar}" />
         <pathelement location="${chat_status_tracker.jar}" />
         <pathelement location="${logging_wrapper.jar}" />
-        
-		<pathelement location="${configdir}" />
-		<pathelement location="${testfiles}" />
-		<pathelement location="${ext_libdir}\im_messenger.jar" />
+        <pathelement location="${servlet-api.jar}" />
+
+        <pathelement location="${dependencies_mocks.jar}" />
+
+		    <pathelement location="${configdir}" />
+		    <pathelement location="${testfiles}" />
 	</path>
 
     <path id="test.build.classpath">
@@ -327,10 +296,25 @@
 
     <target name="dist_tcs" depends="clean,dist,javadoc">
         <!-- define tcs distribution format -->
+<!-- uncomment if configuration files exist.
         <mkdir dir="${dist_conf}"/>
         <copy todir="${dist_conf}">
             <fileset dir="${configdir}" />
         </copy>
+-->
+		<mkdir dir="${dist_coverage}"/>
+		<mkdir dir="${docs_coverage}"/>
+
+		<copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
+		<copy file="${testlogdir}/cobertura.ser" todir="${docsdir}"/>
+
+		<copy todir="${dist_coverage}">
+		<fileset dir="${testlogdir}/coverage" />
+		</copy>
+
+		<copy todir="${docs_coverage}">
+		<fileset dir="${testlogdir}/coverage" />
+		</copy>
 
         <mkdir dir="${dist_src}"/>
         <copy todir="${dist_src}">
@@ -346,6 +330,7 @@
                 <include name="${component}_Component_Specification*"/>
                 <include name="${component}.zargo"/>
                 <include name="${component}.zuml"/>
+                <include name="**/*"/>
             </fileset>
         </copy>
 
@@ -355,6 +340,7 @@
         </copy>
 
         <antcall target="package_docs" />
+
 
         <mkdir dir="${dist_testfiles}"/>
         <copy todir="${dist_testfiles}">
@@ -412,10 +398,14 @@
 
     <target name="dev_dist">
         <!-- copy TCS Dependencies -->
-        <!--
-        <mkdir dir="${jar_tcs_libdir}/${configmanager.path}"/>
-        <copy file="${configmanager.jar}" todir="${jar_tcs_libdir}/${configmanager.path}" />
-        -->
+        <mkdir dir="${jar_tcs_libdir}/${generic_event_manager.path}"/>
+        <copy file="${generic_event_manager.jar}" todir="${jar_tcs_libdir}/${generic_event_manager.path}" />
+
+        <mkdir dir="${jar_tcs_libdir}/${base_exception.path}"/>
+        <copy file="${base_exception.jar}" todir="${jar_tcs_libdir}/${base_exception.path}" />
+
+        <mkdir dir="${jar_tcs_libdir}/${object_factory.path}"/>
+        <copy file="${object_factory.jar}" todir="${jar_tcs_libdir}/${object_factory.path}" />
         
         <jar jarfile="${dev_dist.jar}"
              basedir="."

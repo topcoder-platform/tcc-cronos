@@ -96,6 +96,7 @@ public final class TestHelper {
         profile.addProperty("role", "client");
         profile.addProperty("role", "manager");
         req.getSession().setAttribute(IMAjaxSupportUtility.getUserProfileSessionKey(), profile);
+        req.getSession().setAttribute("selectedCategories", new Category[0]);
         req.getSession().getServletContext().setAttribute(IMAjaxSupportUtility.getIMMessengerKey(),
                 new MockMessenger());
         req.getSession().getServletContext().setAttribute(IMAjaxSupportUtility.getChatSessionManagerKey(),
