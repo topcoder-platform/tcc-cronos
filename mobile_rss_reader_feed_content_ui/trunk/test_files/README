@@ -1,5 +1,0 @@
-NOTICE:
-1. all the class in the package com.topcoder.mobilerssreader.rssfeedcontentui is the developed class and test. the others are all mocked.
-2. the DemoTest is not added to the UnitTests, it's a MIDlet, you can run it individually.
-
-Thank you!

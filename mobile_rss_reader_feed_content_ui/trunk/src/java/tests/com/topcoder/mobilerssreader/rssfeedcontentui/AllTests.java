@@ -4,9 +4,9 @@
  */
 package com.topcoder.mobilerssreader.rssfeedcontentui;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import j2meunit.framework.Test;
+import j2meunit.framework.TestCase;
+import j2meunit.framework.TestSuite;
 import com.topcoder.mobilerssreader.rssfeedcontentui.accuracytests.AccuracyTests;
 import com.topcoder.mobilerssreader.rssfeedcontentui.failuretests.FailureTests;
 import com.topcoder.mobilerssreader.rssfeedcontentui.stresstests.StressTests;
@@ -19,20 +19,20 @@ import com.topcoder.mobilerssreader.rssfeedcontentui.stresstests.StressTests;
  */
 public class AllTests extends TestCase {
 
-    public static Test suite() {
+    public Test suite() {
         final TestSuite suite = new TestSuite();
-        
+
         //unit tests
-        suite.addTest(UnitTests.suite());
+        suite.addTest(new UnitTests().suite());
         
         //accuracy tests
-        suite.addTest(AccuracyTests.suite());
+        suite.addTest(new AccuracyTests().suite());
         
         //failure tests
-        suite.addTest(FailureTests.suite());
+        suite.addTest(new FailureTests().suite());
         
         //stress tests
-        suite.addTest(StressTests.suite());
+        suite.addTest(new StressTests().suite());
         
         return suite;
     }
