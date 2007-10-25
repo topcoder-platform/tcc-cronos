@@ -1539,14 +1539,8 @@ public class RegistrationServicesImpl implements RegistrationServices {
         try {
             // gets the resources in given project
             Filter projectIdFilter = ResourceFilterBuilder.createProjectIdFilter(projectId);
-            Filter rolesFilter=ResourceFilterBuilder.createResourceRoleIdFilter(availableRoles[0].getId());
-            for (int i = 1; i < availableRoles.length; i++) {
-            	Filter roleIdFilter = ResourceFilterBuilder.createResourceRoleIdFilter(availableRoles[i].getId());
-            	rolesFilter=new OrFilter(rolesFilter,roleIdFilter);
-			}
-            Filter resourcesFilter = new AndFilter(projectIdFilter,rolesFilter);
             logBefore("Starts calling ProjectServices#getFullProjectData method.");
-			resources = resourceManager.searchResources(resourcesFilter);
+			resources = resourceManager.searchResources(projectIdFilter);
 			logAfter("Finished calling ProjectServices#getFullProjectData method.");
         } catch (ResourcePersistenceException e) {
             log(Level.ERROR, "ProjectServicesException occurred when retrieving resources of project:" + projectId);
