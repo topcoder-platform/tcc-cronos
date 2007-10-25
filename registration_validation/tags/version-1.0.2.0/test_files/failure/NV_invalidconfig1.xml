@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<CMConfig>
+
+    <Config name="NotValidator">
+        <Property name="bundleName">
+            <Value></Value>
+        </Property>
+        <Property name="bundleLocaleLanguage">
+            <Value>en</Value>
+        </Property>
+        <Property name="bundleLocaleCountry">
+            <Value>ca</Value>
+        </Property>
+        <Property name="bundleLocaleVariant">
+            <Value>Traditional_WIN</Value>
+        </Property>
+        <Property name="messageKey">
+            <Value>messageKey</Value>
+        </Property>
+        <Property name="defaultMessage">
+            <Value></Value>
+        </Property>
+        <Property name="specNamespace">
+            <Value>NotValidator.ObjectFactory</Value>
+        </Property>
+        <Property name="innerValidator">
+            <Value>validator</Value>
+        </Property>
+    </Config>
+    
+    <Config name="NotValidator.ObjectFactory">
+        <Property name="validator">
+            <Property name="type">
+                <Value>com.topcoder.registration.validation.validators.util.NullValidator</Value>
+            </Property>
+        </Property>
+    </Config>
+</CMConfig>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<CMConfig>
+
+    <Config name="ProjectOfTypeValidator">
+        <Property name="bundleName">
+            <Value>resource</Value>
+        </Property>
+        <Property name="bundleLocaleLanguage">
+            <Value>en</Value>
+        </Property>
+        <Property name="bundleLocaleCountry">
+            <Value>ca</Value>
+        </Property>
+        <Property name="bundleLocaleVariant">
+            <Value>Traditional_WIN</Value>
+        </Property>
+        <Property name="messageKey">
+            <Value></Value>
+        </Property>
+        <Property name="defaultMessage">
+            <Value>test_files/doc_gen_files/projectOfTypeTemplate</Value>
+        </Property>
+        <Property name="projectTypeId">
+            <Value>1</Value>
+        </Property>
+    </Config>
+</CMConfig>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<CMConfig>
+
+    <Config name="ProjectOfCategoryValidator">
+        <Property name="bundleName">
+            <Value>resource</Value>
+        </Property>
+        <Property name="bundleLocaleLanguage">
+            <Value>en</Value>
+        </Property>
+        <Property name="bundleLocaleCountry">
+            <Value>ca</Value>
+        </Property>
+        <Property name="bundleLocaleVariant">
+            <Value>Traditional_WIN</Value>
+        </Property>
+
+        <Property name="defaultMessage">
+            <Value>test_files/doc_gen_files/projectOfCategoryTemplate</Value>
+        </Property>
+        <Property name="projectCategoryId">
+            <Value>1</Value>
+        </Property>
+    </Config>
+</CMConfig>

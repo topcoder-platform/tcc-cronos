@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <!--Configuration for MemberMinimumNumberOfRatingsForRatingTypeValidator-->
+    <Config name="NotValidator">
+
+        <Property name="defaultMessage">
+            <Value>test_files/doc_gen_files/NotValidatoremplate</Value>
+        </Property>
+        <Property name="specNamespace">
+            <Value>NotValidator.ObjectFactory</Value>
+        </Property>
+        <Property name="innerValidator">
+            <Value>validator</Value>
+        </Property>
+    </Config>
+    
+    <Config name="xxx">
+        <Property name="validator">
+            <Property name="type">
+                <Value>com.topcoder.registration.validation.validators.util.NullValidator</Value>
+            </Property>
+
+        </Property>
+    </Config>
+</CMConfig>

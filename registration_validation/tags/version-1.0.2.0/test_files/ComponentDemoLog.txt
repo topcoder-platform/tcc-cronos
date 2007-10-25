@@ -1,0 +1,2734 @@
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of [validationInfo.registrationInfo.userId] is [2]
+the value of [validationInfo.project.resource[0].externalReferenceID] is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+the value of [data string] is [<DATA>
+<USER>
+<HANDLE>handle1</HANDLE>
+<FIRST_NAME>user1</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user1@topcoder.com</EMAIL>
+<DESIGN_RATING>900</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+<MINIMUM_RATING>1300</MINIMUM_RATING>
+<RATING_TYPE>Design</RATING_TYPE>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finished calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finished calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#getTemplate(String)
+Finished calling DocumentGenerator#getTemplate(String)
+return value is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of [messages[0]] is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of [validationInfo.registrationInfo.userId] is [1]
+the value of [validationInfo.project.resource[0].externalReferenceID] is [1]
+the value of [data string] is [<DATA>
+<USER>
+<HANDLE>handle2</HANDLE>
+<FIRST_NAME>user2</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user2@topcoder.com</EMAIL>
+<DESIGN_RATING>2000</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finished calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finished calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#getTemplate(String)
+Finished calling DocumentGenerator#getTemplate(String)
+return value is [
+Hello user  handle2,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of [messages[0]] is [
+Hello user  handle2,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of [validationInfo.registrationInfo.userId] is [3]
+the value of [validationInfo.project.resource[0].externalReferenceID] is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of [messages] is [null]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of [validationInfo.registrationInfo.userId] is [2]
+the value of [validationInfo.project.resource[0].externalReferenceID] is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+the value of [data string] is [<DATA>
+<USER>
+<HANDLE>handle1</HANDLE>
+<FIRST_NAME>user1</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user1@topcoder.com</EMAIL>
+<DESIGN_RATING>900</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+<MINIMUM_RATING>1300</MINIMUM_RATING>
+<RATING_TYPE>Design</RATING_TYPE>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finished calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finished calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#getTemplate(String)
+Finished calling DocumentGenerator#getTemplate(String)
+return value is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of [messages[0]] is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of [validationInfo.registrationInfo.userId] is [1]
+the value of [validationInfo.project.resource[0].externalReferenceID] is [1]
+the value of [data string] is [<DATA>
+<USER>
+<HANDLE>handle2</HANDLE>
+<FIRST_NAME>user2</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user2@topcoder.com</EMAIL>
+<DESIGN_RATING>2000</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finished calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finished calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#getTemplate(String)
+Finished calling DocumentGenerator#getTemplate(String)
+return value is [
+Hello user  handle2,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of [messages[0]] is [
+Hello user  handle2,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of [validationInfo.registrationInfo.userId] is [3]
+the value of [validationInfo.project.resource[0].externalReferenceID] is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of [messages] is [null]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of [validationInfo.registrationInfo.userId] is [2]
+the value of [validationInfo.project.resource[0].externalReferenceID] is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+the value of [data string] is [<DATA>
+<USER>
+<HANDLE>handle1</HANDLE>
+<FIRST_NAME>user1</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user1@topcoder.com</EMAIL>
+<DESIGN_RATING>900</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+<MINIMUM_RATING>1300</MINIMUM_RATING>
+<RATING_TYPE>Design</RATING_TYPE>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finished calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finished calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#getTemplate(String)
+Finished calling DocumentGenerator#getTemplate(String)
+return value is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of [messages[0]] is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of [validationInfo.registrationInfo.userId] is [1]
+the value of [validationInfo.project.resource[0].externalReferenceID] is [1]
+the value of [data string] is [<DATA>
+<USER>
+<HANDLE>handle2</HANDLE>
+<FIRST_NAME>user2</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user2@topcoder.com</EMAIL>
+<DESIGN_RATING>2000</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finished calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finished calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#getTemplate(String)
+Finished calling DocumentGenerator#getTemplate(String)
+return value is [
+Hello user  handle2,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of [messages[0]] is [
+Hello user  handle2,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of [validationInfo.registrationInfo.userId] is [3]
+the value of [validationInfo.project.resource[0].externalReferenceID] is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of [messages] is [null]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of [validationInfo.registrationInfo.userId] is [2]
+the value of [validationInfo.project.resource[0].externalReferenceID] is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+the value of [data string] is [<DATA>
+<USER>
+<HANDLE>handle1</HANDLE>
+<FIRST_NAME>user1</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user1@topcoder.com</EMAIL>
+<DESIGN_RATING>900</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+<MINIMUM_RATING>1300</MINIMUM_RATING>
+<RATING_TYPE>Design</RATING_TYPE>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finished calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finished calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#getTemplate(String)
+Finished calling DocumentGenerator#getTemplate(String)
+return value is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of [messages[0]] is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of [validationInfo.registrationInfo.userId] is [1]
+the value of [validationInfo.project.resource[0].externalReferenceID] is [1]
+the value of [data string] is [<DATA>
+<USER>
+<HANDLE>handle2</HANDLE>
+<FIRST_NAME>user2</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user2@topcoder.com</EMAIL>
+<DESIGN_RATING>2000</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finished calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finished calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#getTemplate(String)
+Finished calling DocumentGenerator#getTemplate(String)
+return value is [
+Hello user  handle2,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of [messages[0]] is [
+Hello user  handle2,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of [validationInfo.registrationInfo.userId] is [3]
+the value of [validationInfo.project.resource[0].externalReferenceID] is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of [messages] is [null]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of [validationInfo.registrationInfo.userId] is [2]
+the value of [validationInfo.project.resource[0].externalReferenceID] is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+the value of [data string] is [<DATA>
+<USER>
+<HANDLE>handle1</HANDLE>
+<FIRST_NAME>user1</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user1@topcoder.com</EMAIL>
+<DESIGN_RATING>900</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+<MINIMUM_RATING>1300</MINIMUM_RATING>
+<RATING_TYPE>Design</RATING_TYPE>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finished calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finished calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#getTemplate(String)
+Finished calling DocumentGenerator#getTemplate(String)
+return value is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of [messages[0]] is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of [validationInfo.registrationInfo.userId] is [1]
+the value of [validationInfo.project.resource[0].externalReferenceID] is [1]
+the value of [data string] is [<DATA>
+<USER>
+<HANDLE>handle2</HANDLE>
+<FIRST_NAME>user2</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user2@topcoder.com</EMAIL>
+<DESIGN_RATING>2000</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finished calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finished calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#getTemplate(String)
+Finished calling DocumentGenerator#getTemplate(String)
+return value is [
+Hello user  handle2,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of [messages[0]] is [
+Hello user  handle2,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of [validationInfo.registrationInfo.userId] is [3]
+the value of [validationInfo.project.resource[0].externalReferenceID] is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of [messages] is [null]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [2]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+the value of data stirng is [<DATA>
+<USER>
+<HANDLE>handle1</HANDLE>
+<FIRST_NAME>user1</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user1@topcoder.com</EMAIL>
+<DESIGN_RATING>900</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+<MINIMUM_RATING>1300</MINIMUM_RATING>
+<RATING_TYPE>Design</RATING_TYPE>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finishes calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finishes calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#applyTemplate(Template, String)
+Finishes calling DocumentGenerator#applyTemplate(Template, String)
+return value is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of messages[0] is [[Ljava.lang.String;@858bf1]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [1]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+the value of data stirng is [<DATA>
+<USER>
+<HANDLE>handle2</HANDLE>
+<FIRST_NAME>user2</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user2@topcoder.com</EMAIL>
+<DESIGN_RATING>2000</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finishes calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finishes calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#applyTemplate(Template, String)
+Finishes calling DocumentGenerator#applyTemplate(Template, String)
+return value is [
+Hello user  handle2,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of messages[0] is [[Ljava.lang.String;@2e1f1f]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [3]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the messages is null
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [2]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+the value of data stirng is [<DATA>
+<USER>
+<HANDLE>handle1</HANDLE>
+<FIRST_NAME>user1</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user1@topcoder.com</EMAIL>
+<DESIGN_RATING>900</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+<MINIMUM_RATING>1300</MINIMUM_RATING>
+<RATING_TYPE>Design</RATING_TYPE>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finishes calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finishes calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#applyTemplate(Template, String)
+Finishes calling DocumentGenerator#applyTemplate(Template, String)
+return value is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of messages[0] is [[Ljava.lang.String;@858bf1]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [1]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+the value of data stirng is [<DATA>
+<USER>
+<HANDLE>handle2</HANDLE>
+<FIRST_NAME>user2</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user2@topcoder.com</EMAIL>
+<DESIGN_RATING>2000</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finishes calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finishes calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#applyTemplate(Template, String)
+Finishes calling DocumentGenerator#applyTemplate(Template, String)
+return value is [
+Hello user  handle2,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of messages[0] is [[Ljava.lang.String;@2e1f1f]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [3]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the messages is null
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [2]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+the value of data stirng is [<DATA>
+<USER>
+<HANDLE>handle1</HANDLE>
+<FIRST_NAME>user1</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user1@topcoder.com</EMAIL>
+<DESIGN_RATING>900</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+<MINIMUM_RATING>1300</MINIMUM_RATING>
+<RATING_TYPE>Design</RATING_TYPE>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finishes calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finishes calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#applyTemplate(Template, String)
+Finishes calling DocumentGenerator#applyTemplate(Template, String)
+return value is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of messages[0] is [[Ljava.lang.String;@1a001ff]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [1]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+the value of data stirng is [<DATA>
+<USER>
+<HANDLE>handle2</HANDLE>
+<FIRST_NAME>user2</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user2@topcoder.com</EMAIL>
+<DESIGN_RATING>2000</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finishes calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finishes calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#applyTemplate(Template, String)
+Finishes calling DocumentGenerator#applyTemplate(Template, String)
+return value is [
+Hello user  handle2,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the value of messages[0] is [[Ljava.lang.String;@138c63]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [3]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getAllMessages(Object obj)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj)
+exit AndValidator.getAllMessages(Object obj)
+the messages is null
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [2]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+the value of data stirng is [<DATA>
+<USER>
+<HANDLE>handle1</HANDLE>
+<FIRST_NAME>user1</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user1@topcoder.com</EMAIL>
+<DESIGN_RATING>900</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+<MINIMUM_RATING>1300</MINIMUM_RATING>
+<RATING_TYPE>Design</RATING_TYPE>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finishes calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finishes calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#applyTemplate(Template, String)
+Finishes calling DocumentGenerator#applyTemplate(Template, String)
+return value is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the value of messages[0] is [[Ljava.lang.String;@419d05]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [1]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+the value of data stirng is [<DATA>
+<USER>
+<HANDLE>handle2</HANDLE>
+<FIRST_NAME>user2</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user2@topcoder.com</EMAIL>
+<DESIGN_RATING>2000</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finishes calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finishes calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#applyTemplate(Template, String)
+Finishes calling DocumentGenerator#applyTemplate(Template, String)
+return value is [
+Hello user  handle2,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the value of messages[0] is [[Ljava.lang.String;@cafb56]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [3]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the messages is null
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [2]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+the value of data stirng is [<DATA>
+<USER>
+<HANDLE>handle1</HANDLE>
+<FIRST_NAME>user1</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user1@topcoder.com</EMAIL>
+<DESIGN_RATING>900</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+<MINIMUM_RATING>1300</MINIMUM_RATING>
+<RATING_TYPE>Design</RATING_TYPE>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finishes calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finishes calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#applyTemplate(Template, String)
+Finishes calling DocumentGenerator#applyTemplate(Template, String)
+return value is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the value of messages[0] is [[Ljava.lang.String;@8530b8]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [1]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+the value of data stirng is [<DATA>
+<USER>
+<HANDLE>handle2</HANDLE>
+<FIRST_NAME>user2</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user2@topcoder.com</EMAIL>
+<DESIGN_RATING>2000</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finishes calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finishes calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#applyTemplate(Template, String)
+Finishes calling DocumentGenerator#applyTemplate(Template, String)
+return value is [
+Hello user  handle2,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the value of messages[0] is [[Ljava.lang.String;@26e9f9]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [3]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the messages is null
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [2]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+the value of data stirng is [<DATA>
+<USER>
+<HANDLE>handle1</HANDLE>
+<FIRST_NAME>user1</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user1@topcoder.com</EMAIL>
+<DESIGN_RATING>900</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+<MINIMUM_RATING>1300</MINIMUM_RATING>
+<RATING_TYPE>Design</RATING_TYPE>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finishes calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finishes calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#applyTemplate(Template, String)
+Finishes calling DocumentGenerator#applyTemplate(Template, String)
+return value is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the value of messages[0] is [[Ljava.lang.String;@419d05]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [1]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+the value of data stirng is [<DATA>
+<USER>
+<HANDLE>handle2</HANDLE>
+<FIRST_NAME>user2</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user2@topcoder.com</EMAIL>
+<DESIGN_RATING>2000</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finishes calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finishes calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#applyTemplate(Template, String)
+Finishes calling DocumentGenerator#applyTemplate(Template, String)
+return value is [
+Hello user  handle2,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the value of messages[0] is [[Ljava.lang.String;@cafb56]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [3]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the messages is null
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [2]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+the value of data stirng is [<DATA>
+<USER>
+<HANDLE>handle1</HANDLE>
+<FIRST_NAME>user1</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user1@topcoder.com</EMAIL>
+<DESIGN_RATING>900</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+<MINIMUM_RATING>1300</MINIMUM_RATING>
+<RATING_TYPE>Design</RATING_TYPE>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finishes calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finishes calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#applyTemplate(Template, String)
+Finishes calling DocumentGenerator#applyTemplate(Template, String)
+return value is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the value of messages[0] is [[Ljava.lang.String;@c743eb]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [1]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+the value of data stirng is [<DATA>
+<USER>
+<HANDLE>handle2</HANDLE>
+<FIRST_NAME>user2</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user2@topcoder.com</EMAIL>
+<DESIGN_RATING>2000</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finishes calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finishes calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#applyTemplate(Template, String)
+Finishes calling DocumentGenerator#applyTemplate(Template, String)
+return value is [
+Hello user  handle2,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the value of messages[0] is [[Ljava.lang.String;@1abcc03]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [3]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the messages is null
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [2]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+the value of data stirng is [<DATA>
+<USER>
+<HANDLE>handle1</HANDLE>
+<FIRST_NAME>user1</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user1@topcoder.com</EMAIL>
+<DESIGN_RATING>900</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+<MINIMUM_RATING>1300</MINIMUM_RATING>
+<RATING_TYPE>Design</RATING_TYPE>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finishes calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finishes calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#applyTemplate(Template, String)
+Finishes calling DocumentGenerator#applyTemplate(Template, String)
+return value is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the value of messages[0] is [[Ljava.lang.String;@c743eb]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [1]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+the value of data stirng is [<DATA>
+<USER>
+<HANDLE>handle2</HANDLE>
+<FIRST_NAME>user2</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user2@topcoder.com</EMAIL>
+<DESIGN_RATING>2000</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finishes calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finishes calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#applyTemplate(Template, String)
+Finishes calling DocumentGenerator#applyTemplate(Template, String)
+return value is [
+Hello user  handle2,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the value of messages[0] is [[Ljava.lang.String;@1abcc03]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+the value of validationInfo.registrationInfo.userId is [3]
+the value ofvalidationInfo.project.resource[0].externalReferenceID is [1]
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the messages is null
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+the value of data stirng is [<DATA>
+<USER>
+<HANDLE>handle1</HANDLE>
+<FIRST_NAME>user1</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user1@topcoder.com</EMAIL>
+<DESIGN_RATING>900</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+<MINIMUM_RATING>1300</MINIMUM_RATING>
+<RATING_TYPE>Design</RATING_TYPE>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finishes calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finishes calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#applyTemplate(Template, String)
+Finishes calling DocumentGenerator#applyTemplate(Template, String)
+return value is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the value of messages[0] is [[Ljava.lang.String;@1e808ca]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the messages is null
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the messages is null
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+the value of data stirng is [<DATA>
+<USER>
+<HANDLE>handle1</HANDLE>
+<FIRST_NAME>user1</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user1@topcoder.com</EMAIL>
+<DESIGN_RATING>900</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+<MINIMUM_RATING>1300</MINIMUM_RATING>
+<RATING_TYPE>Design</RATING_TYPE>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finishes calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finishes calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#applyTemplate(Template, String)
+Finishes calling DocumentGenerator#applyTemplate(Template, String)
+return value is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the value of messages[0] is [[Ljava.lang.String;@1e808ca]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the messages is null
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the messages is null
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+the value of data stirng is [<DATA>
+<USER>
+<HANDLE>handle1</HANDLE>
+<FIRST_NAME>user1</FIRST_NAME>
+<LAST_NAME>TCMember</LAST_NAME>
+<EMAIL>user1@topcoder.com</EMAIL>
+<DESIGN_RATING>900</DESIGN_RATING>
+<DESIGN_RELIABILITY>N/A</DESIGN_RELIABILITY>
+<DESIGN_VOLATILITY>N/A</DESIGN_VOLATILITY>
+<DESIGN_NUM_RATINGS>5</DESIGN_NUM_RATINGS><DEV_RATING>N/A</DEV_RATING>
+<DEV_RELIABILITY>N/A</DEV_RELIABILITY>
+<DEV_VOLATILITY>N/A</DEV_VOLATILITY>
+<DEV_NUM_RATINGS>5</DEV_NUM_RATINGS>
+<DEV_NUM_RATINGS>N/A</DEV_NUM_RATINGS>
+</USER>
+<FULL_PROJECT_DATA>
+<RESOURCE>
+<ROLE>null</ROLE>
+</RESOURCE>
+<PROJECT_HEADER>
+<NAME>null</NAME>
+<CATEGORY>projectCategoryName</CATEGORY>
+<STATUS>projectStatusName</STATUS>
+</PROJECT_HEADER><TECHNOLOGY>
+<NAME>Java</NAME>
+</TECHNOLOGY>
+</FULL_PROJECT_DATA>
+<MINIMUM_RATING>1300</MINIMUM_RATING>
+<RATING_TYPE>Design</RATING_TYPE>
+</DATA>]
+Starts calling DocumentGenerator#getInstance()
+Finishes calling DocumentGenerator#getInstance()
+Starts calling DocumentGenerator#getTemplate(String)
+Finishes calling DocumentGenerator#getTemplate(String)
+Starts calling DocumentGenerator#applyTemplate(Template, String)
+Finishes calling DocumentGenerator#applyTemplate(Template, String)
+return value is [
+Hello user  handle1,
+
+
+wellcome to TC
+----------------------------
+best wishes
+TopCoder Software
+]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the value of messages[0] is [[Ljava.lang.String;@1e808ca]
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the messages is null
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)
+enter AndValidator.getAllMessages(Object obj)
+enter AndValidator.getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+return value is [null]
+exit MemberNotTeamMemberForProjectValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+return value is [null]
+exit MemberMinimumRatingForRatingTypeValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+enter AbstractConfigurableValidator#getMessages(Object obj)
+enter ProjectInPhaseValidator.getMessage(Object obj)
+return value is [null]
+exit ProjectInPhaseValidator.getMessage(Object obj)
+exit AbstractConfigurableValidator#getMessages(Object obj)
+exit AbstractConfigurableValidator#getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj, int messageLimit)
+exit AndValidator.getAllMessages(Object obj)
+the messages is null
+exit DataValidationRegistrationValidator.validate(RegistrationInfo registration, ExternalUser user, FullProjectData project)

@@ -1,0 +1,108 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<!-- a Namespace for Validator class -->
+	<Config name="conditional.Good">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+		<Property name="innerValidator">
+			<Value>myValidator</Value>
+		</Property>
+		<Property name="roleId">
+			<Value>3</Value>
+		</Property>
+	</Config>
+
+	<!-- a Namespace for Validator class -->
+	<Config name="conditional.BadSpecify">
+        <Property name="specNamespace">
+            <Value>com.topcoder.BadSpecify</Value>
+        </Property>
+		<Property name="innerValidator">
+			<Value>myValidator</Value>
+		</Property>
+		<Property name="roleId">
+			<Value>3</Value>
+		</Property>
+	</Config>
+	
+	<!-- a Namespace for Validator class -->
+	<Config name="conditional.UnknownObjectFactorySpecify">
+        <Property name="specNamespace">
+            <Value>com.topcoder.UnknownObjectFactorySpecify</Value>
+        </Property>
+		<Property name="innerValidator">
+			<Value>myValidator</Value>
+		</Property>
+		<Property name="roleId">
+			<Value>3</Value>
+		</Property>
+	</Config>
+
+	<!-- an invalid Namespace for Validator class -->
+	<Config name="conditional.NegativeValidatorInfo">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+		<Property name="innerValidator">
+			<Value>myValidator</Value>
+		</Property>
+		<Property name="roleId">
+			<Value>-1</Value>
+		</Property>
+	</Config>
+
+
+	<!-- an invalid Namespace for Validator class -->
+	<Config name="conditional.MissingValidatorInfo">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+		<Property name="innerValidator">
+			<Value>myValidator</Value>
+		</Property>
+		<Property name="MissingroleId">
+			<Value>3</Value>
+		</Property>
+	</Config>	
+
+	<!-- an invalid Namespace for Validator class -->
+	<Config name="conditional.InvalidValidatorInfo">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+		<Property name="innerValidator">
+			<Value>myValidator</Value>
+		</Property>
+		<Property name="roleId">
+			<Value>not int</Value>
+		</Property>
+	</Config>
+	<!-- an invalid Namespace for Validator class -->
+	<Config name="conditional.MissingInnerValidator">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+		<Property name="MissingInnerValidator">
+			<Value>myValidator</Value>
+		</Property>
+		<Property name="roleId">
+			<Value>3</Value>
+		</Property>
+	</Config>
+
+	<!-- an invalid Namespace for Validator class -->
+	<Config name="conditional.InvalidInnerValidator">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+		<Property name="innerValidator">
+			<Value>myInvalidInnerValidator</Value>
+		</Property>
+		<Property name="roleId">
+			<Value>3</Value>
+		</Property>
+	</Config>
+
+</CMConfig>
+

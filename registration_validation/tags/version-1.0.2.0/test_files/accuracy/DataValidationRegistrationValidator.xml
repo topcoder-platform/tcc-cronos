@@ -1,0 +1,250 @@
+<?xml version="1.0" ?>
+<CMConfig>
+    <!-- Namespace for DataValidationRegistrationValidator class -->
+    <Config name="com.topcoder.registration.validation.DataValidationRegistrationValidator">
+        <Property name="specNamespace">
+            <Value>com.topcoder.specify</Value>
+        </Property>
+        <Property name="validatorKey">
+            <Value>myValidator</Value>
+        </Property>
+        <Property name="teamManagerKey">
+            <Value>myTeamManager</Value>
+        </Property>
+        <Property name="projectServicesKey">
+            <Value>myProjectServices</Value>
+        </Property>
+        <Property name="banManagerKey">
+            <Value>myBanManager </Value>
+        </Property>
+        <Property name="loggerName">
+            <Value>myLog</Value>
+        </Property>
+    </Config>
+    <!-- Namespace for ObjectFactory component -->
+    <Config name="com.topcoder.specify">
+         <Property name="myValidator">
+            <Property name="type">                 <Value>com.topcoder.registration.validation.validators.simple.MemberMinimumNumberOfRatingsForRatingTypeValidator</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>test.AbstractConfigurableValidator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+ 
+        <Property name="myInvalidInnerValidator">
+            <Property name="type">                 <Value>com.topcoder.registration.validation.validators.simple.MemberMinimumNumberOfRatingsForRatingTypeValidator</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>test.InvalidInnerValidator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>        
+
+        <Property name="myInnerValidator1">
+            <Property name="type">                 <Value>com.topcoder.registration.validation.validators.simple.MemberMinimumNumberOfRatingsForRatingTypeValidator</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>test.AbstractConfigurableValidator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+        <Property name="myInnerValidator2">
+            <Property name="type">                 <Value>com.topcoder.registration.validation.validators.simple.MemberMinimumNumberOfRatingsForRatingTypeValidator</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>test.AbstractConfigurableValidator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+        <Property name="myInnerValidator3">
+            <Property name="type">                 <Value>com.topcoder.registration.validation.validators.simple.MemberMinimumNumberOfRatingsForRatingTypeValidator</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>test.AbstractConfigurableValidator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+        <Property name="myInnerValidator4">
+            <Property name="type">                 <Value>com.topcoder.registration.validation.validators.simple.MemberMinimumNumberOfRatingsForRatingTypeValidator</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>test.AbstractConfigurableValidator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+       <Property name="myTeamManager">
+            <Property name="type"> 
+                <Value>com.topcoder.management.team.impl.MockTeamManagerImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.management.team.impl.MockTeamManagerImpl</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+       <Property name="myProjectServices">
+            <Property name="type">
+                <Value>com.topcoder.project.service.impl.MockProjectServicesImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.project.service.impl.MockProjectServicesImpl</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+
+       <Property name="myBanManager">
+            <Property name="type"> 
+                <Value>com.topcoder.management.ban.manager.MockBanManager</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.management.ban.manager.MockBanManager</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+    </Config>
+
+<!-- a valid Namespace for MemberMinimumNumberOfRatingsForRatingTypeValidator class -->
+	<Config name="test.AbstractConfigurableValidator">
+		<Property name="ratingType">
+			<Value>Design</Value>
+		</Property>
+		<Property name="minimumNumRatings">
+			<Value>3</Value>
+		</Property>
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>   
+
+    <!-- Namespace for ObjectFactory component -->
+    <Config name="com.topcoder.BadSpecify">
+         <Property name="myValidator">
+            <Property name="type">                 <Value>com.topcoder.registration.validation.validators.simple.BadMemberMinimumNumberOfRatingsForRatingTypeValidator</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>test.AbstractConfigurableValidator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+      <Property name="myBanManager">
+            <Property name="type"> 
+                <Value>com.topcoder.management.ban.manager.BadMockBanManager</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.management.ban.manager.MockBanManager</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>        
+    </Config>    
+    
+	<!-- a valid Namespace for BundleInfo class -->
+	<Config name="test.BundleInfo">
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>myMessageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+</CMConfig>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="AndValidator">
+        <Property name="specNamespace">
+            <Value>AndValidator.ObjectFactory</Value>
+        </Property>
+        <Property name="innerValidator1">
+            <Value>validator</Value>
+        </Property>
+        <Property name="shortCircuited">
+            <Value>xxx</Value>
+        </Property>
+    </Config>
+    
+    <Config name="AndValidator.ObjectFactory">
+        <Property name="validator">
+            <Property name="type">
+                <Value>com.topcoder.registration.validation.validators.util.NullValidator</Value>
+            </Property>
+        </Property>
+    </Config>
+</CMConfig>

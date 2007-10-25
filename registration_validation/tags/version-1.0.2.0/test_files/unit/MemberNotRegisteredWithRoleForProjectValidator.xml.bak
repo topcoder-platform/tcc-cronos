@@ -1,0 +1,235 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<!-- a valid Namespace Validator class -->
+	<Config name="simple.Good">
+		<Property name="roleId">
+			<Value>2</Value>
+		</Property>
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+	<!-- a valid Namespace Validator class -->
+	<Config name="simple.NoBundleName">
+		<Property name="ratingType">
+			<Value>Design</Value>
+		</Property>
+		<Property name="roleId">
+			<Value>2</Value>
+		</Property>
+		<Property name="NoBundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+
+
+	<!-- an invalid Namespace for Validator class -->
+	<Config name="simple.NegativeValidatorInfo">
+		<Property name="ratingType">
+			<Value>Design</Value>
+		</Property>
+		<Property name="roleId">
+			<Value>-1</Value>
+		</Property>
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+	<!-- an invalid Namespace for Validator class -->
+	<Config name="simple.InvalidValidatorInfo">
+		<Property name="ratingType">
+			<Value>Design</Value>
+		</Property>
+		<Property name="roleId">
+			<Value>not int</Value>
+		</Property>
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+	
+
+	<!-- an invalid Namespace for Validator class -->
+	<Config name="simple.MissingValidatorInfo">
+		<Property name="ratingType">
+			<Value>Design</Value>
+		</Property>
+		<Property name="MissingroleId">
+			<Value>3</Value>
+		</Property>
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+	
+	
+	<!-- an invalid Namespace for Validator class -->
+	<Config name="simple.MissingRatingType">
+		<Property name="MissingRatingType">
+			<Value>Design</Value>
+		</Property>
+		<Property name="roleId">
+			<Value>2</Value>
+		</Property>
+
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+	<!-- an invalid Namespace for Validator class -->
+	<Config name="simple.EmptyRatingType">
+		<Property name="ratingType">
+			<Value>
+			</Value>
+		</Property>
+		<Property name="roleId">
+			<Value>2</Value>
+		</Property>
+
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="messageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+	<!-- an invalid Namespace for Validator class -->
+	<Config name="simple.InvalidBundleInfo">
+		<Property name="ratingType">
+			<Value>Design</Value>
+		</Property>
+		<Property name="roleId">
+			<Value>2</Value>
+		</Property>
+		<Property name="bundleName">
+			<Value>myBundle</Value>
+		</Property>
+		<Property name="bundleLocaleLanguage">
+			<Value>en</Value>
+		</Property>
+		<Property name="bundleLocaleCountry">
+			<Value>ca</Value>
+		</Property>
+		<Property name="bundleLocaleVariant">
+			<Value>Traditional_WIN</Value>
+		</Property>
+		<Property name="noMessageKey">
+			<Value>messageKey</Value>
+		</Property>
+		<Property name="defaultMessage">
+			<Value>./test_files/myTemplate.txt</Value>
+		</Property>
+	</Config>
+
+</CMConfig>
+
+
+
