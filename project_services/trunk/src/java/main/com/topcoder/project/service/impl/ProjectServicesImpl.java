@@ -324,7 +324,6 @@ public class ProjectServicesImpl implements ProjectServices {
             this.activeProjectStatusId = theActiveProjectStatusId;
 
 
-            // Nuevo parametro
             log(Level.DEBUG, "Looking for activeCategoryIds");
             int categoryEntryNumber = 0;            
             while (true) {
@@ -346,7 +345,6 @@ public class ProjectServicesImpl implements ProjectServices {
                 	this.activeCategoriesList.add(categoryId);
                 }
             }
-            // Hasta aca 
             
         } catch (UnknownNamespaceException ex) {
             throw new ConfigurationException(
