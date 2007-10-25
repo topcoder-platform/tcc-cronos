@@ -1,0 +1,6 @@
+A member has been removed.
+Handle\: %HANDLE{the handle}%,
+Position name\: %POSITION_NAME{the position name}%,
+Team name\: %TEAM_NAME{the team name}%,
+Project name\: %PROJECT_NAME{the project name}%,
+Captain handle\: %CAPTAIN_HANDLE{the captain handle}%

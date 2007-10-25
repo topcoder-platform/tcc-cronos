@@ -1,0 +1,10 @@
+Offer has been sent, rejected, accepted, or expired.
+%loop:OFFER{the offer data}%
+From\: %FROM{the sender}%,
+To\: %TO{the receiver}%,
+Position\: %POSITION{the team position}%,
+Status\: %STATUS{status of this position}%,
+Percentage\: %PERCENTAGE{percentage of the payment}%,
+Message\: %MESSAGE{the message text}%,
+Rejection\: %REJECTION{the rejection cause}%
+%endloop%
