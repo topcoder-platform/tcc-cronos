@@ -102,7 +102,7 @@ public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrie
      * The string denotes the database column name of the forum id.
      * </p>
      */
-    private static final String FORUM_ID_STRING = "forum_id";
+    private static final String FORUM_ID_STRING = "jive_category_id";
 
     /**
      * <p>
@@ -452,11 +452,10 @@ public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrie
 
         // Constructs the query string.
         String query = "SELECT cv.comp_vers_id, cv.component_id, version, version_text, comments, "
-                + "component_name, description, cc.root_category_id category_id, forum_id, "
+                + "component_name, description, cc.root_category_id category_id, jive_category_id, "
                 + "cc.short_desc short_desc, cc.function_desc function_desc "
-                + "FROM comp_versions cv, comp_catalog cc, OUTER comp_forum_xref f "
-                + "WHERE cv.component_id = cc.component_id AND cv.comp_vers_id = f.comp_vers_id "
-                + "AND f.forum_type = ? ";
+                + "FROM comp_versions cv, comp_catalog cc, OUTER comp_jive_category_xref f "
+                + "WHERE cv.component_id = cc.component_id AND cv.comp_vers_id = f.comp_vers_id ";
         query += queryAndClause + UserProjectDataStoreHelper.generateQuestionMarks(paramLength);
 
         // Prepares the statement.
@@ -464,15 +463,15 @@ public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrie
 
         // Sets the parameters
         try {
-            ps.setLong(1, this.forumType);
+//            ps.setLong(1, this.forumType);
 
             if (queryParameter instanceof long[]) {
                 for (int i = 0; i < paramLength; i++) {
-                    ps.setLong(i + 2, ((long[]) queryParameter)[i]);
+                    ps.setLong(i + 1, ((long[]) queryParameter)[i]);
                 }
             } else if (queryParameter instanceof String[]) {
                 for (int i = 0; i < paramLength; i++) {
-                    ps.setString(i + 2, ((String[]) queryParameter)[i]);
+                    ps.setString(i + 1, ((String[]) queryParameter)[i]);
                 }
             }
         } catch (SQLException e) {
@@ -488,9 +487,9 @@ public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrie
         // Prepare the technologies query
         String techQuery = "SELECT cv.comp_vers_id comp_vers_id, tt.technology_name technology "
                 + "FROM comp_versions cv, comp_catalog cc, technology_types tt, comp_technology ct, "
-                + "OUTER comp_forum_xref f WHERE cv.component_id = cc.component_id "
+                + "OUTER comp_jive_category_xref f WHERE cv.component_id = cc.component_id "
                 + "AND cv.comp_vers_id = ct.comp_vers_id AND ct.technology_type_id = tt.technology_type_id "
-                + "AND cv.comp_vers_id = f.comp_vers_id AND f.forum_type = ? ";
+                + "AND cv.comp_vers_id = f.comp_vers_id ";
 
         techQuery += queryAndClause + UserProjectDataStoreHelper.generateQuestionMarks(paramLength);
 
@@ -499,15 +498,15 @@ public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrie
 
         // Sets the parameters
         try {
-            ps.setLong(1, this.forumType);
+//            ps.setLong(1, this.forumType);
 
             if (queryParameter instanceof long[]) {
                 for (int i = 0; i < paramLength; i++) {
-                    ps.setLong(i + 2, ((long[]) queryParameter)[i]);
+                    ps.setLong(i + 1, ((long[]) queryParameter)[i]);
                 }
             } else if (queryParameter instanceof String[]) {
                 for (int i = 0; i < paramLength; i++) {
-                    ps.setString(i + 2, ((String[]) queryParameter)[i]);
+                    ps.setString(i + 1, ((String[]) queryParameter)[i]);
                 }
             }
         } catch (SQLException e) {
