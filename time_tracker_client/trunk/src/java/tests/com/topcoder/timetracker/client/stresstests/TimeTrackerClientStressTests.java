@@ -53,7 +53,7 @@ public class TimeTrackerClientStressTests extends TestCase {
         		+ File.separatorChar + "object_factory_config.xml");
 
         TestHelper.tearDownDataBase();
-        //TestHelper.setUpDataBase();
+        TestHelper.setUpDatabase();
 
         dao = new InformixClientDAO();
     }

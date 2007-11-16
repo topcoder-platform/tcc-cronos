@@ -106,7 +106,7 @@ public class InformixClientDAO implements ClientDAO {
      */
     private static final String SQL_INSERT_CLIENT = "insert into client (client_id, name, company_id,"
         + " creation_date, creation_user, modification_date, modification_user, payment_term_id, status,"
-        + " salesTax, start_date, end_date) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        + " salesTax, start_date, end_date, greek_name) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
@@ -114,7 +114,7 @@ public class InformixClientDAO implements ClientDAO {
      * </p>
      */
     private static final String SQL_SELECT_ALL_CLIENT = "select client_id, name, company_id, creation_date,"
-        + " creation_user, modification_date, modification_user, payment_term_id, status, salesTax,"
+        + " creation_user, modification_date, modification_user, payment_term_id, status, salesTax, greek_name, "
         + "start_date, end_date from client";
 
     /**
@@ -124,7 +124,8 @@ public class InformixClientDAO implements ClientDAO {
      */
     private static final String SQL_UPDATE_CLIENT = "update client set name = ?, company_id = ?,"
         + " creation_date = ?, creation_user = ?, modification_date = ?, modification_user = ?,"
-        + " payment_term_id = ?, status = ?, salesTax = ?, start_date = ?, end_date = ?" + " where client_id = ?";
+        + " payment_term_id = ?, status = ?, salesTax = ?, start_date = ?, end_date = ?, greek_name = ?"
+        + " where client_id = ?";
 
     /**
      * <p>
@@ -390,6 +391,7 @@ public class InformixClientDAO implements ClientDAO {
                 stmt.setDouble(10, clients[i].getSalesTax());
                 stmt.setDate(11, new java.sql.Date(clients[i].getStartDate().getTime()));
                 stmt.setDate(12, new java.sql.Date(clients[i].getEndDate().getTime()));
+                stmt.setString(13, clients[i].getGreekName());
 
                 stmt.addBatch();
 
@@ -622,7 +624,8 @@ public class InformixClientDAO implements ClientDAO {
                     stmt.setDouble(9, clients[i].getSalesTax());
                     stmt.setDate(10, new java.sql.Date(clients[i].getStartDate().getTime()));
                     stmt.setDate(11, new java.sql.Date(clients[i].getEndDate().getTime()));
-                    stmt.setLong(12, clients[i].getId());
+                    stmt.setString(12, clients[i].getGreekName());
+                    stmt.setLong(13, clients[i].getId());
 
                     if (audit) {
                         auditClient(olds[i], clients[i]);
@@ -1103,7 +1106,10 @@ public class InformixClientDAO implements ClientDAO {
         client.setSalesTax(result.getDouble("salesTax"));
         client.setStartDate(result.getDate("start_date"));
         client.setEndDate(result.getDate("end_date"));
-
+        String greekName = result.getString("greek_name");
+        if (greekName != null) {
+            client.setGreekName(greekName);
+        }
         return client;
     }
 

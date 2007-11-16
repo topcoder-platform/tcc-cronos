@@ -6,6 +6,7 @@ package com.topcoder.timetracker.client.accuracytests;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.timetracker.contact.Contact;
 import com.topcoder.timetracker.contact.ContactManager;
+import com.topcoder.timetracker.contact.PersistenceException;
 
 /**
  * <p>
@@ -166,5 +167,10 @@ public class MockContactManager implements ContactManager {
      */
     public void deassociate(Contact contact, long entityId, boolean doAudit) {
         // empty
+    }
+
+    public Contact[] retrieveContatcts(long[] ids) throws PersistenceException {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

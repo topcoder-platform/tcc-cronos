@@ -70,6 +70,9 @@
 					<Property name="NAME">
 						<Value>client.name</Value>
 					</Property>
+					<Property name="GREEK_NAME">
+						<Value>client.greek_name</Value>
+					</Property>
 					<Property name="PROJECT_ID">
 						<Value>client_project.project_id</Value>
 					</Property>
@@ -196,6 +199,16 @@
                         </Property>
                     </Property>
 					<Property name="NAME">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+					</Property>
+					<Property name="GREEK_NAME">
                         <Property name="validator">
                             <Property name="class">
                                 <Value>validator</Value>

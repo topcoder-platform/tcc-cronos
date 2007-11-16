@@ -38,6 +38,7 @@ public class ClientOnlyDepthAccuracyTests extends TestCase {
     protected void setUp() throws Exception {
         AccuracyTestHelper.loadXMLConfig(AccuracyTestHelper.CONFIG_FILE);
         instance = new ClientOnlyDepth();
+        AccuracyTestHelper.setUpDatabase();
     }
 
     /**

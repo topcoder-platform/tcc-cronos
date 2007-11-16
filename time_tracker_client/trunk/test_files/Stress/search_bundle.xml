@@ -70,6 +70,9 @@
 					<Property name="NAME">
 						<Value>client.name</Value>
 					</Property>
+					<Property name="GREEK_NAME">
+						<Value>client.greek_name</Value>
+					</Property>
 					<Property name="PROJECT_ID">
 						<Value>client_project.project_id</Value>
 					</Property>
@@ -204,9 +207,59 @@
                                 <Value>default</Value>
                             </Property>
                         </Property>
+					</Property>
+					<Property name="GREEK_NAME">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
                     </Property>
 				</Property>
             </Property>
+            <!--
+            <Property name="DbRejectReasonSearchBundle">
+                <Property name="searchStrategy">
+                    <Property name="class">
+                        <Value>dbStrategy</Value>
+                    </Property>
+                </Property>
+                <Property name="context">
+                    <Value>
+                    </Value>
+                </Property>
+
+                <Property name="alias">
+                    <Property name="id">
+                        <Value>reject_reason.reject_reason_id</Value>
+                    </Property>
+                    <Property name="search_company_id">
+                        <Value>comp_rej_email.company_id</Value>
+                    </Property>
+                    <Property name="search_body">
+                        <Value>reject_email.body</Value>
+                    </Property>
+                    <Property name="search_created_date">
+                        <Value>reject_email.creation_date</Value>
+                    </Property>
+                    <Property name="search_created_user">
+                        <Value>reject_email.creation_user</Value>
+                    </Property>
+                    <Property name="search_modification_date">
+                        <Value>reject_email.modification_date</Value>
+                    </Property>
+                    <Property name="search_modification_user">
+                        <Value>reject_email.modification_user</Value>
+                    </Property>
+                </Property>
+
+                <Property name="searchableFields">
+                </Property>
+            </Property>
+            -->
         </Property>
     </Config>
 
@@ -218,6 +271,23 @@
         </Property>
     </Config>
     <Config name="com.topcoder.search.builder.strategy.factory">
+        <!--
+        <Property name="ldapStrategy">
+            <Property name="type">
+                <Value>com.topcoder.search.builder.ldap.LDAPSearchStrategy</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>LDAPSearchStrategy</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        -->
         <Property name="dbStrategy">
             <Property name="type">
                 <Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>

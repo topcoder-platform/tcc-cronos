@@ -81,7 +81,7 @@ public class DemoTest extends TestCase {
         impl = new ClientUtilityImpl();
 
         dbFactory = new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl");
-        UnitTestHelper.clearDatabase(dbFactory, "informix_connect");
+        UnitTestHelper.setUpDatabase(dbFactory, "informix_connect");
     }
 
     /**
@@ -117,7 +117,7 @@ public class DemoTest extends TestCase {
             clients[i].setId(i + 1);
             clients[i].setModificationDate(new Date());
             clients[i].setModificationUser("modificationUser");
-            clients[i].setName("userName");
+            clients[i].setName("userName" + (i + 1));
 
             PaymentTerm term = new PaymentTerm();
             term.setId(i + 1);
@@ -135,10 +135,10 @@ public class DemoTest extends TestCase {
             clients[i].setAddress(address);
 
             Project project1 = new Project();
-            project1.setId(i + 77);
+            project1.setId(i + 1);
 
             Project project2 = new Project();
-            project2.setId(i + 144);
+            project2.setId(2 * i + 2);
 
             clients[i].setProjects(new Project[] {project1, project2});
         }
@@ -157,7 +157,8 @@ public class DemoTest extends TestCase {
         impl.updateClients(getClients, false);
 
         // remove the clients
-        impl.removeClient(getClients[0].getId(), false);
+        // NOTE: remove should only be called when project utility is not mock
+        //impl.removeClient(getClients[0].getId(), false);
 
         // search the clients
         impl.searchClient(ClientFilterFactory.createActiveFilter(true), new ClientIDOnlyDepth());

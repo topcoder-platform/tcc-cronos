@@ -153,6 +153,9 @@
 					<Property name="PROJECT_ID">
 						<Value>client_project.project_id</Value>
 					</Property>
+					<Property name="GREEK_NAME">
+						<Value>client.greek_name</Value>
+					</Property>
                 </Property>
                 <Property name="searchableFields">
                     <Property name="ALL">
@@ -276,6 +279,16 @@
                         </Property>
                     </Property>
 					<Property name="NAME">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+					</Property>
+					<Property name="GREEK_NAME">
                         <Property name="validator">
                             <Property name="class">
                                 <Value>validator</Value>
@@ -542,7 +555,7 @@
 							<Value>com.informix.jdbc.IfxDriver</Value>
 						</Property>
 						<Property name="jdbc_url">
-							<Value>jdbc:informix-sqli://10.37.129.3:1526/tt_client_empty:INFORMIXSERVER=ol_topcoder</Value>
+							<Value>jdbc:informix-sqli://10.37.129.3:1526/empty:INFORMIXSERVER=ol_topcoder</Value>
 						</Property>
 						<Property name="user">
 							<Value>informix</Value>

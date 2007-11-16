@@ -376,7 +376,7 @@
     <!-- ************ REMOVE EVERYTHING BELOW HERE FOR THE DISTRIBUTION ************* -->
     <!-- ************************************************************************** -->
 
-    <target name="dist_tcs" depends="clean,dist">
+    <target name="dist_tcs" depends="clean,dist,javadoc">
         <!-- define tcs distribution format -->
 
         <mkdir dir="${dist_conf}"/>
@@ -404,13 +404,7 @@
 
         <copy todir="${dist_docs}">
             <fileset dir="${docsdir}">
-                <include name="${component}_Class_Diagram*"/>
-                <include name="${component}_Use_Case_Diagram*"/>
-                <include name="${component}_Sequence_Diagram*"/>
-                <include name="${component}_Requirements_Specification.*"/>
-                <include name="${component}_Component_Specification.*"/>
-                <include name="${component}.zargo"/>
-                <include name="${component}.zuml"/>
+                <include name="**"/>
             </fileset>
         </copy>
 
@@ -444,8 +438,10 @@
                 <include name="${component}_Class_Diagram*"/>
                 <include name="${component}_Use_Case_Diagram*"/>
                 <include name="${component}_Sequence_Diagram*"/>
-                <include name="${component}_Requirements_Specification.*"/>
-                <include name="${component}_Component_Specification.*"/>
+                <include name="${component}_Requirements_Specification.pdf"/>
+                <include name="${component}_Requirements_Specification.rtf"/>
+                <include name="${component}_Component_Specification.pdf"/>
+                <include name="${component}_Component_Specification.rtf"/>
             </fileset>
 
             <fileset dir="${testlogdir}">
@@ -474,14 +470,14 @@
              includes="${configdir}/**,${javamain}/**/*.java,${javatests}/${packagedir}/**,${testlogdir}/**,${testfiles}/**,${docsdir}/**"
              excludes="${javatests}/${packagedir}/AllTests.java,${javatests}/${packagedir}/stresstests/*,${javatests}/${packagedir}/failuretests/*,
                        ${javatests}/${packagedir}/accuracytests/*"
-        />
+                />
     </target>
 
     <target name="design_submission">
         <jar jarfile="${design_submission.jar}"
              basedir="."
              includes="${configdir}/**,${javamain}/**,${docsdir}/**,${testfiles}/**"
-        />
+                />
     </target>
 
     <target name="dev_dist">
@@ -495,7 +491,7 @@
                        ${docsdir}/**,
                        ${jar_tcs_libdir}/**,
                        ${testfiles}/**"
-        />
+                />
 
         <delete dir="${jar_tcs_libdir}"/>
     </target>
@@ -509,7 +505,7 @@
                        ${docsdir}/**,
                        ${jar_tcs_libdir}/**,
                        ${testfiles}/**"
-        />
+                />
     </target>
 
     <!-- ************************************************************************** -->

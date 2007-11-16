@@ -40,6 +40,7 @@ public class InformixClientDAOAccuracyTests extends TestCase {
     protected void setUp() throws Exception {
         AccuracyTestHelper.loadXMLConfig(AccuracyTestHelper.CONFIG_FILE);
         instance = new InformixClientDAO();
+        AccuracyTestHelper.setUpDatabase();
     }
 
     /**
@@ -95,9 +96,9 @@ public class InformixClientDAOAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testAddClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         instance.addClient(client, true);
-        AccuracyTestHelper.assertClients(client, instance.retrieveClient(20));
+        AccuracyTestHelper.assertClients(client, instance.retrieveClient(1));
     }
 
     /**
@@ -108,9 +109,9 @@ public class InformixClientDAOAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testAddClients() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         instance.addClients(new Client[] {client}, true);
-        AccuracyTestHelper.assertClients(client, instance.retrieveClient(20));
+        AccuracyTestHelper.assertClients(client, instance.retrieveClient(1));
     }
 
     /**
@@ -121,9 +122,9 @@ public class InformixClientDAOAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testRetrieveClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         instance.addClient(client, true);
-        AccuracyTestHelper.assertClients(client, instance.retrieveClient(20));
+        AccuracyTestHelper.assertClients(client, instance.retrieveClient(1));
     }
 
     /**
@@ -134,9 +135,9 @@ public class InformixClientDAOAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testRetrieveClients() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         instance.addClient(client, true);
-        AccuracyTestHelper.assertClients(client, instance.retrieveClients(new long[] {20})[0]);
+        AccuracyTestHelper.assertClients(client, instance.retrieveClients(new long[] {1})[0]);
     }
 
     /**
@@ -147,10 +148,10 @@ public class InformixClientDAOAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testRemoveClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         instance.addClient(client, true);
-        instance.removeClient(20, true);
-        assertNull("Failed to remove client.", instance.retrieveClient(20));
+        instance.removeClient(1, true);
+        assertNull("Failed to remove client.", instance.retrieveClient(1));
     }
 
     /**
@@ -161,10 +162,10 @@ public class InformixClientDAOAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testRemoveClients() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         instance.addClient(client, true);
-        instance.removeClients(new long[] {20}, true);
-        assertNull("Failed to remove client.", instance.retrieveClient(20));
+        instance.removeClients(new long[] {1}, true);
+        assertNull("Failed to remove client.", instance.retrieveClient(1));
     }
 
     /**
@@ -175,13 +176,13 @@ public class InformixClientDAOAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testUpdateClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         instance.addClient(client, true);
 
         client.setActive(false);
         instance.updateClient(client, true);
 
-        AccuracyTestHelper.assertClients(client, instance.retrieveClient(20));
+        AccuracyTestHelper.assertClients(client, instance.retrieveClient(1));
     }
 
     /**
@@ -192,13 +193,13 @@ public class InformixClientDAOAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testUpdateClients() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         instance.addClient(client, true);
 
         client.setActive(false);
         instance.updateClients(new Client[] {client}, true);
 
-        AccuracyTestHelper.assertClients(client, instance.retrieveClient(20));
+        AccuracyTestHelper.assertClients(client, instance.retrieveClient(1));
     }
 
     /**
@@ -209,7 +210,7 @@ public class InformixClientDAOAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testGetAllClients() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         instance.addClient(client, true);
         AccuracyTestHelper.assertClients(client, instance.getAllClients()[0]);
     }
@@ -222,10 +223,10 @@ public class InformixClientDAOAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testSearchClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         instance.addClient(client, true);
 
-        CustomResultSet result = instance.searchClient(ClientFilterFactory.createCompanyIdFilter(20),
+        CustomResultSet result = instance.searchClient(ClientFilterFactory.createCompanyIdFilter(1),
             new ClientIDOnlyDepth());
         assertNotNull("Failed to search client.", result);
     }
@@ -238,15 +239,15 @@ public class InformixClientDAOAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testAddProjectToClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         Project project = new Project();
-        project.setId(10);
+        project.setId(2);
 
         instance.addClient(client, true);
         instance.addProjectToClient(client, project, true);
         client.setProjects(new Project[] {project});
 
-        AccuracyTestHelper.assertClients(client, instance.retrieveClient(20));
+        AccuracyTestHelper.assertClients(client, instance.retrieveClient(1));
     }
 
     /**
@@ -257,15 +258,15 @@ public class InformixClientDAOAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testRemoveProjectFromClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         Project project = new Project();
-        project.setId(10);
+        project.setId(2);
 
         instance.addClient(client, true);
         instance.addProjectToClient(client, project, true);
-        instance.removeProjectFromClient(client, 10, true);
+        instance.removeProjectFromClient(client, 2, true);
 
-        assertEquals("Failed to remove project from client.", 0, instance.getAllProjectIDsOfClient(20).length);
+        assertEquals("Failed to remove project from client.", 0, instance.getAllProjectIDsOfClient(1).length);
     }
 
     /**
@@ -276,14 +277,14 @@ public class InformixClientDAOAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testGetAllProjectIDsOfClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         Project project = new Project();
-        project.setId(10);
+        project.setId(2);
 
         instance.addClient(client, true);
         instance.addProjectToClient(client, project, true);
 
-        assertEquals("Failed to get all the project ids.", 10, instance.getAllProjectIDsOfClient(20)[0]);
+        assertEquals("Failed to get all the project ids.", 2, instance.getAllProjectIDsOfClient(1)[0]);
     }
 
 }

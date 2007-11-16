@@ -50,7 +50,7 @@ public class InformixClientDAOUnitTests extends TestCase {
         dao = new InformixClientDAO();
 
         dbFactory = new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl");
-        UnitTestHelper.clearDatabase(dbFactory, "informix_connect");
+        UnitTestHelper.setUpDatabase(dbFactory, "informix_connect");
     }
 
     /**

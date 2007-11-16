@@ -28,10 +28,10 @@ import com.topcoder.timetracker.project.Project;
  */
 public class Client extends TimeTrackerBean {
 
-     /**
-      * Automatically generated unique ID for use with serialization.
-      */
-     private static final long serialVersionUID = 3846853780701648357L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = 3846853780701648357L;
 
     /**
      * <p>
@@ -48,6 +48,13 @@ public class Client extends TimeTrackerBean {
      * </p>
      */
     private String name = null;
+
+    /**
+     * <p>
+     * Represents the greek name of this Client. This variable is set to null initially.
+     * </p>
+     */
+    private String greekName = null;
 
     /**
      * <p>
@@ -196,6 +203,33 @@ public class Client extends TimeTrackerBean {
     public void setName(String name) {
         Helper.checkString(name, "name");
         this.name = name;
+
+        this.setChanged(true);
+    }
+
+    /**
+     * <p>
+     * Get the greek name.
+     * </p>
+     *
+     * @return possible null, non empty name of this client
+     */
+    public String getGreekName() {
+        return this.greekName;
+    }
+
+    /**
+     * <p>
+     * Set the greek name.
+     * </p>
+     *
+     * @param name the non null, non empty(trim'd) name
+     *
+     * @throws IllegalArgumentException if the name is null or empty(trim'd)
+     */
+    public void setGreekName(String name) {
+        Helper.checkString(name, "name");
+        this.greekName = name;
 
         this.setChanged(true);
     }

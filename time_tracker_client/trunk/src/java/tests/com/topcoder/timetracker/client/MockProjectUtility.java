@@ -122,7 +122,9 @@ public class MockProjectUtility implements ProjectUtility {
      * @throws DataAccessException if a problem occurs while accessing the persistent store.
      */
     public com.topcoder.timetracker.project.Project[] searchProjects(com.topcoder.search.builder.filter.Filter filter) {
-        return null;
+        Project project = new Project();
+        project.setId(1);
+        return new Project[]{project};
     }
 
     /**
@@ -291,7 +293,7 @@ public class MockProjectUtility implements ProjectUtility {
      * @return the ProjectFilterFactory that is capable of creating SearchFilters to use when searching for projects.
      */
     public com.topcoder.timetracker.project.ProjectFilterFactory getProjectFilterFactory() {
-        return null;
+        return new MockProjectFilterFactory();
     }
 
     /**

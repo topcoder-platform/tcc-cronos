@@ -15,6 +15,7 @@ import java.util.Iterator;
 
 import com.topcoder.db.connectionfactory.ConfigurationException;
 import com.topcoder.db.connectionfactory.DBConnectionException;
+import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.timetracker.client.Client;
 import com.topcoder.timetracker.common.PaymentTerm;
@@ -150,6 +151,35 @@ public class TestHelper {
     }
 
     /**
+     * Setup the data of the database.
+     *
+     * @param dbFactory the db factory
+     * @param connName the connection name
+     *
+     * @throws Exception any exception to JUnit
+     */
+    public static void setUpDatabase()
+        throws Exception {
+        Statement stmt = null;
+        Connection conn = null;
+
+        conn = getConnection();
+
+        stmt = conn.createStatement();
+
+        for (int i = 1; i < 700; i++) {
+            stmt.executeUpdate("insert into company values (" + i + " , 'company" + i
+                    + "', 'passcode" + i + "', CURRENT, USER, CURRENT, USER);");
+        }
+        stmt.executeUpdate("insert into project values (1, 'project1', 1, 'passcode1', CURRENT, CURRENT, CURRENT, USER, CURRENT, USER);");
+        stmt.executeUpdate("insert into project values (2, 'project2', 1, 'passcode2', CURRENT, CURRENT, CURRENT, USER, CURRENT, USER);");
+        stmt.executeUpdate("insert into project values (3, 'project3', 1, 'passcode3', CURRENT, CURRENT, CURRENT, USER, CURRENT, USER);");
+        stmt.executeUpdate("insert into project values (4, 'project4', 1, 'passcode4', CURRENT, CURRENT, CURRENT, USER, CURRENT, USER);");
+
+        conn.close();
+    }
+
+    /**
      * <p>
      * This method return the sql scripts from the given sql file.
      * </p>
@@ -212,7 +242,7 @@ public class TestHelper {
         client.setId(id);
         client.setModificationDate(new Date());
         client.setModificationUser("modificationUser");
-        client.setName("userName");
+        client.setName("userName" + id);
         PaymentTerm term = new PaymentTerm();
         term.setId(1);
         client.setPaymentTerm(term);

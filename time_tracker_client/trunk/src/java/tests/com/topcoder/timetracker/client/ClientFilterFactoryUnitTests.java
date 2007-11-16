@@ -122,6 +122,53 @@ public class ClientFilterFactoryUnitTests extends TestCase {
 
     /**
      * <p>
+     * Failure test for method <code>createGreekNameKeywordFilter</code>. Create with null is illegal.
+     * IllegalArgumentException is expected.
+     * </p>
+     *
+     * @throws Exception Exception to JUnit.
+     */
+    public void testcreateGreekNameKeywordFilterWithNull() throws Exception {
+        try {
+            ClientFilterFactory.createGreekNameKeywordFilter(null);
+            fail("Create with null is illegal, IllegalArgumentException should be thrown");
+        } catch (IllegalArgumentException e) {
+            // ok to be here
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>createGreekNameKeywordFilter</code>. Create with empty is illegal.
+     * IllegalArgumentException is expected.
+     * </p>
+     *
+     * @throws Exception Exception to JUnit.
+     */
+    public void testcreateGreekNameKeywordFilterWithEmpty()
+        throws Exception {
+        try {
+            ClientFilterFactory.createGreekNameKeywordFilter("    ");
+            fail("Create with empty is illegal, IllegalArgumentException should be thrown");
+        } catch (IllegalArgumentException e) {
+            // ok to be here
+        }
+    }
+
+    /**
+     * <p>
+     * Accuracy test for method <code>createGreekNameKeywordFilter</code>.
+     * </p>
+     *
+     * @throws Exception Exception to JUnit.
+     */
+    public void testcreateGreekNameKeywordFilterAccuracy() throws Exception {
+        Filter filter = ClientFilterFactory.createGreekNameKeywordFilter("name");
+
+        assertTrue("The filter should be of type LikeFilter", filter instanceof LikeFilter);
+    }
+    /**
+     * <p>
      * Failure test for method <code>createCreatedInFilter</code>. Create with null is illegal.
      * IllegalArgumentException is expected.
      * </p>

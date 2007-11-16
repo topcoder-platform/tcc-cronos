@@ -141,6 +141,35 @@ final public class UnitTestHelper {
         }
     }
 
+
+    /**
+     * Setup the data of the database.
+     *
+     * @param dbFactory the db factory
+     * @param connName the connection name
+     *
+     * @throws Exception any exception to JUnit
+     */
+    public static void setUpDatabase(DBConnectionFactory dbFactory, String connName)
+        throws Exception {
+        Statement stmt = null;
+        Connection conn = null;
+
+        conn = createConnection(dbFactory, connName, true);
+
+        stmt = conn.createStatement();
+
+        clearDatabase(dbFactory, connName);
+        stmt.executeUpdate("insert into company values (2, 'company2', 'passcode2', CURRENT, USER, CURRENT, USER);");
+        stmt.executeUpdate("insert into company values (1, 'company1', 'passcode1', CURRENT, USER, CURRENT, USER);");
+        stmt.executeUpdate("insert into project values (1, 'project1', 1, 'passcode1', CURRENT, CURRENT, CURRENT, USER, CURRENT, USER);");
+        stmt.executeUpdate("insert into project values (2, 'project2', 1, 'passcode2', CURRENT, CURRENT, CURRENT, USER, CURRENT, USER);");
+        stmt.executeUpdate("insert into project values (3, 'project3', 1, 'passcode3', CURRENT, CURRENT, CURRENT, USER, CURRENT, USER);");
+        stmt.executeUpdate("insert into project values (4, 'project4', 1, 'passcode4', CURRENT, CURRENT, CURRENT, USER, CURRENT, USER);");
+
+        conn.close();
+    }
+
     /**
      * Clear the data of the database.
      *
@@ -158,8 +187,11 @@ final public class UnitTestHelper {
 
         stmt = conn.createStatement();
 
-        stmt.executeUpdate("delete from client");
         stmt.executeUpdate("delete from client_project");
+        stmt.executeUpdate("delete from project");
+        stmt.executeUpdate("delete from client");
+        stmt.executeUpdate("delete from company");
+        
 
         conn.close();
     }
@@ -209,7 +241,8 @@ final public class UnitTestHelper {
         client.setId(id);
         client.setModificationDate(new Date());
         client.setModificationUser("modificationUser");
-        client.setName("userName");
+        client.setName("userName" + id);
+        client.setGreekName("greekName" + id);
 
         PaymentTerm term = new PaymentTerm();
         term.setId(id);
@@ -257,6 +290,7 @@ final public class UnitTestHelper {
                 || !DATEFORMAT.format(first.getModificationDate())
                                   .equals(DATEFORMAT.format(second.getModificationDate()))
                 || !first.getName().equals(second.getName())
+                || (first.getGreekName() != null && !first.getGreekName().equals(second.getGreekName()))
                 || !DATEFORMAT.format(first.getStartDate()).equals(DATEFORMAT.format(second.getStartDate()))
                 || !DATEFORMAT.format(first.getEndDate()).equals(DATEFORMAT.format(second.getEndDate()))) {
             return false;

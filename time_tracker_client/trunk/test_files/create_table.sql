@@ -11,6 +11,7 @@ create table client  (
   salesTax             decimal(7, 3)                   not null,
   start_date           DATETIME YEAR TO SECOND         not null,
   end_date             DATETIME YEAR TO SECOND         not null,
+  greek_name           VARCHAR(64),
 primary key (client_id)
       constraint pk_client
 );

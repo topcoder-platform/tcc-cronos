@@ -38,6 +38,7 @@ public class SummaryDepthAccuracyTests extends TestCase {
     protected void setUp() throws Exception {
         AccuracyTestHelper.loadXMLConfig(AccuracyTestHelper.CONFIG_FILE);
         instance = new SummaryDepth();
+        AccuracyTestHelper.setUpDatabase();
     }
 
     /**

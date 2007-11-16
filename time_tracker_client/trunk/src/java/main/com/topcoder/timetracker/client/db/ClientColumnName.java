@@ -27,7 +27,7 @@ public class ClientColumnName extends Enum {
 
 	/**
      * <p>
-     * Represents the name column name in client_project table. It will never be null. It will be referenced in
+     * Represents the name column name in client table. It will never be null. It will be referenced in
      * ClientInformixDAO class.
      * </p>
      */
@@ -35,7 +35,15 @@ public class ClientColumnName extends Enum {
 
     /**
      * <p>
-     * Represents the company id column name in client_project table. It will never be null. It will be referenced
+     * Represents the greek_name column name in client table. It will never be null. It will be referenced in
+     * ClientInformixDAO class.
+     * </p>
+     */
+    public static final ClientColumnName GREEK_NAME = new ClientColumnName("GREEK_NAME");
+
+    /**
+     * <p>
+     * Represents the company id column name in client table. It will never be null. It will be referenced
      * in ClientInformixDAO class.
      * </p>
      */
@@ -43,7 +51,7 @@ public class ClientColumnName extends Enum {
 
     /**
      * <p>
-     * Represents thecreation date column name in client_project table. It will never be null. It will be
+     * Represents the creation date column name in client_project table. It will never be null. It will be
      * referenced in ClientInformixDAO class.
      * </p>
      */
@@ -51,7 +59,7 @@ public class ClientColumnName extends Enum {
 
     /**
      * <p>
-     * Represents thecreation user column name in client_project table. It will never be null. It will be
+     * Represents the creation user column name in client_project table. It will never be null. It will be
      * referenced in ClientInformixDAO class.
      * </p>
      */
@@ -59,7 +67,7 @@ public class ClientColumnName extends Enum {
 
     /**
      * <p>
-     * Represents themodification date column name in client_project table. It will never be null. It will be
+     * Represents the modification date column name in client_project table. It will never be null. It will be
      * referenced in ClientInformixDAO class.
      * </p>
      */
@@ -67,7 +75,7 @@ public class ClientColumnName extends Enum {
 
     /**
      * <p>
-     * Represents themodification user column name in client_project table. It will never be null. It will be
+     * Represents the modification user column name in client_project table. It will never be null. It will be
      * referenced in ClientInformixDAO class.
      * </p>
      */
@@ -75,7 +83,7 @@ public class ClientColumnName extends Enum {
 
     /**
      * <p>
-     * Represents thestart date column name in client_project table. It will never be null. It will be referenced
+     * Represents the start date column name in client_project table. It will never be null. It will be referenced
      * in ClientInformixDAO class.
      * </p>
      */

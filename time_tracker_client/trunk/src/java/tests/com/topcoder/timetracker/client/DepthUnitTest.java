@@ -49,13 +49,11 @@ public class DepthUnitTest extends TestCase {
         UnitTestHelper.loadXMLConfig("test_files" + File.separatorChar + "object_factory_config.xml");
 
         dbFactory = new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl");
-        UnitTestHelper.clearDatabase(dbFactory, "informix_connect");
+        UnitTestHelper.setUpDatabase(dbFactory, "informix_connect");
 
         dao = new InformixClientDAO();
 
         depth = new ClientIDOnlyDepth();
-
-        UnitTestHelper.clearDatabase(dbFactory, "informix_connect");
 
         impl = new ClientUtilityImpl();
     }

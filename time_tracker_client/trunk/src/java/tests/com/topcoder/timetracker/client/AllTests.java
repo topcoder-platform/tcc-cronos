@@ -4,13 +4,12 @@
  */
 package com.topcoder.timetracker.client;
 
+import com.topcoder.timetracker.client.accuracytests.AccuracyTests;
+import com.topcoder.timetracker.client.failuretests.FailureTests;
+import com.topcoder.timetracker.client.stresstests.StressTests;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import com.topcoder.timetracker.client.accuracytests.AccuracyTests;
-import com.topcoder.timetracker.client.stresstests.StressTests;
-import com.topcoder.timetracker.client.failuretests.FailureTests;
 
 /**
  * <p>This test case aggregates all test cases.</p>
@@ -22,19 +21,19 @@ public class AllTests extends TestCase {
 
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        
-        //unit tests
-        suite.addTest(UnitTests.suite());
-        
-        //accuracy tests
-        suite.addTest(AccuracyTests.suite());
-        
+
         //failure tests
         suite.addTest(FailureTests.suite());
-        
+
+        //unit tests
+        suite.addTest(UnitTests.suite());
+
+        //accuracy tests
+        suite.addTest(AccuracyTests.suite());
+
         //stress tests
         suite.addTest(StressTests.suite());
-        
+
         return suite;
     }
 

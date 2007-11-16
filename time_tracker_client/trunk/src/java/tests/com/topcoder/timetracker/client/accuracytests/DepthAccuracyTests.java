@@ -38,6 +38,7 @@ public class DepthAccuracyTests extends TestCase {
 
         String[] fields = new String[] {"one"};
         instance = new MockDepth(fields, true, true, true, true);
+        AccuracyTestHelper.setUpDatabase();
     }
 
     /**

@@ -59,6 +59,7 @@ public class ClientUtilitySessionBeanAccuracyTests extends TestCase {
 
         AccuracyTestHelper.clearConfig();
         AccuracyTestHelper.loadXMLConfig(AccuracyTestHelper.CONFIG_FILE);
+        AccuracyTestHelper.setUpDatabase();
         /* We need to set MockContextFactory as our JNDI provider.
          * This method sets the necessary system properties.
          */
@@ -131,7 +132,7 @@ public class ClientUtilitySessionBeanAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testAddClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         delegate.addClient(client, true);
         AccuracyTestHelper.assertClients(client, delegate.retrieveClient(client.getId()));
     }
@@ -144,7 +145,7 @@ public class ClientUtilitySessionBeanAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testAddClients() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         delegate.addClients(new Client[] {client}, true);
         AccuracyTestHelper.assertClients(client, delegate.retrieveClient(client.getId()));
     }
@@ -157,7 +158,7 @@ public class ClientUtilitySessionBeanAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testRetrieveClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         delegate.addClient(client, true);
         AccuracyTestHelper.assertClients(client, delegate.retrieveClient(client.getId()));
     }
@@ -170,7 +171,7 @@ public class ClientUtilitySessionBeanAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testRetrieveClients() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         delegate.addClient(client, true);
         AccuracyTestHelper.assertClients(client, delegate.retrieveClients(new long[] {client.getId()})[0]);
     }
@@ -183,7 +184,7 @@ public class ClientUtilitySessionBeanAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testRemoveClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         delegate.addClient(client, true);
         delegate.removeClient(client.getId(), true);
         assertNull("Failed to remove client.", delegate.retrieveClient(client.getId()));
@@ -197,7 +198,7 @@ public class ClientUtilitySessionBeanAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testRemoveClients() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         delegate.addClient(client, true);
         delegate.removeClients(new long[] {client.getId()}, true);
         assertNull("Failed to remove client.", delegate.retrieveClient(client.getId()));
@@ -211,10 +212,10 @@ public class ClientUtilitySessionBeanAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testUpdateClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         delegate.addClient(client, true);
 
-        client.setId(50);
+        client.setName("name" + 2);
         client.setActive(false);
         delegate.updateClient(client, true);
 
@@ -229,10 +230,10 @@ public class ClientUtilitySessionBeanAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testUpdateClients() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         delegate.addClient(client, true);
 
-        client.setId(50);
+        client.setName("name" + 2);
         client.setActive(false);
         delegate.updateClients(new Client[] {client}, true);
 
@@ -247,7 +248,7 @@ public class ClientUtilitySessionBeanAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testGetAllClients() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         delegate.addClient(client, true);
         AccuracyTestHelper.assertClients(client, delegate.getAllClients()[0]);
     }
@@ -260,10 +261,10 @@ public class ClientUtilitySessionBeanAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testSearchClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         delegate.addClient(client, true);
 
-        Client[] clients = delegate.searchClient(ClientFilterFactory.createCompanyIdFilter(20),
+        Client[] clients = delegate.searchClient(ClientFilterFactory.createCompanyIdFilter(1),
             new ClientIDOnlyDepth());
         assertNotNull("Failed to search client.", clients);
     }
@@ -276,9 +277,9 @@ public class ClientUtilitySessionBeanAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testAddProjectToClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         Project project = new Project();
-        project.setId(10);
+        project.setId(2);
 
         delegate.addClient(client, true);
         delegate.addProjectToClient(client, project, true);
@@ -295,9 +296,9 @@ public class ClientUtilitySessionBeanAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testRemoveProjectFromClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         Project project = new Project();
-        project.setId(10);
+        project.setId(2);
 
         delegate.addClient(client, true);
         delegate.addProjectToClient(client, project, true);
@@ -315,15 +316,15 @@ public class ClientUtilitySessionBeanAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testGetAllProjectsOfClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         Project project = new Project();
-        project.setId(10);
+        project.setId(2);
 
         delegate.addClient(client, true);
         delegate.addProjectToClient(client, project, true);
 
-        assertEquals("Failed to get all the project ids.", 20,
-            delegate.getAllProjectsOfClient(client.getId())[0].getId());
+        assertEquals("Failed to get all the project ids.", 2,
+            delegate.getAllProjectsOfClient(client.getId())[1].getId());
     }
 
 }

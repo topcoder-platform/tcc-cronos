@@ -227,6 +227,66 @@ public class ClientUnitTests extends TestCase {
 
     /**
      * <p>
+     * Accuracy test for method <code>getGreekName</code>.
+     * </p>
+     *
+     * @throws Exception Exception to JUnit.
+     */
+    public void testgetGreekNameAccuracy() throws Exception {
+        client.setGreekName("name");
+
+        assertEquals("name should be get.", UnitTestHelper.getPrivateField(Client.class, client, "greekName"),
+            client.getGreekName());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setGreekName</code>. Set with null is illegal. IllegalArgumentException is expected.
+     * </p>
+     *
+     * @throws Exception Exception to JUnit.
+     */
+    public void testsetGreeknameWithNull() throws Exception {
+        try {
+            client.setGreekName(null);
+            fail("Set with null is illegal, IllegalArgumentException should be thrown");
+        } catch (IllegalArgumentException e) {
+            // ok to be here
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setGreekName</code>. Set with empty is illegal. IllegalArgumentException is expected.
+     * </p>
+     *
+     * @throws Exception Exception to JUnit.
+     */
+    public void testsetGreeknameWithEmpty() throws Exception {
+        try {
+            client.setGreekName("        ");
+            fail("Set with null is illegal, IllegalArgumentException should be thrown");
+        } catch (IllegalArgumentException e) {
+            // ok to be here
+        }
+    }
+
+    /**
+     * <p>
+     * Accuracy test for method <code>setGreekName</code>.
+     * </p>
+     *
+     * @throws Exception Exception to JUnit.
+     */
+    public void testsetGreekNameAccuracy() throws Exception {
+        client.setGreekName("name");
+
+        assertEquals("The name should be set.", "name", UnitTestHelper.getPrivateField(Client.class, client, "greekName"));
+        assertTrue("Client should be changed.", client.isChanged());
+    }
+
+    /**
+     * <p>
      * Accuracy test for method <code>getSalesTax</code>.
      * </p>
      *

@@ -236,4 +236,9 @@ public class MockContactManager implements ContactManager {
     public void deassociate(Contact contact, long entity_id, boolean doAudit)
         throws PersistenceException, AuditException {
     }
+
+    public Contact[] retrieveContatcts(long[] ids) throws PersistenceException {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

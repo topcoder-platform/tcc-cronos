@@ -94,7 +94,7 @@ public class AccuracyTestHelper {
      * @param id the id
      * @return the client
      */
-    public static Client createCient(long id) {
+    public static Client createClient(long id) {
         Client client = new Client();
 
         client.setActive(true);
@@ -106,7 +106,7 @@ public class AccuracyTestHelper {
         client.setId(id);
         client.setModificationDate(new Date());
         client.setModificationUser("modificationUser");
-        client.setName("userName");
+        client.setName("userName" + id);
         PaymentTerm term = new PaymentTerm();
         term.setId(id);
         client.setPaymentTerm(term);
@@ -149,6 +149,34 @@ public class AccuracyTestHelper {
     }
 
     /**
+     * Clear the data of the database.
+     *
+     * @param dbFactory the db factory
+     * @param connName the connection name
+     *
+     * @throws Exception any exception to JUnit
+     */
+    public static void setUpDatabase()
+        throws Exception {
+        Statement stmt = null;
+        Connection conn = null;
+
+        conn = getConnection();
+
+        stmt = conn.createStatement();
+
+        tearDownDataBase();
+        stmt.executeUpdate("insert into company values (2, 'company2', 'passcode2', CURRENT, USER, CURRENT, USER);");
+        stmt.executeUpdate("insert into company values (1, 'company1', 'passcode1', CURRENT, USER, CURRENT, USER);");
+        stmt.executeUpdate("insert into project values (1, 'project1', 1, 'passcode1', CURRENT, CURRENT, CURRENT, USER, CURRENT, USER);");
+        stmt.executeUpdate("insert into project values (2, 'project2', 1, 'passcode2', CURRENT, CURRENT, CURRENT, USER, CURRENT, USER);");
+        stmt.executeUpdate("insert into project values (3, 'project3', 1, 'passcode3', CURRENT, CURRENT, CURRENT, USER, CURRENT, USER);");
+        stmt.executeUpdate("insert into project values (4, 'project4', 1, 'passcode4', CURRENT, CURRENT, CURRENT, USER, CURRENT, USER);");
+
+        conn.close();
+    }
+
+    /**
      * <p>
      * Clears all the data from the tables using by this component.
      * </p>
@@ -182,8 +210,10 @@ public class AccuracyTestHelper {
         Statement stmt = null;
         try {
             stmt = connection.createStatement();
-            stmt.executeUpdate("DELETE FROM client");
-            stmt.executeUpdate("DELETE FROM client_project");
+            stmt.executeUpdate("delete from client_project");
+            stmt.executeUpdate("delete from project");
+            stmt.executeUpdate("delete from client");
+            stmt.executeUpdate("delete from company");
         } finally {
             closeStatement(stmt);
         }

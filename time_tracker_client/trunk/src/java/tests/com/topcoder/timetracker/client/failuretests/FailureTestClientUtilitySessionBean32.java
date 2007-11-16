@@ -74,6 +74,7 @@ public class FailureTestClientUtilitySessionBean32 extends TestCase {
                 ClientUtilityLocalHome.class);
 
         impl = home.create();
+        FailureTestHelper.setUpDatabase();
     }
 
     /**
@@ -82,6 +83,7 @@ public class FailureTestClientUtilitySessionBean32 extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
+        FailureTestHelper.tearDownDataBase();
         FailureTestHelper.removeNamespaces();
     }
     

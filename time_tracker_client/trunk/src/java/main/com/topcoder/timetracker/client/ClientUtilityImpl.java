@@ -36,6 +36,7 @@ import com.topcoder.timetracker.project.Project;
 import com.topcoder.timetracker.project.ProjectFilterFactory;
 import com.topcoder.timetracker.project.ProjectUtility;
 import com.topcoder.timetracker.project.UnrecognizedEntityException;
+import com.topcoder.timetracker.project.ejb.ProjectUtilityDelegate;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.idgenerator.IDGenerator;
 import com.topcoder.util.idgenerator.IDGeneratorFactory;
@@ -405,9 +406,6 @@ public class ClientUtilityImpl implements ClientUtility {
         Client[] clients = dao.retrieveClients(ids);
 
         for (int i = 0; i < clients.length; i++) {
-            if (clients[i] == null) {
-                continue;
-            }
             setContact(clients[i]);
             setAddress(clients[i]);
             setPaymentTerm(clients[i]);
@@ -486,6 +484,11 @@ public class ClientUtilityImpl implements ClientUtility {
 
         dao.updateClients(clients, doAudit);
 
+        if (oldClients.length != clients.length) {
+            // it's a add, not a update, oldClients may be smaller than clients.
+            // in this case, just return.
+            return;
+        }
         for (int i = 0; i < clients.length; ++i) {
             Set oldProjectIds = new HashSet();
             Map newProjectIds = new HashMap();
@@ -721,7 +724,8 @@ public class ClientUtilityImpl implements ClientUtility {
     private void setProjects(Client client) throws ClientPersistenceException, PropertyOperationException {
         try {
             ProjectFilterFactory filterFactory = projectUtility.getProjectFilterFactory();
-            Filter clientFilter = filterFactory.createClientIdFilter(client.getId());
+
+            Filter   clientFilter = filterFactory.createClientIdFilter(client.getId());
 
             client.setProjects(projectUtility.searchProjects(clientFilter));
         } catch (UnrecognizedEntityException uee) {

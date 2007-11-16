@@ -29,6 +29,9 @@ public class FailureTestClientUtilityDelegate32 extends TestCase {
         super.setUp();
         FailureTestHelper.removeNamespaces();
         cm.add(new File("test_files/failure/ClientUtilityDelegate.xml").getAbsolutePath());
+        cm.add(new File("test_files/failure/ClientUtilityImpl.xml").getAbsolutePath());
+        cm.add(new File("test_files/failure/conf/db_config.xml").getAbsolutePath());
+        FailureTestHelper.setUpDatabase();
     }
 
     /**
@@ -37,6 +40,7 @@ public class FailureTestClientUtilityDelegate32 extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
+        FailureTestHelper.tearDownDataBase();
         FailureTestHelper.removeNamespaces();
     }
     /**

@@ -39,6 +39,7 @@ public class ClientUtilityImplAccuracyTests extends TestCase {
     protected void setUp() throws Exception {
         AccuracyTestHelper.loadXMLConfig(AccuracyTestHelper.CONFIG_FILE);
         instance = new ClientUtilityImpl();
+        AccuracyTestHelper.setUpDatabase();
     }
 
     /**
@@ -95,7 +96,7 @@ public class ClientUtilityImplAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testAddClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         instance.addClient(client, true);
         AccuracyTestHelper.assertClients(client, instance.retrieveClient(client.getId()));
     }
@@ -108,7 +109,7 @@ public class ClientUtilityImplAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testAddClients() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         instance.addClients(new Client[] {client}, true);
         AccuracyTestHelper.assertClients(client, instance.retrieveClient(client.getId()));
     }
@@ -121,7 +122,7 @@ public class ClientUtilityImplAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testRetrieveClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         instance.addClient(client, true);
         AccuracyTestHelper.assertClients(client, instance.retrieveClient(client.getId()));
     }
@@ -134,7 +135,7 @@ public class ClientUtilityImplAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testRetrieveClients() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         instance.addClient(client, true);
         AccuracyTestHelper.assertClients(client, instance.retrieveClients(new long[] {client.getId()})[0]);
     }
@@ -147,7 +148,7 @@ public class ClientUtilityImplAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testRemoveClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         instance.addClient(client, true);
         instance.removeClient(client.getId(), true);
         assertNull("Failed to remove client.", instance.retrieveClient(client.getId()));
@@ -161,7 +162,7 @@ public class ClientUtilityImplAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testRemoveClients() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         instance.addClient(client, true);
         instance.removeClients(new long[] {client.getId()}, true);
         assertNull("Failed to remove client.", instance.retrieveClient(client.getId()));
@@ -175,10 +176,10 @@ public class ClientUtilityImplAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testUpdateClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         instance.addClient(client, true);
 
-        client.setId(50);
+        client.setName("name" + 2);
         client.setActive(false);
 
         instance.updateClient(client, true);
@@ -194,10 +195,10 @@ public class ClientUtilityImplAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testUpdateClients() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         instance.addClient(client, true);
 
-        client.setId(50);
+        client.setName("name" + 2);
         client.setActive(false);
 
         instance.updateClients(new Client[] {client}, true);
@@ -213,7 +214,7 @@ public class ClientUtilityImplAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testGetAllClients() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         instance.addClient(client, true);
         AccuracyTestHelper.assertClients(client, instance.getAllClients()[0]);
     }
@@ -226,10 +227,10 @@ public class ClientUtilityImplAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testSearchClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         instance.addClient(client, true);
 
-        Client[] clients = instance.searchClient(ClientFilterFactory.createCompanyIdFilter(20),
+        Client[] clients = instance.searchClient(ClientFilterFactory.createCompanyIdFilter(1),
             new ClientIDOnlyDepth());
         assertNotNull("Failed to search client.", clients[0]);
     }
@@ -242,9 +243,9 @@ public class ClientUtilityImplAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testAddProjectToClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         Project project = new Project();
-        project.setId(10);
+        project.setId(2);
 
         instance.addClient(client, true);
         instance.addProjectToClient(client, project, true);
@@ -261,15 +262,15 @@ public class ClientUtilityImplAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testRemoveProjectFromClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         Project project = new Project();
-        project.setId(10);
+        project.setId(2);
 
         instance.addClient(client, true);
         instance.addProjectToClient(client, project, true);
-        instance.removeProjectFromClient(client, 10, true);
+        instance.removeProjectFromClient(client, 2, true);
 
-        assertEquals("Failed to remove project from client.", 0, instance.getAllProjectsOfClient(20).length);
+        assertEquals("Failed to remove project from client.", 0, instance.getAllProjectsOfClient(1).length);
     }
 
     /**
@@ -280,14 +281,14 @@ public class ClientUtilityImplAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     public void testGetAllProjectsOfClient() throws Exception {
-        Client client = AccuracyTestHelper.createCient(20);
+        Client client = AccuracyTestHelper.createClient(1);
         Project project = new Project();
-        project.setId(10);
+        project.setId(2);
 
         instance.addClient(client, true);
         instance.addProjectToClient(client, project, true);
 
-        assertEquals("Failed to get all the project ids.", 20,
+        assertEquals("Failed to get all the project ids.", 1,
             instance.getAllProjectsOfClient(client.getId())[0].getId());
     }
 

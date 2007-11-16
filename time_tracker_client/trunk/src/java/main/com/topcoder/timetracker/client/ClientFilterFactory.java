@@ -82,6 +82,23 @@ public class ClientFilterFactory {
 
     /**
      * <p>
+     * Create filter which will return all clients with greek name that contains a given string.
+     * </p>
+     *
+     * @param keyword non null, non empty(trim'd) string which is expected in the name
+     *
+     * @return non null filter
+     *
+     * @exception IllegalArgumentException if the keyword is null/empty(trim'd)
+     */
+    public static Filter createGreekNameKeywordFilter(String keyword) {
+        Helper.checkString(keyword, "keyword");
+
+        return new LikeFilter(ClientColumnName.GREEK_NAME.getName(), LIKE_FILTER_PREFIX + keyword);
+    }
+
+    /**
+     * <p>
      * Create filter which will return all clients created within a given inclusive date range (may be open-ended).
      * </p>
      *
