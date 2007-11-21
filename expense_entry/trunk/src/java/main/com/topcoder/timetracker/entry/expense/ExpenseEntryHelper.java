@@ -34,6 +34,7 @@ import java.sql.Timestamp;
 
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.ejb.CreateException;
@@ -134,7 +135,33 @@ public final class ExpenseEntryHelper {
         }
 
         for (int i = 0; i < value.length; i++) {
-            validateNotNull(value[i], name + " " + i + "th element.");
+            validateNotNull(value[i], name + " " + i + "th element");
+        }
+    }
+
+    /**
+     * Validates the array of an object. The size of the list must not be less than the given min
+     * length.
+     *
+     * @param values
+     *            value of the variable.
+     * @param name
+     *            name of the variable.
+     * @param minLength
+     *            minimal allowed length of the list.
+     * @throws IllegalArgumentException
+     *             if <code>values</code> is <code>null</code>, or any element is
+     *             <code>null</code>, or its length is less than the given min length.
+     */
+    public static void validateObjectList(List values, String name, int minLength) {
+        validateNotNull(values, name);
+
+        if (values.size() < minLength) {
+            throw new IllegalArgumentException(name + "'s lenth must be at least " + minLength + ".");
+        }
+
+        for (int i = 0; i < values.size(); ++i) {
+            validateNotNull(values.get(i), name + " " + i + "th element");
         }
     }
 
@@ -391,11 +418,11 @@ public final class ExpenseEntryHelper {
         if (value.getCompanyId() <= 0) {
             throw new IllegalArgumentException("The ID of company should be positive.");
         }
-        
+
         if (value.getClientId() <= 0) {
             throw new IllegalArgumentException("The ID of client should be positive.");
         }
-        
+
         if (value.getProjectId() <= 0) {
             throw new IllegalArgumentException("The ID of project should be positive.");
         }
