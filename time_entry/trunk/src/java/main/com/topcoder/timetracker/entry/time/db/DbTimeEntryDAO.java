@@ -26,13 +26,16 @@ import com.topcoder.timetracker.audit.AuditHeader;
 import com.topcoder.timetracker.audit.AuditManager;
 import com.topcoder.timetracker.audit.AuditManagerException;
 import com.topcoder.timetracker.audit.AuditType;
+import com.topcoder.timetracker.common.TimeTrackerBean;
 import com.topcoder.timetracker.entry.time.BatchOperationException;
 import com.topcoder.timetracker.entry.time.ConfigurationException;
 import com.topcoder.timetracker.entry.time.DataAccessException;
+import com.topcoder.timetracker.entry.time.TaskType;
 import com.topcoder.timetracker.entry.time.TaskTypeDAO;
 import com.topcoder.timetracker.entry.time.TimeEntry;
 import com.topcoder.timetracker.entry.time.TimeEntryDAO;
 import com.topcoder.timetracker.entry.time.TimeEntryFilterFactory;
+import com.topcoder.timetracker.entry.time.TimeStatus;
 import com.topcoder.timetracker.entry.time.TimeStatusDAO;
 import com.topcoder.timetracker.entry.time.UnrecognizedEntityException;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
@@ -969,13 +972,13 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
             ++index;
         }
 
+        ++index;
         // get the time status association
-        long statusId = result.getLong(index++);
-        timeEntry.setStatus(timeStatusDao.getTimeStatuses(new long[] {statusId})[0]);
+        timeEntry.setStatus(getTimeStatus(result));
 
+        ++index;
         // get the task type association
-        long taskTypeId = result.getLong(index++);
-        timeEntry.setTaskType(taskTypeDao.getTaskTypes(new long[] {taskTypeId})[0]);
+        timeEntry.setTaskType(getTaskType(result));
 
         // the description can be null in the database
         String description = result.getString(index++);
@@ -994,6 +997,78 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
         timeEntry.setChanged(false);
 
         return timeEntry;
+    }
+
+    /**
+     * <p>
+     * This method creates a <code>TimeStatus</code> instance from the given <code>CustomResultSet</code> instance.
+     * </p>
+     *
+     * <p>
+     * Note, the returned <code>TimeStatus</code> instance will have <tt>unchanged</tt> state.
+     * </p>
+     *
+     * @param result the <code>CustomResultSet</code> instance
+     * @return the <code>TimeStatus</code> created from the given <code>CustomResultSet</code> instance
+     *
+     * @throws InvalidCursorStateException if unable to read data from the given <code>CustomResultSet</code>
+     * instance
+     */
+    private static TimeStatus getTimeStatus(CustomResultSet result) throws InvalidCursorStateException {
+        TimeStatus status = new TimeStatus();
+
+        setBeansProperties(status, result, "time_status_");
+        status.setDescription(result.getString("time_status_description"));
+
+        status.setChanged(false);
+        return status;
+    }
+
+    /**
+     * <p>
+     * This method creates a <code>TaskType</code> instance from the given <code>CustomResultSet</code> instance.
+     * </p>
+     *
+     * <p>
+     * Note, the returned <code>TaskType</code> instance will have <tt>unchanged</tt> state.
+     * </p>
+     *
+     * @param result the <code>CustomResultSet</code> instance
+     * @return the <code>TaskType</code> created from the given <code>CustomResultSet</code> instance
+     *
+     * @throws InvalidCursorStateException if unable to read data from the given <code>CustomResultSet</code>
+     * instance
+     */
+    private static TaskType getTaskType(CustomResultSet result) throws InvalidCursorStateException {
+        TaskType type = new TaskType();
+
+        setBeansProperties(type, result, "task_type_");
+        type.setDescription(result.getString("task_type_description"));
+        type.setActive(result.getInt("task_type_active") == 1);
+
+        type.setChanged(false);
+        return type;
+    }
+
+    /**
+     * <p>
+     * This method initializes common properties of various time tracker beans.
+     * </p>
+     *
+     * @param bean a time tracker bean to initialize its properties
+     * @param result the <code>CustomResultSet</code> instance to initialize properties from
+     * @param prefix the prefix to use while initializing properties of the bean
+     *
+     * @throws InvalidCursorStateException if unable to read data from the given <code>CustomResultSet</code>
+     * instance
+     */
+    private static void setBeansProperties(TimeTrackerBean bean, CustomResultSet result, String prefix)
+            throws InvalidCursorStateException {
+        bean.setId(result.getLong(prefix + "id"));
+        bean.setCreationDate(result.getDate(prefix + "creation_date"));
+        bean.setCreationUser(result.getString(prefix + "creation_user"));
+        bean.setModificationDate(result.getDate(prefix + "modification_date"));
+        bean.setModificationUser(result.getString(prefix + "modification_user"));
     }
 
     /**
