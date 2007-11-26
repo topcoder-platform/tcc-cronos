@@ -26,10 +26,13 @@ import com.topcoder.timetracker.audit.AuditHeader;
 import com.topcoder.timetracker.audit.AuditManager;
 import com.topcoder.timetracker.audit.AuditManagerException;
 import com.topcoder.timetracker.audit.AuditType;
+import com.topcoder.timetracker.common.TimeTrackerBean;
 import com.topcoder.timetracker.entry.expense.ConfigurationException;
 import com.topcoder.timetracker.entry.expense.ExpenseEntry;
 import com.topcoder.timetracker.entry.expense.ExpenseEntryHelper;
+import com.topcoder.timetracker.entry.expense.ExpenseStatus;
 import com.topcoder.timetracker.entry.expense.ExpenseStatusManager;
+import com.topcoder.timetracker.entry.expense.ExpenseType;
 import com.topcoder.timetracker.entry.expense.ExpenseTypeManager;
 import com.topcoder.timetracker.entry.expense.InsufficientDataException;
 import com.topcoder.timetracker.entry.expense.criteria.Criteria;
@@ -130,15 +133,40 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
 
     /** Represents the prepared SQL statement to get all expense entries, including their entry types and statuses. */
     private static final String RETRIEVE_ALL_ENTRY_SQL =
-        "SELECT expense_entry.expense_entry_id, expense_entry.company_id, expense_entry.client_id, expense_entry.project_id, expense_entry.invoice_id, "
-        + "expense_entry.expense_type_id, expense_entry.expense_status_id, expense_entry.description, "
-        + "expense_entry.entry_date, expense_entry.amount, expense_entry.billable, expense_entry.creation_date, "
-        + "expense_entry.creation_user, expense_entry.modification_date, expense_entry.modification_user,"
-        + "expense_entry.mileage FROM expense_entry, "
-        + "expense_type, expense_status, user_account "
-        + "WHERE expense_entry.expense_type_id = expense_type.expense_type_id "
-        + "AND expense_entry.expense_status_id = expense_status.expense_status_id "
-        + "AND user_account.user_name = expense_entry.creation_user";
+        "SELECT expense_entry.expense_entry_id," +
+               "expense_entry.company_id AS company_id," +
+               "expense_entry.client_id," +
+               "expense_entry.project_id," +
+               "expense_entry.invoice_id," +
+               "expense_entry.expense_type_id AS expense_type_id," +
+               "expense_entry.expense_status_id AS expense_status_id," +
+               "expense_entry.description," +
+               "expense_entry.entry_date," +
+               "expense_entry.amount," +
+               "expense_entry.billable," +
+               "expense_entry.creation_date," +
+               "expense_entry.creation_user," +
+               "expense_entry.modification_date," +
+               "expense_entry.modification_user," +
+               "expense_entry.mileage," +
+               "expense_type.description AS expense_type_description," +
+               "expense_type.active AS expense_type_active," +
+               "expense_type.creation_date AS expense_type_creation_date," +
+               "expense_type.creation_user AS expense_type_creation_user," +
+               "expense_type.modification_date AS expense_type_modification_date," +
+               "expense_type.modification_user AS expense_type_modification_user," +
+               "expense_status.description AS expense_status_description," +
+               "expense_status.creation_date AS expense_status_creation_date," +
+               "expense_status.creation_user AS expense_status_creation_user," +
+               "expense_status.modification_date AS expense_status_modification_date," +
+               "expense_status.modification_user AS expense_status_modification_user " +
+          "FROM expense_entry," +
+               "expense_type," +
+               "expense_status," +
+               "user_account " +
+         "WHERE expense_entry.expense_type_id = expense_type.expense_type_id " +
+           "AND expense_entry.expense_status_id = expense_status.expense_status_id " +
+           "AND user_account.user_name = expense_entry.creation_user";
 
     /** Represents the prepared SQL statement to check the expense type id is associated with the company id. */
     private static final String CHECK_COMPANY_ID_EXPENSE_TYPE_SQL = "Select 1 counts from comp_exp_type "
@@ -1319,8 +1347,8 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
                 entry.setInvoiceId(invoiceId);
             }
 
-            entry.setExpenseType(this.expenseTypeManager.retrieveType(resultSet.getLong(TYPE_ID_COLUMN)));
-            entry.setStatus(this.expenseStatusManager.retrieveStatus(resultSet.getLong(STATUS_ID_COLUMN)));
+            entry.setExpenseType(createExpenseType(resultSet));
+            entry.setStatus(createExpenseStatus(resultSet));
 
             String description = resultSet.getString(DESCRIPTION_COLUMN);
             if (!resultSet.wasNull()) {
@@ -1339,12 +1367,10 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
             switch (resultSet.getShort(BILLABLE_COLUMN)) {
             case 0:
                 entry.setBillable(false);
-
                 break;
 
             case 1:
                 entry.setBillable(true);
-
                 break;
 
             default:
@@ -1360,6 +1386,71 @@ public class InformixExpenseEntryDAO implements ExpenseEntryDAO {
         entry.setChanged(false);
 
         return entry;
+    }
+
+    /**
+     * <p>
+     * Creates an expense type instance from the given result set. The current record in the result set is used to create
+     * the instance.
+     * </p>
+     *
+     * @param resultSet the result set used to create expense type instance.
+     *
+     * @return a new <code>ExpenseType</code> instance created from the current record in the result set.
+     *
+     * @throws SQLException if error occurs when accessing the result set.
+     */
+    private static ExpenseType createExpenseType(ResultSet resultSet) throws SQLException {
+        ExpenseType type = new ExpenseType();
+
+        setBeansProperties(type, resultSet, "expense_type_");
+        type.setDescription(resultSet.getString("expense_type_description"));
+        type.setActive(resultSet.getInt("expense_type_active") != 0);
+        type.setCompanyId(resultSet.getLong("company_id")); // This is a hack, but it will work
+
+        type.setChanged(false);
+        return type;
+    }
+
+    /**
+     * <p>
+     * Creates an expense status instance from the given result set. The current record in the result set is used to create
+     * the instance.
+     * </p>
+     *
+     * @param resultSet the result set used to create expense status instance.
+     *
+     * @return a new <code>ExpenseStatus</code> instance created from the current record in the result set.
+     *
+     * @throws SQLException if error occurs when accessing the result set.
+     */
+    private static ExpenseStatus createExpenseStatus(ResultSet resultSet) throws SQLException {
+        ExpenseStatus status = new ExpenseStatus();
+
+        setBeansProperties(status, resultSet, "expense_status_");
+        status.setDescription(resultSet.getString("expense_status_description"));
+
+        status.setChanged(false);
+        return status;
+    }
+
+    /**
+     * <p>
+     * This method initializes common properties of various time tracker beans.
+     * </p>
+     *
+     * @param bean a time tracker bean to initialize its properties.
+     * @param resultSet the <code>ResultSet</code> instance to initialize properties from.
+     * @param prefix the prefix to use while initializing properties of the bean.
+     *
+     * @throws SQLException if error occurs when accessing the result set.
+     */
+    private static void setBeansProperties(TimeTrackerBean bean, ResultSet resultSet, String prefix) throws SQLException {
+        bean.setId(resultSet.getLong(prefix + "id"));
+        bean.setCreationDate(resultSet.getDate(prefix + "creation_date"));
+        bean.setCreationUser(resultSet.getString(prefix + "creation_user"));
+        bean.setModificationDate(resultSet.getDate(prefix + "modification_date"));
+        bean.setModificationUser(resultSet.getString(prefix + "modification_user"));
     }
 
     /**
