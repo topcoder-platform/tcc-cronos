@@ -1045,6 +1045,7 @@ public class DbTimeEntryDAO extends BaseDAO implements TimeEntryDAO {
         setBeansProperties(type, result, "task_type_");
         type.setDescription(result.getString("task_type_description"));
         type.setActive(result.getInt("task_type_active") == 1);
+        type.setCompanyId(result.getLong("company_id")); // This is a hack, but it will work
 
         type.setChanged(false);
         return type;
