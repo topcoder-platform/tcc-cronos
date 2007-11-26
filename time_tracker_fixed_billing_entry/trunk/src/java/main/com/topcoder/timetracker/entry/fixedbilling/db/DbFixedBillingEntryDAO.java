@@ -3,35 +3,6 @@
  */
 package com.topcoder.timetracker.entry.fixedbilling.db;
 
-import com.topcoder.db.connectionfactory.DBConnectionFactory;
-
-import com.topcoder.search.builder.PersistenceOperationException;
-import com.topcoder.search.builder.SearchBuilderException;
-import com.topcoder.search.builder.UnrecognizedFilterException;
-import com.topcoder.search.builder.filter.Filter;
-
-import com.topcoder.timetracker.audit.ApplicationArea;
-import com.topcoder.timetracker.audit.AuditDetail;
-import com.topcoder.timetracker.audit.AuditHeader;
-import com.topcoder.timetracker.audit.AuditManager;
-import com.topcoder.timetracker.audit.AuditManagerException;
-import com.topcoder.timetracker.audit.AuditType;
-import com.topcoder.timetracker.entry.fixedbilling.BatchOperationException;
-import com.topcoder.timetracker.entry.fixedbilling.ConfigurationException;
-import com.topcoder.timetracker.entry.fixedbilling.DataAccessException;
-import com.topcoder.timetracker.entry.fixedbilling.FixedBillingEntry;
-import com.topcoder.timetracker.entry.fixedbilling.FixedBillingEntryDAO;
-import com.topcoder.timetracker.entry.fixedbilling.FixedBillingEntryFilterFactory;
-import com.topcoder.timetracker.entry.fixedbilling.FixedBillingStatus;
-import com.topcoder.timetracker.entry.fixedbilling.FixedBillingStatusDAO;
-import com.topcoder.timetracker.entry.fixedbilling.Helper;
-import com.topcoder.timetracker.entry.fixedbilling.InvalidFilterException;
-import com.topcoder.timetracker.entry.fixedbilling.UnrecognizedEntityException;
-import com.topcoder.timetracker.entry.fixedbilling.filterfactory.MappedFixedBillingEntryFilterFactory;
-
-import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
-import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
-
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -41,10 +12,32 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+
+import com.topcoder.db.connectionfactory.DBConnectionFactory;
+import com.topcoder.search.builder.SearchBuilderException;
+import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.timetracker.audit.ApplicationArea;
+import com.topcoder.timetracker.audit.AuditDetail;
+import com.topcoder.timetracker.audit.AuditHeader;
+import com.topcoder.timetracker.audit.AuditManager;
+import com.topcoder.timetracker.audit.AuditManagerException;
+import com.topcoder.timetracker.audit.AuditType;
+import com.topcoder.timetracker.common.TimeTrackerBean;
+import com.topcoder.timetracker.entry.fixedbilling.BatchOperationException;
+import com.topcoder.timetracker.entry.fixedbilling.ConfigurationException;
+import com.topcoder.timetracker.entry.fixedbilling.DataAccessException;
+import com.topcoder.timetracker.entry.fixedbilling.FixedBillingEntry;
+import com.topcoder.timetracker.entry.fixedbilling.FixedBillingEntryDAO;
+import com.topcoder.timetracker.entry.fixedbilling.FixedBillingEntryFilterFactory;
+import com.topcoder.timetracker.entry.fixedbilling.FixedBillingStatus;
+import com.topcoder.timetracker.entry.fixedbilling.FixedBillingStatusDAO;
+import com.topcoder.timetracker.entry.fixedbilling.Helper;
+import com.topcoder.timetracker.entry.fixedbilling.UnrecognizedEntityException;
+import com.topcoder.timetracker.entry.fixedbilling.filterfactory.MappedFixedBillingEntryFilterFactory;
+import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
+import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 
 /**
  * <p>
@@ -720,44 +713,105 @@ public class DbFixedBillingEntryDAO extends BaseDAO implements FixedBillingEntry
      *
      * @throws IllegalArgumentException if filter is null.
      * @throws DataAccessException if a problem occurs while accessing the persistent store.
-     * @throws InvalidFilterException if the filter cannot be recognized.
      */
-    public FixedBillingEntry[] searchFixedBillingEntries(Filter filter)
-        throws DataAccessException, InvalidFilterException {
+    public FixedBillingEntry[] searchFixedBillingEntries(Filter filter) throws DataAccessException {
         Helper.checkNull("filter", filter);
-
-        FixedBillingEntry[] entries = null;
 
         try {
             CustomResultSet result = (CustomResultSet) getSearchBundle().search(filter);
 
-            List ids = new ArrayList();
-            while (result.next()) {
-                ids.add(new Long(result.getLong(1)));
+            int size = result.getRecordCount();
+
+            // get all the fixed billing entries from the search result
+            FixedBillingEntry[] fixedBillingEntries = new FixedBillingEntry[size];
+            for (int i = 0; i < size; ++i) {
+                result.next();
+                fixedBillingEntries[i] = getFixedBillingEntry(result);
             }
-            long[] idArray = new long[ids.size()];
-            int i = 0;
-            for (Iterator itr = ids.iterator(); itr.hasNext(); ) {
-                idArray[i] = ((Long)itr.next()).longValue();
-                i++;
-            }
-            if (idArray.length == 0) {
-            	return new FixedBillingEntry[0];
-            }
-            entries = this.getFixedBillingEntries(idArray);
-        } catch (PersistenceOperationException poe) {
-            throw new DataAccessException("Unable to search the records with search builder error.", poe);
-        } catch (UnrecognizedFilterException ufe) {
-            throw new InvalidFilterException("Unable to search the records with not exist status.", ufe);
-        } catch (InvalidCursorStateException icse) {
-            throw new DataAccessException("Unable to search the records with invalid cursor state.", icse);
-        } catch (NullPointerException npe) {
-            throw new DataAccessException("Unable to search the records with null pointer exception.", npe);
+
+            return fixedBillingEntries;
         } catch (SearchBuilderException sbe) {
             throw new DataAccessException("Unable to search the records with null pointer exception.", sbe);
+        } catch (InvalidCursorStateException icse) {
+            throw new DataAccessException("Unable to search the records with invalid cursor state.", icse);
+        }
+    }
+
+    /**
+     * <p>
+     * Creates a <code>FixedBillingEntry</code> instance from the given <code>CustomResultSet</code> instance.
+     * </p>
+     *
+     * @param result the <code>CustomResultSet</code> instance.
+     * @return the <code>FixedBillingEntry</code> created from the given <code>CustomResultSet</code> instance.
+     *
+     * @throws InvalidCursorStateException if unable to read data from the given <code>CustomResultSet</code>
+     * instance.
+     */
+    private static FixedBillingEntry getFixedBillingEntry(CustomResultSet result) throws InvalidCursorStateException {
+        FixedBillingEntry fixBillEntry = new FixedBillingEntry();
+
+        setBeansProperties(fixBillEntry, result, "");
+        fixBillEntry.setCompanyId(result.getLong("company_id"));
+        fixBillEntry.setClientId(result.getLong("client_id"));
+        fixBillEntry.setProjectId(result.getLong("project_id"));
+
+        if (result.getObject("invoice_id") != null) {
+            fixBillEntry.setInvoiceId(result.getLong("invoice_id"));
+        } else {
+            fixBillEntry.setInvoiceId(-1);
         }
 
-        return entries;
+        fixBillEntry.setFixedBillingStatus(getFixedBillingStatus(result));
+
+        fixBillEntry.setDescription(result.getString("description"));
+        fixBillEntry.setDate(result.getDate("entry_date"));
+        fixBillEntry.setAmount(result.getDouble("amount"));
+
+        fixBillEntry.setChanged(false);
+        return fixBillEntry;
+    }
+
+    /**
+     * <p>
+     * Creates a <code>FixedBillingStatus</code> instance from the given <code>CustomResultSet</code> instance.
+     * </p>
+     *
+     * @param result the <code>CustomResultSet</code> instance.
+     * @return the <code>FixedBillingStatus</code> created from the given <code>CustomResultSet</code> instance.
+     *
+     * @throws InvalidCursorStateException if unable to read data from the given <code>CustomResultSet</code>
+     * instance.
+     */
+    private static FixedBillingStatus getFixedBillingStatus(CustomResultSet result) throws InvalidCursorStateException {
+        FixedBillingStatus status = new FixedBillingStatus();
+
+        setBeansProperties(status, result, "fix_bill_status_");
+        status.setDescription(result.getString("description"));
+
+        status.setChanged(false);
+        return status;
+    }
+
+    /**
+     * <p>
+     * Initializes common properties of various time tracker beans.
+     * </p>
+     *
+     * @param bean a time tracker bean to initialize its properties.
+     * @param result the <code>CustomResultSet</code> instance to initialize properties from.
+     * @param prefix the prefix to use while initializing properties of the bean.
+     *
+     * @throws InvalidCursorStateException if unable to read data from the given <code>CustomResultSet</code>
+     * instance.
+     */
+    private static void setBeansProperties(TimeTrackerBean bean, CustomResultSet result, String prefix)
+            throws InvalidCursorStateException {
+        bean.setId(result.getLong(prefix + "id"));
+        bean.setCreationDate(result.getDate(prefix + "creation_date"));
+        bean.setCreationUser(result.getString(prefix + "creation_user"));
+        bean.setModificationDate(result.getDate(prefix + "modification_date"));
+        bean.setModificationUser(result.getString(prefix + "modification_user"));
     }
 
     /**
