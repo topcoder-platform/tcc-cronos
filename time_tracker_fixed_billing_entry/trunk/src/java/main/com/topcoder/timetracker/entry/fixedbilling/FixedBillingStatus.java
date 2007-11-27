@@ -62,9 +62,9 @@ public class FixedBillingStatus extends TimeTrackerBean {
      * @throws IllegalArgumentException if description is a null or empty String.
      */
     public void setDescription(String description) {
-        Helper.checkNullOrEmpty("description", description);
+        Helper.checkNull("description", description);
 
-        if ((this.description == null) || !this.description.equals(description)) {
+        if (this.description == null || !this.description.equals(description)) {
             setChanged(true);
         }
 
