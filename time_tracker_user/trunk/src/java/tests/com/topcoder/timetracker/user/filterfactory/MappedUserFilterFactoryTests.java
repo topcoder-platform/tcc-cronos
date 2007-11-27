@@ -23,10 +23,12 @@ import junit.framework.Test;
  * Unit test cases for MappedUserFilterFactory.
  * </p>
  *
- * @author TCSDEVELOPER
- * @version 3.2
+ * @author biotrail, enefem21
+ * @version 3.2.1
+ * @since 3.2
  */
 public class MappedUserFilterFactoryTests extends TestCase {
+
     /**
      * <p>
      * The MappedUserFilterFactory instance for testing.
@@ -66,6 +68,10 @@ public class MappedUserFilterFactoryTests extends TestCase {
         columnNames.put(MappedUserFilterFactory.ZIPCODE_COLUMN_NAME, "zip_code");
         columnNames.put(MappedUserFilterFactory.COMPANY_ID_COLUMN_NAME, "country_name_id");
         columnNames.put(MappedUserFilterFactory.STATUS_COLUMN_NAME, "account_status_id");
+        columnNames.put(MappedUserFilterFactory.USER_STATUS_ID_COLUMN_NAME, "user_status_id");
+        columnNames.put(MappedUserFilterFactory.USER_STATUS_NAME_COLUMN_NAME, "user_status_name");
+        columnNames.put(MappedUserFilterFactory.USER_TYPE_ID_COLUMN_NAME, "user_type_id");
+        columnNames.put(MappedUserFilterFactory.USER_TYPE_NAME_COLUMN_NAME, "user_type_name");
 
         factory = new MappedUserFilterFactory(columnNames);
     }
@@ -119,7 +125,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             new MappedUserFilterFactory(null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -138,7 +144,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             new MappedUserFilterFactory(columnNames);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -157,7 +163,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             new MappedUserFilterFactory(columnNames);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -176,7 +182,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             new MappedUserFilterFactory(columnNames);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -195,7 +201,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             new MappedUserFilterFactory(columnNames);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -214,7 +220,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             new MappedUserFilterFactory(columnNames);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -233,7 +239,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             new MappedUserFilterFactory(columnNames);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -252,7 +258,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             new MappedUserFilterFactory(columnNames);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -284,7 +290,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createUsernameFilter(null, "username");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -302,7 +308,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createUsernameFilter(StringMatchType.ENDS_WITH, null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -320,7 +326,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createUsernameFilter(StringMatchType.ENDS_WITH, " ");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -352,7 +358,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createPasswordFilter(null, "password");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -370,7 +376,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createPasswordFilter(StringMatchType.ENDS_WITH, null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -388,7 +394,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createPasswordFilter(StringMatchType.ENDS_WITH, " ");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -402,7 +408,8 @@ public class MappedUserFilterFactoryTests extends TestCase {
      * </p>
      */
     public void testCreateLastNameFilter() {
-        EqualToFilter filter = (EqualToFilter) factory.createLastNameFilter(StringMatchType.EXACT_MATCH, "lastName");
+        EqualToFilter filter =
+            (EqualToFilter) factory.createLastNameFilter(StringMatchType.EXACT_MATCH, "lastName");
         assertEquals("Failed to create the last name filter correctly.", "last_name", filter.getName());
     }
 
@@ -420,7 +427,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createLastNameFilter(null, "lastName");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -438,7 +445,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createLastNameFilter(StringMatchType.STARTS_WITH, null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -456,7 +463,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createLastNameFilter(StringMatchType.STARTS_WITH, " ");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -470,7 +477,8 @@ public class MappedUserFilterFactoryTests extends TestCase {
      * </p>
      */
     public void testCreateFirstNameFilter() {
-        LikeFilter filter = (LikeFilter) factory.createFirstNameFilter(StringMatchType.ENDS_WITH, "firstName");
+        LikeFilter filter =
+            (LikeFilter) factory.createFirstNameFilter(StringMatchType.ENDS_WITH, "firstName");
         assertEquals("Failed to create the first name filter correctly.", "first_name", filter.getName());
     }
 
@@ -488,7 +496,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createFirstNameFilter(null, "firstName");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -506,7 +514,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createFirstNameFilter(StringMatchType.ENDS_WITH, null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -524,7 +532,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createFirstNameFilter(StringMatchType.ENDS_WITH, " ");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -538,7 +546,8 @@ public class MappedUserFilterFactoryTests extends TestCase {
      * </p>
      */
     public void testCreatePhoneNumberFilter() {
-        LikeFilter filter = (LikeFilter) factory.createPhoneNumberFilter(StringMatchType.ENDS_WITH, "phoneNumber");
+        LikeFilter filter =
+            (LikeFilter) factory.createPhoneNumberFilter(StringMatchType.ENDS_WITH, "phoneNumber");
         assertEquals("Failed to create the phone number filter correctly.", "phone", filter.getName());
     }
 
@@ -556,7 +565,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createPhoneNumberFilter(null, "phoneNumber");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -574,7 +583,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createPhoneNumberFilter(StringMatchType.ENDS_WITH, null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -592,7 +601,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createPhoneNumberFilter(StringMatchType.ENDS_WITH, " ");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -624,7 +633,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createEmailFilter(null, "email");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -642,7 +651,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createEmailFilter(StringMatchType.ENDS_WITH, null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -660,7 +669,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createEmailFilter(StringMatchType.ENDS_WITH, " ");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -678,8 +687,10 @@ public class MappedUserFilterFactoryTests extends TestCase {
         List list = filter.getFilters();
 
         assertEquals("Expected the size of the list is two.", 2, list.size());
-        assertEquals("Failed to create the address filter correctly.", "line1", ((LikeFilter) list.get(0)).getName());
-        assertEquals("Failed to create the address filter correctly.", "line2", ((LikeFilter) list.get(1)).getName());
+        assertEquals("Failed to create the address filter correctly.", "line1", ((LikeFilter) list.get(0))
+            .getName());
+        assertEquals("Failed to create the address filter correctly.", "line2", ((LikeFilter) list.get(1))
+            .getName());
     }
 
     /**
@@ -696,7 +707,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createAddressFilter(null, "address");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -714,7 +725,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createAddressFilter(StringMatchType.ENDS_WITH, null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -732,7 +743,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createAddressFilter(StringMatchType.ENDS_WITH, " ");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -764,7 +775,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createCityFilter(null, "city");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -782,7 +793,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createCityFilter(StringMatchType.ENDS_WITH, null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -800,7 +811,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createCityFilter(StringMatchType.ENDS_WITH, " ");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -832,7 +843,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createStateFilter(null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -864,7 +875,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createZipCodeFilter(null, "zipCode");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -882,7 +893,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createZipCodeFilter(StringMatchType.ENDS_WITH, null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -900,7 +911,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createZipCodeFilter(StringMatchType.ENDS_WITH, " ");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -920,7 +931,7 @@ public class MappedUserFilterFactoryTests extends TestCase {
 
     /**
      * <p>
-     * Tests MappedUserFilterFactory#createCompanyIdFilter(long) for accuracy.
+     * Tests MappedUserFilterFactory#createCompanyIdFilter(long) for failure.
      * </p>
      *
      * <p>
@@ -932,13 +943,13 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createCompanyIdFilter(-8);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
     /**
      * <p>
-     * Tests MappedUserFilterFactory#createStatusFilter(Status) for failure.
+     * Tests MappedUserFilterFactory#createStatusFilter(Status) for accuracy.
      * </p>
      *
      * <p>
@@ -964,8 +975,183 @@ public class MappedUserFilterFactoryTests extends TestCase {
             factory.createStatusFilter(null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
+    /**
+     * <p>
+     * Tests MappedUserFilterFactory#createUserStatusIdFilter(long) for accuracy.
+     * </p>
+     * <p>
+     * It verifies MappedUserFilterFactory#createUserStatusIdFilter(long) is correct.
+     * </p>
+     *
+     * @since 3.2.1
+     */
+    public void testCreateUserStatusIdFilter() {
+        EqualToFilter filter = (EqualToFilter) factory.createUserStatusIdFilter(1);
+        assertEquals("Failed to create the status filter correctly.", "user_status_id", filter.getName());
+    }
+
+    /**
+     * <p>
+     * Tests MappedUserFilterFactory#createUserStatusIdFilter(long) for failure.
+     * </p>
+     * <p>
+     * It tests the case that when user status id is negative and expects IllegalArgumentException.
+     * </p>
+     *
+     * @since 3.2.1
+     */
+    public void testCreateUserStatusIdFilter_NegativeUserStatusId() {
+        try {
+            factory.createUserStatusIdFilter(-1);
+            fail("IllegalArgumentException expected.");
+        } catch (IllegalArgumentException iae) {
+            // good
+        }
+    }
+
+    /**
+     * <p>
+     * Tests MappedUserFilterFactory#createUserStatusNameFilter(String) for accuracy.
+     * </p>
+     * <p>
+     * It verifies MappedUserFilterFactory#createUserStatusNameFilter(String) is correct.
+     * </p>
+     *
+     * @since 3.2.1
+     */
+    public void testCreateUserStatusNameFilter() {
+        EqualToFilter filter = (EqualToFilter) factory.createUserStatusNameFilter("userStatusName");
+        assertEquals("Failed to create the user status name filter correctly.", "user_status_name", filter
+            .getName());
+    }
+
+    /**
+     * <p>
+     * Tests MappedUserFilterFactory#createUserStatusNameFilter(StringMatchType,String) for failure.
+     * </p>
+     * <p>
+     * It tests the case that when UserStatusName is null and expects IllegalArgumentException.
+     * </p>
+     *
+     * @since 3.2.1
+     */
+    public void testCreateUserStatusNameFilter_NullUserStatusName() {
+        try {
+            factory.createUserStatusNameFilter(null);
+            fail("IllegalArgumentException expected.");
+        } catch (IllegalArgumentException iae) {
+            // good
+        }
+    }
+
+    /**
+     * <p>
+     * Tests MappedUserFilterFactory#createUserStatusNameFilter(StringMatchType,String) for failure.
+     * </p>
+     * <p>
+     * It tests the case that when UserStatusName is empty and expects IllegalArgumentException.
+     * </p>
+     *
+     * @since 3.2.1
+     */
+    public void testCreateUserStatusNameFilter_EmptyUserStatusName() {
+        try {
+            factory.createUserStatusNameFilter(" ");
+            fail("IllegalArgumentException expected.");
+        } catch (IllegalArgumentException iae) {
+            // good
+        }
+    }
+
+    /**
+     * <p>
+     * Tests MappedUserFilterFactory#createUserTypeIdFilter(long) for accuracy.
+     * </p>
+     * <p>
+     * It verifies MappedUserFilterFactory#createUserTypeIdFilter(long) is correct.
+     * </p>
+     *
+     * @since 3.2.1
+     */
+    public void testCreateUserTypeIdFilter() {
+        EqualToFilter filter = (EqualToFilter) factory.createUserTypeIdFilter(1);
+        assertEquals("Failed to create the status filter correctly.", "user_type_id", filter.getName());
+    }
+
+    /**
+     * <p>
+     * Tests MappedUserFilterFactory#createUserTypeIdFilter(long) for failure.
+     * </p>
+     * <p>
+     * It tests the case that when user type is negative and expects IllegalArgumentException.
+     * </p>
+     *
+     * @since 3.2.1
+     */
+    public void testCreateUserTypeIdFilter_NegativeUserTypeId() {
+        try {
+            factory.createUserStatusIdFilter(-1);
+            fail("IllegalArgumentException expected.");
+        } catch (IllegalArgumentException iae) {
+            // good
+        }
+    }
+
+    /**
+     * <p>
+     * Tests MappedUserFilterFactory#createUserTypeNameFilter(String) for accuracy.
+     * </p>
+     * <p>
+     * It verifies MappedUserFilterFactory#createUserTypeNameFilter(String) is correct.
+     * </p>
+     *
+     * @since 3.2.1
+     */
+    public void testCreateUserTypeNameFilter() {
+        EqualToFilter filter = (EqualToFilter) factory.createUserTypeNameFilter("UserTypeName");
+        assertEquals("Failed to create the user type name filter correctly.", "user_type_name", filter
+            .getName());
+    }
+
+    /**
+     * <p>
+     * Tests MappedUserFilterFactory#createUserTypeNameFilter(StringMatchType,String) for failure.
+     * </p>
+     * <p>
+     * It tests the case that when UserTypeName is null and expects IllegalArgumentException.
+     * </p>
+     *
+     * @since 3.2.1
+     */
+    public void testCreateUserTypeNameFilter_NullUserTypeName() {
+        try {
+            factory.createUserTypeNameFilter(null);
+            fail("IllegalArgumentException expected.");
+        } catch (IllegalArgumentException iae) {
+            // good
+        }
+    }
+
+    /**
+     * <p>
+     * Tests MappedUserFilterFactory#createUserTypeNameFilter(StringMatchType,String) for failure.
+     * </p>
+     * <p>
+     * It tests the case that when UserTypeName is empty and expects IllegalArgumentException.
+     * </p>
+     *
+     * @since 3.2.1
+     */
+    public void testCreateUserTypeNameFilter_EmptyUserTypeName() {
+        try {
+            factory.createUserTypeNameFilter(" ");
+            fail("IllegalArgumentException expected.");
+        } catch (IllegalArgumentException iae) {
+            // good
+        }
+    }
 }

@@ -4,6 +4,8 @@ DELETE FROM contact;
 DELETE FROM address;
 DELETE FROM state_name;
 DELETE FROM user_account;
+DELETE FROM user_status;
+DELETE FROM user_type;
 DELETE FROM account_status;
 DELETE FROM account_status;
 DELETE FROM company;

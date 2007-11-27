@@ -12,7 +12,7 @@ import junit.framework.Test;
  * Unit test cases for UnrecognizedEntityException.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author biotrail
  * @version 3.2
  */
 public class UnrecognizedEntityExceptionTests extends TestCase {

@@ -2,14 +2,14 @@
 
 <project name="Time Tracker User" default="dist" basedir=".">
 
-    <property file="../topcoder_global.properties"/>
+    <property file="../topcoder_global.properties" />
 
     <!-- COMPONENT PARAMETERS -->
     <property name="component" value="Time_Tracker_User" />
     <property name="package" value="com.topcoder.timetracker.user" />
     <property name="packagedir" value="com/topcoder/timetracker/user" />
     <property name="distfilename" value="time_tracker_user" />
-    <property name="component_version" value="3.2" />
+    <property name="component_version" value="3.2.1" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
@@ -54,15 +54,15 @@
     <property name="dist_testfiles" value="${build_tcsdistdir}/${testfiles}" />
 
     <!-- NAME FOR .JAR AND .WAR FILES -->
-    <property name="component.jar" value="${dist_lib}/${component_path}/${distfilename}.jar"/>
-    <property name="javadoc.jar" value="javadocs.jar"/>
-    <property name="component.tests.jar" value="${dist_lib}/${distfilename}_tests.jar"/>
-    <property name="component.war" value="${dist_examples}/${distfilename}.war"/>
-    <property name="component.dist.jar" value="${build_distdir}/${distfilename}-${component_version}.jar"/>
-    <property name="dev_submission.jar" value="${component}_${component_version}_dev_submission.jar"/>
-    <property name="design_submission.jar" value="${component}_${component_version}_design_submission.jar"/>
-    <property name="dev_dist.jar" value="${component}_${component_version}_dev_dist.jar"/>
-    <property name="design_dist.jar" value="${component}_${component_version}_design_dist.jar"/>
+    <property name="component.jar" value="${dist_lib}/${component_path}/${distfilename}.jar" />
+    <property name="javadoc.jar" value="javadocs.jar" />
+    <property name="component.tests.jar" value="${dist_lib}/${distfilename}_tests.jar" />
+    <property name="component.war" value="${dist_examples}/${distfilename}.war" />
+    <property name="component.dist.jar" value="${build_distdir}/${distfilename}-${component_version}.jar" />
+    <property name="dev_submission.jar" value="${component}_${component_version}_dev_submission.jar" />
+    <property name="design_submission.jar" value="${component}_${component_version}_design_submission.jar" />
+    <property name="dev_dist.jar" value="${component}_${component_version}_dev_dist.jar" />
+    <property name="design_dist.jar" value="${component}_${component_version}_design_dist.jar" />
 
     <!-- DOCUMENT PACKAGE -->
     <property name="dist_docpackage" value="${builddir}/doc_package" />
@@ -188,7 +188,7 @@
     -->
 
     <!-- Java Locations -->
-    <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar"/>
+    <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar" />
 
     <path id="buildlibs">
         <pathelement location="${authentication_factory.jar}" />
@@ -225,14 +225,14 @@
     </path>
 
     <path id="test.build.classpath">
-        <pathelement location="${build_testclassdir}"/>
-        <pathelement location="${build_classdir}"/>
-        <path refid="buildlibs"/>
+        <pathelement location="${build_testclassdir}" />
+        <pathelement location="${build_classdir}" />
+        <path refid="buildlibs" />
     </path>
 
     <path id="runtime.classpath">
-        <pathelement location="${build_classdir}"/>
-        <path refid="buildlibs"/>
+        <pathelement location="${build_classdir}" />
+        <path refid="buildlibs" />
     </path>
 
     <target name="compile">
@@ -244,12 +244,12 @@
 
     <target name="compile_targets">
         <!-- test compile against 1.3 -->
-        <mkdir dir="${build_targetclassdir}"/>
-        <mkdir dir="${javatests}"/>
+        <mkdir dir="${build_targetclassdir}" />
+        <mkdir dir="${javatests}" />
         <javac srcdir="${javamain}"
                destdir="${build_targetclassdir}"
                includes="${packagedir}/**"
-	       debug="true"
+               debug="true"
                verbose="${verbose}"
                target="1.3"
                bootclasspath="${java_1_3_bootclasspath}"
@@ -270,19 +270,19 @@
                >
             <classpath refid="buildlibs" />
         </javac>
-        <delete dir="${build_targetclassdir}"/>
+        <delete dir="${build_targetclassdir}" />
     </target>
 
     <target name="compile_tests" depends="compile">
-        <mkdir dir="${build_testclassdir}"/>
-        <javac srcdir="${javatests}" destdir="${build_testclassdir}" includes="${packagedir}/**" debug="true" verbose="${verbose}">
+        <mkdir dir="${build_testclassdir}" />
+        <javac srcdir="${javatests}" destdir="${build_testclassdir}" includes="${packagedir}/**" debug="true" verbose="${verbose}" deprecation="true">
             <classpath refid="test.build.classpath" />
         </javac>
     </target>
 
     <target name="test" depends="compile_tests">
-        <mkdir dir="${testlogdir}"/>
-        <mkdir dir="${instrumented.dir}"/>
+        <mkdir dir="${testlogdir}" />
+        <mkdir dir="${instrumented.dir}" />
 
         <delete file="${cobertura.datafile}" />
 
@@ -303,38 +303,13 @@
             <classpath refid="cobertura.classpath" />
 
             <test name="${package}.AllTests" todir="${testlogdir}">
-                <formatter type="plain" usefile="true"/>
-                <formatter type="xml" usefile="true"/>
+                <formatter type="plain" usefile="true" />
+                <formatter type="xml" usefile="true" />
             </test>
 
         </junit>
 
-        <replace dir="${testlogdir}">
-            <replacevalue>TCSDEVELOPER</replacevalue>
-            <replacetoken>biotrail</replacetoken>
-        </replace>
     </target>
-
-<!--
-    <taskdef resource="checkstyletask.properties" classpath="E:\TCTool\checkstyle-4.2\checkstyle-all-4.2.jar" />
-
-    <target name="checkstyle" depends="compile">
-        <mkdir dir="${testlogdir}"/>
-        <checkstyle config="E:\TCTool\tcs_checkstyle_config\tc_checks.xml" classpath="${build_classdir}">
-            <fileset dir="src/java/main" includes="**/*.java" />
-            <formatter type="plain" toFile="${testlogdir}/checkstyle.txt" />
-        </checkstyle>
-    </target>
-
-    <target name="checkstyle_tests" depends="compile_tests">
-        <mkdir dir="${testlogdir}"/>
-        <checkstyle config="E:\TCTool\tcs_checkstyle_config\tc_test_checks.xml" classpath="${test.build.classpath}">
-            <fileset dir="${javatests}/${packagedir}/" includes="**/*.java"
-                     excludes="UnitTests.java, AllTests.java, stresstests/*, failuretests/*, accuracytests/*" />
-            <formatter type="plain" toFile="${testlogdir}/checkstyletest.txt" />
-        </checkstyle>
-    </target>
- -->
 
     <target name="coveragereport" depends="test">
 
@@ -350,25 +325,25 @@
     </target>
 
     <target name="reports" depends="test">
-        <mkdir dir="${reports}"/>
+        <mkdir dir="${reports}" />
 
         <junitreport todir="${reports}">
             <fileset dir="${testlogdir}">
-                <include name="*.xml"/>
+                <include name="*.xml" />
             </fileset>
-          <report format="frames" todir="${reports}"/>
+          <report format="frames" todir="${reports}" />
         </junitreport>
 
         <echo>The execution of reports is complete.  Reports are available in /${reports}</echo>
     </target>
 
     <target name="dist" depends="compile">
-        <mkdir dir="${dist_lib}/${component_path}"/>
+        <mkdir dir="${dist_lib}/${component_path}" />
         <jar jarfile="${component.jar}" basedir="${build_classdir}" />
     </target>
 
     <target name="dist_tests" depends="compile_tests">
-        <mkdir dir="${dist_lib}"/>
+        <mkdir dir="${dist_lib}" />
         <jar jarfile="${component.tests.jar}" basedir="${build_testclassdir}" />
     </target>
 
@@ -385,12 +360,12 @@
             bottom="&lt;font class=tcoder5&gt;Contact TopCoder Software at &lt;a href='http://software.topcoder.com'&gt;software.topcoder.com&lt;/a&gt;&lt;/font&gt;"
             stylesheetfile="${javadocsdir}/stylesheet.css"
             verbose="${verbose}">
-            <tag name="copyright" description="Copyright:" scope="types"/>
+            <tag name="copyright" description="Copyright:" scope="types" />
         </javadoc>
     </target>
 
     <target name="clean">
-        <delete dir="${builddir}"/>
+        <delete dir="${builddir}" />
     </target>
 
     <target name="deploy" depends="dist">
@@ -403,7 +378,7 @@
     <!-- ************ REMOVE EVERYTHING BELOW HERE FOR THE DISTRIBUTION ************* -->
     <!-- ************************************************************************** -->
 
-    <target name="dist_tcs" depends="clean,dist">
+    <target name="dist_tcs" depends="clean,dist,javadoc">
         <!-- define tcs distribution format -->
 <!-- uncomment if configuration files exist.
         <mkdir dir="${dist_conf}"/>
@@ -412,40 +387,41 @@
         </copy>
 -->
 
-        <mkdir dir="${dist_src}"/>
+        <mkdir dir="${dist_src}" />
         <copy todir="${dist_src}">
             <fileset dir="${srcdir}" />
         </copy>
 
-        <copy todir="${dist_docs}" >
+        <copy todir="${dist_docs}">
             <fileset dir="${docsdir}">
-                <include name="${component}_Class_Diagram*"/>
-                <include name="${component}_Use_Case_Diagram*"/>
-                <include name="${component}_Sequence_Diagram*"/>
-                <include name="${component}_Requirements_Specification*"/>
-                <include name="${component}_Component_Specification*"/>
-                <include name="${component}.zargo"/>
-                <include name="${component}.zuml"/>
+                <include name="${component}_Class_Diagram*" />
+                <include name="${component}_Use_Case_Diagram*" />
+                <include name="${component}_Sequence_Diagram*" />
+                <include name="${component}_Requirements_Specification*" />
+                <include name="${component}_Component_Specification*" />
+                <include name="${component}.zargo" />
+                <include name="${component}.zuml" />
             </fileset>
         </copy>
 
-        <mkdir dir="${dist_javadocs}"/>
+        <mkdir dir="${dist_javadocs}" />
         <copy todir="${dist_javadocs}">
             <fileset dir="${javadocsdir}" />
         </copy>
 
         <antcall target="package_docs" />
 
+<!-- uncomment if test files exist.
         <mkdir dir="${dist_testfiles}"/>
         <copy todir="${dist_testfiles}">
             <fileset dir="${testfiles}" />
         </copy>
-
+-->
         <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml" />
         <copy file="README" tofile="${build_tcsdistdir}/README" />
-        <jar jarfile="${component.dist.jar}" basedir="${build_distdir}" excludes="*.jar"/>
+        <jar jarfile="${component.dist.jar}" basedir="${build_distdir}" excludes="*.jar" />
 
-        <antcall target="move_to_tcs"/>
+        <antcall target="move_to_tcs" />
     </target>
 
     <target name="package_docs" depends="javadoc">
@@ -453,13 +429,13 @@
 
         <jar jarfile="${dist_docpackage}/${javadoc.jar}" basedir="${build_tcsdistdir}/${javadocsdir}" />
 
-        <copy todir="${dist_docpackage}" >
+        <copy todir="${dist_docpackage}">
             <fileset dir="${docsdir}">
-                <include name="${component}_Class_Diagram*"/>
-                <include name="${component}_Use_Case_Diagram*"/>
-                <include name="${component}_Sequence_Diagram*"/>
-                <include name="${component}_Requirements_Specification.pdf"/>
-                <include name="${component}_Component_Specification.pdf"/>
+                <include name="${component}_Class_Diagram*" />
+                <include name="${component}_Use_Case_Diagram*" />
+                <include name="${component}_Sequence_Diagram*" />
+                <include name="${component}_Requirements_Specification.pdf" />
+                <include name="${component}_Component_Specification.pdf" />
             </fileset>
         </copy>
 
@@ -467,11 +443,11 @@
     </target>
 
     <target name="move_to_tcs">
-        <mkdir dir="${tcs_libdir}/${component_path}"/>
-        <mkdir dir="${tcs_libdir}/${component_path}/dist"/>
+        <mkdir dir="${tcs_libdir}/${component_path}" />
+        <mkdir dir="${tcs_libdir}/${component_path}/dist" />
 
-        <copy file="${component.jar}" todir="${tcs_libdir}/${component_path}"/>
-        <copy file="${component.dist.jar}" todir="${tcs_libdir}/${component_path}/dist"/>
+        <copy file="${component.jar}" todir="${tcs_libdir}/${component_path}" />
+        <copy file="${component.dist.jar}" todir="${tcs_libdir}/${component_path}/dist" />
     </target>
 
     <target name="dev_submission" depends="test">

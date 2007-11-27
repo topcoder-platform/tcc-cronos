@@ -8,8 +8,8 @@ import com.topcoder.security.authorization.SecurityRole;
 
 /**
  * <p>
- * This interface represents the API that may be used in order to manipulate the various details
- * involving a Time Tracker User.
+ * This interface represents the API that may be used in order to manipulate the various details involving a Time
+ * Tracker User.
  * </p>
  *
  * <p>
@@ -28,7 +28,7 @@ import com.topcoder.security.authorization.SecurityRole;
  * Thread safety: Implementations of this interface are required to be thread safety.
  * </p>
  *
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, biotrail
  * @version 3.2
  */
 public interface UserManager {
@@ -46,17 +46,20 @@ public interface UserManager {
      * </p>
      *
      * <p>
-     * The implementation will set the User's creation and modification date to the current
-     * date. These creation/modification details will also reflect in the persistent store.
-     * The creation and modification user is the responsibility of the calling application.
+     * The implementation will set the User's creation and modification date to the current date. These
+     * creation/modification details will also reflect in the persistent store. The creation and modification user
+     * is the responsibility of the calling application.
      * </p>
      *
-     * @param user The user for which the operation should be performed.
-     * @param audit Indicates whether an audit should be performed.
+     * @param user
+     *            The user for which the operation should be performed.
+     * @param audit
+     *            Indicates whether an audit should be performed.
      *
-     * @throws IllegalArgumentException if user is null or user contains null property which
-     * is required when persisting.
-     * @throws DataAccessException if a problem occurs while accessing the persistent store.
+     * @throws IllegalArgumentException
+     *             if user is null or user contains null property which is required when persisting.
+     * @throws DataAccessException
+     *             if a problem occurs while accessing the persistent store.
      */
     public void createUser(User user, boolean audit) throws DataAccessException;
 
@@ -70,73 +73,86 @@ public interface UserManager {
      * </p>
      *
      * <p>
-     * The implementation will set the User's creation and modification details to the current
-     * date. These creation/modification details will also reflect in the persistent store.
-     * The creation and modification user is the responsibility of the calling application.
+     * The implementation will set the User's creation and modification details to the current date. These
+     * creation/modification details will also reflect in the persistent store. The creation and modification user
+     * is the responsibility of the calling application.
      * </p>
      *
-     * @param user The user for which the operation should be performed.
-     * @param audit Indicates whether an audit should be performed.
+     * @param user
+     *            The user for which the operation should be performed.
+     * @param audit
+     *            Indicates whether an audit should be performed.
      *
-     * @throws IllegalArgumentException if user is null.
-     * @throws UnrecognizedEntityException if a user with the provided id was not found in
-     * the data store.
-     * @throws DataAccessException if a problem occurs while accessing the persistent store.
+     * @throws IllegalArgumentException
+     *             if user is null.
+     * @throws UnrecognizedEntityException
+     *             if a user with the provided id was not found in the data store.
+     * @throws DataAccessException
+     *             if a problem occurs while accessing the persistent store.
      */
-    public void updateUser(User user, boolean audit) throws UnrecognizedEntityException, DataAccessException;
+    public void updateUser(User user, boolean audit) throws DataAccessException;
 
     /**
      * <p>
-     * Modifies the persistent store so that it no longer contains data on the user with the specified
-     * userId.
+     * Modifies the persistent store so that it no longer contains data on the user with the specified userId.
      * </p>
      *
      * <p>
      * There is also the option to perform an audit.
      * </p>
      *
-     * @param userId The userId for which the operation should be performed.
-     * @param audit Indicates whether an audit should be performed.
+     * @param userId
+     *            The userId for which the operation should be performed.
+     * @param audit
+     *            Indicates whether an audit should be performed.
      *
-     * @throws IllegalArgumentException if userId &lt;= 0.
-     * @throws UnrecognizedEntityException if a user with the provided id was not found in the data store.
-     * @throws DataAccessException if a problem occurs while accessing the persistent store.
+     * @throws IllegalArgumentException
+     *             if userId &lt;= 0.
+     * @throws UnrecognizedEntityException
+     *             if a user with the provided id was not found in the data store.
+     * @throws DataAccessException
+     *             if a problem occurs while accessing the persistent store.
      */
-    public void removeUser(long userId, boolean audit) throws UnrecognizedEntityException, DataAccessException;
+    public void removeUser(long userId, boolean audit) throws DataAccessException;
 
     /**
      * <p>
-     * Retrieves a <code>User</code> object that reflects the data in the persistent store on the
-     * Time Tracker User with the specified <code>userId</code>.
+     * Retrieves a <code>User</code> object that reflects the data in the persistent store on the Time Tracker
+     * User with the specified <code>userId</code>.
      * </p>
      *
-     * @param usertId The id of the user to retrieve.
+     * @param usertId
+     *            The id of the user to retrieve.
      *
      * @return The user with specified id.
-     * @throws UnrecognizedEntityException if a user with the provided id was not found in the data store.
-     * @throws DataAccessException if a problem occurs while accessing the persistent store.
+     * @throws UnrecognizedEntityException
+     *             if a user with the provided id was not found in the data store.
+     * @throws DataAccessException
+     *             if a problem occurs while accessing the persistent store.
      */
-    public User getUser(long usertId) throws UnrecognizedEntityException, DataAccessException;
+    public User getUser(long usertId) throws DataAccessException;
 
     /**
      * <p>
-     * Searches the persistent store for any users that satisfy the criteria that was specified in the
-     * provided search filter.
+     * Searches the persistent store for any users that satisfy the criteria that was specified in the provided
+     * search filter.
      * </p>
      *
      * <p>
      * The provided filter should be created using either the filters that are created using the
-     * <code>UserFilterFactory</code> returned by {@link UserManager#getUserFilterFactory()}, or
-     * a composite Search Filters (such as <code>AndFilter</code>, <code>OrFilter</code> and
-     * <code>NotFilter</code> from Search Builder component) that combines the filters created using
-     * <code>UserFilterFactory</code>.
+     * <code>UserFilterFactory</code> returned by {@link UserManager#getUserFilterFactory()}, or a composite
+     * Search Filters (such as <code>AndFilter</code>, <code>OrFilter</code> and <code>NotFilter</code> from
+     * Search Builder component) that combines the filters created using <code>UserFilterFactory</code>.
      * </p>
      *
-     * @param filter The filter used to search for projects.
+     * @param filter
+     *            The filter used to search for projects.
      * @return The projects satisfying the conditions in the search filter.
      *
-     * @throws IllegalArgumentException if filter is null.
-     * @throws DataAccessException if a problem occurs while accessing the persistent store.
+     * @throws IllegalArgumentException
+     *             if filter is null.
+     * @throws DataAccessException
+     *             if a problem occurs while accessing the persistent store.
      */
     public User[] searchUsers(Filter filter) throws DataAccessException;
 
@@ -145,15 +161,20 @@ public interface UserManager {
      * This is a batch version of the {@link UserManager#createUser(User, boolean)} method.
      * </p>
      *
-     * @param users An array of users for which the operation should be performed.
-     * @param audit Indicates whether an audit should be performed.
+     * @param users
+     *            An array of users for which the operation should be performed.
+     * @param audit
+     *            Indicates whether an audit should be performed.
      *
-     * @throws IllegalArgumentException if users is null, empty or contains null values, or some user
-     * contains null property which is required when persisting.
-     * @throws DataAccessException if a problem occurs while accessing the persistent store.
-     * @throws BatchOperationException if a problem occurs during the batch operation.
+     * @throws IllegalArgumentException
+     *             if users is null, empty or contains null values, or some user contains null property which is
+     *             required when persisting.
+     * @throws DataAccessException
+     *             if a problem occurs while accessing the persistent store.
+     * @throws BatchOperationException
+     *             if a problem occurs during the batch operation.
      */
-    public void addUsers(User[] users, boolean audit) throws DataAccessException, BatchOperationException;
+    public void addUsers(User[] users, boolean audit) throws DataAccessException;
 
     /**
      * <p>
@@ -162,19 +183,24 @@ public interface UserManager {
      *
      * <p>
      * Note, <code>UnrecognizedEntityException</code> will be thrown as an cause of
-     * <code>BatchOperationException</code> if a user with the provided id was not
-     * found in the persistence store.
+     * <code>BatchOperationException</code> if a user with the provided id was not found in the persistence
+     * store.
      * </p>
      *
-     * @param users An array of users for which the operation should be performed.
-     * @param audit Indicates whether an audit should be performed.
+     * @param users
+     *            An array of users for which the operation should be performed.
+     * @param audit
+     *            Indicates whether an audit should be performed.
      *
-     * @throws IllegalArgumentException if users is null, empty or contains null values, or some user
-     * contains null property which is required when persisting.
-     * @throws DataAccessException if a problem occurs while accessing the persistent store.
-     * @throws BatchOperationException if a problem occurs during the batch operation.
+     * @throws IllegalArgumentException
+     *             if users is null, empty or contains null values, or some user contains null property which is
+     *             required when persisting.
+     * @throws DataAccessException
+     *             if a problem occurs while accessing the persistent store.
+     * @throws BatchOperationException
+     *             if a problem occurs during the batch operation.
      */
-    public void updateUsers(User[] users, boolean audit) throws DataAccessException, BatchOperationException;
+    public void updateUsers(User[] users, boolean audit) throws DataAccessException;
 
     /**
      * <p>
@@ -183,18 +209,23 @@ public interface UserManager {
      *
      * <p>
      * Note, <code>UnrecognizedEntityException</code> will be thrown as an cause of
-     * <code>BatchOperationException</code> if a user with the provided id was not
-     * found in the persistence store.
+     * <code>BatchOperationException</code> if a user with the provided id was not found in the persistence
+     * store.
      * </p>
      *
-     * @param userIds An array of userIds for which the operation should be performed.
-     * @param audit Indicates whether an audit should be performed.
+     * @param userIds
+     *            An array of userIds for which the operation should be performed.
+     * @param audit
+     *            Indicates whether an audit should be performed.
      *
-     * @throws IllegalArgumentException if userIds is null, empty or contains values &lt;= 0.
-     * @throws DataAccessException if a problem occurs while accessing the persistent store.
-     * @throws BatchOperationException if a problem occurs during the batch operation.
+     * @throws IllegalArgumentException
+     *             if userIds is null, empty or contains values &lt;= 0.
+     * @throws DataAccessException
+     *             if a problem occurs while accessing the persistent store.
+     * @throws BatchOperationException
+     *             if a problem occurs during the batch operation.
      */
-    public void removeUsers(long[] userIds, boolean audit) throws DataAccessException, BatchOperationException;
+    public void removeUsers(long[] userIds, boolean audit) throws DataAccessException;
 
     /**
      * <p>
@@ -203,18 +234,22 @@ public interface UserManager {
      *
      * <p>
      * Note, <code>UnrecognizedEntityException</code> will be thrown as an cause of
-     * <code>BatchOperationException</code> if a user with the provided id was not
-     * found in the persistence store.
+     * <code>BatchOperationException</code> if a user with the provided id was not found in the persistence
+     * store.
      * </p>
      *
-     * @param userIds An array of userIds for which users should be retrieved.
+     * @param userIds
+     *            An array of userIds for which users should be retrieved.
      * @return The users corresponding to the provided ids.
      *
-     * @throws IllegalArgumentException if userIds is null, empty or contains values &lt;= 0.
-     * @throws DataAccessException if a problem occurs while accessing the persistent store.
-     * @throws BatchOperationException if a problem occurs during the batch operation.
+     * @throws IllegalArgumentException
+     *             if userIds is null, empty or contains values &lt;= 0.
+     * @throws DataAccessException
+     *             if a problem occurs while accessing the persistent store.
+     * @throws BatchOperationException
+     *             if a problem occurs during the batch operation.
      */
-    public User[] getUsers(long[] userIds) throws DataAccessException, BatchOperationException;
+    public User[] getUsers(long[] userIds) throws DataAccessException;
 
     /**
      * <p>
@@ -229,14 +264,19 @@ public interface UserManager {
      * The roles to assign may be retrieved from the Authorization Component.
      * </p>
      *
-     * @param user The user for which the operation should be performed.
-     * @param role The authorization role to assign to the user.
+     * @param user
+     *            The user for which the operation should be performed.
+     * @param role
+     *            The authorization role to assign to the user.
      *
-     * @throws IllegalArgumentException if any parameter is null.
-     * @throws UnrecognizedEntityException if a user with the provided id was not found in the data store.
-     * @throws DataAccessException if a problem occurs while accessing the persistent store.
+     * @throws IllegalArgumentException
+     *             if any parameter is null.
+     * @throws UnrecognizedEntityException
+     *             if a user with the provided id was not found in the data store.
+     * @throws DataAccessException
+     *             if a problem occurs while accessing the persistent store.
      */
-    public void addRoleToUser(User user, SecurityRole role) throws UnrecognizedEntityException, DataAccessException;
+    public void addRoleToUser(User user, SecurityRole role) throws DataAccessException;
 
     /**
      * <p>
@@ -251,29 +291,37 @@ public interface UserManager {
      * The roles to remove may be retrieved from the Authorization Component.
      * </p>
      *
-     * @param user The user for which the operation should be performed.
-     * @param role The authorization role to remove.
+     * @param user
+     *            The user for which the operation should be performed.
+     * @param role
+     *            The authorization role to remove.
      *
-     * @throws IllegalArgumentException if either argument is null.
-     * @throws UnrecognizedEntityException if a role or user was not found in the data store.
-     * @throws DataAccessException if a problem occurs while accessing the persistent store.
+     * @throws IllegalArgumentException
+     *             if either argument is null.
+     * @throws UnrecognizedEntityException
+     *             if a role or user was not found in the data store.
+     * @throws DataAccessException
+     *             if a problem occurs while accessing the persistent store.
      */
-    public void removeRoleFromUser(User user, SecurityRole role) throws UnrecognizedEntityException,
-        DataAccessException;
+    public void removeRoleFromUser(User user, SecurityRole role) throws DataAccessException;
 
     /**
      * <p>
      * Retrieves all the authorization roles for the given user.
      * </p>
      *
-     * @param user The user for which the operation should be performed.
+     * @param user
+     *            The user for which the operation should be performed.
      * @return An array of SecurityRoles that were assigned to the user (may be empty array)
      *
-     * @throws IllegalArgumentException if the user is null.
-     * @throws UnrecognizedEntityException if the given user was not found in the data store.
-     * @throws DataAccessException if a problem occurs while accessing the persistent store.
+     * @throws IllegalArgumentException
+     *             if the user is null.
+     * @throws UnrecognizedEntityException
+     *             if the given user was not found in the data store.
+     * @throws DataAccessException
+     *             if a problem occurs while accessing the persistent store.
      */
-    public SecurityRole[] retrieveRolesForUser(User user) throws UnrecognizedEntityException, DataAccessException;
+    public SecurityRole[] retrieveRolesForUser(User user) throws DataAccessException;
 
     /**
      * <p>
@@ -284,13 +332,17 @@ public interface UserManager {
      * The user will no longer be able to perform any actions that require authorization.
      * </p>
      *
-     * @param user The user whose roles are to be cleared.
+     * @param user
+     *            The user whose roles are to be cleared.
      *
-     * @throws IllegalArgumentException if the user is null.
-     * @throws DataAccessException if a problem occurs while accessing the persistent store.
-     * @throws UnrecognizedEntityException if a user was not found in the data store.
+     * @throws IllegalArgumentException
+     *             if the user is null.
+     * @throws DataAccessException
+     *             if a problem occurs while accessing the persistent store.
+     * @throws UnrecognizedEntityException
+     *             if a user was not found in the data store.
      */
-    public void clearRolesFromUser(User user) throws DataAccessException, UnrecognizedEntityException;
+    public void clearRolesFromUser(User user) throws DataAccessException;
 
     /**
      * <p>
@@ -298,16 +350,20 @@ public interface UserManager {
      * </p>
      *
      * <p>
-     * The given password will be compared against the one that is stored in persistence, and the results
-     * of the comparison will be returned.
+     * The given password will be compared against the one that is stored in persistence, and the results of the
+     * comparison will be returned.
      * </p>
      *
-     * @param username The user name to authenticate.
-     * @param password The password provided by the user.
+     * @param username
+     *            The user name to authenticate.
+     * @param password
+     *            The password provided by the user.
      * @return true if the password matches; false otherwise.
      *
-     * @throws IllegalArgumentException if user name or password is null or empty string
-     * @throws DataAccessException if a problem occurs while accessing the persistent store.
+     * @throws IllegalArgumentException
+     *             if user name or password is null or empty string
+     * @throws DataAccessException
+     *             if a problem occurs while accessing the persistent store.
      */
     public boolean authenticateUser(String username, String password) throws DataAccessException;
 
@@ -318,24 +374,24 @@ public interface UserManager {
      *
      * @return An array of users retrieved from the persistent store.
      *
-     * @throws DataAccessException if a problem occurs while accessing the persistent store.
+     * @throws DataAccessException
+     *             if a problem occurs while accessing the persistent store.
      */
     public User[] getAllUsers() throws DataAccessException;
 
     /**
      * <p>
-     * Retrieves the <code>UserFilterFactory</code> that is capable of creating SearchFilters to
-     * use when searching for users.
+     * Retrieves the <code>UserFilterFactory</code> that is capable of creating SearchFilters to use when
+     * searching for users.
      * </p>
      *
      * <p>
-     * This is used to conveniently specify the search criteria that should be used.
-     * The filters returned by the given factory should be used with {@link UserManager#searchUsers(Filter)}
-     * method.
+     * This is used to conveniently specify the search criteria that should be used. The filters returned by the
+     * given factory should be used with {@link UserManager#searchUsers(Filter)} method.
      * </p>
      *
-     * @return the <code>UserFilterFactory</code> that is capable of creating SearchFilters to use
-     * when searching for users.
+     * @return the <code>UserFilterFactory</code> that is capable of creating SearchFilters to use when searching
+     *         for users.
      */
     public UserFilterFactory getUserFilterFactory();
 }

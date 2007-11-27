@@ -24,7 +24,7 @@ import junit.framework.Test;
  * Unit test cases for MappedBaseFilterFactory.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author biotrail
  * @version 3.2
  */
 public class MappedBaseFilterFactoryTests extends TestCase {

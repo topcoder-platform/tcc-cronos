@@ -12,7 +12,7 @@ import junit.framework.Test;
  * Unit test cases for BatchOperationException.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author biotrail
  * @version 3.2
  */
 public class BatchOperationExceptionTests extends TestCase {
@@ -100,7 +100,8 @@ public class BatchOperationExceptionTests extends TestCase {
      * </p>
      */
     public void testBatchOperationExceptionInheritance() {
-        assertTrue("BatchOperationException does not subclass Exception.", batchException instanceof Exception);
+        assertTrue("BatchOperationException does not subclass Exception.",
+            batchException instanceof Exception);
     }
 
     /**

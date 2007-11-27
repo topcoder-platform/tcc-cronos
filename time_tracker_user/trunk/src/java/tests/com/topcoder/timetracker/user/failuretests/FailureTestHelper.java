@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,6 +16,7 @@ import java.util.Iterator;
 import com.topcoder.db.connectionfactory.ConfigurationException;
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
+import com.topcoder.timetracker.user.UserManagerFactory;
 import com.topcoder.util.config.ConfigManager;
 
 /**
@@ -29,8 +31,9 @@ class FailureTestHelper {
     /**
      * Represents the the root of all failure config files.
      */
-    public static final String FAILURE_CONFIG_ROOT = "failuretests" + File.separator;
+    public static final String FAILURE_CONFIG_ROOT = "test_files" + File.separator + "failuretests" + File.separator;
 
+    public static final String CONFIG_FILE = FailureTestHelper.FAILURE_CONFIG_ROOT + "config.xml";
     /**
      * <p>
      * private class preventing instantiation.
@@ -52,6 +55,25 @@ class FailureTestHelper {
         for (Iterator iter = configManager.getAllNamespaces(); iter.hasNext();) {
             configManager.removeNamespace((String) iter.next());
         }
+    }
+
+    /**
+     * <p>
+     * Uses the given file to config the configuration manager.
+     * </p>
+     *
+     * @param fileName
+     *            config file to set up environment
+     *
+     * @throws Exception
+     *             when any exception occurs
+     */
+    public static void loadXMLConfig(String fileName) throws Exception {
+        // set up environment
+        ConfigManager config = ConfigManager.getInstance();
+        File file = new File(fileName);
+
+        config.add(file.getCanonicalPath());
     }
 
     /**
@@ -98,8 +120,8 @@ class FailureTestHelper {
         try {
             connection = getConnection();
             connection.setAutoCommit(false);
-            executeSqlFile(connection, "test_files" + File.separator + FAILURE_CONFIG_ROOT + "clear_data.sql");
-            executeSqlFile(connection, "test_files" + File.separator + FAILURE_CONFIG_ROOT + "add_data.sql");
+            executeSqlFile(connection, FAILURE_CONFIG_ROOT + "clear_data.sql");
+            executeSqlFile(connection, FAILURE_CONFIG_ROOT + "add_data.sql");
             connection.commit();
         } catch (SQLException e) {
             connection.rollback();
@@ -124,7 +146,7 @@ class FailureTestHelper {
         try {
             connection = getConnection();
             connection.setAutoCommit(false);
-            executeSqlFile(connection, "test_files" + File.separator + "clear_data.sql");
+            executeSqlFile(connection, FAILURE_CONFIG_ROOT + "clear_data.sql");
             connection.commit();
         } catch (SQLException e) {
             connection.rollback();
@@ -209,6 +231,27 @@ class FailureTestHelper {
             }
         } catch (SQLException e) {
             // Ignore
+        }
+    }
+
+    /**
+     * <p>
+     * This method sets the user manager in the <code>UserManagerFactory</code> to null using reflection.
+     * </p>
+     */
+    public static void resetUserManagerToNull() {
+        try {
+            Field field = UserManagerFactory.class.getDeclaredField("userManager");
+            field.setAccessible(true);
+            field.set(null, null);
+        } catch (SecurityException e) {
+            // ignore
+        } catch (IllegalArgumentException e) {
+            // ignore
+        } catch (NoSuchFieldException e) {
+            // ignore
+        } catch (IllegalAccessException e) {
+            // ignore
         }
     }
 }

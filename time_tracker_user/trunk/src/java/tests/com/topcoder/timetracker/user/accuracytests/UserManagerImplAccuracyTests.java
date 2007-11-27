@@ -36,6 +36,8 @@ import com.topcoder.timetracker.user.filterfactory.MappedUserFilterFactory;
  *
  * @author victorsam
  * @version 3.2
+ * @author Chenhong
+ * @version 3.2.1
  */
 public class UserManagerImplAccuracyTests extends TestCase {
     /**
@@ -60,7 +62,9 @@ public class UserManagerImplAccuracyTests extends TestCase {
      *
      */
     protected void setUp() throws Exception {
+        AccuracyTestHelper.clearConfig();
         AccuracyTestHelper.loadXMLConfig(AccuracyTestHelper.CONFIG_FILE);
+        AccuracyTestHelper.loadXMLConfig(AccuracyTestHelper.CONFIG_FILE_ADD);
         AccuracyTestHelper.setUpDataBase();
 
         DBConnectionFactory dbFactory = new DBConnectionFactoryImpl(AccuracyTestHelper.DB_FACTORY_NAMESPACE);
@@ -70,7 +74,7 @@ public class UserManagerImplAccuracyTests extends TestCase {
         AddressManager addressManager = new MockAddressManager();
         UserDAO userDao = new DbUserDAO(dbFactory, "tt_user", "com.topcoder.timetracker.user.User",
             "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
-            authPersistence, addressManager, true);
+            authPersistence, addressManager, AccuracyTestHelper.getUserStatusDAO(), AccuracyTestHelper.getUserTypeDAO(), true);
 
         instance = new UserManagerImpl(userDao, authPersistence, "Default_TT_UserAuthenticator");
     }
@@ -165,7 +169,7 @@ public class UserManagerImplAccuracyTests extends TestCase {
         User user = AccuracyTestHelper.createUser();
         instance.addUsers(new User[] {user}, true);
         user.setUsername("new");
-        user.setStatus(Status.LOCKED);
+        user.setStatus(Status.ACTIVE);
         instance.updateUsers(new User[] {user}, true);
 
         User actualUser = instance.getUsers(new long[] {user.getId()})[0];
@@ -253,7 +257,7 @@ public class UserManagerImplAccuracyTests extends TestCase {
         User user = AccuracyTestHelper.createUser();
         instance.createUser(user, true);
         user.setUsername("new");
-        user.setStatus(Status.LOCKED);
+        user.setStatus(Status.ACTIVE);
         instance.updateUser(user, true);
 
         User actualUser = instance.getUser(user.getId());

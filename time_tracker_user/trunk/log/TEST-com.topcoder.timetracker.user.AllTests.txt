@@ -1,416 +1,29 @@
 Testsuite: com.topcoder.timetracker.user.AllTests
-Tests run: 598, Failures: 0, Errors: 0, Time elapsed: 597.141 sec
+Tests run: 907, Failures: 0, Errors: 0, Time elapsed: 366.425 sec
 ------------- Standard Output ---------------
 ADDPRINCIPAL: PRINCIPAL: 100-topcoder
 
-ADDPRINCIPAL: PRINCIPAL: 101-topcoder
+ADDPRINCIPAL: PRINCIPAL: 100-topcoder
 
-ADDPRINCIPAL: PRINCIPAL: 102-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 103-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 104-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 105-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 106-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 107-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 108-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 109-topcoder
-
-Add 10 user cost 8.938 seconds.
-ADDPRINCIPAL: PRINCIPAL: 110-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 111-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 112-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 113-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 114-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 115-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 116-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 117-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 118-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 119-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 120-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 121-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 122-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 123-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 124-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 125-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 126-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 127-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 128-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 129-topcoder
-
-Add 20 user cost 18.438 seconds.
-ADDPRINCIPAL: PRINCIPAL: 130-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 131-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 132-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 133-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 134-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 135-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 136-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 137-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 138-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 139-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 140-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 141-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 142-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 143-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 144-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 145-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 146-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 147-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 148-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 149-topcoder
-
-Update 20 user cost 0.359 seconds.
-ADDPRINCIPAL: PRINCIPAL: 150-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 151-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 152-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 153-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 154-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 155-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 156-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 157-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 158-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 159-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 160-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 161-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 162-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 163-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 164-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 165-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 166-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 167-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 168-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 169-topcoder
-
-DELPRINCIPAL: PRINCIPAL: 107
-
-DELPRINCIPAL: PRINCIPAL: 158
-
-DELPRINCIPAL: PRINCIPAL: 143
-
-DELPRINCIPAL: PRINCIPAL: 123
-
-DELPRINCIPAL: PRINCIPAL: 112
-
-DELPRINCIPAL: PRINCIPAL: 113
-
-DELPRINCIPAL: PRINCIPAL: 159
-
-DELPRINCIPAL: PRINCIPAL: 144
-
-DELPRINCIPAL: PRINCIPAL: 118
-
-DELPRINCIPAL: PRINCIPAL: 129
-
-DELPRINCIPAL: PRINCIPAL: 124
-
-DELPRINCIPAL: PRINCIPAL: 169
-
-DELPRINCIPAL: PRINCIPAL: 160
-
-DELPRINCIPAL: PRINCIPAL: 117
-
-DELPRINCIPAL: PRINCIPAL: 106
-
-DELPRINCIPAL: PRINCIPAL: 157
-
-DELPRINCIPAL: PRINCIPAL: 142
-
-DELPRINCIPAL: PRINCIPAL: 122
-
-DELPRINCIPAL: PRINCIPAL: 100
-
-DELPRINCIPAL: PRINCIPAL: 131
-
-DELPRINCIPAL: PRINCIPAL: 146
-
-DELPRINCIPAL: PRINCIPAL: 119
-
-DELPRINCIPAL: PRINCIPAL: 162
-
-DELPRINCIPAL: PRINCIPAL: 145
-
-DELPRINCIPAL: PRINCIPAL: 130
-
-DELPRINCIPAL: PRINCIPAL: 155
-
-DELPRINCIPAL: PRINCIPAL: 103
-
-DELPRINCIPAL: PRINCIPAL: 140
-
-DELPRINCIPAL: PRINCIPAL: 166
-
-DELPRINCIPAL: PRINCIPAL: 156
-
-DELPRINCIPAL: PRINCIPAL: 141
-
-DELPRINCIPAL: PRINCIPAL: 165
-
-DELPRINCIPAL: PRINCIPAL: 102
-
-DELPRINCIPAL: PRINCIPAL: 121
-
-DELPRINCIPAL: PRINCIPAL: 120
-
-DELPRINCIPAL: PRINCIPAL: 101
-
-DELPRINCIPAL: PRINCIPAL: 163
-
-DELPRINCIPAL: PRINCIPAL: 126
-
-DELPRINCIPAL: PRINCIPAL: 136
-
-DELPRINCIPAL: PRINCIPAL: 168
-
-DELPRINCIPAL: PRINCIPAL: 151
-
-DELPRINCIPAL: PRINCIPAL: 104
-
-DELPRINCIPAL: PRINCIPAL: 150
-
-DELPRINCIPAL: PRINCIPAL: 135
-
-DELPRINCIPAL: PRINCIPAL: 161
-
-DELPRINCIPAL: PRINCIPAL: 149
-
-DELPRINCIPAL: PRINCIPAL: 105
-
-DELPRINCIPAL: PRINCIPAL: 134
-
-DELPRINCIPAL: PRINCIPAL: 137
-
-DELPRINCIPAL: PRINCIPAL: 116
-
-DELPRINCIPAL: PRINCIPAL: 132
-
-DELPRINCIPAL: PRINCIPAL: 147
-
-DELPRINCIPAL: PRINCIPAL: 152
-
-DELPRINCIPAL: PRINCIPAL: 125
-
-DELPRINCIPAL: PRINCIPAL: 115
-
-DELPRINCIPAL: PRINCIPAL: 111
-
-DELPRINCIPAL: PRINCIPAL: 114
-
-DELPRINCIPAL: PRINCIPAL: 139
-
-DELPRINCIPAL: PRINCIPAL: 154
-
-DELPRINCIPAL: PRINCIPAL: 127
-
-DELPRINCIPAL: PRINCIPAL: 167
-
-DELPRINCIPAL: PRINCIPAL: 108
-
-DELPRINCIPAL: PRINCIPAL: 148
-
-DELPRINCIPAL: PRINCIPAL: 128
-
-DELPRINCIPAL: PRINCIPAL: 109
-
-DELPRINCIPAL: PRINCIPAL: 133
-
-DELPRINCIPAL: PRINCIPAL: 164
-
-DELPRINCIPAL: PRINCIPAL: 110
-
-DELPRINCIPAL: PRINCIPAL: 153
-
-DELPRINCIPAL: PRINCIPAL: 138
-
-Remove 20 user cost 36.781 seconds.
-ADDPRINCIPAL: PRINCIPAL: 170-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 171-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 172-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 173-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 174-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 175-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 176-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 177-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 178-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 179-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 180-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 181-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 182-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 183-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 184-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 185-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 186-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 187-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 188-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 189-topcoder
-
-Get users with 20 id cost 0.328 seconds.
-ADDPRINCIPAL: PRINCIPAL: 190-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 191-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 192-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 193-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 194-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 195-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 196-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 197-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 198-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 199-topcoder
-
-Call 20 searchUser with UserNameFilter cost 4.953 seconds.
-ADDPRINCIPAL: PRINCIPAL: 200-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 201-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 202-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 203-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 204-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 205-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 206-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 207-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 208-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 209-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 210-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 211-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 212-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 213-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 214-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 215-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 216-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 217-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 218-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 219-topcoder
-
-Gall GetAllUser cost 0.25 seconds.
 ADDPRINCIPAL: PRINCIPAL: 100-topcoder
 
 DELPRINCIPAL: PRINCIPAL: 100
 
 ADDPRINCIPAL: PRINCIPAL: 100-helloWorld
 
-ADDPRINCIPAL: PRINCIPAL: 101-topcoder
+ADDPRINCIPAL: PRINCIPAL: 100-topcoder
+
+DELPRINCIPAL: PRINCIPAL: 100
+
+ADDPRINCIPAL: PRINCIPAL: 100-helloWorld
 
 DELPRINCIPAL: PRINCIPAL: 1
 
-DELPRINCIPAL: PRINCIPAL: 101
-
-ADDPRINCIPAL: PRINCIPAL: 102-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 103-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 104-topcoder
-
-DELPRINCIPAL: PRINCIPAL: 104
-
-ADDPRINCIPAL: PRINCIPAL: 104-helloWorld
+ADDPRINCIPAL: PRINCIPAL: 100-topcoder
 
 DELPRINCIPAL: PRINCIPAL: 1
+
+DELPRINCIPAL: PRINCIPAL: 100
 
 DELPRINCIPAL: PRINCIPAL: 1
 
@@ -418,847 +31,1044 @@ addRole: SecurityRoleId: 100
 
 addRoleForPrincipal: principalId: 1 roleId: 100
 
-addRole: SecurityRoleId: 101
+addRole: SecurityRoleId: 100
 
 removeRoleForPrincipal: principalId: 1 roleId: 4
 
-addRole: SecurityRoleId: 102
+addRole: SecurityRoleId: 100
 
 AUTHEXCEPTION:  METHOD: removeRoleForPrincipal(Principal, SecurityRole)
 
 removeRoleForPrincipal: principalId: 1 roleId: 4
 
-ADDPRINCIPAL: PRINCIPAL: 105-topcoder
+ADDPRINCIPAL: PRINCIPAL: 100-topcoder
 
-DELPRINCIPAL: PRINCIPAL: 105
+DELPRINCIPAL: PRINCIPAL: 100
 
-ADDPRINCIPAL: PRINCIPAL: 105-helloWorld
+ADDPRINCIPAL: PRINCIPAL: 100-helloWorld
 
-ADDPRINCIPAL: PRINCIPAL: 106-topcoder
-
-DELPRINCIPAL: PRINCIPAL: 1
-
-DELPRINCIPAL: PRINCIPAL: 106
-
-ADDPRINCIPAL: PRINCIPAL: 107-topcoder
+ADDPRINCIPAL: PRINCIPAL: 100-topcoder
 
 DELPRINCIPAL: PRINCIPAL: 1
 
-ADDPRINCIPAL: PRINCIPAL: 108-topcoder
+DELPRINCIPAL: PRINCIPAL: 100
 
-DELPRINCIPAL: PRINCIPAL: 108
+ADDPRINCIPAL: PRINCIPAL: 100-topcoder
 
-ADDPRINCIPAL: PRINCIPAL: 108-helloWorld
+ADDPRINCIPAL: PRINCIPAL: 100-topcoder
 
-ADDPRINCIPAL: PRINCIPAL: 109-topcoder
-
-DELPRINCIPAL: PRINCIPAL: 1
-
-DELPRINCIPAL: PRINCIPAL: 109
-
-ADDPRINCIPAL: PRINCIPAL: 110-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 111-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 112-topcoder
-
-DELPRINCIPAL: PRINCIPAL: 112
-
-ADDPRINCIPAL: PRINCIPAL: 112-helloWorld
-
-DELPRINCIPAL: PRINCIPAL: 1
-
-DELPRINCIPAL: PRINCIPAL: 1
-
-addRole: SecurityRoleId: 103
-
-addRoleForPrincipal: principalId: 1 roleId: 103
-
-addRole: SecurityRoleId: 104
-
-removeRoleForPrincipal: principalId: 1 roleId: 4
-
-addRole: SecurityRoleId: 105
-
-AUTHEXCEPTION:  METHOD: removeRoleForPrincipal(Principal, SecurityRole)
-
-removeRoleForPrincipal: principalId: 1 roleId: 4
-
-addRole: SecurityRoleId: 106
-
-ADDPRINCIPAL: PRINCIPAL: 113-TCSDESIGNER
-
-DELPRINCIPAL: PRINCIPAL: 1
-
-addRoleForPrincipal: principalId: 113 roleId: 2
-
-removeRoleForPrincipal: principalId: 113 roleId: 2
-
-ADDPRINCIPAL: PRINCIPAL: 114-TCSDESIGNER
-
-DELPRINCIPAL: PRINCIPAL: 1
-
-addRoleForPrincipal: principalId: 114 roleId: 2
-
-removeRoleForPrincipal: principalId: 114 roleId: 2
-
-ADDPRINCIPAL: PRINCIPAL: 115-topcoder
-
-DELPRINCIPAL: PRINCIPAL: 115
-
-ADDPRINCIPAL: PRINCIPAL: 115-new
-
-ADDPRINCIPAL: PRINCIPAL: 116-topcoder
-
-DELPRINCIPAL: PRINCIPAL: 116
-
-ADDPRINCIPAL: PRINCIPAL: 117-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 118-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 119-topcoder
-
-DELPRINCIPAL: PRINCIPAL: 119
-
-ADDPRINCIPAL: PRINCIPAL: 119-new
+ADDPRINCIPAL: PRINCIPAL: 100-topcoder
 
 DELPRINCIPAL: PRINCIPAL: 1
 
 ADDPRINCIPAL: PRINCIPAL: 100-topcoder
 
-addRole: SecurityRoleId: 107
+ADDPRINCIPAL: PRINCIPAL: 100-topcoder
 
-addRoleForPrincipal: principalId: 1 roleId: 107
+ADDPRINCIPAL: PRINCIPAL: 100-topcoder
 
-removeRoleForPrincipal: principalId: 1 roleId: 4
+DELPRINCIPAL: PRINCIPAL: 100
 
-addRole: SecurityRoleId: 108
+ADDPRINCIPAL: PRINCIPAL: 100-helloWorld
 
-addRoleForPrincipal: principalId: 1 roleId: 108
+ADDPRINCIPAL: PRINCIPAL: 100-topcoder
 
-removeRoleForPrincipal: principalId: 1 roleId: 4
+DELPRINCIPAL: PRINCIPAL: 100
 
-ADDPRINCIPAL: PRINCIPAL: 101-topcoder
-
-DELPRINCIPAL: PRINCIPAL: 101
-
-ADDPRINCIPAL: PRINCIPAL: 101-new
-
-ADDPRINCIPAL: PRINCIPAL: 102-topcoder
-
-DELPRINCIPAL: PRINCIPAL: 102
-
-ADDPRINCIPAL: PRINCIPAL: 103-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 104-topcoder
-
-DELPRINCIPAL: PRINCIPAL: 104
-
-ADDPRINCIPAL: PRINCIPAL: 104-new
-
-ADDPRINCIPAL: PRINCIPAL: 105-topcoder
-
-DELPRINCIPAL: PRINCIPAL: 105
-
-ADDPRINCIPAL: PRINCIPAL: 106-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 107-topcoder
-
-ADDPRINCIPAL: PRINCIPAL: 108-topcoder
-
-DELPRINCIPAL: PRINCIPAL: 108
-
-ADDPRINCIPAL: PRINCIPAL: 108-new
+ADDPRINCIPAL: PRINCIPAL: 100-helloWorld
 
 DELPRINCIPAL: PRINCIPAL: 1
 
-ADDPRINCIPAL: PRINCIPAL: 109-topcoder
+ADDPRINCIPAL: PRINCIPAL: 100-topcoder
 
-addRole: SecurityRoleId: 109
+DELPRINCIPAL: PRINCIPAL: 1
 
-addRoleForPrincipal: principalId: 1 roleId: 109
+DELPRINCIPAL: PRINCIPAL: 100
+
+DELPRINCIPAL: PRINCIPAL: 1
+
+addRole: SecurityRoleId: 100
+
+addRoleForPrincipal: principalId: 1 roleId: 100
+
+addRole: SecurityRoleId: 100
 
 removeRoleForPrincipal: principalId: 1 roleId: 4
 
-addRole: SecurityRoleId: 110
+addRole: SecurityRoleId: 100
 
-addRoleForPrincipal: principalId: 1 roleId: 110
+AUTHEXCEPTION:  METHOD: removeRoleForPrincipal(Principal, SecurityRole)
 
 removeRoleForPrincipal: principalId: 1 roleId: 4
+
+addRole: SecurityRoleId: 100
+
+ADDPRINCIPAL: PRINCIPAL: 100-topcoder
+
+ADDPRINCIPAL: PRINCIPAL: 100-topcoder
+
+ADDPRINCIPAL: PRINCIPAL: 100-topcoder
+
+DELPRINCIPAL: PRINCIPAL: 100
+
+ADDPRINCIPAL: PRINCIPAL: 100-helloWorld
+
+ADDPRINCIPAL: PRINCIPAL: 100-topcoder
+
+DELPRINCIPAL: PRINCIPAL: 100
+
+ADDPRINCIPAL: PRINCIPAL: 100-helloWorld
+
+DELPRINCIPAL: PRINCIPAL: 1
+
+ADDPRINCIPAL: PRINCIPAL: 100-topcoder
+
+DELPRINCIPAL: PRINCIPAL: 1
+
+DELPRINCIPAL: PRINCIPAL: 100
+
+DELPRINCIPAL: PRINCIPAL: 1
+
+addRole: SecurityRoleId: 100
+
+addRoleForPrincipal: principalId: 1 roleId: 100
+
+addRole: SecurityRoleId: 100
+
+removeRoleForPrincipal: principalId: 1 roleId: 4
+
+addRole: SecurityRoleId: 100
+
+AUTHEXCEPTION:  METHOD: removeRoleForPrincipal(Principal, SecurityRole)
+
+removeRoleForPrincipal: principalId: 1 roleId: 4
+
+addRole: SecurityRoleId: 100
+
+ADDPRINCIPAL: PRINCIPAL: 100-TCSDESIGNER
+
+DELPRINCIPAL: PRINCIPAL: 1
+
+addRoleForPrincipal: principalId: 100 roleId: 2
+
+removeRoleForPrincipal: principalId: 100 roleId: 2
+
+ADDPRINCIPAL: PRINCIPAL: 100-TCSDESIGNER
+
+DELPRINCIPAL: PRINCIPAL: 1
+
+addRoleForPrincipal: principalId: 100 roleId: 2
+
+removeRoleForPrincipal: principalId: 100 roleId: 2
 
 ------------- ---------------- ---------------
 ------------- Standard Error -----------------
-java.sql.SQLException: Column (no_column) not found in any table in the query (or SLV is undefined).
-	at com.informix.jdbc.IfxSqli.addException(IfxSqli.java:3082)
-	at com.informix.jdbc.IfxSqli.receiveError(IfxSqli.java:3396)
-	at com.informix.jdbc.IfxSqli.dispatchMsg(IfxSqli.java:2259)
-	at com.informix.jdbc.IfxSqli.receiveMessage(IfxSqli.java:2179)
-	at com.informix.jdbc.IfxSqli.executePrepare(IfxSqli.java:1082)
-	at com.informix.jdbc.IfxResultSet.executePrepare(IfxResultSet.java:182)
-	at com.informix.jdbc.IfxPreparedStatement.setupExecutePrepare(IfxPreparedStatement.java:197)
-	at com.informix.jdbc.IfxPreparedStatement.<init>(IfxPreparedStatement.java:175)
-	at com.informix.jdbc.IfxSqliConnect.prepareStatement(IfxSqliConnect.java:1907)
-	at com.topcoder.search.builder.database.DatabaseSearchStrategy.search(DatabaseSearchStrategy.java:314)
-	at com.topcoder.timetracker.user.db.DbUserDAO.searchUsers(DbUserDAO.java:1383)
-	at com.topcoder.timetracker.user.db.DbUserDAOTests.testSearchUsers_InvalidFilter(DbUserDAOTests.java:1320)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
-	at java.lang.reflect.Method.invoke(Method.java:324)
-	at junit.framework.TestCase.runTest(TestCase.java:154)
-	at junit.framework.TestCase.runBare(TestCase.java:127)
-	at junit.framework.TestResult$1.protect(TestResult.java:106)
-	at junit.framework.TestResult.runProtected(TestResult.java:124)
-	at junit.framework.TestResult.run(TestResult.java:109)
-	at junit.framework.TestCase.run(TestCase.java:118)
-	at junit.framework.TestSuite.runTest(TestSuite.java:208)
-	at junit.framework.TestSuite.run(TestSuite.java:203)
-	at junit.framework.TestSuite.runTest(TestSuite.java:208)
-	at junit.framework.TestSuite.run(TestSuite.java:203)
-	at junit.framework.TestSuite.runTest(TestSuite.java:208)
-	at junit.framework.TestSuite.run(TestSuite.java:203)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
-java.sql.SQLException: Column (no_column) not found in any table in the query (or SLV is undefined).
-	at com.informix.jdbc.IfxSqli.addException(IfxSqli.java:3082)
-	at com.informix.jdbc.IfxSqli.receiveError(IfxSqli.java:3396)
-	at com.informix.jdbc.IfxSqli.dispatchMsg(IfxSqli.java:2259)
-	at com.informix.jdbc.IfxSqli.receiveMessage(IfxSqli.java:2179)
-	at com.informix.jdbc.IfxSqli.executePrepare(IfxSqli.java:1082)
-	at com.informix.jdbc.IfxResultSet.executePrepare(IfxResultSet.java:182)
-	at com.informix.jdbc.IfxPreparedStatement.setupExecutePrepare(IfxPreparedStatement.java:197)
-	at com.informix.jdbc.IfxPreparedStatement.<init>(IfxPreparedStatement.java:175)
-	at com.informix.jdbc.IfxSqliConnect.prepareStatement(IfxSqliConnect.java:1907)
-	at com.topcoder.search.builder.database.DatabaseSearchStrategy.search(DatabaseSearchStrategy.java:314)
-	at com.topcoder.timetracker.user.db.DbUserDAO.searchUsers(DbUserDAO.java:1383)
-	at com.topcoder.timetracker.user.UserManagerImpl.searchUsers(UserManagerImpl.java:287)
-	at com.topcoder.timetracker.user.j2ee.UserManagerSessionBean.searchUsers(UserManagerSessionBean.java:235)
-	at com.topcoder.timetracker.user.j2ee.UserManagerSessionBean$$FastClassByCGLIB$$1482f47b.invoke(<generated>)
-	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:87)
-	at org.mockejb.interceptor.InterceptorInvoker$CglibMethodInvoker.intercept(InterceptorInvoker.java:95)
-	at org.mockejb.interceptor.InvocationContext.proceed(InvocationContext.java:177)
-	at org.mockejb.interceptor.InterceptorInvoker.invoke(InterceptorInvoker.java:53)
-	at org.mockejb.MockEjbObject.invoke(MockEjbObject.java:147)
-	at $Proxy1.searchUsers(Unknown Source)
-	at com.topcoder.timetracker.user.j2ee.UserManagerDelegate.searchUsers(UserManagerDelegate.java:217)
-	at com.topcoder.timetracker.user.j2ee.UserManagerSessionBeanTests.testSearchUsers_InvalidFilter(UserManagerSessionBeanTests.java:974)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
-	at java.lang.reflect.Method.invoke(Method.java:324)
-	at junit.framework.TestCase.runTest(TestCase.java:154)
-	at junit.framework.TestCase.runBare(TestCase.java:127)
-	at junit.framework.TestResult$1.protect(TestResult.java:106)
-	at junit.framework.TestResult.runProtected(TestResult.java:124)
-	at junit.framework.TestResult.run(TestResult.java:109)
-	at junit.framework.TestCase.run(TestCase.java:118)
-	at junit.framework.TestSuite.runTest(TestSuite.java:208)
-	at junit.framework.TestSuite.run(TestSuite.java:203)
-	at junit.framework.TestSuite.runTest(TestSuite.java:208)
-	at junit.framework.TestSuite.run(TestSuite.java:203)
-	at junit.framework.TestSuite.runTest(TestSuite.java:208)
-	at junit.framework.TestSuite.run(TestSuite.java:203)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
-	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
 ------------- ---------------- ---------------
 
-Testcase: testAddUsers_with_10User took 11.047 sec
-Testcase: testAddUsers_with_20User took 18.984 sec
-Testcase: testUpdateUsers took 17.891 sec
-Testcase: testRemoveUsers took 54.687 sec
-Testcase: testGetUsers took 17.563 sec
-Testcase: testSearchUsers took 15.796 sec
-Testcase: testGetAllUsers took 18.704 sec
+Testcase: testCtor took 0.038 sec
+Testcase: testBatchOperationExceptionInheritance took 0.002 sec
+Testcase: testGetCauses took 0 sec
+Testcase: testConfigurationException1 took 0 sec
+Testcase: testConfigurationException2 took 0.001 sec
+Testcase: testConfigurationExceptionInheritance1 took 0 sec
+Testcase: testConfigurationExceptionInheritance2 took 0 sec
+Testcase: testDataAccessException1 took 0.001 sec
+Testcase: testDataAccessException2 took 0.003 sec
+Testcase: testDataAccessExceptionInheritance1 took 0.001 sec
+Testcase: testDataAccessExceptionInheritance2 took 0 sec
+Testcase: testGetName took 0.006 sec
+Testcase: testToString took 0.001 sec
+Testcase: testGetId took 0 sec
+Testcase: testToString took 0.001 sec
+Testcase: testGetFilterPrefix took 0.001 sec
+Testcase: testGetId took 0 sec
+Testcase: testCtor1 took 0.001 sec
+Testcase: testCtor2 took 0.001 sec
+Testcase: testCtor took 2.831 sec
+Testcase: testCtor_NullNamespace took 0.648 sec
+Testcase: testCtor_EmptyNamespace took 0.613 sec
+Testcase: testCtor_UnknownNamespace took 0.484 sec
+Testcase: testCtor_ObjectFactoryNamespaceMissing took 0.512 sec
+Testcase: testCtor_ObjectFactoryNamespaceEmpty took 0.488 sec
+Testcase: testCtor_ObjectFactoryNamespaceInvalid took 0.49 sec
+Testcase: testCtor_UserDaoClassnameMissing took 0.53 sec
+Testcase: testCtor_UserDaoClassnameEmpty took 0.525 sec
+Testcase: testCtor_UserDaoClassnameInvalid took 0.454 sec
+Testcase: testCtor_UserDaoClassnameWrongType took 0.441 sec
+Testcase: testCtor_MissingNamespace took 0.434 sec
+Testcase: testDoAuthenticate took 0.721 sec
+Testcase: testDoAuthenticate_WrongPassword took 0.491 sec
+Testcase: testDoAuthenticate_UnknownUser took 0.472 sec
+Testcase: testDoAuthenticate_UserNameKeyMissing took 0.444 sec
+Testcase: testDoAuthenticate_UserNameNonString took 0.466 sec
+Testcase: testDoAuthenticate_PasswordKeyMissing took 0.45 sec
+Testcase: testDoAuthenticate_PasswordNonString took 0.447 sec
+Testcase: testGetUserManager took 0.747 sec
+Testcase: testGetUserManager_NamespaceNotExist took 0.416 sec
+Testcase: testGetUserManager_UserManagerMissing took 0.64 sec
+Testcase: testGetUserManager_UserManagerWrongConfig took 0.43 sec
+Testcase: testGetUserManager_InvalidReference took 0.374 sec
+Testcase: testGetUserManager_UserManagerWrongType took 0.519 sec
+Testcase: testGetUserStatusManager took 0.441 sec
+Testcase: testGetUserStatusManager_NamespaceNotExist took 1.358 sec
+Testcase: testGetUserStatusManager_UserStatusManagerMissing took 0.462 sec
+Testcase: testGetUserStatusManager_UserStatusManagerWrongConfig took 1.07 sec
+Testcase: testGetUserStatusManager_InvalidReference took 0.274 sec
+Testcase: testGetUserStatusManager_UserStatusManagerWrongType took 0.36 sec
+Testcase: testGetUserTypeManager took 0.38 sec
+Testcase: testGetUserTypeManager_NamespaceNotExist took 0.352 sec
+Testcase: testGetUserTypeManager_UserTypeManagerMissing took 0.388 sec
+Testcase: testGetUserTypeManager_UserTypeManagerWrongConfig took 0.363 sec
+Testcase: testGetUserTypeManager_InvalidReference took 0.368 sec
+Testcase: testGetUserTypeManager_UserTypeManagerWrongType took 0.371 sec
+Testcase: testCtor took 0.43 sec
+Testcase: testCtor_NullUserDao took 0.436 sec
+Testcase: testCtor_NullAuthPersistence took 0.446 sec
+Testcase: testCtor_NullAuthenticatorName took 0.419 sec
+Testcase: testCtor_EmptyAuthenticatorName took 0.425 sec
+Testcase: testCtor_InvalidAuthenticatorName took 0.433 sec
+Testcase: testCreateUser took 0.591 sec
+Testcase: testCreateUser_NullUser took 0.443 sec
+Testcase: testCreateUser_DataAccessException took 0.46 sec
+Testcase: testAddUsers took 0.497 sec
+Testcase: testAddUsers_NullUsers took 0.825 sec
+Testcase: testAddUsers_NullInUsers took 0.456 sec
+Testcase: testAddUsers_DataAccessException took 0.456 sec
+Testcase: testUpdateUser took 0.656 sec
+Testcase: testUpdateUser_NullUser took 0.478 sec
+Testcase: testUpdateUser_DataAccessException took 0.508 sec
+Testcase: testUpdateUser_UnrecognizedEntityException took 0.539 sec
+Testcase: testUpdateUsers took 0.619 sec
+Testcase: testUpdateUsers_NullUsers took 0.732 sec
+Testcase: testUpdateUsers_NullInUsers took 1.066 sec
+Testcase: testUpdateUsers_BatchOperationException took 0.919 sec
+Testcase: testUpdateUsers_DataAccessException took 0.612 sec
+Testcase: testRemoveUser took 1.673 sec
+Testcase: testRemoveUser_NegativeId took 0.479 sec
+Testcase: testRemoveUser_UnrecognizedEntityException took 1.898 sec
+Testcase: testRemoveUser_DataAccessException took 0.479 sec
+Testcase: testRemoveUsers took 0.791 sec
+Testcase: testRemoveUsers_NullUserIds took 0.464 sec
+Testcase: testRemoveUsers_NegativeUserIds took 0.466 sec
+Testcase: testRemoveUsers_BatchOperationException took 0.949 sec
+Testcase: testRemoveUsers_DataAccessException took 0.533 sec
+Testcase: testGetUser took 0.669 sec
+Testcase: testGetUser_UnrecognizedEntityException took 1.089 sec
+Testcase: testGetUser_DataAccessException took 1.565 sec
+Testcase: testGetUsers took 0.674 sec
+Testcase: testGetUsers_NullUserIds took 1.172 sec
+Testcase: testGetUsers_NegativeUserId took 0.518 sec
+Testcase: testGetUsers_DataAccessException took 1.866 sec
+Testcase: testSearchUsers took 1.2 sec
+Testcase: testSearchUsers_NullFilter took 0.554 sec
+Testcase: testSearchUsers_DataAccessException took 0.748 sec
+Testcase: testAddRoleToUser took 2.02 sec
+Testcase: testAddRoleToUser_NullUser took 0.997 sec
+Testcase: testAddRoleToUser_NotPersistedRole took 1.095 sec
+Testcase: testAddRoleToUser_NullRole took 0.542 sec
+Testcase: testRemoveRoleFromUser took 0.59 sec
+Testcase: testRemoveRoleFromUser_NullUser took 0.627 sec
+Testcase: testRemoveRoleFromUser_NullRole took 1.293 sec
+Testcase: testRemoveRoleFromUser_UnknownRole took 0.669 sec
+Testcase: testRemoveRoleFromUser_NotPersistedRole took 1.624 sec
+Testcase: testRetrieveRolesForUser took 0.632 sec
+Testcase: testRetrieveRolesForUser_NullUser took 3.706 sec
+Testcase: testClearRolesFromUser took 3.225 sec
+Testcase: testClearRolesFromUser_NullUser took 0.493 sec
+Testcase: testAuthenticateUser took 1.045 sec
+Testcase: testAuthenticateUser_NullUsername took 0.452 sec
+Testcase: testAuthenticateUser_EmptyUsername took 0.644 sec
+Testcase: testAuthenticateUser_NullPassword took 0.608 sec
+Testcase: testAuthenticateUser_EmptyPassword took 0.686 sec
+Testcase: testGetAllUsers took 2.878 sec
+Testcase: testGetAllUsers_DataAccessException took 0.475 sec
+Testcase: testGetUserFilterFactory took 0.645 sec
 Testcase: testCtor took 0 sec
 Testcase: testSetPassword took 0 sec
 Testcase: testSetPassword_NullPassword took 0 sec
-Testcase: testSetPassword_EmptyPassword took 0 sec
-Testcase: testGetUsername took 0 sec
+Testcase: testSetPassword_EmptyPassword took 0.001 sec
+Testcase: testGetUsername took 0.001 sec
 Testcase: testSetUsername took 0 sec
-Testcase: testSetUsername_NullUsername took 0 sec
-Testcase: testSetUsername_EmptyUsername took 0 sec
-Testcase: testGetCompanyId took 0 sec
-Testcase: testSetCompanyId took 0 sec
+Testcase: testSetUsername_NullUsername took 0.001 sec
+Testcase: testSetUsername_EmptyUsername took 0.002 sec
+Testcase: testGetCompanyId took 0.001 sec
+Testcase: testSetCompanyId took 0.007 sec
 Testcase: testSetCompanyId_NegativeId took 0 sec
 Testcase: testGetContact took 0 sec
-Testcase: testSetContact took 0 sec
+Testcase: testSetContact took 0.001 sec
 Testcase: testSetContact_NullContact took 0 sec
-Testcase: testGetAlgorithmName took 0 sec
-Testcase: testSetAlgorithmName took 0 sec
-Testcase: testSetAlgorithmName_NullAlgorithmName took 0 sec
+Testcase: testGetAlgorithmName took 0.001 sec
+Testcase: testSetAlgorithmName took 0.004 sec
+Testcase: testSetAlgorithmName_NullAlgorithmName took 0.001 sec
 Testcase: testSetAlgorithmName_EmptyAlgorithmName took 0 sec
 Testcase: testGetAddress took 0 sec
 Testcase: testGetPassword took 0 sec
 Testcase: testGetStatus took 0 sec
 Testcase: testSetStatus took 0 sec
 Testcase: testSetStatus_NullStatus took 0 sec
-Testcase: testSetAddress took 0 sec
+Testcase: testSetAddress took 0.001 sec
 Testcase: testSetAddress_NullAddress took 0 sec
-Testcase: testUpdateUsers took 4.609 sec
-Testcase: testRemoveUsers took 4.641 sec
-Testcase: testGetUsers took 1.171 sec
-Testcase: testSearchUsers took 1.516 sec
-Testcase: testGetAllUsers took 1.047 sec
-Testcase: testCtor took 0.984 sec
-Testcase: testCtor_NullUserDao took 0.86 sec
-Testcase: testCtor_NullAuthPersistence took 0.984 sec
-Testcase: testCtor_NullAuthenticatorName took 0.953 sec
-Testcase: testCtor_EmptyAuthenticatorName took 0.985 sec
-Testcase: testCtor_InvalidAuthenticatorName took 0.968 sec
-Testcase: testCreateUser took 2.391 sec
-Testcase: testCreateUser_NullUser took 0.984 sec
-Testcase: testCreateUser_DataAccessException took 1 sec
-Testcase: testAddUsers took 2.235 sec
-Testcase: testAddUsers_NullUsers took 0.984 sec
-Testcase: testAddUsers_NullInUsers took 1.172 sec
-Testcase: testAddUsers_DataAccessException took 1.25 sec
-Testcase: testUpdateUser took 3.344 sec
-Testcase: testUpdateUser_NullUser took 0.875 sec
-Testcase: testUpdateUser_DataAccessException took 0.859 sec
-Testcase: testUpdateUser_UnrecognizedEntityException took 1.359 sec
-Testcase: testUpdateUsers_NullUsers took 0.844 sec
-Testcase: testUpdateUsers_NullInUsers took 0.922 sec
-Testcase: testUpdateUsers_BatchOperationException took 1.078 sec
-Testcase: testUpdateUsers_DataAccessException took 0.891 sec
-Testcase: testRemoveUser took 2.578 sec
-Testcase: testRemoveUser_NegativeId took 0.906 sec
-Testcase: testRemoveUser_UnrecognizedEntityException took 1.297 sec
-Testcase: testRemoveUser_DataAccessException took 1.063 sec
-Testcase: testRemoveUsers_NullUserIds took 0.937 sec
-Testcase: testRemoveUsers_NegativeUserIds took 0.953 sec
-Testcase: testRemoveUsers_BatchOperationException took 2.297 sec
-Testcase: testRemoveUsers_DataAccessException took 0.906 sec
-Testcase: testGetUser took 1.188 sec
-Testcase: testGetUser_UnrecognizedEntityException took 1.172 sec
-Testcase: testGetUser_DataAccessException took 0.922 sec
-Testcase: testGetUsers_NullUserIds took 0.921 sec
-Testcase: testGetUsers_NegativeUserId took 0.922 sec
-Testcase: testGetUsers_DataAccessException took 0.891 sec
-Testcase: testSearchUsers_NullFilter took 1.484 sec
-Testcase: testSearchUsers_DataAccessException took 1.141 sec
-Testcase: testAddRoleToUser took 2.609 sec
-Testcase: testAddRoleToUser_NullUser took 1.328 sec
-Testcase: testAddRoleToUser_NotPersistedRole took 1.938 sec
-Testcase: testAddRoleToUser_NullRole took 1.266 sec
-Testcase: testRemoveRoleFromUser took 3.453 sec
-Testcase: testRemoveRoleFromUser_NullUser took 1.781 sec
-Testcase: testRemoveRoleFromUser_NullRole took 1.219 sec
-Testcase: testRemoveRoleFromUser_UnknownRole took 1.906 sec
-Testcase: testRemoveRoleFromUser_NotPersistedRole took 1.687 sec
-Testcase: testRetrieveRolesForUser took 1.625 sec
-Testcase: testRetrieveRolesForUser_NullUser took 0.829 sec
-Testcase: testClearRolesFromUser took 2.671 sec
-Testcase: testClearRolesFromUser_NullUser took 1.079 sec
-Testcase: testAuthenticateUser took 2.328 sec
-Testcase: testAuthenticateUser_NullUsername took 0.89 sec
-Testcase: testAuthenticateUser_EmptyUsername took 0.953 sec
-Testcase: testAuthenticateUser_NullPassword took 1.016 sec
-Testcase: testAuthenticateUser_EmptyPassword took 0.984 sec
-Testcase: testGetAllUsers_DataAccessException took 0.922 sec
-Testcase: testGetUserFilterFactory took 0.922 sec
-Testcase: testGetName took 0 sec
-Testcase: testToString took 0 sec
-Testcase: testGetId took 0 sec
-Testcase: testConfigurationException1 took 0 sec
-Testcase: testConfigurationException2 took 0 sec
-Testcase: testConfigurationExceptionInheritance1 took 0 sec
-Testcase: testConfigurationExceptionInheritance2 took 0 sec
-Testcase: testCtor took 0.969 sec
-Testcase: testCtor_NullNamespace took 0.969 sec
-Testcase: testCtor_EmptyNamespace took 0.906 sec
-Testcase: testCtor_UnknownNamespace took 0.953 sec
-Testcase: testCtor_ObjectFactoryNamespaceMissing took 0.906 sec
-Testcase: testCtor_ObjectFactoryNamespaceEmpty took 0.985 sec
-Testcase: testCtor_ObjectFactoryNamespaceInvalid took 1.031 sec
-Testcase: testCtor_UserDaoClassnameMissing took 0.969 sec
-Testcase: testCtor_UserDaoClassnameEmpty took 0.968 sec
-Testcase: testCtor_UserDaoClassnameInvalid took 1.063 sec
-Testcase: testCtor_UserDaoClassnameWrongType took 1.125 sec
-Testcase: testCtor_MissingNamespace took 1 sec
-Testcase: testDoAuthenticate took 1.422 sec
-Testcase: testDoAuthenticate_WrongPassword took 1.469 sec
-Testcase: testDoAuthenticate_UnknownUser took 1.125 sec
-Testcase: testDoAuthenticate_UserNameKeyMissing took 1.14 sec
-Testcase: testDoAuthenticate_UserNameNonString took 1 sec
-Testcase: testDoAuthenticate_PasswordKeyMissing took 0.953 sec
-Testcase: testDoAuthenticate_PasswordNonString took 0.985 sec
-Testcase: testCtor took 0 sec
-Testcase: testBatchOperationExceptionInheritance took 0 sec
-Testcase: testGetCauses took 0 sec
-Testcase: testGetUserManager took 1.14 sec
-Testcase: testGetUserManager_NamespaceNotExist took 0.703 sec
-Testcase: testGetUserManager_UserManagerMissing took 0.672 sec
-Testcase: testGetUserManager_UserManagerWrongConfig took 0.688 sec
-Testcase: testGetUserManager_InvalidReference took 0.625 sec
-Testcase: testGetUserManager_UserManagerWrongType took 0.672 sec
-Testcase: testGetId took 0 sec
-Testcase: testCtor1 took 0 sec
-Testcase: testCtor2 took 0 sec
-Testcase: testDataAccessException1 took 0 sec
-Testcase: testDataAccessException2 took 0 sec
-Testcase: testDataAccessExceptionInheritance1 took 0 sec
-Testcase: testDataAccessExceptionInheritance2 took 0 sec
-Testcase: testToString took 0 sec
-Testcase: testGetFilterPrefix took 0 sec
-Testcase: testUpdateUsers took 3.859 sec
-Testcase: testRemoveUsers took 4.75 sec
-Testcase: testGetUsers took 1.25 sec
-Testcase: testSearchUsers took 1.438 sec
-Testcase: testGetAllUsers took 1.234 sec
-Testcase: testCtor took 0.969 sec
-Testcase: testCtor_NullAuthPersistence took 0.953 sec
-Testcase: testAddUsers took 2.328 sec
-Testcase: testAddUsers_NullUsers took 0.875 sec
-Testcase: testUpdateUsers_NullUsers took 0.937 sec
-Testcase: testRemoveUsers_NullUserIds took 2.204 sec
-Testcase: testGetUsers_NullUserIds took 1.64 sec
-Testcase: testGetUsers_NegativeUserId took 1.219 sec
-Testcase: testSearchUsers_NullFilter took 1.109 sec
-Testcase: testGetUserFilterFactory took 0.891 sec
-Testcase: testCtor_NullConnFactory took 0.921 sec
-Testcase: testCtor_NullConnName took 1.141 sec
-Testcase: testCtor_EmptyConnName took 1.125 sec
-Testcase: testCtor_NullIdGen took 0.922 sec
-Testcase: testCtor_EmptyIdGen took 0.953 sec
-Testcase: testCtor_NullSearchsStrategyNamespace took 0.906 sec
-Testcase: testCtor_EmptySearchsStrategyNamespace took 1 sec
-Testcase: testCtor_NullAuditManager took 0.969 sec
-Testcase: testCtor_NullContactManager took 0.906 sec
-Testcase: testCtor_NullAddressManager took 0.844 sec
-Testcase: testCtor_ConfigurationException took 0.922 sec
-Testcase: testAddUsers_EmptyUsers took 0.953 sec
-Testcase: testAddUsers_UserWithNullUserName took 0.922 sec
-Testcase: testAddUsers_UserWithNullPassword took 0.953 sec
-Testcase: testAddUsers_UserWithNullStatus took 0.953 sec
-Testcase: testAddUsers_UserWithNullAddress took 0.86 sec
-Testcase: testAddUsers_UserWithNullContact took 0.968 sec
-Testcase: testAddUsers_UserWithNullCreationDate took 0.922 sec
-Testcase: testAddUsers_UserWithNullCreationUser took 1.078 sec
-Testcase: testAddUsers_UserWithNullModificationDate took 0.875 sec
-Testcase: testAddUsers_UserWithNullModificationUser took 0.969 sec
-Testcase: testAddUsers_NullUserInUsers took 0.875 sec
-Testcase: testAddUsers_InvalidConnectionName took 0.953 sec
-Testcase: testUpdateUsers_EmptyUsers took 1.125 sec
-Testcase: testUpdateUsers_UserWithNullUserName took 1.141 sec
-Testcase: testUpdateUsers_UserWithNullPassword took 0.907 sec
-Testcase: testUpdateUsers_UserWithNullStatus took 0.984 sec
-Testcase: testUpdateUsers_UserWithNullAddress took 0.828 sec
-Testcase: testUpdateUsers_UserWithNullContact took 0.906 sec
-Testcase: testUpdateUsers_UserWithNullCreationDate took 1.11 sec
-Testcase: testUpdateUsers_UserWithNullCreationUser took 0.922 sec
-Testcase: testUpdateUsers_UserWithNullModificationDate took 1.015 sec
-Testcase: testUpdateUsers_UserWithNullModificationUser took 0.922 sec
-Testcase: testUpdateUsers_UnrecognizedEntityException took 1.188 sec
-Testcase: testUpdateUsers_InvalidConnectionName took 1.281 sec
-Testcase: testRemoveUsers_InvalidConnectionName took 1.125 sec
-Testcase: testRemoveUsers_EmptyUserIds took 1.156 sec
-Testcase: testRemoveUsers_NegativeUserId took 0.938 sec
-Testcase: testRemoveUsers_UnrecognizedEntityException took 2.437 sec
-Testcase: testGetUsers_EmptyUserIds took 1.016 sec
-Testcase: testGetUsers_InvalidConnectionName took 1.703 sec
-Testcase: testSearchUsers_InvalidFilter took 1.172 sec
-Testcase: testGetAllUsers_InvalidConnectionName took 1.062 sec
-Testcase: testCtor took 0 sec
-Testcase: testCtor_NullColumnNames took 0 sec
-Testcase: testCtor_NullKey took 0 sec
-Testcase: testCtor_EmptyKey took 0 sec
-Testcase: testCtor_KeyNotString took 0 sec
+Testcase: testGetUserStatusAccuracy took 0.004 sec
+Testcase: testSetUserStatusAccuracy took 0.001 sec
+Testcase: testGetUserTypeAccuracy took 0.001 sec
+Testcase: testSetUserTypeAccuracy took 0 sec
+Testcase: testGetUserStatusAccuracy took 0.382 sec
+Testcase: testUserStatusManagerImplAccuracy took 0.793 sec
+Testcase: testUserStatusManagerImplNull took 0.495 sec
+Testcase: testCreateUserStatusAccuracy took 2.936 sec
+Testcase: testCreateUserStatusNull took 0.282 sec
+Testcase: testCreateUserStatusNotValid1 took 0.423 sec
+Testcase: testCreateUserStatusNotValid2 took 0.299 sec
+Testcase: testCreateUserStatusNotValid3 took 0.7 sec
+Testcase: testCreateUserStatusIdGenError took 0.325 sec
+Testcase: testUpdateUserStatusAccuracy took 0.459 sec
+Testcase: testUpdateUserStatusNull took 0.285 sec
+Testcase: testUpdateUserStatusNegative took 0.412 sec
+Testcase: testUpdateUserStatusUnrecognized took 0.3 sec
+Testcase: testRemoveUserStatusAccuracy took 0.448 sec
+Testcase: testRemoveUserStatusNegative took 0.282 sec
+Testcase: testRemoveUserStatusUnrecognized took 0.414 sec
+Testcase: testGetUserStatusNegative took 0.291 sec
+Testcase: testGetUserStatusUnrecognized took 0.434 sec
+Testcase: testAddUserStatusesAccuracy took 0.34 sec
+Testcase: testAddUserStatusesNull took 0.392 sec
+Testcase: testAddUserStatusesEmpty took 0.285 sec
+Testcase: testAddUserStatusesMissingDescription took 0.415 sec
+Testcase: testAddUserStatusesMissingCompanyId took 0.296 sec
+Testcase: testAddUserStatusesAlreadyAdded took 0.442 sec
+Testcase: testAddUserStatusesIdGenerationTableNotPrepared took 0.499 sec
+Testcase: testUpdateUserStatusesAccuracy took 0.461 sec
+Testcase: testUpdateUserStatusesNull took 0.279 sec
+Testcase: testUpdateUserStatusesEmpty took 0.4 sec
+Testcase: testUpdateUserStatusesUnrecognized took 0.303 sec
+Testcase: testRemoveUserStatusesAccuracy took 0.444 sec
+Testcase: testRemoveUserStatusesNull took 0.282 sec
+Testcase: testRemoveUserStatusesEmpty took 0.625 sec
+Testcase: testRemoveUserStatusesNegativeId took 2.125 sec
+Testcase: testRemoveUserStatusesUnrecognized took 0.899 sec
+Testcase: testGetUserStatusesAccuracy took 0.346 sec
+Testcase: testGetUserStatusesNull took 0.413 sec
+Testcase: testGetUserStatusesEmpty took 0.31 sec
+Testcase: testGetUserStatusesUnrecognizedEntity took 0.528 sec
+Testcase: testSearchUserStatusesAccuracy1 took 0.361 sec
+Testcase: testSearchUserStatusesAccuracy2 took 0.461 sec
+Testcase: testSearchUserStatusesNull took 0.288 sec
+Testcase: testSearchUserStatusesWrongFilter took 0.398 sec
+Testcase: testGetAllUserStatusesAccuracy1 took 0.295 sec
+Testcase: testGetAllUserStatusesAccuracy2 took 0.427 sec
+Testcase: testGetUserTypeAccuracy took 0.506 sec
+Testcase: testUserTypeManagerImplAccuracy took 0.415 sec
+Testcase: testUserTypeManagerImplNull took 0.28 sec
+Testcase: testCreateUserTypeAccuracy took 0.458 sec
+Testcase: testCreateUserTypeNull took 0.291 sec
+Testcase: testCreateUserTypeNotValid1 took 0.419 sec
+Testcase: testCreateUserTypeNotValid2 took 0.543 sec
+Testcase: testCreateUserTypeNotValid3 took 0.436 sec
+Testcase: testCreateUserTypeIdGenError took 0.317 sec
+Testcase: testUpdateUserTypeAccuracy took 0.449 sec
+Testcase: testUpdateUserTypeNull took 0.416 sec
+Testcase: testUpdateUserTypeNegative took 0.293 sec
+Testcase: testUpdateUserTypeUnrecognized took 0.424 sec
+Testcase: testRemoveUserTypeAccuracy took 0.324 sec
+Testcase: testRemoveUserTypeNegative took 0.391 sec
+Testcase: testRemoveUserTypeUnrecognized took 0.297 sec
+Testcase: testGetUserTypeNegative took 0.414 sec
+Testcase: testGetUserTypeUnrecognized took 0.295 sec
+Testcase: testAddUserTypesAccuracy took 0.437 sec
+Testcase: testAddUserTypesNull took 0.29 sec
+Testcase: testAddUserTypesEmpty took 0.434 sec
+Testcase: testAddUserTypesMissingDescription took 0.287 sec
+Testcase: testAddUserTypesMissingCompanyId took 0.388 sec
+Testcase: testAddUserTypesAlreadyAdded took 0.34 sec
+Testcase: testAddUserTypesIdGenerationTableNotPrepared took 0.432 sec
+Testcase: testUpdateUserTypesAccuracy took 0.493 sec
+Testcase: testUpdateUserTypesNull took 0.583 sec
+Testcase: testUpdateUserTypesEmpty took 0.512 sec
+Testcase: testUpdateUserTypesUnrecognized took 0.287 sec
+Testcase: testRemoveUserTypesAccuracy took 0.488 sec
+Testcase: testRemoveUserTypesNull took 0.469 sec
+Testcase: testRemoveUserTypesEmpty took 0.56 sec
+Testcase: testRemoveUserTypesNegativeId took 0.324 sec
+Testcase: testRemoveUserTypesUnrecognized took 3.124 sec
+Testcase: testGetUserTypesAccuracy took 0.635 sec
+Testcase: testGetUserTypesNull took 0.405 sec
+Testcase: testGetUserTypesEmpty took 0.303 sec
+Testcase: testGetUserTypesUnrecognizedEntity took 0.455 sec
+Testcase: testSearchUserTypesAccuracy1 took 0.401 sec
+Testcase: testSearchUserTypesAccuracy2 took 0.804 sec
+Testcase: testSearchUserTypesNull took 3.039 sec
+Testcase: testSearchUserTypesWrongFilter took 3.443 sec
+Testcase: testGetAllUserTypesAccuracy1 took 0.432 sec
+Testcase: testGetAllUserTypesAccuracy2 took 0.331 sec
+Testcase: testUserStatusAccuracy took 0 sec
+Testcase: testGetDescriptionAccuracy took 0 sec
+Testcase: testSetDescriptionAccuracy took 0.001 sec
+Testcase: testSetDescriptionNull took 0 sec
+Testcase: testSetDescriptionEmptyString took 0 sec
+Testcase: testIsActiveAccuracy took 0 sec
+Testcase: testSetActiveAccuracy took 0 sec
+Testcase: testGetCompanyIdAccuracy took 0 sec
+Testcase: testSetCompanyIdAccuracy took 0.001 sec
+Testcase: testSetCompanyIdNegative took 0 sec
+Testcase: testGetDescriptionAccuracy took 0 sec
+Testcase: testSetDescriptionAccuracy took 0.001 sec
+Testcase: testSetDescriptionNull took 0.001 sec
+Testcase: testSetDescriptionEmptyString took 0 sec
+Testcase: testIsActiveAccuracy took 0 sec
+Testcase: testSetActiveAccuracy took 0 sec
+Testcase: testGetCompanyIdAccuracy took 0 sec
+Testcase: testSetCompanyIdAccuracy took 0.001 sec
+Testcase: testSetCompanyIdNegative took 0.001 sec
+Testcase: testUserTypeAccuracy took 0 sec
+Testcase: testCtor took 0.671 sec
+Testcase: testCtor_NullAuthPersistence took 0.769 sec
+Testcase: testAddUsers_NullUsers took 0.505 sec
+Testcase: testUpdateUsers took 0.459 sec
+Testcase: testUpdateUsers_NullUsers took 0.482 sec
+Testcase: testRemoveUsers took 0.717 sec
+Testcase: testRemoveUsers_NullUserIds took 0.506 sec
+Testcase: testGetUsers took 0.548 sec
+Testcase: testGetUsers_NullUserIds took 0.344 sec
+Testcase: testGetUsers_NegativeUserId took 0.884 sec
+Testcase: testSearchUsers took 0.54 sec
+Testcase: testSearchUsers_NullFilter took 0.49 sec
+Testcase: testGetAllUsers took 0.344 sec
+Testcase: testGetUserFilterFactory took 0.485 sec
+Testcase: testCtor_NullConnFactory took 0.345 sec
+Testcase: testCtor_NullConnName took 0.495 sec
+Testcase: testCtor_EmptyConnName took 0.483 sec
+Testcase: testCtor_NullIdGen took 0.344 sec
+Testcase: testCtor_EmptyIdGen took 0.463 sec
+Testcase: testCtor_NullSearchsStrategyNamespace took 0.531 sec
+Testcase: testCtor_EmptySearchsStrategyNamespace took 0.35 sec
+Testcase: testCtor_NullAuditManager took 0.482 sec
+Testcase: testCtor_NullContactManager took 0.492 sec
+Testcase: testCtor_NullAddressManager took 0.341 sec
+Testcase: testCtor_ConfigurationException took 0.473 sec
+Testcase: testAddUsers1 took 0.688 sec
+Testcase: testAddUsers2 took 0.658 sec
+Testcase: testAddUsers3 took 0.646 sec
+Testcase: testAddUsers_EmptyUsers took 0.341 sec
+Testcase: testAddUsers_UserWithNullUserName took 0.551 sec
+Testcase: testAddUsers_UserWithNullPassword took 0.343 sec
+Testcase: testAddUsers_UserWithNullStatus took 0.482 sec
+Testcase: testAddUsers_UserWithNullAddress took 0.342 sec
+Testcase: testAddUsers_UserWithNullContact took 0.471 sec
+Testcase: testAddUsers_UserWithNullCreationDate took 0.354 sec
+Testcase: testAddUsers_UserWithNullCreationUser took 0.485 sec
+Testcase: testAddUsers_UserWithNullModificationDate took 0.339 sec
+Testcase: testAddUsers_UserWithNullModificationUser took 0.518 sec
+Testcase: testAddUsers_NullUserInUsers took 0.352 sec
+Testcase: testAddUsers_InvalidConnectionName took 0.498 sec
+Testcase: testUpdateUsers_EmptyUsers took 0.357 sec
+Testcase: testUpdateUsers_UserWithNullUserName took 0.757 sec
+Testcase: testUpdateUsers_UserWithNullPassword took 0.372 sec
+Testcase: testUpdateUsers_UserWithNullStatus took 0.493 sec
+Testcase: testUpdateUsers_UserWithNullAddress took 0.372 sec
+Testcase: testUpdateUsers_UserWithNullContact took 0.503 sec
+Testcase: testUpdateUsers_UserWithNullCreationDate took 0.374 sec
+Testcase: testUpdateUsers_UserWithNullCreationUser took 0.93 sec
+Testcase: testUpdateUsers_UserWithNullModificationDate took 0.362 sec
+Testcase: testUpdateUsers_UserWithNullModificationUser took 0.502 sec
+Testcase: testUpdateUsers_UnrecognizedEntityException took 0.366 sec
+Testcase: testUpdateUsers_InvalidConnectionName took 0.551 sec
+Testcase: testRemoveUsers_InvalidConnectionName took 0.381 sec
+Testcase: testRemoveUsers_EmptyUserIds took 0.499 sec
+Testcase: testRemoveUsers_NegativeUserId took 0.39 sec
+Testcase: testRemoveUsers_UnrecognizedEntityException took 0.551 sec
+Testcase: testGetUsers_EmptyUserIds took 0.37 sec
+Testcase: testGetUsers_InvalidConnectionName took 0.506 sec
+Testcase: testSearchUsers_InvalidFilter took 0.576 sec
+Testcase: testGetAllUsers_InvalidConnectionName took 0.384 sec
+Testcase: testAddUserStatusesAccuracy took 0.528 sec
+Testcase: testAddUserStatusesNull took 0.296 sec
+Testcase: testAddUserStatusesEmpty took 0.469 sec
+Testcase: testAddUserStatusesMissingDescription took 0.296 sec
+Testcase: testAddUserStatusesMissingCompanyId took 0.468 sec
+Testcase: testAddUserStatusesAlreadyAdded took 0.338 sec
+Testcase: testAddUserStatusesIdGenerationTableNotPrepared took 0.483 sec
+Testcase: testUpdateUserStatusesAccuracy took 0.339 sec
+Testcase: testUpdateUserStatusesNull took 0.476 sec
+Testcase: testUpdateUserStatusesEmpty took 0.324 sec
+Testcase: testUpdateUserStatusesUnrecognized took 0.45 sec
+Testcase: testRemoveUserStatusesAccuracy took 0.37 sec
+Testcase: testRemoveUserStatusesNull took 0.444 sec
+Testcase: testRemoveUserStatusesEmpty took 0.295 sec
+Testcase: testRemoveUserStatusesNegativeId took 0.467 sec
+Testcase: testRemoveUserStatusesUnrecognized took 0.321 sec
+Testcase: testGetUserStatusesAccuracy took 0.516 sec
+Testcase: testGetUserStatusesNull took 0.31 sec
+Testcase: testGetUserStatusesEmpty took 0.468 sec
+Testcase: testGetUserStatusesUnrecognizedEntity took 0.544 sec
+Testcase: testSearchUserStatusesAccuracy1 took 0.592 sec
+Testcase: testSearchUserStatusesAccuracy2 took 0.428 sec
+Testcase: testSearchUserStatusesNull took 0.858 sec
+Testcase: testSearchUserStatusesWrongFilter took 0.39 sec
+Testcase: testGetAllUserStatusesAccuracy1 took 0.538 sec
+Testcase: testGetAllUserStatusesAccuracy2 took 0.585 sec
+Testcase: testDbUserStatusDAOAccuracy took 1.113 sec
+Testcase: testDbUserStatusConnFactoryNull took 2.284 sec
+Testcase: testDbUserStatusConnNameEmpty took 0.458 sec
+Testcase: testDbUserStatusIdGenNull took 0.304 sec
+Testcase: testDbUserStatusIdGenEmpty took 0.455 sec
+Testcase: testDbUserStatusSearchBundleManagerNamespaceNull took 0.89 sec
+Testcase: testDbUserStatusSearchBundleManagerNamespaceEmpty took 0.453 sec
+Testcase: testDbUserStatusSearchBundleNameNull took 0.302 sec
+Testcase: testDbUserStatusSearchBundleNameEmpty took 0.446 sec
+Testcase: testAddUserTypesAccuracy took 0.345 sec
+Testcase: testAddUserTypesNull took 0.598 sec
+Testcase: testAddUserTypesEmpty took 0.814 sec
+Testcase: testAddUserTypesMissingDescription took 0.463 sec
+Testcase: testAddUserTypesMissingCompanyId took 0.296 sec
+Testcase: testAddUserTypesAlreadyAdded took 0.482 sec
+Testcase: testAddUserTypesIdGenerationTableNotPrepared took 0.602 sec
+Testcase: testUpdateUserTypesAccuracy took 0.532 sec
+Testcase: testUpdateUserTypesNull took 0.408 sec
+Testcase: testUpdateUserTypesEmpty took 2.775 sec
+Testcase: testUpdateUserTypesUnrecognized took 0.526 sec
+Testcase: testRemoveUserTypesAccuracy took 1.306 sec
+Testcase: testRemoveUserTypesNull took 0.334 sec
+Testcase: testRemoveUserTypesEmpty took 0.495 sec
+Testcase: testRemoveUserTypesNegativeId took 0.309 sec
+Testcase: testRemoveUserTypesUnrecognized took 0.851 sec
+Testcase: testGetUserTypesAccuracy took 0.346 sec
+Testcase: testGetUserTypesNull took 0.447 sec
+Testcase: testGetUserTypesEmpty took 0.322 sec
+Testcase: testGetUserTypesUnrecognizedEntity took 0.577 sec
+Testcase: testSearchUserTypesAccuracy1 took 0.941 sec
+Testcase: testSearchUserTypesAccuracy2 took 0.723 sec
+Testcase: testSearchUserTypesNull took 0.591 sec
+Testcase: testSearchUserTypesWrongFilter took 0.543 sec
+Testcase: testGetAllUserTypesAccuracy1 took 3.52 sec
+Testcase: testGetAllUserTypesAccuracy2 took 0.553 sec
+Testcase: testDbUserTypeDAOAccuracy took 0.325 sec
+Testcase: testDbUserTypeConnFactoryNull took 0.634 sec
+Testcase: testDbUserTypeConnNameEmpty took 0.296 sec
+Testcase: testDbUserTypeIdGenNull took 0.457 sec
+Testcase: testDbUserTypeIdGenEmpty took 0.317 sec
+Testcase: testDbUserTypeSearchBundleManagerNamespaceNull took 0.444 sec
+Testcase: testDbUserTypeSearchBundleManagerNamespaceEmpty took 0.319 sec
+Testcase: testDbUserTypeSearchBundleNameNull took 0.958 sec
+Testcase: testDbUserTypeSearchBundleNameEmpty took 1.745 sec
+Testcase: testGetConnectionAccuracy1 took 0.412 sec
+Testcase: testGetConnectionAccuracy2 took 0.175 sec
+Testcase: testGetConnectionAccuracy3 took 0.747 sec
+Testcase: testGetConnectionFactoryNull took 0.156 sec
+Testcase: testGetConnectionFactoryNoConnectionName took 0.163 sec
+Testcase: testCloseConnectionAccuracy took 0.311 sec
+Testcase: testCloseConnectionNull took 0.161 sec
+Testcase: testCloseConnectionAlreadyClosed took 0.189 sec
+Testcase: testExecuteUpdateAccuracy took 0.328 sec
+Testcase: testExecuteUpdateUnrecognized took 0.191 sec
+Testcase: testExecuteUpdateWrongQuery took 0.176 sec
+Testcase: testFillPreparedStatementAccuracy1 took 0.3 sec
+Testcase: testFillPreparedStatementAccuracy2 took 0.18 sec
+Testcase: testFillPreparedStatementTooMany took 0.326 sec
+Testcase: testCloseStatementAccuracy took 0.163 sec
+Testcase: testCloseStatementNull took 0.158 sec
+Testcase: testCloseStatementAlreadyClosed took 0.337 sec
+Testcase: testCloseStatementConnectionAlreadyClosed took 0.177 sec
+Testcase: testCloseResultSetAccuracy took 0.162 sec
+Testcase: testCloseResultSetNull took 0.291 sec
+Testcase: testCloseResultSetAlreadyClosed took 0.347 sec
+Testcase: testFinishBatchOperationAccuracy1 took 0.18 sec
+Testcase: testFinishBatchOperationAccuracy2 took 0.301 sec
+Testcase: testFinishBatchOperationError took 0.17 sec
+Testcase: testPrepareTimeTrackerBeanParamsAccuracy took 0.157 sec
+Testcase: testPrepareTimeTrackerBeanParamsParamsNull took 0.287 sec
+Testcase: testPrepareTimeTrackerBeanParamsBeanNull took 0.154 sec
+Testcase: testPrepareSearchBundleAccuracy took 0.345 sec
+Testcase: testPrepareSearchBundleNullNamespace took 0.154 sec
+Testcase: testPrepareSearchBundleEmptyNamespace took 0.154 sec
+Testcase: testPrepareSearchBundleNullName took 0.293 sec
+Testcase: testPrepareSearchBundleEmptyName took 0.153 sec
+Testcase: testPrepareSearchBundleNoConfig took 0.158 sec
+Testcase: testCreateIDGeneratorAccuracy took 0.431 sec
+Testcase: testCreateIDGeneratorNull took 0.154 sec
+Testcase: testCreateIDGeneratorNotKnown took 0.325 sec
+Testcase: testCheckTimeTrackerBeanAccuracy took 0.155 sec
+Testcase: testCheckTimeTrackerBeanCreationDateNull took 0.335 sec
+Testcase: testCheckTimeTrackerBeanCreationUserNull took 0.153 sec
+Testcase: testCheckTimeTrackerBeanModificationDateNull took 0.157 sec
+Testcase: testCheckTimeTrackerBeanModificationUserNull took 0.293 sec
+Testcase: testCtor took 0.001 sec
+Testcase: testCtor_NullColumnNames took 0.001 sec
+Testcase: testCtor_NullKey took 0.001 sec
+Testcase: testCtor_EmptyKey took 0.001 sec
+Testcase: testCtor_KeyNotString took 0.001 sec
 Testcase: testCtor_MissingKey took 0 sec
-Testcase: testCtor_NullValue took 0 sec
-Testcase: testCtor_EmptyValue took 0 sec
+Testcase: testCtor_NullValue took 0.001 sec
+Testcase: testCtor_EmptyValue took 0.001 sec
 Testcase: testCtor_ValueNotString took 0 sec
-Testcase: testCreateCreationDateFilter took 0 sec
+Testcase: testCreateCreationDateFilter took 0.001 sec
 Testcase: testCreateCreationDateFilter_NullRangeStart took 0 sec
-Testcase: testCreateCreationDateFilter_NullRangeEnd took 0 sec
-Testcase: testCreateCreationDateFilter_NullBothArguments took 0 sec
-Testcase: testCreateCreationDateFilter_InvalidArguments took 0 sec
-Testcase: testCreateModificationDateFilter took 0 sec
-Testcase: testCreateModificationDateFilter_NullRangeStart took 0 sec
+Testcase: testCreateCreationDateFilter_NullRangeEnd took 0.001 sec
+Testcase: testCreateCreationDateFilter_NullBothArguments took 0.001 sec
+Testcase: testCreateCreationDateFilter_InvalidArguments took 0.001 sec
+Testcase: testCreateModificationDateFilter took 0.002 sec
+Testcase: testCreateModificationDateFilter_NullRangeStart took 0.001 sec
 Testcase: testCreateModificationDateFilter_NullRangeEnd took 0 sec
 Testcase: testCreateModificationDateFilter_NullBothArguments took 0 sec
 Testcase: testCreateModificationDateFilter_InvalidArguments took 0 sec
-Testcase: testCreateCreationUserFilter took 0 sec
-Testcase: testCreateCreationUserFilter_NullMatchType took 0 sec
+Testcase: testCreateCreationUserFilter took 0.001 sec
+Testcase: testCreateCreationUserFilter_NullMatchType took 0.002 sec
 Testcase: testCreateCreationUserFilter_NullUsername took 0 sec
 Testcase: testCreateCreationUserFilter_EmptyUsername took 0 sec
-Testcase: testCreateModificationUserFilter took 0 sec
-Testcase: testCreateModificationUserFilter_NullMatchType took 0 sec
+Testcase: testCreateModificationUserFilter took 0.001 sec
+Testcase: testCreateModificationUserFilter_NullMatchType took 0.001 sec
 Testcase: testCreateModificationUserFilter_NullUsername took 0 sec
-Testcase: testCreateModificationUserFilter_EmptyUsername took 0 sec
-Testcase: testGetColumnNames took 0 sec
-Testcase: testCheckNull_NotNullObject took 0 sec
-Testcase: testCheckNull_NullObject took 0 sec
+Testcase: testCreateModificationUserFilter_EmptyUsername took 0.001 sec
+Testcase: testGetColumnNames took 0.001 sec
+Testcase: testCheckNull_NotNullObject took 0.001 sec
+Testcase: testCheckNull_NullObject took 0.001 sec
 Testcase: testCheckString_NotNullNotEmptyString took 0 sec
 Testcase: testCheckString_NullString took 0 sec
 Testcase: testCheckString_EmptyString took 0 sec
 Testcase: testCheckMapForKeys took 0 sec
 Testcase: testCheckMapForKeys_NotContainKey took 0 sec
 Testcase: testCreateFilter took 0 sec
-Testcase: testCreateFilter_NullMatchType took 0 sec
-Testcase: testCtor took 0.016 sec
-Testcase: testCtor_NullColumnNames took 0 sec
-Testcase: testCtor_NullKey took 0.016 sec
-Testcase: testCtor_EmptyKey took 0 sec
-Testcase: testCtor_KeyNotString took 0 sec
-Testcase: testCtor_MissingKey took 0 sec
-Testcase: testCtor_NullValue took 0.015 sec
-Testcase: testCtor_EmptyValue took 0 sec
-Testcase: testCtor_ValueNotString took 0.016 sec
-Testcase: testCreateUsernameFilter took 0 sec
-Testcase: testCreateUsernameFilter_NullMatchType took 0 sec
-Testcase: testCreateUsernameFilter_NullUsername took 0 sec
-Testcase: testCreateUsernameFilter_EmptyUsername took 0 sec
-Testcase: testCreatePasswordFilter took 0.015 sec
-Testcase: testCreatePasswordFilter_NullMatchType took 0 sec
-Testcase: testCreatePasswordFilter_NullPassword took 0 sec
-Testcase: testCreatePasswordFilter_EmptyPassword took 0 sec
-Testcase: testCreateLastNameFilter took 0.016 sec
-Testcase: testCreateLastNameFilter_NullMatchType took 0 sec
-Testcase: testCreateLastNameFilter_NullLastName took 0 sec
-Testcase: testCreateLastNameFilter_EmptyLastName took 0 sec
-Testcase: testCreateFirstNameFilter took 0 sec
-Testcase: testCreateFirstNameFilter_NullMatchType took 0.016 sec
-Testcase: testCreateFirstNameFilter_NullFirstName took 0 sec
-Testcase: testCreateFirstNameFilter_EmptyFirstName took 0 sec
-Testcase: testCreatePhoneNumberFilter took 0 sec
-Testcase: testCreatePhoneNumberFilter_NullMatchType took 0.015 sec
-Testcase: testCreatePhoneNumberFilter_NullPhoneNumber took 0 sec
-Testcase: testCreatePhoneNumberFilter_EmptyPhoneNumber took 0 sec
-Testcase: testCreateEmailFilter took 0 sec
-Testcase: testCreateEmailFilter_NullMatchType took 0 sec
-Testcase: testCreateEmailFilter_NullEmail took 0.016 sec
-Testcase: testCreateEmailFilter_EmptyEmail took 0 sec
-Testcase: testCreateAddressFilter took 0 sec
-Testcase: testCreateAddressFilter_NullMatchType took 0 sec
-Testcase: testCreateAddressFilter_NullAddress took 0 sec
-Testcase: testCreateAddressFilter_EmptyAddress took 0.016 sec
-Testcase: testCreateCityFilter took 0 sec
-Testcase: testCreateCityFilter_NullMatchType took 0 sec
-Testcase: testCreateCityFilter_NullCity took 0 sec
-Testcase: testCreateCityFilter_EmptyCity took 0.015 sec
-Testcase: testCreateStateFilter took 0 sec
-Testcase: testCreateStateFilter_NullState took 0 sec
-Testcase: testCreateZipCodeFilter took 0 sec
-Testcase: testCreateZipCodeFilter_NullMatchType took 0.016 sec
-Testcase: testCreateZipCodeFilter_NullZipCode took 0 sec
-Testcase: testCreateZipCodeFilter_EmptyZipCode took 0 sec
-Testcase: testCreateCompanyIdFilter took 0 sec
-Testcase: testCreateCompanyIdFilter_NegativeId took 0.015 sec
-Testcase: testCreateStatusFilter took 0 sec
-Testcase: testCreateStatusFilter_NullStatus took 0 sec
-Testcase: testUpdateUsers took 4.313 sec
-Testcase: testRemoveUsers took 4.672 sec
-Testcase: testGetUsers took 1.203 sec
-Testcase: testSearchUsers took 1.359 sec
-Testcase: testGetAllUsers took 1.266 sec
-Testcase: testCtor took 0.984 sec
-Testcase: testCreateUser took 2.407 sec
-Testcase: testCreateUser_NullUser took 1 sec
-Testcase: testCreateUser_DataAccessException took 0.968 sec
-Testcase: testAddUsers took 2.797 sec
-Testcase: testAddUsers_NullUsers took 0.86 sec
-Testcase: testAddUsers_NullInUsers took 1.187 sec
-Testcase: testAddUsers_DataAccessException took 0.906 sec
-Testcase: testUpdateUser took 3.766 sec
-Testcase: testUpdateUser_NullUser took 1.016 sec
-Testcase: testUpdateUser_DataAccessException took 1.187 sec
-Testcase: testUpdateUsers_NullUsers took 1.563 sec
-Testcase: testUpdateUsers_NullInUsers took 1 sec
-Testcase: testUpdateUsers_BatchOperationException took 1.562 sec
-Testcase: testRemoveUser took 2.375 sec
-Testcase: testRemoveUser_NegativeId took 0.969 sec
-Testcase: testRemoveUser_UnrecognizedEntityException took 1.219 sec
-Testcase: testRemoveUser_DataAccessException took 0.968 sec
-Testcase: testRemoveUsers_NullUserIds took 1.328 sec
-Testcase: testRemoveUsers_NegativeUserIds took 0.938 sec
-Testcase: testRemoveUsers_BatchOperationException took 2.156 sec
-Testcase: testRemoveUsers_DataAccessException took 0.985 sec
-Testcase: testGetUser took 1.656 sec
-Testcase: testGetUser_UnrecognizedEntityException took 1.234 sec
-Testcase: testGetUser_DataAccessException took 0.891 sec
-Testcase: testGetUsers_NullUserIds took 1.406 sec
-Testcase: testGetUsers_NegativeUserId took 0.922 sec
-Testcase: testGetUsers_DataAccessException took 0.984 sec
-Testcase: testSearchUsers_NullFilter took 1.422 sec
-Testcase: testAddRoleToUser took 2.719 sec
-Testcase: testAddRoleToUser_NullUser took 1.75 sec
-Testcase: testAddRoleToUser_NotPersistedRole took 1.687 sec
-Testcase: testAddRoleToUser_NullRole took 1.438 sec
-Testcase: testRemoveRoleFromUser took 2.578 sec
-Testcase: testRemoveRoleFromUser_NullUser took 1.609 sec
-Testcase: testRemoveRoleFromUser_NullRole took 1.266 sec
-Testcase: testRemoveRoleFromUser_UnknownRole took 1.891 sec
-Testcase: testRemoveRoleFromUser_NotPersistedRole took 1.687 sec
-Testcase: testRetrieveRolesForUser took 1.516 sec
-Testcase: testRetrieveRolesForUser_NullUser took 0.937 sec
-Testcase: testClearRolesFromUser took 2.532 sec
-Testcase: testClearRolesFromUser_NullUser took 1 sec
-Testcase: testAuthenticateUser took 2.109 sec
-Testcase: testAuthenticateUser_NullUsername took 0.922 sec
-Testcase: testAuthenticateUser_EmptyUsername took 0.875 sec
-Testcase: testAuthenticateUser_NullPassword took 1 sec
-Testcase: testAuthenticateUser_EmptyPassword took 0.875 sec
-Testcase: testGetAllUsers_DataAccessException took 0.953 sec
-Testcase: testGetUserFilterFactory took 1.5 sec
-Testcase: testCtor_NullNamespace took 0.844 sec
-Testcase: testCtor_EmptyNamespace took 0.984 sec
-Testcase: testCtor_ConfigurationException took 0.922 sec
-Testcase: testSearchUsers_InvalidFilter took 1.234 sec
-Testcase: testUpdateUser_UnknownUser took 1.141 sec
-Testcase: testGetUsers_BatchOperationException took 1.125 sec
-Testcase: testAddRoleToUser_UnrecognizedEntityException took 1.078 sec
-Testcase: testAddRoleToUser_DataAccessException took 1.516 sec
-Testcase: testRemoveRoleFromUser_NotPersistedUser took 2.078 sec
-Testcase: testRetrieveRolesForUser_NotPersistedUser took 1.25 sec
-Testcase: testRetrieveRolesForUser_DataAccessException took 1.125 sec
-Testcase: testClearRolesFromUser_NotPersistedUser took 1.672 sec
-Testcase: testClearRolesFromUser_DataAccessException took 1.343 sec
-Testcase: testAuthenticateUser_DataAccessException took 0.938 sec
-Testcase: testGetUserFilterFactory_DataAccessException took 0.891 sec
-Testcase: testEjbCreate took 0.921 sec
-Testcase: testEjbActivate took 0.829 sec
-Testcase: testEjbPassivate took 1 sec
-Testcase: testEjbRemove took 0.796 sec
-Testcase: testSetSessionContext took 0.922 sec
-Testcase: testGetSessionContext took 0.844 sec
-Testcase: testDemo1 took 6.234 sec
-Testcase: testDemo2 took 7.047 sec
-Testcase: testDoAuthenticate took 1.297 sec
-Testcase: testCtor1 took 0.969 sec
-Testcase: testUpdateUsers took 3.109 sec
-Testcase: testRemoveUsers took 3.563 sec
-Testcase: testGetUsers took 1.031 sec
-Testcase: testSearchUsers took 1.438 sec
-Testcase: testGetAllUsers took 1.093 sec
-Testcase: testCreateUser took 2.469 sec
-Testcase: testAddUsers took 2.063 sec
-Testcase: testUpdateUser took 4.062 sec
-Testcase: testRemoveUser took 3.141 sec
-Testcase: testGetUser took 2.484 sec
-Testcase: testAddRoleToUser took 2.594 sec
-Testcase: testRemoveRoleFromUser took 2.609 sec
-Testcase: testRetrieveRolesForUser took 2.281 sec
-Testcase: testClearRolesFromUser took 2.625 sec
-Testcase: testAuthenticateUser took 1.422 sec
-Testcase: testGetUserFilterFactory took 1.172 sec
-Testcase: testCtor1 took 0.985 sec
-Testcase: testGetId took 0 sec
-Testcase: testCtor1 took 0 sec
-Testcase: testCtor2 took 0 sec
-Testcase: testConfigurationException1 took 0 sec
-Testcase: testConfigurationException2 took 0 sec
-Testcase: testCtor took 0 sec
-Testcase: testBatchOperationExceptionInheritance took 0 sec
-Testcase: testGetCauses took 0 sec
-Testcase: testSetPassword took 0 sec
-Testcase: testGetUsername took 0 sec
-Testcase: testSetUsername took 0 sec
-Testcase: testGetCompanyId took 0 sec
-Testcase: testSetCompanyId took 0 sec
-Testcase: testGetContact took 0 sec
-Testcase: testSetContact took 0 sec
-Testcase: testGetAlgorithmName took 0 sec
-Testcase: testSetAlgorithmName took 0 sec
-Testcase: testGetAddress took 0 sec
-Testcase: testGetPassword took 0 sec
-Testcase: testGetStatus took 0 sec
-Testcase: testSetStatus took 0 sec
-Testcase: testSetAddress took 0 sec
-Testcase: testCtor1 took 0 sec
-Testcase: testGetUserManager took 1.015 sec
-Testcase: testGetName took 0 sec
-Testcase: testToString took 0 sec
-Testcase: testGetId took 0 sec
-Testcase: testDataAccessException1 took 0 sec
-Testcase: testDataAccessException2 took 0 sec
-Testcase: testToString took 0 sec
-Testcase: testGetFilterPrefix took 0 sec
-Testcase: testUpdateUsers took 3.344 sec
-Testcase: testRemoveUsers took 3.515 sec
-Testcase: testGetUsers took 1.141 sec
-Testcase: testSearchUsers took 1.594 sec
-Testcase: testGetAllUsers took 1.156 sec
-Testcase: testAddUsers took 2.187 sec
-Testcase: testGetUserFilterFactory took 0.938 sec
-Testcase: testCtor1 took 1.125 sec
-Testcase: testCtor1 took 0 sec
-Testcase: testCreateUsernameFilter took 0.016 sec
-Testcase: testCreatePasswordFilter took 0 sec
-Testcase: testCreateLastNameFilter took 0 sec
-Testcase: testCreateFirstNameFilter took 0.016 sec
-Testcase: testCreatePhoneNumberFilter took 0 sec
-Testcase: testCreateEmailFilter took 0 sec
-Testcase: testCreateAddressFilter took 0.015 sec
-Testcase: testCreateCityFilter took 0 sec
-Testcase: testCreateStateFilter took 0 sec
-Testcase: testCreateZipCodeFilter took 0.016 sec
-Testcase: testCreateCompanyIdFilter took 0 sec
-Testcase: testCreateStatusFilter took 0 sec
-Testcase: testCtor1 took 0 sec
-Testcase: testCreateCreationDateFilter took 0 sec
-Testcase: testCreateModificationDateFilter took 0 sec
-Testcase: testCreateCreationUserFilter took 0 sec
-Testcase: testCreateModificationUserFilter took 0 sec
-Testcase: testUpdateUsers took 3.766 sec
-Testcase: testRemoveUsers took 3.421 sec
-Testcase: testGetUsers took 1.11 sec
-Testcase: testSearchUsers took 1.406 sec
-Testcase: testGetAllUsers took 1.109 sec
-Testcase: testCreateUser took 2.141 sec
-Testcase: testAddUsers took 2.109 sec
-Testcase: testUpdateUser took 3.86 sec
-Testcase: testRemoveUser took 2.312 sec
-Testcase: testGetUser took 2.485 sec
-Testcase: testAddRoleToUser took 2.25 sec
-Testcase: testRemoveRoleFromUser took 2.843 sec
-Testcase: testRetrieveRolesForUser took 2.329 sec
-Testcase: testClearRolesFromUser took 2.906 sec
-Testcase: testAuthenticateUser took 1.406 sec
-Testcase: testGetUserFilterFactory took 1.063 sec
-Testcase: testCtor1 took 1 sec
-Testcase: testSetPassword_NullPassword took 0 sec
-Testcase: testSetPassword_EmptyPassword took 0 sec
-Testcase: testSetUsername_NullUsername took 0 sec
-Testcase: testSetUsername_EmptyUsername took 0 sec
-Testcase: testSetCompanyId_NegativeId took 0 sec
-Testcase: testSetContact_NullContact took 0 sec
-Testcase: testSetAlgorithmName_EmptyAlgorithmName took 0 sec
-Testcase: testSetStatus_NullStatus took 0 sec
-Testcase: testSetAddress_NullAddress took 0 sec
-Testcase: testSetPassword_TrimmedEmptyPassword took 0 sec
-Testcase: testSetUsername_TrimmedEmptyUsername took 0 sec
-Testcase: testSetCompanyId_ZeroId took 0 sec
-Testcase: testSetAlgorithmName_TrimmedEmptyAlgorithmName took 0 sec
-Testcase: testUserAuthenticator_NullNamespace took 0.015 sec
-Testcase: testUserAuthenticator_EmptyNamespace took 0.016 sec
-Testcase: testUserAuthenticator_TrimmedEmptyNamespace took 0 sec
-Testcase: testUserAuthenticator_UnknownNamespace took 0.015 sec
-Testcase: testUserAuthenticator_MissingObjectFactoryNamespace took 0.016 sec
-Testcase: testUserAuthenticator_EmptyObjectFactoryNamespace took 0.031 sec
-Testcase: testUserAuthenticator_InvalidObjectFactoryNamespace took 0.016 sec
-Testcase: testUserAuthenticator_MissingUserDAO took 0.016 sec
-Testcase: testUserAuthenticator_MissingClassName took 0.015 sec
-Testcase: testUserAuthenticator_EmptyClassName took 0.016 sec
-Testcase: testUserAuthenticator_InvalidClasName took 0.015 sec
-Testcase: testGetUserManager_UnknownNamespace took 0 sec
-Testcase: testGetUserManager1 took 0 sec
-Testcase: testGetUserManager2 took 0.016 sec
-Testcase: testSearchUsers took 0.578 sec
-Testcase: testCreateUser_NullUser took 0.391 sec
-Testcase: testCreateUser_DataAccessException took 0.406 sec
-Testcase: testUpdateUser_NullUser took 0.469 sec
-Testcase: testUpdateUser_DataAccessException took 0.375 sec
-Testcase: testRemoveUser_DataAccessException took 0.406 sec
-Testcase: testGetUser_DataAccessException took 0.516 sec
-Testcase: testAddRoleToUser_NullUser took 0.437 sec
-Testcase: testAddRoleToUser_NullRole took 0.406 sec
-Testcase: testRemoveRoleFromUser_NullUser took 0.485 sec
-Testcase: testRemoveRoleFromUser_NullRole took 0.406 sec
-Testcase: testRetrieveRolesForUser_NullUser took 0.391 sec
-Testcase: testClearRolesFromUser_NullUser took 0.406 sec
-Testcase: testAuthenticateUser_NullPassword took 0.406 sec
-Testcase: testAuthenticateUser_EmptyPassword took 0.391 sec
-Testcase: testUserManagerImpl_NullUserDAO took 0.469 sec
-Testcase: testUserManagerImpl_NullAuthorizationPersistence took 0.375 sec
-Testcase: test_userManagerImpl_NullAuthenticatorName took 0.375 sec
-Testcase: test_userManagerImpl_EmptyAuthenticatorName took 0.485 sec
-Testcase: test_userManagerImpl_TrimmedEmptyAuthenticatorName took 0.468 sec
-Testcase: testUserManagerImpl_ConfigurationException took 0.438 sec
-Testcase: testAuthenticateUser_NullUserName took 0.547 sec
-Testcase: testAuthenticateUser_EmptyUserName took 0.593 sec
-Testcase: testAuthenticateUser_TrimmedUserName took 0.422 sec
-Testcase: testAuthenticateUser_TrimmedPassword took 0.469 sec
-Testcase: testMappedBaseFilterFactory_NullMap took 0 sec
-Testcase: testMappedBaseFilterFactory_MapContainsNullKey took 0 sec
-Testcase: testMappedBaseFilterFactory_MapContainsEmptyKey took 0 sec
-Testcase: testMappedBaseFilterFactory_MapContainsTrimmedEmptyKey took 0 sec
-Testcase: testMappedBaseFilterFactory_MapContainsNullValue took 0 sec
-Testcase: testMappedBaseFilterFactory_MapContainsEmptyValue took 0 sec
-Testcase: testMappedBaseFilterFactory_MapContainsTrimmedEmptyValue took 0 sec
-Testcase: testMappedBaseFilterFactory_MissingRequiredAttribute took 0 sec
-Testcase: testCreateCreationDateFilter_BothNull took 0 sec
-Testcase: testCreateCreationDateFilter_EndDateBeforeStartDate took 0 sec
-Testcase: testCreateModificationDateFilter_BothNull took 0.016 sec
-Testcase: testCreateModificationDateFilter_EndDateBeforeStartDate took 0 sec
-Testcase: testCreateCreationUserFilter_NullStringMatchType took 0 sec
-Testcase: testCreateCreationUserFilter_NullUserName took 0 sec
-Testcase: testCreateCreationUserFilter_EmptyUserName took 0 sec
-Testcase: testCreateCreationUserFilter_TrimmedEmptyUserName took 0 sec
-Testcase: testCreateModificationUserFilter_NullUserName took 0 sec
-Testcase: testCreateModificationUserFilter_EmptyUserName took 0 sec
-Testcase: testCreateModificationUserFilter_TrimmedEmptyUserName took 0 sec
-Testcase: testCreatePasswordFilter_NullPassword took 0.015 sec
-Testcase: testCreatePasswordFilter_EmptyPassword took 0 sec
-Testcase: testCreateLastNameFilter_NullLastName took 0 sec
-Testcase: testCreateLastNameFilter_EmptyLastName took 0.016 sec
-Testcase: testCreateFirstNameFilter_NullFirstName took 0 sec
-Testcase: testCreateFirstNameFilter_EmptyFirstName took 0 sec
-Testcase: testCreatePhoneNumberFilter_NullPhoneNumber took 0.016 sec
-Testcase: testCreatePhoneNumberFilter_EmptyPhoneNumber took 0 sec
-Testcase: testCreateEmailFilter_NullEmail took 0.015 sec
-Testcase: testCreateEmailFilter_EmptyEmail took 0 sec
-Testcase: testCreateAddressFilter_NullAddress took 0 sec
-Testcase: testCreateAddressFilter_EmptyAddress took 0.016 sec
-Testcase: testCreateCityFilter_NullCity took 0 sec
-Testcase: testCreateCityFilter_EmptyCity took 0 sec
-Testcase: testCreateStateFilter_NullState took 0.015 sec
-Testcase: testCreateZipCodeFilter_NullZipCode took 0 sec
-Testcase: testCreateZipCodeFilter_EmptyZipCode took 0 sec
-Testcase: testCreateCompanyIdFilter_NegativeId took 0.016 sec
-Testcase: testCreateStatusFilter_NullStatus took 0 sec
-Testcase: testMappedUserFilterFactory_NullMap took 0.016 sec
-Testcase: testMappedUserFilterFactory_MapContainsNullKey took 0 sec
-Testcase: testMappedUserFilterFactory_MapContainsEmptyKey took 0.015 sec
-Testcase: testMappedUserFilterFactory_MapContainsTrimmedEmptyKey took 0 sec
-Testcase: testMappedUserFilterFactory_MapContainsNullValue took 0.016 sec
-Testcase: testMappedUserFilterFactory_MapContainsEmptyValue took 0 sec
-Testcase: testMappedUserFilterFactory_MapContainsTrimmedEmptyValue took 0.016 sec
-Testcase: testMappedUserFilterFactory_MissingRequiredAttribute took 0 sec
-Testcase: testCreateUsernameFilter_NullUserName took 0.015 sec
-Testcase: testCreateUsernameFilter_EmptyUserName took 0 sec
-Testcase: testCreateUsernameFilter_TrimmedEmptyUserName took 0 sec
-Testcase: testCreatePasswordFilter_TrimmedEmptyPassword took 0.016 sec
-Testcase: testCreateLastNameFilter_TrimmedEmptyLastName took 0 sec
-Testcase: testCreateFirstNameFilter_TrimmedEmptyFirstName took 0 sec
-Testcase: testCreatePhoneNumberFilter_TrimmedEmptyPhoneNumber took 0 sec
-Testcase: testCreateEmailFilter_TrimmedEmptyEmail took 0 sec
-Testcase: testCreateAddressFilter_TrimmedEmptyAddress took 0.016 sec
-Testcase: testCreateCityFilter_TrimmedEmptyCity took 0 sec
-Testcase: testCreateZipCodeFilter_TrimmedEmptyZipCode took 0 sec
-Testcase: testCreateCompanyIdFilter_ZeroId took 0.016 sec
-Testcase: testAddUsers_NullUsers took 0.984 sec
-Testcase: testUpdateUsers_NullUsers took 1.047 sec
-Testcase: testRemoveUsers_NullUserIds took 0.922 sec
-Testcase: testGetUsers_NullUserIds took 1.297 sec
-Testcase: testGetUsers_NegativeUserId took 0.953 sec
-Testcase: testSearchUsers_NullFilter took 1.062 sec
-Testcase: testRemoveUsers_NegativeUserId took 0.891 sec
-Testcase: testDbUserDAO_NullConnectionFactory took 1 sec
-Testcase: testDbUserDAO_EmptyConnectionName took 1.031 sec
-Testcase: testDbUserDAO_TrimmedEmptyConnectionName took 0.86 sec
-Testcase: testDbUserDAO_NullIDGen took 1.125 sec
-Testcase: testDbUserDAO_EmptyIDGen took 0.921 sec
-Testcase: testDbUserDAO_TrimmedEmptyIDGen took 1.016 sec
-Testcase: testDbUserDAO_NotFoundIDGen took 1.172 sec
-Testcase: testDbUserDAO_NullSearchsStrategyNamespace took 1.109 sec
-Testcase: testDbUserDAO_EmptySearchsStrategyNamespace took 1.578 sec
-Testcase: testDbUserDAO_TrimmedEmptySearchsStrategyNamespace took 0.969 sec
-Testcase: testDbUserDAO_NotFoundSearchsStrategyNamespace took 1.172 sec
-Testcase: testDbUserDAO_NullAuditManager took 1.125 sec
-Testcase: testDbUserDAO_NullContactManager took 1.094 sec
-Testcase: testDbUserDAO_NullAuthPersitence took 1.234 sec
-Testcase: testDbUserDAO_NullAddressManager took 1.188 sec
-Testcase: testAddUsers_UsersContainsNull took 1.25 sec
-Testcase: testAddUsers_UsersContainsInvalidUser took 1.109 sec
-Testcase: testUpdateUsers_UsersContainsNull took 1.094 sec
-Testcase: testUpdateUsers_UsersContainsInvalidUser took 1.047 sec
-Testcase: testRemoveUsers_ZeroUserId took 1.093 sec
-Testcase: testGetUsers_ZeroUserId took 1.25 sec
-Testcase: testUserManagerDelegate_NullNamespace took 0.094 sec
-Testcase: testUserManagerDelegate_EmptyNamespace took 0.016 sec
-Testcase: testUserManagerDelegate_TrimmedEmptyNamespace took 0.015 sec
-Testcase: testUserManagerDelegate_InvalidConfig1 took 0 sec
-Testcase: testUserManagerDelegate_InvalidConfig2 took 0.016 sec
-Testcase: testUserManagerDelegate_InvalidConfig3 took 0.016 sec
+Testcase: testCreateFilter_NullMatchType took 0.001 sec
+Testcase: testCreateLocalObjectNull took 0.004 sec
+Testcase: testUpdateDatesAccuracy took 0 sec
+Testcase: testUpdateDatesNull took 0.002 sec
+Testcase: testUpdateDatesContainsNull took 0.001 sec
+Testcase: testCreateDateFilterAccuracy took 0.001 sec
+Testcase: testCreateBooleanFilterAccuracy took 0.001 sec
+Testcase: testCreateLongFilterAccuracy took 0 sec
+Testcase: testCreateLongFilterNegative took 0 sec
+Testcase: testCreateStringFilterAccuracy took 0 sec
+Testcase: testCreateStringFilterNull took 0 sec
+Testcase: testCreateStringFilterEmpty took 0 sec
+Testcase: testConvertBatchExceptionToSingleExceptionAccuracy1 took 0 sec
+Testcase: testConvertBatchExceptionToSingleExceptionAccuracy2 took 0 sec
+Testcase: testConvertBatchExceptionToSingleExceptionNull took 0 sec
+Testcase: testCtor took 0.012 sec
+Testcase: testCtor_NullColumnNames took 0.011 sec
+Testcase: testCtor_NullKey took 0.003 sec
+Testcase: testCtor_EmptyKey took 0.012 sec
+Testcase: testCtor_KeyNotString took 0.01 sec
+Testcase: testCtor_MissingKey took 0.012 sec
+Testcase: testCtor_NullValue took 0.011 sec
+Testcase: testCtor_EmptyValue took 0.014 sec
+Testcase: testCtor_ValueNotString took 0.013 sec
+Testcase: testCreateUsernameFilter took 0.01 sec
+Testcase: testCreateUsernameFilter_NullMatchType took 0.002 sec
+Testcase: testCreateUsernameFilter_NullUsername took 0.011 sec
+Testcase: testCreateUsernameFilter_EmptyUsername took 0.012 sec
+Testcase: testCreatePasswordFilter took 0.002 sec
+Testcase: testCreatePasswordFilter_NullMatchType took 0.01 sec
+Testcase: testCreatePasswordFilter_NullPassword took 0.003 sec
+Testcase: testCreatePasswordFilter_EmptyPassword took 0.011 sec
+Testcase: testCreateLastNameFilter took 0.01 sec
+Testcase: testCreateLastNameFilter_NullMatchType took 0.002 sec
+Testcase: testCreateLastNameFilter_NullLastName took 0.011 sec
+Testcase: testCreateLastNameFilter_EmptyLastName took 0.003 sec
+Testcase: testCreateFirstNameFilter took 0.01 sec
+Testcase: testCreateFirstNameFilter_NullMatchType took 0.01 sec
+Testcase: testCreateFirstNameFilter_NullFirstName took 0.002 sec
+Testcase: testCreateFirstNameFilter_EmptyFirstName took 0.011 sec
+Testcase: testCreatePhoneNumberFilter took 0.003 sec
+Testcase: testCreatePhoneNumberFilter_NullMatchType took 0.01 sec
+Testcase: testCreatePhoneNumberFilter_NullPhoneNumber took 0.012 sec
+Testcase: testCreatePhoneNumberFilter_EmptyPhoneNumber took 0.002 sec
+Testcase: testCreateEmailFilter took 0.01 sec
+Testcase: testCreateEmailFilter_NullMatchType took 0.003 sec
+Testcase: testCreateEmailFilter_NullEmail took 0.01 sec
+Testcase: testCreateEmailFilter_EmptyEmail took 0.002 sec
+Testcase: testCreateAddressFilter took 0.011 sec
+Testcase: testCreateAddressFilter_NullMatchType took 0.01 sec
+Testcase: testCreateAddressFilter_NullAddress took 0.002 sec
+Testcase: testCreateAddressFilter_EmptyAddress took 0.01 sec
+Testcase: testCreateCityFilter took 0.003 sec
+Testcase: testCreateCityFilter_NullMatchType took 0.012 sec
+Testcase: testCreateCityFilter_NullCity took 0.017 sec
+Testcase: testCreateCityFilter_EmptyCity took 0.002 sec
+Testcase: testCreateStateFilter took 0.011 sec
+Testcase: testCreateStateFilter_NullState took 0.002 sec
+Testcase: testCreateZipCodeFilter took 0.01 sec
+Testcase: testCreateZipCodeFilter_NullMatchType took 0.011 sec
+Testcase: testCreateZipCodeFilter_NullZipCode took 0.002 sec
+Testcase: testCreateZipCodeFilter_EmptyZipCode took 0.011 sec
+Testcase: testCreateCompanyIdFilter took 0.003 sec
+Testcase: testCreateCompanyIdFilter_NegativeId took 0.01 sec
+Testcase: testCreateStatusFilter took 0.011 sec
+Testcase: testCreateStatusFilter_NullStatus took 0.002 sec
+Testcase: testCreateUserStatusIdFilter took 0.01 sec
+Testcase: testCreateUserStatusIdFilter_NegativeUserStatusId took 0.002 sec
+Testcase: testCreateUserStatusNameFilter took 0.011 sec
+Testcase: testCreateUserStatusNameFilter_NullUserStatusName took 0.012 sec
+Testcase: testCreateUserStatusNameFilter_EmptyUserStatusName took 0.002 sec
+Testcase: testCreateUserTypeIdFilter took 0.011 sec
+Testcase: testCreateUserTypeIdFilter_NegativeUserTypeId took 0.002 sec
+Testcase: testCreateUserTypeNameFilter took 0.01 sec
+Testcase: testCreateUserTypeNameFilter_NullUserTypeName took 0.012 sec
+Testcase: testCreateUserTypeNameFilter_EmptyUserTypeName took 0.002 sec
+Testcase: testCreateCompanyIdFilterAccuracy took 0 sec
+Testcase: testCreateCompanyIdFilterNegative took 0 sec
+Testcase: testCreateDescriptionFilterAccuracy took 0 sec
+Testcase: testCreateDescriptionFilterNull took 0 sec
+Testcase: testCreateDescriptionFilterEmpty took 0 sec
+Testcase: testCreateActiveFilterAccuracy took 0 sec
+Testcase: testCreateCreationDateFilterAccuracy1 took 0 sec
+Testcase: testCreateCreationDateFilterAccuracy2 took 0.001 sec
+Testcase: testCreateCreationDateFilterAccuracy3 took 0 sec
+Testcase: testCreateCreationDateFilterBothNull took 0 sec
+Testcase: testCreateModificationDateFilterAccuracy1 took 0 sec
+Testcase: testCreateModificationDateFilterAccuracy2 took 0 sec
+Testcase: testCreateModificationDateFilterAccuracy3 took 0 sec
+Testcase: testCreateModificationDateFilterBothNull took 0.001 sec
+Testcase: testCreateCreationUserFilterAccuracy took 0 sec
+Testcase: testCreateCreationUserFilterNull took 0 sec
+Testcase: testCreateCreationUserFilterEmpty took 0 sec
+Testcase: testCreateModificationUserFilterAccuracy took 0 sec
+Testcase: testCreateModificationUserFilterNull took 0 sec
+Testcase: testCreateModificationUserFilterEmpty took 0 sec
+Testcase: testCreateCompanyIdFilterAccuracy took 0 sec
+Testcase: testCreateCompanyIdFilterNegative took 0 sec
+Testcase: testCreateDescriptionFilterAccuracy took 0 sec
+Testcase: testCreateDescriptionFilterNull took 0 sec
+Testcase: testCreateDescriptionFilterEmpty took 0 sec
+Testcase: testCreateActiveFilterAccuracy took 0 sec
+Testcase: testCreateCreationDateFilterAccuracy1 took 0 sec
+Testcase: testCreateCreationDateFilterAccuracy2 took 0.001 sec
+Testcase: testCreateCreationDateFilterAccuracy3 took 0.001 sec
+Testcase: testCreateCreationDateFilterBothNull took 0.001 sec
+Testcase: testCreateModificationDateFilterAccuracy1 took 0.001 sec
+Testcase: testCreateModificationDateFilterAccuracy2 took 0.001 sec
+Testcase: testCreateModificationDateFilterAccuracy3 took 0.001 sec
+Testcase: testCreateModificationDateFilterBothNull took 0 sec
+Testcase: testCreateCreationUserFilterAccuracy took 0.001 sec
+Testcase: testCreateCreationUserFilterNull took 0.001 sec
+Testcase: testCreateCreationUserFilterEmpty took 0.002 sec
+Testcase: testCreateModificationUserFilterAccuracy took 0 sec
+Testcase: testCreateModificationUserFilterNull took 0 sec
+Testcase: testCreateModificationUserFilterEmpty took 0 sec
+Testcase: testCtor took 1.08 sec
+Testcase: testCreateUser took 0.71 sec
+Testcase: testCreateUser_NullUser took 0.508 sec
+Testcase: testCreateUser_DataAccessException took 0.302 sec
+Testcase: testAddUsers took 0.728 sec
+Testcase: testAddUsers_NullUsers took 0.318 sec
+Testcase: testAddUsers_NullInUsers took 0.464 sec
+Testcase: testAddUsers_DataAccessException took 0.311 sec
+Testcase: testUpdateUser took 0.722 sec
+Testcase: testUpdateUser_NullUser took 0.504 sec
+Testcase: testUpdateUser_DataAccessException took 0.336 sec
+Testcase: testUpdateUsers took 0.742 sec
+Testcase: testUpdateUsers_NullUsers took 0.296 sec
+Testcase: testUpdateUsers_NullInUsers took 0.503 sec
+Testcase: testUpdateUsers_BatchOperationException took 0.319 sec
+Testcase: testRemoveUser took 0.609 sec
+Testcase: testRemoveUser_NegativeId took 0.305 sec
+Testcase: testRemoveUser_UnrecognizedEntityException took 0.511 sec
+Testcase: testRemoveUser_DataAccessException took 0.296 sec
+Testcase: testRemoveUsers took 1.089 sec
+Testcase: testRemoveUsers_NullUserIds took 0.304 sec
+Testcase: testRemoveUsers_NegativeUserIds took 0.482 sec
+Testcase: testRemoveUsers_BatchOperationException took 0.37 sec
+Testcase: testRemoveUsers_DataAccessException took 0.492 sec
+Testcase: testGetUser took 0.449 sec
+Testcase: testGetUser_UnrecognizedEntityException took 0.523 sec
+Testcase: testGetUser_DataAccessException took 0.328 sec
+Testcase: testGetUsers took 0.652 sec
+Testcase: testGetUsers_NullUserIds took 0.317 sec
+Testcase: testGetUsers_NegativeUserId took 0.484 sec
+Testcase: testGetUsers_DataAccessException took 0.316 sec
+Testcase: testSearchUsers took 0.68 sec
+Testcase: testSearchUsers_NullFilter took 0.329 sec
+Testcase: testAddRoleToUser took 0.534 sec
+Testcase: testAddRoleToUser_NullUser took 0.342 sec
+Testcase: testAddRoleToUser_NotPersistedRole took 0.531 sec
+Testcase: testAddRoleToUser_NullRole took 0.344 sec
+Testcase: testRemoveRoleFromUser took 0.543 sec
+Testcase: testRemoveRoleFromUser_NullUser took 0.333 sec
+Testcase: testRemoveRoleFromUser_NullRole took 0.513 sec
+Testcase: testRemoveRoleFromUser_UnknownRole took 0.347 sec
+Testcase: testRemoveRoleFromUser_NotPersistedRole took 0.524 sec
+Testcase: testRetrieveRolesForUser took 0.35 sec
+Testcase: testRetrieveRolesForUser_NullUser took 0.516 sec
+Testcase: testClearRolesFromUser took 0.345 sec
+Testcase: testClearRolesFromUser_NullUser took 0.509 sec
+Testcase: testAuthenticateUser took 0.389 sec
+Testcase: testAuthenticateUser_NullUsername took 0.524 sec
+Testcase: testAuthenticateUser_EmptyUsername took 0.33 sec
+Testcase: testAuthenticateUser_NullPassword took 0.526 sec
+Testcase: testAuthenticateUser_EmptyPassword took 0.31 sec
+Testcase: testGetAllUsers took 0.535 sec
+Testcase: testGetAllUsers_DataAccessException took 0.368 sec
+Testcase: testGetUserFilterFactory took 0.702 sec
+Testcase: testSearchUsers_InvalidFilter took 0.338 sec
+Testcase: testUpdateUser_UnknownUser took 0.525 sec
+Testcase: testGetUsers_BatchOperationException took 0.349 sec
+Testcase: testAddRoleToUser_UnrecognizedEntityException took 0.511 sec
+Testcase: testAddRoleToUser_DataAccessException took 0.374 sec
+Testcase: testRemoveRoleFromUser_NotPersistedUser took 0.674 sec
+Testcase: testRetrieveRolesForUser_NotPersistedUser took 0.354 sec
+Testcase: testRetrieveRolesForUser_DataAccessException took 0.529 sec
+Testcase: testClearRolesFromUser_NotPersistedUser took 0.467 sec
+Testcase: testClearRolesFromUser_DataAccessException took 0.527 sec
+Testcase: testAuthenticateUser_DataAccessException took 0.329 sec
+Testcase: testGetUserFilterFactory_DataAccessException took 0.515 sec
+Testcase: testEjbCreate took 0.329 sec
+Testcase: testEjbActivate took 0.503 sec
+Testcase: testEjbPassivate took 0.334 sec
+Testcase: testEjbRemove took 0.525 sec
+Testcase: testSetSessionContext took 0.336 sec
+Testcase: testGetSessionContext took 0.537 sec
+Testcase: testCtor took 0.336 sec
+Testcase: testCtor_NullNamespace took 0.546 sec
+Testcase: testCtor_EmptyNamespace took 0.339 sec
+Testcase: testCreateUser took 0.833 sec
+Testcase: testCreateUser_NullUser took 0.33 sec
+Testcase: testCreateUser_DataAccessException took 0.525 sec
+Testcase: testAddUsers took 0.806 sec
+Testcase: testAddUsers_NullUsers took 0.336 sec
+Testcase: testAddUsers_NullInUsers took 0.553 sec
+Testcase: testAddUsers_DataAccessException took 0.344 sec
+Testcase: testUpdateUser took 0.81 sec
+Testcase: testUpdateUser_NullUser took 0.696 sec
+Testcase: testUpdateUser_DataAccessException took 0.579 sec
+Testcase: testUpdateUsers took 0.588 sec
+Testcase: testUpdateUsers_NullUsers took 0.55 sec
+Testcase: testUpdateUsers_NullInUsers took 0.333 sec
+Testcase: testUpdateUsers_BatchOperationException took 0.547 sec
+Testcase: testRemoveUser took 0.424 sec
+Testcase: testRemoveUser_NegativeId took 0.565 sec
+Testcase: testRemoveUser_UnrecognizedEntityException took 0.369 sec
+Testcase: testRemoveUser_DataAccessException took 0.335 sec
+Testcase: testRemoveUsers took 0.924 sec
+Testcase: testRemoveUsers_NullUserIds took 0.356 sec
+Testcase: testRemoveUsers_NegativeUserIds took 0.527 sec
+Testcase: testRemoveUsers_BatchOperationException took 0.422 sec
+Testcase: testRemoveUsers_DataAccessException took 0.54 sec
+Testcase: testGetUser took 0.51 sec
+Testcase: testGetUser_UnrecognizedEntityException took 0.586 sec
+Testcase: testGetUser_DataAccessException took 0.356 sec
+Testcase: testGetUsers took 0.724 sec
+Testcase: testGetUsers_NullUserIds took 0.354 sec
+Testcase: testGetUsers_NegativeUserId took 0.542 sec
+Testcase: testGetUsers_DataAccessException took 0.345 sec
+Testcase: testSearchUsers took 0.759 sec
+Testcase: testSearchUsers_NullFilter took 0.338 sec
+Testcase: testAddRoleToUser took 0.615 sec
+Testcase: testAddRoleToUser_NullUser took 0.372 sec
+Testcase: testAddRoleToUser_NotPersistedRole took 0.582 sec
+Testcase: testAddRoleToUser_NullRole took 0.506 sec
+Testcase: testRemoveRoleFromUser took 1.039 sec
+Testcase: testRemoveRoleFromUser_NullUser took 0.646 sec
+Testcase: testRemoveRoleFromUser_NullRole took 0.667 sec
+Testcase: testRemoveRoleFromUser_UnknownRole took 0.412 sec
+Testcase: testRemoveRoleFromUser_NotPersistedRole took 0.616 sec
+Testcase: testRetrieveRolesForUser took 0.372 sec
+Testcase: testRetrieveRolesForUser_NullUser took 0.365 sec
+Testcase: testClearRolesFromUser took 0.585 sec
+Testcase: testClearRolesFromUser_NullUser took 0.364 sec
+Testcase: testAuthenticateUser took 0.674 sec
+Testcase: testAuthenticateUser_NullUsername took 0.367 sec
+Testcase: testAuthenticateUser_EmptyUsername took 0.581 sec
+Testcase: testAuthenticateUser_NullPassword took 0.35 sec
+Testcase: testAuthenticateUser_EmptyPassword took 0.342 sec
+Testcase: testGetAllUsers took 0.588 sec
+Testcase: testGetAllUsers_DataAccessException took 0.375 sec
+Testcase: testGetUserFilterFactory took 0.77 sec
+Testcase: testCtor_ConfigurationException took 0.343 sec
+Testcase: testSearchUsers_InvalidFilter took 0.633 sec
+Testcase: testUpdateUser_UnknownUser took 0.371 sec
+Testcase: testGetUsers_BatchOperationException took 0.609 sec
+Testcase: testAddRoleToUser_UnrecognizedEntityException took 0.374 sec
+Testcase: testAddRoleToUser_DataAccessException took 0.642 sec
+Testcase: testRemoveRoleFromUser_NotPersistedUser took 0.567 sec
+Testcase: testRetrieveRolesForUser_NotPersistedUser took 0.613 sec
+Testcase: testRetrieveRolesForUser_DataAccessException took 0.379 sec
+Testcase: testClearRolesFromUser_NotPersistedUser took 1.039 sec
+Testcase: testClearRolesFromUser_DataAccessException took 0.416 sec
+Testcase: testAuthenticateUser_DataAccessException took 0.599 sec
+Testcase: testGetUserFilterFactory_DataAccessException took 0.375 sec
+Testcase: testGetUserStatusAccuracy took 0.694 sec
+Testcase: testCreateUserStatusAccuracy took 0.404 sec
+Testcase: testCreateUserStatusNull took 0.35 sec
+Testcase: testCreateUserStatusNotValid1 took 0.567 sec
+Testcase: testCreateUserStatusNotValid2 took 0.334 sec
+Testcase: testCreateUserStatusNotValid3 took 0.602 sec
+Testcase: testCreateUserStatusIdGenError took 0.418 sec
+Testcase: testUpdateUserStatusAccuracy took 0.648 sec
+Testcase: testUpdateUserStatusNull took 0.349 sec
+Testcase: testUpdateUserStatusNegative took 0.605 sec
+Testcase: testUpdateUserStatusUnrecognized took 0.37 sec
+Testcase: testRemoveUserStatusAccuracy took 0.387 sec
+Testcase: testRemoveUserStatusNegative took 0.553 sec
+Testcase: testRemoveUserStatusUnrecognized took 0.354 sec
+Testcase: testGetUserStatusNegative took 0.352 sec
+Testcase: testGetUserStatusUnrecognized took 0.578 sec
+Testcase: testAddUserStatusesAccuracy took 0.388 sec
+Testcase: testAddUserStatusesNull took 0.416 sec
+Testcase: testAddUserStatusesEmpty took 0.558 sec
+Testcase: testAddUserStatusesMissingDescription took 0.378 sec
+Testcase: testAddUserStatusesMissingCompanyId took 0.329 sec
+Testcase: testAddUserStatusesAlreadyAdded took 0.592 sec
+Testcase: testAddUserStatusesIdGenerationTableNotPrepared took 0.374 sec
+Testcase: testUpdateUserStatusesAccuracy took 0.661 sec
+Testcase: testUpdateUserStatusesNull took 0.326 sec
+Testcase: testUpdateUserStatusesEmpty took 0.357 sec
+Testcase: testUpdateUserStatusesUnrecognized took 0.567 sec
+Testcase: testRemoveUserStatusesAccuracy took 0.395 sec
+Testcase: testRemoveUserStatusesNull took 0.467 sec
+Testcase: testRemoveUserStatusesEmpty took 0.563 sec
+Testcase: testRemoveUserStatusesNegativeId took 0.366 sec
+Testcase: testRemoveUserStatusesUnrecognized took 0.33 sec
+Testcase: testGetUserStatusesAccuracy took 0.58 sec
+Testcase: testGetUserStatusesNull took 0.348 sec
+Testcase: testGetUserStatusesEmpty took 0.336 sec
+Testcase: testGetUserStatusesUnrecognizedEntity took 0.558 sec
+Testcase: testSearchUserStatusesAccuracy1 took 0.357 sec
+Testcase: testSearchUserStatusesAccuracy2 took 0.379 sec
+Testcase: testSearchUserStatusesNull took 0.572 sec
+Testcase: testSearchUserStatusesWrongFilter took 0.353 sec
+Testcase: testGetAllUserStatusesAccuracy1 took 0.339 sec
+Testcase: testGetAllUserStatusesAccuracy2 took 0.623 sec
+Testcase: testUserStatusManagerSessionBeanAccuracy took 0.361 sec
+Testcase: testCreateUserStatusConfigError took 0.799 sec
+Testcase: testEjbCreateAccuracy took 0.535 sec
+Testcase: testEjbActivateAccuracy took 0.342 sec
+Testcase: testEjbPassivateAccuracy took 0.331 sec
+Testcase: testEjbRemoveAccuracy took 0.564 sec
+Testcase: testSetSessionContextAccuracy took 0.326 sec
+Testcase: testGetSessionContextAccuracy took 0.346 sec
+Testcase: testGetUserTypeAccuracy took 0.661 sec
+Testcase: testCreateUserTypeAccuracy took 0.392 sec
+Testcase: testCreateUserTypeNull took 0.591 sec
+Testcase: testCreateUserTypeNotValid1 took 0.402 sec
+Testcase: testCreateUserTypeNotValid2 took 0.324 sec
+Testcase: testCreateUserTypeNotValid3 took 0.583 sec
+Testcase: testCreateUserTypeIdGenError took 0.382 sec
+Testcase: testUpdateUserTypeAccuracy took 0.393 sec
+Testcase: testUpdateUserTypeNull took 0.539 sec
+Testcase: testUpdateUserTypeNegative took 0.363 sec
+Testcase: testUpdateUserTypeUnrecognized took 0.59 sec
+Testcase: testRemoveUserTypeAccuracy took 0.395 sec
+Testcase: testRemoveUserTypeNegative took 0.349 sec
+Testcase: testRemoveUserTypeUnrecognized took 0.551 sec
+Testcase: testGetUserTypeNegative took 0.373 sec
+Testcase: testGetUserTypeUnrecognized took 0.587 sec
+Testcase: testAddUserTypesAccuracy took 0.378 sec
+Testcase: testAddUserTypesNull took 0.327 sec
+Testcase: testAddUserTypesEmpty took 0.589 sec
+Testcase: testAddUserTypesMissingDescription took 0.349 sec
+Testcase: testAddUserTypesMissingCompanyId took 0.328 sec
+Testcase: testAddUserTypesAlreadyAdded took 0.602 sec
+Testcase: testAddUserTypesIdGenerationTableNotPrepared took 0.408 sec
+Testcase: testUpdateUserTypesAccuracy took 0.628 sec
+Testcase: testUpdateUserTypesNull took 0.332 sec
+Testcase: testUpdateUserTypesEmpty took 0.369 sec
+Testcase: testUpdateUserTypesUnrecognized took 0.565 sec
+Testcase: testRemoveUserTypesAccuracy took 0.389 sec
+Testcase: testRemoveUserTypesNull took 0.349 sec
+Testcase: testRemoveUserTypesEmpty took 0.546 sec
+Testcase: testRemoveUserTypesNegativeId took 0.351 sec
+Testcase: testRemoveUserTypesUnrecognized took 0.59 sec
+Testcase: testGetUserTypesAccuracy took 0.387 sec
+Testcase: testGetUserTypesNull took 0.346 sec
+Testcase: testGetUserTypesEmpty took 0.564 sec
+Testcase: testGetUserTypesUnrecognizedEntity took 0.358 sec
+Testcase: testSearchUserTypesAccuracy1 took 0.338 sec
+Testcase: testSearchUserTypesAccuracy2 took 0.637 sec
+Testcase: testSearchUserTypesNull took 0.328 sec
+Testcase: testSearchUserTypesWrongFilter took 0.354 sec
+Testcase: testGetAllUserTypesAccuracy1 took 0.574 sec
+Testcase: testGetAllUserTypesAccuracy2 took 0.392 sec
+Testcase: testEjbCreateAccuracy took 0.329 sec
+Testcase: testEjbActivateAccuracy took 0.565 sec
+Testcase: testEjbPassivateAccuracy took 0.329 sec
+Testcase: testEjbRemoveAccuracy took 0.589 sec
+Testcase: testSetSessionContextAccuracy took 0.343 sec
+Testcase: testGetSessionContextAccuracy took 0.333 sec
+Testcase: testUserTypeManagerSessionBeanAccuracy took 0.558 sec
+Testcase: testCreateUserTypeConfigError took 0.346 sec
+Testcase: testGetUserStatusAccuracy took 0.421 sec
+Testcase: testCreateUserStatusAccuracy took 0.613 sec
+Testcase: testCreateUserStatusNull took 0.341 sec
+Testcase: testCreateUserStatusNotValid1 took 0.588 sec
+Testcase: testCreateUserStatusNotValid2 took 0.33 sec
+Testcase: testCreateUserStatusNotValid3 took 0.361 sec
+Testcase: testCreateUserStatusIdGenError took 0.595 sec
+Testcase: testUpdateUserStatusAccuracy took 0.42 sec
+Testcase: testUpdateUserStatusNull took 0.571 sec
+Testcase: testUpdateUserStatusNegative took 0.363 sec
+Testcase: testUpdateUserStatusUnrecognized took 0.375 sec
+Testcase: testRemoveUserStatusAccuracy took 0.603 sec
+Testcase: testRemoveUserStatusNegative took 0.345 sec
+Testcase: testRemoveUserStatusUnrecognized took 0.587 sec
+Testcase: testGetUserStatusNegative took 0.345 sec
+Testcase: testGetUserStatusUnrecognized took 0.368 sec
+Testcase: testAddUserStatusesAccuracy took 0.594 sec
+Testcase: testAddUserStatusesNull took 0.352 sec
+Testcase: testAddUserStatusesEmpty took 0.563 sec
+Testcase: testAddUserStatusesMissingDescription took 0.349 sec
+Testcase: testAddUserStatusesMissingCompanyId took 0.326 sec
+Testcase: testAddUserStatusesAlreadyAdded took 0.671 sec
+Testcase: testAddUserStatusesIdGenerationTableNotPrepared took 0.378 sec
+Testcase: testUpdateUserStatusesAccuracy took 0.625 sec
+Testcase: testUpdateUserStatusesNull took 0.342 sec
+Testcase: testUpdateUserStatusesEmpty took 0.338 sec
+Testcase: testUpdateUserStatusesUnrecognized took 0.573 sec
+Testcase: testRemoveUserStatusesAccuracy took 0.39 sec
+Testcase: testRemoveUserStatusesNull took 0.592 sec
+Testcase: testRemoveUserStatusesEmpty took 0.349 sec
+Testcase: testRemoveUserStatusesNegativeId took 0.328 sec
+Testcase: testRemoveUserStatusesUnrecognized took 1.064 sec
+Testcase: testGetUserStatusesAccuracy took 0.384 sec
+Testcase: testGetUserStatusesNull took 0.579 sec
+Testcase: testGetUserStatusesEmpty took 0.332 sec
+Testcase: testGetUserStatusesUnrecognizedEntity took 0.371 sec
+Testcase: testSearchUserStatusesAccuracy1 took 0.573 sec
+Testcase: testSearchUserStatusesAccuracy2 took 0.382 sec
+Testcase: testSearchUserStatusesNull took 0.587 sec
+Testcase: testSearchUserStatusesWrongFilter took 0.329 sec
+Testcase: testGetAllUserStatusesAccuracy1 took 0.356 sec
+Testcase: testGetAllUserStatusesAccuracy2 took 0.594 sec
+Testcase: testGetUserTypeAccuracy took 0.443 sec
+Testcase: testCreateUserTypeAccuracy took 0.608 sec
+Testcase: testCreateUserTypeNull took 0.346 sec
+Testcase: testCreateUserTypeNotValid1 took 0.584 sec
+Testcase: testCreateUserTypeNotValid2 took 0.322 sec
+Testcase: testCreateUserTypeNotValid3 took 0.36 sec
+Testcase: testCreateUserTypeIdGenError took 0.583 sec
+Testcase: testUpdateUserTypeAccuracy took 0.394 sec
+Testcase: testUpdateUserTypeNull took 0.346 sec
+Testcase: testUpdateUserTypeNegative took 0.559 sec
+Testcase: testUpdateUserTypeUnrecognized took 0.352 sec
+Testcase: testRemoveUserTypeAccuracy took 0.638 sec
+Testcase: testRemoveUserTypeNegative took 0.317 sec
+Testcase: testRemoveUserTypeUnrecognized took 0.349 sec
+Testcase: testGetUserTypeNegative took 0.556 sec
+Testcase: testGetUserTypeUnrecognized took 0.361 sec
+Testcase: testAddUserTypesAccuracy took 0.61 sec
+Testcase: testAddUserTypesNull took 0.325 sec
+Testcase: testAddUserTypesEmpty took 0.342 sec
+Testcase: testAddUserTypesMissingDescription took 0.577 sec
+Testcase: testAddUserTypesMissingCompanyId took 0.318 sec
+Testcase: testAddUserTypesAlreadyAdded took 0.373 sec
+Testcase: testAddUserTypesIdGenerationTableNotPrepared took 0.588 sec
+Testcase: testUpdateUserTypesAccuracy took 0.406 sec
+Testcase: testUpdateUserTypesNull took 0.551 sec
+Testcase: testUpdateUserTypesEmpty took 0.341 sec
+Testcase: testUpdateUserTypesUnrecognized took 0.364 sec
+Testcase: testRemoveUserTypesAccuracy took 0.596 sec
+Testcase: testRemoveUserTypesNull took 0.347 sec
+Testcase: testRemoveUserTypesEmpty took 0.326 sec
+Testcase: testRemoveUserTypesNegativeId took 0.565 sec
+Testcase: testRemoveUserTypesUnrecognized took 0.36 sec
+Testcase: testGetUserTypesAccuracy took 0.377 sec
+Testcase: testGetUserTypesNull took 0.546 sec
+Testcase: testGetUserTypesEmpty took 0.34 sec
+Testcase: testGetUserTypesUnrecognizedEntity took 0.376 sec
+Testcase: testSearchUserTypesAccuracy1 took 0.579 sec
+Testcase: testSearchUserTypesAccuracy2 took 0.377 sec
+Testcase: testSearchUserTypesNull took 0.562 sec
+Testcase: testSearchUserTypesWrongFilter took 0.352 sec
+Testcase: testGetAllUserTypesAccuracy1 took 0.35 sec
+Testcase: testGetAllUserTypesAccuracy2 took 0.603 sec
+Testcase: testDemo1 took 0.695 sec
+Testcase: testDemo2 took 1.016 sec
+Testcase: testDemo3 took 0.816 sec
+Testcase: testDemo4 took 0.844 sec

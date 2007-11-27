@@ -32,8 +32,9 @@ import com.topcoder.util.config.ConfigManager;
  * A helper class to perform those common operations which are helpful for the test.
  * </p>
  *
- * @author TCSDEVELOPER
- * @version 3.2
+ * @author biotrail, enefem21
+ * @version 3.2.1
+ * @since 3.2
  */
 public class TestHelper {
     /**
@@ -41,7 +42,8 @@ public class TestHelper {
      * Represents the namespace for DB Connection Factory component.
      * </p>
      */
-    public static final String DB_FACTORY_NAMESPACE = "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl";
+    public static final String DB_FACTORY_NAMESPACE =
+        "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl";
 
     /**
      * <p>
@@ -49,6 +51,15 @@ public class TestHelper {
      * </p>
      */
     public static final String CONFIG_FILE = "test_files" + File.separator + "config.xml";
+
+    /**
+     * <p>
+     * The sample configuration file for this component version 3.2.1.
+     * </p>
+     *
+     * @since 3.2.1
+     */
+    public static final String CONFIG_FILE_3_2_1 = "test_files" + File.separator + "configSearchManager.xml";
 
     /**
      * <p>
@@ -64,17 +75,20 @@ public class TestHelper {
      * ConfigManager.CONFIG_XML_FORMAT.
      * </p>
      *
-     * @param namespace use the namespace to load config information to ConfigManager
-     * @param fileName config file to set up environment
+     * @param namespace
+     *            use the namespace to load config information to ConfigManager
+     * @param fileName
+     *            config file to set up environment
      *
-     * @throws Exception when any exception occurs
+     * @throws Exception
+     *             when any exception occurs
      */
     public static void loadSingleXMLConfig(String namespace, String fileName) throws Exception {
-        //set up environment
+        // set up environment
         ConfigManager config = ConfigManager.getInstance();
         File file = new File(fileName);
 
-        //config namespace
+        // config namespace
         if (config.existsNamespace(namespace)) {
             config.removeNamespace(namespace);
         }
@@ -87,14 +101,16 @@ public class TestHelper {
      * Remove the given namespace in the ConfigManager.
      * </p>
      *
-     * @param namespace namespace use to remove the config information in ConfigManager
+     * @param namespace
+     *            namespace use to remove the config information in ConfigManager
      *
-     * @throws Exception when any exception occurs
+     * @throws Exception
+     *             when any exception occurs
      */
     public static void clearConfigFile(String namespace) throws Exception {
         ConfigManager config = ConfigManager.getInstance();
 
-        //clear the environment
+        // clear the environment
         if (config.existsNamespace(namespace)) {
             config.removeNamespace(namespace);
         }
@@ -105,12 +121,14 @@ public class TestHelper {
      * Uses the given file to config the configuration manager.
      * </p>
      *
-     * @param fileName config file to set up environment
+     * @param fileName
+     *            config file to set up environment
      *
-     * @throws Exception when any exception occurs
+     * @throws Exception
+     *             when any exception occurs
      */
     public static void loadXMLConfig(String fileName) throws Exception {
-        //set up environment
+        // set up environment
         ConfigManager config = ConfigManager.getInstance();
         File file = new File(fileName);
 
@@ -122,7 +140,8 @@ public class TestHelper {
      * Clears all the namespaces from the configuration manager.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public static void clearConfig() throws Exception {
         ConfigManager cm = ConfigManager.getInstance();
@@ -137,21 +156,26 @@ public class TestHelper {
      * Verifies whether the given two users are equals or not.
      * </p>
      *
-     * @param expectedUser the expected user
-     * @param actualUser the actual user
+     * @param expectedUser
+     *            the expected user
+     * @param actualUser
+     *            the actual user
      */
     public static void assertUserEquals(User expectedUser, User actualUser) {
-        Assert.assertEquals("The user names are not equals.", expectedUser.getUsername(), actualUser.getUsername());
-        Assert.assertEquals("The passwords are not equals.", expectedUser.getPassword(), actualUser.getPassword());
-        Assert.assertEquals("The statuses are not equals.", expectedUser.getStatus().getId(),
-            actualUser.getStatus().getId());
-        Assert.assertEquals("The addresses are not equals.", expectedUser.getAddress().getId(),
-            actualUser.getAddress().getId());
-        Assert.assertEquals("The company ids are not equals.", expectedUser.getCompanyId(), actualUser.getCompanyId());
-        Assert.assertEquals("The contacts are not equals.", expectedUser.getContact().getId(),
-            actualUser.getContact().getId());
-        Assert.assertEquals("The creation users are not equals.", expectedUser.getCreationUser(),
-            actualUser.getCreationUser());
+        Assert.assertEquals("The user names are not equals.", expectedUser.getUsername(), actualUser
+            .getUsername());
+        Assert.assertEquals("The passwords are not equals.", expectedUser.getPassword(), actualUser
+            .getPassword());
+        Assert.assertEquals("The statuses are not equals.", expectedUser.getStatus().getId(), actualUser
+            .getStatus().getId());
+        Assert.assertEquals("The addresses are not equals.", expectedUser.getAddress().getId(), actualUser
+            .getAddress().getId());
+        Assert.assertEquals("The company ids are not equals.", expectedUser.getCompanyId(), actualUser
+            .getCompanyId());
+        Assert.assertEquals("The contacts are not equals.", expectedUser.getContact().getId(), actualUser
+            .getContact().getId());
+        Assert.assertEquals("The creation users are not equals.", expectedUser.getCreationUser(), actualUser
+            .getCreationUser());
         Assert.assertEquals("The modification users are not equals.", expectedUser.getModificationUser(),
             actualUser.getModificationUser());
     }
@@ -161,7 +185,8 @@ public class TestHelper {
      * This method creates a user instance for testing purpose.
      * </p>
      *
-     * @param missingField the field name to missing
+     * @param missingField
+     *            the field name to missing
      *
      * @return a user instance for testing purpose.
      */
@@ -263,7 +288,8 @@ public class TestHelper {
      * This is used to simplify the testing.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public static void setUpDataBase() throws Exception {
         Connection connection = null;
@@ -274,6 +300,7 @@ public class TestHelper {
             executeSqlFile(connection, "test_files" + File.separator + "add_data.sql");
             connection.commit();
         } catch (SQLException e) {
+            e.printStackTrace();
             connection.rollback();
             throw e;
         } finally {
@@ -290,7 +317,8 @@ public class TestHelper {
      * This is used to simplify the testing.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public static void tearDownDataBase() throws Exception {
         Connection connection = null;
@@ -330,16 +358,67 @@ public class TestHelper {
 
     /**
      * <p>
+     * This method sets the user status manager in the <code>UserManagerFactory</code> to null using reflection.
+     * </p>
+     *
+     * @since 3.2.1
+     */
+    public static void resetUserStatusManagerToNull() {
+        try {
+            Field field = UserManagerFactory.class.getDeclaredField("userStatusManager");
+            field.setAccessible(true);
+            field.set(null, null);
+        } catch (SecurityException e) {
+            // ignore
+        } catch (IllegalArgumentException e) {
+            // ignore
+        } catch (NoSuchFieldException e) {
+            // ignore
+        } catch (IllegalAccessException e) {
+            // ignore
+        }
+    }
+
+    /**
+     * <p>
+     * This method sets the user type manager in the <code>UserManagerFactory</code> to null using reflection.
+     * </p>
+     *
+     * @since 3.2.1
+     */
+    public static void resetUserTypeManagerToNull() {
+        try {
+            Field field = UserManagerFactory.class.getDeclaredField("userTypeManager");
+            field.setAccessible(true);
+            field.set(null, null);
+        } catch (SecurityException e) {
+            // ignore
+        } catch (IllegalArgumentException e) {
+            // ignore
+        } catch (NoSuchFieldException e) {
+            // ignore
+        } catch (IllegalAccessException e) {
+            // ignore
+        }
+    }
+
+    /**
+     * <p>
      * Executes the sql scripts in the given sql file.
      * </p>
      *
-     * @param connection Connection instance to access the database
-     * @param sqlPath the path of the sql file to execute
+     * @param connection
+     *            Connection instance to access the database
+     * @param sqlPath
+     *            the path of the sql file to execute
      *
-     * @throws SQLException if exception occurs during database operation
-     * @throws IOException if fails to read the sql file
+     * @throws SQLException
+     *             if exception occurs during database operation
+     * @throws IOException
+     *             if fails to read the sql file
      */
-    private static void executeSqlFile(Connection connection, String sqlPath) throws SQLException, IOException {
+    private static void executeSqlFile(Connection connection, String sqlPath) throws SQLException,
+        IOException {
         String[] sqlStatements = loadSqlFile(sqlPath);
 
         Statement stmt = null;
@@ -360,10 +439,12 @@ public class TestHelper {
      * This method return the sql scripts from the given sql file.
      * </p>
      *
-     * @param path the path of the sql file
+     * @param path
+     *            the path of the sql file
      * @return the sql scripts
      *
-     * @throws IOException if fails to read the sql file
+     * @throws IOException
+     *             if fails to read the sql file
      */
     private static String[] loadSqlFile(String path) throws IOException {
         StringBuffer sb = new StringBuffer();
@@ -392,8 +473,10 @@ public class TestHelper {
      *
      * @return the connection instance for database operation
      *
-     * @throws ConfigurationException to JUnit
-     * @throws DBConnectionException to JUnit
+     * @throws ConfigurationException
+     *             to JUnit
+     * @throws DBConnectionException
+     *             to JUnit
      */
     static Connection getConnection() throws DBConnectionException, ConfigurationException {
         return new DBConnectionFactoryImpl(DB_FACTORY_NAMESPACE).createConnection();
@@ -404,7 +487,8 @@ public class TestHelper {
      * Closes the given Connection instance.
      * </p>
      *
-     * @param con the given Connection instance to close.
+     * @param con
+     *            the given Connection instance to close.
      */
     static void closeConnection(Connection con) {
         try {
@@ -421,7 +505,8 @@ public class TestHelper {
      * Closes the given PreparedStatement instance.
      * </p>
      *
-     * @param state the given Statement instance to close.
+     * @param state
+     *            the given Statement instance to close.
      */
     static void closeStatement(Statement state) {
         try {

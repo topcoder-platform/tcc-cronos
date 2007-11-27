@@ -8,6 +8,8 @@ INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('co
 INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('TimeTrackerID',60000001,20,0);
 INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('TimeTrackerUser',50000001,20,0);
 INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.user.User',100,20,0);
+INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.user.UserStatus',100,20,0);
+INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.user.UserType',100,20,0);
 INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.entry.time.RejectReason',1,20,0);
 INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.entry.time.Company',1,20,0);
 INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.entry.time.RejectEmail',1,20,0);
@@ -155,6 +157,42 @@ INSERT INTO role_action_context_permission (role_id, action_id, action_context_i
 INSERT INTO role_action_context_permission (role_id, action_id, action_context_id, permission) VALUES (4, 18, 1, 1);
 INSERT INTO role_action_context_permission (role_id, action_id, action_context_id, permission) VALUES (4, 19, 1, 1);
 
+INSERT INTO account_status(account_status_id, description, creation_date, creation_user, modification_date, modification_user)
+  VALUES(0, 'Inactive', CURRENT, 'System', CURRENT, 'System');
+INSERT INTO account_status(account_status_id, description, creation_date, creation_user, modification_date, modification_user)
+  VALUES(1, 'Active', CURRENT, 'System', CURRENT, 'System');
+INSERT INTO account_status(account_status_id, description, creation_date, creation_user, modification_date, modification_user)
+  VALUES(3, 'Locked', CURRENT, 'System', CURRENT, 'System');
+
+INSERT INTO user_status(user_status_id, company_id, description, active, creation_date, creation_user, modification_date, modification_user)
+  VALUES(1, 1, 'Internal Project', 1, CURRENT, 'System', CURRENT, 'System');
+INSERT INTO user_status(user_status_id, company_id, description, active, creation_date, creation_user, modification_date, modification_user)
+  VALUES(2, 1, 'Client Project', 1, CURRENT, 'System', CURRENT, 'System');
+INSERT INTO user_status(user_status_id, company_id, description, active, creation_date, creation_user, modification_date, modification_user)
+  VALUES(3, 1, 'On the Bench', 1, CURRENT, 'System', CURRENT, 'System');
+INSERT INTO user_status(user_status_id, company_id, description, active, creation_date, creation_user, modification_date, modification_user)
+  VALUES(4, 1, 'Training', 1, CURRENT, 'System', CURRENT, 'System');
+INSERT INTO user_status(user_status_id, company_id, description, active, creation_date, creation_user, modification_date, modification_user)
+  VALUES(5, 1, 'Not Started', 1, CURRENT, 'System', CURRENT, 'System');
+
+INSERT INTO user_type(user_type_id, company_id, description, active, creation_date, creation_user, modification_date, modification_user)
+  VALUES(1, 1, 'Project Manager', 1, CURRENT, 'System', CURRENT, 'System');
+INSERT INTO user_type(user_type_id, company_id, description, active, creation_date, creation_user, modification_date, modification_user)
+  VALUES(2, 1, 'Architect', 1, CURRENT, 'System', CURRENT, 'System');
+INSERT INTO user_type(user_type_id, company_id, description, active, creation_date, creation_user, modification_date, modification_user)
+  VALUES(3, 1, 'Creative', 1, CURRENT, 'System', CURRENT, 'System');
+INSERT INTO user_type(user_type_id, company_id, description, active, creation_date, creation_user, modification_date, modification_user)
+  VALUES(4, 1, 'Deployment Engineer', 1, CURRENT, 'System', CURRENT, 'System');
+INSERT INTO user_type(user_type_id, company_id, description, active, creation_date, creation_user, modification_date, modification_user)
+  VALUES(5, 1, 'Developer', 1, CURRENT, 'System', CURRENT, 'System');
+INSERT INTO user_type(user_type_id, company_id, description, active, creation_date, creation_user, modification_date, modification_user)
+  VALUES(6, 1, 'Account Manager', 1, CURRENT, 'System', CURRENT, 'System');
+INSERT INTO user_type(user_type_id, company_id, description, active, creation_date, creation_user, modification_date, modification_user)
+  VALUES(7, 1, 'Sales', 1, CURRENT, 'System', CURRENT, 'System');
+INSERT INTO user_type(user_type_id, company_id, description, active, creation_date, creation_user, modification_date, modification_user)
+  VALUES(8, 1, 'Operations', 1, CURRENT, 'System', CURRENT, 'System');
+INSERT INTO user_type(user_type_id, company_id, description, active, creation_date, creation_user, modification_date, modification_user)
+  VALUES(9, 1, 'Accounting', 1, CURRENT, 'System', CURRENT, 'System');
 
 -- The standard time statuses
 
@@ -194,22 +232,6 @@ insert into company(company_id, name, passcode, creation_date,
        creation_user,
        modification_date,
        modification_user) values(1, 'The Company', 'test', CURRENT, '', CURRENT, '');
-
-
-insert into account_status (account_status_id,
-       description,
-       creation_date,
-       creation_user,
-       modification_date,
-       modification_user) VALUES(1, 'active', CURRENT, '', CURRENT, '');
-
-insert into account_status (account_status_id,
-       description,
-       creation_date,
-       creation_user,
-       modification_date,
-       modification_user) VALUES(0, 'inactive', CURRENT, '', CURRENT, '');
-
 
 insert into user_account(user_account_id, company_id, user_name, password, account_status_id, creation_date,
        creation_user,
@@ -272,3 +294,4 @@ insert into contact_relation(
      contact_id ,
      contact_type_id
 ) values (1, CURRENT, '', CURRENT, '', 1, 4);
+

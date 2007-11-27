@@ -16,6 +16,7 @@ import junit.framework.TestCase;
  * <p>
  * Failure test for <code>{@link MappedUserFilterFactory}</code> class.
  * </p>
+ *
  * @author FireIce
  * @version 1.0
  */
@@ -58,6 +59,10 @@ public class MappedUserFilterFactoryFailureTests extends TestCase {
         columnNames.put(MappedUserFilterFactory.ZIPCODE_COLUMN_NAME, "zip_code");
         columnNames.put(MappedUserFilterFactory.COMPANY_ID_COLUMN_NAME, "country_name_id");
         columnNames.put(MappedUserFilterFactory.STATUS_COLUMN_NAME, "account_status_id");
+        columnNames.put(MappedUserFilterFactory.USER_STATUS_ID_COLUMN_NAME, "user_status_id");
+        columnNames.put(MappedUserFilterFactory.USER_STATUS_NAME_COLUMN_NAME, "user_status_name");
+        columnNames.put(MappedUserFilterFactory.USER_TYPE_ID_COLUMN_NAME, "user_type_id");
+        columnNames.put(MappedUserFilterFactory.USER_TYPE_NAME_COLUMN_NAME, "user_type_name");
 
         mappedUserFilterFactory = new MappedUserFilterFactory(columnNames);
     }
@@ -613,8 +618,7 @@ public class MappedUserFilterFactoryFailureTests extends TestCase {
 
     /**
      * <p>
-     * Failure test for <code>{@link MappedUserFilterFactory#createCityFilter(StringMatchType, String)F}</code>
-     * method.
+     * Failure test for <code>{@link MappedUserFilterFactory#createCompanyIdFilter(long)}</code> method.
      * </p>
      */
     public void testCreateCompanyIdFilter_ZeroId() {
@@ -628,13 +632,152 @@ public class MappedUserFilterFactoryFailureTests extends TestCase {
 
     /**
      * <p>
-     * Failure test for <code>{@link MappedUserFilterFactory#createCityFilter(StringMatchType, String)F}</code>
-     * method.
+     * Failure test for <code>{@link MappedUserFilterFactory#createCompanyIdFilter(long)}</code> method.
      * </p>
      */
     public void testCreateCompanyIdFilter_NegativeId() {
         try {
-            mappedUserFilterFactory.createCompanyIdFilter(0);
+            mappedUserFilterFactory.createCompanyIdFilter(-1);
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link MappedUserFilterFactory#createUserStatusIdFilter(long)}</code> method.
+     * </p>
+     */
+    public void testCreateUserStatusIdFilter_ZeroId() {
+        try {
+            mappedUserFilterFactory.createUserStatusIdFilter(0);
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link MappedUserFilterFactory#createUserStatusIdFilter(long)}</code> method.
+     * </p>
+     */
+    public void testCreateUserStatusIdFilter_NegativeId() {
+        try {
+            mappedUserFilterFactory.createUserStatusIdFilter(-1);
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link MappedUserFilterFactory#createUserTypeIdFilter(long)}</code> method.
+     * </p>
+     */
+    public void testCreateUserTypeIdFilter_ZeroId() {
+        try {
+            mappedUserFilterFactory.createUserTypeIdFilter(0);
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link MappedUserFilterFactory#createUserTypeIdFilter(long)}</code> method.
+     * </p>
+     */
+    public void testCreateUserTypeIdFilter_NegativeId() {
+        try {
+            mappedUserFilterFactory.createUserTypeIdFilter(-1);
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link MappedUserFilterFactory#createUserTypeNameFilter(String)}</code> method.
+     * </p>
+     */
+    public void testCreateUserTypeNameFilter_NullUserTypeName() {
+        try {
+            mappedUserFilterFactory.createUserTypeNameFilter(null);
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link MappedUserFilterFactory#createUserTypeNameFilter(String)}</code> method.
+     * </p>
+     */
+    public void testCreateUserTypeNameFilter_EmptyUserTypeName() {
+        try {
+            mappedUserFilterFactory.createUserTypeNameFilter("");
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link MappedUserFilterFactory#createUserTypeNameFilter(String)}</code> method.
+     * </p>
+     */
+    public void testCreateUserTypeNameFilter_TrimmedEmptyUserTypeName() {
+        try {
+            mappedUserFilterFactory.createUserTypeNameFilter(" ");
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link MappedUserFilterFactory#createUserStatusNameFilter(String)}</code> method.
+     * </p>
+     */
+    public void testCreateUserStatusNameFilter_NullUserStatusName() {
+        try {
+            mappedUserFilterFactory.createUserStatusNameFilter(null);
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link MappedUserFilterFactory#createUserStatusNameFilter(String)}</code> method.
+     * </p>
+     */
+    public void testCreateUserStatusNameFilter_EmptyUserStatusName() {
+        try {
+            mappedUserFilterFactory.createUserStatusNameFilter("");
+            fail("expect throw IllegalArgumentException.");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for <code>{@link MappedUserFilterFactory#createUserStatusNameFilter(String)}</code> method.
+     * </p>
+     */
+    public void testCreateUserStatusNameFilter_TrimmedEmptyUserStatusName() {
+        try {
+            mappedUserFilterFactory.createUserStatusNameFilter(" ");
             fail("expect throw IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expected

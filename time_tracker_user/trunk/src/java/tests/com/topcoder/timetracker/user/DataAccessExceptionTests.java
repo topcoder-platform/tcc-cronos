@@ -13,11 +13,11 @@ import junit.framework.Test;
  * </p>
  *
  * <p>
- * This class is pretty simple. The test cases simply verifies the exception can be instantiated with the error message
- * and cause properly propagated, and that it comes with correct inheritance.
+ * This class is pretty simple. The test cases simply verifies the exception can be instantiated with the error
+ * message and cause properly propagated, and that it comes with correct inheritance.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author biotrail
  * @version 3.2
  */
 public class DataAccessExceptionTests extends TestCase {
@@ -58,7 +58,8 @@ public class DataAccessExceptionTests extends TestCase {
     public void testDataAccessException1() {
         DataAccessException exception = new DataAccessException(ERROR_MESSAGE);
         assertNotNull("Unable to instantiate DataAccessException.", exception);
-        assertEquals("Error message is not properly propagated to super class.", ERROR_MESSAGE, exception.getMessage());
+        assertEquals("Error message is not properly propagated to super class.", ERROR_MESSAGE, exception
+            .getMessage());
     }
 
     /**
@@ -75,7 +76,8 @@ public class DataAccessExceptionTests extends TestCase {
 
         assertNotNull("Unable to instantiate DataAccessException.", exception);
         assertTrue("The error message should match", exception.getMessage().indexOf(ERROR_MESSAGE) >= 0);
-        assertEquals("Cause is not properly propagated to super class.", CAUSE_EXCEPTION, exception.getCause());
+        assertEquals("Cause is not properly propagated to super class.", CAUSE_EXCEPTION, exception
+            .getCause());
     }
 
     /**

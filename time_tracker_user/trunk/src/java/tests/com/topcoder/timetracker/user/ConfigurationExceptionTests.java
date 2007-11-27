@@ -13,11 +13,11 @@ import junit.framework.Test;
  * </p>
  *
  * <p>
- * This class is pretty simple. The test cases simply verifies the exception can be instantiated with the error message
- * and cause properly propagated, and that it comes with correct inheritance.
+ * This class is pretty simple. The test cases simply verifies the exception can be instantiated with the error
+ * message and cause properly propagated, and that it comes with correct inheritance.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author biotrail
  * @version 3.2
  */
 public class ConfigurationExceptionTests extends TestCase {
@@ -58,7 +58,8 @@ public class ConfigurationExceptionTests extends TestCase {
     public void testConfigurationException1() {
         ConfigurationException exception = new ConfigurationException(ERROR_MESSAGE);
         assertNotNull("Unable to instantiate ConfigurationException.", exception);
-        assertEquals("Error message is not properly propagated to super class.", ERROR_MESSAGE, exception.getMessage());
+        assertEquals("Error message is not properly propagated to super class.", ERROR_MESSAGE, exception
+            .getMessage());
     }
 
     /**
@@ -75,7 +76,8 @@ public class ConfigurationExceptionTests extends TestCase {
 
         assertNotNull("Unable to instantiate ConfigurationException.", exception);
         assertTrue("The error message should match", exception.getMessage().indexOf(ERROR_MESSAGE) >= 0);
-        assertEquals("Cause is not properly propagated to super class.", CAUSE_EXCEPTION, exception.getCause());
+        assertEquals("Cause is not properly propagated to super class.", CAUSE_EXCEPTION, exception
+            .getCause());
     }
 
     /**

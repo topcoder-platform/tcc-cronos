@@ -3,12 +3,11 @@
  */
 package com.topcoder.timetracker.user.accuracytests;
 
+import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.Test;
 
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
-import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.authorization.AuthorizationPersistence;
 import com.topcoder.security.authorization.persistence.SQLAuthorizationPersistence;
@@ -26,9 +25,10 @@ import com.topcoder.timetracker.user.filterfactory.MappedUserFilterFactory;
  * <p>
  * Accuracy Unit test cases for DbUserDAO.
  * </p>
- *
  * @author victorsam
  * @version 3.2
+ * @author Chenhong
+ * @version 3.2.1
  */
 public class DbUserDAOAccuracyTests extends TestCase {
     /**
@@ -42,31 +42,33 @@ public class DbUserDAOAccuracyTests extends TestCase {
      * <p>
      * Setup test environment.
      * </p>
-     * @throws Exception to JUnit
-     *
+     * @throws Exception
+     *             to JUnit
      */
     protected void setUp() throws Exception {
         AccuracyTestHelper.loadXMLConfig(AccuracyTestHelper.CONFIG_FILE);
+        AccuracyTestHelper.loadXMLConfig(AccuracyTestHelper.CONFIG_FILE_ADD);
         AccuracyTestHelper.setUpDataBase();
 
-        DBConnectionFactory dbFactory = new DBConnectionFactoryImpl(AccuracyTestHelper.DB_FACTORY_NAMESPACE);
+        DBConnectionFactory dbFactory = AccuracyTestHelper.getDBConnectionFactory();
         AuditManager auditManager = new MockAuditManager();
         ContactManager contactManager = new MockContactManager();
         AuthorizationPersistence authPersistence = new SQLAuthorizationPersistence(
-            "com.topcoder.timetracker.application.authorization");
+                "com.topcoder.timetracker.application.authorization");
         AddressManager addressManager = new MockAddressManager();
 
         instance = new DbUserDAO(dbFactory, "tt_user", "com.topcoder.timetracker.user.User",
-            "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
-            authPersistence, addressManager, true);
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
+                authPersistence, addressManager, AccuracyTestHelper.getUserStatusDAO(), AccuracyTestHelper
+                        .getUserTypeDAO(), true);
     }
 
     /**
      * <p>
      * Tears down test environment.
      * </p>
-     * @throws Exception to JUnit
-     *
+     * @throws Exception
+     *             to JUnit
      */
     protected void tearDown() throws Exception {
         instance = null;
@@ -79,7 +81,6 @@ public class DbUserDAOAccuracyTests extends TestCase {
      * <p>
      * Return all tests.
      * </p>
-     *
      * @return all tests
      */
     public static Test suite() {
@@ -110,8 +111,8 @@ public class DbUserDAOAccuracyTests extends TestCase {
      * <p>
      * Tests DbUserDAO#searchUsers(Filter) for accuracy.
      * </p>
-     *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testSearchUsers() throws Exception {
         Filter filter = instance.getUserFilterFactory().createUsernameFilter(StringMatchType.ENDS_WITH, "admin");
@@ -130,14 +131,14 @@ public class DbUserDAOAccuracyTests extends TestCase {
      * <p>
      * Tests DbUserDAO#addUsers(User[],boolean) for accuracy.
      * </p>
-     *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testAddUsers() throws Exception {
         User user = AccuracyTestHelper.createUser();
-        instance.addUsers(new User[] {user}, true);
-
-        User actualUser = instance.getUsers(new long[] {user.getId()})[0];
+        instance.addUsers(new User[] { user }, true);
+        User actualUser = instance.getUsers(new long[] { user.getId() })[0];
+        System.out.println(actualUser);
         AccuracyTestHelper.assertUserEquals(user, actualUser);
     }
 
@@ -145,17 +146,21 @@ public class DbUserDAOAccuracyTests extends TestCase {
      * <p>
      * Tests DbUserDAO#updateUsers(User[],boolean) for accuracy.
      * </p>
-     *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testUpdateUsers() throws Exception {
         User user = AccuracyTestHelper.createUser();
-        instance.addUsers(new User[] {user}, true);
+        instance.addUsers(new User[] { user }, true);
         user.setUsername("new");
         user.setStatus(Status.LOCKED);
-        instance.updateUsers(new User[] {user}, true);
+        try {
+        instance.updateUsers(new User[] { user }, true);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        User actualUser = instance.getUsers(new long[] {user.getId()})[0];
+        User actualUser = instance.getUsers(new long[] { user.getId() })[0];
         AccuracyTestHelper.assertUserEquals(user, actualUser);
     }
 
@@ -163,13 +168,13 @@ public class DbUserDAOAccuracyTests extends TestCase {
      * <p>
      * Tests DbUserDAO#removeUsers(long[],boolean) for accuracy.
      * </p>
-     *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testRemoveUsers() throws Exception {
         User user = AccuracyTestHelper.createUser();
-        instance.addUsers(new User[] {user}, true);
-        instance.removeUsers(new long[] {user.getId()}, true);
+        instance.addUsers(new User[] { user }, true);
+        instance.removeUsers(new long[] { user.getId() }, true);
 
         User[] users = instance.getAllUsers();
         for (int i = 0; i < users.length; i++) {
@@ -183,11 +188,11 @@ public class DbUserDAOAccuracyTests extends TestCase {
      * <p>
      * Tests DbUserDAO#getUsers(long[]) for accuracy.
      * </p>
-     *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testGetUsers() throws Exception {
-        User user = instance.getUsers(new long[] {1})[0];
+        User user = instance.getUsers(new long[] { 1 })[0];
 
         assertEquals("The user names are not equals.", "admin", user.getUsername());
         assertEquals("The passwords are not equals.", "tc_super", user.getPassword());
@@ -201,8 +206,8 @@ public class DbUserDAOAccuracyTests extends TestCase {
      * <p>
      * Tests DbUserDAO#getAllUsers() for accuracy.
      * </p>
-     *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testGetAllUsers() throws Exception {
         User[] users = instance.getAllUsers();

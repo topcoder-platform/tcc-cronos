@@ -10,7 +10,7 @@ import javax.transaction.UserTransaction;
  * Mock implementation of <code>UserTransaction</code>.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author biotrail
  * @version 3.2
  */
 public class MockUserTransaction implements UserTransaction {

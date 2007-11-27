@@ -26,6 +26,8 @@ import com.topcoder.timetracker.user.filterfactory.MappedUserFilterFactory;
  *
  * @author victorsam
  * @version 3.2
+ * @author Chenhong
+ * @version 3.2.1
  */
 public class MappedUserFilterFactoryAccuracyTests extends TestCase {
     /**
@@ -60,6 +62,11 @@ public class MappedUserFilterFactoryAccuracyTests extends TestCase {
         columnNames.put(MappedUserFilterFactory.ZIPCODE_COLUMN_NAME, "zip_code");
         columnNames.put(MappedUserFilterFactory.COMPANY_ID_COLUMN_NAME, "country_name_id");
         columnNames.put(MappedUserFilterFactory.STATUS_COLUMN_NAME, "account_status_id");
+        
+        columnNames.put(MappedUserFilterFactory.USER_STATUS_NAME_COLUMN_NAME, "user_status_name");
+        columnNames.put(MappedUserFilterFactory.USER_STATUS_ID_COLUMN_NAME, "11");
+        columnNames.put(MappedUserFilterFactory.USER_TYPE_ID_COLUMN_NAME, "1");
+        columnNames.put(MappedUserFilterFactory.USER_TYPE_NAME_COLUMN_NAME, "user_type_name");
 
         instance = new MappedUserFilterFactory(columnNames);
     }
@@ -216,5 +223,46 @@ public class MappedUserFilterFactoryAccuracyTests extends TestCase {
         EqualToFilter filter = (EqualToFilter) instance.createStatusFilter(Status.INACTIVE);
         assertEquals("Failed to create status filter.", "account_status_id", filter.getName());
     }
+
+    /**
+     * <p>
+     * Tests MappedUserFilterFactory#createUserStatusIdFilter(long userStatusId) for accuracy.
+     * </p>
+     */
+    public void testCreateUserStatusIdFilter() {
+        EqualToFilter filter = (EqualToFilter) instance.createUserStatusIdFilter(11);
+        assertEquals("Equal to", "11", filter.getName());
+    }
+
+    /**
+     * <p>
+     * Tests MappedUserFilterFactory#createUserStatusNameFilter(String userStatusName) for accuracy.
+     * </p>
+     */
+    public void testCreateUserStatusNameFilter() {
+        EqualToFilter filter = (EqualToFilter) instance.createUserStatusNameFilter("user_status_name");
+        assertEquals("Equal to", "user_status_name", filter.getName());
+    }
+
+    /**
+     * <p>
+     * Tests MappedUserFilterFactory#createUserTypeNameFilter(String userTypeName) for accuracy.
+     * </p>
+     */
+    public void testCreateUserTypeNameFilter() {
+        EqualToFilter filter = (EqualToFilter) instance.createUserTypeNameFilter("user_type_name");
+        assertEquals("Equal is expected", "user_type_name", filter.getName());
+    }
+
+    /**
+     * <p>
+     * Tests MappedUserFilterFactory#Filter createUserTypeIdFilter(long userTypeId) for accuracy.
+     * </p>
+     */
+    public void testCreateUserTypeIdFilter() {
+        EqualToFilter filter = (EqualToFilter) instance.createUserTypeIdFilter(1);
+        assertEquals("Equal is expected", "1", filter.getName());
+    }
+    
 
 }

@@ -11,6 +11,8 @@ import com.topcoder.timetracker.contact.Address;
 import com.topcoder.timetracker.contact.Contact;
 import com.topcoder.timetracker.user.Status;
 import com.topcoder.timetracker.user.User;
+import com.topcoder.timetracker.user.UserStatus;
+import com.topcoder.timetracker.user.UserType;
 
 /**
  * <p>
@@ -19,6 +21,8 @@ import com.topcoder.timetracker.user.User;
  *
  * @author victorsam
  * @version 3.2
+ * @author Chenhong
+ * @version 3.2.1
  */
 public class UserAccuracyTests extends TestCase {
     /**
@@ -211,5 +215,45 @@ public class UserAccuracyTests extends TestCase {
         instance.setAddress(address);
         assertSame("Failed to set the address.", address, instance.getAddress());
     }
-
+    
+    /**
+     * Test method getUserStatus.
+     *
+     */
+    public void testGetUserStatus() {
+        assertNull(instance.getUserStatus());
+    }
+    
+    /**
+     * Test method setUserStatus.
+     *
+     */
+    public void testSetUserStatus() {
+        UserStatus status = new UserStatus();
+        status.setCompanyId(10);
+        
+        instance.setUserStatus(status);
+        
+        assertEquals(status, instance.getUserStatus());
+    }
+    
+    /**
+     * Test method getUserType.
+     *
+     */
+    public void testGetUserType() {
+        assertNull(instance.getUserType());
+    }
+    
+    /**
+     * Test method setUserType.
+     *
+     */
+    public void testSetUserType() {
+        UserType type = new UserType();
+        type.setCreationUser("user");
+        
+        instance.setUserType(type);
+        assertEquals(type, instance.getUserType());
+    }
 }

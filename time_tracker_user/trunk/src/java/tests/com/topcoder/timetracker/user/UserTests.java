@@ -3,6 +3,9 @@
  */
 package com.topcoder.timetracker.user;
 
+import java.lang.reflect.Field;
+
+import com.topcoder.timetracker.common.TimeTrackerBean;
 import com.topcoder.timetracker.contact.Address;
 import com.topcoder.timetracker.contact.Contact;
 
@@ -15,8 +18,9 @@ import junit.framework.Test;
  * Unit test cases for User.
  * </p>
  *
- * @author TCSDEVELOPER
- * @version 3.2
+ * @author biotrail, enefem21
+ * @version 3.2.1
+ * @since 3.2
  */
 public class UserTests extends TestCase {
     /**
@@ -98,7 +102,7 @@ public class UserTests extends TestCase {
             user.setPassword(null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -116,7 +120,7 @@ public class UserTests extends TestCase {
             user.setPassword(" ");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -162,7 +166,7 @@ public class UserTests extends TestCase {
             user.setUsername(null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -180,7 +184,7 @@ public class UserTests extends TestCase {
             user.setUsername(" ");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -226,7 +230,7 @@ public class UserTests extends TestCase {
             user.setCompanyId(-8);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -274,7 +278,7 @@ public class UserTests extends TestCase {
             user.setContact(null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -334,7 +338,7 @@ public class UserTests extends TestCase {
             user.setAlgorithmName(" ");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -409,7 +413,7 @@ public class UserTests extends TestCase {
             user.setStatus(null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -442,8 +446,70 @@ public class UserTests extends TestCase {
             user.setAddress(null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
+    }
+
+    /**
+     * Test <code>getUserStatus</code> for accuracy. Condition: normal. Expect: returned value is as expected.
+     */
+    public void testGetUserStatusAccuracy() {
+        UserStatus userStatus = new UserStatus();
+        user.setUserStatus(userStatus);
+
+        assertEquals("Returned value is not as expected", userStatus, user.getUserStatus());
+    }
+
+    /**
+     * Test <code>setUserStatus</code> for accuracy. Condition: normal. Expect: the field is set as expected.
+     *
+     * @throws Exception
+     *             to JUnit
+     */
+    public void testSetUserStatusAccuracy() throws Exception {
+        UserStatus userStatus = new UserStatus();
+        user.setUserStatus(userStatus);
+
+        // check the userStatus fields
+        Field userStatusField = User.class.getDeclaredField("userStatus");
+        userStatusField.setAccessible(true);
+        assertEquals("The field is not set as expected", userStatus, userStatusField.get(user));
+
+        // check the changed fields
+        Field changedField = TimeTrackerBean.class.getDeclaredField("changed");
+        changedField.setAccessible(true);
+        assertEquals("The field is not set as expected", Boolean.TRUE, changedField.get(user));
+    }
+
+    /**
+     * Test <code>getUserType</code> for accuracy. Condition: normal. Expect: returned value is as expected.
+     */
+    public void testGetUserTypeAccuracy() {
+        UserType userType = new UserType();
+        user.setUserType(userType);
+
+        assertEquals("Returned value is not as expected", userType, user.getUserType());
+    }
+
+    /**
+     * Test <code>setUserType</code> for accuracy. Condition: normal. Expect: the field is set as expected.
+     *
+     * @throws Exception
+     *             to JUnit
+     */
+    public void testSetUserTypeAccuracy() throws Exception {
+        UserType userType = new UserType();
+        user.setUserType(userType);
+
+        // check the userType fields
+        Field userTypeField = User.class.getDeclaredField("userType");
+        userTypeField.setAccessible(true);
+        assertEquals("The field is not set as expected", userType, userTypeField.get(user));
+
+        // check the changed fields
+        Field changedField = TimeTrackerBean.class.getDeclaredField("changed");
+        changedField.setAccessible(true);
+        assertEquals("The field is not set as expected", Boolean.TRUE, changedField.get(user));
     }
 
 }

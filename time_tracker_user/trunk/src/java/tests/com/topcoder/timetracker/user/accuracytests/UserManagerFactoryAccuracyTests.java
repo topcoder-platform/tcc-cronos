@@ -16,6 +16,8 @@ import com.topcoder.timetracker.user.UserManagerFactory;
  *
  * @author victorsam
  * @version 3.2
+ * @author Chenhong
+ * @version 3.2.1
  */
 public class UserManagerFactoryAccuracyTests extends TestCase {
 
@@ -27,7 +29,9 @@ public class UserManagerFactoryAccuracyTests extends TestCase {
      *
      */
     protected void setUp() throws Exception {
+        AccuracyTestHelper.clearConfig();
         AccuracyTestHelper.loadXMLConfig(AccuracyTestHelper.CONFIG_FILE);
+        AccuracyTestHelper.loadXMLConfig(AccuracyTestHelper.CONFIG_FILE_ADD);
         AccuracyTestHelper.setUpDataBase();
     }
 
@@ -64,4 +68,19 @@ public class UserManagerFactoryAccuracyTests extends TestCase {
         assertNotNull("Failed to get user manager.", UserManagerFactory.getUserManager());
     }
 
+    /**
+     * Test UserStatusManager getUserStatusManager().
+     * @throws Exception to junit.
+     */
+    public void testGetUserStatusManager() throws Exception {
+        assertNotNull(UserManagerFactory.getUserStatusManager());
+    }
+
+    /**
+     * Test UserTypeManager getUserTypeManager().
+     * @throws Exception to junit.
+     */
+    public void testGetUserTypeManager() throws Exception {
+        assertNotNull(UserManagerFactory.getUserTypeManager());
+    }
 }

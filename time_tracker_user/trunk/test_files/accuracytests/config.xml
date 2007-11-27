@@ -18,6 +18,22 @@
 			<Value>UserManagerLocalHome</Value>
 		</Property>
 	</Config>
+	<Config name="com.topcoder.timetracker.user.j2ee.UserStatusManagerDelegate">
+		<Property name="contextName">
+			<Value>tt_user</Value>
+		</Property>
+		<Property name="localHomeName">
+			<Value>UserStatusManagerLocalHome</Value>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.timetracker.user.j2ee.UserTypeManagerDelegate">
+		<Property name="contextName">
+			<Value>tt_user</Value>
+		</Property>
+		<Property name="localHomeName">
+			<Value>UserTypeManagerLocalHome</Value>
+		</Property>
+	</Config>
 	<Config name="com.topcoder.timetracker.user">
 		<!-- For the ConnectionFactory -->
 		<Property name="DBConnectionFactory:timetracker">
@@ -126,13 +142,132 @@
 					</Property>
 				</Property>
 
-				<!-- UseTransaction parameter for the DAO. -->
+				<!-- DbUserStatusDAO parameter for the DAO. -->
 				<Property name="param9">
+					<Property name="name">
+						<Value>DbUserStatusDAO</Value>
+					</Property>
+				</Property>
+
+				<!-- DbUserTypeDAO parameter for the DAO. -->
+				<Property name="param10">
+					<Property name="name">
+						<Value>DbUserTypeDAO</Value>
+					</Property>
+				</Property>
+
+				<!-- UseTransaction parameter for the DAO. -->
+				<Property name="param11">
 					<Property name="type">
 						<Value>boolean</Value>
 					</Property>
 					<Property name="value">
 						<Value>false</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<!-- DbUserStatusDAO config details -->
+		<Property name="DbUserStatusDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.user.db.DbUserStatusDAO</Value>
+			</Property>
+
+			<Property name="params">
+				<!-- ConnectionFactory parameter for the DAO. -->
+				<Property name="param1">
+					<Property name="name">
+						<Value>DBConnectionFactory:timetracker</Value>
+					</Property>
+				</Property>
+
+				<!-- Connection name parameter for the DAO (we use null). -->
+				<Property name="param2">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+				</Property>
+
+				<!-- Id Generator parameter for the DAO. -->
+				<Property name="param3">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.user.UserStatus</Value>
+					</Property>
+				</Property>
+
+				<!-- Search Bundle Namespace parameter for the DAO. -->
+				<Property name="param4">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.search.builder</Value>
+					</Property>
+				</Property>
+
+				<!-- Search Bundle name parameter for the DAO. -->
+				<Property name="param5">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>UserStatusSearchBundle</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<!--DbUserTypeDAO config details -->
+		<Property name="DbUserTypeDAO">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.user.db.DbUserTypeDAO</Value>
+			</Property>
+
+			<Property name="params">
+				<!-- ConnectionFactory parameter for the DAO. -->
+				<Property name="param1">
+					<Property name="name">
+						<Value>DBConnectionFactory:timetracker</Value>
+					</Property>
+				</Property>
+
+				<!-- Connection name parameter for the DAO (we use null). -->
+				<Property name="param2">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+				</Property>
+
+				<!-- Id Generator parameter for the DAO. -->
+				<Property name="param3">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.user.UserType</Value>
+					</Property>
+				</Property>
+
+				<!-- Search Bundle Namespace parameter for the DAO. -->
+				<Property name="param4">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.search.builder</Value>
+					</Property>
+				</Property>
+
+				<!-- Search Bundle name parameter for the DAO. -->
+				<Property name="param5">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>UserTypeSearchBundle</Value>
 					</Property>
 				</Property>
 			</Property>
@@ -189,6 +324,39 @@
 			</Property>
 		</Property>
 
+
+		<!-- Object Factory definition for UserStatusManager -->
+		<Property name="com/topcoder/timetracker/user/UserStatusManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.user.UserStatusManagerImpl</Value>
+			</Property>
+
+			<Property name="params">
+				<!-- UserStatusDAO for the Manager -->
+				<Property name="param1">
+					<Property name="name">
+						<Value>DbUserStatusDAO</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<!-- Object Factory definition for UserTypeManager -->
+		<Property name="com/topcoder/timetracker/user/UserTypeManager">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.user.UserTypeManagerImpl</Value>
+			</Property>
+
+			<Property name="params">
+				<!-- UserTypeDAO for the Manager -->
+				<Property name="param1">
+					<Property name="name">
+						<Value>DbUserTypeDAO</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
 		<!-- Object Factory definition for UserManager Delegate -->
 		<Property name="UserManager:delegate">
 			<Property name="type">
@@ -202,6 +370,43 @@
 					</Property>
 					<Property name="value">
 						<Value>com.topcoder.timetracker.user.j2ee.UserManagerDelegate</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+		<!-- Object Factory definition for UserStatusManager Delegate -->
+		<Property name="UserStatusManager:delegate">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.user.j2ee.UserStatusManagerDelegate</Value>
+			</Property>
+			<Property name="params">
+				<!-- Namespace for the Manager -->
+				<Property name="param1">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.user.j2ee.UserStatusManagerDelegate</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+
+
+		<!-- Object Factory definition for UserTypeManager Delegate -->
+		<Property name="UserTypeManager:delegate">
+			<Property name="type">
+				<Value>com.topcoder.timetracker.user.j2ee.UserTypeManagerDelegate</Value>
+			</Property>
+			<Property name="params">
+				<!-- Namespace for the Manager -->
+				<Property name="param1">
+					<Property name="type">
+						<Value>java.lang.String</Value>
+					</Property>
+					<Property name="value">
+						<Value>com.topcoder.timetracker.user.j2ee.UserTypeManagerDelegate</Value>
 					</Property>
 				</Property>
 			</Property>
@@ -222,13 +427,13 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 					</Property>
 					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://192.168.1.102:1526/tt_user:informixserver=topcoder</Value>
+						<Value>jdbc:informix-sqli://192.168.1.101:1526/ttu:informixserver=ol_satukubik</Value>
 					</Property>
 					<Property name="user">
 						<Value>informix</Value>
 					</Property>
 					<Property name="password">
-						<Value>810814</Value>
+						<Value>informix2</Value>
 					</Property>
 				</Property>
 			</Property>

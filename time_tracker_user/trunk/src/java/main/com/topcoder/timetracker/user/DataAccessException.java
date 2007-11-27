@@ -18,22 +18,23 @@ import com.topcoder.util.errorhandling.BaseException;
  * Thread-Safety: This class is thread safe as it has no state and its super class is also thread safe.
  * </p>
  *
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, biotrail
  * @version 3.2
  */
 public class DataAccessException extends BaseException {
 
-	/**
-	 * Automatically generated unique ID for use with serialization.
-	 */
-	private static final long serialVersionUID = 3273871500371924510L;
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = 3273871500371924510L;
 
-	/**
+    /**
      * <p>
      * Constructor accepting a message.
      * </p>
      *
-     * @param message The message of the exception.
+     * @param message
+     *            The message of the exception.
      */
     public DataAccessException(String message) {
         super(message);
@@ -44,8 +45,10 @@ public class DataAccessException extends BaseException {
      * Constructor accepting a message and cause.
      * </p>
      *
-     * @param message The message of the exception.
-     * @param cause The cause of the exception.
+     * @param message
+     *            The message of the exception.
+     * @param cause
+     *            The cause of the exception.
      */
     public DataAccessException(String message, Throwable cause) {
         super(message, cause);

@@ -12,7 +12,7 @@ import junit.framework.Test;
  * Unit test cases for Status.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author biotrail
  * @version 3.2
  */
 public class StatusTests extends TestCase {
@@ -37,9 +37,9 @@ public class StatusTests extends TestCase {
      * </p>
      */
     public void testGetName() {
-        assertEquals("Failed to get the name correctly.", "active", Status.ACTIVE.getName());
-        assertEquals("Failed to get the name correctly.", "inactive", Status.INACTIVE.getName());
-        assertEquals("Failed to get the name correctly.", "locked", Status.LOCKED.getName());
+        assertEquals("Failed to get the name correctly.", "Active", Status.ACTIVE.getName());
+        assertEquals("Failed to get the name correctly.", "Inactive", Status.INACTIVE.getName());
+        assertEquals("Failed to get the name correctly.", "Locked", Status.LOCKED.getName());
     }
 
     /**
@@ -52,9 +52,9 @@ public class StatusTests extends TestCase {
      * </p>
      */
     public void testToString() {
-        assertEquals("Failed to return the value correctly.", "active", Status.ACTIVE.toString());
-        assertEquals("Failed to return the value correctly.", "inactive", Status.INACTIVE.toString());
-        assertEquals("Failed to return the value correctly.", "locked", Status.LOCKED.toString());
+        assertEquals("Failed to return the value correctly.", "Active", Status.ACTIVE.toString());
+        assertEquals("Failed to return the value correctly.", "Inactive", Status.INACTIVE.toString());
+        assertEquals("Failed to return the value correctly.", "Locked", Status.LOCKED.toString());
     }
 
     /**
@@ -69,7 +69,7 @@ public class StatusTests extends TestCase {
     public void testGetId() {
         assertEquals("Failed to get the id correctly.", 1, Status.ACTIVE.getId());
         assertEquals("Failed to get the id correctly.", 0, Status.INACTIVE.getId());
-        assertEquals("Failed to get the id correctly.", 2, Status.LOCKED.getId());
+        assertEquals("Failed to get the id correctly.", 3, Status.LOCKED.getId());
     }
 
 }

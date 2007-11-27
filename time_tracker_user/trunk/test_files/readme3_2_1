@@ -1,0 +1,46 @@
+List of changes:
+
+1. I do so many enhancement to the code (both old code and the new code).
+   Redundancies are removed and thus, several utility classes are
+   introduced.
+
+2. I made some changes to the method signatures, especially in throw
+   documentation as the thread in the forum and also some others which
+   are not mentioned in the forum. I have good reasons and the old code
+   supports my reason. I don't ask this in the forum for my advantage.
+
+3. As ivern stated:
+   - version is only changed in the modified classes, those are classes
+     that are new or updated in the new design, or classes that are
+     modified due to refactoring. Small changes doesn't count
+   - since is only added to the modified classes with the same rule as
+     above
+   - since is also added to new methods in old classes. Methods in new
+     classes doesn't need any since information since the information
+     is already included in the class.
+   - I added the new designer to all classes that he marks as new or
+     updated in his design
+   - I added TCSDEVELOPER to all classes that I modify (including the
+     one changed for refactoring) and also to utility classes
+
+     http://forums.topcoder.com/?module=Thread&threadID=583067&start=0
+     http://forums.topcoder.com/?module=Thread&threadID=515526&start=0&mc=9
+     http://forums.topcoder.com/?module=Thread&threadID=574211&start=0
+
+4. The tests documentation is also done with the same rule
+
+5. Accuracy, failure and stress tests are not included. I remember this
+   is stated in forum that it is reviewers job to include them (if they
+   want to reuse them).
+
+   http://forums.topcoder.com/?module=Thread&threadID=574211&start=0
+
+6. As also mentioned in the forum, since there is a parent child
+   relation in the exceptions, developers only have to mention the
+   parent in the method signature and mention ALL exceptions in the
+   documentation.
+
+   http://forums.topcoder.com/?module=Thread&threadID=576282&start=0&mc=2#807816
+
+7. Queries in DbUserDAO (including CONTEXT -- for search strategy) is
+   updated to reflect the additional columns

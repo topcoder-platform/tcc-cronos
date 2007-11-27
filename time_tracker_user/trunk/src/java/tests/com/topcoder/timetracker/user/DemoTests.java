@@ -4,6 +4,7 @@
 package com.topcoder.timetracker.user;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.naming.Context;
@@ -24,6 +25,10 @@ import com.topcoder.timetracker.audit.AuditManager;
 import com.topcoder.timetracker.contact.AddressManager;
 import com.topcoder.timetracker.contact.ContactManager;
 import com.topcoder.timetracker.user.db.DbUserDAO;
+import com.topcoder.timetracker.user.db.DbUserStatusDAO;
+import com.topcoder.timetracker.user.db.DbUserTypeDAO;
+import com.topcoder.timetracker.user.filterfactory.UserStatusFilterFactory;
+import com.topcoder.timetracker.user.filterfactory.UserTypeFilterFactory;
 import com.topcoder.timetracker.user.j2ee.MockUserTransaction;
 import com.topcoder.timetracker.user.j2ee.UserManagerDelegate;
 import com.topcoder.timetracker.user.j2ee.UserManagerLocal;
@@ -39,10 +44,12 @@ import junit.framework.TestSuite;
  * The unit test class is used for component demonstration.
  * </p>
  *
- * @author TCSDEVELOPER
- * @version 3.2
+ * @author biotrail, enefem21
+ * @version 3.2.1
+ * @since 3.2
  */
 public class DemoTests extends TestCase {
+
     /**
      * <p>
      * The AuthorizationPersistence instance for testing.
@@ -55,13 +62,16 @@ public class DemoTests extends TestCase {
      * Setup test environment.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     protected void setUp() throws Exception {
         TestHelper.loadXMLConfig(TestHelper.CONFIG_FILE);
+        TestHelper.loadXMLConfig(TestHelper.CONFIG_FILE_3_2_1);
         TestHelper.setUpDataBase();
 
-        authPersistence = new SQLAuthorizationPersistence("com.topcoder.timetracker.application.authorization");
+        authPersistence =
+            new SQLAuthorizationPersistence("com.topcoder.timetracker.application.authorization");
     }
 
     /**
@@ -69,7 +79,8 @@ public class DemoTests extends TestCase {
      * Tears down test environment.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     protected void tearDown() throws Exception {
         TestHelper.tearDownDataBase();
@@ -91,24 +102,31 @@ public class DemoTests extends TestCase {
 
     /**
      * <p>
-     * This test case demonstrates the usage of when the <code>UserManager</code> is used to access
-     * directly.
+     * This test case demonstrates the usage of when the <code>UserManager</code> is used to access directly.
      * </p>
      *
      * <p>
      * The CRUD, search, authorization operations are shown.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testDemo1() throws Exception {
         DBConnectionFactory dbFactory = new DBConnectionFactoryImpl(TestHelper.DB_FACTORY_NAMESPACE);
         AuditManager auditManager = new MockAuditManager();
         ContactManager contactManager = new MockContactManager();
         AddressManager addressManager = new MockAddressManager();
-        UserDAO dao = new DbUserDAO(dbFactory, "tt_user", "com.topcoder.timetracker.user.User",
-            "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
-            authPersistence, addressManager, true);
+        UserStatusDAO userStatusDAO =
+            new DbUserStatusDAO(dbFactory, "tt_user", "com.topcoder.timetracker.user.UserStatus",
+                "com.topcoder.search.builder", "userStatusSearchBundle");
+        UserTypeDAO userTypeDAO =
+            new DbUserTypeDAO(dbFactory, "tt_user", "com.topcoder.timetracker.user.UserType",
+                "com.topcoder.search.builder", "userTypeSearchBundle");
+        UserDAO dao =
+            new DbUserDAO(dbFactory, "tt_user", "com.topcoder.timetracker.user.User",
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
+                authPersistence, addressManager, userStatusDAO, userTypeDAO, true);
 
         // Create a UserManager using the DB DAOs, AuthPersistence and User Authenticator.
         UserManager userManager = new UserManagerImpl(dao, authPersistence, "Default_TT_UserAuthenticator");
@@ -118,19 +136,21 @@ public class DemoTests extends TestCase {
 
     /**
      * <p>
-     * This test case demonstrates the usage of when the <code>UserManager</code> to access is
-     * inside an EJB container.
+     * This test case demonstrates the usage of when the <code>UserManager</code> to access is inside an EJB
+     * container.
      * </p>
      *
      * <p>
      * The CRUD, search, authorization operations are shown.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testDemo2() throws Exception {
-        /* We need to set MockContextFactory as our JNDI provider.
-         * This method sets the necessary system properties.
+        /*
+         * We need to set MockContextFactory as our JNDI provider. This method sets the necessary system
+         * properties.
          */
         MockContextFactory.setAsInitial();
 
@@ -144,17 +164,18 @@ public class DemoTests extends TestCase {
         MockUserTransaction mockTransaction = new MockUserTransaction();
         context.rebind("javax.transaction.UserTransaction", mockTransaction);
 
-        /* Create deployment descriptor of our sample bean.
-         * MockEjb uses it instead of XML deployment descriptors
+        /*
+         * Create deployment descriptor of our sample bean. MockEjb uses it instead of XML deployment descriptors
          */
-        SessionBeanDescriptor sampleServiceDescriptor = new SessionBeanDescriptor("UserManagerLocalHome",
-            UserManagerLocalHome.class, UserManagerLocal.class, new UserManagerSessionBean());
+        SessionBeanDescriptor sampleServiceDescriptor =
+            new SessionBeanDescriptor("UserManagerLocalHome", UserManagerLocalHome.class,
+                UserManagerLocal.class, new UserManagerSessionBean());
         // Deploy operation creates Home and binds it to JNDI
         mockContainer.deploy(sampleServiceDescriptor);
 
         // 4.3.5 Creating a Delegate
-        UserManager userManagerDelegate = new UserManagerDelegate(
-            "com.topcoder.timetracker.user.j2ee.UserManagerDelegate");
+        UserManager userManagerDelegate =
+            new UserManagerDelegate("com.topcoder.timetracker.user.j2ee.UserManagerDelegate");
 
         demoUserManager(userManagerDelegate);
     }
@@ -165,9 +186,11 @@ public class DemoTests extends TestCase {
      * instance.
      * </p>
      *
-     * @param userManager a <code>UserManager</code> instance to perform the actions
+     * @param userManager
+     *            a <code>UserManager</code> instance to perform the actions
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     private void demoUserManager(UserManager userManager) throws Exception {
         // 4.3.1 Creating a new User
@@ -233,5 +256,140 @@ public class DemoTests extends TestCase {
 
         // Authenticate a username/password combination.
         userManager.authenticateUser("TCSDESIGNER", "TCSPASSWORD");
+    }
+
+    /**
+     * <p>
+     * This test case demonstrates the usage of when the <code>UserStatusManager</code> is used to access
+     * directly.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
+     * @since 3.2.1
+     */
+    public void testDemo3() throws Exception {
+        DBConnectionFactory dbFactory = new DBConnectionFactoryImpl(TestHelper.DB_FACTORY_NAMESPACE);
+        UserStatusDAO userStatusDAO =
+            new DbUserStatusDAO(dbFactory, "tt_user", "com.topcoder.timetracker.user.UserStatus",
+                "com.topcoder.search.builder", "userStatusSearchBundle");
+
+        UserStatusManager manager = new UserStatusManagerImpl(userStatusDAO);
+
+        // creates new user status
+        UserStatus userStatus = new UserStatus();
+        userStatus.setDescription("description");
+        userStatus.setCompanyId(10);
+        userStatus.setCreationUser("test");
+        userStatus.setModificationUser("test");
+        userStatus.setCreationDate(new Date());
+        userStatus.setModificationDate(new Date());
+
+        // adds to persistence
+        manager.createUserStatus(userStatus);
+
+        // removes it
+        manager.removeUserStatus(userStatus.getId());
+
+        userStatus = new UserStatus();
+        userStatus.setDescription("description");
+        userStatus.setCompanyId(10);
+        userStatus.setCreationUser("test");
+        userStatus.setModificationUser("test");
+        userStatus.setCreationDate(new Date());
+        userStatus.setModificationDate(new Date());
+
+        // adds it again using batch method
+        manager.addUserStatuses(new UserStatus[] {userStatus});
+
+        // updates it
+        userStatus.setCompanyId(5);
+        manager.updateUserStatus(userStatus);
+
+        // updates using batch method
+        userStatus.setDescription("update");
+        manager.updateUserStatuses(new UserStatus[] {userStatus});
+
+        // retrieves it
+        UserStatus us = manager.getUserStatus(userStatus.getId());
+
+        // retrieves with batch method
+        UserStatus[] uss1 = manager.getUserStatuses(new long[] {userStatus.getId()});
+
+        // searches it with filter
+        UserStatus[] uss2 = manager.searchUserStatuses(UserStatusFilterFactory.createCompanyIdFilter(5));
+
+        // retrieves all
+        UserStatus[] uss3 = manager.getAllUserStatuses();
+
+        // removes with batch
+        manager.removeUserStatuses(new long[] {userStatus.getId()});
+    }
+
+    /**
+     * <p>
+     * This test case demonstrates the usage of when the <code>UserTypeManager</code> is used to access directly.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
+     * @since 3.2.1
+     */
+    public void testDemo4() throws Exception {
+        DBConnectionFactory dbFactory = new DBConnectionFactoryImpl(TestHelper.DB_FACTORY_NAMESPACE);
+        UserTypeDAO userTypeDAO =
+            new DbUserTypeDAO(dbFactory, "tt_user", "com.topcoder.timetracker.user.UserType",
+                "com.topcoder.search.builder", "userTypeSearchBundle");
+
+        UserTypeManager manager = new UserTypeManagerImpl(userTypeDAO);
+
+        // creates new user status
+        UserType userType = new UserType();
+        userType.setDescription("description");
+        userType.setCompanyId(10);
+        userType.setCreationUser("test");
+        userType.setModificationUser("test");
+        userType.setCreationDate(new Date());
+        userType.setModificationDate(new Date());
+
+        // adds to persistence
+        manager.createUserType(userType);
+
+        // removes it
+        manager.removeUserType(userType.getId());
+
+        userType = new UserType();
+        userType.setDescription("description");
+        userType.setCompanyId(10);
+        userType.setCreationUser("test");
+        userType.setModificationUser("test");
+        userType.setCreationDate(new Date());
+        userType.setModificationDate(new Date());
+
+        // adds it again using batch method
+        manager.addUserTypes(new UserType[] {userType});
+
+        // updates it
+        userType.setCompanyId(5);
+        manager.updateUserType(userType);
+
+        // updates using batch method
+        userType.setDescription("update");
+        manager.updateUserTypes(new UserType[] {userType});
+
+        // retrieves it
+        UserType ut = manager.getUserType(userType.getId());
+
+        // retrieves with batch method
+        UserType[] uts1 = manager.getUserTypes(new long[] {userType.getId()});
+
+        // searches it with filter
+        UserType[] usts2 = manager.searchUserTypes(UserTypeFilterFactory.createCompanyIdFilter(5));
+
+        // retrieves all
+        UserType[] ust3 = manager.getAllUserTypes();
+
+        // removes with batch
+        manager.removeUserTypes(new long[] {userType.getId()});
     }
 }

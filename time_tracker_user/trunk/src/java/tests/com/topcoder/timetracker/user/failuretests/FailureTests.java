@@ -11,6 +11,7 @@ import junit.framework.TestSuite;
  * <p>
  * This test case aggregates all Failure test cases.
  * </p>
+ *
  * @author TopCoder
  * @version 1.0
  */
@@ -20,18 +21,33 @@ public class FailureTests extends TestCase {
      * <p>
      * Aggregates all failure tests.
      * </p>
+     *
      * @return test suite aggregating all tests.
      */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
         suite.addTestSuite(UserFailureTests.class);
+        suite.addTestSuite(UserStatusFailureTests.class);
+        suite.addTestSuite(UserTypeFailureTests.class);
+
+        suite.addTestSuite(UserStatusManagerImplFailureTests.class);
+        suite.addTestSuite(UserTypeManagerImplFailureTests.class);
+
         suite.addTestSuite(UserAuthenticatorFailureTests.class);
         suite.addTestSuite(UserManagerFactoryFailureTests.class);
-        suite.addTestSuite(UserManagerImplFailureTests.class);
+
         suite.addTestSuite(MappedBaseFilterFactoryFailureTests.class);
         suite.addTestSuite(MappedUserFilterFactoryFailureTests.class);
-        suite.addTestSuite(DbUserDAOFailureTests.class);
+        suite.addTestSuite(UserStatusFilterFactoryFailureTests.class);
+        suite.addTestSuite(UserTypeFilterFactoryFailureTests.class);
+
         suite.addTestSuite(UserManagerDelegateFailureTests.class);
+
+        suite.addTestSuite(UserManagerImplFailureTests.class);
+        suite.addTestSuite(DbUserDAOFailureTests.class);
+
+        suite.addTestSuite(DbUserStatusDAOFailureTests.class);
+        suite.addTestSuite(DbUserTypeDAOFailureTests.class);
         return suite;
     }
 

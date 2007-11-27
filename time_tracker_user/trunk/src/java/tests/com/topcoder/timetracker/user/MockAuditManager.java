@@ -12,11 +12,10 @@ import com.topcoder.timetracker.audit.AuditManager;
 
 /**
  * <p>
- * This class implements AuditManager interface.
- * It is only used for testing.
+ * This class implements AuditManager interface. It is only used for testing.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author biotrail
  * @version 3.2
  */
 public class MockAuditManager implements AuditManager {
@@ -32,7 +31,8 @@ public class MockAuditManager implements AuditManager {
      * Creates a audit record for the given <code>AuditHeader</code>.
      * </p>
      *
-     * @param record a <code>AuditHeader</code> instance
+     * @param record
+     *            a <code>AuditHeader</code> instance
      */
     public void createAuditRecord(AuditHeader record) {
         auditHeaders.add(record);
@@ -43,7 +43,8 @@ public class MockAuditManager implements AuditManager {
      * Not implemented.
      * </p>
      *
-     * @param auditHeaderId not used
+     * @param auditHeaderId
+     *            not used
      * @return false always
      */
     public boolean rollbackAuditRecord(long auditHeaderId) {
@@ -55,7 +56,8 @@ public class MockAuditManager implements AuditManager {
      * Not implemented.
      * </p>
      *
-     * @param filter not used
+     * @param filter
+     *            not used
      * @return an empty array
      */
     public AuditHeader[] searchAudit(Filter filter) {

@@ -20,8 +20,9 @@ import junit.framework.Test;
  * Unit test cases for UserAuthenticator.
  * </p>
  *
- * @author TCSDEVELOPER
- * @version 3.2
+ * @author biotrail, enefem21
+ * @version 3.2.1
+ * @since 3.2
  */
 public class UserAuthenticatorTests extends TestCase {
     /**
@@ -43,10 +44,12 @@ public class UserAuthenticatorTests extends TestCase {
      * Sets up test environment.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     protected void setUp() throws Exception {
         TestHelper.loadXMLConfig(TestHelper.CONFIG_FILE);
+        TestHelper.loadXMLConfig(TestHelper.CONFIG_FILE_3_2_1);
         TestHelper.loadXMLConfig("test_files" + File.separator + "authenticator_invalid_config.xml");
         TestHelper.setUpDataBase();
         user = new UserAuthenticator(NAMESPACE);
@@ -57,7 +60,8 @@ public class UserAuthenticatorTests extends TestCase {
      * Tears down test environment.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     protected void tearDown() throws Exception {
         TestHelper.tearDownDataBase();
@@ -97,14 +101,16 @@ public class UserAuthenticatorTests extends TestCase {
      * <p>
      * It tests the case that when namespace is null and expects IllegalArgumentException.
      * </p>
-     * @throws ConfigurationException to JUnit
+     *
+     * @throws ConfigurationException
+     *             to JUnit
      */
     public void testCtor_NullNamespace() throws ConfigurationException {
         try {
             new UserAuthenticator(null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -116,14 +122,16 @@ public class UserAuthenticatorTests extends TestCase {
      * <p>
      * It tests the case that when namespace is empty and expects IllegalArgumentException.
      * </p>
-     * @throws ConfigurationException to JUnit
+     *
+     * @throws ConfigurationException
+     *             to JUnit
      */
     public void testCtor_EmptyNamespace() throws ConfigurationException {
         try {
             new UserAuthenticator(" ");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -141,7 +149,7 @@ public class UserAuthenticatorTests extends TestCase {
             new UserAuthenticator("unknownNamespace");
             fail("ConfigurationException expected.");
         } catch (ConfigurationException e) {
-            //good
+            // good
         }
     }
 
@@ -151,8 +159,8 @@ public class UserAuthenticatorTests extends TestCase {
      * </p>
      *
      * <p>
-     * It tests the case when the objectFactoryNamespace property is missing and
-     * expects for ConfigurationException.
+     * It tests the case when the objectFactoryNamespace property is missing and expects for
+     * ConfigurationException.
      * </p>
      */
     public void testCtor_ObjectFactoryNamespaceMissing() {
@@ -160,7 +168,7 @@ public class UserAuthenticatorTests extends TestCase {
             new UserAuthenticator("objectFactoryNamespace_missing");
             fail("ConfigurationException expected.");
         } catch (ConfigurationException e) {
-            //good
+            // good
         }
     }
 
@@ -170,8 +178,7 @@ public class UserAuthenticatorTests extends TestCase {
      * </p>
      *
      * <p>
-     * It tests the case when the objectFactoryNamespace property is empty and
-     * expects for ConfigurationException.
+     * It tests the case when the objectFactoryNamespace property is empty and expects for ConfigurationException.
      * </p>
      */
     public void testCtor_ObjectFactoryNamespaceEmpty() {
@@ -179,7 +186,7 @@ public class UserAuthenticatorTests extends TestCase {
             new UserAuthenticator("objectFactoryNamespace_empty");
             fail("ConfigurationException expected.");
         } catch (ConfigurationException e) {
-            //good
+            // good
         }
     }
 
@@ -189,8 +196,8 @@ public class UserAuthenticatorTests extends TestCase {
      * </p>
      *
      * <p>
-     * It tests the case when the objectFactoryNamespace property is invalid and
-     * expects for ConfigurationException.
+     * It tests the case when the objectFactoryNamespace property is invalid and expects for
+     * ConfigurationException.
      * </p>
      */
     public void testCtor_ObjectFactoryNamespaceInvalid() {
@@ -198,7 +205,7 @@ public class UserAuthenticatorTests extends TestCase {
             new UserAuthenticator("objectFactoryNamespace_invalid");
             fail("ConfigurationException expected.");
         } catch (ConfigurationException e) {
-            //good
+            // good
         }
     }
 
@@ -208,8 +215,7 @@ public class UserAuthenticatorTests extends TestCase {
      * </p>
      *
      * <p>
-     * It tests the case when the userDao.classname property is missing and
-     * expects for ConfigurationException.
+     * It tests the case when the userDao.classname property is missing and expects for ConfigurationException.
      * </p>
      */
     public void testCtor_UserDaoClassnameMissing() {
@@ -217,7 +223,7 @@ public class UserAuthenticatorTests extends TestCase {
             new UserAuthenticator("userDao_classname_missing");
             fail("ConfigurationException expected.");
         } catch (ConfigurationException e) {
-            //good
+            // good
         }
     }
 
@@ -227,8 +233,7 @@ public class UserAuthenticatorTests extends TestCase {
      * </p>
      *
      * <p>
-     * It tests the case when the userDao.classname property is empty and
-     * expects for ConfigurationException.
+     * It tests the case when the userDao.classname property is empty and expects for ConfigurationException.
      * </p>
      */
     public void testCtor_UserDaoClassnameEmpty() {
@@ -236,7 +241,7 @@ public class UserAuthenticatorTests extends TestCase {
             new UserAuthenticator("userDao_classname_empty");
             fail("ConfigurationException expected.");
         } catch (ConfigurationException e) {
-            //good
+            // good
         }
     }
 
@@ -246,8 +251,7 @@ public class UserAuthenticatorTests extends TestCase {
      * </p>
      *
      * <p>
-     * It tests the case when the userDao.classname property is invalid and
-     * expects for ConfigurationException.
+     * It tests the case when the userDao.classname property is invalid and expects for ConfigurationException.
      * </p>
      */
     public void testCtor_UserDaoClassnameInvalid() {
@@ -255,7 +259,7 @@ public class UserAuthenticatorTests extends TestCase {
             new UserAuthenticator("userDao_classname_invalid");
             fail("ConfigurationException expected.");
         } catch (ConfigurationException e) {
-            //good
+            // good
         }
     }
 
@@ -265,8 +269,8 @@ public class UserAuthenticatorTests extends TestCase {
      * </p>
      *
      * <p>
-     * It tests the case when the userDao.classname property is not UserDAO type and
-     * expects for ConfigurationException.
+     * It tests the case when the userDao.classname property is not UserDAO type and expects for
+     * ConfigurationException.
      * </p>
      */
     public void testCtor_UserDaoClassnameWrongType() {
@@ -274,7 +278,7 @@ public class UserAuthenticatorTests extends TestCase {
             new UserAuthenticator("userDao_classname_wrong_type");
             fail("ConfigurationException expected.");
         } catch (ConfigurationException e) {
-            //good
+            // good
         }
     }
 
@@ -292,7 +296,7 @@ public class UserAuthenticatorTests extends TestCase {
             new UserAuthenticator("unknown_namespace");
             fail("ConfigurationException expected.");
         } catch (ConfigurationException e) {
-            //good
+            // good
         }
     }
 
@@ -304,7 +308,9 @@ public class UserAuthenticatorTests extends TestCase {
      * <p>
      * It verifies UserAuthenticator#doAuthenticate(Principal) is correct.
      * </p>
-     * @throws AuthenticateException to JUnit
+     *
+     * @throws AuthenticateException
+     *             to JUnit
      */
     public void testDoAuthenticate() throws AuthenticateException {
         Principal principal = new Principal("tc");
@@ -323,7 +329,9 @@ public class UserAuthenticatorTests extends TestCase {
      * <p>
      * It verifies UserAuthenticator#doAuthenticate(Principal) is correct.
      * </p>
-     * @throws AuthenticateException to JUnit
+     *
+     * @throws AuthenticateException
+     *             to JUnit
      */
     public void testDoAuthenticate_WrongPassword() throws AuthenticateException {
         Principal principal = new Principal("tc");
@@ -342,7 +350,9 @@ public class UserAuthenticatorTests extends TestCase {
      * <p>
      * It verifies UserAuthenticator#doAuthenticate(Principal) is correct.
      * </p>
-     * @throws AuthenticateException to JUnit
+     *
+     * @throws AuthenticateException
+     *             to JUnit
      */
     public void testDoAuthenticate_UnknownUser() throws AuthenticateException {
         Principal principal = new Principal("tc");
@@ -361,7 +371,9 @@ public class UserAuthenticatorTests extends TestCase {
      * <p>
      * It tests the case that when principal is null and expects IllegalArgumentException.
      * </p>
-     * @throws AuthenticateException to JUnit
+     *
+     * @throws AuthenticateException
+     *             to JUnit
      */
     public void testDoAuthenticate_UserNameKeyMissing() throws AuthenticateException {
         Principal principal = new Principal("tc");
@@ -371,7 +383,7 @@ public class UserAuthenticatorTests extends TestCase {
             user.doAuthenticate(principal);
             fail("MissingPrincipalKeyException expected.");
         } catch (MissingPrincipalKeyException e) {
-            //good
+            // good
         }
     }
 
@@ -383,7 +395,9 @@ public class UserAuthenticatorTests extends TestCase {
      * <p>
      * It tests the case that when principal is null and expects IllegalArgumentException.
      * </p>
-     * @throws AuthenticateException to JUnit
+     *
+     * @throws AuthenticateException
+     *             to JUnit
      */
     public void testDoAuthenticate_UserNameNonString() throws AuthenticateException {
         Principal principal = new Principal("tc");
@@ -394,7 +408,7 @@ public class UserAuthenticatorTests extends TestCase {
             user.doAuthenticate(principal);
             fail("AuthenticateException expected.");
         } catch (AuthenticateException e) {
-            //good
+            // good
         }
     }
 
@@ -406,7 +420,9 @@ public class UserAuthenticatorTests extends TestCase {
      * <p>
      * It tests the case that when principal is null and expects IllegalArgumentException.
      * </p>
-     * @throws AuthenticateException to JUnit
+     *
+     * @throws AuthenticateException
+     *             to JUnit
      */
     public void testDoAuthenticate_PasswordKeyMissing() throws AuthenticateException {
         Principal principal = new Principal("tc");
@@ -416,7 +432,7 @@ public class UserAuthenticatorTests extends TestCase {
             user.doAuthenticate(principal);
             fail("MissingPrincipalKeyException expected.");
         } catch (MissingPrincipalKeyException e) {
-            //good
+            // good
         }
     }
 
@@ -428,7 +444,9 @@ public class UserAuthenticatorTests extends TestCase {
      * <p>
      * It tests the case that when principal is null and expects IllegalArgumentException.
      * </p>
-     * @throws AuthenticateException to JUnit
+     *
+     * @throws AuthenticateException
+     *             to JUnit
      */
     public void testDoAuthenticate_PasswordNonString() throws AuthenticateException {
         Principal principal = new Principal("tc");
@@ -439,7 +457,7 @@ public class UserAuthenticatorTests extends TestCase {
             user.doAuthenticate(principal);
             fail("AuthenticateException expected.");
         } catch (AuthenticateException e) {
-            //good
+            // good
         }
     }
 }

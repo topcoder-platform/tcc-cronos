@@ -7,8 +7,8 @@ import com.topcoder.util.collection.typesafeenum.Enum;
 
 /**
  * <p>
- * This is an enum that is used by the filter factories for those methods when a <code>String</code>
- * criterion is specified.
+ * This is an enum that is used by the filter factories for those methods when a <code>String</code> criterion is
+ * specified.
  * </p>
  *
  * <p>
@@ -19,15 +19,10 @@ import com.topcoder.util.collection.typesafeenum.Enum;
  * Thread Safety: This class is an enum, and therefor thread-safe.
  * </p>
  *
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, biotrail
  * @version 3.2
  */
 public class StringMatchType extends Enum {
-
-    /**
-     * Automatically generated unique ID for use with serialization.
-     */
-    private static final long serialVersionUID = -2500639364006680362L;
 
     /**
      * <p>
@@ -58,14 +53,19 @@ public class StringMatchType extends Enum {
     public static final StringMatchType EXACT_MATCH = new StringMatchType("");
 
     /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = -2500639364006680362L;
+
+    /**
      * <p>
-     * This is the filter prefix that the Filter Factory should provide to the <code>LikeFilter</code> that
-     * it produces in order to achieve the desired functionality.
+     * This is the filter prefix that the Filter Factory should provide to the <code>LikeFilter</code> that it
+     * produces in order to achieve the desired functionality.
      * </p>
      *
      * <p>
-     * Note, if it is <code>EXACT_MATCH</code>, then <code>EqualToFilter</code> will be used so this prefix
-     * is not needed.
+     * Note, if it is <code>EXACT_MATCH</code>, then <code>EqualToFilter</code> will be used so this prefix is
+     * not needed.
      * </p>
      *
      * <p>
@@ -79,8 +79,9 @@ public class StringMatchType extends Enum {
      * Private constructor that produces a <code>StringMatchType</code> with given prefix.
      * </p>
      *
-     * @param filterPrefix The prefix that the Filter Factory should provide to the <code>LikeFilter</code>,
-     * if it is <code>EXACT_MATCH</code>, then this prefix string is not used.
+     * @param filterPrefix
+     *            The prefix that the Filter Factory should provide to the <code>LikeFilter</code>, if it is
+     *            <code>EXACT_MATCH</code>, then this prefix string is not used.
      */
     private StringMatchType(String filterPrefix) {
         this.filterPrefix = filterPrefix;
@@ -100,8 +101,7 @@ public class StringMatchType extends Enum {
 
     /**
      * <p>
-     * Retrieves the String representation of this match type,
-     * which is equivalent to the filter prefix.
+     * Retrieves the String representation of this match type, which is equivalent to the filter prefix.
      * </p>
      *
      * @return the filter prefix of this match type.

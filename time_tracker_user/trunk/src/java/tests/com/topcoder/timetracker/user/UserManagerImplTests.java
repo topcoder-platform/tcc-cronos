@@ -16,6 +16,8 @@ import com.topcoder.timetracker.audit.AuditManager;
 import com.topcoder.timetracker.contact.AddressManager;
 import com.topcoder.timetracker.contact.ContactManager;
 import com.topcoder.timetracker.user.db.DbUserDAO;
+import com.topcoder.timetracker.user.db.DbUserStatusDAO;
+import com.topcoder.timetracker.user.db.DbUserTypeDAO;
 import com.topcoder.timetracker.user.filterfactory.MappedUserFilterFactory;
 
 import junit.framework.TestCase;
@@ -27,10 +29,12 @@ import junit.framework.Test;
  * Unit test cases for UserManagerImpl.
  * </p>
  *
- * @author TCSDEVELOPER
- * @version 3.2
+ * @author biotrail, enefem21
+ * @version 3.2.1
+ * @since 3.2
  */
 public class UserManagerImplTests extends TestCase {
+
     /**
      * <p>
      * The UserManagerImpl instance for testing.
@@ -75,6 +79,20 @@ public class UserManagerImplTests extends TestCase {
 
     /**
      * <p>
+     * The UserStatusDAO instance for testing.
+     * </p>
+     */
+    private UserStatusDAO userStatusDAO;
+
+    /**
+     * <p>
+     * The UserTypeDAO instance for testing.
+     * </p>
+     */
+    private UserTypeDAO userTypeDAO;
+
+    /**
+     * <p>
      * The DBConnectionFactory instance for testing.
      * </p>
      */
@@ -84,21 +102,31 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * Sets up test environment.
      * </p>
-     * @throws Exception to JUnit
      *
+     * @throws Exception
+     *             to JUnit
      */
     protected void setUp() throws Exception {
         TestHelper.loadXMLConfig(TestHelper.CONFIG_FILE);
+        TestHelper.loadXMLConfig(TestHelper.CONFIG_FILE_3_2_1);
         TestHelper.setUpDataBase();
 
         dbFactory = new DBConnectionFactoryImpl(TestHelper.DB_FACTORY_NAMESPACE);
         auditManager = new MockAuditManager();
         contactManager = new MockContactManager();
-        authPersistence = new SQLAuthorizationPersistence("com.topcoder.timetracker.application.authorization");
+        authPersistence =
+            new SQLAuthorizationPersistence("com.topcoder.timetracker.application.authorization");
         addressManager = new MockAddressManager();
-        dao = new DbUserDAO(dbFactory, "tt_user", "com.topcoder.timetracker.user.User",
-            "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
-            authPersistence, addressManager, true);
+        userStatusDAO =
+            new DbUserStatusDAO(dbFactory, "tt_user", "com.topcoder.timetracker.user.UserStatus",
+                "com.topcoder.search.builder", "userStatusSearchBundle");
+        userTypeDAO =
+            new DbUserTypeDAO(dbFactory, "tt_user", "com.topcoder.timetracker.user.UserType",
+                "com.topcoder.search.builder", "userTypeSearchBundle");
+        dao =
+            new DbUserDAO(dbFactory, "tt_user", "com.topcoder.timetracker.user.User",
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
+                authPersistence, addressManager, userStatusDAO, userTypeDAO, true);
 
         userManager = new UserManagerImpl(dao, authPersistence, "Default_TT_UserAuthenticator");
     }
@@ -107,7 +135,9 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * Tears down test environment.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      *
      */
     protected void tearDown() throws Exception {
@@ -155,14 +185,16 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It tests the case that when userDao is null and expects IllegalArgumentException.
      * </p>
-     * @throws ConfigurationException to JUnit
+     *
+     * @throws ConfigurationException
+     *             to JUnit
      */
     public void testCtor_NullUserDao() throws ConfigurationException {
         try {
             new UserManagerImpl(null, authPersistence, "Default_TT_UserAuthenticator");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -174,14 +206,16 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It tests the case that when authPersistence is null and expects IllegalArgumentException.
      * </p>
-     * @throws ConfigurationException to JUnit
+     *
+     * @throws ConfigurationException
+     *             to JUnit
      */
     public void testCtor_NullAuthPersistence() throws ConfigurationException {
         try {
             new UserManagerImpl(dao, null, "Default_TT_UserAuthenticator");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -193,14 +227,16 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It tests the case that when authenticatorName is null and expects IllegalArgumentException.
      * </p>
-     * @throws ConfigurationException to JUnit
+     *
+     * @throws ConfigurationException
+     *             to JUnit
      */
     public void testCtor_NullAuthenticatorName() throws ConfigurationException {
         try {
             new UserManagerImpl(dao, authPersistence, null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -212,14 +248,16 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It tests the case that when authenticatorName is empty and expects IllegalArgumentException.
      * </p>
-     * @throws ConfigurationException to JUnit
+     *
+     * @throws ConfigurationException
+     *             to JUnit
      */
     public void testCtor_EmptyAuthenticatorName() throws ConfigurationException {
         try {
             new UserManagerImpl(dao, authPersistence, " ");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -237,7 +275,7 @@ public class UserManagerImplTests extends TestCase {
             new UserManagerImpl(dao, authPersistence, "name");
             fail("ConfigurationException expected.");
         } catch (ConfigurationException e) {
-            //good
+            // good
         }
     }
 
@@ -249,7 +287,9 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It verifies UserManagerImpl#createUser(User,boolean) is correct.
      * </p>
-     * @throws DataAccessException to JUnit
+     *
+     * @throws DataAccessException
+     *             to JUnit
      */
     public void testCreateUser() throws DataAccessException {
         User testingUser = TestHelper.createTestingUser(null);
@@ -269,14 +309,16 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It tests the case that when user is null and expects IllegalArgumentException.
      * </p>
-     * @throws DataAccessException to JUnit
+     *
+     * @throws DataAccessException
+     *             to JUnit
      */
     public void testCreateUser_NullUser() throws DataAccessException {
         try {
             userManager.createUser(null, true);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -288,18 +330,21 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It tests the case when the connection name is invalid and expects DataAccessException.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testCreateUser_DataAccessException() throws Exception {
-        dao = new DbUserDAO(dbFactory, "no_connection", "com.topcoder.timetracker.user.User",
-            "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
-            authPersistence, addressManager, true);
+        dao =
+            new DbUserDAO(dbFactory, "no_connection", "com.topcoder.timetracker.user.User",
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
+                authPersistence, addressManager, userStatusDAO, userTypeDAO, true);
         userManager = new UserManagerImpl(dao, authPersistence, "Default_TT_UserAuthenticator");
         try {
             userManager.createUser(TestHelper.createTestingUser(null), true);
             fail("DataAccessException expected.");
         } catch (DataAccessException e) {
-            //good
+            // good
         }
     }
 
@@ -311,7 +356,9 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It verifies UserManagerImpl#addUsers(User[],boolean) is correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testAddUsers() throws Exception {
         User testingUser = TestHelper.createTestingUser(null);
@@ -331,14 +378,16 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It tests the case that when users is null and expects IllegalArgumentException.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testAddUsers_NullUsers() throws Exception {
         try {
             userManager.addUsers(null, true);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -350,14 +399,16 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It tests the case that when users contain null element and expects IllegalArgumentException.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testAddUsers_NullInUsers() throws Exception {
         try {
             userManager.addUsers(new User[] {null}, true);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -369,18 +420,21 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It tests the case when the connection name is invalid and expects DataAccessException.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testAddUsers_DataAccessException() throws Exception {
-        dao = new DbUserDAO(dbFactory, "no_connection", "com.topcoder.timetracker.user.User",
-            "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
-            authPersistence, addressManager, true);
+        dao =
+            new DbUserDAO(dbFactory, "no_connection", "com.topcoder.timetracker.user.User",
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
+                authPersistence, addressManager, userStatusDAO, userTypeDAO, true);
         userManager = new UserManagerImpl(dao, authPersistence, "Default_TT_UserAuthenticator");
         try {
             userManager.addUsers(new User[] {TestHelper.createTestingUser(null)}, true);
             fail("DataAccessException expected.");
         } catch (DataAccessException e) {
-            //good
+            // good
         }
     }
 
@@ -392,7 +446,9 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It verifies UserManagerImpl#updateUser(User,boolean) is correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testUpdateUser() throws Exception {
         User testingUser = TestHelper.createTestingUser(null);
@@ -415,14 +471,16 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It tests the case that when user is null and expects IllegalArgumentException.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testUpdateUser_NullUser() throws Exception {
         try {
             userManager.updateUser(null, true);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -434,12 +492,15 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It tests the case when the connection name is invalid and expects DataAccessException.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testUpdateUser_DataAccessException() throws Exception {
-        dao = new DbUserDAO(dbFactory, "no_connection", "com.topcoder.timetracker.user.User",
-            "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
-            authPersistence, addressManager, true);
+        dao =
+            new DbUserDAO(dbFactory, "no_connection", "com.topcoder.timetracker.user.User",
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
+                authPersistence, addressManager, userStatusDAO, userTypeDAO, true);
         userManager = new UserManagerImpl(dao, authPersistence, "Default_TT_UserAuthenticator");
         User testingUser = TestHelper.createTestingUser(null);
 
@@ -447,7 +508,7 @@ public class UserManagerImplTests extends TestCase {
             userManager.updateUser(testingUser, true);
             fail("DataAccessException expected.");
         } catch (DataAccessException e) {
-            //good
+            // good
         }
     }
 
@@ -459,14 +520,16 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It tests the case when the user is not persisted and expects UnrecognizedEntityException.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testUpdateUser_UnrecognizedEntityException() throws Exception {
         try {
             userManager.updateUser(TestHelper.createTestingUser(null), true);
             fail("UnrecognizedEntityException expected.");
         } catch (UnrecognizedEntityException e) {
-            //good
+            // good
         }
     }
 
@@ -479,7 +542,8 @@ public class UserManagerImplTests extends TestCase {
      * It verifies UserManagerImpl#updateUsers(User[],boolean) is correct.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testUpdateUsers() throws Exception {
         User testingUser = TestHelper.createTestingUser(null);
@@ -503,14 +567,15 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case that when users is null and expects IllegalArgumentException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testUpdateUsers_NullUsers() throws Exception {
         try {
             userManager.updateUsers(null, true);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -523,14 +588,15 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case that when users contains null element and expects IllegalArgumentException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testUpdateUsers_NullInUsers() throws Exception {
         try {
             userManager.updateUsers(new User[] {null}, true);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -540,11 +606,12 @@ public class UserManagerImplTests extends TestCase {
      * </p>
      *
      * <p>
-     * It test the case when some user id is unknown and expects BatchOperationException.
-     * And the cause of the BatchOperationException should be UnrecognizedEntityException.
+     * It test the case when some user id is unknown and expects BatchOperationException. And the cause of the
+     * BatchOperationException should be UnrecognizedEntityException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testUpdateUsers_BatchOperationException() throws Exception {
         User testingUser = TestHelper.createTestingUser(null);
@@ -555,8 +622,8 @@ public class UserManagerImplTests extends TestCase {
         } catch (BatchOperationException e) {
             Throwable[] causes = e.getCauses();
             assertEquals("Should be only one cause.", 1, causes.length);
-            assertEquals("The cause should be UnrecognizedEntityException.", UnrecognizedEntityException.class,
-                causes[0].getClass());
+            assertEquals("The cause should be UnrecognizedEntityException.",
+                UnrecognizedEntityException.class, causes[0].getClass());
         }
     }
 
@@ -568,12 +635,15 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It tests the case when the connection name is invalid and expects DataAccessException.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testUpdateUsers_DataAccessException() throws Exception {
-        dao = new DbUserDAO(dbFactory, "no_connection", "com.topcoder.timetracker.user.User",
-            "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
-            authPersistence, addressManager, true);
+        dao =
+            new DbUserDAO(dbFactory, "no_connection", "com.topcoder.timetracker.user.User",
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
+                authPersistence, addressManager, userStatusDAO, userTypeDAO, true);
         userManager = new UserManagerImpl(dao, authPersistence, "Default_TT_UserAuthenticator");
         User testingUser = TestHelper.createTestingUser(null);
         testingUser.setId(1);
@@ -582,7 +652,7 @@ public class UserManagerImplTests extends TestCase {
             userManager.updateUsers(new User[] {testingUser}, true);
             fail("DataAccessException expected.");
         } catch (DataAccessException e) {
-            //good
+            // good
         }
     }
 
@@ -594,7 +664,9 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It verifies UserManagerImpl#removeUser(long,boolean) is correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testRemoveUser() throws Exception {
         userManager.removeUser(1, true);
@@ -616,14 +688,15 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case when userId <= 0 and expects IllegalArgumentException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testRemoveUser_NegativeId() throws Exception {
         try {
             userManager.removeUser(-5, true);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
-            //good
+            // good
         }
     }
 
@@ -633,17 +706,18 @@ public class UserManagerImplTests extends TestCase {
      * </p>
      *
      * <p>
-     * It tests the case when id was not found in the data store and
-     * expects UnrecognizedEntityException.
+     * It tests the case when id was not found in the data store and expects UnrecognizedEntityException.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testRemoveUser_UnrecognizedEntityException() throws Exception {
         try {
             userManager.removeUser(4000, true);
             fail("UnrecognizedEntityException expected.");
         } catch (UnrecognizedEntityException e) {
-            //good
+            // good
         }
     }
 
@@ -655,18 +729,21 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It tests the case when the connection name is invalid and expects DataAccessException.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testRemoveUser_DataAccessException() throws Exception {
-        dao = new DbUserDAO(dbFactory, "no_connection", "com.topcoder.timetracker.user.User",
-            "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
-            authPersistence, addressManager, true);
+        dao =
+            new DbUserDAO(dbFactory, "no_connection", "com.topcoder.timetracker.user.User",
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
+                authPersistence, addressManager, userStatusDAO, userTypeDAO, true);
         userManager = new UserManagerImpl(dao, authPersistence, "Default_TT_UserAuthenticator");
         try {
             userManager.removeUser(1, true);
             fail("DataAccessException expected.");
         } catch (DataAccessException e) {
-            //good
+            // good
         }
     }
 
@@ -678,7 +755,9 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It verifies UserManagerImpl#removeUsers([J,boolean) is correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testRemoveUsers() throws Exception {
         User testingUser = TestHelper.createTestingUser(null);
@@ -707,14 +786,15 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case that when userIds is null and expects IllegalArgumentException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testRemoveUsers_NullUserIds() throws Exception {
         try {
             userManager.removeUsers(null, true);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -727,14 +807,15 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case that when userIds contains negative element and expects IllegalArgumentException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testRemoveUsers_NegativeUserIds() throws Exception {
         try {
             userManager.removeUsers(new long[] {1, -6}, true);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -744,11 +825,12 @@ public class UserManagerImplTests extends TestCase {
      * </p>
      *
      * <p>
-     * It test the case when some user id is unknown and expects BatchOperationException.
-     * And the cause of the BatchOperationException should be UnrecognizedEntityException.
+     * It test the case when some user id is unknown and expects BatchOperationException. And the cause of the
+     * BatchOperationException should be UnrecognizedEntityException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testRemoveUsers_BatchOperationException() throws Exception {
         try {
@@ -771,18 +853,21 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It tests the case when the connection name is invalid and expects DataAccessException.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testRemoveUsers_DataAccessException() throws Exception {
-        dao = new DbUserDAO(dbFactory, "no_connection", "com.topcoder.timetracker.user.User",
-            "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
-            authPersistence, addressManager, true);
+        dao =
+            new DbUserDAO(dbFactory, "no_connection", "com.topcoder.timetracker.user.User",
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
+                authPersistence, addressManager, userStatusDAO, userTypeDAO, true);
         userManager = new UserManagerImpl(dao, authPersistence, "Default_TT_UserAuthenticator");
         try {
             userManager.removeUsers(new long[] {1}, true);
             fail("DataAccessException expected.");
         } catch (DataAccessException e) {
-            //good
+            // good
         }
     }
 
@@ -794,7 +879,9 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It verifies UserManagerImpl#getUser(long) is correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testGetUser() throws Exception {
         User user = userManager.getUser(1);
@@ -815,18 +902,18 @@ public class UserManagerImplTests extends TestCase {
      * </p>
      *
      * <p>
-     * It tests the case that when id was not found in the data store and
-     * expects UnrecognizedEntityException.
+     * It tests the case that when id was not found in the data store and expects UnrecognizedEntityException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testGetUser_UnrecognizedEntityException() throws Exception {
         try {
             userManager.getUser(40000);
             fail("UnrecognizedEntityException expected.");
         } catch (UnrecognizedEntityException e) {
-            //good
+            // good
         }
     }
 
@@ -839,18 +926,20 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case when the connection name is invalid and expects DataAccessException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testGetUser_DataAccessException() throws Exception {
-        dao = new DbUserDAO(dbFactory, "no_connection", "com.topcoder.timetracker.user.User",
-            "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
-            authPersistence, addressManager, true);
+        dao =
+            new DbUserDAO(dbFactory, "no_connection", "com.topcoder.timetracker.user.User",
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
+                authPersistence, addressManager, userStatusDAO, userTypeDAO, true);
         userManager = new UserManagerImpl(dao, authPersistence, "Default_TT_UserAuthenticator");
         try {
             userManager.getUser(1);
             fail("DataAccessException expected.");
         } catch (DataAccessException e) {
-            //good
+            // good
         }
     }
 
@@ -863,7 +952,8 @@ public class UserManagerImplTests extends TestCase {
      * It verifies UserManagerImpl#getUsers(long[]) is correct.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testGetUsers() throws Exception {
         User user = userManager.getUsers(new long[] {1})[0];
@@ -887,14 +977,15 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case that when userIds is null and expects IllegalArgumentException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testGetUsers_NullUserIds() throws Exception {
         try {
             userManager.getUsers(null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -907,14 +998,15 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case that when some user id is negative and expects IllegalArgumentException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testGetUsers_NegativeUserId() throws Exception {
         try {
             userManager.getUsers(new long[] {1, -8});
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -927,18 +1019,20 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case when the connection name is invalid and expects DataAccessException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testGetUsers_DataAccessException() throws Exception {
-        dao = new DbUserDAO(dbFactory, "no_connection", "com.topcoder.timetracker.user.User",
-            "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
-            authPersistence, addressManager, true);
+        dao =
+            new DbUserDAO(dbFactory, "no_connection", "com.topcoder.timetracker.user.User",
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
+                authPersistence, addressManager, userStatusDAO, userTypeDAO, true);
         userManager = new UserManagerImpl(dao, authPersistence, "Default_TT_UserAuthenticator");
         try {
             userManager.getUsers(new long[] {1});
             fail("DataAccessException expected.");
         } catch (DataAccessException e) {
-            //good
+            // good
         }
     }
 
@@ -950,11 +1044,13 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It verifies UserManagerImpl#searchUsers(Filter) is correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testSearchUsers() throws Exception {
-        Filter userNameFilter = userManager.getUserFilterFactory().createUsernameFilter(StringMatchType.EXACT_MATCH,
-            "admin");
+        Filter userNameFilter =
+            userManager.getUserFilterFactory().createUsernameFilter(StringMatchType.EXACT_MATCH, "admin");
         User[] users = userManager.searchUsers(userNameFilter);
 
         assertEquals("Only one user should be in the database.", 1, users.length);
@@ -977,14 +1073,16 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It tests the case that when filter is null and expects IllegalArgumentException.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testSearchUsers_NullFilter() throws Exception {
         try {
             userManager.searchUsers(null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -997,21 +1095,23 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case when the connection name is invalid and expects DataAccessException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testSearchUsers_DataAccessException() throws Exception {
-        dao = new DbUserDAO(dbFactory, "no_connection", "com.topcoder.timetracker.user.User",
-            "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
-            authPersistence, addressManager, true);
+        dao =
+            new DbUserDAO(dbFactory, "no_connection", "com.topcoder.timetracker.user.User",
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
+                authPersistence, addressManager, userStatusDAO, userTypeDAO, true);
         userManager = new UserManagerImpl(dao, authPersistence, "Default_TT_UserAuthenticator");
-        Filter userNameFilter = userManager.getUserFilterFactory().createUsernameFilter(StringMatchType.EXACT_MATCH,
-            "admin");
+        Filter userNameFilter =
+            userManager.getUserFilterFactory().createUsernameFilter(StringMatchType.EXACT_MATCH, "admin");
 
         try {
             userManager.searchUsers(userNameFilter);
             fail("DataAccessException expected.");
         } catch (DataAccessException e) {
-            //good
+            // good
         }
     }
 
@@ -1024,7 +1124,8 @@ public class UserManagerImplTests extends TestCase {
      * It verifies UserManagerImpl#addRoleToUser(User,SecurityRole) is correct.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testAddRoleToUser() throws Exception {
         SecurityRole role = new GeneralSecurityRole("NewRole");
@@ -1047,7 +1148,8 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case that when user is null and expects IllegalArgumentException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testAddRoleToUser_NullUser() throws Exception {
         SecurityRole role = new GeneralSecurityRole("NewRole");
@@ -1057,7 +1159,7 @@ public class UserManagerImplTests extends TestCase {
             userManager.addRoleToUser(null, role);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -1070,7 +1172,8 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case that when role hasn't been persisted and expects DataAccessException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testAddRoleToUser_NotPersistedRole() throws Exception {
         User user = userManager.getUser(1);
@@ -1080,7 +1183,7 @@ public class UserManagerImplTests extends TestCase {
             userManager.addRoleToUser(user, role);
             fail("DataAccessException expected.");
         } catch (DataAccessException e) {
-            //good
+            // good
         }
     }
 
@@ -1093,7 +1196,8 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case that when role is null and expects IllegalArgumentException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testAddRoleToUser_NullRole() throws Exception {
         User user = userManager.getUser(1);
@@ -1102,7 +1206,7 @@ public class UserManagerImplTests extends TestCase {
             userManager.addRoleToUser(user, null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -1115,7 +1219,8 @@ public class UserManagerImplTests extends TestCase {
      * It verifies UserManagerImpl#removeRoleFromUser(User,SecurityRole) is correct.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testRemoveRoleFromUser() throws Exception {
         User user = userManager.getUser(1);
@@ -1125,7 +1230,8 @@ public class UserManagerImplTests extends TestCase {
             userManager.removeRoleFromUser(user, roles[i]);
         }
 
-        assertEquals("Failed to remove the roles for the user.", 0, userManager.retrieveRolesForUser(user).length);
+        assertEquals("Failed to remove the roles for the user.", 0,
+            userManager.retrieveRolesForUser(user).length);
     }
 
     /**
@@ -1137,7 +1243,8 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case that when user is null and expects IllegalArgumentException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testRemoveRoleFromUser_NullUser() throws Exception {
         User user = userManager.getUser(1);
@@ -1147,7 +1254,7 @@ public class UserManagerImplTests extends TestCase {
             userManager.removeRoleFromUser(null, role);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -1160,7 +1267,8 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case that when role is null and expects IllegalArgumentException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testRemoveRoleFromUser_NullRole() throws Exception {
         User user = userManager.getUser(1);
@@ -1169,7 +1277,7 @@ public class UserManagerImplTests extends TestCase {
             userManager.removeRoleFromUser(user, null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -1182,7 +1290,8 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case that when role does not belongs to the user and expects DataAccessException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testRemoveRoleFromUser_UnknownRole() throws Exception {
         User user = userManager.getUser(1);
@@ -1193,7 +1302,7 @@ public class UserManagerImplTests extends TestCase {
             userManager.removeRoleFromUser(user, newRole);
             fail("DataAccessException expected.");
         } catch (DataAccessException e) {
-            //good
+            // good
         }
     }
 
@@ -1206,7 +1315,8 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case that when role hasn't been persisted and expects DataAccessException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testRemoveRoleFromUser_NotPersistedRole() throws Exception {
         User user = userManager.getUser(1);
@@ -1216,7 +1326,7 @@ public class UserManagerImplTests extends TestCase {
             userManager.removeRoleFromUser(user, newRole);
             fail("DataAccessException expected.");
         } catch (DataAccessException e) {
-            //good
+            // good
         }
     }
 
@@ -1229,7 +1339,8 @@ public class UserManagerImplTests extends TestCase {
      * It verifies UserManagerImpl#retrieveRolesForUser(User) is correct.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testRetrieveRolesForUser() throws Exception {
         User user = userManager.getUser(1);
@@ -1249,14 +1360,15 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case that when user is null and expects IllegalArgumentException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testRetrieveRolesForUser_NullUser() throws Exception {
         try {
             userManager.retrieveRolesForUser(null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -1269,7 +1381,8 @@ public class UserManagerImplTests extends TestCase {
      * It verifies UserManagerImpl#clearRolesFromUser(User) is correct.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testClearRolesFromUser() throws Exception {
         User user = userManager.getUser(1);
@@ -1287,14 +1400,15 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case that when user is null and expects IllegalArgumentException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testClearRolesFromUser_NullUser() throws Exception {
         try {
             userManager.clearRolesFromUser(null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -1307,14 +1421,15 @@ public class UserManagerImplTests extends TestCase {
      * It verifies UserManagerImpl#authenticateUser(String,String) is correct.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testAuthenticateUser() throws Exception {
         assertTrue("Failed to authentication the user.", userManager.authenticateUser("admin", "tc_super"));
         assertFalse("Should fail authentication because of unknown user name.", userManager.authenticateUser(
             "new_comer", "tc_super"));
-        assertFalse("Should fail authentication because of unknown user name.", userManager.authenticateUser("admin",
-            "try_it_out"));
+        assertFalse("Should fail authentication because of unknown user name.", userManager.authenticateUser(
+            "admin", "try_it_out"));
     }
 
     /**
@@ -1326,14 +1441,15 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case that when username is null and expects IllegalArgumentException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testAuthenticateUser_NullUsername() throws Exception {
         try {
             userManager.authenticateUser(null, "tc_super");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -1346,14 +1462,15 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case that when username is empty and expects IllegalArgumentException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testAuthenticateUser_EmptyUsername() throws Exception {
         try {
             userManager.authenticateUser("  ", "tc_super");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -1366,14 +1483,15 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case that when password is null and expects IllegalArgumentException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testAuthenticateUser_NullPassword() throws Exception {
         try {
             userManager.authenticateUser("admin", null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -1386,14 +1504,15 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case that when password is empty and expects IllegalArgumentException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testAuthenticateUser_EmptyPassword() throws Exception {
         try {
             userManager.authenticateUser("admin", " ");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException iae) {
-            //good
+            // good
         }
     }
 
@@ -1405,7 +1524,9 @@ public class UserManagerImplTests extends TestCase {
      * <p>
      * It verifies UserManagerImpl#getAllUsers() is correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testGetAllUsers() throws Exception {
         User[] users = userManager.getAllUsers();
@@ -1431,18 +1552,20 @@ public class UserManagerImplTests extends TestCase {
      * It tests the case when the connection name is invalid and expects DataAccessException.
      * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     public void testGetAllUsers_DataAccessException() throws Exception {
-        dao = new DbUserDAO(dbFactory, "no_connection", "com.topcoder.timetracker.user.User",
-            "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
-            authPersistence, addressManager, true);
+        dao =
+            new DbUserDAO(dbFactory, "no_connection", "com.topcoder.timetracker.user.User",
+                "com.topcoder.search.builder.database.DatabaseSearchStrategy", auditManager, contactManager,
+                authPersistence, addressManager, userStatusDAO, userTypeDAO, true);
         userManager = new UserManagerImpl(dao, authPersistence, "Default_TT_UserAuthenticator");
         try {
             userManager.getAllUsers();
             fail("DataAccessException expected.");
         } catch (DataAccessException e) {
-            //good
+            // good
         }
     }
 
@@ -1458,6 +1581,7 @@ public class UserManagerImplTests extends TestCase {
     public void testGetUserFilterFactory() {
         UserFilterFactory factory = userManager.getUserFilterFactory();
 
-        assertEquals("Failed to get the user filter factory.", MappedUserFilterFactory.class, factory.getClass());
+        assertEquals("Failed to get the user filter factory.", MappedUserFilterFactory.class, factory
+            .getClass());
     }
 }

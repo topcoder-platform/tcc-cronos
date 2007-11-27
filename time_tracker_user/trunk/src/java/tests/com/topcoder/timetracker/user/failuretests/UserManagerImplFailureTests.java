@@ -3,23 +3,18 @@
  */
 package com.topcoder.timetracker.user.failuretests;
 
-import java.lang.reflect.Field;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.security.authenticationfactory.AuthenticationFactory;
 import com.topcoder.security.authorization.AuthorizationPersistence;
 import com.topcoder.security.authorization.SecurityRole;
 import com.topcoder.timetracker.user.ConfigurationException;
 import com.topcoder.timetracker.user.DataAccessException;
-import com.topcoder.timetracker.user.TestHelper;
 import com.topcoder.timetracker.user.User;
 import com.topcoder.timetracker.user.UserDAO;
-import com.topcoder.timetracker.user.UserManagerFactory;
 import com.topcoder.timetracker.user.UserManagerImpl;
-import com.topcoder.util.config.ConfigManager;
 
 /**
  * <p>
@@ -64,11 +59,8 @@ public class UserManagerImplFailureTests extends MockObjectTestCase {
 
         userDAO = new MockUserDAO();
         FailureTestHelper.clearNamespaces();
-        TestHelper.loadXMLConfig(TestHelper.CONFIG_FILE);
-        TestHelper.setUpDataBase();
-//        ConfigManager.getInstance().add(FailureTestHelper.FAILURE_CONFIG_ROOT + "UserAuthenticator.xml");
-//        ConfigManager.getInstance().add(FailureTestHelper.FAILURE_CONFIG_ROOT + "UserManagerImpl.xml");
-//        ConfigManager.getInstance().add(FailureTestHelper.FAILURE_CONFIG_ROOT + "ObjectFactory.xml");
+        FailureTestHelper.loadXMLConfig(FailureTestHelper.FAILURE_CONFIG_ROOT + "config.xml");
+        FailureTestHelper.setUpDataBase();
 
         userManagerImpl = new UserManagerImpl(userDAO, (AuthorizationPersistence) mockAuthorizationPersistence.proxy(),
             "Default_TT_UserAuthenticator");

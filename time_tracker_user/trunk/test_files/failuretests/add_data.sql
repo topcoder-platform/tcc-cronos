@@ -15,7 +15,8 @@ INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('co
 INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.entry.time.TimeEntry',600000,20,0);
 INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.entry.time.TimeStatus',700000000,20,0);
 INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.entry.time.Rate',1,20,0);
-
+INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.user.UserStatus',1,1,0);
+INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.user.UserType',1,1,0);
 
 -------------------------------------------------------------------------------------------------------
 -- Required roles for Time Tracker application

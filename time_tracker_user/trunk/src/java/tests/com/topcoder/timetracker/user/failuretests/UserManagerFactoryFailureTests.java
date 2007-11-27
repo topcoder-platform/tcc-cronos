@@ -4,7 +4,6 @@
 package com.topcoder.timetracker.user.failuretests;
 
 import com.topcoder.timetracker.user.ConfigurationException;
-import com.topcoder.timetracker.user.TestHelper;
 import com.topcoder.timetracker.user.UserManagerFactory;
 import com.topcoder.util.config.ConfigManager;
 
@@ -27,7 +26,7 @@ public class UserManagerFactoryFailureTests extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        TestHelper.resetUserManagerToNull();
+        FailureTestHelper.resetUserManagerToNull();
     }
 
     /**
@@ -42,7 +41,7 @@ public class UserManagerFactoryFailureTests extends TestCase {
 
         FailureTestHelper.clearNamespaces();
         // handle the singleton problem.
-        TestHelper.resetUserManagerToNull();
+        FailureTestHelper.resetUserManagerToNull();
     }
 
     /**

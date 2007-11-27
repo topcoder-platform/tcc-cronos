@@ -1,0 +1,436 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="com.topcoder.search.builder">
+        <Property name="searchStrategyFactoryNamespace">
+            <Value>com.topcoder.search.builder.strategy.factory</Value>
+        </Property>
+        <Property name="fieldValidatorFactoryNamespace">
+            <Value>com.topcoder.search.builder.validator.factory</Value>
+        </Property>
+        <Property name="searchBundles">
+            <Property name="UserTypeSearchBundle">
+                <Property name="searchStrategy">
+                    <Property name="class">
+                        <Value>dbStrategy</Value>
+                    </Property>
+                </Property>
+                <!-- Base search query-->
+                <Property name="context">
+                    <Value>select user_type_id, company_id, description, active, creation_date, creation_user, modification_date, modification_user from user_type where</Value>
+                </Property>
+                <!--Alais to be used for each column name-->
+                <Property name="alias">
+                    <Property name="COMPANY_ID">
+                        <Value>company_id</Value>
+                    </Property>
+                    <Property name="DESCRIPTION">
+                        <Value>description</Value>
+                    </Property>
+                    <Property name="ACTIVE">
+                        <Value>active</Value>
+                    </Property>
+                    <Property name="CREATION_DATE">
+                        <Value>creation_date</Value>
+                    </Property>
+                    <Property name="CREATION_USER">
+                        <Value>creation_user</Value>
+                    </Property>
+                    <Property name="MODIFICATION_DATE">
+                        <Value>modification_date</Value>
+                    </Property>
+                    <Property name="MODIFICATION_USER">
+                        <Value>modification_user</Value>
+                    </Property>
+                </Property>
+                <!--Validator details for all the searchable fields-->
+                <Property name="searchableFields">
+                    <Property name="COMPANY_ID">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="DESCRIPTION">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="ACTIVE">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="CREATION_DATE">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+
+                    <Property name="CREATION_USER">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="MODIFICATION_DATE">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="MODIFICATION_USER">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+            <!-- User status search query-->
+            <Property name="UserStatusSearchBundle">
+                <Property name="searchStrategy">
+                    <Property name="class">
+                        <Value>dbStrategy</Value>
+                    </Property>
+                </Property>
+                <!-- Base search query-->
+                <Property name="context">
+                    <Value>select user_status_id, company_id, description, active, creation_date, creation_user, modification_date, modification_user from user_status where</Value>
+                </Property>
+                <!--Alais to be used for each column name-->
+                <Property name="alias">
+                    <Property name="COMPANY_ID">
+                        <Value>company_id</Value>
+                    </Property>
+                    <Property name="DESCRIPTION">
+                        <Value>description</Value>
+                    </Property>
+                    <Property name="ACTIVE">
+                        <Value>active</Value>
+                    </Property>
+                    <Property name="CREATION_DATE">
+                        <Value>creation_date</Value>
+                    </Property>
+                    <Property name="CREATION_USER">
+                        <Value>creation_user</Value>
+                    </Property>
+                    <Property name="MODIFICATION_DATE">
+                        <Value>modification_date</Value>
+                    </Property>
+                    <Property name="MODIFICATION_USER">
+                        <Value>modification_user</Value>
+                    </Property>
+                </Property>
+                <!--Validator details for all the searchable fields-->
+                <Property name="searchableFields">
+                    <Property name="COMPANY_ID">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="DESCRIPTION">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="ACTIVE">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="CREATION_DATE">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+
+                    <Property name="CREATION_USER">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="MODIFICATION_DATE">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                    <Property name="MODIFICATION_USER">
+                        <Property name="validator">
+                            <Property name="class">
+                                <Value>validator</Value>
+                            </Property>
+                            <Property name="identifier">
+                                <Value>default</Value>
+                            </Property>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+    <!--Search builder strategy details-->
+    <Config name="com.topcoder.search.builder.strategy.factory">
+        <Property name="dbStrategy">
+            <Property name="type">
+                <Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.search.builder.values</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.search.builder.values">
+        <!--Connection factory for the Search builder-->
+        <Property name="connectionFactory">
+            <Property name="name">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="class">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+        </Property>
+        <!--Fragment namespace-->
+        <Property name="searchFragmentFactoryNamespace">
+            <Value>com.topcoder.search.builder.database.factory</Value>
+        </Property>
+        <!--Fragment builder values-->
+        <Property name="searchFragmentBuilders">
+            <Property name="And">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.AndFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.AndFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="Or">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.OrFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.OrFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="Like">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.LikeFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.LikeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="Not">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.NotFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.NotFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="EqualTo">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.EqualToFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.EqualsFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="In">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.InFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.InFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="Null">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.NullFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.NullFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="GreaterThan">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.GreaterThanFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="GreaterOrEqual">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="Between">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.BetweenFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="LessOrEqual">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.LessThanOrEqualToFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="Less">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.LessThanFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+    <!--For builder validator factory  -->
+    <Config name="com.topcoder.search.builder.validator.factory">
+        <!-- mocked validator, which validates to true always-->
+        <Property name="validator:default">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.user.accuracytests.MockValidator</Value>
+            </Property>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.util.memoryusage.MemoryUsage">
+        <Property name="analyzers_namespace">
+            <Value>com.topcoder.util.memoryusage.MemoryUsage.ObjectFactory</Value>
+        </Property>
+        <Property name="analyzers">
+            <Value>Sun12Analyzer</Value>
+            <Value>Sun13Analyzer</Value>
+            <Value>Sun14Analyzer</Value>
+            <Value>Sun15Analyzer</Value>
+            <Value>IBM14Analyzer</Value>
+            <Value>IBM15Analyzer</Value>
+        </Property>
+        <Property name="fallback_analyzer">
+            <Value>Sun15Analyzer</Value>
+        </Property>
+        <Property name="default_fallback_analyzer_flag">
+            <Value>false</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.util.memoryusage.MemoryUsage.ObjectFactory">
+        <Property name="Sun12Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.Sun12Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="Sun13Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.Sun13Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="Sun14Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.Sun14Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="Sun15Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.Sun15Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="IBM14Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.IBM14Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="IBM15Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.IBM15Analyzer</Value>
+            </Property>
+        </Property>
+    </Config>
+</CMConfig>

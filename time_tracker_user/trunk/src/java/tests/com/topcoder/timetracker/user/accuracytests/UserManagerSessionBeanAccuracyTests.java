@@ -70,7 +70,9 @@ public class UserManagerSessionBeanAccuracyTests extends TestCase {
      * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
+        AccuracyTestHelper.clearConfig();
         AccuracyTestHelper.loadXMLConfig(AccuracyTestHelper.CONFIG_FILE);
+        AccuracyTestHelper.loadXMLConfig(AccuracyTestHelper.CONFIG_FILE_ADD);
         AccuracyTestHelper.setUpDataBase();
         authPersistence = new SQLAuthorizationPersistence("com.topcoder.timetracker.application.authorization");
 
@@ -177,7 +179,7 @@ public class UserManagerSessionBeanAccuracyTests extends TestCase {
         User user = AccuracyTestHelper.createUser();
         delegate.addUsers(new User[] {user}, true);
         user.setUsername("new");
-        user.setStatus(Status.LOCKED);
+        user.setStatus(Status.ACTIVE);
         delegate.updateUsers(new User[] {user}, true);
 
         User actualUser = delegate.getUsers(new long[] {user.getId()})[0];
@@ -265,7 +267,7 @@ public class UserManagerSessionBeanAccuracyTests extends TestCase {
         User user = AccuracyTestHelper.createUser();
         delegate.createUser(user, true);
         user.setUsername("new");
-        user.setStatus(Status.LOCKED);
+        user.setStatus(Status.INACTIVE);
         delegate.updateUser(user, true);
 
         User actualUser = delegate.getUser(user.getId());

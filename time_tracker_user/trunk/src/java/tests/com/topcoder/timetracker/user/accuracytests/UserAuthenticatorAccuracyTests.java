@@ -35,7 +35,9 @@ public class UserAuthenticatorAccuracyTests extends TestCase {
      *
      */
     protected void setUp() throws Exception {
+        AccuracyTestHelper.clearConfig();
         AccuracyTestHelper.loadXMLConfig(AccuracyTestHelper.CONFIG_FILE);
+        AccuracyTestHelper.loadXMLConfig(AccuracyTestHelper.CONFIG_FILE_ADD);
         AccuracyTestHelper.setUpDataBase();
 
         instance = new UserAuthenticator("com.topcoder.timetracker.user.UserAuthenticator");

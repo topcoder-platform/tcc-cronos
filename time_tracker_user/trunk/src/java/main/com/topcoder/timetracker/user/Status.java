@@ -7,28 +7,22 @@ import com.topcoder.util.collection.typesafeenum.Enum;
 
 /**
  * <p>
- * This is an enumeration that is used to distinguish between the different types of Status
- * that may be assigned to a user.
+ * This is an enumeration that is used to distinguish between the different types of Status that may be assigned to
+ * a user.
  * </p>
  *
  * <p>
- * At the moment, <code>ACTIVE</code>, <code>INACTIVE</code> and <code>LOCKED</code>
- * status may be assigned.
+ * At the moment, <code>ACTIVE</code>, <code>INACTIVE</code> and <code>LOCKED</code> status may be assigned.
  * </p>
  *
  * <p>
  * Thread Safety: This class is an enum, and therefore immutable and thread-safe.
  * </p>
  *
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, biotrail
  * @version 3.2
  */
 public class Status extends Enum {
-
-    /**
-     * Automatically generated unique ID for use with serialization.
-     */
-    private static final long serialVersionUID = 8748057160854572375L;
 
     /**
      * This is an Enumeration value representing a status of <tt>ACTIVE</tt>.
@@ -44,6 +38,11 @@ public class Status extends Enum {
      * This is an Enumeration value representing a status of <tt>LOCKED</tt>.
      */
     public static final Status LOCKED = new Status("Locked", 3);
+
+    /**
+     * Automatically generated unique ID for use with serialization.
+     */
+    private static final long serialVersionUID = 8748057160854572375L;
 
     /**
      * This is a name that briefly describes the user status.
@@ -64,8 +63,10 @@ public class Status extends Enum {
     /**
      * This is the private constructor for a status, accepting name and identifier arguments.
      *
-     * @param name The name of the status.
-     * @param id The id of the status.
+     * @param name
+     *            The name of the status.
+     * @param id
+     *            The id of the status.
      */
     private Status(String name, long id) {
         this.name = name;

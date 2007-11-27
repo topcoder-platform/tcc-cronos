@@ -1,16 +1,3 @@
-
-create table account_status  (
-  account_status_id    INTEGER                         not null,
-  description          VARCHAR(255),
-  creation_date        DATETIME YEAR TO SECOND         not null,
-  creation_user        VARCHAR(64)                     not null,
-  modification_date    DATETIME YEAR TO SECOND         not null,
-  modification_user    VARCHAR(64)                     not null,
-primary key (account_status_id)
-      constraint pk_account_status
-);
-
-
 create table action  (
   action_id            INTEGER                         not null,
   class_name           VARCHAR(255)                    not null,
@@ -77,19 +64,18 @@ primary key (app_area_id)
 );
 
 CREATE TABLE audit (
-       audit_id             integer 				NOT NULL,
-       app_area_id          INTEGER 				NOT NULL,
-       client_id            INTEGER 				NOT NULL,
-       company_id           INTEGER 				NOT NULL,
-       project_id           INTEGER 				NOT NULL,
-       account_user_id      INTEGER 				NOT NULL,
-       entity_id            INTEGER 				NOT NULL,
-       table_name           VARCHAR(64) 			NOT NULL,
-       action_type          INTEGER 				NOT NULL,
-       creation_date        datetime year to second NOT NULL,
-       creation_user        VARCHAR(64) 			NOT NULL,
-primary key (audit_id)
-      constraint pk_audit
+    audit_id integer NOT NULL,
+    app_area_id INTEGER NOT NULL,
+    client_id INTEGER ,
+    company_id INTEGER ,
+    project_id INTEGER ,
+    account_user_id INTEGER ,
+    entity_id INTEGER NOT NULL,
+    table_name VARCHAR(64) NOT NULL,
+    action_type INTEGER NOT NULL,
+    creation_date datetime year to second NOT NULL,
+    creation_user VARCHAR(64) NOT NULL,
+    primary key (audit_id) constraint pk_audit
 );
 
 
@@ -536,6 +522,7 @@ create table project  (
   project_id           INTEGER                         not null,
   name                 VARCHAR(64)                     not null,
   company_id           INTEGER                         not null,
+  active               INTEGER                         not null,
   description          VARCHAR(255),
   start_date           DATETIME YEAR TO SECOND         not null,
   end_date             DATETIME YEAR TO SECOND         not null,
@@ -735,16 +722,54 @@ primary key (time_status_id)
 );
 
 
-create table user_account  (
-  user_account_id      INTEGER                         not null,
-  company_id           INTEGER,
-  account_status_id    INTEGER                         not null,
-  user_name            VARCHAR(64)                     not null,
-  password             VARCHAR(64)                     not null,
-  creation_date        DATETIME YEAR TO SECOND         not null,
-  creation_user        VARCHAR(64)                     not null,
-  modification_date    DATETIME YEAR TO SECOND         not null,
-  modification_user    VARCHAR(64)                     not null,
-primary key (user_account_id)
-      constraint pk_user_account
+CREATE TABLE account_status (
+  account_status_id             INTEGER                         NOT NULL,
+  description                   VARCHAR(255)                    NOT NULL,
+  creation_date                 DATETIME YEAR TO SECOND         NOT NULL,
+  creation_user                 VARCHAR(64)                     NOT NULL,
+  modification_date             DATETIME YEAR TO SECOND         NOT NULL,
+  modification_user             VARCHAR(64)                     NOT NULL,
+  PRIMARY KEY (account_status_id) CONSTRAINT pk_account_status
+);
+CREATE TABLE user_status (
+  user_status_id                INTEGER                         NOT NULL,
+  company_id                    INTEGER                         NOT NULL,
+  description                   VARCHAR(255)                    NOT NULL,
+  active                        SMALLINT                        NOT NULL,
+  creation_date                 DATETIME YEAR TO SECOND         NOT NULL,
+  creation_user                 VARCHAR(64)                     NOT NULL,
+  modification_date             DATETIME YEAR TO SECOND         NOT NULL,
+  modification_user             VARCHAR(64)                     NOT NULL,
+  PRIMARY KEY (user_status_id) CONSTRAINT pk_user_status
+);
+CREATE TABLE user_type (
+  user_type_id                  INTEGER                         NOT NULL,
+  company_id                    INTEGER                         NOT NULL,
+  description                   VARCHAR(255)                    NOT NULL,
+  active                        SMALLINT                        NOT NULL,
+  creation_date                 DATETIME YEAR TO SECOND         NOT NULL,
+  creation_user                 VARCHAR(64)                     NOT NULL,
+  modification_date             DATETIME YEAR TO SECOND         NOT NULL,
+  modification_user             VARCHAR(64)                     NOT NULL,
+  PRIMARY KEY (user_type_id) CONSTRAINT pk_user_type
+);
+CREATE TABLE user_account (
+  user_account_id               INTEGER                         NOT NULL,
+  company_id                    INTEGER                         NOT NULL,
+  account_status_id             INTEGER                         NOT NULL,
+  user_status_id                INTEGER,
+  user_type_id                  INTEGER,
+  user_name                     VARCHAR(64)                     NOT NULL,
+  password                      VARCHAR(64)                     NOT NULL,
+  creation_date                 DATETIME YEAR TO SECOND         NOT NULL,
+  creation_user                 VARCHAR(64)                     NOT NULL,
+  modification_date             DATETIME YEAR TO SECOND         NOT NULL,
+  modification_user             VARCHAR(64)                     NOT NULL,
+  PRIMARY KEY (user_account_id) CONSTRAINT pk_user_account,
+  FOREIGN KEY (account_status_id)
+    REFERENCES account_status (account_status_id) CONSTRAINT fk_useraccount_accountstatus_accountstatusid,
+  FOREIGN KEY (user_status_id)
+    REFERENCES user_status (user_status_id) CONSTRAINT fk_useraccount_userstatus_userstatusid,
+  FOREIGN KEY (user_type_id)
+    REFERENCES user_type (user_type_id) CONSTRAINT fk_useraccount_usertype_usertypeid
 );

@@ -1,21 +1,22 @@
 
 -------------------------------------------------------------------------------------------------------
 --  sequences used
-INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.security.authorization.Action',100,20,0);
-INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.security.authorization.ActionContext',100,20,0);
-INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.security.authorization.Principal',100,20,0);
-INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.security.authorization.SecurityRole',100,20,0);
-INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('TimeTrackerID',60000001,20,0);
-INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('TimeTrackerUser',50000001,20,0);
-INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.user.User',100,20,0);
-INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.entry.time.RejectReason',1,20,0);
-INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.entry.time.Company',1,20,0);
-INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.entry.time.RejectEmail',1,20,0);
-INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.entry.time.TaskType',500000,20,0);
-INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.entry.time.TimeEntry',600000,20,0);
-INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.entry.time.TimeStatus',700000000,20,0);
-INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.entry.time.Rate',1,20,0);
-
+INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.security.authorization.Action',100,1,0);
+INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.security.authorization.ActionContext',100,1,0);
+INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.security.authorization.Principal',100,1,0);
+INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.security.authorization.SecurityRole',100,1,0);
+INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('TimeTrackerID',60000001,1,0);
+INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('TimeTrackerUser',50000001,1,0);
+INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.user.User',100,1,0);
+INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.entry.time.RejectReason',1,1,0);
+INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.entry.time.Company',1,1,0);
+INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.entry.time.RejectEmail',1,1,0);
+INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.entry.time.TaskType',500000,1,0);
+INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.entry.time.TimeEntry',600000,1,0);
+INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.entry.time.TimeStatus',700000000,1,0);
+INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.entry.time.Rate',1,1,0);
+INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.user.UserStatus',1,1,0);
+INSERT INTO id_sequences (name,next_block_start,block_size,exhausted) VALUES('com.topcoder.timetracker.user.UserType',1,1,0);
 
 -------------------------------------------------------------------------------------------------------
 -- Required roles for Time Tracker application
@@ -186,9 +187,9 @@ INSERT INTO expense_status (expense_status_id, Description, creation_Date, creat
     VALUES (4, 'Rejected', CURRENT, 'System', CURRENT, 'System');
 
 
-INSERT INTO principal (principal_id, principal_name) VALUES (1, 'admin');
+INSERT INTO PRINCIPAL (principal_id, principal_name) VALUES (1, 'admin');
 
-INSERT INTO principal_role VALUES (1, 4);
+INSERT INTO PRINCIPAL_ROLE VALUES (1, 4);
 
 insert into company(company_id, name, passcode, creation_date,
        creation_user,
@@ -250,7 +251,7 @@ insert into contact (
        creation_date,
        creation_user,
        modification_date,
-       modification_user) 
+       modification_user)
 VALUES (1, 'contact', 'person', '1234567890', 'contact@person.net', CURRENT, '', CURRENT, '');
 
 insert into address_relation(

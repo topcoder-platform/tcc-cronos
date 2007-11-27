@@ -9,7 +9,6 @@ import com.topcoder.security.authenticationfactory.Response;
 import com.topcoder.security.authenticationfactory.Principal;
 import com.topcoder.security.authenticationfactory.AbstractAuthenticator;
 import com.topcoder.security.authenticationfactory.AuthenticateException;
-import com.topcoder.timetracker.user.filterfactory.Util;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.objectfactory.InvalidClassSpecificationException;
@@ -20,44 +19,44 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
 
 /**
  * <p>
- * This is the default implementation of the <code>Authenticator</code> interface that
- * is used to authenticate a username-password combination in order to authenticate a user.
+ * This is the default implementation of the <code>Authenticator</code> interface that is used to authenticate a
+ * username-password combination in order to authenticate a user.
  * </p>
  *
  * <p>
- * It will retrieve the relevant authentication details from the data store and compare it
- * against the data in the principal.
+ * It will retrieve the relevant authentication details from the data store and compare it against the data in the
+ * principal.
  * </p>
  *
  * <p>
- * Thread Safety: The thread-safety of this class is dependent on the inner DAO. since
- * that is thread-safe, then this class is also thread-safe.
+ * Thread Safety: The thread-safety of this class is dependent on the inner DAO. since that is thread-safe, then
+ * this class is also thread-safe.
  * </p>
  *
- * @author ShindouHikaru, TCSDEVELOPER
+ * @author ShindouHikaru, biotrail
  * @version 3.2
  */
 public class UserAuthenticator extends AbstractAuthenticator {
     /**
      * <p>
-     * This is a static constant that represents the principal key used to retrieve
-     * the <b>username</b> authentication attribute from the provided principal.
+     * This is a static constant that represents the principal key used to retrieve the <b>username</b>
+     * authentication attribute from the provided principal.
      * </p>
      */
     public static final String USERNAME_KEY = "username";
 
     /**
      * <p>
-     * This is a static constant that represents the principal key used to retrieve
-     * the <b>password</b> authentication attribute from the provided principal.
+     * This is a static constant that represents the principal key used to retrieve the <b>password</b>
+     * authentication attribute from the provided principal.
      * </p>
      */
     public static final String PASSWORD_KEY = "password";
 
     /**
      * <p>
-     * This is an instance of <code>UserDAO</code> that is used to retrieve the authentication
-     * details from the persistent store.
+     * This is an instance of <code>UserDAO</code> that is used to retrieve the authentication details from the
+     * persistent store.
      * </p>
      *
      * <p>
@@ -75,10 +74,13 @@ public class UserAuthenticator extends AbstractAuthenticator {
      * Creates a <code>UserAuthenticator</code> using the specified configuration details.
      * </p>
      *
-     * @param namespace The configuration namespace to use.
+     * @param namespace
+     *            The configuration namespace to use.
      *
-     * @throws IllegalArgumentException if namespace is a null or empty String.
-     * @throws ConfigurationException if an exception occurs while initializing this <code>Authenticator</code>.
+     * @throws IllegalArgumentException
+     *             if namespace is a null or empty String.
+     * @throws ConfigurationException
+     *             if an exception occurs while initializing this <code>Authenticator</code>.
      */
     public UserAuthenticator(String namespace) throws ConfigurationException {
         super(Util.checkString(namespace, "namespace"));
@@ -106,7 +108,8 @@ public class UserAuthenticator extends AbstractAuthenticator {
             throw new ConfigurationException("IllegalReferenceException occurs "
                 + "while creating ObjectFactory instance using namespace " + ofNamespace, e);
         } catch (InvalidClassSpecificationException e) {
-            throw new ConfigurationException("InvalidClassSpecificationException occurs while creating object.", e);
+            throw new ConfigurationException(
+                "InvalidClassSpecificationException occurs while creating object.", e);
         }
     }
 
@@ -121,29 +124,34 @@ public class UserAuthenticator extends AbstractAuthenticator {
      * </p>
      *
      * <p>
-     * Note, this method is protected and the parameter <code>principal</code> is not null
-     * promised by the class <code>AbstractAuthenticator</code>.
+     * Note, this method is protected and the parameter <code>principal</code> is not null promised by the class
+     * <code>AbstractAuthenticator</code>.
      * </p>
      *
-     * @param principal The principal to authenticate.
+     * @param principal
+     *            The principal to authenticate.
      * @return the authentication response.
      *
-     * @throws MissingPrincipalKeyException if the username or password key is missing
-     * @throws AuthenticateException if a problem occurs during authentication, e.g. data accessing problem
+     * @throws MissingPrincipalKeyException
+     *             if the username or password key is missing
+     * @throws AuthenticateException
+     *             if a problem occurs during authentication, e.g. data accessing problem
      */
     protected Response doAuthenticate(Principal principal) throws AuthenticateException {
         String username = getPrincipalValue(principal, USERNAME_KEY);
         String password = getPrincipalValue(principal, PASSWORD_KEY);
 
         try {
-            User[] users = userDao.searchUsers(userDao.getUserFilterFactory().createUsernameFilter(
-                StringMatchType.EXACT_MATCH, username));
+            User[] users =
+                userDao.searchUsers(userDao.getUserFilterFactory().createUsernameFilter(
+                    StringMatchType.EXACT_MATCH, username));
 
             if (users.length == 0) {
                 return new Response(false, "The user name doesn't exist.");
             } else {
                 return (users[0].getPassword().equals(password)) ? new Response(true,
-                    "The user with the given password exists") : new Response(false, "The password is not correct.");
+                    "The user with the given password exists") : new Response(false,
+                        "The password is not correct.");
             }
         } catch (DataAccessException e) {
             throw new AuthenticateException("Failed to search the users.", e);
@@ -155,12 +163,16 @@ public class UserAuthenticator extends AbstractAuthenticator {
      * Returns the string value of the given key in the given principal.
      * </p>
      *
-     * @param principal The principal to authenticate..
-     * @param keyName the name of the principal key
+     * @param principal
+     *            The principal to authenticate..
+     * @param keyName
+     *            the name of the principal key
      * @return the value for the given key in the principal
      *
-     * @throws MissingPrincipalKeyException if the given key is missing
-     * @throws AuthenticateException if the value of given key in the principal is not an string
+     * @throws MissingPrincipalKeyException
+     *             if the given key is missing
+     * @throws AuthenticateException
+     *             if the value of given key in the principal is not an string
      */
     private String getPrincipalValue(Principal principal, String keyName) throws AuthenticateException {
         Object value = principal.getValue(keyName);
@@ -172,7 +184,8 @@ public class UserAuthenticator extends AbstractAuthenticator {
 
         // the type must be String
         if (!(value instanceof String)) {
-            throw new AuthenticateException("The value for the principal key [" + keyName + "] is not a string.");
+            throw new AuthenticateException("The value for the principal key [" + keyName
+                + "] is not a string.");
         }
 
         return (String) value;
@@ -185,19 +198,23 @@ public class UserAuthenticator extends AbstractAuthenticator {
      *
      * <p>
      * If the property is missing in the configuration, then if it is required, then
-     * <code>ConfigurationException</code> will be thrown, otherwise <code>null</code>
-     * will be returned.
+     * <code>ConfigurationException</code> will be thrown, otherwise <code>null</code> will be returned.
      * </p>
      *
-     * @param namespace the namespace to get
-     * @param propertyName the name of property
-     * @param required whether this property is required
+     * @param namespace
+     *            the namespace to get
+     * @param propertyName
+     *            the name of property
+     * @param required
+     *            whether this property is required
      *
      * @return the value of the property
      *
-     * @throws ConfigurationException if fail to load the config values
+     * @throws ConfigurationException
+     *             if fail to load the config values
      */
-    private String getString(String namespace, String propertyName, boolean required) throws ConfigurationException {
+    private String getString(String namespace, String propertyName, boolean required)
+        throws ConfigurationException {
         try {
             String property = ConfigManager.getInstance().getString(namespace, propertyName);
 
@@ -213,7 +230,8 @@ public class UserAuthenticator extends AbstractAuthenticator {
 
             return property;
         } catch (UnknownNamespaceException e) {
-            throw new ConfigurationException("UnknownNamespaceException occurs when accessing ConfigManager.", e);
+            throw new ConfigurationException(
+                "UnknownNamespaceException occurs when accessing ConfigManager.", e);
         }
     }
 }

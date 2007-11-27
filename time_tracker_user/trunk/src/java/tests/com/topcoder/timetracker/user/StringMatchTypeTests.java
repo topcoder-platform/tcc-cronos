@@ -12,7 +12,7 @@ import junit.framework.Test;
  * Unit test cases for StringMatchType.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author biotrail
  * @version 3.2
  */
 public class StringMatchTypeTests extends TestCase {
@@ -37,11 +37,14 @@ public class StringMatchTypeTests extends TestCase {
      * </p>
      */
     public void testGetFilterPrefix() {
-        assertEquals("Failed to get the filter prefix correctly.", "SW:",
-            StringMatchType.STARTS_WITH.getFilterPrefix());
-        assertEquals("Failed to get the filter prefix correctly.", "EW:", StringMatchType.ENDS_WITH.getFilterPrefix());
-        assertEquals("Failed to get the filter prefix correctly.", "SS:", StringMatchType.SUBSTRING.getFilterPrefix());
-        assertEquals("Failed to get the filter prefix correctly.", "", StringMatchType.EXACT_MATCH.getFilterPrefix());
+        assertEquals("Failed to get the filter prefix correctly.", "SW:", StringMatchType.STARTS_WITH
+            .getFilterPrefix());
+        assertEquals("Failed to get the filter prefix correctly.", "EW:", StringMatchType.ENDS_WITH
+            .getFilterPrefix());
+        assertEquals("Failed to get the filter prefix correctly.", "SS:", StringMatchType.SUBSTRING
+            .getFilterPrefix());
+        assertEquals("Failed to get the filter prefix correctly.", "", StringMatchType.EXACT_MATCH
+            .getFilterPrefix());
     }
 
     /**

@@ -14,6 +14,7 @@ import com.topcoder.db.connectionfactory.ConfigurationException;
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.UnknownConnectionException;
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.timetracker.contact.AssociationException;
 import com.topcoder.timetracker.contact.Contact;
 import com.topcoder.timetracker.contact.ContactManager;
 import com.topcoder.timetracker.contact.ContactType;
@@ -130,7 +131,7 @@ public class MockContactManager implements ContactManager {
      * @return all the contacts for the ids
      * @param ids the contact id array
      */
-    public Contact[] retrieveContacts(long[] ids) {
+    public Contact[] retrieveContatcts(long[] ids) {
         Contact[] contacts = new Contact[ids.length];
         for (int i = 0; i < ids.length; i++) {
             contacts[i] = retrieveContact(ids[i]);
@@ -289,6 +290,14 @@ public class MockContactManager implements ContactManager {
             AccuracyTestHelper.closeStatement(pstmt);
             AccuracyTestHelper.closeConnection(conn);
         }
+    }
+
+    /* (non-Javadoc)
+     * @see com.topcoder.timetracker.contact.ContactManager#retrieveContacts(long[])
+     */
+    public Contact[] retrieveContacts(long[] ids) throws PersistenceException, AssociationException {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

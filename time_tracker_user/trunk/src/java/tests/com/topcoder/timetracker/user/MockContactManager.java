@@ -21,11 +21,10 @@ import com.topcoder.timetracker.contact.PersistenceException;
 
 /**
  * <p>
- * This class implements ContactManager interface.
- * It is only used for testing.
+ * This class implements ContactManager interface. It is only used for testing.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author biotrail
  * @version 3.2
  */
 public class MockContactManager implements ContactManager {
@@ -34,17 +33,18 @@ public class MockContactManager implements ContactManager {
      * Represents the sql script to insert value to contact relation table.
      * </p>
      */
-    private static final String INSERT_CONTACT_RELATION = "insert into contact_relation(entity_id, "
-        + "contact_type_id, creation_date, creation_user, modification_date, modification_user, contact_id)"
-        + " values (?, ?, CURRENT, USER, CURRENT, USER, ?)";
+    private static final String INSERT_CONTACT_RELATION =
+        "insert into contact_relation(entity_id, "
+            + "contact_type_id, creation_date, creation_user, modification_date, modification_user, contact_id)"
+            + " values (?, ?, CURRENT, USER, CURRENT, USER, ?)";
 
     /**
      * <p>
      * Represents the sql script to delete value from contact relation table.
      * </p>
      */
-    private static final String DELETE_CONTACT_RELATION = "delete from contact_relation where "
-        + "entity_id = ? and contact_type_id = ? and contact_id = ?";
+    private static final String DELETE_CONTACT_RELATION =
+        "delete from contact_relation where " + "entity_id = ? and contact_type_id = ? and contact_id = ?";
 
     /**
      * <p>
@@ -81,8 +81,10 @@ public class MockContactManager implements ContactManager {
      * Adds the given contact.
      * </p>
      *
-     * @param contact the contact to add
-     * @param doAudit whether this action should be audited
+     * @param contact
+     *            the contact to add
+     * @param doAudit
+     *            whether this action should be audited
      */
     public void addContact(Contact contact, boolean doAudit) {
         contact.setId(nextId++);
@@ -94,8 +96,10 @@ public class MockContactManager implements ContactManager {
      * Adds the given contacts.
      * </p>
      *
-     * @param contacts the contact array to add
-     * @param doAudit whether this action should be audited
+     * @param contacts
+     *            the contact array to add
+     * @param doAudit
+     *            whether this action should be audited
      */
     public void addContacts(Contact[] contacts, boolean doAudit) {
         for (int i = 0; i < contacts.length; i++) {
@@ -110,7 +114,8 @@ public class MockContactManager implements ContactManager {
      * </p>
      *
      * @return the contact with the given id
-     * @param id the id of the contact to be retrieved
+     * @param id
+     *            the id of the contact to be retrieved
      */
     public Contact retrieveContact(long id) {
         Contact contact = (Contact) contactMap.get(new Long(id));
@@ -128,7 +133,8 @@ public class MockContactManager implements ContactManager {
      * </p>
      *
      * @return all the contacts for the ids
-     * @param ids the contact id array
+     * @param ids
+     *            the contact id array
      */
     public Contact[] retrieveContacts(long[] ids) {
         Contact[] contacts = new Contact[ids.length];
@@ -144,8 +150,10 @@ public class MockContactManager implements ContactManager {
      * Removes the contact with given id.
      * </p>
      *
-     * @param id the contact id to remove
-     * @param doAudit whether this action should be audited
+     * @param id
+     *            the contact id to remove
+     * @param doAudit
+     *            whether this action should be audited
      */
     public void removeContact(long id, boolean doAudit) {
         contactMap.remove(new Long(id));
@@ -156,8 +164,10 @@ public class MockContactManager implements ContactManager {
      * Removes the contacts with given ids.
      * </p>
      *
-     * @param ids the contact id array to remove
-     * @param doAudit whether this action should be audited
+     * @param ids
+     *            the contact id array to remove
+     * @param doAudit
+     *            whether this action should be audited
      */
     public void removeContacts(long[] ids, boolean doAudit) {
         for (int i = 0; i < ids.length; i++) {
@@ -170,8 +180,10 @@ public class MockContactManager implements ContactManager {
      * Updates the given contact.
      * </p>
      *
-     * @param contact the contact to update
-     * @param doAudit whether this action should be audited
+     * @param contact
+     *            the contact to update
+     * @param doAudit
+     *            whether this action should be audited
      */
     public void updateContact(Contact contact, boolean doAudit) {
         contactMap.put(new Long(contact.getId()), contact);
@@ -182,8 +194,10 @@ public class MockContactManager implements ContactManager {
      * Updates the given contacts.
      * </p>
      *
-     * @param contacts the contact array to update
-     * @param doAudit whether this action should be audited
+     * @param contacts
+     *            the contact array to update
+     * @param doAudit
+     *            whether this action should be audited
      */
     public void updateContacts(Contact[] contacts, boolean doAudit) {
         for (int i = 0; i < contacts.length; i++) {
@@ -209,7 +223,8 @@ public class MockContactManager implements ContactManager {
      * </p>
      *
      * @return all the contacts in this manager
-     * @param filter the filter
+     * @param filter
+     *            the filter
      */
     public Contact[] searchContacts(Filter filter) {
         return getAllContacts();
@@ -220,11 +235,15 @@ public class MockContactManager implements ContactManager {
      * Associates the contact with the entity.
      * </p>
      *
-     * @param contact the contact to associate
-     * @param entityId the entity id
-     * @param doAudit whether this action should be audited
+     * @param contact
+     *            the contact to associate
+     * @param entityId
+     *            the entity id
+     * @param doAudit
+     *            whether this action should be audited
      *
-     * @throws PersistenceException if any exception occurs
+     * @throws PersistenceException
+     *             if any exception occurs
      */
     public void associate(Contact contact, long entityId, boolean doAudit) throws PersistenceException {
         Connection conn = null;
@@ -258,11 +277,15 @@ public class MockContactManager implements ContactManager {
      * Deassociates the contact with the entity.
      * </p>
      *
-     * @param contact the contact to deassociate
-     * @param entityId the entity id
-     * @param doAudit whether this action should be audited
+     * @param contact
+     *            the contact to deassociate
+     * @param entityId
+     *            the entity id
+     * @param doAudit
+     *            whether this action should be audited
      *
-     * @throws PersistenceException if any exception occurs
+     * @throws PersistenceException
+     *             if any exception occurs
      */
     public void deassociate(Contact contact, long entityId, boolean doAudit) throws PersistenceException {
         Connection conn = null;

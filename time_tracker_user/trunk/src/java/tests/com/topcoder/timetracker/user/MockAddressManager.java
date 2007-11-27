@@ -23,11 +23,10 @@ import com.topcoder.timetracker.contact.State;
 
 /**
  * <p>
- * This class implements AddressManager interface.
- * It is only used for testing.
+ * This class implements AddressManager interface. It is only used for testing.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author biotrail
  * @version 3.2
  */
 public class MockAddressManager implements AddressManager {
@@ -36,17 +35,18 @@ public class MockAddressManager implements AddressManager {
      * Represents the sql script to insert value to address relation table.
      * </p>
      */
-    private static final String INSERT_ADDRESS_RELATION = "insert into address_relation(entity_id, "
-        + "address_type_id, creation_date, creation_user, modification_date, modification_user, "
-        + "address_id) values (?, ?, CURRENT, USER, CURRENT, USER, ?)";
+    private static final String INSERT_ADDRESS_RELATION =
+        "insert into address_relation(entity_id, "
+            + "address_type_id, creation_date, creation_user, modification_date, modification_user, "
+            + "address_id) values (?, ?, CURRENT, USER, CURRENT, USER, ?)";
 
     /**
      * <p>
      * Represents the sql script to delete value from address relation table.
      * </p>
      */
-    private static final String DELETE_ADDRESS_RELATION = "delete from address_relation where "
-        + "entity_id = ? and address_type_id = ? and address_id = ?";
+    private static final String DELETE_ADDRESS_RELATION =
+        "delete from address_relation where " + "entity_id = ? and address_type_id = ? and address_id = ?";
 
     /**
      * <p>
@@ -83,8 +83,10 @@ public class MockAddressManager implements AddressManager {
      * Adds the given Address.
      * </p>
      *
-     * @param address the address to add
-     * @param doAudit whether this action should be audited
+     * @param address
+     *            the address to add
+     * @param doAudit
+     *            whether this action should be audited
      */
     public void addAddress(Address address, boolean doAudit) {
         address.setId(nextId++);
@@ -96,8 +98,10 @@ public class MockAddressManager implements AddressManager {
      * Adds the given addresses.
      * </p>
      *
-     * @param addresses the address array to add
-     * @param doAudit whether this action should be audited
+     * @param addresses
+     *            the address array to add
+     * @param doAudit
+     *            whether this action should be audited
      */
     public void addAddresses(Address[] addresses, boolean doAudit) {
         for (int i = 0; i < addresses.length; i++) {
@@ -112,7 +116,8 @@ public class MockAddressManager implements AddressManager {
      * </p>
      *
      * @return the address with the given id
-     * @param id the id of the address to be retrieved
+     * @param id
+     *            the id of the address to be retrieved
      */
     public Address retrieveAddress(long id) {
         Address address = (Address) addressMap.get(new Long(id));
@@ -130,7 +135,8 @@ public class MockAddressManager implements AddressManager {
      * </p>
      *
      * @return all the addresses for the ids
-     * @param ids the address id array
+     * @param ids
+     *            the address id array
      */
     public Address[] retrieveAddresses(long[] ids) {
         Address[] addresses = new Address[ids.length];
@@ -146,8 +152,10 @@ public class MockAddressManager implements AddressManager {
      * Removes the address with given id.
      * </p>
      *
-     * @param id the address id to remove
-     * @param doAudit whether this action should be audited
+     * @param id
+     *            the address id to remove
+     * @param doAudit
+     *            whether this action should be audited
      */
     public void removeAddress(long id, boolean doAudit) {
         addressMap.remove(new Long(id));
@@ -158,8 +166,10 @@ public class MockAddressManager implements AddressManager {
      * Removes the addresses with given ids.
      * </p>
      *
-     * @param ids the address id array to remove
-     * @param doAudit whether this action should be audited
+     * @param ids
+     *            the address id array to remove
+     * @param doAudit
+     *            whether this action should be audited
      */
     public void removeAddresses(long[] ids, boolean doAudit) {
         for (int i = 0; i < ids.length; i++) {
@@ -172,8 +182,10 @@ public class MockAddressManager implements AddressManager {
      * Updates the given address.
      * </p>
      *
-     * @param address the address to update
-     * @param doAudit whether this action should be audited
+     * @param address
+     *            the address to update
+     * @param doAudit
+     *            whether this action should be audited
      */
     public void updateAddress(Address address, boolean doAudit) {
         addressMap.put(new Long(address.getId()), address);
@@ -184,8 +196,10 @@ public class MockAddressManager implements AddressManager {
      * Updates the given addresses.
      * </p>
      *
-     * @param addresses the address array to update
-     * @param doAudit whether this action should be audited
+     * @param addresses
+     *            the address array to update
+     * @param doAudit
+     *            whether this action should be audited
      */
     public void updateAddresses(Address[] addresses, boolean doAudit) {
         for (int i = 0; i < addresses.length; i++) {
@@ -211,7 +225,8 @@ public class MockAddressManager implements AddressManager {
      * </p>
      *
      * @return all the addresses in this manager
-     * @param filter the filter
+     * @param filter
+     *            the filter
      */
     public Address[] searchAddresses(Filter filter) {
         return getAllAddresses();
@@ -222,11 +237,15 @@ public class MockAddressManager implements AddressManager {
      * Associates the address with the entity.
      * </p>
      *
-     * @param address the address to associate
-     * @param entityId the entity id
-     * @param doAudit whether this action should be audited
+     * @param address
+     *            the address to associate
+     * @param entityId
+     *            the entity id
+     * @param doAudit
+     *            whether this action should be audited
      *
-     * @throws PersistenceException if any exception occurs
+     * @throws PersistenceException
+     *             if any exception occurs
      */
     public void associate(Address address, long entityId, boolean doAudit) throws PersistenceException {
         Connection conn = null;
@@ -260,11 +279,15 @@ public class MockAddressManager implements AddressManager {
      * Deassociates the address with the entity.
      * </p>
      *
-     * @param address the address to deassociate
-     * @param entityId the entity id
-     * @param doAudit whether this action should be audited
+     * @param address
+     *            the address to deassociate
+     * @param entityId
+     *            the entity id
+     * @param doAudit
+     *            whether this action should be audited
      *
-     * @throws PersistenceException if any exception occurs
+     * @throws PersistenceException
+     *             if any exception occurs
      */
     public void deassociate(Address address, long entityId, boolean doAudit) throws PersistenceException {
         Connection conn = null;

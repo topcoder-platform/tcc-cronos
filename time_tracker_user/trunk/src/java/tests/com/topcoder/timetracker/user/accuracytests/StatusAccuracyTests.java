@@ -35,9 +35,9 @@ public class StatusAccuracyTests extends TestCase {
      * </p>
      */
     public void testGetName() {
-        assertEquals("Failed to get the name.", "active", Status.ACTIVE.getName());
-        assertEquals("Failed to get the name.", "inactive", Status.INACTIVE.getName());
-        assertEquals("Failed to get the name.", "locked", Status.LOCKED.getName());
+        assertEquals("Failed to get the name.", "Active", Status.ACTIVE.getName());
+        assertEquals("Failed to get the name.", "Inactive", Status.INACTIVE.getName());
+        assertEquals("Failed to get the name.", "Locked", Status.LOCKED.getName());
     }
 
     /**
@@ -46,9 +46,9 @@ public class StatusAccuracyTests extends TestCase {
      * </p>
      */
     public void testToString() {
-        assertEquals("Failed to string.", "active", Status.ACTIVE.toString());
-        assertEquals("Failed to string.", "inactive", Status.INACTIVE.toString());
-        assertEquals("Failed to string.", "locked", Status.LOCKED.toString());
+        assertEquals("Failed to string.", "Active", Status.ACTIVE.toString());
+        assertEquals("Failed to string.", "Inactive", Status.INACTIVE.toString());
+        assertEquals("Failed to string.", "Locked", Status.LOCKED.toString());
     }
 
     /**
@@ -59,7 +59,7 @@ public class StatusAccuracyTests extends TestCase {
     public void testGetId() {
         assertEquals("Failed to get the id.", 1, Status.ACTIVE.getId());
         assertEquals("Failed to get the id.", 0, Status.INACTIVE.getId());
-        assertEquals("Failed to get the id.", 2, Status.LOCKED.getId());
+        assertEquals("Failed to get the id.", 3, Status.LOCKED.getId());
     }
 
 }

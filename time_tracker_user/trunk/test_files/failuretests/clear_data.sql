@@ -16,3 +16,5 @@ DELETE FROM action_context;
 DELETE FROM action;
 DELETE FROM role;
 DELETE FROM id_sequences;
+DELETE FROM user_status;
+DELETE FROM user_type;

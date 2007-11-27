@@ -1,462 +1,684 @@
 <?xml version="1.0"?>
 <CMConfig>
-	<Config name="com.topcoder.timetracker.user.UserAuthenticator">
-		<Property name="objectFactoryNamespace">
-			<Value>com.topcoder.timetracker.user</Value>
-		</Property>
-		<Property name="userDao">
-			<Property name="classname">
-				<Value>DbUserDAO</Value>
-			</Property>
-		</Property>
-	</Config>
-	<Config name="com.topcoder.timetracker.user.j2ee.UserManagerDelegate">
-		<Property name="contextName">
-			<Value>tt_user</Value>
-		</Property>
-		<Property name="localHomeName">
-			<Value>UserManagerLocalHome</Value>
-		</Property>
-	</Config>
-	<Config name="com.topcoder.timetracker.user">
-		<!-- For the ConnectionFactory -->
-		<Property name="DBConnectionFactory:timetracker">
-			<Property name="type">
-				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
-			</Property>
+    <Config name="com.topcoder.timetracker.user.UserAuthenticator">
+        <Property name="objectFactoryNamespace">
+            <Value>com.topcoder.timetracker.user</Value>
+        </Property>
+        <Property name="userDao">
+            <Property name="classname">
+                <Value>DbUserDAO</Value>
+            </Property>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.timetracker.user.j2ee.UserManagerDelegate">
+        <Property name="contextName">
+            <Value>tt_user</Value>
+        </Property>
+        <Property name="localHomeName">
+            <Value>UserManagerLocalHome</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.timetracker.user.j2ee.UserStatusManagerDelegate">
+        <Property name="contextName">
+            <Value>tt_user</Value>
+        </Property>
+        <Property name="localHomeName">
+            <Value>UserStatusManagerLocalHome</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.timetracker.user.j2ee.UserTypeManagerDelegate">
+        <Property name="contextName">
+            <Value>tt_user</Value>
+        </Property>
+        <Property name="localHomeName">
+            <Value>UserTypeManagerLocalHome</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.timetracker.user">
+        <!-- For the ConnectionFactory -->
+        <Property name="DBConnectionFactory:timetracker">
+            <Property name="type">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
 
-			<Property name="params">
-				<!-- Namespace parameter for the connection factory. -->
-				<Property name="param1">
-					<Property name="type">
-						<Value>java.lang.String</Value>
-					</Property>
-					<Property name="value">
-						<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
-					</Property>
-				</Property>
-			</Property>
-		</Property>
+            <Property name="params">
+                <!-- Namespace parameter for the connection factory. -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>java.lang.String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
 
-		<!-- For the AuthorizationPersistence -->
-		<Property name="AuthorizationPersistence:timetracker">
-			<Property name="type">
-				<Value>com.topcoder.security.authorization.persistence.SQLAuthorizationPersistence</Value>
-			</Property>
+        <!-- For the AuthorizationPersistence -->
+        <Property name="AuthorizationPersistence:timetracker">
+            <Property name="type">
+                <Value>com.topcoder.security.authorization.persistence.SQLAuthorizationPersistence</Value>
+            </Property>
 
-			<Property name="params">
-				<!-- Namespace parameter for the persistence. -->
-				<Property name="param1">
-					<Property name="type">
-						<Value>java.lang.String</Value>
-					</Property>
-					<Property name="value">
-						<Value>com.topcoder.timetracker.application.authorization</Value>
-					</Property>
-				</Property>
-			</Property>
-		</Property>
+            <Property name="params">
+                <!-- Namespace parameter for the persistence. -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>java.lang.String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.timetracker.application.authorization</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
 
-		<!-- Object Factory definition for UserDAO -->
-		<Property name="DbUserDAO">
-			<Property name="type">
-				<Value>com.topcoder.timetracker.user.db.DbUserDAO</Value>
-			</Property>
+        <!-- Object Factory definition for UserDAO -->
+        <Property name="DbUserDAO">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.user.db.DbUserDAO</Value>
+            </Property>
 
-			<Property name="params">
-				<!-- ConnectionFactory parameter for the DAO. -->
-				<Property name="param1">
-					<Property name="name">
-						<Value>DBConnectionFactory:timetracker</Value>
-					</Property>
-				</Property>
+            <Property name="params">
+                <!-- ConnectionFactory parameter for the DAO. -->
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>DBConnectionFactory:timetracker</Value>
+                    </Property>
+                </Property>
 
-				<!-- Connection name parameter for the DAO (we use null). -->
-				<Property name="param2">
-					<Property name="type">
-						<Value>java.lang.String</Value>
-					</Property>
-				</Property>
+                <!-- Connection name parameter for the DAO (we use null). -->
+                <Property name="param2">
+                    <Property name="type">
+                        <Value>java.lang.String</Value>
+                    </Property>
+                </Property>
 
-				<!-- Id Generator parameter for the DAO. -->
-				<Property name="param3">
-					<Property name="type">
-						<Value>java.lang.String</Value>
-					</Property>
-					<Property name="value">
-						<Value>com.topcoder.timetracker.user.User</Value>
-					</Property>
-				</Property>
+                <!-- Id Generator parameter for the DAO. -->
+                <Property name="param3">
+                    <Property name="type">
+                        <Value>java.lang.String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.timetracker.user.User</Value>
+                    </Property>
+                </Property>
 
-				<!-- Search Strategy Namespace parameter for the DAO. -->
-				<Property name="param4">
-					<Property name="type">
-						<Value>java.lang.String</Value>
-					</Property>
-					<Property name="value">
-						<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
-					</Property>
-				</Property>
+                <!-- Search Strategy Namespace parameter for the DAO. -->
+                <Property name="param4">
+                    <Property name="type">
+                        <Value>java.lang.String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+                    </Property>
+                </Property>
 
-				<!-- AuditManager parameter for the DAO. -->
-				<Property name="param5">
-					<Property name="name">
-						<Value>AuditManager:default</Value>
-					</Property>
-				</Property>
+                <!-- AuditManager parameter for the DAO. -->
+                <Property name="param5">
+                    <Property name="name">
+                        <Value>AuditManager:default</Value>
+                    </Property>
+                </Property>
 
-				<!-- ContactManager parameter for the DAO. -->
-				<Property name="param6">
-					<Property name="name">
-						<Value>ContactManager:default</Value>
-					</Property>
-				</Property>
+                <!-- ContactManager parameter for the DAO. -->
+                <Property name="param6">
+                    <Property name="name">
+                        <Value>ContactManager:default</Value>
+                    </Property>
+                </Property>
 
-				<!-- AuthorizationPersistence parameter for the DAO. -->
-				<Property name="param7">
-					<Property name="name">
-						<Value>AuthorizationPersistence:timetracker</Value>
-					</Property>
-				</Property>
+                <!-- AuthorizationPersistence parameter for the DAO. -->
+                <Property name="param7">
+                    <Property name="name">
+                        <Value>AuthorizationPersistence:timetracker</Value>
+                    </Property>
+                </Property>
 
-				<!-- AddressManager parameter for the DAO. -->
-				<Property name="param8">
-					<Property name="name">
-						<Value>AddressManager:default</Value>
-					</Property>
-				</Property>
+                <!-- AddressManager parameter for the DAO. -->
+                <Property name="param8">
+                    <Property name="name">
+                        <Value>AddressManager:default</Value>
+                    </Property>
+                </Property>
 
-				<!-- UseTransaction parameter for the DAO. -->
-				<Property name="param9">
-					<Property name="type">
-						<Value>boolean</Value>
-					</Property>
-					<Property name="value">
-						<Value>false</Value>
-					</Property>
-				</Property>
-			</Property>
-		</Property>
+                <!-- User Status parameter for the DAO. -->
+                <Property name="param9">
+                    <Property name="name">
+                        <Value>DbUserStatusDAO</Value>
+                    </Property>
+                </Property>
 
-		<Property name="AuditManager:default">
-			<Property name="type">
-				<Value>com.topcoder.timetracker.user.MockAuditManager</Value>
-			</Property>
-		</Property>
+                <!-- User Type parameter for the DAO. -->
+                <Property name="param10">
+                    <Property name="name">
+                        <Value>DbUserTypeDAO</Value>
+                    </Property>
+                </Property>
 
-		<Property name="ContactManager:default">
-			<Property name="type">
-				<Value>com.topcoder.timetracker.user.MockContactManager</Value>
-			</Property>
-		</Property>
+                <!-- UseTransaction parameter for the DAO. -->
+                <Property name="param11">
+                    <Property name="type">
+                        <Value>boolean</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>false</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
 
-		<Property name="AddressManager:default">
-			<Property name="type">
-				<Value>com.topcoder.timetracker.user.MockAddressManager</Value>
-			</Property>
-		</Property>
+        <Property name="DbUserStatusDAO">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.user.db.DbUserStatusDAO</Value>
+            </Property>
 
-		<!-- Object Factory definition for UserManager -->
-		<Property name="com/topcoder/timetracker/user/UserManager">
-			<Property name="type">
-				<Value>com.topcoder.timetracker.user.UserManagerImpl</Value>
-			</Property>
+            <Property name="params">
+                <!-- ConnectionFactory parameter for the DAO. -->
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>DBConnectionFactory:timetracker</Value>
+                    </Property>
+                </Property>
 
-			<Property name="params">
-				<!-- UserDAO for the Manager -->
-				<Property name="param1">
-					<Property name="name">
-						<Value>DbUserDAO</Value>
-					</Property>
-				</Property>
+                <!-- Connection name parameter for the DAO (we use null). -->
+                <Property name="param2">
+                    <Property name="type">
+                        <Value>java.lang.String</Value>
+                    </Property>
+                </Property>
 
-				<!-- AuthorizationPersistence for the Manager -->
-				<Property name="param2">
-					<Property name="name">
-						<Value>AuthorizationPersistence:timetracker</Value>
-					</Property>
-				</Property>
+                <!-- Id Generator parameter for the DAO. -->
+                <Property name="param3">
+                    <Property name="type">
+                        <Value>java.lang.String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.timetracker.user.UserStatus</Value>
+                    </Property>
+                </Property>
 
-				<!-- AuthenticatorName for the Manager -->
-				<Property name="param3">
-					<Property name="type">
-						<Value>java.lang.String</Value>
-					</Property>
-					<Property name="value">
-						<Value>Default_TT_UserAuthenticator</Value>
-					</Property>
-				</Property>
-			</Property>
-		</Property>
+                <!-- Search builder manager namespace parameter for the DAO. -->
+                <Property name="param4">
+                    <Property name="type">
+                        <Value>java.lang.String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.search.builder</Value>
+                    </Property>
+                </Property>
 
-		<!-- Object Factory definition for UserManager Delegate -->
-		<Property name="UserManager:delegate">
-			<Property name="type">
-				<Value>com.topcoder.timetracker.user.j2ee.UserManagerDelegate</Value>
-			</Property>
-			<Property name="params">
-				<!-- Namespace for the Manager -->
-				<Property name="param1">
-					<Property name="type">
-						<Value>java.lang.String</Value>
-					</Property>
-					<Property name="value">
-						<Value>com.topcoder.timetracker.user.j2ee.UserManagerDelegate</Value>
-					</Property>
-				</Property>
-			</Property>
-		</Property>
-	</Config>
+                <!-- Search bundle name namespace parameter for the DAO. -->
+                <Property name="param5">
+                    <Property name="type">
+                        <Value>java.lang.String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>userStatusSearchBundle</Value>
+                    </Property>
+                </Property>
 
-	<Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
-		<Property name="connections">
-			<Property name="default">
-				<Value>tt_user</Value>
-			</Property>
-			<Property name="tt_user">
-				<Property name="producer">
-					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
-				</Property>
-				<Property name="parameters">
-					<Property name="jdbc_driver">
-						<Value>com.informix.jdbc.IfxDriver</Value>
-					</Property>
-					<Property name="jdbc_url">
-						<Value>jdbc:informix-sqli://192.168.1.102:1526/tt_user:informixserver=topcoder</Value>
-					</Property>
-					<Property name="user">
-						<Value>informix</Value>
-					</Property>
-					<Property name="password">
-						<Value>810814</Value>
-					</Property>
-				</Property>
-			</Property>
-		</Property>
-	</Config>
+            </Property>
+        </Property>
 
-	<Config name="com.topcoder.timetracker.application.authorization">
-		<!-- db connection name for DBConnectionFactory, required -->
-		<Property name="db_connection_factory">
-			<Property name="class">
-				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
-			</Property>
-			<Property name="namespace">
-				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
-			</Property>
-			<Property name="connection_name">
-				<Value>tt_user</Value>
-			</Property>
-		</Property>
-		<!-- cache factory, required -->
-		<Property name="cache_factory">
-			<Property name="class">
-				<Value>com.topcoder.security.authorization.persistence.CacheFactoryImpl</Value>
-			</Property>
-			<Property name="namespace">
-				<Value>com.topcoder.security.authorization.persistence.CacheFactoryImpl</Value>
-			</Property>
-		</Property>
-		<Property name="principal_sequence_name">
-			<Value>com.topcoder.security.authorization.Principal</Value>
-		</Property>
-		<Property name="role_sequence_name">
-			<Value>com.topcoder.security.authorization.SecurityRole</Value>
-		</Property>
-		<Property name="action_sequence_name">
-			<Value>com.topcoder.security.authorization.Action</Value>
-		</Property>
-		<Property name="action_context_sequence_name">
-			<Value>com.topcoder.security.authorization.ActionContext</Value>
-		</Property>
-	</Config>
-	<!-- properties for CacheFactoryImpl-->
-	<Config name="com.topcoder.security.authorization.persistence.CacheFactoryImpl">
-		<!-- timeout in milli-seconds, non-negative long value, 0 means NO_TIMEOUT, required -->
-		<Property name="timeout">
-			<Value>1000</Value>
-		</Property>
-		<Property name="max_cache_size">
-			<Value>10000</Value>
-		</Property>
-		<Property name="eviction_strategy">
-			<Property name="class">
-				<Value>com.topcoder.util.cache.LRUCacheEvictionStrategy</Value>
-			</Property>
-		</Property>
-	</Config>
-	<Config name="com.topcoder.search.builder.database.DatabaseSearchStrategy">
-		<!-- Property defining a specification for constructing the dbConnectionFactory to use. -->
-		<Property name="connectionFactory">
-			<!-- The namespace of the ConnectionFactory -->
-			<Property name="name">
-				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
-			</Property>
-			<Property name="class">
-				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
-			</Property>
-		</Property>
+        <Property name="DbUserTypeDAO">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.user.db.DbUserTypeDAO</Value>
+            </Property>
 
-		<Property name="searchFragmentFactoryNamespace">
-			<Value>com.topcoder.search.builder.database.factory</Value>
-		</Property>
+            <Property name="params">
+                <!-- ConnectionFactory parameter for the DAO. -->
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>DBConnectionFactory:timetracker</Value>
+                    </Property>
+                </Property>
 
-		<Property name="searchFragmentBuilders">
-			<Property name="first">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.AndFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.AndFragmentBuilder</Value>
-				</Property>
-			</Property>
+                <!-- Connection name parameter for the DAO (we use null). -->
+                <Property name="param2">
+                    <Property name="type">
+                        <Value>java.lang.String</Value>
+                    </Property>
+                </Property>
 
-			<Property name="second">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.OrFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.OrFragmentBuilder</Value>
-				</Property>
-			</Property>
+                <!-- Id Generator parameter for the DAO. -->
+                <Property name="param3">
+                    <Property name="type">
+                        <Value>java.lang.String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.timetracker.user.UserType</Value>
+                    </Property>
+                </Property>
 
-			<Property name="third">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.LikeFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.LikeFragmentBuilder</Value>
-				</Property>
-			</Property>
+                <!-- Search builder manager namespace parameter for the DAO. -->
+                <Property name="param4">
+                    <Property name="type">
+                        <Value>java.lang.String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.search.builder</Value>
+                    </Property>
+                </Property>
 
-			<Property name="fourth">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.NotFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.NotFragmentBuilder</Value>
-				</Property>
-			</Property>
+                <!-- Search bundle name namespace parameter for the DAO. -->
+                <Property name="param5">
+                    <Property name="type">
+                        <Value>java.lang.String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>userTypeSearchBundle</Value>
+                    </Property>
+                </Property>
 
-			<Property name="fifth">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.EqualToFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.EqualsFragmentBuilder</Value>
-				</Property>
-			</Property>
+            </Property>
+        </Property>
 
-			<Property name="sixth">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.InFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.InFragmentBuilder</Value>
-				</Property>
-			</Property>
+        <Property name="AuditManager:default">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.user.MockAuditManager</Value>
+            </Property>
+        </Property>
 
-			<Property name="eighth">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.NullFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.NullFragmentBuilder</Value>
-				</Property>
-			</Property>
+        <Property name="ContactManager:default">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.user.MockContactManager</Value>
+            </Property>
+        </Property>
 
-			<Property name="ninth">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.GreaterThanFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
-				</Property>
-			</Property>
+        <Property name="AddressManager:default">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.user.MockAddressManager</Value>
+            </Property>
+        </Property>
 
-			<Property name="tenth">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
-				</Property>
-			</Property>
+        <!-- Object Factory definition for UserManager -->
+        <Property name="com/topcoder/timetracker/user/UserManager">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.user.UserManagerImpl</Value>
+            </Property>
 
-			<Property name="eleventh">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.BetweenFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
-				</Property>
-			</Property>
+            <Property name="params">
+                <!-- UserDAO for the Manager -->
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>DbUserDAO</Value>
+                    </Property>
+                </Property>
 
-			<Property name="twelvth">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.LessThanOrEqualToFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
-				</Property>
-			</Property>
+                <!-- AuthorizationPersistence for the Manager -->
+                <Property name="param2">
+                    <Property name="name">
+                        <Value>AuthorizationPersistence:timetracker</Value>
+                    </Property>
+                </Property>
 
-			<Property name="thirteenth">
-				<Property name="targetFilter">
-					<Value>com.topcoder.search.builder.filter.LessThanFilter</Value>
-				</Property>
-				<Property name="className">
-					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
-				</Property>
-			</Property>
-		</Property>
-	</Config>
+                <!-- AuthenticatorName for the Manager -->
+                <Property name="param3">
+                    <Property name="type">
+                        <Value>java.lang.String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>Default_TT_UserAuthenticator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
 
-	<!-- No search fragment factory -->
-	<Config name="com.topcoder.search.builder.database.factory">
-	</Config>
+        <!-- Object Factory definition for UserManager Delegate -->
+        <Property name="UserManager:delegate">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.user.j2ee.UserManagerDelegate</Value>
+            </Property>
+            <Property name="params">
+                <!-- Namespace for the Manager -->
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>java.lang.String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.timetracker.user.j2ee.UserManagerDelegate</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
 
-	<Config name="com.topcoder.security.authenticationfactory.AuthenticationFactory">
-		<Property name="authenticators">
-			<!-- http authenticator -->
-			<Property name="Default_TT_UserAuthenticator">
-				<!-- the full qualified class name, required. -->
-				<Property name="class">
-					<Value>com.topcoder.timetracker.user.UserAuthenticator</Value>
-				</Property>
+        <!-- Object Factory definition for UserStatusManager -->
+        <Property name="com/topcoder/timetracker/user/UserStatusManager">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.user.UserStatusManagerImpl</Value>
+            </Property>
 
-				<!-- the namespace to load configuration values, required. -->
-				<Property name="namespace">
-					<Value>com.topcoder.timetracker.user.UserAuthenticator</Value>
-				</Property>
-			</Property>
-		</Property>
-	</Config>
-	<Config name="com.topcoder.util.log">
-		<!-- The Log implementation class -->
-		<Property name="logClass">
-			<Value>com.topcoder.util.log.basic.BasicLog</Value>
-		</Property>
+            <Property name="params">
+                <!-- UserStatusDAO for the Manager -->
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>DbUserStatusDAO</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+        <!-- Object Factory definition for UserTypeManager -->
+        <Property name="com/topcoder/timetracker/user/UserTypeManager">
+            <Property name="type">
+                <Value>com.topcoder.timetracker.user.UserTypeManagerImpl</Value>
+            </Property>
+
+            <Property name="params">
+                <!-- UserTypeDAO for the Manager -->
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>DbUserTypeDAO</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
 
 
-		<!-- Specifies where the output should be written to, System.out or System.err -->
-		<Property name="basic.log.target">
-			<Value>System.out</Value>
-		</Property>
-	</Config>
 
-	<Config name="com.topcoder.naming.jndiutility">
-		<Property name="context">
-			<Property name="default">
-				<Property name="factory">
-					<Value>org.mockejb.jndi.MockContextFactory</Value>
-				</Property>
-			</Property>
-			<Property name="tt_user">
-				<Property name="factory">
-					<Value>org.mockejb.jndi.MockContextFactory</Value>
-				</Property>
-			</Property>
-		</Property>
-	</Config>
+    <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+        <Property name="connections">
+            <Property name="default">
+                <Value>tt_user</Value>
+            </Property>
+            <Property name="tt_user">
+                <Property name="producer">
+                    <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+                </Property>
+                <Property name="parameters">
+                    <Property name="jdbc_driver">
+                        <Value>com.informix.jdbc.IfxDriver</Value>
+                    </Property>
+                    <Property name="jdbc_url">
+                        <Value>jdbc:informix-sqli://192.168.1.101:1526/ttu:informixserver=ol_satukubik</Value>
+                    </Property>
+                    <Property name="user">
+                        <Value>informix</Value>
+                    </Property>
+                    <Property name="password">
+                        <Value>informix2</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.timetracker.application.authorization">
+        <!-- db connection name for DBConnectionFactory, required -->
+        <Property name="db_connection_factory">
+            <Property name="class">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="namespace">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="connection_name">
+                <Value>tt_user</Value>
+            </Property>
+        </Property>
+        <!-- cache factory, required -->
+        <Property name="cache_factory">
+            <Property name="class">
+                <Value>com.topcoder.security.authorization.persistence.CacheFactoryImpl</Value>
+            </Property>
+            <Property name="namespace">
+                <Value>com.topcoder.security.authorization.persistence.CacheFactoryImpl</Value>
+            </Property>
+        </Property>
+        <Property name="principal_sequence_name">
+            <Value>com.topcoder.security.authorization.Principal</Value>
+        </Property>
+        <Property name="role_sequence_name">
+            <Value>com.topcoder.security.authorization.SecurityRole</Value>
+        </Property>
+        <Property name="action_sequence_name">
+            <Value>com.topcoder.security.authorization.Action</Value>
+        </Property>
+        <Property name="action_context_sequence_name">
+            <Value>com.topcoder.security.authorization.ActionContext</Value>
+        </Property>
+    </Config>
+    <!-- properties for CacheFactoryImpl-->
+    <Config name="com.topcoder.security.authorization.persistence.CacheFactoryImpl">
+        <!-- timeout in milli-seconds, non-negative long value, 0 means NO_TIMEOUT, required -->
+        <Property name="timeout">
+            <Value>1000</Value>
+        </Property>
+        <Property name="max_cache_size">
+            <Value>10000</Value>
+        </Property>
+        <Property name="eviction_strategy">
+            <Property name="class">
+                <Value>com.topcoder.util.cache.LRUCacheEvictionStrategy</Value>
+            </Property>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.search.builder.database.DatabaseSearchStrategy">
+        <!-- Property defining a specification for constructing the dbConnectionFactory to use. -->
+        <Property name="connectionFactory">
+            <!-- The namespace of the ConnectionFactory -->
+            <Property name="name">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="class">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+        </Property>
+
+        <Property name="searchFragmentFactoryNamespace">
+            <Value>com.topcoder.search.builder.database.factory</Value>
+        </Property>
+
+        <Property name="searchFragmentBuilders">
+            <Property name="first">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.AndFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.AndFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="second">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.OrFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.OrFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="third">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.LikeFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.LikeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="fourth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.NotFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.NotFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="fifth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.EqualToFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.EqualsFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="sixth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.InFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.InFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="eighth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.NullFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.NullFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="ninth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.GreaterThanFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="tenth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="eleventh">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.BetweenFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="twelvth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.LessThanOrEqualToFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+
+            <Property name="thirteenth">
+                <Property name="targetFilter">
+                    <Value>com.topcoder.search.builder.filter.LessThanFilter</Value>
+                </Property>
+                <Property name="className">
+                    <Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <!-- No search fragment factory -->
+    <Config name="com.topcoder.search.builder.database.factory"></Config>
+
+    <Config name="com.topcoder.security.authenticationfactory.AuthenticationFactory">
+        <Property name="authenticators">
+            <!-- http authenticator -->
+            <Property name="Default_TT_UserAuthenticator">
+                <!-- the full qualified class name, required. -->
+                <Property name="class">
+                    <Value>com.topcoder.timetracker.user.UserAuthenticator</Value>
+                </Property>
+
+                <!-- the namespace to load configuration values, required. -->
+                <Property name="namespace">
+                    <Value>com.topcoder.timetracker.user.UserAuthenticator</Value>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.util.log">
+        <!-- The Log implementation class -->
+        <Property name="logClass">
+            <Value>com.topcoder.util.log.basic.BasicLog</Value>
+        </Property>
+
+
+        <!-- Specifies where the output should be written to, System.out or System.err -->
+        <Property name="basic.log.target">
+            <Value>System.out</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.naming.jndiutility">
+        <Property name="context">
+            <Property name="default">
+                <Property name="factory">
+                    <Value>org.mockejb.jndi.MockContextFactory</Value>
+                </Property>
+            </Property>
+            <Property name="tt_user">
+                <Property name="factory">
+                    <Value>org.mockejb.jndi.MockContextFactory</Value>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.util.memoryusage.MemoryUsage">
+        <Property name="analyzers_namespace">
+            <Value>com.topcoder.util.memoryusage.MemoryUsage.ObjectFactory</Value>
+        </Property>
+        <Property name="analyzers">
+            <Value>Sun12Analyzer</Value>
+            <Value>Sun13Analyzer</Value>
+            <Value>Sun14Analyzer</Value>
+            <Value>Sun15Analyzer</Value>
+            <Value>IBM14Analyzer</Value>
+            <Value>IBM15Analyzer</Value>
+        </Property>
+        <Property name="fallback_analyzer">
+            <Value>Sun15Analyzer</Value>
+        </Property>
+        <Property name="default_fallback_analyzer_flag">
+            <Value>false</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.util.memoryusage.MemoryUsage.ObjectFactory">
+        <Property name="Sun12Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.Sun12Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="Sun13Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.Sun13Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="Sun14Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.Sun14Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="Sun15Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.Sun15Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="IBM14Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.IBM14Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="IBM15Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.IBM15Analyzer</Value>
+            </Property>
+        </Property>
+    </Config>
 </CMConfig>
