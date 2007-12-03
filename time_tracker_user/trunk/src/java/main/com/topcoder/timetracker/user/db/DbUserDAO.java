@@ -1083,6 +1083,9 @@ public class DbUserDAO implements UserDAO {
         } catch (SQLException e) {
             throw new DataAccessException("Error when preparing PreparedStatement", e);
         } finally {
+            DbUtil.closeStatement(statementExpense);
+            DbUtil.closeStatement(statementFixedBilling);
+            DbUtil.closeStatement(statementTime);
             DbUtil.closeStatement(statement);
             DbUtil.closeConnection(conn);
 
