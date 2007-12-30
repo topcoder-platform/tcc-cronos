@@ -807,9 +807,10 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
     }
 
     /**
-     * Retrieves the scorecard type ids and scorecard ids for a specific category.
+     * Retrieves the scorecard type ids and scorecard ids for a specific category
+     * from default scorecards table.
      * This method takes as a parameter projectCategoryId, gets the
-     * id information of scorecards for it, and return an array of ScorecardIDInfo instances, each one
+     * id information of scorecards for it, and returns an array of ScorecardIDInfo instances, each one
      * containing the scorecard type id and the scorecard id.
      *
      * @param projectCategoryId the id of the project category.
@@ -819,7 +820,7 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      * @throws PersistenceException if error occurred while accessing the persistence.
      * @throws IllegalArgumentException if the projectCategoryId is less than or equal to zero.
      */
-    public ScorecardIDInfo[] getScorecardsIDInfo(long projectCategoryId)
+    public ScorecardIDInfo[] getDefaultScorecardsIDInfo(long projectCategoryId)
         throws PersistenceException {
         if (projectCategoryId <= 0) {
             throw new IllegalArgumentException(

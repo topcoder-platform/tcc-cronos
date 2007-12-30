@@ -8,7 +8,7 @@ import com.topcoder.management.scorecard.ScorecardPersistence;
 
 
 /**
- * The unit tests for the method getScorecardsIDInfo
+ * The unit tests for the method getDefaultScorecardsIDInfo
  * in InformixScorecardPersistence class of version 1.0.2.
  *
  * @author Angen
@@ -33,12 +33,12 @@ public class InformixScorecardPersistenceTestV102 extends DbTestCase {
     }
 
     /**
-     * Tests getScorecardsIDInfo with valid parameter.
+     * Tests getDefaultScorecardsIDInfo with valid parameter.
      *
      * @throws Exception to Junit.
      */
-    public void testGetScorecardsIDInfo1() throws Exception {
-        ScorecardIDInfo[] results = persistence.getScorecardsIDInfo(1);
+    public void testGetDefaultScorecardsIDInfo1() throws Exception {
+        ScorecardIDInfo[] results = persistence.getDefaultScorecardsIDInfo(1);
 
         assertTrue(results.length == 3);
         assertTrue(results[0].getScorecardTypeId() == 1);
@@ -50,12 +50,12 @@ public class InformixScorecardPersistenceTestV102 extends DbTestCase {
     }
 
     /**
-     * Tests getScorecardsIDInfo with valid parameter.
+     * Tests getDefaultScorecardsIDInfo with valid parameter.
      *
      * @throws Exception to Junit.
      */
-    public void testGetScorecardsIDInfo2() throws Exception {
-        ScorecardIDInfo[] results = persistence.getScorecardsIDInfo(2);
+    public void testGetDefaultScorecardsIDInfo2() throws Exception {
+        ScorecardIDInfo[] results = persistence.getDefaultScorecardsIDInfo(2);
 
         assertTrue(results.length == 1);
         assertTrue(results[0].getScorecardTypeId() == 2);
@@ -63,13 +63,24 @@ public class InformixScorecardPersistenceTestV102 extends DbTestCase {
     }
 
     /**
-     * Tests getScorecardsIDInfo with invalid parameter.
+     * Tests getDefaultScorecardsIDInfo with valid parameter.
      *
      * @throws Exception to Junit.
      */
-    public void testGetScorecardsIDInfo3() throws Exception {
+    public void testGetDefaultScorecardsIDInfo3() throws Exception {
+        ScorecardIDInfo[] results = persistence.getDefaultScorecardsIDInfo(10);
+
+        assertTrue(results.length == 0);
+    }
+
+    /**
+     * Tests getDefaultScorecardsIDInfo with invalid parameter.
+     *
+     * @throws Exception to Junit.
+     */
+    public void testGetDefaultScorecardsIDInfo4() throws Exception {
         try {
-            persistence.getScorecardsIDInfo(0);
+            persistence.getDefaultScorecardsIDInfo(0);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException ex) {
             // ok
@@ -77,13 +88,13 @@ public class InformixScorecardPersistenceTestV102 extends DbTestCase {
     }
 
     /**
-     * Tests getScorecardsIDInfo with invalid parameter.
+     * Tests getDefaultScorecardsIDInfo with invalid parameter.
      *
      * @throws Exception to Junit.
      */
-    public void testGetScorecardsIDInfo4() throws Exception {
+    public void testGetDefaultScorecardsIDInfo5() throws Exception {
         try {
-            persistence.getScorecardsIDInfo(-1);
+            persistence.getDefaultScorecardsIDInfo(-1);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException ex) {
             // ok
