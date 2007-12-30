@@ -11,6 +11,7 @@
 		</Property>
 
 		<Property name="tableNames">
+		    <Value>default_scorecard</Value>
 			<Value>phase_criteria</Value>
 			<Value>project_phase</Value>
 			<Value>scorecard_question</Value>

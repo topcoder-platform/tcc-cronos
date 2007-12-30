@@ -3,24 +3,14 @@
  */
 package com.topcoder.management.scorecard.persistence;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.db.connectionfactory.UnknownConnectionException;
+
 import com.topcoder.management.scorecard.ConfigurationException;
 import com.topcoder.management.scorecard.PersistenceException;
+import com.topcoder.management.scorecard.ScorecardIDInfo;
 import com.topcoder.management.scorecard.ScorecardPersistence;
 import com.topcoder.management.scorecard.data.Group;
 import com.topcoder.management.scorecard.data.NamedScorecardStructure;
@@ -29,13 +19,28 @@ import com.topcoder.management.scorecard.data.Scorecard;
 import com.topcoder.management.scorecard.data.ScorecardStatus;
 import com.topcoder.management.scorecard.data.ScorecardType;
 import com.topcoder.management.scorecard.persistence.logging.LogMessage;
+
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
-import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
-import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
+import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
+import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 
 /**
  * This class contains operations to create and update scorecard instances into the Informix database. It
@@ -51,58 +56,66 @@ import com.topcoder.util.log.LogFactory;
  * @author tuenm
  * @author kr00tki
  * @author George1
- * @version 1.0.1
+ * @author Angen
+ *
+ * @version 1.0.2
  */
 public class InformixScorecardPersistence implements ScorecardPersistence {
-	/** Logger instance using the class name as category */
+    /** Logger instance using the class name as category */
     private static final Log logger = LogFactory.getLog(InformixScorecardPersistence.class.getName());
-    
+
     /**
      * Selects the scorecards ids that are in use.
      */
-    private static final String SELECT_IN_USE_IDS = "SELECT pc.parameter FROM phase_criteria pc "
-            + "JOIN phase_criteria_type_lu pct ON pc.phase_criteria_type_id = pct.phase_criteria_type_id "
-            + "WHERE pct.name='Scorecard ID' AND pc.parameter IN ";
+    private static final String SELECT_IN_USE_IDS = "SELECT pc.parameter FROM phase_criteria pc " +
+        "JOIN phase_criteria_type_lu pct ON pc.phase_criteria_type_id = pct.phase_criteria_type_id " +
+        "WHERE pct.name='Scorecard ID' AND pc.parameter IN ";
 
     /**
-     * Selects the scorecars by ids.
+     * Selects the scorecards by ids.
      */
-    private static final String SELECT_SCORECARD = "SELECT sc.scorecard_id, status.scorecard_status_id, "
-            + "type.scorecard_type_id, sc.project_category_id, sc.name, sc.version, sc.min_score, "
-            + "sc.max_score, sc.create_user, sc.create_date, sc.modify_user, sc.modify_date, "
-            + "status.name AS StatusName, type.name AS TypeName FROM scorecard AS sc JOIN scorecard_type_lu AS type "
-            + "ON sc.scorecard_type_id=type.scorecard_type_id JOIN scorecard_status_lu AS status ON "
-            + "sc.scorecard_status_id=status.scorecard_status_id WHERE sc.scorecard_id IN ";
+    private static final String SELECT_SCORECARD = "SELECT sc.scorecard_id, status.scorecard_status_id, " +
+        "type.scorecard_type_id, sc.project_category_id, sc.name, sc.version, sc.min_score, " +
+        "sc.max_score, sc.create_user, sc.create_date, sc.modify_user, sc.modify_date, " +
+        "status.name AS StatusName, type.name AS TypeName FROM scorecard AS sc JOIN scorecard_type_lu AS type " +
+        "ON sc.scorecard_type_id=type.scorecard_type_id JOIN scorecard_status_lu AS status ON " +
+        "sc.scorecard_status_id=status.scorecard_status_id WHERE sc.scorecard_id IN ";
 
     /**
-     * Selects the scorecars statuses.
+     * Selects the scorecards statuses.
      */
     private static final String SELECT_SCORECARD_STATUS = "SELECT scorecard_status_id, name FROM scorecard_status_lu";
 
     /**
      * Selects the question types.
      */
-    private static final String SELECT_SCORECARD_QUESTION_TYPE = "SELECT scorecard_question_type_id, name "
-            + "FROM scorecard_question_type_lu";
+    private static final String SELECT_SCORECARD_QUESTION_TYPE = "SELECT scorecard_question_type_id, name " +
+        "FROM scorecard_question_type_lu";
 
     /**
-     * Selects the scorecars types.
+     * Selects the scorecards types.
      */
     private static final String SELECT_SCORECARD_TYPE = "SELECT scorecard_type_id, name FROM scorecard_type_lu";
 
     /**
+     * Selects the default scorecards.
+     */
+    private static final String SELECT_DEFAULT_SCORECARDS_ID_INFO = "SELECT scorecard_type_id, scorecard_id " +
+        "FROM default_scorecard WHERE project_category_id = ";
+
+    /**
      * Updates the scorecard.
      */
-    private static final String UPDATE_SCORECARD = "UPDATE scorecard SET scorecard_status_id = ?, "
-            + "scorecard_type_id = ?, project_category_id = ?, name = ?, version = ?, min_score = ?, "
-            + "max_score = ?, modify_user = ?, modify_date = ? WHERE scorecard_id = ?";
+    private static final String UPDATE_SCORECARD = "UPDATE scorecard SET scorecard_status_id = ?, " +
+        "scorecard_type_id = ?, project_category_id = ?, name = ?, version = ?, min_score = ?, " +
+        "max_score = ?, modify_user = ?, modify_date = ? WHERE scorecard_id = ?";
 
     /**
      * Insert the scorecard data.
      */
-    private static final String INSERT_SCORECARD = "INSERT INTO scorecard(scorecard_id, scorecard_status_id, "
-            + "scorecard_type_id, project_category_id, name, version, min_score, max_score, create_user, "
-            + "create_date, modify_user, modify_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String INSERT_SCORECARD = "INSERT INTO scorecard(scorecard_id, scorecard_status_id, " +
+        "scorecard_type_id, project_category_id, name, version, min_score, max_score, create_user, " +
+        "create_date, modify_user, modify_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * The factory instance that is used to create connection to the database. The Create, update, get scorecard
@@ -133,37 +146,47 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      *         configuration parameter is missing.
      * @throws PersistenceException if cannot initialize the connection to the database.
      */
-    public InformixScorecardPersistence(String namespace) throws ConfigurationException, PersistenceException {
+    public InformixScorecardPersistence(String namespace)
+        throws ConfigurationException, PersistenceException {
         if (namespace == null) {
             throw new IllegalArgumentException("namespace cannot be null.");
         }
 
         if (namespace.trim().length() == 0) {
-            throw new IllegalArgumentException("namespace cannot be empty String.");
+            throw new IllegalArgumentException(
+                "namespace cannot be empty String.");
         }
 
         try {
             ConfigManager cm = ConfigManager.getInstance();
             String factoryNs = cm.getString(namespace, "ConnectionFactoryNS");
             logger.log(Level.INFO,
-            		"read property ConnectionFactoryNS[" + factoryNs +"] from the namespace :" + namespace);
+                "read property ConnectionFactoryNS[" + factoryNs +
+                "] from the namespace :" + namespace);
             factory = new DBConnectionFactoryImpl(factoryNs);
             connectionName = cm.getString(namespace, "ConnectionName");
             logger.log(Level.INFO,
-            		"read property ConnectionName[" + connectionName +"] from the namespace :" + namespace);
+                "read property ConnectionName[" + connectionName +
+                "] from the namespace :" + namespace);
             IdGeneratorUtility.loadIdGenerators(namespace);
         } catch (ConfigManagerException ex) {
-        	logger.log(Level.FATAL,
-        			"Fails to create InformixScorecardPersistence.\n" + LogMessage.getExceptionStackTrace(ex));
-            throw new ConfigurationException("Error occur while reading the configuration.", ex);
+            logger.log(Level.FATAL,
+                "Fails to create InformixScorecardPersistence.\n" +
+                LogMessage.getExceptionStackTrace(ex));
+            throw new ConfigurationException("Error occur while reading the configuration.",
+                ex);
         } catch (com.topcoder.db.connectionfactory.ConfigurationException ex) {
-        	logger.log(Level.FATAL,
-        			"Fails to create InformixScorecardPersistence.\n" + LogMessage.getExceptionStackTrace(ex));
-            throw new ConfigurationException("Error occur while creating the DbConnectionFactory.", ex);
+            logger.log(Level.FATAL,
+                "Fails to create InformixScorecardPersistence.\n" +
+                LogMessage.getExceptionStackTrace(ex));
+            throw new ConfigurationException("Error occur while creating the DbConnectionFactory.",
+                ex);
         } catch (UnknownConnectionException ex) {
-        	logger.log(Level.FATAL,
-        			"Fails to create InformixScorecardPersistence.\n" + LogMessage.getExceptionStackTrace(ex));
-            throw new PersistenceException("Error occur while creating the DbConnectionFactory.", ex);
+            logger.log(Level.FATAL,
+                "Fails to create InformixScorecardPersistence.\n" +
+                LogMessage.getExceptionStackTrace(ex));
+            throw new PersistenceException("Error occur while creating the DbConnectionFactory.",
+                ex);
         }
     }
 
@@ -178,22 +201,33 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      */
     private Connection createConnection() throws PersistenceException {
         try {
-            Connection conn = (connectionName == null) ? factory.createConnection() : factory
-                    .createConnection(connectionName);
+            Connection conn = (connectionName == null)
+                ? factory.createConnection()
+                : factory.createConnection(connectionName);
 
-            if ( connectionName == null) {
-            	logger.log(Level.INFO, "create db connection with default connect name");
+            if (connectionName == null) {
+                logger.log(Level.INFO,
+                    "create db connection with default connect name");
             } else {
-            	logger.log(Level.INFO, "create db connection with connect name:" + connectionName);
+                logger.log(Level.INFO,
+                    "create db connection with connect name:" + connectionName);
             }
+
             conn.setAutoCommit(false);
+
             return conn;
         } catch (DBConnectionException ex) {
-        	logger.log(Level.ERROR, "fail to create db connection.\n" + LogMessage.getExceptionStackTrace(ex));
-            throw new PersistenceException("Error occur while creating database connection.", ex);
+            logger.log(Level.ERROR,
+                "fail to create db connection.\n" +
+                LogMessage.getExceptionStackTrace(ex));
+            throw new PersistenceException("Error occur while creating database connection.",
+                ex);
         } catch (SQLException ex) {
-        	logger.log(Level.ERROR, "fail to create db connection.\n" + LogMessage.getExceptionStackTrace(ex));
-            throw new PersistenceException("Error occur while creating database connection.", ex);
+            logger.log(Level.ERROR,
+                "fail to create db connection.\n" +
+                LogMessage.getExceptionStackTrace(ex));
+            throw new PersistenceException("Error occur while creating database connection.",
+                ex);
         }
     }
 
@@ -208,7 +242,8 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      * @throws IllegalArgumentException if any input is null or the operator is empty string.
      * @throws PersistenceException if error occurred while accessing the database.
      */
-    public void createScorecard(Scorecard scorecard, String operator) throws PersistenceException {
+    public void createScorecard(Scorecard scorecard, String operator)
+        throws PersistenceException {
         if (scorecard == null) {
             throw new IllegalArgumentException("scorecard cannot be null.");
         }
@@ -218,12 +253,15 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
         }
 
         if (operator.trim().length() == 0) {
-            throw new IllegalArgumentException("operator cannot be empty String.");
+            throw new IllegalArgumentException(
+                "operator cannot be empty String.");
         }
 
-        logger.log(Level.INFO, new LogMessage("Scorecard", null, operator, "Create new Scorecard."));
-        
+        logger.log(Level.INFO,
+            new LogMessage("Scorecard", null, operator, "Create new Scorecard."));
+
         Connection conn = createConnection();
+
         // generate the id first
         long scorecardId = DBUtils.nextId(IdGeneratorUtility.getScorecardIdGenerator());
 
@@ -232,9 +270,11 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
             Timestamp time = new Timestamp(System.currentTimeMillis());
             // create scorecard
             createScorecard(conn, scorecard, scorecardId, operator, time);
+
             // create groups
             InformixGroupPersistence groupPersistence = new InformixGroupPersistence(conn);
-            groupPersistence.createGroups(scorecard.getAllGroups(), operator, scorecardId);
+            groupPersistence.createGroups(scorecard.getAllGroups(), operator,
+                scorecardId);
 
             // set the audit data
             scorecard.setId(scorecardId);
@@ -247,16 +287,20 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
             conn.commit();
         } catch (SQLException ex) {
             DBUtils.rollback(conn);
-            logger.log(Level.ERROR, new LogMessage("Scorecard", null, operator, "Fail to create Scorecard.", ex));
-            throw new PersistenceException("Error occur during create operation.", ex);
+            logger.log(Level.ERROR,
+                new LogMessage("Scorecard", null, operator,
+                    "Fail to create Scorecard.", ex));
+            throw new PersistenceException("Error occur during create operation.",
+                ex);
         } catch (PersistenceException ex) {
             DBUtils.rollback(conn);
-            logger.log(Level.ERROR, new LogMessage("Scorecard", null, operator, "Fail to create Scorecard."));
+            logger.log(Level.ERROR,
+                new LogMessage("Scorecard", null, operator,
+                    "Fail to create Scorecard."));
             throw ex;
         } finally {
             DBUtils.close(conn);
         }
-
     }
 
     /**
@@ -269,10 +313,11 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      * @param time the creation time.
      * @throws SQLException if database error occurs.
      */
-    private static void createScorecard(Connection conn, Scorecard scorecard, long id, String operator,
-            Timestamp time) throws SQLException {
-    	logger.log(Level.INFO, "insert record into scorecard with id:" + id);
-    	PreparedStatement pstmt = null;
+    private static void createScorecard(Connection conn, Scorecard scorecard,
+        long id, String operator, Timestamp time) throws SQLException {
+        logger.log(Level.INFO, "insert record into scorecard with id:" + id);
+
+        PreparedStatement pstmt = null;
 
         try {
             pstmt = conn.prepareStatement(INSERT_SCORECARD);
@@ -293,7 +338,6 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
             pstmt.setTimestamp(12, time);
 
             pstmt.execute();
-
         } finally {
             DBUtils.close(pstmt);
         }
@@ -312,7 +356,8 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      * @throws IllegalArgumentException if any input is null or the operator is empty string.
      * @throws PersistenceException if error occurred while accessing the database.
      */
-    public void updateScorecard(Scorecard scorecard, String operator) throws PersistenceException {
+    public void updateScorecard(Scorecard scorecard, String operator)
+        throws PersistenceException {
         if (scorecard == null) {
             throw new IllegalArgumentException("scorecard cannot be null.");
         }
@@ -322,24 +367,34 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
         }
 
         if (operator.trim().length() == 0) {
-            throw new IllegalArgumentException("operator cannot be empty String.");
+            throw new IllegalArgumentException(
+                "operator cannot be empty String.");
         }
+
         logger.log(Level.INFO,
-        		new LogMessage("Scorecard", new Long(scorecard.getId()), operator, "update Scorecard."));
-        
+            new LogMessage("Scorecard", new Long(scorecard.getId()), operator,
+                "update Scorecard."));
+
         Connection conn = createConnection();
+
         try {
             // get the old scorcard
             Scorecard oldScorecard = getScorecard(scorecard.getId(), true);
+
             if (oldScorecard.isInUse()) {
-            	logger.log(Level.ERROR, new LogMessage("Scorecard", null, operator, "The scorecard is in use."));
-                throw new PersistenceException("The scorecard is in use. Id: " + scorecard.getId());
+                logger.log(Level.ERROR,
+                    new LogMessage("Scorecard", null, operator,
+                        "The scorecard is in use."));
+                throw new PersistenceException("The scorecard is in use. Id: " +
+                    scorecard.getId());
             }
 
             // increment the version number
             String version = incrementVersion(oldScorecard.getVersion());
+
             // get old group id
             Set oldGroupsIds = getGroupsIds(oldScorecard);
+
             // create the group persistence
             InformixGroupPersistence groupPersistence = new InformixGroupPersistence(conn);
 
@@ -355,31 +410,39 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
 
             // add all old groups to the delete list
             List deletedGroupsIds = new ArrayList(oldGroupsIds);
+
             for (int i = 0; i < newGroups.length; i++) {
                 Long longId = new Long(newGroups[i].getId());
+
                 // if is a new group - create it
                 if (newGroups[i].getId() == NamedScorecardStructure.SENTINEL_ID) {
-                    groupPersistence.createGroup(newGroups[i], i, operator, scorecard.getId());
+                    groupPersistence.createGroup(newGroups[i], i, operator,
+                        scorecard.getId());
                 } else if (oldGroupsIds.contains(longId)) {
                     // if this group exists - update it and remove from the delete list
-                    groupPersistence.updateGroup(newGroups[i], i, operator, scorecard.getId(), oldScorecard,
-                            deletedSectionIds, deletedQuestionsIds);
+                    groupPersistence.updateGroup(newGroups[i], i, operator,
+                        scorecard.getId(), oldScorecard, deletedSectionIds,
+                        deletedQuestionsIds);
                     deletedGroupsIds.remove(longId);
                 }
             }
 
             // delete the groups
             if (deletedGroupsIds.size() > 0) {
-                groupPersistence.deleteGroups(DBUtils.listToArray(deletedGroupsIds));
+                groupPersistence.deleteGroups(DBUtils.listToArray(
+                        deletedGroupsIds));
             }
 
             // delete the sections
             if (deletedSectionIds.size() > 0) {
-                new InformixSectionPersistence(conn).deleteSections(DBUtils.listToArray(deletedSectionIds));
+                new InformixSectionPersistence(conn).deleteSections(DBUtils.listToArray(
+                        deletedSectionIds));
             }
+
             // delete the question
             if (deletedQuestionsIds.size() > 0) {
-                new InformixQuestionPersistence(conn).deleteQuestions(DBUtils.listToArray(deletedQuestionsIds));
+                new InformixQuestionPersistence(conn).deleteQuestions(DBUtils.listToArray(
+                        deletedQuestionsIds));
             }
 
             logger.log(Level.INFO, "commit the transaction.");
@@ -390,29 +453,39 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
             scorecard.setModificationUser(operator);
         } catch (SQLException ex) {
             DBUtils.rollback(conn);
-            String errMsg = scorecard + " op:" + operator ;
+
+            String errMsg = scorecard + " op:" + operator;
+
             try {
-            	errMsg = "Scorecard Status: " + scorecard.getScorecardStatus().getId() +
-                            " - Scorecard Type: " + scorecard.getScorecardType().getId() +
-                            " - Scorecard Category: " + scorecard.getCategory() +
-                             " - Scorecard Name: " + scorecard.getName() +
-                             " - Scorecard Version: " + scorecard.getVersion() +
-                             " - Scorecard Min Score: " + scorecard.getMinScore() +
-                             " - Scorecard Max Score: " + scorecard.getMaxScore() +
-                             " - Operator: " + operator +
-                             " - Scorecard ID: " + scorecard.getId();
-            } catch(Exception e) {
-            	logger.log(Level.ERROR, new LogMessage("Scorecard",
-                		new Long(scorecard.getId()), operator, "Failed to update Scorecard." + errMsg, ex));
-            	throw new PersistenceException("Couldn't format error output:" + errMsg);
+                errMsg = "Scorecard Status: " +
+                    scorecard.getScorecardStatus().getId() +
+                    " - Scorecard Type: " +
+                    scorecard.getScorecardType().getId() +
+                    " - Scorecard Category: " + scorecard.getCategory() +
+                    " - Scorecard Name: " + scorecard.getName() +
+                    " - Scorecard Version: " + scorecard.getVersion() +
+                    " - Scorecard Min Score: " + scorecard.getMinScore() +
+                    " - Scorecard Max Score: " + scorecard.getMaxScore() +
+                    " - Operator: " + operator + " - Scorecard ID: " +
+                    scorecard.getId();
+            } catch (Exception e) {
+                logger.log(Level.ERROR,
+                    new LogMessage("Scorecard", new Long(scorecard.getId()),
+                        operator, "Failed to update Scorecard." + errMsg, ex));
+                throw new PersistenceException("Couldn't format error output:" +
+                    errMsg);
             }
-            logger.log(Level.ERROR, new LogMessage("Scorecard",
-            		new Long(scorecard.getId()), operator, "Failed to update Scorecard." + errMsg, ex));
-            throw new PersistenceException("Error occurs while deleting the scorecard: " + errMsg, ex);
+
+            logger.log(Level.ERROR,
+                new LogMessage("Scorecard", new Long(scorecard.getId()),
+                    operator, "Failed to update Scorecard." + errMsg, ex));
+            throw new PersistenceException(
+                "Error occurs while deleting the scorecard: " + errMsg, ex);
         } catch (PersistenceException ex) {
             DBUtils.rollback(conn);
             logger.log(Level.ERROR,
-            		new LogMessage("Scorecard", new Long(scorecard.getId()), operator, "Fail to update Scorecard."));
+                new LogMessage("Scorecard", new Long(scorecard.getId()),
+                    operator, "Fail to update Scorecard."));
             throw ex;
         } finally {
             DBUtils.close(conn);
@@ -428,6 +501,7 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
     private static Set getGroupsIds(Scorecard oldScorecard) {
         Set ids = new HashSet();
         Group[] groups = oldScorecard.getAllGroups();
+
         for (int i = 0; i < groups.length; i++) {
             ids.add(new Long(groups[i].getId()));
         }
@@ -445,10 +519,14 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      * @param version the scorecard version.
      * @throws SQLException if any database error occurs.
      */
-    private static void updateScorecard(Connection conn, Scorecard scorecard, String operator, Timestamp time,
-            String version) throws SQLException {
-    	logger.log(Level.INFO, "update scorecard with id : " + scorecard.getId());
+    private static void updateScorecard(Connection conn, Scorecard scorecard,
+        String operator, Timestamp time, String version)
+        throws SQLException {
+        logger.log(Level.INFO, "update scorecard with id : " +
+            scorecard.getId());
+
         PreparedStatement pstmt = null;
+
         try {
             pstmt = conn.prepareStatement(UPDATE_SCORECARD);
 
@@ -478,11 +556,13 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      */
     private static String incrementVersion(String version) {
         int idx = version.lastIndexOf('.');
+
         if (idx == -1) {
             return version + ".1";
         }
 
         int minor = Integer.parseInt(version.substring(idx + 1)) + 1;
+
         return version.substring(0, idx) + "." + minor;
     }
 
@@ -496,8 +576,10 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      * @throws IllegalArgumentException if the input id is less than or equal to zero.
      * @throws PersistenceException if error occurred while accessing the database.
      */
-    public Scorecard getScorecard(long id, boolean complete) throws PersistenceException {
-    	Scorecard[] result = getScorecards(new long[] {id}, complete);
+    public Scorecard getScorecard(long id, boolean complete)
+        throws PersistenceException {
+        Scorecard[] result = getScorecards(new long[] { id }, complete);
+
         if (result.length > 0) {
             return result[0];
         }
@@ -512,8 +594,9 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      * @throws PersistenceException if error occurred while accessing the database.
      */
     public ScorecardType[] getAllScorecardTypes() throws PersistenceException {
-    	logger.log(Level.INFO, "get all scorecard types.");	
-    	Connection conn = createConnection();
+        logger.log(Level.INFO, "get all scorecard types.");
+
+        Connection conn = createConnection();
         Statement stmt = null;
         ResultSet rs = null;
 
@@ -523,18 +606,22 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
             rs = stmt.executeQuery(SELECT_SCORECARD_TYPE);
 
             List result = new ArrayList();
+
             // for each row in the result set create new ScorecardType instance.
             while (rs.next()) {
                 long id = rs.getLong("scorecard_type_id");
                 String name = rs.getString("name");
                 result.add(new ScorecardType(id, name));
             }
+
             // convert the list to array
             return (ScorecardType[]) result.toArray(new ScorecardType[result.size()]);
         } catch (SQLException ex) {
-        	logger.log(Level.ERROR,
-        			"Failed to get all scorecard types. \n" + LogMessage.getExceptionStackTrace(ex));
-            throw new PersistenceException("Error occur during database operation.", ex);
+            logger.log(Level.ERROR,
+                "Failed to get all scorecard types. \n" +
+                LogMessage.getExceptionStackTrace(ex));
+            throw new PersistenceException("Error occur during database operation.",
+                ex);
         } finally {
             DBUtils.close(rs);
             DBUtils.close(stmt);
@@ -549,8 +636,9 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      * @throws PersistenceException if error occurred while accessing the database.
      */
     public QuestionType[] getAllQuestionTypes() throws PersistenceException {
-    	logger.log(Level.INFO, "get all question types.");	
-    	Connection conn = createConnection();
+        logger.log(Level.INFO, "get all question types.");
+
+        Connection conn = createConnection();
         Statement stmt = null;
         ResultSet rs = null;
 
@@ -560,18 +648,22 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
             rs = stmt.executeQuery(SELECT_SCORECARD_QUESTION_TYPE);
 
             List result = new ArrayList();
+
             // for each row in the result set create new QuestionType instance.
             while (rs.next()) {
                 long id = rs.getLong("scorecard_question_type_id");
                 String name = rs.getString("name");
                 result.add(new QuestionType(id, name));
             }
+
             // convert the list to array
             return (QuestionType[]) result.toArray(new QuestionType[result.size()]);
         } catch (SQLException ex) {
-        	logger.log(Level.ERROR,
-        			"Failed to get all question types. \n" + LogMessage.getExceptionStackTrace(ex));
-            throw new PersistenceException("Error occur during database operation.", ex);
+            logger.log(Level.ERROR,
+                "Failed to get all question types. \n" +
+                LogMessage.getExceptionStackTrace(ex));
+            throw new PersistenceException("Error occur during database operation.",
+                ex);
         } finally {
             DBUtils.close(rs);
             DBUtils.close(stmt);
@@ -585,8 +677,10 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      * @return An array of scorecard status instances.
      * @throws PersistenceException if error occurred while accessing the database.
      */
-    public ScorecardStatus[] getAllScorecardStatuses() throws PersistenceException {	
-    	logger.log(Level.INFO, "get all scorecard status.");	
+    public ScorecardStatus[] getAllScorecardStatuses()
+        throws PersistenceException {
+        logger.log(Level.INFO, "get all scorecard status.");
+
         Connection conn = createConnection();
         Statement stmt = null;
         ResultSet rs = null;
@@ -597,18 +691,22 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
             rs = stmt.executeQuery(SELECT_SCORECARD_STATUS);
 
             List result = new ArrayList();
+
             // for each row in the result set create new QuestionType instance.
             while (rs.next()) {
                 long id = rs.getLong("scorecard_status_id");
                 String name = rs.getString("name");
                 result.add(new ScorecardStatus(id, name));
             }
+
             // convert the list to array
             return (ScorecardStatus[]) result.toArray(new ScorecardStatus[result.size()]);
         } catch (SQLException ex) {
-        	logger.log(Level.ERROR,
-        			"Failed to get all scorecard status. \n" + LogMessage.getExceptionStackTrace(ex));
-            throw new PersistenceException("Error occur during database operation.", ex);
+            logger.log(Level.ERROR,
+                "Failed to get all scorecard status. \n" +
+                LogMessage.getExceptionStackTrace(ex));
+            throw new PersistenceException("Error occur during database operation.",
+                ex);
         } finally {
             DBUtils.close(rs);
             DBUtils.close(stmt);
@@ -629,19 +727,25 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      *         empty.
      * @throws PersistenceException if error occurred while accessing the persistence.
      */
-    public Scorecard[] getScorecards(long[] ids, boolean complete) throws PersistenceException {
+    public Scorecard[] getScorecards(long[] ids, boolean complete)
+        throws PersistenceException {
         DBUtils.checkIdsArray(ids, "ids");
-        
-        logger.log(Level.INFO, new LogMessage("Scorecard", null, null, "retrieve scorecard with ids:"
-        		+ InformixPersistenceHelper.generateIdString(ids) + ", and is " + (complete?"complete":"incomplete")));
-        
+
+        logger.log(Level.INFO,
+            new LogMessage("Scorecard", null, null,
+                "retrieve scorecard with ids:" +
+                InformixPersistenceHelper.generateIdString(ids) + ", and is " +
+                (complete ? "complete" : "incomplete")));
+
         Connection conn = createConnection();
 
         try {
             Set inUseIds = selectInUse(ids, conn);
             List scorecards = getScorecards(conn, ids, inUseIds);
+
             if (complete) {
                 InformixGroupPersistence groupPersistence = new InformixGroupPersistence(conn);
+
                 for (Iterator it = scorecards.iterator(); it.hasNext();) {
                     Scorecard card = (Scorecard) it.next();
                     card.addGroups(groupPersistence.getGroups(card.getId()));
@@ -667,7 +771,8 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      *         empty.
      * @throws PersistenceException if error occurred while accessing the persistence.
      */
-    public Scorecard[] getScorecards(CustomResultSet resultSet, boolean complete) throws PersistenceException {
+    public Scorecard[] getScorecards(CustomResultSet resultSet, boolean complete)
+        throws PersistenceException {
         if (resultSet == null) {
             throw new IllegalArgumentException("resultSet cannot be null.");
         }
@@ -683,16 +788,78 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
         try {
             while (resultSet.next()) {
                 Scorecard scorecard = populateScorecard(resultSet);
+
                 if (groupPersistence != null) {
-                    scorecard.addGroups(groupPersistence.getGroups(scorecard.getId()));
+                    scorecard.addGroups(groupPersistence.getGroups(
+                            scorecard.getId()));
                 }
+
                 scorecards.add(scorecard);
             }
 
             return (Scorecard[]) scorecards.toArray(new Scorecard[scorecards.size()]);
         } catch (InvalidCursorStateException icse) {
-            throw new PersistenceException("Error occured fetching scorecards from the database.", icse);
+            throw new PersistenceException("Error occured fetching scorecards from the database.",
+                icse);
         } finally {
+            DBUtils.close(conn);
+        }
+    }
+
+    /**
+     * Retrieves the scorecard type ids and scorecard ids for a specific category.
+     * This method takes as a parameter projectCategoryId, gets the
+     * id information of scorecards for it, and return an array of ScorecardIDInfo instances, each one
+     * containing the scorecard type id and the scorecard id.
+     *
+     * @param projectCategoryId the id of the project category.
+     *
+     * @return the ScorecardIDInfo instances array, each one containing the scorecard type id and the scorecard id.
+     *
+     * @throws PersistenceException if error occurred while accessing the persistence.
+     * @throws IllegalArgumentException if the projectCategoryId is less than or equal to zero.
+     */
+    public ScorecardIDInfo[] getScorecardsIDInfo(long projectCategoryId)
+        throws PersistenceException {
+        if (projectCategoryId <= 0) {
+            throw new IllegalArgumentException(
+                "The projectCategoryId should be positive.");
+        }
+
+        logger.log(Level.INFO,
+            new LogMessage("Scorecard", null, null,
+                "retrieve scorecards id info with projectCategoryId:" +
+                projectCategoryId));
+
+        Connection conn = createConnection();
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        List scorecardsInfo = new ArrayList();
+
+        try {
+            pstmt = conn.prepareStatement(SELECT_DEFAULT_SCORECARDS_ID_INFO +
+                    projectCategoryId);
+
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                scorecardsInfo.add(new ScorecardIDInfo(rs.getLong(1),
+                        rs.getLong(2)));
+            }
+
+            return (ScorecardIDInfo[]) scorecardsInfo.toArray(new ScorecardIDInfo[scorecardsInfo.size()]);
+        } catch (SQLException ex) {
+            logger.log(Level.ERROR,
+                new LogMessage("ScoreCard", null, null,
+                    "Fails to retrieve scorecards id info with projectCategoryId:" +
+                    projectCategoryId));
+            throw new PersistenceException("Error occurs during database operation.",
+                ex);
+        } finally {
+            DBUtils.close(rs);
+            DBUtils.close(pstmt);
             DBUtils.close(conn);
         }
     }
@@ -704,7 +871,8 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      * @return the Scorecard instance.
      * @throws InvalidCursorStateException if any database error occurs.
      */
-    private static Scorecard populateScorecard(CustomResultSet rs) throws InvalidCursorStateException {
+    private static Scorecard populateScorecard(CustomResultSet rs)
+        throws InvalidCursorStateException {
         Scorecard card = new Scorecard(rs.getLong("scorecard_id"));
         card.setCategory(rs.getLong("project_category_id"));
         card.setVersion(rs.getString("version"));
@@ -717,7 +885,8 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
         status.setName(rs.getString("status_name"));
         card.setScorecardStatus(status);
 
-        card.setScorecardType(new ScorecardType(rs.getLong("type_id"), rs.getString("type_name")));
+        card.setScorecardType(new ScorecardType(rs.getLong("type_id"),
+                rs.getString("type_name")));
 
         card.setModificationUser(rs.getString("modify_user"));
         card.setCreationUser(rs.getString("create_user"));
@@ -736,31 +905,41 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      * @return the list of Scorecards.
      * @throws PersistenceException if any error occurs.
      */
-    private static List getScorecards(Connection conn, long[] ids, Set inUseIds) throws PersistenceException {
+    private static List getScorecards(Connection conn, long[] ids, Set inUseIds)
+        throws PersistenceException {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
         try {
-            pstmt = conn.prepareStatement(SELECT_SCORECARD + DBUtils.createQuestionMarks(ids.length));
+            pstmt = conn.prepareStatement(SELECT_SCORECARD +
+                    DBUtils.createQuestionMarks(ids.length));
+
             for (int i = 0; i < ids.length; i++) {
                 pstmt.setLong(i + 1, ids[i]);
             }
 
             rs = pstmt.executeQuery();
+
             List result = new ArrayList();
+
             while (rs.next()) {
                 Scorecard card = populateScorecard(rs);
+
                 if (inUseIds.contains(new Long(card.getId()))) {
                     card.setInUse(true);
                 }
+
                 result.add(card);
             }
 
             return result;
         } catch (SQLException ex) {
-        	logger.log(Level.ERROR, new LogMessage("ScoreCard", null, null,
-        			"Fails to retrieve scorecards:" + InformixPersistenceHelper.generateIdString(ids) + ".", ex));
-            throw new PersistenceException("Error occurs while retrieving scorecards.", ex);
+            logger.log(Level.ERROR,
+                new LogMessage("ScoreCard", null, null,
+                    "Fails to retrieve scorecards:" +
+                    InformixPersistenceHelper.generateIdString(ids) + ".", ex));
+            throw new PersistenceException("Error occurs while retrieving scorecards.",
+                ex);
         } finally {
             DBUtils.close(rs);
             DBUtils.close(pstmt);
@@ -774,7 +953,8 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      * @return the Scorecard instance.
      * @throws SQLException if any database error occurs.
      */
-    private static Scorecard populateScorecard(ResultSet rs) throws SQLException {
+    private static Scorecard populateScorecard(ResultSet rs)
+        throws SQLException {
         Scorecard card = new Scorecard(rs.getLong("scorecard_id"));
         card.setCategory(rs.getLong("project_category_id"));
         card.setVersion(rs.getString("version"));
@@ -787,7 +967,8 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
         status.setName(rs.getString("StatusName"));
         card.setScorecardStatus(status);
 
-        card.setScorecardType(new ScorecardType(rs.getLong("scorecard_type_id"), rs.getString("TypeName")));
+        card.setScorecardType(new ScorecardType(rs.getLong("scorecard_type_id"),
+                rs.getString("TypeName")));
 
         card.setModificationUser(rs.getString("modify_user"));
         card.setCreationUser(rs.getString("create_user"));
@@ -805,27 +986,37 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      * @return true if the scorecard is in use.
      * @throws PersistenceException if database error occurs.
      */
-    private static Set selectInUse(long[] ids, Connection conn) throws PersistenceException {
+    private static Set selectInUse(long[] ids, Connection conn)
+        throws PersistenceException {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         Set result = new HashSet();
 
         try {
-            pstmt = conn.prepareStatement(SELECT_IN_USE_IDS + DBUtils.createQuestionMarks(ids.length));
+            pstmt = conn.prepareStatement(SELECT_IN_USE_IDS +
+                    DBUtils.createQuestionMarks(ids.length));
+
             for (int i = 0; i < ids.length; i++) {
                 pstmt.setString(i + 1, String.valueOf(ids[i]));
+
                 //pstmt.setLong(i + 1, ids[i]);
             }
 
             rs = pstmt.executeQuery();
+
             while (rs.next()) {
                 result.add(new Long(rs.getString(1)));
             }
+
             return result;
         } catch (SQLException ex) {
-        	logger.log(Level.ERROR, new LogMessage("ScoreCard", null, null,"Fails to check if the scorecards:"
-        			+ InformixPersistenceHelper.generateIdString(ids) + " in use or not.", ex));
-            throw new PersistenceException("Error occurs during database operation.", ex);
+            logger.log(Level.ERROR,
+                new LogMessage("ScoreCard", null, null,
+                    "Fails to check if the scorecards:" +
+                    InformixPersistenceHelper.generateIdString(ids) +
+                    " in use or not.", ex));
+            throw new PersistenceException("Error occurs during database operation.",
+                ex);
         } finally {
             DBUtils.close(rs);
             DBUtils.close(pstmt);
