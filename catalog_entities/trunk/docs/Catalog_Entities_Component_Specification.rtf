@@ -1,0 +1,271 @@
+{\rtf1\ansi\ansicpg1251\deff0\deflang1049\deflangfe1049{\fonttbl{\f0\fswiss\fprq2\fcharset204{\*\fname Arial;}Arial CYR;}{\f1\froman\fprq2\fcharset204{\*\fname Times New Roman;}Times New Roman CYR;}{\f2\fswiss\fprq2\fcharset0 Arial;}{\f3\fmodern\fprq1\fcharset204{\*\fname Courier New;}Courier New CYR;}{\f4\fmodern\fprq1\fcharset0 Courier New;}{\f5\froman\fprq2\fcharset0 Times New Roman;}{\f6\froman\fprq2\fcharset2 Symbol;}{\f7\fswiss\fprq2\fcharset204 MS Reference Sans Serif;}}
+{\colortbl ;\red0\green0\blue0;}
+{\stylesheet{ Normal;}{\s1 heading 1;}{\s2 heading 2;}}
+{\*\generator Msftedit 5.41.15.1507;}\viewkind4\uc1\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx720\ul\b\f0\fs28 Catalog Entities 1.0 Component Specification\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0\ulnone\b0\fs20\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\b\fs24 1.\tab Design\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0\b0\fs20 The Catalog database stores information about TopCoder components and applications.\par
+This component defines entities to represent database information, providing also the O/R mapping for Hibernate.\par
+A class diagram (Entities.zuml), a DB diagram (DataModel.png) and DDL for creating the DB tables (Catalog.ddl) are provided together with this specification.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 1.1\tab Design Patterns \par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0\b0 None.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 1.2\tab Industry Standards \par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0\b0 XML\par
+JPA\par
+Hibernate\par
+JBoss\par
+Informix Database\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 1.3\tab Required Algorithms\par
+\pard\nowidctlpar\tx0\b0\i\f1\fs24 1.3.1Named queries\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0\i0\f0\fs20 We must define three named queries in \lang1033\f2 the Hibernae\lang1049\f0  \lang1033\f2 XML\lang1049\f0  file in this way:\par
+\pard\nowidctlpar\f3\tab <query name="getAllPhases">\par
+        SELECT p FROM Phase p\par
+    \lang1033\f4   \lang1049\f3 </query>\par
+\lang1033\f4   \lang1049\f3     <query name="getActiveTechnologies">\par
+        SELECT t FROM Technology t WHERE t.status=1\par
+  \lang1033\f4   \lang1049\f3   </query>\par
+    \lang1033\f4   \lang1049\f3 <query name="getActiveCategories">\par
+        SELECT c FROM Category c WHERE c.status=1 and c.viewable=true\par
+\lang1033\f4   \lang1049\f3     </query>\par
+\par
+\pard\nowidctlpar\sa120\sl238\slmult0\i\f0 1.3.2O/R mappings\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0\i0 We must define the mappings for hibernate in an xml file. Where the entity has an id, we must define the sequence name for the id generator.\par
+Here there is an example for the Phase entity\par
+\pard\nowidctlpar\f3\tab <?xml version="1.0"?>\par
+\tab <!DOCTYPE hibernate-mapping PUBLIC\par
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"\par
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">\par
+\par
+\tab <hibernate-mapping package="com.topcoder.catalog.entity">\par
+\lang1033\f4             .....\lang1049\f3\par
+    \tab\tab <class name="Phase" table="phase">\par
+        \tab\tab <id name="id" column="phase_id">\par
+            \tab\tab <generator \tab class="com.topcoder.catalog.entity.IdGenerator">\par
+                \tab\tab <param name="sequence_name">PHASE_SEQ</param>\par
+            \tab\tab </generator>\par
+        \tab\tab </id>\par
+         \tab\tab <property name="description" column="description"\lang1033\f4  \lang1049\f3 access="field"/>\par
+    \tab\tab </class>\par
+\lang1033\f4             ....\par
+\lang1049\f3\tab </hibernate-mapping>\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0\f0 Use the DataModel provided with the distribution to find how to map objects.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 1.4\tab Component Class Overview\par
+\pard\nowidctlpar\f1\fs24\tab Component\b0 :\par
+\pard\nowidctlpar\li1670\sa120\sl238\slmult0\f0\fs20 This class represents a component that can actually be an application, assembly, testing or component.\b\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0\b0 The component can have many versions, and the current version can be retrieved from comp_versions table matching current_version with version field, and both component_id\rquote s fields.\b\par
+\b0 Other versions will be stored in versions attribute.\b\par
+\b0 It\rquote s important to understand that the current version is not necessarily the most recent row, since except for the first version, it points to a completed version. For example, when a new component is created, it will use version 1, so comp_versions.version and comp_catalog.current_version will be set to 1. Then, after the component is completed, another version is released. A new row will be created in comp_version with version 2, but comp_catalog.current_version will still be 1. When the new version is completed, this field will be changed to 2, pointing to that version.\b\par
+\b0 Also notice that the version field is just an \ldblquote internal\rdblquote  field that will start in 1 and increase by 1 each time. The user will see comp_versions.version_text instead, where version numbers like \ldblquote 1.1\rdblquote  can be stored.\b\par
+\b0 Each component has a root category, stored in field root_category_id.\b\par
+\b0 The component has as well a collection of categories (from 0 to n). Each category should have as its root ancestor the root category.\b\par
+\b0 There can be some users (other than admins) authorized to view and change component data.\b\par
+\b0 The users attribute provides a list of CompUser entities with the ids of the authorized users.\b\par
+\b0 Also, there can be some clients authorized to change component data, represented by clients list.\b\par
+\b0 This class implements the Serializable interface.\b\par
+\b0 Validation of parameters in setters is outside the scope of the Catalog Entities component.\b\par
+\pard\nowidctlpar\f1\fs24\tab Category\b0  :\par
+\pard\nowidctlpar\li1670\sa120\sl238\slmult0\f0\fs20 Categories are used to classify components. They can be related to other categories through parent_category_id field, creating a hierarchy.\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0 On the top level, there are categories like \ldblquote Java\rdblquote , \ldblquote C++\rdblquote , \ldblquote .Net\rdblquote , etc, whose parent_category_id is set to null. Then, other categories, like \ldblquote JSF\rdblquote , \ldblquote Swing\rdblquote , \ldblquote Communication\rdblquote  are child of \ldblquote Java\rdblquote .\par
+Currently, there are about 60 categories.\par
+Field status indicates whether the category is active or deleted.\par
+Field viewable indicates whether the category should be displayed to users in order to be selected or not.\par
+Root categories can be associated with a catalog (catalog table, containing rows for \ldblquote Java\rdblquote , \ldblquote .Net\rdblquote , etc). The name of the catalog must be retrieved in catalogName attribute in Catalog class.\par
+In order to do that, the table navigation must be done through category_catalog.\par
+This class implements the Serializable interface.\par
+Validation of parameters in setters is outside the scope of the Catalog Entities component.\par
+\pard\nowidctlpar\b\f1\fs24\tab CompUser\b0  :\par
+\pard\nowidctlpar\li1670\sa120\sl238\slmult0\f0\fs20 This class represents an association between a component and a user, meaning that the user can view\b\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0\b0 and change component data.\b\par
+\b0 This class implements the Serializable interface.\b\par
+\b0 Validation of parameters in setters is outside the scope of the Catalog Entities component.\b\par
+\pard\nowidctlpar\f1\fs24\tab CompClient\b0  :\par
+\pard\nowidctlpar\li1670\sa120\sl238\slmult0\f0\fs20 This class represents an association between a component and a client.\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0 This entity also includes a list of the users for the client in the users attribute, retrieved via user_client table. This list is read only.\par
+This class implements the Serializable interface.\par
+Validation of parameters in setters is outside the scope of the Catalog Entities component.\par
+\pard\nowidctlpar\b\f1\fs24\tab Status\b0  :\par
+\pard\nowidctlpar\li1670\sa120\sl238\slmult0\f0\fs20 This class represents an enumeration of the possible status. Each status has a different status id.\b\par
+\pard\nowidctlpar\f1\fs24\tab CompVersionDates\b0  :\par
+\pard\nowidctlpar\li1670\sa120\sl238\slmult0\f0\fs20 This class contains dates for each phase of a component version, as well as comments for those dates and some additional information.\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0 This class implements the Serializable interface.\par
+Validation of parameters in setters is outside the scope of the Catalog Entities component.\par
+\pard\nowidctlpar\b\f1\fs24\tab CompVersion\b0  :\par
+\pard\nowidctlpar\li1670\sa120\sl238\slmult0\f0\fs20 This class represents a component version.\b\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0\b0 When a new version is created, version field must be increased by one, while version_text field will be entered by the user.\b\par
+\b0 The version points to the current phase using phase_id to look up in phase table.\b\par
+\b0 Fields phase_time and price represent the start date and price of the current phase. They are now redundant, since table comp_version_dates provides that information with more detail.\b\par
+\b0 For each phase of the version, there could be a row in comp_version_dates providing different dates for the version, as well as comments and the price. The field versionDates uses a map whose key is the phase_id and the value is a VersionDates entity to represent this.\b\par
+\b0 The version contains a list of technologies in technologies attribute. This list must be retrieved navigating through comp_technology table.\b\par
+\b0 The component version can have a forum associated. This is represented in the entity by forum attribute.\b\par
+\b0 The component version can have a link (currently an svn link where component files are stored), represented by link attribute.\b\par
+\b0 This class implements the Serializable interface.\b\par
+\b0 Validation of parameters in setters is outside the scope of the Catalog Entities component.\b\par
+\pard\nowidctlpar\f1\fs24\tab Technology\b0  :\par
+\pard\nowidctlpar\li1670\sa120\sl238\slmult0\f0\fs20 This class represents a technology that a component version uses, like \ldblquote XML\rdblquote , \ldblquote EJB\rdblquote , \ldblquote Spring\rdblquote  and so on.\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0 The status is used to indicate whether the technology is active or it was logically deleted.\par
+This class implements the Serializable interface.\par
+Validation of parameters in setters is outside the scope of the Catalog Entities component.\par
+\pard\nowidctlpar\b\f1\fs24\tab Phase\b0  :\par
+\pard\nowidctlpar\li1670\sa120\sl238\slmult0\f0\fs20 This class represents a component phase, like collaboration, design, development or completed.\b\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0\b0 This class implements the Serializable interface.\b\par
+\b0 Validation of parameters in setters is outside the scope of the Catalog Entities component.\b\par
+\pard\nowidctlpar\f1\fs24\tab CompForum\b0  :\par
+\pard\nowidctlpar\li1670\sa120\sl238\slmult0\f0\fs20 This class stores the forum associated with the component version.\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0 This class implements the Serializable interface.\par
+Validation of parameters in setters is outside the scope of the Catalog Entities component.\par
+\pard\nowidctlpar\b\f1\fs24\tab CompLink\b0  :\par
+\pard\nowidctlpar\li1670\sa120\sl238\slmult0\f0\fs20 This class stores a link for the component version; currently it\rquote s an SVN link for the component files.\b\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0\b0 This class implements the Serializable interface.\b\par
+\b0 Validation of parameters in setters is outside the scope of the Catalog Entities component.\b\par
+\pard\nowidctlpar\f1\fs24\tab IdGenerator\b0  :\par
+\pard\nowidctlpar\li1670\sa120\sl238\slmult0\f0\fs20 This class generates the id for the entities when they are stored in persistence. This is achieved through xml hibernate mapping.\par
+\pard\nowidctlpar\b\f1\fs24\tab\lang1033\f5 StatusUserType\lang1049\b0\f1  :\par
+\pard\nowidctlpar\li1670\sa120\sl238\slmult0\f0\fs20 This class \lang1033\f2 used by Hibernate to store/retrieve/update fields of type \b Status\b0 , and to use it in 'where' clauses\lang1049\f0 .\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 1.5\tab Component Exception Definitions\par
+\pard\nowidctlpar\b0\f1\fs24\tab\b HibernateException\b0 :\par
+\pard\nowidctlpar\li1681\sa120\sl238\slmult0\f0\fs20\tab This exception is thrown by IdGenerator whenever an error occurs while generating an id.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 1.6\tab Thread Safety\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0\b0 This component is not thread safe, because all classes (except Status\lang1033\f2  ans StatusUserType\lang1049\f0 ) have changeable fields. It can be used in a thread safe manner if deployed in Hibernate. However, avoiding reading and writing on different threads simultaneously is needed for complete thread safety.\b\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\fs24 2.\tab Environment Requirements\tab\tab\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\fs20 2.1\tab Environment\par
+\pard\nowidctlpar\fi-360\li1080\lang1033\b0\f6\fs24\'b7\tab\lang1049\f1 At minimum, Java1.5 is required for compilation and executing test cases.\par
+\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\f0\fs20 2.2\tab TopCoder Software Components\par
+\pard\nowidctlpar\fi-360\li1080\sa120\sl238\slmult0\lang1033\b0\f6\'b7\tab\lang1049\f0 Id Generator 3.0: used for id generation.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 2.3\tab Third Party Components\par
+\pard\nowidctlpar\sa120\sl238\slmult0\cf1\b0 None.\b\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\cf0\fs24 3.\tab Installation and Configuration\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\fs20 3.1\tab Package Name\par
+\pard\nowidctlpar\li720\sa120\sl240\slmult0\cf1\b0\i com.topcoder.catalog.entity\b\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\cf0\i0 3.2\tab Configuration Parameters\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0\b0 None.\b\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0 3.3\tab Dependencies Configuration\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0\b0 None.\b\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\fs24 4.\tab Usage Notes\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\fs20 4.1\tab Required steps to test the component\par
+\pard\nowidctlpar\fi-360\li1080\sa120\sl238\slmult0\lang1033\b0\f6\'b7\tab\lang1049\f0 Extract the component distribution.\b\par
+\lang1033\b0\f6\'b7\tab\lang1049\f0 Execute \lquote ant test\rquote  within the directory that the distribution was extracted to.\b\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0 4.2\tab Required steps to use the component\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0\b0 Follow demo.\b\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0 4.3\tab Demo\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0\lang1040\b0\f2\fs24 To interact with persistence, you need an EntityManager.\lang1049\b\f0\fs20\par
+\b0\f3 To configure EntityManagerFactory you can use persistence.xml file, like the following:\par
+\f7\fs16 <?xml version="1.0" encoding="UTF-8"?>\par
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\par
+             version="1.0"\par
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">\par
+    <persistence-unit name="catalog_manager">\par
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>\par
+        <properties>\par
+            <property name="hibernate.dialect" value="org.hibernate.dialect.InformixDialect"/>\par
+            <property name="hibernate.show_sql" value="true"/>\par
+            <property name="hibernate.connection.driver_class" value="com.informix.jdbc.IfxDriver"/>\par
+            <property name="hibernate.connection.username" value="informix"/>\par
+            <property name="hibernate.connection.password" value="123456"/>\par
+            <property name="hibernate.connection.url"                     value="jdbc:informix-sqli://192.168.131.66:9088/sysuser:INFORMIXSERVER=server_name"/>\par
+        </properties>\par
+    </persistence-unit>\par
+</persistence>\par
+\f3\fs20\par
+\b\f0 Persisting entities.\par
+\b0\f3 Phase phase = new Phase();\par
+phase.setDescription(\ldblquote screening\rdblquote );\par
+entityManager.persist(phase);\par
+\f0\par
+\b Finding entities.\par
+\b0\f3 Phase phase = entityManager.find(Phase.class, phaseId);\par
+\f0\par
+\b Create queries.\par
+\b0\f3 Query query = entityManager.createQuery("select p from Phase p where p.id=:id");\par
+query.setParameter("id", phaseId);\par
+Phase found = (Phase) query.getSingleResult();\par
+\f0\par
+\b Obtaining named queries.\par
+\b0\f3 query = entityManager.createNamedQuery("getAllPhases");\par
+@SuppressWarnings("unchecked")\par
+final List<Phase> phases = query.getResultList();\par
+\par
+\b\f0 Removing \lang1033\f2 phases\lang1049\f0 .\par
+\b0\f3 entityManager.remove(entityManager.getReference(Phase.class, phaseId));\par
+\par
+\lang1033\b\f4 Creating components and component versions.\par
+\lang1049\b0\f3 // create component\par
+final Component component = new Component();\par
+component.setDescription("Component description");\par
+component.setFunctionalDesc("Functional description");\par
+component.setName("Component name");\par
+component.setShortDesc("Short Desc.");\par
+component.setStatus(Status.NEW_POST);\par
+// create version\par
+final CompVersion version = new CompVersion();\par
+version.setComments("Version comments");\par
+version.setPhasePrice(500);\par
+version.setPhaseTime(parseDate("2007/12/21"));\par
+version.setSuspended(false);\par
+version.setVersion(1L);\par
+version.setVersionText("1.0");\par
+// create forum\par
+final CompForum compForum = new CompForum();\par
+compForum.setVersion(version);\par
+version.setForum(compForum); // assign to the version\par
+// create link\par
+final CompLink compLink = new CompLink();\par
+compLink.setLink("some svnlink");\par
+compLink.setVersion(version);\par
+version.setLink(compLink); // assign to the version\par
+\par
+// assign phase, which is already in the database\par
+version.setPhase(getEntityManager().find(Phase.class, 1L));\par
+\par
+// populate version phase dates\par
+final Map<Long, CompVersionDates> dates = populateVersionDates(version);\par
+\par
+version.setVersionDates(dates);\par
+version.setComponent(component);\par
+\par
+// set the current version\par
+component.setCurrentVersion(version);\par
+\par
+// set the root category (categories are in the database\par
+component.setRootCategory(getEntityManager().find(Category.class, 2L));\par
+\par
+// assign categories which this component belongs to\par
+component.setCategories(Arrays.asList(\par
+    getEntityManager().find(Category.class, 2L),\par
+    getEntityManager().find(Category.class, 3L)));\par
+\par
+// assign component clients\par
+final Set<CompClient> clients = populateClients(component);\par
+component.setClients(clients);\par
+\par
+// assign component users\par
+final Set<CompUser> users = populateUsers(component);\par
+component.setUsers(users);\par
+\par
+// start the transation\par
+entityTransaction.begin();\par
+// persist the version first\par
+entityManager.persist(version);\par
+// persist the component, this will update version as well to bind it to the component\par
+entityManager.persist(component);\par
+// commit the transation\par
+entityTransaction.commit();\par
+\par
+\lang1033\b\f4 Removing components\b0\par
+\lang1049\f3 entityTransaction.begin();\lang1033\f4  // start transaction\lang1049\f3\par
+version.setComponent(null);\lang1033\f4  // clear reference to component\lang1049\f3\par
+component.setVersions(null);\lang1033\f4  // remove to versions associations\lang1049\f3\par
+component.setUsers(null);\lang1033\f4  // remove to users associations\lang1049\f3\par
+component.setCategories(null);\lang1033\f4  // remove to categories associations\lang1049\f3\par
+component.setClients(null);\lang1033\f4  // remove to clients associations\lang1049\f3\par
+entityManager.merge(version);\lang1033\f4  // update version without \lang1049\f3\par
+entityManager.remove(entityManager.getReference(Component.class, component.getId()));\lang1033\f4  // remove component\lang1049\f3\par
+entityManager.remove(entityManager.getReference(CompVersion.class, version.getId()));\lang1033\f4  // remove version\lang1049\f3\par
+entityTransaction.commit();\lang1033\f4  // commit finally\lang1049\f3\par
+\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\b\f0\fs24 5.\tab Future Enhancements\par
+\pard\nowidctlpar\li720\sa120\sl238\slmult0\b0\fs20 None at the moment.\par
+\par
+\pard\nowidctlpar\f1\fs24\par
+}
+ 
