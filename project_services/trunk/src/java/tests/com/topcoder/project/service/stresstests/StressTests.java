@@ -7,25 +7,37 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+
 /**
  * <p>
- * This test case aggregates all Stress test cases.
+ * This test case aggregates all stress test cases.
  * </p>
- * 
- * @author TCSDEVELOPER
- * @version 1.0
+ *
+ * @author woodatxc
+ * @version 1.1
  */
 public class StressTests extends TestCase {
-
     /**
      * <p>
-     * Aggregates all Stress test cases.
+     * Aggregates all stress test cases and returns the test suite for them.
      * </p>
-     * @return Aggregate of all Stress test cases
+     *
+     * @return the test suite of all stress test cases.
      */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        suite.addTestSuite(ProjectServicesImplStressTest.class);
+
+        // Aggregates all stress test cases for package com.topcoder.project.service
+        suite.addTest(ProjectServicesFactoryStressTests.suite());
+
+        // Aggregates all stress test cases for package com.topcoder.project.service.impl
+        suite.addTest(ProjectServicesImplStressTest.suite());
+        suite.addTest(ProjectServicesImplNewMethodsStressTests.suite());
+
+        // Aggregates all stress test cases for package com.topcoder.project.service.ejb
+        suite.addTest(ProjectServicesBeanStressTests.suite());
+
         return suite;
     }
 }
+

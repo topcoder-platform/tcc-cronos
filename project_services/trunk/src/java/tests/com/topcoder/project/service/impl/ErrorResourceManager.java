@@ -16,6 +16,7 @@ import com.topcoder.search.builder.filter.Filter;
  * <p>
  * This is a mock implementation of <code>ResourceManager</code>.
  * </p>
+ *
  * @author TCSDEVELOPER
  * @version 1.0
  */
@@ -32,6 +33,7 @@ public class ErrorResourceManager implements ResourceManager {
      * <p>
      * Updates the given resource in the persistence store.
      * </p>
+     *
      * @param resource
      *            The resource to update
      * @param operator
@@ -43,8 +45,7 @@ public class ErrorResourceManager implements ResourceManager {
      * @throws ResourcePersistenceException
      *             If there is an error updating the resource
      */
-    public void updateResource(Resource resource, String operator)
-        throws ResourcePersistenceException {
+    public void updateResource(Resource resource, String operator) throws ResourcePersistenceException {
 
     }
 
@@ -52,6 +53,7 @@ public class ErrorResourceManager implements ResourceManager {
      * <p>
      * Removes the given resource in the persistence store (by id).
      * </p>
+     *
      * @param resource
      *            The resource to remove
      * @param operator
@@ -61,8 +63,7 @@ public class ErrorResourceManager implements ResourceManager {
      * @throws ResourcePersistenceException
      *             If there is an error updating the the persistence store.
      */
-    public void removeResource(Resource resource, String operator)
-        throws ResourcePersistenceException {
+    public void removeResource(Resource resource, String operator) throws ResourcePersistenceException {
 
     }
 
@@ -70,6 +71,7 @@ public class ErrorResourceManager implements ResourceManager {
      * <p>
      * Updates all resources for the given project.
      * </p>
+     *
      * @param resources
      *            The resources associated with the project
      * @param project
@@ -88,8 +90,8 @@ public class ErrorResourceManager implements ResourceManager {
      *             argument
      */
     public void updateResources(Resource[] resources, long project, String operator)
-        throws ResourcePersistenceException {
-
+            throws ResourcePersistenceException {
+        throw new ResourcePersistenceException("For test.");
     }
 
     /**
@@ -97,6 +99,7 @@ public class ErrorResourceManager implements ResourceManager {
      * Gets the resource with the given id from the persistence store. Returns null if there is no
      * resource with the given id.
      * </p>
+     *
      * @return The loaded Resource
      * @param id
      *            the id of the resource to retrieve
@@ -115,6 +118,7 @@ public class ErrorResourceManager implements ResourceManager {
      * formed using the field names and utility methods in ResourceFilterBuilder. The return will
      * always be a non-null (possibly 0 item) array.
      * </p>
+     *
      * @return The loaded resources
      * @param filter
      *            The filter to use
@@ -125,8 +129,7 @@ public class ErrorResourceManager implements ResourceManager {
      * @throws SearchBuilderException
      *             If there is an error executing the filter.
      */
-    public Resource[] searchResources(Filter filter) throws ResourcePersistenceException,
-        SearchBuilderException {
+    public Resource[] searchResources(Filter filter) throws ResourcePersistenceException, SearchBuilderException {
         throw new ResourcePersistenceException("Error occurred.");
     }
 
@@ -136,6 +139,7 @@ public class ErrorResourceManager implements ResourceManager {
      * UNSET_ID), then an id should be assigned and the resource role added to the persistence
      * store. Otherwise the resource role data in the persistence store should be updated.
      * </p>
+     *
      * @param resourceRole
      *            the resource role to update
      * @param operator
@@ -146,8 +150,7 @@ public class ErrorResourceManager implements ResourceManager {
      * @throws ResourcePersistenceException
      *             if there is an error updating the persistence
      */
-    public void updateResourceRole(ResourceRole resourceRole, String operator)
-        throws ResourcePersistenceException {
+    public void updateResourceRole(ResourceRole resourceRole, String operator) throws ResourcePersistenceException {
 
     }
 
@@ -155,6 +158,7 @@ public class ErrorResourceManager implements ResourceManager {
      * <p>
      * Removes a resource role from the persistence (by id).
      * </p>
+     *
      * @param resourceRole
      *            The resource role to remove
      * @param operator
@@ -165,20 +169,19 @@ public class ErrorResourceManager implements ResourceManager {
      * @throws ResourcePersistenceException
      *             If there is an error updating the the persistence store.
      */
-    public void removeResourceRole(ResourceRole resourceRole, String operator)
-        throws ResourcePersistenceException {
+    public void removeResourceRole(ResourceRole resourceRole, String operator) throws ResourcePersistenceException {
 
     }
 
     /**
      * Gets all resource roles in the persistence store.
+     *
      * @return All resource roles in the persistence store
      * @throws ResourcePersistenceException
      *             If there is an error reading the persistence store.
      */
     public ResourceRole[] getAllResourceRoles() throws ResourcePersistenceException {
-        return new ResourceRole[] {new ResourceRole(1), new ResourceRole(2), new ResourceRole(5),
-            new ResourceRole(6)};
+        return new ResourceRole[] {new ResourceRole(1), new ResourceRole(2), new ResourceRole(5), new ResourceRole(6)};
     }
 
     /**
@@ -187,6 +190,7 @@ public class ErrorResourceManager implements ResourceManager {
      * be formed using the field names and utility methods in ResourceRoleFilterBuilder. The return
      * will always be a non-null (possibly 0 item) array.
      * </p>
+     *
      * @param filter
      *            The filter to use
      * @return The loaded resource roles
@@ -198,7 +202,7 @@ public class ErrorResourceManager implements ResourceManager {
      *             If there is an error executing the filter.
      */
     public ResourceRole[] searchResourceRoles(Filter filter) throws ResourcePersistenceException,
-        SearchBuilderException {
+            SearchBuilderException {
         return null;
     }
 
@@ -207,6 +211,7 @@ public class ErrorResourceManager implements ResourceManager {
      * Adds a list of notifications for the given user ids to the persistence store. All of the
      * notification are added are for the given project and type.
      * </p>
+     *
      * @param users
      *            The users to add notifications for
      * @param project
@@ -222,7 +227,7 @@ public class ErrorResourceManager implements ResourceManager {
      *             If there is an error updating the persistence store
      */
     public void addNotifications(long[] users, long project, long notificationType, String operator)
-        throws ResourcePersistenceException {
+            throws ResourcePersistenceException {
 
     }
 
@@ -231,6 +236,7 @@ public class ErrorResourceManager implements ResourceManager {
      * Removes a list of notifications for the given user ids from the persistence store. The
      * notifications removed are for the given project and type.
      * </p>
+     *
      * @param users
      *            The users to remove notifications for
      * @param project
@@ -247,8 +253,8 @@ public class ErrorResourceManager implements ResourceManager {
      * @throws ResourcePersistenceException
      *             If there is an error updating the persistence store
      */
-    public void removeNotifications(long[] users, long project, long notificationType,
-        String operator) throws ResourcePersistenceException {
+    public void removeNotifications(long[] users, long project, long notificationType, String operator)
+            throws ResourcePersistenceException {
 
     }
 
@@ -257,6 +263,7 @@ public class ErrorResourceManager implements ResourceManager {
      * Gets the user id for all notifications for the given project and type. The return will always
      * be a non-null (possibly 0 item) array.
      * </p>
+     *
      * @param project
      *            the project to get notifications for
      * @param notificationType
@@ -267,8 +274,7 @@ public class ErrorResourceManager implements ResourceManager {
      * @throws ResourcePersistenceException
      *             If there is an error reading the persistence store
      */
-    public long[] getNotifications(long project, long notificationType)
-        throws ResourcePersistenceException {
+    public long[] getNotifications(long project, long notificationType) throws ResourcePersistenceException {
         return null;
     }
 
@@ -278,6 +284,7 @@ public class ErrorResourceManager implements ResourceManager {
      * formed using the field names and utility methods in NotificationFilterBuilder. The return
      * will always be a non-null (possibly 0 item) array.
      * </p>
+     *
      * @param filter
      *            The filter to use
      * @return The loaded notifications
@@ -289,7 +296,7 @@ public class ErrorResourceManager implements ResourceManager {
      *             If there is an error executing the filter.
      */
     public Notification[] searchNotifications(Filter filter) throws ResourcePersistenceException,
-        SearchBuilderException {
+            SearchBuilderException {
         return null;
     }
 
@@ -300,6 +307,7 @@ public class ErrorResourceManager implements ResourceManager {
      * persistence store. Otherwise the notification type data in the persistence store should be
      * updated.
      * </p>
+     *
      * @param notificationType
      *            The notification type to update
      * @param operator
@@ -311,7 +319,7 @@ public class ErrorResourceManager implements ResourceManager {
      *             If there is an error updating the persistence
      */
     public void updateNotificationType(NotificationType notificationType, String operator)
-        throws ResourcePersistenceException {
+            throws ResourcePersistenceException {
 
     }
 
@@ -319,6 +327,7 @@ public class ErrorResourceManager implements ResourceManager {
      * <p>
      * Removes a notification type from the persistence (by id).
      * </p>
+     *
      * @param notificationType
      *            The notification type to remove
      * @param operator
@@ -330,7 +339,7 @@ public class ErrorResourceManager implements ResourceManager {
      *             If there is an error updating the the persistence store.
      */
     public void removeNotificationType(NotificationType notificationType, String operator)
-        throws ResourcePersistenceException {
+            throws ResourcePersistenceException {
 
     }
 
@@ -340,6 +349,7 @@ public class ErrorResourceManager implements ResourceManager {
      * can be formed using the field names and utility methods in NotificationTypeFilterBuilder. The
      * return will always be a non-null (possibly 0 item) array.
      * </p>
+     *
      * @param filter
      *            The filter to use
      * @return The loaded notification types
@@ -350,8 +360,8 @@ public class ErrorResourceManager implements ResourceManager {
      * @throws SearchBuilderException
      *             If there is an error executing the filter.
      */
-    public NotificationType[] searchNotificationTypes(Filter filter)
-        throws ResourcePersistenceException, SearchBuilderException {
+    public NotificationType[] searchNotificationTypes(Filter filter) throws ResourcePersistenceException,
+            SearchBuilderException {
         return null;
     }
 
@@ -359,6 +369,7 @@ public class ErrorResourceManager implements ResourceManager {
      * <p>
      * Gets all notification types in the persistence store.
      * </p>
+     *
      * @return All notification types in the persistence store
      * @throws ResourcePersistenceException
      *             If there is an error reading the persistence store.

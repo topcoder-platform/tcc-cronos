@@ -15,14 +15,15 @@ import com.topcoder.util.config.UnknownNamespaceException;
  * </p>
  * 
  * @author stylecheck
- * @version 1.0
+ * @version 1.1
+ * @since 1.0
  */
 public class StressHelper {
 
     /**
      * The times each method needs to be called.
      */
-    public static long STRESS_COUNT = 1000;
+    public static long STRESS_COUNT = 50;
 
     /**
      * <p>

@@ -9,6 +9,7 @@ import junit.framework.TestCase;
  * <p>
  * This is a test case for <code>ProjectServicesException</code> class.
  * </p>
+ *
  * @author TCSDEVELOPER
  * @version 1.0
  */
@@ -21,6 +22,7 @@ public class ProjectServicesExceptionTest extends TestCase {
      * <p>
      * Tests it for accuracy.
      * </p>
+     *
      * @throws Exception
      *             to JUnit
      */
@@ -37,6 +39,7 @@ public class ProjectServicesExceptionTest extends TestCase {
      * <p>
      * Tests it for accuracy.
      * </p>
+     *
      * @throws Exception
      *             to JUnit
      */
@@ -44,7 +47,6 @@ public class ProjectServicesExceptionTest extends TestCase {
         Exception e = new Exception("exception");
         Exception ex = new ProjectServicesException("message", e);
         assertNotNull("'ex' should not be null.", ex);
-        assertEquals("Exception message mismatched.", "message, caused by exception", ex
-            .getMessage());
+        assertEquals("Exception message mismatched.", "message", ex.getMessage());
     }
 }

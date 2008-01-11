@@ -3,7 +3,11 @@
  */
 package com.topcoder.project.service.stresstests;
 
+import java.io.File;
+
+import junit.framework.Test;
 import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 import com.topcoder.project.service.impl.ProjectServicesImpl;
 import com.topcoder.search.builder.filter.Filter;
@@ -15,7 +19,9 @@ import com.topcoder.search.builder.filter.NullFilter;
  * </p>
  * 
  * @author stylecheck
- * @version 1.0
+ * @author woodatxc
+ * @version 1.1
+ * @since 1.0
  */
 public class ProjectServicesImplStressTest extends TestCase {
 
@@ -35,7 +41,9 @@ public class ProjectServicesImplStressTest extends TestCase {
      *             throws exception if any to JUnit.
      */
     protected void setUp() throws Exception {
-        StressHelper.load();
+        TestHelper.clearConfig();
+        TestHelper.loadXMLConfig("test_files" + File.separator
+                + "stresstest_configfiles" + File.separator + "configuration.xml");
         projectServicesImpl = new ProjectServicesImpl();
     }
 
@@ -48,7 +56,19 @@ public class ProjectServicesImplStressTest extends TestCase {
      *             throws exception if any to JUnit.
      */
     protected void tearDown() throws Exception {
-        StressHelper.release();
+        TestHelper.clearConfig();
+        projectServicesImpl = null;
+    }
+
+    /**
+     * <p>
+     * Returns all tests.
+     * </p>
+     *
+     * @return all tests
+     */
+    public static Test suite() {
+        return new TestSuite(ProjectServicesImplStressTest.class);
     }
 
     /**

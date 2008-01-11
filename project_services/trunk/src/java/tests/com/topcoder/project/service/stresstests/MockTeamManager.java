@@ -15,7 +15,8 @@ import com.topcoder.search.builder.filter.Filter;
  * </p>
  * 
  * @author stylecheck
- * @version 1.0
+ * @version 1.1
+ * @since 1.0
  */
 public class MockTeamManager implements TeamManager {
 

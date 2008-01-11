@@ -54,6 +54,24 @@
                 <Value>com.topcoder.project.service.impl.MockTeamManager</Value>
             </Property>
         </Property>
+        <Property name="projectServicesKey">
+            <Property name="type">
+                <Value>com.topcoder.project.service.impl.ProjectServicesImpl</Value>
+            </Property>
+        </Property>
+    </Config>
+    
+    <!-- Configuration for ProjectServicesFactory -->
+    <Config name="com.topcoder.project.service.ProjectServicesFactory">
+        <Property name="specNamespace">
+            <Value>com.topcoder.util.objectfactory</Value>
+        </Property>
+        <Property name="projectServicesKey">
+            <Value>projectServicesKey</Value>
+        </Property>
+        <Property name="loggerName">
+            <Value>FactoryLog</Value>
+        </Property>
     </Config>
 </CMConfig>
 

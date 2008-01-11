@@ -26,9 +26,10 @@ import com.topcoder.management.team.TeamHeader;
  * <p>
  * Thread Safety: This class is mutable and not thread safe.
  * </p>
- * @author argolite, TCSDEVELOPER
+ * @author argolite, moonli
  * @version 1.0
  */
+@SuppressWarnings("serial")
 public class FullProjectData extends com.topcoder.project.phases.Project implements Serializable {
 
     /**

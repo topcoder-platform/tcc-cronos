@@ -20,6 +20,7 @@ import com.topcoder.search.builder.filter.Filter;
  * <p>
  * It is only used for test.
  * </p>
+ *
  * @author TCSDEVELOPER
  * @version 1.0
  */
@@ -49,6 +50,7 @@ public class MockProjectManager implements ProjectManager {
      * creation/modification user and the creation date and modification date will be the current
      * date time when the project is created. The given project instance will be validated before
      * persisting.
+     *
      * @param project
      *            The project instance to be created in the database.
      * @param operator
@@ -60,8 +62,8 @@ public class MockProjectManager implements ProjectManager {
      * @throws ValidationException
      *             if error occurred while validating the project instance.
      */
-    public void createProject(Project project, String operator) throws PersistenceException,
-        ValidationException {
+    public void createProject(Project project, String operator) throws PersistenceException, ValidationException {
+        project.setId(1);
     }
 
     /**
@@ -73,6 +75,7 @@ public class MockProjectManager implements ProjectManager {
      * the project, its properties and associating scorecards, the operator parameter is used as the
      * modification user and the modification date will be the current date time when the project is
      * updated. The given project instance will be validated before persisting.
+     *
      * @param project
      *            The project instance to be updated into the database.
      * @param reason
@@ -86,13 +89,14 @@ public class MockProjectManager implements ProjectManager {
      * @throws ValidationException
      *             if error occurred while validating the project instance.
      */
-    public void updateProject(Project project, String reason, String operator)
-        throws PersistenceException, ValidationException {
+    public void updateProject(Project project, String reason, String operator) throws PersistenceException,
+            ValidationException {
     }
 
     /**
      * Retrieves the project instance from the persistence given its id. The project instance is
      * retrieved with its related items, such as properties and scorecards.
+     *
      * @return The project instance.
      * @param id
      *            The id of the project to be retrieved.
@@ -119,6 +123,7 @@ public class MockProjectManager implements ProjectManager {
      * Retrieves an array of project instance from the persistence given their ids. The project
      * instances are retrieved with their properties.
      * </p>
+     *
      * @param ids
      *            The ids of the projects to be retrieved.
      * @return An array of project instances.
@@ -149,6 +154,7 @@ public class MockProjectManager implements ProjectManager {
      * </ul>
      * The filter is created using the ProjectFilterUtility class. This class provide method to
      * create filter of the above condition and any combination of them.
+     *
      * @return An array of project instance as the search result.
      * @param filter
      *            The filter to search for projects.
@@ -168,6 +174,7 @@ public class MockProjectManager implements ProjectManager {
      * Gets the projects associated with an external user id. The user id is defined as a property
      * of of a resource that belong to the project. The resource property name is 'External
      * Reference ID'. and the property value is the given user id converted to string.
+     *
      * @return An array of project instances associated with the given user id.
      * @param user
      *            The user id to search for projects.
@@ -181,6 +188,7 @@ public class MockProjectManager implements ProjectManager {
     /**
      * Gets an array of all project types in the persistence. The project types are stored in
      * 'project_type_lu' table.
+     *
      * @return An array of all project types in the persistence.
      * @throws PersistenceException
      *             if error occurred while accessing the database.
@@ -192,6 +200,7 @@ public class MockProjectManager implements ProjectManager {
     /**
      * Gets an array of all project categories in the persistence. The project categories are stored
      * in 'project_category_lu' table.
+     *
      * @return An array of all project categories in the persistence.
      * @throws PersistenceException
      *             if error occurred while accessing the database.
@@ -203,6 +212,7 @@ public class MockProjectManager implements ProjectManager {
     /**
      * Gets an array of all project statuses in the persistence. The project statuses are stored in
      * 'project_status_lu' table.
+     *
      * @return An array of all project statuses in the persistence.
      * @throws PersistenceException
      *             if error occurred while accessing the database.
@@ -214,6 +224,7 @@ public class MockProjectManager implements ProjectManager {
     /**
      * Gets an array of all project property type in the persistence. The project property types are
      * stored in 'project_info_type_lu' table.
+     *
      * @return An array of all scorecard assignments in the persistence.
      * @throws PersistenceException
      *             if error occurred while accessing the database.
