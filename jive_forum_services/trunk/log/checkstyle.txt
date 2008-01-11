@@ -1,0 +1,18 @@
+Starting audit...
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\main\com\topcoder\forum\service\JiveForumManager.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'UnauthorizedException'.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\main\com\topcoder\forum\service\JiveForumManager.java:243:22: '<' is not preceded with whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\main\com\topcoder\forum\service\JiveForumManager.java:243:23: '<' is not followed by whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\main\com\topcoder\forum\service\JiveForumManager.java:243:41: '>' is not preceded with whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\main\com\topcoder\forum\service\JiveForumManager.java:243:76: '<' is not preceded with whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\main\com\topcoder\forum\service\JiveForumManager.java:243:77: '<' is not followed by whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\main\com\topcoder\forum\service\JiveForumManager.java:243:95: '>' is not preceded with whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\main\com\topcoder\forum\service\JiveForumManager.java:243:96: '>' is not followed by whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\main\com\topcoder\forum\service\JiveForumManager.java:259:12: '<' is not preceded with whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\main\com\topcoder\forum\service\JiveForumManager.java:259:13: '<' is not followed by whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\main\com\topcoder\forum\service\JiveForumManager.java:259:31: '>' is not preceded with whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\main\com\topcoder\forum\service\JiveForumManager.java:269:19: '<' is not preceded with whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\main\com\topcoder\forum\service\JiveForumManager.java:269:20: '<' is not followed by whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\main\com\topcoder\forum\service\JiveForumManager.java:269:38: '>' is not preceded with whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\main\com\topcoder\forum\service\ejb\JiveForumService.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'UserNotFoundException'.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\main\com\topcoder\forum\service\ejb\bean\JiveForumServiceBean.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'UserNotFoundException'.
+Audit done.

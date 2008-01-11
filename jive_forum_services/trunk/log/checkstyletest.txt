@@ -1,0 +1,13 @@
+Starting audit...
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\tests\com\topcoder\forum\service\JiveForumManagerUnitTest.java:38:16: '<' is not preceded with whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\tests\com\topcoder\forum\service\JiveForumManagerUnitTest.java:38:17: '<' is not followed by whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\tests\com\topcoder\forum\service\JiveForumManagerUnitTest.java:38:35: '>' is not preceded with whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\tests\com\topcoder\forum\service\JiveForumManagerUnitTest.java:38:70: '<' is not preceded with whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\tests\com\topcoder\forum\service\JiveForumManagerUnitTest.java:38:71: '<' is not followed by whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\tests\com\topcoder\forum\service\JiveForumManagerUnitTest.java:38:89: '>' is not preceded with whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\tests\com\topcoder\forum\service\JiveForumManagerUnitTest.java:38:90: '>' is not followed by whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\tests\com\topcoder\forum\service\JiveForumManagerUnitTest.java:149:53: '<' is not preceded with whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\tests\com\topcoder\forum\service\JiveForumManagerUnitTest.java:149:54: '<' is not followed by whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\tests\com\topcoder\forum\service\JiveForumManagerUnitTest.java:149:72: '>' is not preceded with whitespace.
+D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\src\java\tests\com\topcoder\forum\service\JiveForumManagerUnitTest.java:149:73: '>' is not followed by whitespace.
+Audit done.
