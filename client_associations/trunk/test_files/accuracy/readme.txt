@@ -1,0 +1,1 @@
+the remote ejb should be deployed with jndi name "ejb/remote/cabean"
