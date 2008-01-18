@@ -84,11 +84,11 @@ public class BaseTest extends TestCase {
         // Prepare the SessionBean for testing
         sessionBean = new IDGeneratorBean();
 
-        SessionBeanDescriptor descriptor = new SessionBeanDescriptor("java:comp/ejb/IDGeneratorHome",
+        SessionBeanDescriptor descriptor = new SessionBeanDescriptor("java:ejb/IDGeneratorHome",
                 IDGeneratorHome.class, IDGenerator.class, sessionBean);
         container.deploy(descriptor);
 
-        IDGeneratorHome home = (IDGeneratorHome) context.lookup("java:comp/ejb/IDGeneratorHome");
+        IDGeneratorHome home = (IDGeneratorHome) context.lookup("java:ejb/IDGeneratorHome");
         home.create();
         // clear all the table for testing.
         clearData();

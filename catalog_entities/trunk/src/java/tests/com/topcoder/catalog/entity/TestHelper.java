@@ -203,18 +203,16 @@ public class TestHelper {
 
             MockContainer container = new MockContainer(context);
 
-            SessionBeanDescriptor descriptor = new SessionBeanDescriptor("java:comp/ejb/IDGeneratorHome",
+            SessionBeanDescriptor descriptor = new SessionBeanDescriptor("java:ejb/IDGeneratorHome",
                 IDGeneratorHome.class, IDGenerator.class, new IDGeneratorBean());
             container.deploy(descriptor);
 //            // put object to JNDI
 //            Context ctx = new InitialContext();
 //            unbindIdGenerator();
-//            String path1 = "java:comp";
-//            String path2 = "ejb";
-//            String path3 = "IDGeneratorHome";
+//            String path1 = "java:ejb";
+//            String path2 = "IDGeneratorHome";
 //            ctx = ctx.createSubcontext(path1);
-//            ctx = ctx.createSubcontext(path2);
-//            ctx.bind(path3, new MockRemoteHome());
+//            ctx.bind(path2, new MockRemoteHome());
         } catch (NamingException e) {
             throw new IllegalStateException(
                 "Cannot bind 'IDGeneratorHome'. Check the configuration. "
@@ -229,9 +227,8 @@ public class TestHelper {
         MockContextFactory.revertSetAsInitial();
 //        try {
 //            final InitialContext ctx = new InitialContext();
-//            ctx.unbind("java:comp/ejb/IDGeneratorHome");
-//            ctx.unbind("java:comp/ejb");
-//            ctx.unbind("java:comp");
+//            ctx.unbind("java:ejb/IDGeneratorHome");
+//            ctx.unbind("java:ejb");
 //        } catch (NamingException e) {
 //            // ignore, as it was not bound
 //        }

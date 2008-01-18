@@ -117,7 +117,7 @@ create table comp_versions (
     comp_vers_id DECIMAL(12,0) not null,
     component_id DECIMAL(12,0),
     version DECIMAL(12,0) not null,
-    version_text VARCHAR(20) not null,
+    version_text CHAR(20) not null,
     create_time DATETIME YEAR TO FRACTION default CURRENT YEAR TO FRACTION not null,
     phase_id DECIMAL(12,0) not null,
     phase_time DATETIME YEAR TO FRACTION not null,

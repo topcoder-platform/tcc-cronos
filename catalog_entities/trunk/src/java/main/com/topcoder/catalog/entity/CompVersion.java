@@ -219,7 +219,13 @@ public class CompVersion implements Serializable {
      * @return {@link #versionText} property's value.
      */
     public String getVersionText() {
-        return versionText;
+    	// omit trailing spaces
+    	String tmp = versionText;
+    	int c = tmp.length() - 1;
+    	while (tmp.charAt(c) == ' ') {
+    	    --c;
+    	}
+        return tmp.substring(0, c+1);
     }
 
     /**

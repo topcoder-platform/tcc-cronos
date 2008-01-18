@@ -47,7 +47,7 @@ public class IdGeneratorFailureTests extends TestCase {
      */
     protected void setUp() throws Exception {
         MockContextFactory.setAsInitial();
-        SessionBeanDescriptor beanDescriptor = new SessionBeanDescriptor("java:comp/ejb/IDGeneratorHome",
+        SessionBeanDescriptor beanDescriptor = new SessionBeanDescriptor("java:ejb/IDGeneratorHome",
                 IDGeneratorHome.class, IDGenerator.class, new IDGeneratorBean());
         new MockContainer(new InitialContext()).deploy(beanDescriptor);
         generator = new IdGenerator();
@@ -65,20 +65,20 @@ public class IdGeneratorFailureTests extends TestCase {
 
     /**
      * Tests constructor method for failure. Without
-     * java:comp/ejb/IDGeneratorHome bound, HibernateException should be thrown.
+     * java:ejb/IDGeneratorHome bound, HibernateException should be thrown.
      */
     public void testConstructorFail1() {
         MockContextFactory.revertSetAsInitial();
         try {
             generator = new IdGenerator();
-            fail("HibernateException should be thrown. without java:comp/ejb/IDGeneratorHome bound.");
+            fail("HibernateException should be thrown. without java:ejb/IDGeneratorHome bound.");
         } catch (HibernateException e) {
             // expected
         }
     }
 
     /**
-     * Tests constructor method for failure. With java:comp/ejb/IDGeneratorHome
+     * Tests constructor method for failure. With java:ejb/IDGeneratorHome
      * bound incorrect class, HibernateException should be thrown.
      *
      * @throws Exception
@@ -87,12 +87,12 @@ public class IdGeneratorFailureTests extends TestCase {
     public void testConstructorFail2() throws Exception {
         MockContextFactory.revertSetAsInitial();
         MockContextFactory.setAsInitial();
-        SessionBeanDescriptor beanDescriptor = new SessionBeanDescriptor("java:comp/ejb/IDGeneratorHome",
+        SessionBeanDescriptor beanDescriptor = new SessionBeanDescriptor("java:ejb/IDGeneratorHome",
                 FailIDGeneratorHome.class, FailIDGenerator.class, new FailIDGeneratorBean());
         new MockContainer(new InitialContext()).deploy(beanDescriptor);
         try {
             generator = new IdGenerator();
-            fail("HibernateException should be thrown. without java:comp/ejb/IDGeneratorHome bound.");
+            fail("HibernateException should be thrown. without java:ejb/IDGeneratorHome bound.");
         } catch (HibernateException e) {
             // expected
         }

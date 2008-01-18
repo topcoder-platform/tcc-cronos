@@ -49,7 +49,7 @@ public class StressTestHelper {
             MockContainer mockContainer = new MockContainer(context);
             // deploy id generator bean to the mock context
             IDGeneratorBean generatorBean = new IDGeneratorBean();
-            SessionBeanDescriptor descriptor = new SessionBeanDescriptor("java:comp/ejb/IDGeneratorHome",
+            SessionBeanDescriptor descriptor = new SessionBeanDescriptor("java:ejb/IDGeneratorHome",
                 IDGeneratorHome.class, IDGenerator.class, generatorBean);
             mockContainer.deploy(descriptor);
             entityManager = Persistence.createEntityManagerFactory("catalog_manager").createEntityManager();
