@@ -1,1 +1,0 @@
-create database test_auto with log
