@@ -1,0 +1,127 @@
+Starting audit...
+ice\AssetDTOTest.java:22: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+ice\AssetDTOTest.java:89:13: '<' is not preceded with whitespace.
+ice\AssetDTOTest.java:89:14: '<' is not followed by whitespace.
+ice\AssetDTOTest.java:89:22: '>' is not preceded with whitespace.
+ice\AssetDTOTest.java:89:45: '<' is not preceded with whitespace.
+ice\AssetDTOTest.java:89:46: '<' is not followed by whitespace.
+ice\AssetDTOTest.java:89:54: '>' is not preceded with whitespace.
+ice\AssetDTOTest.java:89:55: '>' is not followed by whitespace.
+ice\AssetDTOTest.java:117:13: '<' is not preceded with whitespace.
+ice\AssetDTOTest.java:117:14: '<' is not followed by whitespace.
+ice\AssetDTOTest.java:117:18: '>' is not preceded with whitespace.
+ice\AssetDTOTest.java:117:41: '<' is not preceded with whitespace.
+ice\AssetDTOTest.java:117:42: '<' is not followed by whitespace.
+ice\AssetDTOTest.java:117:46: '>' is not preceded with whitespace.
+ice\AssetDTOTest.java:117:47: '>' is not followed by whitespace.
+ice\AssetDTOTest.java:396:13: '<' is not preceded with whitespace.
+ice\AssetDTOTest.java:396:14: '<' is not followed by whitespace.
+ice\AssetDTOTest.java:396:24: '>' is not preceded with whitespace.
+ice\AssetDTOTest.java:396:47: '<' is not preceded with whitespace.
+ice\AssetDTOTest.java:396:48: '<' is not followed by whitespace.
+ice\AssetDTOTest.java:396:58: '>' is not preceded with whitespace.
+ice\AssetDTOTest.java:396:59: '>' is not followed by whitespace.
+ice\AssetDTOTest.java:424:13: '<' is not preceded with whitespace.
+ice\AssetDTOTest.java:424:14: '<' is not followed by whitespace.
+ice\AssetDTOTest.java:424:18: '>' is not preceded with whitespace.
+ice\AssetDTOTest.java:424:41: '<' is not preceded with whitespace.
+ice\AssetDTOTest.java:424:42: '<' is not followed by whitespace.
+ice\AssetDTOTest.java:424:46: '>' is not preceded with whitespace.
+ice\AssetDTOTest.java:424:47: '>' is not followed by whitespace.
+ice\CatalogServiceImplBaseTst.java:22: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+ice\CatalogServiceImplBaseTst.java:113:19: '<' is not preceded with whitespace.
+ice\CatalogServiceImplBaseTst.java:113:20: '<' is not followed by whitespace.
+ice\CatalogServiceImplBaseTst.java:113:31: '>' is not preceded with whitespace.
+ice\CatalogServiceImplCreateAssetIllegalArgumentsTest.java:19: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+ice\CatalogServiceImplCreateAssetIllegalArgumentsTest.java:281:48: '<' is not preceded with whitespace.
+ice\CatalogServiceImplCreateAssetIllegalArgumentsTest.java:281:49: '<' is not followed by whitespace.
+ice\CatalogServiceImplCreateAssetIllegalArgumentsTest.java:281:57: '>' is not preceded with whitespace.
+ice\CatalogServiceImplCreateAssetIllegalArgumentsTest.java:281:58: '>' is not followed by whitespace.
+ice\CatalogServiceImplCreateAssetIllegalArgumentsTest.java:332:50: '<' is not preceded with whitespace.
+ice\CatalogServiceImplCreateAssetIllegalArgumentsTest.java:332:51: '<' is not followed by whitespace.
+ice\CatalogServiceImplCreateAssetIllegalArgumentsTest.java:332:61: '>' is not preceded with whitespace.
+ice\CatalogServiceImplCreateAssetIllegalArgumentsTest.java:332:62: '>' is not followed by whitespace.
+ice\CatalogServiceImplCreateVersionIllegalArgumentsTest.java:19: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+ice\CatalogServiceImplCreateVersionIllegalArgumentsTest.java:281:48: '<' is not preceded with whitespace.
+ice\CatalogServiceImplCreateVersionIllegalArgumentsTest.java:281:49: '<' is not followed by whitespace.
+ice\CatalogServiceImplCreateVersionIllegalArgumentsTest.java:281:57: '>' is not preceded with whitespace.
+ice\CatalogServiceImplCreateVersionIllegalArgumentsTest.java:281:58: '>' is not followed by whitespace.
+ice\CatalogServiceImplCreateVersionIllegalArgumentsTest.java:332:50: '<' is not preceded with whitespace.
+ice\CatalogServiceImplCreateVersionIllegalArgumentsTest.java:332:51: '<' is not followed by whitespace.
+ice\CatalogServiceImplCreateVersionIllegalArgumentsTest.java:332:61: '>' is not preceded with whitespace.
+ice\CatalogServiceImplCreateVersionIllegalArgumentsTest.java:332:62: '>' is not followed by whitespace.
+ice\CatalogServiceImplFailTest.java:20: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+ice\CatalogServiceImplTest.java:29: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+ice\CatalogServiceImplTest.java:37:19: '<' is not preceded with whitespace.
+ice\CatalogServiceImplTest.java:37:20: '<' is not followed by whitespace.
+ice\CatalogServiceImplTest.java:37:25: '>' is not preceded with whitespace.
+ice\CatalogServiceImplTest.java:49:19: '<' is not preceded with whitespace.
+ice\CatalogServiceImplTest.java:49:20: '<' is not followed by whitespace.
+ice\CatalogServiceImplTest.java:49:30: '>' is not preceded with whitespace.
+ice\CatalogServiceImplTest.java:62:19: '<' is not preceded with whitespace.
+ice\CatalogServiceImplTest.java:62:20: '<' is not followed by whitespace.
+ice\CatalogServiceImplTest.java:62:28: '>' is not preceded with whitespace.
+ice\CatalogServiceImplTest.java:165:43: '<' is not preceded with whitespace.
+ice\CatalogServiceImplTest.java:165:44: '<' is not followed by whitespace.
+ice\CatalogServiceImplTest.java:165:48: '>' is not preceded with whitespace.
+ice\CatalogServiceImplTest.java:165:49: '>' is not followed by whitespace.
+ice\CatalogServiceImplTest.java:197:41: '<' is not preceded with whitespace.
+ice\CatalogServiceImplTest.java:197:42: '<' is not followed by whitespace.
+ice\CatalogServiceImplTest.java:197:46: '>' is not preceded with whitespace.
+ice\CatalogServiceImplTest.java:197:47: '>' is not followed by whitespace.
+ice\CatalogServiceImplTest.java:402:19: '<' is not preceded with whitespace.
+ice\CatalogServiceImplTest.java:402:20: '<' is not followed by whitespace.
+ice\CatalogServiceImplTest.java:402:28: '>' is not preceded with whitespace.
+ice\CatalogServiceImplTest.java:425:23: '<' is not preceded with whitespace.
+ice\CatalogServiceImplTest.java:425:24: '<' is not followed by whitespace.
+ice\CatalogServiceImplTest.java:425:32: '>' is not preceded with whitespace.
+ice\CatalogServiceImplTest.java:434:23: '<' is not preceded with whitespace.
+ice\CatalogServiceImplTest.java:434:24: '<' is not followed by whitespace.
+ice\CatalogServiceImplTest.java:434:32: '>' is not preceded with whitespace.
+ice\CatalogServiceImplUpdateComponentIllegalArgumentsTest.java:19: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+ice\CatalogServiceImplUpdateComponentIllegalArgumentsTest.java:312:48: '<' is not preceded with whitespace.
+ice\CatalogServiceImplUpdateComponentIllegalArgumentsTest.java:312:49: '<' is not followed by whitespace.
+ice\CatalogServiceImplUpdateComponentIllegalArgumentsTest.java:312:57: '>' is not preceded with whitespace.
+ice\CatalogServiceImplUpdateComponentIllegalArgumentsTest.java:312:58: '>' is not followed by whitespace.
+ice\CatalogServiceImplUpdateComponentIllegalArgumentsTest.java:363:50: '<' is not preceded with whitespace.
+ice\CatalogServiceImplUpdateComponentIllegalArgumentsTest.java:363:51: '<' is not followed by whitespace.
+ice\CatalogServiceImplUpdateComponentIllegalArgumentsTest.java:363:61: '>' is not preceded with whitespace.
+ice\CatalogServiceImplUpdateComponentIllegalArgumentsTest.java:363:62: '>' is not followed by whitespace.
+ice\CatalogServiceImplUpdateComponentIllegalArgumentsTest.java:413:50: '<' is not preceded with whitespace.
+ice\CatalogServiceImplUpdateComponentIllegalArgumentsTest.java:413:51: '<' is not followed by whitespace.
+ice\CatalogServiceImplUpdateComponentIllegalArgumentsTest.java:413:61: '>' is not preceded with whitespace.
+ice\CatalogServiceImplUpdateComponentIllegalArgumentsTest.java:413:62: '>' is not followed by whitespace.
+ice\DemoTest.java:22: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+ice\DemoTest.java:107:13: '<' is not preceded with whitespace.
+ice\DemoTest.java:107:14: '<' is not followed by whitespace.
+ice\DemoTest.java:107:22: '>' is not preceded with whitespace.
+ice\EntityNotFoundExceptionTest.java:16: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+ice\FailTestEntityManager.java:21: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+ice\FailTestEntityManager.java:40:13: '<' is not followed by whitespace.
+ice\FailTestEntityManager.java:40:14: '>' is not preceded with whitespace.
+ice\FailTestEntityManager.java:63:13: '<' is not followed by whitespace.
+ice\FailTestEntityManager.java:63:14: '>' is not preceded with whitespace.
+ice\FailTestEntityManager.java:63:28: '<' is not preceded with whitespace.
+ice\FailTestEntityManager.java:63:29: '<' is not followed by whitespace.
+ice\FailTestEntityManager.java:63:30: '>' is not preceded with whitespace.
+ice\FailTestEntityManager.java:76:13: '<' is not followed by whitespace.
+ice\FailTestEntityManager.java:76:14: '>' is not preceded with whitespace.
+ice\FailTestEntityManager.java:76:36: '<' is not preceded with whitespace.
+ice\FailTestEntityManager.java:76:37: '<' is not followed by whitespace.
+ice\FailTestEntityManager.java:76:38: '>' is not preceded with whitespace.
+ice\MockupCatalogService.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for PersistenceException.
+ice\MockupCatalogService.java:23: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+ice\PersistenceExceptionTest.java:16: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+ice\SearchCriteriaTest.java:19: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+ice\SearchCriteriaTest.java:31:30: '<' is not preceded with whitespace.
+ice\SearchCriteriaTest.java:31:31: '<' is not followed by whitespace.
+ice\SearchCriteriaTest.java:31:39: '>' is not preceded with whitespace.
+ice\SearchCriteriaTest.java:152:54: '<' is not preceded with whitespace.
+ice\SearchCriteriaTest.java:152:55: '<' is not followed by whitespace.
+ice\SearchCriteriaTest.java:152:63: '>' is not preceded with whitespace.
+ice\SearchCriteriaTest.java:152:64: '>' is not followed by whitespace.
+ice\SearchCriteriaTest.java:182:23: '<' is not preceded with whitespace.
+ice\SearchCriteriaTest.java:182:24: '<' is not followed by whitespace.
+ice\SearchCriteriaTest.java:182:32: '>' is not preceded with whitespace.
+ice\TestHelper.java:28: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+Audit done.

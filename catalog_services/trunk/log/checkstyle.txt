@@ -1,0 +1,65 @@
+Starting audit...
+AssetDTO.java:79: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+AssetDTO.java:100:17: '<' is not preceded with whitespace.
+AssetDTO.java:100:18: '<' is not followed by whitespace.
+AssetDTO.java:100:22: '>' is not preceded with whitespace.
+AssetDTO.java:148:17: '<' is not preceded with whitespace.
+AssetDTO.java:148:18: '<' is not followed by whitespace.
+AssetDTO.java:148:26: '>' is not preceded with whitespace.
+AssetDTO.java:155:17: '<' is not preceded with whitespace.
+AssetDTO.java:155:18: '<' is not followed by whitespace.
+AssetDTO.java:155:28: '>' is not preceded with whitespace.
+AssetDTO.java:192:17: '<' is not preceded with whitespace.
+AssetDTO.java:192:18: '<' is not followed by whitespace.
+AssetDTO.java:192:22: '>' is not preceded with whitespace.
+AssetDTO.java:251:34: '<' is not preceded with whitespace.
+AssetDTO.java:251:35: '<' is not followed by whitespace.
+AssetDTO.java:251:39: '>' is not preceded with whitespace.
+AssetDTO.java:260:16: '<' is not preceded with whitespace.
+AssetDTO.java:260:17: '<' is not followed by whitespace.
+AssetDTO.java:260:21: '>' is not preceded with whitespace.
+AssetDTO.java:384:35: '<' is not preceded with whitespace.
+AssetDTO.java:384:36: '<' is not followed by whitespace.
+AssetDTO.java:384:44: '>' is not preceded with whitespace.
+AssetDTO.java:393:16: '<' is not preceded with whitespace.
+AssetDTO.java:393:17: '<' is not followed by whitespace.
+AssetDTO.java:393:25: '>' is not preceded with whitespace.
+AssetDTO.java:403:37: '<' is not preceded with whitespace.
+AssetDTO.java:403:38: '<' is not followed by whitespace.
+AssetDTO.java:403:48: '>' is not preceded with whitespace.
+AssetDTO.java:412:16: '<' is not preceded with whitespace.
+AssetDTO.java:412:17: '<' is not followed by whitespace.
+AssetDTO.java:412:27: '>' is not preceded with whitespace.
+AssetDTO.java:514:32: '<' is not preceded with whitespace.
+AssetDTO.java:514:33: '<' is not followed by whitespace.
+AssetDTO.java:514:37: '>' is not preceded with whitespace.
+AssetDTO.java:523:16: '<' is not preceded with whitespace.
+AssetDTO.java:523:17: '<' is not followed by whitespace.
+AssetDTO.java:523:21: '>' is not preceded with whitespace.
+CatalogService.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'PersistenceException'.
+CatalogService.java:77: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+CatalogServiceImpl.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'PersistenceException'.
+CatalogServiceImpl.java:46: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+CatalogServiceLocal.java:18: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+CatalogServiceRemote.java:18: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+EntityNotFoundException.java:17: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+PersistenceException.java:17: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+SearchCriteria.java:41: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+SearchCriteria.java:59:23: '<' is not preceded with whitespace.
+SearchCriteria.java:59:24: '<' is not followed by whitespace.
+SearchCriteria.java:59:32: '>' is not preceded with whitespace.
+SearchCriteria.java:84:59: '<' is not preceded with whitespace.
+SearchCriteria.java:84:60: '<' is not followed by whitespace.
+SearchCriteria.java:84:68: '>' is not preceded with whitespace.
+SearchCriteria.java:95:68: '<' is not preceded with whitespace.
+SearchCriteria.java:95:69: '<' is not followed by whitespace.
+SearchCriteria.java:95:77: '>' is not preceded with whitespace.
+SearchCriteria.java:95:78: '>' is not followed by whitespace.
+SearchCriteria.java:123:16: '<' is not preceded with whitespace.
+SearchCriteria.java:123:17: '<' is not followed by whitespace.
+SearchCriteria.java:123:25: '>' is not preceded with whitespace.
+SearchCriteria.java:124:57: '<' is not preceded with whitespace.
+SearchCriteria.java:124:58: '<' is not followed by whitespace.
+SearchCriteria.java:124:66: '>' is not preceded with whitespace.
+SearchCriteria.java:124:67: '>' is not followed by whitespace.
+Audit done.

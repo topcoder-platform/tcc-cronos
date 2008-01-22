@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/java/main"/>
+	<classpathentry kind="src" path="test_files"/>
+	<classpathentry kind="src" path="src/java/tests"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/jboss/antlr.jar"/>
+	<classpathentry kind="lib" path="lib/jboss/cglib.jar"/>
+	<classpathentry kind="lib" path="lib/jboss/commons-collections.jar"/>
+	<classpathentry kind="lib" path="lib/jboss/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/jboss/dom4j.jar"/>
+	<classpathentry kind="lib" path="lib/jboss/ejb3-persistence.jar"/>
+	<classpathentry kind="lib" path="lib/jboss/hibernate3.jar"/>
+	<classpathentry kind="lib" path="lib/jboss/hibernate-annotations.jar"/>
+	<classpathentry kind="lib" path="lib/jboss/hibernate-entitymanager.jar"/>
+	<classpathentry kind="lib" path="lib/jboss/javassist.jar"/>
+	<classpathentry kind="lib" path="lib/jboss/jbossall-client.jar"/>
+	<classpathentry kind="lib" path="lib/jboss/jboss-aop-jdk50-client.jar"/>
+	<classpathentry kind="lib" path="lib/jboss/jboss-aspect-jdk50-client.jar"/>
+	<classpathentry kind="lib" path="lib/jboss/jboss-ejb3-client.jar"/>
+	<classpathentry kind="lib" path="lib/jboss/jboss-j2ee.jar"/>
+	<classpathentry kind="lib" path="lib/jboss/log4j.jar"/>
+	<classpathentry kind="lib" path="lib/junit/3.8.1/junit.jar"/>
+	<classpathentry kind="lib" path="lib/mockups/easymock.jar"/>
+	<classpathentry kind="lib" path="lib/mockups/junit.jar"/>
+	<classpathentry kind="lib" path="lib/mockups/mockejb.jar"/>
+	<classpathentry kind="lib" path="lib/base_exception.jar"/>
+	<classpathentry kind="lib" path="lib/catalog_entities.jar"/>
+	<classpathentry kind="lib" path="lib/configuration_api.jar"/>
+	<classpathentry kind="lib" path="lib/configuration_manager.jar"/>
+	<classpathentry kind="lib" path="lib/db_connection_factory.jar"/>
+	<classpathentry kind="lib" path="lib/id_generator.jar"/>
+	<classpathentry kind="lib" path="lib/jdbc.jar"/>
+	<classpathentry kind="lib" path="lib/tcs/base_exception/2.0/base_exception.jar"/>
+	<classpathentry kind="lib" path="lib/javaee.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
