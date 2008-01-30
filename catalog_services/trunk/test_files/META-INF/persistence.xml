@@ -11,9 +11,9 @@
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.connection.driver_class" value="com.informix.jdbc.IfxDriver"/>
             <property name="hibernate.connection.username" value="informix"/>
-            <property name="hibernate.connection.password" value="gg"/>
+            <property name="hibernate.connection.password" value="topcoder"/>
             <property name="hibernate.connection.url"
-                      value="jdbc:informix-sqli://192.168.1.200:1526/catalog:INFORMIXSERVER=tc"/>
+                      value="jdbc:informix-sqli://192.168.1.18:1526/catalog:INFORMIXSERVER=topcoder"/>
         </properties>
 
     </persistence-unit>
