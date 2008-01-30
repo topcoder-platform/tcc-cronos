@@ -3,7 +3,7 @@
 <project name="Catalog Services" default="dist" basedir=".">
 
     <property file="../topcoder_global.properties"/>
-    <property file="./jboss.properties"/>
+    <property file="test_files/jboss.properties"/>
 
     <!-- COMPONENT PARAMETERS -->
     <property name="component" value="Catalog_Services" />
@@ -111,6 +111,14 @@
     <property name="id_generator.path" value="id_generator/${id_generator.version}"/>
     <property name="id_generator.jar" value="${tcs_libdir}/${id_generator.path}/${id_generator.jar.name}"/>
     
+    <property name="catalog_entities.jar" value="${testfiles}/lib/catalog_entities.jar"/>
+
+    <!-- 3rd Party Dependencies  -->
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
+    <property name="easymock.jar" value="${ext_libdir}/easymock/2.2/easymock.jar"/>
+    <property name="mockejb.jar" value="${ext_libdir}/mockejb/0.6/mockejb.jar"/>
+    <property name="ifxjdbc.jar" value="${ext_libdir}/informix/3.0/ifxjdbc.jar"/>
+    
     <path id="jboss.classpath">
         <!-- So that we can get jndi.properties for InitialContext -->
         <pathelement location="./jboss.properties"/>
@@ -127,17 +135,7 @@
             <include name="*.jar"/>
         </fileset>
     </path>
-     
-    <property name="catalog_entities.version" value="1.0"/>
-    <property name="catalog_entities.jar.name" value="catalog_entities.jar"/>
-    <property name="catalog_entities.path" value="catalog_entities/${catalog_entities.version}"/>
-    <property name="catalog_entities.jar" value="${cronos_libdir}/${catalog_entities.path}/${catalog_entities.jar.name}"/>
-       
-    <!-- 3rd Party Dependencies  -->
-    <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
-    <property name="easymock.jar" value="${ext_libdir}/easymock/2.2/easymock.jar"/>
-    <property name="mockejb.jar" value="${ext_libdir}/mockejb/mockejb.jar"/>
-    <property name="ifxjdbc.jar" value="${ext_libdir}/informix/ifxjdbc.jar"/>
+    
     <!-- Java Locations -->
     <property name="java_1_5_bootclasspath" value="c:\Program Files\Java\jre1.5.0_11\lib\rt.jar"/>
 

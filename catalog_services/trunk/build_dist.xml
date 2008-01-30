@@ -3,7 +3,7 @@
 <project name="Catalog Services" default="dist" basedir=".">
 
     <property file="../topcoder_global.properties"/>
-    <property file="./jboss.properties"/>
+    <property file="test_files/jboss.properties"/>
 
     <!-- COMPONENT PARAMETERS -->
     <property name="component" value="Catalog_Services" />
@@ -111,6 +111,14 @@
     <property name="id_generator.path" value="id_generator/${id_generator.version}"/>
     <property name="id_generator.jar" value="${tcs_libdir}/${id_generator.path}/${id_generator.jar.name}"/>
     
+    <property name="catalog_entities.jar" value="${testfiles}/lib/catalog_entities.jar"/>
+
+    <!-- 3rd Party Dependencies  -->
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
+    <property name="easymock.jar" value="${ext_libdir}/easymock/2.2/easymock.jar"/>
+    <property name="mockejb.jar" value="${ext_libdir}/mockejb/0.6/mockejb.jar"/>
+    <property name="ifxjdbc.jar" value="${ext_libdir}/informix/3.0/ifxjdbc.jar"/>
+    
     <path id="jboss.classpath">
         <!-- So that we can get jndi.properties for InitialContext -->
         <pathelement location="./jboss.properties"/>
@@ -127,17 +135,7 @@
             <include name="*.jar"/>
         </fileset>
     </path>
-     
-    <property name="catalog_entities.version" value="1.0"/>
-    <property name="catalog_entities.jar.name" value="catalog_entities.jar"/>
-    <property name="catalog_entities.path" value="catalog_entities/${catalog_entities.version}"/>
-    <property name="catalog_entities.jar" value="${cronos_libdir}/${catalog_entities.path}/${catalog_entities.jar.name}"/>
-       
-    <!-- 3rd Party Dependencies  -->
-    <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
-    <property name="easymock.jar" value="${ext_libdir}/easymock/2.2/easymock.jar"/>
-    <property name="mockejb.jar" value="${ext_libdir}/mockejb/mockejb.jar"/>
-    <property name="ifxjdbc.jar" value="${ext_libdir}/informix/ifxjdbc.jar"/>
+    
     <!-- Java Locations -->
     <property name="java_1_5_bootclasspath" value="c:\Program Files\Java\jre1.5.0_11\lib\rt.jar"/>
 
@@ -317,139 +315,5 @@
     <target name="main" depends="deploy,test">
     </target>
 
-    <!-- ************************************************************************** -->
-    <!-- ************ REMOVE EVERYTHING BELOW HERE FOR THE DISTRIBUTION ************* -->
-    <!-- ************************************************************************** -->
-
-    <target name="dist_tcs" depends="clean,dist,javadoc">
-        <!-- define tcs distribution format -->
-
-        <mkdir dir="${dist_conf}"/>
-        <copy todir="${dist_conf}">
-            <fileset dir="${configdir}" />
-        </copy>
-
-        <mkdir dir="${dist_coverage}"/>
-        <mkdir dir="${docs_coverage}"/>
-
-        <copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
-        <copy file="${testlogdir}/cobertura.ser" todir="${docsdir}"/>
-
-        <copy todir="${dist_coverage}">
-            <fileset dir="${testlogdir}/coverage" />
-        </copy>
-        <copy todir="${docs_coverage}">
-            <fileset dir="${testlogdir}/coverage" />
-        </copy>
-
-        <mkdir dir="${dist_src}"/>
-        <copy todir="${dist_src}">
-            <fileset dir="${srcdir}" />
-        </copy>
-
-        <copy todir="${dist_docs}">
-            <fileset dir="${docsdir}">
-                <include name="**"/>
-            </fileset>
-        </copy>
-
-        <mkdir dir="${dist_javadocs}"/>
-        <copy todir="${dist_javadocs}">
-            <fileset dir="${javadocsdir}" />
-        </copy>
-
-        <antcall target="package_docs" />
-
-        <mkdir dir="${dist_testfiles}"/>
-        <copy todir="${dist_testfiles}">
-            <fileset dir="${testfiles}" />
-        </copy>
-
-        <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml" />
-        <copy file="README" tofile="${build_tcsdistdir}/README" />
-        <jar jarfile="${component.dist.jar}" basedir="${build_distdir}" manifest="${manifest_file}" excludes="*.jar"/>
-
-        <antcall target="move_to_tcs"/>
-    </target>
-
-    <target name="package_docs" depends="javadoc">
-        <mkdir dir="${dist_docpackage}" />
-
-        <jar jarfile="${dist_docpackage}/${javadoc.jar}" basedir="${build_tcsdistdir}/${javadocsdir}" />
-
-        <copy todir="${dist_docpackage}" >
-            <fileset dir="${docsdir}">
-                <include name="${component}_Class_Diagram*"/>
-                <include name="${component}_Use_Case_Diagram*"/>
-                <include name="${component}_Sequence_Diagram*"/>
-                <include name="${component}_Requirements_Specification.pdf"/>
-                <include name="${component}_Component_Specification.pdf"/>
-            </fileset>
-        </copy>
-
-        <jar jarfile="${builddir}/${docpackage.jar}" basedir="${dist_docpackage}" />
-    </target>
-
-    <target name="move_to_tcs">
-        <mkdir dir="${cronos_libdir}/${component_path}"/>
-        <mkdir dir="${cronos_libdir}/${component_path}/dist"/>
-
-        <copy file="${component.jar}" todir="${cronos_libdir}/${component_path}"/>
-        <copy file="${component.dist.jar}" todir="${cronos_libdir}/${component_path}/dist"/>
-    </target>
-
-    <target name="dev_submission" depends="test">
-        <jar jarfile="${dev_submission.jar}"
-             basedir="."
-             includes="${configdir}/**,${javamain}/**/*.java,${javatests}/${packagedir}/**,${testlogdir}/**,${testfiles}/**,${docsdir}/**"
-             excludes="${javatests}/${packagedir}/AllTests.java,${javatests}/${packagedir}/stresstests/*,${javatests}/${packagedir}/failuretests/*,
-                       ${javatests}/${packagedir}/accuracytests/*"
-        />
-    </target>
-
-    <target name="design_submission">
-        <jar jarfile="${design_submission.jar}"
-             basedir="."
-             includes="${configdir}/**,${javamain}/**,${docsdir}/**,${testfiles}/**"
-        />
-    </target>
-
-    <target name="dev_dist">
-        <!-- copy TCS Dependencies -->
-        <!--
-        <mkdir dir="${jar_tcs_libdir}/${configmanager.path}"/>
-        <copy file="${configmanager.jar}" todir="${jar_tcs_libdir}/${configmanager.path}" />
-        -->
-
-        <jar jarfile="${dev_dist.jar}"
-             basedir="."
-             includes="build.xml,
-                       ${configdir}/**,
-                       ${srcdir}/**,
-                       ${docsdir}/**,
-                       ${jar_tcs_libdir}/**,
-                       ${testfiles}/**"
-        />
-
-        <!--
-        <delete dir="${jar_tcs_libdir}"/>
-        -->
-    </target>
-
-    <target name="design_dist">
-        <jar jarfile="${design_dist.jar}"
-             basedir="."
-             includes="build.xml,
-                       ${configdir}/**,
-                       ${srcdir}/**,
-                       ${docsdir}/**,
-                       ${jar_tcs_libdir}/**,
-                       ${testfiles}/**"
-        />
-    </target>
-
-    <!-- ************************************************************************** -->
-    <!-- ************************ END REMOVE EVERYTHING ***************************** -->
-    <!-- ************************************************************************** -->
 
 </project>
