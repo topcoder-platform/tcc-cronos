@@ -1,7 +1,7 @@
 
   Installation Requirements
   -------------------------
-  JDK 1.4.2  <http://java.sun.com>
+  JDK 5.0+  <http://java.sun.com>
   Apache Ant 1.6.5  <http://www.apache.org>
   JUnit 3.8.1  <http://www.junit.org>
       Note: The junit.jar should be located inside the Ant lib/ directory in 

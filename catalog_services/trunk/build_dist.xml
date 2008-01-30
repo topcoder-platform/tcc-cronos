@@ -110,7 +110,8 @@
     <property name="id_generator.jar.name" value="id_generator.jar"/>
     <property name="id_generator.path" value="id_generator/${id_generator.version}"/>
     <property name="id_generator.jar" value="${tcs_libdir}/${id_generator.path}/${id_generator.jar.name}"/>
-    
+
+    <!-- Mocked libraries -->
     <property name="catalog_entities.jar" value="${testfiles}/lib/catalog_entities.jar"/>
 
     <!-- 3rd Party Dependencies  -->
@@ -201,7 +202,7 @@
                bootclasspath="${java_1_5_bootclasspath}"
                extdirs=""
                >
-            <classpath refid="buildlibs" />
+            <classpath refid="test.build.classpath" />
         </javac>
         <delete dir="${build_targetclassdir}"/>
     </target>
@@ -314,6 +315,5 @@
 
     <target name="main" depends="deploy,test">
     </target>
-
 
 </project>
