@@ -7,9 +7,9 @@
         <!--
         <property name="show_sql">true</property>
         -->
-        <property name="connection.url">jdbc:informix-sqli://192.168.1.2:1526/ca:informixserver=topcoder</property>
+        <property name="connection.url">jdbc:informix-sqli://192.168.1.18:1526/ca:informixserver=topcoder</property>
         <property name="connection.username">informix</property>
-        <property name="connection.password">810814</property>
+        <property name="connection.password">topcoder</property>
         <property name="connection.driver_class">com.informix.jdbc.IfxDriver</property>
         <property name="dialect">org.hibernate.dialect.InformixDialect</property>
         <property name="connection.autocommit">true</property>
