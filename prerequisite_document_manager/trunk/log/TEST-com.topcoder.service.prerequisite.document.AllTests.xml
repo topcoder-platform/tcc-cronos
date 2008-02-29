@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="Bluefancy" name="com.topcoder.service.prerequisite.document.AllTests" tests="242" time="39.343" timestamp="2008-02-27T14:04:46">
+  <properties>
+    <property name="object_formatter.jar.name" value="object_formatter.jar" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="dist_testfiles" value="build/dist/prerequisite_document_manager-1.0/test_files" />
+    <property name="java.home" value="D:\Software\Java\jdk1.5.0\jre" />
+    <property name="configuration_persistence.version" value="1.0" />
+    <property name="dist_javadocs" value="build/dist/prerequisite_document_manager-1.0/docs/javadocs" />
+    <property name="debug" value="off" />
+    <property name="build_distdir" value="build/dist" />
+    <property name="distfilename" value="prerequisite_document_manager" />
+    <property name="component.dist.jar" value="build/dist/prerequisite_document_manager-1.0.jar" />
+    <property name="java.endorsed.dirs" value="D:\Software\Java\jdk1.5.0\jre\lib\endorsed" />
+    <property name="sun.os.patch.level" value="Service Pack 2" />
+    <property name="design_dist.jar" value="Prerequisite_Document_Manager_1.0_design_dist.jar" />
+    <property name="javadocsdir" value="docs/javadocs" />
+    <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="java.version" value="1.5.0_12" />
+    <property name="configuration_manager.jar.name" value="configuration_manager.jar" />
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="dist_src" value="build/dist/prerequisite_document_manager-1.0/src" />
+    <property name="cobertura.datafile" value="log/cobertura.ser" />
+    <property name="user.name" value="Skyhit" />
+    <property name="packagedir" value="com/topcoder/service/prerequisite/document" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="component_version" value="1.0" />
+    <property name="sun.jnu.encoding" value="GBK" />
+    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition" />
+    <property name="reports" value="reports" />
+    <property name="build_webdir" value="build/web" />
+    <property name="component.jar" value="build/dist/lib/tcs/prerequisite_document_manager/1.0/prerequisite_document_manager.jar" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="javamain" value="src/java/main" />
+    <property name="build_lib" value="build/lib" />
+    <property name="user.timezone" value="" />
+    <property name="path.separator" value=";" />
+    <property name="srcdir" value="src" />
+    <property name="file.encoding" value="Cp1252" />
+    <property name="typesafe_enum.version" value="1.1" />
+    <property name="configuration_manager.path" value="configuration_manager/2.1.5" />
+    <property name="ant.file" value="F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\build.xml" />
+    <property name="javasrc" value="src/java" />
+    <property name="instrumented.dir" value="build/instrumented" />
+    <property name="configuration_persistence.jar.name" value="configuration_persistence.jar" />
+    <property name="component.tests.jar" value="build/dist/lib/tcs/prerequisite_document_manager_tests.jar" />
+    <property name="component.ejb.jar" value="build/dist/application/ejb/prerequisite_document_manager.jar" />
+    <property name="java.io.tmpdir" value="C:\DOCUME~1\Skyhit\LOCALS~1\Temp\" />
+    <property name="user.language" value="en" />
+    <property name="base_exception.path" value="base_exception/2.0" />
+    <property name="line.separator" value="
+" />
+    <property name="jboss_libdir" value="D:/Servers/AppServers/jboss-4.2.2.GA/server/default/lib" />
+    <property name="verbose" value="no" />
+    <property name="jar_ext_libdir" value="lib" />
+    <property name="java.vm.info" value="mixed mode, sharing" />
+    <property name="component_path" value="prerequisite_document_manager/1.0" />
+    <property name="sun.desktop" value="windows" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="builddir" value="build" />
+    <property name="cobertura.dir" value="D:/lib/cobertura/1.8" />
+    <property name="dist_conf" value="build/dist/prerequisite_document_manager-1.0/conf" />
+    <property name="configuration_manager.jar" value="lib/tcs/configuration_manager/2.1.5/configuration_manager.jar" />
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+    <property name="dist_lib" value="build/dist/lib/tcs" />
+    <property name="base_exception.version" value="2.0" />
+    <property name="jdbc.informix.jar" value="lib/ifxjdbc.jar" />
+    <property name="junit.jar" value="lib/junit/3.8.2/junit.jar" />
+    <property name="configdir" value="conf" />
+    <property name="build_tcsdistdir" value="build/dist/prerequisite_document_manager-1.0" />
+    <property name="ant.version" value="Apache Ant version 1.7.0 compiled on December 13 2006" />
+    <property name="dist_docs" value="build/dist/prerequisite_document_manager-1.0/docs" />
+    <property name="testlogdir" value="log" />
+    <property name="configuration_api.jar" value="lib/tcs/configuration_api/1.0/configuration_api.jar" />
+    <property name="checkstyle.home" value="D:/lib/checkstyle/4.4" />
+    <property name="os.name" value="Windows XP" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM" />
+    <property name="java.library.path" value="D:\Software\Java\jdk1.5.0\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;D:\Servers\Databases\oraclexe\app\oracle\product\10.2.0\server\bin;D:\Servers\Databases\sybase1502\DataAccess\ODBC\dll;D:\Servers\Databases\sybase1502\RPL-15_0\bin;D:\Servers\Databases\sybase1502\Shared\Sybase Central 4.3;D:\Servers\Databases\sybase1502\UAF-2_0\bin;D:\Servers\Databases\sybase1502\OCS-15_0\lib3p;D:\Servers\Databases\sybase1502\OCS-15_0\dll;D:\Servers\Databases\sybase1502\OCS-15_0\bin;D:\Servers\Databases\sybase1502\ASE-15_0\dll;D:\Servers\Databases\sybase1502\ASE-15_0\bin;C:\Program Files\ATI Technologies\ATI Control Panel;C:\Program Files\ThinkPad\Utilities;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\Intel\Wireless\Bin\;C:\Program Files\ThinkPad\ConnectUtilities;D:\Software\Java\jdk1.5.0\bin;D:\Software\Java\apache-ant-1.7.0\bin;C:\Program Files\ATI Technologies\ATI Control Panel;C:\Program Files\ATI Technologies\ATI.ACE\Core-Static;C:\Program Files\Microsoft SQL Server\90\Tools\binn\;D:\Software\Microsoft\CodeSmith\v4.1\;%AXIS2_HOME\bin;D:\Servers\Databases\sybase1502\DBISQL\bin;C:\Program Files\Common Files\Lenovo;D:\Software\Tools\nant-0.85\bin;D:\Software\Tools\NUnit-2.2.10-net-2.0\bin;D:\Software\Java\apache-maven-2.0.8\bin;C:\Program Files\StormII\Codec\QTSystem\;C:\Program Files\StormII\Codec;C:\Program Files\StormII" />
+    <property name="docpackage.jar" value="prerequisite_document_manager_docs.jar" />
+    <property name="logging_wrapper.version" value="2.0" />
+    <property name="ant.java.version" value="1.5" />
+    <property name="basedir" value="F:\Download\Prerequisite_Document_Manager_1.0_dev_dist" />
+    <property name="java.class.version" value="49.0" />
+    <property name="configuration_api.path" value="configuration_api/1.0" />
+    <property name="base_exception.jar.name" value="base_exception.jar" />
+    <property name="ant.home" value="D:\Software\Java\apache-ant-1.7.0" />
+    <property name="logging_wrapper.path" value="logging_wrapper/2.0" />
+    <property name="component.war" value="${dist_examples}/prerequisite_document_manager.war" />
+    <property name="net.sourceforge.cobertura.datafile" value="F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\log\cobertura.ser" />
+    <property name="log4j.jar" value="D:/Servers/AppServers/jboss-4.2.2.GA/server/default/lib/log4j.jar" />
+    <property name="sun.boot.library.path" value="D:\Software\Java\jdk1.5.0\jre\bin" />
+    <property name="ext_libdir" value="lib" />
+    <property name="sun.management.compiler" value="HotSpot Client Compiler" />
+    <property name="deploy-dir" value="D:/Servers/AppServers/jboss-4.2.2.GA/server/default/deploy" />
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+    <property name="user.variant" value="" />
+    <property name="jar_tcs_libdir" value="lib/tcs" />
+    <property name="object_formatter.jar" value="lib/tcs/object_formatter/1.0/object_formatter.jar" />
+    <property name="configuration_persistence.path" value="configuration_persistence/1.0" />
+    <property name="ant.file.Prerequisite Document Manager" value="F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\build.xml" />
+    <property name="build_targetclassdir" value="build/targetclasses" />
+    <property name="docsdir" value="docs" />
+    <property name="dev_dist.jar" value="Prerequisite_Document_Manager_1.0_dev_dist.jar" />
+    <property name="configuration_api.jar.name" value="configuration_api.jar" />
+    <property name="ant.project.name" value="Prerequisite Document Manager" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="db_connection_factory.version" value="1.1" />
+    <property name="db_connection_factory.jar.name" value="db_connection_factory.jar" />
+    <property name="component.ejb.dir" value="build/dist/application/ejb" />
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+    <property name="webdir" value="web" />
+    <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86" />
+    <property name="build_javadocsdir" value="build/docs/javadocs" />
+    <property name="java.ext.dirs" value="D:\Software\Java\jdk1.5.0\jre\lib\ext" />
+    <property name="os.version" value="5.1" />
+    <property name="user.home" value="C:\Documents and Settings\Skyhit" />
+    <property name="javadoc.jar" value="javadocs.jar" />
+    <property name="build_classdir" value="build/classes" />
+    <property name="component.ear" value="build/dist/application/ear/prerequisite_document_manager.ear" />
+    <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="component.conf.dir" value="build/dist/conf" />
+    <property name="typesafe_enum.path" value="typesafe_enum/1.1" />
+    <property name="build_testclassdir" value="build/testClasses" />
+    <property name="package" value="com.topcoder.service.prerequisite.document" />
+    <property name="typesafe_enum.jar" value="lib/tcs/typesafe_enum/1.1/typesafe_enum.jar" />
+    <property name="base_exception.jar" value="lib/tcs/base_exception/2.0/base_exception.jar" />
+    <property name="user.dir" value="F:\Download\Prerequisite_Document_Manager_1.0_dev_dist" />
+    <property name="configuration_persistence.jar" value="lib/tcs/configuration_persistence/1.0/configuration_persistence.jar" />
+    <property name="object_formatter.version" value="1.0" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="dist_docpackage" value="build/doc_package" />
+    <property name="java.vm.version" value="1.5.0_12-b04" />
+    <property name="java.class.path" value="F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\build\instrumented;F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\build\testClasses;F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\build\classes;F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\lib\tcs\configuration_api\1.0\configuration_api.jar;F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\lib\tcs\configuration_persistence\1.0\configuration_persistence.jar;F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\lib\tcs\configuration_manager\2.1.5\configuration_manager.jar;F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\lib\tcs\db_connection_factory\1.1\db_connection_factory.jar;F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\lib\ifxjdbc.jar;F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\lib\junit\3.8.2\junit.jar;F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\lib\tcs\base_exception\2.0\base_exception.jar;F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\lib\tcs\logging_wrapper\2.0\logging_wrapper.jar;F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\lib\tcs\object_formatter\1.0\object_formatter.jar;D:\Servers\AppServers\jboss-4.2.2.GA\client\jboss-ejb3x.jar;D:\Servers\AppServers\jboss-4.2.2.GA\client\ejb3-persistence.jar;D:\Servers\AppServers\jboss-4.2.2.GA\client\jbossall-client.jar;D:\Servers\AppServers\jboss-4.2.2.GA\server\default\lib\log4j.jar;F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\conf;F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\test_files;D:\lib\cobertura\1.8\cobertura.jar;D:\lib\cobertura\1.8\lib\asm-2.2.1.jar;D:\lib\cobertura\1.8\lib\jakarta-oro-2.0.8.jar;D:\lib\cobertura\1.8\lib\log4j-1.2.9.jar;F:\Download\Prerequisite_Document_Manager_1.0_dev_dist;C:\Program Files\StormII\Codec\QTSystem\QTJava.zip;D:\Software\Java\apache-ant-1.7.0\lib\ant-launcher.jar;D:\Software\Java\apache-ant-1.7.0\lib\ant.jar;D:\Software\Java\apache-ant-1.7.0\lib\ant-junit.jar" />
+    <property name="dev_submission.jar" value="Prerequisite_Document_Manager_1.0_dev_submission.jar" />
+    <property name="ant.library.dir" value="D:\Software\Java\apache-ant-1.7.0\lib" />
+    <property name="os.arch" value="x86" />
+    <property name="db_connection_factory.path" value="db_connection_factory/1.1" />
+    <property name="package.dir" value="build/package" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="logging_wrapper.jar.name" value="logging_wrapper.jar" />
+    <property name="component.ear.dir" value="build/dist/application/ear" />
+    <property name="ant.core.lib" value="D:\Software\Java\apache-ant-1.7.0\lib\ant.jar" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="object_formatter.path" value="object_formatter/1.0" />
+    <property name="file.separator" value="\" />
+    <property name="java.runtime.version" value="1.5.0_12-b04" />
+    <property name="sun.boot.class.path" value="D:\Software\Java\jdk1.5.0\jre\lib\rt.jar;D:\Software\Java\jdk1.5.0\jre\lib\i18n.jar;D:\Software\Java\jdk1.5.0\jre\lib\sunrsasign.jar;D:\Software\Java\jdk1.5.0\jre\lib\jsse.jar;D:\Software\Java\jdk1.5.0\jre\lib\jce.jar;D:\Software\Java\jdk1.5.0\jre\lib\charsets.jar;D:\Software\Java\jdk1.5.0\jre\classes" />
+    <property name="build_docsdir" value="build/docs" />
+    <property name="design_submission.jar" value="Prerequisite_Document_Manager_1.0_design_submission.jar" />
+    <property name="user.country" value="US" />
+    <property name="configuration_manager.version" value="2.1.5" />
+    <property name="tcs_libdir" value="lib/tcs" />
+    <property name="component" value="Prerequisite_Document_Manager" />
+    <property name="logging_wrapper.jar" value="lib/tcs/logging_wrapper/2.0/logging_wrapper.jar" />
+    <property name="typesafe_enum.jar.name" value="typesafe_enum.jar" />
+    <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar" />
+    <property name="java.vendor" value="Sun Microsystems Inc." />
+    <property name="jboss_home" value="D:/Servers/AppServers/jboss-4.2.2.GA" />
+    <property name="db_connection_factory.jar" value="lib/tcs/db_connection_factory/1.1/db_connection_factory.jar" />
+    <property name="configuration_api.version" value="1.0" />
+    <property name="java.specification.version" value="1.5" />
+    <property name="testfiles" value="test_files" />
+    <property name="sun.arch.data.model" value="32" />
+    <property name="javatests" value="src/java/tests" />
+  </properties>
+  <testcase classname="com.topcoder.service.prerequisite.document.HelperUnitTests" name="testCheckNull_Null" time="0.016" />
+  <testcase classname="com.topcoder.service.prerequisite.document.HelperUnitTests" name="testCheckNull_NotNull" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.HelperUnitTests" name="testCheckNullOrEmpty_Null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.HelperUnitTests" name="testCheckNullOrEmpty_Empty" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.HelperUnitTests" name="testCheckNullOrEmpty_TrimmedEmpty" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.HelperUnitTests" name="testCheckNullOrEmpty_Valid" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.HelperUnitTests" name="testCheckCollection_Null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.HelperUnitTests" name="testCheckCollection_ContainsNull" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.HelperUnitTests" name="testCheckCollection_Valid" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.DocumentManagerExceptionUnitTests" name="testDocumentManagerExceptionStringAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.DocumentManagerExceptionUnitTests" name="testDocumentManagerExceptionStringThrowableAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.DocumentManagerExceptionUnitTests" name="testDocumentManagerExceptionStringExceptionDataAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.DocumentManagerExceptionUnitTests" name="testDocumentManagerExceptionStringThrowableExceptionDataAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.AuthorizationExceptionUnitTests" name="testAuthorizationExceptionStringAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.AuthorizationExceptionUnitTests" name="testAuthorizationExceptionStringExceptionDataAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.AuthorizationExceptionUnitTests" name="testAuthorizationExceptionStringThrowableAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.AuthorizationExceptionUnitTests" name="testAuthorizationExceptionStringThrowableExceptionDataAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ConfigurationExceptionUnitTests" name="testConfigurationExceptionStringAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ConfigurationExceptionUnitTests" name="testConfigurationExceptionStringExceptionDataAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ConfigurationExceptionUnitTests" name="testConfigurationExceptionStringThrowableAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ConfigurationExceptionUnitTests" name="testConfigurationExceptionStringThrowableExceptionDataAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.DocumentPersistenceExceptionUnitTests" name="testDocumentPersistenceExceptionStringAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.DocumentPersistenceExceptionUnitTests" name="testDocumentPersistenceExceptionStringExceptionDataAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.DocumentPersistenceExceptionUnitTests" name="testDocumentPersistenceExceptionStringThrowableAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.DocumentPersistenceExceptionUnitTests" name="testDocumentPersistenceExceptionStringThrowableExceptionDataAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.CompetitionDocumentAnsweredExceptionUnitTests" name="testCompetitionDocumentAnsweredExceptionStringAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.CompetitionDocumentAnsweredExceptionUnitTests" name="testCompetitionDocumentAnsweredExceptionStringExceptionDataAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.CompetitionDocumentAnsweredExceptionUnitTests" name="testCompetitionDocumentAnsweredExceptionStringThrowableAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.CompetitionDocumentAnsweredExceptionUnitTests" name="testCompetitionDocumentAnsweredExceptionStringThrowableExceptionDataAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.CompetitionDocumentAnsweredExceptionUnitTests" name="testGetMemberAnswerAccuracy1" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.CompetitionDocumentAnsweredExceptionUnitTests" name="testGetMemberAnswerAccuracy2" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentUnitTests" name="testDocumentAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentUnitTests" name="testGetDocumentId_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentUnitTests" name="testSetDocumentId_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentUnitTests" name="testSetDocumentId_notNull" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentUnitTests" name="testGetCreateDate_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentUnitTests" name="testSetCreateDate_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentUnitTests" name="testSetCreateDate_notNull" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentUnitTests" name="testGetDescription_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentUnitTests" name="testSetDescription_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentUnitTests" name="testSetDescription_empty" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentUnitTests" name="testSetDescription_trimmedEmpty" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentUnitTests" name="testSetDescription_meaningful" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentUnitTests" name="testGetDocumentVersions_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentUnitTests" name="testSetDocumentVersions_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentUnitTests" name="testSetDocumentVersions_nullElement" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentUnitTests" name="testSetDocumentVersions_accuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentNameUnitTests" name="testGetDocumentVersions_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentNameUnitTests" name="testSetDocumentVersions_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentNameUnitTests" name="testSetDocumentVersions_nullElement" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentNameUnitTests" name="testSetDocumentVersions_accuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentNameUnitTests" name="testDocumentNameAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentNameUnitTests" name="testGetDocumentNameId_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentNameUnitTests" name="testSetDocumentNameId_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentNameUnitTests" name="testSetDocumentNameId_notNull" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentNameUnitTests" name="testGetName_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentNameUnitTests" name="testSetName_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentNameUnitTests" name="testSetName_empty" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentNameUnitTests" name="testSetName_trimmedEmpty" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentNameUnitTests" name="testSetName_meaningful" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.CompetitionDocumentUnitTests" name="testDocumentNameAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.CompetitionDocumentUnitTests" name="testGetCompetitionDocumentId_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.CompetitionDocumentUnitTests" name="testSetCompetitionDocumentId_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.CompetitionDocumentUnitTests" name="testSetCompetitionDocumentId_notNull" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.CompetitionDocumentUnitTests" name="testGetDocumentVersion_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.CompetitionDocumentUnitTests" name="testSetDocumentVersion_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.CompetitionDocumentUnitTests" name="testSetDocumentVersion_notNull" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.CompetitionDocumentUnitTests" name="testGetCompetitionId_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.CompetitionDocumentUnitTests" name="testSetCompetitionId_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.CompetitionDocumentUnitTests" name="testSetCompetitionId_notNull" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.CompetitionDocumentUnitTests" name="testGetRoleId_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.CompetitionDocumentUnitTests" name="testSetRoleId_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.CompetitionDocumentUnitTests" name="testSetRoleId_notNull" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.CompetitionDocumentUnitTests" name="testGetMemberAnswers_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.CompetitionDocumentUnitTests" name="testSetMemberAnswers_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.CompetitionDocumentUnitTests" name="testSetMemberAnswers_nullElement" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.CompetitionDocumentUnitTests" name="testSetMemberAnswers_accuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.MemberAnswerUnitTests" name="testDocumentNameAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.MemberAnswerUnitTests" name="testGetMemberAnswerId_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.MemberAnswerUnitTests" name="testSetMemberAnswerId_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.MemberAnswerUnitTests" name="testSetMemberAnswerId_notNull" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.MemberAnswerUnitTests" name="testGetCompetitionDocument_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.MemberAnswerUnitTests" name="testSetCompetitionDocument_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.MemberAnswerUnitTests" name="testSetCompetitionDocument_notNull" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.MemberAnswerUnitTests" name="testGetMemberId_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.MemberAnswerUnitTests" name="testSetMemberId_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.MemberAnswerUnitTests" name="testSetMemberId_notNull" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.MemberAnswerUnitTests" name="testGetAnswer_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.MemberAnswerUnitTests" name="testSetAnswer_accuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.MemberAnswerUnitTests" name="testGetAnswerDate_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.MemberAnswerUnitTests" name="testSetAnswerDate_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.MemberAnswerUnitTests" name="testSetAnswerDate_notNull" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testDocumentNameAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testGetDocumentVersion_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testSetDocumentVersion_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testSetDocumentVersion_notNull" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testGetDocumentVersionId_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testSetDocumentVersionId_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testSetDocumentVersionId_notNull" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testGetDocument_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testSetDocument_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testSetDocument_notNull" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testGetDocumentName_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testSetDocumentName_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testSetDocumentName_notNull" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testGetVersionDate_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testSetVersionDate_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testSetVersionDate_notNull" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testGetContent_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testSetContent_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testSetContent_empty" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testSetContent_trimmedEmpty" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testSetContent_meaningful" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testGetCompetitionDocuments_default" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testSetCompetitionDocuments_null" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testSetCompetitionDocuments_nullElement" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.model.DocumentVersionUnitTests" name="testSetCompetitionDocuments_accuracy" time="0.0" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testInit_MissingPersistenceUnitName" time="1.062" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testInit_PersistenceUnitNameInvalidType" time="0.328" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testInit_MissingAllowedRoleNames" time="0.422" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testInit_AllowedRoleNamesInvalidType" time="0.344" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testInit_AllowedRoleNamesEmpty" time="0.391" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testInit_AllowedRoleNamesTrimmedEmpty" time="0.75" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testInit_accuracy1" time="0.437" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testInit_accuracy2" time="0.359" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testAddDocument_document_createDateNotSet" time="0.61" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testAddDocument_accuracy1" time="1.078" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testAddDocument_accuracy2" time="0.547" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testAddDocument_accuracy3" time="0.687" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetDocument_NotFound" time="0.391" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetDocument_accuracy1" time="0.828" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetDocument_accuracy2" time="0.688" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetAllDocuments_accuracy1" time="0.359" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetAllDocuments_accuracy2" time="0.609" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testAddDocumentVersion_accuracy1" time="0.75" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testAddDocumentVersion_accuracy2" time="0.75" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testUpdateDocumentVersion_NotFound" time="0.391" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testUpdateDocumentVersion_accuracy" time="0.672" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetDocumentVersion1_duplicateRecord1" time="0.75" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetDocumentVersion1_duplicateRecord2" time="0.578" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetDocumentVersion1_accuracy1" time="0.531" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetDocumentVersion1_accuracy2" time="0.656" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetDocumentVersion2_accuracy1" time="0.329" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetDocumentVersion2_accuracy2" time="0.812" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testAddMemberAnswer_accuracy" time="1.016" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testUpdateMemberAnswer_MemberAnswer_NotFound" time="0.484" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testUpdateMemberAnswer_accuracy" time="0.797" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testDeleteMemberAnswer_accuracy1" time="0.453" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testDeleteMemberAnswer_accuracy2" time="0.625" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetMemberAnswer_accuracy1" time="0.406" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetMemberAnswer_accuracy2" time="0.485" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testAddCompetitionDocument_accuracy" time="0.625" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testUpdateCompetitionDocument_competitionDocument_NotFound" time="0.359" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testUpdateCompetitionDocument_accuracy" time="0.813" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testDeleteCompetitionDocument_accuracy" time="0.703" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testDeleteCompetitionDocuments1_accuracy1" time="0.5" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testDeleteCompetitionDocuments1_accuracy2" time="0.64" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testDeleteCompetitionDocuments2_accuracy1" time="0.375" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testDeleteCompetitionDocuments2_accuracy2" time="1.391" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetCompetitionDocument1_accuracy1" time="0.562" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetCompetitionDocument1_accuracy2" time="0.594" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetCompetitionDocument2_accuracy1" time="0.5" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetCompetitionDocument2_accuracy2" time="0.454" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetCompetitionDocumentsByRole_accuracy1" time="0.453" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetCompetitionDocumentsByRole_accuracy2" time="0.859" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetCompetitionDocumentsByCompetition_accuracy1" time="0.391" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetCompetitionDocumentsByCompetition_accuracy2" time="0.562" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetCompetitionDocuments_accuracy1" time="0.469" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetCompetitionDocuments_accuracy2" time="1.047" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testAddDocumentName_accuracy" time="0.765" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetDocumentName_accuracy1" time="0.359" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetDocumentName_accuracy2" time="0.438" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetAllDocumentNames_accuracy1" time="0.546" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testGetAllDocumentNames_accuracy2" time="0.5" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testIsCompetitionDocumentAnswered_accuracy1" time="0.469" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanUnitTests" name="testIsCompetitionDocumentAnswered_accuracy2" time="0.469" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testAddDocument_NotAuthorized" time="0.031" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testGetDocument_NotAuthorized" time="0.015" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testGetAllDocuments_NotAuthorized" time="0.032" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testAddDocumentVersion_NotAuthorized" time="0.031" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testUpdateDocumentVersion_NotAuthorized" time="0.016" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testGetDocumentVersion1_NotAuthorized" time="0.031" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testGetDocumentVersion2_NotAuthorized" time="0.015" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testAddMemberAnswer_NotAuthorized" time="0.032" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testUpdateMemberAnswer_NotAuthorized" time="0.015" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testDeleteMemberAnswer_NotAuthorized" time="0.016" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testGetMemberAnswer_NotAuthorized" time="0.031" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testAddCompetitionDocument_NotAuthorized" time="0.015" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testUpdateCompetitionDocument_NotAuthorized" time="0.032" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testDeleteCompetitionDocument_NotAuthorized" time="0.031" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testDeleteCompetitionDocuments1_NotAuthorized" time="0.016" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testDeleteCompetitionDocuments2_NotAuthorized" time="0.031" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testGetCompetitionDocument1_NotAuthorized" time="0.015" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testGetCompetitionDocument2_NotAuthorized" time="0.032" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testGetCompetitionDocumentsByRole_NotAuthorized" time="0.015" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testGetCompetitionDocumentsByCompetition_NotAuthorized" time="0.032" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testGetCompetitionDocuments_NotAuthorized" time="0.015" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testAddDocumentName_NotAuthorized" time="0.047" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testGetDocumentName_NotAuthorized" time="0.016" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testGetAllDocumentNames_NotAuthorized" time="0.031" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanNotAuthorizedUnitTests" name="testIsCompetitionDocumentAnswered_NotAuthorized" time="0.094" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testAddDocument_null" time="0.015" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testAddDocumentVersion_null" time="0.032" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testAddDocumentVersion_documentVersion_versionDateNotSet" time="0.031" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testAddDocumentVersion_documentVersion_contentNotSet" time="0.047" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testAddDocumentVersion_documentVersion_documentNotSet" time="0.016" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testAddDocumentVersion_documentVersion_documentIdNotSet" time="0.015" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testAddDocumentVersion_documentVersion_documentNameNotSet" time="0.094" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testAddDocumentVersion_documentVersion_documentNameIdNotSet" time="0.016" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateDocumentVersion_null" time="0.031" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateDocumentVersion_documentVersion_idNotSet" time="0.094" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateDocumentVersion_documentVersion_versionNotSet" time="0.093" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateDocumentVersion_documentVersion_versionDateNotSet" time="0.047" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateDocumentVersion_documentVersion_contentNotSet" time="0.016" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateDocumentVersion_documentVersion_documentNotSet" time="0.031" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateDocumentVersion_documentVersion_documentIdNotSet" time="0.031" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateDocumentVersion_documentVersion_documentNameNotSet" time="0.047" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateDocumentVersion_documentVersion_documentNameIdNotSet" time="0.031" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testAddMemberAnswer_null" time="0.016" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testAddMemberAnswer_MemberAnswer_memberIdNotSet" time="0.094" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testAddMemberAnswer_MemberAnswer_answerDateNotSet" time="0.015" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testAddMemberAnswer_MemberAnswer_competitionDocumentNotSet" time="0.016" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testAddMemberAnswer_MemberAnswer_competitionDocumentIdNotSet" time="0.093" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateMemberAnswer_null" time="0.016" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateMemberAnswer_MemberAnswer_memberAnswerIdNotSet" time="0.031" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateMemberAnswer_MemberAnswer_memberIdNotSet" time="0.094" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateMemberAnswer_MemberAnswer_answerDateNotSet" time="0.016" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateMemberAnswer_MemberAnswer_competitionDocumentNotSet" time="0.016" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateMemberAnswer_MemberAnswer_competitionDocumentIdNotSet" time="0.078" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testAddCompetitionDocument_null" time="0.016" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testAddCompetitionDocument_competitionDocument_competitionIdNotSet" time="0.031" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testAddCompetitionDocument_competitionDocument_roleIdNotSet" time="0.094" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testAddCompetitionDocument_competitionDocument_documentVersionNotSet" time="0.015" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testAddCompetitionDocument_competitionDocument_documentVersionIdNotSet" time="0.016" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateCompetitionDocument_null" time="0.093" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateCompetitionDocument_competitionDocument_competitionDocumentIdNotSet" time="0.016" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateCompetitionDocument_competitionDocument_competitionIdNotSet" time="0.031" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateCompetitionDocument_competitionDocument_roleIdNotSet" time="0.078" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateCompetitionDocument_competitionDocument_documentVersionNotSet" time="0.016" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testUpdateCompetitionDocument_competitionDocument_documentVersionIdNotSet" time="0.031" />
+  <testcase classname="com.topcoder.service.prerequisite.document.ejb.DocumentManagerBeanInvalidParametersUnitTests" name="testAddDocumentName_null" time="0.078" />
+  <testcase classname="com.topcoder.service.prerequisite.document.Demo" name="testAssignmentDocumentManagement" time="0.609" />
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

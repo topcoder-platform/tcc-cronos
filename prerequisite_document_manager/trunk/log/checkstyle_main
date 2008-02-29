@@ -1,0 +1,61 @@
+Starting audit...
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\DocumentManager.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'AuthorizationException'.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\Helper.java:78:50: warning: '<' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\Helper.java:78:51: warning: '<' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\Helper.java:78:51: warning: '?' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\Helper.java:78:67: warning: '>' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\ejb\DocumentManagerBean.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'ConfigurationException'.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\ejb\DocumentManagerBean.java:1: File length is 2,350 lines (max allowed is 2,000).
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\CompetitionDocument.java:106:22: warning: '<' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\CompetitionDocument.java:106:23: warning: '<' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\CompetitionDocument.java:106:35: warning: '>' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\CompetitionDocument.java:106:64: warning: '<' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\CompetitionDocument.java:106:65: warning: '<' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\CompetitionDocument.java:106:77: warning: '>' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\CompetitionDocument.java:106:78: warning: '>' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\CompetitionDocument.java:229:15: warning: '<' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\CompetitionDocument.java:229:16: warning: '<' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\CompetitionDocument.java:229:28: warning: '>' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\CompetitionDocument.java:245:37: warning: '<' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\CompetitionDocument.java:245:38: warning: '<' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\CompetitionDocument.java:245:50: warning: '>' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\Document.java:94:22: warning: '<' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\Document.java:94:23: warning: '<' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\Document.java:94:38: warning: '>' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\Document.java:94:70: warning: '<' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\Document.java:94:71: warning: '<' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\Document.java:94:86: warning: '>' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\Document.java:94:87: warning: '>' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\Document.java:199:15: warning: '<' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\Document.java:199:16: warning: '<' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\Document.java:199:31: warning: '>' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\Document.java:216:40: warning: '<' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\Document.java:216:41: warning: '<' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\Document.java:216:56: warning: '>' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentName.java:82:22: warning: '<' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentName.java:82:23: warning: '<' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentName.java:82:38: warning: '>' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentName.java:82:70: warning: '<' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentName.java:82:71: warning: '<' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentName.java:82:86: warning: '>' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentName.java:82:87: warning: '>' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentName.java:157:15: warning: '<' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentName.java:157:16: warning: '<' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentName.java:157:31: warning: '>' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentName.java:172:40: warning: '<' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentName.java:172:41: warning: '<' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentName.java:172:56: warning: '>' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentVersion.java:129:22: warning: '<' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentVersion.java:129:23: warning: '<' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentVersion.java:129:42: warning: '>' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentVersion.java:129:78: warning: '<' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentVersion.java:129:79: warning: '<' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentVersion.java:129:98: warning: '>' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentVersion.java:129:99: warning: '>' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentVersion.java:316:15: warning: '<' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentVersion.java:316:16: warning: '<' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentVersion.java:316:35: warning: '>' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentVersion.java:329:44: warning: '<' is not preceded with whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentVersion.java:329:45: warning: '<' is not followed by whitespace.
+F:\Download\Prerequisite_Document_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\prerequisite\document\model\DocumentVersion.java:329:64: warning: '>' is not preceded with whitespace.
+Audit done.

@@ -1,0 +1,357 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033\deflangfe2052{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}{\f1\froman\fprq2\fcharset0 Times New Roman;}{\f2\fnil\fprq2\fcharset2 Wingdings;}{\f3\fmodern\fprq1\fcharset0 Courier New;}{\f4\fnil\fprq2\fcharset134 \'cb\'ce\'cc\'e5;}{\f5\froman\fprq2\fcharset2 Symbol;}{\f6\fnil Courier New;}}
+{\colortbl ;\red0\green0\blue0;\red255\green0\blue0;\red127\green0\blue85;\red192\green192\blue192;\red0\green0\blue255;\red0\green100\blue0;\red0\green128\blue128;\red63\green127\blue127;\red127\green0\blue127;\red42\green0\blue255;\red63\green127\blue95;\red0\green0\blue192;\red255\green255\blue255;}
+{\stylesheet{ Normal;}{\s1 heading 1;}{\s2 heading 2;}{\s3 heading 3;}}
+{\*\generator Msftedit 5.41.15.1507;}\viewkind4\uc1\pard\lang2057\ul\b\f0\fs28 Prerequisite Document Manager 1.0 Component Specification\b0\par
+\pard\li720\sa120\lang1033\ulnone\f1\fs20\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\b\f0 1.\tab\fs24 Design\par
+\pard\li720\cf1\b0\fs20 This component provides CRUD operations on document, document name; CRUD operations on member answer; CRUD operations on competition document (document which is specific for concrete competition and role). Component runs as stateless EJB. This component is used Hibernate JPA implementation to work with persistence. It is used by TopCoder Prerequisite Service and can be used for the other services.\par
+\f1\par
+\f0 This component is used as the persistence layer for prerequisite service\f1 .\f0  This design uses DTO and DAO to perform the persistence actions. Five data classes follow POJO, all the methods are getters and setters. They can be managed by JPA\f1 .\f0  DocumentManager interface uses DAO pattern. An EJB3 Stateless Session Bean implements this interface using JPA and Hibernate technologies.\f1\par
+\par
+\f0 Authorization is required as defined in the spec. This design uses programmatic way to do authorization check instead of security annotations to achieve flexible authorization as requirement on authorization is always changing\f1 .\par
+\par
+\f0 This design provides more configuration properties than the requirements to make this component more flexible. The configuration is done by ENC (\cf2 Environment Naming Context\cf1 ) since this component uses EJB3 beans. For detail information, please refer to the configuration parameters part in this document.\f1\par
+\pard\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\cf0\b\f0 1.1\tab Design Patterns \f1\par
+\pard\li720\b0\f0\par
+\b DAO, DTO\b0 . CompetitionDocument, Document, MemberAnswer, DocumentVersion, DocumentName are DTOs while DocumentManager and DocumentManagerBean are DAOs.\par
+\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 1.2\tab Industry Standards \par
+\pard\li720\sa120\lang2057\b0 EJB3 Stateless Session Bean, JPA, Hibernate, Java Bean\f1\par
+\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\lang1033\b\f0 1.3\tab Required Algorithms\f1\par
+\pard\keepn\nowidctlpar\s3\fi-360\li360\sb120\sa60\sl240\slmult0\tx0\b0\i\f0 1.3.1\tab Logging\f1\par
+\pard\li720\cf1\i0\f0 Only DocumentManagerBean class in this component will use the logging mechanism\f1 .\par
+\par
+\f0 All methods in the class should log in the following manner:\par
+\pard\fi-420\li1140\tx1140\lang1049\f2 l\tab\lang1033\f0 Method entrance and exit at INFO level: the log message should contain the name of method and the parameters\f1\par
+\pard\fi-420\li1140\lang1049\f2 l\tab\lang1033\f0 All business logic events (for example authenticating or interacting with backend persistence layer) at INFO level: the log message should contain a description of event and result\f1\par
+\lang1049\f2 l\tab\lang1033\f0 All exceptions and errors at ERROR level. This includes illegal arguments: the log message should include the message of exception and the type of exception\par
+\lang1049\f2 l\tab\lang1033\f0 Any additional logging is at the developer\rquote s discretion.\par
+\pard\li720\f1\par
+\f0 Log format: plus all informations. The developer is free to add other informations into log message.\f1\par
+\pard\par
+\pard\keepn\nowidctlpar\s3\fi-360\li360\sb120\sa60\sl240\slmult0\tx0\cf0\i\f0 1.3.2\tab Authorizing user request\f1\par
+\pard\li720\cf1\i0\f0 In each method in the DocumentManagerBean, the caller should be validated\f1 .\par
+\f0 In the configuration properties, there is a property named \ldblquote allowedRoleNames\rdblquote  which is used to identity what roles can call methods in the DocumentManagerBean.\par
+\f1\par
+\f0 Role of the caller can be retrieved from SessionContext interface since this component run as a EJB stateless session bean. \par
+\f1\par
+\f0 The algorithm is very simple; just iterate all the allowed roles to check if the caller is in one of them:\par
+\par
+\pard\nowidctlpar\f3\fs16         \cf3\b boolean\cf1\b0  isValid = \cf3\b false\cf1\b0 ;\cf0\par
+\cf1         \cf3\b for\cf1\b0  (\highlight4 String\highlight0  roleName : allowedRoleNames) \{\cf0\par
+\cf1             \cf3\b if\cf1\b0  (sessionContext.isCallerInRole(roleName)) \{\cf0\par
+\cf1                 isValid = \cf3\b true\cf1\b0 ;\cf0\par
+\cf1                 \cf3\b break\cf1\b0 ;\cf0\par
+\cf1             \}\cf0\par
+\cf1         \}\cf0\par
+\par
+\cf1         \cf3\b if\cf1\b0  (!\cf5\ul isValid\cf1\ulnone ) \{\cf0\par
+\cf1             \cf3\b throw\cf1\b0  AuthorizationException;\cf0\par
+\pard\li720\cf1  \}\f1\par
+\fs20\par
+\pard\keepn\nowidctlpar\s3\fi-360\li360\sb120\sa60\sl240\slmult0\tx0\cf0\i\f0 1.3.3\tab Database schema\f1\par
+\pard\nowidctlpar\li720\cf6\i0\f3\fs16 -- SQL file for Informix database\cf0\par
+\par
+\cf6 /* This is base table to save documnets. Each document contain id, create date and description. */\cf0\par
+\cf5 CREATE\cf1  \cf5 TABLE\cf1  document (\cf0\par
+\cf1 document_id \cf5 INTEGER\cf1  \cf5 NOT\cf1  \cf5 NULL\cf1 , \cf6 -- auto generated primary key\cf0\par
+\cf1 create_date DATETIME \cf5 YEAR\cf1  \cf5 TO\cf1  FRACTION(3) \cf5 NOT\cf1  \cf5 NULL\cf1 ,\cf0\par
+\cf1 description LVARCHAR(1000),\cf0\par
+\cf5 PRIMARY\cf1  \cf5 KEY\cf1 (document_id)\cf0\par
+\cf1 );\cf0\par
+\par
+\cf6 /* This table used to save document version. Primary key is unique auto generated version_id. Document id and version together is potential primary key. \cf0\par
+\cf6 Tables saves also date of version, id of document name for this version and its content*/\cf0\par
+\cf5 CREATE\cf1  \cf5 TABLE\cf1  document_version (\cf0\par
+\cf1 document_version_id \cf5 INTEGER\cf1  \cf5 NOT\cf1  \cf5 NULL\cf1 , \cf6 -- auto generated primary key\cf0\par
+\cf6 -- combination of document id and version is potential primary key\cf0\par
+\cf1 document_id \cf5 INTEGER\cf1  \cf5 NOT\cf1  \cf5 NULL\cf1 ,\cf0\par
+\cf5 version\cf1  \cf5 INTEGER\cf1  \cf5 NOT\cf1  \cf5 NULL\cf1 ,\cf0\par
+\cf1 document_name_id \cf5 INTEGER\cf1  \cf5 NOT\cf1  \cf5 NULL\cf1 , \cf6 -- foreign key to name\cf0\par
+\cf1 version_date DATETIME \cf5 YEAR\cf1  \cf5 TO\cf1  FRACTION(3) \cf5 NOT\cf1  \cf5 NULL\cf1 ,\cf0\par
+\cf1 content TEXT \cf5 NOT\cf1  \cf5 NULL\cf1 , \cf6 -- this type should be used for content of any size\cf0\par
+\cf5 PRIMARY\cf1  \cf5 KEY\cf1 (document_version_id) \cf5 FOREIGN\cf1  \cf5 KEY\cf1 (document_id), \cf6 -- foreign key to document table\cf0\par
+\cf5 REFERENCES\cf1  document(document_id) \cf5 FOREIGN\cf1  \cf5 KEY\cf1 (document_name_id), \cf6 -- foreign key to document_name table\cf0\par
+\cf5 REFERENCES\cf1  document_name(document_name_id)\cf0\par
+\cf1 );\cf0\par
+\par
+\cf6 /* This table is used to save name of document. Ususally document name will not be changed from version to version, but it such case is possible.\cf0\par
+\cf6 */\cf0\par
+\cf5 CREATE\cf1  \cf5 TABLE\cf1  document_name (\cf0\par
+\cf1 document_name_id \cf5 INTEGER\cf1  \cf5 NOT\cf1  \cf5 NULL\cf1 , \cf6 -- auto generated primary key\cf0\par
+\cf5 name\cf1  \cf5 VARCHAR\cf1 (254) \cf5 NOT\cf1  \cf5 NULL\cf1 , \cf6 -- name of document\cf0\par
+\cf5 PRIMARY\cf1  \cf5 KEY\cf1 (document_name_id)\cf0\par
+\cf1 );\cf0\par
+\par
+\cf6 /*This tables is used to relate document version, competition and role. It defines which version of document should be signed by user in specific role. \cf0\par
+\cf6 */\cf0\par
+\cf5 CREATE\cf1  \cf5 TABLE\cf1  competition_document (\cf0\par
+\cf1 competition_document_id \cf5 INTEGER\cf1  \cf5 NOT\cf1  \cf5 NULL\cf1 , \cf6 -- auto generated primary key\cf0\par
+\cf6 -- combination of 3 next fields is potential primary key\cf0\par
+\cf1 document_version_id \cf5 INTEGER\cf1  \cf5 NOT\cf1  \cf5 NULL\cf1 ,\cf0\par
+\cf1 competition_id \cf5 INTEGER\cf1  \cf5 NOT\cf1  \cf5 NULL\cf1 ,\cf0\par
+\cf1 role_id \cf5 INTEGER\cf1  \cf5 NOT\cf1  \cf5 NULL\cf1 ,\cf0\par
+\cf5 PRIMARY\cf1  \cf5 KEY\cf1 (competition_document_id),\cf0\par
+\cf5 FOREIGN\cf1  \cf5 KEY\cf1 (document_version_id) \cf5 REFERENCES\cf1  document_version(document_version_id) \cf6 -- foreign key to document_version table\cf0\par
+\cf1 );\cf0\par
+\par
+\cf6 /*This table is used to save member answer on specific document in specific competition for specific role. \cf0\par
+\cf6 It saves competition document id, member id e.g. user id, answer which can be true or false e.g.\cf0\par
+\cf6 document is accepted or rejected, date of answer.\cf0\par
+\cf6 */\cf0\par
+\cf5 CREATE\cf1  \cf5 TABLE\cf1  member_answer (\cf0\par
+\cf1 member_answer_id \cf5 INTEGER\cf1  \cf5 NOT\cf1  \cf5 NULL\cf1 ,\cf0\par
+\cf6 --combination of competition_document_id and member_id is potential primary key as user can answer for the same competition document only once\cf0\par
+\cf1 competition_document_id \cf5 INTEGER\cf1  \cf5 NOT\cf1  \cf5 NULL\cf1 ,\cf0\par
+\cf1 member_id \cf5 INTEGER\cf1  \cf5 NOT\cf1  \cf5 NULL\cf1 ,\cf0\par
+\cf1 answer \cf5 BOOLEAN\cf1  \cf5 NOT\cf1  \cf5 NULL\cf1 ,\cf0\par
+\cf1 answer_date DATETIME \cf5 YEAR\cf1  \cf5 TO\cf1  FRACTION(3) \cf5 NOT\cf1  \cf5 NULL\cf1 ,\cf0\par
+\cf5 PRIMARY\cf1  \cf5 KEY\cf1 (member_answer_id),\cf0\par
+\cf5 FOREIGN\cf1  \cf5 KEY\cf1 (competition_document_id) \cf5 REFERENCES\cf1  competition_document(competition_document_id)\cf6 -- foreign key to competition document table\cf0\par
+\pard\li720\cf1 );\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\cf0\b\f0\fs20 1.4\tab Component Class Overview\f1\par
+\pard\b0\fs24\par
+\pard\li720\b\f0\fs20 Package com.topcoder.service.prerequisite.document\par
+\par
+Interface DocumentManager\par
+\b0 This interface provides great number of utility operations with documents like CRUD operations on document; CRUD operations on member answer; CRUD operations on competition document (document which is specific for concrete competition and role). \par
+\par
+This should be used by PreRequisiteService implementation and also it can be used to define more services.\par
+\pard\par
+\pard\li720\b Package com.topcoder.service.prerequisite.document.model\par
+\par
+Class CompetitionDocument\par
+\b0 This is a data class for competition document. It is an entity that can be managed by JPA. This entity is for competition_document table.\par
+\par
+A competition document has the following attributes: \par
+Competition document id, competition id, role id\par
+A competition document also contains the following reference attributes: \par
+Document version, a set of member answers.\par
+\par
+\b Class Document\par
+\b0 This is a data class for a document. It is an entity that can be managed by JPA. This entity is for document table.\par
+\par
+A document has the following attributes: \par
+Document id, create date, description\par
+A document also contains the following\lang2052\f4\'a1\'a1\lang1033\f0 reference attributes: \par
+A set of document versions\par
+\b\par
+Class DocumentName\par
+\b0 This is a data class for document name. It is an entity that can be managed by JPA. This entity is for document_name table.\par
+\par
+A document name has the following attributes: \par
+Document name id, name\par
+A document name also contains the following reference attributes: \par
+A set of document versions\par
+\par
+\b Class DocumentVersion\par
+\b0 This is a data class for document version. It represents concrete document version.\par
+It is an entity that can be managed by JPA. This entity is for document_version table.\par
+\par
+A document version has the following attributes: \par
+Document version id, document version, date of version, content\par
+A document version also contains the following reference attributes: \par
+Document, document name, a set of competition documents\par
+\par
+\b Class MemberAnswer\par
+\b0 It is an entity that can be managed by JPA. This entity is for member_answer table.\par
+\par
+A member answer has the following attributes: \par
+Member answer id, member id, accept or reject answer, date of answer\par
+A member answer also contains the following reference attributes: \par
+Competition document\par
+\pard\par
+\pard\li720\b Package com.topcoder.service.prerequisite.document.ejb\par
+\pard\b0\par
+\pard\li720\b Class DocumentManagerBean\par
+\b0 This is an EJB3 stateless session which implements the DocumentManager interface.\par
+This implementation utilizes JPA to interact with the persistence layer.\par
+\par
+In this implementation, the following properties are configurable:\par
+loggerName, persistenceUnitName, allowedRoleNames.\par
+\par
+\b Interface DocumentManagerLocal\par
+\b0 This is the local interface for DocumentManagerBean.\par
+When the bean is deployed, the local interface can be looked up via "DocumentManagerBean/local".\par
+\par
+\b Interface DocumentManagerRemote\par
+\b0 This is the remote interface for DocumentManagerBean.\par
+When the bean is deployed, the remote interface can be looked up via "DocumentManagerBean/remote".\par
+\pard\par
+\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 1.5\tab Component Exception Definitions\par
+\pard\li720\b0 Component uses three standard exceptions: IllegalArgumentException, IllegalStateException.\par
+\par
+IllegalArgumentException is thrown for invalid arguments, for example, argument is null, string argument is empty, etc.\par
+\par
+IllegalStateException is thrown when session context is not injected in EJB3 stateless session bean.\par
+.\par
+This component defines following custom exceptions:\par
+\par
+\b Class DocumentManagerException\par
+\pard\li720\qj\b0 This exception extends the BaseCriticalException. It is also the parent exception class for all the other custom exceptions in this design.\par
+\pard\par
+\pard\li720\b Class ConfigurationException\par
+\b0 This exception is thrown if the configuration is bad: missing required properties or properties in wrong format.\par
+\par
+\b Class AuthorizationException\par
+\b0 This exception is thrown if the authorization check for a user request fails.\par
+\pard\par
+\pard\li720\b Class DocumentPersistenceException\par
+\pard\li720\qj\b0 This exception is thrown if some errors occur in the persistence layer.\par
+\pard\par
+\pard\li720\b Class CompetitionDocumentAnsweredException\par
+\pard\li720\qj\b0 This exception is thrown if the competition document has been answered by the user while the user wants to answer the competition document again.\par
+\pard\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 1.6\tab Thread Safety\par
+\pard\li720\b0 This component uses EJB3 stateless session bean and JPA implementation so the environment of this component is an EJB container. EJB container routes each request to a different instance of stateless session bean class which means stateless session bean is not required to be threading safety.\par
+\par
+The five entity classes are not thread safety as they follow POJO. They are all mutable.\par
+\par
+There is one stateless session bean in this design which is DocumentManagerBean. The init() can change the state of this EJB bean. But as this class is managed by EJB container, the init() will only be called once after the constructor of this bean. For this aspect, this bean can be counted as thread safety. The persistence layer is thread safe too because this bean uses container-managed transaction. Transaction attributes are REQUIRED for all methods (that has to be interacted with the persistence layer) in this bean class.\par
+\f1\fs24  \f0\fs20\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\b 2.\tab\fs24 Environment Requirements\tab\tab\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\fs20 2.1\tab Environment\par
+\pard\keepn\nowidctlpar\s2\fi720\sb120\sa60\sl240\slmult0\lang2057\b0 Development language: Java 5\f1 .0\par
+\f0 Compile target: Java 5\f1 .0\f0  and Java 6\f1 .0\par
+\pard\keepn\nowidctlpar\s3\fi700\sb120\sa60\sl240\slmult0\f0 QA Environment\f1\par
+\pard\nowidctlpar\fi-360\li1080\sl240\slmult0\tx1080\lang1033\f5\'b7\tab\f0 RedHat Linux 9\par
+\pard\nowidctlpar\fi-360\li1080\sl240\slmult0\f5\'b7\tab\f0 Informix 10\par
+\f5\'b7\tab\f0 JBoss 4.2\par
+\pard\lang2057\f1\fs24\par
+\cf1\f0\fs20\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\cf0\lang1033\b 2.2\tab TopCoder Software Components\f1\par
+\pard\sa120\b0\bullet\tab\f0 Logging Wrapper 2.0 \endash  It is used to perform logging by DocumentManagerBean\f1\par
+\bullet\tab\f0 Base Exception 2.0 \endash  It is used to support custom exceptions\f1\par
+\pard\li720\sa120\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\f0 2.3\tab Third Party Components\par
+\pard\sa120\b0\f1\bullet\tab\f0 EJB 3.0 \endash  The EJB3 Stateless Session Bean is used in this component\f1\par
+\pard\fi-1700\li1700\sa120\bullet\f0             JPA 1.0 \endash  This component follows java persistence interface when interacting with backend persistence layer\f1\par
+\pard\fi-3200\li3200\sa120\bullet\f0             Hibernate 3.2 and higher \endash  Hibernate 3.2 implements JPA 1.0 standard and is used as the recommend JPA provider.\f1\par
+\pard\li720\f0\fs24\par
+\f1 NOTE: The default location for 3\up3 rd\up0  party packages is ../lib relative to this component installation.  Setting the ext_libdir property in topcoder_global.properties will overwrite this default location.\f0\fs20\par
+\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\b 3.\tab\fs24 Installation and Configuration\par
+\pard\li720\b0\fs20\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 3.1\tab Package Name\par
+\pard\fi720\b0 com.topcoder.service.prerequisite.document\par
+com.topcoder.service.prerequisite.document.model\par
+com.topcoder.service.prerequisite.document.ejb\par
+\par
+\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 3.2\tab Configuration Parameters\f1\line\f0              \f1\par
+\pard\li720\qj\cf1\b0 The following configuration properties are supported:\par
+\par
+\cf2 DocumentManagerBean\cf1 :\par
+\trowd\trgaph108\trleft612\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clcfpat1\clcbpat13\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx5228\clcfpat1\clcbpat13\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9797\pard\intbl\qj Property Name\cell Property Description\cell\row\trowd\trgaph108\trleft612\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clcfpat1\clcbpat13\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx5228\clcfpat1\clcbpat13\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9797\pard\intbl\qj loggerName\cell This property describes the name of the logger. A valid value is a String, it is optional, when it is absent, then no logging will be performed.\cell\row\trowd\trgaph108\trleft612\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clcfpat1\clcbpat13\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx5228\clcfpat1\clcbpat13\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9797\pard\intbl\qj persistenceUnitName\par
+\cell This property describes the name of the persistence unit. It is used to retrieve EntityManager from SessionContext. A valid value is a String, it is required.\cell\row\trowd\trgaph108\trleft612\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clcfpat1\clcbpat13\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx5228\clcfpat1\clcbpat13\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9797\pard\intbl\qj allowedRoleNames\par
+\cell This property describes role names that are allowed to access methods in this bean. A valid value is a non-empty String, it is required. Each role name is concatenated with a comma.\cell\row\pard\fi400\li720\qj\par
+\par
+Here is a sample ejb-jar.xml file:\par
+\pard\nowidctlpar\li720\cf7\f3\fs16 <?\cf8 xml \cf9 version\cf1 =\cf10 "1.0" \cf9 encoding\cf1 =\cf10 "UTF-8"\cf7 ?>\cf0\par
+\cf7 <\cf8 ejb-jar\cf7 >\cf0\par
+\cf1   \cf7 <\cf8 enterprise-beans\cf7 >\cf0\par
+\cf1     \cf7 <\cf8 session\cf7 >\cf0\par
+\cf1       \cf7 <\cf8 ejb-name\cf7 >\cf1 DocumentManagerBean\cf7 </\cf8 ejb-name\cf7 >\cf0\par
+\cf1       \cf7 <\cf8 ejb-class\cf7 >\cf0\par
+\cf1         com.topcoder.service.prerequisite.document.ejb.DocumentManagerBean\cf0\par
+\cf1       \cf7 </\cf8 ejb-class\cf7 >\cf0\par
+\cf1       \cf7 <\cf8 env-entry\cf7 >\cf0\par
+\cf1         \cf7 <\cf8 env-entry-name\cf7 >\cf1 loggerName\cf7 </\cf8 env-entry-name\cf7 >\cf0\par
+\cf1         \cf7 <\cf8 env-entry-type\cf7 >\cf1 java.lang.String\cf7 </\cf8 env-entry-type\cf7 >\cf0\par
+\cf1         \cf7 <\cf8 env-entry-value\cf7 >\cf1 document_manager\cf7 </\cf8 env-entry-value\cf7 >\cf0\par
+\cf1       \cf7 </\cf8 env-entry\cf7 >\cf0\par
+\cf1       \cf7 <\cf8 env-entry\cf7 >\cf0\par
+\cf1         \cf7 <\cf8 env-entry-name\cf7 >\cf1 persistenceUnitName\cf7 </\cf8 env-entry-name\cf7 >\cf0\par
+\cf1         \cf7 <\cf8 env-entry-type\cf7 >\cf1 java.lang.String\cf7 </\cf8 env-entry-type\cf7 >\cf0\par
+\cf1         \cf7 <\cf8 env-entry-value\cf7 >\cf1 document_manager\cf7  </\cf8 env-entry-value\cf7 >\cf0\par
+\cf1       \cf7 </\cf8 env-entry\cf7 >\par
+\cf1       \cf7 <\cf8 env-entry\cf7 >\cf0\par
+\cf1         \cf7 <\cf8 env-entry-name\cf7 >\cf1 allowedRoleNames\cf7 </\cf8 env-entry-name\cf7 >\cf0\par
+\cf1         \cf7 <\cf8 env-entry-type\cf7 >\cf1 java.lang.String\cf7 </\cf8 env-entry-type\cf7 >\cf0\par
+\cf1         \cf7 <\cf8 env-entry-value\cf7 >\cf1 admin,manager,Administrator\cf7 </\cf8 env-entry-value\cf7 >\cf0\par
+\cf1       \cf7 </\cf8 env-entry\cf7 >\cf0\par
+\cf1     \cf7 </\cf8 session\cf7 >\cf0\par
+\cf1   \cf7 </\cf8 enterprise-beans\cf7 >\cf0\par
+\pard\li720\cf7 </\cf8 ejb-jar\cf7 >\par
+\pard\cf0\par
+       \par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\f0\fs20 3.3\tab Dependencies Configuration\par
+\pard\fi700\b0 Refer to Logging Wrapper 2.0 component for its configuration.\par
+\par
+Sample configuration files for JPA are provided under /docs directory.\par
+\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\b 4.\tab\fs24 Usage Notes\par
+\pard\b0\f1\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\f0\fs20 4.1\tab Required steps to test the component\par
+\pard\keepn\nowidctlpar\s1\li720\sb120\sa60\sl240\slmult0\b0 Extract the component distribution.\par
+Follow Dependencies Configuration.\par
+Execute \lquote ant test\rquote  within the directory that the distribution was extracted to.\b\fs24\par
+\pard\li720\b0\f1\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\f0\fs20 4.2\tab Required steps to use the component\par
+\pard\li720\sa120\b0 This component should be packaged and deployed to an application server. Sample configuration files are provided under /docs directory.\f1\par
+\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\f0 4.3\tab Demo\par
+\pard\li720\b0\par
+This demonstration demonstrates the scenario how with use DocumentManager to finish assignment document management. Sample configuration is provided under /docs directory.\par
+\par
+\pard\nowidctlpar\fi800\cf11\f3\fs16 // look up the DocumentManager via JNDI\cf0\par
+\pard\nowidctlpar\cf1         InitialContext ctx = \cf3\b new\cf1\b0  InitialContext();\cf0\par
+\cf1         DocumentManager docMgr = (DocumentManager) ctx.lookup(\cf10 "DocumentManagerBean/remote"\cf1 );\cf0\par
+\par
+\pard\sa120\cf1\f6\fs20         \cf11 // add assign document\cf0\par
+\cf1         Document doc = \cf3\b new\cf1\b0  Document();\cf0\par
+\cf1         doc.setCreateDate(\cf3\b new\cf1\b0  Date());\cf0\par
+\cf1         doc.setDescription(\cf10 "assignment document for user confirmation!"\cf1 );\cf0\par
+\cf1         doc = \cf12 documentManager\cf1 .addDocument(doc);\cf0\par
+\par
+\cf1         \cf11 // add assign document name\cf0\par
+\cf1         DocumentName docName = \cf3\b new\cf1\b0  DocumentName();\cf0\par
+\cf1         docName.setName(\cf10 "Assignment Document"\cf1 );\cf0\par
+\cf1         docName = \cf12 documentManager\cf1 .addDocumentName(docName);\cf0\par
+\par
+\cf1         \cf11 // add the first assignment document version\cf0\par
+\cf1         DocumentVersion docVersion = \cf3\b new\cf1\b0  DocumentVersion();\cf0\par
+\cf1         docVersion.setDocumentVersion(1);\cf0\par
+\cf1         docVersion.setVersionDate(\cf3\b new\cf1\b0  Date());\cf0\par
+\cf1         docVersion.setContent(\cf10 "assignment document"\cf1 );\cf0\par
+\cf1         docVersion.setDocument(doc);\cf0\par
+\cf1         doc.getDocumentVersions().add(docVersion);\cf0\par
+\cf1         docVersion.setDocumentName(docName);\cf0\par
+\cf1         docName.getDocumentVersions().add(docVersion);\cf0\par
+\cf1         docVersion = \cf12 documentManager\cf1 .addDocumentVersion(docVersion);\cf0\par
+\par
+\cf1         \cf11 // add a competition document that requires assignment document\cf0\par
+\cf1         CompetitionDocument competitionDoc = \cf3\b new\cf1\b0  CompetitionDocument();\cf0\par
+\cf1         competitionDoc.setRoleId(\cf3\b new\cf1\b0  Long(1));\cf0\par
+\cf1         competitionDoc.setCompetitionId(\cf3\b new\cf1\b0  Long(1));\cf0\par
+\cf1         competitionDoc.setDocumentVersion(docVersion);\cf0\par
+\cf1         docVersion.getCompetitionDocuments().add(competitionDoc);\cf0\par
+\cf1         competitionDoc = \cf12 documentManager\cf1 .addCompetitionDocument(competitionDoc);\cf0\par
+\par
+\cf1         \cf11 // do some updates to assignment document version as requirement changes\cf0\par
+\cf1         DocumentVersion newVersion = \cf12 documentManager\cf1 .getDocumentVersion(doc.getDocumentId(), \cf3\b null\cf1\b0 );\cf0\par
+\cf1         newVersion.setContent(\cf10 "updated assignment document"\cf1 );\cf0\par
+\cf1         \cf12 documentManager\cf1 .updateDocumentVersion(newVersion);\cf0\par
+\par
+\cf1         \cf11 // record user answer to the competition document\cf0\par
+\cf1         MemberAnswer memberAnswer = \cf3\b new\cf1\b0  MemberAnswer();\cf0\par
+\cf1         memberAnswer.setAnswer(\cf3\b true\cf1\b0 );\cf0\par
+\cf1         memberAnswer.setCompetitionDocument(competitionDoc);\cf0\par
+\cf1         memberAnswer.setMemberId(\cf3\b new\cf1\b0  Long(1));\cf0\par
+\cf1         memberAnswer.setAnswerDate(\cf3\b new\cf1\b0  Date());\cf0\par
+\cf1         memberAnswer = \cf12 documentManager\cf1 .addMemberAnswer(memberAnswer);\cf0\par
+\par
+\cf1         \cf11 // remove the user answer\cf0\par
+\cf1         \cf12 documentManager\cf1 .deleteMemberAnswer(memberAnswer.getMemberAnswerId());\f3\fs16\par
+\cf0\f1\fs20\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\b\f0 5.\tab\fs24 Future Enhancements\par
+\pard\nowidctlpar\fi-360\li1080\sl240\slmult0\tx720\b0\f5\'b7\tab\f1 Add more methods to DocumentManager interface.\f0\fs20\par
+}
+ 
