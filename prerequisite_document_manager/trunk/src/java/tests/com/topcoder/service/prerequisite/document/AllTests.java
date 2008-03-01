@@ -3,6 +3,10 @@
  */
 package com.topcoder.service.prerequisite.document;
 
+import com.topcoder.service.prerequisite.document.accuracytests.AccuracyTests;
+import com.topcoder.service.prerequisite.document.failuretests.FailureTests;
+import com.topcoder.service.prerequisite.document.stresstests.StressTests;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -12,7 +16,7 @@ import junit.framework.TestSuite;
  * This test case aggregates all test cases.
  * </p>
  *
- * @author TCSDEVELOPER
+ * @author 80x86
  * @version 1.0
  */
 public class AllTests extends TestCase {
@@ -29,6 +33,9 @@ public class AllTests extends TestCase {
 
         // unit tests
         suite.addTest(UnitTests.suite());
+        suite.addTest(AccuracyTests.suite());
+        suite.addTest(FailureTests.suite());
+        suite.addTest(StressTests.suite());
 
         return suite;
     }
