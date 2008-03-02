@@ -1,0 +1,14 @@
+<project name="Override Macrodef Standard Behaviour Import" basedir=".">
+    <!-- macrodef override definition in order to change the standard behaviour from
+         build.xml/build_dist.xml
+     -->
+    <macrodef name="move_to_libdir">
+        <sequential>
+            <mkdir dir="${cronos_libdir}/${component_path}"/>
+            <mkdir dir="${cronos_libdir}/${component_path}/dist"/>
+
+            <copy file="${component.jar}" todir="${cronos_libdir}/${component_path}"/>
+            <copy file="${component.dist.jar}" todir="${cronos_libdir}/${component_path}/dist"/>
+        </sequential>
+    </macrodef>
+</project>

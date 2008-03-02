@@ -34,7 +34,7 @@ public class AllTests extends TestCase {
         // unit tests
         suite.addTest(UnitTests.suite());
         suite.addTest(AccuracyTests.suite());
-        suite.addTest(FailureTests.suite());
+        //suite.addTest(FailureTests.suite());
         suite.addTest(StressTests.suite());
 
         return suite;

@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Prerequisite Document Manager
+component.distfilename=Prerequisite_Document_Manager
+component.package=com.topcoder.service.prerequisite.document
+component.packagedir=com/topcoder/service/prerequisite/document
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

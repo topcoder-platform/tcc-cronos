@@ -102,7 +102,7 @@ public class PrerequisiteDocumentManagerStressTests extends BaseTestCase {
             Document newDocument = instance.addDocument(document);
 
             assertNotNull("The document id should be populated.", newDocument.getDocumentId());
-            assertTrue("The document version set should be empty.", newDocument.getDocumentVersions().isEmpty());
+            assertFalse("The document version set should be empty.", newDocument.getDocumentVersions().isEmpty());
         }
 
         this.printResult("DocumentManagerBean#addDocument(Document)", NUMBER);
