@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+	version="1.0">
+
+	<persistence-unit name="document_manager">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+	  <class>com.topcoder.service.prerequisite.document.DocumentVersion</class>
+	  <class>com.topcoder.service.prerequisite.document.Document</class>
+	  <class>com.topcoder.service.prerequisite.document.MemberAnswer</class>
+	  <class>com.topcoder.service.prerequisite.document.CompetitionDocument</class>
+	  <class>com.topcoder.service.prerequisite.document.DocumentName</class>
+		<properties>
+	    <property name="hibernate.connection.driver_class"
+	      value="com.informix.jdbc.IfxDriver" />
+	    <property name="hibernate.connection.url"
+	      value="jdbc:informix-sqli://localhost:1526/document:INFORMIXSERVER=topcoder" />
+	    <property name="hibernate.connection.username" value="topcoder" />
+	    <property name="hibernate.connection.password" value="topcoder" />
+		</properties>
+	</persistence-unit>
+</persistence>
