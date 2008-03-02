@@ -12,7 +12,7 @@
 <datasources>
   <local-tx-datasource>
     <jndi-name>InformixDS</jndi-name>
-    <connection-url>jdbc:informix-sqli://192.168.1.2:1526/document:informixserver=topcoder</connection-url>
+    <connection-url>jdbc:informix-sqli://192.168.1.88:1526/document:informixserver=topcoder</connection-url>
     <driver-class>com.informix.jdbc.IfxDriver</driver-class>
     <user-name>informix</user-name>
     <password>topcoder</password>
