@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence>
+  <persistence-unit name="HibernateProjectPersistence" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <non-jta-data-source>java:InformixDS</non-jta-data-source>
+    <properties>
+    <property name="hibernate.ejb.cfgfile" value = "META-INF/hibernate.cfg.xml"/>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.InformixDialect" />
+      <!--
+      <property name="hibernate.transaction.factory_class" value="org.hibernate.ejb.transaction.JoinableCMTTransactionFactory" />
+      -->
+      <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.JBossTransactionManagerLookup" />
+      <!--
+      <property name="jboss.entity.manager.jndi.name" value="document_manager" /> -->
+    </properties>
+  </persistence-unit>
+</persistence>

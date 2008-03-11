@@ -1,0 +1,2 @@
+1. ProjectServiceBeanUnitTests.java should be run by deploying an ear. The only submission's ear file can be used for the testing. It's a pretty good one.
+2. JPAProjectPersistenceUnitTests.java have to be run using MockEJB and Hibernate's EntityManager. The required config files are in the META-INF folder.
