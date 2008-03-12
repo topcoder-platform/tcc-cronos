@@ -1,0 +1,50 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory name="contestAndSubmission">
+		<!-- Database connection settings -->
+		<property name="connection.driver_class">
+			com.informix.jdbc.IfxDriver
+		</property>
+		<property name="connection.url">
+			jdbc:informix-sqli://[hostname]:1526/test:INFORMIXSERVER=tcs
+		</property>
+		<property name="connection.username">informix</property>
+		<property name="connection.password">123456</property>
+
+		<!-- SQL dialect -->
+		<property name="dialect">
+			org.hibernate.dialect.InformixDialect
+		</property>
+		<property name="use_sql_comments">true</property>
+		<property name="show_sql">true</property>
+
+		<!--  Entity Mappings -->
+		<mapping resource="mappings/ContestStatus.hbm.xml" />
+		<mapping resource="mappings/StudioFileType.hbm.xml" />
+		<mapping resource="mappings/MimeType.hbm.xml" />
+		<mapping resource="mappings/FilePath.hbm.xml" />
+		<mapping resource="mappings/DocumentType.hbm.xml" />
+		<mapping resource="mappings/PrizeType.hbm.xml" />
+		<mapping resource="mappings/PaymentStatus.hbm.xml" />
+		<mapping resource="mappings/SubmissionStatus.hbm.xml" />
+		<mapping resource="mappings/SubmissionType.hbm.xml" />
+		<mapping resource="mappings/ContestChannel.hbm.xml" />
+		<mapping resource="mappings/ContestProperty.hbm.xml" />
+		<mapping resource="mappings/ReviewStatus.hbm.xml" />
+		<mapping resource="mappings/Contest.hbm.xml" />
+		<mapping resource="mappings/ContestConfig.hbm.xml" />
+		<mapping resource="mappings/ContestType.hbm.xml" />
+		<mapping resource="mappings/Document.hbm.xml" />
+		<mapping resource="mappings/ContestResult.hbm.xml" />
+		<mapping resource="mappings/Submission.hbm.xml" />
+		<mapping resource="mappings/Prize.hbm.xml" />
+		<mapping resource="mappings/SubmissionReview.hbm.xml" />
+		<mapping resource="mappings/SubmissionPayment.hbm.xml" />
+		<mapping resource="mappings/ContestRegistration.hbm.xml" />
+		
+		
+	</session-factory>
+</hibernate-configuration>
