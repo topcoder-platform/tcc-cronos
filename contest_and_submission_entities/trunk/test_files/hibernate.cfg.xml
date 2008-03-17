@@ -9,10 +9,10 @@
 			com.informix.jdbc.IfxDriver
 		</property>
 		<property name="connection.url">
-			jdbc:informix-sqli://[hostname]:1526/test:INFORMIXSERVER=tcs
+			jdbc:informix-sqli://192.168.1.18:1526/tcs:informixserver=topcoder
 		</property>
 		<property name="connection.username">informix</property>
-		<property name="connection.password">123456</property>
+		<property name="connection.password">topcoder</property>
 
 		<!-- SQL dialect -->
 		<property name="dialect">
