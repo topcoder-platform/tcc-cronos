@@ -13,7 +13,7 @@
             <property name="hibernate.connection.username" value="informix"/>
             <property name="hibernate.connection.password" value="informix"/>
             <property name="hibernate.connection.url"
-                      value="jdbc:informix-sqli://192.168.1.88:1526/test_auto:INFORMIXSERVER=tcs"/>
+                      value="jdbc:informix-sqli://192.168.1.188:1526/test:INFORMIXSERVER=tcstest"/>
         </properties>
 
     </persistence-unit>

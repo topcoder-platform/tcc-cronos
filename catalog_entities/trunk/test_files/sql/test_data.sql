@@ -36,3 +36,6 @@ insert into user_client (client_id, user_id) values (1, 3);
 insert into user_client (client_id, user_id) values (2, 1);
 insert into user_client (client_id, user_id) values (3, 2);
 
+insert into doc_types (document_type_id, description, status_id) values (300, 'type1', 1111);
+insert into doc_types (document_type_id, description, status_id) values (301, 'type2', 1111);
+

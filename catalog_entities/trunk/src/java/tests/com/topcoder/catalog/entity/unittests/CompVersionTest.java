@@ -1,8 +1,9 @@
 /*
- * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007-2008 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.catalog.entity.unittests;
 
+import com.topcoder.catalog.entity.CompDocumentation;
 import com.topcoder.catalog.entity.CompForum;
 import com.topcoder.catalog.entity.CompLink;
 import com.topcoder.catalog.entity.CompVersion;
@@ -21,8 +22,8 @@ import java.util.Map;
 /**
  * <p>Unit test case for {@link CompVersion}.</p>
  *
- * @author Retunsky
- * @version 1.0
+ * @author Retunsky, KingStone
+ * @version 1.1
  */
 public class CompVersionTest extends TestCase {
     /**
@@ -391,5 +392,42 @@ public class CompVersionTest extends TestCase {
         }
     }
 
+    /**
+     * <p>Tests <code>getDocumentation()</code> and
+     * <code>setDocumentation()</code> methods for accuracy.</p>
+     * @since 1.1
+     */
+    public void testGetSetDocumentation() {
+        assertNull("Incorrect default documentation value", compVersion.getDocumentation());
+        List<CompDocumentation> value = new ArrayList<CompDocumentation>();
+        value.add(new CompDocumentation());
+        // set a Documentation
+        compVersion.setDocumentation(value);
+        assertEquals("Incorrect documentation value after setting a new one",
+            value, compVersion.getDocumentation());
+        // empty list is valid
+        value.clear();
+        try {
+            compVersion.setDocumentation(value);
+            // ok
+        } catch (IllegalArgumentException e) {
+            fail("setDocumentation should accept empty list.");
+        }
+    }
 
+    /**
+     * <p>Tests <code>setDocumentation(null)</code>.</p>
+     * @since 1.1
+     */
+    public void testDocumentationAllowsNull() {
+        // set a Documentation
+        // set null
+        try {
+            compVersion.setDocumentation(null);
+            assertNull("Field 'documentation' should contain 'null' value",
+                compVersion.getDocumentation());
+        } catch (IllegalArgumentException e) {
+            fail("Field 'documentation' should allow null values");
+        }
+    }
 }

@@ -318,4 +318,35 @@ alter table comp_link add constraint foreign key
     references comp_versions
     (comp_vers_id) 
     constraint comp_link_vers_fk;
+    
+--------------- doc_types ------------------
+create table doc_types (
+document_type_id DECIMAL(12,0) not null,
+description VARCHAR(254) not null,
+status_id DECIMAL(12,0) not null
+);
+alter table doc_types add constraint primary key
+(document_type_id)
+constraint pk_doc_types;
+--------------- comp_documentation ------------------
+create table comp_documentation (
+document_id DECIMAL(12,0) not null,
+comp_vers_id DECIMAL(12,0),
+document_type_id DECIMAL(12,0),
+document_name VARCHAR(254) not null,
+url VARCHAR(254) not null
+);
+alter table comp_documentation add constraint primary key
+(document_id)
+constraint pk_comp_documentat;
+alter table comp_documentation add constraint foreign key
+(comp_vers_id)
+references comp_versions
+(comp_vers_id)
+constraint fk_comp_doc1;
+alter table comp_documentation add constraint foreign key
+(document_type_id)
+references doc_types
+(document_type_id)
+constraint fk_comp_doc_ref2;
 

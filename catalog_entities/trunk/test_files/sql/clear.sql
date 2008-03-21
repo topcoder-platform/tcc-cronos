@@ -1,3 +1,4 @@
+delete from comp_documentation;
 delete from comp_jive_category_xref;
 delete from comp_link;
 delete from comp_user;
@@ -14,5 +15,5 @@ delete from client;
 delete from user_client;
 delete from comp_client;
 delete from phase;
+delete from doc_types;
 commit;
-

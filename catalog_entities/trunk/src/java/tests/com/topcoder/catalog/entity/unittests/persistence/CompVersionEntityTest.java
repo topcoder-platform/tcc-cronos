@@ -1,14 +1,17 @@
 /*
- * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007-2008 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.catalog.entity.unittests.persistence;
 
-import com.topcoder.catalog.entity.CompVersion;
-import com.topcoder.catalog.entity.TestHelper;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import java.util.Set;
+import javax.persistence.PersistenceException;
+
+import com.topcoder.catalog.entity.CompDocumentation;
+import com.topcoder.catalog.entity.CompVersion;
+import com.topcoder.catalog.entity.TestHelper;
 
 /**
  * <p>This test checks all attributes of CompVersion entity correspond database's columns.</p>
@@ -19,8 +22,8 @@ import java.util.Set;
  * <p>If the list is empty, then the test fails. It guarantees that each entity attribute mapped to
  * a separate database column (no values in all entities tests are duplicated).</p>
  *
- * @author Retunsky
- * @version 1.0
+ * @author Retunsky, KingStone
+ * @version 1.1
  */
 public class CompVersionEntityTest extends BaseCompVersionEntityTest {
 
@@ -194,5 +197,38 @@ public class CompVersionEntityTest extends BaseCompVersionEntityTest {
         assertFalse(
             "Not found entities by the following query: select e from CompVersion e where versionText='"
                 + VERSIONTEXT + "'", items.isEmpty());
+    }
+
+    /**
+     * <p>Test <code>documentation</code> should be retrieved correctly.</p>
+     * @since 1.1
+     */
+    public void testDocumentation() {
+        // create documentation in database
+        CompDocumentation compDocumentation = BaseCompDocumentationEntityTest.createCompDocumentation();
+        //  persistence documentation
+        final EntityTransaction entityTransaction = TestHelper.getEntityTransaction();
+        try {
+            entityTransaction.begin();
+            BaseCompDocumentationEntityTest.persistCompDocumentationForeignObjects(compDocumentation, false);
+            persistEntity(compDocumentation);
+            entityTransaction.commit();
+        } catch (PersistenceException e) {
+            if (entityTransaction.isActive()) {
+                entityTransaction.rollback();
+            }
+            throw e;
+        } finally {
+            TestHelper.getEntityManager().clear();
+        }
+
+        // verify that documentation should be retrieved correctly
+        final Set<CompVersion> items = getEntities("select e from CompVersion e where id=?",
+                compDocumentation.getCompVersion().getId());
+        assertEquals("documentation should be retrieved correctly.", 1, items.iterator().next()
+                .getDocumentation().size());
+        CompDocumentation document = items.iterator().next().getDocumentation().get(0);
+        assertEquals("document stored is invalid.", BaseCompDocumentationEntityTest.DOCUMENT_NAME,
+                document.getDocumentName());
     }
 }

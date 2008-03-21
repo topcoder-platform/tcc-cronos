@@ -112,6 +112,10 @@
             <key column="comp_vers_id" not-null="true"/>
             <many-to-many column="technology_type_id" class="Technology"/>
         </idbag>
+    <bag name="documentation" inverse="false" cascade="all-delete-orphan" lazy="false">
+      <key column="comp_vers_id" />
+      <one-to-many class="CompDocumentation" />
+    </bag>
     </class>
     <class name="CompVersionDates" table="comp_version_dates">
         <id name="id" column="comp_version_dates_id">
@@ -179,6 +183,24 @@
 
         <property name="link" column="link"/>
         <many-to-one name="compVersion" column="comp_vers_id" unique="true" not-null="true"/>
+    </class>
+    <!-- add in version 1.1 -->
+    <class name="CompDocumentation" table="comp_documentation">
+        <id name="id" column="document_id">
+            <generator class="com.topcoder.catalog.entity.IdGenerator">
+                <param name="sequence_name">COMPDOCUMENT_SEQ</param>
+            </generator>
+        </id>
+        <many-to-one name="compVersion" class="CompVersion" column="comp_vers_id"/>
+        <property name="documentTypeId" column="document_type_id"/>
+        <property name="documentType">
+            <formula>
+                (SELECT A.description FROM doc_types A
+                    WHERE A.document_type_id = document_type_id)
+            </formula>
+        </property>
+        <property name="documentName" column="document_name"/>
+        <property name="url" column="url"/>
     </class>
 
     <sql-query name="getUsersByCompClient">

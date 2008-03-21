@@ -3,6 +3,17 @@
  */
 package com.topcoder.catalog.entity.unittests.persistence;
 
+import static com.topcoder.catalog.entity.TestHelper.getEntityManager;
+import static com.topcoder.catalog.entity.TestHelper.getEntityTransaction;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceException;
+
 import com.topcoder.catalog.entity.Category;
 import com.topcoder.catalog.entity.CompForum;
 import com.topcoder.catalog.entity.CompLink;
@@ -11,15 +22,6 @@ import com.topcoder.catalog.entity.CompVersionDates;
 import com.topcoder.catalog.entity.Component;
 import com.topcoder.catalog.entity.Phase;
 import com.topcoder.catalog.entity.Technology;
-import static com.topcoder.catalog.entity.TestHelper.getEntityManager;
-import static com.topcoder.catalog.entity.TestHelper.getEntityTransaction;
-
-import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * <p>This is a base class for CompVersionEntity JPA tests.</p>

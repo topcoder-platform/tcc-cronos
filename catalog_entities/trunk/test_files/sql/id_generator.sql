@@ -16,3 +16,4 @@ INSERT INTO id_sequences (name, next_block_start, block_size) VALUES ('CATEGORY_
 INSERT INTO id_sequences (name, next_block_start, block_size) VALUES ('COMPFORUM_SEQ', 1, 20);
 INSERT INTO id_sequences (name, next_block_start, block_size) VALUES ('COMPTECH_SEQ', 1, 20);
 INSERT INTO id_sequences (name, next_block_start, block_size) VALUES ('COMPCATEGORY_SEQ', 1, 20);
+INSERT INTO id_sequences (name, next_block_start, block_size) VALUES ('COMPDOCUMENT_SEQ', 1, 20);

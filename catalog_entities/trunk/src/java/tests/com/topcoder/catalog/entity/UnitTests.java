@@ -1,10 +1,11 @@
 /*
- * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007-2008 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.catalog.entity;
 
 import com.topcoder.catalog.entity.unittests.CategoryTest;
 import com.topcoder.catalog.entity.unittests.CompClientTest;
+import com.topcoder.catalog.entity.unittests.CompDocumentationTest;
 import com.topcoder.catalog.entity.unittests.CompForumTest;
 import com.topcoder.catalog.entity.unittests.CompLinkTest;
 import com.topcoder.catalog.entity.unittests.CompUserTest;
@@ -19,6 +20,7 @@ import com.topcoder.catalog.entity.unittests.StatusUserTypeTest;
 import com.topcoder.catalog.entity.unittests.TechnologyTest;
 import com.topcoder.catalog.entity.unittests.persistence.CategoryEntityTest;
 import com.topcoder.catalog.entity.unittests.persistence.CompClientEntityTest;
+import com.topcoder.catalog.entity.unittests.persistence.CompDocumentationEntityTest;
 import com.topcoder.catalog.entity.unittests.persistence.CompForumEntityTest;
 import com.topcoder.catalog.entity.unittests.persistence.CompLinkEntityTest;
 import com.topcoder.catalog.entity.unittests.persistence.CompUserEntityTest;
@@ -34,8 +36,8 @@ import junit.framework.TestSuite;
 /**
  * <p>This test case aggregates all Unit test cases.</p>
  *
- * @author Retunsky
- * @version 1.0
+ * @author Retunsky, KingStone
+ * @version 1.1
  */
 public class UnitTests extends TestCase {
 
@@ -71,6 +73,10 @@ public class UnitTests extends TestCase {
         suite.addTestSuite(CompVersionDatesEntityTest.class);
         suite.addTestSuite(PhaseEntityTest.class);
         suite.addTestSuite(TechnologyEntityTest.class);
+        // add version 1.1 testcase
+        suite.addTestSuite(CompDocumentationEntityTest.class);
+        suite.addTestSuite(CompDocumentationTest.class);
+
         // named queries test
         suite.addTestSuite(NamedQueriesTest.class);
         // demo

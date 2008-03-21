@@ -1,3 +1,5 @@
+--------------- comp_documentation ------------------    
+drop table comp_documentation;
 --------------- comp_catalog ------------------
 drop table comp_catalog;
 --------------- categories ------------------
@@ -30,3 +32,6 @@ drop table comp_user;
 drop table comp_jive_category_xref;
 --------------- comp_link ------------------    
 drop table comp_link;
+--------------- doc_types ------------------    
+drop table doc_types;
+

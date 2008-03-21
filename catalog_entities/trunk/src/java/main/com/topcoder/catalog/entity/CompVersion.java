@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007-2008 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.catalog.entity;
 
@@ -44,6 +44,16 @@ import java.util.Map;
  *       compLink.setLink("some svnlink");
  *       compLink.setCompVersion(version);
  *       version.setLink(compLink); // assign to the version
+ *       // create documentation
+ *       // note: newly added in version 1.1
+ *       final CompDocumentation compDocumentation = new CompDocumentation();
+ *       compDocumentation.setDocumentName("my doc");
+ *       compDocumentation.setDocumentTypeId(300L);
+ *       compDocumentation.setUrl("software.topcoder.com");
+ *       compDocumentation.setCompVersion(version);
+ *       List&lt;CompDocumentation&gt; documentation = new ArrayList&lt;CompDocumentation&gt;();
+ *       documentation.add(compDocumentation);
+ *       version.setDocumentation(documentation); // assign to the version
  *
  *       // assign phase, which is already in the database
  *       version.setPhase(getEntityManager().find(Phase.class, 1L));
@@ -52,10 +62,14 @@ import java.util.Map;
  *       final Map&lt;Long, CompVersionDates&gt; dates = populateVersionDates(version);
  *       version.setVersionDates(dates);
  * </pre>
+ * <p>
+ * version 1.1 add filed <code>documentation</code> which stores documents associated to this component version.
+ * </p>
  * <p><strong>Thread safety: </strong></p> <p>This class is mutable and not thread safe.</p>
  *
- * @author caru, Retunsky
- * @version 1.0
+ * @author caru, Retunsky, KingStone
+ * @version 1.1
+ * @since 1.0
  */
 public class CompVersion implements Serializable {
     /**
@@ -131,6 +145,7 @@ public class CompVersion implements Serializable {
      * containing <code>null</code> key or value is legal as well.</p>
      */
     private Map<Long, CompVersionDates> versionDates;
+
     /**
      * <p>This field represents the list of the technologies of the version.</p>
      * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
@@ -139,6 +154,14 @@ public class CompVersion implements Serializable {
      */
     private List<Technology> technologies;
 
+    /**
+     * <p>This field represents the list of the documents of the version.</p>
+     * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
+     * <p>The acceptable region: any list including <code>null</code> and empty one, a non-empty list
+     * containing <code>null</code> is legal as well.</p>
+     * @since 1.1
+     */
+    private List<CompDocumentation> documentation;
 
     /**
      * <p>Default constructor.</p> <p><em>Does nothing.</em></p>
@@ -219,13 +242,7 @@ public class CompVersion implements Serializable {
      * @return {@link #versionText} property's value.
      */
     public String getVersionText() {
-    	// omit trailing spaces
-    	String tmp = versionText;
-    	int c = tmp.length() - 1;
-    	while (tmp.charAt(c) == ' ') {
-    	    --c;
-    	}
-        return tmp.substring(0, c+1);
+        return versionText;
     }
 
     /**
@@ -401,5 +418,26 @@ public class CompVersion implements Serializable {
         return technologies;
     }
 
+    /**
+     * <p>Sets a value to the {@link #documentation} field.</p>
+     * <p>The acceptable region: any list including <code>null</code> and empty one, a non-empty list
+     * containing <code>null</code> is legal as well.</p>
+     *
+     * @param documentation the list of the documentation of the version.
+     * @since 1.1
+     */
+    public void setDocumentation(List<CompDocumentation> documentation) {
+        this.documentation = documentation;
+    }
+
+    /**
+     * <p>Retrieves the list of the documentation of the version.</p>
+     *
+     * @return {@link #documentation} property's value.
+     * @since 1.1
+     */
+    public List<CompDocumentation> getDocumentation() {
+        return documentation;
+    }
 }
 

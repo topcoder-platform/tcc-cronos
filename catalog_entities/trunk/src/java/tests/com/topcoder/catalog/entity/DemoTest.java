@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007-2008 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.catalog.entity;
 
@@ -12,6 +12,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,8 +24,8 @@ import java.util.Set;
 /**
  * <p>Tests the Demo provided in the CS 4.3.</p>
  *
- * @author caru, Retunsky
- * @version 1.0
+ * @author caru, Retunsky, KingStone
+ * @version 1.1
  */
 public class DemoTest extends TestCase {
     /**
@@ -231,6 +232,16 @@ public class DemoTest extends TestCase {
         compLink.setLink("some svnlink");
         compLink.setCompVersion(version);
         version.setLink(compLink); // assign to the version
+        // create documentation
+        // note: newly added in version 1.1
+        final CompDocumentation compDocumentation = new CompDocumentation();
+        compDocumentation.setDocumentName("my doc");
+        compDocumentation.setDocumentTypeId(300L);
+        compDocumentation.setUrl("software.topcoder.com");
+        compDocumentation.setCompVersion(version);
+        List<CompDocumentation> documentation = new ArrayList<CompDocumentation>();
+        documentation.add(compDocumentation);
+        version.setDocumentation(documentation); // assign to the version
 
         // assign phase, which is already in the database
         version.setPhase(getEntityManager().find(Phase.class, 1L));
