@@ -1,0 +1,213 @@
+Testsuite: com.topcoder.service.prerequisite.AllTests
+Tests run: 180, Failures: 0, Errors: 0, Time elapsed: 26.094 sec
+------------- Standard Output ---------------
+insert into document (description, create_date, document_id) values ('test1', '2008-03-16 17:53:45', 1)
+insert into document (description, create_date, document_id) values ('test2', '2008-03-16 17:53:45', 2)
+insert into document (description, create_date, document_id) values ('test3', '2008-03-16 17:53:45', 3)
+insert into document_name (document_name_id, name) values (1, 'name1')
+insert into document_name (document_name_id, name) values (2, 'name2')
+insert into document_name (document_name_id, name) values (3, 'name1')
+Calling getAllPrerequisiteDocuments 10 times costs:0.828
+insert into document (description, create_date, document_id) values ('test1', '2008-03-16 17:53:45', 1)
+insert into document (description, create_date, document_id) values ('test2', '2008-03-16 17:53:45', 2)
+insert into document (description, create_date, document_id) values ('test3', '2008-03-16 17:53:45', 3)
+insert into document_name (document_name_id, name) values (1, 'name1')
+insert into document_name (document_name_id, name) values (2, 'name2')
+insert into document_name (document_name_id, name) values (3, 'name1')
+Calling RecordMemberAnswer once costs:0.094 seconds.
+insert into document (description, create_date, document_id) values ('test1', '2008-03-16 17:53:45', 1)
+insert into document (description, create_date, document_id) values ('test2', '2008-03-16 17:53:45', 2)
+insert into document (description, create_date, document_id) values ('test3', '2008-03-16 17:53:45', 3)
+insert into document_name (document_name_id, name) values (1, 'name1')
+insert into document_name (document_name_id, name) values (2, 'name2')
+insert into document_name (document_name_id, name) values (3, 'name1')
+calling getPrerequisiteDocument(long documentId, Integer version) 10 times  costs 0.562 seconds.
+insert into document (description, create_date, document_id) values ('test1', '2008-03-16 17:53:45', 1)
+insert into document (description, create_date, document_id) values ('test2', '2008-03-16 17:53:45', 2)
+insert into document (description, create_date, document_id) values ('test3', '2008-03-16 17:53:45', 3)
+insert into document_name (document_name_id, name) values (1, 'name1')
+insert into document_name (document_name_id, name) values (2, 'name2')
+insert into document_name (document_name_id, name) values (3, 'name1')
+calling getPrerequisiteDocument(long documentId, Integer version) 10 times  costs 0.625 seconds.
+------------- ---------------- ---------------
+
+Testcase: testGetPrerequisiteDocument_NegatieDocumentId took 1.125 sec
+Testcase: testGetPrerequisiteDocument_DocumentVersionNotFound took 0.422 sec
+Testcase: testGetPrerequisiteDocument_accuracy1 took 0.734 sec
+Testcase: testGetPrerequisiteDocument_accuracy2 took 0.828 sec
+Testcase: testGetAllPrerequisiteDocuments_Unauthorized took 0.406 sec
+Testcase: testGetAllPrerequisiteDocuments_accuracy1 took 0.453 sec
+Testcase: testGetAllPrerequisiteDocuments_accuracy2 took 0.844 sec
+Testcase: testGetPrerequisiteDocuments_NegatieCompetitionId took 0.719 sec
+Testcase: testGetPrerequisiteDocuments_NegatieRoleId took 0.484 sec
+Testcase: testGetPrerequisiteDocuments_NotAuthorized took 0.407 sec
+Testcase: testGetPrerequisiteDocuments_RoleNotFoundException took 0.468 sec
+Testcase: testGetPrerequisiteDocuments_CompetitionNotFoundException1 took 0.391 sec
+Testcase: testGetPrerequisiteDocuments_CompetitionNotFoundException2 took 0.39 sec
+Testcase: testGetPrerequisiteDocuments_accuracy took 0.531 sec
+Testcase: testRecordMemberAnswer_NegatieCompetitionId took 0.531 sec
+Testcase: testRecordMemberAnswer_NegatieRoleId took 0.391 sec
+Testcase: testRecordMemberAnswer_NullTimestamp took 0.406 sec
+Testcase: testRecordMemberAnswer_NullPrerequisiteDocument took 0.438 sec
+Testcase: testRecordMemberAnswer_NotAuthorized took 0.406 sec
+Testcase: testRecordMemberAnswer_RoleNotFoundException took 0.422 sec
+Testcase: testRecordMemberAnswer_CompetitionNotFoundException took 0.484 sec
+Testcase: testRecordMemberAnswer_UserAlreadyAnsweredDocumentException took 0.563 sec
+Testcase: testRecordMemberAnswer_accuracy took 0.5 sec
+Testcase: testCompetitionNotFoundException_accuracy1 took 0 sec
+Testcase: testCompetitionNotFoundException_accuracy2 took 0 sec
+Testcase: testCompetitionNotFoundException_accuracy3 took 0 sec
+Testcase: testCompetitionNotFoundException_accuracy4 took 0 sec
+Testcase: testCompetitionNotFoundException_accuracy5 took 0 sec
+Testcase: testCompetitionNotFoundException_accuracy6 took 0 sec
+Testcase: testGetCompetitionIdNotFound_accuracy took 0 sec
+Testcase: testGetFaultInfo_accuracy took 0 sec
+Testcase: testPrerequisiteServiceExceptionStringAccuracy took 0 sec
+Testcase: testPrerequisiteServiceExceptionStringExceptionDataAccuracy took 0 sec
+Testcase: testPrerequisiteServiceExceptionStringThrowableAccuracy took 0 sec
+Testcase: testPrerequisiteServiceExceptionStringThrowableExceptionDataAccuracy took 0 sec
+Testcase: testGetFaultInfo_accuracy took 0 sec
+Testcase: testDocumentNotFoundException_accuracy1 took 0 sec
+Testcase: testDocumentNotFoundException_accuracy2 took 0 sec
+Testcase: testDocumentNotFoundException_accuracy3 took 0 sec
+Testcase: testDocumentNotFoundException_accuracy4 took 0 sec
+Testcase: testDocumentNotFoundException_accuracy5 took 0 sec
+Testcase: testDocumentNotFoundException_accuracy6 took 0 sec
+Testcase: testGetDocumentIdNotFound_accuracy took 0 sec
+Testcase: testGetFaultInfo_accuracy took 0 sec
+Testcase: testIllegalArgumentWSException_accuracy1 took 0 sec
+Testcase: testIllegalArgumentWSException_accuracy2 took 0 sec
+Testcase: testGetIllegalArgumentMessage_accuracy took 0 sec
+Testcase: testGetFaultInfo_accuracy took 0 sec
+Testcase: testPersistenceException_accuracy1 took 0 sec
+Testcase: testPersistenceException_accuracy2 took 0 sec
+Testcase: testPersistenceException_accuracy3 took 0 sec
+Testcase: testPersistenceException_accuracy4 took 0 sec
+Testcase: testPersistenceException_accuracy5 took 0 sec
+Testcase: testPersistenceException_accuracy6 took 0 sec
+Testcase: testGetPersistenceMessage_accuracy took 0 sec
+Testcase: testGetFaultInfo_accuracy took 0 sec
+Testcase: testRoleNotFoundException_accuracy1 took 0 sec
+Testcase: testRoleNotFoundException_accuracy2 took 0 sec
+Testcase: testRoleNotFoundException_accuracy3 took 0 sec
+Testcase: testRoleNotFoundException_accuracy4 took 0 sec
+Testcase: testRoleNotFoundException_accuracy5 took 0 sec
+Testcase: testRoleNotFoundException_accuracy6 took 0 sec
+Testcase: testGetRoleIdNotFound_accuracy took 0 sec
+Testcase: testGetFaultInfo_accuracy took 0 sec
+Testcase: testUserAlreadyAnsweredDocumentException_accuracy1 took 0 sec
+Testcase: testUserAlreadyAnsweredDocumentException_accuracy2 took 0 sec
+Testcase: testUserAlreadyAnsweredDocumentException_accuracy3 took 0 sec
+Testcase: testUserAlreadyAnsweredDocumentException_accuracy4 took 0 sec
+Testcase: testUserAlreadyAnsweredDocumentException_accuracy5 took 0 sec
+Testcase: testUserAlreadyAnsweredDocumentException_accuracy6 took 0 sec
+Testcase: testGetUserIdAlreadyAnsweredDocument_accuracy took 0 sec
+Testcase: testGetFaultInfo_accuracy took 0 sec
+Testcase: testUserNotAuthorizedException_accuracy1 took 0 sec
+Testcase: testUserNotAuthorizedException_accuracy2 took 0 sec
+Testcase: testGetUserIdNotAuthorized_accuracy took 0 sec
+Testcase: testPrerequisiteDocument_accuracy took 0 sec
+Testcase: testGetDocumentId_default took 0 sec
+Testcase: testSetDocumentId_iae took 0 sec
+Testcase: testSetDocumentId_accuracy took 0 sec
+Testcase: testGetVersion_default took 0 sec
+Testcase: testSetVersion_iae took 0 sec
+Testcase: testSetVersion_accuracy took 0 sec
+Testcase: testGetVersionDate_default took 0 sec
+Testcase: testSetVersionDate_accuracy took 0 sec
+Testcase: testGetName_default took 0 sec
+Testcase: testSetName_accuracy took 0 sec
+Testcase: testGetContent_default took 0 sec
+Testcase: testSetContent_accuracy took 0 sec
+Testcase: testCompetitionNotFoundFault_accuracy took 0 sec
+Testcase: testGetCompetitionIdNotFound_default took 0 sec
+Testcase: testSetCompetitionIdNotFound_accuracy took 0 sec
+Testcase: testDocumentNotFoundFault_accuracy took 0 sec
+Testcase: testGetDocumentIdNotFound_default took 0 sec
+Testcase: testSetDocumentIdNotFound_accuracy took 0 sec
+Testcase: testIllegalArgumentWSFault_accuracy took 0 sec
+Testcase: testGetIllegalArgumentMessage_default took 0 sec
+Testcase: testSetIllegalArgumentMessage_accuracy took 0 sec
+Testcase: testPersistenceFault_accuracy took 0 sec
+Testcase: testGetPersistenceMessage_default took 0 sec
+Testcase: testSetPersistenceMessage_accuracy took 0 sec
+Testcase: testRoleNotFoundFault_accuracy took 0 sec
+Testcase: testGetRoleIdNotFound_default took 0 sec
+Testcase: testSetRoleIdNotFound_accuracy took 0 sec
+Testcase: testUserAlreadyAnsweredDocumentFault_accuracy took 0 sec
+Testcase: testGetUserId_default took 0 sec
+Testcase: testSetUserId_accuracy took 0 sec
+Testcase: testUserNotAuthorizedFault_accuracy took 0 sec
+Testcase: testGetUserIdNotAuthorized_default took 0 sec
+Testcase: testSetUserIdNotAuthorized_accuracy took 0 sec
+Testcase: testGetAllPrerequisiteDocumentsRequest_accuracy took 0 sec
+Testcase: testGetPrerequisiteDocuments_accuracy took 0 sec
+Testcase: testGetAllPrerequisiteDocumentsResponse_accuracy took 0 sec
+Testcase: testGetPrerequisiteDocumentsRequest_accuracy took 0 sec
+Testcase: testGetCompetitionId_default took 0 sec
+Testcase: testSetCompetitionId_accuracy took 0 sec
+Testcase: testGetRoleId_default took 0 sec
+Testcase: testSetRoleId_accuracy took 0 sec
+Testcase: testGetPrerequisiteDocuments_accuracy took 0 sec
+Testcase: testGetPrerequisiteDocumentsResponse_accuracy took 0 sec
+Testcase: testGetDocumentId_default took 0 sec
+Testcase: testSetDocumentId_accuracy took 0 sec
+Testcase: testGetVersion_default took 0 sec
+Testcase: testSetVersion_accuracy took 0 sec
+Testcase: testGetPrerequisiteDocumentRequest_accuracy took 0 sec
+Testcase: testGetPrerequisiteDocument_default took 0 sec
+Testcase: testSetPrerequisiteDocument_accuracy took 0 sec
+Testcase: testRecordMemberAnswerResponse_accuracy took 0 sec
+Testcase: testGetCompetitionId_default took 0 sec
+Testcase: testSetCompetitionId_accuracy took 0 sec
+Testcase: testGetRoleId_default took 0 sec
+Testcase: testSetRoleId_accuracy took 0 sec
+Testcase: testGetPrerequisiteDocument_default took 0 sec
+Testcase: testSetPrerequisiteDocument_accuracy took 0 sec
+Testcase: testRecordMemberAnswerRequest_accuracy took 0 sec
+Testcase: testGetTimestamp_default took 0 sec
+Testcase: testSetTimestamp_accuracy took 0 sec
+Testcase: testIsAgrees_default took 0 sec
+Testcase: testSetAgrees_accuracy took 0 sec
+Testcase: testPrerequisiteElementsFactory_accuracy took 0 sec
+Testcase: testCreateGetPrerequisiteDocumentsRequest_accuracy took 0 sec
+Testcase: testCreateGetPrerequisiteDocumentsResponse_accuracy took 0 sec
+Testcase: testCreateGetAllPrerequisiteDocumentsRequest_accuracy took 0 sec
+Testcase: testCreateGetAllPrerequisiteDocumentsResponse_accuracy took 0 sec
+Testcase: testCreatePrerequisiteDocument_accuracy took 0 sec
+Testcase: testCreateRecordMemberAnswerRequest_accuracy took 0 sec
+Testcase: testCreateDocumentNotFoundFault_accuracy took 0 sec
+Testcase: testCreateUserAlreadyAnsweredDocumentFault_accuracy took 0.016 sec
+Testcase: testCreateCompetitionNotFoundFault_accuracy took 0 sec
+Testcase: testCreateRoleNotFoundFault_accuracy took 0 sec
+Testcase: testCreateGetPrerequisiteDocumentRequest_accuracy took 0 sec
+Testcase: testCreateUserNotAuthorizedFault_accuracy took 0 sec
+Testcase: testCreateIllegalArgumentWSFault_accuracy took 0 sec
+Testcase: testCreatePersistenceFault_accuracy took 0 sec
+Testcase: testCreateGetPrerequisiteDocumentResponse_accuracy took 0 sec
+Testcase: testCreateRecordMemberAnswerResponse_accuracy took 0 sec
+Testcase: testDemo took 2.657 sec
+Testcase: testGetPrerequisiteDocumentsWithCompetitionIdAndRoleId took 0.609 sec
+Testcase: testGetPrerequisiteDocumentWithDocumentIdAndVersion took 0.5 sec
+Testcase: testGetAllPrerequisiteDocuments took 0.594 sec
+Testcase: testRecordMemberAnswer took 0.484 sec
+Testcase: testRecordMemberAnswer_NullTimestamp took 0.313 sec
+Testcase: testRecordMemberAnswer_NullPrerequisiteDocument took 0.188 sec
+Testcase: testGetPrerequisiteDocument_NegativeDocumentId took 0.187 sec
+Testcase: testGetPrerequisiteDocument_NegativeVersion took 0.187 sec
+Testcase: testGetPrerequisiteDocument_DocumentNotFound took 0.203 sec
+Testcase: testGetAllPrerequisiteDocuments_NotAuthorized took 0.219 sec
+Testcase: testGetPrerequisiteDocuments_NegativeCompetiitionId took 0.188 sec
+Testcase: testGetPrerequisiteDocuments_CompetitionNotFound took 0.187 sec
+Testcase: testGetPrerequisiteDocuments_NegativeRoleId took 0.188 sec
+Testcase: testGetPrerequisiteDocuments_RoleNotFound took 0.203 sec
+Testcase: testRecordMemberAnswer_NegativeCompetiitionId took 0.219 sec
+Testcase: testRecordMemberAnswer_CompetitionNotFound took 0.187 sec
+Testcase: testRecordMemberAnswer_NegativeRoleId took 0.203 sec
+Testcase: testRecordMemberAnswer_RoleNotFound took 0.172 sec
+Testcase: testRecordMemberAnswer_DocumentNotFound took 0.266 sec
+Testcase: testRecordMemberAnswer_AlreadyAnswered took 0.437 sec
+Testcase: testGetAllPrerequisiteDocuments took 1.703 sec
+Testcase: testRecordMemberAnswer took 0.719 sec
+Testcase: testGetPrerequisiteDocument took 1.156 sec
+Testcase: testGetPrerequisiteDocuments took 1.094 sec

@@ -1,0 +1,10 @@
+1.1.2	replaced
+1.1.3	use cases added/replaced
+2.1.4	I think that (URL,QNAME) constructor is sufficient since it delegates and comprises all combinations to the parent constructor. 
+2.1.6	it's ok
+3.1.5	no, the "normal distribution" for topcoder in Java is the entire Java Standard Edition, in C#.Net is the library.
+		The question 3.5 speaks about the normal distribution, not java.lang or java.util: "Relationships to system classes (ie classes that are installed with the normal distributions ? this does not include J2EE classes) do not need to be shown unless they are part of an extends or inherits relationship."
+		I show only the J2EE relationships. (Wendell is correct in his comment about J2EE and normal distribution)
+		I marked the aggregations private
+4.1.2	doc changed
+4.1.6	fixed

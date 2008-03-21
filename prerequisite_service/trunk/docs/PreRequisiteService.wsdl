@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.example.org/PrerequisiteService/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="PrerequisiteService" targetNamespace="http://www.example.org/PrerequisiteService/">
+  <wsdl:documentation>Retrieves the list of pre-requisite documents for a user for a specific competition, based on their role in the competition.
+Returns a list of prerequisiteDocuments
+
+A pre-requisite document can have multiple versions (such as an NDA).
+A competition may specify 0, 1, or more prerequisite documents (by version) for a competition (example, may specify that an NDA and background check are required) for a role (i.e., client, submitter, reviewer).
+A record of user agreement per document version per competition per role  is required.
+A user who has previously agreed to the same version of a required document is not required to re-agree to the document</wsdl:documentation>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.example.org/PrerequisiteService/">
+      <xsd:element name="getPrerequisiteDocuments">
+        <xsd:complexType>
+          <xsd:sequence>
+
+          	<xsd:element name="competitionId" type="xsd:long" minOccurs="1" maxOccurs="1"></xsd:element>
+          	<xsd:element name="roleId" type="xsd:long" minOccurs="1" maxOccurs="1"></xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getPrerequisiteDocumentsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="prerequisiteDocuments" type="tns:prerequisiteDocument" maxOccurs="unbounded" minOccurs="0"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    
+      <xsd:complexType name="prerequisiteDocument">
+      	<xsd:sequence>
+                    <xsd:element name="documentId" type="xsd:long">
+                    	<xsd:annotation>
+                    		<xsd:documentation>
+                    			Base Document Identification Id.
+                    			Combined with the version provides a
+                    			unique identification to each document.
+                    		</xsd:documentation>
+                    	</xsd:annotation></xsd:element>
+                    <xsd:element name="version" type="xsd:int">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					Contains the document's version as an integer;
+      					the document version is a series of increasing
+      					integer values, with the highest value for a
+      					document representing the most recent version
+      					of that document. Combined with the
+      					DocumentId, provides a unique identification
+      					for each document.
+      				</xsd:documentation>
+      			</xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="versionDate" type="xsd:date">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					The date the version of this document becomes
+      					official. This can be used when displaying the
+      					document to the user so that the user realizes
+      					this is a new version of an existing document.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+                    <xsd:element name="name" type="xsd:string">
+                    	<xsd:annotation>
+                    		<xsd:documentation>
+                    			Short display name for this document
+                    			(i.e, Non-Disclosure Agreement).
+                    		</xsd:documentation>
+                    	</xsd:annotation></xsd:element>
+      		<xsd:element name="content" type="xsd:string">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					Full document content that needs to be
+      					displayed to user.
+      				</xsd:documentation>
+      			</xsd:annotation></xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="recordMemberAnswer">
+                <xsd:annotation>
+                	<xsd:documentation>
+                		The document (which includes id and vesion) to
+                		which the user is agreeing/not agreeing to.
+                	</xsd:documentation>
+                </xsd:annotation>
+                <xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="competitionId" type="xsd:long"
+      				minOccurs="1" maxOccurs="1">
+      				<xsd:annotation>
+      					<xsd:documentation>
+      						the competition Id.
+      					</xsd:documentation>
+      				</xsd:annotation>
+      			</xsd:element>
+      			<xsd:element name="timestamp" type="xsd:date"
+      				minOccurs="1" maxOccurs="1">
+      				<xsd:annotation>
+      					<xsd:documentation>
+      						the date and time, in UTC, the user agrees
+      						or disagrees.
+      					</xsd:documentation>
+      				</xsd:annotation>
+      			</xsd:element>
+      			<xsd:element name="agrees" type="xsd:boolean"
+      				minOccurs="1" maxOccurs="1">
+      				<xsd:annotation>
+      					<xsd:documentation>
+      						True if user agrees to provided
+      						documentation, false otherwise.
+      					</xsd:documentation>
+      				</xsd:annotation>
+      			</xsd:element>
+      			<xsd:element name="prerequisiteDocument"
+      				type="tns:prerequisiteDocument" minOccurs="1" maxOccurs="1">
+      			</xsd:element>
+      			<xsd:element name="roleId" type="xsd:long" minOccurs="1" maxOccurs="1"></xsd:element>
+      		</xsd:sequence>
+                </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="recordMemberAnswerResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getPrerequisiteDocument">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="documentId" type="xsd:long" minOccurs="1" maxOccurs="1"></xsd:element>
+      			<xsd:element name="version" type="xsd:int" minOccurs="0" maxOccurs="1"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getPrerequisiteDocumentResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="prerequisiteDocuments" type="tns:prerequisiteDocument" minOccurs="0" maxOccurs="1"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getAllPrerequisiteDocuments">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getAllPrerequisiteDocumentsResponse">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="prerequisiteDocuments" type="tns:prerequisiteDocument" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+       <xsd:element name="competition_not_found_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="competition_not_found"
+      				type="xsd:long">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+      <xsd:element name="role_not_found_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="role_not_found"
+      				type="xsd:long">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+      <xsd:element name="document_not_found_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="document_not_found"
+      				type="xsd:long">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+      <xsd:element name="user_not_authorized_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="user_not_authorized"
+      				type="xsd:long">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+	  <xsd:element name="user_already_answered_document_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+
+      			<xsd:element name="user_already_answered_document"
+      				type="xsd:long">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+	  
+	  <xsd:element name="persistence_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="persistence_message"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+      
+      <xsd:element name="illegal_argument_fault">
+      	<xsd:complexType>
+      		<xsd:sequence>
+      			<xsd:element name="illegal_argument_message"
+      				type="xsd:string">
+      			</xsd:element>
+      		</xsd:sequence>
+      	</xsd:complexType>
+      </xsd:element>
+	
+      
+    </xsd:schema>
+	
+  </wsdl:types>
+  <wsdl:message name="getPrerequisiteDocumentsRequest">
+    <wsdl:part element="tns:getPrerequisiteDocuments" name="parameters">
+    	<wsdl:documentation>Returns any and all required documentation the member is required to agree to for the specific competition.  This can be abstracted to serve client-members launching a competition by creating competitions-types that correspond to the competition creation activity</wsdl:documentation></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPrerequisiteDocumentsResponse">
+    <wsdl:part element="tns:getPrerequisiteDocumentsResponse" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="recordMemberAnswerRequest">
+  	<wsdl:part name="parameters" element="tns:recordMemberAnswer"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="recordMemberAnswerResponse">
+  	<wsdl:part name="parameters" element="tns:recordMemberAnswerResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPrerequisiteDocumentRequest">
+  	<wsdl:part name="parameters" element="tns:getPrerequisiteDocument"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPrerequisiteDocumentResponse">
+  	<wsdl:part name="parameters" element="tns:getPrerequisiteDocumentResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllPrerequisiteDocumentsRequest">
+  	<wsdl:part name="parameters" element="tns:getAllPrerequisiteDocuments"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllPrerequisiteDocumentsResponse">
+  	<wsdl:part name="parameters" element="tns:getAllPrerequisiteDocumentsResponse"></wsdl:part>
+  </wsdl:message>
+  
+   <wsdl:message name="competition_not_found_faultMsg">
+  	<wsdl:part name="parameters" element="tns:competition_not_found_fault"></wsdl:part>
+  </wsdl:message>
+  
+  <wsdl:message name="role_not_found_faultMsg">
+  	<wsdl:part name="parameters" element="tns:role_not_found_fault"></wsdl:part>
+  </wsdl:message>
+  
+  <wsdl:message name="document_not_found_faultMsg">
+  	<wsdl:part name="parameters" element="tns:document_not_found_fault"></wsdl:part>
+  </wsdl:message>
+  
+  <wsdl:message name="user_not_authorized_faultMsg">
+  	<wsdl:part name="parameters" element="tns:user_not_authorized_fault"></wsdl:part>
+  </wsdl:message>
+  
+  <wsdl:message name="user_already_answered_document_faultMsg">
+  	<wsdl:part name="parameters" element="tns:user_already_answered_document_fault"></wsdl:part>
+  </wsdl:message>
+  
+  <wsdl:message name="persistence_faultMsg">
+  	<wsdl:part name="parameters" element="tns:persistence_fault"></wsdl:part>
+  </wsdl:message>
+  
+   <wsdl:message name="illegal_argument_faultMsg">
+  	<wsdl:part name="parameters" element="tns:illegal_argument_fault"></wsdl:part>
+  </wsdl:message>
+
+  
+  
+  <wsdl:portType name="PrerequisiteService">
+    <wsdl:documentation>The pre-requisite service provides the ability to retrieve required pre-requisite documents, and to record a users response to the pre-requisite.</wsdl:documentation>
+    
+    <wsdl:operation name="getPrerequisiteDocuments">
+      <wsdl:documentation>Retrieves all documents the specific user is required to agree to, for a particular role for a  specific competition</wsdl:documentation>
+      <wsdl:input message="tns:getPrerequisiteDocumentsRequest"/>
+      <wsdl:output message="tns:getPrerequisiteDocumentsResponse"/>
+            <wsdl:fault name="fault" message="tns:competition_not_found_faultMsg"></wsdl:fault>
+            <wsdl:fault name="fault1" message="tns:role_not_found_faultMsg"></wsdl:fault>
+            <wsdl:fault name="fault2" message="tns:persistence_faultMsg"></wsdl:fault>
+            <wsdl:fault name="fault3" message="tns:illegal_argument_faultMsg"></wsdl:fault>
+        </wsdl:operation>
+        
+    <wsdl:operation name="recordMemberAnswer">
+    	<wsdl:documentation>ecord a single member's answer (agree or not agree) to the specific documentId and versionId.  This includes recording negative agreements (i.e., do not agree) for the purpose of tracking such responses from the member base to specific documents</wsdl:documentation>
+    	<wsdl:input message="tns:recordMemberAnswerRequest"></wsdl:input>
+    	<wsdl:output message="tns:recordMemberAnswerResponse"></wsdl:output>
+            <wsdl:fault name="fault" message="tns:competition_not_found_faultMsg"></wsdl:fault>
+            <wsdl:fault name="fault1" message="tns:role_not_found_faultMsg"></wsdl:fault>
+            <wsdl:fault name="fault2" message="tns:document_not_found_faultMsg"></wsdl:fault>
+			<wsdl:fault name="fault3" message="tns:user_already_answered_document_faultMsg"></wsdl:fault>
+			<wsdl:fault name="fault4" message="tns:persistence_faultMsg"></wsdl:fault>
+			<wsdl:fault name="fault5" message="tns:illegal_argument_faultMsg"></wsdl:fault>
+        </wsdl:operation>
+        
+    <wsdl:operation name="getPrerequisiteDocument">
+    	<wsdl:documentation>Retrieves the details for a specific document as defined by a document Id</wsdl:documentation>
+    	<wsdl:input message="tns:getPrerequisiteDocumentRequest"></wsdl:input>
+    	<wsdl:output message="tns:getPrerequisiteDocumentResponse"></wsdl:output>
+            <wsdl:fault name="fault" message="tns:document_not_found_faultMsg"></wsdl:fault>
+            <wsdl:fault name="fault1" message="tns:persistence_faultMsg"></wsdl:fault>
+             <wsdl:fault name="fault2" message="tns:illegal_argument_faultMsg"></wsdl:fault>
+        </wsdl:operation>
+        
+    <wsdl:operation name="getAllPrerequisiteDocuments">
+    	<wsdl:documentation>Retrieves a list of all documents; restricted to administrative users</wsdl:documentation>
+    	<wsdl:input message="tns:getAllPrerequisiteDocumentsRequest"></wsdl:input>
+    	<wsdl:output message="tns:getAllPrerequisiteDocumentsResponse"></wsdl:output>
+    	<wsdl:fault name="fault" message="tns:persistence_faultMsg"></wsdl:fault>
+        </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PrerequisiteServiceSOAP" type="tns:PrerequisiteService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getPrerequisiteDocuments">
+      <soap:operation soapAction="http://www.example.org/PrerequisiteService/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      
+      <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal" />
+      </wsdl:fault>
+      
+        <wsdl:fault name="fault1">
+        <soap:fault name="fault1" use="literal" />
+      </wsdl:fault>
+      
+       <wsdl:fault name="fault2">
+        <soap:fault name="fault2" use="literal" />
+      </wsdl:fault>
+      <wsdl:fault name="fault3">
+        <soap:fault name="fault3" use="literal" />
+      </wsdl:fault>
+      
+    </wsdl:operation>
+       <wsdl:operation name="recordMemberAnswer">
+      <soap:operation soapAction="http://www.example.org/PrerequisiteService/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      
+      <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal" />
+      </wsdl:fault>
+      
+        <wsdl:fault name="fault1">
+        <soap:fault name="fault1" use="literal" />
+      </wsdl:fault>
+      
+        <wsdl:fault name="fault2">
+        <soap:fault name="fault2" use="literal" />
+      </wsdl:fault>
+      
+        <wsdl:fault name="fault3">
+        <soap:fault name="fault3" use="literal" />
+      </wsdl:fault>
+      
+       <wsdl:fault name="fault4">
+        <soap:fault name="fault4" use="literal" />
+      </wsdl:fault>
+      
+      <wsdl:fault name="fault5">
+        <soap:fault name="fault5" use="literal" />
+      </wsdl:fault>
+
+      
+    </wsdl:operation>
+    <wsdl:operation name="getPrerequisiteDocument">
+      <soap:operation soapAction="http://www.example.org/PrerequisiteService/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      
+      <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal" />
+      </wsdl:fault>
+       <wsdl:fault name="fault1">
+        <soap:fault name="fault1" use="literal" />
+      </wsdl:fault>
+      
+      <wsdl:fault name="fault2">
+        <soap:fault name="fault2" use="literal" />
+      </wsdl:fault>
+      
+    </wsdl:operation>   
+       <wsdl:operation name="getAllPrerequisiteDocuments">
+      <soap:operation soapAction="http://www.example.org/PrerequisiteService/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      
+       <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>     
+  </wsdl:binding>
+  <wsdl:service name="PrerequisiteService">
+    <wsdl:port binding="tns:PrerequisiteServiceSOAP" name="PrerequisiteServiceSOAP">
+      <soap:address location="http://www.example.org/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

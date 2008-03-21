@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<jboss>
+    <enterprise-beans>
+      <session>
+        <ejb-name>DocumentManagerBean</ejb-name>
+        <jndi-name>remote/DocumentManager</jndi-name>
+      </session>
+    </enterprise-beans>
+    <security-domain>java:/jaas/other</security-domain>
+</jboss>
