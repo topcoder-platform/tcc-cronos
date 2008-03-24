@@ -417,4 +417,7 @@
     <!-- ************************ END REMOVE EVERYTHING ***************************** -->
     <!-- ************************************************************************** -->
 
+    <!-- Import the macro definitions used to override standard behaviour of
+    some of the targets of this build file. -->
+    <import file="${basedir}/build-override.xml" optional="true"/>
 </project>
