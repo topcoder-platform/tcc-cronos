@@ -1,0 +1,79 @@
+This is a component for testing builds
+
+TO RUN:
+
+1. Install the component structure in ${basedir}
+
+2. Create "topcoder_global.properties" in ${basedir}/.. and add the properties from steps 2,3,4
+
+3. The following standard build script properties must be set
+	ext_libdir - root of third party libraries
+	tcs_libdir - root of topcoder components
+	java_1_3_bootclasspath - installation path for java 1.3 (only needed for compile_targets task)
+	junit.jar - location of junit.jar (component was written for v3.8.2)
+
+4. The following standard build script properties can be changed (defaults are noted)
+	debug=off - as expected
+	verbose=no - as expected
+	cobertura.dir=${ext_libdir}/cobertura/1.8
+		installation directory of cobertura script expects {$cobertura.dir}/cobertura.jar
+		and {$cobertura.dir}/lib/containg hars for asm, jakarta, and log4j to run cobertura task
+
+5. The following properties need to be set for this component
+	jboss_home - points to the home directory ob JBoss (needed for compile, component dev'd against JBoss 4.2.2)
+	jboss_config_name - the configuration name of your JBoss server (like all/default/minimal)
+    
+6. Database
+
+    6.1. Install Informix and make sure the database is started.
+    
+    6.2. Create a database named 'project' in Informix.
+    
+    6.3. Use 'dbaccess project <path>/test_files/create.sql' to create database. it will create tables and sequences. Note, you can use 'dbaccess project <path>/test_files/drop.sql' to drop tables and sequences.
+
+    6.4. Change the DB connection string in
+        test_files/informix-ds.xml
+        test_files/InformixDBConnectionFactory.xml
+        test_files/META-INF/hibernate.cfg.xml
+        test_files/ejb/hibernate.cfg.xml.
+        
+7. JBoss 
+
+    7.1. Download and install JBoss 4.2.2.
+    
+    7.2. modify <jboss-home\server\default\conf\login-config.xml, adding
+       <application-policy name="JBossLoginModule">
+    	    <authentication>
+    	      <login-module code="com.topcoder.security.auth.module.JBossLoginModule"
+    	        flag="required">
+    	        <module-option name="fileName">C:/tcs/ws_java/project_service/test_files/demoConfigs.properties</module-option>
+    	        <module-option name="password-stacking">useFirstPass</module-option>
+    	      </login-module>
+    	    </authentication>
+      </application-policy>    
+    Notes, fileName property should be point to test_files/demoConfigs.properties file.
+
+    7.3. change demoConfigs.properties, using the correct path for JBossLoginModule.xml.
+    
+8. Run Tests
+    8.1. start Jboss 4.2.2
+    8.2. use 'ant deployEAR', to package ear file and deploy to jboss, a latest built is alredy saved as test_files/project_service.ear.
+    8.3. use 'ant test' to run the test cases.
+    8.4. 'ant undeployEAR' is used to delete the ear file in JBoss. and 'ant package.ejb' is used to package the ejb jar.
+        
+NB:
+	The folder ${basedir}/test_reflib contains TopCoder components 
+	that are required by this component's test code. This component is
+	used to by compile_test and test targets. Components are listed under
+	the following directory structure "component name"/"component version".
+	Components are provided AS IS for development purposes only.
+
+	Included:   Auditor 2.0.2
+                Authentication Factory 2.0
+                Authentication Manager 1.0.2
+                Data Entitlement 1.1.4
+                Functional Entitlement 1.0.3
+                Object Factory 2.0.1
+                Object Factory Configuration API 1.0.0
+                Search Builder 1.3.2
+                Security Facade 2.1.1
