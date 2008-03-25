@@ -1,65 +1,15 @@
 <project name="Dependency Import" default="dist" basedir=".">
     <!-- property file defining the component's dependencies -->
-
-    <!-- define typesafe_enum.jar -->
-    <property name="typesafe_enum.name" value="typesafe_enum" />
-    <property name="typesafe_enum.version" value="1.1.0" />
-    <property name="typesafe_enum.path" value="${typesafe_enum.name}/${typesafe_enum.version}" />
-    <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.name}.jar" />
-
-    <!-- define base_exception.jar -->
-    <property name="base_exception.version" value="2.0.0" />
-    <property name="base_exception.jar.name" value="base_exception.jar" />
-    <property name="base_exception.path" value="base_exception/${base_exception.version}" />
-    <property name="base_exception.jar" value="${tcs_libdir}/${base_exception.path}/${base_exception.jar.name}" />
-
-    <!-- define jboss_login_module.jar -->
-    <property name="jboss_login_module.version" value="2.0.0" />
-    <property name="jboss_login_module.jar.name" value="jboss_login_module.jar" />
-    <property name="jboss_login_module.path" value="jboss_login_module/${jboss_login_module.version}" />
-    <property name="jboss_login_module.jar" value="${tcs_libdir}/${jboss_login_module.path}/${jboss_login_module.jar.name}" />
-
-    <!-- define logging_wrapper.jar -->
-    <property name="logging_wrapper.version" value="2.0.0" />
-    <property name="logging_wrapper.jar.name" value="logging_wrapper.jar" />
-    <property name="logging_wrapper.path" value="logging_wrapper/${logging_wrapper.version}" />
-    <property name="logging_wrapper.jar" value="${tcs_libdir}/${logging_wrapper.path}/${logging_wrapper.jar.name}" />
-
-    <!-- define user_group_manager.jar -->
-    <property name="user_group_manager.version" value="1.0.1" />
-    <property name="user_group_manager.jar.name" value="user_group_manager.jar" />
-    <property name="user_group_manager.path" value="user_group_manager/${user_group_manager.version}" />
-    <property name="user_group_manager.jar" value="${tcs_libdir}/${user_group_manager.path}/${user_group_manager.jar.name}" />
-
-    <!-- define object_formatter.jar -->
-    <property name="object_formatter.version" value="1.0.0" />
-    <property name="object_formatter.jar.name" value="object_formatter.jar" />
-    <property name="object_formatter.path" value="object_formatter/${object_formatter.version}" />
-    <property name="object_formatter.jar" value="${tcs_libdir}/${object_formatter.path}/${object_formatter.jar.name}" />
-
-    <!-- define db_connection_factory.jar -->
-    <property name="db_connection_factory.version" value="1.1" />
-    <property name="db_connection_factory.jar.name" value="db_connection_factory.jar" />
-    <property name="db_connection_factory.path" value="db_connection_factory/${db_connection_factory.version}" />
-    <property name="db_connection_factory.jar" value="${tcs_libdir}/${db_connection_factory.path}/${db_connection_factory.jar.name}" />
-
-    <!-- define configuration_api.jar -->
-    <property name="configuration_api.version" value="1.0.0" />
-    <property name="configuration_api.jar.name" value="configuration_api.jar" />
-    <property name="configuration_api.path" value="configuration_api/${configuration_api.version}" />
-    <property name="configuration_api.jar" value="${tcs_libdir}/${configuration_api.path}/${configuration_api.jar.name}" />
-
-    <!-- define configuration_persistence.jar -->
-    <property name="configuration_persistence.version" value="1.0.0" />
-    <property name="configuration_persistence.jar.name" value="configuration_persistence.jar" />
-    <property name="configuration_persistence.path" value="configuration_persistence/${configuration_persistence.version}" />
-    <property name="configuration_persistence.jar" value="${tcs_libdir}/${configuration_persistence.path}/${configuration_persistence.jar.name}" />
-
-    <!-- define configuration_manager.jar -->
-    <property name="configuration_manager.version" value="2.1.5" />
-    <property name="configuration_manager.jar.name" value="configuration_manager.jar" />
-    <property name="configuration_manager.path" value="configuration_manager/${configuration_manager.version}" />
-    <property name="configuration_manager.jar" value="${tcs_libdir}/${configuration_manager.path}/${configuration_manager.jar.name}" />
+    <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar" />
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar" />
+    <property name="jboss_login_module.jar" value="${tcs_libdir}/jboss_login_module/2.0.0/jboss_login_module.jar" />
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar" />
+    <property name="user_group_manager.jar" value="${tcs_libdir}/user_group_manager/1.0.1/user_group_manager.jar" />
+    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar" />
+    <property name="db_connection_factory.jar" value="${tcs_libdir}/db_connection_factory/1.1/db_connection_factory.jar" />
+    <property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar" />
+    <property name="configuration_persistence.jar" value="${tcs_libdir}/configuration_persistence/1.0.0/configuration_persistence.jar" />
+    <property name="configuration_manager.jar" value="${tcs_libdir}/configuration_manager/2.1.5/configuration_manager.jar" />
   
     <!-- the required path elements must be defined even if empty -->
     <path id="component.tcs-dependencies">
@@ -86,9 +36,7 @@
     <property name="mockejb.jar" value="${ext_libdir}/mockejb/0.6/mockejb.jar" />
     <property name="cglib.jar" value="${ext_libdir}/hibernate/3.2/cglib-2.1.3.jar" />
     <property name="asm.jar" value="${ext_libdir}/hibernate/3.2/asm.jar" />
-   
-
-  
+    
     <path id="component.3rdParty-dependencies">
         <pathelement location="${jboss-ejb3x.jar}" />
         <pathelement location="${ejb3-persistence.jar}" />
@@ -96,7 +44,9 @@
         <pathelement location="${jbossall-client.jar}" />
         <pathelement location="${log4j.jar}" />
     </path>
-    <path id="component.test.3rdParty-dependencies">
+
+    <path id="component.test.3rdParty-dependencies">    
+        <pathelement location="${junit.jar}" />    
         <pathelement location="${jdbc.informix.jar}" />
         <pathelement location="${mockejb.jar}" />
         <pathelement location="${cglib.jar}" />    

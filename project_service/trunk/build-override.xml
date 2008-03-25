@@ -9,73 +9,102 @@
   <property name="component.ear" value="${component.ear.dir}/${distfilename}.ear" />
   <property name="package.dir" value="${builddir}/package" />
 
-  <target name="package.ejb" depends="compile, compile_tests">
-    <delete dir="${package.dir}" />
 
-    <copy todir="${package.dir}" overwrite="true">
-      <fileset dir="${build_classdir}">
-        <include name="**/*" />
-      </fileset>
-    </copy>
+    <!-- overrides the test.setup and test.teardown macros -->
+    <macrodef name="test.setup">
+        <sequential>
+            <delete dir="${package.dir}" />
 
-    <copy todir="${package.dir}" overwrite="true">
-      <fileset dir="${build_testclassdir}">
-        <include name="**/*" />
-      </fileset>
-    </copy>
+            <copy todir="${package.dir}" overwrite="true">
+              <fileset dir="${build_classdir}">
+                <include name="**/*" />
+              </fileset>
+            </copy>
 
-    <copy todir="${package.dir}" overwrite="true">
-      <fileset dir="${testfiles}">
-        <include name="users.properties" />
-        <include name="roles.properties" />
-      </fileset>
-    </copy>
+            <copy todir="${package.dir}" overwrite="true">
+              <fileset dir="${build_testclassdir}">
+                <include name="**/*" />
+              </fileset>
+            </copy>
 
-    <mkdir dir="${component.ejb.dir}" />
-    <jar basedir="${package.dir}" destfile="${component.ejb.jar}">
-      <metainf dir="${testfiles}/ejb">
-      </metainf>
-    </jar>
-  </target>
+            <copy todir="${package.dir}" overwrite="true">
+              <fileset dir="${testfiles}">
+                <include name="users.properties" />
+                <include name="roles.properties" />
+              </fileset>
+            </copy>
 
-  <target name="deployEAR" depends="package.ejb">
-    <delete file="${component.ear}" failonerror="false" />
+            <mkdir dir="${component.ejb.dir}" />
+            <jar basedir="${package.dir}" destfile="${component.ejb.jar}">
+              <metainf dir="${testfiles}/ejb">
+              </metainf>
+            </jar>  
 
-    <mkdir dir="${component.ear.dir}" />
+            <delete file="${component.ear}" failonerror="false" />
+            <mkdir dir="${component.ear.dir}" />
 
-    <!-- copy informix driver to jboss -->    
-    <copy file="${test_reflib}\authentication_factory\2.0\authentication_factory.jar" todir="${component.ear.dir}" overwrite="true" />
-    <copy file="${test_reflib}\authentication_manager\1.0.2\authentication_manager.jar" todir="${component.ear.dir}" overwrite="true" />
-    <copy file="${test_reflib}\data_entitlement\1.1.4\data_entitlement.jar" todir="${component.ear.dir}" overwrite="true" />
-    <copy file="${test_reflib}\functional_entitlement\1.0.3\functional_entitlement.jar" todir="${component.ear.dir}" overwrite="true" />
-    <copy file="${test_reflib}\object_factory\2.0.1\object_factory.jar" todir="${component.ear.dir}" overwrite="true" />
-    <copy file="${test_reflib}\object_factory_configuration_api_plugin\1.0.0\object_factory_configuration_api_plugin.jar" todir="${component.ear.dir}" overwrite="true" />
-    <copy file="${test_reflib}\search_builder\1.3.2\search_builder.jar" todir="${component.ear.dir}" overwrite="true" />
-    <copy file="${test_reflib}\security_facade\2.1.1\security_facade.jar" todir="${component.ear.dir}" overwrite="true" />
+            <!-- copy informix driver to jboss -->    
+            <copy file="${test_reflib}\auditor\2.0.2\auditor.jar" todir="${component.ear.dir}" overwrite="true" />     
+            <copy file="${test_reflib}\authentication_factory\2.0\authentication_factory.jar" todir="${component.ear.dir}" overwrite="true" />
+            <copy file="${test_reflib}\authentication_manager\1.0.2\authentication_manager.jar" todir="${component.ear.dir}" overwrite="true" />
+            <copy file="${test_reflib}\data_entitlement\1.1.4\data_entitlement.jar" todir="${component.ear.dir}" overwrite="true" />
+            <copy file="${test_reflib}\functional_entitlement\1.0.3\functional_entitlement.jar" todir="${component.ear.dir}" overwrite="true" />
+            <copy file="${test_reflib}\object_factory\2.0.1\object_factory.jar" todir="${component.ear.dir}" overwrite="true" />
+            <copy file="${test_reflib}\object_factory_configuration_api_plugin\1.0.0\object_factory_configuration_api_plugin.jar" todir="${component.ear.dir}" overwrite="true" />
+            <copy file="${test_reflib}\search_builder\1.3.2\search_builder.jar" todir="${component.ear.dir}" overwrite="true" />
+            <copy file="${test_reflib}\security_facade\2.1.1\security_facade.jar" todir="${component.ear.dir}" overwrite="true" />
 
-    <copy file="${test_reflib}\auditor\2.0.2\auditor.jar" todir="${component.ear.dir}" overwrite="true" />     
-    <copy file="${typesafe_enum.jar}" todir="${component.ear.dir}" overwrite="true" />
-    <copy file="${jboss_login_module.jar}" todir="${component.ear.dir}" overwrite="true" />
-    <copy file="${base_exception.jar}" todir="${component.ear.dir}" overwrite="true" />
-    <copy file="${logging_wrapper.jar}" todir="${component.ear.dir}" overwrite="true" />
-    <copy file="${user_group_manager.jar}" todir="${component.ear.dir}" overwrite="true" />
-    <copy file="${object_formatter.jar}" todir="${component.ear.dir}" overwrite="true" />
-    <copy file="${logging_wrapper.jar}" todir="${component.ear.dir}" overwrite="true" />
-    <copy file="${configuration_api.jar}" todir="${component.ear.dir}" overwrite="true" />
-    <copy file="${configuration_persistence.jar}" todir="${component.ear.dir}" overwrite="true" />
-    <copy file="${configuration_manager.jar}" todir="${component.ear.dir}" overwrite="true" />
-    <copy file="${testfiles}/lib/mock.jar" todir="${component.ear.dir}" overwrite="true" />
-    <copy file="${jdbc.informix.jar}" todir="${component.ear.dir}" overwrite="true" />
+            <copy file="${typesafe_enum.jar}" todir="${component.ear.dir}" overwrite="true" />
+            <copy file="${jboss_login_module.jar}" todir="${component.ear.dir}" overwrite="true" />
+            <copy file="${base_exception.jar}" todir="${component.ear.dir}" overwrite="true" />
+            <copy file="${logging_wrapper.jar}" todir="${component.ear.dir}" overwrite="true" />
+            <copy file="${user_group_manager.jar}" todir="${component.ear.dir}" overwrite="true" />
+            <copy file="${object_formatter.jar}" todir="${component.ear.dir}" overwrite="true" />
+            <copy file="${logging_wrapper.jar}" todir="${component.ear.dir}" overwrite="true" />
+            <copy file="${configuration_api.jar}" todir="${component.ear.dir}" overwrite="true" />
+            <copy file="${configuration_persistence.jar}" todir="${component.ear.dir}" overwrite="true" />
+            <copy file="${configuration_manager.jar}" todir="${component.ear.dir}" overwrite="true" />
+            <copy file="${testfiles}/lib/mock.jar" todir="${component.ear.dir}" overwrite="true" />
+            <copy file="${jdbc.informix.jar}" todir="${component.ear.dir}" overwrite="true" />
 
-    <copy file="${component.ejb.jar}" todir="${component.ear.dir}" overwrite="true" />
-    <copy file="${testfiles}/informix-ds.xml" todir="${component.ear.dir}" overwrite="true" />
-    <ear earfile="${component.ear}" basedir="${component.ear.dir}" appxml="${testfiles}/ear/application.xml" />
+            <copy file="${component.ejb.jar}" todir="${component.ear.dir}" overwrite="true" />
+            <copy file="${testfiles}/informix-ds.xml" todir="${component.ear.dir}" overwrite="true" />
+            <ear earfile="${component.ear}" basedir="${component.ear.dir}" appxml="${testfiles}/ear/application.xml" />
 
-    <!-- deploy the genereated ear file -->
-    <copy file="${component.ear}" todir="${jboss_home}/server/${jboss_config_name}/deploy" />
-  </target>
+            <!-- deploy the genereated ear file -->
+            <copy file="${component.ear}" todir="${jboss_home}/server/${jboss_config_name}/deploy" />        
+        </sequential>
+    </macrodef>
 
-  <target name="undeployEAR">
-    <delete file="${jboss_home}/server/${jboss_config_name}/deploy/${distfilename}.ear" />
-  </target>     
+    <macrodef name="test.execute">
+        <!-- standard test task -->
+        <sequential>
+            <mkdir dir="${testlogdir}"/>
+            <mkdir dir="${instrumented.dir}"/>
+            <delete file="${cobertura.datafile}"/>
+            <cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
+                <!-- all included -->
+                <fileset dir="${build_classdir}">
+                    <include name="**/*.class"/>
+                </fileset>
+            </cobertura-instrument>
+            <junit fork="true" haltonerror="false">
+                <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}"/>
+                <classpath location="${instrumented.dir}"/>
+                <classpath location="${build_testclassdir}"/>
+                <classpath refid="test.build.classpath"/>
+                <classpath refid="cobertura.classpath"/>
+                <test name="${package}.AllTests" todir="${testlogdir}">
+                    <formatter type="plain" usefile="true"/>
+                    <formatter type="xml" usefile="true"/>
+                </test>
+            </junit>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="test.teardown">
+        <sequential>
+            <delete file="${jboss_home}/server/${jboss_config_name}/deploy/${distfilename}.ear" />
+        </sequential>
+    </macrodef>  
 </project>

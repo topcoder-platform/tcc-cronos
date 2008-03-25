@@ -121,7 +121,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -147,7 +147,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -173,7 +173,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -199,7 +199,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -225,7 +225,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -252,7 +252,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -278,7 +278,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -318,7 +318,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -344,7 +344,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -370,7 +370,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -395,7 +395,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -420,7 +420,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -446,7 +446,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -472,7 +472,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -498,7 +498,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -524,7 +524,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -550,7 +550,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -576,7 +576,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -601,7 +601,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -626,7 +626,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -652,7 +652,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }
@@ -678,7 +678,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
             projectService.getAllProjects();
             fail("Expected ConfigurationException.");
         } catch (RuntimeException e) {
-            assertTrue("Fail to construct.", e.getCause() instanceof InvocationTargetException);
+            assertTrue("Fail to construct." + e.getCause(), e.getCause() instanceof InvocationTargetException);
             InvocationTargetException exception = (InvocationTargetException) e.getCause();
             assertTrue("Expect ConfigurationException cause.", exception.getCause() instanceof ConfigurationException);
         }

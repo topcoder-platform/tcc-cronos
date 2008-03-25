@@ -56,10 +56,10 @@ TO RUN:
     7.3. change demoConfigs.properties, using the correct path for JBossLoginModule.xml.
     
 8. Run Tests
+
     8.1. start Jboss 4.2.2
-    8.2. use 'ant deployEAR', to package ear file and deploy to jboss, a latest built is alredy saved as test_files/project_service.ear.
-    8.3. use 'ant test' to run the test cases.
-    8.4. 'ant undeployEAR' is used to delete the ear file in JBoss. and 'ant package.ejb' is used to package the ejb jar.
+    
+    8.2. use 'ant test' to run the test cases.
         
 NB:
 	The folder ${basedir}/test_reflib contains TopCoder components 
