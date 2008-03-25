@@ -64,11 +64,10 @@
     <module>
         <java>typesafe_enum.jar</java>
     </module>
-    <!--
+
     <module>
         <java>ifxjdbc.jar</java>
     </module>
-    -->
     
     <module>
         <java>informix-ds.xml</java>
