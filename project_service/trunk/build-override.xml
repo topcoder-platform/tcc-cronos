@@ -66,6 +66,7 @@
             <copy file="${configuration_manager.jar}" todir="${component.ear.dir}" overwrite="true" />
             <copy file="${testfiles}/lib/mock.jar" todir="${component.ear.dir}" overwrite="true" />
             <copy file="${jdbc.informix.jar}" todir="${component.ear.dir}" overwrite="true" />
+                       
 
             <copy file="${component.ejb.jar}" todir="${component.ear.dir}" overwrite="true" />
             <copy file="${testfiles}/informix-ds.xml" todir="${component.ear.dir}" overwrite="true" />
