@@ -2,9 +2,6 @@
     <!-- macrodef override definition in order to change the standard behaviour from
          build.xml/build_dist.xml
      -->
-  
-
-
     <macrodef name="test.setup">
         <sequential>
             <property name="jboss_libdir" value="${jboss_home}/server/${jboss_config_name}/lib" />
@@ -64,7 +61,7 @@
             <copy file="${test_reflib}\object_factory\2.0.1\object_factory.jar" todir="${component.ear.dir}" overwrite="true" />
             <copy file="${test_reflib}\object_factory_configuration_api_plugin\1.0.0\object_factory_configuration_api_plugin.jar" todir="${component.ear.dir}" overwrite="true" />
             <copy file="${test_reflib}\data_entitlement\1.1.4\data_entitlement.jar" todir="${component.ear.dir}" overwrite="true" />
-<!--            <copy file="${test_reflib}\auditor\2.0.2\auditor.jar" todir="${component.ear.dir}" overwrite="true" />             -->
+
             <copy file="${test_reflib}\authentication_factory\2.0\authentication_factory.jar" todir="${component.ear.dir}" overwrite="true" />          
             <copy file="${test_reflib}\authentication_manager\1.0.3\authentication_manager.jar" todir="${component.ear.dir}" overwrite="true" /> 
                 
@@ -74,15 +71,12 @@
             <copy file="${logging_wrapper.jar}" todir="${component.ear.dir}" overwrite="true" />
             <copy file="${object_formatter.jar}" todir="${component.ear.dir}" overwrite="true" />
             <copy file="${typesafe_enum.jar}" todir="${component.ear.dir}" overwrite="true" />
-            <!--<copy file="${jdbc.informix.jar}" todir="${component.ear.dir}" overwrite="true" />-->
+
             <copy file="${jboss_login_module.jar}" todir="${component.ear.dir}" overwrite="true" />         
             <copy file="${testfiles}/informix-ds.xml" todir="${component.ear.dir}" overwrite="true" />
             <ear earfile="${component.ear}" basedir="${component.ear.dir}" appxml="${testfiles}/ear/application.xml" />
 
             <copy file="${component.ear}" todir="${deploy-dir}" />
-
-            <!-- backup the genereated ear file -->
-            <copy file="${component.ear}" todir="${testfiles}" />
 
         </sequential>
     </macrodef>
