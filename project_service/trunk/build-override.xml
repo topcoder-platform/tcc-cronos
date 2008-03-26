@@ -72,38 +72,13 @@
             <copy file="${object_formatter.jar}" todir="${component.ear.dir}" overwrite="true" />
             <copy file="${typesafe_enum.jar}" todir="${component.ear.dir}" overwrite="true" />
 
+            <copy file="${jdbc.informix.jar}" todir="${component.ear.dir}" overwrite="true" />
             <copy file="${jboss_login_module.jar}" todir="${component.ear.dir}" overwrite="true" />         
             <copy file="${testfiles}/informix-ds.xml" todir="${component.ear.dir}" overwrite="true" />
             <ear earfile="${component.ear}" basedir="${component.ear.dir}" appxml="${testfiles}/ear/application.xml" />
 
             <copy file="${component.ear}" todir="${deploy-dir}" />
 
-        </sequential>
-    </macrodef>
-
-    <macrodef name="test.execute">
-        <!-- standard test task -->
-        <sequential>
-            <mkdir dir="${testlogdir}"/>
-            <mkdir dir="${instrumented.dir}"/>
-            <delete file="${cobertura.datafile}"/>
-            <cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
-                <!-- all included -->
-                <fileset dir="${build_classdir}">
-                    <include name="**/*.class"/>
-                </fileset>
-            </cobertura-instrument>
-            <junit fork="true" haltonerror="false">
-                <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}"/>
-                <classpath location="${instrumented.dir}"/>
-                <classpath location="${build_testclassdir}"/>
-                <classpath refid="test.build.classpath"/>
-                <classpath refid="cobertura.classpath"/>
-                <test name="${package}.AllTests" todir="${testlogdir}">
-                    <formatter type="plain" usefile="true"/>
-                    <formatter type="xml" usefile="true"/>
-                </test>
-            </junit>
         </sequential>
     </macrodef>
 
