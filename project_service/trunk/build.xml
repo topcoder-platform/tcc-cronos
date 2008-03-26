@@ -387,7 +387,7 @@
         <jar jarfile="${dev_submission.jar}"
              basedir="."
              includes="build-dependencies.xml,
-		       README,   
+		       README,
                        ${configdir}/**,
                        ${javamain}/**/*.java,
                        ${javatests}/${packagedir}/**,
