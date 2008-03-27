@@ -308,15 +308,10 @@
         </copy>
 
         <mkdir dir="${dist_coverage}"/>
-        <mkdir dir="${docs_coverage}"/>
 
         <copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
-        <copy file="${testlogdir}/cobertura.ser" todir="${docsdir}"/>
 
         <copy todir="${dist_coverage}">
-            <fileset dir="${testlogdir}/coverage"/>
-        </copy>
-        <copy todir="${docs_coverage}">
             <fileset dir="${testlogdir}/coverage"/>
         </copy>
 
@@ -387,7 +382,7 @@
         <jar jarfile="${dev_submission.jar}"
              basedir="."
              includes="build-dependencies.xml,
-		       README,
+		       README,   
                        ${configdir}/**,
                        ${javamain}/**/*.java,
                        ${javatests}/${packagedir}/**,
