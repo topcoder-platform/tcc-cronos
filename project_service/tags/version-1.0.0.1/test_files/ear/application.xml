@@ -1,0 +1,75 @@
+<!DOCTYPE application PUBLIC "-//Sun Microsystems, Inc.//DTD J2EE Application 1.3//EN"
+ "http://java.sun.com/dtd/application_1_3.dtd">
+<application>
+    <display-name>Client Associations</display-name>
+
+
+    <!-- Descriptor only ejb deployment (the classes are deployed as java modules) -->
+    <module>
+        <ejb>project_service.jar</ejb>
+    </module>
+
+    <module>
+        <java>auditor.jar</java>
+    </module>
+    <module>
+        <java>authentication_factory.jar</java>
+    </module>
+    <module>
+        <java>authentication_manager.jar</java>
+    </module>
+    <module>
+        <java>configuration_api.jar</java>
+    </module>
+    <module>
+        <java>configuration_persistence.jar</java>
+    </module>
+    <module>
+        <java>data_entitlement.jar</java>
+    </module>
+    <module>
+        <java>functional_entitlement.jar</java>
+    </module>
+    <module>
+        <java>jboss_login_module.jar</java>
+    </module>
+    <module>
+        <java>mock.jar</java>
+    </module>
+    <module>
+        <java>object_factory.jar</java>
+    </module>
+    <module>
+        <java>object_factory_configuration_api_plugin.jar</java>
+    </module>
+    <module>
+        <java>search_builder.jar</java>
+    </module>
+    <module>
+        <java>security_facade.jar</java>
+    </module>
+    <module>
+        <java>user_group_manager.jar</java>
+    </module>
+    
+    <module>
+        <java>base_exception.jar</java>
+    </module>
+    <module>
+        <java>logging_wrapper.jar</java>
+    </module>
+    <module>
+        <java>object_formatter.jar</java>
+    </module>
+    <module>
+        <java>typesafe_enum.jar</java>
+    </module>
+
+    <module>
+        <java>ifxjdbc.jar</java>
+    </module>
+    
+    <module>
+        <java>informix-ds.xml</java>
+    </module>
+</application>
