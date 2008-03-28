@@ -47,7 +47,7 @@ public class IdGeneratorFailureTests extends TestCase {
      */
     protected void setUp() throws Exception {
         MockContextFactory.setAsInitial();
-        SessionBeanDescriptor beanDescriptor = new SessionBeanDescriptor("java:ejb/IDGeneratorHome",
+        SessionBeanDescriptor beanDescriptor = new SessionBeanDescriptor("java:comp/ejb/IDGeneratorHome",
                 IDGeneratorHome.class, IDGenerator.class, new IDGeneratorBean());
         new MockContainer(new InitialContext()).deploy(beanDescriptor);
         generator = new IdGenerator();
