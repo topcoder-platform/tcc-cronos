@@ -1,0 +1,107 @@
+<ejb-jar xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd"
+         version="3.0">
+
+    <!-- This is the EJB declaration. It's minimal because the component uses the annotations to declare
+         home and local interface -->
+    <enterprise-beans>
+        <session>
+            <description>Submission bean</description>
+            <ejb-name>SubmissionManager</ejb-name>
+            <remote>com.topcoder.service.studio.submission.SubmissionManagerRemote</remote>
+            <ejb-class>com.topcoder.service.studio.SubmissionManagerImpl</ejb-class>
+
+            <session-type>Stateless</session-type>
+            <transaction-type>Bean</transaction-type>
+        </session>
+
+
+        <session>
+            <description>Correct configuration, used in most of the tests</description>
+            <ejb-name>StudioService</ejb-name>
+            <ejb-class>com.topcoder.service.studio.ejb.StudioServiceBean</ejb-class>
+            <env-entry>
+                <env-entry-name>logName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>studio_log</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>env/draftStatusId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>2</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>submissionPaidStatusId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>5</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>submissionUnpaidStatusId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>8</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>submissionMarkedForPurchaseStatusId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>9</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>submissionPassedStatus</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>21</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>submissionContentBaseURI</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>http://studio.topcoder.com/?module=DownloadSubmission</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>submissionContentSubmissionIdParameterName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>sbmid</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>submissionContentSubmissionTypeParameterName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>sbt</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>submissionContentPaidParameterValue</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>full</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>submissionContentUnpaidParameterValue</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>tiny</env-entry-value>
+            </env-entry>
+
+            <!--
+            <ejb-ref>
+                <ejb-ref-name>SubmissionManager</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <remote>com.topcoder.service.studio.submission.SubmissionManagerRemote</remote>
+                <ejb-link>SubmissionManager</ejb-link>
+                <injection-target>
+                    <injection-target-class>com.topcoder.service.studio.ejb.StudioServiceBean</injection-target-class>
+                    <injection-target-name>submissionManager</injection-target-name>
+                </injection-target>
+            </ejb-ref>
+            -->
+            <!--
+            <ejb-local-ref>
+              <ejb-ref-name>smref</ejb-ref-name>
+              <ejb-ref-type>Session</ejb-ref-type>
+              <local>com.topcoder.service.studio.submission.SubmissionManagerRemote</local>
+              <ejb-link>SubmissionManager</ejb-link>
+              <injection-target>
+                <injection-target-class>com.hermes.eventdb.pcd.updater.mdb.PCDUpdaterMDB</injection-target-class>
+                <injection-target-name>pcdUpdater</injection-target-name>
+              </injection-target>
+            </ejb-local-ref>
+            -->
+        </session>
+
+    </enterprise-beans>
+</ejb-jar>

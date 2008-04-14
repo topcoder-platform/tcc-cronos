@@ -1,0 +1,265 @@
+Testsuite: com.topcoder.service.studio.AllTests
+Tests run: 179, Failures: 0, Errors: 0, Time elapsed: 0,175 sec
+------------- Standard Output ---------------
+Leave method init.
+Leave method init.
+Enter method createContest with parameters [com.topcoder.service.studio.ContestData@1b10d42, 5].
+Leave method createContest with return value com.topcoder.service.studio.ContestData@dd87b2.
+Leave method init.
+Enter method createContest with parameters [com.topcoder.service.studio.ContestData@67ac19, 5].
+Leave method createContest with return value com.topcoder.service.studio.ContestData@e80a59.
+Enter method getContest with parameters [33].
+Leave method getContest with return value com.topcoder.service.studio.ContestData@9f2a0b.
+Leave method init.
+Enter method getContestsForProject with parameters [5].
+ContestManager reports error while retrieving contest.
+com.topcoder.service.studio.contest.ContestManagementException: exception was requested
+	at com.topcoder.service.studio.ContestManagerImpl.checkErrorRequest(ContestManagerImpl.java:46)
+	at com.topcoder.service.studio.ContestManagerImpl.getContestsForProject(ContestManagerImpl.java:107)
+	at com.topcoder.service.studio.ejb.StudioServiceBean.getContestsForProject(StudioServiceBean.java:304)
+	at com.topcoder.service.studio.ejb.StudioServiceBeanTest.testGetContestsForProjectForError(StudioServiceBeanTest.java:308)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:164)
+	at junit.framework.TestCase.runBare(TestCase.java:130)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:120)
+	at junit.framework.TestSuite.runTest(TestSuite.java:228)
+	at junit.framework.TestSuite.run(TestSuite.java:223)
+	at junit.framework.TestSuite.runTest(TestSuite.java:228)
+	at junit.framework.TestSuite.run(TestSuite.java:223)
+	at junit.framework.TestSuite.runTest(TestSuite.java:228)
+	at junit.framework.TestSuite.run(TestSuite.java:223)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Leave method init.
+Enter method createContest with parameters [com.topcoder.service.studio.ContestData@4b222f, 5].
+Leave method createContest with return value com.topcoder.service.studio.ContestData@b169f8.
+Enter method updateContestStatus with parameters [33, 7].
+Leave method updateContestStatus.
+Leave method init.
+Enter method createContest with parameters [com.topcoder.service.studio.ContestData@b0f13d, 5].
+Leave method createContest with return value com.topcoder.service.studio.ContestData@ae000d.
+Enter method updateContestStatus with parameters [33, 55].
+Only administrator can perform this action.
+Leave method init.
+Enter method updateContestStatus with parameters [100, 7].
+No contest with id 100.
+No contest with id 100.
+Leave method init.
+Enter method createContest with parameters [com.topcoder.service.studio.ContestData@9fbe93, 5].
+Leave method createContest with return value com.topcoder.service.studio.ContestData@198dfaf.
+Enter method updateContestStatus with parameters [33, 8].
+can't find Status with id 8 in persistence.
+com.topcoder.service.studio.contest.EntityNotFoundException: No even stutus ids.
+	at com.topcoder.service.studio.ContestManagerImpl.updateContestStatus(ContestManagerImpl.java:151)
+	at com.topcoder.service.studio.ejb.StudioServiceBean.updateContestStatus(StudioServiceBean.java:376)
+	at com.topcoder.service.studio.ejb.StudioServiceBeanTest.testUpdateContestStatusForMissedStatus(StudioServiceBeanTest.java:459)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:164)
+	at junit.framework.TestCase.runBare(TestCase.java:130)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:120)
+	at junit.framework.TestSuite.runTest(TestSuite.java:228)
+	at junit.framework.TestSuite.run(TestSuite.java:223)
+	at junit.framework.TestSuite.runTest(TestSuite.java:228)
+	at junit.framework.TestSuite.run(TestSuite.java:223)
+	at junit.framework.TestSuite.runTest(TestSuite.java:228)
+	at junit.framework.TestSuite.run(TestSuite.java:223)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Leave method init.
+Enter method retrieveAllSubmissionsByMember with parameters [3].
+Leave method retrieveAllSubmissionsByMember with return value [com.topcoder.service.studio.SubmissionData@11a698a, com.topcoder.service.studio.SubmissionData@107077e].
+------------- ---------------- ---------------
+
+Testcase: test took 0,093 sec
+Testcase: testInit took 0,018 sec
+Testcase: testGetters took 0 sec
+Testcase: testCreateContest took 0,001 sec
+Testcase: testCreateContestWithDocuments took 0,003 sec
+Testcase: testCreateContestForAuthorizationFail took 0,005 sec
+Testcase: testGetContest took 0,003 sec
+Testcase: testGetContestWithDocuments took 0 sec
+Testcase: testGetContestForAuthorizationFail took 0 sec
+Testcase: testGetContestForNoContest took 0,002 sec
+Testcase: testGetContestsForProject took 0,001 sec
+Testcase: testGetContestsForProjectForError took 0,002 sec
+Testcase: testUpdateContest took 0,001 sec
+Testcase: testUpdateWithDocuments took 0,001 sec
+Testcase: testUpdateContestForUserAuthorization took 0,001 sec
+Testcase: testUpdateContestForMissedId took 0 sec
+Testcase: testUpdateContestStatus took 0,001 sec
+Testcase: testUpdateContestStatusForAuthorizationFail took 0 sec
+Testcase: testUpdateContestStatusForMissedContest took 0,001 sec
+Testcase: testUpdateContestStatusForMissedStatus took 0,002 sec
+Testcase: testUpdateContestStatusForForbiddenStatus took 0,002 sec
+Testcase: testUploadDocumentForContest took 0 sec
+Testcase: testUploadDocumentForContestForMissedContest took 0 sec
+Testcase: testRemoveDocumentForContest took 0,001 sec
+Testcase: testRemoveDocumentFromContestForMissedDocument took 0,001 sec
+Testcase: testGetAllContestCategories took 0,003 sec
+Testcase: testGetAllContestStatuses took 0,003 sec
+Testcase: testRetrieveSubmissionsForContest took 0,006 sec
+Testcase: testRetrieveSubmissionsForMissedContest took 0 sec
+Testcase: testRetrieveAllSubmissionsByMember took 0,001 sec
+Testcase: testRetrieveAllSubmissionsByMemberForNotAdmin took 0 sec
+Testcase: testSubmissionFileTypes took 0 sec
+Testcase: testSubmissionFileTypesForError took 0,001 sec
+Testcase: testUpdateSubmission took 0 sec
+Testcase: testRemoveSubmission took 0 sec
+Testcase: testCreateContestForNull took 0,001 sec
+Testcase: testCreateContestForNegative took 0,001 sec
+Testcase: testGetContestForNegative took 0 sec
+Testcase: testGetContestsForProjectForNegative took 0 sec
+Testcase: testUpdateContestForNull took 0 sec
+Testcase: testUpdateContestStatusForNegative1 took 0 sec
+Testcase: testUpdateContestStatusForNegative2 took 0 sec
+Testcase: testUploadDocumentForContestForNull took 0,001 sec
+Testcase: testRemoveDocumentFromContestForNull took 0 sec
+Testcase: testRetrieveSubmissionsForContestForNegative took 0 sec
+Testcase: testRetrieveAllSubmissionsByMemberForNegative took 0 sec
+Testcase: testUpdateSubmissionForNull took 0 sec
+Testcase: testRemoveSubmissionForNegative took 0 sec
+Testcase: testContestCategoryId took 0 sec
+Testcase: testContestName took 0 sec
+Testcase: testContestDescription took 0 sec
+Testcase: testContestCategory took 0 sec
+Testcase: testContestCategoryId took 0,001 sec
+Testcase: testContestId took 0 sec
+Testcase: testProjectId took 0 sec
+Testcase: testTcDirectProjectId took 0 sec
+Testcase: testDurationInHours took 0 sec
+Testcase: testCreatorUserId took 0 sec
+Testcase: testName took 0 sec
+Testcase: testShortSummary took 0 sec
+Testcase: testContestDescriptionAndRequirements took 0 sec
+Testcase: testRequiredOrRestrictedColors took 0 sec
+Testcase: testRequiredOrRestrictedFonts took 0 sec
+Testcase: testSizeRequirements took 0 sec
+Testcase: testOtherRequirementsOrRestrictions took 0 sec
+Testcase: testFinalFileFormat took 0 sec
+Testcase: testOtherFileFormats took 0 sec
+Testcase: testLaunchDateAndTime took 0 sec
+Testcase: testWinnerAnnoucementDeadline took 0,001 sec
+Testcase: testDocumentationUploads took 0 sec
+Testcase: testSetDocumentationUploadsForNull took 0 sec
+Testcase: testContestPayloads took 0,002 sec
+Testcase: testSetContestPayloadsForNull took 0 sec
+Testcase: testPrizes took 0 sec
+Testcase: testSetPrizesForNull took 0 sec
+Testcase: testName took 0 sec
+Testcase: testValue took 0 sec
+Testcase: testRequired took 0 sec
+Testcase: testName took 0 sec
+Testcase: testStatusId took 0 sec
+Testcase: testDescription took 0 sec
+Testcase: testAllowableNextStatus took 0,001 sec
+Testcase: testSetAllowableNextStatusForNull took 0 sec
+Testcase: testPlace took 0 sec
+Testcase: testAmount took 0 sec
+Testcase: testContestId took 0 sec
+Testcase: testSubmissionId took 0 sec
+Testcase: testSubmitterId took 0 sec
+Testcase: testPlacement took 0 sec
+Testcase: testPrice took 0 sec
+Testcase: testSubmissionContent took 0 sec
+Testcase: testPassedScreening took 0 sec
+Testcase: testPaidFor took 0 sec
+Testcase: testMarkedForPurchase took 0 sec
+Testcase: testSubmittedDate took 0,003 sec
+Testcase: testContestId took 0 sec
+Testcase: testDescription took 0 sec
+Testcase: testDocumentId took 0 sec
+Testcase: testDocumentTypeId took 0 sec
+Testcase: testMimeTypeId took 0 sec
+Testcase: testFileName took 0,001 sec
+Testcase: testPath took 0 sec
+Testcase: testFile took 0 sec
+Testcase: testConstructor took 0 sec
+Testcase: testContestIdNotFound took 0 sec
+Testcase: testConstructor took 0 sec
+Testcase: testDocumentIdNotFound took 0 sec
+Testcase: testConstructor took 0 sec
+Testcase: testIllegalArgumentMessage took 0 sec
+Testcase: testConstructor took 0 sec
+Testcase: testPersistenceMessage took 0 sec
+Testcase: testConstructor took 0,001 sec
+Testcase: testProjectIdNotFound took 0 sec
+Testcase: testConstructor took 0 sec
+Testcase: testStatusIdNotAllowed took 0 sec
+Testcase: testConstructor took 0 sec
+Testcase: testStatusIdNotFound took 0 sec
+Testcase: testConstructor took 0 sec
+Testcase: testUserIdNotAuthorized took 0,001 sec
+Testcase: testConstructor1 took 0 sec
+Testcase: testConstructor2 took 0 sec
+Testcase: testConstructor3 took 0 sec
+Testcase: testConstructor4 took 0 sec
+Testcase: testConstructor1 took 0 sec
+Testcase: testConstructor2 took 0 sec
+Testcase: testConstructor3 took 0 sec
+Testcase: testConstructor4 took 0 sec
+Testcase: testConstructor1ForNullFault took 0 sec
+Testcase: testConstructor2ForNullFault took 0 sec
+Testcase: testConstructor5 took 0 sec
+Testcase: testConstructor6 took 0,001 sec
+Testcase: testConstructor1 took 0 sec
+Testcase: testConstructor2 took 0 sec
+Testcase: testConstructor3 took 0 sec
+Testcase: testConstructor4 took 0 sec
+Testcase: testConstructor1ForNullFault took 0 sec
+Testcase: testConstructor2ForNullFault took 0 sec
+Testcase: testConstructor5 took 0 sec
+Testcase: testConstructor6 took 0 sec
+Testcase: testConstructor1 took 0,001 sec
+Testcase: testConstructor2 took 0 sec
+Testcase: testConstructor3 took 0 sec
+Testcase: testConstructor4 took 0 sec
+Testcase: testConstructor1ForNullFault took 0 sec
+Testcase: testConstructor2ForNullFault took 0 sec
+Testcase: testConstructor5 took 0 sec
+Testcase: testConstructor6 took 0 sec
+Testcase: testConstructor1 took 0 sec
+Testcase: testConstructor2 took 0 sec
+Testcase: testConstructor3 took 0 sec
+Testcase: testConstructor4 took 0 sec
+Testcase: testConstructor1ForNullFault took 0 sec
+Testcase: testConstructor2ForNullFault took 0 sec
+Testcase: testConstructor5 took 0 sec
+Testcase: testConstructor6 took 0 sec
+Testcase: testConstructor1 took 0 sec
+Testcase: testConstructor2 took 0 sec
+Testcase: testConstructor3 took 0 sec
+Testcase: testConstructor4 took 0 sec
+Testcase: testConstructor1ForNullFault took 0 sec
+Testcase: testConstructor2ForNullFault took 0 sec
+Testcase: testConstructor5 took 0 sec
+Testcase: testConstructor6 took 0 sec
+Testcase: testConstructor1 took 0 sec
+Testcase: testConstructor2 took 0 sec
+Testcase: testConstructor1ForNullFault took 0 sec
+Testcase: testConstructor1 took 0,001 sec
+Testcase: testConstructor2 took 0 sec
+Testcase: testConstructor3 took 0 sec
+Testcase: testConstructor4 took 0 sec
+Testcase: testConstructor1ForNullFault took 0 sec
+Testcase: testConstructor2ForNullFault took 0 sec
+Testcase: testConstructor5 took 0 sec
+Testcase: testConstructor6 took 0 sec
+Testcase: testConstructor1 took 0 sec
+Testcase: testConstructor2 took 0 sec
+Testcase: testConstructor1ForNullFault took 0 sec
+Testcase: testCheckNull1 took 0 sec
+Testcase: testCheckNull2 took 0 sec
