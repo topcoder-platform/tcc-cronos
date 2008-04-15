@@ -1002,6 +1002,52 @@
 </INDEX>
 </INDICES>
 </TABLE>
+<TABLE ID="5254" Tablename="comp_dependencies" PrevTableName="" XPos="335" YPos="23" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="21" >
+<COLUMNS>
+<COLUMN ID="5255" ColName="comp_dependency_id" PrevColName="" Pos="1" idDatatype="12" DatatypeParams="(12,0)" Width="0" Prec="0" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="5256" ColName="comp_vers_id" PrevColName="" Pos="2" idDatatype="12" DatatypeParams="(12,0)" Width="0" Prec="0" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="5257" ColName="child_comp_vers_id" PrevColName="" Pos="3" idDatatype="12" DatatypeParams="(12,0)" Width="0" Prec="0" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+</COLUMNS>
+<INDICES>
+<INDEX ID="5260" IndexName="PRIMARY" IndexKind="0" FKRefDef_Obj_id="-1">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="5255" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="5261" IndexName="fk_comp_tech1" IndexKind="1" FKRefDef_Obj_id="-1">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="5256" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="5262" IndexName="fk_comp_tech2" IndexKind="1" FKRefDef_Obj_id="-1">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="5257" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="5881" IndexName="comp_dependencies_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5258">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="5256" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="5882" IndexName="comp_dependencies_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5259">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="5257" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+</INDICES>
+</TABLE>
 </TABLES>
 <RELATIONS>
 <RELATION ID="7484" RelationName="Rel_01" Kind="1" SrcTable="7481" DestTable="7499" FKFields="catalog_id=catalog_id\n" FKFieldsComments="\n" relDirection="4" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="7612" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="17" />

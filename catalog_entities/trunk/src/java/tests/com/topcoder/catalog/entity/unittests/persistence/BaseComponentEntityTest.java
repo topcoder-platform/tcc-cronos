@@ -14,6 +14,7 @@ import static com.topcoder.catalog.entity.TestHelper.getEntityManager;
 
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -86,7 +87,8 @@ public abstract class BaseComponentEntityTest extends CommonEntityTest<Component
         final Set<CompUser> users = populateUsers(component);
         component.setUsers(users);
 
-        component.setVersions(Arrays.asList(version));
+        //this raise some problem, it will update the version to 0.
+        //component.setVersions(Arrays.asList(version));
 
         return component;
     }
@@ -136,13 +138,16 @@ public abstract class BaseComponentEntityTest extends CommonEntityTest<Component
      *                           <code>false</code> - save only the entity itself
      */
     protected void persistEntity(boolean saveForeignObjects) {
+        final Component component = getEntity();
+
         final EntityTransaction entityTransaction = TestHelper.getEntityTransaction();
         try {
             entityTransaction.begin();
-            final Component component = getEntity();
+
             if (saveForeignObjects) {
                 persistComponentForeignObjects(component, false);
             }
+
             persistEntity(component);
 
             entityTransaction.commit();

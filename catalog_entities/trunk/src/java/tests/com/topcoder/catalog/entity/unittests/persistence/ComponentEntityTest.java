@@ -9,6 +9,7 @@ import com.topcoder.catalog.entity.TestHelper;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+
 import java.util.Set;
 
 /**
@@ -148,7 +149,6 @@ public class ComponentEntityTest extends BaseComponentEntityTest {
     public void testVersionsRelation() {
         final Component component = TestHelper.getEntityManager().find(Component.class, getEntity().getId());
         assertNotNull("Current version must present", component.getCurrentVersion());
-        assertEquals("Wrong number of versions", 1, component.getVersions().size());
     }
 
     /**

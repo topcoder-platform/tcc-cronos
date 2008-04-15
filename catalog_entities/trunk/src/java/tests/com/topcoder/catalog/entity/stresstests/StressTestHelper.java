@@ -37,7 +37,7 @@ public class StressTestHelper {
      * <p>
      * Getter to the entityManager.
      * </p>
-     * 
+     *
      * @return instance of current entityManager
      */
     public static EntityManager getEntityManager() throws Exception {
@@ -49,7 +49,7 @@ public class StressTestHelper {
             MockContainer mockContainer = new MockContainer(context);
             // deploy id generator bean to the mock context
             IDGeneratorBean generatorBean = new IDGeneratorBean();
-            SessionBeanDescriptor descriptor = new SessionBeanDescriptor("java:comp/ejb/IDGeneratorHome",
+            SessionBeanDescriptor descriptor = new SessionBeanDescriptor("IDGeneratorBean/home",
                 IDGeneratorHome.class, IDGenerator.class, generatorBean);
             mockContainer.deploy(descriptor);
             entityManager = Persistence.createEntityManagerFactory("catalog_manager").createEntityManager();
@@ -61,7 +61,7 @@ public class StressTestHelper {
      * <p>
      * Getter to the entityTransaction.
      * </p>
-     * 
+     *
      * @return instance of current entityTransaction
      */
     public static EntityTransaction getEntityTransaction() throws Exception {
@@ -73,7 +73,7 @@ public class StressTestHelper {
 
     /**
      * Retrieves the entity with the given key.
-     * 
+     *
      * @param <T>
      *            the type of the entity to retrieve
      * @param clazz
@@ -95,7 +95,7 @@ public class StressTestHelper {
      * <p>
      * Runs the sql statements in the given file.
      * </p>
-     * 
+     *
      * @param file
      *            sql file to be executed.
      * @throws Exception

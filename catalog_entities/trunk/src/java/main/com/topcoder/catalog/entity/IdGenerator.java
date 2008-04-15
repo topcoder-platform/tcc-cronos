@@ -73,7 +73,7 @@ public class IdGenerator implements Configurable, IdentifierGenerator {
     public IdGenerator() {
         try {
             Context ctx = new InitialContext();
-            IDGeneratorHome home = (IDGeneratorHome) ctx.lookup("java:comp/ejb/IDGeneratorHome");
+            IDGeneratorHome home = (IDGeneratorHome) ctx.lookup("IDGeneratorBean/home");
             idGenerator = home.create();
         } catch (NamingException e) {
             throw new HibernateException("Cannot look up ID Generator Home", e);

@@ -6,23 +6,26 @@
     <!-- property file defining the component's dependencies -->
 
     <!-- define TCS dependencies -->
-    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
-    <property name="id_generator.jar" value="${tcs_libdir}/id_generator/3.0/id_generator.jar"/>
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0/base_exception.jar"/>    
+    <property name="id_generator.jar" value="${tcs_libdir}/id_generator/3.0.2/id_generator.jar"/>
+    
+    <property name="mockejb_dir" value="${ext_libdir}/mockejb/0.6-beta2"/>
+    
     <!-- define 3rd party dependencies -->
-    <property name="jboss.dir" value="${ext_libdir}/jboss/4.2.0.GA/server/default/lib"/>
-	  <path id="jboss.classpath">
-	  <fileset dir="${jboss.dir}">
-    	  <include name="*.jar" />
-	  </fileset>
-	  </path>
-	  
-	  <property name="jbossall-client.jar" value="${ext_libdir}/jboss/4.2.0.GA/client/jbossall-client.jar"/>
-	  
-	  <property name="cglib.jar" value="${ext_libdir}/mockejb/0.6/cglib-full-2.0-RC2.jar"/>
-	  <property name="j2ee.jar" value="${ext_libdir}/mockejb/0.6/j2ee.jar"/>
-	  <property name="jakarta-oro.jar" value="${ext_libdir}/mockejb/0.6/jakarta-oro-2.0.8.jar"/>
-	  <property name="mockejb.jar" value="${ext_libdir}/mockejb/0.6/mockejb.jar"/>	      	      
-	      
+    <property name="jboss.dir" value="${jboss.home}/server/default/lib"/>
+      <path id="jboss.classpath">
+      <fileset dir="${jboss.dir}">
+          <include name="*.jar" />
+      </fileset>
+      </path>
+      
+      <property name="jbossall-client.jar" value="${jboss.home}/client/jbossall-client.jar"/>
+      
+      <property name="cglib.jar" value="${mockejb_dir}/cglib-full-2.0-RC2.jar"/>
+      <property name="j2ee.jar" value="${mockejb_dir}/j2ee.jar"/>
+      <property name="jakarta-oro.jar" value="${mockejb_dir}/jakarta-oro-2.0.8.jar"/>
+      <property name="mockejb.jar" value="${mockejb_dir}/mockejb.jar"/>                
+          
     <property name="ifxjdbc.jar" value="${ext_libdir}/informix/1.4.1/ifxjdbc.jar"/>
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
     <property name="easymock.jar" value="${ext_libdir}/easymock/2.2/easymock.jar"/>

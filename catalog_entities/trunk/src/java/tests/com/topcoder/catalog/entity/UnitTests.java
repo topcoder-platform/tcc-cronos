@@ -27,6 +27,7 @@ import com.topcoder.catalog.entity.unittests.persistence.CompUserEntityTest;
 import com.topcoder.catalog.entity.unittests.persistence.CompVersionDatesEntityTest;
 import com.topcoder.catalog.entity.unittests.persistence.CompVersionEntityTest;
 import com.topcoder.catalog.entity.unittests.persistence.ComponentEntityTest;
+import com.topcoder.catalog.entity.unittests.persistence.ComponentUnitTest;
 import com.topcoder.catalog.entity.unittests.persistence.PhaseEntityTest;
 import com.topcoder.catalog.entity.unittests.persistence.TechnologyEntityTest;
 import junit.framework.Test;
@@ -48,6 +49,10 @@ public class UnitTests extends TestCase {
      */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
+
+        // For BUGR-78
+        suite.addTestSuite(ComponentUnitTest.class);
+
         // class tests
         suite.addTestSuite(CategoryTest.class);
         suite.addTestSuite(CompClientTest.class);

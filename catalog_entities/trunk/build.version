@@ -6,4 +6,4 @@ component.packagedir=com/topcoder/catalog/entity
 component.version.major=1
 component.version.minor=1
 component.version.micro=0
-component.version.build=1
+component.version.build=BUGR-15,BUGR-78,BUGR-79,BUGR-110

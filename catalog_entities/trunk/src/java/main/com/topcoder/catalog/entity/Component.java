@@ -5,7 +5,10 @@ package com.topcoder.catalog.entity;
 
 import java.io.Serializable;
 import java.util.Set;
+import java.util.HashSet;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * <p>This class represents a component that can be <tt>application</tt>, <tt>assembly</tt>, <tt>testing</tt> or
@@ -384,7 +387,9 @@ public class Component implements Serializable {
     /**
      * <p>Sets a value to the {@link #versions} field.</p>
      * <p>The acceptable region: any set including <code>null</code> and empty one, a non-empty list
-     * containing <code>null</code> is legal as well.</p>
+     * containing <code>null</code> is legal as well.  However, when constructing the result list,
+     * this method will only include the non-<code>null</code> elements.  Furthermore, it will only
+     * include the first occurrence of elements with the same version number.</p>
      *
      * @param versions the list of the versions of the component.
      */
@@ -398,7 +403,19 @@ public class Component implements Serializable {
      * @return {@link #versions} property's value.
      */
     public List<CompVersion> getVersions() {
-        return versions;
+        if (versions == null) return null;
+
+        List<CompVersion> v = new ArrayList<CompVersion>();
+        Set<Long> seenVersions = new HashSet<Long>();
+        CompVersion cv;
+        for (Iterator<CompVersion> iterator = versions.iterator(); iterator.hasNext();) {
+            cv = iterator.next();
+            if ((cv != null) && (cv.getVersion() != null) && !seenVersions.contains(cv.getVersion())) {
+                seenVersions.add(cv.getVersion());
+                v.add(cv);
+            }
+        }
+        return v;
     }
 
 }

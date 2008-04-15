@@ -155,6 +155,27 @@ public class CompVersion implements Serializable {
     private List<Technology> technologies;
 
     /**
+     * <p>
+     * This field dependencies the list of the CompVersion.
+     * </p>
+     *
+     * <p>
+     * The initial value is <tt>null</tt>. Access is performed via its getter and setter.
+     * </p>
+     *
+     * <p>
+     * The acceptable region: any list including <code>null</code> and empty one,
+     * a non-empty list containing <code>null</code> is legal as well.
+     * </p>
+     *
+     * <p>
+     *  <strong>Changes:</strong>
+     *  A new field add in bug fix.
+     * </p>
+     */
+    private List<CompVersion> dependencies;
+
+    /**
      * <p>This field represents the list of the documents of the version.</p>
      * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
      * <p>The acceptable region: any list including <code>null</code> and empty one, a non-empty list
@@ -416,6 +437,26 @@ public class CompVersion implements Serializable {
      */
     public List<Technology> getTechnologies() {
         return technologies;
+    }
+
+    /**
+     * <p>
+     * Sets a value to the {@link #dependencies} field.
+     * </p>
+     *
+     * @param dependencies the list of the technologies of the version.
+     */
+    public void setDependencies(List<CompVersion> dependencies) {
+        this.dependencies = dependencies;
+    }
+
+    /**
+     * <p>Retrieves the list of the dependencies of the version.</p>
+     *
+     * @return {@link #dependencies} property's value.
+     */
+    public List<CompVersion> getDependencies() {
+        return dependencies;
     }
 
     /**

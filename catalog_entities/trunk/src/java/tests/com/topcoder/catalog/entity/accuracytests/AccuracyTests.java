@@ -36,7 +36,8 @@ public class AccuracyTests extends TestCase {
         suite.addTestSuite(TestCompClientAccuracy.class);
 
         suite.addTestSuite(TestCompVersionAccuracy.class);
-
+	// Test for BUGR-110
+        suite.addTestSuite(BugFixTest.class);
         suite.addTestSuite(TestCompVersionDatesAccuracy.class);
         suite.addTestSuite(TestComponentAccuracy.class);
 

@@ -377,6 +377,51 @@ public class ComponentTest extends TestCase {
     }
 
     /**
+     * <p>Tests <code>setVersions(versions)</code> method for accuracy in filtering
+     * out <code>null</code> and duplicates.</p>
+     */
+    public void testSetVersions() {
+        // Set up individual CompVersion elements
+        CompVersion cv1 = new CompVersion();
+        cv1.setVersion(5L);
+        CompVersion cv2 = new CompVersion();
+        cv2.setVersion(3L);
+        CompVersion cv3 = new CompVersion();
+        cv3.setVersion(15L);
+        CompVersion cv4 = new CompVersion(); // leave the version number as null
+
+        // Set up the dirty CompVersion list for input ...
+        List<CompVersion> versions = new ArrayList<CompVersion>();
+        versions.add(null);
+        versions.add(null);
+        versions.add(cv3);
+        versions.add(cv2);
+        versions.add(cv2);
+        versions.add(null);
+        versions.add(null);
+        versions.add(null);
+        versions.add(cv1);
+        versions.add(cv4);
+        versions.add(null);
+        versions.add(cv4);
+        versions.add(cv1);
+
+        // Set up the expected result
+        List<CompVersion> expectedVersions = new ArrayList<CompVersion>();
+        expectedVersions.add(cv3);
+        expectedVersions.add(cv2);
+        expectedVersions.add(cv1);
+
+        try {
+            component.setVersions(versions);
+            assertEquals("Incorrect versions value after setting a new one",
+                expectedVersions, component.getVersions());
+        } catch (Exception e) {
+            fail("The setVersions method shouldn't throw any exception");
+        }
+    }
+
+    /**
      * <p>Tests <code>setVersions(null)</code>.</p>
      */
     public void testVersionsAllowsNull() {

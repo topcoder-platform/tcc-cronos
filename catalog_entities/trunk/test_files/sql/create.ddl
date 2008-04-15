@@ -350,3 +350,26 @@ references doc_types
 (document_type_id)
 constraint fk_comp_doc_ref2;
 
+
+--------------- comp_dependencies ------------------
+create table comp_dependencies (
+    comp_dependency_id DECIMAL(12,0) not null,
+    comp_vers_id DECIMAL(12,0),
+    child_comp_vers_id DECIMAL(12,0)
+);
+
+alter table comp_dependencies add constraint primary key 
+    (comp_dependency_id)
+    constraint pk_comp_dependenci;
+
+alter table comp_dependencies add constraint foreign key 
+    (comp_vers_id)
+    references comp_versions
+    (comp_vers_id) 
+    constraint fk_comp_depend1;
+
+alter table comp_dependencies add constraint foreign key 
+    (child_comp_vers_id)
+    references comp_versions
+    (comp_vers_id) 
+    constraint fk_comp_depend2;

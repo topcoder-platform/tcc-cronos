@@ -203,7 +203,7 @@ public class TestHelper {
 
             MockContainer container = new MockContainer(context);
 
-            SessionBeanDescriptor descriptor = new SessionBeanDescriptor("java:comp/ejb/IDGeneratorHome",
+            SessionBeanDescriptor descriptor = new SessionBeanDescriptor("IDGeneratorBean/home",
                 IDGeneratorHome.class, IDGenerator.class, new IDGeneratorBean());
             container.deploy(descriptor);
 //            // put object to JNDI
