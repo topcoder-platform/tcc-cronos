@@ -7,6 +7,7 @@ import com.topcoder.catalog.entity.Category;
 import com.topcoder.catalog.entity.CompDocumentation;
 import com.topcoder.catalog.entity.CompForum;
 import com.topcoder.catalog.entity.CompLink;
+import com.topcoder.catalog.entity.CompVersion;
 import com.topcoder.catalog.entity.Technology;
 
 import java.io.Serializable;
@@ -224,6 +225,41 @@ public class AssetDTO implements Serializable {
      */
     private List<CompDocumentation> documentation;
 
+    /**
+     * <p>
+     * This field represents the comments of the CompVersion.
+     * </p>
+     *
+     * <p>
+     *  <strong>Changes:</strong>
+     *  A new field add in bug fix.
+     * </p>
+     */
+    private String comments;
+
+    /**
+     * <p>
+     * This field represents the phase name of the CompVersion.
+     * </p>
+     * 
+     * <p>
+     *  <strong>Changes:</strong>
+     *  A new field add in bug fix.
+     * </p> 
+     */
+    private String phase;
+    
+    /**
+     * <p>
+     * This field represents the id of the all the dependencies.
+     * </p>
+     *
+     * <p>
+     *  <strong>Changes:</strong>
+     *  A new field add in bug fix.
+     * </p>
+     */
+    private List<Long> dependencies;
 
     /**
      * <p>Default constructor.</p> <p><em>Does nothing.</em></p>
@@ -589,6 +625,102 @@ public class AssetDTO implements Serializable {
      */
     public List<CompDocumentation> getDocumentation() {
         return documentation;
+    }
+
+    /**
+     * <p>
+     * Sets the comments of the compVersion.
+     * </p>
+     *
+     * <p>
+     *  <strong>Changes:</strong>
+     *  A new field add in bug fix.
+     * </p>
+     *
+     * @param comments the comments of the compVersion.
+     */
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    /**
+     * <p>
+     * Retrieves the comments of the compVersion.
+     * </p>
+     *
+     * <p>
+     *  <strong>Changes:</strong>
+     *  A new field add in bug fix.
+     * </p>
+     *
+     * @return the comments of the compVersion.
+     */
+    public String getComments() {
+        return comments;
+    }
+
+    /**
+     * <p>
+     * Sets the phase name of the compVersion.
+     * </p>
+     *
+     * <p>
+     *  <strong>Changes:</strong>
+     *  A new field add in bug fix.
+     * </p>
+     *
+     * @param phase the phase name of the compVersion.
+     */
+    public void setPhase(String phase) {
+        this.phase = phase;
+    }
+
+    /**
+     * <p>
+     * Retrieves the phase name of the compVersion.
+     * </p>
+     *
+     * <p>
+     *  <strong>Changes:</strong>
+     *  A new field add in bug fix.
+     * </p>
+     *
+     * @return the phase name of the compVersion.
+     */
+    public String getPhase() {
+        return phase;
+    }
+
+    /**
+     * <p>
+     * Sets a value to the {@link #dependencies} field.
+     * </p>
+     *
+     * <p>
+     *  <strong>Changes:</strong>
+     *  A new field add in bug fix.
+     * </p>
+     *
+     * @param dependencies the list of the technologies of the version.
+     */
+    public void setDependencies(List<Long> dependencies) {
+        this.dependencies = dependencies;
+    }
+
+    /**
+     * <p>
+     * Retrieves the list of the dependencies of the version.
+     * </p>
+     *
+     * <p>
+     *  <strong>Changes:</strong>
+     *  A new field add in bug fix.
+     * </p>
+     *
+     * @return {@link #dependencies} property's value.
+     */
+    public List<Long> getDependencies() {
+        return dependencies;
     }
 }
 

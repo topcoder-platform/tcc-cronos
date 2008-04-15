@@ -19,7 +19,10 @@
         <property name="functionalDesc" column="function_desc"/>
         <property name="description" column="description"/>
         <many-to-one name="rootCategory" class="Category" column="root_category_id"/>
-        <many-to-one name="currentVersion" class="CompVersion" column="current_version" cascade="save-update"/>
+        <many-to-one name="currentVersion" class="CompVersion" property-ref="CurrentCompVersion" cascade="save-update">
+            <formula>component_id</formula>
+            <column name="current_version" not-null="true" />
+        </many-to-one>
         <idbag name="categories" table="comp_categories" cascade="persist">
             <collection-id column="comp_categories_id" type="long">
                 <generator class="com.topcoder.catalog.entity.IdGenerator">
@@ -37,7 +40,7 @@
             <key column="component_id" not-null="true"/>
             <one-to-many class="CompClient"/>
         </set>
-        <list name="versions" table="comp_versions" cascade="save-update">
+        <list name="versions" table="comp_versions" cascade="save-update" access="field">
             <key column="component_id"/>
             <list-index column="version"/>
             <one-to-many class="CompVersion"/>
@@ -87,9 +90,11 @@
                 <param name="sequence_name">COMPVERSION_SEQ</param>
             </generator>
         </id>
-        <many-to-one name="component" class="Component" column="component_id"/>
-        <property name="version" column="version"/>
-        <property name="versionText" column="version_text"/>
+        <properties name="CurrentCompVersion" unique="true">
+            <many-to-one name="component" class="Component" column="component_id"/>
+            <property name="version" column="version"/>
+        </properties>
+         <property name="versionText" column="version_text"/>
         <many-to-one name="phase" class="Phase" column="phase_id"/>
         <property name="phaseTime" column="phase_time"/>
         <property name="phasePrice" column="price"/>
@@ -112,10 +117,21 @@
             <key column="comp_vers_id" not-null="true"/>
             <many-to-many column="technology_type_id" class="Technology"/>
         </idbag>
-	    <bag name="documentation" inverse="false" cascade="all-delete-orphan">
-	      <key column="comp_vers_id" />
-	      <one-to-many class="CompDocumentation" />
-	    </bag>
+        <!-- new dependencies add in bug fix -->
+        <idbag name="dependencies" table="comp_dependencies" cascade="all">
+            <collection-id column="comp_dependency_id" type="long">
+                <generator class="com.topcoder.catalog.entity.IdGenerator">
+                    <param name="sequence_name">DEPENDENCIES_SEQ</param>
+                </generator>
+            </collection-id>
+            <key column="comp_vers_id" not-null="true"/>
+            <many-to-many column="child_comp_vers_id" class="CompVersion"/>
+        </idbag>
+        
+    <bag name="documentation" inverse="false" cascade="all-delete-orphan" lazy="false">
+      <key column="comp_vers_id" />
+      <one-to-many class="CompDocumentation" />
+    </bag>
     </class>
     <class name="CompVersionDates" table="comp_version_dates">
         <id name="id" column="comp_version_dates_id">

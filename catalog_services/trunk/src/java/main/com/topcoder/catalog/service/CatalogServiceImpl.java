@@ -566,9 +566,10 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         List<Category> categories = new ArrayList<Category>();
         if (component.getCategories() != null) {
             for (Category category : component.getCategories()) {
-                categories.add(entityManager.find(Category.class, category.getId()));
+                categories.add(category);
             }
         }
+        org.hibernate.Hibernate.initialize(component.getRootCategory());
         assetDTO.setCategories(categories);
         populateClientAndUsersIds(component, assetDTO);
 
@@ -582,16 +583,32 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         assetDTO.setName(component.getName());
         assetDTO.setRootCategory(component.getRootCategory());
         assetDTO.setShortDescription(component.getShortDesc());
+
         //force hibernate to retrieve lazy collection
         List<Technology> technologies = new ArrayList<Technology>();
         if (compVersion.getTechnologies() != null) {
             // actually, getTechnologies will not be null
             // just to make code more robust
             for (Technology tech : compVersion.getTechnologies()) {
-                technologies.add(entityManager.find(Technology.class, tech.getId()));
+                technologies.add(tech);
             }
         }
         assetDTO.setTechnologies(technologies);
+
+        // here is the new lines add in bug fix.
+        // start here
+        List<Long> dependencies = new ArrayList<Long>();
+        if (compVersion.getDependencies() != null) {
+            // actually, getDependencies will not be null
+            // just to make code more robust
+            for (CompVersion com : compVersion.getDependencies()) {
+                dependencies.add(com.getId());
+            }
+        }
+        assetDTO.setDependencies(dependencies);
+        assetDTO.setComments(compVersion.getComments());
+        assetDTO.setPhase(compVersion.getPhase().getDescription());
+        // end here.
 
         // extract production date, if it's available
         final CompVersionDates versionDates = compVersion.getVersionDates().get(compVersion.getPhase().getId());
@@ -686,6 +703,14 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         // create version
         CompVersion compVersion = new CompVersion();
         populateVersionTechnologies(assetDTO, em, compVersion);
+
+        // here is the new code line add in bug fix.
+        // start here.
+        populateVersionDependencies(assetDTO, em, compVersion);
+        compVersion.setComments(assetDTO.getComments());
+        compVersion.getPhase().setDescription(assetDTO.getPhase());
+        // end
+
         populateVersionDocumentation(assetDTO, em, compVersion);
         compVersion.setVersionText(assetDTO.getVersionText());
         populateForumAndLink(assetDTO, compVersion);
@@ -814,6 +839,48 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
                 technologies.add(foundTechnology);
             }
             compVersion.setTechnologies(technologies);
+        } catch (javax.persistence.PersistenceException e) {
+            // any other errors, e.g. on JDBC level are wrapped to it
+            throw new PersistenceException("Unexpected error: " + e.getMessage(), e);
+        } catch (IllegalStateException e) {
+            throw new PersistenceException("Unexpected error: " + e.getMessage(), e);
+        } catch (IllegalArgumentException e) {
+            throw new PersistenceException("Unexpected error: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * <p>
+     * Populates <code>CompVersion</code>'s dependencies collection from the
+     * given <code>assetDTO.dependencies</code>.
+     * </p>
+     *
+     * @param assetDTO the original assetDTO to take data from
+     * @param em the entity manager to verify dependencies exist in the persistence and to take them from it
+     * @param compVersion the CompVersion to populate
+     *
+     * <p>
+     *  <strong>Changes:</strong>
+     *  A new field add in bug fix.
+     * </p>
+     *
+     * @throws PersistenceException if a technology is not found in the persistence
+     */
+    private void populateVersionDependencies(AssetDTO assetDTO, EntityManager em, CompVersion compVersion)
+        throws PersistenceException {
+        final List<CompVersion> dependencies = new ArrayList<CompVersion>();
+        try {
+            for (Long compId : assetDTO.getDependencies()) {
+                // try to find each one
+                final CompVersion foundCompVersion = em.find(CompVersion.class, compId);
+                if (foundCompVersion == null) {
+                    // invalid compVersion passed
+                    throw new PersistenceException("Invalid parameter passed: there is no compVersion with id="
+                        + compId);
+                }
+                dependencies.add(foundCompVersion);
+            }
+            compVersion.setDependencies(dependencies);
         } catch (javax.persistence.PersistenceException e) {
             // any other errors, e.g. on JDBC level are wrapped to it
             throw new PersistenceException("Unexpected error: " + e.getMessage(), e);

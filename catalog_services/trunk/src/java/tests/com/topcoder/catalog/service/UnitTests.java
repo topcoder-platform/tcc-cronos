@@ -36,6 +36,7 @@ public class UnitTests extends TestCase {
         // demo
         suite.addTestSuite(DemoTest.class);
 
+        suite.addTestSuite(BugFixTest.class);
         return suite;
     }
 

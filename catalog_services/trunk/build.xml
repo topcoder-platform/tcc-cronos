@@ -43,8 +43,8 @@
     <property name="build_webdir" value="${builddir}/${webdir}" />
     <property name="build_lib" value="${builddir}/lib" />
     <property name="build_tcsdistdir" value="${build_distdir}/${distfilename}-${component_version}" />
-	<property name="manifest_file_path" value="${build_tcsdistdir}/META-INF/" />
-	<property name="manifest_file" value="${manifest_file_path}/MANIFEST.MF" />
+    <property name="manifest_file_path" value="${build_tcsdistdir}/META-INF/" />
+    <property name="manifest_file" value="${manifest_file_path}/MANIFEST.MF" />
     <!-- EXECUTION TAGS -->
     <property name="debug" value="off" />
     <property name="verbose" value="no" />
@@ -73,17 +73,17 @@
     <property name="dist_docpackage" value="${builddir}/doc_package" />
     <property name="docpackage.jar" value="${distfilename}_docs.jar" />
 
-	<!-- codertura task definitation -->
-	<property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8" />
-	<path id="cobertura.classpath">
-	<fileset dir="${cobertura.dir}">
-  	  <include name="cobertura.jar" />
-    	<include name="lib/**/*.jar" />
-	</fileset>
-	</path>
-	<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
-	<property name="cobertura.datafile" value="${testlogdir}/cobertura.ser" />
-	<property name="instrumented.dir" value="${builddir}/instrumented" />
+    <!-- codertura task definitation -->
+    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8" />
+    <path id="cobertura.classpath">
+    <fileset dir="${cobertura.dir}">
+      <include name="cobertura.jar" />
+        <include name="lib/**/*.jar" />
+    </fileset>
+    </path>
+    <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+    <property name="cobertura.datafile" value="${testlogdir}/cobertura.ser" />
+    <property name="instrumented.dir" value="${builddir}/instrumented" />
 
     <!-- TCS Dependencies -->
     <property name="base_exception.version" value="2.0"/>
@@ -112,7 +112,10 @@
     <property name="id_generator.jar" value="${tcs_libdir}/${id_generator.path}/${id_generator.jar.name}"/>
 
     <!-- Mocked libraries -->
-    <property name="catalog_entities.jar" value="${testfiles}/lib/catalog_entities.jar"/>
+    <property name="catalog_entities.version" value="1.1.1"/>
+    <property name="catalog_entities.jar.name" value="catalog_entities.jar"/>
+    <property name="catalog_entities.path" value="catalog_entities/${catalog_entities.version}"/>
+    <property name="catalog_entities.jar" value="${tcs_libdir}/${catalog_entities.path}/${catalog_entities.jar.name}"/>
 
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
@@ -183,7 +186,7 @@
         <javac srcdir="${javamain}"
                destdir="${build_targetclassdir}"
                includes="${packagedir}/**"
-	       debug="true"
+           debug="true"
                verbose="${verbose}"
                target="1.5"
                bootclasspath="${java_1_5_bootclasspath}"
@@ -196,7 +199,7 @@
         <javac srcdir="${javatests}"
                destdir="${build_targetclassdir}"
                includes="${packagedir}/**"
-	       debug="true"
+           debug="true"
                verbose="${verbose}"
                target="1.5"
                bootclasspath="${java_1_5_bootclasspath}"
@@ -216,25 +219,25 @@
 
     <target name="test" depends="compile_tests">
         <mkdir dir="${testlogdir}"/>
-				<mkdir dir="${instrumented.dir}"/>
+                <mkdir dir="${instrumented.dir}"/>
 
-				<delete file="${cobertura.datafile}" />
+                <delete file="${cobertura.datafile}" />
 
-				<cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
-						<!-- all included -->
-						<fileset dir="${build_classdir}">
-        			<include name="**/*.class" />
-    				</fileset>
-				</cobertura-instrument>
+                <cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
+                        <!-- all included -->
+                        <fileset dir="${build_classdir}">
+                    <include name="**/*.class" />
+                    </fileset>
+                </cobertura-instrument>
 
         <junit fork="true" haltonerror="false">
 
-				<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}" />
+                <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}" />
 
-						<classpath location="${instrumented.dir}" />
-						<classpath location="${build_testclassdir}" />
-						<classpath refid="test.build.classpath" />
-						<classpath refid="cobertura.classpath" />
+                        <classpath location="${instrumented.dir}" />
+                        <classpath location="${build_testclassdir}" />
+                        <classpath refid="test.build.classpath" />
+                        <classpath refid="cobertura.classpath" />
 
             <test name="${package}.AllTests" todir="${testlogdir}">
                 <formatter type="plain" usefile="true"/>
@@ -245,18 +248,18 @@
 
     </target>
 
-		<target name="coveragereport" depends="test">
+        <target name="coveragereport" depends="test">
 
-				<cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}" datafile="${cobertura.datafile}">
-    			<fileset dir="${javamain}">
-        		<include name="**/*.java" />
-    			</fileset>
-    			<fileset dir="${javatests}">
-        		<include name="**/*.java" />
-    			</fileset>
-				</cobertura-report>
+                <cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}" datafile="${cobertura.datafile}">
+                <fileset dir="${javamain}">
+                <include name="**/*.java" />
+                </fileset>
+                <fileset dir="${javatests}">
+                <include name="**/*.java" />
+                </fileset>
+                </cobertura-report>
 
-		</target>
+        </target>
 
     <target name="reports" depends="test">
         <mkdir dir="${reports}"/>
@@ -271,13 +274,13 @@
         <echo>The execution of reports is complete.  Reports are available in /${reports}</echo>
     </target>
 
-	<target name="manifest">
-		<mkdir dir="${manifest_file_path}" />
-  	    <manifest file="${manifest_file}">
-  		<attribute name="Component-Name" value="${component}"/>
- 	 	<attribute name="Component-Version" value="${component_version}"/>
-  	    </manifest>
-	</target>
+    <target name="manifest">
+        <mkdir dir="${manifest_file_path}" />
+        <manifest file="${manifest_file}">
+        <attribute name="Component-Name" value="${component}"/>
+        <attribute name="Component-Version" value="${component_version}"/>
+        </manifest>
+    </target>
 
     <target name="dist" depends="compile, manifest">
         <mkdir dir="${dist_lib}/${component_path}"/>
@@ -303,7 +306,7 @@
             stylesheetfile="${javadocsdir}/stylesheet.css"
             verbose="${verbose}">
             <tag name="copyright" description="Copyright:" scope="types"/>
-		</javadoc>
+        </javadoc>
     </target>
 
     <target name="clean">
