@@ -6,4 +6,4 @@ component.packagedir=com/topcoder/service/studio/submission
 component.version.major=1
 component.version.minor=0
 component.version.micro=0
-component.version.build=1
+component.version.build=2
