@@ -10,7 +10,7 @@
     <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
     <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
 
-    <property name="contest_and_submission_entities.jar" value="${croos_libdir}/contest_and_submission_entities/1.0.0/contest_and_submission_entities.jar" />
+    <property name="contest_and_submission_entities.jar" value="${cronos_libdir}/contest_and_submission_entities/1.0.0/contest_and_submission_entities.jar" />
 
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
