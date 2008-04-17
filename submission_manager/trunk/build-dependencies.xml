@@ -1,0 +1,57 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+    <!-- Properties used in compile_targets ANT target for JDK version 5 -->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
+
+    <!-- TCS dependencies -->
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
+    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+
+    <property name="contest_and_submission_entities.jar" value="${croos_libdir}/contest_and_submission_entities/1.0.0/contest_and_submission_entities.jar" />
+
+    <!-- 3rd party dependencies -->
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+    <property name="jdbc.informix.jar" value="${ext_libdir}/jdbc/informix/1.4.1/ifxjdbc.jar"/>
+    <property name="javaee.jar" value="${ext_libdir}/j2ee/5.0/javaee.jar"/>
+
+    <property name="jboss.server.libdir" value="${jboss.dir}/server/${jboss.config.name}/lib"/>
+    <property name="hibernate.jar" value="${jboss.server.libdir}/hibernate3.jar"/>
+    <property name="javassist.jar" value="${jboss.server.libdir}/javassist.jar"/>
+    <property name="commons-logging.jar" value="${jboss.server.libdir}/commons-logging.jar"/>
+    <property name="dom4j.jar" value="${jboss.server.libdir}/dom4j.jar"/>
+    <property name="antlr.jar" value="${jboss.server.libdir}/antlr.jar"/>
+    <property name="log4j.jar" value="${jboss.server.libdir}/log4j.jar"/>
+
+    <property name="jboss-ejb3x.jar" value="${jboss.dir}/client/jboss-ejb3x.jar"/>
+    <property name="ejb3-persistence.jar" value="${jboss.dir}/client/ejb3-persistence.jar"/>
+    <property name="jbossall-client.jar" value="${jboss.dir}/client/jbossall-client.jar"/>
+
+    <path id="component.tcs-dependencies">
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${logging_wrapper.jar}"/>
+        <pathelement location="${object_formatter.jar}"/>
+        <pathelement location="${contest_and_submission_entities.jar}"/>
+    </path>
+
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${javaee.jar}"/>
+        <pathelement location="${jboss-ejb3x.jar}"/>      
+    </path>
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${jdbc.informix.jar}"/>
+        <pathelement location="${jbossall-client.jar}"/>        
+        <pathelement location="${ejb3-persistence.jar}"/>  
+        <pathelement location="${hibernate.jar}"/>        
+        <pathelement location="${javassist.jar}"/>
+        <pathelement location="${commons-logging.jar}"/>
+        <pathelement location="${dom4j.jar}"/>
+        <pathelement location="${antlr.jar}"/>
+        <pathelement location="${log4j.jar}"/> 
+    </path>
+
+</project>
