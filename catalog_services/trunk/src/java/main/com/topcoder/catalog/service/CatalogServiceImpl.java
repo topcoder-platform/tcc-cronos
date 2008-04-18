@@ -398,7 +398,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
         String queryString = "SELECT A.component_id, A.component_name, A.short_desc,"
             + " A.root_category_id, B.version_text, B.comp_vers_id FROM comp_catalog A\n"
             + "JOIN comp_versions B ON "
-            + (currentVersion ? "A.current_version=B.comp_vers_id" : "A.component_id=B.component_id") // join type
+            + (currentVersion ? "A.current_version=B.version and A.component_id = B.component_id" : "A.component_id=B.component_id") // join type
             + "\n where A.component_id IN (" + subQueryString + ")\n" // only in eligible components' ids
             + (currentVersion ? ""
             : "AND version=(SELECT MAX(version) FROM comp_versions WHERE component_id=A.component_id)"); // latest one
