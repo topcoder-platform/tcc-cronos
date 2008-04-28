@@ -140,7 +140,7 @@ public class Demo extends BaseTestCase {
         // we can successfully retrieve the instance, but we can not call any operations because of authentication
         // problem.
         Service service = Service.create(new URL(
-                "http://127.0.0.1:7070/prerequisite_service-prerequisite_service/PrerequisiteServiceBean?wsdl"),
+                "http://127.0.0.1:8080/prerequisite_service-prerequisite_service/PrerequisiteServiceBean?wsdl"),
                 new QName("http://ejb.prerequisite.service.topcoder.com/", "PrerequisiteServiceBeanService"));
         prerequisiteService = service.getPort(PrerequisiteService.class);
 
