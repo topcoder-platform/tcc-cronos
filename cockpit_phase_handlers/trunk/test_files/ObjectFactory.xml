@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<CMConfig>
+
+
+  <!-- The object factory configuration for message generator -->
+  <Config name="com.topcoder.clientcockpit.objectfactory">
+		<Property name="messageGeneratorKey">
+			<Property name="type">
+				<Value>com.topcoder.clientcockpit.phases.messagegenerators.DefaultEmailMessageGenerator</Value>
+			</Property>
+        </Property>
+  </Config>
+
+ <Config name="objectfactory_wrong_type">
+		<Property name="messageGeneratorKey">
+			<Property name="type">
+			    <!-- Wrong type -->
+				<Value>java.lang.String</Value>
+			</Property>
+        </Property>
+ </Config>
+
+ <Config name="objectfactory_invalid_configuration">
+        <!-- Invalid config -->
+		<Property name="messageGeneratorKey">
+        </Property>
+ </Config>
+
+</CMConfig>

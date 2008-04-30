@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<CMConfig>
+ <Config name="com.topcoder.util.file">
+    <Property name="sources">
+      <Value>startTemplateSource</Value>
+      <Value>endTemplateSource</Value>
+      <Value>eightHoursTemplateSource</Value>
+      <Value>oneHourTemplateSource</Value>
+    </Property>
+
+    <!-- the identifier of the template source to be used as default -->
+    <Property name="default_source">
+      <Value>startTemplateSource</Value>
+    </Property>
+
+    <!-- mock template source properties -->
+    <Property name="startTemplateSource_class">
+      <Value>com.topcoder.clientcockpit.phases.accuracytests.MockTemplateSource</Value>
+    </Property>
+    <Property name="endTemplateSource_class">
+      <Value>com.topcoder.clientcockpit.phases.accuracytests.MockTemplateSource</Value>
+    </Property>
+    <Property name="eightHoursTemplateSource_class">
+      <Value>com.topcoder.clientcockpit.phases.accuracytests.MockTemplateSource</Value>
+    </Property>
+    <Property name="oneHourTemplateSource_class">
+      <Value>com.topcoder.clientcockpit.phases.accuracytests.MockTemplateSource</Value>
+    </Property>
+
+   </Config>
+</CMConfig>

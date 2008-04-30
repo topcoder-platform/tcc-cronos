@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Cockpit Phase Handlers
+component.distfilename=cockpit_phase_handlers
+component.package=com.topcoder.clientcockpit.phases
+component.packagedir=com/topcoder/clientcockpit/phases
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

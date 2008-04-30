@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<CMConfig>
+    <Config name="com.topcoder.clientcockpit.phase">
+
+        <Property name="use_cache">
+            <Value>true</Value>
+        </Property>
+
+        <Property name="bean_name">
+            <Value>beanName</Value>
+        </Property>
+
+        <Property name="send_start_phase_email">
+            <Value>true</Value>
+        </Property>
+        <Property name="start_email_template_source">
+            <Value>startTemplateSource</Value>
+        </Property>
+        <Property name="start_email_template_name">
+            <Value>startTemplateName</Value>
+        </Property>
+        <Property name="start_email_subject">
+            <Value>startEmailSubject</Value>
+        </Property>
+        <Property name="start_email_from_address">
+            <Value>address@yahoo.com</Value>
+        </Property>
+
+        <Property name="send_end_phase_email">
+            <Value>true</Value>
+        </Property>
+        <Property name="end_email_template_source">
+            <Value>endTemplateSource</Value>
+        </Property>
+        <Property name="end_email_template_name">
+            <Value>endTemplateName</Value>
+        </Property>
+        <Property name="end_email_subject">
+            <Value>endEmailSubject</Value>
+        </Property>
+        <Property name="end_email_from_address">
+            <Value>address@yahoo.com</Value>
+        </Property>
+
+        <Property name="send_eight_hours_phase_email">
+            <Value>true</Value>
+        </Property>
+        <Property name="eight_hours_email_template_source">
+            <Value>eightHoursTemplateSource</Value>
+        </Property>
+        <Property name="eight_hours_email_template_name">
+            <Value>eightHoursTemplateName</Value>
+        </Property>
+        <Property name="eight_hours_email_subject">
+            <Value>eightHoursEmailSubject</Value>
+        </Property>
+        <Property name="eight_hours_email_from_address">
+            <Value>address@yahoo.com</Value>
+        </Property>
+
+        <Property name="send_one_hour_phase_email">
+            <Value>true</Value>
+        </Property>
+        <Property name="one_hour_email_template_source">
+            <Value>oneHourTemplateSource</Value>
+        </Property>
+        <Property name="one_hour_email_template_name">
+            <Value>oneHourTemplateName</Value>
+        </Property>
+        <Property name="one_hour_email_subject">
+            <Value>oneHourEmailSubject</Value>
+        </Property>
+        <Property name="one_hour_email_from_address">
+            <Value>address@yahoo.com</Value>
+        </Property>
+
+        <Property name="message_generator_key">
+            <Value>messageGeneratorKey</Value>
+        </Property>
+
+        <Property name="specification_factory_namespace">
+            <Value>specificationFactoryNamespace</Value>
+        </Property>
+
+
+    </Config>
+</CMConfig>
