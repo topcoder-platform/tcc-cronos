@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="TopCoder Java Generic Build" default="dist" basedir=".">
+<project name="Cronos Java Generic Build" default="dist" basedir=".">
     <property file="${basedir}/build.version"/>
     <property file="../topcoder_global.properties"/>
     <!-- Import the dependencies of this build file -->
@@ -296,11 +296,11 @@
 
     <macrodef name="move_to_libdir">
         <sequential>
-            <mkdir dir="${tcs_libdir}/${component_path}"/>
-            <mkdir dir="${tcs_libdir}/${component_path}/dist"/>
+            <mkdir dir="${cronos_libdir}/${component_path}"/>
+            <mkdir dir="${cronos_libdir}/${component_path}/dist"/>
 
-            <copy file="${component.jar}" todir="${tcs_libdir}/${component_path}"/>
-            <copy file="${component.dist.jar}" todir="${tcs_libdir}/${component_path}/dist"/>
+            <copy file="${component.jar}" todir="${cronos_libdir}/${component_path}"/>
+            <copy file="${component.dist.jar}" todir="${cronos_libdir}/${component_path}/dist"/>
         </sequential>
     </macrodef>
 
