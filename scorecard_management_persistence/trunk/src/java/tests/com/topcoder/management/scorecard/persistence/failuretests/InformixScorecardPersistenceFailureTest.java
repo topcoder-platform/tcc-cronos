@@ -245,7 +245,7 @@ public class InformixScorecardPersistenceFailureTest extends TestCase {
      */
     public void testGetScorecards_NullIds() {
         try {
-            persist.getScorecards(null, true);
+            persist.getScorecards((long[]) null, true);
             fail("testGetScorecards_NullIds is failure.");
         } catch (IllegalArgumentException iae) {
             // pass

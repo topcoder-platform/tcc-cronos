@@ -418,7 +418,7 @@ public class InformixScorecardPersistenceTest extends DbTestCase {
      */
     public void testGetScorecards_Null() throws Exception {
         try {
-            persistence.getScorecards(null, true);
+            persistence.getScorecards((long[]) null, true);
             fail("Null ids, IAE expected.");
         } catch (IllegalArgumentException ex) {
             // ok
@@ -433,7 +433,7 @@ public class InformixScorecardPersistenceTest extends DbTestCase {
      */
     public void testGetScorecards_EmptyArray() throws Exception {
         try {
-            persistence.getScorecards(null, true);
+            persistence.getScorecards((long[]) null, true);
             fail("Null ids, IAE expected.");
         } catch (IllegalArgumentException ex) {
             // ok
