@@ -1,0 +1,83 @@
+<CMConfig>
+	<Config name="com.topcoder.management.phase.clientcockpit.CockpitPhaseManager">
+		<Property name="objectFactoryNamespace">
+			<Value>objectFactoryNamespace</Value>
+		</Property>
+
+		<Property name="contestManagerKey">
+			<Value>contestManagerKey</Value>
+		</Property>
+
+		<Property name="handlers">
+			<Property name="0,Draft,start">
+				<Value>phaseHandler</Value>
+			</Property>
+		</Property>
+
+		<Property name="draftPhaseTypeName">
+			<Value>Draft</Value>
+		</Property>
+		<Property name="scheduledPhaseTypeName">
+			<Value>Scheduled</Value>
+		</Property>
+		<Property name="activePhaseTypeName">
+			<Value>Active</Value>
+		</Property>
+		<Property name="actionRequiredPhaseTypeName">
+			<Value>Action Required</Value>
+		</Property>
+		<Property name="inDangerPhaseTypeName">
+			<Value>In Danger</Value>
+		</Property>
+		<Property name="insufficientSubmissionsReRunPossiblePhaseTypeName">
+			<Value>Insufficient Submissions ReRun Possible</Value>
+		</Property>
+		<Property name="extendedPhaseTypeName">
+			<Value>Extended</Value>
+		</Property>
+		<Property name="repostPhaseTypeName">
+			<Value>Repost</Value>
+		</Property>
+		<Property name="insufficientSubmissionsPhaseTypeName">
+			<Value>Insufficient Submissions</Value>
+		</Property>
+		<Property name="noWinnerChosenPhaseTypeName">
+			<Value>No Winner Chosen</Value>
+		</Property>
+		<Property name="completedPhaseTypeName">
+			<Value>Completed</Value>
+		</Property>
+		<Property name="abandonedPhaseTypeName">
+			<Value>Abandoned</Value>
+		</Property>
+		<Property name="cancelledPhaseTypeName">
+			<Value>Cancelled</Value>
+		</Property>
+	</Config>
+
+	<Config name="objectFactoryNamespace">
+		<Property name="contestManagerKey">
+			<Property name="type">
+				<Value>com.topcoder.management.phase.clientcockpit.stresstests.MockContestManager</Value>
+			</Property>
+		</Property>
+		<Property name="phaseHandler">
+			<Property name="type">
+				<Value>com.topcoder.management.phase.clientcockpit.stresstests.MockPhaseHandler</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="com.topcoder.naming.jndiutility">
+		<Property name="context">
+			<Property name="default">
+				<Property name="factory">
+					<Value>com.topcoder.management.phase.clientcockpit.stresstests.MockContextFactory</Value>
+				</Property>
+				<Property name="url">
+					<Value>iiop://localhost:1099/</Value>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

@@ -1,0 +1,249 @@
+Testsuite: com.topcoder.management.phase.clientcockpit.AllTests
+Tests run: 222, Failures: 0, Errors: 0, Time elapsed: 15.937 sec
+------------- Standard Output ---------------
+updating the contest status with contest status [id=1, name=Draft] in contest with id of 1
+start the phase with phase type [id=1, name=Draft] in project with id of 1
+updating the contest status with contest status [id=2, name=Scheduled] in contest with id of 1
+end the phase with phase type [id=2, name=Scheduled] in project with id of 1
+updating the contest status with contest status [id=1, name=Draft] in contest with id of 1
+updating the contest status with contest status [id=1, name=Draft] in contest with id of 1
+start the phase with phase type [id=1, name=Draft] in project with id of 1
+updating the contest status with contest status [id=2, name=Scheduled] in contest with id of 1
+updating the contest status with contest status [id=2, name=Scheduled] in contest with id of 1
+end the phase with phase type [id=2, name=Scheduled] in project with id of 1
+updating the contest status with contest status [id=2, name=Scheduled] in contest with id of 17
+start the phase with phase type [id=2, name=Scheduled] in project with id of 17
+updating the contest status with contest status [id=2, name=Scheduled] in contest with id of 17
+end the phase with phase type [id=2, name=Scheduled] in project with id of 17
+updating the contest status with contest status [id=1, name=Scheduled] in contest with id of 1
+start the phase with phase type [id=1, name=Scheduled] in project with id of 1
+updating the contest status with contest status [id=1, name=Scheduled] in contest with id of 1
+end the phase with phase type [id=1, name=Scheduled] in project with id of 1
+Executing CockpitPhaseManager(String namespace) 20 times takes 0ms
+Executing CockpitPhaseManager(String namespace) 20 times takes 0ms
+Executing start(Phase, String) 20 times takes 0ms
+Executing end(Phase, String) 20 times takes 0ms
+------------- ---------------- ---------------
+
+Testcase: testCtor1 took 0.016 sec
+Testcase: testCtor2 took 0 sec
+Testcase: testCtor1 took 0 sec
+Testcase: testCtor2 took 0 sec
+Testcase: testCtor1 took 0.437 sec
+Testcase: testCtor2_JNDI took 0.156 sec
+Testcase: testCtor2_OF took 0.141 sec
+Testcase: testCtor3 took 0.125 sec
+Testcase: testUpdatePhases took 0.125 sec
+Testcase: testGetPhases_Draft took 0.156 sec
+Testcase: testGetPhases_Scheduled took 0.141 sec
+Testcase: testGetPhases_Active took 0.109 sec
+Testcase: testGetPhases_ActionRequired took 0.125 sec
+Testcase: testGetPhases_InDanger took 0.125 sec
+Testcase: testGetPhases_InsufficientSubmissionsRP took 0.125 sec
+Testcase: testGetPhases_Extended took 0.11 sec
+Testcase: testGetPhases_Repost took 0.125 sec
+Testcase: testGetPhases_InsufficientSubmissions took 0.125 sec
+Testcase: testGetPhases_NoWinnerChosen took 0.109 sec
+Testcase: testGetPhases_FromCache took 0.125 sec
+Testcase: testGetPhases_NoContest took 0.109 sec
+Testcase: testGetPhases2 took 0.125 sec
+Testcase: testGetPhases2_EmptyArray took 0.11 sec
+Testcase: testGetAllPhaseTypes took 0.109 sec
+Testcase: testGetAllPhaseStatuses took 0.125 sec
+Testcase: testCanStart1 took 0.11 sec
+Testcase: testCanStart2 took 0.109 sec
+Testcase: testStart took 0.125 sec
+Testcase: testStart_NoHandler took 0.109 sec
+Testcase: testCanEnd1 took 0.11 sec
+Testcase: testCanEnd2 took 0.109 sec
+Testcase: testEnd took 0.109 sec
+Testcase: testEnd_NoHandler took 0.125 sec
+Testcase: testCanCancel took 0.11 sec
+Testcase: testCancel took 0.109 sec
+Testcase: testRegisterHandler took 0.11 sec
+Testcase: testUnregisterHandler took 0.109 sec
+Testcase: testGetAllHandlers took 0.109 sec
+Testcase: testGetHandlerRegistrationInfo took 0.11 sec
+Testcase: testSetPhaseValidator took 0.109 sec
+Testcase: testGetPhaseValidator took 0.109 sec
+Testcase: testGetContestManager took 0.11 sec
+Testcase: testSetContestManager1 took 0.109 sec
+Testcase: testSetContestManager2 took 0.11 sec
+Testcase: testGetLog took 0.187 sec
+Testcase: testSetLog1 took 0.109 sec
+Testcase: testSetLog2 took 0.11 sec
+Testcase: testGetCachedContestStatuses took 0.109 sec
+Testcase: testSetCachedContestStatuses took 0.11 sec
+Testcase: testGetHandlers took 0.109 sec
+Testcase: testSetHandlers took 0.125 sec
+Testcase: testCtor2_FailureNullNamespace took 0.109 sec
+Testcase: testCtor2_FailureEmptyNamespace took 0.11 sec
+Testcase: testCtor2_FailureUnknownNamespace took 0.093 sec
+Testcase: testCtor2_FailureJNDIUtil1 took 0.11 sec
+Testcase: testCtor2_FailureJNDIUtil2 took 0.109 sec
+Testcase: testCtor2_FailureContestManagerJNDI1 took 0.094 sec
+Testcase: testCtor2_FailureContestManagerJNDI2 took 0.109 sec
+Testcase: testCtor2_OF_FailureMissingContestManagerKey took 0.11 sec
+Testcase: testCtor2_OF_FailureEmptyContestManagerKey took 0.093 sec
+Testcase: testCtor2_FailureCreateObjectFactoryUnknownNamespace took 0.11 sec
+Testcase: testCtor2_FailureCreateObjectFactoryIllegalReference took 0.109 sec
+Testcase: testCtor2_OF_FailureCreateObjectNotTypeInstance1 took 0.094 sec
+Testcase: testCtor2_OF_FailureCreateObjectNotTypeInstance2 took 0.109 sec
+Testcase: testCtor2_FailureInvalidClass took 0.094 sec
+Testcase: testCtor2_FailureMissingHandlers took 0.109 sec
+Testcase: testCtor2_FailureCreateHandlerRegistryInfo1 took 0.11 sec
+Testcase: testCtor2_FailureCreateHandlerRegistryInfo2 took 0.094 sec
+Testcase: testCtor2_FailureCreateHandlerRegistryInfo3 took 0.109 sec
+Testcase: testCtor2_FailureCreateHandlerRegistryInfo4 took 0.094 sec
+Testcase: testCtor2_FailureCreateHandlerRegistryInfo5 took 0.109 sec
+Testcase: testCtor2_FailureCreateHandlerRegistryInfo6 took 0.109 sec
+Testcase: testCtor2_FailureCreatePhaseHandler took 0.094 sec
+Testcase: testCtor2_FailureMissingObjectFactoryNamespace took 0.11 sec
+Testcase: testCtor2_FailureEmptyObjectFactoryNamespace took 0.109 sec
+Testcase: testCtor3_FailureNullContestManager took 0.094 sec
+Testcase: testCtor3_FailureEmptyLogName took 0.109 sec
+Testcase: testGetPhases_NoContestManager took 0.094 sec
+Testcase: testGetPhases_FailureRetrieveContest took 0.109 sec
+Testcase: testGetPhases_FailureRetrieveAllContestStatuses took 0.11 sec
+Testcase: testGetPhases_FailureNoContestStatus took 0.109 sec
+Testcase: testGetPhases_FailureNoMatchingContestStatus took 0.109 sec
+Testcase: testGetPhases_FailureNoStartDate took 0.11 sec
+Testcase: testGetPhases2_NullIds took 0.093 sec
+Testcase: testGetPhases2_NoContestManager took 0.11 sec
+Testcase: testGetPhases2_FailureRetrieveContest took 0.109 sec
+Testcase: testGetPhases2_FailureRetrieveAllContestStatuses took 0.094 sec
+Testcase: testGetPhases2_FailureNoContestStatus took 0.109 sec
+Testcase: testGetPhases2_FailureNoMatchingContestStatus took 0.11 sec
+Testcase: testGetPhases2_FailureNoStartDate took 0.109 sec
+Testcase: testGetAllPhaseTypes_NoContestManager took 0.109 sec
+Testcase: testGetAllPhaseTypes_FailureRetrieveAllContestStatuses took 0.11 sec
+Testcase: testCanStart_FailurePhaseHandling took 0.094 sec
+Testcase: testCanStart_FailureNullPhase took 0.109 sec
+Testcase: testCanStart_FailureNullPhaseType took 0.125 sec
+Testcase: testStart_FailureNullPhase took 0.109 sec
+Testcase: testStart_FailureNullOperator took 0.11 sec
+Testcase: testStart_FailureEmptyOperator took 0.093 sec
+Testcase: testStart_NoContestManager took 0.11 sec
+Testcase: testStart_NoPhaseType took 0.109 sec
+Testcase: testStart_FailureUpdateContestStatus took 0.11 sec
+Testcase: testStart_FailurePhaseHandling took 0.109 sec
+Testcase: testStart_FailureNoContestStatus took 0.094 sec
+Testcase: testCanEnd_FailurePhaseHandling took 0.109 sec
+Testcase: testCanEnd_FailureNullPhase took 0.109 sec
+Testcase: testCanEnd_FailureNullPhaseType took 0.094 sec
+Testcase: testEnd_FailureNullPhase took 0.11 sec
+Testcase: testEnd_FailureNullOperator took 0.109 sec
+Testcase: testEnd_FailureEmptyOperator took 0.094 sec
+Testcase: testEnd_NoContestManager took 0.109 sec
+Testcase: testEnd_NoPhaseType took 0.109 sec
+Testcase: testEnd_FailureUpdateContestStatus took 0.094 sec
+Testcase: testEnd_FailurePhaseHandling took 0.11 sec
+Testcase: testEnd_FailureNoContestStatus took 0.109 sec
+Testcase: testRegisterHandler_FailureNullHandler took 0.109 sec
+Testcase: testRegisterHandler_FailureNullType took 0.094 sec
+Testcase: testRegisterHandler_FailureNullOperation took 0.109 sec
+Testcase: testUnregisterHandler_FailureNullType took 0.11 sec
+Testcase: testUnregisterHandler_FailureNullOperation took 0.094 sec
+Testcase: testGetHandlerRegistrationInfo_FailureNullHandler took 0.109 sec
+Testcase: testSetContestManager1_FailureNullContestManager took 0.109 sec
+Testcase: testSetContestManager2_FailureNullName took 0.094 sec
+Testcase: testSetContestManager2_FailureEmptyName took 0.109 sec
+Testcase: testSetContestManager2_FailureJNDIUtil1 took 0.11 sec
+Testcase: testSetContestManager2_FailureContestManagerJNDI1 took 0.094 sec
+Testcase: testSetContestManager2_FailureContestManagerJNDI2 took 0.109 sec
+Testcase: testSetHandlers_FailureNullHandlers took 0.109 sec
+Testcase: testSetHandlers_FailureHandlersContainsNullKey took 0.094 sec
+Testcase: testSetHandlers_FailureHandlersContainsNullValue took 0.109 sec
+Testcase: testDemo took 0.032 sec
+Testcase: testCtor1 took 0.062 sec
+Testcase: testCtor2 took 0.016 sec
+Testcase: testCtor3 took 0.015 sec
+Testcase: testGetAllPhaseTypes took 0 sec
+Testcase: testStart took 0.032 sec
+Testcase: testEnd took 0.015 sec
+Testcase: testRegisterHandler took 0 sec
+Testcase: testUnregisterHandler took 0.016 sec
+Testcase: testGetAllHandlers took 0.016 sec
+Testcase: testGetHandlerRegistrationInfo took 0 sec
+Testcase: testGetHandlers took 0.015 sec
+Testcase: testGetPhases took 0.016 sec
+Testcase: testGetPhasesArray took 0.015 sec
+Testcase: testCanStart took 0.032 sec
+Testcase: testCanEnd took 0.015 sec
+Testcase: testCtor_String_failure1 took 0.047 sec
+Testcase: testCtor_String_failure2 took 0.016 sec
+Testcase: testCtor_String_failure3 took 0.015 sec
+Testcase: testCtor_String_failure4 took 0.016 sec
+Testcase: testCtor_String_failure5 took 0.016 sec
+Testcase: testCtor_String_failure6 took 0.015 sec
+Testcase: testCtor_String_failure7 took 0.032 sec
+Testcase: testCtor_String_failure9 took 0.015 sec
+Testcase: testCtor_String_failure10 took 0.031 sec
+Testcase: testCtor_String_failure11 took 0.047 sec
+Testcase: testCtor_String_failure12 took 0.016 sec
+Testcase: testCtor_String_failure_cacheContestStatusesKey_empty took 0.016 sec
+Testcase: testCtor_String_failure_handlers_miss took 0.015 sec
+Testcase: testCtor_String_failure_handlers_property_key_invalid1 took 0.031 sec
+Testcase: testCtor_String_failure_handlers_property_key_invalid2 took 0.016 sec
+Testcase: testCtor_String_failure_handlers_property_key_invalid3 took 0.016 sec
+Testcase: testCtor_String_failure_handlers_property_value_miss took 0.015 sec
+Testcase: testCtor_String_failure_handlers_property_value_empty took 0.016 sec
+Testcase: testCtor_String_failure_handlers_property_value_invalid took 0.031 sec
+Testcase: testCtor_String_failure_draftPhaseTypeName_empty took 0.047 sec
+Testcase: testCtor_String_failure_scheduledPhaseTypeNam_empty took 0.016 sec
+Testcase: testCtor_String_failure_activePhaseTypeName_empty took 0.015 sec
+Testcase: testCtor_String_failure_inDangerPhaseTypeName_empty took 0.032 sec
+Testcase: testCtor_String_failure_insufficientSubmissionsRe_empty took 0.015 sec
+Testcase: testCtor_String_failure_extendedPhaseTypeNam_empty took 0.016 sec
+Testcase: testCtor_String_failure_repostPhaseTypeName_empty took 0.015 sec
+Testcase: testCtor_String_failure_insufficientSubmissionsPhaseTypeName_empty took 0.032 sec
+Testcase: testCtor_String_failure_noWinnerChosenPhaseTypeName_empty took 0.047 sec
+Testcase: testCtor_String_failure_completedPhaseTypeName_empty took 0.015 sec
+Testcase: testCtor_String_failure_abandonedPhaseTypeName_empty took 0.016 sec
+Testcase: testCtor_String_failure_cancelledPhaseTypeName_empty took 0.015 sec
+Testcase: testCtor_String_failure_contestManagerName_CCE took 0.032 sec
+Testcase: testCtor_String_failure_contestManagerKey_CCE took 0.015 sec
+Testcase: testCtor_String_failure_cacheContestStatusesKey_CCE took 0.016 sec
+Testcase: testCtor_String_failure_hander_CCE took 0.016 sec
+Testcase: testCtor_ContestManager_String_failure1 took 0.015 sec
+Testcase: test_getPhases_long_failure1 took 0.047 sec
+Testcase: test_getPhases_long_failure2 took 0.016 sec
+Testcase: test_getPhases_long_failure3 took 0.015 sec
+Testcase: test_getPhases_long_failure4 took 0.016 sec
+Testcase: test_getPhases_long_failure5 took 0.016 sec
+Testcase: test_getPhases_longArray_failure1 took 0.015 sec
+Testcase: test_getPhases_longArray_failure2 took 0.016 sec
+Testcase: test_getPhases_longArray_failure3 took 0.015 sec
+Testcase: test_getAllPhaseTypes_failure1 took 0.016 sec
+Testcase: test_canStart_failure1 took 0 sec
+Testcase: test_canStart_failure2 took 0.016 sec
+Testcase: test_canStart_failure3 took 0.047 sec
+Testcase: test_start_failure1 took 0.015 sec
+Testcase: test_start_failure2 took 0.016 sec
+Testcase: test_start_failure3 took 0.015 sec
+Testcase: test_start_failure4 took 0.016 sec
+Testcase: test_canEnd_failure1 took 0.016 sec
+Testcase: test_canEnd_failure2 took 0.015 sec
+Testcase: test_canEnd_failure3 took 0.016 sec
+Testcase: test_end_failure1 took 0 sec
+Testcase: test_end_failure2 took 0.016 sec
+Testcase: test_end_failure3 took 0.046 sec
+Testcase: test_end_failure4 took 0.016 sec
+Testcase: test_end_failure5 took 0.016 sec
+Testcase: test_registerHandler_failure1 took 0.015 sec
+Testcase: test_registerHandler_failure2 took 0.016 sec
+Testcase: test_registerHandler_failure3 took 0.016 sec
+Testcase: test_unregisterHandler_failure1 took 0.015 sec
+Testcase: test_unregisterHandler_failure2 took 0.016 sec
+Testcase: test_getHandlerRegistrationInfo_failure1 took 0 sec
+Testcase: test_setContestManager_failure1 took 0.047 sec
+Testcase: test_setContestManager_String_failure1 took 0.015 sec
+Testcase: test_setContestManager_String_failure2 took 0.016 sec
+Testcase: test_setContestManager_String_failure3 took 0.016 sec
+Testcase: test_setHandlers_failure1 took 0.015 sec
+Testcase: test_setHandlers_failure2 took 0.016 sec
+Testcase: test_setHandlers_failure3 took 0.015 sec
+Testcase: testCockpitPhaseManager_Namespace_Stress took 0.016 sec
+Testcase: testCockpitPhaseManager_ContestManager_String_Cache_Stress took 0.016 sec
+Testcase: testStart_Stress took 0 sec
+Testcase: testEnd_Stress took 0.015 sec

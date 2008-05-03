@@ -1,0 +1,103 @@
+<project name="Dependency Import" basedir=".">
+	<!-- property file defining the component's dependencies -->
+
+	<!-- Properties used in compile_targets ANT target for JDK version x -->
+	<property name="component.target" value="1.5" />
+	<property name="component.bootclasspath" value="${java_1_5_bootclasspath}" />
+
+	<!-- TCS dependencies -->
+	<property name="base_exception.version" value="2.0" />
+	<property name="base_exception.jar.name" value="base_exception.jar" />
+	<property name="base_exception.path" value="base_exception/${base_exception.version}" />
+	<property name="base_exception.jar" value="${tcs_libdir}/${base_exception.path}/${base_exception.jar.name}" />
+
+	<property name="configuration_manager.version" value="2.1.5" />
+	<property name="configuration_manager.jar.name" value="configuration_manager.jar" />
+	<property name="configuration_manager.path" value="configuration_manager/${configuration_manager.version}" />
+	<property name="configuration_manager.jar" value="${tcs_libdir}/${configuration_manager.path}/${configuration_manager.jar.name}" />
+
+	<property name="jndi_context_utility.version" value="2.0" />
+	<property name="jndi_context_utility.jar.name" value="jndi_context_utility.jar" />
+	<property name="jndi_context_utility.path" value="jndi_context_utility/${jndi_context_utility.version}" />
+	<property name="jndi_context_utility.jar" value="${tcs_libdir}/${jndi_context_utility.path}/${jndi_context_utility.jar.name}" />
+
+	<property name="logging_wrapper.version" value="2.0" />
+	<property name="logging_wrapper.jar.name" value="logging_wrapper.jar" />
+	<property name="logging_wrapper.path" value="logging_wrapper/${logging_wrapper.version}" />
+	<property name="logging_wrapper.jar" value="${tcs_libdir}/${logging_wrapper.path}/${logging_wrapper.jar.name}" />
+
+	<property name="memory_usage.version" value="2.0" />
+	<property name="memory_usage.jar.name" value="memory_usage.jar" />
+	<property name="memory_usage.path" value="memory_usage/${memory_usage.version}" />
+	<property name="memory_usage.jar" value="${tcs_libdir}/${memory_usage.path}/${memory_usage.jar.name}" />
+
+	<property name="object_factory.version" value="2.0.1" />
+	<property name="object_factory.jar.name" value="object_factory.jar" />
+	<property name="object_factory.path" value="object_factory/${object_factory.version}" />
+	<property name="object_factory.jar" value="${tcs_libdir}/${object_factory.path}/${object_factory.jar.name}" />
+
+	<property name="object_formatter.version" value="1.0" />
+	<property name="object_formatter.jar.name" value="object_formatter.jar" />
+	<property name="object_formatter.path" value="object_formatter/${object_formatter.version}" />
+	<property name="object_formatter.jar" value="${tcs_libdir}/${object_formatter.path}/${object_formatter.jar.name}" />
+
+	<property name="phase_management.version" value="1.0.4" />
+	<property name="phase_management.jar.name" value="phase_management.jar" />
+	<property name="phase_management.path" value="phase_management/${phase_management.version}" />
+	<property name="phase_management.jar" value="${tcs_libdir}/${phase_management.path}/${phase_management.jar.name}" />
+
+	<property name="project_phases.version" value="2.0" />
+	<property name="project_phases.jar.name" value="project_phases.jar" />
+	<property name="project_phases.path" value="project_phases/${project_phases.version}" />
+	<property name="project_phases.jar" value="${tcs_libdir}/${project_phases.path}/${project_phases.jar.name}" />
+
+	<property name="simple_cache.version" value="2.0.2" />
+	<property name="simple_cache.jar.name" value="simple_cache.jar" />
+	<property name="simple_cache.path" value="simple_cache/${simple_cache.version}" />
+	<property name="simple_cache.jar" value="${tcs_libdir}/${simple_cache.path}/${simple_cache.jar.name}" />
+
+	<property name="typesafe_enum.version" value="1.1" />
+	<property name="typesafe_enum.jar.name" value="typesafe_enum.jar" />
+	<property name="typesafe_enum.path" value="typesafe_enum/${typesafe_enum.version}" />
+	<property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.jar.name}" />
+
+	<property name="workdays.version" value="1.0.1" />
+	<property name="workdays.jar.name" value="workdays.jar" />
+	<property name="workdays.path" value="workdays/${workdays.version}" />
+	<property name="workdays.jar" value="${tcs_libdir}/${workdays.path}/${workdays.jar.name}" />
+
+	<!--
+	<property name="contest_and_submission_entities.jar" value="${testfiles}/contest_and_submission_entities.jar" />
+	-->
+	<property name="contest_and_submission_entities.jar" value="${testfiles}/contest.jar" />
+	<property name="project.jar" value="${testfiles}/project.jar" />
+	<property name="studio_contest_manager.jar" value="${testfiles}/manager.jar" />
+
+	<!-- 3rd party dependencies -->
+	<property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar" />
+
+	<path id="component.tcs-dependencies">
+		<pathelement location="${base_exception.jar}" />
+		<pathelement location="${configuration_manager.jar}" />
+		<pathelement location="${contest_and_submission_entities.jar}" />
+		<pathelement location="${jndi_context_utility.jar}" />
+		<pathelement location="${logging_wrapper.jar}" />
+		<pathelement location="${memory_usage.jar}" />
+		<pathelement location="${object_factory.jar}" />
+		<pathelement location="${object_formatter.jar}" />
+		<pathelement location="${phase_management.jar}" />
+		<pathelement location="${project.jar}" />
+		<pathelement location="${project_phases.jar}" />
+		<pathelement location="${simple_cache.jar}" />
+		<pathelement location="${studio_contest_manager.jar}" />
+		<pathelement location="${typesafe_enum.jar}" />
+		<pathelement location="${workdays.jar}" />
+	</path>
+
+	<path id="component.3rdParty-dependencies" />
+
+	<path id="component.test.3rdParty-dependencies">
+		<pathelement location="${junit.jar}" />
+	</path>
+
+</project>
