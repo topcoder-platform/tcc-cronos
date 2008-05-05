@@ -13,7 +13,7 @@
 
     <!-- define 3rd party dependencies -->
     <property name="prerequisite_document_manager.jar" value="${cronos_libdir}/prerequisite_document_manager/1.0.0/prerequisite_document_manager.jar"/>
-    <property name="jboss.dir" value="${ext_libdir}/jboss-4.2.2.GA"/>
+    <property name="jboss.dir" value="${ext_libdir}/jboss/4.2.2.GA"/>
     <property name="jboss-ejb3x.jar" value="${jboss.dir}/client/jboss-ejb3x.jar"/>
     <property name="jbossall-client.jar" value="${jboss.dir}/client/jbossall-client.jar"/>
     <property name="ejb3-persistence.jar" value="${jboss.dir}/client/ejb3-persistence.jar"/>
