@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<jboss>
+  <enterprise-beans>
+    <session>
+      <ejb-name>PrerequisiteServiceBean</ejb-name>
+      <jndi-name>remote/PrerequisiteService</jndi-name>
+      <ejb-ref>
+       <ejb-ref-name>documentManager</ejb-ref-name>
+       <jndi-name>remote/DocumentManager</jndi-name>
+      </ejb-ref>
+    </session>
+  </enterprise-beans>
+
+  <security-domain>java:/jaas/JBossLoginModule</security-domain>
+</jboss>

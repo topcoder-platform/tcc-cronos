@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Prerequisite Service
+component.distfilename=prerequisite_service
+component.package=com.topcoder.service.prerequisite
+component.packagedir=com/topcoder/service/prerequisite
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

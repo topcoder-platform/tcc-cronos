@@ -1,0 +1,55 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies -->
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+    <!-- define TCS dependencies -->
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    <property name="db_connection_factory.jar"
+              value="${tcs_libdir}/db_connection_factory/1.1/db_connection_factory.jar"/>
+    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
+    <property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar"/>
+    <property name="user_group_manager.jar" value="${tcs_libdir}/user_group_manager/1.0.1/user_group_manager.jar"/>
+    <property name="jboss_login_module.jar" value="${tcs_libdir}/jboss_login_module/2.0.0/jboss_login_module.jar"/>
+
+    <!-- define 3rd party dependencies -->
+    <property name="prerequisite_document_manager.jar" value="${cronos_libdir}/prerequisite_document_manager/1.0.0/prerequisite_document_manager.jar"/>
+    <property name="jboss.dir" value="${ext_libdir}/jboss/4.2.2.GA"/>
+    <property name="jboss-ejb3x.jar" value="${jboss.dir}/client/jboss-ejb3x.jar"/>
+    <property name="jbossall-client.jar" value="${jboss.dir}/client/jbossall-client.jar"/>
+    <property name="ejb3-persistence.jar" value="${jboss.dir}/client/ejb3-persistence.jar"/>
+    <property name="log4j.jar" value="${jboss.dir}/client/log4j.jar"/>
+    <property name="jaxb-api.jar" value="${jboss.dir}/client/jaxb-api.jar"/>
+    <property name="jboss-jaxws.jar" value="${jboss.dir}/client/jboss-jaxws.jar"/>
+    <property name="xercesImpl.jar" value="${jboss.dir}/lib/endorsed/xercesImpl.jar"/>
+    <property name="jbossws-core.jar" value="${jboss.dir}/server/default/deploy/jbossws.sar/jbossws-core.jar"/>
+    <property name="ifxjdbc.jar" value="${ext_libdir}/ifxjdbc/3.0/ifxjdbc.jar"/>
+
+    <path id="component.tcs-dependencies">
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${object_formatter.jar}"/>
+        <pathelement location="${logging_wrapper.jar}"/>
+        <pathelement location="${user_group_manager.jar}"/>
+        <pathelement location="${jboss_login_module.jar}"/>
+    </path>
+
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${prerequisite_document_manager.jar}"/>
+        <pathelement location="${jboss-ejb3x.jar}"/>
+        <pathelement location="${jbossall-client.jar}"/>
+        <pathelement location="${ejb3-persistence.jar}"/>
+        <pathelement location="${jaxb-api.jar}"/>
+        <pathelement location="${log4j.jar}"/>
+        <pathelement location="${jboss-jaxws.jar}"/>
+        <pathelement location="${xercesImpl.jar}"/>
+        <pathelement location="${jbossws-core.jar}"/>
+        <pathelement location="${ifxjdbc.jar}"/>
+    </path>
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+    </path>
+
+    <!-- Properties used in compile_targets ANT target -->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
+</project>

@@ -1,0 +1,62 @@
+TO RUN:
+
+1. Install the component structure in ${basedir}
+
+2. Create "topcoder_global.properties" in ${basedir}/.. and add the properties from steps 2,3,4
+
+3. The following standard build script properties must be set
+	ext_libdir - root of third party libraries
+	tcs_libdir - root of topcoder components
+	cronos_libdir - root of cronos client components
+	java_1_5_bootclasspath - installation path for java 1.5 (only needed for compile_targets task)
+
+4. The following standard build script properties can be changed (defaults are noted)
+	debug=off - as expected
+	verbose=no - as expected
+	cobertura.dir=${ext_libdir}/cobertura/1.8
+		installation directory of cobertura script expects {$cobertura.dir}/cobertura.jar
+		and {$cobertura.dir}/lib/containg Jars for asm, jakarta, and log4j to run cobertura task
+
+5. The following properties need to be set for this component
+	None
+
+NB:
+	The folder ${basedir}/test_reflib contains TopCoder components
+	that are required by this component's test code. This component is
+	used to by compile_test and test targets. Components are listed under
+	the following directory structure "component name"/"component version".
+	Components are provided AS IS for development purposes only.
+
+	Included: Configuration API 1.0.0
+                  Configuration Manager 2.1.5
+                  Configuration Persistence 1.0.1
+                  DB Connection Factory 1.1.0
+                  Typesafe Enum 1.1.0
+
+6. Setup the test environment:
+	6.1. install Informix and make sure the database is started.
+	6.2. create a database named 'document' in Informix.
+	6.3. use '/test_files/create.sql' to create database. NOTE:  Note, you can use 'dbaccess project <path>/test_files/drop.sql' to drop tables and sequences.
+	6.4. change the connection string in the following files to your enviroment.
+            - test_files/informix-ds.xml
+            - test_files/InformixDBConnectionFactory.xml.
+            - test_files/accuracy/InformixDBConnectionFactory.xml
+            - test_files/failure_tests/DBConnectionFactory.xml
+            - test_files/stresstestfile/InformixDBConnectionFactory.xml
+        6.5 copy test_files\lib\ to <jboss-home>\server\default\lib
+        6.6 modify <jboss-home\server\default\conf\login-config.xml, adding
+            <application-policy name="JBossLoginModule">
+	      <authentication>
+	        <login-module code="com.topcoder.security.auth.module.JBossLoginModule"
+	          flag="required">
+	          <module-option name="fileName">C:/demoConfigs.properties</module-option>
+	          <module-option name="password-stacking">useFirstPass</module-option>
+	        </login-module>
+	      </authentication>
+           </application-policy>
+        6.7 fileName property should be point to test_files/demoConfigs.properties file.
+        6.8 change demoConfigs.properties, using the correct path for JBossLoginModule.xml.
+        6.9 start Jboss 4.2.2
+        6.10 Update the informix-ds.xml file in test_files/prerequisite_service.ear
+        6.11 Deploy EJB test_files/prerequisite_service.ear into $JBoss_Home\server\default\deploy.
+        6.12 Modify the "build-dependencies.xml" for dependencies.
