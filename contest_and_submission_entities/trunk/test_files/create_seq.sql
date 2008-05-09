@@ -16,3 +16,5 @@ CREATE SEQUENCE sq_contest;
 CREATE SEQUENCE sq_prize;
 CREATE SEQUENCE sq_submission;
 CREATE SEQUENCE sq_contest_property_lu;
+CREATE SEQUENCE sq_contest_config;
+CREATE SEQUENCE sq_contest_type_config;

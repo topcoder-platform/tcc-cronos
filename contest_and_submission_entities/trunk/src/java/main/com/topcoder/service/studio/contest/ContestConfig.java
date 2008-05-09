@@ -24,6 +24,11 @@ public class ContestConfig implements Serializable {
     private static final long serialVersionUID = -6941184025378017040L;
 
     /**
+     * Represents the contest config id. 
+     */
+    private long contestConfigId;
+
+    /**
      * Represents the contest.
      */
     private Contest contest;
@@ -37,6 +42,11 @@ public class ContestConfig implements Serializable {
      * Represents the property.
      */
     private ContestProperty property;
+
+    /**
+     * Represents the config id.
+     */
+    private Long configId; 
 
     /**
      * Default constructor.
@@ -103,6 +113,25 @@ public class ContestConfig implements Serializable {
     }
 
     /**
+     * Returns the configId.
+     *
+     * @return the configId.
+     */
+    public Long getConfigId() {
+        return configId;
+    }
+
+    /**
+     * Updates the configId with the specified value.
+     *
+     * @param configId
+     *            the configId to set.
+     */
+    public void setConfigId(Long configId) {
+        this.configId = configId;
+    }
+
+    /**
      * Compares this object with the passed object for equality. Only the id will be compared.
      *
      * @param obj
@@ -130,4 +159,24 @@ public class ContestConfig implements Serializable {
         return Helper.calculateHash(contest != null ? contest.getContestId() : null,
                 property != null ? property.getPropertyId() : null);
     }
+
+    /**
+     * Returns the contestConfigId.
+     *
+     * @return the contestConfigId.
+     */
+    public long getContestConfigId() {
+        return contestConfigId;
+    }
+
+    /**
+     * Updates the contestConfigId with the specified value.
+     *
+     * @param contestConfigId
+     *            the contestConfigId to set.
+     */
+    public void setContestConfigId(long contestConfigId) {
+        this.contestConfigId = contestConfigId;
+    }
+    
 }

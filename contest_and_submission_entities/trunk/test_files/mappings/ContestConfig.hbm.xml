@@ -9,15 +9,19 @@
 			and value of property. In additional it keeps name and
 			required of configuration parameter
 		</comment>
-		<composite-id>
-			<key-many-to-one name="contest"
+		<id name="contestConfigId" column="contest_config_id" type="long">
+			<generator class="sequence">
+				<param name="sequence">sq_contest_config</param>
+			</generator>
+		</id>
+		<many-to-one name="contest"
 				class="com.topcoder.service.studio.contest.Contest"
 				column="contest_id" />
-			<key-many-to-one name="property"
+		<many-to-one name="property"
 				class="com.topcoder.service.studio.contest.ContestProperty"
 				column="property_id" />
-		</composite-id>
-		
+				
 		<property name="value" not-null="true" column="property_value" />
+		<property name="configId" not-null="true" column="config_id" />
 	</class>
 </hibernate-mapping>

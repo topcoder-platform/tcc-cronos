@@ -245,7 +245,6 @@ public class ContestConfigTest extends TestCase {
             entity.setContest(contest);
             entity.setProperty(property);
             entity.setValue("value");
-
             // save the entity
             HibernateUtil.getManager().persist(entity);
 
