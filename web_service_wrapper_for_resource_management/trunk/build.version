@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Web Service Wrapper for Resource Management
+component.distfilename=Web_Service_Wrapper_for_Resource_Management
+component.package=com.topcoder.registration.persistence
+component.packagedir=com/topcoder/registration/persistence
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

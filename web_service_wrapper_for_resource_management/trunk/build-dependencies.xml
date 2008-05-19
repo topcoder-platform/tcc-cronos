@@ -1,0 +1,93 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.x"/>
+    <property name="component.bootclasspath" value="${java_1_x_bootclasspath}"/>
+
+    <!-- TCS dependencies -->
+
+    <property name="base_exception.name" value="base_exception"/>
+    <property name="base_exception.version" value="2.0"/>
+    <property name="base_exception.jar.name" value="${base_exception.name}.jar"/>
+    <property name="base_exception.jar" value="${tcs_libdir}/${base_exception.name}/${base_exception.version}/${base_exception.jar.name}"/>
+
+    <property name="configuration_api.name" value="configuration_api"/>
+    <property name="configuration_api.version" value="1.0"/>
+    <property name="configuration_api.jar.name" value="${configuration_api.name}.jar"/>
+    <property name="configuration_api.jar" value="${tcs_libdir}/${configuration_api.name}/${configuration_api.version}/${configuration_api.jar.name}"/>
+
+    <property name="configuration_persistence.name" value="configuration_persistence"/>
+    <property name="configuration_persistence.version" value="1.0.1"/>
+    <property name="configuration_persistence.jar.name" value="${configuration_persistence.name}.jar"/>
+    <property name="configuration_persistence.jar" value="${tcs_libdir}/${configuration_persistence.name}/${configuration_persistence.version}/${configuration_persistence.jar.name}"/>
+
+    <property name="object_factory.name" value="object_factory"/>
+    <property name="object_factory.version" value="2.1.0"/>
+    <property name="object_factory.jar.name" value="${object_factory.name}.jar"/>
+    <property name="object_factory.jar" value="${tcs_libdir}/${object_factory.name}/${object_factory.version}/${object_factory.jar.name}"/>
+
+    <property name="object_factory_configuration_api_plugin.name" value="object_factory_configuration_api_plugin"/>
+    <property name="object_factory_configuration_api_plugin.version" value="1.0"/>
+    <property name="object_factory_configuration_api_plugin.jar.name" value="${object_factory_configuration_api_plugin.name}.jar"/>
+    <property name="object_factory_configuration_api_plugin.jar" value="${tcs_libdir}/${object_factory_configuration_api_plugin.name}/${object_factory_configuration_api_plugin.version}/${object_factory_configuration_api_plugin.jar.name}"/>
+
+    <property name="object_factory_config_manager_plugin.name" value="object_factory_config_manager_plugin"/>
+    <property name="object_factory_config_manager_plugin.version" value="1.0"/>
+    <property name="object_factory_config_manager_plugin.jar.name" value="${object_factory_config_manager_plugin.name}.jar"/>
+    <property name="object_factory_config_manager_plugin.jar" value="${tcs_libdir}/${object_factory_config_manager_plugin.name}/${object_factory_config_manager_plugin.version}/${object_factory_config_manager_plugin.jar.name}"/>
+
+    <property name="resource_management.name" value="resource_management"/>
+    <property name="resource_management.version" value="1.1"/>
+    <property name="resource_management.jar.name" value="${resource_management.name}.jar"/>
+    <property name="resource_management.jar" value="${tcs_libdir}/${resource_management.name}/${resource_management.version}/${resource_management.jar.name}"/>
+
+    <property name="registration_framework.jar" value="${test_reflib}/registration_framework_mock.jar"/>
+
+    <!-- 3rd party dependencies -->
+    <property name="jboss-ejb3x.jar" value="${jboss.home}/client/jboss-ejb3x.jar"/>
+    <property name="jboss-jaxws.jar" value="${jboss.home}/client/jboss-jaxws.jar"/>
+    <property name="jboss-j2ee.jar" value="${jboss.home}/client/jboss-j2ee.jar"/>
+    <property name="jaxb-api.jar" value="${jboss.home}/client/jaxb-api.jar"/>
+
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+    <property name="easymock.jar" value="${ext_libdir}/easymock/2.3/easymock.jar"/>
+
+    <property name="jbossall-client.jar" value="${jboss.home}/client/jbossall-client.jar"/>
+    <property name="jbossws-client.jar" value="${jboss.home}/client/jbossws-client.jar"/>
+	<property name="jboss-saaj.jar" value="${jboss.home}/client/jboss-saaj.jar"/>
+    <property name="xercesImpl.jar" value="${jboss.home}/lib/endorsed/xercesImpl.jar"/>
+
+    <path id="component.tcs-dependencies">
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${configuration_api.jar}"/>
+        <pathelement location="${configuration_persistence.jar}"/>
+        <pathelement location="${object_factory.jar}"/>
+        <pathelement location="${object_factory_config_manager_plugin.jar}"/>
+        <pathelement location="${object_factory_configuration_api_plugin.jar}"/>
+        <pathelement location="${resource_management.jar}"/>
+        <pathelement location="${registration_framework.jar}"/>
+    </path>
+
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${jboss-ejb3x.jar}"/>
+        <pathelement location="${jboss-jaxws.jar}"/>
+        <pathelement location="${jboss-j2ee.jar}"/>
+        <pathelement location="${jaxb-api.jar}"/>
+    </path>
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${easymock.jar}"/>
+    	<!--
+    	<pathelement location="${jboss-saaj.jar}"/>
+        <pathelement location="${jbossall-client.jar}"/>
+        <pathelement location="${jbossws-client.jar}"/>
+        -->
+        <pathelement location="${xercesImpl.jar}"/>
+    	<fileset dir="${jboss.home}/client">
+    		<include name="*.jar"/>
+    	</fileset>
+    </path>
+
+</project>

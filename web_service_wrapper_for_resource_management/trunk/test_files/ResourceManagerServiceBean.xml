@@ -1,0 +1,16 @@
+<ResourceManagerServiceBean>
+
+    
+		<Config name="resourceManagerKey">
+			<Property name="type">
+				<Value>com.topcoder.registration.persistence.MockResourceManager</Value>
+			</Property>
+        </Config>
+
+        <Config name="stringKey">
+			<Property name="type">
+				<Value>java.lang.String</Value>
+			</Property>
+        </Config>
+
+</ResourceManagerServiceBean>

@@ -1,0 +1,33 @@
+1. Correct the "jboss.home" and "jboss.server" properties in build.xml
+
+
+2. Use "ant deployToJBoss" to compile sources and package into jar and deploy it to JBoss.
+
+
+3. Start JBoss, with successful deployment, go to http://localhost:8080/jbossws/services, there should show the service end point like following:
+
+ServiceEndpointID 	jboss.ws:context=ResourceManagerServiceBeanService,endpoint=ResourceManagerServiceBean
+ServiceEndpointAddress 	http://127.0.0.1:8080/ResourceManagerServiceBeanService/ResourceManagerServiceBean?wsdl
+
+    Check the WSDL property in /test_files/url.properties to point to the correct WSDL URL according to your env
+
+4. "ant test".
+
+
+
+About the Resource.properties map:
+
+    The Resource.properties map does not have proper getter/setter, so they can not be marshalled/unmarshalled when passing between client and server.
+    In other words, the properties map's values will get lost.
+    
+    So i extend the Resource to hold an addition properties map which can be properly marshalled/unmarshalled. And the ResourceManagerServiceClient
+    and ResourceManagerServiceBean will take care the sync of the new properties map and the original properties map.
+ 
+
+
+About jars:
+
+    1. The mock Registration Framework is under /test_reflib/registration_framework_mock.jar
+    
+    2. The log4j used by JBossWS may confilct with the log4j used by Cobertura since they are different version.
+       You may encounter the issue when coverage report. The workaround is to Repalce the log4j used by Cobertura1.8 with log4j-1.2.14.
