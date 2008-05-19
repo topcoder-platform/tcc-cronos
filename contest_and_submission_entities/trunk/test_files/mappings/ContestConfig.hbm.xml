@@ -22,6 +22,5 @@
 				column="property_id" />
 				
 		<property name="value" not-null="true" column="property_value" />
-		<property name="configId" not-null="true" column="config_id" />
 	</class>
 </hibernate-mapping>

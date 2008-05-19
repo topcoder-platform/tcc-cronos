@@ -19,9 +19,9 @@
 
 		<property name="amount" not-null="true" />
 
-		<set name="contests" >
+		<set name="contests" table="contest_prize_xref">
 			<key column="prizeId" />
-			<one-to-many
+			<many-to-many column="contest_id"
 				class="com.topcoder.service.studio.contest.Contest" />
 		</set>
 

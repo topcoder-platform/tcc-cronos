@@ -1,6 +1,5 @@
 CREATE TABLE contest_config (
   contest_config_id   DECIMAL(5,0) NOT NULL,
-  config_id   		  DECIMAL(5,0) NOT NULL,
   property_id 		  DECIMAL(5,0) NOT NULL,
   contest_id 		  DECIMAL(10,0) NOT NULL,
   property_value      LVARCHAR(1000) NOT NULL

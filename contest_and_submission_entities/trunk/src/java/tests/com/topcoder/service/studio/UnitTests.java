@@ -14,6 +14,7 @@ import com.topcoder.service.studio.contest.ContestPropertyTest;
 import com.topcoder.service.studio.contest.ContestRegistrationTest;
 import com.topcoder.service.studio.contest.ContestStatusTest;
 import com.topcoder.service.studio.contest.ContestTest;
+import com.topcoder.service.studio.contest.ContestTypeConfigTest;
 import com.topcoder.service.studio.contest.ContestTypeTest;
 import com.topcoder.service.studio.contest.Demo;
 import com.topcoder.service.studio.contest.DocumentTest;
@@ -67,6 +68,7 @@ public class UnitTests extends TestCase {
         suite.addTest(SubmissionTest.suite());
         suite.addTest(SubmissionTypeTest.suite());
         suite.addTest(ContestPropertyTest.suite());
+        suite.addTest(ContestTypeConfigTest.suite());
         return suite;
     }
 }

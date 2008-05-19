@@ -44,11 +44,6 @@ public class ContestConfig implements Serializable {
     private ContestProperty property;
 
     /**
-     * Represents the config id.
-     */
-    private Long configId; 
-
-    /**
      * Default constructor.
      */
     public ContestConfig() {
@@ -110,25 +105,6 @@ public class ContestConfig implements Serializable {
      */
     public void setValue(String value) {
         this.value = value;
-    }
-
-    /**
-     * Returns the configId.
-     *
-     * @return the configId.
-     */
-    public Long getConfigId() {
-        return configId;
-    }
-
-    /**
-     * Updates the configId with the specified value.
-     *
-     * @param configId
-     *            the configId to set.
-     */
-    public void setConfigId(Long configId) {
-        this.configId = configId;
     }
 
     /**
