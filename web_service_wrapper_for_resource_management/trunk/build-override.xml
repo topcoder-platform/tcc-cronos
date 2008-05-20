@@ -1,0 +1,59 @@
+<project name="Override Macrodef Standard Behaviour Import" basedir=".">
+    <!-- macrodef override definition in order to change the standard behaviour from
+         build.xml/build_dist.xml
+     -->
+  <property name="jboss.home" value="${ext_libdir}/jboss/4.2.0.GA"/>
+  <property name="jboss.server" value="default"/>
+  <property name="temp_jar_dir" value="${builddir}/Web_Service_Wrapper_for_Resource_Management"/>
+    
+    <target name="jar" depends="compile, compile_tests">
+        <delete dir="${temp_jar_dir}"/>
+        <mkdir dir="${temp_jar_dir}"/>
+        <mkdir dir="${temp_jar_dir}/META-INF"/>
+        
+        <copy todir="${temp_jar_dir}">
+            <fileset dir="${build_classdir}">
+                <include name="**/*.class" />
+            </fileset>
+            <fileset dir="${build_testclassdir}">
+                <include name="**/MockResourceManager.class" />
+            </fileset>
+        </copy>
+
+        <copy todir="${temp_jar_dir}/META-INF">
+            <fileset dir="${configdir}">
+                <include name="**/*.*" />
+            </fileset>
+        </copy>
+        <copy todir="${temp_jar_dir}">
+            <fileset dir="${test_reflib}">
+                <include name="**/*.jar" />
+            </fileset>
+        </copy>
+        <copy todir="${temp_jar_dir}">
+            <fileset dir="${testfiles}">
+                <include name="ServerSideConfig.properties" />
+                <include name="ResourceManagerServiceBean.xml" />
+            </fileset>
+        </copy>
+
+    </target>
+
+    <target name="deployToJBoss" depends="jar">
+        <!-- Copy the jar -->
+        <copy todir="${jboss.home}/server/${jboss.server}/deploy/Web_Service_Wrapper_for_Resource_Management.jar" overwrite="true" >
+        
+            <fileset dir="${temp_jar_dir}">
+                <include name="**/*" />
+            </fileset>
+        </copy>
+        
+        <!-- Copy the users/roles properties files used by JBossWS security domain -->
+        <copy todir="${jboss.home}/server/${jboss.server}/conf/props" overwrite="true">
+            <fileset dir="${testfiles}">
+                <include name="jbossws-roles.properties" />
+                <include name="jbossws-users.properties" />
+            </fileset>
+        </copy>
+    </target>
+</project>
