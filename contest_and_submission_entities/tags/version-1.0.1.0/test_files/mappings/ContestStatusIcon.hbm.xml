@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.topcoder.service.studio.contest">
+	<class name="ContestStatusIcon" table="contest_status_icon"
+		lazy="true">
+		<comment>Table which describes contest status icon</comment>
+
+		<id name="contestStatusIconId" column="contest_status_icon_id"
+			type="long">
+			<generator class="sequence">
+				<param name="sequence">sq_contest_status_icon</param>
+			</generator>
+		</id>
+
+		<property name="displayIcon" length="254" column="display_icon" />
+
+	</class>
+</hibernate-mapping>
