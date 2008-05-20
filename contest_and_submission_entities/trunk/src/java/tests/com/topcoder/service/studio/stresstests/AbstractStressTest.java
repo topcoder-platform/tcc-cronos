@@ -38,6 +38,11 @@ public class AbstractStressTest extends TestCase {
     /**
      * The Session instance used for tests.
      */
+    protected SessionFactory factory = null;
+
+    /**
+     * The Session instance used for tests.
+     */
     protected Session session = null;
 
     /**
@@ -48,7 +53,8 @@ public class AbstractStressTest extends TestCase {
      * @throws Exception to JUnit.
      */
     protected void setUp() throws Exception {
-        session = createSessionFactory().openSession();
+        factory = createSessionFactory();
+        session = factory.openSession();
     }
 
     /**
@@ -61,7 +67,7 @@ public class AbstractStressTest extends TestCase {
     protected void tearDown() throws Exception {
         clearTables();
         session.close();
-        session = null;
+        factory.close();
     }
 
     /**
@@ -90,7 +96,8 @@ public class AbstractStressTest extends TestCase {
      *             to JUnit.
      */
     private void clearTables() throws Exception {
-        Session session = createSessionFactory().openSession();
+        SessionFactory factory = createSessionFactory();
+        Session session = factory.openSession();
 
         Transaction t = session.beginTransaction();
         String[] tables = new String[] {
@@ -113,7 +120,7 @@ public class AbstractStressTest extends TestCase {
             "delete from contest_file_type_xref",
             "delete from contest_document_xref",
             "delete from contest_config", "delete from contest_channel_lu",
-            "delete from contest_config", "delete from file_type_lu"
+            "delete from contest_property_lu", "delete from file_type_lu"
         };
 
         for (int i = 0; i < tables.length; i++) {
@@ -123,6 +130,7 @@ public class AbstractStressTest extends TestCase {
 
         t.commit();
         session.close();
+        factory.close();
     }
 
     /**

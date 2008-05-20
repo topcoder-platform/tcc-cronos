@@ -9,7 +9,7 @@
 			com.informix.jdbc.IfxDriver
 		</property>
 		<property name="connection.url">
-			jdbc:informix-sqli://192.168.1.18:1526/tcs:informixserver=topcoder
+			jdbc:informix-sqli://192.168.18.100:9088/tcs:informixserver=tcs
 		</property>
 		<property name="connection.username">informix</property>
 		<property name="connection.password">topcoder</property>
@@ -37,6 +37,7 @@
 		<mapping resource="mappings/Contest.hbm.xml" />
 		<mapping resource="mappings/ContestConfig.hbm.xml" />
 		<mapping resource="mappings/ContestType.hbm.xml" />
+		<mapping resource="mappings/ContestTypeConfig.hbm.xml" />
 		<mapping resource="mappings/Document.hbm.xml" />
 		<mapping resource="mappings/ContestResult.hbm.xml" />
 		<mapping resource="mappings/Submission.hbm.xml" />

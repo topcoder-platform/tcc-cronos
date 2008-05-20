@@ -358,15 +358,15 @@ ALTER TABLE prize
 ;
 ALTER TABLE contest_status_relation
         ADD CONSTRAINT ( FOREIGN KEY(contest_status_id)
-    	REFERENCES contest_status_lu(contest_status_id) CONSTRAINT FK_contest_status_relation_1);
+    	REFERENCES contest_status_lu(contest_status_id) CONSTRAINT FK_contest_status_relation_1)
 ;
 ALTER TABLE contest_type_config
         ADD CONSTRAINT ( FOREIGN KEY(contest_type_id)
-    	REFERENCES contest_type_lu(contest_type_id) CONSTRAINT FK_contest_type_config_1);
+    	REFERENCES contest_type_lu(contest_type_id) CONSTRAINT FK_contest_type_config_1)
 ;
 ALTER TABLE contest_type_config
         ADD CONSTRAINT ( FOREIGN KEY(property_id)
-    	REFERENCES contest_property_lu(property_id) CONSTRAINT FK_contest_type_config_2);
+    	REFERENCES contest_property_lu(property_id) CONSTRAINT FK_contest_type_config_2)
 ;
 ALTER TABLE document
         ADD CONSTRAINT ( FOREIGN KEY(mime_type_id)
