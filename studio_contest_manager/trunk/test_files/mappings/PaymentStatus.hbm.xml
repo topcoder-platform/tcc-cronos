@@ -8,7 +8,9 @@
 
 		<id name="paymentStatusId" column="payment_status_id"
 			type="long">
-			<generator class="increment"/>
+			<generator class="sequence">
+				<param name="sequence">sq_payment_status_lu</param>
+			</generator>
 		</id>
 
 		<property name="description" length="100"

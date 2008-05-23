@@ -10,7 +10,9 @@
 		</comment>
 
 		<id name="prizeId" column="prize_id" type="long">
-			<generator class="increment"/>
+			<generator class="sequence">
+				<param name="sequence">sq_prize</param>
+			</generator>
 		</id>
 
 		<property name="place" not-null="true" />
@@ -18,8 +20,9 @@
 		<property name="amount" not-null="true" />
 
 		<set name="contests" table="contest_prize_xref">
-			<key column="prize_Id" />
-			<many-to-many column="contest_id" class="com.topcoder.service.studio.contest.Contest" />
+			<key column="prizeId" />
+			<many-to-many column="contest_id"
+				class="com.topcoder.service.studio.contest.Contest" />
 		</set>
 
 		<set name="submissions" >

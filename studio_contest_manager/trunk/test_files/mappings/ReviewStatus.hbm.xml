@@ -10,7 +10,9 @@
 		</comment>
 
 		<id name="reviewStatusId" column="review_status_id" type="long">
-			<generator class="increment"/>
+			<generator class="sequence">
+				<param name="sequence">sq_review_status_lu</param>
+			</generator>
 		</id>
 
 		<property name="description" length="100" not-null="true"

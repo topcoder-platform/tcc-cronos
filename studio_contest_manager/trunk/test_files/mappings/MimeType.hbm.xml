@@ -7,7 +7,9 @@
 		<comment>This table describes mime type</comment>
 
 		<id name="mimeTypeId" column="mime_type_id" type="long">
-			<generator class="increment"/>
+			<generator class="sequence">
+				<param name="sequence">sq_mime_type_lu</param>
+			</generator>
 		</id>
 
 		<property name="description" not-null="true" length="100"

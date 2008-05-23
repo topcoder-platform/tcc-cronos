@@ -10,7 +10,9 @@
 		</comment>
 
 		<id name="documentId" column="document_id" type="long">
-			<generator class="increment"/>
+			<generator class="sequence">
+				<param name="sequence">sq_document</param>
+			</generator>
 		</id>
 
 		<property name="originalFileName" length="254"
@@ -29,9 +31,10 @@
 			class="com.topcoder.service.studio.contest.DocumentType"
 			 />
 
-		<set name="contests" table="contest_document_xref">
+		<set name="contests">
 			<key column="document_id" />
-			<many-to-many column="contest_id" class="com.topcoder.service.studio.contest.Contest" />
+			<one-to-many
+				class="com.topcoder.service.studio.contest.Contest" />
 		</set>
 
 		<property name="createDate" column="create_date"

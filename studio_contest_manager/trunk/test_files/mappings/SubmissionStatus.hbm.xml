@@ -12,7 +12,9 @@
 
 		<id name="submissionStatusId" column="submission_status_id"
 			type="long">
-			<generator class="increment"/>
+			<generator class="sequence">
+				<param name="sequence">sq_submission_status_lu</param>
+			</generator>
 		</id>
 
 		<property name="description" length="100" not-null="true"

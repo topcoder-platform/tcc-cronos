@@ -12,7 +12,9 @@
 		</comment>
 
 		<id name="contestId" column="contest_id">
-			<generator class="increment"/>
+			<generator class="sequence">
+				<param name="sequence">sq_contest</param>
+			</generator>
 		</id>
 
 		<many-to-one name="contestChannel" column="contest_channel_id"

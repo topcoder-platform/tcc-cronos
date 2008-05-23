@@ -5,7 +5,9 @@
 <hibernate-mapping package="com.topcoder.service.studio.contest">
 	<class name="ContestTypeConfig" table="contest_type_config" lazy="true">
 		<id name="contestTypeConfigId" column="contest_type_config_id" type="long">
-			<generator class="increment"/>
+			<generator class="sequence">
+				<param name="sequence">sq_contest_type_config</param>
+			</generator>
 		</id>
 		<many-to-one name="type"
 				class="com.topcoder.service.studio.contest.ContestType"

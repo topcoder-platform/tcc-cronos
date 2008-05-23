@@ -10,7 +10,9 @@
 		</comment>
 
 		<id name="submissionId" column="submission_id" type="long">
-			<generator class="increment"/>
+			<generator class="sequence">
+				<param name="sequence">sq_submission</param>
+			</generator>
 		</id>
 
 		<many-to-one name="status"

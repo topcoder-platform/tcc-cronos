@@ -13,7 +13,9 @@
 		</comment>
 
 		<id name="contestType" column="contest_type_id" type="long">
-			<generator class="increment"/>
+			<generator class="sequence">
+				<param name="sequence">sq_contest_type_lu</param>
+			</generator>
 		</id>
 
 		<property name="description" length="100"

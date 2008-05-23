@@ -5,7 +5,9 @@
 <hibernate-mapping package="com.topcoder.service.studio.contest">
 	<class name="ContestProperty" table="contest_property_lu" lazy="true">
 		<id name="propertyId" column="property_id">
-			<generator class="increment"/>
+			<generator class="sequence">
+				<param name="sequence">sq_contest_property_lu</param>
+			</generator>
 		</id>
 		<property name="description" column="property_desc"/>
 	</class>

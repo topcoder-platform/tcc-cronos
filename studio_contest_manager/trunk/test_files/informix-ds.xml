@@ -13,11 +13,11 @@
 	<local-tx-datasource>
 		<jndi-name>InformixDS</jndi-name>
 		<connection-url>
-			jdbc:informix-sqli://133.133.133.123:1526/topcoder:INFORMIXSERVER=topcoder
+			jdbc:informix-sqli://192.168.18.100:9088/tcs:INFORMIXSERVER=tcs
 		</connection-url>
 		<driver-class>com.informix.jdbc.IfxDriver</driver-class>
 		<user-name>informix</user-name>
-		<password>dchcucko</password>
+		<password>topcoder</password>
 		<exception-sorter-class-name>
 			org.jboss.resource.adapter.jdbc.vendor.InformixExceptionSorter
 		</exception-sorter-class-name>

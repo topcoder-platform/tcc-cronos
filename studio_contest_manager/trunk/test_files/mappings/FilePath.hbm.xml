@@ -7,7 +7,9 @@
 		<comment>This table describe URL path to file.</comment>
 
 		<id name="filePathId" column="path_id" type="long">
-			<generator class="increment"/>
+			<generator class="sequence">
+				<param name="sequence">sq_path</param>
+			</generator>
 		</id>
 
 		<property name="path" length="254" />

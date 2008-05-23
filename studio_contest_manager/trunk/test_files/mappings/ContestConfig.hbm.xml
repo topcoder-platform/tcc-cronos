@@ -10,9 +10,10 @@
 			required of configuration parameter
 		</comment>
 		<id name="contestConfigId" column="contest_config_id" type="long">
-		    <generator class="increment"/>
+			<generator class="sequence">
+				<param name="sequence">sq_contest_config</param>
+			</generator>
 		</id>
-
 		<many-to-one name="contest"
 				class="com.topcoder.service.studio.contest.Contest"
 				column="contest_id" />

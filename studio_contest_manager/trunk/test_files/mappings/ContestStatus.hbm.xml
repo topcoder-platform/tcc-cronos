@@ -8,7 +8,9 @@
 
 		<id name="contestStatusId" column="contest_status_id"
 			type="long">
-			<generator class="increment"/>
+			<generator class="sequence">
+				<param name="sequence">sq_contest_status_lu</param>
+			</generator>
 		</id>
 
 		<property name="description" length="100" not-null="true"

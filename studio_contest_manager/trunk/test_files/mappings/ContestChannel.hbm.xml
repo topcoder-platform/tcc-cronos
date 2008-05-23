@@ -10,7 +10,9 @@
 
 		<id name="contestChannelId" column="contest_channel_id"
 			type="long">
-			<generator class="increment"/>
+			<generator class="sequence">
+				<param name="sequence">sq_contest_channel_lu</param>
+			</generator>
 		</id>
 
 		<property name="description" length="254"
