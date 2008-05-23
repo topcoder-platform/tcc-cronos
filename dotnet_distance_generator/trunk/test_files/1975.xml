@@ -1,0 +1,36 @@
+﻿<data>
+  <coder>
+    <coder_id>1975</coder_id>
+    <handle>ivern</handle>
+    <image>ivern.jpg</image>
+    <distance>0</distance>
+    <overlap>0</overlap>
+    <country>US</country>
+    <algorithm_rating>1000</algorithm_rating>
+    <design_rating>1000</design_rating>
+    <development_rating>1000</development_rating>
+  </coder>
+  <coder>
+    <coder_id>1981</coder_id>
+    <handle>mess</handle>
+    <image>mess.jpg</image>
+    <distance>0.375</distance>
+    <overlap>20</overlap>
+    <country>US</country>
+    <algorithm_rating>1750</algorithm_rating>
+    <design_rating>1000</design_rating>
+    <development_rating>1000</development_rating>
+  </coder>
+  <coder>
+    <coder_id>1999</coder_id>
+    <handle>topc</handle>
+    <image>topc.jpg</image>
+    <distance>0.875</distance>
+    <overlap>15</overlap>
+    <country>US</country>
+    <algorithm_rating>1000</algorithm_rating>
+    <design_rating>2000</design_rating>
+    <development_rating>2000</development_rating>
+    <marathon_rating>2000</marathon_rating>
+  </coder>
+</data>

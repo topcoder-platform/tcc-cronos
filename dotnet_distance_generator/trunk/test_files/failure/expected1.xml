@@ -1,0 +1,5 @@
+<map xmlns="http://www.topcoder.com/Distance">
+<coder><coder_id>1</coder_id><handle>M1</handle><rating>600</rating><image>../image1.jpg</image><distance>0</distance><overlap>0</overlap><country>US</country></coder>
+<coder><coder_id>2</coder_id><handle>M2</handle><rating>600</rating><image>../image2.jpg</image><distance>1.23</distance><overlap>2</overlap><country>EN</country></coder>
+<coder><coder_id>3</coder_id><handle>M3</handle><rating>600</rating><image>../image3.jpg</image><distance>2.34</distance><overlap>4</overlap><country>CN</country></coder>
+</map>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ConfigManager>
+  <namespace name="HelperTestNamespace">
+    <property name="property_name">
+      <value>property value</value>
+    </property>
+    <property name="empty_property_name">
+      <value>   </value>
+    </property>
+  </namespace>
+</ConfigManager>

@@ -1,0 +1,30 @@
+﻿<map xmlns="http://www.topcoder.com/Distance">
+  <coder>
+    <coder_id>1975</coder_id>
+    <handle>ivern</handle>
+    <rating>1000</rating>
+    <image>ivern.jpg</image>
+    <distance>0.0</distance>
+    <overlap>0</overlap>
+    <country>US</country>
+  </coder>
+  <coder>
+    <coder_id>1981</coder_id>
+    <handle>mess</handle>
+    <rating>1750</rating>
+    <image>mess.jpg</image>
+    <distance>0.4285714</distance>
+    <overlap>20</overlap>
+    <country>US</country>
+  </coder>
+  <coder>
+    <coder_id>1999</coder_id>
+    <handle>topc</handle>
+    <rating>2000</rating>
+    <image>topc.jpg</image>
+    <distance>1.0</distance>
+    <overlap>15</overlap>
+    <country>US</country>
+  </coder>
+</map>
+

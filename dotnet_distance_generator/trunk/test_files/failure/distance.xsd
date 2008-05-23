@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.topcoder.com/Distance" xmlns:tns="http://www.topcoder.com/Distance" elementFormDefault="qualified">
+    <element name="map">
+    	<complexType>
+    		<sequence minOccurs="1" maxOccurs="unbounded">
+    			<element name="coder">
+    				<complexType>
+              <sequence>
+                <element name="coder_id" type="integer"></element>
+                <element name="handle" type="string"></element>
+                <element name="rating" type="integer"></element>
+                <element name="image" type="string"></element>
+                <element name="distance" type="decimal"></element>
+                <element name="overlap" type="integer"></element>
+                <element name="country" type="string"></element>
+              </sequence>
+            </complexType>
+    			</element>
+    		</sequence>
+    	</complexType>
+    </element>
+</schema>
