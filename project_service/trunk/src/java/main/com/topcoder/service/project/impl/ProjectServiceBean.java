@@ -249,7 +249,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      * @throws IllegalArgumentFault
      *             If the arg given was illegal.
      */
-    @RolesAllowed("User")
+    @RolesAllowed("Cockpit User")
     public ProjectData createProject(ProjectData projectData) throws PersistenceFault, IllegalArgumentFault {
         logEnter("createProject(ProjectData)");
         logParameters("project data: {0}", formatProjectData(projectData));
@@ -303,7 +303,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      * @throws AuthorizationFailedFault
      *             If the calling principal is not authorized to retrieve the project.
      */
-    @RolesAllowed("User")
+    @RolesAllowed("Cockpit User")
     public ProjectData getProject(long projectId) throws PersistenceFault, ProjectNotFoundFault,
         AuthorizationFailedFault {
         logEnter("getProject(long)");
@@ -336,7 +336,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *             If there are no projects linked to the given user.
      */
     @SuppressWarnings("unchecked")
-    @RolesAllowed("Administrator")
+    @RolesAllowed("Cockpit Administrator")
     public List<ProjectData> getProjectsForUser(long userId) throws PersistenceFault, AuthorizationFailedFault,
         UserNotFoundFault {
         logEnter("getProjectsForUser(long)");
@@ -391,7 +391,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *             If a generic persistence error.
      */
     @SuppressWarnings("unchecked")
-    @RolesAllowed("User")
+    @RolesAllowed("Cockpit User")
     public List<ProjectData> getAllProjects() throws PersistenceFault {
         logEnter("getAllProjects()");
 
@@ -448,7 +448,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      * @throws IllegalArgumentFault
      *             If the arg given was illegal.
      */
-    @RolesAllowed("User")
+    @RolesAllowed("Cockpit User")
     public void updateProject(ProjectData projectData) throws PersistenceFault, ProjectNotFoundFault,
         AuthorizationFailedFault, IllegalArgumentFault {
         logEnter("updateProject(ProjectData)");
@@ -504,7 +504,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *             If the project cannot be deleted since it has competitions associated with it.
      */
     @SuppressWarnings("unchecked")
-    @RolesAllowed("User")
+    @RolesAllowed("Cockpit User")
     public boolean deleteProject(long projectId) throws PersistenceFault, ProjectHasCompetitionsFault,
         AuthorizationFailedFault {
         logEnter("deleteProject(long)");

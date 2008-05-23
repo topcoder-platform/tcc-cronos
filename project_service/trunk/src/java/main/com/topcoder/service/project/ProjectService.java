@@ -45,7 +45,7 @@ public interface ProjectService {
      * @throws IllegalArgumentFault
      *             If the arg given was illegal.
      */
-    @RolesAllowed("User")
+    @RolesAllowed("Cockpit User")
     ProjectData createProject(ProjectData projectData) throws PersistenceFault, IllegalArgumentFault;
 
     /**
@@ -66,7 +66,7 @@ public interface ProjectService {
      * @throws AuthorizationFailedFault
      *             If the calling principal is not authorized to retrieve the project.
      */
-    @RolesAllowed("User")
+    @RolesAllowed("Cockpit User")
     ProjectData getProject(long projectId) throws PersistenceFault, ProjectNotFoundFault,
         AuthorizationFailedFault;
 
@@ -88,7 +88,7 @@ public interface ProjectService {
      * @throws UserNotFoundFault
      *             If there are no projects linked to the given user.
      */
-    @RolesAllowed("Administrator")
+    @RolesAllowed("Cockpit Administrator")
     List<ProjectData> getProjectsForUser(long userId) throws PersistenceFault, AuthorizationFailedFault,
         UserNotFoundFault;
 
@@ -105,7 +105,7 @@ public interface ProjectService {
      * @throws PersistenceFault
      *             If a generic persistence error.
      */
-    @RolesAllowed("User")
+    @RolesAllowed("Cockpit User")
     List<ProjectData> getAllProjects() throws PersistenceFault;
 
     /**
@@ -128,7 +128,7 @@ public interface ProjectService {
      * @throws IllegalArgumentFault
      *             If the arg given was illegal.
      */
-    @RolesAllowed("User")
+    @RolesAllowed("Cockpit User")
     void updateProject(ProjectData projectData) throws PersistenceFault, ProjectNotFoundFault,
         AuthorizationFailedFault, IllegalArgumentFault;
 
@@ -150,7 +150,7 @@ public interface ProjectService {
      * @throws ProjectHasCompetitionsFault
      *             If the project cannot be deleted since it has competitions associated with it.
      */
-    @RolesAllowed("User")
+    @RolesAllowed("Cockpit User")
     boolean deleteProject(long projectId) throws PersistenceFault, AuthorizationFailedFault,
         ProjectHasCompetitionsFault;
 }

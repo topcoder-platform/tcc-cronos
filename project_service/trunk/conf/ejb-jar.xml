@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar>
+  <enterprise-beans>
+    <session>
+      <ejb-name>ProjectServiceBean</ejb-name>
+      <home>com.topcoder.service.project.ProjectServiceLocal</home>
+      <remote>com.topcoder.service.project.ProjectServiceRemote</remote>
+      <ejb-class>com.topcoder.service.project.impl.ProjectServiceBean</ejb-class>
+      <session-type>Stateless</session-type>
+      <transaction-type>Bean</transaction-type>
+      <env-entry>
+        <description>Class that implements ProjectPersistence</description>
+        <env-entry-name>project_persistence_class</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>com.topcoder.service.project.persistence.JPAProjectPersistence</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The key under which the roles will be found</description>
+        <env-entry-name>roles_key</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>roles</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The name of the administrator role</description>
+        <env-entry-name>administrator_role</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>Cockpit Administrator</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <description>The name of the user role</description>
+        <env-entry-name>user_role</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>Cockpit User</env-entry-value>
+      </env-entry>
+      <!-- For the JPA persistence -->
+      <env-entry>
+        <description>The persistence unit name</description>
+        <env-entry-name>persistence_unit_name</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>HibernateProjectPersistence</env-entry-value>
+      </env-entry>
+    </session>
+
+  </enterprise-beans>
+</ejb-jar>
