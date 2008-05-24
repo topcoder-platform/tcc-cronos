@@ -9,5 +9,3 @@ Before run the unit test, please set up the database first.
       Also, copy mysql-ds.xml or informix-ds.xml to deploy directory. Start jboss.
   1.5 A demo is provided in test_files/demo. run the demo/ejbtest. 
   1.6 refer the included build.xml for necessary libraries
-  
- 

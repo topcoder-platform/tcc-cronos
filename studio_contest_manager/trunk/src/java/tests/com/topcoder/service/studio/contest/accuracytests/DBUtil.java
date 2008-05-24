@@ -3,6 +3,7 @@
  */
 package com.topcoder.service.studio.contest.accuracytests;
 
+import com.topcoder.configuration.persistence.ConfigurationFileManager;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 
@@ -74,13 +75,10 @@ final class DBUtil {
      */
     static DBConnectionFactory getDBConnectionFactory()
         throws Exception {
-        ConfigManager cm = ConfigManager.getInstance();
+        ConfigurationFileManager configurationFileManager =
+            new ConfigurationFileManager("test_files/accuracytests.properties");
 
-        if (!cm.existsNamespace("accuracytests")) {
-            cm.add(new File("test_files/acc_files/InformixDBConnectionFactory.xml").getCanonicalPath());
-        }
-
-        return new DBConnectionFactoryImpl("accuracytests");
+        return new DBConnectionFactoryImpl(configurationFileManager.getConfiguration("InformixDBConnectionFactory"));
     }
 
     /**

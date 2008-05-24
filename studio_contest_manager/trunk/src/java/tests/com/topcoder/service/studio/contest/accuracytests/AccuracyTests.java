@@ -27,7 +27,7 @@ public class AccuracyTests extends TestCase {
 
         suite.addTestSuite(TestContestManagerBeanAccuracy.class);
         //suite.addTestSuite(TestSocketDocumentContentManagerAccuracy.class);
-        
+
         return suite;
     }
 }
