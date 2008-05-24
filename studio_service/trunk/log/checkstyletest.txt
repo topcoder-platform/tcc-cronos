@@ -1,4 +1,0 @@
-Starting audit...
-C:\work\tc\dev\Studio_Service\src\java\tests\com\topcoder\service\studio\Demo.java:23: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
-C:\work\tc\dev\Studio_Service\src\java\tests\com\topcoder\service\studio\ejb\StudioServiceBeanTest.java:49:30: Variable 'target' must be private and have accessor methods.
-Audit done.
