@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="dist" name="Dependency Import">
+    <!--property file defining the component's dependencies-->
+    <!--Properties used in compile_targets ANT target for JDK version x-->
+    <property name="component.target" value="1.3"/>
+    <property name="component.bootclasspath" value="${java_1_3_bootclasspath}"/>
+
+    <!--TCS dependencies-->
+	<property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+	<property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
+	<property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+	<property name="jboss_login_module.jar" value="${tcs_libdir}/jboss_login_module/2.0.0/jboss_login_module.jar"/>
+	<property name="failure_test_generator.jar" value="${test_reflib}/failure_test_generator/1.0.0/failure_test_generator.jar"/>
+	<property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.1.0/object_factory.jar"/>
+	<property name="user_group_manager.jar" value="${tcs_libdir}/user_group_manager/1.0.1/user_group_manager.jar"/>
+
+	<property name="contest_and_submission_entities.jar" value="${tcs_libdir}/contest_and_submission_entities/1.0.1/contest_and_submission_entities.jar"/>
+	<property name="studio_contest_manager.jar" value="test_files/mocks.jar"/>
+	<property name="submission_manager.jar" value="${tcs_libdir}/submission_manager/1.0.0/submission_manager.jar"/>
+
+    <!--3rd party dependencies-->
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+    <property name="javaee.jar" value="${ext_libdir}/javaee.jar"/>
+
+    <!--Path declarations which are to be used in the master build file.-->
+    <path id="component.tcs-dependencies">
+		<pathelement location="${base_exception.jar}"/>
+		<pathelement location="${logging_wrapper.jar}"/>
+		<pathelement location="${object_formatter.jar}"/>
+		<pathelement location="${jboss_login_module.jar}"/>
+
+		<pathelement location="${contest_and_submission_entities.jar}"/>
+		<pathelement location="${studio_contest_manager.jar}"/>
+		<pathelement location="${submission_manager.jar}"/>
+
+		<pathelement location="${failure_test_generator.jar}"/>
+		<pathelement location="${object_factory.jar}"/>
+		<pathelement location="${user_group_manager.jar}"/>
+	</path>
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${javaee.jar}"/>
+    </path>
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+    </path>
+</project>
