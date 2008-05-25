@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="C:\work\bin\dotnet_distance_generator\build\classes\TopCoder.Web.Distance.Test.dll" total="172" failures="0" not-run="0" date="2008-05-25" time="01:57:40">
+  <environment nunit-version="2.2.8.0" clr-version="2.0.50727.1434" os-version="Microsoft Windows NT 6.0.6001 Service Pack 1" platform="Win32NT" cwd="C:\work\bin\dotnet_distance_generator" machine-name="PC" user="User" user-domain="PC" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite name="C:\work\bin\dotnet_distance_generator\build\classes\TopCoder.Web.Distance.Test.dll" success="True" time="106.086" asserts="0">
+    <results>
+      <test-suite name="C:\work\bin\dotnet_distance_generator\build\classes\TopCoder.Web.Distance.Test.dll" success="True" time="106.085" asserts="0">
+        <results>
+          <test-suite name="TopCoder" success="True" time="106.085" asserts="0">
+            <results>
+              <test-suite name="TopCoder.Web" success="True" time="106.085" asserts="0">
+                <results>
+                  <test-suite name="TopCoder.Web.Distance" success="True" time="106.085" asserts="0">
+                    <results>
+                      <test-suite name="TopCoder.Web.Distance.AccuracyTests" success="True" time="0.199" asserts="0">
+                        <results>
+                          <test-suite name="TopCoder.Web.Distance.AccuracyTests.FlatFileMemberDataAccessTests" success="True" time="0.063" asserts="0">
+                            <results>
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.FlatFileMemberDataAccessTests.TestGetMember" executed="True" success="True" time="0.060" asserts="35" />
+                            </results>
+                          </test-suite>
+                          <test-suite name="TopCoder.Web.Distance.AccuracyTests.GeographicalDistanceCalculatorTests" success="True" time="0.015" asserts="0">
+                            <results>
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.GeographicalDistanceCalculatorTests.TestBothDefined" executed="True" success="True" time="0.005" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.GeographicalDistanceCalculatorTests.TestBothUndefined" executed="True" success="True" time="0.002" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.GeographicalDistanceCalculatorTests.TestDefinedUndefined" executed="True" success="True" time="0.003" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.GeographicalDistanceCalculatorTests.TestUndefinedDefined" executed="True" success="True" time="0.002" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.GeographicalDistanceCalculatorTests.TestUndefMaxDistance" executed="True" success="True" time="0.000" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.GeographicalDistanceCalculatorTests.TestZeroMaxDistance" executed="True" success="True" time="0.002" asserts="2" />
+                            </results>
+                          </test-suite>
+                          <test-suite name="TopCoder.Web.Distance.AccuracyTests.OverlapDistanceCalculatorTests" success="True" time="0.009" asserts="0">
+                            <results>
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.OverlapDistanceCalculatorTests.TestBothDefined" executed="True" success="True" time="0.005" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.OverlapDistanceCalculatorTests.TestBothDefined2" executed="True" success="True" time="0.003" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.OverlapDistanceCalculatorTests.TestZeroMaxDistance" executed="True" success="True" time="0.001" asserts="1" />
+                            </results>
+                          </test-suite>
+                          <test-suite name="TopCoder.Web.Distance.AccuracyTests.RatingDistanceCalculatorTests" success="True" time="0.039" asserts="0">
+                            <results>
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.RatingDistanceCalculatorTests.TestAlgDevBothDefined" executed="True" success="True" time="0.012" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.RatingDistanceCalculatorTests.TestAlgDevBothDefined2" executed="True" success="True" time="0.002" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.RatingDistanceCalculatorTests.TestAlgDevBothUndefined" executed="True" success="True" time="0.002" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.RatingDistanceCalculatorTests.TestAlgDevDefinedUndefined" executed="True" success="True" time="0.002" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.RatingDistanceCalculatorTests.TestAlgDevUndefinedDefined" executed="True" success="True" time="0.002" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.RatingDistanceCalculatorTests.TestAlgDevUndefMaxDistance" executed="True" success="True" time="0.001" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.RatingDistanceCalculatorTests.TestAlgDevZeroMaxDistance" executed="True" success="True" time="0.001" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.RatingDistanceCalculatorTests.TestAllBothDefined" executed="True" success="True" time="0.003" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.RatingDistanceCalculatorTests.TestBothDefined" executed="True" success="True" time="0.002" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.RatingDistanceCalculatorTests.TestBothUndefined" executed="True" success="True" time="0.002" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.RatingDistanceCalculatorTests.TestDefinedUndefined" executed="True" success="True" time="0.003" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.RatingDistanceCalculatorTests.TestUndefinedDefined" executed="True" success="True" time="0.002" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.RatingDistanceCalculatorTests.TestUndefMaxDistance" executed="True" success="True" time="0.001" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.RatingDistanceCalculatorTests.TestZeroMaxDistance" executed="True" success="True" time="0.001" asserts="1" />
+                            </results>
+                          </test-suite>
+                          <test-suite name="TopCoder.Web.Distance.AccuracyTests.XmlDistanceGeneratorTests" success="True" time="0.067" asserts="0">
+                            <results>
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.XmlDistanceGeneratorTests.TestAllTypes" executed="True" success="True" time="0.044" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.XmlDistanceGeneratorTests.TestAllTypesWithWeighting" executed="True" success="True" time="0.003" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.XmlDistanceGeneratorTests.TestGeoType" executed="True" success="True" time="0.002" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.XmlDistanceGeneratorTests.TestOverlapType" executed="True" success="True" time="0.003" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.XmlDistanceGeneratorTests.TestRatingType" executed="True" success="True" time="0.003" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.XmlDistanceGeneratorTests.TestRatingTypeAlg" executed="True" success="True" time="0.002" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.XmlDistanceGeneratorTests.TestRatingTypeAlgDesign" executed="True" success="True" time="0.003" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.AccuracyTests.XmlDistanceGeneratorTests.TestRatingTypeAlgDesign2" executed="True" success="True" time="0.003" asserts="1" />
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                      <test-suite name="TopCoder.Web.Distance.Data" success="True" time="0.009" asserts="0">
+                        <results>
+                          <test-suite name="TopCoder.Web.Distance.Data.TestDistanceGenerationException" success="True" time="0.009" asserts="0">
+                            <results>
+                              <test-case name="TopCoder.Web.Distance.Data.TestDistanceGenerationException.TestClassDefinition" executed="True" success="True" time="0.000" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.Data.TestDistanceGenerationException.TestCtor" executed="True" success="True" time="0.003" asserts="3" />
+                              <test-case name="TopCoder.Web.Distance.Data.TestDistanceGenerationException.TestCtorSerializationInfoStreamingContext" executed="True" success="True" time="0.001" asserts="3" />
+                              <test-case name="TopCoder.Web.Distance.Data.TestDistanceGenerationException.TestCtorString" executed="True" success="True" time="0.001" asserts="3" />
+                              <test-case name="TopCoder.Web.Distance.Data.TestDistanceGenerationException.TestCtorStringException" executed="True" success="True" time="0.000" asserts="3" />
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                      <test-suite name="TopCoder.Web.Distance.Demo" success="True" time="0.107" asserts="0">
+                        <results>
+                          <test-case name="TopCoder.Web.Distance.Demo.TestDemo" executed="True" success="True" time="0.104" asserts="0" />
+                        </results>
+                      </test-suite>
+                      <test-suite name="TopCoder.Web.Distance.DistanceCalculators" success="True" time="0.032" asserts="0">
+                        <results>
+                          <test-suite name="TopCoder.Web.Distance.DistanceCalculators.TestGeographicalDistanceCalculator" success="True" time="0.013" asserts="0">
+                            <results>
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestGeographicalDistanceCalculator.TestCalculateDistanceKnownToKnown" executed="True" success="True" time="0.003" asserts="4" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestGeographicalDistanceCalculator.TestCalculateDistanceKnownToUnknown" executed="True" success="True" time="0.000" asserts="3" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestGeographicalDistanceCalculator.TestCalculateDistanceUnknownToKnown" executed="True" success="True" time="0.002" asserts="3" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestGeographicalDistanceCalculator.TestCalculateDistanceUnknownToUnknown" executed="True" success="True" time="0.002" asserts="3" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestGeographicalDistanceCalculator.TestCalculateDistanceWithEmptyListOfRelatedMembers" executed="True" success="True" time="0.004" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestGeographicalDistanceCalculator.TestCalculateDistanceWithNullElementInRelatedMembers" executed="True" success="True" time="0.000" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestGeographicalDistanceCalculator.TestCalculateDistanceWithNullMember" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestGeographicalDistanceCalculator.TestCalculateDistanceWithNullRelatedMembers" executed="True" success="True" time="0.000" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestGeographicalDistanceCalculator.TestClassDefinition" executed="True" success="True" time="0.000" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestGeographicalDistanceCalculator.TestCtor" executed="True" success="True" time="0.001" asserts="1" />
+                            </results>
+                          </test-suite>
+                          <test-suite name="TopCoder.Web.Distance.DistanceCalculators.TestOverlapDistanceCalculator" success="True" time="0.011" asserts="0">
+                            <results>
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestOverlapDistanceCalculator.TestCalculateDistance" executed="True" success="True" time="0.001" asserts="4" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestOverlapDistanceCalculator.TestCalculateDistance2" executed="True" success="True" time="0.001" asserts="5" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestOverlapDistanceCalculator.TestCalculateDistanceWithEmptyListOfRelatedMembers" executed="True" success="True" time="0.000" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestOverlapDistanceCalculator.TestCalculateDistanceWithNullElementInRelatedMembers" executed="True" success="True" time="0.000" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestOverlapDistanceCalculator.TestCalculateDistanceWithNullMember" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestOverlapDistanceCalculator.TestCalculateDistanceWithNullRelatedMembers" executed="True" success="True" time="0.000" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestOverlapDistanceCalculator.TestClassDefinition" executed="True" success="True" time="0.001" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestOverlapDistanceCalculator.TestCtor" executed="True" success="True" time="0.000" asserts="1" />
+                            </results>
+                          </test-suite>
+                          <test-suite name="TopCoder.Web.Distance.DistanceCalculators.TestRatingDistanceCalculator" success="True" time="0.007" asserts="0">
+                            <results>
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestRatingDistanceCalculator.TestCalculateDistance" executed="True" success="True" time="0.001" asserts="8" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestRatingDistanceCalculator.TestCalculateDistance2" executed="True" success="True" time="0.002" asserts="12" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestRatingDistanceCalculator.TestCalculateDistanceWithEmptyListOfRelatedMembers" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestRatingDistanceCalculator.TestCalculateDistanceWithNullElementInRelatedMembers" executed="True" success="True" time="0.000" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestRatingDistanceCalculator.TestCalculateDistanceWithNullMember" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestRatingDistanceCalculator.TestCalculateDistanceWithNullRelatedMembers" executed="True" success="True" time="0.000" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestRatingDistanceCalculator.TestClassDefinition" executed="True" success="True" time="0.000" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.DistanceCalculators.TestRatingDistanceCalculator.TestCtor" executed="True" success="True" time="0.000" asserts="1" />
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                      <test-suite name="TopCoder.Web.Distance.DistanceGenerators" success="True" time="0.060" asserts="0">
+                        <results>
+                          <test-suite name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator" success="True" time="0.054" asserts="0">
+                            <results>
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestClassDefinition" executed="True" success="True" time="0.003" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestCtor1" executed="True" success="True" time="0.001" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestCtor1WithInvalidCalculatorKeys" executed="True" success="True" time="0.002" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestCtor1WithInvalidWeights" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestCtor1WithMissingChildren" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestCtor1WithMissingObjFactoryConfig" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestCtor1WithNoCalculatorKeys" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestCtor1WithNoDataAccessKey" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestCtor1WithNull" executed="True" success="True" time="0.000" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestCtor2WithNullCalculators" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestCtor2WithNullGenerator" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestCtor2WithNullMemberDataAccess" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestCtor3WithEmptyCalculators" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestCtor3WithInvalidKeyInCalculators" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestCtor3WithNullCalculators" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestCtor3WithNullGenerator" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestCtor3WithNullMemberDataAccess" executed="True" success="True" time="0.000" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestCtor3WithNullWeights" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestGenerateDistanceXml" executed="True" success="True" time="0.003" asserts="2" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestGenerateDistanceXml2WithEmptyWeights" executed="True" success="True" time="0.002" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestGenerateDistanceXml2WithInvalidCompetitionTypes" executed="True" success="True" time="0.000" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestGenerateDistanceXml2WithInvalidDistanceTypes" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestGenerateDistanceXml2WithInvalidKeyInWeights" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestGenerateDistanceXml2WithInvalidSumInWeights" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestGenerateDistanceXml2WithNegativeCoderId" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestGenerateDistanceXml2WithNullWeights" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestGenerateDistanceXmlWithInvalidCompetitionTypes" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestGenerateDistanceXmlWithInvalidDistanceTypes" executed="True" success="True" time="0.000" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestGenerateDistanceXmlWithNegativeCoderId" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestGenerateDistanceXmlWithWeights" executed="True" success="True" time="0.003" asserts="2" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestGenerateDistanceXmlWithWeightsAllDistanceTypes" executed="True" success="True" time="0.005" asserts="2" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestGenerateDistanceXmlWithWeightsCountryOnly" executed="True" success="True" time="0.002" asserts="2" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestGenerateDistanceXmlWithWeightsOverlapAndCountry" executed="True" success="True" time="0.003" asserts="2" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestGenerateDistanceXmlWithWeightsOverlapOnly" executed="True" success="True" time="0.002" asserts="2" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestGenerateDistanceXmlWithWeightsRatingAndCountry" executed="True" success="True" time="0.003" asserts="2" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestGenerateDistanceXmlWithWeightsRatingAndOverlap" executed="True" success="True" time="0.003" asserts="2" />
+                              <test-case name="TopCoder.Web.Distance.DistanceGenerators.TestDefaultDistanceGenerator.TestGenerateDistanceXmlWithWeightsRatingOnly" executed="True" success="True" time="0.002" asserts="2" />
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                      <test-suite name="TopCoder.Web.Distance.FailureTests" success="True" time="0.603" asserts="0">
+                        <results>
+                          <test-suite name="TopCoder.Web.Distance.FailureTests.DistanceCalculators" success="True" time="0.394" asserts="0">
+                            <results>
+                              <test-suite name="TopCoder.Web.Distance.FailureTests.DistanceCalculators.GeographicalDistanceCalculatorFailureTests" success="True" time="0.137" asserts="0">
+                                <results>
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceCalculators.GeographicalDistanceCalculatorFailureTests.TestCalculateDistanceWithEmptyRelatedMembers" executed="True" success="True" time="0.032" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceCalculators.GeographicalDistanceCalculatorFailureTests.TestCalculateDistanceWithNullElementInRelatedMembers" executed="True" success="True" time="0.031" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceCalculators.GeographicalDistanceCalculatorFailureTests.TestCalculateDistanceWithNullMember" executed="True" success="True" time="0.033" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceCalculators.GeographicalDistanceCalculatorFailureTests.TestCalculateDistanceWithNullRelatedMembers" executed="True" success="True" time="0.041" asserts="0" />
+                                </results>
+                              </test-suite>
+                              <test-suite name="TopCoder.Web.Distance.FailureTests.DistanceCalculators.OverlapDistanceCalculatorFailureTests" success="True" time="0.126" asserts="0">
+                                <results>
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceCalculators.OverlapDistanceCalculatorFailureTests.TestCalculateDistanceWithEmptyRelatedMembers" executed="True" success="True" time="0.033" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceCalculators.OverlapDistanceCalculatorFailureTests.TestCalculateDistanceWithNullElementInRelatedMembers" executed="True" success="True" time="0.031" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceCalculators.OverlapDistanceCalculatorFailureTests.TestCalculateDistanceWithNullMember" executed="True" success="True" time="0.032" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceCalculators.OverlapDistanceCalculatorFailureTests.TestCalculateDistanceWithNullRelatedMembers" executed="True" success="True" time="0.030" asserts="0" />
+                                </results>
+                              </test-suite>
+                              <test-suite name="TopCoder.Web.Distance.FailureTests.DistanceCalculators.RatingDistanceCalculatorFailureTests" success="True" time="0.128" asserts="0">
+                                <results>
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceCalculators.RatingDistanceCalculatorFailureTests.TestCalculateDistanceWithEmptyRelatedMembers" executed="True" success="True" time="0.035" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceCalculators.RatingDistanceCalculatorFailureTests.TestCalculateDistanceWithNullElementInRelatedMembers" executed="True" success="True" time="0.031" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceCalculators.RatingDistanceCalculatorFailureTests.TestCalculateDistanceWithNullMember" executed="True" success="True" time="0.031" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceCalculators.RatingDistanceCalculatorFailureTests.TestCalculateDistanceWithNullRelatedMembers" executed="True" success="True" time="0.031" asserts="0" />
+                                </results>
+                              </test-suite>
+                            </results>
+                          </test-suite>
+                          <test-suite name="TopCoder.Web.Distance.FailureTests.DistanceGenerators" success="True" time="0.035" asserts="0">
+                            <results>
+                              <test-suite name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests" success="True" time="0.030" asserts="0">
+                                <results>
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestConstructor1WithInvalidConfiguration" executed="True" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestConstructor1WithNullConfiguration" executed="True" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestConstructor2WithEmptyCalculators" executed="True" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestConstructor2WithInvalidCalculators1" executed="True" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestConstructor2WithInvalidCalculators2" executed="True" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestConstructor2WithNullCalculators" executed="True" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestConstructor2WithNullMemberDataAccess" executed="True" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestConstructor2WithNullXmlGenerator" executed="True" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestConstructor3WithEmptyCalculators" executed="True" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestConstructor3WithEmptyWeights" executed="True" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestConstructor3WithInvalidCalculators1" executed="True" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestConstructor3WithInvalidCalculators2" executed="True" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestConstructor3WithInvalidWeights1" executed="True" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestConstructor3WithInvalidWeights2" executed="True" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestConstructor3WithInvalidWeights3" executed="True" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestConstructor3WithInvalidWeights4" executed="True" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestConstructor3WithNullCalculators" executed="True" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestConstructor3WithNullMemberDataAccess" executed="True" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestConstructor3WithNullWeights" executed="True" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestConstructor3WithNullXmlGenerator" executed="True" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestGenerateDistanceXml1WithInvalidCompetitionType" executed="True" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestGenerateDistanceXml1WithInvalidDistanceType" executed="True" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestGenerateDistanceXml1WithNegativeCoderId" executed="True" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestGenerateDistanceXml1WithZeroCoderId" executed="True" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestGenerateDistanceXml2WithEmptyWeights" executed="True" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestGenerateDistanceXml2WithInvalidCompetitionType" executed="True" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestGenerateDistanceXml2WithInvalidDistanceType" executed="True" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestGenerateDistanceXml2WithInvalidWeights1" executed="True" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestGenerateDistanceXml2WithInvalidWeights2" executed="True" success="True" time="0.002" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestGenerateDistanceXml2WithInvalidWeights3" executed="True" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestGenerateDistanceXml2WithInvalidWeights4" executed="True" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestGenerateDistanceXml2WithInvalidWeights5" executed="True" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestGenerateDistanceXml2WithInvalidWeights6" executed="True" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestGenerateDistanceXml2WithNegativeCoderId" executed="True" success="True" time="0.000" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestGenerateDistanceXml2WithNullWeights" executed="True" success="True" time="0.001" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.DistanceGenerators.DefaultDistanceGeneratorFailureTests.TestGenerateDistanceXml2WithZeroCoderId" executed="True" success="True" time="0.001" asserts="0" />
+                                </results>
+                              </test-suite>
+                            </results>
+                          </test-suite>
+                          <test-suite name="TopCoder.Web.Distance.FailureTests.XmlGenerators" success="True" time="0.169" asserts="0">
+                            <results>
+                              <test-suite name="TopCoder.Web.Distance.FailureTests.XmlGenerators.DefaultXmlGeneratorFailureTests" success="True" time="0.169" asserts="0">
+                                <results>
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.XmlGenerators.DefaultXmlGeneratorFailureTests.TestGenerateXmlWithDifferentlySizedLists" executed="True" success="True" time="0.032" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.XmlGenerators.DefaultXmlGeneratorFailureTests.TestGenerateXmlWithNullDistances" executed="True" success="True" time="0.032" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.XmlGenerators.DefaultXmlGeneratorFailureTests.TestGenerateXmlWithNullElementsInMembers" executed="True" success="True" time="0.037" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.XmlGenerators.DefaultXmlGeneratorFailureTests.TestGenerateXmlWithNullMember" executed="True" success="True" time="0.031" asserts="0" />
+                                  <test-case name="TopCoder.Web.Distance.FailureTests.XmlGenerators.DefaultXmlGeneratorFailureTests.TestGenerateXmlWithNullRelatedMembers" executed="True" success="True" time="0.033" asserts="0" />
+                                </results>
+                              </test-suite>
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                      <test-suite name="TopCoder.Web.Distance.StressTests" success="True" time="105.055" asserts="0">
+                        <results>
+                          <test-suite name="TopCoder.Web.Distance.StressTests.StressTests" success="True" time="105.049" asserts="0">
+                            <results>
+                              <test-case name="TopCoder.Web.Distance.StressTests.StressTests.TestStress" executed="True" success="True" time="105.047" asserts="7499" />
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                      <test-suite name="TopCoder.Web.Distance.TestHelper" success="True" time="0.005" asserts="0">
+                        <results>
+                          <test-case name="TopCoder.Web.Distance.TestHelper.TestValidateArgumentWhenErrorConditionIsFalse" executed="True" success="True" time="0.000" asserts="0" />
+                          <test-case name="TopCoder.Web.Distance.TestHelper.TestValidateArgumentWhenErrorConditionIsTrue" executed="True" success="True" time="0.001" asserts="0" />
+                          <test-case name="TopCoder.Web.Distance.TestHelper.TestValidateListWithEmptyListAllowed" executed="True" success="True" time="0.000" asserts="0" />
+                          <test-case name="TopCoder.Web.Distance.TestHelper.TestValidateListWithEmptyListNotAllowed" executed="True" success="True" time="0.000" asserts="0" />
+                          <test-case name="TopCoder.Web.Distance.TestHelper.TestValidateListWithNullElementInList" executed="True" success="True" time="0.001" asserts="0" />
+                          <test-case name="TopCoder.Web.Distance.TestHelper.TestValidateListWithNullList" executed="True" success="True" time="0.000" asserts="0" />
+                          <test-case name="TopCoder.Web.Distance.TestHelper.TestValidateListWithValid" executed="True" success="True" time="0.000" asserts="0" />
+                          <test-case name="TopCoder.Web.Distance.TestHelper.TestValidateNotNullWithNonNull" executed="True" success="True" time="0.000" asserts="0" />
+                          <test-case name="TopCoder.Web.Distance.TestHelper.TestValidateNotNullWithNull" executed="True" success="True" time="0.000" asserts="0" />
+                        </results>
+                      </test-suite>
+                      <test-suite name="TopCoder.Web.Distance.XmlGenerators" success="True" time="0.006" asserts="0">
+                        <results>
+                          <test-suite name="TopCoder.Web.Distance.XmlGenerators.TestDefaultXmlGenerator" success="True" time="0.006" asserts="0">
+                            <results>
+                              <test-case name="TopCoder.Web.Distance.XmlGenerators.TestDefaultXmlGenerator.TestClassDefinition" executed="True" success="True" time="0.001" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.XmlGenerators.TestDefaultXmlGenerator.TestCtor" executed="True" success="True" time="0.000" asserts="1" />
+                              <test-case name="TopCoder.Web.Distance.XmlGenerators.TestDefaultXmlGenerator.TestGenerateXml" executed="True" success="True" time="0.001" asserts="4" />
+                              <test-case name="TopCoder.Web.Distance.XmlGenerators.TestDefaultXmlGenerator.TestGenerateXmlWithEmptyListOfRelatedMembers" executed="True" success="True" time="0.000" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.XmlGenerators.TestDefaultXmlGenerator.TestGenerateXmlWithNullDistances" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.XmlGenerators.TestDefaultXmlGenerator.TestGenerateXmlWithNullElementInRelatedMembers" executed="True" success="True" time="0.000" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.XmlGenerators.TestDefaultXmlGenerator.TestGenerateXmlWithNullMember" executed="True" success="True" time="0.001" asserts="0" />
+                              <test-case name="TopCoder.Web.Distance.XmlGenerators.TestDefaultXmlGenerator.TestGenerateXmlWithNullRelatedMembers" executed="True" success="True" time="0.000" asserts="0" />
+                            </results>
+                          </test-suite>
+                        </results>
+                      </test-suite>
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
