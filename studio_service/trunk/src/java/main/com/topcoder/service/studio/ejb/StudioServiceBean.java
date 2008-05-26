@@ -3,10 +3,13 @@
  */
 package com.topcoder.service.studio.ejb;
 
+import com.topcoder.search.builder.filter.EqualToFilter;
+import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
 import com.topcoder.service.studio.ContestCategoryData;
 import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.ContestNotFoundException;
+import com.topcoder.service.studio.ContestPayload;
 import com.topcoder.service.studio.ContestStatusData;
 import com.topcoder.service.studio.DocumentNotFoundException;
 import com.topcoder.service.studio.IllegalArgumentWSException;
@@ -26,6 +29,7 @@ import com.topcoder.service.studio.contest.ContestManagerRemote;
 import com.topcoder.service.studio.contest.ContestProperty;
 import com.topcoder.service.studio.contest.ContestStatus;
 import com.topcoder.service.studio.contest.ContestStatusTransitionException;
+import com.topcoder.service.studio.contest.ContestType;
 import com.topcoder.service.studio.contest.Document;
 import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
@@ -60,28 +64,37 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
- * This is the EJB implementation of the StudioService interface webservice endpoint.
- *
- * It allows getting, updating, and creating contest data; get, remove and update submission data; get some additional
- * information like content's categories, statuses and file types.
- *
- * It uses an instance of ContestManager and an instance of SubmissionManager (injected as EJB) to perform the logic of
- * the methods. The webservices annotations are presents in the endpoint interface, this bean contains only the
- * annotation to connect the endpoint interface and this implementation. The security is provided programmatically and
- * also with annotations. The exceptions are constructed using the fault bean because the fault message can be consumed
- * as SOAP message, this is necessary because it's a webservices. This implementations is designed to be used by the
- * related interface and also by a different webservices client: all the response, request and exceptions are
- * automatically transformed to SOAP element.</p>
- *
- * <p> Thread safety: this class is thread safe if the managers used are thread safe. Considering that probably the
- * managers beans will use the transactions, this stateless bean is thread safe</p>
- *
+ * This is the EJB implementation of the StudioService interface webservice
+ * endpoint.
+ * 
+ * It allows getting, updating, and creating contest data; get, remove and
+ * update submission data; get some additional information like content's
+ * categories, statuses and file types.
+ * 
+ * It uses an instance of ContestManager and an instance of SubmissionManager
+ * (injected as EJB) to perform the logic of the methods. The webservices
+ * annotations are presents in the endpoint interface, this bean contains only
+ * the annotation to connect the endpoint interface and this implementation. The
+ * security is provided programmatically and also with annotations. The
+ * exceptions are constructed using the fault bean because the fault message can
+ * be consumed as SOAP message, this is necessary because it's a webservices.
+ * This implementations is designed to be used by the related interface and also
+ * by a different webservices client: all the response, request and exceptions
+ * are automatically transformed to SOAP element.
+ * </p>
+ * 
+ * <p>
+ * Thread safety: this class is thread safe if the managers used are thread
+ * safe. Considering that probably the managers beans will use the transactions,
+ * this stateless bean is thread safe
+ * </p>
+ * 
  * @author fabrizyo, TCSDEVELOPER
  * @version 1.0
  */
 @WebService(endpointInterface = "com.topcoder.service.studio.StudioService")
 @RunAs("Administrator")
-@DeclareRoles({"User", "Administrator"})
+@DeclareRoles( { "User", "Administrator" })
 @Stateless
 public class StudioServiceBean implements StudioService {
     /**
@@ -95,114 +108,142 @@ public class StudioServiceBean implements StudioService {
     private static final String ADMIN_ROLE = "Administrator";
 
     /**
-     * <p> Represents the loggerName used to retrieve the logger.</p>
+     * <p>
+     * Represents the loggerName used to retrieve the logger.
+     * </p>
      */
     @Resource(name = "logName")
     private String logName;
 
     /**
-     * <p> Represents the sessionContext of the ejb.</p>
+     * <p>
+     * Represents the sessionContext of the ejb.
+     * </p>
      */
     @Resource
     private SessionContext sessionContext;
 
     /**
-     * <p> Represents the log used to log the methods logic of this class.</p>
+     * <p>
+     * Represents the log used to log the methods logic of this class.
+     * </p>
      */
     private Log log;
 
     /**
-     * <p> Represents the contest Manager instance used by this bean to perform all methods related to Contests.</p>
+     * <p>
+     * Represents the contest Manager instance used by this bean to perform all
+     * methods related to Contests.
+     * </p>
      */
     @EJB
     private ContestManagerRemote contestManager;
 
     /**
-     * <p> Represents the submission Manager instance used by this bean to perform all methods related to
-     * Submissions.</p>
+     * <p>
+     * Represents the submission Manager instance used by this bean to perform
+     * all methods related to Submissions.
+     * </p>
      */
     @EJB
     private SubmissionManagerRemote submissionManager;
 
     /**
-     * <p> Represents the draft status used to retrieve the check the draft status.</p>
+     * <p>
+     * Represents the draft status used to retrieve the check the draft status.
+     * </p>
      */
     @Resource(name = "draftStatusId")
     private long draftStatusId;
 
     /**
-     * Represents the id of status of a submission paid.</p>
+     * Represents the id of status of a submission paid.
+     * </p>
      */
     @Resource(name = "submissionPaidStatusId")
     private long submissionPaidStatusId;
 
     /**
-     * Represents the id of status of a submission unpaid.</p>
+     * Represents the id of status of a submission unpaid.
+     * </p>
      */
     @Resource(name = "submissionUnpaidStatusId")
     private long submissionUnpaidStatusId;
 
     /**
-     * Represents the id of status of a submission marked for purchase.</p>
+     * Represents the id of status of a submission marked for purchase.
+     * </p>
      */
     @Resource(name = "submissionMarkedForPurchaseStatusId")
     private long submissionMarkedForPurchaseStatusId;
 
     /**
-     * Represents the id of submission status of a submission that passed the review.</p>
+     * Represents the id of submission status of a submission that passed the
+     * review.
+     * </p>
      */
     @Resource(name = "submissionPassedStatus")
     private long submissionPassedStatus;
 
     /**
-     * Represents the base URI used to construct the submission content.</p>
+     * Represents the base URI used to construct the submission content.
+     * </p>
      */
     @Resource(name = "submissionContentBaseURI")
     private String submissionContentBaseURI;
 
     /**
-     * Represents the parameter name of the submission id, it will be used in the constructrion of submission URI
-     * content.</p>
+     * Represents the parameter name of the submission id, it will be used in
+     * the constructrion of submission URI content.
+     * </p>
      */
     @Resource(name = "submissionContentSubmissionIdParameterName")
     private String submissionContentSubmissionIdParameterName;
 
     /**
-     * Represents the parameter name of the submission type, it will be used in the constructrion of submission URI
-     * content.</p>
+     * Represents the parameter name of the submission type, it will be used in
+     * the constructrion of submission URI content.
+     * </p>
      */
     @Resource(name = "submissionContentSubmissionTypeParameterName")
     private String submissionContentSubmissionTypeParameterName;
 
     /**
-     * Represents the parameter value of the submission paid parameter, it will be used in the constructrion of
-     * submission URI content.</p>
+     * Represents the parameter value of the submission paid parameter, it will
+     * be used in the constructrion of submission URI content.
+     * </p>
      */
     @Resource(name = "submissionContentPaidParameterValue")
     private String submissionContentPaidParameterValue;
 
     /**
-     * Represents the parameter value of the submission unpaid parameter, it will be used in the constructrion of
-     * submission URI content.</p>
+     * Represents the parameter value of the submission unpaid parameter, it
+     * will be used in the constructrion of submission URI content.
+     * </p>
      */
     @Resource(name = "submissionContentUnpaidParameterValue")
     private String submissionContentUnpaidParameterValue;
 
     /**
-     * <p>This is the default constructor. It does nothing.</p>
+     * <p>
+     * This is the default constructor. It does nothing.
+     * </p>
      */
     public StudioServiceBean() {
     }
 
     /**
-     * <p> This is method is performed after the construction of the bean, at this point all the bean's resources will
-     * be ready.</p>
+     * <p>
+     * This is method is performed after the construction of the bean, at this
+     * point all the bean's resources will be ready.
+     * </p>
      */
     @PostConstruct
     private void init() {
         if (logName != null) {
             if (logName.trim().length() == 0) {
-                throw new IllegalStateException("logName parameter not supposed to be empty.");
+                throw new IllegalStateException(
+                        "logName parameter not supposed to be empty.");
             }
             log = LogManager.getLog(logName);
         }
@@ -212,16 +253,25 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * <p> Create contest for project. Return contest populated with id.</p>
-     *
-     * @param contestData       the contestData used to create the Contest
-     * @param tcDirectProjectId the tc project id set to Contest
+     * <p>
+     * Create contest for project. Return contest populated with id.
+     * </p>
+     * 
+     * @param contestData
+     *            the contestData used to create the Contest
+     * @param tcDirectProjectId
+     *            the tc project id set to Contest
      * @return the ContestData persisted and polulated with the new id
-     * @throws IllegalArgumentWSException if the contestData is null or if the tcDirectProjectId is less than 0
-     * @throws PersistenceException       if some persistence errors occur
-     * @throws UserNotAuthorizedException if the user is not authorized to perform this method
+     * @throws IllegalArgumentWSException
+     *             if the contestData is null or if the tcDirectProjectId is
+     *             less than 0
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     * @throws UserNotAuthorizedException
+     *             if the user is not authorized to perform this method
      */
-    public ContestData createContest(ContestData contestData, long tcDirectProjectId) throws PersistenceException {
+    public ContestData createContest(ContestData contestData,
+            long tcDirectProjectId) throws PersistenceException {
         logEnter("createContest", contestData, tcDirectProjectId);
         checkParameter("contestData", contestData);
         checkParameter("tcDirectProjectId", tcDirectProjectId);
@@ -230,11 +280,11 @@ public class StudioServiceBean implements StudioService {
         authorizeWithProject(tcDirectProjectId);
 
         // access is granted, create contest
-        Contest contest = convertContestData(contestData);
-        contest.setTcDirectProjectId(tcDirectProjectId);
-        contest.setCreatedUser(0l);
-
         try {
+            Contest contest = convertContestData(contestData);
+            contest.setTcDirectProjectId(tcDirectProjectId);
+            contest.setCreatedUser(0l);
+
             contest = contestManager.createContest(contest);
 
             List<UploadedDocument> documents = new ArrayList<UploadedDocument>();
@@ -244,7 +294,9 @@ public class StudioServiceBean implements StudioService {
             contestData = convertContest(contest);
             contestData.setDocumentationUploads(documents);
         } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManager reports error while creating new contest.", e);
+            handlePersistenceError(
+                    "ContestManager reports error while creating new contest.",
+                    e);
         }
 
         logExit("createContest", contestData);
@@ -252,16 +304,24 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * <p> Get contest by id</p>
-     *
-     * @param contestId the id used to retrireve the contest
+     * <p>
+     * Get contest by id
+     * </p>
+     * 
+     * @param contestId
+     *            the id used to retrireve the contest
      * @return the ContestData retrieved
-     * @throws IllegalArgumentWSException if the contestId is less than 0
-     * @throws PersistenceException       if some persistence errors occur
-     * @throws UserNotAuthorizedException if the user is not authorized to perform this method
-     * @throws ContestNotFoundException   if the contest is not found
+     * @throws IllegalArgumentWSException
+     *             if the contestId is less than 0
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     * @throws UserNotAuthorizedException
+     *             if the user is not authorized to perform this method
+     * @throws ContestNotFoundException
+     *             if the contest is not found
      */
-    public ContestData getContest(long contestId) throws PersistenceException, ContestNotFoundException {
+    public ContestData getContest(long contestId) throws PersistenceException,
+            ContestNotFoundException {
         logEnter("getContest", contestId);
         checkParameter("contestId", contestId);
 
@@ -278,7 +338,8 @@ public class StudioServiceBean implements StudioService {
             logExit("getContest", result);
             return result;
         } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManager reports error while retrieving contest.", e);
+            handlePersistenceError(
+                    "ContestManager reports error while retrieving contest.", e);
         }
 
         // never reached
@@ -286,28 +347,38 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * <p> Get contests for given project. Return an empty list if there are no contests.</p>
-     *
-     * @param tcDirectProjectId the tc Direct Projec tId used to retrieve the ContestData
+     * <p>
+     * Get contests for given project. Return an empty list if there are no
+     * contests.
+     * </p>
+     * 
+     * @param tcDirectProjectId
+     *            the tc Direct Projec tId used to retrieve the ContestData
      * @return the contest datas which represents the contests
-     * @throws IllegalArgumentWSException if the tcDirectProjectId is less than 0
-     * @throws PersistenceException       if some persistence errors occur
-     * @throws UserNotAuthorizedException if the user is not authorized to perform this method
+     * @throws IllegalArgumentWSException
+     *             if the tcDirectProjectId is less than 0
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     * @throws UserNotAuthorizedException
+     *             if the user is not authorized to perform this method
      */
-    public List<ContestData> getContestsForProject(long tcDirectProjectId) throws PersistenceException {
+    public List<ContestData> getContestsForProject(long tcDirectProjectId)
+            throws PersistenceException {
         logEnter("getContestsForProject", tcDirectProjectId);
         checkParameter("tcDirectProjectId", tcDirectProjectId);
 
         // no authorization applyed
 
         try {
-            List<Contest> contests = contestManager.getContestsForProject(tcDirectProjectId);
+            List<Contest> contests = contestManager
+                    .getContestsForProject(tcDirectProjectId);
             List<ContestData> result = convertContests(contests);
 
             logExit("getContestsForProject", result);
             return result;
         } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManager reports error while retrieving contest.", e);
+            handlePersistenceError(
+                    "ContestManager reports error while retrieving contest.", e);
         }
 
         // never reached
@@ -315,15 +386,23 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * <p> Update contest</p>
-     *
-     * @param contestData the contest data to update
-     * @throws IllegalArgumentWSException if the argument is null
-     * @throws PersistenceException       if some persistence errors occur
-     * @throws UserNotAuthorizedException if the user is not authorized to perform this method
-     * @throws ContestNotFoundException   if the contest is not found
+     * <p>
+     * Update contest
+     * </p>
+     * 
+     * @param contestData
+     *            the contest data to update
+     * @throws IllegalArgumentWSException
+     *             if the argument is null
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     * @throws UserNotAuthorizedException
+     *             if the user is not authorized to perform this method
+     * @throws ContestNotFoundException
+     *             if the contest is not found
      */
-    public void updateContest(ContestData contestData) throws PersistenceException, ContestNotFoundException {
+    public void updateContest(ContestData contestData)
+            throws PersistenceException, ContestNotFoundException {
         logEnter("updateContest", contestData);
         checkParameter("contestData", contestData);
 
@@ -337,7 +416,8 @@ public class StudioServiceBean implements StudioService {
         } catch (EntityNotFoundException e) {
             handleContestNotFoundError(e, contestData.getContestId());
         } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManager reports error while updating contest.", e);
+            handlePersistenceError(
+                    "ContestManager reports error while updating contest.", e);
         }
 
         // persist documents
@@ -349,19 +429,30 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * <p> Update contest status</p>
-     *
-     * @param contestId   the id of contest to what the status will be updated
-     * @param newStatusId the id of the new status
-     * @throws IllegalArgumentWSException if any id is less than 0
-     * @throws PersistenceException       if some persistence errors occur
-     * @throws UserNotAuthorizedException if the user is not authorized to perform this method
-     * @throws StatusNotAllowedException  if the status is not allowed
-     * @throws StatusNotFoundException    if the status is not found
-     * @throws ContestNotFoundException   if the contest is not found
+     * <p>
+     * Update contest status
+     * </p>
+     * 
+     * @param contestId
+     *            the id of contest to what the status will be updated
+     * @param newStatusId
+     *            the id of the new status
+     * @throws IllegalArgumentWSException
+     *             if any id is less than 0
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     * @throws UserNotAuthorizedException
+     *             if the user is not authorized to perform this method
+     * @throws StatusNotAllowedException
+     *             if the status is not allowed
+     * @throws StatusNotFoundException
+     *             if the status is not found
+     * @throws ContestNotFoundException
+     *             if the contest is not found
      */
     public void updateContestStatus(long contestId, long newStatusId)
-            throws PersistenceException, ContestNotFoundException, StatusNotFoundException, StatusNotAllowedException {
+            throws PersistenceException, ContestNotFoundException,
+            StatusNotFoundException, StatusNotAllowedException {
         logEnter("updateContestStatus", contestId, newStatusId);
         checkParameter("contestId", contestId);
         checkParameter("newStatusId", newStatusId);
@@ -377,7 +468,8 @@ public class StudioServiceBean implements StudioService {
 
         } catch (EntityNotFoundException e) {
             // since contest existance already checked, we miss status entity
-            String message = "can't find Status with id " + newStatusId + " in persistence.";
+            String message = "can't find Status with id " + newStatusId
+                    + " in persistence.";
             logError(e, message);
             StatusNotFoundFault fault = new StatusNotFoundFault();
             fault.setStatusIdNotFound(newStatusId);
@@ -392,24 +484,34 @@ public class StudioServiceBean implements StudioService {
             throw new StatusNotAllowedException(message, fault, e);
 
         } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManager reports error while updating contest status.", e);
+            handlePersistenceError(
+                    "ContestManager reports error while updating contest status.",
+                    e);
         }
 
         logExit("updateContestStatus");
     }
 
     /**
-     * <p> Upload document to contest. Return document populated with id.</p>
-     *
-     * @param uploadedDocument the uploadDocument to update
+     * <p>
+     * Upload document to contest. Return document populated with id.
+     * </p>
+     * 
+     * @param uploadedDocument
+     *            the uploadDocument to update
      * @return the same instance passed in argument with the documentId updated
-     * @throws IllegalArgumentWSException if the argument is null
-     * @throws PersistenceException       if some persistence errors occur
-     * @throws UserNotAuthorizedException if the user is not authorized to perform this method
-     * @throws ContestNotFoundException   if the contest is not found
+     * @throws IllegalArgumentWSException
+     *             if the argument is null
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     * @throws UserNotAuthorizedException
+     *             if the user is not authorized to perform this method
+     * @throws ContestNotFoundException
+     *             if the contest is not found
      */
-    public UploadedDocument uploadDocumentForContest(UploadedDocument uploadedDocument)
-            throws PersistenceException, ContestNotFoundException {
+    public UploadedDocument uploadDocumentForContest(
+            UploadedDocument uploadedDocument) throws PersistenceException,
+            ContestNotFoundException {
         logEnter("uploadDocumentForContest", uploadedDocument);
         checkParameter("uploadedDocument", uploadedDocument);
 
@@ -421,7 +523,8 @@ public class StudioServiceBean implements StudioService {
         try {
             c = contestManager.getContest(uploadedDocument.getContestId());
         } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManager reports error while fetching contest.", e);
+            handlePersistenceError(
+                    "ContestManager reports error while fetching contest.", e);
         }
 
         if (c == null) {
@@ -431,7 +534,8 @@ public class StudioServiceBean implements StudioService {
 
         // last authentication check
         if (sessionContext.isCallerInRole(USER_ROLE)) {
-            if (c.getStatus() == null || c.getStatus().getContestStatusId() != draftStatusId) {
+            if (c.getStatus() == null
+                    || c.getStatus().getContestStatusId() != draftStatusId) {
                 handleAuthorizationError("draft check was failed.");
             }
         }
@@ -443,13 +547,20 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * <p> Remove document from contest.</p>
-     *
-     * @param document the document to remove
-     * @throws IllegalArgumentWSException if the argument is null
-     * @throws PersistenceException       if some persistence errors occur
-     * @throws UserNotAuthorizedException if the user is not authorized to perform this method
-     * @throws DocumentNotFoundException  if the document is not found
+     * <p>
+     * Remove document from contest.
+     * </p>
+     * 
+     * @param document
+     *            the document to remove
+     * @throws IllegalArgumentWSException
+     *             if the argument is null
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     * @throws UserNotAuthorizedException
+     *             if the user is not authorized to perform this method
+     * @throws DocumentNotFoundException
+     *             if the document is not found
      */
     public void removeDocumentFromContest(UploadedDocument document)
             throws PersistenceException, DocumentNotFoundException {
@@ -460,32 +571,44 @@ public class StudioServiceBean implements StudioService {
         authorizeWithContest(document.getContestId());
 
         try {
-            contestManager.removeDocumentFromContest(document.getDocumentId(), document.getContestId());
+            contestManager.removeDocumentFromContest(document.getDocumentId(),
+                    document.getContestId());
 
         } catch (EntityNotFoundException ex) {
             // no such document in persistence
-            String message = "can't find document with id " + document.getDocumentId() + " in persistence.";
+            String message = "can't find document with id "
+                    + document.getDocumentId() + " in persistence.";
             logError(ex, message);
             DocumentNotFoundFault fault = new DocumentNotFoundFault();
             fault.setDocumentIdNotFound(document.getDocumentId());
             throw new DocumentNotFoundException(message, fault, ex);
 
         } catch (ContestManagementException ex) {
-            handlePersistenceError("ContestManager reports error while removing document from contest.", ex);
+            handlePersistenceError(
+                    "ContestManager reports error while removing document from contest.",
+                    ex);
         }
 
         logExit("removeDocumentFromContest");
     }
 
     /**
-     * <p> Retrieve submission data. return an empty list if there are no submission data items.</p>
-     *
-     * @param contestId the contest if used
+     * <p>
+     * Retrieve submission data. return an empty list if there are no submission
+     * data items.
+     * </p>
+     * 
+     * @param contestId
+     *            the contest if used
      * @return the submission data of contest
-     * @throws IllegalArgumentWSException if the argument id less than 0
-     * @throws PersistenceException       if some persistence errors occur
-     * @throws UserNotAuthorizedException if the user is not authorized to perform this method
-     * @throws ContestNotFoundException   if the contest is not found
+     * @throws IllegalArgumentWSException
+     *             if the argument id less than 0
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     * @throws UserNotAuthorizedException
+     *             if the user is not authorized to perform this method
+     * @throws ContestNotFoundException
+     *             if the contest is not found
      */
     public List<SubmissionData> retrieveSubmissionsForContest(long contestId)
             throws PersistenceException, ContestNotFoundException {
@@ -495,7 +618,8 @@ public class StudioServiceBean implements StudioService {
         // authorization
         authorizeWithContest(contestId);
 
-        boolean selectFullSubmission = sessionContext.isCallerInRole(ADMIN_ROLE);
+        boolean selectFullSubmission = sessionContext
+                .isCallerInRole(ADMIN_ROLE);
 
         // check if contest with such id is presented
         try {
@@ -503,16 +627,19 @@ public class StudioServiceBean implements StudioService {
                 handleContestNotFoundError(null, contestId);
             }
         } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManager reports error while retrieving contest.", e);
+            handlePersistenceError(
+                    "ContestManager reports error while retrieving contest.", e);
         }
 
         try {
-            List<SubmissionData> result =
-                    convertSubmissions(submissionManager.getSubmissionsForContest(contestId, selectFullSubmission));
+            List<SubmissionData> result = convertSubmissions(submissionManager
+                    .getSubmissionsForContest(contestId, selectFullSubmission));
             logExit("retrieveSubmissionsForContest", result);
             return result;
         } catch (SubmissionManagementException e) {
-            handlePersistenceError("SubmissionManager reports error while retrieving submissions for contest.", e);
+            handlePersistenceError(
+                    "SubmissionManager reports error while retrieving submissions for contest.",
+                    e);
         }
 
         // never reached
@@ -520,15 +647,23 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * <p> Retrieve submission by member. return an empty list if there are no submission data</p>
-     *
-     * @param userId the user id used to retrieve the submissions
+     * <p>
+     * Retrieve submission by member. return an empty list if there are no
+     * submission data
+     * </p>
+     * 
+     * @param userId
+     *            the user id used to retrieve the submissions
      * @return the submissions by member
-     * @throws IllegalArgumentWSException if the id is less than 0
-     * @throws PersistenceException       if some persistence errors occur
-     * @throws UserNotAuthorizedException if the user is not authorized to perform this method
+     * @throws IllegalArgumentWSException
+     *             if the id is less than 0
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     * @throws UserNotAuthorizedException
+     *             if the user is not authorized to perform this method
      */
-    public List<SubmissionData> retrieveAllSubmissionsByMember(long userId) throws PersistenceException {
+    public List<SubmissionData> retrieveAllSubmissionsByMember(long userId)
+            throws PersistenceException {
         logEnter("retrieveAllSubmissionsByMember", userId);
         checkParameter("userId", userId);
 
@@ -536,11 +671,14 @@ public class StudioServiceBean implements StudioService {
         authorizeAdmin();
 
         try {
-            List<SubmissionData> result = convertSubmissions(submissionManager.getAllSubmissionsByMember(userId));
+            List<SubmissionData> result = convertSubmissions(submissionManager
+                    .getAllSubmissionsByMember(userId));
             logExit("retrieveAllSubmissionsByMember", result);
             return result;
         } catch (SubmissionManagementException e) {
-            handlePersistenceError("SubmissionManager reports error while fetching submissions by member.", e);
+            handlePersistenceError(
+                    "SubmissionManager reports error while fetching submissions by member.",
+                    e);
         }
 
         // never reached
@@ -548,14 +686,21 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * <p> Update submission.</p>
-     *
-     * @param submission the submission to update
-     * @throws IllegalArgumentWSException if the submission is null
-     * @throws PersistenceException       if some persistence errors occur
-     * @throws UserNotAuthorizedException if the user is not authorized to perform this method
+     * <p>
+     * Update submission.
+     * </p>
+     * 
+     * @param submission
+     *            the submission to update
+     * @throws IllegalArgumentWSException
+     *             if the submission is null
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     * @throws UserNotAuthorizedException
+     *             if the user is not authorized to perform this method
      */
-    public void updateSubmission(SubmissionData submission) throws PersistenceException {
+    public void updateSubmission(SubmissionData submission)
+            throws PersistenceException {
         logEnter("updateSubmission", submission);
         checkParameter("submission", submission);
 
@@ -563,21 +708,30 @@ public class StudioServiceBean implements StudioService {
         authorizeWithContest(submission.getContestId());
 
         try {
-            submissionManager.updateSubmission(convertSubmissionData(submission));
+            submissionManager
+                    .updateSubmission(convertSubmissionData(submission));
         } catch (SubmissionManagementException e) {
-            handlePersistenceError("SubmissionManager reports error while updating submission.", e);
+            handlePersistenceError(
+                    "SubmissionManager reports error while updating submission.",
+                    e);
         }
 
         logExit("updateSubmission");
     }
 
     /**
-     * <p> Remove submission</p>
-     *
-     * @param submissionId the id of submission to remove
-     * @throws IllegalArgumentWSException if the submissionId is less than 0
-     * @throws PersistenceException       if some persistence errors occur
-     * @throws UserNotAuthorizedException if the user is not authorized to perform this method
+     * <p>
+     * Remove submission
+     * </p>
+     * 
+     * @param submissionId
+     *            the id of submission to remove
+     * @throws IllegalArgumentWSException
+     *             if the submissionId is less than 0
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     * @throws UserNotAuthorizedException
+     *             if the user is not authorized to perform this method
      */
     public void removeSubmission(long submissionId) throws PersistenceException {
         logEnter("removeSubmission", submissionId);
@@ -589,27 +743,35 @@ public class StudioServiceBean implements StudioService {
         try {
             submissionManager.removeSubmission(submissionId);
         } catch (SubmissionManagementException e) {
-            handlePersistenceError("SubmissionManager reports error while removing submission.", e);
+            handlePersistenceError(
+                    "SubmissionManager reports error while removing submission.",
+                    e);
         }
 
         logExit("removeSubmission");
     }
 
     /**
-     * <p> Get contest categories</p>
-     *
+     * <p>
+     * Get contest categories
+     * </p>
+     * 
      * @return the list of categories
-     * @throws PersistenceException       if some persistence errors occur
-     * @throws UserNotAuthorizedException if the user is not authorized to perform this method
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     * @throws UserNotAuthorizedException
+     *             if the user is not authorized to perform this method
      */
-    public List<ContestCategoryData> getContestCategories() throws PersistenceException {
+    public List<ContestCategoryData> getContestCategories()
+            throws PersistenceException {
         logEnter("getContestCategories");
 
         // no authorization required
 
         try {
             List<ContestCategoryData> result = new ArrayList<ContestCategoryData>();
-            for (ContestChannel channel : contestManager.getAllContestCategories()) {
+            for (ContestChannel channel : contestManager
+                    .getAllContestChannels()) {
                 ContestCategoryData data = new ContestCategoryData();
 
                 data.setContestCategoryId(channel.getContestChannelId());
@@ -622,7 +784,9 @@ public class StudioServiceBean implements StudioService {
             logExit("getContestCategories", result);
             return result;
         } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManager reports error while retrieving contest categories.", e);
+            handlePersistenceError(
+                    "ContestManager reports error while retrieving contest categories.",
+                    e);
         }
 
         // never reached
@@ -630,11 +794,16 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * <p> Get contest statuses. Return an empty list if there are no ContestStatusData</p>
-     *
+     * <p>
+     * Get contest statuses. Return an empty list if there are no
+     * ContestStatusData
+     * </p>
+     * 
      * @return the list of status
-     * @throws PersistenceException       if some persistence errors occur
-     * @throws UserNotAuthorizedException if the user is not authorized to perform this method
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     * @throws UserNotAuthorizedException
+     *             if the user is not authorized to perform this method
      */
     public List<ContestStatusData> getStatusList() throws PersistenceException {
         logEnter("getStatusList");
@@ -647,6 +816,7 @@ public class StudioServiceBean implements StudioService {
                 ContestStatusData data = new ContestStatusData();
                 data.setDescription(status.getDescription());
                 data.setName(status.getName());
+                data.setDescription("");
                 if (status.getContestStatusId() != null) {
                     // prevent NPE
                     data.setStatusId(status.getContestStatusId());
@@ -656,7 +826,9 @@ public class StudioServiceBean implements StudioService {
             logExit("getStatusList", result);
             return result;
         } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManager reports error while retrieving contest statuses.", e);
+            handlePersistenceError(
+                    "ContestManager reports error while retrieving contest statuses.",
+                    e);
         }
 
         // never reached
@@ -664,11 +836,15 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * <p> Get submission types</p>
-     *
+     * <p>
+     * Get submission types
+     * </p>
+     * 
      * @return the file types
-     * @throws PersistenceException       if some persistence errors occur
-     * @throws UserNotAuthorizedException if the user is not authorized to perform this method
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     * @throws UserNotAuthorizedException
+     *             if the user is not authorized to perform this method
      */
     public String getSubmissionFileTypes() throws PersistenceException {
         logEnter("getSubmissionFileTypes");
@@ -678,7 +854,8 @@ public class StudioServiceBean implements StudioService {
         try {
             StringBuilder buf = new StringBuilder();
 
-            for (StudioFileType fileType : contestManager.getAllStudioFileTypes()) {
+            for (StudioFileType fileType : contestManager
+                    .getAllStudioFileTypes()) {
                 if (buf.length() != 0) {
                     buf.append(",");
                 }
@@ -688,7 +865,9 @@ public class StudioServiceBean implements StudioService {
             logExit("getSubmissionFileTypes", buf.toString());
             return buf.toString();
         } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManager reports error while retrieving studio file types.", e);
+            handlePersistenceError(
+                    "ContestManager reports error while retrieving studio file types.",
+                    e);
         }
 
         // never reached
@@ -696,8 +875,10 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * <p> Return the sessionContext. Don't perfom the logging in this method.</p>
-     *
+     * <p>
+     * Return the sessionContext. Don't perfom the logging in this method.
+     * </p>
+     * 
      * @return the sessionContext
      */
     protected SessionContext getSessionContext() {
@@ -705,8 +886,10 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * <p> Return the log. Don't perfom the logging in this method.</p>
-     *
+     * <p>
+     * Return the log. Don't perfom the logging in this method.
+     * </p>
+     * 
      * @return the log
      */
     protected Log getLog() {
@@ -714,8 +897,10 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * <p> Return the contestManager. Don't perfom the logging in this method.</p>
-     *
+     * <p>
+     * Return the contestManager. Don't perfom the logging in this method.
+     * </p>
+     * 
      * @return the contestManager
      */
     protected ContestManagerRemote getContestManager() {
@@ -723,8 +908,10 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * <p> Return the submissionManager. Don't perfom the logging in this method.</p>
-     *
+     * <p>
+     * Return the submissionManager. Don't perfom the logging in this method.
+     * </p>
+     * 
      * @return the submissionManager
      */
     protected SubmissionManagerRemote getSubmissionManager() {
@@ -733,69 +920,106 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * This method used to convert ContestData object into Contest object.
-     *
-     * @param data ContestData object to convert
+     * 
+     * @param data
+     *            ContestData object to convert
      * @return converted Contest instance
-     * @throws PersistenceException when error reported by manager
+     * @throws PersistenceException
+     *             when error reported by manager
+     * @throws ContestManagementException
+     *             when error reported by manager
      */
-    private Contest convertContestData(ContestData data) throws PersistenceException {
+    private Contest convertContestData(ContestData data)
+            throws PersistenceException, ContestManagementException {
         Contest result = new Contest();
 
-        // StartDate and endDate: the startDate is the launchDateAndTime, the endDate is launchDateTime+durationInHours
+        // StartDate and endDate: the startDate is the launchDateAndTime, the
+        // endDate is launchDateTime+durationInHours
         Date startDate = getDate(data.getLaunchDateAndTime());
         result.setStartDate(startDate);
         if (startDate != null) {
-            result.setEndDate(new Date(startDate.getTime() + 60l * 60 * data.getDurationInHours()));
+            result.setEndDate(new Date(startDate.getTime() + 60l * 60
+                    * data.getDurationInHours()));
         }
 
-        // Create the Config and add it to the Contest.config: set the name as the name of parameter
-        // (�contestDescriptionAndRequirements�) and the value is the value of parameter
-        addContestConfig(result, "contestDescriptionAndRequirements", data.getContestDescriptionAndRequirements());
+        // Create the Config and add it to the Contest.config: set the name as
+        // the name of parameter
+        // (�contestDescriptionAndRequirements�) and the value is the value
+        // of parameter
+        addContestConfig(result, "contestDescriptionAndRequirements", data
+                .getContestDescriptionAndRequirements());
 
-        // Create the Config and add it to the Contest.config: set the name as the name of parameter
-        // (�requiredOrRestrictedColors�) and the value is the value of parameter
-        addContestConfig(result, "requiredOrRestrictedColors", data.getRequiredOrRestrictedColors());
+        // Create the Config and add it to the Contest.config: set the name as
+        // the name of parameter
+        // (�requiredOrRestrictedColors�) and the value is the value of
+        // parameter
+        addContestConfig(result, "requiredOrRestrictedColors", data
+                .getRequiredOrRestrictedColors());
 
-        // Create the Config and add it to the Contest.config: set the name as the name of parameter
-        // (�requiredOrRestrictedFonts�) and the value is the value of parameter
-        addContestConfig(result, "requiredOrRestrictedFonts", data.getRequiredOrRestrictedFonts());
+        // Create the Config and add it to the Contest.config: set the name as
+        // the name of parameter
+        // (�requiredOrRestrictedFonts�) and the value is the value of
+        // parameter
+        addContestConfig(result, "requiredOrRestrictedFonts", data
+                .getRequiredOrRestrictedFonts());
 
-        // Create the Config and add it to the Contest.config: set the name as the name of parameter
+        // Create the Config and add it to the Contest.config: set the name as
+        // the name of parameter
         // (�sizeRequirements�) and the value is the value of parameter
         addContestConfig(result, "sizeRequirements", data.getSizeRequirements());
 
-        // Create the Config and add it to the Contest.config: set the name as the name of parameter
-        // (�otherRequirementsOrRestrictions�) and the value is the value of parameter
-        addContestConfig(result, "otherRequirementsOrRestrictions", data.getOtherRequirementsOrRestrictions());
+        // Create the Config and add it to the Contest.config: set the name as
+        // the name of parameter
+        // (�otherRequirementsOrRestrictions�) and the value is the value of
+        // parameter
+        addContestConfig(result, "otherRequirementsOrRestrictions", data
+                .getOtherRequirementsOrRestrictions());
 
         result.setContestId(data.getContestId());
         result.setName(data.getName());
         result.setProjectId(data.getProjectId());
-        result.setWinnerAnnoucementDeadline(getDate(data.getWinnerAnnoucementDeadline()));
+        result.setWinnerAnnoucementDeadline(getDate(data
+                .getWinnerAnnoucementDeadline()));
+        result.setStatus(contestManager.getContestStatus(data.getStatusId()));
 
+        if (data.getContestPayloads().size() > 0) {
+            ContestPayload contestPayload = data.getContestPayloads().get(0);
+
+            // ContestPayload.contestTypeId map to
+            // Contest.contestType.contestType
+            ContestType contestType = new ContestType();
+            contestType.setContestType(contestPayload.getContestTypeId());
+            result.setContestType(contestType);
+        }
         return result;
     }
 
     /**
      * This method converts Contest object into ContestData object.
-     *
-     * @param contest Contest instance to convert
+     * 
+     * @param contest
+     *            Contest instance to convert
      * @return converted ContestDate object
      */
     private ContestData convertContest(Contest contest) {
         ContestData contestData = new ContestData();
 
         if (contest.getContestChannel() != null) {
-            contestData.setContestCategoryId(unbox(contest.getContestChannel().getContestChannelId()));
+            contestData.setContestCategoryId(unbox(contest.getContestChannel()
+                    .getContestChannelId()));
         }
 
-        contestData.setLaunchDateAndTime(getXMLGregorianCalendar(contest.getStartDate()));
+        contestData.setLaunchDateAndTime(getXMLGregorianCalendar(contest
+                .getStartDate()));
 
         contestData.setContestId(unbox(contest.getContestId()));
         contestData.setCreatorUserId(unbox(contest.getCreatedUser()));
         contestData.setName(contest.getName());
         contestData.setProjectId(unbox(contest.getProjectId()));
-        contestData.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(contest.getWinnerAnnoucementDeadline()));
+        contestData
+                .setWinnerAnnoucementDeadline(getXMLGregorianCalendar(contest
+                        .getWinnerAnnoucementDeadline()));
+        contestData.setStatusId(contest.getStatus().getContestStatusId());
 
         List<UploadedDocument> documents = new ArrayList<UploadedDocument>();
         for (Document doc : contest.getDocuments()) {
@@ -803,14 +1027,25 @@ public class StudioServiceBean implements StudioService {
         }
         contestData.setDocumentationUploads(documents);
 
+        for (ContestPayload payload : contestData.getContestPayloads()) {
+            // ContestPayload.contestTypeId map to
+            // Contest.contestType.contestType
+            payload.setContestTypeId(contest.getContestType().getContestType());
+
+            // leave the ContestPayload.description field and empty string.
+            payload.setDescription("");
+        }
+
         return contestData;
     }
 
     /**
-     * Converts Document object into UploadedDocument instance. Simply sets basic attributes and retrieves document data
-     * from contestManager. As required by designer, errors are suppressed.
-     *
-     * @param from Document to convert
+     * Converts Document object into UploadedDocument instance. Simply sets
+     * basic attributes and retrieves document data from contestManager. As
+     * required by designer, errors are suppressed.
+     * 
+     * @param from
+     *            Document to convert
      * @return converted UploadedDocument object
      */
     private UploadedDocument convertDocument(Document from) {
@@ -832,16 +1067,19 @@ public class StudioServiceBean implements StudioService {
             to.setFile(contestManager.getDocumentContent(to.getDocumentId()));
         } catch (ContestManagementException e) {
             // no need to propagate exception
-            logError(e, "ContestManager reports error during getDocumentContent call.");
+            logError(e,
+                    "ContestManager reports error during getDocumentContent call.");
         }
 
         return to;
     }
 
     /**
-     * Converts list of Contest objects into list of ContestData objects, calling convertContest repeatly.
-     *
-     * @param contests list of contests to convert
+     * Converts list of Contest objects into list of ContestData objects,
+     * calling convertContest repeatly.
+     * 
+     * @param contests
+     *            list of contests to convert
      * @return converted list of contests
      */
     private List<ContestData> convertContests(List<Contest> contests) {
@@ -853,9 +1091,11 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * Converts standard java Date object into XMLGregorianCalendar instance. Returns null if parameter is null.
-     *
-     * @param date Date object to convert
+     * Converts standard java Date object into XMLGregorianCalendar instance.
+     * Returns null if parameter is null.
+     * 
+     * @param date
+     *            Date object to convert
      * @return converted calendar instance
      */
     private XMLGregorianCalendar getXMLGregorianCalendar(Date date) {
@@ -873,9 +1113,11 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * Converts XMLGregorianCalendar date into standard java Date object. Returns null if argument is null.
-     *
-     * @param calendar calendar instance to convert
+     * Converts XMLGregorianCalendar date into standard java Date object.
+     * Returns null if argument is null.
+     * 
+     * @param calendar
+     *            calendar instance to convert
      * @return converted Date instance
      */
     private Date getDate(XMLGregorianCalendar calendar) {
@@ -887,10 +1129,13 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * Simple routine used to add ContestConfig object to the contest.
-     *
-     * @param contest contest to add config to
-     * @param name    name of the config to add
-     * @param value   value to add
+     * 
+     * @param contest
+     *            contest to add config to
+     * @param name
+     *            name of the config to add
+     * @param value
+     *            value to add
      */
     private void addContestConfig(Contest contest, String name, String value) {
         if (value == null) {
@@ -909,15 +1154,19 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * This method used to upload document in persistence. It will save both document's data and it's body (byte[]
-     * contents).
-     *
-     * @param data    document to upload
-     * @param contest contest to which document belongs
+     * This method used to upload document in persistence. It will save both
+     * document's data and it's body (byte[] contents).
+     * 
+     * @param data
+     *            document to upload
+     * @param contest
+     *            contest to which document belongs
      * @return uploaded document
-     * @throws PersistenceException if ContestManager reports any error
+     * @throws PersistenceException
+     *             if ContestManager reports any error
      */
-    private UploadedDocument uploadDocument(UploadedDocument data, Contest contest) throws PersistenceException {
+    private UploadedDocument uploadDocument(UploadedDocument data,
+            Contest contest) throws PersistenceException {
         Document doc = new Document();
 
         doc.setDocumentId(data.getDocumentId());
@@ -943,15 +1192,20 @@ public class StudioServiceBean implements StudioService {
         // save document
         try {
             doc = contestManager.addDocument(doc);
-            contestManager.addDocumentToContest(unbox(doc.getDocumentId()), unbox(contest.getContestId()));
+            contestManager.addDocumentToContest(unbox(doc.getDocumentId()),
+                    unbox(contest.getContestId()));
         } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManager reports error while adding document in persistence.", e);
+            handlePersistenceError(
+                    "ContestManager reports error while adding document in persistence.",
+                    e);
         }
 
         // persist document content where necessary
         try {
-            if (!contestManager.existDocumentContent(unbox(doc.getDocumentId()))) {
-                contestManager.saveDocumentContent(doc.getDocumentId(), data.getFile());
+            if (!contestManager
+                    .existDocumentContent(unbox(doc.getDocumentId()))) {
+                contestManager.saveDocumentContent(doc.getDocumentId(), data
+                        .getFile());
             }
         } catch (IllegalArgumentException e) {
             // do not reproduce any errors here
@@ -964,16 +1218,19 @@ public class StudioServiceBean implements StudioService {
         return convertDocument(doc);
     }
 
-
     /**
-     * This methid converts list of Submission objects into list of SubmissionData objects. It's logic is derived from
-     * CS and designer's comments.
-     *
-     * @param submissions list of submissions to convert
+     * This methid converts list of Submission objects into list of
+     * SubmissionData objects. It's logic is derived from CS and designer's
+     * comments.
+     * 
+     * @param submissions
+     *            list of submissions to convert
      * @return converted list of SubmissionData entities
-     * @throws PersistenceException if SubmissionManager reports error
+     * @throws PersistenceException
+     *             if SubmissionManager reports error
      */
-    private List<SubmissionData> convertSubmissions(List<Submission> submissions) throws PersistenceException {
+    private List<SubmissionData> convertSubmissions(List<Submission> submissions)
+            throws PersistenceException {
         List<SubmissionData> result = new ArrayList<SubmissionData>();
         for (Submission s : submissions) {
             SubmissionData sd = new SubmissionData();
@@ -995,26 +1252,37 @@ public class StudioServiceBean implements StudioService {
             // retrieve SubmissionPayment and check it
             SubmissionPayment p = null;
             try {
-                p = submissionManager.getSubmissionPayment(sd.getSubmissionId());
+                p = submissionManager
+                        .getSubmissionPayment(sd.getSubmissionId());
             } catch (SubmissionManagementException e) {
-                handlePersistenceError("SubmissionManager reports error while retrieving payment for submission.", e);
+                handlePersistenceError(
+                        "SubmissionManager reports error while retrieving payment for submission.",
+                        e);
             }
             if (p != null) {
                 PaymentStatus ps = p.getStatus();
                 if (ps != null) {
-                    sd.setPaidFor(ps.getPaymentStatusId() == submissionPaidStatusId);
-                    sd.setMarkedForPurchase(ps.getPaymentStatusId() == submissionMarkedForPurchaseStatusId);
+                    sd
+                            .setPaidFor(ps.getPaymentStatusId() == submissionPaidStatusId);
+                    sd
+                            .setMarkedForPurchase(ps.getPaymentStatusId() == submissionMarkedForPurchaseStatusId);
                 }
             }
             if (s.getStatus() != null) {
-                sd.setPassedScreening(s.getStatus().getSubmissionStatusId() == submissionPassedStatus);
+                sd
+                        .setPassedScreening(s.getStatus()
+                                .getSubmissionStatusId() == submissionPassedStatus);
             }
 
             // create content
             String content = submissionContentBaseURI;
-            content += "&" + submissionContentSubmissionIdParameterName + "=" + sd.getSubmissionId();
-            content += "&" + submissionContentSubmissionTypeParameterName + "=" + (sd.isPaidFor() ?
-                    submissionContentPaidParameterValue : submissionContentUnpaidParameterValue);
+            content += "&" + submissionContentSubmissionIdParameterName + "="
+                    + sd.getSubmissionId();
+            content += "&"
+                    + submissionContentSubmissionTypeParameterName
+                    + "="
+                    + (sd.isPaidFor() ? submissionContentPaidParameterValue
+                            : submissionContentUnpaidParameterValue);
             sd.setSubmissionContent(content);
 
             result.add(sd);
@@ -1024,9 +1292,11 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * This simple routing used to convert SubmissionData object into Submission.
-     *
-     * @param submissionData entity to convert
+     * This simple routing used to convert SubmissionData object into
+     * Submission.
+     * 
+     * @param submissionData
+     *            entity to convert
      * @return converted entity
      */
     private Submission convertSubmissionData(SubmissionData submissionData) {
@@ -1034,22 +1304,28 @@ public class StudioServiceBean implements StudioService {
 
         submission.setSubmissionId(submissionData.getSubmissionId());
         submission.setSubmitterId(submissionData.getSubmitterId());
-        submission.setSubmissionDate(getDate(submissionData.getSubmittedDate()));
+        submission
+                .setSubmissionDate(getDate(submissionData.getSubmittedDate()));
         submission.setRank(submissionData.getPlacement());
 
         return submission;
     }
 
     /**
-     * Method used to create new error regarding to persistence fault in managers. It will log necessary information,
-     * create appropriate exception and throw it. In fact, method processes all types of errors except of special
-     * (processed by other handlers or in main code).
-     *
-     * @param message string describing error
-     * @param cause   error cause, if any
-     * @throws PersistenceException always
+     * Method used to create new error regarding to persistence fault in
+     * managers. It will log necessary information, create appropriate exception
+     * and throw it. In fact, method processes all types of errors except of
+     * special (processed by other handlers or in main code).
+     * 
+     * @param message
+     *            string describing error
+     * @param cause
+     *            error cause, if any
+     * @throws PersistenceException
+     *             always
      */
-    private void handlePersistenceError(String message, Throwable cause) throws PersistenceException {
+    private void handlePersistenceError(String message, Throwable cause)
+            throws PersistenceException {
         logError(cause, message);
         PersistenceFault faultBean = new PersistenceFault();
         faultBean.setPersistenceMessage(cause.getMessage());
@@ -1057,12 +1333,15 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * Method used to create new error regarding to failed authorization. It will log necessary information, create
-     * appropriate exception and throw it. This method will not use used id, related type of error will be processed in
-     * other place.
-     *
-     * @param message string describing error
-     * @throws UserNotAuthorizedException always
+     * Method used to create new error regarding to failed authorization. It
+     * will log necessary information, create appropriate exception and throw
+     * it. This method will not use used id, related type of error will be
+     * processed in other place.
+     * 
+     * @param message
+     *            string describing error
+     * @throws UserNotAuthorizedException
+     *             always
      */
     private void handleAuthorizationError(String message) {
         logError(message);
@@ -1072,11 +1351,14 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * Method used to create new error regarding to wrong method parameter. It will log necessary information, create
-     * appropriate exception and throw it.
-     *
-     * @param message string describing error
-     * @throws IllegalArgumentWSException always
+     * Method used to create new error regarding to wrong method parameter. It
+     * will log necessary information, create appropriate exception and throw
+     * it.
+     * 
+     * @param message
+     *            string describing error
+     * @throws IllegalArgumentWSException
+     *             always
      */
     private void handleIllegalWSArgument(String message) {
         logError(message);
@@ -1086,14 +1368,18 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * Method used to create new error regarding to wrong contest id. It will log necessary information, create
-     * appropriate exception and throw it.
-     *
-     * @param message string describing error
-     * @param cause   error cause, if any
-     * @throws StudioServiceException always
+     * Method used to create new error regarding to wrong contest id. It will
+     * log necessary information, create appropriate exception and throw it.
+     * 
+     * @param message
+     *            string describing error
+     * @param cause
+     *            error cause, if any
+     * @throws StudioServiceException
+     *             always
      */
-    private void handleError(String message, Throwable cause) throws StudioServiceException {
+    private void handleError(String message, Throwable cause)
+            throws StudioServiceException {
         logError(cause, message);
         PersistenceFault faultBean = new PersistenceFault();
         faultBean.setPersistenceMessage(cause.getMessage());
@@ -1101,14 +1387,18 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * Method used to create new error regarding to wrong contest id. It will log necessary information, create
-     * appropriate exception and throw it.
-     *
-     * @param cause error cause, if any
-     * @param id    id of the missed contest
-     * @throws ContestNotFoundException always
+     * Method used to create new error regarding to wrong contest id. It will
+     * log necessary information, create appropriate exception and throw it.
+     * 
+     * @param cause
+     *            error cause, if any
+     * @param id
+     *            id of the missed contest
+     * @throws ContestNotFoundException
+     *             always
      */
-    private void handleContestNotFoundError(Throwable cause, long id) throws ContestNotFoundException {
+    private void handleContestNotFoundError(Throwable cause, long id)
+            throws ContestNotFoundException {
         String message = "No contest with id " + id + ".";
         logError(cause, message);
         ContestNotFoundFault fault = new ContestNotFoundFault();
@@ -1117,21 +1407,30 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * <p>This method used to log enter in method. It will persist both method name and it's parameters if any.</p>
-     *
-     * @param method name of the entered method
-     * @param params array containing parameters used to invoke method
+     * <p>
+     * This method used to log enter in method. It will persist both method name
+     * and it's parameters if any.
+     * </p>
+     * 
+     * @param method
+     *            name of the entered method
+     * @param params
+     *            array containing parameters used to invoke method
      */
     private void logEnter(String method, Object... params) {
         if (log != null) {
-            log.log(Level.DEBUG, "Enter method {0} with parameters {1}.", method, Arrays.deepToString(params));
+            log.log(Level.DEBUG, "Enter method {0} with parameters {1}.",
+                    method, Arrays.deepToString(params));
         }
     }
 
     /**
-     * <p>This method used to log leave of method. It will persist method name.</p>
-     *
-     * @param method name of the leaved method
+     * <p>
+     * This method used to log leave of method. It will persist method name.
+     * </p>
+     * 
+     * @param method
+     *            name of the leaved method
      */
     private void logExit(String method) {
         if (log != null) {
@@ -1140,21 +1439,29 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * <p>This method used to log leave of method. It will persist method name.</p>
-     *
-     * @param method      name of the leaved method
-     * @param returnValue value returned from the method
+     * <p>
+     * This method used to log leave of method. It will persist method name.
+     * </p>
+     * 
+     * @param method
+     *            name of the leaved method
+     * @param returnValue
+     *            value returned from the method
      */
     private void logExit(String method, Object returnValue) {
         if (log != null) {
-            log.log(Level.DEBUG, "Leave method {0} with return value {1}.", method, returnValue);
+            log.log(Level.DEBUG, "Leave method {0} with return value {1}.",
+                    method, returnValue);
         }
     }
 
     /**
-     * <p>This method used to log arbitrary error. It will persist error's data.</p>
-     *
-     * @param error exception describing error
+     * <p>
+     * This method used to log arbitrary error. It will persist error's data.
+     * </p>
+     * 
+     * @param error
+     *            exception describing error
      */
     private void logError(Throwable error) {
         if (log != null) {
@@ -1163,10 +1470,14 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * <p>This method used to log arbitrary error. It will persist error's data.</p>
-     *
-     * @param error   exception describing error
-     * @param message additional message information
+     * <p>
+     * This method used to log arbitrary error. It will persist error's data.
+     * </p>
+     * 
+     * @param error
+     *            exception describing error
+     * @param message
+     *            additional message information
      */
     private void logError(Throwable error, String message) {
         if (error == null) {
@@ -1178,9 +1489,12 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * <p>This method used to log arbitrary error. It will persist error's data.</p>
-     *
-     * @param message additional message information
+     * <p>
+     * This method used to log arbitrary error. It will persist error's data.
+     * </p>
+     * 
+     * @param message
+     *            additional message information
      */
     private void logError(String message) {
         if (log != null) {
@@ -1189,9 +1503,11 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * Simple helper to unbox Long value to long. If parameter is null, return -1.
-     *
-     * @param value Long value to unbox.
+     * Simple helper to unbox Long value to long. If parameter is null, return
+     * -1.
+     * 
+     * @param value
+     *            Long value to unbox.
      * @return unboxed long value
      */
     private static long unbox(Long value) {
@@ -1203,9 +1519,11 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * Simple helper to unbox Integer value to int. If parameter is null, return -1.
-     *
-     * @param value Integer value to unbox.
+     * Simple helper to unbox Integer value to int. If parameter is null, return
+     * -1.
+     * 
+     * @param value
+     *            Integer value to unbox.
      * @return unboxed int value
      */
     private static int unbox(Integer value) {
@@ -1216,31 +1534,36 @@ public class StudioServiceBean implements StudioService {
         }
     }
 
-
     /**
-     * Checks web service parameter for obeying given rules (objects are not null and integers are not negative). Throws
-     * exception otherwise.
-     *
-     * @param name name of the parameter to check
-     * @param data parameter itself
-     * @throws IllegalArgumentWSException when data parameter is null or (data is Long and negative)
+     * Checks web service parameter for obeying given rules (objects are not
+     * null and integers are not negative). Throws exception otherwise.
+     * 
+     * @param name
+     *            name of the parameter to check
+     * @param data
+     *            parameter itself
+     * @throws IllegalArgumentWSException
+     *             when data parameter is null or (data is Long and negative)
      */
     private void checkParameter(String name, Object data) {
         if (data == null) {
-            handleIllegalWSArgument("Parameter " + name + " not supposed to be null.");
+            handleIllegalWSArgument("Parameter " + name
+                    + " not supposed to be null.");
         }
         if (data instanceof Long) {
             if ((Long) data < 0) {
-                handleIllegalWSArgument("Parameter " + name + " not supposed to be negative.");
+                handleIllegalWSArgument("Parameter " + name
+                        + " not supposed to be negative.");
             }
         }
     }
 
-
     /**
-     * Simple routine to check whether user is admin. Simple user will not be authorized.
-     *
-     * @throws UserNotAuthorizedException if access was denied
+     * Simple routine to check whether user is admin. Simple user will not be
+     * authorized.
+     * 
+     * @throws UserNotAuthorizedException
+     *             if access was denied
      */
     private void authorizeAdmin() {
         if (sessionContext.isCallerInRole(USER_ROLE)) {
@@ -1249,56 +1572,181 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * Implements statdard algorithm of authorization based on fetching client id from contest id. Only admin and client
-     * may pass.
-     *
-     * @param id contest id to identify client (if necessary)
-     * @throws PersistenceException       when ContestManager reports some error
-     * @throws UserNotAuthorizedException if access was denied
+     * Implements statdard algorithm of authorization based on fetching client
+     * id from contest id. Only admin and client may pass.
+     * 
+     * @param id
+     *            contest id to identify client (if necessary)
+     * @throws PersistenceException
+     *             when ContestManager reports some error
+     * @throws UserNotAuthorizedException
+     *             if access was denied
      */
     private void authorizeWithContest(long id) throws PersistenceException {
         if (sessionContext.isCallerInRole(USER_ROLE)) {
             try {
                 authorizeUser(contestManager.getClientForContest(id));
             } catch (ContestManagementException e) {
-                handlePersistenceError("ContestManager reports error while retrieving client for contest.", e);
+                handlePersistenceError(
+                        "ContestManager reports error while retrieving client for contest.",
+                        e);
             }
         }
     }
 
     /**
-     * Implements statdard algorithm of authorization based on fetching client id from project id. Only admin and client
-     * may pass.
-     *
-     * @param id project id to identify client (if necessary)
-     * @throws PersistenceException       when ContestManager reports some error
-     * @throws UserNotAuthorizedException if access was denied
+     * Implements statdard algorithm of authorization based on fetching client
+     * id from project id. Only admin and client may pass.
+     * 
+     * @param id
+     *            project id to identify client (if necessary)
+     * @throws PersistenceException
+     *             when ContestManager reports some error
+     * @throws UserNotAuthorizedException
+     *             if access was denied
      */
     private void authorizeWithProject(long id) throws PersistenceException {
         if (sessionContext.isCallerInRole(USER_ROLE)) {
             try {
                 authorizeUser(contestManager.getClientForProject(id));
             } catch (ContestManagementException e) {
-                handlePersistenceError("ContestManager reports error while retrieving client for project.", e);
+                handlePersistenceError(
+                        "ContestManager reports error while retrieving client for project.",
+                        e);
             }
         }
     }
 
     /**
-     * Endpoint of authorizeWithContest and authorizeWithProject methods, authorize current user only if he is
-     * project/contest client.
-     *
-     * @param clientId id of client to compare
-     * @throws UserNotAuthorizedException if access was denied
+     * Endpoint of authorizeWithContest and authorizeWithProject methods,
+     * authorize current user only if he is project/contest client.
+     * 
+     * @param clientId
+     *            id of client to compare
+     * @throws UserNotAuthorizedException
+     *             if access was denied
      */
     private void authorizeUser(long clientId) {
-        UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+        UserProfilePrincipal p = (UserProfilePrincipal) sessionContext
+                .getCallerPrincipal();
         long userId = p.getUserId();
         if (userId != clientId) {
             logError("Access was denied to the user.");
             UserNotAuthorizedFault bean = new UserNotAuthorizedFault();
             bean.setUserIdNotAuthorized(userId);
-            throw new UserNotAuthorizedException("Access was denied to the user.", bean);
+            throw new UserNotAuthorizedException(
+                    "Access was denied to the user.", bean);
         }
+    }
+
+    /**
+     * <p>
+     * This is going to fetch all the currently available contests.
+     * </p>
+     * 
+     * @return the list of all available contents (or empty if none found)
+     * 
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     */
+    public List<Contest> getAllContests() throws PersistenceException {
+        logEnter("getAllContests");
+
+        try {
+            List<Contest> result = contestManager.getAllContests();
+            logExit("getAllContests", result);
+            return result;
+        } catch (ContestManagementException e) {
+            handlePersistenceError(
+                    "ContestManager reports error while retrieving contest.", e);
+        }
+
+        return null;
+    }
+
+    /**
+     * <p>
+     * This is going to get all the matching contest entities that fulfill the
+     * input criteria.
+     * </p>
+     * 
+     * @param filter
+     *            a search filter used as criteria for contests.
+     * @return a list (possibly empty) of all the matched contest entities.
+     * 
+     * @throws IllegalArgumentException
+     *             if the input filter is null or filter is not supported for
+     *             searching
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     */
+    public List<Contest> searchContests(Filter filter)
+            throws PersistenceException {
+        logEnter("searchContests");
+
+        try {
+            List<Contest> result = contestManager.searchContests(filter);
+            logExit("searchContests", result);
+            return result;
+        } catch (ContestManagementException e) {
+            handlePersistenceError(
+                    "ContestManager reports error while retrieving contest.", e);
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns all contests for a particular client ID, provided as a long
+     * 
+     * @param clientId
+     *            client Id to search for.
+     * @return all contests for the given client ID.
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     */
+    public List<Contest> getContestsForClient(long clientId)
+            throws PersistenceException {
+        logEnter("getContestsForClient");
+
+        try {
+            EqualToFilter filter = new EqualToFilter("clientId", clientId);
+            List<Contest> result = contestManager.searchContests(filter);
+            logExit("getContestsForClient", result);
+            return result;
+        } catch (ContestManagementException e) {
+            handlePersistenceError(
+                    "ContestManager reports error while retrieving contest.", e);
+        }
+
+        return null;
+    }
+
+    /**
+     * <p>
+     * Gets the submission with the given id.
+     * </p>
+     * 
+     * @param submissionId
+     *            The id of the submission to get
+     * @return the submission with the given id, or null if not found
+     * @throws PersistenceException
+     *             If any error occurs during the retrieval
+     */
+    public Submission retrieveSubmission(long submissionId)
+            throws PersistenceException {
+        logEnter("retrieveSubmission");
+
+        try {
+            Submission result = submissionManager.getSubmission(submissionId);
+            logExit("retrieveSubmission", result);
+            return result;
+        } catch (SubmissionManagementException e) {
+            handlePersistenceError(
+                    "SubmissionManager reports error while retrieving submission.",
+                    e);
+        }
+
+        return null;
     }
 }
