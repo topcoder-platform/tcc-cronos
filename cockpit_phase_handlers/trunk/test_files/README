@@ -1,1 +1,0 @@
-The TestSMTPServer is used to mock the SMTP server. It will use port 25. So please ensure port 25 is available.
