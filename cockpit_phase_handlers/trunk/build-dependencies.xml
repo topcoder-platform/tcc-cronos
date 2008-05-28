@@ -8,20 +8,20 @@
     <!-- define TCS dependencies -->
     <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
     <property name="configuration_manager.jar" value="${tcs_libdir}/configuration_manager/2.1.5/configuration_manager.jar"/>
-    <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.1/object_factory.jar"/>
+    <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.1.0/object_factory.jar"/>
     <property name="object_factory_config_manager_plugin.jar"
-     value="${tcs_libdir}/object_factory_config_manager_plugin/1.0/object_factory_config_manager_plugin.jar"/>
-    <property name="project_phases.jar" value="${tcs_libdir}/project_phases/2.0/project_phases.jar"/>   
+     value="${tcs_libdir}/object_factory_config_manager_plugin/1.0.0/object_factory_config_manager_plugin.jar"/>
+    <property name="project_phases.jar" value="${tcs_libdir}/project_phases/2.0.0/project_phases.jar"/>   
     <property name="phase_management.jar" value="${tcs_libdir}/phase_management/1.0.4/phase_management.jar"/>
-    <property name="document_generator.jar" value="${tcs_libdir}/document_generator/2.1/document_generator.jar"/>
-    <property name="email_engine.jar" value="${tcs_libdir}/email_engine/3.0/email_engine.jar"/>
+    <property name="document_generator.jar" value="${tcs_libdir}/document_generator/2.1.0/document_generator.jar"/>
+    <property name="email_engine.jar" value="${tcs_libdir}/email_engine/3.0.0/email_engine.jar"/>
 
 
     <!-- define 3rd party dependencies -->
     <property name="studio_contest_manager.jar" value="${cronos_libdir}/studio_contest_manager/1.0.0/studio_contest_manager.jar"/>
     <property name="contest_and_submission_entities.jar" value="${cronos_libdir}/contest_and_submission_entities/1.0.1/contest_and_submission_entities.jar"/>
     
-    <property name="jboss.dir" value="${ext_libdir}/jboss/4.2.2.GA/client"/>
+    <property name="jboss.dir" value="${ext_libdir}/jboss/4.2.2.ga/client"/>
     <property name="activation.jar" value="${jboss.dir}/activation.jar"/>
     <property name="mail.jar" value="${jboss.dir}/mail.jar"/>
     <property name="log4j.jar" value="${jboss.dir}/log4j.jar"/>
