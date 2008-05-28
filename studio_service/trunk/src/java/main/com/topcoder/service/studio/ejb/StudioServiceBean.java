@@ -11,6 +11,7 @@ import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.ContestNotFoundException;
 import com.topcoder.service.studio.ContestPayload;
 import com.topcoder.service.studio.ContestStatusData;
+import com.topcoder.service.studio.ContestTypeData;
 import com.topcoder.service.studio.DocumentNotFoundException;
 import com.topcoder.service.studio.IllegalArgumentWSException;
 import com.topcoder.service.studio.PersistenceException;
@@ -30,6 +31,7 @@ import com.topcoder.service.studio.contest.ContestProperty;
 import com.topcoder.service.studio.contest.ContestStatus;
 import com.topcoder.service.studio.contest.ContestStatusTransitionException;
 import com.topcoder.service.studio.contest.ContestType;
+import com.topcoder.service.studio.contest.ContestTypeConfig;
 import com.topcoder.service.studio.contest.Document;
 import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
@@ -1744,6 +1746,62 @@ public class StudioServiceBean implements StudioService {
         } catch (SubmissionManagementException e) {
             handlePersistenceError(
                     "SubmissionManager reports error while retrieving submission.",
+                    e);
+        }
+
+        return null;
+    }
+
+    /**
+     * <p>
+     * This is going to fetch all the currently available contest types.
+     * </p>
+     * 
+     * @return the list of all available content types (or empty if none found)
+     * 
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     */
+    public List<ContestTypeData> getAllContestTypes()
+            throws PersistenceException {
+        logEnter("getAllContestTypes");
+        try {
+            ArrayList<ContestTypeData> result = new ArrayList<ContestTypeData>();
+            for (ContestType type : contestManager.getAllContestTypes()) {
+                ContestTypeData data = new ContestTypeData();
+                data.setDescription(type.getDescription());
+                data.setContestTypeId(type.getContestType());
+                data.setRequirePreviewFile(type.isRequirePreviewFile());
+                data.setRequirePreviewImage(type.isRequirePreviewImage());
+
+                // Each of the ContestTypeConfigs in the ContestType retrieved
+                // from the Studio Contest Manager should be used to create the
+                // list of ContestPayload instances.
+                ArrayList<ContestPayload> payloads = new ArrayList<ContestPayload>();
+                for (ContestConfig cfg : type.getConfig()) {
+                    long contestTypeConfigId = cfg.getContestConfigId();
+                    ContestTypeConfig typeConfig = contestManager
+                            .getContestTypeConfig(contestTypeConfigId);
+
+                    ContestPayload payload = new ContestPayload();
+                    
+                    payload.setContestTypeId(contestTypeConfigId);
+                    payload.setDescription(typeConfig.getProperty()
+                            .getDescription());
+                    payload.setValue(typeConfig.getPropertyValue());
+                    payload.setRequired(typeConfig.isRequired());
+                    payload.setName(cfg.getContest().getName());
+                    
+                    payloads.add(payload);
+                }
+                data.setConfig(payloads);
+            }
+
+            logExit("getAllContestTypes", result);
+            return result;
+        } catch (ContestManagementException e) {
+            handlePersistenceError(
+                    "ContestManagement reports error while retrieving ContestTypes.",
                     e);
         }
 
