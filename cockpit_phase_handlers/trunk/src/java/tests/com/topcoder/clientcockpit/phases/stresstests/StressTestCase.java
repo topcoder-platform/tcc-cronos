@@ -97,7 +97,8 @@ class StressTestCase extends TestCase {
      */
     public void setUp() throws Exception {
         super.setUp();
-
+        System.setProperty("java.naming.factory.initial",
+        "com.topcoder.clientcockpit.phases.stresstests.MockInitialContextFactoryForStress");
         StressHelper.setUpConfig();
     }
 
@@ -111,7 +112,7 @@ class StressTestCase extends TestCase {
      */
     public void tearDown() throws Exception {
         StressHelper.clearConfig();
-
+        System.clearProperty("java.naming.factory.initial");
         super.tearDown();
     }
 

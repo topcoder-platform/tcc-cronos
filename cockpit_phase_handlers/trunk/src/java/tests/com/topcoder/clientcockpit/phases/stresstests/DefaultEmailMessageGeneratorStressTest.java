@@ -69,11 +69,11 @@ public class DefaultEmailMessageGeneratorStressTest extends StressTestCase {
 
             totalTime += getMilliseconds();
 
-            assertEquals(message, "stress author littleken");
+            assertTrue(message.indexOf("operator is littleken") != -1);
         }
 
         System.out.println("Run DefaultEmailMessageGenerator#generateMessage(Template, Phase) for " + LOOP
-                + " times consumes " + totalTime + " milliseconds.");
+            + " times consumes " + totalTime + " milliseconds.");
     }
 
     /**
