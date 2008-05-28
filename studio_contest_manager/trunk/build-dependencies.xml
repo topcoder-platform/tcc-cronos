@@ -16,6 +16,9 @@
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
     <property name="jdbc.jar" value="${ext_libdir}/jdbc/mysql/3.1.12/mysql-connector-java-3.1.12-bin.jar"/>    
     <property name="jbossall-client.jar" value="${jboss.dir}/client/jbossall-client.jar"/>
+
+    <property name="jboss.dir" value="C:/dev/jboss-4.2.2.GA/bin"/>
+    <property name="jboss.conig.name" value="default"/>
     <property name="jboss.libdir" value="${jboss.dir}/server/${jboss.config.name}/lib"/>
     <property name="commons-collections.jar" value="${jboss.libdir}/commons-collections.jar"/>
     <property name="commons-logging.jar" value="${jboss.libdir}/commons-logging.jar"/>
