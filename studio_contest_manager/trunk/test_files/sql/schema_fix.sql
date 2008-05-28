@@ -1,0 +1,2 @@
+ALTER TABLE contest_prize_xref MODIFY create_date DATETIME YEAR to FRACTION(3) DEFAULT CURRENT;
+ALTER TABLE contest_document_xref MODIFY create_date DATETIME YEAR to FRACTION(3) DEFAULT CURRENT;
