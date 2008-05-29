@@ -39,6 +39,7 @@ import com.topcoder.service.studio.contest.ContestManagerLocal;
 import com.topcoder.service.studio.contest.ContestManagerRemote;
 import com.topcoder.service.studio.contest.ContestStatus;
 import com.topcoder.service.studio.contest.ContestStatusTransitionException;
+import com.topcoder.service.studio.contest.ContestType;
 import com.topcoder.service.studio.contest.ContestTypeConfig;
 import com.topcoder.service.studio.contest.Document;
 import com.topcoder.service.studio.contest.DocumentContentManagementException;
@@ -1934,6 +1935,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         }
     }
 
+
     /**
      * <p>
      * This is going to get all the matching contest entities that fulfill the input criteria.
@@ -1977,6 +1979,41 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "There are errors while persisting the entity.");
         } finally {
             logExit("searchContests()");
+        }
+    }
+
+    /**
+     * <p>
+     * Gets all the currently available contests types.
+     * </p>
+     *
+     * @return the list of all available contents types (or empty if none found)
+     *
+     * @throws ContestManagementException if any error occurs when getting contest types
+     *
+     * @since 1.1
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<ContestType> getAllContestTypes() throws ContestManagementException {
+        try {
+            logEnter("getAllContestTypes()");
+
+            EntityManager em = getEntityManager();
+
+            Query query = em.createQuery("select c from ContestType c");
+
+            List list = query.getResultList();
+
+            List<ContestType> result = new ArrayList<ContestType>();
+            result.addAll(list);
+            return result;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("getAllContestTypes()");
         }
     }
 
