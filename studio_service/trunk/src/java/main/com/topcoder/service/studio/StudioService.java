@@ -295,8 +295,8 @@ public interface StudioService {
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
-    public List<Contest> getAllContests() throws PersistenceException;
-
+	public List<ContestData> getAllContests() throws PersistenceException;
+	
     /**
      * <p>
      * This is going to get all the matching contest entities that fulfill the
@@ -313,7 +313,7 @@ public interface StudioService {
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
-    public List<Contest> searchContests(Filter filter)
+    public List<ContestData> searchContests(Filter filter)
             throws PersistenceException;
 
     /**
@@ -325,7 +325,7 @@ public interface StudioService {
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
-    public List<Contest> getContestsForClient(long clientId)
+    public List<ContestData> getContestsForClient(long clientId)
             throws PersistenceException;
 
     /**
@@ -339,9 +339,8 @@ public interface StudioService {
      * @throws PersistenceException
      *             If any error occurs during the retrieval
      */
-    public Submission retrieveSubmission(long submissionId)
+    public SubmissionData retrieveSubmission(long submissionId)
             throws PersistenceException;
-
     /**
      * <p>
      * This is going to fetch all the currently available contest types.
