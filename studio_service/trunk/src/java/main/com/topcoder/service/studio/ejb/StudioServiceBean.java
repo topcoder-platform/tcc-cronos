@@ -1651,21 +1651,24 @@ public class StudioServiceBean implements StudioService {
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
-    public List<Contest> getAllContests() throws PersistenceException {
-        logEnter("getAllContests");
+ 	public List<ContestData> getAllContests() throws PersistenceException {
+     logEnter("getAllContests");
 
-        try {
-            List<Contest> result = contestManager.getAllContests();
-            logExit("getAllContests", result);
-            return result;
-        } catch (ContestManagementException e) {
-            handlePersistenceError(
-                    "ContestManager reports error while retrieving contest.", e);
-        }
+     try {
+         List<Contest> contests = contestManager.getAllContests();
+         ArrayList<ContestData> result = new ArrayList<ContestData>();
+         for (Contest contest : contests) {
+             result.add(convertContest(contest));
+         }
+         logExit("getAllContests", result);
+         return result;
+     } catch (ContestManagementException e) {
+         handlePersistenceError(
+                 "ContestManager reports error while retrieving contest.", e);
+     }
 
-        return null;
-    }
-
+     return null;
+ 	}
     /**
      * <p>
      * This is going to get all the matching contest entities that fulfill the
@@ -1682,12 +1685,18 @@ public class StudioServiceBean implements StudioService {
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
-    public List<Contest> searchContests(Filter filter)
+    public List<ContestData> searchContests(Filter filter)
             throws PersistenceException {
         logEnter("searchContests");
 
         try {
-            List<Contest> result = contestManager.searchContests(filter);
+            List<Contest> contests = contestManager.searchContests(filter);
+
+            ArrayList<ContestData> result = new ArrayList<ContestData>();
+            for (Contest contest : contests) {
+                result.add(convertContest(contest));
+            }
+
             logExit("searchContests", result);
             return result;
         } catch (ContestManagementException e) {
@@ -1707,13 +1716,19 @@ public class StudioServiceBean implements StudioService {
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
-    public List<Contest> getContestsForClient(long clientId)
+    public List<ContestData> getContestsForClient(long clientId)
             throws PersistenceException {
         logEnter("getContestsForClient");
 
         try {
             EqualToFilter filter = new EqualToFilter("clientId", clientId);
-            List<Contest> result = contestManager.searchContests(filter);
+            List<Contest> contests = contestManager.searchContests(filter);
+
+            ArrayList<ContestData> result = new ArrayList<ContestData>();
+            for (Contest contest : contests) {
+                result.add(convertContest(contest));
+            }
+
             logExit("getContestsForClient", result);
             return result;
         } catch (ContestManagementException e) {
@@ -1735,12 +1750,18 @@ public class StudioServiceBean implements StudioService {
      * @throws PersistenceException
      *             If any error occurs during the retrieval
      */
-    public Submission retrieveSubmission(long submissionId)
+    public SubmissionData retrieveSubmission(long submissionId)
             throws PersistenceException {
         logEnter("retrieveSubmission");
 
         try {
-            Submission result = submissionManager.getSubmission(submissionId);
+            Submission submission = submissionManager
+                    .getSubmission(submissionId);
+
+            ArrayList<Submission> submissions = new ArrayList<Submission>();
+            submissions.add(submission);
+            SubmissionData result = convertSubmissions(submissions).get(0);
+
             logExit("retrieveSubmission", result);
             return result;
         } catch (SubmissionManagementException e) {
