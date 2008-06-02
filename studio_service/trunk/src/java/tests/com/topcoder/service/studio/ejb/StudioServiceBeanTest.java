@@ -569,8 +569,11 @@ public class StudioServiceBeanTest extends TestCase {
      * @throws Exception when it occurs deeper
      */
     public void testGetAllContestStatuses() throws Exception {
-        int i = 0;
-        for (ContestStatusData data : target.getStatusList()) {
+        List<ContestStatusData> statuses = target.getStatusList();
+    	assertEquals("Wrong number of statuses", 3, statuses.size());
+
+    	int i = 0;
+        for (ContestStatusData data : statuses) {
             assertEquals("category id", i, data.getStatusId());
             assertEquals("description", "desc" + i, data.getDescription());
             assertEquals("name", "name" + i, data.getName());

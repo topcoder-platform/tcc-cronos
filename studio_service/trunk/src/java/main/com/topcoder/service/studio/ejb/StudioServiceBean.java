@@ -818,11 +818,11 @@ public class StudioServiceBean implements StudioService {
                 ContestStatusData data = new ContestStatusData();
                 data.setDescription(status.getDescription());
                 data.setName(status.getName());
-                data.setDescription("");
                 if (status.getContestStatusId() != null) {
                     // prevent NPE
                     data.setStatusId(status.getContestStatusId());
                 }
+                result.add(data);
             }
 
             logExit("getStatusList", result);
