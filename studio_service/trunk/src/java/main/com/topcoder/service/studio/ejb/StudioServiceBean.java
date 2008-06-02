@@ -1568,7 +1568,7 @@ public class StudioServiceBean implements StudioService {
      *             if access was denied
      */
     private void authorizeAdmin() {
-        if (sessionContext.isCallerInRole(USER_ROLE)) {
+        if (!sessionContext.isCallerInRole(ADMIN_ROLE)) {
             handleAuthorizationError("Only administrator can perform this action.");
         }
     }
