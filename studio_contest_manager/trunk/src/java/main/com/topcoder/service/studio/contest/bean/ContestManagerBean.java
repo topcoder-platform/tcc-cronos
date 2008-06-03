@@ -37,6 +37,7 @@ import com.topcoder.service.studio.contest.ContestConfigurationException;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.ContestManagerLocal;
 import com.topcoder.service.studio.contest.ContestManagerRemote;
+import com.topcoder.service.studio.contest.ContestProperty;
 import com.topcoder.service.studio.contest.ContestStatus;
 import com.topcoder.service.studio.contest.ContestStatusTransitionException;
 import com.topcoder.service.studio.contest.ContestTypeConfig;
@@ -2028,6 +2029,72 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "There are errors while persisting the entity.");
         } finally {
             logExit("getContestPrizes()");
+        }
+    }
+
+    /**
+     * <p>
+     * Get all the ContestProperty objects.
+     * </p>
+     *
+     * @return the list of all available ContestProperty
+     *
+     * @throws ContestManagementException if any error occurs when getting contest
+     *
+     * @since 1.1.2
+     */
+	@PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<ContestProperty> getAllContestProperties() throws ContestManagementException {
+        try {
+            logEnter("getAllContestProperties()");
+
+            EntityManager em = getEntityManager();
+
+            Query query = em.createQuery("select cp from ContestProperty cp");
+
+            List list = query.getResultList();
+
+            List<ContestProperty> result = new ArrayList<ContestProperty>();
+            result.addAll(list);
+            return result;
+
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("getAllContestProperties()");
+        }
+    }
+
+	/**
+	 * <p>
+	 * Get the ContestProperty with the specified id. 
+	 * </p>
+	 * 
+	 * @param contestPropertyId id to look for
+	 * @return the ContestProperty with the specified id. 
+	 * @throws ContestManagementException if any error occurs when getting contest
+	 * @since 1.1.2
+	 */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public ContestProperty getContestProperty(long contestPropertyId) throws ContestManagementException {
+        try {
+            logEnter("getContestProperty()");            
+            logOneParameter(contestPropertyId);
+
+            EntityManager em = getEntityManager();
+
+            return em.find(ContestProperty.class, contestPropertyId);
+
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("getContestProperty()");
         }
     }
 
