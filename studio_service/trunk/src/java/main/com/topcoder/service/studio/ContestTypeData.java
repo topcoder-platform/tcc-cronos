@@ -108,7 +108,7 @@ public class ContestTypeData {
      * 
      * @return whether preview file is required.
      */
-    public boolean isRequirePreviewImage(boolean requirePreviewImage) {
+    public boolean isRequirePreviewImage() {
         return requirePreviewImage;
     }
 
