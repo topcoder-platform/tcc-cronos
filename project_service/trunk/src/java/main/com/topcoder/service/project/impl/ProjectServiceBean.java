@@ -7,12 +7,13 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.jws.WebService;
 import javax.naming.InitialContext;
 import javax.naming.NameNotFoundException;
@@ -119,6 +120,7 @@ import com.topcoder.util.log.LogManager;
  */
 @Stateless
 @WebService
+@RolesAllowed({"Cockpit Administrator" , "Cockpit User"})
 public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRemote {
     /**
      * <p>
@@ -249,7 +251,6 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      * @throws IllegalArgumentFault
      *             If the arg given was illegal.
      */
-    @RolesAllowed("Cockpit User")
     public ProjectData createProject(ProjectData projectData) throws PersistenceFault, IllegalArgumentFault {
         logEnter("createProject(ProjectData)");
         logParameters("project data: {0}", formatProjectData(projectData));
@@ -303,7 +304,6 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      * @throws AuthorizationFailedFault
      *             If the calling principal is not authorized to retrieve the project.
      */
-    @RolesAllowed("Cockpit User")
     public ProjectData getProject(long projectId) throws PersistenceFault, ProjectNotFoundFault,
         AuthorizationFailedFault {
         logEnter("getProject(long)");
@@ -343,17 +343,6 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
         logParameters("user id: {0}", userId);
 
         try {
-            // Obtain the user profile principal
-            UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-
-            // Obtain the roles from the profile
-            Map<Object, String> roles = (Map<Object, String>) principal.getProfile().getAttribute(rolesKey).getValue();
-
-            // Check if the administrator role is satisfied
-            if (!roles.containsValue(administratorRole)) {
-                throw logException(new AuthorizationFailedFault("The user is not administrator."));
-            }
-
             List<Project> projects = projectPersistence.getProjectsForUser(userId);
 
             if (projects.isEmpty()) {
@@ -391,22 +380,14 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *             If a generic persistence error.
      */
     @SuppressWarnings("unchecked")
-    @RolesAllowed("Cockpit User")
     public List<ProjectData> getAllProjects() throws PersistenceFault {
         logEnter("getAllProjects()");
 
         try {
-            // Obtain the user profile principal
-            UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-
-            // Obtain the roles from the profile
-            Map<Object, String> roles = (Map<Object, String>) principal.getProfile().getAttribute(rolesKey).getValue();
-
-            // Check if the administrator role is satisfied
-
             List<Project> projects = null;
-            if (!roles.containsValue(administratorRole)) {
+            if (!sessionContext.isCallerInRole(administratorRole)) {
                 // not administrator
+                UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
                 projects = projectPersistence.getProjectsForUser(principal.getUserId());
             } else {
                 projects = projectPersistence.getAllProjects();
@@ -448,7 +429,6 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      * @throws IllegalArgumentFault
      *             If the arg given was illegal.
      */
-    @RolesAllowed("Cockpit User")
     public void updateProject(ProjectData projectData) throws PersistenceFault, ProjectNotFoundFault,
         AuthorizationFailedFault, IllegalArgumentFault {
         logEnter("updateProject(ProjectData)");
@@ -456,16 +436,8 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
         try {
             checkProjectData(projectData, false);
 
-            Project project = projectPersistence.getProject(projectData.getProjectId());
-
-            // Obtain the user profile principal
-            UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-
-            long userId = principal.getUserId();
-
-            if (userId != project.getUserId()) {
-                throw logException(new AuthorizationFailedFault("User is not authorized to update project."));
-            }
+            // This will check that the project is owned by the user or the user is an admin.
+            Project project = getProjectById(projectData.getProjectId());
 
             // update the data.
             project.setName(projectData.getName());
@@ -504,7 +476,6 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *             If the project cannot be deleted since it has competitions associated with it.
      */
     @SuppressWarnings("unchecked")
-    @RolesAllowed("Cockpit User")
     public boolean deleteProject(long projectId) throws PersistenceFault, ProjectHasCompetitionsFault,
         AuthorizationFailedFault {
         logEnter("deleteProject(long)");
@@ -760,11 +731,8 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
             // Obtain the user profile principal
             UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
 
-            // Obtain the roles from the profile
-            Map<Object, String> roles = (Map<Object, String>) principal.getProfile().getAttribute(rolesKey).getValue();
-
-            if (principal.getUserId() != project.getUserId() &&  !roles.containsValue(administratorRole)) {
-                throw logException(new AuthorizationFailedFault("User is is not administrator or own this probject."));
+            if (principal.getUserId() != project.getUserId() &&  !sessionContext.isCallerInRole(administratorRole)) {
+                throw logException(new AuthorizationFailedFault("User is is not administrator or own this project."));
             }
 
             return project;
