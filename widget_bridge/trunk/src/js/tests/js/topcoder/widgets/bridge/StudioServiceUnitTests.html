@@ -1,0 +1,630 @@
+<!--
+/*
+ * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ */
+
+/**
+ * Unit test cases for StudioService class.
+ *
+ * @author pinoydream
+ * @version 1.0
+ */
+-->
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>StudioService - Unit Tests</title>
+        <link rel="stylesheet" type="text/css" href="../../../../../../../test_files/jsunit/css/jsUnitStyle.css" />
+        <script language="JavaScript" type="text/javascript" src="../../../../../../../test_files/jsunit/app/jsUnitCore.js"></script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/WidgetBridgeNamespace.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/StudioService.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/IllegalArgumentException.js">
+        </script>
+        <script language="JavaScript" type="text/javascript">
+            /** 
+             * The StudioService instance.
+             */
+            var instance = null;
+            
+            /**
+             * Servlet url string.
+             */
+            var urlString;
+            
+            /**
+             * Success callback.
+             */
+            var success = function() {
+            	// do nothing
+            }
+            
+            /**
+             * Error callback.
+             */
+            var error = function() {
+            
+            }
+            
+            /**
+             * setUp. Creates the StudioService instance.
+             */
+            function setUp() {
+            	urlString = "ajaxBridge";
+                instance = new js.topcoder.widgets.bridge.StudioService(urlString);
+            }
+
+            /**
+             * Test the constructor whether it is instantiating properly.
+             */
+            function test_Constructor_Instantiation() {
+                assertNotNull("Unable to instantiate StudioService.", instance);
+            }
+
+            /**
+             * Test the constructor whether it is instantiating properly.
+             */
+            function test_Constructor_NoArgument() {
+            	try {
+            		var service = new StudioService();
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the createContest for accuracy.
+             */
+            function test_createContest_invalid1() {
+            	try {
+            		instance.createContest(null,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the createContest for accuracy.
+             */
+            function test_createContest_invalid2() {
+            	try {
+            		instance.createContest("",null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the createContest for accuracy.
+             */
+            function test_createContest_invalid3() {
+            	try {
+            		instance.createContest("",success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getContest for accuracy.
+             */
+            function test_getContest_invalid1() {
+            	try {
+            		instance.getContest(-1,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getContest for accuracy.
+             */
+            function test_getContest_invalid2() {
+            	try {
+            		instance.getContest(1,null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getContest for accuracy.
+             */
+            function test_getContest_invalid3() {
+            	try {
+            		instance.getContest(1,success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getContestsForClient for accuracy.
+             */
+            function test_getContestsForClient_invalid1() {
+            	try {
+            		instance.getContestsForClient(-1,1,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getContestsForClient for accuracy.
+             */
+            function test_getContestsForClient_invalid2() {
+            	try {
+            		instance.getContestsForClient(1,-1,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getContestsForClient for accuracy.
+             */
+            function test_getContestsForClient_invalid3() {
+            	try {
+            		instance.getContestsForClient(1,1,null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getContestsForClient for accuracy.
+             */
+            function test_getContestsForClient_invalid4() {
+            	try {
+            		instance.getContestsForClient(1,1,success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getContestsForProject for accuracy.
+             */
+            function test_getContestsForProject_invalid1() {
+            	try {
+            		instance.getContestsForProject(-1,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getContestsForProject for accuracy.
+             */
+            function test_getContestsForProject_invalid2() {
+            	try {
+            		instance.getContestsForProject(1,null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getContestsForProject for accuracy.
+             */
+            function test_getContestsForProject_invalid3() {
+            	try {
+            		instance.getContestsForProject(1,success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the updateContestStatus for accuracy.
+             */
+            function test_updateContestStatus_invalid1() {
+            	try {
+            		instance.updateContestStatus(-1,1,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the updateContestStatus for accuracy.
+             */
+            function test_updateContestStatus_invalid2() {
+            	try {
+            		instance.updateContestStatus(1,-1,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the updateContestStatus for accuracy.
+             */
+            function test_updateContestStatus_invalid3() {
+            	try {
+            		instance.updateContestStatus(1,1,null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the updateContestStatus for accuracy.
+             */
+            function test_updateContestStatus_invalid4() {
+            	try {
+            		instance.updateContestStatus(1,1,success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the removeDocumentFromContest for accuracy.
+             */
+            function test_removeDocumentFromContest_invalid1() {
+            	try {
+            		instance.removeDocumentFromContest(null,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the removeDocumentFromContest for accuracy.
+             */
+            function test_removeDocumentFromContest_invalid2() {
+            	try {
+            		instance.removeDocumentFromContest("",null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the removeDocumentFromContest for accuracy.
+             */
+            function test_removeDocumentFromContest_invalid3() {
+            	try {
+            		instance.removeDocumentFromContest("",success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the retrieveSubmissionsForContest for accuracy.
+             */
+            function test_retrieveSubmissionsForContest_invalid1() {
+            	try {
+            		instance.retrieveSubmissionsForContest(-1,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the retrieveSubmissionsForContest for accuracy.
+             */
+            function test_retrieveSubmissionsForContest_invalid2() {
+            	try {
+            		instance.retrieveSubmissionsForContest(1,null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the retrieveSubmissionsForContest for accuracy.
+             */
+            function test_retrieveSubmissionsForContest_invalid3() {
+            	try {
+            		instance.retrieveSubmissionsForContest(1,success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the updateSubmission for accuracy.
+             */
+            function test_updateSubmission_invalid1() {
+            	try {
+            		instance.updateSubmission(null,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the updateSubmission for accuracy.
+             */
+            function test_updateSubmission_invalid2() {
+            	try {
+            		instance.updateSubmission("",null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the updateSubmission for accuracy.
+             */
+            function test_updateSubmission_invalid3() {
+            	try {
+            		instance.updateSubmission("",success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the updateContest for accuracy.
+             */
+            function test_updateContest_invalid1() {
+            	try {
+            		instance.updateContest(null,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the updateContest for accuracy.
+             */
+            function test_updateContest_invalid2() {
+            	try {
+            		instance.updateContest("",null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the updateContest for accuracy.
+             */
+            function test_updateContest_invalid3() {
+            	try {
+            		instance.updateContest("",success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the retrieveSubmission for accuracy.
+             */
+            function test_retrieveSubmission_invalid1() {
+            	try {
+            		instance.retrieveSubmission(-1,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the retrieveSubmission for accuracy.
+             */
+            function test_retrieveSubmission_invalid2() {
+            	try {
+            		instance.retrieveSubmission(1,null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the retrieveSubmission for accuracy.
+             */
+            function test_retrieveSubmission_invalid3() {
+            	try {
+            		instance.retrieveSubmission(1,success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the removeSubmission for accuracy.
+             */
+            function test_removeSubmission_invalid1() {
+            	try {
+            		instance.removeSubmission(-1,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the removeSubmission for accuracy.
+             */
+            function test_removeSubmission_invalid2() {
+            	try {
+            		instance.removeSubmission(1,null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the removeSubmission for accuracy.
+             */
+            function test_removeSubmission_invalid3() {
+            	try {
+            		instance.removeSubmission(1,success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the retrieveAllSubmissionsByMember for accuracy.
+             */
+            function test_retrieveAllSubmissionsByMember_invalid1() {
+            	try {
+            		instance.retrieveAllSubmissionsByMember(-1,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the retrieveAllSubmissionsByMember for accuracy.
+             */
+            function test_retrieveAllSubmissionsByMember_invalid2() {
+            	try {
+            		instance.retrieveAllSubmissionsByMember(1,null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the retrieveAllSubmissionsByMember for accuracy.
+             */
+            function test_retrieveAllSubmissionsByMember_invalid3() {
+            	try {
+            		instance.retrieveAllSubmissionsByMember(1,success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getContestCategories for accuracy.
+             */
+            function test_getContestCategories_invalid1() {
+            	try {
+            		instance.getContestCategories(null,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getContestCategories for accuracy.
+             */
+            function test_getContestCategories_invalid2() {
+            	try {
+            		instance.getContestCategories(["",""],null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getContestCategories for accuracy.
+             */
+            function test_getContestCategories_invalid3() {
+            	try {
+            		instance.getContestCategories(["",""],success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getSubmissionFileTypes for accuracy.
+             */
+            function test_getSubmissionFileTypes_invalid1() {
+            	try {
+            		instance.getSubmissionFileTypes(null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getSubmissionFileTypes for accuracy.
+             */
+            function test_getSubmissionFileTypes_invalid2() {
+            	try {
+            		instance.getSubmissionFileTypes(success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getContestStatuses for accuracy.
+             */
+            function test_getContestStatuses_invalid1() {
+            	try {
+            		instance.getContestStatuses(null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getContestStatuses for accuracy.
+             */
+            function test_getContestStatuses_invalid2() {
+            	try {
+            		instance.getContestStatuses(success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Tears down. Sets the instance value to null.
+             */
+            function tearDown() {
+                instance = null;
+                urlString = null;
+            }
+        </script>
+    </head>
+    <body>
+        <h1>StudioService - Unit Tests</h1>
+        <p>This page contains unit tests for the js Class StudioService. To see them, take a look at the source.</p>
+    </body>
+</html>

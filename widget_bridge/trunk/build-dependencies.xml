@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="dist" name="Dependency Import">
+    <!--property file defining the component's dependencies-->
+    <!--Properties used in compile_targets ANT target for JDK version x-->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
+    
+    <!--TCS dependencies-->
+    <property name="json_object.jar" value="${tcs_libdir}/json_object/1.0/json_object.jar"/>
+    <property name="configuration_api.jar"  value="${tcs_libdir}/configuration_api/1.0/configuration_api.jar"/>
+    <property name="configuration_persistence.jar" value="${tcs_libdir}/configuration_persistence/1.0.1/configuration_persistence.jar"/>
+    <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.0.1/object_factory.jar"/>
+    <property name="object_factory_configuration_api_plugin.jar"  value="${tcs_libdir}/object_factory_configuration_api_plugin/1.0/object_factory_configuration_api_plugin.jar"/>
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0/logging_wrapper.jar"/>
+    <property name="file_upload.jar" value="${tcs_libdir}/file_upload/2.2.0/file_upload.jar"/>
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0/base_exception.jar"/>
+    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0/object_formatter.jar"/>
+    <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1/typesafe_enum.jar"/>
+
+    <!-- Service dependencies -->
+    <property name="studio_service.jar" value="${cronos_libdir}/studio_service/1.0.0/studio_service.jar"/>
+    <property name="project_service.jar" value="${cronos_libdir}/project_service/1.0.0/project_service.jar"/>
+    <property name="prerequisite_service.jar" value="${cronos_libdir}/prerequisite_service/1.0.0/prerequisite_service.jar"/>
+    
+    <!--3rd party dependencies-->
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
+    
+    <property name="spring.jar" value="${ext_libdir}/spring/2.5.1/spring.jar"/>
+    <property name="spring-test.jar" value="${ext_libdir}/spring/2.5.1/spring-test.jar"/>
+
+	<property name="jboss.dir" value="${ext_libdir}/jboss/4.2" />    
+	<path id="jboss.classpath">
+	  <fileset dir="${jboss.dir}">
+        <include name="jboss-ejb3x.jar" />
+        <include name="jboss-j2ee.jar" />
+        <include name="commons-logging.jar" />
+        <include name="servlet-api.jar" />
+	  </fileset>
+	</path>
+	
+	<property name="jbossws.dir" value="${ext_libdir}/jbossws/2.0" />    
+	<path id="jbossws.classpath">
+	  <fileset dir="${jbossws.dir}">
+        <include name="jaxb-api.jar" />
+        <include name="jboss-jaxws.jar" />
+      </fileset>  	
+	</path>
+	
+
+    <!--Path declarations which are to be used in the master build file.-->
+    <path id="component.tcs-dependencies">
+        <pathelement location="${json_object.jar}"/>
+        <pathelement location="${configuration_api.jar}"/>
+        <pathelement location="${configuration_persistence.jar}"/>
+        <pathelement location="${object_factory.jar}"/>
+        <pathelement location="${object_factory_configuration_api_plugin.jar}"/>        
+        <pathelement location="${logging_wrapper.jar}"/>
+        <pathelement location="${file_upload.jar}"/>
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${object_formatter.jar}"/>
+        <pathelement location="${typesafe_enum.jar}"/>
+        <pathelement location="${studio_service.jar}"/>
+        <pathelement location="${project_service.jar}"/>
+        <pathelement location="${prerequisite_service.jar}"/>        
+    </path>
+    <path id="component.3rdParty-dependencies">
+        <path refid="jboss.classpath"/>
+        <path refid="jbossws.classpath"/>
+    </path>
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${spring.jar}"/>
+        <pathelement location="${spring-test.jar}"/>        
+    </path>
+</project>
