@@ -68,11 +68,11 @@ import java.util.List;
 /**
  * This is the EJB implementation of the StudioService interface webservice
  * endpoint.
- * 
+ *
  * It allows getting, updating, and creating contest data; get, remove and
  * update submission data; get some additional information like content's
  * categories, statuses and file types.
- * 
+ *
  * It uses an instance of ContestManager and an instance of SubmissionManager
  * (injected as EJB) to perform the logic of the methods. The webservices
  * annotations are presents in the endpoint interface, this bean contains only
@@ -84,13 +84,13 @@ import java.util.List;
  * by a different webservices client: all the response, request and exceptions
  * are automatically transformed to SOAP element.
  * </p>
- * 
+ *
  * <p>
  * Thread safety: this class is thread safe if the managers used are thread
  * safe. Considering that probably the managers beans will use the transactions,
  * this stateless bean is thread safe
  * </p>
- * 
+ *
  * @author fabrizyo, TCSDEVELOPER
  * @version 1.0
  */
@@ -227,6 +227,41 @@ public class StudioServiceBean implements StudioService {
     private String submissionContentUnpaidParameterValue;
 
     /**
+     * Represents the id for the Contest property "Contest Overview Text"
+     * @since 1.0.3
+     */
+    @Resource(name="contestPropertyContestOverviewTextId")
+    private long contestPropertyContestOverviewTextId;
+
+    /**
+     * Represents the id for the Contest property "Color Requirements"
+     * @since 1.0.3
+     */
+    @Resource(name="contestPropertyColorRequirementsId")
+    private long contestPropertyColorRequirementsId;
+
+    /**
+     * Represents the id for the Contest property "Font Requirements"
+     * @since 1.0.3
+     */
+    @Resource(name="contestPropertyFontRequirementsId")
+    private long contestPropertyFontRequirementsId;
+
+    /**
+     * Represents the id for the Contest property "Size Requirements"
+     * @since 1.0.3
+     */
+    @Resource(name="contestPropertySizeRequirementsId")
+    private long contestPropertySizeRequirementsId;
+
+    /**
+     * Represents the id for the Contest property "Other Requirements"
+     * @since 1.0.3
+     */
+    @Resource(name="contestPropertyOtherRequirementsId")
+    private long contestPropertyOtherRequirementsId;
+
+    /**
      * <p>
      * This is the default constructor. It does nothing.
      * </p>
@@ -258,7 +293,7 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * Create contest for project. Return contest populated with id.
      * </p>
-     * 
+     *
      * @param contestData
      *            the contestData used to create the Contest
      * @param tcDirectProjectId
@@ -309,7 +344,7 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * Get contest by id
      * </p>
-     * 
+     *
      * @param contestId
      *            the id used to retrireve the contest
      * @return the ContestData retrieved
@@ -353,7 +388,7 @@ public class StudioServiceBean implements StudioService {
      * Get contests for given project. Return an empty list if there are no
      * contests.
      * </p>
-     * 
+     *
      * @param tcDirectProjectId
      *            the tc Direct Projec tId used to retrieve the ContestData
      * @return the contest datas which represents the contests
@@ -391,7 +426,7 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * Update contest
      * </p>
-     * 
+     *
      * @param contestData
      *            the contest data to update
      * @throws IllegalArgumentWSException
@@ -434,7 +469,7 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * Update contest status
      * </p>
-     * 
+     *
      * @param contestId
      *            the id of contest to what the status will be updated
      * @param newStatusId
@@ -498,7 +533,7 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * Upload document to contest. Return document populated with id.
      * </p>
-     * 
+     *
      * @param uploadedDocument
      *            the uploadDocument to update
      * @return the same instance passed in argument with the documentId updated
@@ -552,7 +587,7 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * Remove document from contest.
      * </p>
-     * 
+     *
      * @param document
      *            the document to remove
      * @throws IllegalArgumentWSException
@@ -599,7 +634,7 @@ public class StudioServiceBean implements StudioService {
      * Retrieve submission data. return an empty list if there are no submission
      * data items.
      * </p>
-     * 
+     *
      * @param contestId
      *            the contest if used
      * @return the submission data of contest
@@ -653,7 +688,7 @@ public class StudioServiceBean implements StudioService {
      * Retrieve submission by member. return an empty list if there are no
      * submission data
      * </p>
-     * 
+     *
      * @param userId
      *            the user id used to retrieve the submissions
      * @return the submissions by member
@@ -691,7 +726,7 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * Update submission.
      * </p>
-     * 
+     *
      * @param submission
      *            the submission to update
      * @throws IllegalArgumentWSException
@@ -725,7 +760,7 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * Remove submission
      * </p>
-     * 
+     *
      * @param submissionId
      *            the id of submission to remove
      * @throws IllegalArgumentWSException
@@ -757,7 +792,7 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * Get contest categories
      * </p>
-     * 
+     *
      * @return the list of categories
      * @throws PersistenceException
      *             if some persistence errors occur
@@ -800,7 +835,7 @@ public class StudioServiceBean implements StudioService {
      * Get contest statuses. Return an empty list if there are no
      * ContestStatusData
      * </p>
-     * 
+     *
      * @return the list of status
      * @throws PersistenceException
      *             if some persistence errors occur
@@ -841,7 +876,7 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * Get submission types
      * </p>
-     * 
+     *
      * @return the file types
      * @throws PersistenceException
      *             if some persistence errors occur
@@ -880,7 +915,7 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * Return the sessionContext. Don't perfom the logging in this method.
      * </p>
-     * 
+     *
      * @return the sessionContext
      */
     protected SessionContext getSessionContext() {
@@ -891,7 +926,7 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * Return the log. Don't perfom the logging in this method.
      * </p>
-     * 
+     *
      * @return the log
      */
     protected Log getLog() {
@@ -902,7 +937,7 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * Return the contestManager. Don't perfom the logging in this method.
      * </p>
-     * 
+     *
      * @return the contestManager
      */
     protected ContestManagerRemote getContestManager() {
@@ -913,7 +948,7 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * Return the submissionManager. Don't perfom the logging in this method.
      * </p>
-     * 
+     *
      * @return the submissionManager
      */
     protected SubmissionManagerRemote getSubmissionManager() {
@@ -922,7 +957,7 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * This method used to convert ContestData object into Contest object.
-     * 
+     *
      * @param data
      *            ContestData object to convert
      * @return converted Contest instance
@@ -944,38 +979,20 @@ public class StudioServiceBean implements StudioService {
                     * data.getDurationInHours()));
         }
 
-        // Create the Config and add it to the Contest.config: set the name as
-        // the name of parameter
-        // (�contestDescriptionAndRequirements�) and the value is the value
-        // of parameter
-        addContestConfig(result, "contestDescriptionAndRequirements", data
-                .getContestDescriptionAndRequirements());
+        addContestConfig(result, contestPropertyContestOverviewTextId,
+                data.getContestDescriptionAndRequirements());
 
-        // Create the Config and add it to the Contest.config: set the name as
-        // the name of parameter
-        // (�requiredOrRestrictedColors�) and the value is the value of
-        // parameter
-        addContestConfig(result, "requiredOrRestrictedColors", data
-                .getRequiredOrRestrictedColors());
+        addContestConfig(result, contestPropertyColorRequirementsId,
+                data.getRequiredOrRestrictedColors());
 
-        // Create the Config and add it to the Contest.config: set the name as
-        // the name of parameter
-        // (�requiredOrRestrictedFonts�) and the value is the value of
-        // parameter
-        addContestConfig(result, "requiredOrRestrictedFonts", data
-                .getRequiredOrRestrictedFonts());
+        addContestConfig(result, contestPropertyFontRequirementsId,
+                data.getRequiredOrRestrictedFonts());
 
-        // Create the Config and add it to the Contest.config: set the name as
-        // the name of parameter
-        // (�sizeRequirements�) and the value is the value of parameter
-        addContestConfig(result, "sizeRequirements", data.getSizeRequirements());
+        addContestConfig(result, contestPropertySizeRequirementsId,
+                data.getSizeRequirements());
 
-        // Create the Config and add it to the Contest.config: set the name as
-        // the name of parameter
-        // (�otherRequirementsOrRestrictions�) and the value is the value of
-        // parameter
-        addContestConfig(result, "otherRequirementsOrRestrictions", data
-                .getOtherRequirementsOrRestrictions());
+        addContestConfig(result, contestPropertyOtherRequirementsId,
+                data.getOtherRequirementsOrRestrictions());
 
         result.setContestId(data.getContestId());
         result.setName(data.getName());
@@ -998,7 +1015,7 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * This method converts Contest object into ContestData object.
-     * 
+     *
      * @param contest
      *            Contest instance to convert
      * @return converted ContestDate object
@@ -1045,7 +1062,7 @@ public class StudioServiceBean implements StudioService {
      * Converts Document object into UploadedDocument instance. Simply sets
      * basic attributes and retrieves document data from contestManager. As
      * required by designer, errors are suppressed.
-     * 
+     *
      * @param from
      *            Document to convert
      * @return converted UploadedDocument object
@@ -1079,7 +1096,7 @@ public class StudioServiceBean implements StudioService {
     /**
      * Converts list of Contest objects into list of ContestData objects,
      * calling convertContest repeatly.
-     * 
+     *
      * @param contests
      *            list of contests to convert
      * @return converted list of contests
@@ -1095,7 +1112,7 @@ public class StudioServiceBean implements StudioService {
     /**
      * Converts standard java Date object into XMLGregorianCalendar instance.
      * Returns null if parameter is null.
-     * 
+     *
      * @param date
      *            Date object to convert
      * @return converted calendar instance
@@ -1117,7 +1134,7 @@ public class StudioServiceBean implements StudioService {
     /**
      * Converts XMLGregorianCalendar date into standard java Date object.
      * Returns null if argument is null.
-     * 
+     *
      * @param calendar
      *            calendar instance to convert
      * @return converted Date instance
@@ -1131,25 +1148,24 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * Simple routine used to add ContestConfig object to the contest.
-     * 
+     *
      * @param contest
      *            contest to add config to
-     * @param name
-     *            name of the config to add
+     * @param contestPropertyId
+     *            Contest Property Id of the property
      * @param value
      *            value to add
+     * @throws ContestManagementException
      */
-    private void addContestConfig(Contest contest, String name, String value) {
+    private void addContestConfig(Contest contest, long contestPropertyId, String value) throws ContestManagementException {
         if (value == null) {
             return;
         }
+        ContestProperty property = contestManager.getContestProperty(contestPropertyId);
 
         ContestConfig config = new ContestConfig();
         config.setContest(contest);
         config.setValue(value);
-
-        ContestProperty property = new ContestProperty();
-        property.setDescription(name);
         config.setProperty(property);
 
         contest.getConfig().add(config);
@@ -1158,7 +1174,7 @@ public class StudioServiceBean implements StudioService {
     /**
      * This method used to upload document in persistence. It will save both
      * document's data and it's body (byte[] contents).
-     * 
+     *
      * @param data
      *            document to upload
      * @param contest
@@ -1224,7 +1240,7 @@ public class StudioServiceBean implements StudioService {
      * This methid converts list of Submission objects into list of
      * SubmissionData objects. It's logic is derived from CS and designer's
      * comments.
-     * 
+     *
      * @param submissions
      *            list of submissions to convert
      * @return converted list of SubmissionData entities
@@ -1296,7 +1312,7 @@ public class StudioServiceBean implements StudioService {
     /**
      * This simple routing used to convert SubmissionData object into
      * Submission.
-     * 
+     *
      * @param submissionData
      *            entity to convert
      * @return converted entity
@@ -1318,7 +1334,7 @@ public class StudioServiceBean implements StudioService {
      * managers. It will log necessary information, create appropriate exception
      * and throw it. In fact, method processes all types of errors except of
      * special (processed by other handlers or in main code).
-     * 
+     *
      * @param message
      *            string describing error
      * @param cause
@@ -1339,7 +1355,7 @@ public class StudioServiceBean implements StudioService {
      * will log necessary information, create appropriate exception and throw
      * it. This method will not use used id, related type of error will be
      * processed in other place.
-     * 
+     *
      * @param message
      *            string describing error
      * @throws UserNotAuthorizedException
@@ -1356,7 +1372,7 @@ public class StudioServiceBean implements StudioService {
      * Method used to create new error regarding to wrong method parameter. It
      * will log necessary information, create appropriate exception and throw
      * it.
-     * 
+     *
      * @param message
      *            string describing error
      * @throws IllegalArgumentWSException
@@ -1372,7 +1388,7 @@ public class StudioServiceBean implements StudioService {
     /**
      * Method used to create new error regarding to wrong contest id. It will
      * log necessary information, create appropriate exception and throw it.
-     * 
+     *
      * @param message
      *            string describing error
      * @param cause
@@ -1391,7 +1407,7 @@ public class StudioServiceBean implements StudioService {
     /**
      * Method used to create new error regarding to wrong contest id. It will
      * log necessary information, create appropriate exception and throw it.
-     * 
+     *
      * @param cause
      *            error cause, if any
      * @param id
@@ -1413,7 +1429,7 @@ public class StudioServiceBean implements StudioService {
      * This method used to log enter in method. It will persist both method name
      * and it's parameters if any.
      * </p>
-     * 
+     *
      * @param method
      *            name of the entered method
      * @param params
@@ -1430,7 +1446,7 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * This method used to log leave of method. It will persist method name.
      * </p>
-     * 
+     *
      * @param method
      *            name of the leaved method
      */
@@ -1444,7 +1460,7 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * This method used to log leave of method. It will persist method name.
      * </p>
-     * 
+     *
      * @param method
      *            name of the leaved method
      * @param returnValue
@@ -1461,7 +1477,7 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * This method used to log arbitrary error. It will persist error's data.
      * </p>
-     * 
+     *
      * @param error
      *            exception describing error
      */
@@ -1475,7 +1491,7 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * This method used to log arbitrary error. It will persist error's data.
      * </p>
-     * 
+     *
      * @param error
      *            exception describing error
      * @param message
@@ -1494,7 +1510,7 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * This method used to log arbitrary error. It will persist error's data.
      * </p>
-     * 
+     *
      * @param message
      *            additional message information
      */
@@ -1507,7 +1523,7 @@ public class StudioServiceBean implements StudioService {
     /**
      * Simple helper to unbox Long value to long. If parameter is null, return
      * -1.
-     * 
+     *
      * @param value
      *            Long value to unbox.
      * @return unboxed long value
@@ -1523,7 +1539,7 @@ public class StudioServiceBean implements StudioService {
     /**
      * Simple helper to unbox Integer value to int. If parameter is null, return
      * -1.
-     * 
+     *
      * @param value
      *            Integer value to unbox.
      * @return unboxed int value
@@ -1539,7 +1555,7 @@ public class StudioServiceBean implements StudioService {
     /**
      * Checks web service parameter for obeying given rules (objects are not
      * null and integers are not negative). Throws exception otherwise.
-     * 
+     *
      * @param name
      *            name of the parameter to check
      * @param data
@@ -1563,7 +1579,7 @@ public class StudioServiceBean implements StudioService {
     /**
      * Simple routine to check whether user is admin. Simple user will not be
      * authorized.
-     * 
+     *
      * @throws UserNotAuthorizedException
      *             if access was denied
      */
@@ -1576,7 +1592,7 @@ public class StudioServiceBean implements StudioService {
     /**
      * Implements statdard algorithm of authorization based on fetching client
      * id from contest id. Only admin and client may pass.
-     * 
+     *
      * @param id
      *            contest id to identify client (if necessary)
      * @throws PersistenceException
@@ -1599,7 +1615,7 @@ public class StudioServiceBean implements StudioService {
     /**
      * Implements statdard algorithm of authorization based on fetching client
      * id from project id. Only admin and client may pass.
-     * 
+     *
      * @param id
      *            project id to identify client (if necessary)
      * @throws PersistenceException
@@ -1622,7 +1638,7 @@ public class StudioServiceBean implements StudioService {
     /**
      * Endpoint of authorizeWithContest and authorizeWithProject methods,
      * authorize current user only if he is project/contest client.
-     * 
+     *
      * @param clientId
      *            id of client to compare
      * @throws UserNotAuthorizedException
@@ -1645,13 +1661,13 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * This is going to fetch all the currently available contests.
      * </p>
-     * 
+     *
      * @return the list of all available contents (or empty if none found)
-     * 
+     *
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
- 	public List<ContestData> getAllContests() throws PersistenceException {
+    public List<ContestData> getAllContests() throws PersistenceException {
      logEnter("getAllContests");
 
      try {
@@ -1668,17 +1684,17 @@ public class StudioServiceBean implements StudioService {
      }
 
      return null;
- 	}
+    }
     /**
      * <p>
      * This is going to get all the matching contest entities that fulfill the
      * input criteria.
      * </p>
-     * 
+     *
      * @param filter
      *            a search filter used as criteria for contests.
      * @return a list (possibly empty) of all the matched contest entities.
-     * 
+     *
      * @throws IllegalArgumentException
      *             if the input filter is null or filter is not supported for
      *             searching
@@ -1709,7 +1725,7 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * Returns all contests for a particular client ID, provided as a long
-     * 
+     *
      * @param clientId
      *            client Id to search for.
      * @return all contests for the given client ID.
@@ -1743,7 +1759,7 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * Gets the submission with the given id.
      * </p>
-     * 
+     *
      * @param submissionId
      *            The id of the submission to get
      * @return the submission with the given id, or null if not found
@@ -1777,9 +1793,9 @@ public class StudioServiceBean implements StudioService {
      * <p>
      * This is going to fetch all the currently available contest types.
      * </p>
-     * 
+     *
      * @return the list of all available content types (or empty if none found)
-     * 
+     *
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
@@ -1805,14 +1821,14 @@ public class StudioServiceBean implements StudioService {
                             .getContestTypeConfig(contestTypeConfigId);
 
                     ContestPayload payload = new ContestPayload();
-                    
+
                     payload.setContestTypeId(contestTypeConfigId);
                     payload.setDescription(typeConfig.getProperty()
                             .getDescription());
                     payload.setValue(typeConfig.getPropertyValue());
                     payload.setRequired(typeConfig.isRequired());
                     payload.setName(cfg.getContest().getName());
-                    
+
                     payloads.add(payload);
                 }
                 data.setConfig(payloads);

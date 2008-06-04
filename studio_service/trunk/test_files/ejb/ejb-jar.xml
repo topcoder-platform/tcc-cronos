@@ -76,7 +76,31 @@
                 <env-entry-type>java.lang.String</env-entry-type>
                 <env-entry-value>tiny</env-entry-value>
             </env-entry>
-
+            <env-entry>
+                <env-entry-name>contestPropertyContestOverviewTextId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>1</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>contestPropertyColorRequirementsId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>14</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>contestPropertyFontRequirementsId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>15</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>contestPropertySizeRequirementsId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>16</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>contestPropertyOtherRequirementsId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>18</env-entry-value>
+            </env-entry>
             <!--
             <ejb-ref>
                 <ejb-ref-name>SubmissionManager</ejb-ref-name>
