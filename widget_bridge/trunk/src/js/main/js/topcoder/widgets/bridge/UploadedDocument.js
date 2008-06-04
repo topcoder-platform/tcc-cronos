@@ -62,6 +62,16 @@ js.topcoder.widgets.bridge.UploadedDocument = function (/* JSON Object */ json) 
     var fileName /* String */ = null;
 
 	/**
+	 * <p>Represents the path</p>
+	 * <p>Initial Value: null, means that is not set</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 * <p>Valid Values: all values, can be null, can be empty</p>
+	 */
+    var path /* String */ = null;
+
+	/**
 	 * <p>Represents the description</p>
 	 * <p>Initial Value: null, means that is not set</p>
 	 * <p>Accessed In: getter method</p>
@@ -88,25 +98,31 @@ js.topcoder.widgets.bridge.UploadedDocument = function (/* JSON Object */ json) 
 		if (typeof(json.documentID) != "undefined" && typeof(json.documentID) == "number") {		
 			that.documentID = json.documentID;
 		} else {
-			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.documentID","json.documentID does not exists");
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.documentID","json.documentID does not exist");
 		}		
 		// set the contest id
 		if (typeof(json.contestID) != "undefined" && typeof(json.contestID) == "number") {		
 			that.contestID = json.contestID;
 		} else {
-			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.contestID","json.contestID does not exists");
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.contestID","json.contestID does not exist");
 		}			
 		// set the description
 		if (typeof(json.description) != "undefined" && typeof(json.description) == "string") {		
 			that.description = json.description;
 		} else {
-			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.description","json.description does not exists");
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.description","json.description does not exist");
 		}			
 		// set the file name
 		if (typeof(json.fileName) != "undefined" && typeof(json.fileName) == "string") {		
 			that.fileName = json.fileName;
 		} else {
-			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.fileName","json.fileName does not exists");
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.fileName","json.fileName does not exist");
+		}			
+		// set the path
+		if (typeof(json.path) != "undefined" && typeof(json.path) == "string") {		
+			that.path = json.path;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.path","json.path does not exist");
 		}			
 	}
 
@@ -166,6 +182,20 @@ js.topcoder.widgets.bridge.UploadedDocument = function (/* JSON Object */ json) 
         that.fileName = fileName;
     }
 
+    /**
+     * <p>Returns the path.</p>
+     */
+    this.getPath = function /* String */ () {
+        return that.path;
+    }
+
+    /**
+     * <p>Sets the path.</p>
+     */
+    this.setPath = function /* void */ (/* String */ path) {
+        that.path = path;
+    }
+
 	/**
 	 * <p>Convert this JavaScript object to a JSON string and return.
 	 *
@@ -177,7 +207,7 @@ js.topcoder.widgets.bridge.UploadedDocument = function (/* JSON Object */ json) 
 	 * {"fileName" : $fileName,"documentID" : $documentID,"contestID" : $contestID,"description" : "$description"}
 	 */
 	this.toJSON = function /* String */ () {
-		return "{\"fileName\" : \""+that.getFileName()+"\",\"documentID\" : "+that.getDocumentID()+
+		return "{\"fileName\" : \""+that.getFileName()+"\",\"path\" :\""+that.getPath()+"\",\"documentID\" : "+that.getDocumentID()+
 			",\"contestID\" : "+that.getContestID()+", \"description\" : \""+that.getDescription()+"\"}";
 	}
 

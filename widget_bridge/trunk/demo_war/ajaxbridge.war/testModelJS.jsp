@@ -25,10 +25,10 @@ function testContestEmpty() {
 		"{\"place\" : 1,\"amount\" : 20000}";
 	// Doc Up #1
 	var docup1 = 
-		"{\"fileName\" : \"JSON file name1\",\"documentID\" : 321321,\"contestID\" : 77777, \"description\" : \"JSON descrip1\"}";
+		"{\"fileName\" : \"JSON file name1\",\"path\":\"filePath\",\"documentID\" : 321321,\"contestID\" : 77777, \"description\" : \"JSON descrip1\"}";
 	// Doc Up #2
 	var docup2 = 
-		"{\"fileName\" : \"JSON file name2\",\"documentID\" : 321321,\"contestID\" : 77777, \"description\" : \"JSON descrip2\"}";
+		"{\"fileName\" : \"JSON file name2\",\"path\":\"filePath\",\"documentID\" : 321321,\"contestID\" : 77777, \"description\" : \"JSON descrip2\"}";
 
 	// Contest Payload #1
 	var payload1 = 
@@ -71,8 +71,8 @@ function testContestJSON() {
 		"{\"contestID\" : 222, \"projectID\" : 333, \"name\" : \"contest name\", \"shortSummary\" : \"short summary\","+
 		" \"prizes\" : [{\"place\" : 1,\"amount\" : 20000},{\"place\" : 2,\"amount\" : 10000}], \"launchDateAndTime\" : \"2008-03-07 01:00\","+
 		" \"durationInHours\" : 3, \"winnerAnnouncementDeadline\" : \"2008-03-20 01:00\", \"contestTypeID\" : 1,\"finalFileFormatList\" : [\"format 1\",\"format2\",\"format3\"],"+
-		" \"finalFileFormatOther\" : \"zip\", \"documentationUploads\" : [{\"fileName\" : \"JSON file name1\",\"documentID\" : 321321,\"contestID\" : "+
-		" 77777, \"description\" : \"JSON descrip1\"},{\"fileName\" : \"JSON file name2\",\"documentID\" : 321321,\"contestID\" : 77777, \"description\" "+
+		" \"finalFileFormatOther\" : \"zip\", \"documentationUploads\" : [{\"fileName\" : \"JSON file name1\",\"path\":\"filePath\",\"documentID\" : 321321,\"contestID\" : "+
+		" 77777, \"description\" : \"JSON descrip1\"},{\"fileName\" : \"JSON file name2\",\"path\":\"filePath\",\"documentID\" : 321321,\"contestID\" : 77777, \"description\" "+
 		" : \"JSON descrip2\"}], \"statusID\" : 3221123, \"contestPayloads\" : [{\"name\" : \"JSON Payload Name1\",\"value\" : "+
 		" \"JSON Payload Value1\",\"description\" : \"JSON Payload Desc1\",\"required\" : true, \"contestTypeID\" : 4444},"+
 		" {\"name\" : \"JSON Payload Name2\",\"value\" : \"JSON Payload Value2\",\"description\" : \"JSON Payload Desc2\",\"required\" : true,"+
@@ -93,8 +93,8 @@ function testInvalidContestJSON() {
 		"{\"contestID\" : 222, \"projectID\" : 333, \"name\" : \"contest name\", \"shortSummary\" : \"short summary\","+
 		" \"prizes\" : [{\"place\" : 1,\"amount\" : 20000},{\"place\" : 2,\"amount\" : 10000}], \"launchDateAndTime\" : \"2008-03-07 01:00\","+
 		" \"durationInHours\" : 3, \"winnerAnnouncementDeadline\" : \"2008-03-20 01:00\", \"contestTypeID\" : 1,\"finalFileFormatList\" : [\"format 1\",\"format2\",\"format3\"],"+
-		" \"finalFileFormatOther\" : \"zip\", \"documentationUploads\" : [{\"fileName\" : \"JSON file name1\",\"documentID\" : 321321,\"contestID\" : "+
-		" 77777, \"description\" : \"JSON descrip1\"},{\"fileName\" : \"JSON file name2\",\"documentID\" : 321321,\"contestID\" : 77777, \"description\" "+
+		" \"finalFileFormatOther\" : \"zip\", \"documentationUploads\" : [{\"fileName\" : \"JSON file name1\",\"path\":\"filePath\",\"documentID\" : 321321,\"contestID\" : "+
+		" 77777, \"description\" : \"JSON descrip1\"},{\"fileName\" : \"JSON file name2\",\"path\":\"filePath\",\"documentID\" : 321321,\"contestID\" : 77777, \"description\" "+
 		" : \"JSON descrip2\"}], \"contestPayloads\" : [{\"name\" : \"JSON Payload Name1\",\"value\" : "+
 		" \"JSON Payload Value1\",\"description\" : \"JSON Payload Desc1\",\"required\" : true, \"contestTypeID\" : 4444},"+
 		" {\"name\" : \"JSON Payload Name2\",\"value\" : \"JSON Payload Value2\",\"description\" : \"JSON Payload Desc2\",\"required\" : true,"+
@@ -341,13 +341,14 @@ function testUpDocEmpty() {
 	updoc.setContestID(77777);
 	updoc.setFileName("file name");
 	updoc.setDescription("descrip");
+	updoc.setPath("path");
 		
 	alert("created UploadedDocument using empty constructor : \n"+updoc.toJSON());
 }
 
 function testUpDocJSON() {
 	var jsonString = 
-		"{\"fileName\" : \"JSON file name\",\"documentID\" : 321321,\"contestID\" : 77777, \"description\" : \"JSON descrip\"}";
+		"{\"fileName\" : \"JSON file name\",\"path\":\"filePath\",\"documentID\" : 321321,\"contestID\" : 77777, \"description\" : \"JSON descrip\"}";
 	var json = eval("(" + jsonString + ")");
 	// initialize	
 	var updoc = new js.topcoder.widgets.bridge.UploadedDocument(json);
@@ -358,7 +359,7 @@ function testUpDocJSON() {
 function testInvalidUpDocJSON() {
 // missing documentID
 	var jsonString = 
-		"{\"fileName\" : \"JSON file name\",\"contestID\" : 77777, \"description\" : \"JSON descrip\"}";
+		"{\"fileName\" : \"JSON file name\",\"path\":\"filePath\",\"contestID\" : 77777, \"description\" : \"JSON descrip\"}";
 	var json = eval("(" + jsonString + ")");
 	// initialize	
 	try {

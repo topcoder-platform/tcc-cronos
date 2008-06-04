@@ -36,7 +36,7 @@ import com.topcoder.service.studio.UploadedDocument;
  * <p>
  * Helper class for use with Unit test classes.
  * </p>
- *
+ * 
  * @author pinoydream
  * @author TCSDEVELOPER
  * @version 1.0
@@ -69,7 +69,7 @@ public final class TestHelper {
      * <p>
      * Sets the Servlet Config's init parameter 'ajaxBridgeConfigFile' with an invalid file.
      * </p>
-     *
+     * 
      * @param servletConfig the servlet config to add the init parameter
      */
     public static void initSCWithInvalidAjaxBridgeParam(MockServletConfig servletConfig) {
@@ -80,7 +80,7 @@ public final class TestHelper {
      * <p>
      * Sets the Servlet Config's init parameter 'ajaxBridgeConfigFile' with an invalid file.
      * </p>
-     *
+     * 
      * @param servletConfig the servlet config to add the init parameter
      */
     public static void initSCWithInvalid1AjaxBridgeParam(MockServletConfig servletConfig) {
@@ -91,7 +91,7 @@ public final class TestHelper {
      * <p>
      * Sets the Servlet Config's init parameter 'ajaxBridgeConfigFile' with an invalid file.
      * </p>
-     *
+     * 
      * @param servletConfig the servlet config to add the init parameter
      */
     public static void initSCWithInvalid2AjaxBridgeParam(MockServletConfig servletConfig) {
@@ -102,7 +102,7 @@ public final class TestHelper {
      * <p>
      * Sets the Servlet Config's init parameter 'ajaxBridgeConfigFile' with an empty value.
      * </p>
-     *
+     * 
      * @param servletConfig the servlet config to add the init parameter
      */
     public static void initSCWithEmptyAjaxBridgeParam(MockServletConfig servletConfig) {
@@ -113,7 +113,7 @@ public final class TestHelper {
      * <p>
      * Sets the Servlet Config's init parameter 'ajaxBridgeConfigFile' with a null value.
      * </p>
-     *
+     * 
      * @param servletConfig the servlet config to add the init parameter
      */
     public static void initSCWithNullAjaxBridgeParam(MockServletConfig servletConfig) {
@@ -131,7 +131,7 @@ public final class TestHelper {
      * <p>
      * Sets the Servlet Config's init parameter 'objectFactoryNamespace' with an invalid file.
      * </p>
-     *
+     * 
      * @param servletConfig the servlet config to add the init parameter
      */
     public static void initSCWithInvalidObjectNS(MockServletConfig servletConfig) {
@@ -142,7 +142,7 @@ public final class TestHelper {
      * <p>
      * Sets the Servlet Config's init parameter 'jsonEncoderKey' with an invalid file.
      * </p>
-     *
+     * 
      * @param servletConfig the servlet config to add the init parameter
      */
     public static void initSCWithInvalidEncoderKey(MockServletConfig servletConfig) {
@@ -153,7 +153,7 @@ public final class TestHelper {
      * <p>
      * Sets the Servlet Config's init parameter 'jsonDecoderKey' with an invalid file.
      * </p>
-     *
+     * 
      * @param servletConfig the servlet config to add the init parameter
      */
     public static void initSCWithInvalidDecoderKey(MockServletConfig servletConfig) {
@@ -164,7 +164,7 @@ public final class TestHelper {
      * <p>
      * Sets the Servlet Config's init parameter 'projectServiceKey' with an invalid file.
      * </p>
-     *
+     * 
      * @param servletConfig the servlet config to add the init parameter
      */
     public static void initSCWithInvalidProjectKey(MockServletConfig servletConfig) {
@@ -175,7 +175,7 @@ public final class TestHelper {
      * <p>
      * Sets the Servlet Config's init parameter 'projectServiceKey' with an empty value.
      * </p>
-     *
+     * 
      * @param servletConfig the servlet config to add the init parameter
      */
     public static void initSCWithEmptyProjectKey(MockServletConfig servletConfig) {
@@ -186,7 +186,7 @@ public final class TestHelper {
      * <p>
      * Sets the Servlet Config's init parameter 'prerequisiteServiceKey' with an invalid file.
      * </p>
-     *
+     * 
      * @param servletConfig the servlet config to add the init parameter
      */
     public static void initSCWithInvalidPrerequisiteKey(MockServletConfig servletConfig) {
@@ -197,7 +197,7 @@ public final class TestHelper {
      * <p>
      * Sets the Servlet Config's init parameter 'studioServiceKey' with an invalid file.
      * </p>
-     *
+     * 
      * @param servletConfig the servlet config to add the init parameter
      */
     public static void initSCWithInvalidStudioKey(MockServletConfig servletConfig) {
@@ -208,7 +208,7 @@ public final class TestHelper {
      * <p>
      * Sets the Servlet Config's init parameter 'fileUploadNamespace' with an invalid file.
      * </p>
-     *
+     * 
      * @param servletConfig the servlet config to add the init parameter
      */
     public static void initSCWithInvalidUploadKey(MockServletConfig servletConfig) {
@@ -219,7 +219,7 @@ public final class TestHelper {
      * <p>
      * Sets the Servlet Config's init parameters with valid values.
      * </p>
-     *
+     * 
      * @param servletConfig the servlet config to add the init parameter
      */
     public static void initSCWithValidValues(MockServletConfig servletConfig) {
@@ -239,7 +239,7 @@ public final class TestHelper {
      * <p>
      * Decodes a json response string and converts it to a simple JSONObject.
      * </p>
-     *
+     * 
      * @param jsonResponse string that contains a json encoded strings
      * @throws Exception when there's a problem encoding the response string
      * @return JSONObject of the json string
@@ -252,7 +252,7 @@ public final class TestHelper {
      * <p>
      * Gets a valid JSON String equivalent of a Project.
      * </p>
-     *
+     * 
      * @return json string of a valid Project
      */
     public static String getProjectJSONStringValid() {
@@ -263,7 +263,7 @@ public final class TestHelper {
      * <p>
      * Gets a JSON String equivalent of a Project that will cause a project service exception when created.
      * </p>
-     *
+     * 
      * @return json string of a valid Project
      */
     public static String getProjectJSONStringError() {
@@ -274,11 +274,11 @@ public final class TestHelper {
      * <p>
      * Gets a valid JSON String equivalent of a Uploaded Document.
      * </p>
-     *
+     * 
      * @return json string of a valid Uploaded Document
      */
     public static String getUploadDocJSONStringValid() {
-        return "{\"fileName\" : \"JSON file name\",\"documentID\" : 1,\"contestID\" : 77777,"
+        return "{\"fileName\" : \"JSON file name\",\"path\":\"filePath\",\"documentID\" : 1,\"contestID\" : 77777,"
             + " \"description\" : \"JSON descrip\"}";
     }
 
@@ -286,7 +286,7 @@ public final class TestHelper {
      * <p>
      * Gets a JSON String equivalent of a Uploaded Document that will cause a studio service exception when created.
      * </p>
-     *
+     * 
      * @return json string of a valid Uploaded Document
      */
     public static String getUploadDocJSONStringError() {
@@ -298,7 +298,7 @@ public final class TestHelper {
      * <p>
      * Gets a valid JSON String equivalent of a Submission.
      * </p>
-     *
+     * 
      * @return json string of a valid Uploaded Document
      */
     public static String getSubmissionJSONStringValid() {
@@ -312,7 +312,7 @@ public final class TestHelper {
      * <p>
      * Gets a JSON String equivalent of a Submission that will cause a studio service exception when created.
      * </p>
-     *
+     * 
      * @return json string of a valid Uploaded Document
      */
     public static String getSubmissionJSONStringError() {
@@ -325,7 +325,7 @@ public final class TestHelper {
      * <p>
      * Gets a valid JSON String parameters.
      * </p>
-     *
+     * 
      * @return json string of valid parameters
      */
     public static String getParametersJSONStringValid() {
@@ -336,7 +336,7 @@ public final class TestHelper {
      * <p>
      * Gets an invalid JSON String parameters.
      * </p>
-     *
+     * 
      * @return json string of invalid parameters
      */
     public static String getParametersJSONStringError() {
@@ -347,7 +347,7 @@ public final class TestHelper {
      * <p>
      * Gets a valid JSON String equivalent of a Contest.
      * </p>
-     *
+     * 
      * @return json string of a valid Contest
      */
     public static String getContestJSONStringValid() {
@@ -357,9 +357,9 @@ public final class TestHelper {
             + "\"2008-03-20 01:00\", \"contestTypeID\" : 1,\"finalFileFormatList\" : [\"format 1\",\"format2\","
             + "\"format3\""
             + "],\"finalFileFormatOther\" : \"zip\", \"documentationUploads\" : [{\"fileName\" : \"JSON file name1\","
-            + "\"documentID\" : 321321,\"contestID\" : 77777, \"description\" : \"JSON descrip1\"},{\"fileName\" :"
+            + "\"path\":\"filePath\",\"documentID\" : 321321,\"contestID\" : 77777, \"description\" : \"JSON descrip1\"},{\"fileName\" :"
             + " \"JSON"
-            + " file name2\",\"documentID\" : 321321,\"contestID\" : 77777, \"description\" : \"JSON descrip2\"}], "
+            + " file name2\",\"path\":\"filePath\",\"documentID\" : 321321,\"contestID\" : 77777, \"description\" : \"JSON descrip2\"}], "
             + "\"statusID\" : 3221123, \"contestPayloads\" : [{\"name\" : \"JSON Payload Name1\",\"value\" : "
             + " \"JSON Payload Value1\",\"description\" : \"JSON Payload Desc1\",\"required\" : true, \"contestTypeID\""
             + " : " + "4444},{\"name\" : \"JSON Payload Name2\",\"value\" : \"JSON Payload Value2\",\"description\" : "
@@ -374,7 +374,7 @@ public final class TestHelper {
      * <p>
      * Gets a JSON String equivalent of a Contest that will cause a studio service exception when created.
      * </p>
-     *
+     * 
      * @return json string of a valid Contest
      */
     public static String getContestJSONStringError() {
@@ -402,7 +402,7 @@ public final class TestHelper {
      * <p>
      * Gets a valid JSON String equivalent of a PrerequisiteDocument.
      * </p>
-     *
+     * 
      * @return json string of a valid PrerequisiteDocument
      */
     public static String getPrerequisiteDocumentJSONStringValid() {
@@ -414,7 +414,7 @@ public final class TestHelper {
      * <p>
      * Gets a invalid JSON String of a PrerequisiteDocument.
      * </p>
-     *
+     * 
      * @return json string of a invalid PrerequisiteDocument
      */
     public static String getPrerequisiteDocumentJSONStringError() {
@@ -426,7 +426,7 @@ public final class TestHelper {
      * <p>
      * Convenience method in getting a Project object from a JSONObject.
      * </p>
-     *
+     * 
      * @param jsonProj the JSONObject where the values will be coming from
      * @return the project object created from this json object
      */
@@ -444,7 +444,7 @@ public final class TestHelper {
      * <p>
      * Convenience method in getting a Contest object from a JSONObject.
      * </p>
-     *
+     * 
      * @param jsonContest the JSONObject where the values will be coming from
      * @return the project object created from this json object
      * @throws ParseException when an error occurs while parsing the date
@@ -560,7 +560,7 @@ public final class TestHelper {
      * <p>
      * Convenience method in getting a Submission object from a JSONObject.
      * </p>
-     *
+     * 
      * @param jsonSubmission the JSONObject where the values will be coming from
      * @return the Submission object created from this json object
      * @throws ParseException when an exception occurs while parsing the date
@@ -588,7 +588,7 @@ public final class TestHelper {
      * <p>
      * Convenience method in getting a Prize object from a JSONObject.
      * </p>
-     *
+     * 
      * @param jsonPrize the JSONObject where the values will be coming from
      * @return the prize object created from this json object
      */
@@ -604,7 +604,7 @@ public final class TestHelper {
      * <p>
      * Convenience method in getting a UploadedDocument object from a JSONObject.
      * </p>
-     *
+     * 
      * @param jsonUpDoc the JSONObject where the values will be coming from
      * @return the uploaded document object created from this json object
      */
@@ -613,8 +613,8 @@ public final class TestHelper {
         upDoc.setContestId(jsonUpDoc.getLong("contestID"));
         upDoc.setDescription(jsonUpDoc.getString("description"));
         upDoc.setDocumentId(jsonUpDoc.getLong("documentID"));
-        // how about the fileName?
-        jsonUpDoc.getString("fileName");
+        upDoc.setFileName(jsonUpDoc.getString("fileName"));
+        upDoc.setPath(jsonUpDoc.getString("path"));
 
         return upDoc;
     }
@@ -623,7 +623,7 @@ public final class TestHelper {
      * <p>
      * Convenience method in getting a Contest Payload object from a JSONObject.
      * </p>
-     *
+     * 
      * @param jsonPayload the JSONObject where the values will be coming from
      * @return the contest payload object created from this json object
      */
@@ -640,7 +640,7 @@ public final class TestHelper {
      * <p>
      * Convenience method in getting a Contest Category from a JSON Object.
      * </p>
-     *
+     * 
      * @param jsonCategory the JSON Contest Category object where the values will be coming from
      * @return the contest category object created from this json category object
      */
@@ -659,7 +659,7 @@ public final class TestHelper {
      * <p>
      * Reads the contents of an input stream into a byte[].
      * </p>
-     *
+     * 
      * @param inputStream where the data will come from
      * @return byte array equivalent of the contents from the input stream
      * @throws IOException where there's a problem reading the input stream
@@ -684,7 +684,7 @@ public final class TestHelper {
      * <p>
      * Join strings together as comma deliminated string.
      * </p>
-     *
+     * 
      * @param strings string list to be joined
      * @return concatenated string
      */
@@ -710,7 +710,7 @@ public final class TestHelper {
      * <p>
      * Split a string into string array by ",". It is a reverse function of above.
      * </p>
-     *
+     * 
      * @param string to be split
      * @return array of strings
      */
@@ -722,7 +722,7 @@ public final class TestHelper {
      * <p>
      * Converts date string into XMLGregorianCalendar instance. Returns null if parameter is null or empty.
      * </p>
-     *
+     * 
      * @param dateString Date string to convert
      * @return converted calendar instance
      * @throws ParseException if any parse error
@@ -746,7 +746,7 @@ public final class TestHelper {
      * <p>
      * Converts XMLGregorianCalendar date into standard java Date object. Returns empty string if argument is null.
      * </p>
-     *
+     * 
      * @param calendar calendar instance to convert
      * @return converted date string
      */

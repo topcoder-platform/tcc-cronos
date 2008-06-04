@@ -139,7 +139,7 @@ public class AjaxBridgeServletTest extends TestCase {
         } catch (ServletException e) {
             e.printStackTrace();
             fail("The ServletConfig is valid. " + e.getMessage());
-            
+
         }
     }
 
@@ -887,8 +887,12 @@ public class AjaxBridgeServletTest extends TestCase {
         request.setParameter("contest", TestHelper.getContestJSONStringValid());
         // call doPost
         ajaxServlet.doPost(request, response);
-        // check if response is valid
-        checkVoidSuccessResponse();
+        // now get the response as JSONObject
+        JSONObject jsonContest = checkValidJSONSuccessResponse();
+        assertNotNull("The 'json' parameter should not be null", jsonContest);
+        ContestData contest = TestHelper.getContestFromJSON(jsonContest);
+        assertNotNull("The 'contest' should not be null", contest);
+
     }
 
     /**
@@ -990,12 +994,64 @@ public class AjaxBridgeServletTest extends TestCase {
 
     /**
      * <p>
-     * Tests execution of Studio - getContestsForClient. not supported yet. Always returns error.
+     * Tests execution of Studio - getAllContestTypes. It will return a list of contest types back without any error.
      * </p>
      *
      * @throws Exception wraps all exception
      */
-    public void testStudioGetContestsForClientNotSupportedYet() throws Exception {
+    public void testStudioGetAllContestTypes() throws Exception {
+        // initialize the servlet
+        initializeValidAjaxBridgeServlet();
+        // set invalid service
+        request.setParameter("service", "studio");
+        request.setParameter("method", "getAllContestTypes");
+        // call doPost
+        ajaxServlet.doPost(request, response);
+
+        JSONArray jsonContest = checkValidJSONArraySuccessResponse();
+        assertNotNull("The 'json' parameter should not be null", jsonContest);
+        Object[] objects = jsonContest.getObjects();
+        for (int i = 0; i < objects.length; i++) {
+            assertNotNull("Each json object should not be null", objects[i]);
+        }
+    }
+
+    /**
+     * <p>
+     * Tests execution of Studio - getAllContests. It will return a list of contests back without any error.
+     * </p>
+     *
+     * @throws Exception wraps all exception
+     */
+    public void testStudioGetAllContestsSuccess() throws Exception {
+        // initialize the servlet
+        initializeValidAjaxBridgeServlet();
+        // set invalid service
+        request.setParameter("service", "studio");
+        request.setParameter("method", "getAllContests");
+        // call doPost
+        ajaxServlet.doPost(request, response);
+
+        // not supported yet
+        // check if error response is valid
+        // get response as Array
+        JSONArray jsonContest = checkValidJSONArraySuccessResponse();
+        assertNotNull("The 'json' parameter should not be null", jsonContest);
+        Object[] object = jsonContest.getObjects();
+        for (int i = 0; i < object.length; i++) {
+            ContestData contest = TestHelper.getContestFromJSON((JSONObject) object[i]);
+            assertNotNull("The 'contest' should not be null", contest);
+        }
+    }
+
+    /**
+     * <p>
+     * Tests execution of Studio - getContestsForClient.
+     * </p>
+     *
+     * @throws Exception wraps all exception
+     */
+    public void testStudioGetContestsForClientSuccess() throws Exception {
         // initialize the servlet
         initializeValidAjaxBridgeServlet();
         // set invalid service
@@ -1009,7 +1065,14 @@ public class AjaxBridgeServletTest extends TestCase {
 
         // not supported yet
         // check if error response is valid
-        checkValidErrorResponse();
+        // get response as Array
+        JSONArray jsonContest = checkValidJSONArraySuccessResponse();
+        assertNotNull("The 'json' parameter should not be null", jsonContest);
+        Object[] object = jsonContest.getObjects();
+        for (int i = 0; i < object.length; i++) {
+            ContestData contest = TestHelper.getContestFromJSON((JSONObject) object[i]);
+            assertNotNull("The 'contest' should not be null", contest);
+        }
     }
 
     /**
@@ -1360,7 +1423,7 @@ public class AjaxBridgeServletTest extends TestCase {
      *
      * @throws Exception wraps all exception
      */
-    public void testStudioRetrieveSubmissionNotSupported() throws Exception {
+    public void testStudioRetrieveSubmission() throws Exception {
         // initialize the servlet
         initializeValidAjaxBridgeServlet();
         // set invalid service
@@ -1370,8 +1433,12 @@ public class AjaxBridgeServletTest extends TestCase {
         request.setParameter("submissionID", "1");
         // call doPost
         ajaxServlet.doPost(request, response);
-        // check if error response is valid
-        checkValidErrorResponse();
+
+        // now get the response as JSONObject
+        JSONObject jsonContest = checkValidJSONSuccessResponse();
+        assertNotNull("The 'json' parameter should not be null", jsonContest);
+        SubmissionData submission = TestHelper.getSubmissionFromJSON(jsonContest);
+        assertNotNull("The 'submission' should not be null", submission);
     }
 
     /**
@@ -1710,7 +1777,7 @@ public class AjaxBridgeServletTest extends TestCase {
         initializeValidAjaxBridgeServlet();
         request.setParameter("service", "prerequisite");
         request.setParameter("method", "getPrerequisiteDocument");
-        //trigger mock service exception
+        // trigger mock service exception
         request.setParameter("documentID", "3");
         request.setParameter("version", "1");
         ajaxServlet.doPost(request, response);
@@ -1743,7 +1810,7 @@ public class AjaxBridgeServletTest extends TestCase {
         initializeValidAjaxBridgeServlet();
         request.setParameter("service", "prerequisite");
         request.setParameter("method", "getPrerequisiteDocument");
-        //trigger mock service exception
+        // trigger mock service exception
         request.setParameter("documentID", "3");
         request.setParameter("version", "wrong");
         ajaxServlet.doPost(request, response);
@@ -1851,6 +1918,7 @@ public class AjaxBridgeServletTest extends TestCase {
         ajaxServlet.doPost(request, response);
         checkValidErrorResponse();
     }
+
     /**
      * <p>
      * Tests failed execution of Prerequisite - recordMemberAnswer. Method name wrong.

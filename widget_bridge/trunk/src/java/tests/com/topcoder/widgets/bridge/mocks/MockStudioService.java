@@ -8,11 +8,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.service.studio.ContestCategoryData;
 import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.ContestNotFoundException;
 import com.topcoder.service.studio.ContestPayload;
 import com.topcoder.service.studio.ContestStatusData;
+import com.topcoder.service.studio.ContestTypeData;
 import com.topcoder.service.studio.DocumentNotFoundException;
 import com.topcoder.service.studio.IllegalArgumentWSException;
 import com.topcoder.service.studio.PersistenceException;
@@ -107,7 +109,6 @@ public class MockStudioService implements StudioService {
         } else {
             throw new PersistenceException("mock error.", "persistence error.");
         }
-
     }
 
     /**
@@ -174,6 +175,8 @@ public class MockStudioService implements StudioService {
             upDoc2.setContestId(1233);
             upDoc2.setDescription("description");
             upDoc2.setDocumentId(document.getDocumentId());
+            upDoc2.setFileName("fileName");
+            upDoc2.setPath("path");
             return upDoc2;
         } else {
             throw new PersistenceException("mock error.", "persistence error.");
@@ -345,6 +348,94 @@ public class MockStudioService implements StudioService {
 
     /**
      * <p>
+     * This is going to fetch all the currently available contests.
+     * </p>
+     *
+     * @return the list of all available contents (or empty if none found)
+     *
+     * @throws PersistenceException if any error occurs when getting contest.
+     */
+    public List<ContestData> getAllContests() throws PersistenceException {
+        List<ContestData> contests = new ArrayList<ContestData>();
+        contests.add(getContestObj(10));
+        contests.add(getContestObj(20));
+        return contests;
+    }
+
+    /**
+     * <p>
+     * This is going to get all the matching contest entities that fulfill the input criteria.
+     * </p>
+     *
+     * @param filter a search filter used as criteria for contests.
+     * @return a list (possibly empty) of all the matched contest entities.
+     *
+     * @throws IllegalArgumentException if the input filter is null or filter is not supported for searching
+     * @throws PersistenceException if any error occurs when getting contest.
+     */
+    public List<ContestData> searchContests(Filter filter) throws PersistenceException {
+        throw new UnsupportedOperationException("not supported");
+    }
+
+    /**
+     * <p>
+     * Returns all contests for a particular client ID, provided as a long.
+     * </p>
+     *
+     * @param clientId client Id to search for.
+     * @return all contests for the given client ID.
+     * @throws PersistenceException if any error occurs when getting contest.
+     */
+    public List<ContestData> getContestsForClient(long clientId) throws PersistenceException {
+        checkId(clientId, "client id");
+        if (clientId == 1) {
+            List<ContestData> contests = new ArrayList<ContestData>();
+            contests.add(getContestObj(1));
+            contests.add(getContestObj(2));
+            return contests;
+        } else {
+            throw new PersistenceException("mock error.", "persistence error.");
+        }
+    }
+
+    /**
+     * <p>
+     * Gets the submission with the given id.
+     * </p>
+     *
+     * @param submissionId The id of the submission to get
+     * @return the submission with the given id, or null if not found
+     * @throws PersistenceException If any error occurs during the retrieval
+     */
+    public SubmissionData retrieveSubmission(long submissionId) throws PersistenceException {
+        checkId(submissionId, "submission id");
+        if (submissionId == 1) {
+            return getSubmission(1);
+        } else if (submissionId == 20) {
+            return null;
+        } else {
+            throw new PersistenceException("mock error.", "persistence error.");
+        }
+    }
+
+    /**
+     * <p>
+     * This is going to fetch all the currently available contest types.
+     * </p>
+     *
+     * @return the list of all available content types (or empty if none found)
+     *
+     * @throws PersistenceException if any error occurs when getting contest.
+     */
+    public List<ContestTypeData> getAllContestTypes() throws PersistenceException {
+        List<ContestTypeData> types = new ArrayList<ContestTypeData>();
+        types.add(getContestTypeData(1));
+        types.add(getContestTypeData(2));
+        return types;
+    }
+
+    /**
+     * <p>
      * Creates mocked contest.
      * </p>
      *
@@ -395,11 +486,15 @@ public class MockStudioService implements StudioService {
         upDoc1.setContestId(123);
         upDoc1.setDescription("desc of uploaded");
         upDoc1.setDocumentId(3344);
+        upDoc1.setFileName("fileName1");
+        upDoc1.setPath("path1");
 
         UploadedDocument upDoc2 = new UploadedDocument();
         upDoc2.setContestId(1233);
         upDoc2.setDescription("desc of222 uploaded");
         upDoc2.setDocumentId(3344);
+        upDoc2.setFileName("fileName2");
+        upDoc2.setPath("path2");
 
         List<UploadedDocument> uploadedDocs = new ArrayList<UploadedDocument>();
         uploadedDocs.add(upDoc1);
@@ -468,6 +563,37 @@ public class MockStudioService implements StudioService {
         submission.setSubmitterId(32221);
 
         return submission;
+    }
+
+    /**
+     * <p>
+     * Gets dummy contest type data.
+     * </p>
+     *
+     * @param contestTypeID contest type id
+     * @return mock contest type data
+     */
+    private ContestTypeData getContestTypeData(long contestTypeID) {
+        ContestTypeData type = new ContestTypeData();
+        type.setContestTypeId(contestTypeID);
+        type.setDescription("type" + contestTypeID);
+        type.setRequirePreviewFile(true);
+        type.setRequirePreviewImage(true);
+
+        List<ContestPayload> payloads = new ArrayList<ContestPayload>();
+        ContestPayload payload1 = new ContestPayload();
+        payload1.setName("Name of payload1");
+        payload1.setValue("Value of payload1");
+        payload1.setRequired(true);
+        ContestPayload payload2 = new ContestPayload();
+        payload2.setName("Name of payload2");
+        payload2.setValue("Value of payload2");
+        payload2.setRequired(true);
+        payloads.add(payload1);
+        payloads.add(payload2);
+
+        type.setConfig(payloads);
+        return type;
     }
 
     /**

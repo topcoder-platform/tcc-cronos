@@ -120,8 +120,10 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	                	onError(jsonResp.error);
 	                } else {
 	                	// success
+	                	// create a contest
+	                	var retContest = new js.topcoder.widgets.bridge.Contest(jsonResp.json);	                	
 	                	// call the success callback
-	                	onSuccess();
+	                	onSuccess(retContest);
 	                }
 	           }
 	     	}
@@ -194,6 +196,62 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	     	}
 	     });
 	}
+	
+	/**
+	 * <p>
+	 * Get all contests asynchronously, if the contests are retrieved successfully, onSuccess
+	 * callback function will be called with the retrieved contests, otherwise onError will be called.
+	 * </p>
+	 *
+	 * @throws IllegalArgumentException if any argument is null
+	 * @throws InvalidResponseException if the received response is invalid.
+	 */
+	this.getAllContests = getAllContests;
+	function /* void */ getAllContests(/* ContestsHandler */ onSuccess, /* ErrorHandler */ onError ) {
+		if (onSuccess == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onSuccess","onSuccess callback should not be null");
+		}
+		if (onError == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onError","onError callback should not be null");
+		}
+		var processor = new AJAXProcessor();
+		processor.request({
+	    	url:  servletUrlString,
+	    	async: true,
+	     	method: "POST",
+	     	sendingText: "service=studio&method=getAllContests",
+	     	onStateChange: function() {
+	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
+	            	var response = processor.getResponseText();
+	                var jsonResp = eval("(" + response + ")");
+	                if (jsonResp == null) {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getAllContests","Invalid response");
+	                }
+	                if (typeof(jsonResp.success) == "undefined") {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getAllContests","Invalid response");
+	                }	                
+	                if (jsonResp.success == false) {
+		                if (typeof(jsonResp.error) == "undefined") {
+		                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getAllContests","Invalid response");
+		                }	                
+	                	onError(jsonResp.error);
+	                } else {
+		                if (typeof(jsonResp.json) == "undefined") {
+		                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getAllContests","Invalid response");
+		                }	                
+	                	// success
+	                	var newContests = new Array();
+	                	var contests = jsonResp.json;
+	                	for(var x = 0; x < contests.length; x++) {
+	                		var retContest = new js.topcoder.widgets.bridge.Contest(contests[x]);
+	                		newContests[x] = retContest;
+	                	}
+	                	onSuccess(newContests);
+	                }
+	           }
+	     	}
+	     });
+	}	
 
 	/**
 	 * <p>
@@ -419,6 +477,62 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	     	}
 	     });
 	}
+
+	/**
+	 * <p>
+	 * Get all contest types asynchronously, if the contest typess are retrieved successfully, onSuccess
+	 * callback function will be called with the retrieved contests, otherwise onError will be called.
+	 * </p>
+	 *
+	 * @throws IllegalArgumentException if any argument is null
+	 * @throws InvalidResponseException if the received response is invalid.
+	 */
+	this.getAllContestTypes = getAllContestTypes;
+	function /* void */ getAllContestTypes(/* ContestTypesHandler */ onSuccess, /* ErrorHandler */ onError ) {
+		if (onSuccess == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onSuccess","onSuccess callback should not be null");
+		}
+		if (onError == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onError","onError callback should not be null");
+		}
+		var processor = new AJAXProcessor();
+		processor.request({
+	    	url:  servletUrlString,
+	    	async: true,
+	     	method: "POST",
+	     	sendingText: "service=studio&method=getAllContestTypes",
+	     	onStateChange: function() {
+	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
+	            	var response = processor.getResponseText();
+	                var jsonResp = eval("(" + response + ")");
+	                if (jsonResp == null) {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getAllContestTypes","Invalid response");
+	                }
+	                if (typeof(jsonResp.success) == "undefined") {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getAllContestTypes","Invalid response");
+	                }	                
+	                if (jsonResp.success == false) {
+		                if (typeof(jsonResp.error) == "undefined") {
+		                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getAllContestTypes","Invalid response");
+		                }	                
+	                	onError(jsonResp.error);
+	                } else {
+		                if (typeof(jsonResp.json) == "undefined") {
+		                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getAllContestTypes","Invalid response");
+		                }	                
+	                	// success
+	                	var types = new Array();
+	                	var typesJSONArray = jsonResp.json;
+	                	for(var x = 0; x < typesJSONArray.length; x++) {
+	                		var type = new js.topcoder.widgets.bridge.ContestType(typesJSONArray[x]);
+	                		types[x] = type;
+	                	}
+	                	onSuccess(types);
+	                }
+	           }
+	     	}
+	     });
+	}	
 
 	/**
 	 * <p>

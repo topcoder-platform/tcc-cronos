@@ -2,11 +2,13 @@
 <head>
 <script language='javascript' src="js/AJAXProcessor.js"></script>
 <script language='javascript' src="js/WidgetBridgeNamespace.js"></script>
+<script language='javascript' src="js/Helper.js"></script>
 <script language='javascript' src="js/StudioService.js"></script>
 <script language='javascript' src="js/Contest.js"></script>
 <script language='javascript' src="js/ContestCategory.js"></script>
 <script language='javascript' src="js/ContestPayload.js"></script>
 <script language='javascript' src="js/ContestStatus.js"></script>
+<script language='javascript' src="js/ContestType.js"></script>
 <script language='javascript' src="js/Prize.js"></script>
 <script language='javascript' src="js/Submission.js"></script>
 <script language='javascript' src="js/UploadedDocument.js"></script>
@@ -16,7 +18,7 @@
 <script language="JavaScript">
 
 /**
- * <p>Tests Studtio.createContest().</p>
+ * <p>Tests Studio.createContest().</p>
  */
 function testStudioCreateContest() {
 	// initialize the studio service
@@ -24,8 +26,8 @@ function testStudioCreateContest() {
 	var projectID = 1;
 
 	// success callback	
-	var success = function() {
-		alert("Success = Contest created!");
+	var success = function(contest) {
+		alert("Success = Contest retrieved : "+contest.toJSON());
 	}
 	// error callback
 	var error = function(errMsg) {
@@ -38,7 +40,7 @@ function testStudioCreateContest() {
 }
 
 /**
- * <p>Tests Erro Studtio.createContest().</p>
+ * <p>Tests Erro Studio.createContest().</p>
  */
 function testStudioCreateContestError() {
 	// initialize the studio service
@@ -46,8 +48,8 @@ function testStudioCreateContestError() {
 	var projectID = 50;
 
 	// success callback	
-	var success = function() {
-		alert("Success = Contest created!");
+	var success = function(contest) {
+		alert("Success = Contest retrieved : "+contest.toJSON());
 	}
 	// error callback
 	var error = function(errMsg) {
@@ -60,7 +62,7 @@ function testStudioCreateContestError() {
 }
 
 /**
- * <p>Tests Studtio.getContest().</p>
+ * <p>Tests Studio.getContest().</p>
  */
 function testStudioGetContest() {
 	// initialize the studio service
@@ -80,7 +82,7 @@ function testStudioGetContest() {
 }
 
 /**
- * <p>Tests Error Studtio.getContest().</p>
+ * <p>Tests Error Studio.getContest().</p>
  */
 function testStudioGetContestError() {
 	// initialize the studio service
@@ -100,7 +102,50 @@ function testStudioGetContestError() {
 }
 
 /**
- * <p>Tests Studtio.getContestsForClient().</p>
+ * <p>Tests Studio.getAllContests().</p>
+ */
+function testStudioGetAllContests() {
+	// initialize the studio service
+	var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+
+	// success callback	
+	var success = function(contests) {
+		for (var i = 0; i < contests.length; i++) {
+			alert("Success = Contest returned index["+i+"]: "+contests[i].toJSON());
+		}
+	}
+	// error callback
+	var error = function(errMsg) {
+		alert("Error = "+errMsg);
+	}
+	
+	studioService.getAllContests(success,error);
+}
+
+/**
+ * <p>Tests Studio.getAllContestTypes().</p>
+ */
+function testStudioGetAllContestTypes() {
+	// initialize the studio service
+	var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+
+	// success callback	
+	var success = function(types) {
+		for (var i = 0; i < types.length; i++) {
+			alert("Success = Contest Type returned index["+i+"]: "+types[i].toJSON());
+		}
+	}
+	// error callback
+	var error = function(errMsg) {
+		alert("Error = "+errMsg);
+	}
+	
+	studioService.getAllContestTypes(success,error);
+}
+
+
+/**
+ * <p>Tests Studio.getContestsForClient().</p>
  */
 function testStudioGetContestsForClient() {
 	// initialize the studio service
@@ -123,7 +168,7 @@ function testStudioGetContestsForClient() {
 }
 
 /**
- * <p>Tests Error Studtio.getContestsForClient().</p>
+ * <p>Tests Error Studio.getContestsForClient().</p>
  */
 function testStudioGetContestsForClientError() {
 	// initialize the studio service
@@ -146,7 +191,7 @@ function testStudioGetContestsForClientError() {
 }
 
 /**
- * <p>Tests Studtio.getContestsForProject().</p>
+ * <p>Tests Studio.getContestsForProject().</p>
  */
 function testStudioGetContestsForProject() {
 	// initialize the studio service
@@ -168,7 +213,7 @@ function testStudioGetContestsForProject() {
 }
 
 /**
- * <p>Tests Error Studtio.getContestsForProject().</p>
+ * <p>Tests Error Studio.getContestsForProject().</p>
  */
 function testStudioGetContestsForProjectError() {
 	// initialize the studio service
@@ -190,7 +235,7 @@ function testStudioGetContestsForProjectError() {
 }
 
 /**
- * <p>Tests Studtio.updateContestStatus().</p>
+ * <p>Tests Studio.updateContestStatus().</p>
  */
 function testStudioUpdateContestStatus() {
 	// initialize the studio service
@@ -211,7 +256,7 @@ function testStudioUpdateContestStatus() {
 }
 
 /**
- * <p>Tests Error Studtio.updateContestStatus().</p>
+ * <p>Tests Error Studio.updateContestStatus().</p>
  */
 function testStudioUpdateContestStatusError() {
 	// initialize the studio service
@@ -232,7 +277,7 @@ function testStudioUpdateContestStatusError() {
 }
 
 /**
- * <p>Tests Studtio.removeDocumentFromContest().</p>
+ * <p>Tests Studio.removeDocumentFromContest().</p>
  */
 function testStudioRemoveDocumentFromContest() {
 
@@ -241,6 +286,7 @@ function testStudioRemoveDocumentFromContest() {
 	updoc.setContestID(1);
 	updoc.setFileName("C:\\test.txt");
 	updoc.setDescription("descrip");
+	updoc.setPath("path");
 
 	// initialize the studio service
 	var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
@@ -258,7 +304,7 @@ function testStudioRemoveDocumentFromContest() {
 }
 
 /**
- * <p>Tests Error Studtio.removeDocumentFromContest().</p>
+ * <p>Tests Error Studio.removeDocumentFromContest().</p>
  */
 function testStudioRemoveDocumentFromContestError() {
 
@@ -267,6 +313,7 @@ function testStudioRemoveDocumentFromContestError() {
 	updoc.setContestID(50);
 	updoc.setFileName("C:\\test.txt");
 	updoc.setDescription("descrip");
+	updoc.setPath("path");
 
 	// initialize the studio service
 	var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
@@ -284,7 +331,7 @@ function testStudioRemoveDocumentFromContestError() {
 }
 
 /**
- * <p>Tests Studtio.retrieveSubmissionsForContest().</p>
+ * <p>Tests Studio.retrieveSubmissionsForContest().</p>
  */
 function testStudioRetrieveSubmissionsForContest() {
 
@@ -307,7 +354,7 @@ function testStudioRetrieveSubmissionsForContest() {
 }
 
 /**
- * <p>Tests Error Studtio.retrieveSubmissionsForContest().</p>
+ * <p>Tests Error Studio.retrieveSubmissionsForContest().</p>
  */
 function testStudioRetrieveSubmissionsForContestError() {
 
@@ -330,7 +377,7 @@ function testStudioRetrieveSubmissionsForContestError() {
 }
 
 /**
- * <p>Tests Studtio.updateSubmission().</p>
+ * <p>Tests Studio.updateSubmission().</p>
  */
 function testStudioUpdateSubmission() {
 
@@ -352,7 +399,7 @@ function testStudioUpdateSubmission() {
 }
 
 /**
- * <p>Tests Error Studtio.updateSubmission().</p>
+ * <p>Tests Error Studio.updateSubmission().</p>
  */
 function testStudioUpdateSubmissionError() {
 
@@ -375,7 +422,7 @@ function testStudioUpdateSubmissionError() {
 }
 
 /**
- * <p>Tests Studtio.updateContest().</p>
+ * <p>Tests Studio.updateContest().</p>
  */
 function testStudioUpdateContest() {
 
@@ -397,7 +444,7 @@ function testStudioUpdateContest() {
 }
 
 /**
- * <p>Tests Erro Studtio.updateContest().</p>
+ * <p>Tests Erro Studio.updateContest().</p>
  */
 function testStudioUpdateContestError() {
 
@@ -420,7 +467,7 @@ function testStudioUpdateContestError() {
 }
 
 /**
- * <p>Tests Studtio.retrieveSubmission().</p>
+ * <p>Tests Studio.retrieveSubmission().</p>
  */
 function testStudioRetrieveSubmission() {
 
@@ -441,7 +488,7 @@ function testStudioRetrieveSubmission() {
 }
 
 /**
- * <p>Tests Error Studtio.retrieveSubmission().</p>
+ * <p>Tests Error Studio.retrieveSubmission().</p>
  */
 function testStudioRetrieveSubmissionError() {
 
@@ -462,7 +509,7 @@ function testStudioRetrieveSubmissionError() {
 }
 
 /**
- * <p>Tests Studtio.removeSubmission().</p>
+ * <p>Tests Studio.removeSubmission().</p>
  */
 function testStudioRemoveSubmission() {
 
@@ -483,7 +530,7 @@ function testStudioRemoveSubmission() {
 }
 
 /**
- * <p>Tests Error Studtio.removeSubmission().</p>
+ * <p>Tests Error Studio.removeSubmission().</p>
  */
 function testStudioRemoveSubmissionError() {
 
@@ -504,7 +551,7 @@ function testStudioRemoveSubmissionError() {
 }
 
 /**
- * <p>Tests Studtio.retrieveAllSubmissionsByMember().</p>
+ * <p>Tests Studio.retrieveAllSubmissionsByMember().</p>
  */
 function testStudioRetrieveAllSubmissionsByMember() {
 
@@ -527,7 +574,7 @@ function testStudioRetrieveAllSubmissionsByMember() {
 }
 
 /**
- * <p>Tests Error Studtio.retrieveAllSubmissionsByMember().</p>
+ * <p>Tests Error Studio.retrieveAllSubmissionsByMember().</p>
  */
 function testStudioRetrieveAllSubmissionsByMemberError() {
 
@@ -550,7 +597,7 @@ function testStudioRetrieveAllSubmissionsByMemberError() {
 }
 
 /**
- * <p>Tests Studtio.getContestCategories().</p>
+ * <p>Tests Studio.getContestCategories().</p>
  */
 function testStudioGetContestCategories() {
 
@@ -577,7 +624,7 @@ function testStudioGetContestCategories() {
 }
 
 /**
- * <p>Tests Studtio.getSubmissionFileTypes().</p>
+ * <p>Tests Studio.getSubmissionFileTypes().</p>
  */
 function testStudioGetSubmissionFileTypes() {
 
@@ -599,7 +646,7 @@ function testStudioGetSubmissionFileTypes() {
 }
 
 /**
- * <p>Tests Studtio.getContestStatuses().</p>
+ * <p>Tests Studio.getContestStatuses().</p>
  */
 function testStudioGetContestStatuses() {
 
@@ -633,10 +680,10 @@ function getContest1() {
 		"{\"place\" : 1,\"amount\" : 20000}";
 	// Doc Up #1
 	var docup1 = 
-		"{\"fileName\" : \"JSON file name1\",\"documentID\" : 321321,\"contestID\" : 77777, \"description\" : \"JSON descrip1\"}";
+		"{\"fileName\" : \"JSON file name1\",\"path\":\"filePath\",\"documentID\" : 321321,\"contestID\" : 77777, \"description\" : \"JSON descrip1\"}";
 	// Doc Up #2
 	var docup2 = 
-		"{\"fileName\" : \"JSON file name2\",\"documentID\" : 321321,\"contestID\" : 77777, \"description\" : \"JSON descrip2\"}";
+		"{\"fileName\" : \"JSON file name2\",\"path\":\"filePath\",\"documentID\" : 321321,\"contestID\" : 77777, \"description\" : \"JSON descrip2\"}";
 
 	// Contest Payload #1
 	var payload1 = 
@@ -703,13 +750,15 @@ Widget Webservices Bridge Demo
 <ul>
 	<li>Studio.createContest() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioCreateContest()" /></li>
 	<li>Studio.getContest() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetContest()" /></li>
-	<li>Studio.getContestsForClient() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetContestsForClient()" />NOT SUPPORTED YET!!</li>
+	<li>Studio.getAllContests() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetAllContests()" /></li>
+	<li>Studio.getAllContestTypes() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetAllContestTypes()" /></li>	
+	<li>Studio.getContestsForClient() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetContestsForClient()" /></li>
 	<li>Studio.getContestsForProject() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetContestsForProject()" /></li>
 	<li>Studio.updateContestStatus() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioUpdateContestStatus()" /></li>
 	<li>Studio.removeDocumentFromContest() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioRemoveDocumentFromContest()" /></li>
 	<li>Studio.updateSubmission() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioUpdateSubmission()" /></li>
 	<li>Studio.updateContest() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioUpdateContest()" /></li>
-	<li>Studio.retrieveSubmission() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioRetrieveSubmission()" />NOT SUPPORTED YET!!</li>
+	<li>Studio.retrieveSubmission() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioRetrieveSubmission()" /></li>
 	<li>Studio.removeSubmission() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioRemoveSubmission()" /></li>
 	<li>Studio.retrieveSubmissionsForContest() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioRetrieveSubmissionsForContest()" /></li>
 	<li>Studio.retrieveAllSubmissionsByMember() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioRetrieveAllSubmissionsByMember()" /></li>

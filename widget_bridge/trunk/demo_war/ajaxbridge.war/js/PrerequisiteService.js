@@ -243,7 +243,7 @@ js.topcoder.widgets.bridge.PrerequisiteService = function(newServletUrlString){
         var methodName = "recordMemberAnswer";
 		var sendingText = "service=" + SERVICE_NAME + "&method=" + methodName;
 		sendingText += "&competitionID=" + competitionID + "&timestamp=" + timestamp;
-		sendingText += "&agrees=" + agrees + "&prerequisiteDocument=" + prerequisiteDocument.toJSON();
+		sendingText += "&agrees=" + agrees + "&prerequisiteDocument=" + escape(prerequisiteDocument.toJSON());
 		sendingText += "&roleID="+roleID;
         processor.request({
             url: servletUrlString,

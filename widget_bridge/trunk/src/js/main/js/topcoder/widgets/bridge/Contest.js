@@ -360,8 +360,8 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 			var tempUpDoc = json.documentationUploads;
 			var upDocArray = new Array();
 			for (var x = 0; x < tempUpDoc.length; x++) {
-				upDocArray[x] =
-					"{\"fileName\" : \"" + tempUpDoc[x].fileName + "\",\"documentID\" : " + tempUpDoc[x].documentID
+				upDocArray[x] = 
+					"{\"fileName\" : \"" + tempUpDoc[x].fileName + "\",\"path\" : \""+ tempUpDoc[x].path + "\",\"documentID\" : " + tempUpDoc[x].documentID
 					+ ",\"contestID\" : " + tempUpDoc[x].contestID + ", \"description\" : \""
 					+ tempUpDoc[x].description+"\"}";
 			}

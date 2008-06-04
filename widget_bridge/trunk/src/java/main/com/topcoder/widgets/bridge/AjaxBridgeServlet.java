@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.ejb.EJBAccessException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,13 +22,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.topcoder.configuration.ConfigurationAccessException;
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.configuration.persistence.ConfigurationFileManager;
-import com.topcoder.configuration.persistence.ConfigurationParserException;
-import com.topcoder.configuration.persistence.NamespaceConflictException;
-import com.topcoder.configuration.persistence.UnrecognizedFileTypeException;
-import com.topcoder.configuration.persistence.UnrecognizedNamespaceException;
 import com.topcoder.json.object.JSONArray;
 import com.topcoder.json.object.JSONDataAccessTypeException;
 import com.topcoder.json.object.JSONInvalidKeyException;
@@ -40,37 +34,27 @@ import com.topcoder.json.object.io.JSONEncoder;
 import com.topcoder.json.object.io.JSONEncodingException;
 import com.topcoder.service.prerequisite.PrerequisiteDocument;
 import com.topcoder.service.prerequisite.PrerequisiteService;
-import com.topcoder.service.prerequisite.PrerequisiteServiceException;
 import com.topcoder.service.project.ProjectData;
 import com.topcoder.service.project.ProjectService;
-import com.topcoder.service.project.ProjectServiceFault;
 import com.topcoder.service.studio.ContestCategoryData;
 import com.topcoder.service.studio.ContestData;
-import com.topcoder.service.studio.ContestNotFoundException;
 import com.topcoder.service.studio.ContestPayload;
 import com.topcoder.service.studio.ContestStatusData;
+import com.topcoder.service.studio.ContestTypeData;
 import com.topcoder.service.studio.PrizeData;
 import com.topcoder.service.studio.StudioService;
 import com.topcoder.service.studio.StudioServiceException;
 import com.topcoder.service.studio.SubmissionData;
 import com.topcoder.service.studio.UploadedDocument;
-import com.topcoder.servlet.request.ConfigurationException;
-import com.topcoder.servlet.request.FileDoesNotExistException;
 import com.topcoder.servlet.request.FileUploadResult;
 import com.topcoder.servlet.request.HttpRequestParser;
-import com.topcoder.servlet.request.InvalidFileException;
 import com.topcoder.servlet.request.MemoryFileUpload;
-import com.topcoder.servlet.request.PersistenceException;
-import com.topcoder.servlet.request.RequestParsingException;
 import com.topcoder.servlet.request.UploadedFile;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogManager;
-import com.topcoder.util.objectfactory.InvalidClassSpecificationException;
 import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.objectfactory.impl.ConfigurationObjectSpecificationFactory;
-import com.topcoder.util.objectfactory.impl.IllegalReferenceException;
-import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
 
 /**
  * <p>
@@ -196,11 +180,9 @@ public class AjaxBridgeServlet extends HttpServlet {
      */
     @Override
     public void init(ServletConfig config) throws ServletException {
-        // check first if ServletConfig is not null
         if (config == null) {
             throw new ServletException("config can't be null!");
         }
-        // call super init
         super.init(config);
 
         try {
@@ -236,29 +218,8 @@ public class AjaxBridgeServlet extends HttpServlet {
 
             // initialize the File Upload Configuration Object
             fileUploadConfig = cm.getConfiguration(getParameter("fileUploadNamespace", null));
-        } catch (ConfigurationParserException e) {
-            throw new ServletException(e);
-        } catch (ConfigurationAccessException e) {
-            throw new ServletException(e);
-        } catch (NamespaceConflictException e) {
-            throw new ServletException(e);
-        } catch (UnrecognizedFileTypeException e) {
-            throw new ServletException(e);
-        } catch (UnrecognizedNamespaceException e) {
-            throw new ServletException(e);
-        } catch (IllegalReferenceException e) {
-            throw new ServletException(e);
-        } catch (SpecificationConfigurationException e) {
-            throw new ServletException(e);
-        } catch (InvalidClassSpecificationException e) {
-            throw new ServletException(e);
-        } catch (IOException e) {
-            throw new ServletException(e);
-        } catch (IllegalArgumentException e) {
-            throw new ServletException(e);
-        } catch (ClassCastException e) {
-            throw new ServletException(e);
         } catch (Exception e) {
+            // see http://forums.topcoder.com/?module=Thread&threadID=614361&start=0
             throw new ServletException(e);
         }
     }
@@ -332,40 +293,24 @@ public class AjaxBridgeServlet extends HttpServlet {
         }
 
         try {
-            // get the service from request later
             String service = null;
-            // get the method from request later
             String method = null;
-            // flag to see if request is multipart
             boolean isMultiPart = isMultipartContent(request);
-            // declare the FileUloadResult where to get the uploaded file
             FileUploadResult result = null;
 
-            // check if multipart request
             if (isMultiPart) {
-                // initialize MemoryFileUpload for uploading the File
                 MemoryFileUpload mfu = new MemoryFileUpload(fileUploadConfig);
-                // Initialize the HttpRequestParser
                 HttpRequestParser requestParser = new HttpRequestParser();
-                // upload and parse the file from HttpRequest
                 result = mfu.uploadFiles(request, requestParser);
-
-                // initialize the service parameter
                 service = result.getParameter(SERVICE_PARAM_KEY);
-                // initialize the method parameter
                 method = result.getParameter(METHOD_PARAM_KEY);
             } else {
-                // else simple form data
-                // initialize the service parameter
                 service = request.getParameter(SERVICE_PARAM_KEY);
-                // initialize the method parameter
                 method = request.getParameter(METHOD_PARAM_KEY);
             }
-            // check if service is null/empty
             if (checkIfNullOrEmpty(service, "service", response)) {
                 return;
             }
-            // check if method is null/empty
             if (checkIfNullOrEmpty(method, "method", response)) {
                 return;
             }
@@ -376,125 +321,94 @@ public class AjaxBridgeServlet extends HttpServlet {
                 // *********************************************************************************************
                 // ::Project Service::
                 // *********************************************************************************************
-                // for createProject
                 if ("createProject".equals(method)) {
-                    // get the project parameter from request
                     String strProject = request.getParameter("project");
                     if (checkIfNullOrEmpty(strProject, "project", response)) {
                         return;
                     }
-                    // decode the project
                     JSONObject jsonProj = jsonDecoder.decodeObject(strProject);
-                    // log the received ID
                     debug("received ID = [project id] : " + jsonProj.getLong("projectID"));
-                    // initialize the project using the JSON object
+
                     ProjectData project = getProjectFromJSON(jsonProj);
-                    // do the actual creation of the Project
+                    if (checkIfNullOrEmpty(project.getName(), "project name", response)) {
+                        return;
+                    }
                     ProjectData respProj = projectService.createProject(project);
-                    // now create the corresponding JSON object for the response
                     JSONObject respJSON = getJSONFromProject(respProj);
-                    debug("createProject success!");
-                    // send the JSONObject as a response
                     sendJSONObjectAsResponse(respJSON, response);
 
-                } else if ("updateProject".equals(method)) { // for updateProject
-                    // get the project parameter from request
+                    debug("createProject success!");
+                } else if ("updateProject".equals(method)) {
                     String strProject = request.getParameter("project");
                     if (checkIfNullOrEmpty(strProject, "project", response)) {
                         return;
                     }
-                    // decode the project
                     JSONObject jsonProj = jsonDecoder.decodeObject(strProject);
-                    // log the received ID
                     debug("received ID = [project id] : " + jsonProj.getLong("projectID"));
-                    // initialize the project using the JSON object
+
                     ProjectData project = getProjectFromJSON(jsonProj);
-                    // do the actual updating of the Project
                     projectService.updateProject(project);
                     ProjectData respProj = projectService.getProject(project.getProjectId());
-                    // now create the corresponding JSON object for the response
                     JSONObject respJSON = getJSONFromProject(respProj);
-                    debug("updateProject success!");
-                    // send the JSONObject as a response
                     sendJSONObjectAsResponse(respJSON, response);
 
-                } else if ("deleteProject".equals(method)) { // for deleteProject
-                    // get the project parameter from request
+                    debug("updateProject success!");
+                } else if ("deleteProject".equals(method)) {
                     String strProject = request.getParameter("project");
                     if (checkIfNullOrEmpty(strProject, "project", response)) {
                         return;
                     }
-                    // decode the project
                     JSONObject jsonProj = jsonDecoder.decodeObject(strProject);
-                    // log the received ID
                     debug("received ID = [project id] : " + jsonProj.getLong("projectID"));
-                    // initialize the project using the JSON object
-                    ProjectData project = getProjectFromJSON(jsonProj);
-                    // do the actual retrieval of the Project
-                    projectService.deleteProject(project.getProjectId());
-                    // set the success message with json object
-                    JSONObject succJson = getSuccessJSONResponse();
-                    debug("deleteProject success!");
-                    // send the success response
-                    printSuccessResponse(succJson, response);
 
-                } else if ("getProject".equals(method)) { // for getProject
-                    // get the project parameter from request
+                    ProjectData project = getProjectFromJSON(jsonProj);
+                    projectService.deleteProject(project.getProjectId());
+                    printSuccessResponse(getSuccessJSONResponse(), response);
+
+                    debug("deleteProject success!");
+                } else if ("getProject".equals(method)) {
                     String strProjectID = request.getParameter("projectID");
                     if (checkLongIfLessThanZero(strProjectID, "projectID", response)) {
                         return;
                     }
-                    // log the received ID
                     debug("received ID = [project id] : " + strProjectID);
-                    // do the actual retrieval of the Project
+
                     ProjectData respProj = projectService.getProject(Long.parseLong(strProjectID));
-                    // now create the corresponding JSON object for the response
                     JSONObject respJSON = getJSONFromProject(respProj);
-                    debug("getProject success!");
-                    // send the JSONObject as a response
                     sendJSONObjectAsResponse(respJSON, response);
-                } else if ("getProjectsForUser".equals(method)) { // for getProjectsForUser
-                    // get the user id parameter from request
+
+                    debug("getProject success!");
+                } else if ("getProjectsForUser".equals(method)) {
                     String userID = request.getParameter("userID");
                     if (checkLongIfLessThanZero(userID, "userID", response)) {
                         return;
                     }
-                    // log the received ID
                     debug("received ID = [user id] : " + userID);
 
                     List<ProjectData> projects = projectService.getProjectsForUser(Long.parseLong(userID));
                     JSONArray projectArr = new JSONArray();
-                    // iterate through projects
                     for (ProjectData proj : projects) {
-                        // create the json object
                         JSONObject respJSON = getJSONFromProject(proj);
-                        // add to array
                         projectArr.addJSONObject(respJSON);
                     }
-                    debug("getProjectsForUser success!");
-                    // send the JSONObject as a response
                     sendJSONObjectWithArrayAsResponse(projectArr, response);
-                } else if ("getAllProjects".equals(method)) { // for getAllProjects
+
+                    debug("getProjectsForUser success!");
+                } else if ("getAllProjects".equals(method)) {
                     List<ProjectData> projects = projectService.getAllProjects();
                     JSONArray projectArr = new JSONArray();
 
-                    // iterate through projects
                     for (ProjectData proj : projects) {
-                        // create the json object
                         JSONObject respJSON = getJSONFromProject(proj);
-                        // add to array
                         projectArr.addJSONObject(respJSON);
                     }
                     debug("getAllProjects success!");
-                    // send the JSONObject as a response
                     sendJSONObjectWithArrayAsResponse(projectArr, response);
-
                 } else {
-                    // if we reach here this means the method param is invalid
                     sendErrorJSONResponse("The 'method' param passed is invalid.", response);
                 }
 
-            } else if ("prerequisite".equals(service)) { // for Prerequisite SERVICES
+            } else if ("prerequisite".equals(service)) {
                 // *********************************************************************************************
                 // ::Prerequisite Service::
                 // *********************************************************************************************
@@ -528,7 +442,6 @@ public class AjaxBridgeServlet extends HttpServlet {
                     for (PrerequisiteDocument document : documents) {
                         documentArray.addJSONObject(getJSONFromPrerequisteDocument(document));
                     }
-                    // send the JSONObject as a response
                     sendJSONObjectWithArrayAsResponse(documentArray, response);
 
                     debug("getPrerequisiteDocuments success!");
@@ -577,7 +490,6 @@ public class AjaxBridgeServlet extends HttpServlet {
                 // ::Studio Service::
                 // *********************************************************************************************
                 if ("createContest".equals(method)) {
-                    // get the contest parameter from request
                     String strContest = request.getParameter("contest");
                     String strProjectID = request.getParameter("projectID");
                     if (checkIfNullOrEmpty(strContest, "contest", response)) {
@@ -591,45 +503,51 @@ public class AjaxBridgeServlet extends HttpServlet {
                         + strProjectID);
 
                     ContestData contest = getContestFromJSON(jsonContest);
-                    studioService.createContest(contest, Long.parseLong(strProjectID));
-                    printSuccessResponse(getSuccessJSONResponse(), response);
+                    ContestData respContest = studioService.createContest(contest, Long.parseLong(strProjectID));
+                    sendJSONObjectAsResponse(getJSONFromContest(respContest), response);
 
                     debug("createContest success!");
                 } else if ("getContest".equals(method)) {
-                    // get the contestID parameter from request
                     String strContestID = request.getParameter("contestID");
                     if (checkLongIfLessThanZero(strContestID, "contestID", response)) {
                         return;
                     }
-                    // log the received ID
                     debug("received ID = [contest ID] : " + strContestID);
-                    // do the actual retrieval of the Contest
-                    ContestData respContest = studioService.getContest(Long.parseLong(strContestID));
-                    // now create the corresponding JSON object for the response
-                    JSONObject respJSON = getJSONFromContest(respContest);
-                    debug("getContest success!");
-                    // send the JSONObject as a response
-                    sendJSONObjectAsResponse(respJSON, response);
 
+                    ContestData respContest = studioService.getContest(Long.parseLong(strContestID));
+                    sendJSONObjectAsResponse(getJSONFromContest(respContest), response);
+
+                    debug("getContest success!");
+                } else if ("getAllContests".equals(method)) {
+                    debug("start to get all contests.");
+                    List<ContestData> contests = studioService.getAllContests();
+                    JSONArray contestArr = new JSONArray();
+                    for (ContestData contest : contests) {
+                        JSONObject respJSON = getJSONFromContest(contest);
+                        contestArr.addJSONObject(respJSON);
+                    }
+                    sendJSONObjectWithArrayAsResponse(contestArr, response);
+
+                    debug("getAllContests success!");
                 } else if ("getContestsForClient".equals(method)) {
-                    // get the clientID parameter from request
                     String strClientID = request.getParameter("clientID");
                     if (checkLongIfLessThanZero(strClientID, "clientID", response)) {
                         return;
                     }
-                    // get the contestStatusID parameter from request
+                    // JS API has a contestStatusID and we just ignore it since we are not using it
                     String strContestStatusID = request.getParameter("contestStatusID");
-                    if (checkLongIfLessThanZero(strContestStatusID, "contestStatusID", response)) {
-                        return;
-                    }
-                    // log the received ID
                     debug("received ID = [clientID]: " + strClientID + " [contestStatusID]: " + strContestStatusID);
-                    // see http://forums.topcoder.com/?module=Thread&threadID=614386&start=0
-                    // we just throw an exception to indicate that it is not supported for now
-                    throw new StudioServiceException("It is not supported.");
 
+                    List<ContestData> contests = studioService.getContestsForClient(Long.valueOf(strClientID));
+                    JSONArray contestArr = new JSONArray();
+                    for (ContestData contest : contests) {
+                        JSONObject respJSON = getJSONFromContest(contest);
+                        contestArr.addJSONObject(respJSON);
+                    }
+                    sendJSONObjectWithArrayAsResponse(contestArr, response);
+
+                    debug("getContestsForClient success!");
                 } else if ("getContestsForProject".equals(method)) {
-                    // get the projectID parameter from request
                     String projectID = request.getParameter("projectID");
                     if (checkLongIfLessThanZero(projectID, "projectID", response)) {
                         return;
@@ -638,11 +556,8 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                     List<ContestData> contests = studioService.getContestsForProject(Long.parseLong(projectID));
                     JSONArray contestArr = new JSONArray();
-                    // iterate through contests
                     for (ContestData contest : contests) {
-                        // create the json object
                         JSONObject respJSON = getJSONFromContest(contest);
-                        // add to array
                         contestArr.addJSONObject(respJSON);
                     }
                     sendJSONObjectWithArrayAsResponse(contestArr, response);
@@ -667,6 +582,17 @@ public class AjaxBridgeServlet extends HttpServlet {
                     sendJSONObjectAsResponse(getJSONFromContest(respContest), response);
 
                     debug("updateContestStatus success!");
+                } else if ("getAllContestTypes".equals(method)) {
+                    debug("start to get all contest types.");
+                    List<ContestTypeData> types = studioService.getAllContestTypes();
+                    JSONArray typeArr = new JSONArray();
+                    for (ContestTypeData type : types) {
+                        JSONObject respJSON = getJSONFromContestType(type);
+                        typeArr.addJSONObject(respJSON);
+                    }
+                    sendJSONObjectWithArrayAsResponse(typeArr, response);
+
+                    debug("getAllContestTypes success!");
                 } else if ("uploadDocumentForContest".equals(method)) {
                     // verify here again if the form we received is multipart/form-data
                     if (isMultiPart) {
@@ -714,116 +640,88 @@ public class AjaxBridgeServlet extends HttpServlet {
                     if (checkIfNullOrEmpty(strDocument, "document", response)) {
                         return;
                     }
-                    // decode the document
                     JSONObject jsonDocument = jsonDecoder.decodeObject(strDocument);
-                    // log the received ID
                     debug("received ID = [document ID] : " + jsonDocument.getLong("documentID"));
 
-                    // initialize the Document using the JSON object
                     UploadedDocument document = getDocumentUploadsFromJSON(jsonDocument);
-                    // do the actual removal of document
                     studioService.removeDocumentFromContest(document);
-                    // set the success message with json object
                     JSONObject succJson = getSuccessJSONResponse();
-                    debug("removeDocumentFromContest success!");
-                    // send the success response
                     printSuccessResponse(succJson, response);
 
+                    debug("removeDocumentFromContest success!");
                 } else if ("retrieveSubmissionsForContest".equals(method)) {
-                    // get the contestID parameter from request
                     String contestID = request.getParameter("contestID");
                     if (checkLongIfLessThanZero(contestID, "contestID", response)) {
                         return;
                     }
-                    // log the received ID
                     debug("received ID = [contest ID] : " + contestID);
 
                     List<SubmissionData> submissions = studioService.retrieveSubmissionsForContest(Long
                         .parseLong(contestID));
                     JSONArray submissionArr = new JSONArray();
 
-                    // iterate through submissions
                     for (SubmissionData submission : submissions) {
-                        // create the json object
                         JSONObject respJSON = getJSONFromSubmission(submission);
-                        // add to array
                         submissionArr.addJSONObject(respJSON);
                     }
-                    debug("retrieveSubmissionsForContest success!");
-                    // send the JSONObject as a response
                     sendJSONObjectWithArrayAsResponse(submissionArr, response);
 
+                    debug("retrieveSubmissionsForContest success!");
                 } else if ("updateSubmission".equals(method)) {
                     String strSubmission = request.getParameter("submission");
                     if (checkIfNullOrEmpty(strSubmission, "submission", response)) {
                         return;
                     }
-                    // decode the submission
                     JSONObject jsonSubmission = jsonDecoder.decodeObject(strSubmission);
-                    // log the received ID
                     debug("received ID = [submission ID] : " + jsonSubmission.getLong("submissionID"));
 
-                    // initialize the Submission using the JSON object
                     SubmissionData submission = getSubmissionFromJSON(jsonSubmission);
-                    // do the actual update of submission
                     studioService.updateSubmission(submission);
-                    // set the success message with json object
                     JSONObject succJson = getSuccessJSONResponse();
-                    debug("updateSubmission success!");
-                    // send the success response
                     printSuccessResponse(succJson, response);
 
+                    debug("updateSubmission success!");
                 } else if ("updateContest".equals(method)) {
-                    // get the contest parameter from request
                     String strContest = request.getParameter("contest");
                     if (checkIfNullOrEmpty(strContest, "contest", response)) {
                         return;
                     }
-                    // decode the contest
                     JSONObject jsonContest = jsonDecoder.decodeObject(strContest);
-                    // log the received ID
                     debug("received ID = [contest ID] : " + jsonContest.getLong("contestID"));
 
-                    // initialize the contest using the JSON object
                     ContestData contest = getContestFromJSON(jsonContest);
-                    // do the actual update of the Contest
                     studioService.updateContest(contest);
 
-                    // set the success message with json object
                     JSONObject succJson = getSuccessJSONResponse();
+                    printSuccessResponse(succJson, response);
+
                     debug("updateContest success!");
-                    // send the success response
-                    printSuccessResponse(succJson, response);
-
                 } else if ("retrieveSubmission".equals(method)) {
-
-                    // get the submissionID parameter from request
                     String strSubmissionID = request.getParameter("submissionID");
                     if (checkLongIfLessThanZero(strSubmissionID, "submissionID", response)) {
                         return;
                     }
-                    // log the received ID
                     debug("received ID = [submission ID] : " + strSubmissionID);
-                    // see http://forums.topcoder.com/?module=Thread&threadID=614386&start=0
-                    // we just throw an exception to indicate that it is not supported for now
-                    throw new StudioServiceException("It is not supported.");
+
+                    SubmissionData submission = studioService.retrieveSubmission(Long.valueOf(strSubmissionID));
+                    if (submission == null) {
+                        throw new StudioServiceException("There is no submission for submission id<" + strSubmissionID
+                            + ">");
+                    }
+                    sendJSONObjectAsResponse(getJSONFromSubmission(submission), response);
+
+                    debug("retrieveSubmission success!");
                 } else if ("removeSubmission".equals(method)) {
-                    // get the contest parameter from request
                     String strSubmissionID = request.getParameter("submissionID");
                     if (checkLongIfLessThanZero(strSubmissionID, "submissionID", response)) {
                         return;
                     }
-                    // log the received ID
                     debug("received ID = [submission ID] : " + strSubmissionID);
 
-                    // do the actual update of the Submission
                     studioService.removeSubmission(Long.parseLong(strSubmissionID));
-                    // set the success message with json object
-                    JSONObject succJson = getSuccessJSONResponse();
-                    debug("removeSubmission success!");
-                    // send the success response
-                    printSuccessResponse(succJson, response);
+                    printSuccessResponse(getSuccessJSONResponse(), response);
 
+                    debug("removeSubmission success!");
                 } else if ("retrieveAllSubmissionsByMember".equals(method)) {
                     // get the userID parameter from request
                     String userID = request.getParameter("userID");
@@ -835,85 +733,61 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                     List<SubmissionData> subs = studioService.retrieveAllSubmissionsByMember(Long.parseLong(userID));
                     JSONArray submissionArr = new JSONArray();
-
-                    // iterate through submissions
                     for (SubmissionData submission : subs) {
-                        // create the json object
                         JSONObject respJSON = getJSONFromSubmission(submission);
-                        // add to array
                         submissionArr.addJSONObject(respJSON);
                     }
-                    debug("retrieveAllSubmissionsByMember success!");
-                    // send the JSONObject as a response
                     sendJSONObjectWithArrayAsResponse(submissionArr, response);
 
+                    debug("retrieveAllSubmissionsByMember success!");
                 } else if ("getContestCategories".equals(method)) {
-                    // get the contest parameter from request
                     String strParameters = request.getParameter("parameters");
                     if (checkIfNullOrEmpty(strParameters, "parameters", response)) {
                         return;
                     }
-                    // decode the parameters
                     JSONArray jsonParameters = jsonDecoder.decodeArray(strParameters);
                     List<String> parameters = new ArrayList<String>();
-                    // check if it is null
                     if (jsonParameters != null) {
-                        // log the received ID
                         debug("received ID = [parameters] : " + jsonParameters.toJSONString());
-                        // we get the contents as Array of Objects
                         Object[] fileformat = jsonParameters.getObjects();
-                        // we initialize a list for the file formats which will be converted later into a Set
                         if (fileformat != null) {
                             for (int i = 0; i < fileformat.length; i++) {
-                                // get the Uploaded Document object from the JSONObject
                                 parameters.add((String) fileformat[i]);
                             }
                         }
                     }
 
-                    // TODO: needs to add parameters??
                     List<ContestCategoryData> categories = studioService.getContestCategories();
                     JSONArray categoriesArr = new JSONArray();
 
-                    // iterate through contest categories
                     for (ContestCategoryData category : categories) {
-                        // create the json object
                         JSONObject respJSON = getJSONFromContestCategory(category);
-                        // add to array
                         categoriesArr.addJSONObject(respJSON);
                     }
-                    debug("getContestCategories success!");
-                    // send the JSONObject as a response
                     sendJSONObjectWithArrayAsResponse(categoriesArr, response);
 
+                    debug("getContestCategories success!");
                 } else if ("getSubmissionFileTypes".equals(method)) {
                     String[] fileTypes = splitString(studioService.getSubmissionFileTypes());
                     JSONArray fileTypesArr = new JSONArray();
 
-                    // iterate through file types
                     for (String fileType : fileTypes) {
-                        // add to array
                         fileTypesArr.addString(fileType);
                     }
-                    debug("getSubmissionFileTypes success!");
-                    // send the JSONObject as a response
                     sendJSONObjectWithArrayAsResponse(fileTypesArr, response);
 
+                    debug("getSubmissionFileTypes success!");
                 } else if ("getContestStatuses".equals(method)) {
                     List<ContestStatusData> contestStatuses = studioService.getStatusList();
                     JSONArray contestStatusArray = new JSONArray();
 
-                    // iterate through contest statuses
                     for (ContestStatusData contestStatus : contestStatuses) {
-                        // create the json object
                         JSONObject respJSON = getJSONFromContestStatus(contestStatus);
-                        // add to array
                         contestStatusArray.addJSONObject(respJSON);
                     }
-                    debug("getContestStatuses success!");
-                    // send the JSONObject as a response
                     sendJSONObjectWithArrayAsResponse(contestStatusArray, response);
 
+                    debug("getContestStatuses success!");
                 } else {
                     // if we reach here this means the method param is invalid
                     sendErrorJSONResponse("The 'method' param passed is invalid.", response);
@@ -924,40 +798,7 @@ public class AjaxBridgeServlet extends HttpServlet {
                 sendErrorJSONResponse("The 'service' param passed is invalid.", response);
             }
 
-        } catch (IllegalArgumentException e) {
-            handleException(e, response);
-        } catch (InvalidFileException e) {
-            handleException(e, response);
-        } catch (FileDoesNotExistException e) {
-            handleException(e, response);
-        } catch (PersistenceException e) {
-            handleException(e, response);
-        } catch (RequestParsingException e) {
-            handleException(e, response);
-        } catch (ConfigurationException e) {
-            handleException(e, response);
-        } catch (ContestNotFoundException e) {
-            handleException(e, response);
-        } catch (ParseException e) {
-            handleException(e, response);
-        } catch (JSONDecodingException e) {
-            handleException(e, response);
-        } catch (JSONEncodingException e) {
-            handleException(e, response);
-        } catch (JSONDataAccessTypeException e) {
-            handleException(e, response);
-        } catch (JSONInvalidKeyException e) {
-            handleException(e, response);
-        } catch (StudioServiceException e) {
-            handleException(e, response);
-        } catch (ProjectServiceFault e) {
-            handleException(e, response);
-        } catch (PrerequisiteServiceException e) {
-            handleException(e, response);
-        } catch (EJBAccessException e) {
-            handleException(e, response);
         } catch (IOException e) {
-            // propagate IOException
             logError(e, null);
             throw e;
         } catch (Exception e) {
@@ -1014,17 +855,14 @@ public class AjaxBridgeServlet extends HttpServlet {
      * @throws JSONDataAccessTypeException If the data associated with the key can not be retrieved as a long.
      */
     private ContestData getContestFromJSON(JSONObject jsonContest) throws ParseException, JSONDecodingException {
-        // initialize the contest using the JSON object
         ContestData contest = new ContestData();
-        // set simple types
         contest.setContestId(jsonContest.getLong("contestID"));
         contest.setProjectId(jsonContest.getLong("projectID"));
         contest.setName(jsonContest.getString("name"));
         contest.setShortSummary(jsonContest.getString("shortSummary"));
         contest.setDurationInHours(jsonContest.getInt("durationInHours"));
         contest.setOtherFileFormats(jsonContest.getString("finalFileFormatOther"));
-        // It needs to be fixed to add a contest status id in ContestData class
-        // contest.setStatusId(jsonContest.getLong("statusID"));
+        contest.setStatusId(jsonContest.getLong("statusID"));
         contest.setContestCategoryId(jsonContest.getLong("contestCategoryID"));
         contest.setContestDescriptionAndRequirements(jsonContest.getString("contestDescriptionAndRequirements"));
         contest.setRequiredOrRestrictedColors(jsonContest.getString("requiredOrRestrictedColors"));
@@ -1039,80 +877,52 @@ public class AjaxBridgeServlet extends HttpServlet {
         // no contestTypeID available in Contest.java but architect specified to add this
         // jsonContest.getLong("contestTypeID");
 
-        // set up ARRAYS
-        // Prizes[]
-        // get the JSONArray of prizes
         JSONArray jsonPrizes = jsonContest.getArray("prizes");
-        // check if it is null
         if (jsonPrizes != null) {
-            // we get the contents as Array of Objects
             Object[] prizes = jsonPrizes.getObjects();
-            // we initialize a list for the prizes which will be converted later into a Set
             List<PrizeData> listOfPrizes = new ArrayList<PrizeData>();
             if (prizes != null) {
                 for (int i = 0; i < prizes.length; i++) {
-                    // get the Prize object from the JSONObject
                     listOfPrizes.add(getPrizeFromJSON((JSONObject) prizes[i]));
                 }
             }
-            // set the Set of prizes
             contest.setPrizes(listOfPrizes);
         }
 
-        // final file format list
-        // get the JSONArray of Final File Format List
         JSONArray jsonFileFormat = jsonContest.getArray("finalFileFormatList");
         // check if it is null
         if (jsonFileFormat != null) {
-            // we get the contents as Array of Objects
             Object[] fileformat = jsonFileFormat.getObjects();
-            // we initialize a list for the file formats which will be converted later into a Set
             List<String> fileFormats = new ArrayList<String>();
             if (fileformat != null) {
                 for (int i = 0; i < fileformat.length; i++) {
-                    // get the Uploaded Document object from the JSONObject
                     fileFormats.add((String) fileformat[i]);
                 }
             }
-            // set the Set of uploaded documents
             contest.setFinalFileFormat(joinStrings(fileFormats));
         }
 
-        // document uploads
-        // get the JSONArray of Uploaded Document
         JSONArray jsonUpDoc = jsonContest.getArray("documentationUploads");
-        // check if it is null
         if (jsonUpDoc != null) {
-            // we get the contents as Array of Objects
             Object[] updocs = jsonUpDoc.getObjects();
-            // we initialize a list for the uploaded documents which will be converted later into a Set
             List<UploadedDocument> listOfUpDocs = new ArrayList<UploadedDocument>();
             if (updocs != null) {
                 for (int i = 0; i < updocs.length; i++) {
-                    // get the Uploaded Document object from the JSONObject
                     listOfUpDocs.add(getDocumentUploadsFromJSON((JSONObject) updocs[i]));
                 }
             }
-            // set the Set of uploaded documents
             contest.setDocumentationUploads(listOfUpDocs);
         }
 
-        // contest payloads
-        // get the JSONArray of Contest Payloads
         JSONArray jsonPayloads = jsonContest.getArray("contestPayloads");
-        // check if it is null
         if (jsonPayloads != null) {
-            // we get the contents as Array of Objects
             Object[] payloads = jsonPayloads.getObjects();
-            // we initialize a list for the payloads which will be converted later into a Set
             List<ContestPayload> listOfPayloads = new ArrayList<ContestPayload>();
             if (payloads != null) {
                 for (int i = 0; i < payloads.length; i++) {
-                    // get the contest payload object from the JSONObject
                     listOfPayloads.add(getContestPayloadFromJSON((JSONObject) payloads[i]));
                 }
             }
-            // set the Set of contest payload
             contest.setContestPayloads(listOfPayloads);
         }
 
@@ -1156,7 +966,6 @@ public class AjaxBridgeServlet extends HttpServlet {
         JSONObject respJSON = new JSONObject();
         respJSON.setInt("place", prize.getPlace());
         respJSON.setDouble("amount", prize.getAmount());
-
         return respJSON;
     }
 
@@ -1177,9 +986,8 @@ public class AjaxBridgeServlet extends HttpServlet {
         upDoc.setContestId(jsonUpDoc.getLong("contestID"));
         upDoc.setDescription(jsonUpDoc.getString("description"));
         upDoc.setDocumentId(jsonUpDoc.getLong("documentID"));
-        // how about the fileName?
-        jsonUpDoc.getString("fileName");
-
+        upDoc.setFileName(jsonUpDoc.getString("fileName"));
+        upDoc.setPath(jsonUpDoc.getString("path"));
         return upDoc;
     }
 
@@ -1196,13 +1004,12 @@ public class AjaxBridgeServlet extends HttpServlet {
      * @throws JSONDataAccessTypeException If the data associated with the key can not be retrieved as a long.
      */
     private JSONObject getJSONFromUploadedDocument(UploadedDocument upDoc) {
-        // initialize the JSON object using the UploadedDocument
         JSONObject respJSON = new JSONObject();
         respJSON.setLong("contestID", upDoc.getContestId());
-        respJSON.setString("description", upDoc.getDescription());
         respJSON.setLong("documentID", upDoc.getDocumentId());
-        respJSON.setString("fileName", ""); // set to blank so JS won't get error when parsed
-
+        respJSON.setString("description", getString(upDoc.getDescription()));
+        respJSON.setString("fileName", getString(upDoc.getFileName()));
+        respJSON.setString("path", getString(upDoc.getPath()));
         return respJSON;
     }
 
@@ -1219,13 +1026,12 @@ public class AjaxBridgeServlet extends HttpServlet {
      * @throws JSONDataAccessTypeException If the data associated with the key can not be retrieved as a long.
      */
     private ContestPayload getContestPayloadFromJSON(JSONObject jsonPayload) {
-        // see http://forums.topcoder.com/?module=Thread&threadID=614371&start=0&mc=1#979330
-        // no description and contest type id
         ContestPayload payload = new ContestPayload();
         payload.setName(jsonPayload.getString("name"));
         payload.setValue(jsonPayload.getString("value"));
         payload.setRequired(jsonPayload.getBoolean("required"));
-
+        payload.setDescription(jsonPayload.getString("description"));
+        payload.setContestTypeId(jsonPayload.getLong("contestTypeID"));
         return payload;
     }
 
@@ -1242,15 +1048,12 @@ public class AjaxBridgeServlet extends HttpServlet {
      * @throws JSONDataAccessTypeException If the data associated with the key can not be retrieved as a long.
      */
     private JSONObject getJSONFromContestPayload(ContestPayload payload) {
-        // initialize the JSON object using the ContestPayload
         JSONObject respJSON = new JSONObject();
         respJSON.setString("name", payload.getName());
         respJSON.setString("value", payload.getValue());
         respJSON.setBoolean("required", payload.isRequired());
-        // TODO: no fields now and give constant values
-        respJSON.setString("description", "description");
-        respJSON.setLong("contestTypeID", -1);
-
+        respJSON.setString("description", getString(payload.getDescription()));
+        respJSON.setLong("contestTypeID", payload.getContestTypeId());
         return respJSON;
     }
 
@@ -1267,13 +1070,11 @@ public class AjaxBridgeServlet extends HttpServlet {
      * @throws JSONDataAccessTypeException If the data associated with the key can not be retrieved as a long.
      */
     private JSONObject getJSONFromContestCategory(ContestCategoryData category) {
-        // initialize the JSON object using the ContestCategory
         JSONObject respJSON = new JSONObject();
         respJSON.setString("contestCategory", category.getContestCategory());
         respJSON.setString("contestDescription", category.getContestDescription());
         respJSON.setString("contestName", category.getContestName());
         respJSON.setLong("contestCategoryID", category.getContestCategoryId());
-
         return respJSON;
     }
 
@@ -1290,14 +1091,11 @@ public class AjaxBridgeServlet extends HttpServlet {
      * @throws JSONDataAccessTypeException If the data associated with the key can not be retrieved as a long.
      */
     private JSONObject getJSONFromContestStatus(ContestStatusData contestStatus) {
-        // initialize the JSON object using the ContestStatus
-        // see http://forums.topcoder.com/?module=Thread&threadID=614376&start=0 no displayIcon field
         JSONObject respJSON = new JSONObject();
         respJSON.setLong("statusID", contestStatus.getStatusId());
         respJSON.setString("name", contestStatus.getName());
-        respJSON.setString("description", contestStatus.getDescription());
-        // always give empty value for missing field
-        respJSON.setString("displayIcon", "");
+        respJSON.setString("description", getString(contestStatus.getDescription()));
+        respJSON.setString("displayIcon", getString(contestStatus.getDisplayIcon()));
 
         JSONArray allowableNextStatuses = new JSONArray();
         // iterate over the allowable statuses
@@ -1332,8 +1130,7 @@ public class AjaxBridgeServlet extends HttpServlet {
         respJSON.setString("shortSummary", contest.getShortSummary());
         respJSON.setInt("durationInHours", contest.getDurationInHours());
         respJSON.setString("finalFileFormatOther", contest.getOtherFileFormats());
-        // TODO: missing statusId, add a constant id now
-        respJSON.setLong("statusID", -1);
+        respJSON.setLong("statusID", contest.getStatusId());
         respJSON.setLong("contestCategoryID", contest.getContestCategoryId());
         respJSON.setString("contestDescriptionAndRequirements", contest.getContestDescriptionAndRequirements());
         respJSON.setString("requiredOrRestrictedColors", contest.getRequiredOrRestrictedColors());
@@ -1401,6 +1198,34 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
+     * Gets JSON string from contest type value.
+     * </p>
+     *
+     * @param type contest type data
+     * @return JSON string
+     */
+    private JSONObject getJSONFromContestType(ContestTypeData type) {
+        JSONObject json = new JSONObject();
+        json.setLong("contestTypeID", type.getContestTypeId());
+        json.setString("description", type.getDescription());
+        json.setBoolean("requirePreviewFile", type.isRequirePreviewFile());
+        // BUG in studio service
+        json.setBoolean("requirePreviewImage", type.isRequirePreviewImage());
+
+        // config : array of payloads
+        JSONArray config = new JSONArray();
+        if (type.getConfig() != null) {
+            for (ContestPayload payload : type.getConfig()) {
+                config.addJSONObject(getJSONFromContestPayload(payload));
+            }
+        }
+        json.setArray("config", config);
+
+        return json;
+    }
+
+    /**
+     * <p>
      * Convenience method in getting a Project object from a JSONObject.
      * </p>
      *
@@ -1459,7 +1284,7 @@ public class AjaxBridgeServlet extends HttpServlet {
         JSONObject respJSON = new JSONObject();
         respJSON.setLong("projectID", project.getProjectId());
         respJSON.setString("name", project.getName());
-        respJSON.setString("description", project.getDescription());
+        respJSON.setString("description", getString(project.getDescription()));
 
         return respJSON;
     }
@@ -1966,5 +1791,17 @@ public class AjaxBridgeServlet extends HttpServlet {
         if (logger.isEnabled(Level.DEBUG)) {
             logger.log(Level.DEBUG, message);
         }
+    }
+
+    /**
+     * <p>
+     * Convenience method to always return a non-null string value.
+     * </p>
+     *
+     * @param str value
+     * @return string value. It will be converted to "" if it is null.
+     */
+    private String getString(String str) {
+        return str == null ? "" : str;
     }
 }
