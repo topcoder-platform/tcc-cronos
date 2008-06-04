@@ -518,4 +518,29 @@ public interface ContestManager {
      * @throws ContestManagementException if any error occurs when getting contest types
      */
     public List<ContestType> getAllContestTypes() throws ContestManagementException;
+
+    /**
+     * <p>
+     * Get all the ContestProperty objects.
+     * </p>
+     *
+     * @return the list of all available ContestProperty
+     *
+     * @throws ContestManagementException if any error occurs when getting contest
+     *
+     * @since 1.1.2
+     */
+    public List<ContestProperty> getAllContestProperties() throws ContestManagementException;
+    
+	/**
+	 * <p>
+	 * Get the ContestProperty with the specified id. 
+	 * </p>
+	 * 
+	 * @param contestPropertyId id to look for
+	 * @return the ContestProperty with the specified id. 
+	 * @throws ContestManagementException if any error occurs when getting contest
+	 * @since 1.1.2
+	 */
+    public ContestProperty getContestProperty(long contestPropertyId) throws ContestManagementException;
 }
