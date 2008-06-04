@@ -10,27 +10,27 @@
 
 
 <datasources>
-	<local-tx-datasource>
-		<jndi-name>InformixDS</jndi-name>
-		<connection-url>
-			jdbc:informix-sqli://192.168.18.105:9088/tcs:INFORMIXSERVER=tcs
-		</connection-url>
-		<driver-class>com.informix.jdbc.IfxDriver</driver-class>
-		<user-name>informix</user-name>
-		<password>topcoder</password>
-		<exception-sorter-class-name>
-			org.jboss.resource.adapter.jdbc.vendor.InformixExceptionSorter
-		</exception-sorter-class-name>
-		<!-- sql to call when connection is created -->
-		<new-connection-sql>set lock mode to wait</new-connection-sql>
+    <local-tx-datasource>
+        <jndi-name>InformixDS</jndi-name>
+        <connection-url>
+            jdbc:informix-sqli://LENOVO-PC:1526/tcs:INFORMIXSERVER=ol_tcs
+        </connection-url>
+        <driver-class>com.informix.jdbc.IfxDriver</driver-class>
+        <user-name>informix</user-name>
+        <password>123456</password>
+        <exception-sorter-class-name>
+            org.jboss.resource.adapter.jdbc.vendor.InformixExceptionSorter
+        </exception-sorter-class-name>
+        <!-- sql to call when connection is created -->
+        <new-connection-sql>set lock mode to wait</new-connection-sql>
 
-		<!-- sql to call on an existing pooled connection when it is obtained from pool
-			<check-valid-connection-sql>some arbitrary sql</check-valid-connection-sql>
-		-->
+        <!-- sql to call on an existing pooled connection when it is obtained from pool
+            <check-valid-connection-sql>some arbitrary sql</check-valid-connection-sql>
+        -->
 
-		<!-- corresponding type-mapping in the standardjbosscmp-jdbc.xml -->
-		<metadata>
-			<type-mapping>InformixDB</type-mapping>
-		</metadata>
-	</local-tx-datasource>
+        <!-- corresponding type-mapping in the standardjbosscmp-jdbc.xml -->
+        <metadata>
+            <type-mapping>InformixDB</type-mapping>
+        </metadata>
+    </local-tx-datasource>
 </datasources>

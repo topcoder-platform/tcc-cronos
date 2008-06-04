@@ -36,6 +36,8 @@ import com.topcoder.service.studio.submission.Prize;
  * @since 1.0
  */
 public interface ContestManager {
+
+    
     /**
      * <p>
      * Creates a new contest and returns the created contest.
@@ -508,26 +510,12 @@ public interface ContestManager {
 
     /**
      * <p>
-     * Get all the ContestProperty objects.
+     * Gets all the currently available contests types.
      * </p>
      *
-     * @return the list of all available ContestProperty
+     * @return the list of all available contents type (or empty if none found)
      *
-     * @throws ContestManagementException if any error occurs when getting contest
-     *
-     * @since 1.1.2
+     * @throws ContestManagementException if any error occurs when getting contest types
      */
-    public List<ContestProperty> getAllContestProperties() throws ContestManagementException;
-    
-	/**
-	 * <p>
-	 * Get the ContestProperty with the specified id. 
-	 * </p>
-	 * 
-	 * @param contestPropertyId id to look for
-	 * @return the ContestProperty with the specified id. 
-	 * @throws ContestManagementException if any error occurs when getting contest
-	 * @since 1.1.2
-	 */
-    public ContestProperty getContestProperty(long contestPropertyId) throws ContestManagementException;
+    public List<ContestType> getAllContestTypes() throws ContestManagementException;
 }

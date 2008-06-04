@@ -37,9 +37,9 @@ import com.topcoder.service.studio.contest.ContestConfigurationException;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.ContestManagerLocal;
 import com.topcoder.service.studio.contest.ContestManagerRemote;
-import com.topcoder.service.studio.contest.ContestProperty;
 import com.topcoder.service.studio.contest.ContestStatus;
 import com.topcoder.service.studio.contest.ContestStatusTransitionException;
+import com.topcoder.service.studio.contest.ContestType;
 import com.topcoder.service.studio.contest.ContestTypeConfig;
 import com.topcoder.service.studio.contest.Document;
 import com.topcoder.service.studio.contest.DocumentContentManagementException;
@@ -57,32 +57,30 @@ import com.topcoder.util.log.LogManager;
 /**
  * <p>
  * This bean class implements the <code>ContestManagerLocal</code> and <code>ContestManagerRemote</code>
- * interfaces. It is a stateless session bean with
- *
- * @Stateless annotation. It would simply use the JPA to manage the entities in the persistence. It uses contains to
- *            maintain the transaction issues.
- *            </p>
+ * interfaces. It is a stateless session bean with @Stateless annotation. It would simply use the JPA
+ * to manage the entities in the persistence. It uses contains to maintain the transaction issues.
+ * </p>
  *
  * <p>
- * It should have annotations:<br/> 1.
- * @Stateless<br/> 2.
- * @TransactionManagement(TransactionManagementType.CONTAINER)<br/> 3.
- * @DeclareRoles("Administrator")<br/>
- *                                </p>
+ * It should have annotations:<br/>
+ * 1. @Stateless<br/>
+ * 2. @TransactionManagement(TransactionManagementType.CONTAINER)<br/>
+ * 3. @DeclareRoles("Administrator")<br/>
+ * </p>
  *
  * <p>
- * And all public methods in this bean should have the following annotations:<br/> 1.
- * @PermitAll -- indicating only "Administrator" role is allowed to perform the operation.<br/> 2.
- * @TransactionAttribute(TransactionAttributeType.REQUIRED) -- indicating the transaction is required.
- *                                                          </p>
+ * And all public methods in this bean should have the following annotations:<br/>
+ * 1. @PermitAll   -- indicating only "Administrator" role is allowed to perform the operation.<br/>
+ * 2. @TransactionAttribute(TransactionAttributeType.REQUIRED) -- indicating the transaction is required.
+ * </p>
  *
  * <p>
- * 1.1 change: 2 new methods <code>searchContests(Filter)</code> and <code>getAllContests()</code> are added.
+ * 1.1 change: 2 new methods <code>searchContests(Filter)</code>
+ * and <code>getAllContests()</code> are added.
  * </p>
  *
  * <p>
  * It should be configured before loaded:
- *
  * <pre>
  *         &lt;env-entry&gt;
  *                         &lt;env-entry-name&gt;unitName&lt;/env-entry-name&gt;
@@ -127,14 +125,13 @@ import com.topcoder.util.log.LogManager;
  *                         &lt;env-entry-value&gt;30000&lt;/env-entry-value&gt;
  *                 &lt;/env-entry&gt;
  * </pre>
- *
  * </p>
  *
  * <p>
- * <strong>Thread safety:</strong> The variables in this class are initialized once in the initialize method after
- * the bean is instantiated by EJB container. They would be never be changed afterwards. So they won't affect the
- * thread-safety of this class when its EJB methods are called. So this class can be used thread-safely in EJB
- * container.
+ * <strong>Thread safety:</strong>
+ * The variables in this class are initialized once in the initialize method after the bean is instantiated
+ * by EJB container. They would be never be changed afterwards. So they won't affect the thread-safety of
+ * this class when its EJB methods are called. So this class can be used thread-safely in EJB container.
  * </p>
  *
  * @author Standlove, TCSDEVELOPER
@@ -148,8 +145,8 @@ import com.topcoder.util.log.LogManager;
 public class ContestManagerBean implements ContestManagerRemote, ContestManagerLocal {
     /**
      * <p>
-     * This field represents the <code>SessionContext</code> injected by the EJB container automatically. It is
-     * marked with
+     * This field represents the <code>SessionContext</code> injected by the EJB container automatically. It is marked
+     * with
      *
      * @Resource annotation. It's non-null after injected when this bean is instantiated. And its reference is not
      *           changed afterwards. It is used in the initialize method to lookup JNDI resources.
@@ -178,8 +175,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * <p>
-     * This field represents the logger to log invocation information and exception. It is initialized in the
-     * initialize method, and never changed afterwards. It can be null, and if so, logging is disabled.
+     * This field represents the logger to log invocation information and exception. It is initialized in the initialize
+     * method, and never changed afterwards. It can be null, and if so, logging is disabled.
      * </p>
      */
     private Log logger;
@@ -187,8 +184,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
     /**
      * <p>
      * This field represents the <code>DocumentContentManager</code> object to manage the document content. It is
-     * initialized in the <code>initialize</code> method, and never changed afterwards. It must be non-null after
-     * set.
+     * initialized in the <code>initialize</code> method, and never changed afterwards. It must be non-null after set.
      * </p>
      */
     private DocumentContentManager documentContentManager;
@@ -218,9 +214,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *                the lookup method.
      *                </p>
      *
-     * @throws ContestConfigurationException
-     *             if any required parameter is missing, or any configured value is invalid, it is also used to wrap
-     *             the underlying exceptions.
+     * @throws ContestConfigurationException if any required parameter is missing, or any configured value is invalid,
+     *             it is also used to wrap the underlying exceptions.
      */
     @PostConstruct
     private void initialize() {
@@ -252,13 +247,13 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             if (!(obj instanceof DocumentContentManager)) {
                 throw new ContestConfigurationException(
-                        "The 'documentContestManagerClassName' should be instance of DocumentContentManager");
+                    "The 'documentContestManagerClassName' should be instance of DocumentContentManager");
             }
 
             documentContentManager = (DocumentContentManager) obj;
         } catch (ClassNotFoundException e) {
             throw new ContestConfigurationException(
-                    "The class specified by 'documentContentManagerClassName' doesn't exist.", e);
+                "The class specified by 'documentContentManagerClassName' doesn't exist.", e);
         } catch (SecurityException e) {
             throw new ContestConfigurationException("There are security problem to access the constructor.", e);
         } catch (InstantiationException e) {
@@ -269,7 +264,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw new ContestConfigurationException("Error occurs when calling the constructor.", e);
         } catch (NoSuchMethodException e) {
             throw new ContestConfigurationException(
-                    "The constructor with specified parameter Map<String, Object> doesn't exist.", e);
+                "The constructor with specified parameter Map<String, Object> doesn't exist.", e);
         }
     }
 
@@ -278,17 +273,13 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Gets a string parameter from the session context.
      * </p>
      *
-     * @param paramName
-     *            the name of the parameter
-     * @param required
-     *            if it's true, the parameter should be present
-     * @param canEmpty
-     *            if it's false, the parameter should not be empty string
+     * @param paramName the name of the parameter
+     * @param required if it's true, the parameter should be present
+     * @param canEmpty if it's false, the parameter should not be empty string
      * @return the parameter value
      *
-     * @throws ContestConfigurationException
-     *             if required is true and the parameter is missing, or if the parameter isn't a String value, or if
-     *             canEmpty is false and the parameter is a empty string.
+     * @throws ContestConfigurationException if required is true and the parameter is missing, or if the parameter isn't
+     *             a String value, or if canEmpty is false and the parameter is a empty string.
      */
     private String getStringParameter(String paramName, boolean required, boolean canEmpty) {
         Object obj = sessionContext.lookup(paramName);
@@ -319,12 +310,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Gets a Long parameter from the session context.
      * </p>
      *
-     * @param paramName
-     *            the name of the parameter
+     * @param paramName the name of the parameter
      * @return the parameter value
      *
-     * @throws ContestConfigurationException
-     *             if the parameter is missing or it isn't a Long value.
+     * @throws ContestConfigurationException if the parameter is missing or it isn't a Long value.
      */
     private Long getLongParameter(String paramName) {
         Object obj = sessionContext.lookup(paramName);
@@ -345,16 +334,12 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Creates a new contest, and return the created contest.
      * </p>
      *
-     * @param contest
-     *            the contest to create
+     * @param contest the contest to create
      * @return the created contest
      *
-     * @throws IllegalArgumentException
-     *             if the argument is null.
-     * @throws EntityAlreadyExistsException
-     *             if the entity already exists in the persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws IllegalArgumentException if the argument is null.
+     * @throws EntityAlreadyExistsException if the entity already exists in the persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -393,11 +378,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Gets contest by id, and return the retrieved contest. If the contest doesn't exist, null is returned.
      * </p>
      *
-     * @param contestId
-     *            the contest id
+     * @param contestId the contest id
      * @return the retrieved contest, or null if it doesn't exist.
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest.
+     * @throws ContestManagementException if any error occurs when getting contest.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -420,15 +403,13 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * <p>
-     * Gets projects' contests by the project id. A list of contests associated with the given tcDirectProjectId
-     * should be returned. If there is no such contests, an empty list should be returned.
+     * Gets projects' contests by the project id. A list of contests associated with the given tcDirectProjectId should
+     * be returned. If there is no such contests, an empty list should be returned.
      * </p>
      *
-     * @param tcDirectProjectId
-     *            the project id.
+     * @param tcDirectProjectId the project id.
      * @return a list of associated contests.
-     * @throws ContestManagementException
-     *             if any error occurs when getting contests.
+     * @throws ContestManagementException if any error occurs when getting contests.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -462,18 +443,14 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * <p>
-     * Updates contest data. Note that all data can be updated only if contest is not active. If contest is active it
-     * is possible to increase prize amount and duration.
+     * Updates contest data. Note that all data can be updated only if contest is not active. If contest is active it is
+     * possible to increase prize amount and duration.
      * </p>
      *
-     * @param contest
-     *            the contest to update
-     * @throws IllegalArgumentException
-     *             if the argument is null.
-     * @throws EntityNotFoundException
-     *             if the contest doesn't exist in persistence.
-     * @throws ContestManagementException
-     *             if any error occurs when updating contest.
+     * @param contest the contest to update
+     * @throws IllegalArgumentException if the argument is null.
+     * @throws EntityNotFoundException if the contest doesn't exist in persistence.
+     * @throws ContestManagementException if any error occurs when updating contest.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -493,16 +470,14 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             if (result.getStatus().getContestStatusId().equals(activeContestStatusId)) {
                 checkSet(result.getConfig(), contest.getConfig());
 
-                if (contest.getContestChannel() == null
-                        || contest.getContestChannel().getContestChannelId() == null
-                        || !contest.getContestChannel().getContestChannelId().equals(
-                                result.getContestChannel().getContestChannelId())) {
+                if ((contest.getContestChannel() == null)
+                    || (contest.getContestChannel().getContestChannelId() != result.getContestChannel()
+                        .getContestChannelId())) {
                     throw wrapContestManagementException("The contest channel doesn't match.");
                 }
 
                 if ((contest.getContestType() == null)
-                        || !contest.getContestType().getContestType()
-                                .equals(result.getContestType().getContestType())) {
+                    || !contest.getContestType().getContestType().equals(result.getContestType().getContestType())) {
                     throw wrapContestManagementException("The contest type doesn't match.");
                 }
 
@@ -532,12 +507,12 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
                 checkSet(result.getResults(), contest.getResults());
 
-                if (result.getStartDate().getTime() != contest.getStartDate().getTime()) {
+                if (!result.getStartDate().equals(contest.getStartDate())) {
                     throw wrapContestManagementException("The start date doesn't match.");
                 }
 
                 if ((contest.getStatus() == null)
-                        || !result.getStatus().getContestStatusId().equals(contest.getStatus().getContestStatusId())) {
+                    || !result.getStatus().getContestStatusId().equals(contest.getStatus().getContestStatusId())) {
                     throw wrapContestManagementException("The status doesn't match.");
                 }
 
@@ -547,8 +522,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     throw wrapContestManagementException("The tcDirectProjectId doesn't match.");
                 }
 
-                if (result.getWinnerAnnoucementDeadline().getTime() != contest.getWinnerAnnoucementDeadline()
-                        .getTime()) {
+                if (!result.getWinnerAnnoucementDeadline().equals(contest.getWinnerAnnoucementDeadline())) {
                     throw wrapContestManagementException("The WinnerAnnoucementDeadline doesn't match.");
                 }
             }
@@ -570,12 +544,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Checks whether the set has the same elements.
      * </p>
      *
-     * @param src
-     *            the source set
-     * @param dest
-     *            the destination set
-     * @throws ContestManagementException
-     *             if two sets don't match
+     * @param src the source set
+     * @param dest the destination set
+     * @throws ContestManagementException if two sets don't match
      */
     private void checkSet(Set<?> src, Set<?> dest) throws ContestManagementException {
         if ((dest == null) || (dest.size() != src.size()) || !src.containsAll(dest)) {
@@ -588,16 +559,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Updates contest status to the given value.
      * </p>
      *
-     * @param contestId
-     *            the contest id
-     * @param newStatusId
-     *            the new status id
-     * @throws EntityNotFoundException
-     *             if there is no corresponding Contest or ContestStatus in persistence.
-     * @throws ContestStatusTransitionException
-     *             if it's not allowed to update the contest to the given status.
-     * @throws ContestManagementException
-     *             if any error occurs when updating contest's status.
+     * @param contestId the contest id
+     * @param newStatusId the new status id
+     * @throws EntityNotFoundException if there is no corresponding Contest or ContestStatus in persistence.
+     * @throws ContestStatusTransitionException if it's not allowed to update the contest to the given status.
+     * @throws ContestManagementException if any error occurs when updating contest's status.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -632,7 +598,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             if (!status.getStatuses().contains(contestStatus)) {
                 ContestStatusTransitionException e = new ContestStatusTransitionException(
-                        "The contest's status can't be change to dest status.");
+                    "The contest's status can't be change to dest status.");
                 logException(e, "The contest's status can't be change to dest status.");
                 sessionContext.setRollbackOnly();
 
@@ -657,13 +623,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Gets client for contest, the client id is returned.
      * </p>
      *
-     * @param contestId
-     *            the contest id
+     * @param contestId the contest id
      * @return the client id
-     * @throws EntityNotFoundException
-     *             if there is no corresponding contest (or project) in persistence.
-     * @throws ContestManagementException
-     *             if any error occurs when retrieving the client id.
+     * @throws EntityNotFoundException if there is no corresponding contest (or project) in persistence.
+     * @throws ContestManagementException if any error occurs when retrieving the client id.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -684,7 +647,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             if (project == null) {
                 throw wrapEntityNotFoundException("The project with id '" + contest.getTcDirectProjectId()
-                        + "' doesn't exist.");
+                    + "' doesn't exist.");
             }
 
             return project.getUserId();
@@ -702,13 +665,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Get client for project, and return the retrieved client id.
      * </p>
      *
-     * @param projectId
-     *            the project id
+     * @param projectId the project id
      * @return the client id
-     * @throws EntityNotFoundException
-     *             if there is no corresponding project in persistence.
-     * @throws ContestManagementException
-     *             if any error occurs when retrieving the client id.
+     * @throws EntityNotFoundException if there is no corresponding project in persistence.
+     * @throws ContestManagementException if any error occurs when retrieving the client id.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -740,16 +700,12 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Adds contest status, and return the added contest status.
      * </p>
      *
-     * @param contestStatus
-     *            the contest status to add
+     * @param contestStatus the contest status to add
      * @return the added contest status
      *
-     * @throws IllegalArgumentException
-     *             if the argument is null.
-     * @throws EntityAlreadyExistsException
-     *             if the entity already exists in the persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws IllegalArgumentException if the argument is null.
+     * @throws EntityAlreadyExistsException if the entity already exists in the persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -761,9 +717,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             logOneParameter(contestStatus.getContestStatusId());
 
             if ((contestStatus.getContestStatusId() != null)
-                    && (getContestStatus(contestStatus.getContestStatusId()) != null)) {
-                EntityAlreadyExistsException e = new EntityAlreadyExistsException(
-                        "The contest status already exists.");
+                && (getContestStatus(contestStatus.getContestStatusId()) != null)) {
+                EntityAlreadyExistsException e = new EntityAlreadyExistsException("The contest status already exists.");
 
                 logException(e, "The contest status already exists.");
                 sessionContext.setRollbackOnly();
@@ -791,14 +746,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Updates the contest status.
      * </p>
      *
-     * @param contestStatus
-     *            the contest status to update
-     * @throws IllegalArgumentException
-     *             if the argument is null.
-     * @throws EntityNotFoundException
-     *             if the contestStatus doesn't exist in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @param contestStatus the contest status to update
+     * @throws IllegalArgumentException if the argument is null.
+     * @throws EntityNotFoundException if the contestStatus doesn't exist in persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -812,9 +763,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             EntityManager em = getEntityManager();
 
             if ((contestStatus.getContestStatusId() == null)
-                    || (em.find(ContestStatus.class, contestStatus.getContestStatusId()) == null)) {
+                || (em.find(ContestStatus.class, contestStatus.getContestStatusId()) == null)) {
                 throw wrapEntityNotFoundException("The contest status with id '" + contestStatus.getContestStatusId()
-                        + "' doesn't exist.");
+                    + "' doesn't exist.");
             }
 
             em.merge(contestStatus);
@@ -835,11 +786,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * doesn't exist.
      * </p>
      *
-     * @param contestStatusId
-     *            the contest status id
+     * @param contestStatusId the contest status id
      * @return true if the contest status exists and removed successfully, return false if it doesn't exist.
-     * @throws ContestManagementException
-     *             if any error occurs
+     * @throws ContestManagementException if any error occurs
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -875,11 +824,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Gets contest status, and return the retrieved contest status. Return null if it doesn't exist.
      * </p>
      *
-     * @param contestStatusId
-     *            the contest status id
+     * @param contestStatusId the contest status id
      * @return the retrieved contest status, or null if it doesn't exist
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest status
+     * @throws ContestManagementException if any error occurs when getting contest status
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -907,15 +854,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Adds new document, and return the added document.
      * </p>
      *
-     * @param document
-     *            the document to add
+     * @param document the document to add
      * @return the added document
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityAlreadyExistsException
-     *             if the document already exists in the persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityAlreadyExistsException if the document already exists in the persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -969,14 +912,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Updates the specified document.
      * </p>
      *
-     * @param document
-     *            the document to update
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityNotFoundException
-     *             if the document doesn't exist in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @param document the document to update
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityNotFoundException if the document doesn't exist in persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -991,7 +930,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             if ((document.getDocumentId() == null) || (em.find(Document.class, document.getDocumentId()) == null)) {
                 throw wrapEntityNotFoundException("The document with id '" + document.getDocumentId()
-                        + "' doesn't exist.");
+                    + "' doesn't exist.");
             }
 
             em.merge(document);
@@ -1011,11 +950,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Gets document by id, and return the retrieved document. Return null if the document doesn't exist.
      * </p>
      *
-     * @param documentId
-     *            the document id
+     * @param documentId the document id
      * @return the retrieved document, or null if it doesn't exist.
-     * @throws ContestManagementException
-     *             if any error occurs when getting document
+     * @throws ContestManagementException if any error occurs when getting document
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1044,11 +981,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * doesn't exist.
      * </p>
      *
-     * @param documentId
-     *            the document id
+     * @param documentId the document id
      * @return true if the document exists and removed successfully, return false if it doesn't exist.
-     * @throws ContestManagementException
-     *             if any error occurs.
+     * @throws ContestManagementException if any error occurs.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1084,15 +1019,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Adds document to contest. Nothing happens if the document already exists in contest.
      * </p>
      *
-     * @param documentId
-     *            the document id
-     * @param contestId
-     *            the contest id
+     * @param documentId the document id
+     * @param contestId the contest id
      *
-     * @throws EntityNotFoundException
-     *             if there is no corresponding document or contest in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws EntityNotFoundException if there is no corresponding document or contest in persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1132,20 +1063,16 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * <p>
-     * Removes document from contest. Return true if the document exists in the contest and removed successfully,
-     * return false if it doesn't exist in contest.
+     * Removes document from contest. Return true if the document exists in the contest and removed successfully, return
+     * false if it doesn't exist in contest.
      * </p>
      *
-     * @param documentId
-     *            the document id
-     * @param contestId
-     *            the contest id
-     * @return true if the document exists in the contest and removed successfully, return false if it doesn't exist
-     *         in contest.
-     * @throws EntityNotFoundException
-     *             if there is no corresponding document or contest in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @param documentId the document id
+     * @param contestId the contest id
+     * @return true if the document exists in the contest and removed successfully, return false if it doesn't exist in
+     *         contest.
+     * @throws EntityNotFoundException if there is no corresponding document or contest in persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1194,15 +1121,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Adds contest channel, and return the added contest channel.
      * </p>
      *
-     * @param contestChannel
-     *            the contest channel to add
+     * @param contestChannel the contest channel to add
      * @return the added contest channel
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityAlreadyExistsException
-     *             if the entity already exists in the persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityAlreadyExistsException if the entity already exists in the persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1216,11 +1139,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             EntityManager em = getEntityManager();
 
             if ((contestChannel.getContestChannelId() != null)
-                    && (em.find(ContestChannel.class, contestChannel.getContestChannelId()) != null)) {
+                && (em.find(ContestChannel.class, contestChannel.getContestChannelId()) != null)) {
                 EntityAlreadyExistsException e = new EntityAlreadyExistsException("The contest channel with id '"
-                        + contestChannel.getContestChannelId() + "' already exists.");
+                    + contestChannel.getContestChannelId() + "' already exists.");
                 logException(e, "The contest channel with id '" + contestChannel.getContestChannelId()
-                        + "' already exists.");
+                    + "' already exists.");
                 sessionContext.setRollbackOnly();
 
                 throw e;
@@ -1245,14 +1168,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Updates the contest channel.
      * </p>
      *
-     * @param contestChannel
-     *            the contest category to update.
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityNotFoundException
-     *             if the contestChannel doesn't exist in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @param contestChannel the contest category to update.
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityNotFoundException if the contestChannel doesn't exist in persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1266,9 +1185,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             EntityManager em = getEntityManager();
 
             if ((contestChannel.getContestChannelId() == null)
-                    || (em.find(ContestChannel.class, contestChannel.getContestChannelId()) == null)) {
+                || (em.find(ContestChannel.class, contestChannel.getContestChannelId()) == null)) {
                 throw wrapEntityNotFoundException("The contest channel with id '"
-                        + contestChannel.getContestChannelId() + "' doesn't exist.");
+                    + contestChannel.getContestChannelId() + "' doesn't exist.");
             }
 
             em.merge(contestChannel);
@@ -1285,15 +1204,13 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * <p>
-     * Removes contest category, return true if the contest category exists and removed successfully, return false if
-     * it doesn't exist.
+     * Removes contest category, return true if the contest category exists and removed successfully, return false if it
+     * doesn't exist.
      * </p>
      *
-     * @param contestChannelId
-     *            the contest channel id
+     * @param contestChannelId the contest channel id
      * @return true if the contest category exists and removed successfully, return false if it doesn't exist.
-     * @throws ContestManagementException
-     *             if fails to remove the contest category when it exists
+     * @throws ContestManagementException if fails to remove the contest category when it exists
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1329,11 +1246,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Gets contest channel, and return the retrieved contest channel. Return null if it doesn't exist.
      * </p>
      *
-     * @param contestChannelId
-     *            the contest channel id
+     * @param contestChannelId the contest channel id
      * @return the retrieved contest channel, or null if it doesn't exist
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest channel
+     * @throws ContestManagementException if any error occurs when getting contest channel
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1361,15 +1276,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Adds contest configuration parameter, and return the added contest configuration parameter.
      * </p>
      *
-     * @param contestConfig
-     *            the contest configuration parameter to add.
+     * @param contestConfig the contest configuration parameter to add.
      * @return the added contest configuration parameter.
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityAlreadyExistsException
-     *             if the entity already exists in the persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityAlreadyExistsException if the entity already exists in the persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1383,9 +1294,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             if (em.find(ContestConfig.class, contestConfig.getContestConfigId()) != null) {
                 EntityAlreadyExistsException e = new EntityAlreadyExistsException("The contest config with id '"
-                        + contestConfig.getContestConfigId() + "' already exists.");
+                    + contestConfig.getContestConfigId() + "' already exists.");
                 logException(e, "The contest config with id '" + contestConfig.getContestConfigId()
-                        + "' already exists.");
+                    + "' already exists.");
                 sessionContext.setRollbackOnly();
 
                 throw e;
@@ -1410,14 +1321,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Updates contest configuration parameter.
      * </p>
      *
-     * @param contestConfig
-     *            the contest configuration parameter to update.
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityNotFoundException
-     *             if the contest configuration parameter doesn't exist in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @param contestConfig the contest configuration parameter to update.
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityNotFoundException if the contest configuration parameter doesn't exist in persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1430,7 +1337,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             EntityManager em = getEntityManager();
             if (em.find(ContestConfig.class, contestConfig.getContestConfigId()) == null) {
                 throw wrapEntityNotFoundException("The contest config with id '" + contestConfig.getContestConfigId()
-                        + "' doesn't exist");
+                    + "' doesn't exist");
             }
 
             em.merge(contestConfig);
@@ -1447,15 +1354,13 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * <p>
-     * Gets contest configuration parameter by id, and return the retrieved contest configuration parameter. Return
-     * null if it doesn't exist.
+     * Gets contest configuration parameter by id, and return the retrieved contest configuration parameter. Return null
+     * if it doesn't exist.
      * </p>
      *
-     * @param contestConfigId
-     *            the contest configuration parameter id.
+     * @param contestConfigId the contest configuration parameter id.
      * @return the retrieved contest configuration parameter, or null if it doesn't exist
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest configuration parameter
+     * @throws ContestManagementException if any error occurs when getting contest configuration parameter
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1485,16 +1390,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Save document content in file system. This methods should use DocumentContentManager interface.
      * </p>
      *
-     * @param documentId
-     *            the document id
-     * @param documentContent
-     *            the file data of the document to save
-     * @throws IllegalArgumentException
-     *             if fileData argument is null or empty array.
-     * @throws EntityNotFoundException
-     *             if the document doesn't exist in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @param documentId the document id
+     * @param documentContent the file data of the document to save
+     * @throws IllegalArgumentException if fileData argument is null or empty array.
+     * @throws EntityNotFoundException if the document doesn't exist in persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1536,18 +1436,14 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
     /**
      * <p>
      * Gets document content to return. If the document is not saved, null is returned. It will use
-     * DocumentContentManager to get document content. It can also return empty array if the document content is
-     * empty.
+     * DocumentContentManager to get document content. It can also return empty array if the document content is empty.
      * </p>
      *
      *
-     * @param documentId
-     *            the document id
+     * @param documentId the document id
      * @return the document content in byte array. If the document is not saved, null is returned.
-     * @throws EntityNotFoundException
-     *             if the document doesn't exist in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws EntityNotFoundException if the document doesn't exist in persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1585,8 +1481,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Forms the path of the specified document's content.
      * </p>
      *
-     * @param document
-     *            the document to get path
+     * @param document the document to get path
      * @return the path of the document's content
      */
     private String formPath(Document document) {
@@ -1607,13 +1502,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * DocumentContentManager to check document content's existence.
      * </p>
      *
-     * @param documentId
-     *            the document id
+     * @param documentId the document id
      * @return true if the document content exists, return false otherwise.
-     * @throws EntityNotFoundException
-     *             if the document doesn't exist in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws EntityNotFoundException if the document doesn't exist in persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1639,10 +1531,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "There are errors while persisting the entity.");
         } catch (DocumentContentManagementException e) {
             throw wrapContestManagementException(e,
-                    "There are errors while getting the exist flag of the document content.");
+                "There are errors while getting the exist flag of the document content.");
         } catch (IOException e) {
             throw wrapContestManagementException(e,
-                    "There are io errors while getting the exist flag of the document content.");
+                "There are io errors while getting the exist flag of the document content.");
         } finally {
             logExit("existDocumentContent()");
         }
@@ -1654,8 +1546,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * </p>
      *
      * @return a list of contest statuses
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest statuses
+     * @throws ContestManagementException if any error occurs when getting contest statuses
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1691,8 +1582,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * </p>
      *
      * @return a list of contest channels
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest categories.
+     * @throws ContestManagementException if any error occurs when getting contest categories.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1728,8 +1618,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * </p>
      *
      * @return a list of studio file types
-     * @throws ContestManagementException
-     *             if any error occurs when getting studio file types.
+     * @throws ContestManagementException if any error occurs when getting studio file types.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1764,20 +1653,16 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Adds contest type configuration parameter, and return the added contest type configuration parameter.
      * </p>
      *
-     * @param contestTypeConfig
-     *            the contest type configuration parameter to add
+     * @param contestTypeConfig the contest type configuration parameter to add
      * @return the added contest type configuration parameter.
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityAlreadyExistsException
-     *             if the entity already exists in the persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityAlreadyExistsException if the entity already exists in the persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public ContestTypeConfig addContestTypeConfig(ContestTypeConfig contestTypeConfig)
-            throws ContestManagementException {
+        throws ContestManagementException {
         try {
             logEnter("addContestTypeConfig()");
             Helper.checkNull(contestTypeConfig, "contestTypeConfig");
@@ -1787,9 +1672,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             if (em.find(ContestTypeConfig.class, new Long(contestTypeConfig.getContestTypeConfigId())) != null) {
                 EntityAlreadyExistsException e = new EntityAlreadyExistsException("The contest type config with id '"
-                        + contestTypeConfig.getContestTypeConfigId() + "' already exists.");
+                    + contestTypeConfig.getContestTypeConfigId() + "' already exists.");
                 logException(e, "The contest type config with id '" + contestTypeConfig.getContestTypeConfigId()
-                        + "' already exists.");
+                    + "' already exists.");
                 sessionContext.setRollbackOnly();
 
                 throw e;
@@ -1814,14 +1699,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Updates contest type configuration parameter.
      * </p>
      *
-     * @param contestTypeConfig
-     *            the contest type configuration parameter to update.
-     * @throws IllegalArgumentException
-     *             if the arg is null.
-     * @throws EntityNotFoundException
-     *             if the contest type configuration parameter doesn't exist in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs
+     * @param contestTypeConfig the contest type configuration parameter to update.
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityNotFoundException if the contest type configuration parameter doesn't exist in persistence.
+     * @throws ContestManagementException if any other error occurs
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1835,7 +1716,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             if (em.find(ContestTypeConfig.class, new Long(contestTypeConfig.getContestTypeConfigId())) == null) {
                 throw wrapEntityNotFoundException("The contest type config with id '"
-                        + contestTypeConfig.getContestTypeConfigId() + "' doesn't exist");
+                    + contestTypeConfig.getContestTypeConfigId() + "' doesn't exist");
             }
 
             em.merge(contestTypeConfig);
@@ -1856,11 +1737,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Return null if it doesn't exist.
      * </p>
      *
-     * @param contestTypeConfigId
-     *            the contest type configuration parameter id.
+     * @param contestTypeConfigId the contest type configuration parameter id.
      * @return the retrieved contest type configuration parameter, or null if it doesn't exist.
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest type configuration parameter
+     * @throws ContestManagementException if any error occurs when getting contest type configuration parameter
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1888,14 +1767,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Adds prize to the given contest. Nothing happens if the prize already exists in contest.
      * </p>
      *
-     * @param contestId
-     *            the contest id
-     * @param prizeId
-     *            the prize id
-     * @throws EntityNotFoundException
-     *             if there is no corresponding prize or contest in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @param contestId the contest id
+     * @param prizeId the prize id
+     * @throws EntityNotFoundException if there is no corresponding prize or contest in persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1933,20 +1808,16 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * <p>
-     * Removes prize from contest. Return true if the prize exists in the contest and removed successfully, return
-     * false if it doesn't exist in contest.
+     * Removes prize from contest. Return true if the prize exists in the contest and removed successfully, return false
+     * if it doesn't exist in contest.
      * </p>
      *
-     * @param prizeId
-     *            the prize id
-     * @param contestId
-     *            the contest id
+     * @param prizeId the prize id
+     * @param contestId the contest id
      * @return true if the prize exists in the contest and removed successfully, return false if it doesn't exist in
      *         contest.
-     * @throws EntityNotFoundException
-     *             if there is no corresponding prize or contest in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws EntityNotFoundException if there is no corresponding prize or contest in persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -1993,13 +1864,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Retrieves all prizes in the given contest to return. An empty list is returned if there is no such prizes.
      * </p>
      *
-     * @param contestId
-     *            the contest id
+     * @param contestId the contest id
      * @return a list of prizes
-     * @throws EntityNotFoundException
-     *             if there is no corresponding contest in persistence.
-     * @throws ContestManagementException
-     *             if any other error occurs.
+     * @throws EntityNotFoundException if there is no corresponding contest in persistence.
+     * @throws ContestManagementException if any other error occurs.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -2034,79 +1902,12 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * <p>
-     * Get all the ContestProperty objects.
-     * </p>
-     *
-     * @return the list of all available ContestProperty
-     *
-     * @throws ContestManagementException if any error occurs when getting contest
-     *
-     * @since 1.1.2
-     */
-	@PermitAll
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public List<ContestProperty> getAllContestProperties() throws ContestManagementException {
-        try {
-            logEnter("getAllContestProperties()");
-
-            EntityManager em = getEntityManager();
-
-            Query query = em.createQuery("select cp from ContestProperty cp");
-
-            List list = query.getResultList();
-
-            List<ContestProperty> result = new ArrayList<ContestProperty>();
-            result.addAll(list);
-            return result;
-
-        } catch (IllegalStateException e) {
-            throw wrapContestManagementException(e, "The EntityManager is closed.");
-        } catch (PersistenceException e) {
-            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
-        } finally {
-            logExit("getAllContestProperties()");
-        }
-    }
-
-	/**
-	 * <p>
-	 * Get the ContestProperty with the specified id. 
-	 * </p>
-	 * 
-	 * @param contestPropertyId id to look for
-	 * @return the ContestProperty with the specified id. 
-	 * @throws ContestManagementException if any error occurs when getting contest
-	 * @since 1.1.2
-	 */
-    @PermitAll
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public ContestProperty getContestProperty(long contestPropertyId) throws ContestManagementException {
-        try {
-            logEnter("getContestProperty()");            
-            logOneParameter(contestPropertyId);
-
-            EntityManager em = getEntityManager();
-
-            return em.find(ContestProperty.class, contestPropertyId);
-
-        } catch (IllegalStateException e) {
-            throw wrapContestManagementException(e, "The EntityManager is closed.");
-        } catch (PersistenceException e) {
-            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
-        } finally {
-            logExit("getContestProperty()");
-        }
-    }
-
-    /**
-     * <p>
      * This is going to fetch all the currently available contests.
      * </p>
      *
      * @return the list of all available contents (or empty if none found)
      *
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest
+     * @throws ContestManagementException if any error occurs when getting contest
      *
      * @since 1.1
      */
@@ -2134,20 +1935,18 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         }
     }
 
+
     /**
      * <p>
      * This is going to get all the matching contest entities that fulfill the input criteria.
      * </p>
      *
-     * @param filter
-     *            a search filter used as criteria for contests.
+     * @param filter a search filter used as criteria for contests.
      * @return a list (possibly empty) of all the matched contest entities.
      *
-     * @throws IllegalArgumentException
-     *             if the input filter is null or filter is not supported for searching
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest categories
-     *
+     * @throws IllegalArgumentException if the input filter is null or filter is not supported for searching
+     * @throws ContestManagementException if any error occurs when getting contest categories
+     * 
      * @since 1.1
      */
     @PermitAll
@@ -2185,12 +1984,46 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * <p>
+     * Gets all the currently available contests types.
+     * </p>
+     *
+     * @return the list of all available contents types (or empty if none found)
+     *
+     * @throws ContestManagementException if any error occurs when getting contest types
+     *
+     * @since 1.1
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<ContestType> getAllContestTypes() throws ContestManagementException {
+        try {
+            logEnter("getAllContestTypes()");
+
+            EntityManager em = getEntityManager();
+
+            Query query = em.createQuery("select c from ContestType c");
+
+            List list = query.getResultList();
+
+            List<ContestType> result = new ArrayList<ContestType>();
+            result.addAll(list);
+            return result;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("getAllContestTypes()");
+        }
+    }
+
+    /**
+     * <p>
      * Returns the <code>EntityManager</code> looked up from the session context.
      * </p>
      *
      * @return the EntityManager looked up from the session context
-     * @throws ContestManagementException
-     *             if fail to get the EntityManager from the sessionContext.
+     * @throws ContestManagementException if fail to get the EntityManager from the sessionContext.
      */
     private EntityManager getEntityManager() throws ContestManagementException {
         try {
@@ -2203,7 +2036,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             return (EntityManager) obj;
         } catch (ClassCastException e) {
             throw wrapContestManagementException(e, "The jndi name for '" + unitName
-                    + "' should be EntityManager instance.");
+                + "' should be EntityManager instance.");
         }
     }
 
@@ -2212,8 +2045,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Log the entrance of a method.
      * </p>
      *
-     * @param methodName
-     *            the method name
+     * @param methodName the method name
      */
     private void logEnter(String methodName) {
         if (logger != null) {
@@ -2226,8 +2058,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Log the exit of a method.
      * </p>
      *
-     * @param methodName
-     *            the method name
+     * @param methodName the method name
      */
     private void logExit(String methodName) {
         if (logger != null) {
@@ -2240,8 +2071,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Log the parameter.
      * </p>
      *
-     * @param param
-     *            the parameter value
+     * @param param the parameter value
      */
     private void logOneParameter(Object param) {
         if (logger != null) {
@@ -2254,10 +2084,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Log the parameters.
      * </p>
      *
-     * @param param1
-     *            the first parameter values
-     * @param param2
-     *            the second parameter value
+     * @param param1 the first parameter values
+     * @param param2 the second parameter value
      */
     private void logTwoParameters(Object param1, Object param2) {
         if (logger != null) {
@@ -2270,10 +2098,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * Log the exception.
      * </p>
      *
-     * @param e
-     *            the exception to log
-     * @param message
-     *            the string message
+     * @param e the exception to log
+     * @param message the string message
      */
     private void logException(Throwable e, String message) {
         if (logger != null) {
@@ -2288,8 +2114,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * sessionContext to correct state.
      * </p>
      *
-     * @param message
-     *            the error message
+     * @param message the error message
      * @return the created EntityNotFoundException
      */
     private EntityNotFoundException wrapEntityNotFoundException(String message) {
@@ -2306,8 +2131,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * the sessionContext to rollback only.
      * </p>
      *
-     * @param message
-     *            the error message
+     * @param message the error message
      * @return the created exception
      */
     private ContestManagementException wrapContestManagementException(String message) {
@@ -2320,14 +2144,12 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * <p>
-     * Creates a <code>ContestManagementException</code> with inner exception and message. It will log the
-     * exception, and set the sessionContext to rollback only.
+     * Creates a <code>ContestManagementException</code> with inner exception and message. It will log the exception,
+     * and set the sessionContext to rollback only.
      * </p>
      *
-     * @param e
-     *            the inner exception
-     * @param message
-     *            the error message
+     * @param e the inner exception
+     * @param message the error message
      * @return the created exception
      */
     private ContestManagementException wrapContestManagementException(Exception e, String message) {
