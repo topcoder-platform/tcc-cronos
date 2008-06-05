@@ -227,7 +227,14 @@ public class StudioServiceBean implements StudioService {
     private String submissionContentUnpaidParameterValue;
 
     /**
-     * Represents the id for the Contest property "Contest Overview Text"
+     * Represents the id for the Contest property "Short Summary" 
+     * @since 1.0.3
+     */
+    @Resource(name="contestPropertyShortSummaryId")
+    private long contestPropertyShortSummaryId;
+
+    /**
+     * Represents the id for the Contest property "Contest Overview Text" 
      * @since 1.0.3
      */
     @Resource(name="contestPropertyContestOverviewTextId")
@@ -261,6 +268,21 @@ public class StudioServiceBean implements StudioService {
     @Resource(name="contestPropertyOtherRequirementsId")
     private long contestPropertyOtherRequirementsId;
 
+    /**
+     * Represents the id for the Contest property "Final File Format" 
+     * @since 1.0.3
+     */
+    @Resource(name="contestPropertyFinalFileFormatId")
+    private long contestPropertyFinalFileFormatId;
+
+    /**
+     * Represents the id for the Contest property "Other File Formats" 
+     * @since 1.0.3
+     */
+    @Resource(name="contestPropertyOtherFileFormatsId")
+    private long contestPropertyOtherFileFormatsId;
+
+    
     /**
      * <p>
      * This is the default constructor. It does nothing.
@@ -979,20 +1001,29 @@ public class StudioServiceBean implements StudioService {
                     * data.getDurationInHours()));
         }
 
-        addContestConfig(result, contestPropertyContestOverviewTextId,
-                data.getContestDescriptionAndRequirements());
+        addContestConfig(result, contestPropertyShortSummaryId, 
+        		data.getShortSummary());
+
+        addContestConfig(result, contestPropertyContestOverviewTextId, 
+        		data.getContestDescriptionAndRequirements());
 
         addContestConfig(result, contestPropertyColorRequirementsId,
                 data.getRequiredOrRestrictedColors());
 
-        addContestConfig(result, contestPropertyFontRequirementsId,
+        addContestConfig(result, contestPropertyFontRequirementsId, 
                 data.getRequiredOrRestrictedFonts());
 
-        addContestConfig(result, contestPropertySizeRequirementsId,
-                data.getSizeRequirements());
+        addContestConfig(result, contestPropertySizeRequirementsId, 
+        		data.getSizeRequirements());
 
-        addContestConfig(result, contestPropertyOtherRequirementsId,
-                data.getOtherRequirementsOrRestrictions());
+        addContestConfig(result, contestPropertyOtherRequirementsId, 
+        		data.getOtherRequirementsOrRestrictions());
+
+        addContestConfig(result, contestPropertyFinalFileFormatId, 
+        		data.getFinalFileFormat());
+
+        addContestConfig(result, contestPropertyOtherFileFormatsId, 
+        		data.getOtherFileFormats());
 
         result.setContestId(data.getContestId());
         result.setName(data.getName());
@@ -1040,6 +1071,20 @@ public class StudioServiceBean implements StudioService {
                         .getWinnerAnnoucementDeadline()));
         contestData.setStatusId(contest.getStatus().getContestStatusId());
 
+         // Since 1.0.3, Bug Fix 27074484-14
+        for (ContestConfig cc : contest.getConfig()) {
+
+        	if (cc.getId().getProperty().getPropertyId() == contestPropertyShortSummaryId) contestData.setShortSummary(cc.getValue());
+        	else if (cc.getId().getProperty().getPropertyId() == contestPropertyFinalFileFormatId) contestData.setFinalFileFormat(cc.getValue());
+        	else if (cc.getId().getProperty().getPropertyId() == contestPropertyOtherFileFormatsId) contestData.setOtherFileFormats(cc.getValue());
+        	else if (cc.getId().getProperty().getPropertyId() == contestPropertyColorRequirementsId) contestData.setRequiredOrRestrictedColors(cc.getValue());
+        	else if (cc.getId().getProperty().getPropertyId() == contestPropertyFontRequirementsId) contestData.setRequiredOrRestrictedFonts(cc.getValue());
+        	else if (cc.getId().getProperty().getPropertyId() == contestPropertyContestOverviewTextId) contestData.setContestDescriptionAndRequirements(cc.getValue());
+        	else if (cc.getId().getProperty().getPropertyId() == contestPropertySizeRequirementsId) contestData.setSizeRequirements(cc.getValue());
+        	else if (cc.getId().getProperty().getPropertyId() == contestPropertyOtherRequirementsId) contestData.setOtherRequirementsOrRestrictions(cc.getValue());
+        }
+        
+        
         List<UploadedDocument> documents = new ArrayList<UploadedDocument>();
         for (Document doc : contest.getDocuments()) {
             documents.add(convertDocument(doc));
@@ -1163,10 +1208,13 @@ public class StudioServiceBean implements StudioService {
         }
         ContestProperty property = contestManager.getContestProperty(contestPropertyId);
 
+        ContestConfig.Identifier id = new ContestConfig.Identifier();
+        id.setContest(contest);
+        id.setProperty(property);
+        
         ContestConfig config = new ContestConfig();
-        config.setContest(contest);
+        config.setId(id);
         config.setValue(value);
-        config.setProperty(property);
 
         contest.getConfig().add(config);
     }
