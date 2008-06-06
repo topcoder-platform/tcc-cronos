@@ -543,4 +543,59 @@ public interface ContestManager {
 	 * @since 1.1.2
 	 */
     public ContestProperty getContestProperty(long contestPropertyId) throws ContestManagementException;
+    
+    
+    
+    /**
+     * <p>
+     * Get all the MimeType objects.
+     * </p>
+     *
+     * @return the list of all available MimeType
+     *
+     * @throws ContestManagementException if any error occurs when getting MimeType
+     *
+     * @since 1.1.2
+     */
+    public List<MimeType> getAllMimeTypes() throws ContestManagementException;
+
+    /**
+     * <p>
+     * Get the MimeType with the specified id.
+     * </p>
+     *
+     * @param mimeTypeId id to look for
+     * @return the MimeType with the specified id.
+     * @throws ContestManagementException if any error occurs when getting contest
+     * @since 1.1.2
+     */
+    public MimeType getMimeType(long mimeTypeId) throws ContestManagementException;
+
+	
+    /**
+     * <p>
+     * Get all the DocumentType objects.
+     * </p>
+     *
+     * @return the list of all available DocumentType
+     *
+     * @throws ContestManagementException if any error occurs when getting contest
+     *
+     * @since 1.1.2
+     */
+    public List<DocumentType> getAllDocumentTypes() throws ContestManagementException;
+    
+
+    /**
+     * <p>
+     * Get the DocumentType with the specified id.
+     * </p>
+     *
+     * @param documentTypeId id to look for
+     * @return the DocumentType with the specified id.
+     * @throws ContestManagementException if any error occurs when getting contest
+     * @since 1.1.2
+     */
+    public DocumentType getDocumentType(long documentTypeId) throws ContestManagementException;
+
 }

@@ -45,9 +45,11 @@ import com.topcoder.service.studio.contest.ContestTypeConfig;
 import com.topcoder.service.studio.contest.Document;
 import com.topcoder.service.studio.contest.DocumentContentManagementException;
 import com.topcoder.service.studio.contest.DocumentContentManager;
+import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.EntityAlreadyExistsException;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.contest.FilePath;
+import com.topcoder.service.studio.contest.MimeType;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.utils.FilterToSqlConverter;
 import com.topcoder.service.studio.submission.Prize;
@@ -1289,14 +1291,15 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         try {
             logEnter("addConfig()");
             Helper.checkNull(contestConfig, "contestConfig");
-            logOneParameter(contestConfig.getContestConfigId());
+            String idStr = "(" + contestConfig.getId().getContest() + ", " + contestConfig.getId().getProperty() + ")";
+            logOneParameter(idStr);
 
             EntityManager em = getEntityManager();
 
-            if (em.find(ContestConfig.class, contestConfig.getContestConfigId()) != null) {
+            if (em.find(ContestConfig.class, contestConfig.getId()) != null) {
                 EntityAlreadyExistsException e = new EntityAlreadyExistsException("The contest config with id '"
-                    + contestConfig.getContestConfigId() + "' already exists.");
-                logException(e, "The contest config with id '" + contestConfig.getContestConfigId()
+                    + idStr + "' already exists.");
+                logException(e, "The contest config with id '" + idStr
                     + "' already exists.");
                 sessionContext.setRollbackOnly();
 
@@ -1333,11 +1336,12 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         try {
             logEnter("updateConfig()");
             Helper.checkNull(contestConfig, "contestConfig");
-            logOneParameter(contestConfig.getContestConfigId());
+            String idStr = "(" + contestConfig.getId().getContest() + ", " + contestConfig.getId().getProperty() + ")";
+            logOneParameter(idStr);
 
             EntityManager em = getEntityManager();
-            if (em.find(ContestConfig.class, contestConfig.getContestConfigId()) == null) {
-                throw wrapEntityNotFoundException("The contest config with id '" + contestConfig.getContestConfigId()
+            if (em.find(ContestConfig.class, contestConfig.getId()) == null) {
+                throw wrapEntityNotFoundException("The contest config with id '" + idStr
                     + "' doesn't exist");
             }
 
@@ -1918,24 +1922,13 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         try {
             logEnter("getAllContestProperties()");
 
-            EntityManager em = getEntityManager();
+            return getAll(ContestProperty.class);
 
-            Query query = em.createQuery("select cp from ContestProperty cp");
-
-            List list = query.getResultList();
-
-            List<ContestProperty> result = new ArrayList<ContestProperty>();
-            result.addAll(list);
-            return result;
-
-        } catch (IllegalStateException e) {
-            throw wrapContestManagementException(e, "The EntityManager is closed.");
-        } catch (PersistenceException e) {
-            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
         } finally {
             logExit("getAllContestProperties()");
         }
     }
+    
 
     /**
      * <p>
@@ -1964,6 +1957,116 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "There are errors while persisting the entity.");
         } finally {
             logExit("getContestProperty()");
+        }
+    }
+
+    /**
+     * <p>
+     * Get all the MimeType objects.
+     * </p>
+     *
+     * @return the list of all available MimeType
+     *
+     * @throws ContestManagementException if any error occurs when getting MimeType
+     *
+     * @since 1.1.2
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<MimeType> getAllMimeTypes() throws ContestManagementException {
+        try {
+            logEnter("getAllMimeTypes()");
+
+            return getAll(MimeType.class);
+
+        } finally {
+            logExit("getAllMimeTypes()");
+        }
+    }
+    
+
+    /**
+     * <p>
+     * Get the MimeType with the specified id.
+     * </p>
+     *
+     * @param mimeTypeId id to look for
+     * @return the MimeType with the specified id.
+     * @throws ContestManagementException if any error occurs when getting contest
+     * @since 1.1.2
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public MimeType getMimeType(long mimeTypeId) throws ContestManagementException {
+        try {
+            logEnter("getMimeType()");
+            logOneParameter(mimeTypeId);
+
+            EntityManager em = getEntityManager();
+
+            return em.find(MimeType.class, mimeTypeId);
+
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("getMimeType()");
+        }
+    }
+
+    /**
+     * <p>
+     * Get all the DocumentType objects.
+     * </p>
+     *
+     * @return the list of all available DocumentType
+     *
+     * @throws ContestManagementException if any error occurs when getting contest
+     *
+     * @since 1.1.2
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<DocumentType> getAllDocumentTypes() throws ContestManagementException {
+        try {
+            logEnter("getAllDocumentTypes()");
+
+            return getAll(DocumentType.class);
+
+        } finally {
+            logExit("getAllDocumentTypes()");
+        }
+    }
+    
+
+    /**
+     * <p>
+     * Get the DocumentType with the specified id.
+     * </p>
+     *
+     * @param documentTypeId id to look for
+     * @return the DocumentType with the specified id.
+     * @throws ContestManagementException if any error occurs when getting contest
+     * @since 1.1.2
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public DocumentType getDocumentType(long documentTypeId) throws ContestManagementException {
+        try {
+            logEnter("getDocumentType()");
+            logOneParameter(documentTypeId);
+
+            EntityManager em = getEntityManager();
+
+            return em.find(DocumentType.class, documentTypeId);
+
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("getDocumentType()");
         }
     }
 
@@ -2084,6 +2187,34 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         }
     }
 
+    /**
+     * Generic method for getting all the entities
+     * 
+     * @param clazz class to get all the entities.
+     * @return a list with the all required entities
+     * @throws ContestManagementException
+     */
+    @SuppressWarnings("unchecked")
+	private <T> List<T> getAll(Class<T> clazz) throws ContestManagementException {
+        try {
+            EntityManager em = getEntityManager();
+
+            Query query = em.createQuery("select from " + clazz.getName());
+
+            List<T> list = query.getResultList();
+
+            List<T> result = new ArrayList<T>();
+            result.addAll(list);
+            return result;
+
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        }
+    }
+
+    
     /**
      * <p>
      * Returns the <code>EntityManager</code> looked up from the session context.
