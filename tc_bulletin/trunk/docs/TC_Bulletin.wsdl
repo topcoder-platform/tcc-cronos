@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="TCBulletin"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:types="http://topcoder.com/tc_bulletin/types"
+    xmlns:tns="http://topcoder.com/tc_bulletin"
+    targetNamespace="http://topcoder.com/tc_bulletin">
+
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://topcoder.com/tc_bulletin">
+            <xsd:import namespace="http://topcoder.com/tc_bulletin/types" schemaLocation="types/TC_BulletinTypes.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="empty"/>
+
+    <wsdl:message name="id">
+        <wsdl:part name="id" type="types:ID"/>
+    </wsdl:message>
+
+    <wsdl:message name="pageRequest">
+        <wsdl:part name="threadId" type="types:ID"/>
+        <wsdl:part name="initial" type="xsd:int"/>
+        <wsdl:part name="count" type="xsd:int"/>
+    </wsdl:message>
+
+    <wsdl:message name="messageList">
+        <wsdl:part name="stringList" type="types:MessageDTOList"/>
+    </wsdl:message>
+
+    <wsdl:message name="createContent">
+        <wsdl:part name="threadId" type="types:ID"/>
+        <wsdl:part name="attributes" type="types:MessageAttributeList"/>
+        <wsdl:part name="content" type="types:MessageContentDTO"/>
+    </wsdl:message>
+
+    <wsdl:message name="updateContent">
+        <wsdl:part name="messageId" type="types:ID"/>
+        <wsdl:part name="content" type="types:MessageContentDTO"/>
+    </wsdl:message>
+
+    <wsdl:portType name="TCBulletinIF">
+
+        <wsdl:operation name="retrieveMessages">
+            <wsdl:input message="tns:pageRequest"/>
+            <wsdl:output message="tns:messageList"/>
+            <wsdl:fault name="TCBulletinServiceFault" message="tns:TCBulletinServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="postMessage">
+            <wsdl:input message="tns:createContent"/>
+            <wsdl:output message="tns:id"/>
+            <wsdl:fault name="TCBulletinServiceFault" message="tns:TCBulletinServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="updateMessage">
+            <wsdl:input message="tns:updateContent"/>
+            <wsdl:output message="tns:empty"/>
+            <wsdl:fault name="TCBulletinServiceFault" message="tns:TCBulletinServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="postReply">
+            <wsdl:input message="tns:updateContent"/>
+            <wsdl:output message="tns:empty"/>
+            <wsdl:fault name="TCBulletinServiceFault" message="tns:TCBulletinServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="updateReply">
+            <wsdl:input message="tns:updateContent"/>
+            <wsdl:output message="tns:empty"/>
+            <wsdl:fault name="TCBulletinServiceFault" message="tns:TCBulletinServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+    </wsdl:portType>
+
+    <wsdl:binding name="TCBulletinIFBinding" type="tns:TCBulletinIF">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        <wsdl:operation name="retrieveMessages">
+            <wsdl:input>
+                <soap:body parts="tns:pageRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:messageList" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TCBulletinServiceFault">
+                <soap:fault name="tns:TCBulletinServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="postMessage">
+            <wsdl:input>
+                <soap:body parts="tns:createContent" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:id" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TCBulletinServiceFault">
+                <soap:fault name="tns:TCBulletinServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="updateMessage">
+            <wsdl:input>
+                <soap:body parts="tns:updateContent" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:empty" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TCBulletinServiceFault">
+                <soap:fault name="tns:TCBulletinServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="postReply">
+            <wsdl:input>
+                <soap:body parts="tns:updateContent" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:empty" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TCBulletinServiceFault">
+                <soap:fault name="tns:TCBulletinServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="updateReply">
+            <wsdl:input>
+                <soap:body parts="tns:updateContent" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:empty" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="TCBulletinServiceFault">
+                <soap:fault name="tns:TCBulletinServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+    </wsdl:binding>
+
+    <wsdl:service name="TCBulletin">
+        <wsdl:port name="TCBulletinIFPort" binding="tns:TCBulletinIFBinding">
+            <soap:address location="http://localhost:8081/tc_bulletin/TCBulletinIFPort"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>

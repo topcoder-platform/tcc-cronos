@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema  targetNamespace="http://topcoder.com/tc_bulletin/types"
+            xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            xmlns:types="http://topcoder.com/tc_bulletin/types">
+
+    <xs:simpleType name="ID">
+        <xs:restriction base="xs:integer"> 
+            <!-- the same as Java's long type -->
+            <xs:maxInclusive value="9223372036854775807"/>
+            <xs:minInclusive value="-9223372036854775808"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="MessageContentDTO">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="message" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="date" type="xs:dateTime" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="MessageAttributeDTO">
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="value" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="MessageDTO">
+        <xs:sequence>
+            <xs:element name="id" type="types:ID" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="attributes" type="types:MessageAttribute" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="message" type="types:MessageContent" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="reply" type="types:MessageContent" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="MessageDTOList">
+        <xs:sequence>
+           <xs:element name="messages" type="types:MessageDTO" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="MessageAttributeList">
+        <xs:sequence>
+           <xs:element name="attributes" type="types:MessageAttribute" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TCBulletinServiceFault">
+        <xs:attribute name="message" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="ServiceNotReadyFault"/>
+
+</xs:schema>
