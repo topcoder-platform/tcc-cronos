@@ -3,16 +3,12 @@
  */
 package com.topcoder.service.studio;
 
-import javax.jws.WebService;
-
-import com.topcoder.search.builder.filter.EqualToFilter;
-import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.service.studio.contest.Contest;
-import com.topcoder.service.studio.contest.ContestManagementException;
-import com.topcoder.service.studio.contest.ContestType;
-import com.topcoder.service.studio.submission.Submission;
-
 import java.util.List;
+
+import javax.ejb.Remote;
+
+import com.topcoder.search.builder.filter.Filter;
+
 
 /**
  * <p>
@@ -37,7 +33,8 @@ import java.util.List;
  * @author fabrizyo, TCSDEVELOPER
  * @version 1.0
  */
-@WebService
+//@WebService
+@Remote
 public interface StudioService {
     /**
      * Create contest for project. Return contest populated with id
