@@ -227,14 +227,14 @@ public class StudioServiceBean implements StudioService {
     private String submissionContentUnpaidParameterValue;
 
     /**
-     * Represents the id for the Contest property "Short Summary" 
+     * Represents the id for the Contest property "Short Summary"
      * @since 1.0.3
      */
     @Resource(name="contestPropertyShortSummaryId")
     private long contestPropertyShortSummaryId;
 
     /**
-     * Represents the id for the Contest property "Contest Overview Text" 
+     * Represents the id for the Contest property "Contest Overview Text"
      * @since 1.0.3
      */
     @Resource(name="contestPropertyContestOverviewTextId")
@@ -269,20 +269,20 @@ public class StudioServiceBean implements StudioService {
     private long contestPropertyOtherRequirementsId;
 
     /**
-     * Represents the id for the Contest property "Final File Format" 
+     * Represents the id for the Contest property "Final File Format"
      * @since 1.0.3
      */
     @Resource(name="contestPropertyFinalFileFormatId")
     private long contestPropertyFinalFileFormatId;
 
     /**
-     * Represents the id for the Contest property "Other File Formats" 
+     * Represents the id for the Contest property "Other File Formats"
      * @since 1.0.3
      */
     @Resource(name="contestPropertyOtherFileFormatsId")
     private long contestPropertyOtherFileFormatsId;
 
-    
+
     /**
      * <p>
      * This is the default constructor. It does nothing.
@@ -1001,29 +1001,29 @@ public class StudioServiceBean implements StudioService {
                     * data.getDurationInHours()));
         }
 
-        addContestConfig(result, contestPropertyShortSummaryId, 
-        		data.getShortSummary());
+        addContestConfig(result, contestPropertyShortSummaryId,
+                data.getShortSummary());
 
-        addContestConfig(result, contestPropertyContestOverviewTextId, 
-        		data.getContestDescriptionAndRequirements());
+        addContestConfig(result, contestPropertyContestOverviewTextId,
+                data.getContestDescriptionAndRequirements());
 
         addContestConfig(result, contestPropertyColorRequirementsId,
                 data.getRequiredOrRestrictedColors());
 
-        addContestConfig(result, contestPropertyFontRequirementsId, 
+        addContestConfig(result, contestPropertyFontRequirementsId,
                 data.getRequiredOrRestrictedFonts());
 
-        addContestConfig(result, contestPropertySizeRequirementsId, 
-        		data.getSizeRequirements());
+        addContestConfig(result, contestPropertySizeRequirementsId,
+                data.getSizeRequirements());
 
-        addContestConfig(result, contestPropertyOtherRequirementsId, 
-        		data.getOtherRequirementsOrRestrictions());
+        addContestConfig(result, contestPropertyOtherRequirementsId,
+                data.getOtherRequirementsOrRestrictions());
 
-        addContestConfig(result, contestPropertyFinalFileFormatId, 
-        		data.getFinalFileFormat());
+        addContestConfig(result, contestPropertyFinalFileFormatId,
+                data.getFinalFileFormat());
 
-        addContestConfig(result, contestPropertyOtherFileFormatsId, 
-        		data.getOtherFileFormats());
+        addContestConfig(result, contestPropertyOtherFileFormatsId,
+                data.getOtherFileFormats());
 
         result.setContestId(data.getContestId());
         result.setName(data.getName());
@@ -1074,17 +1074,17 @@ public class StudioServiceBean implements StudioService {
          // Since 1.0.3, Bug Fix 27074484-14
         for (ContestConfig cc : contest.getConfig()) {
 
-        	if (cc.getId().getProperty().getPropertyId() == contestPropertyShortSummaryId) contestData.setShortSummary(cc.getValue());
-        	else if (cc.getId().getProperty().getPropertyId() == contestPropertyFinalFileFormatId) contestData.setFinalFileFormat(cc.getValue());
-        	else if (cc.getId().getProperty().getPropertyId() == contestPropertyOtherFileFormatsId) contestData.setOtherFileFormats(cc.getValue());
-        	else if (cc.getId().getProperty().getPropertyId() == contestPropertyColorRequirementsId) contestData.setRequiredOrRestrictedColors(cc.getValue());
-        	else if (cc.getId().getProperty().getPropertyId() == contestPropertyFontRequirementsId) contestData.setRequiredOrRestrictedFonts(cc.getValue());
-        	else if (cc.getId().getProperty().getPropertyId() == contestPropertyContestOverviewTextId) contestData.setContestDescriptionAndRequirements(cc.getValue());
-        	else if (cc.getId().getProperty().getPropertyId() == contestPropertySizeRequirementsId) contestData.setSizeRequirements(cc.getValue());
-        	else if (cc.getId().getProperty().getPropertyId() == contestPropertyOtherRequirementsId) contestData.setOtherRequirementsOrRestrictions(cc.getValue());
+            if (cc.getId().getProperty().getPropertyId() == contestPropertyShortSummaryId) contestData.setShortSummary(cc.getValue());
+            else if (cc.getId().getProperty().getPropertyId() == contestPropertyFinalFileFormatId) contestData.setFinalFileFormat(cc.getValue());
+            else if (cc.getId().getProperty().getPropertyId() == contestPropertyOtherFileFormatsId) contestData.setOtherFileFormats(cc.getValue());
+            else if (cc.getId().getProperty().getPropertyId() == contestPropertyColorRequirementsId) contestData.setRequiredOrRestrictedColors(cc.getValue());
+            else if (cc.getId().getProperty().getPropertyId() == contestPropertyFontRequirementsId) contestData.setRequiredOrRestrictedFonts(cc.getValue());
+            else if (cc.getId().getProperty().getPropertyId() == contestPropertyContestOverviewTextId) contestData.setContestDescriptionAndRequirements(cc.getValue());
+            else if (cc.getId().getProperty().getPropertyId() == contestPropertySizeRequirementsId) contestData.setSizeRequirements(cc.getValue());
+            else if (cc.getId().getProperty().getPropertyId() == contestPropertyOtherRequirementsId) contestData.setOtherRequirementsOrRestrictions(cc.getValue());
         }
-        
-        
+
+
         List<UploadedDocument> documents = new ArrayList<UploadedDocument>();
         for (Document doc : contest.getDocuments()) {
             documents.add(convertDocument(doc));
@@ -1211,7 +1211,7 @@ public class StudioServiceBean implements StudioService {
         ContestConfig.Identifier id = new ContestConfig.Identifier();
         id.setContest(contest);
         id.setProperty(property);
-        
+
         ContestConfig config = new ContestConfig();
         config.setId(id);
         config.setValue(value);
@@ -1245,18 +1245,17 @@ public class StudioServiceBean implements StudioService {
         fp.setPath(data.getPath());
         doc.setPath(fp);
 
-        // set mime type
-        MimeType mt = new MimeType();
-        mt.setMimeTypeId(data.getMimeTypeId());
-        doc.setMimeType(mt);
-
-        // set document type
-        DocumentType dt = new DocumentType();
-        dt.setDocumentTypeId(data.getDocumentTypeId());
-        doc.setType(dt);
-
-        // save document
         try {
+
+            // set mime type [BUG 27074484-15]
+            MimeType mt = contestManager.getMimeType(data.getMimeTypeId());
+            doc.setMimeType(mt);
+
+            // set document type [BUG 27074484-15]
+            DocumentType dt = contestManager.getDocumentType(data.getDocumentTypeId());
+            doc.setType(dt);
+
+            // save document
             doc = contestManager.addDocument(doc);
             contestManager.addDocumentToContest(unbox(doc.getDocumentId()),
                     unbox(contest.getContestId()));
