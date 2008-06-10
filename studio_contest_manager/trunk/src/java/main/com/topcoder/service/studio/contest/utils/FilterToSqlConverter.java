@@ -52,16 +52,15 @@ public class FilterToSqlConverter {
      * Search context string. It contains the first part of SQL string and will prepend to returned conditional
      * statement to form a detailed search SQL string.
      * </p>
+     * Fixed: [27074412-7]
      */
     private static final String SQL_SEARCH_CONTEXT = ""
-        + "SELECT contest.contest_id,contest.contest_channel_id,contest.name,contest.contest_type_id, "
-        + "contest.project_id,contest.tc_direct_project_id,contest.contest_status_id,contest.forum_id, "
-        + "contest.event_id,contest.start_time,contest.end_date,contest.winner_annoucement_deadline, "
-        + "contest.creator_user_id "
-        + "FROM contest  "
-        + "JOIN contest_channel_lu ON contest.contest_channel_id = contest_channel_lu.contest_channel_id "
-        + "JOIN file_type_lu ON contest_channel_lu.file_type_id = file_type_lu.file_type_id "
-        + "JOIN contest_status_lu ON contest.contest_status_id = contest_status_lu.contest_status_id WHERE ";
+    	+ "SELECT contest.contest_id,contest.contest_channel_id,contest.name,contest.contest_type_id, "  
+        + "contest.project_id,contest.tc_direct_project_id,contest.contest_status_id,contest.forum_id, " 
+        + "contest.event_id,contest.start_time,contest.end_time,contest.winner_announcement_time, "  
+        + "contest.create_user_id "  
+        + "FROM contest WHERE ";  
+
 
     /**
      * <p>
