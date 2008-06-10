@@ -47,7 +47,7 @@ public class ContestType implements Serializable {
     /**
      * Represents the list of configuration parameters.
      */
-    private List<ContestConfig> config;
+    private List<ContestTypeConfig> config;
 
     /**
      * Default constructor.
@@ -137,7 +137,7 @@ public class ContestType implements Serializable {
      *
      * @return the config.
      */
-    public List<ContestConfig> getConfig() {
+    public List<ContestTypeConfig> getConfig() {
         return config;
     }
 
@@ -147,7 +147,7 @@ public class ContestType implements Serializable {
      * @param config
      *            the config to set.
      */
-    public void setConfig(List<ContestConfig> config) {
+    public void setConfig(List<ContestTypeConfig> config) {
         this.config = config;
     }
 

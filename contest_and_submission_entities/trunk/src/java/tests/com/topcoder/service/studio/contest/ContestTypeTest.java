@@ -214,8 +214,8 @@ public class ContestTypeTest extends TestCase {
      */
     public void test_accuracy_setConfig() {
         // set the value to test
-        List<ContestConfig> config = new ArrayList<ContestConfig>();
-        config.add(new ContestConfig());
+        List<ContestTypeConfig> config = new ArrayList<ContestTypeConfig>();
+        config.add(new ContestTypeConfig());
         contestType.setConfig(config);
         assertEquals("getConfig and setConfig failure occured", config.size(), contestType.getConfig().size());
     }

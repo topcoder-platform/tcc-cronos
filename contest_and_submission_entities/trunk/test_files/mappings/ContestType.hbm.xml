@@ -30,7 +30,7 @@
 		<bag name="config">
 			<key column="contest_type_id" />
 			<one-to-many
-				class="com.topcoder.service.studio.contest.ContestConfig" />
+				class="com.topcoder.service.studio.contest.ContestTypeConfig" />
 		</bag>
 
 	</class>
