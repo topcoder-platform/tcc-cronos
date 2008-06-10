@@ -246,19 +246,6 @@ public interface StudioService {
 
     /**
      * <p>
-     * Get contest categories
-     * 
-     * @return the list of categories
-     * @throws PersistenceException
-     *             if some persistence errors occur
-     * @throws UserNotAuthorizedException
-     *             if the user is not authorized to perform this method
-     */
-    public List<ContestCategoryData> getContestCategories()
-            throws PersistenceException;
-
-    /**
-     * <p>
      * Get contest statuses. Return an empty list if there are no
      * ContestStatusData
      * 

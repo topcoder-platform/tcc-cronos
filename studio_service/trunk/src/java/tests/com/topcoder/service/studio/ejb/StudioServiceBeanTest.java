@@ -3,7 +3,6 @@
  */
 package com.topcoder.service.studio.ejb;
 
-import com.topcoder.service.studio.ContestCategoryData;
 import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.ContestManagerImpl;
 import com.topcoder.service.studio.ContestNotFoundException;
@@ -546,20 +545,6 @@ public class StudioServiceBeanTest extends TestCase {
             fail("DocumentNotFoundException expected.");
         } catch (DocumentNotFoundException ex) {
             // success
-        }
-    }
-
-    /**
-     * Tests getContestCategories method for accuracy.
-     *
-     * @throws Exception when it occurs deeper
-     */
-    public void testGetAllContestCategories() throws Exception {
-        int i = 0;
-        for (ContestCategoryData data : target.getContestCategories()) {
-            assertEquals("category id", i, data.getContestCategoryId());
-            assertEquals("description", "desc" + i, data.getContestDescription());
-            ++i;
         }
     }
 

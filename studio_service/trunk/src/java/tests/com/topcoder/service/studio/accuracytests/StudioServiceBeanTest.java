@@ -12,7 +12,7 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-import com.topcoder.service.studio.ContestCategoryData;
+import com.topcoder.service.studio.ContestManagerImpl;
 import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.ContestStatusData;
 import com.topcoder.service.studio.MockSessionContext;
@@ -258,22 +258,6 @@ public class StudioServiceBeanTest extends TestCase {
         bean.removeDocumentFromContest(ud);
 
         assertEquals("The number of documents is wrong.", 1, ContestManagerImpl.documentsForContest.get(33l).size());
-    }
-
-    /**
-     * <p>
-     * Tests the method <code>getContestCategories</code>.
-     * </p>
-     *
-     * @throws Exception to JUnit
-     */
-    public void testGetAllContestCategories() throws Exception {
-        int i = 0;
-        for (ContestCategoryData data : bean.getContestCategories()) {
-            assertEquals("The category id is wrong.", i, data.getContestCategoryId());
-            assertEquals("The description is wrong.", "description" + i, data.getContestDescription());
-            ++i;
-        }
     }
 
     /**

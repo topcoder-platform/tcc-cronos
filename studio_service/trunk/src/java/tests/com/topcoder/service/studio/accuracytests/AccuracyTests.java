@@ -22,12 +22,10 @@ public class AccuracyTests extends TestCase {
      */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        suite.addTestSuite(ContestCategoryDataTest.class);
         suite.addTestSuite(ContestDataTest.class);
         suite.addTestSuite(ContestPayloadTest.class);
         suite.addTestSuite(ContestStatusDataTest.class);
         suite.addTestSuite(StudioServiceBeanTest.class);
-        suite.addTestSuite(ContestCategoryDataTest.class);
         return suite;
     }
 }

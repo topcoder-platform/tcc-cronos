@@ -34,7 +34,6 @@ public class UnitTests extends TestCase {
 
         suite.addTest(Demo.suite());
         suite.addTest(StudioServiceBeanTest.suite());
-        suite.addTest(ContestCategoryDataTest.suite());
         suite.addTest(ContestDataTest.suite());
         suite.addTest(ContestPayloadTest.suite());
         suite.addTest(ContestStatusDataTest.suite());

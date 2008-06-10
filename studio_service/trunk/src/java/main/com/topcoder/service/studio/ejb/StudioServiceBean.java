@@ -6,7 +6,6 @@ package com.topcoder.service.studio.ejb;
 import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
-import com.topcoder.service.studio.ContestCategoryData;
 import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.ContestNotFoundException;
 import com.topcoder.service.studio.ContestPayload;
@@ -23,7 +22,6 @@ import com.topcoder.service.studio.SubmissionData;
 import com.topcoder.service.studio.UploadedDocument;
 import com.topcoder.service.studio.UserNotAuthorizedException;
 import com.topcoder.service.studio.contest.Contest;
-import com.topcoder.service.studio.contest.ContestChannel;
 import com.topcoder.service.studio.contest.ContestConfig;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.ContestManagerRemote;
@@ -812,48 +810,6 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * <p>
-     * Get contest categories
-     * </p>
-     *
-     * @return the list of categories
-     * @throws PersistenceException
-     *             if some persistence errors occur
-     * @throws UserNotAuthorizedException
-     *             if the user is not authorized to perform this method
-     */
-    public List<ContestCategoryData> getContestCategories()
-            throws PersistenceException {
-        logEnter("getContestCategories");
-
-        // no authorization required
-
-        try {
-            List<ContestCategoryData> result = new ArrayList<ContestCategoryData>();
-            for (ContestChannel channel : contestManager
-                    .getAllContestChannels()) {
-                ContestCategoryData data = new ContestCategoryData();
-
-                data.setContestCategoryId(channel.getContestChannelId());
-                data.setContestDescription(channel.getDescription());
-                data.setContestName(channel.getName());
-
-                result.add(data);
-            }
-
-            logExit("getContestCategories", result);
-            return result;
-        } catch (ContestManagementException e) {
-            handlePersistenceError(
-                    "ContestManager reports error while retrieving contest categories.",
-                    e);
-        }
-
-        // never reached
-        return null;
-    }
-
-    /**
-     * <p>
      * Get contest statuses. Return an empty list if there are no
      * ContestStatusData
      * </p>
@@ -1074,14 +1030,14 @@ public class StudioServiceBean implements StudioService {
          // Since 1.0.3, Bug Fix 27074484-14
         for (ContestConfig cc : contest.getConfig()) {
 
-            if (cc.getId().getProperty().getPropertyId() == contestPropertyShortSummaryId) contestData.setShortSummary(cc.getValue());
-            else if (cc.getId().getProperty().getPropertyId() == contestPropertyFinalFileFormatId) contestData.setFinalFileFormat(cc.getValue());
-            else if (cc.getId().getProperty().getPropertyId() == contestPropertyOtherFileFormatsId) contestData.setOtherFileFormats(cc.getValue());
-            else if (cc.getId().getProperty().getPropertyId() == contestPropertyColorRequirementsId) contestData.setRequiredOrRestrictedColors(cc.getValue());
-            else if (cc.getId().getProperty().getPropertyId() == contestPropertyFontRequirementsId) contestData.setRequiredOrRestrictedFonts(cc.getValue());
-            else if (cc.getId().getProperty().getPropertyId() == contestPropertyContestOverviewTextId) contestData.setContestDescriptionAndRequirements(cc.getValue());
-            else if (cc.getId().getProperty().getPropertyId() == contestPropertySizeRequirementsId) contestData.setSizeRequirements(cc.getValue());
-            else if (cc.getId().getProperty().getPropertyId() == contestPropertyOtherRequirementsId) contestData.setOtherRequirementsOrRestrictions(cc.getValue());
+            if (cc.getProperty().getPropertyId() == contestPropertyShortSummaryId) contestData.setShortSummary(cc.getValue());
+            else if (cc.getProperty().getPropertyId() == contestPropertyFinalFileFormatId) contestData.setFinalFileFormat(cc.getValue());
+            else if (cc.getProperty().getPropertyId() == contestPropertyOtherFileFormatsId) contestData.setOtherFileFormats(cc.getValue());
+            else if (cc.getProperty().getPropertyId() == contestPropertyColorRequirementsId) contestData.setRequiredOrRestrictedColors(cc.getValue());
+            else if (cc.getProperty().getPropertyId() == contestPropertyFontRequirementsId) contestData.setRequiredOrRestrictedFonts(cc.getValue());
+            else if (cc.getProperty().getPropertyId() == contestPropertyContestOverviewTextId) contestData.setContestDescriptionAndRequirements(cc.getValue());
+            else if (cc.getProperty().getPropertyId() == contestPropertySizeRequirementsId) contestData.setSizeRequirements(cc.getValue());
+            else if (cc.getProperty().getPropertyId() == contestPropertyOtherRequirementsId) contestData.setOtherRequirementsOrRestrictions(cc.getValue());
         }
 
 
@@ -1208,12 +1164,9 @@ public class StudioServiceBean implements StudioService {
         }
         ContestProperty property = contestManager.getContestProperty(contestPropertyId);
 
-        ContestConfig.Identifier id = new ContestConfig.Identifier();
-        id.setContest(contest);
-        id.setProperty(property);
-
         ContestConfig config = new ContestConfig();
-        config.setId(id);
+        config.setContest(contest);
+        config.setProperty(property);
         config.setValue(value);
 
         contest.getConfig().add(config);
