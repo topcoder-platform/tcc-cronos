@@ -1,0 +1,9 @@
+#property file defining the component's information
+component.name=Bar Graph
+component.distfilename=bar_graph
+component.package=com.topcoder.report.chart.bargraph
+component.packagedir=com/topcoder/report/chart/bargraph
+component.version.major=1
+component.version.minor=2
+component.version.micro=0
+component.version.build=1

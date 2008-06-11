@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=JDBC Driver Connection
+component.distfilename=jdbc_driver_connection
+component.package=com.topcoder.jdbc.connection
+component.packagedir=com/topcoder/jdbc/connection
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

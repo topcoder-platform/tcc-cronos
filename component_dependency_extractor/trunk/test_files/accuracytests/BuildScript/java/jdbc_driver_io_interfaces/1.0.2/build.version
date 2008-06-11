@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=JDBC Driver IO Interfaces
+component.distfilename=jdbc_driver_io_interfaces
+component.package=com.topcoder.jdbc.io
+component.packagedir=com/topcoder/jdbc/io
+component.version.major=1
+component.version.minor=0
+component.version.micro=2
+component.version.build=3

@@ -1,0 +1,46 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
+
+    <!-- TCS dependencies -->
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    <property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar"/>
+
+    <!-- 3rd party dependencies -->
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+    <property name="j2ee.jar" value="${ext_libdir}/j2ee/1.4/j2ee.jar"/>
+
+    <property name="axis.dir" value="${ext_libdir}/axis/1.4"/>
+    <property name="axis.jar" value="${axis.dir}/axis.jar"/>
+    <property name="axis-ant.jar" value="${axis.dir}/lib/axis-ant.jar"/>
+    <property name="commons-logging.jar" value="${axis.dir}/lib/commons-logging-1.0.4.jar"/>
+    <property name="commons-discovery.jar" value="${axis.dir}/lib/commons-discovery-0.2.jar"/>
+    <property name="jaxrpc.jar" value="${axis.dir}/lib/jaxrpc.jar"/>
+    <property name="log4j.jar" value="${axis.dir}/lib/log4j-1.2.8.jar"/>
+    <property name="saaj.jar" value="${axis.dir}/lib/saaj.jar"/>
+    <property name="wsdl.jar" value="${axis.dir}/lib/wsdl4j-1.5.1.jar"/>
+
+    <path id="component.tcs-dependencies">
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${configuration_api.jar}"/>
+    </path>
+
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${axis.jar}"/>
+        <pathelement location="${axis-ant.jar}"/>
+        <pathelement location="${commons-logging.jar}"/>
+        <pathelement location="${commons-discovery.jar}"/>
+        <pathelement location="${jaxrpc.jar}"/>
+        <pathelement location="${saaj.jar}"/>
+        <pathelement location="${wsdl.jar}"/>
+    </path>
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${j2ee.jar}"/>
+    </path>
+
+</project>

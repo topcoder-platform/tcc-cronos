@@ -1,0 +1,9 @@
+#property file defining the component's information
+component.name=Magic Numbers
+component.distfilename=magic_numbers
+component.package=com.topcoder.file.type
+component.packagedir=com/topcoder/file/type
+component.version.major=1
+component.version.minor=1
+component.version.micro=2
+component.version.build=2

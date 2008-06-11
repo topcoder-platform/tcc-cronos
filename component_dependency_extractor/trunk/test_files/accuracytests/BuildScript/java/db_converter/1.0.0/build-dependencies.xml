@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="dist" name="Dependency Import">
+    <!--property file defining the component's dependencies-->
+
+    <!--Properties used in compile_targets ANT target for JDK version x-->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
+
+    <!--TCS dependencies-->
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    <property name="complex_boolean_expression_evaluator.jar"
+              value="${tcs_libdir}/complex_boolean_expression_evaluator/1.1/complex_boolean_expression_evaluator.jar"/>
+    <property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar"/>
+    <property name="configuration_manager.jar"
+              value="${tcs_libdir}/configuration_manager/2.1.5/configuration_manager.jar"/>
+    <property name="db_connection_factory.jar"
+              value="${tcs_libdir}/db_connection_factory/1.1/db_connection_factory.jar"/>
+    <property name="multimap.jar" value="${tcs_libdir}/multimap/1.0/multimap.jar"/>
+    <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.0.1/object_factory.jar"/>
+    <property name="string_template_engine.jar"
+              value="${tcs_libdir}/string_template_engine/1.0/string_template_engine.jar"/>
+
+    <!--3rd party dependencies-->
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+    <property name="antlr.jar" value="${ext_libdir}/antlr/2.7.7/antlr.jar"/>
+    <property name="mysql.jar"
+              value="${ext_libdir}/mysql/3.1.8a/mysql-connector-java-3.1.8-bin.jar"/>
+
+    <!--Path declarations which are to be used in the master build file.-->
+    <path id="component.tcs-dependencies">
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${complex_boolean_expression_evaluator.jar}"/>
+        <pathelement location="${configuration_api.jar}"/>
+        <pathelement location="${configuration_manager.jar}"/>
+        <pathelement location="${db_connection_factory.jar}"/>
+        <pathelement location="${multimap.jar}"/>
+        <pathelement location="${object_factory.jar}"/>
+        <pathelement location="${string_template_engine.jar}"/>
+    </path>
+    <path id="component.3rdParty-dependencies"/>
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${antlr.jar}"/>
+        <pathelement location="${mysql.jar}"/>
+    </path>
+</project>

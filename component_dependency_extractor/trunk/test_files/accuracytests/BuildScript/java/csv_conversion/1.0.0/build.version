@@ -1,0 +1,9 @@
+#property file defining the component's information
+component.name=CSV Conversion
+component.distfilename=csv_conversion
+component.package=com.topcoder.file.conversion.csv
+component.packagedir=com/topcoder/file/conversion/csv
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=JDBC Driver Result Set
+component.distfilename=jdbc_driver_result_set
+component.package=com.topcoder.jdbc.resultset
+component.packagedir=com/topcoder/jdbc/resultset
+component.version.major=1
+component.version.minor=0
+component.version.micro=1
+component.version.build=1

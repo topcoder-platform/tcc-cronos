@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=User Group Manager
+component.distfilename=user_group_manager
+component.package=com.topcoder.user.manager
+component.packagedir=com/topcoder/user/manager
+component.version.major=1
+component.version.minor=0
+component.version.micro=1
+component.version.build=1

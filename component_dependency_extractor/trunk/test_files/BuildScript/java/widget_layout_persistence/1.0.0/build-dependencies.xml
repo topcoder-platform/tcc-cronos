@@ -1,0 +1,77 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- Properties used in compile_targets ANT target -->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
+
+    <!-- property file defining the component's dependencies -->
+
+    <!-- define TCS dependencies -->
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0/base_exception.jar"/>
+    <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.0.1/object_factory.jar"/>
+    <property name="object_factory_configuration_api_plugin.jar"
+              value="${tcs_libdir}/object_factory_configuration_api_plugin/1.0/object_factory_configuration_api_plugin.jar"/>
+    <property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.0/configuration_api.jar"/>
+
+    <!-- define 3rd party dependencies -->
+    <property name="spring.dir" value="${ext_libdir}/spring-framework/2.5.0"/>
+    <path id="spring.classpath">
+        <fileset dir="${spring.dir}">
+            <include name="*.jar"/>
+            <include name="lib/j2ee/*.jar"/>
+        </fileset>
+    </path>
+
+    <property name="hibernate.dir" value="${ext_libdir}/hibernate/3.2.5.ga"/>
+    <path id="hibernate.classpath">
+        <fileset dir="${hibernate.dir}">
+            <include name="*.jar"/>
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <property name="hibernate-annotations.dir" value="${ext_libdir}/hibernate-annotations/3.3.0.GA"/>
+    <path id="hibernate-annotations.classpath">
+        <fileset dir="${hibernate-annotations.dir}">
+            <include name="*.jar"/>
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <property name="hibernate-entitymanager.dir" value="${ext_libdir}/hibernate-entitymanager/3.3.1.GA"/>
+    <path id="hibernate-entitymanager.classpath">
+        <fileset dir="${hibernate-entitymanager.dir}">
+            <include name="*.jar"/>
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <property name="hibernate-validator.dir" value="${ext_libdir}/hibernate-validator/3.0.0.GA"/>
+    <path id="hibernate-validator.classpath">
+        <fileset dir="${hibernate-validator.dir}">
+            <include name="*.jar"/>
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <property name="hsqldb.jar" value="${ext_libdir}/hsqldb/1.8.0/hsqldb.jar"/>
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+
+    <path id="component.tcs-dependencies">
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${configuration_api.jar}"/>
+        <pathelement location="${object_factory.jar}"/>
+        <pathelement location="${object_factory_configuration_api_plugin.jar}"/>
+    </path>
+    <path id="component.3rdParty-dependencies">
+        <path refid="spring.classpath"/>
+        <path refid="hibernate.classpath"/>
+        <path refid="hibernate-annotations.classpath"/>
+        <path refid="hibernate-entitymanager.classpath"/>
+        <path refid="hibernate-validator.classpath"/>
+        <pathelement location="${hsqldb.jar}"/>
+    </path>
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+    </path>
+
+</project>

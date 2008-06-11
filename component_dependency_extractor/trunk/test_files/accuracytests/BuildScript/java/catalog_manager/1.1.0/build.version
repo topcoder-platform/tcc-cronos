@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Catalog Manager
+component.distfilename=catalog_manager
+component.package=com.topcoder.vault.asset
+component.packagedir=com/topcoder/vault/asset
+component.version.major=1
+component.version.minor=1
+component.version.micro=0
+component.version.build=1

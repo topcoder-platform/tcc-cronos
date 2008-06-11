@@ -1,0 +1,47 @@
+COMPONENT DEPLOYMENT INFORMATION
+1. Install the component structure in ${basedir}
+
+2. Create "topcoder_global.properties" in ${basedir}/.. and add the properties from steps 2,3,4
+
+3. The following standard build script properties must be set
+	ext_libdir - root of third party libraries
+	tcs_libdir - root of topcoder components
+	java_1_4_bootclasspath - installation path for java 1.4 (only needed for compile_targets task)
+
+4. The following standard build script properties can be changed (defaults are noted)
+	debug=off - as expected
+	verbose=no - as expected
+	cobertura.dir=${ext_libdir}/cobertura/1.8
+		installation directory of cobertura script expects {$cobertura.dir}/cobertura.jar
+		and {$cobertura.dir}/lib/containg Jars for asm, jakarta, and log4j to run cobertura task
+
+5. The following properties need to be set for this component
+	None
+
+NB:
+	The folder ${basedir}/test_reflib contains TopCoder components 
+	that are required by this component's test code. This component is
+	used to by compile_test and test targets. Components are listed under
+	the following directory structure "component name"/"component version".
+	Components are provided AS IS for development purposes only.
+
+	Included:None.
+---------------------------------------------------------------------------------------------------------------------
+Steps for running tests:
+
+  1. Add all the dependency components to the building path: (please refer to build.xml file for dependency component name and version)
+
+  2. Set up your MySQL environment (Free download: http://dev.mysql.com/downloads/)
+
+  3. Run test_files/mysql.sql to initialize your MySQL DB
+
+  4. Change the DB Connection Factory configuration to your own MySQL username and password:
+       test_files/accuracy/accuracy.xml
+       test_files/failuretests/DBConnectionFactoryConfig.xml
+       test_files/stresstests/dbConverter.xml
+       test_files/db.xml
+       test_files/dbInvalid1.xml
+       test_files/dbInvalid2.xml
+       conf/resources/dbConverter.xml
+
+  5. run "ant test"

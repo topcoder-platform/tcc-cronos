@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Asset Text Searcher
+component.distfilename=asset_text_searcher
+component.package=com.topcoder.vault.asset.search
+component.packagedir=com/topcoder/vault/asset/search
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

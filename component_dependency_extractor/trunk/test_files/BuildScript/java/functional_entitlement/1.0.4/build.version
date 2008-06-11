@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Functional Entitlement
+component.distfilename=functional_entitlement
+component.package=com.topcoder.security.entitlement.functional
+component.packagedir=com/topcoder/security/entitlement/functional
+component.version.major=1
+component.version.minor=0
+component.version.micro=4
+component.version.build=2

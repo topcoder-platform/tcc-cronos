@@ -1,0 +1,41 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- Properties used in compile_targets ANT target -->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
+
+    <!-- property file defining the component's dependencies -->
+
+    <!-- define TCS dependencies -->
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    <property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar"/>
+    <property name="configuration_manager.jar"
+              value="${tcs_libdir}/configuration_manager/2.1.5/configuration_manager.jar"/>
+    <property name="file_system_server.jar" value="${tcs_libdir}/file_system_server/1.0.0/file_system_server.jar"/>
+    <property name="guid_generator.jar" value="${tcs_libdir}/guid_generator/1.0/guid_generator.jar"/>
+    <property name="ip_server.jar" value="${tcs_libdir}/ip_server/2.0.1/ip_server.jar"/>
+    <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
+    <!-- define 3rd party dependencies -->
+    <property name="mysql.jar" value="${ext_libdir}/mysql/3.1.8a/mysql-connector-java-3.1.8-bin.jar"/>
+    <property name="servlet-api.jar" value="${ext_libdir}/servlet-api/2.3/servlet-api.jar"/>
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+    <property name="httpunit.jar" value="${ext_libdir}/httpunit/1.6.2/httpunit.jar"/>
+
+    <path id="component.tcs-dependencies">
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${configuration_api.jar}"/>
+        <pathelement location="${configuration_manager.jar}"/>
+        <pathelement location="${file_system_server.jar}"/>
+        <pathelement location="${guid_generator.jar}"/>
+        <pathelement location="${ip_server.jar}"/>
+        <pathelement location="${typesafe_enum.jar}"/>
+    </path>
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${servlet-api.jar}"/>
+    </path>
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${httpunit.jar}"/>
+        <pathelement location="${mysql.jar}"/>
+    </path>
+
+</project>

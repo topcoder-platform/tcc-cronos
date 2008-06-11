@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." name="Dependency Import">
+    <!--property file defining the component's dependencies-->
+    <!--Properties used in compile_targets ANT target for JDK version x-->
+    <property name="component.target" value="1.4"/>
+    <property name="component.bootclasspath" value="${java_1_4_bootclasspath}"/>
+    <!--TCS dependencies-->
+    <property name="chart_data_structure.jar" value="${tcs_libdir}/chart_data_structure/1.2.0/chart_data_structure.jar"/>
+    <!--3rd party dependencies-->
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+    <!--Path declarations which are to be used in the master build file.-->
+</project>

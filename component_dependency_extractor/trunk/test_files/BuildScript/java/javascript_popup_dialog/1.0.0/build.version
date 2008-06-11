@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=JavaScript Popup Dialog
+component.distfilename=javascript_popup_dialog
+component.package=js.topcoder.gadget.popup
+component.packagedir=js/topcoder/gadget/popup
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

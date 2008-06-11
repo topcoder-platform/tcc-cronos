@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Auditor
+component.distfilename=auditor
+component.package=com.topcoder.object.auditor
+component.packagedir=com/topcoder/object/auditor
+component.version.major=2
+component.version.minor=0
+component.version.micro=1
+component.version.build=1

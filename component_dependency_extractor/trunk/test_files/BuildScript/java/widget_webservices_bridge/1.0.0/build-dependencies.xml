@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="dist" name="Dependency Import">
+    <!--property file defining the component's dependencies-->
+    <!--Properties used in compile_targets ANT target for JDK version x-->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
+    <!--TCS dependencies-->
+    <property name="json_object.jar" value="${tcs_libdir}/json_object/1.0/json_object.jar"/>
+    <property name="configuration_api.jar"
+              value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar"/>
+    <property name="configuration_persistence.jar"
+              value="${tcs_libdir}/configuration_persistence/1.0.0/configuration_persistence.jar"/>
+    <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.0.1/object_factory.jar"/>
+    <property name="object_factory_configuration_api_plugin.jar"
+              value="${tcs_libdir}/object_factory_configuration_api_plugin/1.0.0/object_factory_configuration_api_plugin.jar"/>
+    <property name="logging_wrapper.jar"
+              value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
+    <property name="file_upload.jar" value="${tcs_libdir}/file_upload/2.2.0/file_upload.jar"/>
+    <property name="base_exception.jar"
+              value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    <property name="widget_webservices_wrapper.jar"
+              value="${tcs_libdir}/widget_webservices_wrapper/1.0.0/widget_webservices_wrapper.jar"/>
+
+    <!--3rd party dependencies-->
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+    <property name="servlet-api.jar"
+              value="${ext_libdir}/cactus/1.7.2/j2ee1.3/lib/servletapi-2.3.jar"/>
+    <property name="commons-logging.jar"
+              value="${ext_libdir}/cactus/1.7.2/lib/commons-logging-1.0.4.jar"/>
+    <property name="spring.jar" value="${ext_libdir}/spring-framework/2.5.2/spring.jar"/>
+    <property name="spring-test.jar"
+              value="${ext_libdir}/spring-framework/2.5.2/modules/spring-test.jar"/>
+
+    <!--Path declarations which are to be used in the master build file.-->
+    <path id="component.tcs-dependencies">
+        <pathelement location="${json_object.jar}"/>
+        <pathelement location="${configuration_api.jar}"/>
+        <pathelement location="${configuration_persistence.jar}"/>
+        <pathelement location="${object_factory.jar}"/>
+        <pathelement location="${object_factory_configuration_api_plugin.jar}"/>
+        <pathelement location="${logging_wrapper.jar}"/>
+        <pathelement location="${file_upload.jar}"/>
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${widget_webservices_wrapper.jar}"/>
+
+    </path>
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${servlet-api.jar}"/>
+    </path>
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${spring.jar}"/>
+        <pathelement location="${spring-test.jar}"/>
+        <pathelement location="${commons-logging.jar}"/>
+    </path>
+</project>

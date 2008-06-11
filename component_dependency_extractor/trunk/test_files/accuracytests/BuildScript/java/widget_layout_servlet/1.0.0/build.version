@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Widget Layout Servlet
+component.distfilename=widget_layout_servlet
+component.package=com.topcoder.widgets.servlet
+component.packagedir=com/topcoder/widgets/servlet
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

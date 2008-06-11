@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=JDBC Driver Extensions
+component.distfilename=jdbc_driver_extensions
+component.package=com.topcoder.jdbc.extensions
+component.packagedir=com/topcoder/jdbc/extensions
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=3

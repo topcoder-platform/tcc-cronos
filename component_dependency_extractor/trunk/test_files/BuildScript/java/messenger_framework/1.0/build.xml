@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+
+<project name="Messenger_Framework" default="dist" basedir=".">
+
+    <!-- any property set in topcoder_global.properties will take precedence
+         over properties set in this file -->
+    <property file="../topcoder_global.properties"/>
+
+    <!-- COMPONENT PARAMETERS -->
+    <property name="component" value="Messenger_Framework" />
+    <property name="package" value="com.topcoder.message.messenger" />
+    <property name="packagedir" value="com/topcoder/message/messenger" />
+    <property name="configfilename" value="Messenger.xml" />
+    <property name="distfilename" value="messenger" />
+    <property name="component_version" value="1.0" />
+
+    <!-- DIRECTORY SETUP -->
+    <property name="srcdir" value="src" />
+    <property name="tcs_libdir" value="../lib/tcs" />
+    <property name="ext_libdir" value="../lib" />
+    <property name="docsdir" value="docs" />
+    <property name="configdir" value="conf" />
+    <property name="testlogdir" value="log" />
+    <property name="testfiles" value="test_files" />
+    <property name="javadocsdir" value="${docsdir}/javadocs" />
+    <property name="webdir" value="web" />
+    <property name="reports" value="reports" />
+
+    <property name="javasrc" value="${srcdir}/java" />
+    <property name="javamain" value="${javasrc}/main" />
+    <property name="javatests" value="${javasrc}/tests" />
+
+    <property name="builddir" value="build" />
+    <property name="build_classdir" value="${builddir}/classes" />
+    <property name="build_testclassdir" value="${builddir}/testClasses" />
+    <property name="build_targetclassdir" value="${builddir}/targetclasses" />
+    <property name="build_distdir" value="${builddir}/dist" />
+    <property name="build_docsdir" value="${builddir}/docs" />
+    <property name="build_javadocsdir" value="${builddir}/javadocs" />
+    <property name="build_webdir" value="${builddir}/web" />
+    <property name="build_lib" value="${builddir}/lib" />
+
+    <!-- EXECUTION TAGS -->
+    <property name="debug" value="on" />
+    <property name="verbose" value="yes" />
+
+    <!-- NAME FOR .JAR FILES -->
+    <property name="component.jar" value="${build_lib}/${distfilename}.jar"/>
+    <property name="component.tests.jar" value="${build_lib}/${distfilename}_tests.jar"/>
+    <property name="component.dist.jar" value="${build_distdir}/${distfilename}-${component_version}.jar"/>
+
+    <!-- TCS Dependencies -->
+    <!-- TCS Dependencies -->
+    <property name="configmanager.version" value="1.2"/>
+    <property name="configmanager.jar.name" value="configmanager_xerces-1.4.4.jar"/>
+    <property name="configmanager.path" value="configmanager/${configmanager.version}"/>
+    <property name="configmanager.jar" value="${tcs_libdir}/${configmanager.path}/${configmanager.jar.name}"/>
+
+    <property name="logging_wrapper.version" value="1.1"/>
+    <property name="logging_wrapper.jar.name" value="logging_wrapper.jar"/>
+    <property name="logging_wrapper.path" value="logging_wrapper/${logging_wrapper.version}"/>
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/${logging_wrapper.path}/${logging_wrapper.jar.name}"/>
+
+    <property name="email_engine.version" value="2.0"/>
+    <property name="email_engine.jar.name" value="email_engine.jar"/>
+    <property name="email_engine.path" value="emailengine/${email_engine.version}"/>
+    <property name="email_engine.jar" value="${tcs_libdir}/${email_engine.path}/${email_engine.jar.name}"/>
+
+    <!-- 3rd Party Dependencies  -->
+    <property name="mail.jar" value="${ext_libdir}/javamail-1.2/mail.jar"/>
+    <property name="activation.jar" value="${ext_libdir}/activation.jar"/>
+    <property name="xerces.jar" value="${ext_libdir}/xerces.jar"/>
+    <property name="log4j.jar" value="${ext_libdir}/log4j-1.2.6.jar"/>
+
+    <!-- Java Locations -->
+    <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar"/>
+
+    <path id="buildlibs">
+        <pathelement location="${configdir}" />
+        <pathelement location="${xerces.jar}" />
+        <pathelement location="${mail.jar}" />
+        <pathelement location="${activation.jar}" />
+        <pathelement location="${log4j.jar}" />
+        <pathelement location="${configmanager.jar}" />
+        <pathelement location="${logging_wrapper.jar}" />
+        <pathelement location="${email_engine.jar}" />
+    </path>
+
+    <path id="test.build.classpath">
+        <pathelement location="${build_testclassdir}"/>
+        <pathelement location="${build_classdir}"/>
+        <path refid="buildlibs"/>
+    </path>
+
+    <path id="runtime.classpath">
+        <pathelement location="${build_classdir}"/>
+        <path refid="buildlibs"/>
+    </path>
+
+    <target name="compile">
+        <mkdir dir="${build_classdir}"/>
+        <javac srcdir="${javamain}" destdir="${build_classdir}" includes="${packagedir}/**" verbose="${verbose}">
+            <classpath refid="buildlibs" />
+        </javac>
+        <echo>Class files have been compiled to /${build_classdir}</echo>
+    </target>
+
+    <target name="compile_targets">
+        <!-- test compile against 1.3 -->
+        <mkdir dir="${build_targetclassdir}"/>
+        <javac srcdir="${javamain}"
+               destdir="${build_targetclassdir}"
+               includes="${packagedir}/**"
+               verbose="${verbose}"
+               target="1.3"
+               bootclasspath="${java_1_3_bootclasspath}"
+               extdirs=""
+               >
+            <classpath refid="buildlibs" />
+        </javac>
+
+        <!-- compile test cases -->
+        <javac srcdir="${javatests}"
+               destdir="${build_targetclassdir}"
+               includes="${packagedir}/**"
+               verbose="${verbose}"
+               target="1.3"
+               bootclasspath="${java_1_3_bootclasspath}"
+               extdirs=""
+               >
+            <classpath refid="buildlibs" />
+        </javac>
+        <delete dir="${build_targetclassdir}"/>
+    </target>
+
+    <target name="compile_tests" depends="compile">
+        <mkdir dir="${build_testclassdir}"/>
+        <javac srcdir="${javatests}" destdir="${build_testclassdir}" includes="${packagedir}/**" verbose="${verbose}">
+            <classpath refid="test.build.classpath" />
+        </javac>
+        <echo>Test class files have been compiled to /${build_testclassdir}</echo>
+    </target>
+
+    <target name="test" depends="compile_tests">
+        <mkdir dir="${testlogdir}"/>
+        <junit fork="true" haltonerror="false">
+            <classpath refid="test.build.classpath"/>
+            <test name="${package}.AllTests" todir="${testlogdir}">
+                <formatter type="plain" usefile="true"/>
+                <formatter type="xml" usefile="true"/>
+            </test>
+        </junit>
+        <echo>The execution of test cases is complete.  A log is available in /${testlogdir}</echo>
+    </target>
+
+    <target name="reports" depends="test">
+        <mkdir dir="${reports}"/>
+
+        <junitreport todir="${reports}">
+          <fileset dir="${testlogdir}">
+            <include name="*.xml"/>
+          </fileset>
+          <report format="frames" todir="${reports}"/>
+        </junitreport>
+        <echo>The execution of reports is complete.  Reports are available in /${reports}</echo>
+    </target>
+
+    <target name="dist" depends="compile">
+        <mkdir dir="${build_lib}/${component_path}"/>
+        <jar jarfile="${component.jar}" basedir="${build_classdir}" />
+    </target>
+
+    <target name="dist_tests" depends="compile_tests">
+        <mkdir dir="${build_lib}"/>
+        <jar jarfile="${component.tests.jar}" basedir="${build_testclassdir}" />
+    </target>
+
+    <target name="javadoc" depends="compile">
+        <mkdir dir="${build_javadocsdir}" />
+        <javadoc packagenames="${package}"
+            sourcepath="${javamain}"
+            classpath="${build_classdir}"
+            classpathref="buildlibs"
+            destdir="${build_javadocsdir}"
+            windowtitle="Topcoder Software"
+            header="&lt;table border=0 cellpadding=0 cellspacing=2&gt;&lt;tr&gt;&lt;td&gt;&lt;font class=tcoder2&gt;&#091; &lt;/font&gt;&lt;font class=tcoder1&gt;TOP&lt;/font&gt;&lt;font class=tcoder2&gt;CODER &lt;/font&gt;&lt;font class=tcoder2&gt;&#093;&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font class=tcoder4&gt;&#153;&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td class=tcoder3 align=center&gt;&lt;font class=tcoder3&gt;SOFTWARE&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
+            footer="&lt;table border=0 cellpadding=0 cellspacing=2&gt;&lt;tr&gt;&lt;td&gt;&lt;font class=tcoder2&gt;&#091; &lt;/font&gt;&lt;font class=tcoder1&gt;TOP&lt;/font&gt;&lt;font class=tcoder2&gt;CODER &lt;/font&gt;&lt;font class=tcoder2&gt;&#093;&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font class=tcoder4&gt;&#153;&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td class=tcoder3 align=center&gt;&lt;font class=tcoder3&gt;SOFTWARE&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
+            bottom="&lt;font class=tcoder5&gt;Contact TopCoder Software at &lt;a href='http://www.topcodersoftware.com'&gt;www.topcodersoftware.com&lt;/a&gt;&lt;/font&gt;"
+            stylesheetfile="${javadocsdir}/stylesheet.css"
+            verbose="${verbose}"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${builddir}"/>
+        <delete verbose="${verbose}" quiet="true">
+            <fileset dir="." includes="**/*~" defaultexcludes="no" />
+        </delete>
+    </target>
+
+    <target name="deploy" depends="dist">
+    </target>
+
+    <target name="main" depends="deploy,test">
+    </target>
+
+</project>

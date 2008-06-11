@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.topcoder.util.dependency.extractor.utility.ComponentDependencyExtractorUtility">
+		<property name="object_factory_config_name">
+			<value>object_factory_config</value>
+		</property>
+		<property name="persistence_class">
+			<value>com.topcoder.util.dependency.persistence.DefaultXmlDependenciesEntryPersistence</value>
+		</property>
+		<property name="log_factory_key">
+			<value>lf</value>
+		</property>
+		<property name="logger_name">
+			<value>logger</value>
+		</property>
+		<property name="extractor_class">
+			<value>com.topcoder.util.dependency.extractor.MultipleFormatDependenciesEntryExtractor</value>
+		</property>
+		<property name="dependency_types">
+			<value>internal;external</value>
+		</property>
+		<property name="dependency_categories">
+			<value>compile;test</value>
+		</property>
+		<property name="file_masks">
+			<value>test_files/scripts/*;test_files/scripts/java/*.jar</value>
+		</property>
+		<property name="object_factory_config">
+			<property name="lf">
+				<property name="type">
+					<value>com.topcoder.util.log.basic.BasicLogFactory</value>
+				</property>
+			</property>
+        </property>		
+		<property name="persistence_config">
+		    <property name="file_name">
+		    	<value>test_files/report2.xml</value>
+		    </property>
+        </property>		
+    </Config>
+</CMConfig>

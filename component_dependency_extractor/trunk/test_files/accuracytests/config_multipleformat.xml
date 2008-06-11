@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<CMConfig>
+<Config name="com.topcoder.util.dependency.extractor.utility.ComponentDependencyExtractorUtility">
+	<Property name="object_factory_config_name">
+		<Value>of_config</Value>
+	</Property>
+	<Property name="of_config">
+		<Property name="myLogFactory">
+			<Property name="type">
+				<Value>com.topcoder.util.dependency.accuracytests.MyLogFactory</Value>
+			</Property>
+		</Property>
+		<!-- Put OF configuration here-->
+	</Property>
+	<Property name="persistence_class">
+		<Value>com.topcoder.util.dependency.persistence.DefaultXmlDependenciesEntryPersistence</Value>
+	</Property>
+	<Property name="persistence_config">
+		<Property name="file_name">
+			<Value>test_files/accuracytests/multipleformat_dependencies_result.xml</Value>
+		</Property>
+	</Property>
+	<Property name="extractor_class">
+		<Value>com.topcoder.util.dependency.extractor.MultipleFormatDependenciesEntryExtractor</Value>
+	</Property>
+	<Property name="log_factory_key">
+		<Value>myLogFactory</Value>
+	</Property>
+	<Property name="logger_name">
+		<Value>myLogger</Value>
+	</Property>
+	<Property name="dependency_types">
+		<Value>internal;external</Value>
+	</Property>
+	<Property name="dependency_categories">
+		<Value>compile;test</Value>
+	</Property>
+	<Property name="file_masks">
+		<Value>test_files/accuracytests/BuildScript/dotnet/*/*/default.build</Value>
+		<Value>test_files/accuracytests/BuildScript/java/*/*/build.xml</Value>
+	</Property>
+</Config>
+</CMConfig>

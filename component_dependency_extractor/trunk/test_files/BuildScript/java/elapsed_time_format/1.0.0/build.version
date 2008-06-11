@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Elapsed Time Format
+component.distfilename=elapsed_time_format
+component.package=com.topcoder.util.timeformat
+component.packagedir=com/topcoder/util/timeformat
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

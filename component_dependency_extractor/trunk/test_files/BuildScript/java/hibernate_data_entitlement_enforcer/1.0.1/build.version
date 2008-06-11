@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Hibernate Data Entitlement Enforcer
+component.distfilename=hibernate_data_entitlement_enforcer
+component.package=com.topcoder.security.hibernate
+component.packagedir=com/topcoder/security/hibernate
+component.version.major=1
+component.version.minor=0
+component.version.micro=1
+component.version.build=1

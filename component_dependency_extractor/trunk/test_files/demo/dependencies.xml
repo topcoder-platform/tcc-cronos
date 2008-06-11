@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components>
+<component language="java" name="A" version="1.0">
+<dependency category="compile" name="B" path="b.jar" type="internal" version="1.0"/>
+</component>
+</components>

@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Data Entitlement
+component.distfilename=data_entitlement
+component.package=com.topcoder.security.entitlement.data
+component.packagedir=com/topcoder/security/entitlement/data
+component.version.major=1
+component.version.minor=3
+component.version.micro=2
+component.version.build=1

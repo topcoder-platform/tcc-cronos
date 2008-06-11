@@ -1,0 +1,43 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- Properties used in compile_targets ANT target -->
+    <property name="component.target" value="1.4"/>
+    <property name="component.bootclasspath" value="${java_1_4_bootclasspath}"/>
+
+    <!-- define TCS dependencies -->
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
+    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+    <property name="checksum_utility.jar" value="${tcs_libdir}/checksum_utility/1.0/checksum_utility.jar"/>
+
+    <!-- define 3rd party dependencies -->
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+    <property name="jmock-core.jar" value="${ext_libdir}/jmock/1.2.0/jmock-core-1.2.0.jar"/>
+    <property name="jmock-cglib.jar" value="${ext_libdir}/jmock/1.2.0/jmock-cglib-1.2.0.jar"/>
+    <property name="j2ee.jar" value="${ext_libdir}/j2ee/1.4/j2ee.jar"/>
+
+    <property name="confluence.dir" value="${ext_libdir}/confluence/2.7.1"/>
+    <property name="confluence.libdir" value="${confluence.dir}/confluence/WEB-INF/lib"/>
+    <path id="confluence.classpath">
+        <fileset dir="${confluence.libdir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <!-- the required path elements must be defined even if empty -->
+    <path id="component.tcs-dependencies">
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${checksum_utility.jar}"/>
+        <pathelement location="${logging_wrapper.jar}"/>
+        <pathelement location="${object_formatter.jar}"/>
+    </path>
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${j2ee.jar}"/>
+        <path refid="confluence.classpath"/>
+    </path>
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${jmock-core.jar}"/>
+        <pathelement location="${jmock-cglib.jar}"/>
+    </path>
+</project>

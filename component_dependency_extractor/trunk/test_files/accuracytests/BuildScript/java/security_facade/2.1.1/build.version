@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Security Facade
+component.distfilename=security_facade
+component.package=com.topcoder.security.facade
+component.packagedir=com/topcoder/security/facade
+component.version.major=2
+component.version.minor=1
+component.version.micro=1
+component.version.build=1

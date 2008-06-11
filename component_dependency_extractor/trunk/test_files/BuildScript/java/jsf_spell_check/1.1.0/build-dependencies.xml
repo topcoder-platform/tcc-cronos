@@ -1,0 +1,67 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
+
+    <!-- TCS dependencies -->
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    <property name="configuration_manager.jar"
+              value="${tcs_libdir}/configuration_manager/2.1.5/configuration_manager.jar"/>
+    <property name="jsf_utility.jar" value="${tcs_libdir}/jsf_utility/1.0.1/jsf_utility.jar"/>
+    <property name="json_object.jar" value="${tcs_libdir}/json_object/1.0/json_object.jar"/>
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
+    <property name="spell_check.jar" value="${tcs_libdir}/spell_check/1.0/spell_check.jar"/>
+
+    <!-- 3rd Party Dependencies  -->
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+
+    <property name="jsf.home" location="${ext_libdir}/jsf/1.1.0.1"/>
+    <property name="jsf-api.jar" location="${jsf.home}/jsf-api.jar"/>
+    <property name="jsf-impl.jar" value="${jsf.home}/jsf-impl.jar"/>
+
+    <property name="servlet-api.jar" value="${ext_libdir}/servlet/2.3/servletapi-2.3.jar"/>
+
+    <property name="shale-framework.home" value="${ext_libdir}/shale-framework/1.0.4/lib"/>
+    <property name="shale-test.jar" value="${shale-framework.home}/shale-test-1.0.4.jar"/>
+    <property name="commons-logging.jar" value="${shale-framework.home}/commons-logging-1.1.jar"/>
+    <property name="commons-digester.jar" value="${shale-framework.home}/commons-digester-1.8.jar"/>
+    <property name="commons-collections.jar"
+              value="${shale-framework.home}/commons-collections-3.1.jar"/>
+    <property name="commons-beanutils.jar" value="${shale-framework.home}/commons-beanutils-1.7.0.jar"/>
+
+    <property name="richfaces-ui.home" value="${ext_libdir}/richfaces-ui/3.1.4.GA/lib"/>
+    <property name="richfaces-api.jar" value="${richfaces-ui.home}/richfaces-api-3.1.4.GA.jar"/>
+    <property name="richfaces-impl.jar" value="${richfaces-ui.home}/richfaces-impl-3.1.4.GA.jar"/>
+    <property name="richfaces-ui.jar" value="${richfaces-ui.home}/richfaces-ui-3.1.4.GA.jar"/>
+
+
+    <path id="component.tcs-dependencies">
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${configuration_manager.jar}"/>
+        <pathelement location="${json_object.jar}"/>
+        <pathelement location="${jsf_utility.jar}"/>
+        <pathelement location="${logging_wrapper.jar}"/>
+        <pathelement location="${spell_check.jar}"/>
+    </path>
+
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${jsf-api.jar}"/>
+        <pathelement location="${jsf-impl.jar}"/>
+        <pathelement location="${richfaces-api.jar}"/>
+        <pathelement location="${richfaces-impl.jar}"/>
+        <pathelement location="${richfaces-ui.jar}"/>
+        <pathelement location="${servlet-api.jar}"/>
+    </path>
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${shale-test.jar}"/>
+        <pathelement location="${commons-logging.jar}"/>
+        <pathelement location="${commons-collections.jar}"/>
+        <pathelement location="${commons-beanutils.jar}"/>
+        <pathelement location="${commons-digester.jar}"/>
+    </path>
+
+</project>

@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Confluence Page Content Security Plugin
+component.distfilename=confluence_page_content_security_plugin
+component.package=com.topcoder.confluenceplugin.contentsecurity
+component.packagedir=com/topcoder/confluenceplugin/contentsecurity
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

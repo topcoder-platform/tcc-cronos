@@ -1,0 +1,50 @@
+This is a component for testing builds
+
+TO RUN:
+
+1. Install the component structure in ${basedir}
+
+2. Create "topcoder_global.properties" in ${basedir}/.. and add the properties from steps 2,3,4
+
+3. The following standard build script properties must be set
+	ext_libdir - root of third party libraries
+	tcs_libdir - root of topcoder components
+	java_1_5_bootclasspath - installation path for java 1.5 (only needed for compile_targets task)
+
+4. The following standard build script properties can be changed (defaults are noted)
+	debug=off - as expected
+	verbose=no - as expected
+	cobertura.dir=${ext_libdir}/cobertura/1.8
+		installation directory of cobertura script expects {$cobertura.dir}/cobertura.jar
+		and {$cobertura.dir}/lib/containg Jars for asm, jakarta, and log4j to run cobertura task
+
+5. The following properties need to be set for this component
+	None
+
+NB:
+	The folder ${basedir}/test_reflib contains TopCoder components 
+	that are required by this component's test code. This component is
+	used to by compile_test and test targets. Components are listed under
+	the following directory structure "component name"/"component version".
+	Components are provided AS IS for development purposes only.
+
+	Included:
+
+    
+
+6. Under test_files/META-INF/services, there are files which switch between JBoss and Sun implementation for tests.
+   javax.xml.soap.MessageFactory is used to change different implementation for MessageFactory between JBoss and Sun.
+
+7. DEMO
+   1). Demo is the sample web service with logging handler using web deployment. 
+      It is test_files/WSDemo.war and all source codes are also included.
+      It is set up to use XSLTNodeLoggingHandler as demonstrated in cs which has been updated to reflect actual demo 
+      setup and output.
+
+   2). Deploy test_files/WSDemo.war into JBoss 4.x with JBoss WS 2.0 or Sun Application Server. Depending on how the 
+   server is set up, the access url will be as:
+   
+   http://localhost:8080/WSDemo/ContestSOAP?wsdl
+   
+   3). You can run demo tests or your own client to test and see/verify logging output.
+    

@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=JDBC Driver Data Types
+component.distfilename=jdbc_driver_data_types
+component.package=com.topcoder.jdbc.types
+component.packagedir=com/topcoder/jdbc/types
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=2

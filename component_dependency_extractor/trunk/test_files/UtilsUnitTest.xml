@@ -1,0 +1,48 @@
+<CMConfig>
+  <Config name="UtilsUnitTest">
+       <Property name="requiredString">
+           <Value>value</Value>
+       </Property>     
+       <Property name="requiredStringEmpty">
+           <Value></Value>
+       </Property>     
+       <Property name="optionalString">
+           <Value>valueOptional</Value>
+       </Property>     
+       <Property name="optionalStringEmpty">
+           <Value></Value>
+       </Property>     
+       <!-- use object factory to try to create an array list -->
+       <Property name="objectKey">
+           <Value>objectInstance</Value>
+       </Property>
+       <Property name="ofConfigKey">
+           <Property name="objectInstance">
+               <Property name="type">
+                   <Value>java.util.ArrayList</Value>
+               </Property>
+           </Property>
+       </Property>       
+       <Property name="ofConfigKeyWrong">
+           <Property name="objectInstance">
+               <Property name="type">
+                   <Value>java.util.HashSet</Value>
+               </Property>
+           </Property>
+       </Property>       
+       <Property name="ofConfigKeyWrong2">
+           <Property name="objectInstance">
+               <Property name="type">
+                   <Value>no.this.class</Value>
+               </Property>
+           </Property>
+       </Property>       
+       <Property name="ofConfigKeyWrong3">
+           <Property name="objectInstance">
+               <Property name="type">
+                   <Value>java.util.Collection</Value>
+               </Property>
+           </Property>
+       </Property>       
+  </Config>
+</CMConfig>

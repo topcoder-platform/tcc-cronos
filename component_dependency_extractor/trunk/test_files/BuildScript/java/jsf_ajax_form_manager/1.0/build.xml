@@ -1,0 +1,456 @@
+<?xml version="1.0"?>
+
+<project name="JSF AJAX Form Manager" basedir=".">
+
+    <property file="../topcoder_global.properties"/>
+
+    <!-- COMPONENT PARAMETERS -->
+    <property name="component" value="JSF_AJAX_Form_Manager"/>
+    <property name="package" value="com.topcoder.web.ui.jsf.form.ajaxmanager"/>
+    <property name="packagedir" value="com/topcoder/web/ui/jsf/form/ajaxmanager"/>
+    <property name="distfilename" value="jsf_ajax_form_manager"/>
+    <property name="component_version" value="1.0"/>
+    <property name="component_path" value="${distfilename}/${component_version}"/>
+
+    <!-- DIRECTORY SETUP -->
+    <property name="srcdir" value="src" />
+    <property name="tcs_libdir" value="lib/tcs" />
+    <property name="ext_libdir" value="lib" />
+    <property name="jar_tcs_libdir" value="lib/tcs" />
+    <property name="jar_ext_libdir" value="lib" />
+    <property name="docsdir" value="docs" />
+    <property name="configdir" value="conf" />
+    <property name="testlogdir" value="log" />
+    <property name="testfiles" value="test_files" />
+    <property name="javadocsdir" value="${docsdir}/javadocs" />
+    <property name="webdir" value="web" />
+    <property name="reports" value="reports" />
+
+    <property name="javasrc" value="${srcdir}/java" />
+    <property name="javamain" value="${javasrc}/main" />
+    <property name="javatests" value="${javasrc}/tests" />
+
+    <property name="builddir" value="build" />
+    <property name="build_classdir" value="${builddir}/classes" />
+    <property name="build_testclassdir" value="${builddir}/testClasses" />
+    <property name="build_targetclassdir" value="${builddir}/targetclasses" />
+    <property name="build_distdir" value="${builddir}/dist" />
+    <property name="build_docsdir" value="${builddir}/${docsdir}" />
+    <property name="build_javadocsdir" value="${builddir}/${javadocsdir}" />
+    <property name="build_webdir" value="${builddir}/${webdir}" />
+    <property name="build_lib" value="${builddir}/lib" />
+    <property name="build_tcsdistdir" value="${build_distdir}/${distfilename}-${component_version}" />
+
+    <!-- EXECUTION TAGS -->
+    <property name="debug" value="off" />
+    <property name="verbose" value="no" />
+
+    <!-- COMPONENT DISTRIBUTION STRUCTURE -->
+    <property name="dist_conf" value="${build_tcsdistdir}/${configdir}" />
+    <property name="dist_lib" value="${build_distdir}/lib/tcs" />
+    <property name="dist_src" value="${build_tcsdistdir}/${srcdir}" />
+    <property name="dist_docs" value="${build_tcsdistdir}/${docsdir}" />
+    <property name="dist_javadocs" value="${build_tcsdistdir}/${javadocsdir}" />
+    <property name="dist_testfiles" value="${build_tcsdistdir}/${testfiles}" />
+    <property name="dist_coverage" value="${dist_docs}/coverage" />
+    <property name="docs_coverage" value="${docsdir}/coverage" />
+
+    <!-- NAME FOR .JAR AND .WAR FILES -->
+    <property name="component.jar" value="${dist_lib}/${component_path}/${distfilename}.jar"/>
+    <property name="javadoc.jar" value="javadocs.jar"/>
+    <property name="component.tests.jar" value="${dist_lib}/${distfilename}_tests.jar"/>
+    <property name="component.war" value="${build_distdir}/${distfilename}.war"/>
+    <property name="component.dist.jar" value="${build_distdir}/${distfilename}-${component_version}.jar"/>
+    <property name="dev_submission.jar" value="${component}_${component_version}_dev_submission.jar"/>
+    <property name="design_submission.jar" value="${component}_${component_version}_design_submission.jar"/>
+    <property name="dev_dist.jar" value="${component}_${component_version}_dev_dist.jar"/>
+    <property name="design_dist.jar" value="${component}_${component_version}_design_dist.jar"/>
+
+    <!-- DOCUMENT PACKAGE -->
+    <property name="dist_docpackage" value="${builddir}/doc_package" />
+    <property name="docpackage.jar" value="${distfilename}_docs.jar" />
+
+    <!-- Java Sun Creator -->
+    <property name="commons-beanutils.jar" value="${ext_libdir}/jsf-1_1_01/lib/commons-beanutils.jar"/>
+    <property name="commons-collections.jar" value="${ext_libdir}/jsf-1_1_01/lib/commons-collections.jar"/>
+    <property name="commons-digester.jar" value="${ext_libdir}/jsf-1_1_01/lib/commons-digester.jar"/>
+    <property name="commons-logging.jar" value="${ext_libdir}/jsf-1_1_01/lib/commons-logging.jar"/>
+    <property name="jsf-api.jar" value="${ext_libdir}/jsf-1_1_01/lib/jsf-api.jar"/>
+    <property name="jsf-impl.jar" value="${ext_libdir}/jsf-1_1_01/lib/jsf-impl.jar"/>
+    <property name="j2ee.jar" value="${ext_libdir}/j2ee.jar"/>
+
+    <!--cactus required libraries-->
+    <property name="aspectjrt.jar" location="${ext_libdir}/cactus/1.7.2/lib/aspectjrt-1.2.1.jar"/>
+    <property name="cactus.jar" location="${ext_libdir}/cactus/1.7.2/lib/cactus-1.7.2.jar"/>
+    <property name="cactus.ant.jar" location="${ext_libdir}/cactus/1.7.2/lib/cactus-ant-1.7.2.jar"/>
+    <property name="cargo.jar" location="${ext_libdir}/cactus/1.7.2/lib/cargo-0.5.jar"/>
+    <property name="commons.httpclient.jar" location="${ext_libdir}/cactus/1.7.2/lib/commons-httpclient-2.0.2.jar"/>
+    <property name="commons.logging.jar" location="${ext_libdir}/cactus/1.7.2/lib/commons-logging-1.0.4.jar"/>
+    <property name="httpunit.jar" location="${ext_libdir}/cactus/1.7.2/lib/httpunit-1.6.jar"/>
+    <property name="nekohtml.jar" location="${ext_libdir}/cactus/1.7.2/lib/nekohtml-0.9.1.jar"/>
+
+		<!-- codertura task definitation -->
+		<property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8" />
+		<path id="cobertura.classpath">
+    	<fileset dir="${cobertura.dir}">
+      	  <include name="cobertura.jar" />
+        	<include name="lib/**/*.jar" />
+    	</fileset>
+		</path>
+		<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+		<property name="cobertura.datafile" value="${testlogdir}/cobertura.ser" />
+		<property name="instrumented.dir" value="${builddir}/instrumented" />
+
+    <!--Change this property to a valid Tomcat 5.x home dir to run tests in server environment-->
+    <property name="tomcat5x_home" value="D:\JavaTools\jakarta-tomcat-5.0.28"/>
+
+
+    <!-- TCS Dependencies -->
+    <property name="configmanager.version" value="2.1.5"/>
+    <property name="configmanager.jar.name" value="configuration_manager.jar"/>
+    <property name="configmanager.path" value="configuration_manager/${configmanager.version}"/>
+    <property name="configmanager.jar" value="${tcs_libdir}/${configmanager.path}/${configmanager.jar.name}"/>
+
+    <property name="document_generator.version" value="2.0"/>
+    <property name="document_generator.jar.name" value="document_generator.jar"/>
+    <property name="document_generator.path" value="document_generator/${document_generator.version}"/>
+    <property name="document_generator.jar" value="${tcs_libdir}/${document_generator.path}/${document_generator.jar.name}"/>
+
+    <property name="object_factory.version" value="2.0.1"/>
+    <property name="object_factory.jar.name" value="object_factory.jar"/>
+    <property name="object_factory.path" value="object_factory/${object_factory.version}"/>
+    <property name="object_factory.jar" value="${tcs_libdir}/${object_factory.path}/${object_factory.jar.name}"/>
+
+    <property name="command_line_utility.version" value="1.0"/>
+    <property name="command_line_utility.jar.name" value="command_line_utility.jar"/>
+    <property name="command_line_utility.path" value="command_line_utility/${command_line_utility.version}"/>
+    <property name="command_line_utility.jar" value="${tcs_libdir}/${command_line_utility.path}/${command_line_utility.jar.name}"/>
+
+    <property name="base_exception.version" value="1.0"/>
+    <property name="base_exception.jar.name" value="base_exception.jar"/>
+    <property name="base_exception.path" value="base_exception/${base_exception.version}"/>
+    <property name="base_exception.jar" value="${tcs_libdir}/${base_exception.path}/${base_exception.jar.name}"/>
+
+    <property name="simple_rule_evaluator.version" value="1.0"/>
+    <property name="simple_rule_evaluator.jar.name" value="simple_rule_evaluator.jar"/>
+    <property name="simple_rule_evaluator.path" value="simple_rule_evaluator/${simple_rule_evaluator.version}"/>
+    <property name="simple_rule_evaluator.jar" value="${tcs_libdir}/${simple_rule_evaluator.path}/${simple_rule_evaluator.jar.name}"/>
+
+    <property name="complex_boolean_expression_evaluator.version" value="1.1"/>
+    <property name="complex_boolean_expression_evaluator.jar.name" value="complex_boolean_expression_evaluator.jar"/>
+    <property name="complex_boolean_expression_evaluator.path" value="complex_boolean_expression_evaluator/${complex_boolean_expression_evaluator.version}"/>
+    <property name="complex_boolean_expression_evaluator.jar" value="${tcs_libdir}/${complex_boolean_expression_evaluator.path}/${complex_boolean_expression_evaluator.jar.name}"/>
+
+    <property name="logging_wrapper.version" value="1.2"/>
+    <property name="logging_wrapper.jar.name" value="logging_wrapper.jar"/>
+    <property name="logging_wrapper.path" value="logging_wrapper/${logging_wrapper.version}"/>
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/${logging_wrapper.path}/${logging_wrapper.jar.name}"/>
+
+    <property name="typesafe_enum.version" value="1.0"/>
+    <property name="typesafe_enum.jar.name" value="typesafe_enum.jar"/>
+    <property name="typesafe_enum.path" value="typesafe_enum/${typesafe_enum.version}"/>
+    <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.jar.name}"/>
+
+    <property name="math_expression_evaluator.version" value="1.0"/>
+    <property name="math_expression_evaluator.jar.name" value="math_expression_evaluator.jar"/>
+    <property name="math_expression_evaluator.path" value="math_expression_evaluator/${math_expression_evaluator.version}"/>
+    <property name="math_expression_evaluator.jar" value="${tcs_libdir}/${math_expression_evaluator.path}/${math_expression_evaluator.jar.name}"/>
+
+    <property name="simple_cache.version" value="2.0"/>
+    <property name="simple_cache.jar.name" value="simple_cache.jar"/>
+    <property name="simple_cache.path" value="simple_cache/${simple_cache.version}"/>
+    <property name="simple_cache.jar" value="${tcs_libdir}/${simple_cache.path}/${simple_cache.jar.name}"/>
+
+    <property name="memory_usage.version" value="1.0"/>
+    <property name="memory_usage.jar.name" value="memory_usage.jar"/>
+    <property name="memory_usage.path" value="memory_usage/${memory_usage.version}"/>
+    <property name="memory_usage.jar" value="${tcs_libdir}/${memory_usage.path}/${memory_usage.jar.name}"/>
+
+    <!--cactus classpath-->
+    <path id="cactus.classpath">
+        <path refid="test.build.classpath"/>
+        <pathelement location="${aspectjrt.jar}"/>
+        <pathelement location="${cactus.jar}"/>
+        <pathelement location="${cactus.ant.jar}"/>
+        <pathelement location="${cargo.jar}"/>
+        <pathelement location="${commons.httpclient.jar}"/>
+        <pathelement location="${commons.logging.jar}"/>
+        <pathelement location="${junit.jar}"/>
+    </path>
+
+    <!--cactus taskdefs-->
+    <taskdef resource="cactus.tasks" classpathref="cactus.classpath"/>
+
+    <!-- Java Locations -->
+    <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar"/>
+
+    <!-- Java Sun Creator -->
+    <path id="jsf.classpath">
+        <pathelement location="${jsf-api.jar}"/>
+        <pathelement location="${commons-beanutils.jar}"/>
+        <pathelement location="${commons-collections.jar}"/>
+        <pathelement location="${commons-digester.jar}"/>
+        <pathelement location="${commons-logging.jar}"/>
+        <pathelement location="${jsf-impl.jar}"/>
+    </path>
+
+    <path id="buildlibs">
+        <path refid="jsf.classpath"/>
+        <pathelement location="${j2ee.jar}" />
+        <pathelement location="${configmanager.jar}" />
+        <pathelement location="${command_line_utility.jar}" />
+        <pathelement location="${base_exception.jar}" />
+        <pathelement location="${object_factory.jar}" />
+        <pathelement location="${simple_rule_evaluator.jar}" />
+        <pathelement location="${complex_boolean_expression_evaluator.jar}" />
+        <pathelement location="${logging_wrapper.jar}" />
+        <pathelement location="${typesafe_enum.jar}" />
+        <pathelement location="${math_expression_evaluator.jar}" />
+        <pathelement location="${simple_cache.jar}" />
+        <pathelement location="${memory_usage.jar}" />
+        <pathelement location="${document_generator.jar}" />
+        <pathelement location="${testfiles}" />
+    </path>
+
+    <path id="test.build.classpath">
+        <pathelement location="${build_testclassdir}"/>
+        <pathelement location="${build_classdir}"/>
+        <pathelement location="${build_designdir}"/>
+        <path refid="buildlibs"/>
+    </path>
+
+    <path id="runtime.classpath">
+        <pathelement location="${build_classdir}"/>
+        <path refid="buildlibs"/>
+    </path>
+
+    <target name="compile" description="compiles the runtime source">
+        <mkdir dir="${build_classdir}"/>
+        <javac srcdir="${javamain}" destdir="${build_classdir}" includes="${packagedir}/**" debug="true"
+               verbose="${verbose}">
+            <classpath refid="buildlibs"/>
+        </javac>
+
+        <filter token="title" value="${component} - ${component_version}"/>
+        <filter token="package" value="${package}"/>
+        <filter token="version" value="${component_version}"/>
+        <filter token="project-artifact" value="${component}"/>
+        <filter token="taglib-uri" value="http://www.topcoder.com/${component}"/>
+
+    </target>
+
+    <target name="compile_targets">
+        <!-- test compile against 1.3 -->
+        <mkdir dir="${build_targetclassdir}"/>
+        <mkdir dir="${javatests}"/>
+        <javac srcdir="${javamain}"
+               destdir="${build_targetclassdir}"
+               includes="${packagedir}/**"
+               debug="true"
+               verbose="${verbose}"
+               target="1.3"
+               bootclasspath="${java_1_3_bootclasspath}"
+               extdirs=""
+            >
+            <classpath refid="buildlibs"/>
+        </javac>
+
+        <!-- compile test cases -->
+        <javac srcdir="${javatests}"
+               destdir="${build_targetclassdir}"
+               includes="${packagedir}/**"
+               debug="true"
+               verbose="${verbose}"
+               target="1.3"
+               bootclasspath="${java_1_3_bootclasspath}"
+               extdirs=""
+            >
+            <classpath refid="buildlibs"/>
+        </javac>
+        <delete dir="${build_targetclassdir}"/>
+    </target>
+
+
+    <target name="compile_tests" depends="compile"
+            description="compiles the test sources into a cactified war file">
+
+        <!--compile the testcases-->
+        <mkdir dir="${build_testclassdir}"/>
+        <javac destdir="${build_testclassdir}" debug="true">
+            <src path="${javatests}"/>
+            <classpath>
+                <path refid="cactus.classpath"/>
+            </classpath>
+        </javac>
+
+    </target>
+
+    <target name="war" depends="compile_tests">
+        <mkdir dir="${build_distdir}" />
+        <war warfile="${component.war}" webxml="${testfiles}/WEB-INF/web.xml">
+            <webinf dir="${testfiles}/WEB-INF" excludes="web.xml" />
+            <!-- <classes dir="${build_examples}"/> -->
+            <lib file="${jsf-api.jar}"/>
+            <lib file="${commons-beanutils.jar}"/>
+            <lib file="${commons-collections.jar}"/>
+            <lib file="${commons-digester.jar}"/>
+            <lib file="${commons-logging.jar}"/>
+            <lib file="${jsf-impl.jar}"/>
+            <lib file="${builddir}/lib/${component}.jar"/>
+          	<lib dir="${cobertura.dir}">
+            	  <include name="cobertura.jar" />
+         	      <include name="lib/**/*.jar" />
+           	</lib>
+
+            <!-- <fileset dir="${basedir}/test_files/demoWebapp/web"/> -->
+        </war>
+    </target>
+
+    <target name="test.prepare" depends="rt-jar, war">
+        <cactifywar srcfile="${component.war}" destfile="${build_distdir}/${distfilename}-cactified.war" >
+            <classes dir="${build_testclassdir}"/>
+            <lib file="${httpunit.jar}"/>
+            <servletredirector/>
+            <fileset dir="${basedir}/test_files/demo/" />
+        </cactifywar>
+        <!-- <mkdir dir="${testlogdir}/tomcat5x" /> -->
+    </target>
+
+    <target name="test" depends="test.prepare" description="runs the test inside the configured Tomcat instance">
+        <mkdir dir="${testlogdir}"/>
+        <!-- Run the tests -->
+        <cactus warfile="${build_distdir}/${distfilename}-cactified.war"
+                fork="yes" failureproperty="tests.failed" haltonerror="false">
+						<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}" />
+            <classpath>
+                <pathelement location="${instrumented.dir}"/>
+                <pathelement location="${build_testclassdir}"/>
+								<path refid="test.build.classpath"/>
+								<path refid="cobertura.classpath"/>
+                <pathelement location="${httpunit.jar}"/>
+                <pathelement location="${nekohtml.jar}"/>
+            </classpath>
+
+            <containerset>
+                <tomcat5x if="tomcat5x_home"
+                          dir="${tomcat5x_home}"
+                          output="${testlogdir}/tomcat5x.out"
+                          todir="${testlogdir}"/>
+            </containerset>
+
+            <formatter type="brief" usefile="true"/>
+            <formatter type="xml" usefile="true"/>
+            <formatter type="brief" usefile="false"/>
+
+            <test name="${package}.AllTests"/>
+        </cactus>
+    </target>
+
+		<target name="coveragereport" depends="test">
+
+				<cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}" datafile="${cobertura.datafile}">
+    			<fileset dir="${javamain}">
+        		<include name="**/*.java" />
+    			</fileset>
+    			<fileset dir="${javatests}">
+        		<include name="**/*.java" />
+    			</fileset>
+				</cobertura-report>
+
+		</target>
+
+    <target name="reports" depends="test" description="creates HTML reports from the test XML logs">
+        <mkdir dir="${reports}"/>
+
+        <junitreport todir="${reports}">
+            <fileset dir="${testlogdir}">
+                <include name="*.xml"/>
+            </fileset>
+            <report format="frames" todir="${reports}"/>
+        </junitreport>
+        <echo>The execution of reports is complete. Reports are available in /${reports}</echo>
+    </target>
+
+    <target name="dist" depends="compile">
+        <mkdir dir="${dist_lib}/${component_path}"/>
+        <jar jarfile="${component.jar}" basedir="${build_classdir}"/>
+    </target>
+
+    <target name="dist_tests" depends="compile_tests">
+        <mkdir dir="${dist_lib}"/>
+        <jar jarfile="${component.tests.jar}" basedir="${build_testclassdir}"/>
+    </target>
+
+    <target name="javadoc" depends="compile" description="builds the javadoc for the source">
+        <mkdir dir="${dist_javadocs}"/>
+        <javadoc packagenames="${package}.*"
+                 destdir="${dist_javadocs}"
+                 windowtitle="Topcoder Software"
+                 header="&lt;table border=0 cellpadding=0 cellspacing=2&gt;&lt;tr&gt;&lt;td&gt;&lt;font class=tcoder2&gt;&#091; &lt;/font&gt;&lt;font class=tcoder1&gt;TOP&lt;/font&gt;&lt;font class=tcoder2&gt;CODER &lt;/font&gt;&lt;font class=tcoder2&gt;&#093;&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font class=tcoder4&gt;&#153;&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td class=tcoder3 align=center&gt;&lt;font class=tcoder3&gt;SOFTWARE&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
+                 footer="&lt;table border=0 cellpadding=0 cellspacing=2&gt;&lt;tr&gt;&lt;td&gt;&lt;font class=tcoder2&gt;&#091; &lt;/font&gt;&lt;font class=tcoder1&gt;TOP&lt;/font&gt;&lt;font class=tcoder2&gt;CODER &lt;/font&gt;&lt;font class=tcoder2&gt;&#093;&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font class=tcoder4&gt;&#153;&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td class=tcoder3 align=center&gt;&lt;font class=tcoder3&gt;SOFTWARE&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
+                 bottom="&lt;font class=tcoder5&gt;Contact TopCoder Software at &lt;a href='http://www.topcodersoftware.com'&gt;www.topcodersoftware.com&lt;/a&gt;&lt;/font&gt;"
+                 stylesheetfile="${javadocsdir}/stylesheet.css"
+                 verbose="${verbose}">
+            <tag name="copyright" description="Copyright:" scope="types"/>
+            <sourcepath>
+                <pathelement path="${javamain}"/>
+            </sourcepath>
+            <classpath>
+                <path refid="buildlibs"/>
+                <pathelement path="${build_designdir}"/>
+            </classpath>
+        </javadoc>
+    </target>
+
+    <target name="clean" description="deletes all files that were generated during build">
+        <delete dir="${builddir}"/>
+    </target>
+
+
+    <target name="deploy" depends="dist">
+    </target>
+
+    <target name="main" depends="deploy,test">
+    </target>
+
+    <!-- Java Sun Creator -->
+    <target name="rt-jar"
+            depends="compile"
+            description="Create runtime jar">
+        <mkdir dir="${builddir}/lib"/>
+        <mkdir dir="${testlogdir}"/>
+				<mkdir dir="${instrumented.dir}"/>
+
+				<delete file="${cobertura.datafile}" />
+
+        <copy todir="${instrumented.dir}">
+            <fileset dir="${build_classdir}" />
+        </copy>
+
+				<cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
+						<!-- all included -->
+						<fileset dir="${build_classdir}">
+        			<include name="**/*.class" />
+    				</fileset>
+				</cobertura-instrument>
+
+        <copy todir="${builddir}/classes/META-INF">
+            <fileset dir="${configdir}">
+                <include name="faces-config.xml"/>
+                <include name="*.tld"/>
+            </fileset>
+        </copy>
+
+        <jar jarfile="${builddir}/lib/${component}.jar"
+             basedir="${instrumented.dir}"
+             manifest="${configdir}/manifest-rt.mf"/>
+    </target>
+
+    <!-- ************************************************************************** -->
+    <!-- ************ REMOVE EVERYTHING BELOW HERE FOR THE DISTRIBUTION ************* -->
+    <!-- ************************************************************************** -->
+
+    <!-- ************************************************************************** -->
+    <!-- ************************ END REMOVE EVERYTHING ***************************** -->
+    <!-- ************************************************************************** -->
+</project>

@@ -1,0 +1,37 @@
+<project name="Dependency Import" default="dist" basedir=".">
+
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.4"/>
+    <property name="component.bootclasspath" value="${java_1_4_bootclasspath}"/>
+
+    <!-- property file defining the component's dependencies -->
+    <!-- TCS dependencies -->
+    <property name="auditor.jar" value="${tcs_libdir}/auditor/2.0.1/auditor.jar"/>
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.1.0/object_factory.jar"/>
+    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+    <property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar"/>
+    <property name="object_factory_configuration_api_plugin.jar"
+              value="${tcs_libdir}/object_factory_configuration_api_plugin/1.0.0/object_factory_configuration_api_plugin.jar"/>
+    <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
+
+    <!-- 3rd party dependencies -->
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+
+    <!-- the required path elements must be defined even if empty -->
+    <path id="component.tcs-dependencies">
+        <pathelement location="${auditor.jar}"/>
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${logging_wrapper.jar}"/>
+        <pathelement location="${typesafe_enum.jar}"/>
+        <pathelement location="${object_formatter.jar}"/>
+        <pathelement location="${object_factory.jar}"/>
+        <pathelement location="${object_factory_configuration_api_plugin.jar}"/>
+        <pathelement location="${configuration_api.jar}"/>
+    </path>
+    <path id="component.3rdParty-dependencies"/>
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+    </path>
+</project>

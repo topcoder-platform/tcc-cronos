@@ -1,0 +1,80 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies -->
+    <property name="auditor.name" value="auditor" />
+    <property name="auditor.version" value="2.0.1" />
+    <property name="auditor.path" value="${auditor.name}/${auditor.version}" />
+    <property name="auditor.jar" value="${tcs_libdir}/${auditor.path}/${auditor.name}.jar" />
+
+    <property name="authentication_manager.name" value="authentication_manager" />
+    <property name="authentication_manager.version" value="1.0.3" />
+    <property name="authentication_manager.path" value="${authentication_manager.name}/${authentication_manager.version}" />
+    <property name="authentication_manager.jar" value="${tcs_libdir}/${authentication_manager.path}/${authentication_manager.name}.jar" />
+
+    <property name="functional_entitlement.name" value="functional_entitlement" />
+    <property name="functional_entitlement.version" value="1.0.3" />
+    <property name="functional_entitlement.path" value="${functional_entitlement.name}/${functional_entitlement.version}" />
+    <property name="functional_entitlement.jar" value="${tcs_libdir}/${functional_entitlement.path}/${functional_entitlement.name}.jar" />
+
+    <property name="data_entitlement.name" value="data_entitlement" />
+    <property name="data_entitlement.version" value="1.1.4" />
+    <property name="data_entitlement.path" value="${data_entitlement.name}/${data_entitlement.version}" />
+    <property name="data_entitlement.jar" value="${tcs_libdir}/${data_entitlement.path}/${data_entitlement.name}.jar" />
+
+    <property name="user_group_manager.name" value="user_group_manager" />
+    <property name="user_group_manager.version" value="1.0.1" />
+    <property name="user_group_manager.path" value="${user_group_manager.name}/${user_group_manager.version}" />
+    <property name="user_group_manager.jar" value="${tcs_libdir}/${user_group_manager.path}/${user_group_manager.name}.jar" />
+
+    <property name="logging_wrapper.name" value="logging_wrapper" />
+    <property name="logging_wrapper.version" value="2.0.0" />
+    <property name="logging_wrapper.path" value="${logging_wrapper.name}/${logging_wrapper.version}" />
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/${logging_wrapper.path}/${logging_wrapper.name}.jar" />
+
+    <property name="base_exception.name" value="base_exception" />
+    <property name="base_exception.version" value="2.0.0" />
+    <property name="base_exception.path" value="${base_exception.name}/${base_exception.version}" />
+    <property name="base_exception.jar" value="${tcs_libdir}/${base_exception.path}/${base_exception.name}.jar" />
+
+    <property name="object_factory.name" value="object_factory" />
+    <property name="object_factory.version" value="2.1.0" />
+    <property name="object_factory.path" value="${object_factory.name}/${object_factory.version}" />
+    <property name="object_factory.jar" value="${tcs_libdir}/${object_factory.path}/${object_factory.name}.jar" />
+
+    <property name="object_formatter.name" value="object_formatter" />
+    <property name="object_formatter.version" value="1.0.0" />
+    <property name="object_formatter.path" value="${object_formatter.name}/${object_formatter.version}" />
+    <property name="object_formatter.jar" value="${tcs_libdir}/${object_formatter.path}/${object_formatter.name}.jar" />
+
+    <property name="configuration_api.name" value="configuration_api" />
+    <property name="configuration_api.version" value="1.0.0" />
+    <property name="configuration_api.path" value="${configuration_api.name}/${configuration_api.version}" />
+    <property name="configuration_api.jar" value="${tcs_libdir}/${configuration_api.path}/${configuration_api.name}.jar" />
+
+    <property name="object_factory_configuration_api_plugin.name" value="object_factory_configuration_api_plugin" />
+    <property name="object_factory_configuration_api_plugin.version" value="1.0.0" />
+    <property name="object_factory_configuration_api_plugin.path" value="${object_factory_configuration_api_plugin.name}/${object_factory_configuration_api_plugin.version}" />
+    <property name="object_factory_configuration_api_plugin.jar" value="${tcs_libdir}/${object_factory_configuration_api_plugin.path}/${object_factory_configuration_api_plugin.name}.jar" />
+
+    <property name="typesafe_enum.name" value="typesafe_enum" />
+    <property name="typesafe_enum.version" value="1.1.0" />
+    <property name="typesafe_enum.path" value="${typesafe_enum.name}/${typesafe_enum.version}" />
+    <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.name}.jar" />
+
+    <!-- the required path elements must be defined even if empty -->
+    <path id="component.tcs-dependencies">
+        <pathelement location="${auditor.jar}" />
+        <pathelement location="${authentication_manager.jar}" />
+        <pathelement location="${base_exception.jar}" />
+        <pathelement location="${configuration_api.jar}" />
+        <pathelement location="${data_entitlement.jar}" />
+        <pathelement location="${functional_entitlement.jar}" />
+        <pathelement location="${logging_wrapper.jar}" />
+        <pathelement location="${object_factory.jar}" />
+        <pathelement location="${object_factory_configuration_api_plugin.jar}" />
+        <pathelement location="${object_formatter.jar}" />
+        <pathelement location="${typesafe_enum.jar}" />
+        <pathelement location="${user_group_manager.jar}"/>
+    </path>
+    <path id="component.3rdParty-dependencies" />
+    <path id="component.test.3rdParty-dependencies" />
+</project>

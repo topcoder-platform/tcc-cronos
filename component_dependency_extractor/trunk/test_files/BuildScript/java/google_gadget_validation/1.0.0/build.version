@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Google Gadget Validation
+component.distfilename=google_gadget_validation
+component.package=com.topcoder.widget.validation.googlegadget
+component.packagedir=com/topcoder/widget/validation/googlegadget
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

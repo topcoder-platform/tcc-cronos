@@ -1,0 +1,9 @@
+#property file defining the component's information
+component.name=Lexical Analyzer
+component.distfilename=lexical_analyzer
+component.package=com.topcoder.util.lexicalanalyzer
+component.packagedir=com/topcoder/util/lexicalanalyzer
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

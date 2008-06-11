@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Vault Hibernate Persistence
+component.distfilename=vault_hibernate_persistence
+component.package=com.topcoder.vault.facade.persistence.hibernate
+component.packagedir=com/topcoder/vault/facade/persistence/hibernate
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

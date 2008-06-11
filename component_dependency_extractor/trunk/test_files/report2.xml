@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components>
+<component language="java" name="file_upload" version="2.2.0">
+<dependency category="compile" name="base_exception" path="../tcs/lib/tcs/base_exception/2.0.0/base_exception.jar" type="internal" version="2.0.0"/>
+<dependency category="compile" name="configuration_api" path="../tcs/lib/tcs/configuration_api/1.0.0/configuration_api.jar" type="internal" version="1.0.0"/>
+<dependency category="compile" name="configuration_manager" path="../tcs/lib/tcs/configuration_manager/2.1.5/configuration_manager.jar" type="internal" version="2.1.5"/>
+<dependency category="compile" name="file_system_server" path="../tcs/lib/tcs/file_system_server/1.0.0/file_system_server.jar" type="internal" version="1.0.0"/>
+<dependency category="compile" name="guid_generator" path="../tcs/lib/tcs/guid_generator/1.0/guid_generator.jar" type="internal" version="1.0"/>
+<dependency category="compile" name="ip_server" path="../tcs/lib/tcs/ip_server/2.0.1/ip_server.jar" type="internal" version="2.0.1"/>
+<dependency category="compile" name="typesafe_enum" path="../tcs/lib/tcs/typesafe_enum/1.1.0/typesafe_enum.jar" type="internal" version="1.1.0"/>
+<dependency category="compile" name="servlet-api" path="../tcs/lib/third_party/servlet-api/2.3/servlet-api.jar" type="external" version="2.3"/>
+<dependency category="test" name="junit" path="../tcs/lib/third_party/junit/3.8.2/junit.jar" type="external" version="3.8.2"/>
+<dependency category="test" name="httpunit" path="../tcs/lib/third_party/httpunit/1.6.2/httpunit.jar" type="external" version="1.6.2"/>
+<dependency category="test" name="mysql-connector-java-3.1.8-bin" path="../tcs/lib/third_party/mysql/3.1.8a/mysql-connector-java-3.1.8-bin.jar" type="external" version="3.1.8a"/>
+<dependency category="test" name="base_exception" path="../tcs/lib/tcs/base_exception/2.0.0/base_exception.jar" type="internal" version="2.0.0"/>
+<dependency category="test" name="configuration_api" path="../tcs/lib/tcs/configuration_api/1.0.0/configuration_api.jar" type="internal" version="1.0.0"/>
+<dependency category="test" name="configuration_manager" path="../tcs/lib/tcs/configuration_manager/2.1.5/configuration_manager.jar" type="internal" version="2.1.5"/>
+<dependency category="test" name="file_system_server" path="../tcs/lib/tcs/file_system_server/1.0.0/file_system_server.jar" type="internal" version="1.0.0"/>
+<dependency category="test" name="guid_generator" path="../tcs/lib/tcs/guid_generator/1.0/guid_generator.jar" type="internal" version="1.0"/>
+<dependency category="test" name="ip_server" path="../tcs/lib/tcs/ip_server/2.0.1/ip_server.jar" type="internal" version="2.0.1"/>
+<dependency category="test" name="typesafe_enum" path="../tcs/lib/tcs/typesafe_enum/1.1.0/typesafe_enum.jar" type="internal" version="1.1.0"/>
+<dependency category="test" name="servlet-api" path="../tcs/lib/third_party/servlet-api/2.3/servlet-api.jar" type="external" version="2.3"/>
+</component>
+<component language="java" name="authentication" version="1.0.1">
+<dependency category="compile" name="junit" path="../tcs/lib/third_party/junit/3.8.2/junit.jar" type="external" version="3.8.2"/>
+<dependency category="compile" name="mysql-connector-java-3.1.14-bin" path="../tcs/lib/third_party/mysql_connector/3.1.14/mysql-connector-java-3.1.14-bin.jar" type="external" version="3.1.14"/>
+<dependency category="compile" name="jaas" path="../tcs/lib/third_party/jaas.jar" type="external" version=""/>
+<dependency category="compile" name="user_profile" path="../tcs/lib/tcs/user_profile/1.0.1/user_profile.jar" type="internal" version="1.0.1"/>
+<dependency category="compile" name="base_exception" path="../tcs/lib/tcs/base_exception/1.0/base_exception.jar" type="internal" version="1.0"/>
+<dependency category="compile" name="db_connection_factory" path="../tcs/lib/tcs/db_connection_factory/1.0/db_connection_factory.jar" type="internal" version="1.0"/>
+<dependency category="compile" name="generic_event_manager" path="../tcs/lib/tcs/generic_event_manager/1.0/generic_event_manager.jar" type="internal" version="1.0"/>
+<dependency category="compile" name="configuration_manager" path="../tcs/lib/tcs/configuration_manager/2.1.5/configuration_manager.jar" type="internal" version="2.1.5"/>
+<dependency category="compile" name="data_validation" path="../tcs/lib/tcs/data_validation/1.0/data_validation.jar" type="internal" version="1.0"/>
+<dependency category="compile" name="id_generator" path="../tcs/lib/tcs/id_generator/3.0/id_generator.jar" type="internal" version="3.0"/>
+<dependency category="test" name="junit" path="../tcs/lib/third_party/junit/3.8.2/junit.jar" type="external" version="3.8.2"/>
+<dependency category="test" name="mysql-connector-java-3.1.14-bin" path="../tcs/lib/third_party/mysql_connector/3.1.14/mysql-connector-java-3.1.14-bin.jar" type="external" version="3.1.14"/>
+<dependency category="test" name="jaas" path="../tcs/lib/third_party/jaas.jar" type="external" version=""/>
+<dependency category="test" name="user_profile" path="../tcs/lib/tcs/user_profile/1.0.1/user_profile.jar" type="internal" version="1.0.1"/>
+<dependency category="test" name="base_exception" path="../tcs/lib/tcs/base_exception/1.0/base_exception.jar" type="internal" version="1.0"/>
+<dependency category="test" name="db_connection_factory" path="../tcs/lib/tcs/db_connection_factory/1.0/db_connection_factory.jar" type="internal" version="1.0"/>
+<dependency category="test" name="generic_event_manager" path="../tcs/lib/tcs/generic_event_manager/1.0/generic_event_manager.jar" type="internal" version="1.0"/>
+<dependency category="test" name="configuration_manager" path="../tcs/lib/tcs/configuration_manager/2.1.5/configuration_manager.jar" type="internal" version="2.1.5"/>
+<dependency category="test" name="data_validation" path="../tcs/lib/tcs/data_validation/1.0/data_validation.jar" type="internal" version="1.0"/>
+<dependency category="test" name="id_generator" path="../tcs/lib/tcs/id_generator/3.0/id_generator.jar" type="internal" version="3.0"/>
+</component>
+<component language="dot_net" name="authentication" version="1.0">
+<dependency category="compile" name="encryption" path="..\tcs\bin\tcs\encryption\1.0\TopCoder.Security.Encryption.dll" type="internal" version="1.0"/>
+<dependency category="compile" name="reference_collection" path="..\tcs\bin\tcs\reference_collection\1.0\TopCoder.Util.Collection.Reference.dll" type="internal" version="1.0"/>
+<dependency category="compile" name="simple_file_database" path="..\tcs\bin\tcs\simple_file_database-1.0.dll" type="internal" version="1.0"/>
+<dependency category="compile" name="configuration_manager" path="..\tcs\bin\tcs\configuration_manager\2.0\TopCoder.Util.ConfigurationManager.dll" type="internal" version="2.0"/>
+<dependency category="compile" name="logging_wrapper" path="..\tcs\bin\tcs\logging_wrapper\2.0\TopCoder.LoggingWrapper.dll" type="internal" version="2.0"/>
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+<dependency category="test" name="encryption" path="..\tcs\bin\tcs\encryption\1.0\TopCoder.Security.Encryption.dll" type="internal" version="1.0"/>
+<dependency category="test" name="reference_collection" path="..\tcs\bin\tcs\reference_collection\1.0\TopCoder.Util.Collection.Reference.dll" type="internal" version="1.0"/>
+<dependency category="test" name="simple_file_database" path="..\tcs\bin\tcs\simple_file_database-1.0.dll" type="internal" version="1.0"/>
+<dependency category="test" name="configuration_manager" path="..\tcs\bin\tcs\configuration_manager\2.0\TopCoder.Util.ConfigurationManager.dll" type="internal" version="2.0"/>
+<dependency category="test" name="logging_wrapper" path="..\tcs\bin\tcs\logging_wrapper\2.0\TopCoder.LoggingWrapper.dll" type="internal" version="2.0"/>
+</component>
+</components>

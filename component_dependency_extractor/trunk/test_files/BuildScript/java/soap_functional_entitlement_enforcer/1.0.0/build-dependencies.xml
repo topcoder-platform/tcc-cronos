@@ -1,0 +1,62 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- Properties used in compile_targets ANT target -->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
+
+    <!-- property file defining the component's dependencies -->
+
+    <!-- define TCS dependencies -->
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
+    <property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar"/>
+    <property name="auditor.jar" value="${tcs_libdir}/auditor/2.0.1/auditor.jar"/>
+    <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.1.0/object_factory.jar"/>
+    <property name="object_factory_configuration_api_plugin.jar"
+              value="${tcs_libdir}/object_factory_configuration_api_plugin/1.0.0/object_factory_configuration_api_plugin.jar"/>
+    <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
+    <property name="security_facade.jar" value="${tcs_libdir}/security_facade/2.0/security_facade.jar"/>
+    <property name="functional_entitlement.jar"
+              value="${tcs_libdir}/functional_entitlement/1.0.3/functional_entitlement.jar"/>
+
+    <!-- define 3rd party dependencies -->
+    <property name="axiom.dir" value="${ext_libdir}/axiom/1.2.5"/>
+    <property name="axiom-dom.jar" value="${axiom.dir}/axiom-dom-1.2.5.jar"/>
+    <property name="axiom-impl.jar" value="${axiom.dir}/axiom-impl-1.2.5.jar"/>
+    <property name="axiom-api.jar" value="${axiom.dir}/axiom-api-1.2.5.jar"/>
+    <property name="stax-api.jar" value="${axiom.dir}/lib/stax-api-1.0.1.jar"/>
+    <property name="commons-logging.jar" value="${axiom.dir}/lib/commons-logging-1.0.4.jar"/>
+
+    <property name="axis2-saaj.jar" value="${ext_libdir}/axis2/1.3/lib/axis2-saaj-1.3.jar"/>
+    <property name="axis2-saaj-api.jar" value="${ext_libdir}/axis2/1.3/lib/axis2-saaj-api-1.3.jar"/>
+    <property name="stax.jar" value="${ext_libdir}/stax/1.2/stax-1.2.0.jar"/>
+
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+
+    <path id="component.tcs-dependencies">
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${configuration_api.jar}"/>
+        <pathelement location="${auditor.jar}"/>
+        <pathelement location="${object_formatter.jar}"/>
+        <pathelement location="${logging_wrapper.jar}"/>
+        <pathelement location="${object_factory.jar}"/>
+        <pathelement location="${object_factory_configuration_api_plugin.jar}"/>
+        <pathelement location="${typesafe_enum.jar}"/>
+        <pathelement location="${security_facade.jar}"/>
+        <pathelement location="${functional_entitlement.jar}"/>
+    </path>
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${axis2-saaj.jar}"/>
+        <pathelement location="${axis2-saaj-api.jar}"/>
+        <pathelement location="${axiom-dom.jar}"/>
+        <pathelement location="${axiom-impl.jar}"/>
+        <pathelement location="${axiom-api.jar}"/>
+        <pathelement location="${stax-api.jar}"/>
+        <pathelement location="${stax.jar}"/>
+        <pathelement location="${commons-logging.jar}"/>
+    </path>
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+    </path>
+
+</project>

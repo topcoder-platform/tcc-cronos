@@ -1,0 +1,77 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{596934BE-67BE-4DAE-81DB-D408EF755536}"
+	ProjectSection(SolutionItems) = preProject
+		default.build = default.build
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{0C7BC4E5-356B-4BDA-B819-4A212E0CE681}"
+	ProjectSection(SolutionItems) = preProject
+		docs\WCF_Text_Translation_Service_Requirements_Specification.pdf = docs\WCF_Text_Translation_Service_Requirements_Specification.pdf
+		docs\WCF_Text_Translation_Service_Requirements_Specification.rtf = docs\WCF_Text_Translation_Service_Requirements_Specification.rtf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test_files", "test_files", "{1E5CAAE8-4907-402D-851C-FA9E762547D0}"
+	ProjectSection(SolutionItems) = preProject
+		test_files\ExceptionManager.xml = test_files\ExceptionManager.xml
+		test_files\GuidTextTranslation.xml = test_files\GuidTextTranslation.xml
+		test_files\Logger.xml = test_files\Logger.xml
+		test_files\ObjectFactory.xml = test_files\ObjectFactory.xml
+		test_files\readme.txt = test_files\readme.txt
+		test_files\SqlTextTranslationPersistence.xml = test_files\SqlTextTranslationPersistence.xml
+		test_files\stored_procedures.sql = test_files\stored_procedures.sql
+		test_files\TopCoder.Services.WCF.TextTranslation.DeveloperTest.dll.config = test_files\TopCoder.Services.WCF.TextTranslation.DeveloperTest.dll.config
+		test_files\trigger.sql = test_files\trigger.sql
+		test_files\WCFBase.xml = test_files\WCFBase.xml
+		test_files\WCFDistributedCache.xml = test_files\WCFDistributedCache.xml
+		test_files\WCFTextTranslationService.SQL = test_files\WCFTextTranslationService.SQL
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopCoder.Services.WCF.TextTranslation", "TopCoder.Services.WCF.TextTranslation\TopCoder.Services.WCF.TextTranslation.csproj", "{50CF2163-BBA7-4335-AEF6-6526D0B72A7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopCoder.Services.WCF.TextTranslation.Clients", "TopCoder.Services.WCF.TextTranslation.Clients\TopCoder.Services.WCF.TextTranslation.Clients.csproj", "{4E81BCFD-28D6-4D73-A1D9-EEB0581754BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopCoder.Services.WCF.TextTranslation.AccuracyTests", "TopCoder.Services.WCF.TextTranslation.AccuracyTests\TopCoder.Services.WCF.TextTranslation.AccuracyTests.csproj", "{584C98E3-AE21-4E65-8279-D05014521FF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopCoder.Services.WCF.TextTranslation.StressTests", "TopCoder.Services.WCF.TextTranslation.StressTests\TopCoder.Services.WCF.TextTranslation.StressTests.csproj", "{8016EA74-7E1A-4548-B666-660EB1D1022C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopCoder.Services.WCF.TextTranslation.FailureTests", "TopCoder.Services.WCF.TextTranslation.FailureTests\TopCoder.Services.WCF.TextTranslation.FailureTests.csproj", "{884E223A-4A7A-401C-A941-848D026C7F98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopCoder.Services.WCF.TextTranslation.DeveloperTests", "TopCoder.Services.WCF.TextTranslation.DeveloperTests\TopCoder.Services.WCF.TextTranslation.DeveloperTests.csproj", "{432392D6-EECE-4F29-AA44-9F9FF862A595}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50CF2163-BBA7-4335-AEF6-6526D0B72A7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50CF2163-BBA7-4335-AEF6-6526D0B72A7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50CF2163-BBA7-4335-AEF6-6526D0B72A7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50CF2163-BBA7-4335-AEF6-6526D0B72A7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E81BCFD-28D6-4D73-A1D9-EEB0581754BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E81BCFD-28D6-4D73-A1D9-EEB0581754BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E81BCFD-28D6-4D73-A1D9-EEB0581754BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E81BCFD-28D6-4D73-A1D9-EEB0581754BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{584C98E3-AE21-4E65-8279-D05014521FF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{584C98E3-AE21-4E65-8279-D05014521FF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{584C98E3-AE21-4E65-8279-D05014521FF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{584C98E3-AE21-4E65-8279-D05014521FF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8016EA74-7E1A-4548-B666-660EB1D1022C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8016EA74-7E1A-4548-B666-660EB1D1022C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8016EA74-7E1A-4548-B666-660EB1D1022C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8016EA74-7E1A-4548-B666-660EB1D1022C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{884E223A-4A7A-401C-A941-848D026C7F98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{884E223A-4A7A-401C-A941-848D026C7F98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{884E223A-4A7A-401C-A941-848D026C7F98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{884E223A-4A7A-401C-A941-848D026C7F98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{432392D6-EECE-4F29-AA44-9F9FF862A595}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{432392D6-EECE-4F29-AA44-9F9FF862A595}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{432392D6-EECE-4F29-AA44-9F9FF862A595}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{432392D6-EECE-4F29-AA44-9F9FF862A595}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
