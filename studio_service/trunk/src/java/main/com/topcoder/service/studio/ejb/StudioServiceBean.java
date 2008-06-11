@@ -93,19 +93,21 @@ import java.util.List;
  * @version 1.0
  */
 @WebService(endpointInterface = "com.topcoder.service.studio.StudioService")
-@RunAs("Administrator")
-@DeclareRoles( { "User", "Administrator" })
+@RunAs("Cockpit Administrator")
+@RolesAllowed("Cockpit User")
+@DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
+@TransactionManagement(TransactionManagementType.CONTAINER)
 @Stateless
 public class StudioServiceBean implements StudioService {
     /**
      * Private constant specifying user role.
      */
-    private static final String USER_ROLE = "User";
+    private static final String USER_ROLE = "Cockpit User";
 
     /**
      * Private constant specifying administrator role.
      */
-    private static final String ADMIN_ROLE = "Administrator";
+    private static final String ADMIN_ROLE = "Cockpit Administrator";
 
     /**
      * <p>
