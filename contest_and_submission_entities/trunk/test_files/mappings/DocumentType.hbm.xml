@@ -9,11 +9,7 @@
 			types: 1. Specification 2. Template
 		</comment>
 
-		<id name="documentTypeId" column="document_type_id" type="long">
-			<generator class="sequence">
-				<param name="sequence">sq_document_type_lu</param>
-			</generator>
-		</id>
+		<id name="documentTypeId" column="document_type_id" type="long"/>
 
 		<property name="description" length="100" column="document_type_desc"/>
 

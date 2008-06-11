@@ -7,11 +7,7 @@
 		<comment>Tables which describes payment status</comment>
 
 		<id name="paymentStatusId" column="payment_status_id"
-			type="long">
-			<generator class="sequence">
-				<param name="sequence">sq_payment_status_lu</param>
-			</generator>
-		</id>
+			type="long" />
 
 		<property name="description" length="100"
 			column="payments_status_desc" />

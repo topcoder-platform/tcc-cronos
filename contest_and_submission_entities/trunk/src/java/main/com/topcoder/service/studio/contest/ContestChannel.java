@@ -14,6 +14,10 @@ import java.io.Serializable;
  * Thread Safety: This entity is not thread safe since it is mutable.
  * </p>
  *
+ * <p>
+ * Version 1.1: removed name, parentChannelId and fileType fields.
+ * </p>
+ * 
  * @author tushak, cyberjag
  * @version 1.0
  */
@@ -32,21 +36,6 @@ public class ContestChannel implements Serializable {
      * Represents the description of category.
      */
     private String description;
-
-    /**
-     * Represents the name of category.
-     */
-    private String name;
-
-    /**
-     * Represents the parent channel.
-     */
-    private Long parentChannelId;
-
-    /**
-     * Represents the file type, default for category.
-     */
-    private StudioFileType fileType;
 
     /**
      * Default constructor.
@@ -91,63 +80,6 @@ public class ContestChannel implements Serializable {
      */
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    /**
-     * Returns the name.
-     *
-     * @return the name.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Updates the name with the specified value.
-     *
-     * @param name
-     *            the name to set.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Returns the parentChannelId.
-     *
-     * @return the parentChannelId.
-     */
-    public Long getParentChannelId() {
-        return parentChannelId;
-    }
-
-    /**
-     * Updates the parentChannelId with the specified value.
-     *
-     * @param parentChannelId
-     *            the parentChannelId to set.
-     */
-    public void setParentChannelId(Long parentChannelId) {
-        this.parentChannelId = parentChannelId;
-    }
-
-    /**
-     * Returns the fileType.
-     *
-     * @return the fileType.
-     */
-    public StudioFileType getFileType() {
-        return fileType;
-    }
-
-    /**
-     * Updates the fileType with the specified value.
-     *
-     * @param fileType
-     *            the fileType to set.
-     */
-    public void setFileType(StudioFileType fileType) {
-        this.fileType = fileType;
     }
 
     /**

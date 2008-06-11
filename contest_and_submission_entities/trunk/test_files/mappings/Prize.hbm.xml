@@ -9,9 +9,9 @@
 			of money for each place.
 		</comment>
 
-		<id name="prizeId" column="prize_id" type="long">
+		<id name="prizeId" column="prize_id" type="long" unsaved-value="-1">
 			<generator class="sequence">
-				<param name="sequence">sq_prize</param>
+				<param name="sequence">STUDIO_PRIZE_SEQ</param>
 			</generator>
 		</id>
 
@@ -34,7 +34,7 @@
 			class="com.topcoder.service.studio.submission.PrizeType"
 			 />
 
-		<property name="createDate" column="create_date"
-			not-null="true" />
+		<property name="createDate" column="create_date" generated="insert"
+					not-null="true" />
 	</class>
 </hibernate-mapping>

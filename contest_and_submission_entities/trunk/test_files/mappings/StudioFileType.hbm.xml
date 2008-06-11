@@ -9,11 +9,7 @@
 			file type
 		</comment>
 
-		<id name="studioFileType" column="file_type_id" type="long">
-			<generator class="sequence">
-				<param name="sequence">sq_file_type_lu</param>
-			</generator>
-		</id>
+		<id name="studioFileType" column="file_type_id" type="long" />
 
 		<property name="sort" not-null="true" />
 		<property name="imageFile" column="image_file_ind"

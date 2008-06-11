@@ -9,9 +9,9 @@
 			system name, document type, mime type and creation date.
 		</comment>
 
-		<id name="documentId" column="document_id" type="long">
+		<id name="documentId" column="document_id" type="long" unsaved-value="-1">
 			<generator class="sequence">
-				<param name="sequence">sq_document</param>
+				<param name="sequence">STUDIO_DOCUMENT_SEQ</param>
 			</generator>
 		</id>
 
@@ -22,7 +22,8 @@
 			column="system_file_name" />
 
 		<many-to-one name="path" column="path_id"
-			class="com.topcoder.service.studio.contest.FilePath"  />
+			class="com.topcoder.service.studio.contest.FilePath"  
+			cascade="all" /> 
 
 		<many-to-one name="mimeType" column="mime_type_id"
 			class="com.topcoder.service.studio.contest.MimeType"  />
@@ -36,8 +37,7 @@
 			<many-to-many column="contest_id" class="com.topcoder.service.studio.contest.Contest" />
 		</set>
 
-		<property name="createDate" column="create_date"
-			not-null="true" />
+		<property name="createDate" column="create_date" generated="insert" not-null="true" />
 
 	</class>
 </hibernate-mapping>

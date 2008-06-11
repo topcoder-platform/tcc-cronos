@@ -6,12 +6,7 @@
 	<class name="ContestStatus" table="contest_status_lu" lazy="true">
 		<comment>Table which describes contest status</comment>
 
-		<id name="contestStatusId" column="contest_status_id"
-			type="long">
-			<generator class="sequence">
-				<param name="sequence">sq_contest_status_lu</param>
-			</generator>
-		</id>
+		<id name="contestStatusId" column="contest_status_id" type="long" />
 
 		<property name="description" length="100" not-null="true"
 			column="contest_status_desc" />

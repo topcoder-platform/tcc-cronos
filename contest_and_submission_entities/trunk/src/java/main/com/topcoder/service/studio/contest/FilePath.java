@@ -58,7 +58,7 @@ public class FilePath implements Serializable {
     /**
      * Represents the entity id.
      */
-    private Long filePathId;
+    private Long filePathId = -1l;
 
     /**
      * Represents the URI path.

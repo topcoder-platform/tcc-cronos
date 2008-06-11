@@ -12,11 +12,7 @@
 			2 Prototype 3 Logo.
 		</comment>
 
-		<id name="contestType" column="contest_type_id" type="long">
-			<generator class="sequence">
-				<param name="sequence">sq_contest_type_lu</param>
-			</generator>
-		</id>
+		<id name="contestType" column="contest_type_id" type="long" />
 
 		<property name="description" length="100"
 			column="contest_type_desc" />

@@ -5,21 +5,18 @@
 <hibernate-mapping package="com.topcoder.service.studio.contest">
 	<class name="ContestConfig" table="contest_config" lazy="true">
 		<comment>
-			Base table for configuration. It keeps id, id of property
+			Base table for configuration. It keeps id of property
 			and value of property. In additional it keeps name and
 			required of configuration parameter
 		</comment>
-		<id name="contestConfigId" column="contest_config_id" type="long">
-			<generator class="sequence">
-				<param name="sequence">sq_contest_config</param>
-			</generator>
-		</id>
-		<many-to-one name="contest"
-				class="com.topcoder.service.studio.contest.Contest"
-				column="contest_id" />
-		<many-to-one name="property"
-				class="com.topcoder.service.studio.contest.ContestProperty"
-				column="property_id" />
+		<composite-id name="id" class="ContestConfig$Identifier">
+			<key-many-to-one name="contest"
+					class="com.topcoder.service.studio.contest.Contest"
+					column="contest_id" />
+			<key-many-to-one name="property"
+					class="com.topcoder.service.studio.contest.ContestProperty"
+					column="property_id" />
+		</composite-id>
 				
 		<property name="value" not-null="true" column="property_value" />
 	</class>

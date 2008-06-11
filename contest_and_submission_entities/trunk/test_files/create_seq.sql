@@ -1,3 +1,12 @@
+create sequence STUDIO_PATH_SEQ;
+create sequence STUDIO_DOCUMENT_SEQ;
+create sequence STUDIO_CONTEST_SEQ;
+create sequence STUDIO_PRIZE_SEQ;
+create sequence STUDIO_SUBMISSION_SEQ;
+
+
+
+
 CREATE SEQUENCE sq_mime_type_lu;
 CREATE SEQUENCE sq_file_type_lu;
 CREATE SEQUENCE sq_contest_channel_lu;

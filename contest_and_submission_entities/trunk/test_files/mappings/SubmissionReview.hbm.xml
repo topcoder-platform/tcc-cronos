@@ -22,7 +22,7 @@
 			class="com.topcoder.service.studio.submission.ReviewStatus"
 			 />
 
-		<property name="modifyDate" column="modify_date"
+		<property name="modifyDate" column="modify_date" generated="always"
 			not-null="true" />
 	</class>
 </hibernate-mapping>

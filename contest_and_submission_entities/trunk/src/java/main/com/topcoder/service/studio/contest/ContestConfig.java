@@ -21,27 +21,18 @@ public class ContestConfig implements Serializable {
     /**
      * Generated serial version id.
      */
-    private static final long serialVersionUID = -6941184025378017040L;
+	private static final long serialVersionUID = -859939008179387964L;
+
+	/**
+	 * Represents the composite identifier for this entity.
+	 */
+	private Identifier id;
 
     /**
-     * Represents the contest config id. 
-     */
-    private long contestConfigId;
-
-    /**
-     * Represents the contest.
-     */
-    private Contest contest;
-
-    /**
-     * Represents the config value.
+     * Represents the configuration value.
      */
     private String value;
 
-    /**
-     * Represents the property.
-     */
-    private ContestProperty property;
 
     /**
      * Default constructor.
@@ -51,42 +42,24 @@ public class ContestConfig implements Serializable {
     }
 
     /**
-     * Returns the contest.
-     *
-     * @return the contest.
+     * Return the identifier.
+     * 
+     * @return the identifier.
      */
-    public Contest getContest() {
-        return contest;
-    }
+	public Identifier getId() {
+		return id;
+	}
 
-    /**
-     * Updates the contest with the specified value.
-     *
-     * @param contest
-     *            the contest to set.
-     */
-    public void setContest(Contest contest) {
-        this.contest = contest;
-    }
 
-    /**
-     * Returns the property.
-     *
-     * @return the property.
-     */
-    public ContestProperty getProperty() {
-        return property;
-    }
+	/**
+	 * Set the identifier
+	 * 
+	 * @param id the identifier
+	 */
+	public void setId(Identifier id) {
+		this.id = id;
+	}
 
-    /**
-     * Updates the property with the specified value.
-     *
-     * @param property
-     *            the property to set.
-     */
-    public void setProperty(ContestProperty property) {
-        this.property = property;
-    }
 
     /**
      * Returns the value.
@@ -116,12 +89,17 @@ public class ContestConfig implements Serializable {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof ContestConfig) {
-            ContestConfig config = (ContestConfig) obj;
-            return (contest != null && getContest().equals(config.getContest()))
-                && (property != null && getProperty().equals(config.getProperty()));
-        }
-        return false;
+    	if (this == obj) {
+    		return true;
+    	}
+    	
+    	if ((obj == null) || (obj.getClass() != this.getClass())) {
+    		return false;
+    	}
+
+    	ContestConfig other = (ContestConfig) obj;
+    	
+    	return id.equals(other.getId());
     }
 
     /**
@@ -132,27 +110,102 @@ public class ContestConfig implements Serializable {
      */
     @Override
     public int hashCode() {
-        return Helper.calculateHash(contest != null ? contest.getContestId() : null,
-                property != null ? property.getPropertyId() : null);
+    	return id.hashCode();
     }
 
-    /**
-     * Returns the contestConfigId.
-     *
-     * @return the contestConfigId.
-     */
-    public long getContestConfigId() {
-        return contestConfigId;
-    }
+
 
     /**
-     * Updates the contestConfigId with the specified value.
-     *
-     * @param contestConfigId
-     *            the contestConfigId to set.
+     * Composite identifier for a ContestConfig
+     * 
+     * @since 1.1
      */
-    public void setContestConfigId(long contestConfigId) {
-        this.contestConfigId = contestConfigId;
+    public static class Identifier implements Serializable {
+    	/**
+    	 * Generated serial version id.
+		 */
+		private static final long serialVersionUID = -1512528048724458809L;
+
+		/**
+    	 * Contest to which this configuration belongs
+    	 */
+        private Contest contest;
+        
+        /**
+         * Property being configured
+         */
+        private ContestProperty property;
+
+        /**
+         * Returns the contest.
+         *
+         * @return the contest.
+         */
+        public Contest getContest() {
+            return contest;
+        }
+
+        /**
+         * Updates the contest with the specified value.
+         *
+         * @param contest
+         *            the contest to set.
+         */
+        public void setContest(Contest contest) {
+            this.contest = contest;
+        }
+
+        /**
+         * Returns the property.
+         *
+         * @return the property.
+         */
+        public ContestProperty getProperty() {
+            return property;
+        }
+
+        /**
+         * Updates the property with the specified value.
+         *
+         * @param property
+         *            the property to set.
+         */
+        public void setProperty(ContestProperty property) {
+            this.property = property;
+        }
+        
+        /**
+         * Override the equals method to be consistent with this class definition
+         * 
+         * @param obj object to compare to this
+         * @return true if obj is equal to this object
+         */
+        @Override
+        public boolean equals(Object obj) {
+        	if (this == obj) {
+        		return true;
+        	}
+        	
+        	if ((obj == null) || (obj.getClass() != this.getClass())) {
+        		return false;
+        	}
+        	
+        	Identifier id = (Identifier) obj;
+        	
+        	return id.getContest().getContestId().equals(contest.getContestId()) &&
+        		id.getProperty().getPropertyId() == property.getPropertyId();
+        }
+        
+        /**
+         * Override the hashCode method to provide a hash code based on the identifier.
+         * 
+         * @return a hashcode for this identifier
+         */
+        @Override
+        public int hashCode() {
+        	return (contest.getContestId() + "-" + property.getPropertyId()).hashCode();
+        }
+        
     }
-    
+
 }
