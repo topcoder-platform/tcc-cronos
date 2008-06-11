@@ -992,16 +992,30 @@ public class StudioServiceBean implements StudioService {
                 .getWinnerAnnoucementDeadline()));
         result.setStatus(contestManager.getContestStatus(data.getStatusId()));
 
-        if (data.getContestPayloads().size() > 0) {
-            ContestPayload contestPayload = data.getContestPayloads().get(0);
 
-            // ContestPayload.contestTypeId map to
-            // Contest.contestType.contestType
-            ContestType contestType = new ContestType();
-            contestType.setContestType(contestPayload.getContestTypeId());
-            result.setContestType(contestType);
-        }
+        result.setContestType(getContestType(data.getContestTypeId()));
+
         return result;
+    }
+
+    /**
+     * Get the ContestType object from persistence by its id
+     *
+     * @param contestTypeId id to retrieve
+     * @return a ContestType object with that id, or null if not found.
+     *
+     * @throws ContestManagementException
+     */
+    private ContestType getContestType(long contestTypeId) throws ContestManagementException {
+        List<ContestType> contestTypes = contestManager.getAllContestTypes();
+
+        for (ContestType ct : contestTypes) {
+            if (ct.getContestType() == contestTypeId) {
+                return ct;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -1030,6 +1044,10 @@ public class StudioServiceBean implements StudioService {
                 .setWinnerAnnoucementDeadline(getXMLGregorianCalendar(contest
                         .getWinnerAnnoucementDeadline()));
         contestData.setStatusId(contest.getStatus().getContestStatusId());
+
+        // [27074484-20]
+        ContestType contestType = contest.getContestType();
+        contestData.setContestTypeId(contestType == null? -1 : unbox(contestType.getContestType()));
 
          // Since 1.0.3, Bug Fix 27074484-14
         for (ContestConfig cc : contest.getConfig()) {

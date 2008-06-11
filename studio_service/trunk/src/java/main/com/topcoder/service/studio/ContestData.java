@@ -17,11 +17,11 @@ import java.util.List;
  * can be null or can be empty, therefore this check is not present in the
  * setters. It's the related to the equivalent Contest entity.
  * </p>
- * 
+ *
  * <p>
  * This class is not thread safe because it's highly mutable
  * </p>
- * 
+ *
  * @author fabrizyo, TCSDEVELOPER
  * @version 1.0
  */
@@ -97,6 +97,14 @@ public class ContestData implements Serializable {
      * </p>
      */
     private long contestCategoryId = -1;
+
+    /**
+     * <p>
+     * Represents the id of the type of contest
+     * </p>
+     * [27074484-20]
+     */
+    private long contestTypeId = -1;
 
     /**
      * <p>
@@ -193,7 +201,7 @@ public class ContestData implements Serializable {
      * <p>
      * Return the contestId
      * </p>
-     * 
+     *
      * @return the contestId
      */
     public long getContestId() {
@@ -204,7 +212,7 @@ public class ContestData implements Serializable {
      * <p>
      * Set the contestId
      * </p>
-     * 
+     *
      * @param contestId
      *            the contestId to set
      */
@@ -216,7 +224,7 @@ public class ContestData implements Serializable {
      * <p>
      * Return the name
      * </p>
-     * 
+     *
      * @return the name
      */
     public String getName() {
@@ -227,7 +235,7 @@ public class ContestData implements Serializable {
      * <p>
      * Set the name
      * </p>
-     * 
+     *
      * @param name
      *            the name to set
      */
@@ -239,7 +247,7 @@ public class ContestData implements Serializable {
      * <p>
      * Return the projectId
      * </p>
-     * 
+     *
      * @return the projectId
      */
     public long getProjectId() {
@@ -250,7 +258,7 @@ public class ContestData implements Serializable {
      * <p>
      * Set the projectId
      * </p>
-     * 
+     *
      * @param projectId
      *            the projectId to set
      */
@@ -262,7 +270,7 @@ public class ContestData implements Serializable {
      * <p>
      * Return the tcDirectProjectId
      * </p>
-     * 
+     *
      * @return the tcDirectProjectId
      */
     public long getTcDirectProjectId() {
@@ -273,7 +281,7 @@ public class ContestData implements Serializable {
      * <p>
      * Set the tcDirectProjectId
      * </p>
-     * 
+     *
      * @param tcDirectProjectId
      *            the tcDirectProjectId to set
      */
@@ -285,7 +293,7 @@ public class ContestData implements Serializable {
      * <p>
      * Return the prizes
      * </p>
-     * 
+     *
      * @return the prizes
      */
     public List<PrizeData> getPrizes() {
@@ -296,7 +304,7 @@ public class ContestData implements Serializable {
      * <p>
      * Set the prizes
      * </p>
-     * 
+     *
      * @param prizes
      *            the prizes to set
      * @throws IllegalArgumentException
@@ -312,7 +320,7 @@ public class ContestData implements Serializable {
      * <p>
      * Return the launchDateAndTime
      * </p>
-     * 
+     *
      * @return the launchDateAndTime
      */
     public XMLGregorianCalendar getLaunchDateAndTime() {
@@ -323,7 +331,7 @@ public class ContestData implements Serializable {
      * <p>
      * Set the launchDateAndTime
      * </p>
-     * 
+     *
      * @param launchDateAndTime
      *            the launchDateAndTime to set
      */
@@ -335,7 +343,7 @@ public class ContestData implements Serializable {
      * <p>
      * Return the winnerAnnoucementDeadline
      * </p>
-     * 
+     *
      * @return the winnerAnnoucementDeadline
      */
     public XMLGregorianCalendar getWinnerAnnoucementDeadline() {
@@ -346,7 +354,7 @@ public class ContestData implements Serializable {
      * <p>
      * Set the winnerAnnoucementDeadline
      * </p>
-     * 
+     *
      * @param winnerAnnoucementDeadline
      *            the winnerAnnoucementDeadline to set
      */
@@ -359,7 +367,7 @@ public class ContestData implements Serializable {
      * <p>
      * Return the durationInHours
      * </p>
-     * 
+     *
      * @return the durationInHours
      */
     public int getDurationInHours() {
@@ -370,7 +378,7 @@ public class ContestData implements Serializable {
      * <p>
      * Set the durationInHours
      * </p>
-     * 
+     *
      * @param durationInHours
      *            the durationInHours to set
      */
@@ -382,7 +390,7 @@ public class ContestData implements Serializable {
      * <p>
      * Return the contestCategoryId
      * </p>
-     * 
+     *
      * @return the contestCategoryId
      */
     public long getContestCategoryId() {
@@ -393,7 +401,7 @@ public class ContestData implements Serializable {
      * <p>
      * Set the contestCategoryId
      * </p>
-     * 
+     *
      * @param contestCategoryId
      *            the contestCategoryId to set
      */
@@ -405,7 +413,7 @@ public class ContestData implements Serializable {
      * <p>
      * Return the documentationUploads. Make a shallow copy.
      * </p>
-     * 
+     *
      * @return the documentationUploads
      */
     public List<UploadedDocument> getDocumentationUploads() {
@@ -416,7 +424,7 @@ public class ContestData implements Serializable {
      * <p>
      * Set the documentationUploads. Make a shallow copy.
      * </p>
-     * 
+     *
      * @param documentationUploads
      *            the documentationUploads to set
      * @throws IllegalArgumentException
@@ -433,7 +441,7 @@ public class ContestData implements Serializable {
      * <p>
      * Return the contestPayloads. Use a shallow copy.
      * </p>
-     * 
+     *
      * @return the contestPayloads
      */
     public List<ContestPayload> getContestPayloads() {
@@ -444,7 +452,7 @@ public class ContestData implements Serializable {
      * <p>
      * Set the contestPayloads. Use a shallow copy.
      * </p>
-     * 
+     *
      * @param contestPayloads
      *            the contestPayloads to set
      * @throws IllegalArgumentException
@@ -460,7 +468,7 @@ public class ContestData implements Serializable {
      * <p>
      * Return the shortSummary
      * </p>
-     * 
+     *
      * @return the shortSummary
      */
     public String getShortSummary() {
@@ -471,7 +479,7 @@ public class ContestData implements Serializable {
      * <p>
      * Set the shortSummary
      * </p>
-     * 
+     *
      * @param shortSummary
      *            the shortSummary to set
      */
@@ -483,7 +491,7 @@ public class ContestData implements Serializable {
      * <p>
      * Return the contestDescriptionAndRequirements
      * </p>
-     * 
+     *
      * @return the contestDescriptionAndRequirements
      */
     public String getContestDescriptionAndRequirements() {
@@ -494,7 +502,7 @@ public class ContestData implements Serializable {
      * <p>
      * Set the contestDescriptionAndRequirements
      * </p>
-     * 
+     *
      * @param contestDescriptionAndRequirements
      *            the contestDescriptionAndRequirements to set
      */
@@ -507,7 +515,7 @@ public class ContestData implements Serializable {
      * <p>
      * Return the requiredOrRestrictedColors
      * </p>
-     * 
+     *
      * @return the requiredOrRestrictedColors
      */
     public String getRequiredOrRestrictedColors() {
@@ -518,7 +526,7 @@ public class ContestData implements Serializable {
      * <p>
      * Set the requiredOrRestrictedColors
      * </p>
-     * 
+     *
      * @param requiredOrRestrictedColors
      *            the requiredOrRestrictedColors to set
      */
@@ -530,7 +538,7 @@ public class ContestData implements Serializable {
      * <p>
      * Return the requiredOrRestrictedFonts
      * </p>
-     * 
+     *
      * @return the requiredOrRestrictedFonts
      */
     public String getRequiredOrRestrictedFonts() {
@@ -541,7 +549,7 @@ public class ContestData implements Serializable {
      * <p>
      * Set the requiredOrRestrictedFonts
      * </p>
-     * 
+     *
      * @param requiredOrRestrictedFonts
      *            the requiredOrRestrictedFonts to set
      */
@@ -553,7 +561,7 @@ public class ContestData implements Serializable {
      * <p>
      * Return the sizeRequirements
      * </p>
-     * 
+     *
      * @return the sizeRequirements
      */
     public String getSizeRequirements() {
@@ -564,7 +572,7 @@ public class ContestData implements Serializable {
      * <p>
      * Set the sizeRequirements
      * </p>
-     * 
+     *
      * @param sizeRequirements
      *            the sizeRequirements to set
      */
@@ -576,7 +584,7 @@ public class ContestData implements Serializable {
      * <p>
      * Return the otherRequirementsOrRestrictions
      * </p>
-     * 
+     *
      * @return the otherRequirementsOrRestrictions
      */
     public String getOtherRequirementsOrRestrictions() {
@@ -587,7 +595,7 @@ public class ContestData implements Serializable {
      * <p>
      * Set the otherRequirementsOrRestrictions
      * </p>
-     * 
+     *
      * @param otherRequirementsOrRestrictions
      *            the otherRequirementsOrRestrictions to set
      */
@@ -600,7 +608,7 @@ public class ContestData implements Serializable {
      * <p>
      * Return the creatorUserId
      * </p>
-     * 
+     *
      * @return the creatorUserId
      */
     public long getCreatorUserId() {
@@ -611,7 +619,7 @@ public class ContestData implements Serializable {
      * <p>
      * Set the creatorUserId
      * </p>
-     * 
+     *
      * @param creatorUserId
      *            the creatorUserId to set
      */
@@ -623,7 +631,7 @@ public class ContestData implements Serializable {
      * <p>
      * Return the finalFileFormat
      * </p>
-     * 
+     *
      * @return the finalFileFormat
      */
     public String getFinalFileFormat() {
@@ -634,7 +642,7 @@ public class ContestData implements Serializable {
      * <p>
      * Set the finalFileFormat
      * </p>
-     * 
+     *
      * @param finalFileFormat
      *            the finalFileFormat to set
      */
@@ -646,7 +654,7 @@ public class ContestData implements Serializable {
      * <p>
      * Return the otherFileFormats
      * </p>
-     * 
+     *
      * @return the otherFileFormats
      */
     public String getOtherFileFormats() {
@@ -657,7 +665,7 @@ public class ContestData implements Serializable {
      * <p>
      * Set the otherFileFormats
      * </p>
-     * 
+     *
      * @param otherFileFormats
      *            the otherFileFormats to set
      */
@@ -667,7 +675,7 @@ public class ContestData implements Serializable {
 
     /**
      * Returns status id.
-     * 
+     *
      * @return the statusId
      */
     public long getStatusId() {
@@ -676,11 +684,29 @@ public class ContestData implements Serializable {
 
     /**
      * Sets status id.
-     * 
+     *
      * @param statusId
      *            the statusId to set
      */
     public void setStatusId(long statusId) {
         this.statusId = statusId;
+    }
+
+    /**
+     * Get contestTypeId
+     *
+     * @return the contestTypeId
+     */
+    public long getContestTypeId() {
+        return contestTypeId;
+    }
+
+    /**
+     * Set contestTypeId
+     *
+     * @param contestTypeId the contestTypeId to set
+     */
+    public void setContestTypeId(long contestTypeId) {
+        this.contestTypeId = contestTypeId;
     }
 }
