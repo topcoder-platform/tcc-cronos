@@ -3,6 +3,11 @@
  */
 package com.topcoder.service.studio.ejb;
 
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
+import javax.annotation.security.RunAs;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
@@ -97,6 +102,7 @@ import java.util.List;
 @RolesAllowed("Cockpit User")
 @DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
 @TransactionManagement(TransactionManagementType.CONTAINER)
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
 @Stateless
 public class StudioServiceBean implements StudioService {
     /**
