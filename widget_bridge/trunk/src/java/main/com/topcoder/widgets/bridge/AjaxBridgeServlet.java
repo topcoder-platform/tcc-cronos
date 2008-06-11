@@ -843,10 +843,9 @@ public class AjaxBridgeServlet extends HttpServlet {
         contest.setTcDirectProjectId(jsonContest.getLong("tcDirectProjectID"));
         contest.setCreatorUserId(jsonContest.getLong("creatorUserID"));
         contest.setLaunchDateAndTime(getXMLGregorianCalendar(jsonContest.getString("launchDateAndTime")));
-        contest.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(jsonContest
-            .getString("winnerAnnouncementDeadline")));        
-        // no contestTypeID available in Contest.java but architect specified to add this
-        // jsonContest.getLong("contestTypeID");
+        contest.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(jsonContest.getString("winnerAnnouncementDeadline")));
+        
+        contest.setContestTypeId(jsonContest.getLong("contestTypeID")); // [27128642-6]
 
         JSONArray jsonPrizes = jsonContest.getArray("prizes");
         if (jsonPrizes != null) {
@@ -1091,8 +1090,7 @@ public class AjaxBridgeServlet extends HttpServlet {
         respJSON.setString("otherRequirementsOrRestrictions", contest.getOtherRequirementsOrRestrictions());
         respJSON.setLong("tcDirectProjectID", contest.getTcDirectProjectId());
         respJSON.setLong("creatorUserID", contest.getCreatorUserId());
-        // no contestTypeID available in Contest.java but architect specified to add this
-        respJSON.setLong("contestTypeID", 0);
+        respJSON.setLong("contestTypeID", contest.getContestTypeId()); // [27128642-6]
         respJSON.setString("launchDateAndTime", getDateString(contest.getLaunchDateAndTime()));
         respJSON.setString("winnerAnnouncementDeadline", getDateString(contest.getWinnerAnnoucementDeadline()));
 

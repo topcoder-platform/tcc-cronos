@@ -4,7 +4,7 @@
 
 
 /**
- * <p>This Java Script object represents the Contest Category data.
+ * <p>This Java Script object represents the Contest Payload data.
  *
  * Thread safety:  Mutable and not thread-safe.</p>
  *

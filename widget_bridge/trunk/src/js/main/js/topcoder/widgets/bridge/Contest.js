@@ -165,16 +165,6 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
     var contestPayloads /* ContestPayload[] */ = new Array();
 
 	/**
-	 * <p>Represents the contestCategory Id. It is added in the CID because it exists in the WSDL.</p>
-	 * <p>Initial Value: -1, means that is not set</p>
-	 * <p>Accessed In: getter method</p>
-	 * <p>Modified In: setter method</p>
-	 * <p>Utilized In: none</p>
-	 * <p>Valid Values: must be greater or equal than -1</p>
-	 */
-	var contestCategoryID /* long */ = -1;
-
-	/**
 	 * <p>Represents the contest Description And Requirements It is added in the CID because it exists in the WSDL.</p>
 	 * <p>Initial Value: null, means that is not set</p>
 	 * <p>Accessed In: getter method</p>
@@ -396,13 +386,6 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 			"json.contestPayloads does not exists");
 		}
 
-		// sets the contestCategoryID
-		if (typeof(json.contestCategoryID) != "undefined" && typeof(json.contestCategoryID) == "number") {
-			that.contestCategoryID /* long */ = json.contestCategoryID;
-		} else {
-			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.contestCategoryID",
-			"json.contestCategoryID does not exists");
-		}
 
 		// sets the contestDescriptionAndRequirements
 		if (typeof(json.contestDescriptionAndRequirements) != "undefined"
@@ -465,19 +448,7 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 		}
 	}
 
-    /**
-     * <p>Returns the contestCategoryID.</p>
-     */
-    this.getContestCategoryID = function /* long */ () {
-        return that.contestCategoryID;
-    }
 
-    /**
-     * <p>Sets the contestCategoryID.</p>
-     */
-    this.setContestCategoryID = function /* void */ (/* long */ contestCategoryID) {
-        that.contestCategoryID = contestCategoryID;
-    }
 
     /**
      * <p>Returns the contestDescriptionAndRequirements.</p>
@@ -787,7 +758,7 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 	 * //  string representation of the date value"winnerAnnouncementDeadline","finalFileFormatList" : 
 	 * [ values of $finalFileFormatList delimited by comma ], "finalFileFormatOther" : "$finalFileFormatOther","documentationUpload" : 
 	 * [json-string of each UploadedDocument js object delimited by comma],"statusID" : $statusID,"contestPayloads" : 
-	 * [json-string of each ContestPayload js object delimited by comma],"contestCategoryID" : $contestCategoryID,
+	 * [json-string of each ContestPayload js object delimited by comma],
 	 * "contestDescriptionAndRequirements" : "$contestDescriptionAndRequirements","requiredOrRestrictedColors" : "$requiredOrRestrictedColors",
 	 * "requiredOrRestrictedFonts" : "$requiredOrRestrictedFonts","sizeRequirements" : "$sizeRequirements","otherRequirementsOrRestrictions" : 
 	 * "$otherRequirementsOrRestrictions","tcDirectProjectID" : $tcDirectProjectID,"creatorUserID" : $creatorUserID}
@@ -856,7 +827,6 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 		        + "\"documentationUploads\" : " + locUpDoc + ", "
 		        + "\"statusID\" : " + that.getStatusID() + ", "
 		        + "\"contestPayloads\" : " + locContPay + ", "
-		        + "\"contestCategoryID\" : " + that.getContestCategoryID() + ", "
 		        + "\"contestDescriptionAndRequirements\" : \"" + that.getContestDescriptionAndRequirements() + "\", "
 		        + "\"requiredOrRestrictedColors\" : \"" + that.getRequiredOrRestrictedColors() + "\", "
 		        + "\"requiredOrRestrictedFonts\" : \"" + that.getRequiredOrRestrictedFonts() + "\", "
