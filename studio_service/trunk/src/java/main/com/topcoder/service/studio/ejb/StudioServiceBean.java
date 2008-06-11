@@ -1034,14 +1034,14 @@ public class StudioServiceBean implements StudioService {
          // Since 1.0.3, Bug Fix 27074484-14
         for (ContestConfig cc : contest.getConfig()) {
 
-            if (cc.getProperty().getPropertyId() == contestPropertyShortSummaryId) contestData.setShortSummary(cc.getValue());
-            else if (cc.getProperty().getPropertyId() == contestPropertyFinalFileFormatId) contestData.setFinalFileFormat(cc.getValue());
-            else if (cc.getProperty().getPropertyId() == contestPropertyOtherFileFormatsId) contestData.setOtherFileFormats(cc.getValue());
-            else if (cc.getProperty().getPropertyId() == contestPropertyColorRequirementsId) contestData.setRequiredOrRestrictedColors(cc.getValue());
-            else if (cc.getProperty().getPropertyId() == contestPropertyFontRequirementsId) contestData.setRequiredOrRestrictedFonts(cc.getValue());
-            else if (cc.getProperty().getPropertyId() == contestPropertyContestOverviewTextId) contestData.setContestDescriptionAndRequirements(cc.getValue());
-            else if (cc.getProperty().getPropertyId() == contestPropertySizeRequirementsId) contestData.setSizeRequirements(cc.getValue());
-            else if (cc.getProperty().getPropertyId() == contestPropertyOtherRequirementsId) contestData.setOtherRequirementsOrRestrictions(cc.getValue());
+            if (cc.getId().getProperty().getPropertyId() == contestPropertyShortSummaryId) contestData.setShortSummary(cc.getValue());
+            else if (cc.getId().getProperty().getPropertyId() == contestPropertyFinalFileFormatId) contestData.setFinalFileFormat(cc.getValue());
+            else if (cc.getId().getProperty().getPropertyId() == contestPropertyOtherFileFormatsId) contestData.setOtherFileFormats(cc.getValue());
+            else if (cc.getId().getProperty().getPropertyId() == contestPropertyColorRequirementsId) contestData.setRequiredOrRestrictedColors(cc.getValue());
+            else if (cc.getId().getProperty().getPropertyId() == contestPropertyFontRequirementsId) contestData.setRequiredOrRestrictedFonts(cc.getValue());
+            else if (cc.getId().getProperty().getPropertyId() == contestPropertyContestOverviewTextId) contestData.setContestDescriptionAndRequirements(cc.getValue());
+            else if (cc.getId().getProperty().getPropertyId() == contestPropertySizeRequirementsId) contestData.setSizeRequirements(cc.getValue());
+            else if (cc.getId().getProperty().getPropertyId() == contestPropertyOtherRequirementsId) contestData.setOtherRequirementsOrRestrictions(cc.getValue());
         }
 
 
@@ -1168,9 +1168,12 @@ public class StudioServiceBean implements StudioService {
         }
         ContestProperty property = contestManager.getContestProperty(contestPropertyId);
 
+        ContestConfig.Identifier id = new ContestConfig.Identifier();
+        id.setContest(contest);
+        id.setProperty(property);
+
         ContestConfig config = new ContestConfig();
-        config.setContest(contest);
-        config.setProperty(property);
+        config.setId(id);
         config.setValue(value);
 
         contest.getConfig().add(config);
@@ -1836,6 +1839,8 @@ public class StudioServiceBean implements StudioService {
                     payloads.add(payload);
                 }
                 data.setConfig(payloads);
+                
+                result.add(data);
             }
 
             logExit("getAllContestTypes", result);
