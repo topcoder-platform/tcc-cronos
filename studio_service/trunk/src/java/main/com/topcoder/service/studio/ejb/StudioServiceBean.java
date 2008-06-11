@@ -1028,11 +1028,6 @@ public class StudioServiceBean implements StudioService {
     private ContestData convertContest(Contest contest) {
         ContestData contestData = new ContestData();
 
-        if (contest.getContestChannel() != null) {
-            contestData.setContestCategoryId(unbox(contest.getContestChannel()
-                    .getContestChannelId()));
-        }
-
         contestData.setLaunchDateAndTime(getXMLGregorianCalendar(contest
                 .getStartDate()));
 

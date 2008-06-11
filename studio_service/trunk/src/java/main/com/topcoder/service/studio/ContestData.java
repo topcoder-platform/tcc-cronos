@@ -93,13 +93,6 @@ public class ContestData implements Serializable {
 
     /**
      * <p>
-     * Represents the contest Category Id
-     * </p>
-     */
-    private long contestCategoryId = -1;
-
-    /**
-     * <p>
      * Represents the id of the type of contest
      * </p>
      * [27074484-20]
@@ -386,28 +379,6 @@ public class ContestData implements Serializable {
         this.durationInHours = durationInHours;
     }
 
-    /**
-     * <p>
-     * Return the contestCategoryId
-     * </p>
-     *
-     * @return the contestCategoryId
-     */
-    public long getContestCategoryId() {
-        return contestCategoryId;
-    }
-
-    /**
-     * <p>
-     * Set the contestCategoryId
-     * </p>
-     *
-     * @param contestCategoryId
-     *            the contestCategoryId to set
-     */
-    public void setContestCategoryId(long contestCategoryId) {
-        this.contestCategoryId = contestCategoryId;
-    }
 
     /**
      * <p>
