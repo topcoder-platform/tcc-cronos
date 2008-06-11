@@ -342,7 +342,9 @@ public class StudioServiceBean implements StudioService {
         try {
             Contest contest = convertContestData(contestData);
             contest.setTcDirectProjectId(tcDirectProjectId);
-            contest.setCreatedUser(0l);
+
+            // use the logged user [27074484-16]
+            contest.setCreatedUser(((UserProfilePrincipal) sessionContext.getCallerPrincipal()).getUserId());
 
             contest = contestManager.createContest(contest);
 
