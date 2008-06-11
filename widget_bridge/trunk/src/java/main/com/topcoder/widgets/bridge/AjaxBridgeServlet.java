@@ -36,7 +36,6 @@ import com.topcoder.service.prerequisite.PrerequisiteDocument;
 import com.topcoder.service.prerequisite.PrerequisiteService;
 import com.topcoder.service.project.ProjectData;
 import com.topcoder.service.project.ProjectService;
-import com.topcoder.service.studio.ContestCategoryData;
 import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.ContestPayload;
 import com.topcoder.service.studio.ContestStatusData;
@@ -740,33 +739,6 @@ public class AjaxBridgeServlet extends HttpServlet {
                     sendJSONObjectWithArrayAsResponse(submissionArr, response);
 
                     debug("retrieveAllSubmissionsByMember success!");
-                } else if ("getContestCategories".equals(method)) {
-                    String strParameters = request.getParameter("parameters");
-                    if (checkIfNullOrEmpty(strParameters, "parameters", response)) {
-                        return;
-                    }
-                    JSONArray jsonParameters = jsonDecoder.decodeArray(strParameters);
-                    List<String> parameters = new ArrayList<String>();
-                    if (jsonParameters != null) {
-                        debug("received ID = [parameters] : " + jsonParameters.toJSONString());
-                        Object[] fileformat = jsonParameters.getObjects();
-                        if (fileformat != null) {
-                            for (int i = 0; i < fileformat.length; i++) {
-                                parameters.add((String) fileformat[i]);
-                            }
-                        }
-                    }
-
-                    List<ContestCategoryData> categories = studioService.getContestCategories();
-                    JSONArray categoriesArr = new JSONArray();
-
-                    for (ContestCategoryData category : categories) {
-                        JSONObject respJSON = getJSONFromContestCategory(category);
-                        categoriesArr.addJSONObject(respJSON);
-                    }
-                    sendJSONObjectWithArrayAsResponse(categoriesArr, response);
-
-                    debug("getContestCategories success!");
                 } else if ("getSubmissionFileTypes".equals(method)) {
                     String[] fileTypes = splitString(studioService.getSubmissionFileTypes());
                     JSONArray fileTypesArr = new JSONArray();
@@ -861,9 +833,8 @@ public class AjaxBridgeServlet extends HttpServlet {
         contest.setName(jsonContest.getString("name"));
         contest.setShortSummary(jsonContest.getString("shortSummary"));
         contest.setDurationInHours(jsonContest.getInt("durationInHours"));
-        contest.setOtherFileFormats(jsonContest.getString("finalFileFormatOther"));
+        contest.setOtherFileFormats(jsonContest.getString("finalFileFormatOther"));        
         contest.setStatusId(jsonContest.getLong("statusID"));
-        contest.setContestCategoryId(jsonContest.getLong("contestCategoryID"));
         contest.setContestDescriptionAndRequirements(jsonContest.getString("contestDescriptionAndRequirements"));
         contest.setRequiredOrRestrictedColors(jsonContest.getString("requiredOrRestrictedColors"));
         contest.setRequiredOrRestrictedFonts(jsonContest.getString("requiredOrRestrictedFonts"));
@@ -873,7 +844,7 @@ public class AjaxBridgeServlet extends HttpServlet {
         contest.setCreatorUserId(jsonContest.getLong("creatorUserID"));
         contest.setLaunchDateAndTime(getXMLGregorianCalendar(jsonContest.getString("launchDateAndTime")));
         contest.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(jsonContest
-            .getString("winnerAnnouncementDeadline")));
+            .getString("winnerAnnouncementDeadline")));        
         // no contestTypeID available in Contest.java but architect specified to add this
         // jsonContest.getLong("contestTypeID");
 
@@ -1057,26 +1028,6 @@ public class AjaxBridgeServlet extends HttpServlet {
         return respJSON;
     }
 
-    /**
-     * <p>
-     * Convenience method in getting a JSON object from an Contest Category.
-     * </p>
-     *
-     * @param category the Contest Category object where the values will be coming from
-     * @return the json object created from this category object
-     * @throws IllegalArgumentException If any parameter is <code>null</code> or <code>value</code> is NaN, positive
-     *             infinity, or negative infinity.
-     * @throws JSONInvalidKeyException If there is no data for the given key.
-     * @throws JSONDataAccessTypeException If the data associated with the key can not be retrieved as a long.
-     */
-    private JSONObject getJSONFromContestCategory(ContestCategoryData category) {
-        JSONObject respJSON = new JSONObject();
-        respJSON.setString("contestCategory", category.getContestCategory());
-        respJSON.setString("contestDescription", category.getContestDescription());
-        respJSON.setString("contestName", category.getContestName());
-        respJSON.setLong("contestCategoryID", category.getContestCategoryId());
-        return respJSON;
-    }
 
     /**
      * <p>
@@ -1122,6 +1073,8 @@ public class AjaxBridgeServlet extends HttpServlet {
      * @throws JSONDataAccessTypeException If the data associated with the key can not be retrieved as a long.
      */
     private JSONObject getJSONFromContest(ContestData contest) {
+    	debug("getJSONFromContest - contestID=" + contest.getContestId());
+    	
         // initialize the JSON object using the Contest
         JSONObject respJSON = new JSONObject();
         respJSON.setLong("contestID", contest.getContestId());
@@ -1131,7 +1084,6 @@ public class AjaxBridgeServlet extends HttpServlet {
         respJSON.setInt("durationInHours", contest.getDurationInHours());
         respJSON.setString("finalFileFormatOther", contest.getOtherFileFormats());
         respJSON.setLong("statusID", contest.getStatusId());
-        respJSON.setLong("contestCategoryID", contest.getContestCategoryId());
         respJSON.setString("contestDescriptionAndRequirements", contest.getContestDescriptionAndRequirements());
         respJSON.setString("requiredOrRestrictedColors", contest.getRequiredOrRestrictedColors());
         respJSON.setString("requiredOrRestrictedFonts", contest.getRequiredOrRestrictedFonts());
