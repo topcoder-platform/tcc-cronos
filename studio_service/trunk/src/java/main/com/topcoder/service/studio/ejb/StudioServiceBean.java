@@ -24,7 +24,7 @@ import com.topcoder.service.studio.UserNotAuthorizedException;
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestConfig;
 import com.topcoder.service.studio.contest.ContestManagementException;
-import com.topcoder.service.studio.contest.ContestManagerRemote;
+import com.topcoder.service.studio.contest.ContestManagerLocal;
 import com.topcoder.service.studio.contest.ContestProperty;
 import com.topcoder.service.studio.contest.ContestStatus;
 import com.topcoder.service.studio.contest.ContestStatusTransitionException;
@@ -40,7 +40,7 @@ import com.topcoder.service.studio.submission.PaymentStatus;
 import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.service.studio.submission.Submission;
 import com.topcoder.service.studio.submission.SubmissionManagementException;
-import com.topcoder.service.studio.submission.SubmissionManagerRemote;
+import com.topcoder.service.studio.submission.SubmissionManagerLocal;
 import com.topcoder.service.studio.submission.SubmissionPayment;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
@@ -139,7 +139,7 @@ public class StudioServiceBean implements StudioService {
      * </p>
      */
     @EJB
-    private ContestManagerRemote contestManager;
+    private ContestManagerLocal contestManager;
 
     /**
      * <p>
@@ -148,7 +148,7 @@ public class StudioServiceBean implements StudioService {
      * </p>
      */
     @EJB
-    private SubmissionManagerRemote submissionManager;
+    private SubmissionManagerLocal submissionManager;
 
     /**
      * <p>
@@ -922,7 +922,7 @@ public class StudioServiceBean implements StudioService {
      *
      * @return the contestManager
      */
-    protected ContestManagerRemote getContestManager() {
+    protected ContestManagerLocal getContestManager() {
         return contestManager;
     }
 
@@ -933,7 +933,7 @@ public class StudioServiceBean implements StudioService {
      *
      * @return the submissionManager
      */
-    protected SubmissionManagerRemote getSubmissionManager() {
+    protected SubmissionManagerLocal getSubmissionManager() {
         return submissionManager;
     }
 
