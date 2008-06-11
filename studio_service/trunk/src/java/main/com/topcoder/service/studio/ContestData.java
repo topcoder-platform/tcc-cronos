@@ -28,7 +28,7 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "contestData", propOrder = { "contestId", "name", "projectId",
         "tcDirectProjectId", "prizes", "launchDateAndTime",
-        "winnerAnnoucementDeadline", "durationInHours", "contestCategoryId",
+        "winnerAnnoucementDeadline", "durationInHours",
         "documentationUploads", "contestPayloads", "shortSummary",
         "contestDescriptionAndRequirements", "requiredOrRestrictedColors",
         "requiredOrRestrictedFonts", "sizeRequirements",
