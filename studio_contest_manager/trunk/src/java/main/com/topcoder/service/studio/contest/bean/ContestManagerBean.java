@@ -144,7 +144,7 @@ import com.topcoder.util.log.LogManager;
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
-@DeclareRoles("Administrator")
+@DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
 public class ContestManagerBean implements ContestManagerRemote, ContestManagerLocal {
     /**
      * <p>
