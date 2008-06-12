@@ -147,51 +147,7 @@ function testStudioGetAllContestTypes() {
 }
 
 
-/**
- * <p>Tests Studio.getContestsForClient().</p>
- */
-function testStudioGetContestsForClient() {
-    // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
-    var clientID = 1;
-    var contestStatusID = 1;
 
-    // success callback 
-    var success = function(contests) {
-        for (var i = 0; i < contests.length; i++) {
-            alert("Success = Contest returned index["+i+"]: "+contests[i].toJSON());
-        }
-    }
-    // error callback
-    var error = function(errMsg) {
-        alert("Error = "+errMsg);
-    }
-    
-    studioService.getContestsForClient(clientID,contestStatusID,success,error);
-}
-
-/**
- * <p>Tests Error Studio.getContestsForClient().</p>
- */
-function testStudioGetContestsForClientError() {
-    // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
-    var clientID = 50;
-    var contestStatusID = 50;
-
-    // success callback 
-    var success = function(contests) {
-        for (var i = 0; i < contests.length; i++) {
-            alert("Success = Contest returned index["+i+"]: "+contests[i].toJSON());
-        }
-    }
-    // error callback
-    var error = function(errMsg) {
-        alert("Error = "+errMsg);
-    }
-    
-    studioService.getContestsForClient(clientID,contestStatusID,success,error);
-}
 
 /**
  * <p>Tests Studio.getContestsForProject().</p>
@@ -729,7 +685,6 @@ Widget Webservices Bridge Demo
     <li>Studio.getContest() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetContest()" /></li>
     <li>Studio.getAllContests() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetAllContests()" /></li>
     <li>Studio.getAllContestTypes() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetAllContestTypes()" /></li>    
-    <li>Studio.getContestsForClient() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetContestsForClient()" /></li>
     <li>Studio.getContestsForProject() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetContestsForProject()" /></li>
     <li>Studio.updateContestStatus() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioUpdateContestStatus()" /></li>
     <li>Studio.removeDocumentFromContest() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioRemoveDocumentFromContest()" /></li>
@@ -748,7 +703,6 @@ Widget Webservices Bridge Demo
 <ul>
     <li>Studio.createContest() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioCreateContestError()" /></li>
     <li>Studio.getContest() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetContestError()" /></li>
-    <li>Studio.getContestsForClient() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetContestsForClientError()" /></li>
     <li>Studio.getContestsForProject() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetContestsForProjectError()" /></li>
     <li>Studio.updateContestStatus() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioUpdateContestStatusError()" /></li>
     <li>Studio.removeDocumentFromContest() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioRemoveDocumentFromContestError()" /></li>

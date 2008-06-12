@@ -545,24 +545,6 @@ public class AjaxBridgeServlet extends HttpServlet {
                     sendJSONObjectWithArrayAsResponse(contestArr, response);
 
                     debug("getAllContests success!");
-                } else if ("getContestsForClient".equals(method)) {
-                    String strClientID = request.getParameter("clientID");
-                    if (checkLongIfLessThanZero(strClientID, "clientID", response)) {
-                        return;
-                    }
-                    // JS API has a contestStatusID and we just ignore it since we are not using it
-                    String strContestStatusID = request.getParameter("contestStatusID");
-                    debug("received ID = [clientID]: " + strClientID + " [contestStatusID]: " + strContestStatusID);
-
-                    List<ContestData> contests = studioService.getContestsForClient(Long.valueOf(strClientID));
-                    JSONArray contestArr = new JSONArray();
-                    for (ContestData contest : contests) {
-                        JSONObject respJSON = getJSONFromContest(contest);
-                        contestArr.addJSONObject(respJSON);
-                    }
-                    sendJSONObjectWithArrayAsResponse(contestArr, response);
-
-                    debug("getContestsForClient success!");
                 } else if ("getContestsForProject".equals(method)) {
                     String projectID = request.getParameter("projectID");
                     if (checkLongIfLessThanZero(projectID, "projectID", response)) {
