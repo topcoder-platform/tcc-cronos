@@ -207,7 +207,7 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	 * @throws InvalidResponseException if the received response is invalid.
 	 */
 	this.getAllContests = getAllContests;
-	function /* void */ getAllContests(/* ContestsHandler */ onSuccess, /* ErrorHandler */ onError ) {
+	function /* void */ getAllContests(/* boolean */ onlyDirectProjects, /* ContestsHandler */ onSuccess, /* ErrorHandler */ onError ) {
 		if (onSuccess == null) {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onSuccess","onSuccess callback should not be null");
 		}
@@ -219,7 +219,7 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	    	url:  servletUrlString,
 	    	async: true,
 	     	method: "POST",
-	     	sendingText: "service=studio&method=getAllContests",
+	     	sendingText: "service=studio&method=getAllContests&onlyDirectProjects=" + onlyDirectProjects,
 	     	onStateChange: function() {
 	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
 	            	var response = processor.getResponseText();

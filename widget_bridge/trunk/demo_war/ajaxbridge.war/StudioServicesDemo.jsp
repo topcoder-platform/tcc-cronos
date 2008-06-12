@@ -122,7 +122,7 @@ function testStudioGetAllContests() {
         alert("Error = "+errMsg);
     }
     
-    studioService.getAllContests(success,error);
+    studioService.getAllContests(true, success,error);
 }
 
 /**

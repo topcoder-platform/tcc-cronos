@@ -32,6 +32,9 @@ import com.topcoder.json.object.io.JSONDecoder;
 import com.topcoder.json.object.io.JSONDecodingException;
 import com.topcoder.json.object.io.JSONEncoder;
 import com.topcoder.json.object.io.JSONEncodingException;
+import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.search.builder.filter.NotFilter;
+import com.topcoder.search.builder.filter.NullFilter;
 import com.topcoder.service.prerequisite.PrerequisiteDocument;
 import com.topcoder.service.prerequisite.PrerequisiteService;
 import com.topcoder.service.project.ProjectData;
@@ -518,8 +521,22 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                     debug("getContest success!");
                 } else if ("getAllContests".equals(method)) {
-                    debug("start to get all contests.");
-                    List<ContestData> contests = studioService.getAllContests();
+                	String strOnlyDirectProjects = request.getParameter("onlyDirectProjects");
+                	if (checkBoolean(strOnlyDirectProjects, "onlyDirectProjects", response)) {
+                		return;
+                	}
+                    List<ContestData> contests = null;
+                    
+                    // Fix bug [27128642-4]
+                    if ("true".equals(strOnlyDirectProjects)) {
+                    	// Just get the contests having a related direct project
+                        Filter projectNotNullFilter = new NotFilter(new NullFilter("tc_direct_project_id"));
+
+                        contests = studioService.searchContests(projectNotNullFilter);
+                    } else {
+                    	contests = studioService.getAllContests();                    
+                	}
+                
                     JSONArray contestArr = new JSONArray();
                     for (ContestData contest : contests) {
                         JSONObject respJSON = getJSONFromContest(contest);
@@ -1655,6 +1672,30 @@ public class AjaxBridgeServlet extends HttpServlet {
         }
         return false;
     }
+
+    /**
+     * Check if the parameter is a valid boolean value ('true' or 'false')
+     * 
+     * @param param the parameter to be check
+     * @param name the name of parameter
+     * @param response where the response will be sent
+     * @return true if it is null/empty, false if it is not null/empty
+     * @throws JSONEncodingException when an error occurs in encoding the response
+     * @throws IOException when an error occurs in sending the response
+     */
+    private boolean checkBoolean(String param, String name, HttpServletResponse response)
+    	throws JSONEncodingException, IOException {
+
+    	if (checkIfNullOrEmpty(param, name, response)) {
+	        return true;
+	    } 
+    	
+    	if (!(param.equals("true") || param.equals("false"))) {
+            sendErrorJSONResponse("Invalid [" + name + "] parameter. It must be either 'true' or 'false'.", response);
+            return true;
+    	}
+	    return false;
+	}
 
     /**
      * <p>
