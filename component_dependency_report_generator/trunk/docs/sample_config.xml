@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <Config name="com.topcoder.util.dependency.report.utility.DependencyReportGeneratorUtility">
+    <Property name="persistence_config">
+      <Property name="file_name">
+        <Value>dependencies.xml</Value>
+      </Property>
+    </Property>
+    <Property name="generator_class">
+      <Value>com.topcoder.util.dependency.report.impl.HtmlReportGenerator</Value>
+    </Property>
+    <Property name="generator_config">
+      <Property name="dependency_types">
+        <Value>internal</Value>
+      </Property>
+      <Property name="dependency_categories">
+        <Value>compile</Value>
+      </Property>
+      <Property name="include_dependency_category">
+        <Value>false</Value>
+      </Property>
+      <Property name="include_dependency_path">
+        <Value>true</Value>
+      </Property>
+    </Property>
+    <Property name="stdout">
+      <Value>false</Value>
+    </Property>
+    <Property name="report_file_name">
+      <Value>report.html</Value>
+    </Property>
+    <Property name="indirect">
+      <Value>false</Value>
+    </Property>
+  </Config>
+</CMConfig>

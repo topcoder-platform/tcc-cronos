@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components>
+  <component language="java" name="A" version="1.0">
+    <dependency category="compile" name="B" path="path_for_B" type="internal" version="1.0"/>
+    <dependency category="compile" name="C" path="path_for_C" type="internal" version="1.0"/>
+    <dependency category="compile" name="D" path="path_for_D" type="internal" version="1.0"/>
+  </component>
+  <component language="java" name="C" version="1.0">
+    <dependency category="compile" name="D" path="path_for_D" type="internal" version="1.0"/>
+    <dependency category="compile" name="B" path="path_for_B" type="internal" version="1.0"/>
+  </component>
+  <component language="java" name="D" version="1.0">
+    <dependency category="compile" name="B" path="path_for_B" type="internal" version="1.0"/>
+  </component>
+  <component language="dot_net" name="X" version="1.0">
+    <dependency category="compile" name="Y" path="path_for_Y" type="internal" version="1.0"/>
+    <dependency category="compile" name="Z" path="path_for_Z" type="internal" version="1.0"/>
+  </component>
+</components>

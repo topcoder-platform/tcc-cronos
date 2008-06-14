@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components>
+  <component language="java" name="Component1" version="1.0">
+    <dependency category="test" name="Component1_dependency1" path="third_party/Component1_dependency1/1.0/Component1_dependency1.jar" type="external" version="1.0"/>
+    <dependency category="compile" name="Component1_dependency2" path="tcs/Component1_dependency2/2.0/Component1_dependency2.jar" type="internal" version="2.0"/>
+  </component>
+  <component language="dot_net" name="Component2" version="2.0">
+    <dependency category="test" name="Component2_dependency1" path="third_party/Component2_dependency1/1.0/Component2_dependency1.dll" type="external" version="1.0"/>
+    <dependency category="compile" name="Component2_dependency2" path="tcs/Component2_dependency2/2.0/Component2_dependency2.dll" type="internal" version="2.0"/>
+  </component>
+  <component language="java" name="Component1_dependency1" version="1.0">
+    <dependency category="test" name="Component1_dependency1_dependency1" path="third_party/Component1_dependency1_dependency1/1.0/Component1_dependency1_dependency1.jar" type="external" version="1.0"/>
+    <dependency category="compile" name="Component1_dependency1_dependency2" path="tcs/Component1_dependency1_dependency2/2.0/Component1_dependency1_dependency2.jar" type="internal" version="2.0"/>
+  </component>
+  <component language="dot_net" name="Component2_dependency2" version="2.0">
+    <dependency category="test" name="Component2_dependency2_dependency1" path="third_party/Component2_dependency2_dependency1/1.0/Component2_dependency2_dependency1.dll" type="external" version="1.0"/>
+    <dependency category="compile" name="Component2_dependency2_dependency2" path="tcs/Component2_dependency2_dependency2/2.0/Component2_dependency2_dependency2.dll" type="internal" version="2.0"/>
+  </component>
+  <component language="dot_net" name="Component3" version="3.0">
+    <dependency category="test" name="Component1_dependency1" path="third_party/Component1_dependency1/1.0/Component1_dependency1.jar" type="external" version="1.0"/>
+    <dependency category="compile" name="Component2_dependency2" path="tcs/Component2_dependency2/2.0/Component2_dependency2.dll" type="internal" version="2.0"/>
+  </component>
+</components>
+

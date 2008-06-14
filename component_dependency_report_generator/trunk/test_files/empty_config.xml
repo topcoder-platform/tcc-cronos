@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <Config name="com.topcoder.util.dependency.report.utility.DependencyReportGeneratorUtility">
+
+  <!-- All properties/children are optional...... -->
+
+  <!-- This is a completely empty config -->
+
+  <!-- 
+     In such case:
+        <ul>
+           <li><code>DefaultXmlDependenciesEntryPersistence</code> is used by default.</li>
+           <li><code>XmlDependencyReportGenerator</code> is used by default.</li>
+           <li>"internal;external" dependencies types are allowed by default.</li>
+           <li>"compile;test" dependencies categories are allowed by default.</li>
+           <li>Dependency type is included in report by default.</li>
+           <li>Dependency category is included in report by default.</li>
+           <li>Dependency path is not included in report by default.</li>
+           <li>Indirect dependencies are included in report by default.</li>
+           <li>All components are included in report by default.</li>
+           <li>The generated report is printed to stdout by default.</li>
+        </ul>
+   -->
+
+  <!-- Since DefaultXmlDependenciesEntryPersistence is used as default persistence, so
+       the user must specify the "-i" switch through command line to provide input file
+       for DefaultXmlDependenciesEntryPersistence -->
+
+  </Config>
+</CMConfig>

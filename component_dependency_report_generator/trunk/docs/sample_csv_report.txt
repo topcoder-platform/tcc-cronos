@@ -1,0 +1,1 @@
+java-logging_wrapper-2.0.0,[int][compile]base_exception-2.0.0,[int][compile]typesafe_enum-1.1.0,[int][compile]object_formatter-1.0.0,[ext][compile]log4j-1.2.14,[ext][compile]junit-3.8.2

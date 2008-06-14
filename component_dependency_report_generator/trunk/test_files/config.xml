@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <!-- The "config.xml" is the default configuration file -->
+  <Config name="com.topcoder.util.dependency.report.utility.DependencyReportGeneratorUtility">
+    <!-- All properties/children are optional...... -->
+
+    <!-- Optional. Not empty.
+         Default is "com.topcoder.util.dependency.persistence.DefaultXmlDependenciesEntryPersistence". -->
+    <Property name="persistence_class">
+        <Value>com.topcoder.util.dependency.persistence.DefaultXmlDependenciesEntryPersistence</Value>
+    </Property>
+
+    <!-- Optional child. Default is an empty child. -->
+    <Property name="persistence_config">
+        <Property name="file_name">
+            <Value>/dependencies.xml</Value>
+        </Property>
+    </Property>
+
+    <!-- Optional. Not empty.
+         Default is "com.topcoder.util.dependency.report.impl.XmlDependencyReportGenerator". -->
+    <Property name="generator_class">
+        <Value>com.topcoder.util.dependency.report.impl.HtmlDependencyReportGenerator</Value>
+    </Property>
+
+    <!-- Optional child. Default is an empty child. -->
+    <Property name="generator_config">
+        <!-- Optional. Not empty. Semicolon separated. Case Insensitive. Default is "internal;external". -->
+        <Property name="dependency_types">
+            <Value>internal;external</Value>
+        </Property>
+        <!-- Optional. Not empty. Semicolon separated. Case Insensitive. Default is "compile;test". -->
+        <Property name="dependency_categories">
+            <Value>compile;test</Value>
+        </Property>
+        <!-- Optional. Either "true" or "false". Case Sensitive. Default is "true". -->
+        <Property name="include_dependency_type">
+            <Value>true</Value>
+        </Property>
+        <!-- Optional. Either "true" or "false". Case Sensitive. Default is "true". -->
+        <Property name="include_dependency_category">
+            <Value>true</Value>
+        </Property>
+        <!-- Optional. Either "true" or "false". Case Sensitive. Default is "false". -->
+        <Property name="include_dependency_path">
+            <Value>true</Value>
+        </Property>
+    </Property>
+
+    <!-- Optional. Either "true" or "false". Case Sensitive. Default is "true". -->
+    <Property name="stdout">
+        <Value>true</Value>
+    </Property>
+
+    <!-- Optional. Not empty. Default is null. -->
+    <Property name="report_file_name">
+        <Value>test_files/report.html</Value>
+    </Property>
+
+    <!-- Optional. Either "true" or "false". Case Sensitive. Default is "true". -->
+    <Property name="indirect">
+        <Value>false</Value>
+    </Property>
+  </Config>
+</CMConfig>

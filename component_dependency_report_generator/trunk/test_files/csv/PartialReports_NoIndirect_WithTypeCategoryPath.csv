@@ -1,0 +1,3 @@
+java-Component1-1.0,[ext][test]Component1_dependency1-1.0[third_party/Component1_dependency1/1.0/Component1_dependency1.jar],[int][compile]Component1_dependency2-2.0[tcs/Component1_dependency2/2.0/Component1_dependency2.jar]
+dot_net-Component3-3.0,[ext][test]Component1_dependency1-1.0[third_party/Component1_dependency1/1.0/Component1_dependency1.jar],[int][compile]Component2_dependency2-2.0[tcs/Component2_dependency2/2.0/Component2_dependency2.dll]
+

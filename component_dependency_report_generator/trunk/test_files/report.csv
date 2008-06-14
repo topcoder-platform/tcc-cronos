@@ -1,0 +1,2 @@
+java-logging_wrapper-2.0.0,base_exception-2.0.0[../tcs/lib/tcs/base_exception/2.0.0/base_exception.jar],typesafe_enum-1.1.0[../tcs/lib/tcs/typesafe_enum/1.1.0/typesafe_enum.jar],object_formatter-1.0.0[../tcs/lib/tcs/object_formatter/1.0.0/object_formatter.jar]
+dot_net-command_line_executor-1.0

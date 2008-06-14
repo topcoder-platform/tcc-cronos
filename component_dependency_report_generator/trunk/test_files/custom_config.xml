@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <Config name="com.topcoder.util.dependency.report.utility.DependencyReportGeneratorUtility">
+
+    <Property name="persistence_class">
+        <Value>com.topcoder.util.dependency.persistence.DefaultXmlDependenciesEntryPersistence</Value>
+    </Property>
+
+    <Property name="persistence_config">
+        <Property name="file_name">
+            <Value>/dependencies.xml</Value>
+        </Property>
+    </Property>
+
+    <Property name="generator_class">
+        <Value>com.topcoder.util.dependency.report.impl.XmlDependencyReportGenerator</Value>
+    </Property>
+
+    <Property name="generator_config">
+        <Property name="include_dependency_path">
+            <Value>true</Value>
+        </Property>
+    </Property>
+
+    <!-- The stdout is enabled, and the "report_file_name" is not configured.
+         If the user does not specify an output file through command line,
+         the application will print report to stdout. -->
+
+    <Property name="stdout">
+        <Value>true</Value>
+    </Property>
+<!-- 
+    <Property name="report_file_name">
+        <Value>report.html</Value>
+    </Property>
+ -->
+    <Property name="indirect">
+        <Value>true</Value>
+    </Property>
+  </Config>
+</CMConfig>

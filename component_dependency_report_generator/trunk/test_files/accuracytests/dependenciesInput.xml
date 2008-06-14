@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components>
+<component language="java" name="logging_wrapper" version="1.0">
+<dependency category="compile" name="configmanager_xerces" path="../lib/tcs/configmanager/1.2/configmanager_xerces-1.4.4.jar" type="internal" version="1.4.4"/>
+<dependency category="compile" name="xerces" path="../lib/xerces.jar" type="external" version=""/>
+<dependency category="compile" name="log4j" path="../lib/log4j-1.2.6.jar" type="external" version="1.2.6"/>
+<dependency category="test" name="configmanager_xerces" path="../lib/tcs/configmanager/1.2/configmanager_xerces-1.4.4.jar" type="internal" version="1.4.4"/>
+<dependency category="test" name="xerces" path="../lib/xerces.jar" type="external" version=""/>
+<dependency category="test" name="log4j" path="../lib/log4j-1.2.6.jar" type="external" version="1.2.6"/>
+</component>
+<component language="java" name="logging_wrapper" version="1.2">
+<dependency category="compile" name="configuration_manager" path="lib/tcs/configuration_manager/2.1.2/configuration_manager.jar" type="internal" version="2.1.2"/>
+<dependency category="compile" name="typesafe_enum" path="lib/tcs/typesafe_enum/1.0/typesafe_enum.jar" type="internal" version="1.0"/>
+<dependency category="compile" name="base_exception" path="lib/tcs/base_exception/1.0/base_exception.jar" type="internal" version="1.0"/>
+<dependency category="compile" name="log4j" path="lib/log4j-1.2.6.jar" type="external" version="1.2.6"/>
+<dependency category="test" name="configuration_manager" path="lib/tcs/configuration_manager/2.1.2/configuration_manager.jar" type="internal" version="2.1.2"/>
+<dependency category="test" name="typesafe_enum" path="lib/tcs/typesafe_enum/1.0/typesafe_enum.jar" type="internal" version="1.0"/>
+<dependency category="test" name="base_exception" path="lib/tcs/base_exception/1.0/base_exception.jar" type="internal" version="1.0"/>
+<dependency category="test" name="log4j" path="lib/log4j-1.2.6.jar" type="external" version="1.2.6"/>
+</component>
+<component language="java" name="logging_wrapper" version="2.0">
+<dependency category="compile" name="junit" path="../tcs/lib/third_party/junit/3.8.2/junit.jar" type="external" version="3.8.2"/>
+<dependency category="compile" name="log4j" path="../tcs/lib/third_party/log4j/1.2.14/log4j.jar" type="external" version="1.2.14"/>
+<dependency category="compile" name="configuration_manager" path="../tcs/lib/tcs/configuration_manager/2.1.5/configuration_manager.jar" type="internal" version="2.1.5"/>
+<dependency category="compile" name="typesafe_enum" path="../tcs/lib/tcs/typesafe_enum/1.0/typesafe_enum.jar" type="internal" version="1.0"/>
+<dependency category="compile" name="base_exception" path="../tcs/lib/tcs/base_exception/1.0/base_exception.jar" type="internal" version="1.0"/>
+<dependency category="compile" name="object_formatter" path="../tcs/lib/tcs/object_formatter/1.0/object_formatter.jar" type="internal" version="1.0"/>
+<dependency category="test" name="junit" path="../tcs/lib/third_party/junit/3.8.2/junit.jar" type="external" version="3.8.2"/>
+<dependency category="test" name="log4j" path="../tcs/lib/third_party/log4j/1.2.14/log4j.jar" type="external" version="1.2.14"/>
+<dependency category="test" name="configuration_manager" path="../tcs/lib/tcs/configuration_manager/2.1.5/configuration_manager.jar" type="internal" version="2.1.5"/>
+<dependency category="test" name="typesafe_enum" path="../tcs/lib/tcs/typesafe_enum/1.0/typesafe_enum.jar" type="internal" version="1.0"/>
+<dependency category="test" name="base_exception" path="../tcs/lib/tcs/base_exception/1.0/base_exception.jar" type="internal" version="1.0"/>
+<dependency category="test" name="object_formatter" path="../tcs/lib/tcs/object_formatter/1.0/object_formatter.jar" type="internal" version="1.0"/>
+</component>
+<component language="dot_net" name="authentication" version="1.0">
+<dependency category="compile" name="encryption" path="..\tcs\bin\tcs\encryption\1.0\TopCoder.Security.Encryption.dll" type="internal" version="1.0"/>
+<dependency category="compile" name="reference_collection" path="..\tcs\bin\tcs\reference_collection\1.0\TopCoder.Util.Collection.Reference.dll" type="internal" version="1.0"/>
+<dependency category="compile" name="simple_file_database" path="..\tcs\bin\tcs\simple_file_database\1.0\TopCoder.DB.FileStore.dll" type="internal" version="1.0"/>
+<dependency category="compile" name="configuration_manager" path="..\tcs\bin\tcs\configuration_manager\2.0\TopCoder.Util.ConfigurationManager.dll" type="internal" version="2.0"/>
+<dependency category="compile" name="logging_wrapper" path="..\tcs\bin\tcs\logging_wrapper\2.0\TopCoder.LoggingWrapper.dll" type="internal" version="2.0"/>
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+<dependency category="test" name="encryption" path="..\tcs\bin\tcs\encryption\1.0\TopCoder.Security.Encryption.dll" type="internal" version="1.0"/>
+<dependency category="test" name="reference_collection" path="..\tcs\bin\tcs\reference_collection\1.0\TopCoder.Util.Collection.Reference.dll" type="internal" version="1.0"/>
+<dependency category="test" name="simple_file_database" path="..\tcs\bin\tcs\simple_file_database\1.0\TopCoder.DB.FileStore.dll" type="internal" version="1.0"/>
+<dependency category="test" name="configuration_manager" path="..\tcs\bin\tcs\configuration_manager\2.0\TopCoder.Util.ConfigurationManager.dll" type="internal" version="2.0"/>
+<dependency category="test" name="logging_wrapper" path="..\tcs\bin\tcs\logging_wrapper\2.0\TopCoder.LoggingWrapper.dll" type="internal" version="2.0"/>
+</component>
+<component language="dot_net" name="authorization" version="1.0">
+<dependency category="compile" name="configuration_manager" path="..\tcs\bin\tcs\configuration_manager\1.0\TopCoder.Util.ConfigurationManager.dll" type="internal" version="1.0"/>
+<dependency category="compile" name="logging_wrapper" path="..\tcs\bin\tcs\logging_wrapper\1.0\logging_wrapper.dll" type="internal" version="1.0"/>
+<dependency category="compile" name="log4net" path="..\tcs\bin\log4net.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="configuration_manager" path="..\tcs\bin\tcs\configuration_manager\1.0\TopCoder.Util.ConfigurationManager.dll" type="internal" version="1.0"/>
+<dependency category="test" name="logging_wrapper" path="..\tcs\bin\tcs\logging_wrapper\1.0\logging_wrapper.dll" type="internal" version="1.0"/>
+<dependency category="test" name="log4net" path="..\tcs\bin\log4net.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="authorization" version="2.0">
+<dependency category="compile" name="configuration_manager" path="..\tcs\bin\tcs\configuration_manager\2.0\TopCoder.Util.ConfigurationManager.dll" type="internal" version="2.0"/>
+<dependency category="compile" name="set_utility" path="..\tcs\bin\tcs\set_utility\1.0\TopCoder.Util.Collection.Set.dll" type="internal" version="1.0"/>
+<dependency category="compile" name="simple_cache" path="..\tcs\bin\tcs\simple_cache\2.0\TopCoder.Cache.dll" type="internal" version="2.0"/>
+<dependency category="compile" name="id_generator" path="..\tcs\bin\tcs\id_generator\1.0\TopCoder.Util.IDGenerator.dll" type="internal" version="1.0"/>
+<dependency category="compile" name="nhibernate" path="..\tcs\bin\nhibernate\1.0.2\Castle.DynamicProxy.dll" type="external" version="1.0.2"/>
+<dependency category="compile" name="linked_list" path="..\tcs\bin\tcs\linked_list\1.0\TopCoder.Util.Collection.List.LinkedList.dll" type="internal" version="1.0"/>
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+<dependency category="test" name="configuration_manager" path="..\tcs\bin\tcs\configuration_manager\2.0\TopCoder.Util.ConfigurationManager.dll" type="internal" version="2.0"/>
+<dependency category="test" name="set_utility" path="..\tcs\bin\tcs\set_utility\1.0\TopCoder.Util.Collection.Set.dll" type="internal" version="1.0"/>
+<dependency category="test" name="simple_cache" path="..\tcs\bin\tcs\simple_cache\2.0\TopCoder.Cache.dll" type="internal" version="2.0"/>
+<dependency category="test" name="id_generator" path="..\tcs\bin\tcs\id_generator\1.0\TopCoder.Util.IDGenerator.dll" type="internal" version="1.0"/>
+<dependency category="test" name="nhibernate" path="..\tcs\bin\nhibernate\1.0.2\Castle.DynamicProxy.dll" type="external" version="1.0.2"/>
+<dependency category="test" name="linked_list" path="..\tcs\bin\tcs\linked_list\1.0\TopCoder.Util.Collection.List.LinkedList.dll" type="internal" version="1.0"/>
+</component>
+</components>

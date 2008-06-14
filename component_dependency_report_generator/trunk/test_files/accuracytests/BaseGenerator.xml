@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <Config name="BaseConfig">
+		    <property name="dependency_types">
+		    	<value>internal;external</value>
+		    </property>
+		    <property name="dependency_categories">
+		    	<value>compile;test</value>
+		    </property>
+		    <property name="include_dependency_type">
+		    	<value>true</value>
+		    </property>
+		    <property name="include_dependency_category">
+		    	<value>true</value>
+		    </property>
+		    <property name="include_dependency_path">
+		    	<value>true</value>
+		    </property>  
+  </Config>
+  <Config name="ConfigWithWrongTypes">
+		    <property name="dependency_types">
+		    	<value>wrongtype</value>
+		    </property>
+		    <property name="dependency_categories">
+		    	<value>compile;test</value>
+		    </property>
+		    <property name="include_dependency_type">
+		    	<value>true</value>
+		    </property>
+		    <property name="include_dependency_category">
+		    	<value>true</value>
+		    </property>
+		    <property name="include_dependency_path">
+		    	<value>true</value>
+		    </property>  
+  </Config>
+  <Config name="ConfigWithWrongCategoryIncludeValue">
+		    <property name="dependency_types">
+		    	<value>internal</value>
+		    </property>
+		    <property name="dependency_categories">
+		    	<value>compile;test</value>
+		    </property>
+		    <property name="include_dependency_type">
+		    	<value>true</value>
+		    </property>
+		    <property name="include_dependency_category">
+		    	<value>wrongvalue</value>
+		    </property>
+		    <property name="include_dependency_path">
+		    	<value>true</value>
+		    </property>  
+  </Config>
+  <Config name="ConfigWithWrongCats">
+		    <property name="dependency_types">
+		    	<value>internal</value>
+		    </property>
+		    <property name="dependency_categories">
+		    	<value>compile;wrongvalue</value>
+		    </property>
+		    <property name="include_dependency_type">
+		    	<value>true</value>
+		    </property>
+		    <property name="include_dependency_category">
+		    	<value>true</value>
+		    </property>
+		    <property name="include_dependency_path">
+		    	<value>true</value>
+		    </property>  
+  </Config>  
+</CMConfig>
