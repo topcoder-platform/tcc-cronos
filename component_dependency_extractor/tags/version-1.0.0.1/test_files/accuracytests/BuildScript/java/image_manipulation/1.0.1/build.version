@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Image Manipulation
+component.distfilename=image_manipulation
+component.package=com.topcoder.util.image.manipulation
+component.packagedir=com/topcoder/util/image/manipulation
+component.version.major=1
+component.version.minor=0
+component.version.micro=1
+component.version.build=2

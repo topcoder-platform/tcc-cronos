@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Vault Peer Manager
+component.distfilename=vault_peer_manager
+component.package=com.topcoder.vault.peer
+component.packagedir=com/topcoder/vault/peer
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

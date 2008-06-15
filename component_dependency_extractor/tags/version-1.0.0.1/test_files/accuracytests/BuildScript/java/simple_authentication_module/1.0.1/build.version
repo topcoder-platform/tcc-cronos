@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Simple Authentication Module
+component.distfilename=simple_authentication_module
+component.package=com.topcoder.security.authenticationmanager.modules
+component.packagedir=com/topcoder/security/authenticationmanager/modules
+component.version.major=1
+component.version.minor=0
+component.version.micro=1
+component.version.build=1

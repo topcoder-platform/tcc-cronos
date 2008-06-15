@@ -1,0 +1,9 @@
+#property file defining the component's information
+component.name=Calendar Tag
+component.distfilename=calendar_tag
+component.package=com.topcoder.web.ui.tag.calendar
+component.packagedir=com/topcoder/web/ui/tag/calendar
+component.version.major=1
+component.version.minor=0
+component.version.micro=1
+component.version.build=1

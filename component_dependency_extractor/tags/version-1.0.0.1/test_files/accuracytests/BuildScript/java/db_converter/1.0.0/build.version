@@ -1,0 +1,9 @@
+#property file defining the component's information
+component.name=DB Converter
+component.distfilename=db_converter
+component.package=com.topcoder.util.dbconverter
+component.packagedir=com/topcoder/util/dbconverter
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

@@ -1,0 +1,67 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+    <!-- define TCS dependencies -->
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0/base_exception.jar"/>
+    <property name="auditor.jar" value="${tcs_libdir}/auditor/2.0.1/auditor.jar"/>
+    <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.0.1/object_factory.jar"/>
+    <property name="object_factory_configuration_api_plugin.jar"
+              value="${tcs_libdir}/object_factory_configuration_api_plugin/1.0/object_factory_configuration_api_plugin.jar"/>
+    <property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.0/configuration_api.jar"/>
+    <property name="configuration_persistence.jar"
+              value="${tcs_libdir}/configuration_persistence/1.0.1/configuration_persistence.jar"/>
+    <property name="authentication_manager.jar"
+              value="${tcs_libdir}/authentication_manager/1.0.2/authentication_manager.jar"/>
+    <!-- fix some bugs by developder -->
+    <property name="security_facade.jar" value="test_files/lib/security_facade.jar"/>
+    <property name="user_group_manager.jar" value="test_files/lib/user_group_manager.jar"/>
+    <property name="functional_entitlement.jar" value="test_files/lib/functional_entitlement.jar"/>
+    <property name="JBossLoginDemo.jar" value="test_files/lib/JBossLoginDemo.jar"/>
+
+    <!-- define 3rd party dependencies -->
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+    <property name="httpunit.jar" value="${ext_libdir}/httpunit/1.6.2/httpunit.jar"/>
+
+    <property name="jboss.dir" value="${ext_libdir}/jboss-4.2.0.GA"/>
+    <property name="commons-logging.jar" value="${jboss.dir}/client/commons-logging.jar"/>
+    <property name="jbossall-client.jar" value="${jboss.dir}/client/jbossall-client.jar"/>
+    <property name="jboss-common.jar" value="${jboss.dir}/lib/jboss-common.jar"/>
+    <property name="jbosssx.jar" value="${jboss.dir}/server/default/lib/jbosssx.jar"/>
+    <property name="jboss-system.jar" value="${jboss.dir}/lib/jboss-system.jar"/>
+    <property name="log4j-boot.jar" value="${jboss.dir}/server/default/lib/log4j-boot.jar"/>
+    <property name="Tidy.jar" value="${jboss.dir}/server/default/lib/Tidy.jar"/>
+
+    <!-- the required path elements must be defined even if empty -->
+    <path id="component.tcs-dependencies">
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${configuration_api.jar}"/>
+        <pathelement location="${auditor.jar}"/>
+        <pathelement location="${object_factory.jar}"/>
+        <pathelement location="${object_factory_configuration_api_plugin.jar}"/>
+        <pathelement location="${authentication_manager.jar}"/>
+        <pathelement location="${configuration_persistence.jar}"/>
+
+        <pathelement location="${functional_entitlement.jar}"/>
+        <pathelement location="${JBossLoginDemo.jar}"/>
+        <pathelement location="${user_group_manager.jar}"/>
+        <pathelement location="${security_facade.jar}"/>
+    </path>
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${commons-logging.jar}"/>
+        <pathelement location="${jbossall-client.jar}"/>
+        <pathelement location="${jboss-common.jar}"/>
+        <pathelement location="${jbosssx.jar}"/>
+        <pathelement location="${jboss-system.jar}"/>
+        <pathelement location="${log4j-boot.jar}"/>
+        <pathelement location="${Tidy.jar}"/>
+        <pathelement location="${httpunit.jar}"/>
+
+    </path>
+    <path id="component.test.3rdParty-dependencies"/>
+
+    <!-- Properties used in compile_targets ANT target -->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
+
+</project>

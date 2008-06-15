@@ -1,0 +1,297 @@
+<?xml version="1.0"?>
+
+<project name="Mobile HTTP Authenticator Plug-In" default="dist" basedir=".">
+
+    <property file="../topcoder_global.properties"/>
+
+    <!-- COMPONENT PARAMETERS -->
+    <property name="component" value="Mobile_HTTP_Authenticator_Plug_-_In" />
+    <property name="package" value="com.topcoder.mobile.authenticator" />
+    <property name="packagedir" value="com/topcoder/mobile/authenticator" />
+    <property name="distfilename" value="mobile_http_authenticator_plug_-_in" />
+    <property name="component_version" value="1.0" />
+    <property name="component_path" value="${distfilename}/${component_version}" />
+
+    <!-- DIRECTORY SETUP -->
+    <property name="srcdir" value="src" />
+    <property name="tcs_libdir" value="lib/tcs" />
+    <property name="ext_libdir" value="lib/third_party" />
+    <property name="jar_tcs_libdir" value="lib/tcs" />
+    <property name="jar_ext_libdir" value="lib/third_party" />
+    <property name="docsdir" value="docs" />
+    <property name="configdir" value="conf" />
+    <property name="testlogdir" value="log" />
+    <property name="testfiles" value="test_files" />
+    <property name="javadocsdir" value="${docsdir}/javadocs" />
+    <property name="webdir" value="web" />
+    <property name="reports" value="reports" />
+
+    <property name="javasrc" value="${srcdir}/java" />
+    <property name="javamain" value="${javasrc}/main" />
+    <property name="javatests" value="${javasrc}/tests" />
+
+    <property name="builddir" value="build" />
+    <property name="build_classdir" value="${builddir}/classes" />
+    <property name="build_testclassdir" value="${builddir}/testClasses" />
+    <property name="build_targetclassdir" value="${builddir}/targetclasses" />
+    <property name="build_distdir" value="${builddir}/dist" />
+    <property name="build_docsdir" value="${builddir}/${docsdir}" />
+    <property name="build_javadocsdir" value="${builddir}/${javadocsdir}" />
+    <property name="build_webdir" value="${builddir}/${webdir}" />
+    <property name="build_lib" value="${builddir}/lib" />
+    <property name="build_tcsdistdir" value="${build_distdir}/${distfilename}-${component_version}" />
+
+    <!-- EXECUTION TAGS -->
+    <property name="debug" value="off" />
+    <property name="verbose" value="no" />
+
+    <!-- COMPONENT DISTRIBUTION STRUCTURE -->
+    <property name="dist_conf" value="${build_tcsdistdir}/${configdir}" />
+    <property name="dist_lib" value="${build_distdir}/lib/tcs" />
+    <property name="dist_src" value="${build_tcsdistdir}/${srcdir}" />
+    <property name="dist_docs" value="${build_tcsdistdir}/${docsdir}" />
+    <property name="dist_javadocs" value="${build_tcsdistdir}/${javadocsdir}" />
+    <property name="dist_testfiles" value="${build_tcsdistdir}/${testfiles}" />
+
+    <!-- NAME FOR .JAR AND .WAR FILES -->
+    <property name="component.jar" value="${dist_lib}/${component_path}/${distfilename}.jar"/>
+    <property name="javadoc.jar" value="javadocs.jar"/>
+    <property name="component.tests.jar" value="${dist_lib}/${distfilename}_tests.jar"/>
+    <property name="component.war" value="${dist_examples}/${distfilename}.war"/>
+    <property name="component.dist.jar" value="${build_distdir}/${distfilename}-${component_version}.jar"/>
+    <property name="dev_submission.jar" value="${component}_${component_version}_dev_submission.jar"/>
+    <property name="design_submission.jar" value="${component}_${component_version}_design_submission.jar"/>
+    <property name="dev_dist.jar" value="${component}_${component_version}_dev_dist.jar"/>
+    <property name="design_dist.jar" value="${component}_${component_version}_design_dist.jar"/>
+
+    <!-- DOCUMENT PACKAGE -->
+    <property name="dist_docpackage" value="${builddir}/doc_package" />
+    <property name="docpackage.jar" value="${distfilename}_docs.jar" />
+
+    <!-- TCS Dependencies -->
+    <!--
+    <property name="mobile_configuration_manager.version" value="1.0"/>
+    <property name="mobile_configuration_manager.jar.name" value="mobile_configuration_manager.jar"/>
+    <property name="mobile_configuration_manager.path" value="mobile_configuration_manager/${mobile_configuration_manager.version}"/>
+    <property name="mobile_configuration_manager.jar" value="${tcs_libdir}/${mobile_configuration_manager.path}/${mobile_configuration_manager.jar.name}"/>
+    -->
+    <!-- 3rd Party Dependencies  -->
+    <property name="mobile_http_handler.version" value="1.0"/>
+    <property name="mobile_http_handler.jar.name" value="mobile_http_handler.jar"/>
+    <property name="mobile_http_handler.path" value="mobile_http_handler/${mobile_http_handler.version}"/>
+    <property name="mobile_http_handler.jar" value="${tcs_libdir}/${mobile_http_handler.path}/${mobile_http_handler.jar.name}"/>
+    
+    <!-- ANTENNA TASKS -->
+    <property name="antenna.jar" value="${ext_libdir}/antenna/0.9.15/antenna-bin-0.9.15-beta.jar"/>
+		<taskdef classpath="${antenna.jar}" resource="antenna.properties" />
+
+    <!-- WTK PARAMETERS -->
+    <property name="wtk.home" value="C:/WTK25" />
+    <property name="wtk.midp.version" value="2.0" />
+    <property name="wtk.cldc.version" value="1.1" />
+
+    <!-- J2ME Unit -->
+    <property name="j2meunit.jar" value="${ext_libdir}/j2meunit/1.1.1/j2meunit.jar"/>
+    <property name="cldcapi.jar" value="${wtk.home}/lib/cldcapi11.jar"/>
+    <property name="midpapi.jar" value="${wtk.home}/lib/midpapi20.jar"/>
+
+    <!-- Java Locations -->
+    <property name="java_1_3_bootclasspath" value="E:\Program files\JavaSoft\JRE\1.3.1\lib\rt.jar"/>
+
+    <path id="buildlibs">
+        <pathelement location="${j2meunit.jar}" />
+        <pathelement location="${mobile_http_handler.jar}" />
+    </path>
+
+    <path id="test.build.classpath">
+        <pathelement location="${build_testclassdir}"/>
+        <pathelement location="${build_classdir}"/>
+        <path refid="buildlibs"/>
+    </path>
+
+    <path id="runtime.classpath">
+        <pathelement location="${build_classdir}"/>
+        <path refid="buildlibs"/>
+    </path>
+
+    <target name="compile">
+        <mkdir dir="${build_classdir}"/>
+        <javac srcdir="${javamain}" destdir="${build_classdir}" includes="${packagedir}/**" debug="true" verbose="${verbose}" target="1.1" bootclasspath="${cldcapi.jar};${midpapi.jar}">
+            <classpath refid="buildlibs" />
+        </javac>
+    </target>
+
+    <target name="compile_targets">
+        <!-- test compile against 1.3 -->
+        <mkdir dir="${build_targetclassdir}"/>
+        <mkdir dir="${javatests}"/>
+        <javac srcdir="${javamain}"
+               destdir="${build_targetclassdir}"
+               includes="${packagedir}/**"
+               debug="true"
+               verbose="${verbose}"
+               target="1.3"
+               bootclasspath="${java_1_3_bootclasspath}"
+               extdirs=""
+               >
+               <classpath refid="buildlibs" />
+        </javac>
+
+        <!-- compile test cases -->
+        <javac srcdir="${javatests}"
+               destdir="${build_targetclassdir}"
+               includes="${packagedir}/**"
+           debug="true"
+               verbose="${verbose}"
+               target="1.3"
+               bootclasspath="${java_1_3_bootclasspath}"
+               classpath="${j2meunit.jar}"
+               extdirs=""
+               >
+            <classpath refid="buildlibs" />
+        </javac>
+        <delete dir="${build_targetclassdir}"/>
+    </target>
+
+    <target name="compile_tests" depends="compile">
+        <mkdir dir="${build_testclassdir}"/>
+        <javac srcdir="${javatests}" destdir="${build_testclassdir}" includes="${packagedir}/**" debug="true" verbose="${verbose}" target="1.1" bootclasspath="${cldcapi.jar};${midpapi.jar}">
+            <classpath refid="test.build.classpath" />
+        </javac>
+    </target>
+
+    <!-- Invokes the WTK specific tasks to create the midlet JAR -->
+    <target name="build.midlet" depends="compile_tests">
+
+        <!-- First create the JAD file -->
+        <wtkjad jadfile="${midlet.basename}.jad"
+                jarfile="${midlet.basename}.jar"
+                name="${midlet.name}"
+                vendor="TopCoder"
+                version="${component_version}">
+        
+            <midlet name="${midlet.name}" 
+                    class="${midlet.class}" />
+
+            <attribute name="${wtk.jad.attr1}" value="${wtk.jad.attr1.value}" if="wtk.jad.attr1" />
+            <attribute name="${wtk.jad.attr2}" value="${wtk.jad.attr2.value}" if="wtk.jad.attr2" />
+            <attribute name="${wtk.jad.attr3}" value="${wtk.jad.attr3.value}" if="wtk.jad.attr3" />
+            <attribute name="${wtk.jad.attr4}" value="${wtk.jad.attr4.value}" if="wtk.jad.attr4" />
+            <attribute name="${wtk.jad.attr5}" value="${wtk.jad.attr5.value}" if="wtk.jad.attr5" />
+            <attribute name="${wtk.jad.attr6}" value="${wtk.jad.attr6.value}" if="wtk.jad.attr6" />
+            <attribute name="${wtk.jad.attr7}" value="${wtk.jad.attr7.value}" if="wtk.jad.attr7" />
+            <attribute name="${wtk.jad.attr8}" value="${wtk.jad.attr8.value}" if="wtk.jad.attr8" />
+            <attribute name="${wtk.jad.attr9}" value="${wtk.jad.attr9.value}" if="wtk.jad.attr9" />
+
+        </wtkjad>
+        
+        <!-- Package everything. Most of the necessary information is
+             contained in the JAD file. Also preverify the result this
+             time. To obfuscate everything, set the corresponding
+             parameter to "true" (requires RetroGuard or ProGuard). If 
+             the autoversion parameter is true it will increment the 
+             MIDlet-Version by one each time. -->
+        <wtkpackage jarfile="${midlet.basename}.jar"
+                    jadfile="${midlet.basename}.jad"
+                    preverify="true"
+                    autoversion="false"
+                    cldc="false"
+        	          bootclasspath="${midpapi.jar};${cldcapi.jar}"
+        			      libclasspathref="buildlibs" >
+            <!-- Package the  compiled classes and the resources -->
+            <fileset dir="${build_classdir}"/>
+            <fileset dir="${build_testclassdir}"/>
+        	  <fileset dir="${testfiles}"/>
+
+<!--<manifest>
+            <attribute name="${wtk.jad.attr1}" value="${wtk.jad.attr1.value}" />
+</manifest>-->
+            <preserve class="${wtk.pack.preserve1}" if="wtk.pack.preserve1" />
+            <preserve class="${wtk.pack.preserve2}" if="wtk.pack.preserve2" />
+            <preserve class="${wtk.pack.preserve3}" if="wtk.pack.preserve3" />
+            <preserve class="${wtk.pack.preserve4}" if="wtk.pack.preserve4" />
+            <preserve class="${wtk.pack.preserve5}" if="wtk.pack.preserve5" />
+            <preserve class="${wtk.pack.preserve6}" if="wtk.pack.preserve6" />
+            <preserve class="${wtk.pack.preserve7}" if="wtk.pack.preserve7" />
+            <preserve class="${wtk.pack.preserve8}" if="wtk.pack.preserve8" />
+            <preserve class="${wtk.pack.preserve9}" if="wtk.pack.preserve9" />
+        </wtkpackage>
+
+    </target> <!-- build.midlet -->
+
+    <target name="run" depends="build.midlet">
+    	<exec executable="${wtk.home}/bin/emulator" output="${testlogdir}/TEST-${package}.AllTests.txt">
+    		<arg value="-Xdescriptor:${midlet.basename}.jad" />
+    	</exec>
+    </target>
+
+    <target name="test" depends="compile_tests">
+        <mkdir dir="${testlogdir}"/>
+
+        <antcall target="run" inheritall="false" >
+            <param name="midlet.name" value="${component}_${component_version}_test" />
+            <param name="midlet.basename" value="${builddir}/${component}_${component_version}_test" />
+            <param name="midlet.class" value="j2meunit.midletui.TestRunner" />
+            <param name="wtk.jad.attr1" value="J2MEUnitTestClasses" />
+            <param name="wtk.jad.attr1.value" value="${package}.AllTests" />
+        </antcall>
+    </target>
+
+    <target name="reports" depends="test">
+        <mkdir dir="${reports}"/>
+
+        <junitreport todir="${reports}">
+          <fileset dir="${testlogdir}">
+            <include name="*.xml"/>
+          </fileset>
+          <report format="frames" todir="${reports}"/>
+        </junitreport>
+        <echo>The execution of reports is complete.  Reports are available in /${reports}</echo>
+    </target>
+
+    <target name="dist" depends="compile">
+        <mkdir dir="${dist_lib}/${component_path}"/>
+        <jar jarfile="${component.jar}" basedir="${build_classdir}" />
+    </target>
+
+    <target name="dist_tests" depends="compile_tests">
+        <mkdir dir="${dist_lib}"/>
+        <jar jarfile="${component.tests.jar}" basedir="${build_testclassdir}" />
+    </target>
+
+    <target name="javadoc" depends="compile">
+        <mkdir dir="${dist_javadocs}" />
+        <javadoc packagenames="${package}.*"
+            sourcepath="${javamain}"
+            classpath="${build_classdir}"
+            classpathref="buildlibs"
+            destdir="${dist_javadocs}"
+            windowtitle="Topcoder Software"
+            header="&lt;table border=0 cellpadding=0 cellspacing=2&gt;&lt;tr&gt;&lt;td&gt;&lt;font class=tcoder2&gt;&#091; &lt;/font&gt;&lt;font class=tcoder1&gt;TOP&lt;/font&gt;&lt;font class=tcoder2&gt;CODER &lt;/font&gt;&lt;font class=tcoder2&gt;&#093;&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font class=tcoder4&gt;&#153;&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td class=tcoder3 align=center&gt;&lt;font class=tcoder3&gt;SOFTWARE&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
+            footer="&lt;table border=0 cellpadding=0 cellspacing=2&gt;&lt;tr&gt;&lt;td&gt;&lt;font class=tcoder2&gt;&#091; &lt;/font&gt;&lt;font class=tcoder1&gt;TOP&lt;/font&gt;&lt;font class=tcoder2&gt;CODER &lt;/font&gt;&lt;font class=tcoder2&gt;&#093;&lt;/font&gt;&lt;/td&gt;&lt;td&gt;&lt;font class=tcoder4&gt;&#153;&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td class=tcoder3 align=center&gt;&lt;font class=tcoder3&gt;SOFTWARE&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
+            bottom="&lt;font class=tcoder5&gt;Contact TopCoder Software at &lt;a href='http://www.topcodersoftware.com'&gt;www.topcodersoftware.com&lt;/a&gt;&lt;/font&gt;"
+            stylesheetfile="${javadocsdir}/stylesheet.css"
+            verbose="${verbose}">
+            <tag name="copyright" description="Copyright:" scope="types"/>
+        </javadoc>
+    </target>
+
+    <target name="clean">
+        <delete dir="${builddir}"/>
+    </target>
+
+
+    <target name="deploy" depends="dist">
+    </target>
+
+    <target name="main" depends="deploy,test">
+    </target>
+    
+    <!-- ************************************************************************** -->
+    <!-- ************ REMOVE EVERYTHING BELOW HERE FOR THE DISTRIBUTION ************* -->
+    <!-- ************************************************************************** -->
+    <!-- ************************************************************************** -->
+    <!-- ************************ END REMOVE EVERYTHING ***************************** -->
+    <!-- ************************************************************************** -->
+
+</project>

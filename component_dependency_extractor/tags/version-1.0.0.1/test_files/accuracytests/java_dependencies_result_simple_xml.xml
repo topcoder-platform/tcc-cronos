@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components>
+<component language="java" name="logging_wrapper" version="2.0.0">
+<dependency category="compile" name="typesafe_enum" path="/typesafe_enum/1.1.0/typesafe_enum.jar" type="external" version="1.1.0"/>
+<dependency category="compile" name="object_formatter" path="/object_formatter/1.0.0/object_formatter.jar" type="external" version="1.0.0"/>
+<dependency category="compile" name="base_exception" path="/base_exception/2.0.0/base_exception.jar" type="external" version="2.0.0"/>
+<dependency category="compile" name="log4j" path="/log4j/1.2.14/log4j-1.2.14.jar" type="external" version="1.2.14"/>
+<dependency category="test" name="typesafe_enum" path="/typesafe_enum/1.1.0/typesafe_enum.jar" type="external" version="1.1.0"/>
+<dependency category="test" name="object_formatter" path="/object_formatter/1.0.0/object_formatter.jar" type="external" version="1.0.0"/>
+<dependency category="test" name="base_exception" path="/base_exception/2.0.0/base_exception.jar" type="external" version="2.0.0"/>
+<dependency category="test" name="log4j" path="/log4j/1.2.14/log4j-1.2.14.jar" type="external" version="1.2.14"/>
+</component>
+</components>

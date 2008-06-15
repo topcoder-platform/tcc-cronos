@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=JBoss Login Module
+component.distfilename=jboss_login_module
+component.package=com.topcoder.security.auth.module
+component.packagedir=com/topcoder/security/auth/module
+component.version.major=2
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

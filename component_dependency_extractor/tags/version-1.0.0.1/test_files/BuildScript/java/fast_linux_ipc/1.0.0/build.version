@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Fast Linux IPC
+component.distfilename=fast_linux_ipc
+component.package=com.topcoder.util.ipc
+component.packagedir=com/topcoder/util/ipc
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=2

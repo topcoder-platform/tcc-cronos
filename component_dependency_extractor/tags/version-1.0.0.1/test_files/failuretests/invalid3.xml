@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components>
+<component language="dot_net" name="" version="version1">
+<dependency category="compile" name="name1" path="path" type="internal" version="version1"/>
+</component>
+<component language="dot_net" name="name2" version="version2">
+<dependency category="compile" name="name2" path="path" type="internal" version="version2"/>
+</component>
+</components>

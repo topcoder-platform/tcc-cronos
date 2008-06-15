@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Database Logging Handler
+component.distfilename=Database_Logging_Handler
+component.package=com.topcoder.logging.db
+component.packagedir=com/topcoder/logging/db
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=0

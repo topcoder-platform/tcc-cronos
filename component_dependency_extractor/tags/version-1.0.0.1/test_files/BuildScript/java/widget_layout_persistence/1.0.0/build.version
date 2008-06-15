@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Widget Layout Persistence
+component.distfilename=widget_layout_persistence
+component.package=com.topcoder.widgets.persistence
+component.packagedir=com/topcoder/widgets/persistence
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

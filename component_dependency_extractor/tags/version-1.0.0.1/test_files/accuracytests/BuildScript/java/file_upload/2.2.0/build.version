@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=File Upload
+component.distfilename=file_upload
+component.package=com.topcoder.servlet.request
+component.packagedir=com/topcoder/servlet/request
+component.version.major=2
+component.version.minor=2
+component.version.micro=0
+component.version.build=3

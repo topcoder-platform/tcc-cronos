@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Stress Test
+component.distfilename=stress_test
+component.package=com.topcoder.testing.stress
+component.packagedir=com/topcoder/testing/stress
+component.version.major=2
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

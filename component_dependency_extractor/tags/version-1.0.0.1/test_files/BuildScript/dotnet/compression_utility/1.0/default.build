@@ -1,0 +1,307 @@
+<?xml version="1.0"?>
+<project name="Compression Utility" default="compile" basedir=".">
+       
+    <tstamp property="build.date" pattern="dd-MM-yyyy" verbose="true"/>
+    <sysinfo verbose="true"/>
+
+    <property name="component" value="Compression_Utility" />
+    <property name="distfilename" value="compression_utility" />  
+
+    <property name="component_version" value="1.0" />
+
+    <!--  REFERENCE TO NUNIT -->
+    <property name="Nunit" value="C:\Program Files\NUnit V2.0\bin\nunit.framework.dll"/>
+    <!--  REFERENCE TO NUNIT -->
+	
+	
+    <property name="debug" value="true"/>
+    <property name="verbose" value="true" />
+    <property name="component_path" value="${distfilename}/${component_version}" />    
+
+    <!-- directories -->
+    <property name="builddir" value="build" />
+    <property name="configdir" value="conf" />
+    <property name="testlogdir" value="log" />
+    <property name="testfiles" value="test_files" />
+    
+
+    <!-- NUNIT's output needs to go back to the root these next two properties should correspond -->
+    <property name="build_classdir" value="${builddir}\classes" />
+    <property name="root_from_build_classdir" value="..\.." />
+    <property name="TestOuput" value="${testlogdir}\${distfilename}TestResult.xml"/>
+    
+    
+    <!-- LOG4NET -->
+    <!--
+    <property name="log4net" value="lib\log4net.dll" />
+    -->
+    
+    
+    <!--   ****************************************************  -->
+    <property name="build_testclassdir" value="${builddir}\testClasses\" />
+    <property name="build_distdir" value="${builddir}\dist" />
+    <property name="build_tcsdistdir" value="${build_distdir}\${distfilename}-${component_version}" />
+    <property name="build_docsdir" value="${builddir}\docs" />
+    <property name="testdocsresult_dir" value="${build_docsdir}\testResults" />
+    <property name="msdndocs_dir" value="${build_docsdir}\msdn" />
+    <property name="build_xmldocsdir" value="${build_docsdir}\xmldoc\" />
+    <property name="build_javadocsdir" value="${build_docsdir}\javadoc" />
+    <property name="build_webdir" value="${builddir}\web\" />
+    
+    <property name="webdir" value="web" />
+
+    <property name="srcdir" value="src" />
+    <property name="dotnetsrc" value="${srcdir}\csharp" />
+    <property name="dotnetmain" value="${dotnetsrc}\main\TopCoder\Util\Compression" />
+    <property name="dotnettests" value="${dotnetsrc}\tests\TopCoder\Util\Compression" />
+    <property name="docsdir" value="docs" />
+    
+    
+
+    <!-- Component distribution structure -->
+    <property name="dist_conf" value="${build_tcsdistdir}\conf" />
+    <property name="dist_lib" value="${build_tcsdistdir}\lib" />
+    <property name="dist_examples" value="${build_tcsdistdir}\examples" />
+    <property name="dist_src" value="${build_tcsdistdir}\src" />
+    <property name="dist_docs" value="${build_tcsdistdir}\docs" />
+    <property name="test_results" value="${dist_docs}\test_results" />
+    <property name="msdn_docs" value="${dist_docs}\msdn_docs" />
+    <property name="java_docs" value="${dist_docs}\java_docs" />
+    <property name="xml_docs" value="${dist_docs}\xml" />
+    <property name="source_xml_docs" value="${xml_docs}\source" />
+    <property name="test_xml_docs" value="${xml_docs}\tests" />
+    <property name="component.zip" value="${dist_lib}\${distfilename}.zip"/>
+    <property name="component.dist.zip" value="${build_distdir}\${distfilename}-${component_version}.zip"/>
+    <property name="component.dist.source.zip" value="${dist_src}\${distfilename}-${component_version}_source.zip"/>
+    <property name="component.dist.docs.zip" value="${dist_docs}\${distfilename}-${component_version}_docs.zip"/>
+    <property name="design_dist.zip" value="${distfilename}_${component_version}_design_dist.zip"/>
+    <property name="dev_dist.zip" value="${distfilename}_${component_version}_dev_dist.zip"/>
+    
+    <!-- builds -->
+    <property name="design_submission.zip" value="${distfilename}_${component_version}_design_submission.zip"/>
+    <property name="dev_submission.zip" value="${distfilename}_${component_version}_dev_submission.zip"/>
+
+
+    <target name="design_dist">
+        
+        <zip zipfile="${design_dist.zip}"   >
+            <fileset defaultexcludes="true"> 
+                <includes name="${configdir}/**"/>
+                <includes name="default.build"/>
+                <includes name="${srcdir}/**"/>
+                <includes name="${docsdir}/**"/>
+                <includes name="${testfiles}/**"/>
+            </fileset>
+        </zip>
+    </target>
+
+    <target name="dev_dist">
+        
+        <zip zipfile="${dev_dist.zip}"   >
+            <fileset defaultexcludes="true"> 
+                <includes name="${configdir}/**"/>
+                <includes name="default.build"/>
+                <includes name="${srcdir}/**"/>
+                <includes name="${docsdir}/**"/>
+                <includes name="${testfiles}/**"/>
+            </fileset>
+        </zip>
+    </target>
+
+    <target name="dist_docs">
+        
+        <mkdir dir="${source_xml_docs}"/>
+        <mkdir dir="${test_xml_docs}"/>
+        <mkdir dir="${test_results}"/>
+        <mkdir dir="${java_docs}"/>
+        
+        <copy file="${build_docsdir}\${distfilename}.xml" todir="${source_xml_docs}"/>
+        <copy file="${build_docsdir}\${distfilename}Test.xml" todir="${test_xml_docs}"/>
+        
+        <copy todir="${test_results}">
+            <fileset basedir="${testdocsresult_dir}" defaultexcludes="true">
+                <includes name="**/*"/>
+                <excludes name="**/*.xml"/>
+            </fileset>
+        </copy>
+        <copy todir="${java_docs}">
+            <fileset basedir="${build_javadocsdir}" defaultexcludes="true">
+                <includes name="**/*"/>
+                <excludes name="**/*.xml"/>
+            </fileset>
+        </copy>
+
+    </target>
+
+	<target name="compile" >
+	    <mkdir dir="${build_classdir}"/>
+	    <mkdir dir="${build_docsdir}"/>
+		<csc target="library" output="${build_classdir}\${distfilename}.dll" doc="${build_classdir}\${distfilename}.xml" >
+			<sources>
+				<includes name="${dotnetmain}\*.cs"/>
+			</sources>
+		</csc>
+		<copy file="${build_classdir}\${distfilename}.xml" todir="${build_docsdir}" />
+	</target>
+	
+    <target name="clean">
+        <mkdir dir="${builddir}"/>
+        <mkdir dir="${dist_docs}"/>
+		<delete verbose="${verbose}"> 
+	        <fileset defaultexcludes="false" >
+	            <includes name="${builddir}/**/**"/>
+	            <includes name="*.zip"/>
+	            <includes name="${dist_docs}/**.zip"/>
+	        </fileset>
+		</delete>
+    </target>
+
+    <target name="design_submission" >
+        <zip zipfile="${design_submission.zip}"   >
+            <fileset defaultexcludes="true"> 
+                <includes name="${srcdir}/**"/>
+                <includes name="${docsdir}/**"/>
+            </fileset>
+        </zip>
+    </target>
+
+    <target name="dev_submission">
+        <zip zipfile="${dev_submission.zip}">
+            <fileset defaultexcludes="true">
+                <includes name="${srcdir}/**"/>
+                <includes name="${docsdir}/**" />
+                <includes name="${testlogdir}/**" />
+            </fileset>
+        </zip>
+    </target>
+
+    <target name="compile_tests" depends="compile">
+        <mkdir dir="${build_testclassdir}"/> 
+        <echo message="Please make sure that Nunit 2.0 is installed."/>
+        <echo message="The NUnit property is currently pointing to: ${Nunit}."/>
+        <echo message="If this is incorrect please adjust the Nunit property to point to the correct location."/>
+        <csc target="library" doc="${build_classdir}\${distfilename}Test.xml" output="${build_classdir}\${distfilename}Test.dll" failonerror="true"  >
+            <sources>
+                <includes name="${dotnettests}\*.cs" />
+                <includes name="${dotnettests}\accuracytests\*.cs" />
+                <includes name="${dotnettests}\failuretests\*.cs" />
+                <includes name="${dotnettests}\functionaltests\*.cs" />
+                <includes name="${dotnettests}\stresstests\*.cs" />
+                
+                
+            </sources>
+            <references>
+			    <includes name="${Nunit}"/>
+			    <includes name="${build_classdir}\${distfilename}.dll"/>
+			</references>
+        </csc>
+        <copy file="${build_classdir}\${distfilename}Test.xml" todir="${build_docsdir}" />
+    </target>
+    
+    <target name="test" depends="compile_tests">
+        <mkdir dir="${testlogdir}"/>
+        
+        <echo message="Please make sure that nunit-console is in your path."/>
+        <echo message="This file can be found in the NUnit bin directory."/>
+        <echo message="nunit-console /assembly:${build_classdir}\${distfilename}Test.dll /xml:${root_from_build_classdir}\${TestOuput}"/>
+        <exec program="nunit-console" commandline="/assembly:${build_classdir}\${distfilename}Test.dll /xml:${root_from_build_classdir}\${testlogdir}\${distfilename}TestResult.xml" />
+    </target>
+
+
+    <target name="dist" depends="compile_tests">
+        <mkdir dir="${dist_lib}/${component_path}"/>
+        <copy file="${build_classdir}\${distfilename}.dll" todir="${dist_lib}" />
+        <!--
+        <zip zipfile="${component.zip}">
+            <fileset basedir="${build_classdir}" defaultexcludes="true">
+                <includes name="**/*.dll"/>
+                <excludes name="**/*Test.dll"/>
+            </fileset>
+        </zip>
+        -->
+    </target>
+
+    <target name="dist_src">
+        <mkdir dir="${dist_src}"/>
+        <zip zipfile="${component.dist.source.zip}">
+            <fileset defaultexcludes="true">
+                <includes name="${srcdir}/**" />
+             </fileset>
+        </zip>
+
+    </target>
+
+    <target name="dist_tcs" depends="dist,nunitreport,dist_docs">
+        <!-- define tcs distribution format -->
+        <mkdir dir="${dist_conf}"/>
+        <mkdir dir="${dist_src}"/>
+
+        <copy todir="${dist_src}">
+            <fileset basedir="${srcdir}" defaultexcludes="true">
+                <includes name="**/*.cs"/>
+            </fileset>
+        </copy>
+        <copy todir="${dist_conf}">
+            <fileset basedir="${configdir}" defaultexcludes="true">
+                <includes name="**/*.cs"/>
+            </fileset>
+        </copy>
+        
+        <copy file="${docsdir}/${component}_Class_Diagram.gif" todir="${dist_docs}" />
+        <copy file="${docsdir}/${component}_Use_Case_Diagram.gif" todir="${dist_docs}" />
+        <copy file="${docsdir}/${component}_Choose_Compression_Algorithm_Sequence_Diagram.gif" todir="${dist_docs}" />
+        <copy file="${docsdir}/${component}_Compress_Decompress_Data_Sequence_Diagram.gif" todir="${dist_docs}" />
+        <copy file="${docsdir}/${component}_Requirements_Specification.pdf" todir="${dist_docs}" />
+        <copy file="${docsdir}/${component}_Component_Specification.pdf" todir="${dist_docs}" />
+        <copy file="${docsdir}/${component}.zargo" todir="${dist_docs}" />
+                
+        <copy file="default.build" tofile="${build_tcsdistdir}/default.build" />
+        <copy file="README.txt" tofile="${build_tcsdistdir}/README.txt" />
+        
+        <zip zipfile="${component.dist.zip}">
+            <fileset basedir="${build_distdir}" defaultexcludes="true">
+                <excludes name="**/*.zip"/>
+                <includes name="**/*"/>
+             </fileset>
+        </zip>
+    </target>
+
+
+    <target name="deploy" depends="dist">
+    </target>
+
+    <target name="main" depends="deploy,test">
+    </target>
+
+
+	<target name="nunitreport" depends="test">
+		<!-- By default the report is in english, format is noframes by default -->
+		<mkdir dir="${testdocsresult_dir}"/>
+		<nunit2report format="frames" opendesc="yes"  todir="${testdocsresult_dir}" out="${distfilename}TestResults.html" >
+			<fileset>
+				<includes name="${TestOuput}" />
+			</fileset>
+			<summaries>
+				<includes name="${build_docsdir}\${distfilename}Test.xml" />
+			</summaries> 
+		</nunit2report>
+
+		<echo message="NUnit frame report generated."/>
+	</target>
+
+    <target name="javadoc" depends="compile_tests">
+        <mkdir dir="${build_javadocsdir}"/>
+        <echo message="Please make sure that NDocConsole.exe is in your path."/>
+        <echo message="This file can be found in the NDoc directory."/>
+        <!--<exec program="NDocConsole.exe"  verbose="true" workingdir="." commandline="-verbose -documenter=JavaDoc -Title=${component} -OutputDirectory=${build_javadocsdir} build/classes/checksum.dll,build/classes/checksum.xml " /> -->
+        <exec program="NDocConsole.exe"  verbose="true" workingdir="." commandline="-verbose -documenter=JavaDoc -Title=${component} 
+                        -OutputDirectory=${build_javadocsdir} 
+                        ${build_classdir}\${distfilename}.dll,${build_classdir}\${distfilename}.xml
+                        ${build_classdir}\${distfilename}Test.dll,${build_classdir}\${distfilename}Test.xml" />
+        
+        <!--  -->
+        <!--  -->
+    </target>
+    
+</project>
+

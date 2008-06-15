@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Template Manager
+component.distfilename=template_manager
+component.package=com.topcoder.vault.template
+component.packagedir=com/topcoder/vault/template
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

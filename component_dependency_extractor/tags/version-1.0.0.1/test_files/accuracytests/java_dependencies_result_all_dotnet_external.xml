@@ -1,0 +1,1925 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components>
+<component language="dot_net" name="active_directory_authentication" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+</component>
+<component language="dot_net" name="active_directory_authentication" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+</component>
+<component language="dot_net" name="active_directory_authorization" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-1.1\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="nhibernate" path="..\tcs\bin\third_party\nhibernate\1.0.2\NHibernate.dll" type="external" version="1.0.2"/>
+<dependency category="test" name="Castle.DynamicProxy" path="..\tcs\bin\third_party\nhibernate\1.0.2\lib\Castle.DynamicProxy.dll" type="external" version=""/>
+<dependency category="test" name="Iesi.Collections" path="..\tcs\bin\third_party\nhibernate\1.0.2\lib\Iesi.Collections.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+</component>
+<component language="dot_net" name="address_book" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="ajax_paging_control" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.Web.Extensions" path="C:/Program Files/Microsoft ASP.NET/ASP.NET 2.0 AJAX Extensions/v1.0.61025/System.Web.Extensions.dll" type="external" version=""/>
+<dependency category="test" name="NUnitAsp" path="..\tcs\bin\third_party\NUnitAsp\2.0\NUnitAsp.dll" type="external" version="2.0"/>
+</component>
+<component language="dot_net" name="application_based_configuration" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="dependency" path="test_files\lib\dependency.dll" type="external" version=""/>
+<dependency category="test" name="Person" path="test_files\lib\Person.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="asp.net_front_controller" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Util.ConfigurationManager" path="lib\TopCoder.Util.ConfigurationManager.dll" type="external" version=""/>
+<dependency category="test" name="NUnitAsp" path="lib\NUnitAsp.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="asp.net_localization" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\tools\nunit\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="nunitasp" path="..\tcs\bin\third_party\nunitasp\1.5\NUnitAsp.dll" type="external" version="1.5"/>
+<dependency category="test" name="TopCoder.Web.UI.Localization" path="build/classes/TopCoder.Web.UI.Localization.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="asp.net_role_controls" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NUnitAsp" path="..\tcs\bin\NUnitAsp.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="asp.net_user_profile_selector" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NUnitAsp" path="..\tcs\bin\third_party\NUnitAsp\2.0\NUnitAsp.dll" type="external" version="2.0"/>
+</component>
+<component language="dot_net" name="aspnet_jscript_collapsible_panel" version="1.0">
+<dependency category="test" name="Cassini" path="test_files\Cassini.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NUnitAsp" path="test_files\NUnitAsp.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="ASPNET_Single_Click_Command_Button" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NUnitAsp" path="..\tcs\bin\third_party\NUnitAsp\2.0.0.41294\NUnitAsp.dll" type="external" version="2.0.0.41294"/>
+</component>
+<component language="dot_net" name="aspnet_user_profile_control" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="nunit_asp" path="..\tcs\bin\third_party\nunit_asp\2.0\NUnitAsp.dll" type="external" version="2.0"/>
+</component>
+<component language="dot_net" name="atlas_master-slave_form_element" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="Microsoft.Web.Atlas" path="..\tcs\bin\third_party\Microsoft.Web.Atlas.dll" type="external" version=""/>
+<dependency category="test" name="nunitasp" path="..\tcs\bin\third_party\nunitasp\1.5.1\NUnitAsp.dll" type="external" version="1.5.1"/>
+<dependency category="test" name="nunit.mocks" path="..\tcs\bin\third_party\nunit.mocks.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="atlas_master-slave_form_element" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="nunit.mocks" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.mocks.dll" type="external" version=""/>
+<dependency category="test" name="Microsoft.Web.Atlas" path="..\tcs\bin\third_party\atlas\Microsoft.Web.Atlas.dll" type="external" version=""/>
+<dependency category="test" name="nunitasp" path="..\tcs\bin\third_party\nunitasp\1.5.1\NUnitAsp.dll" type="external" version="1.5.1"/>
+</component>
+<component language="dot_net" name="auditor" version="1.0">
+<dependency category="test" name="TopCoder.Audit.Tracker" path="build\classes\TopCoder.Audit.Tracker.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="D:\NUnit\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="audit_log" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="authentication" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="authorization" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\log4net.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="authorization" version="2.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+<dependency category="test" name="nhibernate" path="..\tcs\bin\nhibernate\1.0.2\Castle.DynamicProxy.dll" type="external" version="1.0.2"/>
+</component>
+<component language="dot_net" name="autocomplete_textbox" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Softs\Programming Tool\Light Weighted\DotNet\NUnit V2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="bar_code_generator" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\bin\NUnit 2.2.7-net-1.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="bar_graph" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="bar_graph" version="2.1">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="bar_graph_renderer" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="base_graph" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="base_graph" version="1.1.1">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="base_graph_renderer" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="base_graph_renderer" version="1.1">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="base_question" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="bcp_output_sink" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="bcp_output_sink" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="bcp_output_sink" version="1.0.2">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="bloom_filter" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="boolean_expression_wf_condition" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.Runtime" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.Runtime.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.ComponentModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.ComponentModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.Activities" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.Activities.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\log4net.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="bread_crumb_control" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\NUnit\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NUnitAsp" path="..\tcs\bin\NUnitAsp.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="bread_crumb_trail_control" version="2.0">
+<dependency category="test" name="nunit.framework" path="D:\Softs\Programming Tool\Light Weighted\DotNet\Nunit V2.2\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NUnitAsp" path="..\tcs\bin\NUnitAsp.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="c#_runtime_compiler" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="calculated_entity" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\log4net.dll" type="external" version=""/>
+<dependency category="test" name="antlr.runtime" path="..\tcs\bin\antlr.runtime.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="calculated_entity" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\log4net.dll" type="external" version=""/>
+<dependency category="test" name="antlr.runtime" path="..\tcs\bin\antlr.runtime.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="calculated_entity_web_controls" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NUnitAsp" path="..\tcs\bin\third_party\NUnitAsp\2.0\NUnitAsp.dll" type="external" version="2.0"/>
+</component>
+<component language="dot_net" name="calculated_entity_web_controls" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NUnitAsp" path="..\tcs\bin\third_party\NUnitAsp\2.0\NUnitAsp.dll" type="external" version="2.0"/>
+</component>
+<component language="dot_net" name="calendar_entry" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="calendar_print_dialog" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NUnitForms" path="..\tcs\bin\NUnitForms.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="calendar_view_control" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Softs\Programming Tool\Light Weighted\DotNet\NUnit V2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="calendar_view_control" version="1.1">
+<dependency category="test" name="nunit.framework" path="D:\Softs\Programming Tool\Light Weighted\DotNet\NUnit V2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="cellset_to_dataset" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="ADOMD.NET" path="C:\Program Files\Microsoft.NET\ADOMD.NET\90\Microsoft.AnalysisServices.AdomdClient.dll" type="external" version="90"/>
+</component>
+<component language="dot_net" name="chart_data_structure" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="chart_rendering_engine" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="checkbox_list_control" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-2.2.4-net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="checksum" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="Util.Checksum" path="build\classes\Util.Checksum.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="code_documentation_completeness_checker" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+</component>
+<component language="dot_net" name="code_values_retriever" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="collapsible_detail_list_control" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="collection_views" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-2.2.4-net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="collection_views" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-2.2.4-net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="collection_views" version="1.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="columns_handler" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Softs\Programming Tool\Light Weighted\DotNet\NUnit V2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="command_line_executor" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="command_line_utility" version="1.0">
+<dependency category="test" name="TopCoder.Util.CommandLine" path="build\classes\TopCoder.Util.CommandLine.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="command_line_xml_processor" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="compact_framework_configuration_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.Data" path="C:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Data.dll" type="external" version=""/>
+<dependency category="test" name="System.Drawing" path="C:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Drawing.dll" type="external" version=""/>
+<dependency category="test" name="System.Messaging" path="C:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Messaging.dll" type="external" version=""/>
+<dependency category="test" name="System.Windows.Forms" path="C:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Windows.Forms.dll" type="external" version=""/>
+<dependency category="test" name="Microsoft.WindowsCE.Forms" path="C:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\Microsoft.WindowsCE.Forms.dll" type="external" version=""/>
+<dependency category="test" name="System.Windows.Forms.DataGrid" path="C:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Windows.Forms.DataGrid.dll" type="external" version=""/>
+<dependency category="test" name="System.Net.IrDA" path="C:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Net.IrDA.dll" type="external" version=""/>
+<dependency category="test" name="System.Web.Services" path="C:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Web.Services.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="compact_framework_configuration_manager" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.Data" path="C:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Data.dll" type="external" version=""/>
+<dependency category="test" name="System.Drawing" path="C:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Drawing.dll" type="external" version=""/>
+<dependency category="test" name="System.Messaging" path="C:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Messaging.dll" type="external" version=""/>
+<dependency category="test" name="System.Windows.Forms" path="C:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Windows.Forms.dll" type="external" version=""/>
+<dependency category="test" name="Microsoft.WindowsCE.Forms" path="C:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\Microsoft.WindowsCE.Forms.dll" type="external" version=""/>
+<dependency category="test" name="System.Windows.Forms.DataGrid" path="C:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Windows.Forms.DataGrid.dll" type="external" version=""/>
+<dependency category="test" name="System.Net.IrDA" path="C:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Net.IrDA.dll" type="external" version=""/>
+<dependency category="test" name="System.Web.Services" path="C:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Web.Services.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="compact_framework_gui_wizard" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="compact_framework_object_factory" version="1.0">
+<dependency category="test" name="TopCoder.Util.CompactFrameworkObjectFactory" path="build\classes\TopCoder.Util.CompactFrameworkObjectFactory.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="MsCorlib" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\MsCorlib.dll" type="external" version=""/>
+<dependency category="test" name="System.Data" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Data.dll" type="external" version=""/>
+<dependency category="test" name="System.Text" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Text.dll" type="external" version=""/>
+<dependency category="test" name="System" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.dll" type="external" version=""/>
+<dependency category="test" name="System.Drawing" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Drawing.dll" type="external" version=""/>
+<dependency category="test" name="System.Messaging" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Messaging.dll" type="external" version=""/>
+<dependency category="test" name="System.Windows.Forms" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Windows.Forms.dll" type="external" version=""/>
+<dependency category="test" name="System.Xml" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Xml.dll" type="external" version=""/>
+<dependency category="test" name="Microsoft.WindowsCE.Forms" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\Microsoft.WindowsCE.Forms.dll" type="external" version=""/>
+<dependency category="test" name="System.Windows.Forms.DataGrid" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Windows.Forms.DataGrid.dll" type="external" version=""/>
+<dependency category="test" name="System.Net.IrDA" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Net.IrDA.dll" type="external" version=""/>
+<dependency category="test" name="System.Web.Services" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Web.Services.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="compact_framework_signature_capture_control" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="complex_boolean_expression_evaluator" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="antlr.runtime" path="..\tcs\bin\third_party\antlr.runtime.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="compound_document" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="compound_expression_evaluator" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="compound_expression_evaluator" version="1.0.1">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="compound_expression_evaluator" version="1.0.2">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="compressed_archive_file_replacement" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="compression_utility" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="compression_utility" path="build\classes\compression_utility.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="compression_utility" version="1.1">
+<dependency category="test" name="TopCoder.Util.Compression" path="build\classes\TopCoder.Util.Compression.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="compression_utility" version="2.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="configuration_api" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="configuration_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="configuration_manager" version="1.1">
+<dependency category="test" name="nunit.framework" path="D:\NUnit\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="configuration_manager" version="2.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="configuration_manager" version="2.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="configuration_persistence_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="connection_factory" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="connection_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="constants_depot" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="constants_depot" version="2.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="constants_service" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="constants_service" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="constants_viewer_control" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.ComponentModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.ComponentModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.Runtime" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.Runtime.dll" type="external" version=""/>
+<dependency category="test" name="System.Web.Extensions" path="C:/Program Files/Microsoft ASP.NET/ASP.NET 2.0 AJAX Extensions/v1.0.61025/System.Web.Extensions.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin/third_party/log4net.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="context_help" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+<dependency category="test" name="nunitasp" path="..\tcs\bin\nunitasp\1.5\nunitasp.dll" type="external" version="1.5"/>
+<dependency category="test" name="TopCoder.Web.ContextHelp" path="build\classes\TopCoder.Web.ContextHelp.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Web.ContextHelp.Test" path="build\classes\TopCoder.Web.ContextHelp.Test.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="conversation_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.MSMQ.ConversationManager.Entities" path="build\classes\TopCoder.MSMQ.ConversationManager.Entities.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="conversation_manager_data_entities" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="conversation_manager_entities_view" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="conversation_manager_message_attributes_view" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="conversation_monitor_service" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.MSMQ.ConversationManager.Entities" path="test_files\bin\TopCoder.MSMQ.ConversationManager.Entities.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="conversion_factory" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="country_province_user_control" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="credit_card_validation" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="csharp_failure_test_generator" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="antlr.runtime" path="..\tcs\bin\antlr.runtime.dll" type="external" version=""/>
+<dependency category="test" name="StringTemplate" path="..\tcs\bin\StringTemplate.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="csv_conversion" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="currency_factory" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="custom_grid" version="1.0">
+<dependency category="test" name="TopCoder.Web.Controls.CustomGrid" path="build\classes\TopCoder.Web.Controls.CustomGrid.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="custom_properties" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="custom_properties" version="1.1">
+<dependency category="test" name="nunit.framework" path="D:\NUnit\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="database_constants_provider" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="database_document_persistence_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="database_notification_service" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="nDumbster" path="test_files\accuracy\nDumbster.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+</component>
+<component language="dot_net" name="database_queue" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="dataset_synchronization" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="dataset_synchronization" version="1.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="dataview_decorator" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+<dependency category="test" name="nunitasp" path="..\tcs\bin\nunitasp\1.5\NUnitAsp.dll" type="external" version="1.5"/>
+<dependency category="test" name="TopCoder.Sql.DataViewDecorator.Test" path="build\classes\TopCoder.Sql.DataViewDecorator.Test.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="data_access_interface" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="data_access_interface" version="2.0">
+<dependency category="test" name="nunit.framework" path="D:\Softs\Programming Tool\Light Weighted\DotNet\NUnit V2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="data_access_interface" version="2.0.1">
+<dependency category="test" name="nunit.framework" path="D:\Softs\Programming Tool\Light Weighted\DotNet\NUnit V2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="data_access_interface" version="2.0.4">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-1.1\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.Data.OracleClient" path="C:\Windows\Microsoft.NET\Framework\v1.1.4322\System.Data.OracleClient.dll" type="external" version=""/>
+<dependency category="test" name="bin" path="C:\Program Files\Oracle\product\10.2.0\client_1\odp.net\bin\1.x\Oracle.DataAccess.dll" type="external" version="1.x"/>
+</component>
+<component language="dot_net" name="data_access_interface" version="2.0.5">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="bin" path="G:\app\Administrator\product\11.1.0\db_1\ODP.NET\bin\2.x\Oracle.DataAccess.dll" type="external" version="2.x"/>
+<dependency category="test" name="System.Data.OracleClient" path="C:\Windows\Microsoft.NET\Framework\v1.1.4322\System.Data.OracleClient.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="data_accumulator" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="data_accumulator" version="1.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="data_grouping" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="data_mapper" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Softs\Programming Tool\Light Weighted\DotNet\NUnit V2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="data_migration_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="data_normalizer" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="data_normalizer" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="data_validation" version="1.0">
+<dependency category="test" name="TopCoder.Util.DataValidator" path="build\classes\TopCoder.Util.DataValidator.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="date_dropdown_control" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="date_picker_control" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="date_picker_control" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="date_selector_control" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-2.2.4-net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="date_utility" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\nant\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="date_utility" version="2.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="date_utility" version="2.1">
+<dependency category="test" name="nunit.framework" path="\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="db_table_object_generator" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="delta_subscriber" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2.8\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="dependency_map" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="Rules.DependencyMap" path="build\classes\Rules.DependencyMap.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="dependency_map_renderer" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="dhtml_graph_renderer" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Graph.Layout" path="test_files\dlls\TopCoder.Graph.Layout.dll" type="external" version=""/>
+<dependency category="test" name="NMock2" path="test_files\dlls\NMock2.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+</component>
+<component language="dot_net" name="dictionary" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="dictionary_persistence" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="dictionary_searcher" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="dimension_lookup" version="1.0"/>
+<component language="dot_net" name="directed_graph" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="distributed_protocol_factory" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="distributed_simple_cache" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\NUnit\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="distributed_simple_cache" version="1.1">
+<dependency category="test" name="nunit.framework" path="D:\NUnit\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="dns_query" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="document" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-2.2.10-net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="document_classifier" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="document_generator" version="1.0">
+<dependency category="test" name="TopCoder.Util.File" path="build\classes\TopCoder.Util.File.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="document_indexer" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="document_indexer_persistence" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="document_link_resolver" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\log4net.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="document_persistence_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="document_persistence_manager" version="2.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="document_persistence_manager" version="2.0.1">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="document_searcher" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.2\bin\nunit.framework.dll" type="external" version="2.2"/>
+</component>
+<component language="dot_net" name="dynamic_cache" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="dynamic_localization" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="dynamic_web_page_data" version="1.0">
+<dependency category="test" name="NunitAsp" path="..\tcs\bin\NunitAsp.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="c:\program\NUnit 2.4\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="email_address_validator" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Email.AddressValidator" path="build\classes\TopCoder.Email.AddressValidator.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="email_confirmation" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="email_engine" version="1.0">
+<dependency category="test" name="TopCoder.EmailEngine" path="build\classes\TopCoder.EmailEngine.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="email_engine" version="1.1.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2.8\.net-1.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="email_generator" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="email_service" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\log4net.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="encryption" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\NUnit\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="encryption" version="1.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="enterprise_logging_service" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2.8\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+<dependency category="test" name="TopCoder.Services.WCF.Logging.Test" path="build\classes\TopCoder.Services.WCF.Logging.Test.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="entity_attribute_value_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\nunit\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NHibernate" path="test_files\nhibernate\NHibernate.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="test_files\nhibernate\log4net.dll" type="external" version=""/>
+<dependency category="test" name="Iesi.Collections" path="test_files\nhibernate\Iesi.Collections.dll" type="external" version=""/>
+<dependency category="test" name="Castle.DynamicProxy" path="test_files\nhibernate\Castle.DynamicProxy.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="entity_relationship_graph" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="etw_file_import" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="etw_file_import" version="1.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="etw_interop" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="event_engine" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="event_engine" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="excel_report_builder" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="Microsoft.Office.Interop.Excel" path="..\tcs\bin\Microsoft.Office.Interop.Excel.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="excel_utility" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="Microsoft.Office.Interop.Excel" path="..\tcs\bin\Microsoft.Office.Interop.Excel.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="excel_utility_formatter" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2.8\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="Microsoft.Office.Interop.Excel" path="C:/Program Files/Microsoft Visual Studio 9.0/Visual Studio Tools for Office/PIA/Office11/Microsoft.Office.Interop.Excel.dll" type="external" version=""/>
+<dependency category="test" name="Microsoft.Vbe.Interop" path="C:/Program Files/Microsoft Visual Studio 9.0/Visual Studio Tools for Office/PIA/Office11/Microsoft.Vbe.Interop.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="exception_manager" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="exception_manager" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="exception_manager" version="1.0.2">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2.8\.net-1.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="exception_manager_wf_activity" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.Activities" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.Activities.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.ComponentModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.ComponentModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.Runtime" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.Runtime.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="exchange_rate_factory" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\TopCoder\Tools\NUnit\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="exif_digital_image_data_extractor" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="expandable_list_control" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.2\bin\nunit.framework.dll" type="external" version="2.2"/>
+<dependency category="test" name="nunitasp" path="c:\svn\internal\tcs\bin\third_party\nunitasp\1.5.1\NUnitAsp.dll" type="external" version="1.5.1"/>
+</component>
+<component language="dot_net" name="extended_datagridView" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="extended_datagridView" version="1.2">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NUnitForms" path="test_files\NUnitForms.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="extended_datagridView" version="1.2.1">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NUnitForms" path="test_files\NUnitForms.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="extract_auditor" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="csharp_failure_test_generator" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="antlr.runtime" path="..\tcs\bin\antlr.runtime.dll" type="external" version=""/>
+<dependency category="test" name="StringTemplate" path="..\tcs\bin\StringTemplate.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="fax_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="FaxComExInterop" path="..\tcs\bin\FaxComExInterop.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="file_based_configuration" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="file_based_configuration" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="file_conversion" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="file_crawler" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="file_delta" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.2\bin\nunit.framework.dll" type="external" version="2.2"/>
+</component>
+<component language="dot_net" name="file_event_alerter" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="file_management_service" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Document.PersistenceManager" path="build\classes\TopCoder.Document.PersistenceManager.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.File.ReportGeneration" path="build\classes\TopCoder.File.ReportGeneration.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.ComponentModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Workflow.ComponentModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.Runtime" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Workflow.Runtime.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="file_management_service" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.ComponentModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Workflow.ComponentModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.Runtime" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Workflow.Runtime.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="file_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2.8\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="file_upload" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="file_upload" version="1.0.1">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="file_validator" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="financial_security_lookup_service" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="fix_message_interface" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="forgot_password" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="form_validator" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="free_form_layout_panel" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="free_form_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Softs\Programming Tool\Light Weighted\DotNet\NUnit V2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="free_form_template" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="AccuracyTestsControl" path="./test_files/AccuracyTests/AccuracyTestsControl.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="ftp_utility" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="Net.FTP" path="build\classes\Net.FTP.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="function_expression" version="1.0"/>
+<component language="dot_net" name="function_expression" version="1.0.1"/>
+<component language="dot_net" name="gdi_svg_common_interface" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="generic_application_service_processor" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="generic_cache_processor" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4.3\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Util.GCP" path="build\classes\TopCoder.Util.GCP.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Util.GCP.Common" path="build\classes\TopCoder.Util.GCP.Common.dll" type="external" version=""/>
+<dependency category="test" name="System.AddIn" path="c:\Program Files\Reference Assemblies\Microsoft\Framework\v3.5\System.AddIn.dll" type="external" version=""/>
+<dependency category="test" name="System.AddIn.Contract" path="c:\Program Files\Reference Assemblies\Microsoft\Framework\v3.5\System.AddIn.Contract.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.10\log4net.dll" type="external" version="1.2.10"/>
+</component>
+<component language="dot_net" name="generic_cache_processor" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4.7\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.AddIn" path="c:\Program Files\Reference Assemblies\Microsoft\Framework\v3.5\System.AddIn.dll" type="external" version=""/>
+<dependency category="test" name="System.AddIn.Contract" path="c:\Program Files\Reference Assemblies\Microsoft\Framework\v3.5\System.AddIn.Contract.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Util.GCP" path="build\classes\TopCoder.Util.GCP.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Util.GCP.Common" path="build\classes\TopCoder.Util.GCP.Common.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+</component>
+<component language="dot_net" name="generic_parser" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Util.GenericParser" path="build\classes\TopCoder.Util.GenericParser.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="generic_processing_pipeline" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="generic_service" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\bin\nant-0.8.3.50105\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Util.GenericService" path="build\classes\TopCoder.Util.GenericService.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="generic_service" version="1.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="generic_service" version="1.1.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="generic_service" version="1.2">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="global_distance_calculator" version="1.0">
+<dependency category="test" name="TopCoder.Util.Geo" path="build\classes\TopCoder.Util.Geo.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="graph_definition_template" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="graph_generator" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="graph_layout" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="graph_layout" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2.8\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="graph_layout_engine" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="graph_print_preview_control" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="hashing_utility" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="heartbeat" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="helper_table_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="hierarchical_drop_down_control" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="hierarchical_drop_down_control" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="hierarchical_drop_down_server" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.Web.Extensions" path="C:\Program Files\Microsoft ASP.NET\ASP.NET 2.0 AJAX Extensions\v1.0.61025\System.Web.Extensions.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="hierarchy" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="hierarchy" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2.8\.net-1.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="historical_extract_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="html_code_documentation_generator" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\log4net.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="html_parser" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="id_generator" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="id_generator" version="1.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-1.1\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.Data.OracleClient" path="..\tcs\bin\System.Data.OracleClient.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="id_generator" version="1.1.1">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.Data.OracleClient" path="..\tcs\bin\System.Data.OracleClient.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="image_chart_renderer" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="image_manipulation" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="image_overlay" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="image_text_converter" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="indexing" version="1.0">
+<dependency category="test" name="TopCoder.Util.Indexing" path="build\classes\TopCoder.Util.Indexing.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="indexing" version="1.0">
+<dependency category="test" name="TopCoder.Util.Indexing" path="build\classes\TopCoder.Util.Indexing.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="indexing" version="1.0">
+<dependency category="test" name="TopCoder.Util.Indexing" path="build\classes\TopCoder.Util.Indexing.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="indexing" version="1.2.1">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="indexing" version="1.2.2">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="input_consolidator_wf_activities" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.Runtime" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.Runtime.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.ComponentModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.ComponentModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.Activities" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.Activities.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="installation_core_entities" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2.8\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NHibernate" path="..\tcs\bin\third_party\nhibernate\1.2.1.GA\net-2.0\NHibernate.dll" type="external" version=""/>
+<dependency category="test" name="Castle.DynamicProxy" path="..\tcs\bin\third_party\nhibernate\1.2.1.GA\net-2.0\Castle.DynamicProxy.dll" type="external" version=""/>
+<dependency category="test" name="Iesi.Collections" path="..\tcs\bin\third_party\nhibernate\1.2.1.GA\net-2.0\Iesi.Collections.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\nhibernate\1.2.1.GA\net-2.0\log4net.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="installation_core_entities" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NHibernate" path="..\tcs\bin\third_party\nhibernate\1.2.1.GA\net-2.0\NHibernate.dll" type="external" version=""/>
+<dependency category="test" name="Castle.DynamicProxy" path="..\tcs\bin\third_party\nhibernate\1.2.1.GA\net-2.0\Castle.DynamicProxy.dll" type="external" version=""/>
+<dependency category="test" name="Iesi.Collections" path="..\tcs\bin\third_party\nhibernate\1.2.1.GA\net-2.0\Iesi.Collections.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\nhibernate\1.2.1.GA\net-2.0\log4net.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="installation_core_management" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="Castle.DynamicProxy" path="..\tcs\bin\third_party\nhibernate\1.2.1.GA\net-2.0\Castle.DynamicProxy.dll" type="external" version=""/>
+<dependency category="test" name="Iesi.Collections" path="..\tcs\bin\third_party\nhibernate\1.2.1.GA\net-2.0\Iesi.Collections.dll" type="external" version=""/>
+<dependency category="test" name="NHibernate" path="..\tcs\bin\third_party\nhibernate\1.2.1.GA\net-2.0\NHibernate.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.10\log4net.dll" type="external" version="1.2.10"/>
+</component>
+<component language="dot_net" name="installation_logging" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+</component>
+<component language="dot_net" name="installation_validation_module" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4.6\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="Castle.DynamicProxy" path="..\tcs\bin\third_party\nhibernate\1.2.1.GA\net-2.0\Castle.DynamicProxy.dll" type="external" version=""/>
+<dependency category="test" name="Iesi.Collections" path="..\tcs\bin\third_party\nhibernate\1.2.1.GA\net-2.0\Iesi.Collections.dll" type="external" version=""/>
+<dependency category="test" name="NHibernate" path="..\tcs\bin\third_party\nhibernate\1.2.1.GA\net-2.0\NHibernate.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.10\log4net.dll" type="external" version="1.2.10"/>
+</component>
+<component language="dot_net" name="instant_messaging_framework" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="javascript_drag_and_drop" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="job_scheduler" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="json_object" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="json_object" version="1.0.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="just_in_time_object_loader" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="label_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2.8\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="label_plugins" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="lightweight_xml_parser" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="line_graph" version="1.0">
+<dependency category="test" name="nunit.framework" path="\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="line_graph" version="1.1">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="line_graph_renderer" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="line_graph_renderer" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="linked_list" version="1.0">
+<dependency category="test" name="TopCoder.Util.Collection.List.LinkedList" path="build\classes\TopCoder.Util.Collection.List.LinkedList.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="logging_wrapper" version="1.0">
+<dependency category="test" name="TopCoder.LoggingWrapper" path="build\classes\TopCoder.LoggingWrapper.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\log4net.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="logging_wrapper" version="2.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\\bin\nunit.framework.dll" type="external" version="2.1\"/>
+<dependency category="test" name="log4net" path="..\tcs\bin\log4net-1.2.9\bin\net\1.1\release\log4net.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="logging_wrapper" version="2.0.1">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+</component>
+<component language="dot_net" name="logging_wrapper" version="3.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4.3\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+<dependency category="test" name="System.ServiceModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.ComponentModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.ComponentModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.Runtime" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.Runtime.dll" type="external" version=""/>
+<dependency category="test" name="Microsoft.Practices.EnterpriseLibrary.Logging" path="C:\Program Files\Microsoft Enterprise Library 3.1 - May 2007\Bin\Microsoft.Practices.EnterpriseLibrary.Logging.dll" type="external" version=""/>
+<dependency category="test" name="Microsoft.Practices.EnterpriseLibrary.Common" path="C:\Program Files\Microsoft Enterprise Library 3.1 - May 2007\Bin\Microsoft.Practices.EnterpriseLibrary.Common.dll" type="external" version=""/>
+<dependency category="test" name="Microsoft.Practices.ObjectBuilder" path="C:\Program Files\Microsoft Enterprise Library 3.1 - May 2007\Bin\Microsoft.Practices.ObjectBuilder.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="lookup_filter_control" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="lookup_filter_control" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="lookup_filter_control" version="1.0.2">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="lookup_filter_control" version="1.0.3">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="lookup_filter_control" version="1.0.4">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="lookup_filter_control" version="1.0.5">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="magic_numbers" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="magic_numbers" version="1.0.1">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="math_expression_evaluator" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="math_expression_evaluator" version="1.0.1">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="math_expression_evaluator" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="math_expression_wf_activity" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.Activities" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.Activities.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.ComponentModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.ComponentModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.Runtime" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.Runtime.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="matrix_math_library" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="mdx_slicer" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="antlr" path="..\tcs\bin\third_party\antlr\0.3.0.37313\Antlr3.Runtime.dll" type="external" version="0.3.0.37313"/>
+</component>
+<component language="dot_net" name="message_aggregation_service" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4.6\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.Core" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.5\System.Core.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="message_center" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="message_center" version="2.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="message_parser" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.MSMQ.ConversationManager.Entities" path="test_files\TopCoder.MSMQ.ConversationManager.Entities.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="message_processing_framework" version="1.0"/>
+<component language="dot_net" name="message_processing_framework" version="2.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.MSMQ.ConversationManager.Entities" path="test_files\Mock\bin\TopCoder.MSMQ.ConversationManager.Entities.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.MSMQ.MessageProcessingWorkflow" path="test_files\Mock\bin\TopCoder.MSMQ.MessageProcessingWorkflow.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="mobile_wse" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit\2.2.9\net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="MsCorlib" path="C:\Program Files\Microsoft.NET\SDK\CompactFramework\v2.0\WindowsCE\MsCorlib.dll" type="external" version=""/>
+<dependency category="test" name="System.Data" path="C:\Program Files\Microsoft.NET\SDK\CompactFramework\v2.0\WindowsCE\System.Data.dll" type="external" version=""/>
+<dependency category="test" name="System" path="C:\Program Files\Microsoft.NET\SDK\CompactFramework\v2.0\WindowsCE\System.dll" type="external" version=""/>
+<dependency category="test" name="System.Drawing" path="C:\Program Files\Microsoft.NET\SDK\CompactFramework\v2.0\WindowsCE\System.Drawing.dll" type="external" version=""/>
+<dependency category="test" name="System.Messaging" path="C:\Program Files\Microsoft.NET\SDK\CompactFramework\v2.0\WindowsCE\System.Messaging.dll" type="external" version=""/>
+<dependency category="test" name="System.Windows.Forms" path="C:\Program Files\Microsoft.NET\SDK\CompactFramework\v2.0\WindowsCE\System.Windows.Forms.dll" type="external" version=""/>
+<dependency category="test" name="System.Xml" path="C:\Program Files\Microsoft.NET\SDK\CompactFramework\v2.0\WindowsCE\System.Xml.dll" type="external" version=""/>
+<dependency category="test" name="Microsoft.WindowsCE.Forms" path="C:\Program Files\Microsoft.NET\SDK\CompactFramework\v2.0\WindowsCE\Microsoft.WindowsCE.Forms.dll" type="external" version=""/>
+<dependency category="test" name="System.Windows.Forms.DataGrid" path="C:\Program Files\Microsoft.NET\SDK\CompactFramework\v2.0\WindowsCE\System.Windows.Forms.DataGrid.dll" type="external" version=""/>
+<dependency category="test" name="System.Net.IrDA" path="C:\Program Files\Microsoft.NET\SDK\CompactFramework\v2.0\WindowsCE\System.Net.IrDA.dll" type="external" version=""/>
+<dependency category="test" name="System.Web.Services" path="C:\Program Files\Microsoft.NET\SDK\CompactFramework\v2.0\WindowsCE\System.Web.Services.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="mobile_xml_encryption" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit\2.2.9\net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="mobile_xml_signature" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-2.2.10-net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="MsCorlib" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\MsCorlib.dll" type="external" version=""/>
+<dependency category="test" name="System.Data" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Data.dll" type="external" version=""/>
+<dependency category="test" name="System" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.dll" type="external" version=""/>
+<dependency category="test" name="System.Drawing" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Drawing.dll" type="external" version=""/>
+<dependency category="test" name="System.Messaging" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Messaging.dll" type="external" version=""/>
+<dependency category="test" name="System.Windows.Forms" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Windows.Forms.dll" type="external" version=""/>
+<dependency category="test" name="System.Xml" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Xml.dll" type="external" version=""/>
+<dependency category="test" name="Microsoft.WindowsCE.Forms" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\Microsoft.WindowsCE.Forms.dll" type="external" version=""/>
+<dependency category="test" name="System.Windows.Forms.DataGrid" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Windows.Forms.DataGrid.dll" type="external" version=""/>
+<dependency category="test" name="System.Net.IrDA" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Net.IrDA.dll" type="external" version=""/>
+<dependency category="test" name="System.Web.Services" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Web.Services.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="mobile_xml_signature_sha256_plugin" version="1.0">
+<dependency category="test" name="TopCoder.Security.Cryptography.Mobile" path="build\classes\TopCoder.Security.Cryptography.Mobile.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="MsCorlib" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\MsCorlib.dll" type="external" version=""/>
+<dependency category="test" name="System.Data" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Data.dll" type="external" version=""/>
+<dependency category="test" name="System.Text" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Text.dll" type="external" version=""/>
+<dependency category="test" name="System" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.dll" type="external" version=""/>
+<dependency category="test" name="System.Drawing" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Drawing.dll" type="external" version=""/>
+<dependency category="test" name="System.Messaging" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Messaging.dll" type="external" version=""/>
+<dependency category="test" name="System.Windows.Forms" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Windows.Forms.dll" type="external" version=""/>
+<dependency category="test" name="System.Xml" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Xml.dll" type="external" version=""/>
+<dependency category="test" name="Microsoft.WindowsCE.Forms" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\Microsoft.WindowsCE.Forms.dll" type="external" version=""/>
+<dependency category="test" name="System.Windows.Forms.DataGrid" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Windows.Forms.DataGrid.dll" type="external" version=""/>
+<dependency category="test" name="System.Net.IrDA" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Net.IrDA.dll" type="external" version=""/>
+<dependency category="test" name="System.Web.Services" path="D:\Program Files\Microsoft Visual Studio 8\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\System.Web.Services.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="msmq_adapter_service" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="msmq_monitor" version="1.0"/>
+<component language="dot_net" name="msmq_monitor" version="2.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="msmq_remoting_channel" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="msmq_service" version="1.0">
+<dependency category="test" name="System" path="C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.dll" type="external" version=""/>
+<dependency category="test" name="System.Messaging" path="C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Messaging.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceProcess" path="C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.ServiceProcess.dll" type="external" version=""/>
+<dependency category="test" name="System.Data" path="C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll" type="external" version=""/>
+<dependency category="test" name="System.Configuration.Install" path="C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Configuration.Install.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="named_query_builder" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="named_query_builder" version="1.1">
+<dependency category="test" name="nunit.framework" path="D:\Softs\Programming Tool\Light Weighted\DotNet\NUnit V2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="named_query_builder" version="1.1">
+<dependency category="test" name="nunit.framework" path="D:\Softs\Programming Tool\Light Weighted\DotNet\NUnit V2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="named_query_factory" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="named_query_factory" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="named_query_processor" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-2.2.4-net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="named_query_processor" version="1.0.2">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-2.2.4-net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="named_query_processor" version="1.0.3">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="named_query_processor" version="1.0.3">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="nant_build_file_converter" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+<dependency category="test" name="NAnt" path="C:\Program Files\NAnt\0.84\bin\NAnt.Core.dll" type="external" version="0.84"/>
+</component>
+<component language="dot_net" name="nant_build_file_converter" version="1.1">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+<dependency category="test" name="NAnt" path="C:\Program Files\NAnt\0.84\bin\NAnt.Core.dll" type="external" version="0.84"/>
+</component>
+<component language="dot_net" name="nant_dependency_versions" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4.1\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="nant" path="..\tcs\bin\third_party\nant\0.85\NAnt.Core.dll" type="external" version="0.85"/>
+</component>
+<component language="dot_net" name="normalized_text_box" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-2.2.4-net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="notification" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="object_diff" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="object_factory" version="1.0">
+<dependency category="test" name="nunit.framework" path="E:\tools\nunit\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="object_factory" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="object_factory" version="1.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="object_factory" version="1.2">
+<dependency category="test" name="nunit.framework" path="D:\Softs\Programming Tool\Light Weighted\DotNet\NUnit V2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="object_factory" version="1.2.1">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="object_factory_configuration_api_plugin" version="1.1">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="object_formatter" version="2.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="object_pool" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\TopCoder\Tools\NUnit\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="object_printer" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2.8\.net-1.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="observer_layer" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="ole_file_conversion" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="Microsoft.Office.Interop.Excel" path="..\tcs\bin\third_party\Microsoft.Office.Interop.Excel.dll" type="external" version=""/>
+<dependency category="test" name="Office" path="..\tcs\bin\third_party\Office.dll" type="external" version=""/>
+<dependency category="test" name="Microsoft.Office.Interop.Word" path="..\tcs\bin\third_party\Microsoft.Office.Interop.Word.dll" type="external" version=""/>
+<dependency category="test" name="Microsoft.Office.Interop.PowerPoint" path="..\tcs\bin\third_party\Microsoft.Office.Interop.PowerPoint.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="paged_persistence" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="page_authorization_command" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NUnitAsp" path="..\tcs\bin\third_party\NUnitAsp.dll" type="external" version=""/>
+<dependency category="test" name="NHibernate" path="..\tcs\bin\third_party\NHibernate.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="paging_control" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-2.2.8-net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NUnitAsp" path="..\tcs\bin\third_party\NUnitAsp.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="password_validator" version="1.0">
+<dependency category="test" name="TopCoder.Util.PasswordValidator" path="build\classes\TopCoder.Util.PasswordValidator.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="pdf_conversion" version="1.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2.8\.net-1.1\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="vjslib" path="c:\Windows\Microsoft.NET\Framework\v1.1.4322\vjslib.dll" type="external" version=""/>
+<dependency category="test" name="nfop" path="..\tcs\bin\third_party\nfop\1.1.0\ApacheFop.Net.dll" type="external" version="1.1.0"/>
+</component>
+<component language="dot_net" name="pdf_form_control" version="1.0">
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net-1.2.9\bin\net\1.1\release\log4net.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="pdf_object_manager" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="performance_counter_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="persist_message_command" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="phonetic_pattern_matching" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="pie_graph" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="pie_graph_renderer" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="pie_graph_renderer" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="plsql_email_client" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="plsql_logger" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="poll_engine" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\TopCoder\Software\nunit-2.1\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="nhibernate" path="..\tcs\bin\third_party\nhibernate\1.0.2\NHibernate.dll" type="external" version="1.0.2"/>
+</component>
+<component language="dot_net" name="prerequisite_software_validation" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4.6\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="priority_based_bulk_email" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\NUnit\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.EmailEngine.PriorityBulk" path="build\classes\TopCoder.EmailEngine.PriorityBulk.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\log4net.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="priority_queue" version="1.0">
+<dependency category="test" name="TopCoder.Util.Collection.Queue" path="build\classes\TopCoder.Util.Collection.Queue.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="process_execution_service" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="product_database_query_validation" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4.6\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="product_licensing" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="provider_pattern" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="query_analyzer" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="question_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="question_manager_html_layout" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-2.2.10-net-1.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="random_string_generator" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.String.Random" path="build\classes\TopCoder.String.Random.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="red_black_tree" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-2.2.10-net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="reference_collection" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\TopCoder\Tools\NUnit\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="refreshable_cache" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\TopCoder\Tools\NUnit\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="registration_data_validation" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Util.ConfigurationManager" path="..\tcs\bin\tcs/configuration_manager/1.1/TopCoder.Util.ConfigurationManager.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Util.DataValidator" path="..\tcs\bin\tcs/data_validation/1.0/TopCoder.Util.DataValidator.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Validation.CreditCard" path="..\tcs\bin\tcs/credit_card_validation/1.0/TopCoder.Validation.CreditCard.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Email.AddressValidator" path="..\tcs\bin\tcs/email_address_validator/1.0/TopCoder.Email.AddressValidator.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Util.PasswordValidator" path="..\tcs\bin\tcs/password_validator/1.0/TopCoder.Util.PasswordValidator.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="registry_utility" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4.6\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="relation" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="rename_namespace_nant_task" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="nunit.core" path="C:\Program Files\NUnit 2.2.9\bin\nunit.core.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\log4net.dll" type="external" version=""/>
+<dependency category="test" name="nant.core" path="..\tcs\bin\third_party\nant.core.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="reporting_services_utility" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="report_data" version="1.0">
+<dependency category="test" name="TopCoder.Reporting.Data" path="build\classes\TopCoder.Reporting.Data.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="request_processor_server" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="rich_document_generator" version="1.0">
+<dependency category="test" name="nunit.framework" path="\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="nfop" path="\bin\third_party\nfop\1.1.0\ApacheFop.Net.dll" type="external" version="1.1.0"/>
+</component>
+<component language="dot_net" name="rich_document_generator" version="2.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="vjslib" path="vjslib.dll" type="external" version=""/>
+<dependency category="test" name="nfop" path="..\tcs\bin\third_party\nfop\1.1.0\ApacheFop.Net.dll" type="external" version="1.1.0"/>
+</component>
+<component language="dot_net" name="rich_text_toolstrip" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\tcs\bin\third_party\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NUnitForms" path="C:\tcs\bin\third_party\NUnitForms.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="rounding_factory" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="rss_library" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="rss_library" version="1.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="schedule" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\NUnit\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="schedule" version="1.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="schedule" version="2.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="schedule" version="2.0.1">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="search_builder" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="search_builder" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="search_builder" version="1.1.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-1.1\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="bin" path="c:\oracle\product\11.1.0\ODP.NET\bin\1.x\Oracle.DataAccess.dll" type="external" version="1.x"/>
+</component>
+<component language="dot_net" name="search_builder" version="1.1.2">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="bin" path="c:\oracle\product\11.1.0\ODP.NET\bin\2.x\Oracle.DataAccess.dll" type="external" version="2.x"/>
+</component>
+<component language="dot_net" name="search_builder" version="1.1.3">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4.6\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="bin" path="c:\oracle\product\11.1.0\ODP.NET\bin\2.x\Oracle.DataAccess.dll" type="external" version="2.x"/>
+</component>
+<component language="dot_net" name="search_builder" version="1.1.4">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4.6\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="bin" path="G:\app\Administrator\product\11.1.0\db_1\ODP.NET\bin\2.x\Oracle.DataAccess.dll" type="external" version="2.x"/>
+</component>
+<component language="dot_net" name="secure_socket" version="1.0">
+<dependency category="test" name="Win32Socket" path="build\classes\Win32Socket.dll" type="external" version=""/>
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="secure_socket" version="1.1">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+<dependency category="test" name="Win32Socket" path="build\classes\Win32Socket.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="self-documenting_exception" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="self-documenting_exception" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="self-documenting_exception" version="2.0.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4.6\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+</component>
+<component language="dot_net" name="send_message_command" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="CM_Data_Entities" path="test_files\lib\CM_Data_Entities.dll" type="external" version=""/>
+<dependency category="test" name="MockMessageSerializer" path="test_files\lib\MockMessageSerializer.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="serial_number_generator" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="server_handler" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Softs\Programming Tool\Light Weighted\DotNet\NUnit V2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="set_utility" version="1.0">
+<dependency category="test" name="TopCoder.Util.Collection.Set" path="build\classes\TopCoder.Util.Collection.Set.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="simple_cache" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\NUnit\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="simple_cache" version="2.0">
+<dependency category="test" name="nunit.framework" path="D:\NUnit\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="simple_file_database" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\NUnit\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="simple_object_generator" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="simple_xsl_transformer" version="1.0">
+<dependency category="test" name="nunit.framework" path="\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="site_map" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="Iesi.Collections" path="..\tcs\bin\Iesi.Collections.dll" type="external" version=""/>
+<dependency category="test" name="Castle.DynamicProxy" path="..\tcs\bin\Castle.DynamicProxy.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\log4net.dll" type="external" version=""/>
+<dependency category="test" name="NHibernate" path="..\tcs\bin\NHibernate.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="site_validation" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Softs\Programming Tool\Light Weighted\DotNet\NUnit V2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="smartclient_animated_splash_screen" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2.8\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="PresentationCore" path="c:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/PresentationCore.dll" type="external" version=""/>
+<dependency category="test" name="PresentationFramework" path="c:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/PresentationFramework.dll" type="external" version=""/>
+<dependency category="test" name="WindowsBase" path="c:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/WindowsBase.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="smartclient_update_provider" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Runtime.Serialization.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="smartclient_update_provider" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="c:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0\System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="c:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0\System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="PresentationFramework" path="c:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0\PresentationFramework.dll" type="external" version=""/>
+<dependency category="test" name="WindowsBase" path="c:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0\WindowsBase.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="smartclient_update_provider_admin" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="sort_utility" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="spell_check" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="spreadsheet_builder" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="sql_builder" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+<dependency category="test" name="Oracle.DataAccess" path="..\tcs\bin\Oracle.DataAccess.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="sql_parser" version="1.0">
+<dependency category="test" name="NAnt" path="C:\Program Files\NAnt\0.84\bin\nunit.framework.dll" type="external" version="0.84"/>
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.Core.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="ssis_control_task" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Softs\Programming Tool\Light Weighted\DotNet\NUnit V2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="Microsoft.SQLServer.ManagedDTS" path="C:\Program Files\Microsoft SQL Server\90\SDK\Assemblies\Microsoft.SQLServer.ManagedDTS.dll" type="external" version=""/>
+<dependency category="test" name="nunit.mocks" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.mocks.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="status_tracker" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="stopwatch" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.2.7\bin\nunit.framework.dll" type="external" version="2.2.7"/>
+</component>
+<component language="dot_net" name="stream_filter" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="stress_test" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Softs\Programming Tool\Light Weighted\DotNet\NUnit V2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="string_distance" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="string_template_engine" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2.8\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="string_template_engine" version="1.0.0.2">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2.8\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="svg_generator" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="system_monitor" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="1.2.10" path="..\tcs\bin\log4net\1.2.10\2.0\log4net.dll" type="external" version="2.0"/>
+</component>
+<component language="dot_net" name="system_monitor" version="1.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="tabbed_multiview_control" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="tail" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="task_based_event_handler" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Util.ConfigurationManager" path="..\tcs\bin\tcs/configuration_manager/2.0/TopCoder.Util.ConfigurationManager.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.EmailEngine" path="..\tcs\bin\tcs/email_engine/1.0/TopCoder.EmailEngine.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.LoggingWrapper" path="..\tcs\bin\tcs/logging_wrapper/2.0/TopCoder.LoggingWrapper.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Util.Collection.List.LinkedList" path="..\tcs\bin\tcs/linked_list/1.0/TopCoder.Util.Collection.List.LinkedList.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Util.File" path="..\tcs\bin\tcs/document_generator/1.0/TopCoder.Util.File.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Util.ObjectFactory" path="..\tcs\bin\tcs/object_factory/1.2/TopCoder.Util.ObjectFactory.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Util.DataAccessInterface" path="..\tcs\bin\tcs/data_access_interface/2.0/TopCoder.Util.DataAccessInterface.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Data.NamedQuery.Builder" path="..\tcs\bin\tcs/named_query_builder/1.1/TopCoder.Data.NamedQuery.Builder.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Data.NamedQuery.Processor" path="..\tcs\bin\tcs/named_query_processor/1.0.1/TopCoder.Data.NamedQuery.Processor.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Util.IDGenerator" path="..\tcs\bin\tcs/id_generator/1.0/TopCoder.Util.IDGenerator.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Data.ConnectionFactory" path="..\tcs\bin\tcs/connection_factory/1.0/TopCoder.Data.ConnectionFactory.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Services.WCF" path="..\tcs\bin\tcs/wcf_base/1.0/TopCoder.Services.WCF.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Util.ExceptionManager.SDE" path="..\tcs\bin\tcs/self-documenting_exception/1.0/TopCoder.Util.ExceptionManager.SDE.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Notification" path="..\tcs\bin\tcs/event_engine/2.0/TopCoder.Notification.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Util.ExceptionManager" path="..\tcs\bin\tcs/exception_manager/1.0/TopCoder.Util.ExceptionManager.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="task_queue_database_persistence" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Util.ExceptionManager" path="..\tcs\bin\tcs/exception_manager/1.0/TopCoder.Util.ExceptionManager.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Util.ExceptionManager.SDE" path="..\tcs\bin\tcs/self-document_exception/1.0/TopCoder.Util.ExceptionManager.SDE.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="task_queue_service" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.ComponentModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.ComponentModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.Runtime" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.Runtime.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin/third_party/log4net.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="template_language_parser" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\log4net.dll" type="external" version=""/>
+<dependency category="test" name="Antlr3.Runtime" path="..\tcs\bin\antlr\Antlr3.Runtime.dll" type="external" version=""/>
+<dependency category="test" name="Antlr3.Utility" path="..\tcs\bin\antlr\Antlr3.Utility.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="template_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="testing_framework" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Softs\Programming Tool\Light Weighted\DotNet\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NAnt.Core" path="D:\Softs\Programming Tool\Light Weighted\DotNet\nant0.84\bin\NAnt.Core.dll" type="external" version=""/>
+<dependency category="test" name="NAnt.NUnit" path="D:\Softs\Programming Tool\Light Weighted\DotNet\nant0.84\bin\NAnt.NUnit.dll" type="external" version=""/>
+<dependency category="test" name="NAnt.NUnit2Tasks" path="D:\Softs\Programming Tool\Light Weighted\DotNet\nant0.84\bin\NAnt.NUnit2Tasks.dll" type="external" version=""/>
+<dependency category="test" name="NUnitAsp" path="..\tcs\bin\NUnitAsp\1.5.0\NUnitAsp.dll" type="external" version="1.5.0"/>
+<dependency category="test" name="log4net" path="D:\Softs\Programming Tool\Light Weighted\DotNet\nant0.84\bin\log4net.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="thesaurus" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="threshold_alerts" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="threshold_alerts" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="timezone_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="time_grid_control" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.2\bin\nunit.framework.dll" type="external" version="2.2"/>
+<dependency category="test" name="nunitasp" path="c:\svn\internal\tcs\bin\third_party\nunitasp\1.5.1\NUnitAsp.dll" type="external" version="1.5.1"/>
+</component>
+<component language="dot_net" name="transformation_engine" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="transport_layer_security_1.0_sap" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Softs\Programming Tool\Light Weighted\DotNet\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="Win32Socket" path="..\tcs\bin\Win32Socket.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="tree_view_user_control" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+<dependency category="test" name="NUnitAsp" path="..\tcs\bin\NUnitAsp.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="tree_view_user_control" version="2.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NUnitAsp" path="c:\subversion\tcs\bin\NUnitAsp.dll" type="external" version=""/>
+<dependency category="test" name="System.Web.Extensions" path="C:\Program Files\Microsoft ASP.NET\ASP.NET 2.0 AJAX Extensions\v1.0.61025\System.Web.Extensions.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="trie_collection" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="unique_values_retriever" version="1.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\log4net.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="unit_converter" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="unit_test_generator" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="unit_test_generator" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\NUnit\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="user_profile" version="1.0">
+<dependency category="test" name="TopCoder.User.Profile" path="build\classes\TopCoder.User.Profile.dll" type="external" version=""/>
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit V2.1\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="user_profile" version="2.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="view_state_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NUnitAsp" path="..\tcs\bin\third_party\NUnitAsp.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="warehouse_manager" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="wcf_audit_trail" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Runtime.Serialization.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="wcf_audit_trail" version="1.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4.6\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.ComponentModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.ComponentModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.Runtime" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.Runtime.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="wcf_base" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="wcf_base" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="wcf_base" version="1.0.2">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="wcf_base" version="2.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2.8\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+</component>
+<component language="dot_net" name="wcf_base" version="2.1.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4.6\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+</component>
+<component language="dot_net" name="wcf_contact_information_services" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="wcf_contact_information_services" version="1.0.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="wcf_distributed_cache" version="1.0.2">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+<dependency category="test" name="System.ServiceModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.ComponentModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.ComponentModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.Runtime" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.Runtime.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.Activities" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.Activities.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="wcf_extendable_tasks" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Services.WCF.GenericNotes" path="test_files\GenericNotesService\TopCoder.Services.WCF.GenericNotes.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Services.WCF.Tasks.GenericNotesService" path="test_files\GenericNotesService\TopCoder.Services.WCF.Tasks.GenericNotesService.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="wcf_extendable_tasks" version="1.1">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="c:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="c:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Services.WCF.GenericNotes" path="test_files\GenericNotesService\TopCoder.Services.WCF.GenericNotes.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Services.WCF.Tasks.GenericNotesService" path="test_files\GenericNotesService\TopCoder.Services.WCF.Tasks.GenericNotesService.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+<dependency category="test" name="antlr" path="..\tcs\bin\third_party\antlr\2.7.6.2\antlr.runtime.dll" type="external" version="2.7.6.2"/>
+</component>
+<component language="dot_net" name="wcf_extendable_tasks" version="1.2">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4.6\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="c:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="c:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+</component>
+<component language="dot_net" name="wcf_generic_notes_services" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="wcf_generic_notes_services" version="1.0.2">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="wcf_generic_notes_services" version="1.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4.6\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="Oracle.DataAccess" path="c:/oracle/product/11.1.0/ODP.NET/bin/2.x/Oracle.DataAccess.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="wcf_generic_notes_services" version="1.1.1">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4.6\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="Oracle.DataAccess" path="c:/oracle/product/11.1.0/ODP.NET/bin/2.x/Oracle.DataAccess.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="wcf_generic_notes_services" version="1.1.2">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4.6\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="bin" path="G:\app\Administrator\product\11.1.0\db_1\ODP.NET\bin\2.x\Oracle.DataAccess.dll" type="external" version="2.x"/>
+</component>
+<component language="dot_net" name="wcf_host" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+</component>
+<component language="dot_net" name="wcf_host" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+</component>
+<component language="dot_net" name="wcf_schedule_item" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Services.WCF.GenericNotes" path="test_files\TopCoder.Services.WCF.GenericNotes.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Services.WCF.GenericNotesClient" path="test_files\Proxy\TopCoder.Services.WCF.GenericNotesClient.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+</component>
+<component language="dot_net" name="wcf_searchtoken_persistence_service" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="wcf_subscription_service" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+</component>
+<component language="dot_net" name="wcf_text_translation_service" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+</component>
+<component language="dot_net" name="wcf_user_providers" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="System.Runtime.Serialization" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.Runtime.Serialization.dll" type="external" version=""/>
+<dependency category="test" name="TopCoder.Web.Security.WcfUserProviders.Service.Test" path="build\classes\TopCoder.Web.Security.WcfUserProviders.Service.Test.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net\1.2.9\log4net.dll" type="external" version="1.2.9"/>
+</component>
+<component language="dot_net" name="web_menu_control" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NUnitAsp" path="..\tcs\bin\third_party\NUnitAsp.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="weekly_calendar" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-2.2.4-net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="weighted_calculator" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\TopCoder\Tools\NUnit\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="windows_workflow_loader" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.Runtime" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.Runtime.dll" type="external" version=""/>
+<dependency category="test" name="System.Workflow.ComponentModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.Workflow.ComponentModel.dll" type="external" version=""/>
+<dependency category="test" name="log4net" path="..\tcs\bin\third_party\log4net.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="window_location_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="PresentationCore" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\PresentationCore.dll" type="external" version=""/>
+<dependency category="test" name="PresentationFramework" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\PresentationFramework.dll" type="external" version=""/>
+<dependency category="test" name="WindowsBase" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\WindowsBase.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="window_size_manager" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2.8\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="PresentationCore" path="c:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/PresentationCore.dll" type="external" version=""/>
+<dependency category="test" name="PresentationFramework" path="c:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/PresentationFramework.dll" type="external" version=""/>
+<dependency category="test" name="WindowsBase" path="c:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/WindowsBase.dll" type="external" version=""/>
+<dependency category="test" name="System.Windows.Presentation" path="c:/Program Files/Reference Assemblies/Microsoft/Framework/v3.5/System.Windows.Presentation.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="window_snapshot_utility" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="WindowsBase" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/WindowsBase.dll" type="external" version=""/>
+<dependency category="test" name="PresentationFramework" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/PresentationFramework.dll" type="external" version=""/>
+<dependency category="test" name="PresentationCore" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/PresentationCore.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="winforms_error_provider" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="NUnitForms" path="test_files\NUnitForms.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="workflow_builder" version="1.0">
+<dependency category="test" name="nunit.framework" path="\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="workflow_execution" version="1.0">
+<dependency category="test" name="nunit.framework" path="\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="wpf_datagrid" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.4.3\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="PresentationCore" path="c:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/PresentationCore.dll" type="external" version=""/>
+<dependency category="test" name="PresentationFramework" path="c:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/PresentationFramework.dll" type="external" version=""/>
+<dependency category="test" name="WindowsBase" path="c:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/WindowsBase.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="xamlconverter" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="PresentationCore" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\PresentationCore.dll" type="external" version=""/>
+<dependency category="test" name="PresentationFramework" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\PresentationFramework.dll" type="external" version=""/>
+<dependency category="test" name="WindowsBase" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\WindowsBase.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.ServiceModel.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="xaml_canvas" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="PresentationFramework" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/PresentationFramework.dll" type="external" version=""/>
+<dependency category="test" name="PresentationCore" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/PresentationCore.dll" type="external" version=""/>
+<dependency category="test" name="System.ServiceModel" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/System.ServiceModel.dll" type="external" version=""/>
+<dependency category="test" name="WindowsBase" path="C:/Program Files/Reference Assemblies/Microsoft/Framework/v3.0/WindowsBase.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="xaml_viewer" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit 2.2\.net-2.0\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="nunit_asp" path="..\tcs\bin\third_party\nunit_asp\2.0\NUnitAsp.dll" type="external" version="2.0"/>
+</component>
+<component language="dot_net" name="xmi_parser" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.2\bin\nunit.framework.dll" type="external" version="2.2"/>
+</component>
+<component language="dot_net" name="xmi_reader" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="xml_tree_viewer" version="1.0">
+<dependency category="test" name="nunit.framework" path="D:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+<dependency category="test" name="nunitasp" path="..\tcs\bin\nunitasp\1.5.1\NUnitAsp.dll" type="external" version="1.5.1"/>
+<dependency category="test" name="System.Web.Extensions" path="..\tcs\bin\System.Web.Extensions.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="xpath_object_navigator" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.8\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+<component language="dot_net" name="xsd2ddl" version="1.0">
+<dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+</component>
+<component language="dot_net" name="xslfo_web_editing" version="1.0">
+<dependency category="test" name="nunit.framework" path="C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit.framework.dll" type="external" version=""/>
+</component>
+</components>

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <Config name="com.topcoder.util.dependency.extractor.utility.ComponentDependencyExtractorUtility">
+    <Property name="object_factory_config_name">
+      <Value>of_config</Value>
+    </Property>
+    <Property name="of_config">
+      <!-- Put OF configuration here-->
+    </Property>
+    <Property name="persistence_class">
+      <Value>com.topcoder.util.dependency.persistence.BinaryFileDependenciesEntryPersistence</Value>
+    </Property>
+    <Property name="persistence_config">
+      <Property name="file_name">
+        <Value>dependencies.xml</Value>
+      </Property>
+    </Property>
+    <Property name="extractor_class">
+      <Value>com.topcoder.util.dependency.extractor.DotNetDependenciesEntryExtractor</Value>
+    </Property>
+    <Property name="logger_name">
+      <Value>myLogger</Value>
+    </Property>
+    <Property name="dependency_types">
+      <Value>internal</Value>
+    </Property>
+    <Property name="dependency_categories">
+      <Value>compile</Value>
+    </Property>
+    <Property name="file_masks">
+      <Value>build.xml</Value>
+      <Value>default.build</Value>
+      <Value>*.jar</Value>
+      <Value>*.zip</Value>
+      <Value>*\build.xml</Value>
+      <Value>*\default.build</Value>
+      <Value>*\*.jar</Value>
+      <Value>*\*.zip</Value>
+    </Property>
+  </Config>
+</CMConfig>

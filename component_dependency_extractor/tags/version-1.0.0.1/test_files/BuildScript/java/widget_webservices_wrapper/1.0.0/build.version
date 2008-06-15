@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Widget Webservices Wrapper
+component.distfilename=widget_webservices_wrapper
+component.package=com.topcoder.widget.servicewrapper
+component.packagedir=com/topcoder/widget/servicewrapper
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

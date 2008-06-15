@@ -1,0 +1,9 @@
+#property file defining the component's information
+component.name=LDAP SDK Interface JNDI Plugin
+component.distfilename=ldap_sdk_interface_jndi_plugin
+component.package=com.topcoder.util.net.ldap.sdkinterface.jndi
+component.packagedir=com/topcoder/util/net/ldap/sdkinterface/jndi
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

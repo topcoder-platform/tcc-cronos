@@ -1,0 +1,47 @@
+** MVC CHANGES **
+This component required changes to the TCS component Lightweight MVC.  It required the two calls
+to the System.getSystemClassLoader() to be changed to this.getClass().getClassLoader() in MVCConfigFactory.
+This was so that the webapps classloader is used instead of the server's.
+Furthermore, you have to put mvc.xml relative to the working directory of the app server, not inside the web
+application at all.  This is another flaw in MVC, but one that can be worked around.
+
+** FINAL FIX RESPONSES **
+I probably should have appealed a large number of the issues, since a number of them
+were covered, but I was too busy.
+
+CD1 (WishingBone) - OptinManager.deleteQuestion IS responsible for deactivating the question.  Refer
+	to the forum for that discussion, the persistence model just flags the data.
+
+MD1 (WishingBone) - This again was discussed on the forum and was in the documentation and stubs from the
+	designer.  It is per spec and the intended functionality.  A group id that does not match
+	a group is not the same thing as what an optinpersistenceexception is supposed to portray.  This
+	comes up most if you examine how cachedoptinpersistence works.
+
+TC4 (MPhk) - This is an opinion.  Most reviewers want me to separate test methods one per method for
+	better readability.
+	
+TC Executions
+WishingBone - That concurrency issue only comes up in a test class which isn't part of the component.
+	I've since synchronized every method, so there should be no issue accessing it's member variables.
+Standlove - Your failing test case was incorrect, read the docs.  Null actually has a meaning in that failing test.
+
+
+** INCREASES TO DEVELOPMENT SCOPE **
+The Component Specification didn't go into too much implementation detail
+of the web administration aspect of the component.  I included an edited version
+of the Component Specification with some extra information on the details that
+were implemented.  To sum up the distribution differences:
+
+build.xml - needs a dist_web task, similar to the dev_web task that I wrote in there
+	to do my own deployment
+optins.tld - new tag library definition file to allow usage of the custom tags in
+	both the administrative JSP pages and an example for further user pages
+default.css - this stylesheet gets deployed to the main directory for common styles
+web.xml - the necessary web application configuration file sets up the tag libraries
+	and the MVC servlet controller
+
+** TESTING **
+The base classes are tested using JUnit and cactus is used to test the tags.  To test the MVC 
+commands, you'd have to create very complex request, response, and session objects.
+Instead of throwing exceptions, they return a String which will direct the user to an error page 
+for graceful degradation.  These have all been hand tested for most cases.

@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=SOAP Functional Entitlement Enforcer
+component.distfilename=soap_functional_entitlement_enforcer
+component.package=com.topcoder.security.soap
+component.packagedir=com/topcoder/security/soap
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

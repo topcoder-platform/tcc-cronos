@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=JSF Spell Check
+component.distfilename=jsf_spell_check
+component.package=com.topcoder.web.ui.jsf.spellcheck
+component.packagedir=com/topcoder/web/ui/jsf/spellcheck
+component.version.major=1
+component.version.minor=1
+component.version.micro=0
+component.version.build=1

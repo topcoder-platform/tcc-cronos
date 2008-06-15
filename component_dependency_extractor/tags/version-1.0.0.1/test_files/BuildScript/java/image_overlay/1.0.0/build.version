@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Image Overlay
+component.distfilename=image_overlay
+component.package=com.topcoder.imaging.overlay
+component.packagedir=com/topcoder/imaging/overlay
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

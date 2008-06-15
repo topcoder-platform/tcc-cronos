@@ -1,0 +1,9 @@
+#property file defining the component's information
+component.name=HTTP Utility
+component.distfilename=http_utility
+component.package=com.topcoder.util.net.httputility
+component.packagedir=com/topcoder/util/net/httputility
+component.version.major=3
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

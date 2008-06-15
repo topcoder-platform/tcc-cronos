@@ -1,0 +1,9 @@
+#property file defining the component's information
+component.name=Widget Webservices Bridge
+component.distfilename=widget_webservices_bridge
+component.package=com.topcoder.widget.bridge
+component.packagedir=com/topcoder/widget/bridge
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

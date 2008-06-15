@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Javascript Scatter Chart Renderer
+component.distfilename=javascript_scatter_chart_renderer
+component.package=com.topcoder.js.chart.scatterchartrenderer
+component.packagedir=com/topcoder/js/chart/scatterchartrenderer
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=URI Access Auditor
+component.distfilename=uri_access_auditor
+component.package=com.topcoder.web.auditor
+component.packagedir=com/topcoder/web/auditor
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

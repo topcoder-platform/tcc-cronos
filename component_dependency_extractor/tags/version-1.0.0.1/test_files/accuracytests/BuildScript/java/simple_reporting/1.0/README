@@ -1,0 +1,28 @@
+The libs used:
+
+junit.jar
+commons-beanutils.jar
+commons-collections-3.1.jar
+commons-digester.jar
+commons-logging.jar
+commons-validator.jar
+log4j-1.2.11.jar
+mysql-connector-java-3.1.10-bin.jar
+servlet-api.jar
+struts.jar
+strutstest-2.1.3.jar
+xerces.jar
+
+tcs/configmanager.jar
+tcs/currency.jar
+tcs/db_connection_factory.jar
+tcs/simple_cache.jar
+tcs/base_exception.jar
+tcs/authorization.jar
+tcs/logging_wrapper.jar
+tcs/typesafe_enum.jar
+
+----------------------------------------------------
+
+mysql databases needed(for more info, see test_files/DBConnectionFactory.xml)
+Please run "test_files/Authorization_ddl.sql" , "test_files/ddl.sql" and "test_files/accuracytests/schema.sql first

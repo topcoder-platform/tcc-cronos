@@ -1,0 +1,79 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- Properties used in compile_targets ANT target -->
+    <property name="component.target" value="1.4"/>
+    <property name="component.bootclasspath" value="${java_1_4_bootclasspath}"/>
+
+    <!-- property file defining the component's dependencies -->
+    <!-- define TCS dependencies -->
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0/base_exception.jar"/>
+    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0/object_formatter.jar"/>
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0/logging_wrapper.jar"/>
+    <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1/typesafe_enum.jar"/>
+    <!-- define 3rd party dependencies -->
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+    <property name="easymock.jar" value="${ext_libdir}/easymock/1.2/easymock.jar"/>
+
+    <property name="spring.dir" value="${ext_libdir}/spring-framework/2.5.0"/>
+    <property name="servlet.jar" value="${spring.dir}/lib/j2ee/servlet-api.jar"/>
+    <property name="velocity.jar" value="${spring.dir}/lib/velocity/velocity-1.5.jar"/>
+    <property name="commons-logging.jar" value="${spring.dir}/lib/jakarta-commons/commons-logging.jar"/>
+    <property name="commons-lang.jar" value="${spring.dir}/lib/jakarta-commons/commons-lang.jar"/>
+
+    <property name="confluence.dir" value="${ext_libdir}/confluence-2.7.1-std"/>
+    <property name="confluence.jar" value="${confluence.dir}/confluence/WEB-INF/lib/confluence-2.7.1.jar"/>
+    <property name="atlassian-bandana.jar"
+              value="${confluence.dir}/confluence/WEB-INF/lib/atlassian-bandana-0.2.0.jar"/>
+    <property name="atlassian-user.jar" value="${confluence.dir}/confluence/WEB-INF/lib/atlassian-user-1.24.jar"/>
+    <property name="atlassian-renderer.jar"
+              value="${confluence.dir}/confluence/WEB-INF/lib/atlassian-renderer-3.17.jar"/>
+    <property name="atlassian-seraph.jar" value="${confluence.dir}/confluence/WEB-INF/lib/atlassian-seraph-0.31.jar"/>
+    <property name="atlassian-event.jar" value="${confluence.dir}/confluence/WEB-INF/lib/atlassian-event-0.3.jar"/>
+    <property name="atlassian-spring.jar" value="${confluence.dir}/confluence/WEB-INF/lib/atlassian-spring-0.7.jar"/>
+    <property name="atlassian-bucket.jar" value="${confluence.dir}/confluence/WEB-INF/lib/atlassian-bucket-0.20.jar"/>
+    <property name="atlassian-mail.jar" value="${confluence.dir}/confluence/WEB-INF/lib/atlassian-mail-1.5.jar"/>
+    <property name="atlassian-config.jar" value="${confluence.dir}/confluence/WEB-INF/lib/atlassian-config-0.8.jar"/>
+    <property name="atlassian-extras.jar" value="${confluence.dir}/confluence/WEB-INF/lib/atlassian-extras-1.12.jar"/>
+    <property name="xwork.jar" value="${confluence.dir}/confluence/WEB-INF/lib/xwork-1.0.3.jar"/>
+    <property name="oscore.jar" value="${confluence.dir}/confluence/WEB-INF/lib/oscore-2.2.4.jar"/>
+    <property name="propertyset.jar" value="${confluence.dir}/confluence/WEB-INF/lib/propertyset-1.3-21Nov03.jar"/>
+    <property name="radeox.jar" value="${confluence.dir}/confluence/WEB-INF/lib/radeox-1.0b2-forked-22Apr2004.jar"/>
+
+    <property name="atlassian-pdk.jar" value="${ext_libdir}/confluence/atlassian-pdk-2.1.1.jar"/>
+    <property name="atlassian-core.jar" value="${ext_libdir}/confluence/atlassian-core-2006.07.14.jar"/>
+
+    <path id="component.tcs-dependencies">
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${typesafe_enum.jar}"/>
+        <pathelement location="${object_formatter.jar}"/>
+        <pathelement location="${logging_wrapper.jar}"/>
+    </path>
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${servlet.jar}"/>
+        <pathelement location="${velocity.jar}"/>
+        <pathelement location="${commons-logging.jar}"/>
+        <pathelement location="${commons-lang.jar}"/>
+
+        <pathelement location="${confluence.jar}"/>
+        <pathelement location="${atlassian-bandana.jar}"/>
+        <pathelement location="${atlassian-user.jar}"/>
+        <pathelement location="${atlassian-renderer.jar}"/>
+        <pathelement location="${atlassian-seraph.jar}"/>
+        <pathelement location="${atlassian-event.jar}"/>
+        <pathelement location="${atlassian-spring.jar}"/>
+        <pathelement location="${atlassian-bucket.jar}"/>
+        <pathelement location="${atlassian-mail.jar}"/>
+        <pathelement location="${atlassian-config.jar}"/>
+        <pathelement location="${atlassian-extras.jar}"/>
+        <pathelement location="${xwork.jar}"/>
+        <pathelement location="${oscore.jar}"/>
+        <pathelement location="${propertyset.jar}"/>
+        <pathelement location="${radeox.jar}"/>
+
+        <pathelement location="${atlassian-pdk.jar}"/>
+        <pathelement location="${atlassian-core.jar}"/>
+    </path>
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${easymock.jar}"/>
+    </path>
+</project>

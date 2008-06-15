@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Auditor Hibernate Plug-in
+component.distfilename=auditor_hibernate_plug-in
+component.package=com.topcoder.object.auditor.hibernate
+component.packagedir=com/topcoder/object/auditor/hibernate
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

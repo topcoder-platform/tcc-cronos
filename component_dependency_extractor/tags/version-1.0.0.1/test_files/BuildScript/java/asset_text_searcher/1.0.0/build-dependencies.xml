@@ -1,0 +1,94 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
+
+    <!-- TCS dependencies -->
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    <property name="catalog_manager.jar" value="${tcs_libdir}/catalog_manager/1.1.0/catalog_manager.jar"/>
+    <property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar"/>
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
+    <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.1.0/object_factory.jar"/>
+    <property name="object_factory_configuration_api_plugin.jar"
+              value="${tcs_libdir}/object_factory_configuration_api_plugin/1.0.0/object_factory_configuration_api_plugin.jar"/>
+    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+    <property name="vault_hibernate_persistence.jar"
+              value="${tcs_libdir}/vault_hibernate_persistence/1.0.0/vault_hibernate_persistence.jar"/>
+
+    <!-- 3rd party dependencies -->
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+
+    <property name="hibernate.dir" value="${ext_libdir}/hibernate/3.2.6.ga"/>
+    <property name="hibernate-annotations.dir" value="${ext_libdir}/hibernate-annotations/3.3.0.ga"/>
+    <property name="hibernate-search.dir" value="${ext_libdir}/hibernate-search/3.0.1.GA"/>
+    <path id="hibernate.classpath">
+        <fileset dir="${hibernate.dir}">
+            <include name="hibernate3.jar"/>
+            <include name="lib/jta.jar"/>
+            <include name="lib/log4j-1.2.11.jar"/>
+            <include name="lib/xml-apis.jar"/>
+            <include name="lib/xerces-2.6.2.jar"/>
+            <include name="lib/asm.jar"/>
+            <include name="lib/c3p0-0.9.1.jar"/>
+            <include name="lib/cglib-2.1.3.jar"/>
+            <include name="lib/commons-collections-2.1.1.jar"/>
+            <include name="lib/commons-logging-1.0.4.jar"/>
+            <include name="lib/concurrent-1.3.2.jar"/>
+            <include name="lib/connector.jar"/>
+            <include name="lib/dom4j-1.6.1.jar"/>
+            <include name="lib/ehcache-1.2.3.jar"/>
+            <include name="lib/jaas.jar"/>
+            <include name="lib/jacc-1_0-fr.jar"/>
+            <include name="lib/javassist.jar"/>
+            <include name="lib/jaxen-1.1-beta-7.jar"/>
+            <include name="lib/jboss-cache.jar"/>
+            <include name="lib/jboss-common.jar"/>
+            <include name="lib/jboss-jmx.jar"/>
+            <include name="lib/jboss-system.jar"/>
+            <include name="lib/jdbc2_0-stdext.jar"/>
+            <include name="lib/jgroups-2.2.8.jar"/>
+            <include name="lib/oscache-2.1.jar"/>
+            <include name="lib/proxool-0.8.3.jar"/>
+            <include name="lib/swarmcache-1.0rc2.jar"/>
+            <include name="lib/syndiag2.jar"/>
+            <include name="lib/versioncheck.jar"/>
+            <include name="lib/antlr-2.7.6.jar"/>
+        </fileset>
+        <fileset dir="${hibernate-annotations.dir}">
+            <include name="hibernate-annotations.jar"/>
+            <include name="lib/ejb3-persistence.jar"/>
+            <include name="lib/hibernate-commons-annotations.jar"/>
+        </fileset>
+        <fileset dir="${hibernate-search.dir}">
+            <include name="hibernate-annotations.jar"/>
+            <include name="hibernate-search.jar"/>
+            <include name="lib/lucene-core-2.3.0.jar"/>
+        </fileset>
+    </path>
+
+    <property name="mysql.jar" value="${ext_libdir}/mysql/5.0.5/mysql-connector-java-5.0.5-bin.jar"/>
+
+    <path id="component.tcs-dependencies">
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${catalog_manager.jar}"/>
+        <pathelement location="${configuration_api.jar}"/>
+        <pathelement location="${logging_wrapper.jar}"/>
+        <pathelement location="${object_factory.jar}"/>
+        <pathelement location="${object_factory_configuration_api_plugin.jar}"/>
+        <pathelement location="${object_formatter.jar}"/>
+        <pathelement location="${vault_hibernate_persistence.jar}"/>
+    </path>
+
+    <path id="component.3rdParty-dependencies">
+        <path refid="hibernate.classpath"/>
+    </path>
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${mysql.jar}"/>
+        <pathelement location="test_files/unittests"/>
+    </path>
+
+</project>

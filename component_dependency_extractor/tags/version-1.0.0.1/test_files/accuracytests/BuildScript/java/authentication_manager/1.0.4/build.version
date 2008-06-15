@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Authentication Manager
+component.distfilename=authentication_manager
+component.package=com.topcoder.security.authenticationmanager
+component.packagedir=com/topcoder/security/authenticationmanager
+component.version.major=1
+component.version.minor=0
+component.version.micro=4
+component.version.build=1

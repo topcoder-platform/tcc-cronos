@@ -1,0 +1,41 @@
+This is a component for testing builds
+
+TO RUN:
+
+1. Install the component structure in ${basedir}
+
+2. Create "topcoder_global.properties" in ${basedir}/.. and add the properties from steps 2,3,4
+
+3. The following standard build script properties must be set
+	ext_libdir - root of third party libraries
+	tcs_libdir - root of topcoder components
+	java_1_3_bootclasspath - installation path for java 1.3 (only needed for compile_targets task)
+	junit.jar - location of junit.jar (component was written for v3.8.2)
+
+4. The following standard build script properties can be changed (defaults are noted)
+	debug=off - as expected
+	verbose=no - as expected
+	cobertura.dir=${ext_libdir}/cobertura/1.8
+		installation directory of cobertura script expects {$cobertura.dir}/cobertura.jar
+		and {$cobertura.dir}/lib/containg hars for asm, jakarta, and log4j to run cobertura task
+
+5. For the test and demo:
+    5.1. The clam and clamd should be installed.
+    5.2. Currently the test_code are intergated under Windows, in order to be run under Linux, the
+        following code or config should be changed against your local settings:
+        5.2.1 the path of of clamscan and clamd in the configuration:
+            test_files\failuretests\config.xml
+            test_files\stresstests\config-default.xml
+            test_files\config.xml
+            test_files\config-default.xml
+            test_files\config-invalidSpec.xml
+            test_files\config-refError.xml
+            
+        5.2.2 the following code:
+            TestHelper#CLAMSCAN_COMMAND, and CLAMD_COMMAND
+            LocalAntiVirusValidatorFailureTest#command
+            StressTestsHelper#COMMAND_CLAMSCAN
+
+    5.3. the clamd should be start before running the test cases, and keep running during the test.
+    5.4. The might be some problems on the WinSock and the Java RunTime started process(Runtime.getRuntime().exec(command)),
+        the test cases(Unit Test and Stress Test) may fail from time to time, run the failed case alone should be ok.

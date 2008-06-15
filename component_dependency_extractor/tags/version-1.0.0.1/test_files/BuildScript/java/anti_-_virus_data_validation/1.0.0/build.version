@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Anti-Virus Data Validation
+component.distfilename=anti_-_virus_data_validation
+component.package=com.topcoder.util.datavalidator.antivirus
+component.packagedir=com/topcoder/util/datavalidator/antivirus
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=0

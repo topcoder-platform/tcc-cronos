@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Security Facade Hibernate Persistence
+component.distfilename=security_facade_hibernate_persistence
+component.package=com.topcoder.security.facade.persistence.hibernate
+component.packagedir=com/topcoder/security/facade/persistence/hibernate
+component.version.major=2
+component.version.minor=0
+component.version.micro=1
+component.version.build=1
