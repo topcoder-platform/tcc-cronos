@@ -17,8 +17,10 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * <p>This test case aggregates all Unit test cases.</p>
- *
+ * <p>
+ * This test case aggregates all Unit test cases.
+ * </p>
+ * 
  * @author TCSDEVELOPER
  * @version 1.0
  */
@@ -26,7 +28,7 @@ public class UnitTests extends TestCase {
 
     /**
      * Gathers all unit tests together and return.
-     *
+     * 
      * @return all tests in one suite
      */
     public static Test suite() {

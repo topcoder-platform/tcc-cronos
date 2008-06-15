@@ -1872,4 +1872,113 @@ public class StudioServiceBean implements StudioService {
 
         return null;
     }
+    /**
+     * <p>
+     * Links a document to a contest.
+     * 
+     * @param documentId
+     *            document id, which document will be linked.
+     * @param contestId
+     *            cpntest id, which contest will be linked.
+     * @throws IllegalArgumentWSException
+     *             if any id is less than 0
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     * @throws ContestNotFoundException
+     *             if the contest is not found.
+     */
+    public void addDocumentToContest(long documentId, long contestId)
+            throws PersistenceException, ContestNotFoundException {
+        logEnter("addDocumentToContest");
+
+        checkParameter("contestId", contestId);
+        checkParameter("documentId", documentId);
+
+        try {
+            Contest contest = contestManager.getContest(contestId);
+            if (contest == null) {
+                handleContestNotFoundError(null, contestId);
+            }
+
+            if (contestManager.getDocument(documentId) == null) {
+                handlePersistenceError(
+                        "Document " + documentId + "is missing.", null);
+            }
+
+            contestManager.addDocumentToContest(documentId, contestId);
+        } catch (ContestManagementException e) {
+            handlePersistenceError(
+                    "ContestManager reports error while linking document to contest in persistence.",
+                    e);
+        }
+        logExit("addDocumentToContest", null);
+    }
+    
+
+    /**
+     * <p>
+     * Upload document. Return document populated with id.
+     * 
+     * @param uploadedDocument
+     *            the uploadDocument to update
+     * @return the same instance passed in argument with the documentId updated
+     * @throws IllegalArgumentWSException
+     *             if the argument is null
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     */
+    public UploadedDocument uploadDocument(UploadedDocument data)
+            throws PersistenceException {
+        logEnter("uploadDocument");
+
+        checkParameter("data", data);
+
+        Document doc = new Document();
+
+        doc.setDocumentId(data.getDocumentId());
+        doc.setOriginalFileName(data.getFileName());
+
+        // set file path
+        FilePath fp = new FilePath();
+        fp.setPath(data.getPath());
+        doc.setPath(fp);
+
+        try {
+
+            // set mime type [BUG 27074484-15]
+            MimeType mt = contestManager.getMimeType(data.getMimeTypeId());
+            doc.setMimeType(mt);
+
+            // set document type [BUG 27074484-15]
+            DocumentType dt = contestManager.getDocumentType(data
+                    .getDocumentTypeId());
+            doc.setType(dt);
+
+            // save document
+            doc = contestManager.addDocument(doc);
+        } catch (ContestManagementException e) {
+            handlePersistenceError(
+                    "ContestManager reports error while adding document in persistence.",
+                    e);
+        }
+
+        // persist document content where necessary
+        try {
+            if (!contestManager
+                    .existDocumentContent(unbox(doc.getDocumentId()))) {
+                contestManager.saveDocumentContent(doc.getDocumentId(), data
+                        .getFile());
+            }
+        } catch (IllegalArgumentException e) {
+            // do not reproduce any errors here
+            logError(e);
+        } catch (ContestManagementException e) {
+            logError(e);
+        }
+
+        UploadedDocument ret = convertDocument(doc);
+        logExit("uploadDocument", ret);
+        // return uploaded document
+        return ret;
+    }
 }

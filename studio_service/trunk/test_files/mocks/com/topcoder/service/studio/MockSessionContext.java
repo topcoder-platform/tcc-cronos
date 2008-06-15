@@ -38,10 +38,6 @@ public class MockSessionContext implements SessionContext {
         throw new UnsupportedOperationException("Method is not implemented yet.");
     }
 
-    public <T> T getBusinessObject(Class<T> tClass) throws IllegalStateException {
-        throw new UnsupportedOperationException("Method is not implemented yet.");
-    }
-
     public Class getInvokedBusinessInterface() throws IllegalStateException {
         throw new UnsupportedOperationException("Method is not implemented yet.");
     }
@@ -58,16 +54,8 @@ public class MockSessionContext implements SessionContext {
         throw new UnsupportedOperationException("Method is not implemented yet.");
     }
 
-    public Identity getCallerIdentity() {
-        throw new UnsupportedOperationException("Method is not implemented yet.");
-    }
-
     public Principal getCallerPrincipal() {
         return new UserProfilePrincipal(new MockProfile(), userId, "user15");
-    }
-
-    public boolean isCallerInRole(Identity identity) {
-        throw new UnsupportedOperationException("Method is not implemented yet.");
     }
 
     public boolean isCallerInRole(String s) {
@@ -158,5 +146,21 @@ public class MockSessionContext implements SessionContext {
         public void clearAttributes() {
             throw new UnsupportedOperationException("Method is not implemented yet.");
         }
+    }
+
+
+    public Identity getCallerIdentity() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public boolean isCallerInRole(Identity arg0) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    public Object getBusinessObject(Class arg0) throws IllegalStateException {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

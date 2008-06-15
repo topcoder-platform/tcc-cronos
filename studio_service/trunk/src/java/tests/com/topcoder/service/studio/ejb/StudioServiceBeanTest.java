@@ -18,6 +18,7 @@ import com.topcoder.service.studio.SubmissionManagerImpl;
 import com.topcoder.service.studio.UploadedDocument;
 import com.topcoder.service.studio.UserNotAuthorizedException;
 import com.topcoder.service.studio.contest.Contest;
+import com.topcoder.service.studio.contest.Document;
 import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.service.studio.submission.Submission;
 import junit.framework.Test;
@@ -37,24 +38,31 @@ import java.util.Set;
 
 /**
  * Tests for main class in this component, StudioServiceBean.
- *
+ * 
  * @author TCSDEVELOPER
  * @version 1.0
  */
 public class StudioServiceBeanTest extends TestCase {
     /**
-     * Bean to test. Made public, so it can be used outside of this test class (in demo, for example).
+     * Bean to test. Made public, so it can be used outside of this test class
+     * (in demo, for example).
      */
     public StudioServiceBean target;
 
+    /**
+     * ContestManagerImpl used for test.
+     */
+    private ContestManagerImpl contestMgr;
     /**
      * Index used in tests to build always different ids.
      */
     private long index = 0;
 
     /**
-     * <p>Returns the test suite of this class.</p>
-     *
+     * <p>
+     * Returns the test suite of this class.
+     * </p>
+     * 
      * @return the test suite of this class.
      */
     public static Test suite() {
@@ -62,31 +70,40 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * <p>Sets up test environment.</p>
-     *
-     * @throws Exception to junit
+     * <p>
+     * Sets up test environment.
+     * </p>
+     * 
+     * @throws Exception
+     *             to junit
      */
     public void setUp() throws Exception {
         target = new StudioServiceBean();
+        contestMgr = new ContestManagerImpl();
+
         setPrivateField("sessionContext", new MockSessionContext());
         setPrivateField("submissionManager", new SubmissionManagerImpl());
-        setPrivateField("contestManager", new ContestManagerImpl());
+        setPrivateField("contestManager", contestMgr);
         callInit();
     }
 
     /**
-     * <p>Tears down test environment.</p>
-     *
-     * @throws Exception to junit
+     * <p>
+     * Tears down test environment.
+     * </p>
+     * 
+     * @throws Exception
+     *             to junit
      */
     public void tearDown() throws Exception {
     }
 
     /**
-     * Tests init method with different configuration values. IllegalStateException expected at the end (empty log
-     * name).
-     *
-     * @throws Exception when it occurs deeper
+     * Tests init method with different configuration values.
+     * IllegalStateException expected at the end (empty log name).
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testInit() throws Exception {
         callInit();
@@ -106,24 +123,30 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * This method checks who three simple getters works: for SubmissionManager, ContestManager and SessionContext.
+     * This method checks who three simple getters works: for SubmissionManager,
+     * ContestManager and SessionContext.
      */
     public void testGetters() {
-        assertTrue("correct submission manager", target.getSubmissionManager() instanceof SubmissionManagerImpl);
-        assertTrue("correct contest manager", target.getContestManager() instanceof ContestManagerImpl);
-        assertTrue("correct session context", target.getSessionContext() instanceof MockSessionContext);
+        assertTrue("correct submission manager",
+                target.getSubmissionManager() instanceof SubmissionManagerImpl);
+        assertTrue("correct contest manager",
+                target.getContestManager() instanceof ContestManagerImpl);
+        assertTrue("correct session context",
+                target.getSessionContext() instanceof MockSessionContext);
     }
 
     /**
      * Tests createContest method for valid data.
-     *
-     * @throws Exception when it occurs deeper
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testCreateContest() throws Exception {
         ContestData result = target.createContest(newContestData(), 5);
 
         // check if contest saved in persistence
-        assertEquals("name of saved contest", "contestName", ContestManagerImpl.contests.get(33l).getName());
+        assertEquals("name of saved contest", "contestName",
+                ContestManagerImpl.contests.get(33l).getName());
 
         // check result
         assertEquals("name of contest", "contestName", result.getName());
@@ -132,8 +155,9 @@ public class StudioServiceBeanTest extends TestCase {
 
     /**
      * Tests createContest method with some documents to upload.
-     *
-     * @throws Exception when it occurs deeper
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testCreateContestWithDocuments() throws Exception {
         setPrivateField("logName", "someName");
@@ -151,26 +175,34 @@ public class StudioServiceBeanTest extends TestCase {
         target.createContest(cd, 5);
 
         // check if contest saved in persistence
-        assertEquals("number of documents", 2, ContestManagerImpl.documents.size());
-        assertEquals("file name", "someFile", ContestManagerImpl.documents.get(7l).getOriginalFileName());
-        assertEquals("file path", "/work/tc", ContestManagerImpl.documents.get(7l).getPath().getPath());
+        assertEquals("number of documents", 2, ContestManagerImpl.documents
+                .size());
+        assertEquals("file name", "someFile", ContestManagerImpl.documents.get(
+                7l).getOriginalFileName());
+        assertEquals("file path", "/work/tc", ContestManagerImpl.documents.get(
+                7l).getPath().getPath());
 
-        assertNull("file name", ContestManagerImpl.documents.get(50l).getOriginalFileName());
-        assertNull("file path", ContestManagerImpl.documents.get(50l).getPath().getPath());
+        assertNull("file name", ContestManagerImpl.documents.get(50l)
+                .getOriginalFileName());
+        assertNull("file path", ContestManagerImpl.documents.get(50l).getPath()
+                .getPath());
 
         // check doc contents
-        assertEquals("content of the first document", "abc",
-                new String((byte[]) ContestManagerImpl.documentsContent.get(7l)));
-        assertEquals("content of the second document", "xyz",
-                new String((byte[]) ContestManagerImpl.documentsContent.get(50l)));
+        assertEquals("content of the first document", "abc", new String(
+                (byte[]) ContestManagerImpl.documentsContent.get(7l)));
+        assertEquals("content of the second document", "xyz", new String(
+                (byte[]) ContestManagerImpl.documentsContent.get(50l)));
 
-        assertEquals("name of saved contest", "contestName", ContestManagerImpl.contests.get(33l).getName());
+        assertEquals("name of saved contest", "contestName",
+                ContestManagerImpl.contests.get(33l).getName());
     }
 
     /**
-     * Tests method when user is not authorized to perform operation. UserNotAuthorizedException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests method when user is not authorized to perform operation.
+     * UserNotAuthorizedException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testCreateContestForAuthorizationFail() throws Exception {
         MockSessionContext.isAdmin = false;
@@ -185,8 +217,9 @@ public class StudioServiceBeanTest extends TestCase {
 
     /**
      * Tests getContest method for valid data.
-     *
-     * @throws Exception when it occurs deeper
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testGetContest() throws Exception {
         setPrivateField("logName", "someName");
@@ -208,7 +241,8 @@ public class StudioServiceBeanTest extends TestCase {
         assertEquals("contestId", 33, contestData.getContestId());
 
         // check returned documents
-        assertEquals("number of documents", 2, contestData.getDocumentationUploads().size());
+        assertEquals("number of documents", 2, contestData
+                .getDocumentationUploads().size());
         Map<Long, UploadedDocument> resDocs = new HashMap<Long, UploadedDocument>();
         for (UploadedDocument doc : contestData.getDocumentationUploads()) {
             resDocs.put(doc.getDocumentId(), doc);
@@ -216,16 +250,19 @@ public class StudioServiceBeanTest extends TestCase {
 
         assertEquals("file name", "someFile", resDocs.get(7l).getFileName());
         assertEquals("file path", "/work/tc", resDocs.get(7l).getPath());
-        assertEquals("document data", "abc", new String(resDocs.get(7l).getFile()));
+        assertEquals("document data", "abc", new String(resDocs.get(7l)
+                .getFile()));
         assertNull("file name", resDocs.get(50l).getFileName());
         assertNull("file path", resDocs.get(50l).getPath());
-        assertEquals("document data", "xyz", new String(resDocs.get(50l).getFile()));
+        assertEquals("document data", "xyz", new String(resDocs.get(50l)
+                .getFile()));
     }
 
     /**
      * Tests getContest method when some documents retrieved also.
-     *
-     * @throws Exception when it occurs deeper
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testGetContestWithDocuments() throws Exception {
         target.createContest(newContestData(), 5);
@@ -237,9 +274,11 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Tests method when user is not authorized to perform operation. UserNotAuthorizedException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests method when user is not authorized to perform operation.
+     * UserNotAuthorizedException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testGetContestForAuthorizationFail() throws Exception {
         target.createContest(newContestData(), 5);
@@ -254,11 +293,12 @@ public class StudioServiceBeanTest extends TestCase {
         }
     }
 
-
     /**
-     * Tests getContest method when no contest with such id presented. ContestNotFoundException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests getContest method when no contest with such id presented.
+     * ContestNotFoundException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testGetContestForNoContest() throws Exception {
         try {
@@ -271,8 +311,9 @@ public class StudioServiceBeanTest extends TestCase {
 
     /**
      * Tests getContestsForProject method for valid data.
-     *
-     * @throws Exception when it occurs deeper
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testGetContestsForProject() throws Exception {
         // populate contests
@@ -295,9 +336,11 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Tests getContestsForProject method internal error from ContestManager. PersistenceException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests getContestsForProject method internal error from ContestManager.
+     * PersistenceException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testGetContestsForProjectForError() throws Exception {
         setPrivateField("logName", "someName");
@@ -313,8 +356,9 @@ public class StudioServiceBeanTest extends TestCase {
 
     /**
      * Tests updateContest method for valid data.
-     *
-     * @throws Exception when it occurs deeper
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testUpdateContest() throws Exception {
         ContestData cd = newContestData();
@@ -331,8 +375,9 @@ public class StudioServiceBeanTest extends TestCase {
 
     /**
      * Tests updateContest method for valid data.
-     *
-     * @throws Exception when it occurs deeper
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testUpdateWithDocuments() throws Exception {
         // prepare data for test
@@ -352,14 +397,18 @@ public class StudioServiceBeanTest extends TestCase {
         assertEquals("name of contest", "anotherName", contestData.getName());
         assertEquals("contestId", 33, contestData.getContestId());
 
-        assertEquals("number of documents", 1, contestData.getDocumentationUploads().size());
-        assertEquals("file name", "someFile", contestData.getDocumentationUploads().get(0).getFileName());
+        assertEquals("number of documents", 1, contestData
+                .getDocumentationUploads().size());
+        assertEquals("file name", "someFile", contestData
+                .getDocumentationUploads().get(0).getFileName());
     }
 
     /**
-     * Tests updateContest method when user is authorized to perform operation. UserNotAuthorizedException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests updateContest method when user is authorized to perform operation.
+     * UserNotAuthorizedException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testUpdateContestForUserAuthorization() throws Exception {
         ContestData cd = newContestData();
@@ -374,9 +423,11 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Tests updateContest method when passed contest is not persisted. ContestNotFoundException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests updateContest method when passed contest is not persisted.
+     * ContestNotFoundException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testUpdateContestForMissedId() throws Exception {
         try {
@@ -389,8 +440,9 @@ public class StudioServiceBeanTest extends TestCase {
 
     /**
      * Tests updateContestStatus method for valid data.
-     *
-     * @throws Exception when it occurs deeper
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testUpdateContestStatus() throws Exception {
         setPrivateField("logName", "someName");
@@ -399,14 +451,16 @@ public class StudioServiceBeanTest extends TestCase {
 
         // perform update
         target.updateContestStatus(33, 7);
-        assertEquals("contestManager call", "updateContestStatus(33, 7)", ContestManagerImpl.lastCall);
+        assertEquals("contestManager call", "updateContestStatus(33, 7)",
+                ContestManagerImpl.lastCall);
     }
 
     /**
-     * Tests updateContestStatus method when user is not admin (only admins can do it). UserNotAuthorizedException
-     * expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests updateContestStatus method when user is not admin (only admins can
+     * do it). UserNotAuthorizedException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testUpdateContestStatusForAuthorizationFail() throws Exception {
         setPrivateField("logName", "someName");
@@ -426,10 +480,11 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Tests updateContestStatus method when contest is not presented in persistence. ContestNotFoundException
-     * expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests updateContestStatus method when contest is not presented in
+     * persistence. ContestNotFoundException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testUpdateContestStatusForMissedContest() throws Exception {
         setPrivateField("logName", "someName");
@@ -444,10 +499,11 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Tests updateContestStatus method when such status is not presented in persistence. StatusNotFoundException
-     * expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests updateContestStatus method when such status is not presented in
+     * persistence. StatusNotFoundException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testUpdateContestStatusForMissedStatus() throws Exception {
         setPrivateField("logName", "someName");
@@ -463,9 +519,11 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Tests updateContestStatus method when status change forbidden. StatusNotAllowedException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests updateContestStatus method when status change forbidden.
+     * StatusNotAllowedException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testUpdateContestStatusForForbiddenStatus() throws Exception {
         target.createContest(newContestData(), 5);
@@ -479,20 +537,23 @@ public class StudioServiceBeanTest extends TestCase {
 
     /**
      * Tests uploadDocumentForContest method for valid data.
-     *
-     * @throws Exception when it occurs deeper
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testUploadDocumentForContest() throws Exception {
         target.createContest(newContestData(), 5);
         target.uploadDocumentForContest(newUploadedDocument());
-        assertEquals("number of documents", 1, ContestManagerImpl.documentsForContest.get(33l).size());
+        assertEquals("number of documents", 1,
+                ContestManagerImpl.documentsForContest.get(33l).size());
     }
 
     /**
-     * Tests uploadDocumentForContest method when contest is not presented in persistence. ContestNotFoundException
-     * expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests uploadDocumentForContest method when contest is not presented in
+     * persistence. ContestNotFoundException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testUploadDocumentForContestForMissedContest() throws Exception {
         try {
@@ -505,8 +566,9 @@ public class StudioServiceBeanTest extends TestCase {
 
     /**
      * Tests removeDocumentFromContest method for valid data.
-     *
-     * @throws Exception when it occurs deeper
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testRemoveDocumentForContest() throws Exception {
         // prepare data for test
@@ -528,17 +590,21 @@ public class StudioServiceBeanTest extends TestCase {
         target.removeDocumentFromContest(ud);
 
         // check result
-        assertEquals("number of documents", 1, ContestManagerImpl.documentsForContest.get(33l).size());
-        assertTrue("valid document removed", ContestManagerImpl.documentsForContest.get(33l).contains(7l));
+        assertEquals("number of documents", 1,
+                ContestManagerImpl.documentsForContest.get(33l).size());
+        assertTrue("valid document removed",
+                ContestManagerImpl.documentsForContest.get(33l).contains(7l));
     }
 
     /**
-     * Tests removeDocumentFromContest method when document is not presented in persistence. DocumentNotFoundException
-     * expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests removeDocumentFromContest method when document is not presented in
+     * persistence. DocumentNotFoundException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
-    public void testRemoveDocumentFromContestForMissedDocument() throws Exception {
+    public void testRemoveDocumentFromContestForMissedDocument()
+            throws Exception {
         target.createContest(newContestData(), 5);
         try {
             target.removeDocumentFromContest(newUploadedDocument());
@@ -550,14 +616,15 @@ public class StudioServiceBeanTest extends TestCase {
 
     /**
      * Tests getAllContestStatuses method for accuracy.
-     *
-     * @throws Exception when it occurs deeper
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testGetAllContestStatuses() throws Exception {
         List<ContestStatusData> statuses = target.getStatusList();
-    	assertEquals("Wrong number of statuses", 3, statuses.size());
+        assertEquals("Wrong number of statuses", 3, statuses.size());
 
-    	int i = 0;
+        int i = 0;
         for (ContestStatusData data : statuses) {
             assertEquals("category id", i, data.getStatusId());
             assertEquals("description", "desc" + i, data.getDescription());
@@ -568,13 +635,14 @@ public class StudioServiceBeanTest extends TestCase {
 
     /**
      * Tests retrieveSubmissionsForContest method for valid data.
-     *
-     * @throws Exception when it occurs deeper
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testRetrieveSubmissionsForContest() throws Exception {
         target.createContest(newContestData(), 5);
         Contest c = ContestManagerImpl.contests.get(33l);
-        //c.setContestId(33l);
+        // c.setContestId(33l);
 
         // add first submission
         Submission s = new Submission();
@@ -611,9 +679,11 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Tests retrieveSubmissionsForContest method for unknown contest id. ContestNotFoundException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests retrieveSubmissionsForContest method for unknown contest id.
+     * ContestNotFoundException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testRetrieveSubmissionsForMissedContest() throws Exception {
         setPrivateField("logName", "someName");
@@ -627,8 +697,9 @@ public class StudioServiceBeanTest extends TestCase {
 
     /**
      * Tests retrieveAllSubmissionsByMember method for valid data.
-     *
-     * @throws Exception when it occurs deeper
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testRetrieveAllSubmissionsByMember() throws Exception {
         setPrivateField("logName", "someName");
@@ -673,10 +744,12 @@ public class StudioServiceBeanTest extends TestCase {
 
     /**
      * Only admins can use this method. UserNotAuthorizedException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
-    public void testRetrieveAllSubmissionsByMemberForNotAdmin() throws Exception {
+    public void testRetrieveAllSubmissionsByMemberForNotAdmin()
+            throws Exception {
         MockSessionContext.isAdmin = false;
         try {
             target.retrieveAllSubmissionsByMember(3);
@@ -688,17 +761,21 @@ public class StudioServiceBeanTest extends TestCase {
 
     /**
      * Tests getSubmissionFileTypes method for accuracy.
-     *
-     * @throws Exception when it occurs deeper
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testSubmissionFileTypes() throws Exception {
-        assertEquals("file types", "ex0,ex1,ex2", target.getSubmissionFileTypes());
+        assertEquals("file types", "ex0,ex1,ex2", target
+                .getSubmissionFileTypes());
     }
 
     /**
-     * Tests getSubmissionFileTypes method internal error from ContestManager. PersistenceException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests getSubmissionFileTypes method internal error from ContestManager.
+     * PersistenceException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testSubmissionFileTypesForError() throws Exception {
         ContestManagerImpl.errorRequested = true;
@@ -712,8 +789,9 @@ public class StudioServiceBeanTest extends TestCase {
 
     /**
      * Tests updateSubmission method for accuracy.
-     *
-     * @throws Exception when it occurs deeper
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testUpdateSubmission() throws Exception {
         SubmissionData sd = new SubmissionData();
@@ -732,8 +810,9 @@ public class StudioServiceBeanTest extends TestCase {
 
     /**
      * Tests updateSubmission method for accuracy.
-     *
-     * @throws Exception when it occurs deeper
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testRemoveSubmission() throws Exception {
         target.removeSubmission(3);
@@ -741,9 +820,11 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Tests createContest method for null parameter. IllegalArgumentWSException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests createContest method for null parameter. IllegalArgumentWSException
+     * expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testCreateContestForNull() throws Exception {
         try {
@@ -755,9 +836,11 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Tests createContest method for negative parameter. IllegalArgumentWSException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests createContest method for negative parameter.
+     * IllegalArgumentWSException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testCreateContestForNegative() throws Exception {
         try {
@@ -769,9 +852,11 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Tests getContest method for negative parameter. IllegalArgumentWSException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests getContest method for negative parameter.
+     * IllegalArgumentWSException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testGetContestForNegative() throws Exception {
         try {
@@ -783,9 +868,11 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Tests getContestForProject method for negative parameter. IllegalArgumentWSException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests getContestForProject method for negative parameter.
+     * IllegalArgumentWSException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testGetContestsForProjectForNegative() throws Exception {
         try {
@@ -797,9 +884,11 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Tests updateContest method for null parameter. IllegalArgumentWSException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests updateContest method for null parameter. IllegalArgumentWSException
+     * expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testUpdateContestForNull() throws Exception {
         try {
@@ -811,9 +900,11 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Tests updateContestStatus method for negative first parameter. IllegalArgumentWSException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests updateContestStatus method for negative first parameter.
+     * IllegalArgumentWSException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testUpdateContestStatusForNegative1() throws Exception {
         try {
@@ -825,9 +916,11 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Tests updateContestStatus method for negative second parameter. IllegalArgumentWSException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests updateContestStatus method for negative second parameter.
+     * IllegalArgumentWSException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testUpdateContestStatusForNegative2() throws Exception {
         try {
@@ -839,9 +932,11 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Tests uploadDocumentForContest method for null parameter. IllegalArgumentWSException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests uploadDocumentForContest method for null parameter.
+     * IllegalArgumentWSException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testUploadDocumentForContestForNull() throws Exception {
         try {
@@ -853,9 +948,11 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Tests removeDocumentFromContest method for null parameter. IllegalArgumentWSException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests removeDocumentFromContest method for null parameter.
+     * IllegalArgumentWSException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testRemoveDocumentFromContestForNull() throws Exception {
         try {
@@ -867,9 +964,11 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Tests retrieveSubmissionsForContest method for negative parameter. IllegalArgumentWSException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests retrieveSubmissionsForContest method for negative parameter.
+     * IllegalArgumentWSException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testRetrieveSubmissionsForContestForNegative() throws Exception {
         try {
@@ -881,11 +980,14 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Tests retrieveAllSubmissionsByMember method for negative parameter. IllegalArgumentWSException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests retrieveAllSubmissionsByMember method for negative parameter.
+     * IllegalArgumentWSException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
-    public void testRetrieveAllSubmissionsByMemberForNegative() throws Exception {
+    public void testRetrieveAllSubmissionsByMemberForNegative()
+            throws Exception {
         try {
             target.retrieveAllSubmissionsByMember(-15);
             fail("IllegalArgumentWSException expected.");
@@ -895,9 +997,11 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Tests updateSubmission method for null parameter. IllegalArgumentWSException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests updateSubmission method for null parameter.
+     * IllegalArgumentWSException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testUpdateSubmissionForNull() throws Exception {
         try {
@@ -909,9 +1013,11 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Tests removeSubmission method for negative parameter. IllegalArgumentWSException expected.
-     *
-     * @throws Exception when it occurs deeper
+     * Tests removeSubmission method for negative parameter.
+     * IllegalArgumentWSException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     public void testRemoveSubmissionForNegative() throws Exception {
         try {
@@ -923,13 +1029,193 @@ public class StudioServiceBeanTest extends TestCase {
     }
 
     /**
-     * Used to set contents of private field in tested bean (inject resources).
-     *
-     * @param fieldName name of the field to set
-     * @param value     value to set in the field
-     * @throws Exception when it occurs deeper
+     * Tests getAllContests with admin user.
+     * 
+     * @throws Exception
+     *             Exception to JUnit.
      */
-    public void setPrivateField(String fieldName, Object value) throws Exception {
+    public void testGetAllContests_Admin() throws Exception {
+        MockSessionContext.isAdmin = true;
+
+        // ContestManager will return clientId 33 when contestId <= 555 or
+        // contestId >= 666
+        // Otherwise, it returns the passed clientId.
+
+        // ClientId = 556
+        ContestData contestData1 = newContestData();
+        contestData1.setContestId(556);
+        target.createContest(contestData1, 1);
+
+        // ClientId = 557
+        ContestData contestData2 = newContestData();
+        contestData2.setContestId(557);
+        target.createContest(contestData2, 1);
+
+        // ClientId = 33
+        ContestData contestData3 = newContestData();
+        contestData3.setContestId(3);
+        target.createContest(contestData3, 2);
+
+        // ClientId = 33
+        ContestData contestData4 = newContestData();
+        contestData4.setContestId(4);
+        target.createContest(contestData4, 2);
+
+        List<ContestData> allContests = target.getAllContests();
+        assertEquals("Contests count is incorrect", 4, allContests.size());
+    }
+
+    /**
+     * Tests getAllContests with non-admin user.
+     * 
+     * @throws Exception
+     *             Exception to JUnit.
+     */
+    public void testGetAllContests_NonAdmin1() throws Exception {
+        MockSessionContext.isAdmin = false;
+
+        // ContestManager will return clientId 33 when contestId <= 555 or
+        // contestId >= 666
+        // Otherwise, it returns the passed clientId.
+
+        // ClientId = 556
+        ContestData contestData1 = newContestData();
+        contestData1.setContestId(556);
+        target.createContest(contestData1, 1);
+
+        // ClientId = 557
+        ContestData contestData2 = newContestData();
+        contestData2.setContestId(557);
+        target.createContest(contestData2, 1);
+
+        // ClientId = 33
+        ContestData contestData3 = newContestData();
+        contestData3.setContestId(3);
+        target.createContest(contestData3, 2);
+
+        // ClientId = 33
+        ContestData contestData4 = newContestData();
+        contestData4.setContestId(4);
+        target.createContest(contestData4, 2);
+
+        List<ContestData> allContests = target.getAllContests();
+        assertEquals("Contests count is incorrect", 2, allContests.size());
+    }
+
+    /**
+     * Tests getAllContests with non-admin user.
+     * 
+     * @throws Exception
+     *             Exception to JUnit.
+     */
+    public void testGetAllContests_NonAdmin2() throws Exception {
+        MockSessionContext.isAdmin = false;
+
+        // ContestManager will return clientId 33 when contestId <= 555 or
+        // contestId >= 666
+        // Otherwise, it returns the passed clientId.
+
+        // ClientId = 556
+        ContestData contestData1 = newContestData();
+        contestData1.setContestId(556);
+        target.createContest(contestData1, 1);
+
+        // ClientId = 557
+        ContestData contestData2 = newContestData();
+        contestData2.setContestId(557);
+        target.createContest(contestData2, 1);
+
+        // ClientId = 558
+        ContestData contestData3 = newContestData();
+        contestData3.setContestId(558);
+        target.createContest(contestData3, 2);
+
+        List<ContestData> allContests = target.getAllContests();
+        assertEquals("Contests count is incorrect", 0, allContests.size());
+    }
+
+    /**
+     * Tests getContestsForClient method.
+     * 
+     * @throws Exception
+     *             Exception to JUnit.
+     */
+    public void testGetContestsForClient1() throws Exception {
+        // ContestManager will return clientId 33 when contestId <= 555 or
+        // contestId >= 666
+        // Otherwise, it returns the passed clientId.
+
+        // ClientId = 556
+        ContestData contestData1 = newContestData();
+        contestData1.setContestId(556);
+        target.createContest(contestData1, 1);
+
+        // ClientId = 557
+        ContestData contestData2 = newContestData();
+        contestData2.setContestId(557);
+        target.createContest(contestData2, 1);
+
+        // ClientId = 33
+        ContestData contestData3 = newContestData();
+        contestData3.setContestId(3);
+        target.createContest(contestData3, 2);
+
+        // ClientId = 33
+        ContestData contestData4 = newContestData();
+        contestData4.setContestId(4);
+        target.createContest(contestData4, 2);
+
+        List<ContestData> contestsForClient = target.getContestsForClient(33);
+        assertEquals("Contests count is incorrect", 2, contestsForClient.size());
+    }
+
+    /**
+     * Tests getContestsForClient method.
+     * 
+     * @throws Exception
+     *             Exception to JUnit.
+     */
+    public void testGetContestsForClient2() throws Exception {
+        // ContestManager will return clientId 33 when contestId <= 555 or
+        // contestId >= 666
+        // Otherwise, it returns the passed clientId.
+
+        // ClientId = 556
+        ContestData contestData1 = newContestData();
+        contestData1.setContestId(556);
+        target.createContest(contestData1, 1);
+
+        // ClientId = 557
+        ContestData contestData2 = newContestData();
+        contestData2.setContestId(557);
+        target.createContest(contestData2, 1);
+
+        // ClientId = 33
+        ContestData contestData3 = newContestData();
+        contestData3.setContestId(3);
+        target.createContest(contestData3, 2);
+
+        // ClientId = 33
+        ContestData contestData4 = newContestData();
+        contestData4.setContestId(4);
+        target.createContest(contestData4, 2);
+
+        List<ContestData> contestsForClient = target.getContestsForClient(44);
+        assertEquals("Contests count is incorrect", 0, contestsForClient.size());
+    }
+
+    /**
+     * Used to set contents of private field in tested bean (inject resources).
+     * 
+     * @param fieldName
+     *            name of the field to set
+     * @param value
+     *            value to set in the field
+     * @throws Exception
+     *             when it occurs deeper
+     */
+    public void setPrivateField(String fieldName, Object value)
+            throws Exception {
         Field f = StudioServiceBean.class.getDeclaredField(fieldName);
         f.setAccessible(true);
         f.set(target, value);
@@ -937,7 +1223,7 @@ public class StudioServiceBeanTest extends TestCase {
 
     /**
      * Creates ContestData instance with some parameters set to default values.
-     *
+     * 
      * @return created ContestData object
      */
     private ContestData newContestData() {
@@ -951,7 +1237,7 @@ public class StudioServiceBeanTest extends TestCase {
 
     /**
      * Creates new UploadedDocument object with default content.
-     *
+     * 
      * @return created UploadedDocument instance
      */
     private UploadedDocument newUploadedDocument() {
@@ -971,8 +1257,9 @@ public class StudioServiceBeanTest extends TestCase {
 
     /**
      * Creates new Prize object with specified amount and unique id.
-     *
-     * @param amount amount parameter of new Prize
+     * 
+     * @param amount
+     *            amount parameter of new Prize
      * @return created Prize object
      */
     private Prize newPrize(double amount) {
@@ -982,15 +1269,47 @@ public class StudioServiceBeanTest extends TestCase {
         return p;
     }
 
-
     /**
      * Simple routine to call private method init through reflection api.
-     *
-     * @throws Exception when it occurs deeper
+     * 
+     * @throws Exception
+     *             when it occurs deeper
      */
     private void callInit() throws Exception {
         Method m = target.getClass().getDeclaredMethod("init");
         m.setAccessible(true);
         m.invoke(target);
+    }
+
+    /**
+     * Tests uploadDocument method for valid data.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
+     */
+    public void testUploadDocument() throws Exception {
+        UploadedDocument doc = target.uploadDocument(newUploadedDocument());
+        assertNotNull("uploadDocument fails.", ContestManagerImpl.documents
+                .get(doc.getDocumentId()));
+    }
+
+    /**
+     * Tests addDocumentToContest method for valid data.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
+     */
+    public void testAddDocumentToContest() throws Exception {
+        // prepare data for test
+        ContestData cd = newContestData();
+        target.createContest(cd, 5);
+        
+        UploadedDocument doc = target.uploadDocument(newUploadedDocument());
+        assertNotNull("uploadDocument fails.", ContestManagerImpl.documents
+                .get(doc.getDocumentId()));
+        
+        target.addDocumentToContest(doc.getDocumentId(), cd.getContestId());
+        assertEquals("number of documents", 1,
+                ContestManagerImpl.documentsForContest.get(33l).size());
     }
 }

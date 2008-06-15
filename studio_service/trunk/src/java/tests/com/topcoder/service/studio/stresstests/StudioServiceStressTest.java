@@ -44,9 +44,6 @@ public class StudioServiceStressTest extends TestCase {
             // Create the competition and set its values
             ContestData contestData = new ContestData();
             contestData.setContestId(20);
-            contestData.setContestDescriptionAndRequirements("The requirements are...");
-            contestData.setContestCategoryId(20);
-            contestData.setCreatorUserId(30);
 
             // Create the upload documentation
             List<UploadedDocument> documentationUpload = new ArrayList<UploadedDocument>();
@@ -58,15 +55,12 @@ public class StudioServiceStressTest extends TestCase {
             documentationUpload.add(document);
 
             // add the design distribution documentation to competition
-            contestData.setDocumentationUploads(documentationUpload);
 
             // create the timestamp with the current date
             GregorianCalendar cal = new GregorianCalendar();
             // create the XMLGregorianCalendar
             XMLGregorianCalendar xmlCal = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
-            contestData.setLaunchDateAndTime(xmlCal);
             contestData.setName("Kink DAO studio design");
-            contestData.setOtherRequirementsOrRestrictions("nothing");
 
             // create the competition associated with a tc project
             studioService.createContest(contestData, 40);
@@ -79,7 +73,6 @@ public class StudioServiceStressTest extends TestCase {
             // get the file types
             studioService.getSubmissionFileTypes();
             // remove the previous created document from the related competition
-            studioService.removeDocumentFromContest(document);
         }
 
         long cost = System.currentTimeMillis() - start;

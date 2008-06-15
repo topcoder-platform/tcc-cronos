@@ -9,7 +9,6 @@ import javax.ejb.Remote;
 
 import com.topcoder.search.builder.filter.Filter;
 
-
 /**
  * <p>
  * This is service interface which defines operations available for client. It
@@ -33,7 +32,7 @@ import com.topcoder.search.builder.filter.Filter;
  * @author fabrizyo, TCSDEVELOPER
  * @version 1.0
  */
-//@WebService
+// @WebService
 @Remote
 public interface StudioService {
     /**
@@ -159,6 +158,42 @@ public interface StudioService {
 
     /**
      * <p>
+     * Upload document. Return document populated with id.
+     * 
+     * @param uploadedDocument
+     *            the uploadDocument to update
+     * @return the same instance passed in argument with the documentId updated
+     * @throws IllegalArgumentWSException
+     *             if the argument is null
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     * @throws UserNotAuthorizedException
+     *             if the user is not authorized to perform this method
+     */
+    public UploadedDocument uploadDocument(UploadedDocument data)
+            throws PersistenceException;
+
+    /**
+     * <p>
+     * Links a document to a contest.
+     * 
+     * @param documentId
+     *            document id, which document will be linked.
+     * @param contestId
+     *            cpntest id, which contest will be linked.
+     * @throws IllegalArgumentWSException
+     *             if any id is less than 0
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     * @throws UserNotAuthorizedException
+     *             if the user is not authorized to perform this method
+     * @throws ContestNotFoundException
+     *             if the contest or document is not found.
+     */
+    public void addDocumentToContest(long documentId, long contestId) throws PersistenceException, ContestNotFoundException;
+
+    /**
+     * <p>
      * Remove document from contest.
      * 
      * @param document
@@ -279,8 +314,8 @@ public interface StudioService {
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
-	public List<ContestData> getAllContests() throws PersistenceException;
-	
+    public List<ContestData> getAllContests() throws PersistenceException;
+
     /**
      * <p>
      * This is going to get all the matching contest entities that fulfill the
@@ -325,6 +360,7 @@ public interface StudioService {
      */
     public SubmissionData retrieveSubmission(long submissionId)
             throws PersistenceException;
+
     /**
      * <p>
      * This is going to fetch all the currently available contest types.
@@ -335,5 +371,6 @@ public interface StudioService {
      * @throws PersistenceException
      *             if any error occurs when getting contest.
      */
-    public List<ContestTypeData> getAllContestTypes() throws PersistenceException;
+    public List<ContestTypeData> getAllContestTypes()
+            throws PersistenceException;
 }

@@ -59,31 +59,24 @@ public class Demo extends TestCase {
 
         //Create the competition and set its values
         ContestData contestData = new ContestData();
+        contestData.setName("contestName");
         contestData.setContestId(20);
-        contestData.setContestDescriptionAndRequirements("The requirements are...");
-        contestData.setContestCategoryId(20);
-        contestData.setCreatorUserId(30);
 
         //Create the upload documentation
         List<UploadedDocument> documentationUpload = new ArrayList<UploadedDocument>();
         UploadedDocument document = new UploadedDocument();
         document.setContestId(20);
         document.setDescription("Design Studio Distribution for Kink DAO");
-        document.setDocumentId(40);
         document.setFile("designDistribution".getBytes());
         documentationUpload.add(document);
 
         //add the design distribution documentation to competition
-        contestData.setDocumentationUploads(documentationUpload);
 
         //launch the competition now
         // create the timestamp with the current date
         GregorianCalendar cal = new GregorianCalendar();
         // create the XMLGregorianCalendar
         XMLGregorianCalendar xmlCal = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
-        contestData.setLaunchDateAndTime(xmlCal);
-        contestData.setName("Kink DAO studio design");
-        contestData.setOtherRequirementsOrRestrictions("nothing");
 
         //create the competition associated with a tc project
         studioService.createContest(contestData, 40);
@@ -103,7 +96,6 @@ public class Demo extends TestCase {
         //it now contains "pdf","rtf","jpg","png",etc... separated by commas
 
         //remove the previous created document from the related competition
-        studioService.removeDocumentFromContest(document);
         //the design distribution is removed now
     }
 }

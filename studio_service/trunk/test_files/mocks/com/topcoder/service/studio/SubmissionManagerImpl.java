@@ -1,6 +1,8 @@
+/*
+ * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ */
 package com.topcoder.service.studio;
 
-import com.topcoder.service.studio.submission.SubmissionManager;
 import com.topcoder.service.studio.submission.Submission;
 import com.topcoder.service.studio.submission.SubmissionManagementException;
 import com.topcoder.service.studio.submission.Prize;
@@ -10,19 +12,16 @@ import com.topcoder.service.studio.submission.SubmissionManagerRemote;
 import com.topcoder.service.studio.submission.EntityNotFoundException;
 import com.topcoder.service.studio.submission.EntityExistsException;
 import com.topcoder.service.studio.submission.PaymentStatus;
-
-import javax.ejb.Stateless;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * This is mock submission manager implementation.
+ *
+ * @author superZZ
+ * @version 1.0
+ */
 public class SubmissionManagerImpl implements SubmissionManagerRemote {
-    //public static Map<Long, Submission> submissions;
     public static List<Submission> submissions;
 
 
