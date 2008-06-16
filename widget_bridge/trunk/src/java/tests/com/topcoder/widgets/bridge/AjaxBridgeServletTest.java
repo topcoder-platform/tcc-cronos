@@ -15,7 +15,6 @@ import com.topcoder.json.object.JSONArray;
 import com.topcoder.json.object.JSONInvalidKeyException;
 import com.topcoder.json.object.JSONObject;
 import com.topcoder.service.project.ProjectData;
-import com.topcoder.service.studio.ContestCategoryData;
 import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.SubmissionData;
 
@@ -96,6 +95,31 @@ public class AjaxBridgeServletTest extends TestCase {
         response = null;
     }
 
+
+    /**
+     * <p>
+     * Tests successful execution of Studio - uploadDocument  .
+     * </p>
+     *
+     * @throws Exception wraps all exception
+     */
+    public void testStudioUploadDocumentSuccess () throws Exception {
+        
+        // initialize the servlet
+        initializeValidAjaxBridgeServlet();
+        // set invalid service
+        request.setParameter("service", "studio");
+        request.setParameter("method", "uploadDocument");
+        request.setMethod("post");
+        request.setContentType("multipart/form-data");
+        
+        // set the project
+        // call doPost
+        ajaxServlet.doPost(request, response);
+
+        checkVoidSuccessResponse();
+    }
+    
     /**
      * <p>
      * Tests the Constructor.
@@ -892,7 +916,6 @@ public class AjaxBridgeServletTest extends TestCase {
         assertNotNull("The 'json' parameter should not be null", jsonContest);
         ContestData contest = TestHelper.getContestFromJSON(jsonContest);
         assertNotNull("The 'contest' should not be null", contest);
-
     }
 
     /**
@@ -1575,33 +1598,6 @@ public class AjaxBridgeServletTest extends TestCase {
 
     /**
      * <p>
-     * Tests successful execution of Studio - getContestCategories.
-     * </p>
-     *
-     * @throws Exception wraps all exception
-     */
-    public void testStudioGetContestCategoriesSuccess() throws Exception {
-        // initialize the servlet
-        initializeValidAjaxBridgeServlet();
-        // set invalid service
-        request.setParameter("service", "studio");
-        request.setParameter("method", "getContestCategories");
-        // set the user ID
-        request.setParameter("parameters", TestHelper.getParametersJSONStringValid());
-        // call doPost
-        ajaxServlet.doPost(request, response);
-        // get response as Array
-        JSONArray jsonContestCategory = checkValidJSONArraySuccessResponse();
-        assertNotNull("The 'json' parameter should not be null", jsonContestCategory);
-        Object[] object = jsonContestCategory.getObjects();
-        for (int i = 0; i < object.length; i++) {
-            ContestCategoryData category = TestHelper.getContestCategoryFromJSON((JSONObject) object[i]);
-            assertNotNull("The 'category' should not be null", category);
-        }
-    }
-
-    /**
-     * <p>
      * Tests failed execution of Studio - getContestCategories.
      * </p>
      *
@@ -1661,6 +1657,92 @@ public class AjaxBridgeServletTest extends TestCase {
         assertNotNull("The 'json' parameter should not be null", jsonContestStatuses);
     }
 
+    /**
+     * <p>
+     * Tests successful execution of Studio - addDocumentToContest .
+     * </p>
+     *
+     * @throws Exception wraps all exception
+     */
+    public void testStudioAddDocumentToContestSuccess () throws Exception {
+        // initialize the servlet
+        initializeValidAjaxBridgeServlet();
+        // set invalid service
+        request.setParameter("service", "studio");
+        request.setParameter("method", "addDocumentToContest");
+        // set the project
+        request.setParameter("documentId", "1");
+        request.setParameter("contestId", "2");
+        // call doPost
+        ajaxServlet.doPost(request, response);
+        checkVoidSuccessResponse();
+    }
+
+    /**
+     * <p>
+     * Tests successful execution of Studio - addDocumentToContest .
+     * </p>
+     *
+     * @throws Exception wraps all exception
+     */
+    public void testStudioAddDocumentToContestFail1 () throws Exception {
+        // initialize the servlet
+        initializeValidAjaxBridgeServlet();
+        // set invalid service
+        request.setParameter("service", "studio");
+        request.setParameter("method", "addDocumentToContest");
+        // set the project
+        request.setParameter("documentId", "-1");
+        request.setParameter("contestId", "2");
+        // call doPost
+        ajaxServlet.doPost(request, response);
+        // check if error response is valid
+        checkValidErrorResponse();
+    }
+
+    /**
+     * <p>
+     * Tests successful execution of Studio - addDocumentToContest .
+     * </p>
+     *
+     * @throws Exception wraps all exception
+     */
+    public void testStudioAddDocumentToContestFail2 () throws Exception {
+        // initialize the servlet
+        initializeValidAjaxBridgeServlet();
+        // set invalid service
+        request.setParameter("service", "studio");
+        request.setParameter("method", "addDocumentToContest");
+        // set the project
+        request.setParameter("documentId", "1");
+        request.setParameter("contestId", "-2");
+        // call doPost
+        ajaxServlet.doPost(request, response);
+        // check if error response is valid
+        checkValidErrorResponse();
+    }
+
+    /**
+     * <p>
+     * Tests successful execution of Studio - uploadDocument  .
+     * </p>
+     *
+     * @throws Exception wraps all exception
+     */
+    public void testStudioUploadDocumentFail () throws Exception {
+        // initialize the servlet
+        initializeValidAjaxBridgeServlet();
+        // set invalid service
+        request.setParameter("service", "studio");
+        request.setParameter("method", "uploadDocument");
+        // set the project
+        // call doPost
+        ajaxServlet.doPost(request, response);
+
+        // check if error response is valid
+        checkValidErrorResponse();
+    }
+    
     /**
      * <p>
      * Tests successful execution of Prerequisite - getAllPrerequisiteDocuments.

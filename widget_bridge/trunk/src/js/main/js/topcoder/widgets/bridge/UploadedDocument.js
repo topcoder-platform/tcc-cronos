@@ -82,6 +82,16 @@ js.topcoder.widgets.bridge.UploadedDocument = function (/* JSON Object */ json) 
     var description /* String */  = null;
 
 	/**
+	 * <p>Represents the documentTypeId</p>
+	 * <p>Initial Value: -1, means that is not set</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 * <p>Valid Values: can be -1, can be greater or equal to 0</p>
+	 */
+    var documentTypeID /* long */  = -1;
+    
+	/**
 	 * <p>Construct the js object with the json object.
 	 * Set json's properties to the corresponding properties of this js object.
 	 *
@@ -105,6 +115,12 @@ js.topcoder.widgets.bridge.UploadedDocument = function (/* JSON Object */ json) 
 			that.contestID = json.contestID;
 		} else {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.contestID","json.contestID does not exist");
+		}			
+		// set the contest id
+		if (typeof(json.documentTypeID) != "undefined" && typeof(json.documentTypeID) == "number") {		
+			that.documentTypeID = json.documentTypeID;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.documentTypeID","json.documentTypeID does not exist");
 		}			
 		// set the description
 		if (typeof(json.description) != "undefined" && typeof(json.description) == "string") {		
@@ -169,6 +185,20 @@ js.topcoder.widgets.bridge.UploadedDocument = function (/* JSON Object */ json) 
     }
 
     /**
+     * <p>Returns the documentTypeID.</p>
+     */
+    this.getdocumentTypeID = function /* long */ () {
+        return that.documentTypeID;
+    }
+
+    /**
+     * <p>Sets the documentTypeID.</p>
+     */
+    this.setdocumentTypeID = function /* void */ (/* long */ documentTypeID) {
+        that.documentTypeID = documentTypeID;
+    }
+
+    /**
      * <p>Returns the fileName.</p>
      */
     this.getFileName = function /* String */ () {
@@ -204,11 +234,11 @@ js.topcoder.widgets.bridge.UploadedDocument = function (/* JSON Object */ json) 
 	 * NOTE: the string-value needs to be enclosed by double-quotes according to JSON format.  Properties with null
 	 * value should also be added to the generated json string with null value. 
 	 *
-	 * {"fileName" : $fileName,"documentID" : $documentID,"contestID" : $contestID,"description" : "$description"}
+	 * {"fileName" : $fileName,"documentID" : $documentID,"contestID" : $contestID,"documentTypeID" : $documentTypeID,"description" : "$description"}
 	 */
 	this.toJSON = function /* String */ () {
 		return "{\"fileName\" : \""+that.getFileName()+"\",\"path\" :\""+that.getPath()+"\",\"documentID\" : "+that.getDocumentID()+
-			",\"contestID\" : "+that.getContestID()+", \"description\" : \""+that.getDescription()+"\"}";
+			",\"contestID\" : "+that.getContestID()+",\"documentTypeID\" : "+that.getdocumentTypeID()+", \"description\" : \""+that.getDescription()+"\"}";
 	}
 
 } // end

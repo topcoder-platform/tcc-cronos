@@ -25,7 +25,6 @@ import com.topcoder.json.object.io.JSONDecodingException;
 import com.topcoder.json.object.io.StandardJSONDecoder;
 import com.topcoder.service.project.Project;
 import com.topcoder.service.project.ProjectData;
-import com.topcoder.service.studio.ContestCategoryData;
 import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.ContestPayload;
 import com.topcoder.service.studio.PrizeData;
@@ -462,7 +461,7 @@ public final class TestHelper {
         contest.setOtherFileFormats(jsonContest.getString("finalFileFormatOther"));
         // It needs to be fixed to add a contest status id in ContestData class
         // contest.setStatusId(jsonContest.getLong("statusID"));
-        contest.setContestCategoryId(jsonContest.getLong("contestCategoryID"));
+        contest.setContestTypeId(jsonContest.getLong("contestTypeID"));
         contest.setContestDescriptionAndRequirements(jsonContest.getString("contestDescriptionAndRequirements"));
         contest.setRequiredOrRestrictedColors(jsonContest.getString("requiredOrRestrictedColors"));
         contest.setRequiredOrRestrictedFonts(jsonContest.getString("requiredOrRestrictedFonts"));
@@ -638,25 +637,6 @@ public final class TestHelper {
 
     /**
      * <p>
-     * Convenience method in getting a Contest Category from a JSON Object.
-     * </p>
-     * 
-     * @param jsonCategory the JSON Contest Category object where the values will be coming from
-     * @return the contest category object created from this json category object
-     */
-    public static ContestCategoryData getContestCategoryFromJSON(JSONObject jsonCategory) {
-        // initialize the Contest Category using JSON object
-        ContestCategoryData category = new ContestCategoryData();
-        category.setContestCategory(jsonCategory.getString("contestCategory"));
-        category.setContestDescription(jsonCategory.getString("contestDescription"));
-        category.setContestName(jsonCategory.getString("contestName"));
-        category.setContestCategoryId(jsonCategory.getLong("contestCategoryID"));
-
-        return category;
-    }
-
-    /**
-     * <p>
      * Reads the contents of an input stream into a byte[].
      * </p>
      * 
@@ -704,18 +684,6 @@ public final class TestHelper {
         }
 
         return sb.toString();
-    }
-
-    /**
-     * <p>
-     * Split a string into string array by ",". It is a reverse function of above.
-     * </p>
-     * 
-     * @param string to be split
-     * @return array of strings
-     */
-    private static String[] splitString(String string) {
-        return (string == null || string.trim().length() == 0) ? new String[] {} : string.split(",");
     }
 
     /**

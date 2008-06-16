@@ -1057,5 +1057,135 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	     });
 	}
 	
+
+
+	/**
+	 * <p>
+	 * Links a document to a contest asynchronously.
+	 * onSuccess callback function will be called, otherwise onError will be called.</p>
+	 *
+	 * @throws IllegalArgumentException if any argument is null
+	 * @throws InvalidResponseException if the received response is invalid.
+	 */
+	this.addDocumentToContest = addDocumentToContest;
+	function /* void */ addDocumentToContest(/* Document Id */ documentId, /* Contest Id */ contestId, /* VoidHandler */ onSuccess, /* ErrorHandler */ onError ) {
+		// check first the validity of parameters
+		if (documentId == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.documentId","documentId should not be null");
+		}
+		if (contestId == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.contestId","contestId should not be null");
+		}
+		// check onSuccess
+		if (onSuccess == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onSuccess","onSuccess callback should not be null");
+		}
+		// check onError
+		if (onError == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onError","onError callback should not be null");
+		}
+		// Create AJAXProcessor object
+		var processor = new AJAXProcessor();
+		// Send a request asynchronously
+		processor.request({
+	    	url:  servletUrlString,
+	    	async: true,
+	     	method: "POST",
+	     	// the json string should be escaped properly here. 
+	     	sendingText: "service=studio&method=addDocumentToContest&documentId=" + documentId + "&contestId=" + contestId,
+	     	onStateChange: function() {
+	        	// Handle the response
+	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
+	            	var response = processor.getResponseText();
+	                var jsonResp = eval("(" + response + ")");
+	                // check response
+	                if (jsonResp == null) {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","addDocumentToContest","Invalid response");
+	                }
+	                if (typeof(jsonResp.success) == "undefined") {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","addDocumentToContest","Invalid response");
+	                }	                
+	                // now check if valid or not
+	                if (jsonResp.success == false) {
+		                if (typeof(jsonResp.error) == "undefined") {
+		                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","addDocumentToContest","Invalid response");
+		                }	                
+	                	// errors
+	                	// call error handler with error message
+	                	onError(jsonResp.error);
+	                } else {
+	                	// success
+	                	// call the success callback 
+	                	onSuccess();
+	                }
+	           }
+	     	}
+	     });
+	}
+
+
+	/**
+	 * <p>
+	 * Uploads document asynchronously, if the document is updated successfully,
+	 * onSuccess callback function will be called with the updated document, otherwise onError will be called.</p>
+	 *
+	 * @throws IllegalArgumentException if any argument is null
+	 * @throws InvalidResponseException if the received response is invalid.
+	 */
+	this.uploadDocument = uploadDocument;
+	function /* void */ uploadDocument(/* UploadedDocument */ uploadedDocument, /* DocumentHandler */ onSuccess, /* ErrorHandler */ onError ) {
+		// check first the validity of parameters
+		// check data
+		if (uploadedDocument == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.uploadedDocument","uploadedDocument should not be null");
+		}
+		// check onSuccess
+		if (onSuccess == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onSuccess","onSuccess callback should not be null");
+		}
+		// check onError
+		if (onError == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onError","onError callback should not be null");
+		}
+		// Create AJAXProcessor object
+		var processor = new AJAXProcessor();
+		// Send a request asynchronously
+		processor.request({
+	    	url:  servletUrlString,
+	    	async: true,
+	     	method: "POST",
+	     	// the json string should be escaped properly here. 
+	     	sendingText: "service=studio&method=uploadDocument&document="+ escape(uploadedDocument.toJSON()),
+	     	onStateChange: function() {
+	        	// Handle the response
+	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
+	            	var response = processor.getResponseText();
+	                var jsonResp = eval("(" + response + ")");
+	                // check response
+	                if (jsonResp == null) {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","uploadDocument","Invalid response");
+	                }
+	                if (typeof(jsonResp.success) == "undefined") {
+		               	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","uploadDocument","Invalid response");
+		            }	                
+	                // now check if valid or not
+	                if (jsonResp.success == false) {
+		                if (typeof(jsonResp.error) == "undefined") {
+			               	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","uploadDocument","Invalid response");
+			            }	                
+	                	// errors
+	                	// call error handler with error message
+	                	onError(jsonResp.error);
+	                } else {
+	                	// success
+	                	// create a document
+	                	var retDocument = new js.topcoder.widgets.bridge.UploadedDocument(jsonResp.json);
+	                	// call the success callback passing the contest
+	                	onSuccess(retDocument);
+	                }
+	           }
+	     	}
+	     });
+	}
 	
 } // end

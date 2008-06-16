@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.service.studio.ContestCategoryData;
 import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.ContestNotFoundException;
 import com.topcoder.service.studio.ContestPayload;
@@ -291,34 +290,6 @@ public class MockStudioService implements StudioService {
 
     /**
      * <p>
-     * Gets contest categories. Mock implementation.
-     * </p>
-     *
-     * @return the list of categories
-     * @throws PersistenceException if some persistence errors occur
-     * @throws UserNotAuthorizedException if the user is not authorized to perform this method
-     */
-    public List<ContestCategoryData> getContestCategories() throws PersistenceException {
-        ContestCategoryData category1 = new ContestCategoryData();
-        category1.setContestCategory("Category Cont1");
-        category1.setContestCategoryId(111);
-        category1.setContestDescription("Description");
-        category1.setContestName("Contest Name1");
-
-        ContestCategoryData category2 = new ContestCategoryData();
-        category2.setContestCategory("Category Cont2");
-        category2.setContestCategoryId(111222);
-        category2.setContestDescription("Decription2");
-        category2.setContestName("Contest Name2");
-
-        List<ContestCategoryData> categories = new ArrayList<ContestCategoryData>();
-        categories.add(category1);
-        categories.add(category2);
-        return categories;
-    }
-
-    /**
-     * <p>
      * Get contest statuses. Return an empty list if there are no ContestStatusData.
      * </p>
      *
@@ -453,7 +424,7 @@ public class MockStudioService implements StudioService {
         contest.setFinalFileFormat("bmp,png");
         contest.setOtherFileFormats("jpg,gif");
         // contest.setStatusId(1);
-        contest.setContestCategoryId(2);
+        contest.setContestTypeId(2);
         contest.setContestDescriptionAndRequirements("contest reqs");
         contest.setRequiredOrRestrictedColors("Red");
         contest.setRequiredOrRestrictedFonts("Arial");
@@ -625,5 +596,24 @@ public class MockStudioService implements StudioService {
             throw new IllegalArgumentWSException(name + " should not be less than 0.", name
                 + " should not be less than 0.");
         }
+    }
+
+    /* (non-Javadoc)
+     * @see com.topcoder.service.studio.StudioService#addDocumentToContest(long, long)
+     */
+    public void addDocumentToContest(long documentId, long contestId)
+            throws PersistenceException, ContestNotFoundException {
+        if ( documentId==555)
+        {
+            throw new IllegalArgumentException("Expected exception.");
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.topcoder.service.studio.StudioService#uploadDocument(com.topcoder.service.studio.UploadedDocument)
+     */
+    public UploadedDocument uploadDocument(UploadedDocument data)
+            throws PersistenceException {
+        return data;
     }
 }

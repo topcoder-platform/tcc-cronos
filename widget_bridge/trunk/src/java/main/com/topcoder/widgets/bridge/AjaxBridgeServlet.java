@@ -60,15 +60,18 @@ import com.topcoder.util.objectfactory.impl.ConfigurationObjectSpecificationFact
 
 /**
  * <p>
- * This class extends the HttpServlet class, and it will decode AJAXrequests from the JavaScript part into parameters
- * used to call API methods in the Prerequisite/Project/Studio services, which will in turn make calls to service
- * servers. They can be EJB clients to make calls. Returned values should be encoded into the AJAX response.
+ * This class extends the HttpServlet class, and it will decode AJAXrequests
+ * from the JavaScript part into parameters used to call API methods in the
+ * Prerequisite/Project/Studio services, which will in turn make calls to
+ * service servers. They can be EJB clients to make calls. Returned values
+ * should be encoded into the AJAX response.
  * </p>
  * <p>
- * <b>Thread-safety:</b> Mutable and not thread-safe. But as its mutable variables are all initialized in the init
- * method and would never change afterwards. So this class can be used thread-safely by the container.
+ * <b>Thread-safety:</b> Mutable and not thread-safe. But as its mutable
+ * variables are all initialized in the init method and would never change
+ * afterwards. So this class can be used thread-safely by the container.
  * </p>
- *
+ * 
  * @author StandLove,pinoydream
  * @author TCSDEVELOPER
  * @version 1.0
@@ -97,57 +100,64 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
-     * Represents the JSONEncoder to encoder the json object into string. Initialized in init method, and never changed
-     * afterwards. Must be non-null after initialized. Used in doPost method.
+     * Represents the JSONEncoder to encoder the json object into string.
+     * Initialized in init method, and never changed afterwards. Must be
+     * non-null after initialized. Used in doPost method.
      * </p>
      */
     private JSONEncoder jsonEncoder;
 
     /**
      * <p>
-     * Represents the JSONDecoder to decode string into json object. Initialized in init method, and never changed
-     * afterwards. Must be non-null after initialized. Used in doPost method.
+     * Represents the JSONDecoder to decode string into json object. Initialized
+     * in init method, and never changed afterwards. Must be non-null after
+     * initialized. Used in doPost method.
      * </p>
      */
     private JSONDecoder jsonDecoder;
 
     /**
      * <p>
-     * Represents the client to access Project Service. Initialized in init method, and never changed afterwards. Must
-     * be non-null after initialized. Used in doPost method.
+     * Represents the client to access Project Service. Initialized in init
+     * method, and never changed afterwards. Must be non-null after initialized.
+     * Used in doPost method.
      * </p>
      */
     private ProjectService projectService;
 
     /**
      * <p>
-     * Represents the client to access Prerequisite Service. Initialized in init method, and never changed afterwards.
-     * Must be non-null after initialized. Used in doPost method.
+     * Represents the client to access Prerequisite Service. Initialized in init
+     * method, and never changed afterwards. Must be non-null after initialized.
+     * Used in doPost method.
      * </p>
      */
     private PrerequisiteService prerequisiteService;
 
     /**
      * <p>
-     * Represents the client to access Studio Service. Initialized in init method, and never changed afterwards. Must be
-     * non-null after initialized. Used in doPost method.
+     * Represents the client to access Studio Service. Initialized in init
+     * method, and never changed afterwards. Must be non-null after initialized.
+     * Used in doPost method.
      * </p>
      */
     private StudioService studioService;
 
     /**
      * <p>
-     * Represents the logger to do the logging. Initialized in init method, and never changed afterwards. Must be
-     * non-null after initialized. Used in doPost method.
+     * Represents the logger to do the logging. Initialized in init method, and
+     * never changed afterwards. Must be non-null after initialized. Used in
+     * doPost method.
      * </p>
      */
     private Log logger;
 
     /**
      * <p>
-     * Represents the configuration object used to create the MemoryFileUpload object. Initialized in init method, and
-     * never changed afterwards. Must be non-null. (Though the ConfigurationObject is mutable, but it's never changed
-     * after loaded.) Used in doPost method.
+     * Represents the configuration object used to create the MemoryFileUpload
+     * object. Initialized in init method, and never changed afterwards. Must be
+     * non-null. (Though the ConfigurationObject is mutable, but it's never
+     * changed after loaded.) Used in doPost method.
      * </p>
      */
     private ConfigurationObject fileUploadConfig;
@@ -157,7 +167,8 @@ public class AjaxBridgeServlet extends HttpServlet {
      * Date Formatter for the date strings received from request.
      * </p>
      */
-    private final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private final SimpleDateFormat dateFormatter = new SimpleDateFormat(
+            "yyyy-MM-dd HH:mm");
 
     /**
      * <p>
@@ -170,15 +181,21 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
-     * Initializes the servlet. Gets the init parameters from web.xml and uses that to properly initialize the instance
-     * variables. When and exception occurs while creating these objects, the exception is not thrown but only thrown
-     * back to the requesting entity.
+     * Initializes the servlet. Gets the init parameters from web.xml and uses
+     * that to properly initialize the instance variables. When and exception
+     * occurs while creating these objects, the exception is not thrown but only
+     * thrown back to the requesting entity.
      * </p>
-     *
-     * @param config the servlet config object passed by the container for this servlet
-     * @throws ServletException - if an exception occurs when initializing instance variables, or the configured value
-     *             is invalid. All exceptions that occurred here in init are wrapped in a ServletException object since
-     *             this is the only exception that can be thrown here.
+     * 
+     * @param config
+     *            the servlet config object passed by the container for this
+     *            servlet
+     * @throws ServletException -
+     *             if an exception occurs when initializing instance variables,
+     *             or the configured value is invalid. All exceptions that
+     *             occurred here in init are wrapped in a ServletException
+     *             object since this is the only exception that can be thrown
+     *             here.
      */
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -194,34 +211,45 @@ public class AjaxBridgeServlet extends HttpServlet {
             }
 
             // initialize the ConfigurationFileManager
-            ConfigurationFileManager cm = new ConfigurationFileManager(getParameter("ajaxBridgeConfigFile", null));
+            ConfigurationFileManager cm = new ConfigurationFileManager(
+                    getParameter("ajaxBridgeConfigFile", null));
             // get the ConfigurationObject for ObjectFactory
-            ConfigurationObject rootConfig = cm.getConfiguration(getParameter("objectFactoryNamespace", null))
-                .getChild("default");
-            ConfigurationObjectSpecificationFactory cosf = new ConfigurationObjectSpecificationFactory(rootConfig);
+            ConfigurationObject rootConfig = cm.getConfiguration(
+                    getParameter("objectFactoryNamespace", null)).getChild(
+                    "default");
+            ConfigurationObjectSpecificationFactory cosf = new ConfigurationObjectSpecificationFactory(
+                    rootConfig);
 
             ObjectFactory objectFactory = new ObjectFactory(cosf);
 
             // Create objects for JSON
             // initialize the JSONEncoder
-            jsonEncoder = (JSONEncoder) objectFactory.createObject(getParameter("jsonEncoderKey", "jsonEncoder"));
+            jsonEncoder = (JSONEncoder) objectFactory
+                    .createObject(getParameter("jsonEncoderKey", "jsonEncoder"));
             // initialize the JSONDecoder
-            jsonDecoder = (JSONDecoder) objectFactory.createObject(getParameter("jsonDecoderKey", "jsonDecoder"));
+            jsonDecoder = (JSONDecoder) objectFactory
+                    .createObject(getParameter("jsonDecoderKey", "jsonDecoder"));
 
             // Create the Services
-            projectService = getServiceObject(ProjectService.class, objectFactory.createObject(getParameter(
-                "projectServiceKey", "projectService")));
-            prerequisiteService = getServiceObject(PrerequisiteService.class, objectFactory.createObject(getParameter(
-                "prerequisiteServiceKey", "prerequisiteService")));
-            studioService = getServiceObject(StudioService.class, objectFactory.createObject(getParameter(
-                "studioServiceKey", "studioService")));
+            projectService = getServiceObject(ProjectService.class,
+                    objectFactory.createObject(getParameter(
+                            "projectServiceKey", "projectService")));
+            prerequisiteService = getServiceObject(PrerequisiteService.class,
+                    objectFactory.createObject(getParameter(
+                            "prerequisiteServiceKey", "prerequisiteService")));
+            studioService = getServiceObject(StudioService.class, objectFactory
+                    .createObject(getParameter("studioServiceKey",
+                            "studioService")));
 
-            logger = LogManager.getLog(getParameter("loggerName", "com.topcoder.widget.bridge.AjaxBridgeServlet"));
+            logger = LogManager.getLog(getParameter("loggerName",
+                    "com.topcoder.widget.bridge.AjaxBridgeServlet"));
 
             // initialize the File Upload Configuration Object
-            fileUploadConfig = cm.getConfiguration(getParameter("fileUploadNamespace", null));
+            fileUploadConfig = cm.getConfiguration(getParameter(
+                    "fileUploadNamespace", null));
         } catch (Exception e) {
-            // see http://forums.topcoder.com/?module=Thread&threadID=614361&start=0
+            // see
+            // http://forums.topcoder.com/?module=Thread&threadID=614361&start=0
             throw new ServletException(e);
         }
     }
@@ -230,41 +258,56 @@ public class AjaxBridgeServlet extends HttpServlet {
      * <p>
      * Gets service object either using service locator or just service itself.
      * </p>
-     *
-     * @param <T> type of the created service
-     * @param clazz class of the desired type
-     * @param service service object
+     * 
+     * @param <T>
+     *            type of the created service
+     * @param clazz
+     *            class of the desired type
+     * @param service
+     *            service object
      * @return service object
-     * @throws Exception if the service is not the right type or any other error
+     * @throws Exception
+     *             if the service is not the right type or any other error
      */
-    private <T> T getServiceObject(Class<T> clazz, Object service) throws Exception {
+    private <T> T getServiceObject(Class<T> clazz, Object service)
+            throws Exception {
         if (ServiceLocator.class.isAssignableFrom(service.getClass())) {
             return clazz.cast(((ServiceLocator) service).getService());
         } else if (clazz.isAssignableFrom(service.getClass())) {
             return clazz.cast(service);
         } else {
-            throw new ClassCastException("The created service object is neither service locator.");
+            throw new ClassCastException(
+                    "The created service object is neither service locator.");
         }
     }
 
     /**
      * <p>
-     * Handle the GET request. This method will simply call doPost(request, response).
+     * Handle the GET request. This method will simply call doPost(request,
+     * response).
      * </p>
-     *
-     * @param request the request object that comes from the web container
-     * @param response the response object that comes from the web container
-     * @throws ServletException this is for all the servlet related exceptions
-     * @throws IOException this is for input / output errors when handling the servlet request
+     * 
+     * @param request
+     *            the request object that comes from the web container
+     * @param response
+     *            the response object that comes from the web container
+     * @throws ServletException
+     *             this is for all the servlet related exceptions
+     * @throws IOException
+     *             this is for input / output errors when handling the servlet
+     *             request
      */
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         debug("Entering doGet() method.");
         // check first if request and response is not null
         // no longer needed to delegate if one of these parameters are null
         if (request == null || response == null) {
-            logger.log(Level.ERROR, "The request or response object should not be null!");
-            throw new ServletException("The request or response object should not be null!");
+            logger.log(Level.ERROR,
+                    "The request or response object should not be null!");
+            throw new ServletException(
+                    "The request or response object should not be null!");
         }
         // delegate to doPost
         this.doPost(request, response);
@@ -273,25 +316,36 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
-     * Handle the POST request. The request will contain parameters for "service" (corresponds to which service should
-     * be called, its value can be: "project", "payment" and "studio"), "method" (corresponds to the method name of the
-     * matched service. ), and some other parameters corresponding to the service method's arguments. The implementation
-     * will call the matched service method with extracted parameters and get the returned value. Then it will convert
-     * the returned value into json string and write to the response.
+     * Handle the POST request. The request will contain parameters for
+     * "service" (corresponds to which service should be called, its value can
+     * be: "project", "payment" and "studio"), "method" (corresponds to the
+     * method name of the matched service. ), and some other parameters
+     * corresponding to the service method's arguments. The implementation will
+     * call the matched service method with extracted parameters and get the
+     * returned value. Then it will convert the returned value into json string
+     * and write to the response.
      * </p>
-     *
-     * @param request the request object that comes from the web container
-     * @param response the response object that comes from the web container
-     * @throws ServletException this is for all the servlet related exceptions
-     * @throws IOException this is for input / output errors when handling the servlet request
+     * 
+     * @param request
+     *            the request object that comes from the web container
+     * @param response
+     *            the response object that comes from the web container
+     * @throws ServletException
+     *             this is for all the servlet related exceptions
+     * @throws IOException
+     *             this is for input / output errors when handling the servlet
+     *             request
      */
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         debug("Entering doPost() method.");
         // check first if request and response is not null
         if (request == null || response == null) {
-            logger.log(Level.ERROR, "The request or response object should not be null!");
-            throw new ServletException("The request or response object should not be null!");
+            logger.log(Level.ERROR,
+                    "The request or response object should not be null!");
+            throw new ServletException(
+                    "The request or response object should not be null!");
         }
 
         try {
@@ -317,7 +371,8 @@ public class AjaxBridgeServlet extends HttpServlet {
                 return;
             }
 
-            debug("main parameters = [service] : " + service + " [method] : " + method);
+            debug("main parameters = [service] : " + service + " [method] : "
+                    + method);
 
             if ("project".equals(service)) {
                 // *********************************************************************************************
@@ -329,13 +384,16 @@ public class AjaxBridgeServlet extends HttpServlet {
                         return;
                     }
                     JSONObject jsonProj = jsonDecoder.decodeObject(strProject);
-                    debug("received ID = [project id] : " + jsonProj.getLong("projectID"));
+                    debug("received ID = [project id] : "
+                            + jsonProj.getLong("projectID"));
 
                     ProjectData project = getProjectFromJSON(jsonProj);
-                    if (checkIfNullOrEmpty(project.getName(), "project name", response)) {
+                    if (checkIfNullOrEmpty(project.getName(), "project name",
+                            response)) {
                         return;
                     }
-                    ProjectData respProj = projectService.createProject(project);
+                    ProjectData respProj = projectService
+                            .createProject(project);
                     JSONObject respJSON = getJSONFromProject(respProj);
                     sendJSONObjectAsResponse(respJSON, response);
 
@@ -346,11 +404,13 @@ public class AjaxBridgeServlet extends HttpServlet {
                         return;
                     }
                     JSONObject jsonProj = jsonDecoder.decodeObject(strProject);
-                    debug("received ID = [project id] : " + jsonProj.getLong("projectID"));
+                    debug("received ID = [project id] : "
+                            + jsonProj.getLong("projectID"));
 
                     ProjectData project = getProjectFromJSON(jsonProj);
                     projectService.updateProject(project);
-                    ProjectData respProj = projectService.getProject(project.getProjectId());
+                    ProjectData respProj = projectService.getProject(project
+                            .getProjectId());
                     JSONObject respJSON = getJSONFromProject(respProj);
                     sendJSONObjectAsResponse(respJSON, response);
 
@@ -361,7 +421,8 @@ public class AjaxBridgeServlet extends HttpServlet {
                         return;
                     }
                     JSONObject jsonProj = jsonDecoder.decodeObject(strProject);
-                    debug("received ID = [project id] : " + jsonProj.getLong("projectID"));
+                    debug("received ID = [project id] : "
+                            + jsonProj.getLong("projectID"));
 
                     ProjectData project = getProjectFromJSON(jsonProj);
                     projectService.deleteProject(project.getProjectId());
@@ -370,12 +431,14 @@ public class AjaxBridgeServlet extends HttpServlet {
                     debug("deleteProject success!");
                 } else if ("getProject".equals(method)) {
                     String strProjectID = request.getParameter("projectID");
-                    if (checkLongIfLessThanZero(strProjectID, "projectID", response)) {
+                    if (checkLongIfLessThanZero(strProjectID, "projectID",
+                            response)) {
                         return;
                     }
                     debug("received ID = [project id] : " + strProjectID);
 
-                    ProjectData respProj = projectService.getProject(Long.parseLong(strProjectID));
+                    ProjectData respProj = projectService.getProject(Long
+                            .parseLong(strProjectID));
                     JSONObject respJSON = getJSONFromProject(respProj);
                     sendJSONObjectAsResponse(respJSON, response);
 
@@ -387,7 +450,8 @@ public class AjaxBridgeServlet extends HttpServlet {
                     }
                     debug("received ID = [user id] : " + userID);
 
-                    List<ProjectData> projects = projectService.getProjectsForUser(Long.parseLong(userID));
+                    List<ProjectData> projects = projectService
+                            .getProjectsForUser(Long.parseLong(userID));
                     JSONArray projectArr = new JSONArray();
                     for (ProjectData proj : projects) {
                         JSONObject respJSON = getJSONFromProject(proj);
@@ -397,7 +461,8 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                     debug("getProjectsForUser success!");
                 } else if ("getAllProjects".equals(method)) {
-                    List<ProjectData> projects = projectService.getAllProjects();
+                    List<ProjectData> projects = projectService
+                            .getAllProjects();
                     JSONArray projectArr = new JSONArray();
 
                     for (ProjectData proj : projects) {
@@ -407,7 +472,8 @@ public class AjaxBridgeServlet extends HttpServlet {
                     debug("getAllProjects success!");
                     sendJSONObjectWithArrayAsResponse(projectArr, response);
                 } else {
-                    sendErrorJSONResponse("The 'method' param passed is invalid.", response);
+                    sendErrorJSONResponse(
+                            "The 'method' param passed is invalid.", response);
                 }
 
             } else if ("prerequisite".equals(service)) {
@@ -417,32 +483,39 @@ public class AjaxBridgeServlet extends HttpServlet {
                 if ("getAllPrerequisiteDocuments".equals(method)) {
                     debug("Handle request of getAllPrerequisiteDocuments");
 
-                    List<PrerequisiteDocument> documents = prerequisiteService.getAllPrerequisiteDocuments();
+                    List<PrerequisiteDocument> documents = prerequisiteService
+                            .getAllPrerequisiteDocuments();
                     JSONArray documentArray = new JSONArray();
                     for (PrerequisiteDocument document : documents) {
-                        documentArray.addJSONObject(getJSONFromPrerequisteDocument(document));
+                        documentArray
+                                .addJSONObject(getJSONFromPrerequisteDocument(document));
                     }
                     sendJSONObjectWithArrayAsResponse(documentArray, response);
 
                     debug("getAllPrerequisiteDocuments success!");
                 } else if ("getPrerequisiteDocuments".equals(method)) {
-                    String paramCompetitionId = request.getParameter("competitionID");
+                    String paramCompetitionId = request
+                            .getParameter("competitionID");
                     String paramRoleId = request.getParameter("roleID");
-                    if (checkLongIfLessThanZero(paramCompetitionId, "competitionID", response)) {
+                    if (checkLongIfLessThanZero(paramCompetitionId,
+                            "competitionID", response)) {
                         return;
                     }
                     if (checkLongIfLessThanZero(paramRoleId, "roleID", response)) {
                         return;
                     }
-                    debug("received parameters = [competitionID] : " + paramCompetitionId + " [roleID] : "
-                        + paramRoleId);
+                    debug("received parameters = [competitionID] : "
+                            + paramCompetitionId + " [roleID] : " + paramRoleId);
 
-                    List<PrerequisiteDocument> documents = prerequisiteService.getPrerequisiteDocuments(Long
-                        .parseLong(paramCompetitionId), Long.parseLong(paramRoleId));
+                    List<PrerequisiteDocument> documents = prerequisiteService
+                            .getPrerequisiteDocuments(Long
+                                    .parseLong(paramCompetitionId), Long
+                                    .parseLong(paramRoleId));
 
                     JSONArray documentArray = new JSONArray();
                     for (PrerequisiteDocument document : documents) {
-                        documentArray.addJSONObject(getJSONFromPrerequisteDocument(document));
+                        documentArray
+                                .addJSONObject(getJSONFromPrerequisteDocument(document));
                     }
                     sendJSONObjectWithArrayAsResponse(documentArray, response);
 
@@ -450,42 +523,56 @@ public class AjaxBridgeServlet extends HttpServlet {
                 } else if ("getPrerequisiteDocument".equals(method)) {
                     String paramDocumentId = request.getParameter("documentID");
                     String paramVersion = request.getParameter("version");
-                    if (checkLongIfLessThanZero(paramDocumentId, "documentID", response)) {
+                    if (checkLongIfLessThanZero(paramDocumentId, "documentID",
+                            response)) {
                         return;
                     }
-                    if (checkIntegerIfLessThanZero(paramVersion, "version", response)) {
+                    if (checkIntegerIfLessThanZero(paramVersion, "version",
+                            response)) {
                         return;
                     }
-                    debug("received parameters = [documentID] : " + paramDocumentId + " [version] : " + paramVersion);
+                    debug("received parameters = [documentID] : "
+                            + paramDocumentId + " [version] : " + paramVersion);
 
-                    PrerequisiteDocument document = prerequisiteService.getPrerequisiteDocument(Long
-                        .parseLong(paramDocumentId), Integer.parseInt(paramVersion));
-                    sendJSONObjectAsResponse(getJSONFromPrerequisteDocument(document), response);
+                    PrerequisiteDocument document = prerequisiteService
+                            .getPrerequisiteDocument(Long
+                                    .parseLong(paramDocumentId), Integer
+                                    .parseInt(paramVersion));
+                    sendJSONObjectAsResponse(
+                            getJSONFromPrerequisteDocument(document), response);
 
                     debug("getPrerequisiteDocument success!");
                 } else if ("recordMemberAnswer".equals(method)) {
-                    String paramCompetitionId = request.getParameter("competitionID");
+                    String paramCompetitionId = request
+                            .getParameter("competitionID");
                     String paramTimestamp = request.getParameter("timestamp");
                     String paramAgrees = request.getParameter("agrees");
                     String paramRoleId = request.getParameter("roleID");
-                    if (checkLongIfLessThanZero(paramCompetitionId, "competitionID", response)) {
+                    if (checkLongIfLessThanZero(paramCompetitionId,
+                            "competitionID", response)) {
                         return;
                     }
                     if (checkLongIfLessThanZero(paramRoleId, "roleID", response)) {
                         return;
                     }
-                    JSONObject jsonDocument = jsonDecoder.decodeObject(request.getParameter("prerequisiteDocument"));
-                    debug("received IDs = [competitionID] : " + paramCompetitionId + " [roleID] : " + paramRoleId);
+                    JSONObject jsonDocument = jsonDecoder.decodeObject(request
+                            .getParameter("prerequisiteDocument"));
+                    debug("received IDs = [competitionID] : "
+                            + paramCompetitionId + " [roleID] : " + paramRoleId);
 
-                    prerequisiteService.recordMemberAnswer(Long.parseLong(paramCompetitionId),
-                        getXMLGregorianCalendar(paramTimestamp), Boolean.parseBoolean(paramAgrees),
-                        getPrerequisiteDocumentFromJSON(jsonDocument), Long.parseLong(paramRoleId));
+                    prerequisiteService.recordMemberAnswer(Long
+                            .parseLong(paramCompetitionId),
+                            getXMLGregorianCalendar(paramTimestamp), Boolean
+                                    .parseBoolean(paramAgrees),
+                            getPrerequisiteDocumentFromJSON(jsonDocument), Long
+                                    .parseLong(paramRoleId));
                     printSuccessResponse(getSuccessJSONResponse(), response);
 
                     debug("recordMemberAnswer success!");
                 } else {
                     // if we reach here this means the method param is invalid
-                    sendErrorJSONResponse("The 'method' param passed is invalid.", response);
+                    sendErrorJSONResponse(
+                            "The 'method' param passed is invalid.", response);
                 }
             } else if ("studio".equals(service)) { // for STUDIO SERVICES
                 // *********************************************************************************************
@@ -497,46 +584,58 @@ public class AjaxBridgeServlet extends HttpServlet {
                     if (checkIfNullOrEmpty(strContest, "contest", response)) {
                         return;
                     }
-                    if (checkLongIfLessThanZero(strProjectID, "projectID", response)) {
+                    if (checkLongIfLessThanZero(strProjectID, "projectID",
+                            response)) {
                         return;
                     }
-                    JSONObject jsonContest = jsonDecoder.decodeObject(strContest);
-                    debug("received IDs = [contest ID] : " + jsonContest.getLong("contestID") + " [project ID] : "
-                        + strProjectID);
+                    JSONObject jsonContest = jsonDecoder
+                            .decodeObject(strContest);
+                    debug("received IDs = [contest ID] : "
+                            + jsonContest.getLong("contestID")
+                            + " [project ID] : " + strProjectID);
 
                     ContestData contest = getContestFromJSON(jsonContest);
-                    ContestData respContest = studioService.createContest(contest, Long.parseLong(strProjectID));
-                    sendJSONObjectAsResponse(getJSONFromContest(respContest), response);
+                    ContestData respContest = studioService.createContest(
+                            contest, Long.parseLong(strProjectID));
+                    sendJSONObjectAsResponse(getJSONFromContest(respContest),
+                            response);
 
                     debug("createContest success!");
                 } else if ("getContest".equals(method)) {
                     String strContestID = request.getParameter("contestID");
-                    if (checkLongIfLessThanZero(strContestID, "contestID", response)) {
+                    if (checkLongIfLessThanZero(strContestID, "contestID",
+                            response)) {
                         return;
                     }
                     debug("received ID = [contest ID] : " + strContestID);
 
-                    ContestData respContest = studioService.getContest(Long.parseLong(strContestID));
-                    sendJSONObjectAsResponse(getJSONFromContest(respContest), response);
+                    ContestData respContest = studioService.getContest(Long
+                            .parseLong(strContestID));
+                    sendJSONObjectAsResponse(getJSONFromContest(respContest),
+                            response);
 
                     debug("getContest success!");
                 } else if ("getAllContests".equals(method)) {
-                	String strOnlyDirectProjects = request.getParameter("onlyDirectProjects");
-                	if (checkBoolean(strOnlyDirectProjects, "onlyDirectProjects", response)) {
-                		return;
-                	}
+                    String strOnlyDirectProjects = request
+                            .getParameter("onlyDirectProjects");
+                    if (checkBoolean(strOnlyDirectProjects,
+                            "onlyDirectProjects", response)) {
+                        return;
+                    }
                     List<ContestData> contests = null;
-                    
+
                     // Fix bug [27128642-4]
                     if ("true".equals(strOnlyDirectProjects)) {
-                    	// Just get the contests having a related direct project
-                        Filter projectNotNullFilter = new NotFilter(new NullFilter("tc_direct_project_id"));
+                        // Just get the contests having a related direct project
+                        Filter projectNotNullFilter = new NotFilter(
+                                new NullFilter("tc_direct_project_id"));
 
-                        contests = studioService.searchContests(projectNotNullFilter);
+                        contests = studioService
+                                .searchContests(projectNotNullFilter);
                     } else {
-                    	contests = studioService.getAllContests();                    
-                	}
-                
+                        contests = studioService.getAllContests();
+                    }
+
                     JSONArray contestArr = new JSONArray();
                     for (ContestData contest : contests) {
                         JSONObject respJSON = getJSONFromContest(contest);
@@ -547,12 +646,14 @@ public class AjaxBridgeServlet extends HttpServlet {
                     debug("getAllContests success!");
                 } else if ("getContestsForProject".equals(method)) {
                     String projectID = request.getParameter("projectID");
-                    if (checkLongIfLessThanZero(projectID, "projectID", response)) {
+                    if (checkLongIfLessThanZero(projectID, "projectID",
+                            response)) {
                         return;
                     }
                     debug("received ID = [project ID] : " + projectID);
 
-                    List<ContestData> contests = studioService.getContestsForProject(Long.parseLong(projectID));
+                    List<ContestData> contests = studioService
+                            .getContestsForProject(Long.parseLong(projectID));
                     JSONArray contestArr = new JSONArray();
                     for (ContestData contest : contests) {
                         JSONObject respJSON = getJSONFromContest(contest);
@@ -565,24 +666,31 @@ public class AjaxBridgeServlet extends HttpServlet {
                     // get the contestID parameter from request
                     String strContestID = request.getParameter("contestID");
                     String strNewStatusID = request.getParameter("newStatusID");
-                    if (checkLongIfLessThanZero(strContestID, "contestID", response)) {
+                    if (checkLongIfLessThanZero(strContestID, "contestID",
+                            response)) {
                         return;
                     }
-                    if (checkLongIfLessThanZero(strNewStatusID, "newStatusID", response)) {
+                    if (checkLongIfLessThanZero(strNewStatusID, "newStatusID",
+                            response)) {
                         return;
                     }
                     // log the received ID
-                    debug("received IDs = [contest ID] : " + strContestID + " [new status ID] : " + strNewStatusID);
+                    debug("received IDs = [contest ID] : " + strContestID
+                            + " [new status ID] : " + strNewStatusID);
 
                     long contestId = Long.parseLong(strContestID);
-                    studioService.updateContestStatus(contestId, Long.parseLong(strNewStatusID));
-                    ContestData respContest = studioService.getContest(contestId);
-                    sendJSONObjectAsResponse(getJSONFromContest(respContest), response);
+                    studioService.updateContestStatus(contestId, Long
+                            .parseLong(strNewStatusID));
+                    ContestData respContest = studioService
+                            .getContest(contestId);
+                    sendJSONObjectAsResponse(getJSONFromContest(respContest),
+                            response);
 
                     debug("updateContestStatus success!");
                 } else if ("getAllContestTypes".equals(method)) {
                     debug("start to get all contest types.");
-                    List<ContestTypeData> types = studioService.getAllContestTypes();
+                    List<ContestTypeData> types = studioService
+                            .getAllContestTypes();
                     JSONArray typeArr = new JSONArray();
                     for (ContestTypeData type : types) {
                         JSONObject respJSON = getJSONFromContestType(type);
@@ -592,20 +700,24 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                     debug("getAllContestTypes success!");
                 } else if ("uploadDocumentForContest".equals(method)) {
-                    // verify here again if the form we received is multipart/form-data
+                    // verify here again if the form we received is
+                    // multipart/form-data
                     if (isMultiPart) {
                         // get the uploaded file
-                        UploadedFile uploadedFile = result.getUploadedFile("document");
+                        UploadedFile uploadedFile = result
+                                .getUploadedFile("document");
                         // Initialize the UploadedDocument
                         UploadedDocument document = new UploadedDocument();
                         String contestID = result.getParameter("contestID");
                         String documentID = result.getParameter("documentID");
                         String description = result.getParameter("description");
-                        if (checkLongIfLessThanZero(contestID, "contestID", response)) {
+                        if (checkLongIfLessThanZero(contestID, "contestID",
+                                response)) {
                             return;
                         }
                         // log the received ID
-                        debug("received IDs = [contest ID] : " + contestID + " [document ID] : " + documentID);
+                        debug("received IDs = [contest ID] : " + contestID
+                                + " [document ID] : " + documentID);
                         // check if null
                         if (contestID != null) {
                             // set the contest ID
@@ -619,18 +731,23 @@ public class AjaxBridgeServlet extends HttpServlet {
                         // set the description
                         document.setDescription(description);
                         // set the File here
-                        document.setFile(readContent(uploadedFile.getInputStream()));
+                        document.setFile(readContent(uploadedFile
+                                .getInputStream()));
                         // uploadDocumentForContest
-                        UploadedDocument respDoc = studioService.uploadDocumentForContest(document);
-                        // now create the corresponding JSON object for the response
+                        UploadedDocument respDoc = studioService
+                                .uploadDocumentForContest(document);
+                        // now create the corresponding JSON object for the
+                        // response
                         JSONObject respJSON = getJSONFromUploadedDocument(respDoc);
                         debug("uploadDocumentForContest success!");
                         // send the JSONObject as a response
                         sendJSONObjectAsResponse(respJSON, response);
 
                     } else {
-                        sendErrorJSONResponse("The 'enctype' of the request submitted"
-                            + " should be of type 'multipart/*'", response);
+                        sendErrorJSONResponse(
+                                "The 'enctype' of the request submitted"
+                                        + " should be of type 'multipart/*'",
+                                response);
                     }
 
                 } else if ("removeDocumentFromContest".equals(method)) {
@@ -638,8 +755,10 @@ public class AjaxBridgeServlet extends HttpServlet {
                     if (checkIfNullOrEmpty(strDocument, "document", response)) {
                         return;
                     }
-                    JSONObject jsonDocument = jsonDecoder.decodeObject(strDocument);
-                    debug("received ID = [document ID] : " + jsonDocument.getLong("documentID"));
+                    JSONObject jsonDocument = jsonDecoder
+                            .decodeObject(strDocument);
+                    debug("received ID = [document ID] : "
+                            + jsonDocument.getLong("documentID"));
 
                     UploadedDocument document = getDocumentUploadsFromJSON(jsonDocument);
                     studioService.removeDocumentFromContest(document);
@@ -649,13 +768,15 @@ public class AjaxBridgeServlet extends HttpServlet {
                     debug("removeDocumentFromContest success!");
                 } else if ("retrieveSubmissionsForContest".equals(method)) {
                     String contestID = request.getParameter("contestID");
-                    if (checkLongIfLessThanZero(contestID, "contestID", response)) {
+                    if (checkLongIfLessThanZero(contestID, "contestID",
+                            response)) {
                         return;
                     }
                     debug("received ID = [contest ID] : " + contestID);
 
-                    List<SubmissionData> submissions = studioService.retrieveSubmissionsForContest(Long
-                        .parseLong(contestID));
+                    List<SubmissionData> submissions = studioService
+                            .retrieveSubmissionsForContest(Long
+                                    .parseLong(contestID));
                     JSONArray submissionArr = new JSONArray();
 
                     for (SubmissionData submission : submissions) {
@@ -667,11 +788,14 @@ public class AjaxBridgeServlet extends HttpServlet {
                     debug("retrieveSubmissionsForContest success!");
                 } else if ("updateSubmission".equals(method)) {
                     String strSubmission = request.getParameter("submission");
-                    if (checkIfNullOrEmpty(strSubmission, "submission", response)) {
+                    if (checkIfNullOrEmpty(strSubmission, "submission",
+                            response)) {
                         return;
                     }
-                    JSONObject jsonSubmission = jsonDecoder.decodeObject(strSubmission);
-                    debug("received ID = [submission ID] : " + jsonSubmission.getLong("submissionID"));
+                    JSONObject jsonSubmission = jsonDecoder
+                            .decodeObject(strSubmission);
+                    debug("received ID = [submission ID] : "
+                            + jsonSubmission.getLong("submissionID"));
 
                     SubmissionData submission = getSubmissionFromJSON(jsonSubmission);
                     studioService.updateSubmission(submission);
@@ -684,8 +808,10 @@ public class AjaxBridgeServlet extends HttpServlet {
                     if (checkIfNullOrEmpty(strContest, "contest", response)) {
                         return;
                     }
-                    JSONObject jsonContest = jsonDecoder.decodeObject(strContest);
-                    debug("received ID = [contest ID] : " + jsonContest.getLong("contestID"));
+                    JSONObject jsonContest = jsonDecoder
+                            .decodeObject(strContest);
+                    debug("received ID = [contest ID] : "
+                            + jsonContest.getLong("contestID"));
 
                     ContestData contest = getContestFromJSON(jsonContest);
                     studioService.updateContest(contest);
@@ -695,28 +821,36 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                     debug("updateContest success!");
                 } else if ("retrieveSubmission".equals(method)) {
-                    String strSubmissionID = request.getParameter("submissionID");
-                    if (checkLongIfLessThanZero(strSubmissionID, "submissionID", response)) {
+                    String strSubmissionID = request
+                            .getParameter("submissionID");
+                    if (checkLongIfLessThanZero(strSubmissionID,
+                            "submissionID", response)) {
                         return;
                     }
                     debug("received ID = [submission ID] : " + strSubmissionID);
 
-                    SubmissionData submission = studioService.retrieveSubmission(Long.valueOf(strSubmissionID));
+                    SubmissionData submission = studioService
+                            .retrieveSubmission(Long.valueOf(strSubmissionID));
                     if (submission == null) {
-                        throw new StudioServiceException("There is no submission for submission id<" + strSubmissionID
-                            + ">");
+                        throw new StudioServiceException(
+                                "There is no submission for submission id<"
+                                        + strSubmissionID + ">");
                     }
-                    sendJSONObjectAsResponse(getJSONFromSubmission(submission), response);
+                    sendJSONObjectAsResponse(getJSONFromSubmission(submission),
+                            response);
 
                     debug("retrieveSubmission success!");
                 } else if ("removeSubmission".equals(method)) {
-                    String strSubmissionID = request.getParameter("submissionID");
-                    if (checkLongIfLessThanZero(strSubmissionID, "submissionID", response)) {
+                    String strSubmissionID = request
+                            .getParameter("submissionID");
+                    if (checkLongIfLessThanZero(strSubmissionID,
+                            "submissionID", response)) {
                         return;
                     }
                     debug("received ID = [submission ID] : " + strSubmissionID);
 
-                    studioService.removeSubmission(Long.parseLong(strSubmissionID));
+                    studioService.removeSubmission(Long
+                            .parseLong(strSubmissionID));
                     printSuccessResponse(getSuccessJSONResponse(), response);
 
                     debug("removeSubmission success!");
@@ -729,7 +863,9 @@ public class AjaxBridgeServlet extends HttpServlet {
                     // log the received ID
                     debug("received ID = [user ID] : " + userID);
 
-                    List<SubmissionData> subs = studioService.retrieveAllSubmissionsByMember(Long.parseLong(userID));
+                    List<SubmissionData> subs = studioService
+                            .retrieveAllSubmissionsByMember(Long
+                                    .parseLong(userID));
                     JSONArray submissionArr = new JSONArray();
                     for (SubmissionData submission : subs) {
                         JSONObject respJSON = getJSONFromSubmission(submission);
@@ -739,7 +875,8 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                     debug("retrieveAllSubmissionsByMember success!");
                 } else if ("getSubmissionFileTypes".equals(method)) {
-                    String[] fileTypes = splitString(studioService.getSubmissionFileTypes());
+                    String[] fileTypes = splitString(studioService
+                            .getSubmissionFileTypes());
                     JSONArray fileTypesArr = new JSONArray();
 
                     for (String fileType : fileTypes) {
@@ -749,31 +886,87 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                     debug("getSubmissionFileTypes success!");
                 } else if ("getContestStatuses".equals(method)) {
-                    List<ContestStatusData> contestStatuses = studioService.getStatusList();
+                    List<ContestStatusData> contestStatuses = studioService
+                            .getStatusList();
                     JSONArray contestStatusArray = new JSONArray();
 
                     for (ContestStatusData contestStatus : contestStatuses) {
                         JSONObject respJSON = getJSONFromContestStatus(contestStatus);
                         contestStatusArray.addJSONObject(respJSON);
                     }
-                    sendJSONObjectWithArrayAsResponse(contestStatusArray, response);
+                    sendJSONObjectWithArrayAsResponse(contestStatusArray,
+                            response);
 
                     debug("getContestStatuses success!");
+                } else if ("addDocumentToContest".equals(method)) {
+                    // get the documentId and contestId parameter from request
+                    String documentId = request.getParameter("documentId");
+                    String contestId = request.getParameter("contestId");
+                    if (checkLongIfLessThanZero(documentId, "documentId",
+                            response)) {
+                        return;
+                    }
+                    if (checkLongIfLessThanZero(contestId, "contestId",
+                            response)) {
+                        return;
+                    }
+                    // log the received ID
+                    debug("received ID = [documen ID] : " + documentId);
+                    debug("received ID = [contest ID] : " + contestId);
+
+                    studioService.addDocumentToContest(Long
+                            .parseLong(documentId), Long.parseLong(contestId));
+
+                    printSuccessResponse(getSuccessJSONResponse(), response);
+                    debug("addDocumentToContest success!");
+                } else if ("uploadDocument".equals(method)) {
+                    // verify here again if the form we received is
+                    // multipart/form-data
+                    if (isMultiPart) {
+                        String strDocument = request.getParameter("document");
+                        if (checkIfNullOrEmpty(strDocument, "document", response)) {
+                            return;
+                        }
+                        JSONObject jsonDocument = jsonDecoder
+                                .decodeObject(strDocument);
+                        UploadedDocument document = getDocumentUploadsFromJSON(jsonDocument);
+                        
+                        // get the uploaded file
+                        UploadedFile uploadedFile = result
+                                .getUploadedFile("document");
+                        // Initialize the UploadedDocument
+                        // set the File here
+                        document.setFile(readContent(uploadedFile
+                                .getInputStream()));
+                        // uploadDocumentForContest
+                        UploadedDocument respDoc = studioService
+                                .uploadDocument(document);
+                        // now create the corresponding JSON object for the
+                        // response
+                        JSONObject respJSON = getJSONFromUploadedDocument(respDoc);
+                        debug("uploadDocument success!");
+                        // send the JSONObject as a response
+                        sendJSONObjectAsResponse(respJSON, response);
+                    } else {
+                        // if we reach here this means the method param is
+                        // invalid
+                        sendErrorJSONResponse(
+                                "The 'method' param passed is invalid.",
+                                response);
+                    }
+
                 } else {
-                    // if we reach here this means the method param is invalid
-                    sendErrorJSONResponse("The 'method' param passed is invalid.", response);
+                    // if we reach here this means the service param is invalid
+                    sendErrorJSONResponse(
+                            "The 'service' param passed is invalid.", response);
                 }
-
-            } else {
-                // if we reach here this means the service param is invalid
-                sendErrorJSONResponse("The 'service' param passed is invalid.", response);
             }
-
         } catch (IOException e) {
             logError(e, null);
             throw e;
         } catch (Exception e) {
-            // see http://forums.topcoder.com/?module=Thread&threadID=614361&start=0
+            // see
+            // http://forums.topcoder.com/?module=Thread&threadID=614361&start=0
             handleException(e, response);
         }
 
@@ -784,26 +977,33 @@ public class AjaxBridgeServlet extends HttpServlet {
      * <p>
      * Handles exception occurred in handling request.
      * </p>
-     *
-     * @param exception to be dealt
-     * @param response http response
-     * @throws IOException any io error happens
-     * @throws ServletException any servlet error
+     * 
+     * @param exception
+     *            to be dealt
+     * @param response
+     *            http response
+     * @throws IOException
+     *             any io error happens
+     * @throws ServletException
+     *             any servlet error
      */
-    private void handleException(Exception exception, HttpServletResponse response) throws IOException,
-        ServletException {
+    private void handleException(Exception exception,
+            HttpServletResponse response) throws IOException, ServletException {
         try {
             logError(exception, null);
             sendErrorJSONResponse(exception.getClass().getSimpleName()
-                + " exception occurred while handling request : " + exception.getMessage(), response);
+                    + " exception occurred while handling request : "
+                    + exception.getMessage(), response);
         } catch (IOException e) {
             // we caught the exception here for logging
-            logError(e, "An exception occurred while sending an error message to the user. ");
+            logError(e,
+                    "An exception occurred while sending an error message to the user. ");
             // throw it back again after logging
             throw e;
         } catch (JSONEncodingException e) {
             // we only log the error here
-            logError(e, "An exception occurred while sending an error message to the user. ");
+            logError(e,
+                    "An exception occurred while sending an error message to the user. ");
             // no need to send the error to the user since we
             // are already sending an error message to the user when the error
             // occurred, so it is useless to try it again.
@@ -815,35 +1015,51 @@ public class AjaxBridgeServlet extends HttpServlet {
      * <p>
      * Convenience method in getting a Contest object from a JSONObject.
      * </p>
-     *
-     * @param jsonContest the JSONObject where the values will be coming from
+     * 
+     * @param jsonContest
+     *            the JSONObject where the values will be coming from
      * @return the project object created from this json object
-     * @throws ParseException when parsing the date gets an error
-     * @throws JSONDecodingException when an exception occurs while decoding a json string
-     * @throws IllegalArgumentException If any parameter is <code>null</code> or <code>value</code> is NaN, positive
-     *             infinity, or negative infinity.
-     * @throws JSONInvalidKeyException If there is no data for the given key.
-     * @throws JSONDataAccessTypeException If the data associated with the key can not be retrieved as a long.
+     * @throws ParseException
+     *             when parsing the date gets an error
+     * @throws JSONDecodingException
+     *             when an exception occurs while decoding a json string
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code> or <code>value</code>
+     *             is NaN, positive infinity, or negative infinity.
+     * @throws JSONInvalidKeyException
+     *             If there is no data for the given key.
+     * @throws JSONDataAccessTypeException
+     *             If the data associated with the key can not be retrieved as a
+     *             long.
      */
-    private ContestData getContestFromJSON(JSONObject jsonContest) throws ParseException, JSONDecodingException {
+    private ContestData getContestFromJSON(JSONObject jsonContest)
+            throws ParseException, JSONDecodingException {
         ContestData contest = new ContestData();
         contest.setContestId(jsonContest.getLong("contestID"));
         contest.setProjectId(jsonContest.getLong("projectID"));
         contest.setName(jsonContest.getString("name"));
         contest.setShortSummary(jsonContest.getString("shortSummary"));
         contest.setDurationInHours(jsonContest.getInt("durationInHours"));
-        contest.setOtherFileFormats(jsonContest.getString("finalFileFormatOther"));        
+        contest.setOtherFileFormats(jsonContest
+                .getString("finalFileFormatOther"));
         contest.setStatusId(jsonContest.getLong("statusID"));
-        contest.setContestDescriptionAndRequirements(jsonContest.getString("contestDescriptionAndRequirements"));
-        contest.setRequiredOrRestrictedColors(jsonContest.getString("requiredOrRestrictedColors"));
-        contest.setRequiredOrRestrictedFonts(jsonContest.getString("requiredOrRestrictedFonts"));
+        contest.setContestDescriptionAndRequirements(jsonContest
+                .getString("contestDescriptionAndRequirements"));
+        contest.setRequiredOrRestrictedColors(jsonContest
+                .getString("requiredOrRestrictedColors"));
+        contest.setRequiredOrRestrictedFonts(jsonContest
+                .getString("requiredOrRestrictedFonts"));
         contest.setSizeRequirements(jsonContest.getString("sizeRequirements"));
-        contest.setOtherRequirementsOrRestrictions(jsonContest.getString("otherRequirementsOrRestrictions"));
+        contest.setOtherRequirementsOrRestrictions(jsonContest
+                .getString("otherRequirementsOrRestrictions"));
         contest.setTcDirectProjectId(jsonContest.getLong("tcDirectProjectID"));
         contest.setCreatorUserId(jsonContest.getLong("creatorUserID"));
-        contest.setLaunchDateAndTime(getXMLGregorianCalendar(jsonContest.getString("launchDateAndTime")));
-        contest.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(jsonContest.getString("winnerAnnouncementDeadline")));
-        
+        contest.setLaunchDateAndTime(getXMLGregorianCalendar(jsonContest
+                .getString("launchDateAndTime")));
+        contest
+                .setWinnerAnnoucementDeadline(getXMLGregorianCalendar(jsonContest
+                        .getString("winnerAnnouncementDeadline")));
+
         contest.setContestTypeId(jsonContest.getLong("contestTypeID")); // [27128642-6]
 
         JSONArray jsonPrizes = jsonContest.getArray("prizes");
@@ -877,7 +1093,8 @@ public class AjaxBridgeServlet extends HttpServlet {
             List<UploadedDocument> listOfUpDocs = new ArrayList<UploadedDocument>();
             if (updocs != null) {
                 for (int i = 0; i < updocs.length; i++) {
-                    listOfUpDocs.add(getDocumentUploadsFromJSON((JSONObject) updocs[i]));
+                    listOfUpDocs
+                            .add(getDocumentUploadsFromJSON((JSONObject) updocs[i]));
                 }
             }
             contest.setDocumentationUploads(listOfUpDocs);
@@ -889,7 +1106,8 @@ public class AjaxBridgeServlet extends HttpServlet {
             List<ContestPayload> listOfPayloads = new ArrayList<ContestPayload>();
             if (payloads != null) {
                 for (int i = 0; i < payloads.length; i++) {
-                    listOfPayloads.add(getContestPayloadFromJSON((JSONObject) payloads[i]));
+                    listOfPayloads
+                            .add(getContestPayloadFromJSON((JSONObject) payloads[i]));
                 }
             }
             contest.setContestPayloads(listOfPayloads);
@@ -902,13 +1120,18 @@ public class AjaxBridgeServlet extends HttpServlet {
      * <p>
      * Convenience method in getting a Prize object from a JSONObject.
      * </p>
-     *
-     * @param jsonPrize the JSONObject where the values will be coming from
+     * 
+     * @param jsonPrize
+     *            the JSONObject where the values will be coming from
      * @return the prize object created from this json object
-     * @throws IllegalArgumentException If any parameter is <code>null</code> or <code>value</code> is NaN, positive
-     *             infinity, or negative infinity.
-     * @throws JSONInvalidKeyException If there is no data for the given key.
-     * @throws JSONDataAccessTypeException If the data associated with the key can not be retrieved as a long.
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code> or <code>value</code>
+     *             is NaN, positive infinity, or negative infinity.
+     * @throws JSONInvalidKeyException
+     *             If there is no data for the given key.
+     * @throws JSONDataAccessTypeException
+     *             If the data associated with the key can not be retrieved as a
+     *             long.
      */
     private PrizeData getPrizeFromJSON(JSONObject jsonPrize) {
         PrizeData prize = new PrizeData();
@@ -922,13 +1145,18 @@ public class AjaxBridgeServlet extends HttpServlet {
      * <p>
      * Convenience method in getting a JSON object from a Prize.
      * </p>
-     *
-     * @param prize the Prize object where the values will be coming from
+     * 
+     * @param prize
+     *            the Prize object where the values will be coming from
      * @return the json object created from this prize object
-     * @throws IllegalArgumentException If any parameter is <code>null</code> or <code>value</code> is NaN, positive
-     *             infinity, or negative infinity.
-     * @throws JSONInvalidKeyException If there is no data for the given key.
-     * @throws JSONDataAccessTypeException If the data associated with the key can not be retrieved as a long.
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code> or <code>value</code>
+     *             is NaN, positive infinity, or negative infinity.
+     * @throws JSONInvalidKeyException
+     *             If there is no data for the given key.
+     * @throws JSONDataAccessTypeException
+     *             If the data associated with the key can not be retrieved as a
+     *             long.
      */
     private JSONObject getJSONFromPrize(PrizeData prize) {
         // initialize the JSON object using the Prize
@@ -940,15 +1168,21 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
-     * Convenience method in getting a UploadedDocument object from a JSONObject.
+     * Convenience method in getting a UploadedDocument object from a
+     * JSONObject.
      * </p>
-     *
-     * @param jsonUpDoc the JSONObject where the values will be coming from
+     * 
+     * @param jsonUpDoc
+     *            the JSONObject where the values will be coming from
      * @return the uploaded document object created from this json object
-     * @throws IllegalArgumentException If any parameter is <code>null</code> or <code>value</code> is NaN, positive
-     *             infinity, or negative infinity.
-     * @throws JSONInvalidKeyException If there is no data for the given key.
-     * @throws JSONDataAccessTypeException If the data associated with the key can not be retrieved as a long.
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code> or <code>value</code>
+     *             is NaN, positive infinity, or negative infinity.
+     * @throws JSONInvalidKeyException
+     *             If there is no data for the given key.
+     * @throws JSONDataAccessTypeException
+     *             If the data associated with the key can not be retrieved as a
+     *             long.
      */
     private UploadedDocument getDocumentUploadsFromJSON(JSONObject jsonUpDoc) {
         UploadedDocument upDoc = new UploadedDocument();
@@ -957,6 +1191,7 @@ public class AjaxBridgeServlet extends HttpServlet {
         upDoc.setDocumentId(jsonUpDoc.getLong("documentID"));
         upDoc.setFileName(jsonUpDoc.getString("fileName"));
         upDoc.setPath(jsonUpDoc.getString("path"));
+        upDoc.setDocumentTypeId(jsonUpDoc.getLong("documentTypeID"));
         return upDoc;
     }
 
@@ -964,13 +1199,19 @@ public class AjaxBridgeServlet extends HttpServlet {
      * <p>
      * Convenience method in getting a JSON object from an UploadedDocument.
      * </p>
-     *
-     * @param upDoc the UploadedDocument object where the values will be coming from
+     * 
+     * @param upDoc
+     *            the UploadedDocument object where the values will be coming
+     *            from
      * @return the json object created from this uploaded document object
-     * @throws IllegalArgumentException If any parameter is <code>null</code> or <code>value</code> is NaN, positive
-     *             infinity, or negative infinity.
-     * @throws JSONInvalidKeyException If there is no data for the given key.
-     * @throws JSONDataAccessTypeException If the data associated with the key can not be retrieved as a long.
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code> or <code>value</code>
+     *             is NaN, positive infinity, or negative infinity.
+     * @throws JSONInvalidKeyException
+     *             If there is no data for the given key.
+     * @throws JSONDataAccessTypeException
+     *             If the data associated with the key can not be retrieved as a
+     *             long.
      */
     private JSONObject getJSONFromUploadedDocument(UploadedDocument upDoc) {
         JSONObject respJSON = new JSONObject();
@@ -979,6 +1220,7 @@ public class AjaxBridgeServlet extends HttpServlet {
         respJSON.setString("description", getString(upDoc.getDescription()));
         respJSON.setString("fileName", getString(upDoc.getFileName()));
         respJSON.setString("path", getString(upDoc.getPath()));
+        respJSON.setLong("documentTypeID", upDoc.getDocumentTypeId());
         return respJSON;
     }
 
@@ -986,13 +1228,18 @@ public class AjaxBridgeServlet extends HttpServlet {
      * <p>
      * Convenience method in getting a Contest Payload object from a JSONObject.
      * </p>
-     *
-     * @param jsonPayload the JSONObject where the values will be coming from
+     * 
+     * @param jsonPayload
+     *            the JSONObject where the values will be coming from
      * @return the contest payload object created from this json object
-     * @throws IllegalArgumentException If any parameter is <code>null</code> or <code>value</code> is NaN, positive
-     *             infinity, or negative infinity.
-     * @throws JSONInvalidKeyException If there is no data for the given key.
-     * @throws JSONDataAccessTypeException If the data associated with the key can not be retrieved as a long.
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code> or <code>value</code>
+     *             is NaN, positive infinity, or negative infinity.
+     * @throws JSONInvalidKeyException
+     *             If there is no data for the given key.
+     * @throws JSONDataAccessTypeException
+     *             If the data associated with the key can not be retrieved as a
+     *             long.
      */
     private ContestPayload getContestPayloadFromJSON(JSONObject jsonPayload) {
         ContestPayload payload = new ContestPayload();
@@ -1008,13 +1255,18 @@ public class AjaxBridgeServlet extends HttpServlet {
      * <p>
      * Convenience method in getting a JSON object from an ContestPayload.
      * </p>
-     *
-     * @param payload the ContestPayload object where the values will be coming from
+     * 
+     * @param payload
+     *            the ContestPayload object where the values will be coming from
      * @return the json object created from this payload object
-     * @throws IllegalArgumentException If any parameter is <code>null</code> or <code>value</code> is NaN, positive
-     *             infinity, or negative infinity.
-     * @throws JSONInvalidKeyException If there is no data for the given key.
-     * @throws JSONDataAccessTypeException If the data associated with the key can not be retrieved as a long.
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code> or <code>value</code>
+     *             is NaN, positive infinity, or negative infinity.
+     * @throws JSONInvalidKeyException
+     *             If there is no data for the given key.
+     * @throws JSONDataAccessTypeException
+     *             If the data associated with the key can not be retrieved as a
+     *             long.
      */
     private JSONObject getJSONFromContestPayload(ContestPayload payload) {
         JSONObject respJSON = new JSONObject();
@@ -1026,25 +1278,31 @@ public class AjaxBridgeServlet extends HttpServlet {
         return respJSON;
     }
 
-
     /**
      * <p>
      * Convenience method in getting a JSON object from an Contest Status.
      * </p>
-     *
-     * @param contestStatus the Contest Status object where the values will be coming from
+     * 
+     * @param contestStatus
+     *            the Contest Status object where the values will be coming from
      * @return the json object created from this contest status object
-     * @throws IllegalArgumentException If any parameter is <code>null</code> or <code>value</code> is NaN, positive
-     *             infinity, or negative infinity.
-     * @throws JSONInvalidKeyException If there is no data for the given key.
-     * @throws JSONDataAccessTypeException If the data associated with the key can not be retrieved as a long.
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code> or <code>value</code>
+     *             is NaN, positive infinity, or negative infinity.
+     * @throws JSONInvalidKeyException
+     *             If there is no data for the given key.
+     * @throws JSONDataAccessTypeException
+     *             If the data associated with the key can not be retrieved as a
+     *             long.
      */
     private JSONObject getJSONFromContestStatus(ContestStatusData contestStatus) {
         JSONObject respJSON = new JSONObject();
         respJSON.setLong("statusID", contestStatus.getStatusId());
         respJSON.setString("name", contestStatus.getName());
-        respJSON.setString("description", getString(contestStatus.getDescription()));
-        respJSON.setString("displayIcon", getString(contestStatus.getDisplayIcon()));
+        respJSON.setString("description", getString(contestStatus
+                .getDescription()));
+        respJSON.setString("displayIcon", getString(contestStatus
+                .getDisplayIcon()));
 
         JSONArray allowableNextStatuses = new JSONArray();
         // iterate over the allowable statuses
@@ -1062,17 +1320,22 @@ public class AjaxBridgeServlet extends HttpServlet {
      * <p>
      * Convenience method in getting a JSON object from a Contest.
      * </p>
-     *
-     * @param contest the Contest object where the values will be coming from
+     * 
+     * @param contest
+     *            the Contest object where the values will be coming from
      * @return the json object created from this contest object
-     * @throws IllegalArgumentException If any parameter is <code>null</code> or <code>value</code> is NaN, positive
-     *             infinity, or negative infinity.
-     * @throws JSONInvalidKeyException If there is no data for the given key.
-     * @throws JSONDataAccessTypeException If the data associated with the key can not be retrieved as a long.
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code> or <code>value</code>
+     *             is NaN, positive infinity, or negative infinity.
+     * @throws JSONInvalidKeyException
+     *             If there is no data for the given key.
+     * @throws JSONDataAccessTypeException
+     *             If the data associated with the key can not be retrieved as a
+     *             long.
      */
     private JSONObject getJSONFromContest(ContestData contest) {
-    	debug("getJSONFromContest - contestID=" + contest.getContestId());
-    	
+        debug("getJSONFromContest - contestID=" + contest.getContestId());
+
         // initialize the JSON object using the Contest
         JSONObject respJSON = new JSONObject();
         respJSON.setLong("contestID", contest.getContestId());
@@ -1080,18 +1343,25 @@ public class AjaxBridgeServlet extends HttpServlet {
         respJSON.setString("name", contest.getName());
         respJSON.setString("shortSummary", contest.getShortSummary());
         respJSON.setInt("durationInHours", contest.getDurationInHours());
-        respJSON.setString("finalFileFormatOther", contest.getOtherFileFormats());
+        respJSON.setString("finalFileFormatOther", contest
+                .getOtherFileFormats());
         respJSON.setLong("statusID", contest.getStatusId());
-        respJSON.setString("contestDescriptionAndRequirements", contest.getContestDescriptionAndRequirements());
-        respJSON.setString("requiredOrRestrictedColors", contest.getRequiredOrRestrictedColors());
-        respJSON.setString("requiredOrRestrictedFonts", contest.getRequiredOrRestrictedFonts());
+        respJSON.setString("contestDescriptionAndRequirements", contest
+                .getContestDescriptionAndRequirements());
+        respJSON.setString("requiredOrRestrictedColors", contest
+                .getRequiredOrRestrictedColors());
+        respJSON.setString("requiredOrRestrictedFonts", contest
+                .getRequiredOrRestrictedFonts());
         respJSON.setString("sizeRequirements", contest.getSizeRequirements());
-        respJSON.setString("otherRequirementsOrRestrictions", contest.getOtherRequirementsOrRestrictions());
+        respJSON.setString("otherRequirementsOrRestrictions", contest
+                .getOtherRequirementsOrRestrictions());
         respJSON.setLong("tcDirectProjectID", contest.getTcDirectProjectId());
         respJSON.setLong("creatorUserID", contest.getCreatorUserId());
         respJSON.setLong("contestTypeID", contest.getContestTypeId()); // [27128642-6]
-        respJSON.setString("launchDateAndTime", getDateString(contest.getLaunchDateAndTime()));
-        respJSON.setString("winnerAnnouncementDeadline", getDateString(contest.getWinnerAnnoucementDeadline()));
+        respJSON.setString("launchDateAndTime", getDateString(contest
+                .getLaunchDateAndTime()));
+        respJSON.setString("winnerAnnouncementDeadline", getDateString(contest
+                .getWinnerAnnoucementDeadline()));
 
         // set up ARRAYS
         // Prizes[]
@@ -1149,8 +1419,9 @@ public class AjaxBridgeServlet extends HttpServlet {
      * <p>
      * Gets JSON string from contest type value.
      * </p>
-     *
-     * @param type contest type data
+     * 
+     * @param type
+     *            contest type data
      * @return JSON string
      */
     private JSONObject getJSONFromContestType(ContestTypeData type) {
@@ -1177,13 +1448,18 @@ public class AjaxBridgeServlet extends HttpServlet {
      * <p>
      * Convenience method in getting a Project object from a JSONObject.
      * </p>
-     *
-     * @param jsonProj the JSONObject where the values will be coming from
+     * 
+     * @param jsonProj
+     *            the JSONObject where the values will be coming from
      * @return the project object created from this json object
-     * @throws IllegalArgumentException If any parameter is <code>null</code> or <code>value</code> is NaN, positive
-     *             infinity, or negative infinity.
-     * @throws JSONInvalidKeyException If there is no data for the given key.
-     * @throws JSONDataAccessTypeException If the data associated with the key can not be retrieved as a long.
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code> or <code>value</code>
+     *             is NaN, positive infinity, or negative infinity.
+     * @throws JSONInvalidKeyException
+     *             If there is no data for the given key.
+     * @throws JSONDataAccessTypeException
+     *             If the data associated with the key can not be retrieved as a
+     *             long.
      */
     private ProjectData getProjectFromJSON(JSONObject jsonProj) {
         // initialize the project using the JSON object
@@ -1197,22 +1473,31 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
-     * Convenience method in getting a PrerequisiteDocument object from a JSONObject.
+     * Convenience method in getting a PrerequisiteDocument object from a
+     * JSONObject.
      * </p>
-     *
-     * @param json the JSONObject which will be used to construct the document
+     * 
+     * @param json
+     *            the JSONObject which will be used to construct the document
      * @return the document created from the json object
-     * @throws ParseException if any parsing error
-     * @throws IllegalArgumentException If any parameter is <code>null</code> or <code>value</code> is NaN, positive
-     *             infinity, or negative infinity.
-     * @throws JSONInvalidKeyException If there is no data for the given key.
-     * @throws JSONDataAccessTypeException If the data associated with the key can not be retrieved as a long.
+     * @throws ParseException
+     *             if any parsing error
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code> or <code>value</code>
+     *             is NaN, positive infinity, or negative infinity.
+     * @throws JSONInvalidKeyException
+     *             If there is no data for the given key.
+     * @throws JSONDataAccessTypeException
+     *             If the data associated with the key can not be retrieved as a
+     *             long.
      */
-    private PrerequisiteDocument getPrerequisiteDocumentFromJSON(JSONObject json) throws ParseException {
+    private PrerequisiteDocument getPrerequisiteDocumentFromJSON(JSONObject json)
+            throws ParseException {
         PrerequisiteDocument document = new PrerequisiteDocument();
         document.setDocumentId(json.getLong("documentID"));
         document.setVersion(json.getInt("version"));
-        document.setVersionDate(getXMLGregorianCalendar(json.getString("versionDate")));
+        document.setVersionDate(getXMLGregorianCalendar(json
+                .getString("versionDate")));
         document.setName(json.getString("name"));
         document.setContent(json.getString("content"));
         return document;
@@ -1222,11 +1507,13 @@ public class AjaxBridgeServlet extends HttpServlet {
      * <p>
      * Convenience method in getting a JSON object from a Project.
      * </p>
-     *
-     * @param project the Project object where the values will be coming from
+     * 
+     * @param project
+     *            the Project object where the values will be coming from
      * @return the json object created from this project object
-     * @throws IllegalArgumentException If any parameter is <code>null</code> or <code>value</code> is NaN, positive
-     *             infinity, or negative infinity.
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code> or <code>value</code>
+     *             is NaN, positive infinity, or negative infinity.
      */
     private JSONObject getJSONFromProject(ProjectData project) {
         // initialize the JSON object using the Project
@@ -1242,29 +1529,41 @@ public class AjaxBridgeServlet extends HttpServlet {
      * <p>
      * Convenience method in getting a Submission object from a JSONObject.
      * </p>
-     *
-     * @param jsonSubmission the JSONObject where the values will be coming from
+     * 
+     * @param jsonSubmission
+     *            the JSONObject where the values will be coming from
      * @return the Submission object created from this json object
-     * @throws ParseException when an exception occurs while parsing the date string
-     * @throws IllegalArgumentException If any parameter is <code>null</code> or <code>value</code> is NaN, positive
-     *             infinity, or negative infinity.
-     * @throws JSONInvalidKeyException If there is no data for the given key.
-     * @throws JSONDataAccessTypeException If the data associated with the key can not be retrieved as a long.
+     * @throws ParseException
+     *             when an exception occurs while parsing the date string
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code> or <code>value</code>
+     *             is NaN, positive infinity, or negative infinity.
+     * @throws JSONInvalidKeyException
+     *             If there is no data for the given key.
+     * @throws JSONDataAccessTypeException
+     *             If the data associated with the key can not be retrieved as a
+     *             long.
      */
-    private SubmissionData getSubmissionFromJSON(JSONObject jsonSubmission) throws ParseException {
+    private SubmissionData getSubmissionFromJSON(JSONObject jsonSubmission)
+            throws ParseException {
         // initialize the Submission using the JSON object
         SubmissionData submission = new SubmissionData();
         submission.setSubmissionId(jsonSubmission.getLong("submissionID"));
         submission.setSubmitterId(jsonSubmission.getLong("submitterID"));
-        submission.setSubmittedDate(getXMLGregorianCalendar(jsonSubmission.getString("submissionTimeStamp")));
-        submission.setSubmissionContent(jsonSubmission.getString("submissionContent"));
+        submission.setSubmittedDate(getXMLGregorianCalendar(jsonSubmission
+                .getString("submissionTimeStamp")));
+        submission.setSubmissionContent(jsonSubmission
+                .getString("submissionContent"));
         submission.setContestId(jsonSubmission.getLong("contestID"));
-        submission.setPassedScreening(new Boolean(jsonSubmission.getBoolean("passedScreening")));
+        submission.setPassedScreening(new Boolean(jsonSubmission
+                .getBoolean("passedScreening")));
         submission.setPlacement(jsonSubmission.getInt("placement"));
         submission.setPaidFor(jsonSubmission.getBoolean("paidFor"));
         submission.setPrice(jsonSubmission.getDouble("price"));
-        submission.setMarkedForPurchase(jsonSubmission.getBoolean("markedForPurchase"));
-        submission.setPassedScreening(jsonSubmission.getBoolean("passedReview"));
+        submission.setMarkedForPurchase(jsonSubmission
+                .getBoolean("markedForPurchase"));
+        submission
+                .setPassedScreening(jsonSubmission.getBoolean("passedReview"));
         // http://forums.topcoder.com/?module=Thread&threadID=614379&start=0&mc=3#979412
         // ignore it for now
         // submission.setRemoved(jsonSubmission.getBoolean("removed"));
@@ -1276,28 +1575,34 @@ public class AjaxBridgeServlet extends HttpServlet {
      * <p>
      * Convenience method in getting a JSON object from a Submission.
      * </p>
-     *
-     * @param submission the Submission object where the values will be coming from
+     * 
+     * @param submission
+     *            the Submission object where the values will be coming from
      * @return the json object created from this Submission object
-     * @throws IllegalArgumentException If any parameter is <code>null</code> or <code>value</code> is NaN, positive
-     *             infinity, or negative infinity.
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code> or <code>value</code>
+     *             is NaN, positive infinity, or negative infinity.
      */
     private JSONObject getJSONFromSubmission(SubmissionData submission) {
         // initialize the JSON object using the Submission
         JSONObject respJSON = new JSONObject();
         respJSON.setLong("submissionID", submission.getSubmissionId());
         respJSON.setLong("submitterID", submission.getSubmitterId());
-        respJSON.setString("submissionTimeStamp", getDateString(submission.getSubmittedDate()));
-        respJSON.setString("submissionContent", submission.getSubmissionContent());
+        respJSON.setString("submissionTimeStamp", getDateString(submission
+                .getSubmittedDate()));
+        respJSON.setString("submissionContent", submission
+                .getSubmissionContent());
         respJSON.setLong("contestID", submission.getContestId());
         respJSON.setBoolean("passedScreening", submission.isPassedScreening());
-        // although passedReview is not existing in current version of Submission,
+        // although passedReview is not existing in current version of
+        // Submission,
         // this was still added per instruction of Architect
         respJSON.setBoolean("passedReview", false);
         respJSON.setInt("placement", submission.getPlacement());
         respJSON.setBoolean("paidFor", submission.isPaidFor());
         respJSON.setDouble("price", submission.getPrice());
-        respJSON.setBoolean("markedForPurchase", submission.isMarkedForPurchase());
+        respJSON.setBoolean("markedForPurchase", submission
+                .isMarkedForPurchase());
         // http://forums.topcoder.com/?module=Thread&threadID=614379&start=0&mc=1#979408
         // make the removed as false all the time now
         respJSON.setBoolean("removed", false);
@@ -1307,15 +1612,19 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
-     * Convenience method to get a JSON object from a PrerequisiteDocument instance.
+     * Convenience method to get a JSON object from a PrerequisiteDocument
+     * instance.
      * </p>
-     *
-     * @param document prerequisite document
+     * 
+     * @param document
+     *            prerequisite document
      * @return the json object created from the document
-     * @throws IllegalArgumentException If any parameter is <code>null</code> or <code>value</code> is NaN, positive
-     *             infinity, or negative infinity.
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code> or <code>value</code>
+     *             is NaN, positive infinity, or negative infinity.
      */
-    private JSONObject getJSONFromPrerequisteDocument(PrerequisiteDocument document) {
+    private JSONObject getJSONFromPrerequisteDocument(
+            PrerequisiteDocument document) {
         JSONObject json = new JSONObject();
         json.setLong("documentID", document.getDocumentId());
         json.setInt("version", document.getVersion());
@@ -1327,25 +1636,33 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
-     * This is a helper method in getting the init parameters from the servlet config. When the init parameter is
-     * null/empty and default value is null, throw an <code>IllegalArgumentException</code> or if the default value is
-     * not null, return the default value. If the init parameter is neither null nor empty, return it.
+     * This is a helper method in getting the init parameters from the servlet
+     * config. When the init parameter is null/empty and default value is null,
+     * throw an <code>IllegalArgumentException</code> or if the default value
+     * is not null, return the default value. If the init parameter is neither
+     * null nor empty, return it.
      * </p>
-     *
+     * 
      * <p>
-     * A null value in defaultValue parameter means that the init parameter is required.
+     * A null value in defaultValue parameter means that the init parameter is
+     * required.
      * </p>
-     *
-     * @param name the name of the init parameter to retrieve
-     * @param defaultValue the default value to use in case the init parameter is not found
+     * 
+     * @param name
+     *            the name of the init parameter to retrieve
+     * @param defaultValue
+     *            the default value to use in case the init parameter is not
+     *            found
      * @return the value of the init parameter defined in web.xml
-     * @throws IllegalArgumentException when a required parameter is not supplied
+     * @throws IllegalArgumentException
+     *             when a required parameter is not supplied
      */
     private String getParameter(String name, String defaultValue) {
         String value = getServletConfig().getInitParameter(name);
         if ((value == null || "".equals(value.trim()))) {
             if (defaultValue == null) {
-                throw new IllegalArgumentException("The init parameter '" + name + "' is null/empty");
+                throw new IllegalArgumentException("The init parameter '"
+                        + name + "' is null/empty");
             } else {
                 return defaultValue;
             }
@@ -1356,15 +1673,21 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
-     * Convenience method for sending the response of this servlet to the entity who initiated the request. This first
-     * properly setups the response object before sending the response.
+     * Convenience method for sending the response of this servlet to the entity
+     * who initiated the request. This first properly setups the response object
+     * before sending the response.
      * </p>
-     *
-     * @param s the response to be send to the requesting entity
-     * @param response the response object to be operated on
-     * @throws IOException when an exception occurs while sending the response to the requesting entity
+     * 
+     * @param s
+     *            the response to be send to the requesting entity
+     * @param response
+     *            the response object to be operated on
+     * @throws IOException
+     *             when an exception occurs while sending the response to the
+     *             requesting entity
      */
-    private void printAjaxResponseString(String s, HttpServletResponse response) throws IOException {
+    private void printAjaxResponseString(String s, HttpServletResponse response)
+            throws IOException {
         PrintWriter pw = response.getWriter();
         // properly setups the response
         setupAjaxResponseHeaders(response);
@@ -1374,28 +1697,37 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
-     * Convenience method for setting the Content Type of the response of this servlet. This also in turn calls
-     * <code>setupAjaxCommonResponseHeaders()</code> to setup the common HTTP Headers needed for this response.
+     * Convenience method for setting the Content Type of the response of this
+     * servlet. This also in turn calls
+     * <code>setupAjaxCommonResponseHeaders()</code> to setup the common HTTP
+     * Headers needed for this response.
      * </p>
-     *
-     * @param response the response object to be operated on
-     * @throws IOException when an exception occurs while setting the Content Type of the response
+     * 
+     * @param response
+     *            the response object to be operated on
+     * @throws IOException
+     *             when an exception occurs while setting the Content Type of
+     *             the response
      */
-    private void setupAjaxResponseHeaders(HttpServletResponse response) throws IOException {
+    private void setupAjaxResponseHeaders(HttpServletResponse response)
+            throws IOException {
         response.setContentType("text/html");
         setupAjaxCommonResponseHeaders(response);
     }
 
     /**
      * <p>
-     * Convenience method for setting the HTTP Headers so that the response from this servlet is not cached by the
-     * receiving browser.
+     * Convenience method for setting the HTTP Headers so that the response from
+     * this servlet is not cached by the receiving browser.
      * </p>
-     *
-     * @param response the response object where to set the HTTP Headers
-     * @throws IOException when an exception occurs while setting the HTTP Headers
+     * 
+     * @param response
+     *            the response object where to set the HTTP Headers
+     * @throws IOException
+     *             when an exception occurs while setting the HTTP Headers
      */
-    private void setupAjaxCommonResponseHeaders(HttpServletResponse response) throws IOException {
+    private void setupAjaxCommonResponseHeaders(HttpServletResponse response)
+            throws IOException {
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Expires", "0");
         response.setHeader("Cache-Control", "no-store");
@@ -1405,13 +1737,16 @@ public class AjaxBridgeServlet extends HttpServlet {
      * <p>
      * Convenience method for logging error that occurred in this servlet.
      * </p>
-     *
-     * @param e the exception that occurred.
-     * @param customErrorMsg the error message in string format
+     * 
+     * @param e
+     *            the exception that occurred.
+     * @param customErrorMsg
+     *            the error message in string format
      */
     private void logError(Exception e, String customErrorMsg) {
-        String errorMsg = customErrorMsg != null ? customErrorMsg : e.getClass().getSimpleName()
-            + " exception occurred while handling request";
+        String errorMsg = customErrorMsg != null ? customErrorMsg : e
+                .getClass().getSimpleName()
+                + " exception occurred while handling request";
         logger.log(Level.ERROR, e, errorMsg + " : " + e.getMessage());
         // print the stack trace
         e.printStackTrace();
@@ -1419,10 +1754,10 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
-     * Convenience method to get Success <code>JSONObject</code> to return to as a response. This by default sets
-     * "success" to true.
+     * Convenience method to get Success <code>JSONObject</code> to return to
+     * as a response. This by default sets "success" to true.
      * </p>
-     *
+     * 
      * @return json object that corresponds to a success operation.
      */
     private JSONObject getSuccessJSONResponse() {
@@ -1433,17 +1768,24 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
-     * Convenience method to get Error <code>JSONObject</code> to return to as a response. This by default sets
-     * "success" to false.
+     * Convenience method to get Error <code>JSONObject</code> to return to as
+     * a response. This by default sets "success" to false.
      * </p>
-     *
-     * @param errorMsg the error message to be sent back to the user
-     * @param response the HttpServletResponse object where to get the writer for the response
-     * @throws IOException this exception is propagated from the other methods called inside this method
-     * @throws JSONEncodingException when an error occurred while encoding the json object
+     * 
+     * @param errorMsg
+     *            the error message to be sent back to the user
+     * @param response
+     *            the HttpServletResponse object where to get the writer for the
+     *            response
+     * @throws IOException
+     *             this exception is propagated from the other methods called
+     *             inside this method
+     * @throws JSONEncodingException
+     *             when an error occurred while encoding the json object
      */
-    private void sendErrorJSONResponse(String errorMsg, HttpServletResponse response) throws IOException,
-        JSONEncodingException {
+    private void sendErrorJSONResponse(String errorMsg,
+            HttpServletResponse response) throws IOException,
+            JSONEncodingException {
 
         JSONObject json = new JSONObject();
         json.setBoolean("success", false);
@@ -1454,17 +1796,24 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
-     * Convenience method to send a success JSONObject response to the requesting entity.
+     * Convenience method to send a success JSONObject response to the
+     * requesting entity.
      * </p>
-     *
-     * @param respJSON the json object to be send as a response
-     * @param response object where to get the print writer to send the response
-     *
-     * @throws IOException this exception is propagated from the other methods called inside this method
-     * @throws JSONEncodingException when an error occurred while encoding the json object
+     * 
+     * @param respJSON
+     *            the json object to be send as a response
+     * @param response
+     *            object where to get the print writer to send the response
+     * 
+     * @throws IOException
+     *             this exception is propagated from the other methods called
+     *             inside this method
+     * @throws JSONEncodingException
+     *             when an error occurred while encoding the json object
      */
-    private void sendJSONObjectAsResponse(JSONObject respJSON, HttpServletResponse response) throws IOException,
-        JSONEncodingException {
+    private void sendJSONObjectAsResponse(JSONObject respJSON,
+            HttpServletResponse response) throws IOException,
+            JSONEncodingException {
         // set the success message with json object
         JSONObject succJson = getSuccessJSONResponse();
         succJson.setNestedObject("json", respJSON);
@@ -1474,17 +1823,24 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
-     * Convenience method to send a success JSONObject embedded with JSONArray response to the requesting entity.
+     * Convenience method to send a success JSONObject embedded with JSONArray
+     * response to the requesting entity.
      * </p>
-     *
-     * @param jsonArray the json array to be send as a response
-     * @param response object where to get the print writer to send the response
-     *
-     * @throws IOException this exception is propagated from the other methods called inside this method
-     * @throws JSONEncodingException when an error occurred while encoding the json object
+     * 
+     * @param jsonArray
+     *            the json array to be send as a response
+     * @param response
+     *            object where to get the print writer to send the response
+     * 
+     * @throws IOException
+     *             this exception is propagated from the other methods called
+     *             inside this method
+     * @throws JSONEncodingException
+     *             when an error occurred while encoding the json object
      */
-    private void sendJSONObjectWithArrayAsResponse(JSONArray jsonArray, HttpServletResponse response)
-        throws IOException, JSONEncodingException {
+    private void sendJSONObjectWithArrayAsResponse(JSONArray jsonArray,
+            HttpServletResponse response) throws IOException,
+            JSONEncodingException {
         // set the success message with json object
         JSONObject succJson = getSuccessJSONResponse();
         succJson.setArray("json", jsonArray);
@@ -1494,18 +1850,24 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
-     * Convenience method to send a success response to the requesting entity. Before the response is written, we first
-     * log the Ajax response.
+     * Convenience method to send a success response to the requesting entity.
+     * Before the response is written, we first log the Ajax response.
      * </p>
-     *
-     * @param succJson the json object to be send as a response
-     * @param response object where to get the print writer to send the response
-     *
-     * @throws IOException this exception is thrown when an error occurs while writing the response
-     * @throws JSONEncodingException when an error occurred while encoding the json object
+     * 
+     * @param succJson
+     *            the json object to be send as a response
+     * @param response
+     *            object where to get the print writer to send the response
+     * 
+     * @throws IOException
+     *             this exception is thrown when an error occurs while writing
+     *             the response
+     * @throws JSONEncodingException
+     *             when an error occurred while encoding the json object
      */
-    private void printSuccessResponse(JSONObject succJson, HttpServletResponse response) throws IOException,
-        JSONEncodingException {
+    private void printSuccessResponse(JSONObject succJson,
+            HttpServletResponse response) throws IOException,
+            JSONEncodingException {
         // encode the json object for response
         String strResponse = jsonEncoder.encode(succJson);
         // log the ajax response
@@ -1521,8 +1883,9 @@ public class AjaxBridgeServlet extends HttpServlet {
      * <p>
      * Based from apache commons file upload.
      * </p>
-     *
-     * @param request the HttpServletRequest
+     * 
+     * @param request
+     *            the HttpServletRequest
      * @return true if multipart, false if not
      */
     private boolean isMultipartContent(HttpServletRequest request) {
@@ -1544,10 +1907,12 @@ public class AjaxBridgeServlet extends HttpServlet {
      * <p>
      * Reads the contents of an input stream into a byte[].
      * </p>
-     *
-     * @param inputStream where the data will come from
+     * 
+     * @param inputStream
+     *            where the data will come from
      * @return byte array equivalent of the contents from the input stream
-     * @throws IOException where there's a problem reading the input stream
+     * @throws IOException
+     *             where there's a problem reading the input stream
      */
     private byte[] readContent(InputStream inputStream) throws IOException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -1568,18 +1933,25 @@ public class AjaxBridgeServlet extends HttpServlet {
      * <p>
      * Checks if the parameter passed is null or empty.
      * </p>
-     *
-     * @param param the parameter to be check
-     * @param paramName the name of parameter
-     * @param response where the response will be sent
+     * 
+     * @param param
+     *            the parameter to be check
+     * @param paramName
+     *            the name of parameter
+     * @param response
+     *            where the response will be sent
      * @return true if it is null/empty, false if it is not null/empty
-     * @throws JSONEncodingException when an error occurs in encoding the response
-     * @throws IOException when an error occurs in sending the response
+     * @throws JSONEncodingException
+     *             when an error occurs in encoding the response
+     * @throws IOException
+     *             when an error occurs in sending the response
      */
-    private boolean checkIfNullOrEmpty(String param, String paramName, HttpServletResponse response)
-        throws JSONEncodingException, IOException {
+    private boolean checkIfNullOrEmpty(String param, String paramName,
+            HttpServletResponse response) throws JSONEncodingException,
+            IOException {
         if (param == null || "".equals(param.trim())) {
-            sendErrorJSONResponse("Invalid [" + paramName + "] parameter. It cannot be null or empty.", response);
+            sendErrorJSONResponse("Invalid [" + paramName
+                    + "] parameter. It cannot be null or empty.", response);
             return true;
         }
         return false;
@@ -1587,68 +1959,93 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
-     * Checks if the parameter of long type passed is less than zero. This will be used to check for parameters that
-     * needs to be greater than zero.
+     * Checks if the parameter of long type passed is less than zero. This will
+     * be used to check for parameters that needs to be greater than zero.
      * </p>
-     *
-     * @param param the parameter to be check
-     * @param paramName the name of parameter
-     * @param response where the response will be sent
+     * 
+     * @param param
+     *            the parameter to be check
+     * @param paramName
+     *            the name of parameter
+     * @param response
+     *            where the response will be sent
      * @return true if it is null/empty, false if it is not null/empty
-     * @throws JSONEncodingException when an error occurs in encoding the response
-     * @throws IOException when an error occurs in sending the response
+     * @throws JSONEncodingException
+     *             when an error occurs in encoding the response
+     * @throws IOException
+     *             when an error occurs in sending the response
      */
-    private boolean checkLongIfLessThanZero(String param, String paramName, HttpServletResponse response)
-        throws JSONEncodingException, IOException {
+    private boolean checkLongIfLessThanZero(String param, String paramName,
+            HttpServletResponse response) throws JSONEncodingException,
+            IOException {
         return checkIfLessThanZero(param, paramName, true, response);
     }
 
     /**
      * <p>
-     * Checks if the parameter of integer type passed is less than zero. This will be used to check for parameters that
-     * needs to be greater than zero.
+     * Checks if the parameter of integer type passed is less than zero. This
+     * will be used to check for parameters that needs to be greater than zero.
      * </p>
-     *
-     * @param param the parameter to be check
-     * @param paramName the name of parameter
-     * @param response where the response will be sent
+     * 
+     * @param param
+     *            the parameter to be check
+     * @param paramName
+     *            the name of parameter
+     * @param response
+     *            where the response will be sent
      * @return true if it is null/empty, false if it is not null/empty
-     * @throws JSONEncodingException when an error occurs in encoding the response
-     * @throws IOException when an error occurs in sending the response
+     * @throws JSONEncodingException
+     *             when an error occurs in encoding the response
+     * @throws IOException
+     *             when an error occurs in sending the response
      */
-    private boolean checkIntegerIfLessThanZero(String param, String paramName, HttpServletResponse response)
-        throws JSONEncodingException, IOException {
+    private boolean checkIntegerIfLessThanZero(String param, String paramName,
+            HttpServletResponse response) throws JSONEncodingException,
+            IOException {
         return checkIfLessThanZero(param, paramName, false, response);
     }
 
     /**
      * <p>
-     * Checks if the parameter passed is less than zero. This will be used to check for parameters that needs to be
-     * greater than zero.
+     * Checks if the parameter passed is less than zero. This will be used to
+     * check for parameters that needs to be greater than zero.
      * </p>
-     *
-     * @param param the parameter to be check
-     * @param name the name of parameter
-     * @param isLongType true if it is long and false if it is integer
-     * @param response where the response will be sent
+     * 
+     * @param param
+     *            the parameter to be check
+     * @param name
+     *            the name of parameter
+     * @param isLongType
+     *            true if it is long and false if it is integer
+     * @param response
+     *            where the response will be sent
      * @return true if it is null/empty, false if it is not null/empty
-     * @throws JSONEncodingException when an error occurs in encoding the response
-     * @throws IOException when an error occurs in sending the response
+     * @throws JSONEncodingException
+     *             when an error occurs in encoding the response
+     * @throws IOException
+     *             when an error occurs in sending the response
      */
-    private boolean checkIfLessThanZero(String param, String name, boolean isLongType, HttpServletResponse response)
-        throws JSONEncodingException, IOException {
+    private boolean checkIfLessThanZero(String param, String name,
+            boolean isLongType, HttpServletResponse response)
+            throws JSONEncodingException, IOException {
         // check first if null or empty
         if (checkIfNullOrEmpty(param, name, response)) {
             return true;
         } else {
             try {
-                if (isLongType && Long.parseLong(param) < 0 || !isLongType && Integer.parseInt(param) < 0) {
-                    sendErrorJSONResponse("Invalid [" + name + "] parameter. It cannot be less than zero.", response);
+                if (isLongType && Long.parseLong(param) < 0 || !isLongType
+                        && Integer.parseInt(param) < 0) {
+                    sendErrorJSONResponse("Invalid [" + name
+                            + "] parameter. It cannot be less than zero.",
+                            response);
                     return true;
                 }
             } catch (NumberFormatException e) {
-                sendErrorJSONResponse("Invalid [" + name + "] parameter of number type. It cannot have the value of ["
-                    + param + "].", response);
+                sendErrorJSONResponse(
+                        "Invalid ["
+                                + name
+                                + "] parameter of number type. It cannot have the value of ["
+                                + param + "].", response);
                 return true;
             }
         }
@@ -1658,37 +2055,49 @@ public class AjaxBridgeServlet extends HttpServlet {
     /**
      * Check if the parameter is a valid boolean value ('true' or 'false')
      * 
-     * @param param the parameter to be check
-     * @param name the name of parameter
-     * @param response where the response will be sent
+     * @param param
+     *            the parameter to be check
+     * @param name
+     *            the name of parameter
+     * @param response
+     *            where the response will be sent
      * @return true if it is null/empty, false if it is not null/empty
-     * @throws JSONEncodingException when an error occurs in encoding the response
-     * @throws IOException when an error occurs in sending the response
+     * @throws JSONEncodingException
+     *             when an error occurs in encoding the response
+     * @throws IOException
+     *             when an error occurs in sending the response
      */
-    private boolean checkBoolean(String param, String name, HttpServletResponse response)
-    	throws JSONEncodingException, IOException {
+    private boolean checkBoolean(String param, String name,
+            HttpServletResponse response) throws JSONEncodingException,
+            IOException {
 
-    	if (checkIfNullOrEmpty(param, name, response)) {
-	        return true;
-	    } 
-    	
-    	if (!(param.equals("true") || param.equals("false"))) {
-            sendErrorJSONResponse("Invalid [" + name + "] parameter. It must be either 'true' or 'false'.", response);
+        if (checkIfNullOrEmpty(param, name, response)) {
             return true;
-    	}
-	    return false;
-	}
+        }
+
+        if (!(param.equals("true") || param.equals("false"))) {
+            sendErrorJSONResponse("Invalid [" + name
+                    + "] parameter. It must be either 'true' or 'false'.",
+                    response);
+            return true;
+        }
+        return false;
+    }
 
     /**
      * <p>
-     * Converts date string into XMLGregorianCalendar instance. Returns null if parameter is null or empty.
+     * Converts date string into XMLGregorianCalendar instance. Returns null if
+     * parameter is null or empty.
      * </p>
-     *
-     * @param dateString Date string to convert
+     * 
+     * @param dateString
+     *            Date string to convert
      * @return converted calendar instance
-     * @throws ParseException if any parse error
+     * @throws ParseException
+     *             if any parse error
      */
-    private XMLGregorianCalendar getXMLGregorianCalendar(String dateString) throws ParseException {
+    private XMLGregorianCalendar getXMLGregorianCalendar(String dateString)
+            throws ParseException {
         if (dateString == null || dateString.trim().length() == 0) {
             return null;
         }
@@ -1705,22 +2114,26 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
-     * Converts XMLGregorianCalendar date into standard java Date object. Returns empty string if argument is null.
+     * Converts XMLGregorianCalendar date into standard java Date object.
+     * Returns empty string if argument is null.
      * </p>
-     *
-     * @param calendar calendar instance to convert
+     * 
+     * @param calendar
+     *            calendar instance to convert
      * @return converted date string
      */
     private String getDateString(XMLGregorianCalendar calendar) {
-        return calendar == null ? "" : dateFormatter.format(calendar.toGregorianCalendar().getTime());
+        return calendar == null ? "" : dateFormatter.format(calendar
+                .toGregorianCalendar().getTime());
     }
 
     /**
      * <p>
      * Join strings together as comma deliminated string.
      * </p>
-     *
-     * @param strings string list to be joined
+     * 
+     * @param strings
+     *            string list to be joined
      * @return concatenated string
      */
     private String joinStrings(List<String> strings) {
@@ -1743,22 +2156,26 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
-     * Split a string into string array by ",". It is a reverse function of above.
+     * Split a string into string array by ",". It is a reverse function of
+     * above.
      * </p>
-     *
-     * @param string to be split
+     * 
+     * @param string
+     *            to be split
      * @return array of strings
      */
     private String[] splitString(String string) {
-        return (string == null || string.trim().length() == 0) ? new String[] {} : string.split(",");
+        return (string == null || string.trim().length() == 0) ? new String[] {}
+                : string.split(",");
     }
 
     /**
      * <p>
      * Logs debug information.
      * </p>
-     *
-     * @param message debug message
+     * 
+     * @param message
+     *            debug message
      */
     private void debug(String message) {
         if (logger.isEnabled(Level.DEBUG)) {
@@ -1770,8 +2187,9 @@ public class AjaxBridgeServlet extends HttpServlet {
      * <p>
      * Convenience method to always return a non-null string value.
      * </p>
-     *
-     * @param str value
+     * 
+     * @param str
+     *            value
      * @return string value. It will be converted to "" if it is null.
      */
     private String getString(String str) {

@@ -28,6 +28,7 @@ public class UnitTests extends TestCase {
 
         // add AjaxBridgeSevlet
         suite.addTestSuite(AjaxBridgeServletTest.class);
+        suite.addTestSuite(AjaxBridgeServletUploadedDocumentTest.class);
 
         return suite;
     }

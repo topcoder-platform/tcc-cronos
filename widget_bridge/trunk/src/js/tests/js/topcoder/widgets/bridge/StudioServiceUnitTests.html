@@ -615,6 +615,42 @@
             }
 
             /**
+             * Test the uploadDocument for failure.
+             */
+            function test_uploadDocument_invalid() {
+            	try {
+            		instance.uploadDocument(null,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the addDocumentToContest for failure.
+             */
+            function test_addDocumentToContest_invalid1() {
+            	try {
+            		instance.addDocumentToContest(1,null,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the addDocumentToContest for failure.
+             */
+            function test_addDocumentToContest_invalid2() {
+            	try {
+            		instance.addDocumentToContest(null,2,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+            
+            /**
              * Tears down. Sets the instance value to null.
              */
             function tearDown() {
