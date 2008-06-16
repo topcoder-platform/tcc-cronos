@@ -598,4 +598,14 @@ public interface ContestManager {
      */
     public DocumentType getDocumentType(long documentTypeId) throws ContestManagementException;
 
+    /**
+     * <p>
+     * Fill status's statuses field (To statuses).
+     * </p>
+     *
+     * @param status status whose statuses field to be filled.
+     * @throws ContestManagementException if any error occurs when filling the status.
+     * @since 1.1.2
+     */
+    public void fillToStatuses(ContestStatus status) throws ContestManagementException;
 }

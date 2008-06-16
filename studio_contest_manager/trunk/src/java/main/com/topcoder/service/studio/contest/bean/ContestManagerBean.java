@@ -393,8 +393,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             logOneParameter(contestId);
 
             EntityManager em = getEntityManager();
-
-            return em.find(Contest.class, new Long(contestId));
+            Contest contest = em.find(Contest.class, new Long(contestId));
+            if (contest != null && contest.getStatus() != null) {
+                fillToStatuses(contest.getStatus());
+            }
+            return contest;
         } catch (IllegalStateException e) {
             throw wrapContestManagementException(e, "The EntityManager is closed.");
         } catch (PersistenceException e) {
@@ -840,7 +843,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             EntityManager em = getEntityManager();
 
-            ContestStatus contestStatus = em.find(ContestStatus.class, new Long(contestStatusId));
+            ContestStatus contestStatus = em.find(ContestStatus.class,
+                    new Long(contestStatusId));
+            if (contestStatus != null) {
+                fillToStatuses(contestStatus);
+            }
 
             return contestStatus;
         } catch (IllegalStateException e) {
@@ -1568,7 +1575,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             List<ContestStatus> result = new ArrayList<ContestStatus>();
 
             for (int i = 0; i < list.size(); i++) {
-                result.add((ContestStatus) list.get(i));
+                ContestStatus status = (ContestStatus) list.get(i);
+                fillToStatuses(status);
+                result.add(status);
             }
 
             return result;
@@ -1578,6 +1587,53 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "There are errors while persisting the entity.");
         } finally {
             logExit("getAllContestSatuses()");
+        }
+    }
+
+    /**
+     * <p>
+     * Fill status's statuses field (To statuses).
+     * </p>
+     * 
+     * @param status
+     *            status whose statuses field to be filled.
+     * @throws ContestManagementException
+     *             if any error occurs when filling the status.
+     * @since 1.1.2
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void fillToStatuses(ContestStatus status)
+            throws ContestManagementException {
+        try {
+            logEnter("fillToStatuses(ContestStsta)");
+            logOneParameter(status);
+
+            EntityManager em = getEntityManager();
+            Query query = em
+                    .createNativeQuery(
+                            "SELECT csl.* FROM contest_status_lu csl, "+
+                            "contest_status_relation csr "+
+                            "WHERE "+
+                            "csl.contest_status_id = csr.from_contest_status_id AND "+
+                            "csr.from_contest_status_id = ? AND csl.contest_status_group_id = 2",
+                            ContestStatus.class);
+            query.setParameter(1, status.getContestStatusId());
+            List<ContestStatus> list = query.getResultList();
+            if (list != null) {
+                for (ContestStatus s : list) {
+                    fillToStatuses(s);
+                }
+                status.setStatuses(list);
+            }
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e,
+                    "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e,
+                    "There are errors while persisting the entity.");
+        } finally {
+            logExit("fillToStatuses(ContestStatus)");
         }
     }
 
@@ -2094,6 +2150,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             List list = query.getResultList();
 
             List<Contest> result = new ArrayList<Contest>();
+            for(Contest contest : result)
+            {
+                fillToStatuses(contest.getStatus());
+            }
             result.addAll(list);
             return result;
         } catch (IllegalStateException e) {
