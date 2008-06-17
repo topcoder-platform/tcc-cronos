@@ -356,6 +356,7 @@ public class AjaxBridgeServlet extends HttpServlet {
 
             if (isMultiPart) {
                 MemoryFileUpload mfu = new MemoryFileUpload(fileUploadConfig);
+				mfu.setSkipInvalidFiles(true);
                 HttpRequestParser requestParser = new HttpRequestParser();
                 result = mfu.uploadFiles(request, requestParser);
                 service = result.getParameter(SERVICE_PARAM_KEY);
