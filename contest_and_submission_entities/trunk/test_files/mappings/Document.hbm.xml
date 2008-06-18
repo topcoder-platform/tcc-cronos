@@ -25,10 +25,10 @@
 			class="com.topcoder.service.studio.contest.FilePath"  
 			cascade="all" /> 
 
-		<many-to-one name="mimeType" column="mime_type_id"
+		<many-to-one name="mimeType" column="mime_type_id" not-null="true"
 			class="com.topcoder.service.studio.contest.MimeType"  />
 
-		<many-to-one name="type" column="document_type_id"
+		<many-to-one name="type" column="document_type_id" not-null="true"
 			class="com.topcoder.service.studio.contest.DocumentType"
 			 />
 
