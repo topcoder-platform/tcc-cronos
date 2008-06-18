@@ -1228,10 +1228,16 @@ public class StudioServiceBean implements StudioService {
 
             // set mime type [BUG 27074484-15]
             MimeType mt = contestManager.getMimeType(data.getMimeTypeId());
+            if (mt == null) {
+            	throw new PersistenceException("Mime Type Id not found in the database: " + data.getMimeTypeId(), "");
+            } 
             doc.setMimeType(mt);
 
             // set document type [BUG 27074484-15]
             DocumentType dt = contestManager.getDocumentType(data.getDocumentTypeId());
+            if (dt == null) {
+            	throw new PersistenceException("Document Type Id not found in the database: " + data.getDocumentTypeId(), "");
+            } 
             doc.setType(dt);
 
             // save document
