@@ -68,10 +68,11 @@
 				class="com.topcoder.service.studio.submission.SubmissionReview" />
 		</bag>
 
-		<set name="prizes">
+		<set name="prizes" table="submission_prize_xref">
 			<key column="submission_id" />
-			<one-to-many
-				class="com.topcoder.service.studio.submission.Prize" />
+			<many-to-many
+				class="com.topcoder.service.studio.submission.Prize" 
+				column="prize_id" />
 		</set>
 
 		<many-to-one name="result" unique="true" insert="false"
