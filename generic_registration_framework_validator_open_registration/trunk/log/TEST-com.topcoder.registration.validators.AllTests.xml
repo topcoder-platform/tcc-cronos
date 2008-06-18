@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" name="com.topcoder.registration.validators.AllTests" tests="102" time="2.532">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc."></property>
+    <property name="package" value="com.topcoder.registration.validators"></property>
+    <property name="docpackage.jar" value="registration_framework_validators_docs.jar"></property>
+    <property name="sun.management.compiler" value="HotSpot Client Compiler"></property>
+    <property name="manifest_file_path" value="build/dist/registration_framework_validators-1.0.0/META-INF/"></property>
+    <property name="verbose" value="no"></property>
+    <property name="os.name" value="Windows XP"></property>
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.5.0_06\jre\lib\rt.jar;C:\Program Files\Java\jdk1.5.0_06\jre\lib\i18n.jar;C:\Program Files\Java\jdk1.5.0_06\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.5.0_06\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.5.0_06\jre\lib\jce.jar;C:\Program Files\Java\jdk1.5.0_06\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.5.0_06\jre\classes"></property>
+    <property name="docsdir" value="docs"></property>
+    <property name="javadoc.jar" value="javadocs.jar"></property>
+    <property name="design_submission.jar" value="registration_framework_validators_1.0.0_design_submission.jar"></property>
+    <property name="sun.desktop" value="windows"></property>
+    <property name="component.tests.jar" value="build/dist/lib/tcs/registration_framework_validators_tests.jar"></property>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="net.sourceforge.cobertura.datafile" value="C:\generic_registration_framework_validator_open_registration\log\cobertura.ser"></property>
+    <property name="ant.home" value="C:\apache-ant-1.6.5\bin\.."></property>
+    <property name="java.runtime.version" value="1.5.0_06-b05"></property>
+    <property name="component_path" value="registration_framework_validators/1.0.0"></property>
+    <property name="cobertura.dir" value="C:\tcs\lib\third_party/cobertura/1.8"></property>
+    <property name="component.version.micro" value="0"></property>
+    <property name="user.name" value="daiwb"></property>
+    <property name="manifest_file" value="build/dist/registration_framework_validators-1.0.0/META-INF//MANIFEST.MF"></property>
+    <property name="debug" value="off"></property>
+    <property name="reports" value="log/reports"></property>
+    <property name="testfiles" value="test_files"></property>
+    <property name="component.version.major" value="1"></property>
+    <property name="resource_bundle.jar" value="C:\generic_registration_framework_validator_open_registration/test_reflib/resource_bundle/1.0/resource_bundle.jar"></property>
+    <property name="component_version" value="1.0.0"></property>
+    <property name="dist_coverage" value="build/dist/registration_framework_validators-1.0.0/docs/coverage"></property>
+    <property name="component.packagedir" value="com/topcoder/registration/validators"></property>
+    <property name="user.language" value="en"></property>
+    <property name="cobertura.datafile" value="log/cobertura.ser"></property>
+    <property name="javadoc.locale" value="en_US"></property>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.5.0_06\jre\bin"></property>
+    <property name="tcs_libdir" value="C:\tcs\lib\tcs"></property>
+    <property name="srcdir" value="src"></property>
+    <property name="ant.project.name" value="TopCoder Java Generic Build"></property>
+    <property name="component.bootclasspath" value="${java_1_6_bootclasspath}"></property>
+    <property name="component.version.minor" value="0"></property>
+    <property name="java.version" value="1.5.0_06"></property>
+    <property name="user.timezone" value=""></property>
+    <property name="dev_dist.jar" value="registration_framework_validators_1.0.0_dev_dist.jar"></property>
+    <property name="sun.arch.data.model" value="32"></property>
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.5.0_06\jre\lib\endorsed"></property>
+    <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86"></property>
+    <property name="packagedir" value="com/topcoder/registration/validators"></property>
+    <property name="sun.jnu.encoding" value="GBK"></property>
+    <property name="file.encoding.pkg" value="sun.io"></property>
+    <property name="file.separator" value="\"></property>
+    <property name="java.specification.name" value="Java Platform API Specification"></property>
+    <property name="build_docsdir" value="build/docs"></property>
+    <property name="dev_submission.jar" value="registration_framework_validators_1.0.0_dev_submission.jar"></property>
+    <property name="java.class.version" value="49.0"></property>
+    <property name="build_testclassdir" value="build/testClasses"></property>
+    <property name="user.country" value="US"></property>
+    <property name="java.home" value="C:\Program Files\Java\jdk1.5.0_06\jre"></property>
+    <property name="component.distfilename" value="registration_framework_validators"></property>
+    <property name="component.version.build" value="1"></property>
+    <property name="java.vm.info" value="mixed mode"></property>
+    <property name="ant.file" value="C:\generic_registration_framework_validator_open_registration\build.xml"></property>
+    <property name="os.version" value="5.1"></property>
+    <property name="build_distdir" value="build/dist"></property>
+    <property name="dist_docpackage" value="build/doc_package"></property>
+    <property name="build_tcsdistdir" value="build/dist/registration_framework_validators-1.0.0"></property>
+    <property name="path.separator" value=";"></property>
+    <property name="java.vm.version" value="1.5.0_06-b05"></property>
+    <property name="testlogdir" value="log"></property>
+    <property name="user.variant" value=""></property>
+    <property name="ant.library.dir" value="C:\apache-ant-1.6.5\lib"></property>
+    <property name="component.name" value="Registration Framework Validator Open Registration"></property>
+    <property name="javamain" value="src/java/main"></property>
+    <property name="base_exception.jar" value="C:\generic_registration_framework_validator_open_registration/test_reflib/base_exception/2.0/base_exception.jar"></property>
+    <property name="dist_javadocs" value="build/dist/registration_framework_validators-1.0.0/docs/javadocs"></property>
+    <property name="dist_lib" value="build/dist/lib/tcs"></property>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"></property>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"></property>
+    <property name="component" value="Registration Framework Validator Open Registration"></property>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"></property>
+    <property name="user.home" value="C:\Documents and Settings\daiwb"></property>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.5.0_06\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;C:\oracle\product\10.2.0\client_1\bin;C:\oracle\product\10.1.0\db_2\bin;C:\oracle\product\10.1.0\db_2\jre\1.4.2\bin\client;C:\oracle\product\10.1.0\db_2\jre\1.4.2\bin;;c:\Program Files\Microsoft SQL Server\90\Tools\binn\;C:\Program Files\doxygen\bin;C:\Program Files\QuickTime\QTSystem\;C:\Program Files\Subversion\bin;C:\Program Files\ATI Technologies\ATI.ACE\Core-Static;C:\Program Files\Java\jdk1.5.0_06\bin;C:\MinGW\bin;C:\cygwin\bin;C:\apache-ant-1.6.5\bin;C:\nant-0.85-nightly-2006-05-26\bin;C:\Program Files\doxygen\bin;C:\WINDOWS\system32;C:\WTK21\bin;C:\Python25;C:\Program Files\StormII\Codec;C:\Program Files\StormII;C:\Program Files\foobar2000;"></property>
+    <property name="java.vendor.url" value="http://java.sun.com/"></property>
+    <property name="build_javadocsdir" value="build/docs/javadocs"></property>
+    <property name="configdir" value="conf"></property>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."></property>
+    <property name="ant.file.TopCoder Java Generic Build" value="C:\generic_registration_framework_validator_open_registration\build.xml"></property>
+    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition"></property>
+    <property name="ant.version" value="Apache Ant version 1.6.5 compiled on June 2 2005"></property>
+    <property name="java.class.path" value="C:\generic_registration_framework_validator_open_registration\build\instrumented;C:\generic_registration_framework_validator_open_registration\build\testClasses;C:\generic_registration_framework_validator_open_registration\test_reflib\base_exception\2.0\base_exception.jar;C:\generic_registration_framework_validator_open_registration\test_reflib\registration_framework\1.0.0\registration_framework.jar;C:\generic_registration_framework_validator_open_registration\test_reflib\resource_bundle\1.0\resource_bundle.jar;C:\tcs\lib\third_party\junit\3.8.2\junit.jar;C:\tcs\lib\third_party\jaxb\2.1.7\activation.jar;C:\tcs\lib\third_party\jaxb\2.1.7\jaxb-api.jar;C:\tcs\lib\third_party\jaxb\2.1.7\jaxb-impl.jar;C:\generic_registration_framework_validator_open_registration\build\classes;C:\generic_registration_framework_validator_open_registration\conf;C:\generic_registration_framework_validator_open_registration\test_files;C:\tcs\lib\third_party\cobertura\1.8\cobertura.jar;C:\tcs\lib\third_party\cobertura\1.8\lib\asm-2.2.1.jar;C:\tcs\lib\third_party\cobertura\1.8\lib\jakarta-oro-2.0.8.jar;C:\tcs\lib\third_party\cobertura\1.8\lib\log4j-1.2.9.jar;C:\Program Files\eclipse\plugins\org.junit_3.8.1\junit.jar;C:\Program Files\IBM\Informix JDBC Driver 2.21.JC5\lib\ifxjdbc.jar;C:\Program Files\IBM\Informix JDBC Driver 2.21.JC5\lib\ifxjdbcx.jar;C:\Program Files\IBM\Informix JDBC Driver 2.21.JC5\lib\ifxlang.jar;C:\Program Files\IBM\Informix JDBC Driver 2.21.JC5\lib\ifxlsupp.jar;C:\Program Files\IBM\Informix JDBC Driver 2.21.JC5\lib\ifxsqlj.jar;C:\Program Files\IBM\Informix JDBC Driver 2.21.JC5\lib\ifxtools.jar;C:\apache-ant-1.6.5\lib\ant-launcher.jar;C:\apache-ant-1.6.5\lib\ant.jar;C:\apache-ant-1.6.5\lib\ant-junit.jar"></property>
+    <property name="ext_libdir" value="C:\tcs\lib\third_party"></property>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"></property>
+    <property name="builddir" value="build"></property>
+    <property name="java.vm.specification.version" value="1.0"></property>
+    <property name="component.dist.jar" value="build/dist/registration_framework_validators-1.0.0.jar"></property>
+    <property name="junit.jar" value="C:\tcs\lib\third_party/junit/3.8.2/junit.jar"></property>
+    <property name="sun.cpu.endian" value="little"></property>
+    <property name="sun.os.patch.level" value="Service Pack 2"></property>
+    <property name="log4j.jar" value="C:\tcs\lib\third_party\log4j-1.2.13.jar"></property>
+    <property name="component.target" value="1.6"></property>
+    <property name="java.io.tmpdir" value="C:\DOCUME~1\daiwb\LOCALS~1\Temp\"></property>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"></property>
+    <property name="build_targetclassdir" value="build/targetclasses"></property>
+    <property name="javac.encoding" value="UTF-8"></property>
+    <property name="build_classdir" value="build/classes"></property>
+    <property name="javatests" value="src/java/tests"></property>
+    <property name="javadocsdir" value="docs/javadocs"></property>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"></property>
+    <property name="instrumented.dir" value="build/instrumented"></property>
+    <property name="os.arch" value="x86"></property>
+    <property name="test_reflib" value="test_reflib"></property>
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.5.0_06\jre\lib\ext"></property>
+    <property name="user.dir" value="C:\generic_registration_framework_validator_open_registration"></property>
+    <property name="design_dist.jar" value="registration_framework_validators_1.0.0_design_dist.jar"></property>
+    <property name="libdir" value="../tcs/lib"></property>
+    <property name="javasrc" value="src/java"></property>
+    <property name="line.separator" value="
+"></property>
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM"></property>
+    <property name="distfilename" value="registration_framework_validators"></property>
+    <property name="basedir" value="C:\generic_registration_framework_validator_open_registration"></property>
+    <property name="ant.java.version" value="1.5"></property>
+    <property name="registration_framework.jar" value="C:\generic_registration_framework_validator_open_registration/test_reflib/registration_framework/1.0.0/registration_framework.jar"></property>
+    <property name="file.encoding" value="Cp1252"></property>
+    <property name="dist_docs" value="build/dist/registration_framework_validators-1.0.0/docs"></property>
+    <property name="component.jar" value="build/dist/lib/tcs/registration_framework_validators/1.0.0/registration_framework_validators.jar"></property>
+    <property name="java.specification.version" value="1.5"></property>
+    <property name="target_libdir" value="C:\tcs\lib\tcs"></property>
+    <property name="component.package" value="com.topcoder.registration.validators"></property>
+    <property name="ant.file.Dependency Import" value="C:\generic_registration_framework_validator_open_registration\build-dependencies.xml"></property>
+    <property name="xerces.jar" value="C:\tcs\lib\third_party\xerces.jar"></property>
+  </properties>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testDEFAULT_BUNDLE_NAME" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testCtor1" time="0.032"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testCtor2_NullArgument" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testCtor2_EmptyArgument" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testCtor2_TrimmedEmptyArgument" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testCtor2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_NullContest" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_NullRole" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_ContestRegistrationStartDateNotSet" time="0.015"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_ContestRegistrationEndDateNotSet" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_ContestRoleRegistrationStartOffsetNotSet" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_ContestRoleRegistrationEndOffsetNotSet" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_NullContest" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_NullRole" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_ContestRegistrationStartDateNotSet" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_ContestRegistrationEndDateNotSet" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_ContestRoleRegistrationStartOffsetNotSet" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_ContestRoleRegistrationEndOffsetNotSet" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_DefaultProperties_Success" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_CustomProperties_Success" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_MissingResourceBundle_Success" time="0.016"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_MissingResourceBundle_Success" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_MissingSuccessKey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_MissingSuccessKey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_EmptySuccessKey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_EmptySuccessKey" time="0.015"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_DefaultProperties_Early" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_CustomProperties_Early" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_DefaultProperties_Early" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_CustomProperties_Early" time="0.016"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_MissingResourceBundle_Early" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_MissingResourceBundle_Early" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_MissingEarlyKey" time="0.016"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_MissingEarlyKey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_EmptyEarlyKey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_EmptyEarlyKey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_DefaultProperties_Late" time="0.015"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_CustomProperties_Late" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_DefaultProperties_Late" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_CustomProperties_Late" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_MissingResourceBundle_Late" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_MissingResourceBundle_Late" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_MissingLateKey" time="0.016"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_MissingLateKey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_EmptyLateKey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_EmptyLateKey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_DefaultProperties_StartOffset_Early" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_DefaultProperties_EndOffset_Success" time="0.016"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateRegistration_InvalidPropertiesObject" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.OpenRegistrationValidatorUnitTest" name="testValidateUnregistration_InvalidPropertiesObject" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.Demo" name="testDemo_ValidateRegistration" time="0.015"></testcase>
+  <testcase classname="com.topcoder.registration.validators.Demo" name="testDemo_ValidateUnRegistration" time="0.016"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testDEFAULT_BUNDLE_NAME" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testCtor1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testCtor2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateUnregistration_DefaultProperties_Success" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateUnregistration_CustomProperties_Success" time="0.015"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateRegistration_MissingResourceBundle_Success" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateUnregistration_MissingResourceBundle_Success" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateRegistration_MissingSuccessKey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateUnregistration_MissingSuccessKey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateRegistration_EmptySuccessKey" time="0.016"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateUnregistration_EmptySuccessKey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateRegistration_DefaultProperties_Early" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateRegistration_CustomProperties_Early" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateUnregistration_DefaultProperties_Early" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateUnregistration_CustomProperties_Early" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateRegistration_MissingResourceBundle_Early" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateUnregistration_MissingResourceBundle_Early" time="0.016"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateRegistration_MissingEarlyKey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateUnregistration_MissingEarlyKey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateRegistration_EmptyEarlyKey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateUnregistration_EmptyEarlyKey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateRegistration_DefaultProperties_Late" time="0.015"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateRegistration_CustomProperties_Late" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateUnregistration_DefaultProperties_Late" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateUnregistration_CustomProperties_Late" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateRegistration_MissingResourceBundle_Late" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateUnregistration_MissingResourceBundle_Late" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateRegistration_MissingLateKey" time="0.016"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateUnregistration_MissingLateKey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateRegistration_EmptyLateKey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateUnregistration_EmptyLateKey" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateRegistration_DefaultProperties_StartOffset_Early" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.accuracytests.OpenRegistrationValidatorAccuracyTest" name="testValidateRegistration_DefaultProperties_EndOffset_Success" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.failuretests.OpenRegistrationValidatorFailureTest" name="testCtor2_NullArgument" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.failuretests.OpenRegistrationValidatorFailureTest" name="testCtor2_EmptyArgument" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.failuretests.OpenRegistrationValidatorFailureTest" name="testCtor2_TrimmedEmptyArgument" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.failuretests.OpenRegistrationValidatorFailureTest" name="testValidateRegistration_NullContest" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.failuretests.OpenRegistrationValidatorFailureTest" name="testValidateRegistration_NullRole" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.failuretests.OpenRegistrationValidatorFailureTest" name="testValidateRegistration_ContestRegistrationStartDateNotSet" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.failuretests.OpenRegistrationValidatorFailureTest" name="testValidateRegistration_ContestRegistrationEndDateNotSet" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.failuretests.OpenRegistrationValidatorFailureTest" name="testValidateRegistration_ContestRoleRegistrationStartOffsetNotSet" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.failuretests.OpenRegistrationValidatorFailureTest" name="testValidateRegistration_ContestRoleRegistrationEndOffsetNotSet" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.failuretests.OpenRegistrationValidatorFailureTest" name="testValidateUnregistration_NullContest" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.failuretests.OpenRegistrationValidatorFailureTest" name="testValidateUnregistration_NullRole" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.failuretests.OpenRegistrationValidatorFailureTest" name="testValidateUnregistration_ContestRegistrationStartDateNotSet" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.failuretests.OpenRegistrationValidatorFailureTest" name="testValidateUnregistration_ContestRegistrationEndDateNotSet" time="0.016"></testcase>
+  <testcase classname="com.topcoder.registration.validators.failuretests.OpenRegistrationValidatorFailureTest" name="testValidateUnregistration_ContestRoleRegistrationStartOffsetNotSet" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.failuretests.OpenRegistrationValidatorFailureTest" name="testValidateUnregistration_ContestRoleRegistrationEndOffsetNotSet" time="0.0"></testcase>
+  <testcase classname="com.topcoder.registration.validators.stresstests.OpenRegistrationValidatorStressTest" name="testValidateUnregistration" time="1.093"></testcase>
+  <testcase classname="com.topcoder.registration.validators.stresstests.OpenRegistrationValidatorStressTest" name="testValidateRegistration" time="1.11"></testcase>
+  <system-out><![CDATA[---- testDemo_ValidateRegistration ----
+Registration is validated by OpenRegistrationValidator
+Registration validation failed because registration is closed for the contest and role submitted.
+Registration validation failed because registration is not open yet for the contest and role submitted.
+Registration validation failed because registration is not open yet for the contest and role submitted.
+Registration is validated by OpenRegistrationValidator
+---- testDemo_ValidateUnRegistration ----
+Unregistration successful
+Unregistration too late
+Unregistration too early
+Unregistration too early
+Unregistration successful
+validateUnregistration execution time: 2.186ms
+validateRegistration execution time: 2.22ms
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

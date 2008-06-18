@@ -1,0 +1,32 @@
+<project name="Dependency Import" default="dist" basedir=".">
+  <!-- property file defining the component's dependencies -->
+
+  <!-- Properties used in compile_targets ANT target for JDK version x -->
+  <property name="component.target" value="1.6"/>
+  <property name="component.bootclasspath" value="${java_1_6_bootclasspath}"/>
+
+  <!-- TCS dependencies -->
+  <pathelement location="${tcs_libdir}/base_exception/2.0/base_exception.jar" />
+  <pathelement location="${tcs_libdir}/registration_framework/1.0.0/registration_framework.jar" />
+  <pathelement location="${tcs_libdir}/resource_bundle/1.0/resource_bundle.jar" />
+
+  <!-- 3rd party dependencies -->
+  <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+
+  <path id="component.tcs-dependencies">
+    <pathelement location="${registration_framework.jar}"/>
+    <pathelement location="${base_exception.jar}"/>
+    <pathelement location="${resource_bundle.jar}"/>
+  </path>
+
+  <path id="component.3rdParty-dependencies">
+    <pathelement location="${ext_libdir}/jaxb/2.1.7/activation.jar" />
+    <pathelement location="${ext_libdir}/jaxb/2.1.7/jaxb-api.jar" />
+    <pathelement location="${ext_libdir}/jaxb/2.1.7/jaxb-impl.jar" />
+  </path>
+
+  <path id="component.test.3rdParty-dependencies">
+    <pathelement location="${junit.jar}"/>
+  </path>
+
+</project>
