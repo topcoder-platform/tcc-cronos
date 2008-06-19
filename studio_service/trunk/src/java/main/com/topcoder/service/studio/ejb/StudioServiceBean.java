@@ -1987,4 +1987,31 @@ public class StudioServiceBean implements StudioService {
         // return uploaded document
         return ret;
     }
+    
+
+    /**
+     * <p>
+     * Remove document
+     * 
+     * @param documentId
+     *            the id of document to remove
+     * @throws IllegalArgumentWSException
+     *             if the documentId is less than 0
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     */
+    public boolean removeDocument(long documentId) throws PersistenceException {
+        logEnter("removeDocument", documentId);
+        checkParameter("documentId", documentId);
+
+        try {
+            contestManager.removeDocument(documentId);
+        } catch (SubmissionManagementException e) {
+            handlePersistenceError(
+                    "contestManager reports error while removing document.",
+                    e);
+        }
+
+        logExit("removeDocument");
+    }
 }

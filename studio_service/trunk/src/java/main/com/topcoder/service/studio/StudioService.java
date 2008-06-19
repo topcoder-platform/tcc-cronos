@@ -373,4 +373,18 @@ public interface StudioService {
      */
     public List<ContestTypeData> getAllContestTypes()
             throws PersistenceException;
+    
+
+    /**
+     * <p>
+     * Remove document
+     * 
+     * @param documentId
+     *            the id of document to remove
+     * @throws IllegalArgumentWSException
+     *             if the documentId is less than 0
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     */
+    public boolean removeDocument(long documentId) throws PersistenceException;
 }

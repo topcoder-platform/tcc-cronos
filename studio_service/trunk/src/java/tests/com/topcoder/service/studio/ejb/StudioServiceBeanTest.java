@@ -1312,4 +1312,32 @@ public class StudioServiceBeanTest extends TestCase {
         assertEquals("number of documents", 1,
                 ContestManagerImpl.documentsForContest.get(33l).size());
     }
+    
+
+    /**
+     * Tests removeSubmission method for accuracy.
+     * 
+     * @throws Exception
+     *             Exception to JUnit.
+     */
+    public void testRemoveDocument() throws Exception {
+        target.removeDocument(3);
+        assertFalse("remove failed.", ContestManagerImpl.documents.containsKey(3));
+    }
+
+    /**
+     * Tests removeDocument method for negative parameter.
+     * IllegalArgumentWSException expected.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
+     */
+    public void testRemoveDocumentForNegative() throws Exception {
+        try {
+            target.removeDocument(-1);
+            fail("IllegalArgumentWSException expected.");
+        } catch (IllegalArgumentWSException ex) {
+            // success
+        }
+    }
 }
