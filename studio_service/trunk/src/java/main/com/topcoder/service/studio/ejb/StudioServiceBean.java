@@ -2005,13 +2005,16 @@ public class StudioServiceBean implements StudioService {
         checkParameter("documentId", documentId);
 
         try {
-            contestManager.removeDocument(documentId);
-        } catch (SubmissionManagementException e) {
+            return contestManager.removeDocument(documentId);
+            
+        } catch (ContestManagementException e) {
             handlePersistenceError(
                     "contestManager reports error while removing document.",
                     e);
+        } finally {
+        	logExit("removeDocument");
         }
-
-        logExit("removeDocument");
+        
+        return true; // never reached
     }
 }
