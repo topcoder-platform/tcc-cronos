@@ -639,8 +639,26 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                     JSONArray contestArr = new JSONArray();
                     for (ContestData contest : contests) {
-                        JSONObject respJSON = getJSONFromContest(contest);
-                        contestArr.addJSONObject(respJSON);
+                        try {
+                            JSONObject respJSON = getJSONFromContest(contest);
+                            contestArr.addJSONObject(respJSON);
+                        } catch (JSONDataAccessTypeException ex) {
+                            error("JSONDataAccessTypeException "
+                                    + ex.getMessage()
+                                    + " occurred while parsed json from contest.");
+                        } catch (JSONInvalidKeyException ex) {
+                            error("JSONDataAccessTypeException "
+                                    + ex.getMessage()
+                                    + " occurred while parsed json from contest.");
+                        } catch (IllegalArgumentException ex) {
+                            error("JSONDataAccessTypeException "
+                                    + ex.getMessage()
+                                    + " occurred while parsed json from contest.");
+                        } catch (RuntimeException ex) {
+                            error("RuntimeException "
+                                    + ex.getMessage()
+                                    + " occurred while parsed json from contest.");
+                        }
                     }
                     sendJSONObjectWithArrayAsResponse(contestArr, response);
 
@@ -657,8 +675,26 @@ public class AjaxBridgeServlet extends HttpServlet {
                             .getContestsForProject(Long.parseLong(projectID));
                     JSONArray contestArr = new JSONArray();
                     for (ContestData contest : contests) {
-                        JSONObject respJSON = getJSONFromContest(contest);
-                        contestArr.addJSONObject(respJSON);
+                        try {
+                            JSONObject respJSON = getJSONFromContest(contest);
+                            contestArr.addJSONObject(respJSON);
+                        } catch (JSONDataAccessTypeException ex) {
+                            error("JSONDataAccessTypeException "
+                                    + ex.getMessage()
+                                    + " occurred while parsed json from contest.");
+                        } catch (JSONInvalidKeyException ex) {
+                            error("JSONDataAccessTypeException "
+                                    + ex.getMessage()
+                                    + " occurred while parsed json from contest.");
+                        } catch (IllegalArgumentException ex) {
+                            error("JSONDataAccessTypeException "
+                                    + ex.getMessage()
+                                    + " occurred while parsed json from contest.");
+                        } catch (RuntimeException ex) {
+                            error("RuntimeException "
+                                    + ex.getMessage()
+                                    + " occurred while parsed json from contest.");
+                        }
                     }
                     sendJSONObjectWithArrayAsResponse(contestArr, response);
 
@@ -2184,6 +2220,20 @@ public class AjaxBridgeServlet extends HttpServlet {
         }
     }
 
+    /**
+     * <p>
+     * Logs error information.
+     * </p>
+     * 
+     * @param message
+     *            error message
+     */
+    private void error(String message) {
+        if (logger.isEnabled(Level.ERROR)) {
+            logger.log(Level.ERROR, message);
+        }
+    }
+    
     /**
      * <p>
      * Convenience method to always return a non-null string value.

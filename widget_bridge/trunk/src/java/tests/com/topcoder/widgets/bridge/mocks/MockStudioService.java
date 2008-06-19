@@ -25,6 +25,7 @@ import com.topcoder.service.studio.StudioService;
 import com.topcoder.service.studio.SubmissionData;
 import com.topcoder.service.studio.UploadedDocument;
 import com.topcoder.service.studio.UserNotAuthorizedException;
+import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.widgets.bridge.TestHelper;
 
 /**
@@ -35,6 +36,11 @@ import com.topcoder.widgets.bridge.TestHelper;
  * @version 1.0
  */
 public class MockStudioService implements StudioService {
+    /**
+     * If set to true, returns bad contest.
+     */
+    public static boolean returnBadContest;
+    
     /**
      * <p>
      * Creates contest for project. Return contest populated with id. Mock implementation.
@@ -100,7 +106,13 @@ public class MockStudioService implements StudioService {
         checkId(tcDirectProjectId, "project id");
         if (tcDirectProjectId == 1) {
             List<ContestData> contests = new ArrayList<ContestData>();
-            contests.add(getContestObj(1));
+            ContestData data = getContestObj(10);
+            if (returnBadContest) {
+                ArrayList<PrizeData> prizes = new ArrayList<PrizeData>();
+                prizes.add(null);
+                data.setPrizes(prizes);
+            }
+            contests.add(data);
             contests.add(getContestObj(2));
             return contests;
         } else if (tcDirectProjectId == 20) {
@@ -328,7 +340,13 @@ public class MockStudioService implements StudioService {
      */
     public List<ContestData> getAllContests() throws PersistenceException {
         List<ContestData> contests = new ArrayList<ContestData>();
-        contests.add(getContestObj(10));
+            ContestData data = getContestObj(10);
+        if (returnBadContest) {
+            ArrayList<PrizeData> prizes = new ArrayList<PrizeData>();
+            prizes.add(null);
+            data.setPrizes(prizes);
+        }
+        contests.add(data);
         contests.add(getContestObj(20));
         return contests;
     }
@@ -345,7 +363,17 @@ public class MockStudioService implements StudioService {
      * @throws PersistenceException if any error occurs when getting contest.
      */
     public List<ContestData> searchContests(Filter filter) throws PersistenceException {
-        throw new UnsupportedOperationException("not supported");
+        List<ContestData> contests = new ArrayList<ContestData>();
+            ContestData data = getContestObj(10);
+        if (returnBadContest) {
+            ArrayList<PrizeData> prizes = new ArrayList<PrizeData>();
+            prizes.add(null);
+            data.setPrizes(prizes);
+        }
+
+        contests.add(data);
+        contests.add(getContestObj(2));
+        return contests;
     }
 
     /**
