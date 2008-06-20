@@ -12,8 +12,14 @@ import junit.framework.TestSuite;
  * Unit test for <code>{@link UserNotFoundFault}</code> class.
  * </p>
  *
+ * <p>
+ * Version 1.1 adds a test case to ensure the inheritance.
+ * </p>
+ *
+ * @author FireIce
  * @author TCSDEVELOPER
- * @version 1.0
+ * @version 1.1
+ * @since 1.0
  */
 public class UserNotFoundFaultUnitTests extends TestCase {
 
@@ -31,6 +37,16 @@ public class UserNotFoundFaultUnitTests extends TestCase {
      */
     public static Test suite() {
         return new TestSuite(UserNotFoundFaultUnitTests.class);
+    }
+
+    /**
+     * <p>
+     * <code>{@link UserNotFoundFault}</code> should be subclass of <code>ProjectServiceFault</code>.
+     * </p>
+     */
+    public void testInheritance() {
+        assertTrue("UserNotFoundFault should be subclass of ProjectServiceFault",
+            UserNotFoundFault.class.getSuperclass() == ProjectServiceFault.class);
     }
 
     /**

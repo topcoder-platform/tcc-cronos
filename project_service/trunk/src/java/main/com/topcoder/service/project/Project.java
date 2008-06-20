@@ -74,7 +74,7 @@ public class Project extends ProjectData {
      * collection may also have ANY value.
      * </p>
      */
-    private Set<Competition> competitions;
+    private Set < Competition > competitions;
 
     /**
      * <p>
@@ -160,7 +160,7 @@ public class Project extends ProjectData {
      *
      * @return The competitions associated with the project.
      */
-    public Set<Competition> getCompetitions() {
+    public Set < Competition > getCompetitions() {
         return competitions;
     }
 
@@ -172,7 +172,7 @@ public class Project extends ProjectData {
      * @param competitions
      *            The competitions associated with this project. ANY value.
      */
-    public void setCompetitions(Set<Competition> competitions) {
+    public void setCompetitions(Set < Competition > competitions) {
         this.competitions = competitions;
     }
 }

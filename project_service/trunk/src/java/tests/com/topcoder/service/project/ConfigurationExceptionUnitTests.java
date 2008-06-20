@@ -7,6 +7,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import com.topcoder.util.errorhandling.BaseRuntimeException;
 import com.topcoder.util.errorhandling.ExceptionData;
 
 /**
@@ -14,8 +15,14 @@ import com.topcoder.util.errorhandling.ExceptionData;
  * Unit test for <code>{@link ConfigurationException}</code> class.
  * </p>
  *
+ * <p>
+ * Version 1.1 adds a test case to ensure the inheritance.
+ * </p>
+ *
+ * @author FireIce
  * @author TCSDEVELOPER
- * @version 1.0
+ * @version 1.1
+ * @since 1.0
  */
 public class ConfigurationExceptionUnitTests extends TestCase {
 
@@ -56,6 +63,16 @@ public class ConfigurationExceptionUnitTests extends TestCase {
      */
     public static Test suite() {
         return new TestSuite(ConfigurationExceptionUnitTests.class);
+    }
+
+    /**
+     * <p>
+     * <code>{@link ConfigurationException}</code> should be subclass of <code>BaseRuntimeException</code>.
+     * </p>
+     */
+    public void testInheritance() {
+        assertTrue("ConfigurationException should be subclass of BaseRuntimeException",
+            ConfigurationException.class.getSuperclass() == BaseRuntimeException.class);
     }
 
     /**

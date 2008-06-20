@@ -4,6 +4,6 @@ component.distfilename=project_service
 component.package=com.topcoder.service.project
 component.packagedir=com/topcoder/service/project
 component.version.major=1
-component.version.minor=0
+component.version.minor=1
 component.version.micro=0
 component.version.build=1

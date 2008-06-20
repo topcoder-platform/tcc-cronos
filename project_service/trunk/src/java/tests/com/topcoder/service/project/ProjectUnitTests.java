@@ -231,8 +231,9 @@ public class ProjectUnitTests extends TestCase {
      * Non-Null Date is valid to set.
      * </p>
      */
+    @SuppressWarnings("unchecked")
     public void testSetCompetitions_NonNull() {
-        Set<Competition> competitions = new HashSet<Competition>();
+        Set < Competition > competitions = new HashSet();
         project.setCompetitions(competitions);
         assertSame("Should return the competitions set.", competitions, project.getCompetitions());
     }

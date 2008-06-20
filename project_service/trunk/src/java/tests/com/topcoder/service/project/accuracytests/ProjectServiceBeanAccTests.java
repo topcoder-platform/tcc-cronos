@@ -3,17 +3,6 @@
  */
 package com.topcoder.service.project.accuracytests;
 
-import com.topcoder.service.project.Competition;
-import com.topcoder.service.project.Project;
-import com.topcoder.service.project.ProjectData;
-import com.topcoder.service.project.ProjectService;
-
-import junit.extensions.TestSetup;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
@@ -21,11 +10,24 @@ import java.util.Set;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
+import junit.extensions.TestSetup;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+import com.topcoder.service.project.Competition;
+import com.topcoder.service.project.Project;
+import com.topcoder.service.project.ProjectData;
+import com.topcoder.service.project.ProjectService;
+
 
 /**
  * <p>
  * Accuracy Test cases for the ProjectServiceBean.
  * </p>
+ * @author TCSDEVELOPER
+ * @version 1.1
+ * @since 1.0
  */
 public class ProjectServiceBeanAccTests extends TestCase {
     /**
@@ -217,10 +219,10 @@ public class ProjectServiceBeanAccTests extends TestCase {
         projectService.createProject(projectThree);
 
         assertEquals("The size of project should be 3.", 3, projectService.getAllProjects().size());
-        assertEquals("The size of project should be 1.", 3, projectService.getProjectsForUser(0).size());
+        assertEquals("The size of project should be 2.", 2, projectService.getProjectsForUser(1).size());
 
         lookupProjectServiceRemoteWithUserRole();
-        assertEquals("The size of project should be 2.", 3, projectService.getAllProjects().size());
+        assertEquals("The size of project should be 2.", 2, projectService.getAllProjects().size());
 
         try {
             projectService.getProjectsForUser(0);

@@ -8,29 +8,31 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.jws.WebService;
-import javax.naming.InitialContext;
-import javax.naming.NameNotFoundException;
-import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 
 import com.topcoder.security.auth.module.UserProfilePrincipal;
 import com.topcoder.service.project.AuthorizationFailedFault;
 import com.topcoder.service.project.ConfigurationException;
 import com.topcoder.service.project.IllegalArgumentFault;
-import com.topcoder.service.project.PersistenceException;
 import com.topcoder.service.project.PersistenceFault;
 import com.topcoder.service.project.Project;
 import com.topcoder.service.project.ProjectData;
 import com.topcoder.service.project.ProjectHasCompetitionsFault;
-import com.topcoder.service.project.ProjectNotFoundException;
 import com.topcoder.service.project.ProjectNotFoundFault;
-import com.topcoder.service.project.ProjectPersistence;
 import com.topcoder.service.project.ProjectServiceLocal;
 import com.topcoder.service.project.ProjectServiceRemote;
 import com.topcoder.service.project.UserNotFoundFault;
@@ -40,75 +42,172 @@ import com.topcoder.util.log.LogManager;
 
 /**
  * <p>
- * This class implements the <code>{@link ProjectServiceLocal}</code> as well as the
- * <code>{@link ProjectServiceRemote}</code> interfaces. Thus, by extension it also implements the
- * <code>{@link com.topcoder.service.project.ProjectService}</code> interface. While EJB 3.0 does not allow the same
- * business interface to be both local and remote, a single class can implement different local and remote business
- * interfaces. This class, when hosted from an EJB container, allows clients to access the project service (as a web
- * service/local bean/remote bean) It performs additional authorization tasks where necessary and delegates persistence
- * to a pluggable instance of ProjectPersistence.
+ * This class implements the <code>{@link ProjectServiceLocal}</code> as well as the <code>{@link ProjectServiceRemote}
+ * </code> interfaces. Thus by extension it also implements the <code>{@link com.topcoder.service.project.ProjectService
+ * }</code> interface. While EJB 3.0 does not allow the same business interface to be both local and remote, a single
+ * class can implement different local and remote business interfaces.
  * </p>
+ *
  * <p>
- * We store a member persistence object as well as a member log. We also store certain string properties which allow
- * easy configuration of the usage of the <code>{@link UserProfilePrincipal}</code>. We use the injected resource
- * <code>{@link SessionContext}</code> to fetch the calling principal when required.
+ * This class, when hosted from an EJB container, allows clients to access the project service (as a web service/local
+ * bean/remote bean).
  * </p>
+ *
+ * <p>
+ * It performs additional authorization tasks where necessary and delegates persistence to a container managed <code>
+ * EntityManager</code>.
+ * </p>
+ *
+ * <p>
+ * We store a member <code>log</code> to perform logging. The log name is specified by <b>log_name</b> environment
+ * entry.
+ * </p>
+ *
+ * <p>
+ * We also store a string property which represents the administrator role. It is specified by <b>administrator_role
+ * </b> environment entry. It is used to check whether the caller <code>{@link UserProfilePrincipal}</code> is having
+ * administrator role.
+ * </p>
+ *
+ * <p>
+ * We use the injected resource <code>{@link SessionContext}</code> to fetch the calling principal when required.
+ * </p>
+ *
+ * <p>
+ *     <strong>Version History:</strong>
+ *     <ul>
+ *         <li>Introduced since version 1.0.</li>
+ *         <li>Modified in version 1.1:</li>
+ *             <ul>
+ *               <li>Removed the <code>projectPersistence</code> variable. This class is now responsible for performing
+ *               persistence operations directly;</li>
+ *               <li>Removed <code>getProjectPersistence()</code> method;</li>
+ *               <li>Removed the <code>rolesKey</code> variable. This class now relies on standard J2EE APIs for
+ *               determining which roles a user has;</li>
+ *               <li>Removed <code>getRolesKey()</code> method;</li>
+ *               <li>Removed the <code>userRole</code> variable, which had no particular use;</li>
+ *               <li>Removed <code>getRolesKey()</code> method, which had no particular use;</li>
+ *               <li>Change <code>getAdministratorRole()</code> method to be protected;</li>
+ *               <li>Added <code>entityManager</code> variable, which is a container injected/managed, transaction
+ *               scoped <code>EntityManager</code>;</li>
+ *               <li>Annotated with "@DeclareRoles({"Cockpit User", "Cockpit Administrator" })" to
+ *               declare security roles in making authorization decisions. Note this can be overridden in deployment
+ *               descriptor;</li>
+ *               <li>Annotated with "@RolesAllowed({"Cockpit User", "Cockpit Administrator" })" to
+ *               allow security roles in making authorization decisions. Note this can be overridden in deployment
+ *               descriptor;</li>
+ *               <li>Annotated with "@TransactionManagement(TransactionManagementType.CONTAINER)" to rely on container
+ *               -managed transactions;</li>
+ *               <li>Annotated with "@TransactionAttribute(TransactionAttributeType.REQUIRED)" to indicate each business
+ *               method expects to have EJB transaction attribute "REQUIRED".</li>
+ *             </ul>
+ *     </ul>
+ * </p>
+ *
  * <p>
  * <b>ejb-jar.xml</b> configuration sample:<br>
- *
  * <pre>
  *  &lt;ejb-jar&gt;
- *  &lt;enterprise-beans&gt;
- *  &lt;session&gt;
- *  &lt;ejb-name&gt;ProjectServiceBean&lt;/ejb-name&gt;
- *  &lt;home&gt;com.topcoder.service.project.ProjectServiceLocal&lt;/home&gt;
- *  &lt;remote&gt;com.topcoder.service.project.ProjectServiceRemote&lt;/remote&gt;
- *  &lt;ejb-class&gt;com.topcoder.service.project.impl.ProjectServiceBean&lt;/ejb-class&gt;
- *  &lt;session-type&gt;Stateless&lt;/session-type&gt;
- *  &lt;transaction-type&gt;Bean&lt;/transaction-type&gt;
- *  &lt;env-entry&gt;
- *  &lt;description&gt;Class that implements ProjectPersistence&lt;/description&gt;
- *  &lt;env-entry-name&gt;project_persistence_class&lt;/env-entry-name&gt;
- *  &lt;env-entry-type&gt;java.lang.String&lt;/env-entry-type&gt;
- *  &lt;env-entry-value&gt;com.topcoder.service.project.persistence.JPAProjectPersistence&lt;/env-entry-value&gt;
- *  &lt;/env-entry&gt;
- *  &lt;env-entry&gt;
- *  &lt;description&gt;The name of the log to use&lt;/description&gt;
- *  &lt;env-entry-name&gt;log_name&lt;/env-entry-name&gt;
- *  &lt;env-entry-type&gt;java.lang.String&lt;/env-entry-type&gt;
- *  &lt;env-entry-value&gt;TopCoderLog&lt;/env-entry-value&gt;
- *  &lt;/env-entry&gt;
- *  &lt;env-entry&gt;
- *  &lt;description&gt;The key under which the roles will be found&lt;/description&gt;
- *  &lt;env-entry-name&gt;roles_key&lt;/env-entry-name&gt;
- *  &lt;env-entry-type&gt;java.lang.String&lt;/env-entry-type&gt;
- *  &lt;env-entry-value&gt;roles&lt;/env-entry-value&gt;
- *  &lt;/env-entry&gt;
- *  &lt;env-entry&gt;
- *  &lt;description&gt;The name of the administrator role&lt;/description&gt;
- *  &lt;env-entry-name&gt;administrator_role&lt;/env-entry-name&gt;
- *  &lt;env-entry-type&gt;java.lang.String&lt;/env-entry-type&gt;
- *  &lt;env-entry-value&gt;Administrator&lt;/env-entry-value&gt;
- *  &lt;/env-entry&gt;
- *  &lt;env-entry&gt;
- *  &lt;description&gt;The name of the user role&lt;/description&gt;
- *  &lt;env-entry-name&gt;user_role&lt;/env-entry-name&gt;
- *  &lt;env-entry-type&gt;java.lang.String&lt;/env-entry-type&gt;
- *  &lt;env-entry-value&gt;User&lt;/env-entry-value&gt;
- *  &lt;/env-entry&gt;
- *  &lt;!-- For the JPA persistence --&gt;
- *  &lt;env-entry&gt;
- *  &lt;description&gt;The persistence unit name&lt;/description&gt;
- *  &lt;env-entry-name&gt;persistence_unit_name&lt;/env-entry-name&gt;
- *  &lt;env-entry-type&gt;java.lang.String&lt;/env-entry-type&gt;
- *  &lt;env-entry-value&gt;HibernateProjectPersistence&lt;/env-entry-value&gt;
- *  &lt;/env-entry&gt;
- *  &lt;/session&gt;
- *  &lt;/enterprise-beans&gt;
+ *    &lt;enterprise-beans&gt;
+ *      &lt;session&gt;
+ *        &lt;ejb-name&gt;ProjectServiceBean&lt;/ejb-name&gt;
+ *        &lt;remote&gt;com.topcoder.service.project.ProjectServiceRemote&lt;/remote&gt;
+ *        &lt;local&gt;com.topcoder.service.project.ProjectServiceLocal&lt;/local&gt;
+ *        &lt;ejb-class&gt;com.topcoder.service.project.impl.ProjectServiceBean&lt;/ejb-class&gt;
+ *        &lt;session-type&gt;Stateless&lt;/session-type&gt;
+ *        &lt;transaction-type&gt;Container&lt;/transaction-type&gt;
+ *        &lt;env-entry&gt;
+ *          &lt;description&gt;The name of the log to use&lt;/description&gt;
+ *          &lt;env-entry-name&gt;log_name&lt;/env-entry-name&gt;
+ *          &lt;env-entry-type&gt;java.lang.String&lt;/env-entry-type&gt;
+ *          &lt;env-entry-value&gt;TopCoderLog&lt;/env-entry-value&gt;
+ *        &lt;/env-entry&gt;
+ *        &lt;env-entry&gt;
+ *          &lt;description&gt;The name of the administrator role&lt;/description&gt;
+ *          &lt;env-entry-name&gt;administrator_role&lt;/env-entry-name&gt;
+ *          &lt;env-entry-type&gt;java.lang.String&lt;/env-entry-type&gt;
+ *          &lt;env-entry-value&gt;Cockpit Administrator&lt;/env-entry-value&gt;
+ *        &lt;/env-entry&gt;
+ *        &lt;!-- Tells the container for which persistence unit to inject an EntityManager --&gt;
+ *        &lt;persistence-context-ref&gt;
+ *              &lt;persistence-context-ref-name&gt;project_service_persistence&lt;/persistence-context-ref-name&gt;
+ *              &lt;persistence-unit-name&gt;HibernateProjectPersistence&lt;/persistence-unit-name&gt;
+ *        &lt;/persistence-context-ref&gt;
+ *      &lt;/session&gt;
+ *    &lt;/enterprise-beans&gt;
  *  &lt;/ejb-jar&gt;
  * </pre>
- *
  * </p>
+ *
+ * <p>
+ *     <strong>To use Remote EJB:</strong>
+ *     <pre>
+ *        Properties env = new Properties();
+ *        // Specify principal
+ *        env.setProperty(Context.SECURITY_PRINCIPAL, "username");
+ *        // Specify credential
+ *        env.setProperty(Context.SECURITY_CREDENTIALS, "password");
+ *
+ *        // The initial factory and provider url are specified in jndi.properties
+ *        InitialContext ctx = new InitialContext(env);
+ *
+ *        // Lookup remote EJB
+ *        ProjectServiceRemote service = (ProjectServiceRemote) ctx.lookup("remote/ProjectServiceBean");
+ *
+ *        // Instantiate a ProjectData
+ *        ProjectData projectData = ...
+ *
+ *        // Create project
+ *        projectData = service.createProject(projectData);
+ *
+ *        System.out.println("Project created with id - " + projectData.getProjectId());
+ *
+ *        // Get project by id
+ *        service.getProject(projectData.getProjectId());
+ *
+ *        // Get all projects own by user
+ *        service.getAllProjects();
+ *
+ *        projectData.setName("new name");
+ *        projectData.setDescription("new description");
+ *
+ *        // Update project
+ *        service.updateProject(projectData);
+ *
+ *        // Only administrator can get projects for user
+ *        try {
+ *            service.getProjectsForUser(1L);
+ *        } catch (EJBAccessException e) {
+ *            System.err.println("Only administrator can get projects for user");
+ *        }
+ *
+ *        // Delete project
+ *        service.deleteProject(projectData.getProjectId());
+ *     </pre>
+ * </p>
+ *
+ * <p>
+ *     <strong>To inject Local EJB:</strong>
+ *     "@EJB(beanName = "ProjectServiceBean") private ProjectServiceLocal projectService;"
+ * </p>
+ *
+ * <p>
+ *     <strong>To get Web Service client:</strong>
+ *     <pre>
+ *        ProjectService service = Service.create(
+ *            new URL("http://127.0.0.1:8080/project_service-project_service/ProjectServiceBean?wsdl"),
+ *                new QName("http://impl.project.service.topcoder.com/", "ProjectServiceBeanService"))
+ *                .getPort(ProjectService.class);
+ *
+ *        // Provide the username/password security info
+ *        URL securityURL = Demo.class.getResource("/jboss-wsse-client.xml");
+ *        ((StubExt) service).setSecurityConfig(securityURL.toURI().toString());
+ *        ((StubExt) service).setConfigName("Standard WSSecurity Client");
+ *        ((BindingProvider) service).getRequestContext().put(BindingProvider.USERNAME_PROPERTY, "username");
+ *        ((BindingProvider) service).getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, "password");
+ *     </pre>
+ * </p>
+ *
  * <p>
  * <b>Thread Safety</b>: This class is thread safe as it is immutable except for the session context. The
  * sessionContext resource, despite being mutable, does not compromise thread safety as it is injected by the EJB
@@ -116,171 +215,321 @@ import com.topcoder.util.log.LogManager;
  * </p>
  *
  * @author humblefool, FireIce
- * @version 1.0
+ * @author ThinMan, TCSDEVELOPER
+ * @version 1.1
+ * @since 1.0
  */
 @Stateless
 @WebService
-@RolesAllowed({"Cockpit Administrator" , "Cockpit User"})
+@DeclareRoles({"Cockpit User", "Cockpit Administrator" })
+@RolesAllowed({"Cockpit User", "Cockpit Administrator" })
+@TransactionManagement(TransactionManagementType.CONTAINER)
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRemote {
+
     /**
      * <p>
-     * Represents the persistence object used to persist <code>Project</code> entities.
+     * The query used to retrieve <code>Project</code> entities.
      * </p>
-     * <p>
-     * It is frozen as it will not be changed after being set by the constructor. It will not be null. It is retrieved
-     * by the {@link #getProjectPersistence()} method. It is used by all the methods of this class to perform
-     * persistence tasks.
-     * </p>
+     *
+     * @since 1.1
      */
-    private final ProjectPersistence projectPersistence;
+    private static final String QUERY = "SELECT p FROM Project p";
+
+    /**
+     * <p>
+     * The "where" clause used to retrieve <code>Project</code> entities by user id.
+     * </p>
+     *
+     * @since 1.1
+     */
+    private static final String WHERE_CLAUSE = " WHERE p.userId=:userId";
 
     /**
      * <p>
      * Represents the log used to log useful information.
      * </p>
+     *
      * <p>
-     * It is frozen as it will not be changed after being set by the constructor. It may be null, indicating that no
-     * logging is to be performed. It is retrieved by the {@link #getLog()} method. It is used by all the methods of
-     * this class to perform logging. The details of the logging may be seen in section 1.3.4 of the component
-     * specification.
+     * It is not frozen because it is set in {@link #initialize()} (not in the constructor),
+     * but once set it will not be modified.
      * </p>
+     *
+     * <p>
+     * It may be null, indicating that no logging is to be performed.
+     * </p>
+     *
+     * <p>
+     * It is retrieved by the {@link #getLog()} method.
+     * </p>
+     *
+     * <p>
+     * It is used by all the methods of this class to perform logging.
+     * The details of the logging may be seen in section 1.3.4 of the component specification.
+     * </p>
+     *
+     * <p>
+     *     <strong>Version History:</strong>
+     *     <ul>
+     *         <li>Introduced since version 1.0.</li>
+     *         <li>Modified in version 1.1:</li>
+     *             <ul>
+     *               <li>Made to be not frozen.</li>
+     *             </ul>
+     *     </ul>
+     * </p>
+     *
+     * @since 1.0
      */
-    private final Log log;
-
-    /**
-     * <p>
-     * Represents the key used to fetch roles from the profile attributes of user profile principal.
-     * </p>
-     * <p>
-     * It is frozen as it will not be changed after being set by the constructor. It will not be null/empty. It is
-     * retrieved by the {@link #getRolesKey()} method. It is used by the {@link #getAllProjects()} method, whose logic
-     * depends on what roles the current user satisfies.
-     * </p>
-     */
-    private final String rolesKey;
+    private Log log;
 
     /**
      * <p>
      * Represents the name of the administrator role in the roles attribute of the profile of the user profile
      * persistence.
      * </p>
+     *
      * <p>
-     * It is frozen as it will not be changed after being set by the constructor. It will not be null/empty. It is
-     * retrieved by the {@link #getAdministratorRole()} method. It is used by those methods of this class which need to
-     * check the roles satisfied by a user as part of their logic.
+     * It is not frozen because it is set in {@link #initialize()} (not in the constructor),
+     * but once set it will not be modified.
      * </p>
+     *
+     * <p>
+     * It will not be null/empty.
+     * </p>
+     *
+     * <p>
+     * It is retrieved by the {@link #getAdministratorRole()} method.
+     * </p>
+     *
+     * <p>
+     * It is used by those methods of this class which need to check the roles satisfied by a user as part of
+     * their logic.
+     * </p>
+     *
+     * <p>
+     *     <strong>Version History:</strong>
+     *     <ul>
+     *         <li>Introduced since version 1.0.</li>
+     *         <li>Modified in version 1.1:</li>
+     *             <ul>
+     *               <li>Made to be not frozen.</li>
+     *             </ul>
+     *     </ul>
+     * </p>
+     *
+     * @since 1.0
      */
-    private final String administratorRole;
-
-    /**
-     * Represents the name of the user role in the roles attribute of the profile of the user profile persistence. It is
-     * frozen as it will not be changed after being set by the constructor. It will not be null/empty. It is retrieved
-     * by the {@link #getUserRole()} method. It is used by the {@link #getAllProjects()} method of this class whose
-     * logic depends on whether the User role is satisfied.
-     */
-    private final String userRole;
+    private String administratorRole;
 
     /**
      * <p>
      * Represents the session context of this bean.
      * </p>
+     *
      * <p>
-     * It is a resource injected by the EJB container and will not be null while client calls are being executed. It is
-     * not frozen since it will be set by the EJB container when required. However, it does not compromise thread safety
-     * since the context will not be set while the bean is executing client calls.
+     * It is a resource injected by the EJB container and will not be null while client calls are being executed.
      * </p>
+     *
+     * <p>
+     * It is not frozen since it will be set by the EJB container when required. However, it does not compromise
+     * thread safety since the context will not be set while the bean is executing client calls.
+     * </p>
+     *
+     * @since 1.0
      */
     @Resource
     private SessionContext sessionContext;
 
     /**
-     * Constructs a <code>ProjectServiceBean</code> instance.
+     * <p>
+     * A container-managed JTA <code>EntityManager</code> for the persistence context this service manages,
+     * injected into instances of this classes by the EJB container.
+     * </p>
      *
-     * @throws ConfigurationException
-     *             if required properties are missing or there is an exception during reflection.
+     * <p>
+     * It is the responsibility of the container to ensure that this object is injected and used in a thread-safe
+     * manner.
+     * </p>
+     *
+     * @since 1.1
      */
-    public ProjectServiceBean() throws ConfigurationException {
-        InitialContext ctx;
-        try {
-            ctx = new InitialContext();
-        } catch (NamingException e) {
-            throw new ConfigurationException("A naming problem occurs.", e);
-        }
+    @PersistenceContext
+    private EntityManager entityManager;
 
-        String projectPersistenceClass = getConfigString(ctx, "project_persistence_class", true);
+    /**
+     * <p>
+     * Constructs a <code>ProjectServiceBean</code> instance.
+     * </p>
+     *
+     * <p>
+     *     <strong>Version History:</strong>
+     *     <ul>
+     *         <li>Introduced since version 1.0.</li>
+     *         <li>Modified in version 1.1:</li>
+     *             <ul>
+     *               <li>Now this is a completely empty constructor. The logic to retrieve/validate environment entries
+     *               are moved to <code>initialize()</code> method.</li>
+     *             </ul>
+     *     </ul>
+     * </p>
+     *
+     * @since 1.0
+     */
+    public ProjectServiceBean() {
+        //empty constructor
+    }
 
-        try {
-            projectPersistence = (ProjectPersistence) Class.forName(projectPersistenceClass).newInstance();
-        } catch (InstantiationException e) {
-            throw new ConfigurationException("Fail to create persistence instance.", e);
-        } catch (IllegalAccessException e) {
-            throw new ConfigurationException("Illegal access problem.", e);
-        } catch (ClassNotFoundException e) {
-            throw new ConfigurationException("Unable to find the class.", e);
-        } catch (ClassCastException e) {
-            throw new ConfigurationException("The instance is not ProjectPersistence type.", e);
-        }
+    /**
+     * <p>
+     * All instance initialization depends on this bean's EJB environment, and is therefore moved to here from the
+     * constructor.
+     * </p>
+     *
+     * @throws ConfigurationException To indicate configuration errors(e.g. if required <code>administrator_role</code>
+     *         property is missing or not type of <code>String</code>, or if <code>log_name</code> property is present
+     *         but not type of <code>String</code>).
+     *
+     * @since 1.1
+     */
+    @PostConstruct
+    protected void initialize() {
 
-        String logName = getConfigString(ctx, "log_name", false);
+        String logName = getConfigString("log_name", false);
 
+        // Note JBoss will treat the empty env-entry value as null
         if (logName != null) {
             log = LogManager.getLog(logName);
-        } else {
-            log = null;
         }
 
-        rolesKey = getConfigString(ctx, "roles_key", true);
-        administratorRole = getConfigString(ctx, "administrator_role", true);
-        userRole = getConfigString(ctx, "user_role", true);
+        administratorRole = getConfigString("administrator_role", true);
+    }
+
+    /**
+     * <p>
+     * Retrieve the configuration string from context.
+     * </p>
+     *
+     * @param name
+     *            The name of the object to look up.
+     * @param required
+     *            Whether this property is required.
+     *
+     * @return The configured object.
+     *
+     * @throws ConfigurationException
+     *             If the required property is missing or if any property is not desired type.
+     *
+     * @since 1.1
+     */
+    private String getConfigString(String name, boolean required) {
+        try {
+            String value = (String) sessionContext.lookup(name);
+
+            if (required && (value == null || 0 == value.trim().length())) {
+                throw new ConfigurationException(
+                    MessageFormat.format("The {0} property is required to be non-null and non-empty.", name));
+            }
+
+            return value;
+        } catch (ClassCastException e) {
+            throw new ConfigurationException(MessageFormat.format("The {0} property is not String type.", name), e);
+        } catch (IllegalArgumentException e) {
+            if (!required) {
+                return null;
+            }
+            throw new ConfigurationException(MessageFormat.format("The {0} property is missing.", name), e);
+        }
     }
 
     /**
      * <p>
      * Creates a project with the given project data.
      * </p>
+     *
      * <p>
-     * Notes, any user can create project, the project will associate with him/her.
+     * Note, any user can create project and the project will associate with him/her.
+     * </p>
+     *
+     * <p>
+     *     <strong>Only interest for <code>ProjectData.name</code> and <code>ProjectData.description</code>:</strong>
+     *     We are only interested for the <code>name</code> and <code>description</code> properties of given <code>
+     *     ProjectData</code>. The <code>ProjectData.projectId</code>, if any, is ignored. And also any property
+     *     of <code>Project</code>, if the given <code>ProjectData</code> is instance of <code>Project</code>, is
+     *     ignored.
+     * </p>
+     *
+     * <p>
+     *     <strong>Passed in <code>ProjectData</code> is not changed:</strong>
+     *     We treat the given <code>ProjectData</code> as a DTO, and will not update its properties(e.g. the project id,
+     *     the associated user id). The application should rely on the instance of <code>ProjectData</code> returned by
+     *     this method.
+     * </p>
+     *
+     * <p>
+     *     <strong>Version History:</strong>
+     *     <ul>
+     *         <li>Introduced since version 1.0.</li>
+     *         <li>Modified in version 1.1:</li>
+     *             <ul>
+     *               <li>Uses a container injected/managed <code>EntityManager</code> to perform persistence tasks
+     *               directly;</li>
+     *               <li>The allowed roles are pre-defined as "<b>Cockpit User</b>" and "<b>Cockpit Administrator
+     *               </b>". Note this can be overridden in deployment descriptor.</li>
+     *             </ul>
+     *     </ul>
      * </p>
      *
      * @param projectData
-     *            The project data. Must not be null. The name must also not be null/empty. The ProjectId , if any, is
-     *            ignored.
-     * @return The project as it was created, with the projectId set.
-     * @throws PersistenceFault
-     *             If a generic persistence error.
+     *            The project data to be created. Must not be null.
+     *            The <code>ProjectData.name</code> must not be null/empty.
+     *            The <code>ProjectData.projectId</code>, if any, is ignored.
+     *
+     * @return The project as it was created, with the <code>ProjectData.projectId</code> and <code>ProjectData.userId
+     *         </code> set. Will never be null.
+     *
      * @throws IllegalArgumentFault
-     *             If the arg given was illegal.
+     *             If the given <code>ProjectData</code> is illegal.
+     * @throws PersistenceFault
+     *             If a generic persistence error occurs.
+     * @throws NullPointerException
+     *             If there is no caller principal.
+     * @throws ClassCastException
+     *             If the caller principal is not type of <code>UserProfilePrincipal</code>.
+     *
+     * @since 1.0
      */
-    public ProjectData createProject(ProjectData projectData) throws PersistenceFault, IllegalArgumentFault {
+    public ProjectData createProject(ProjectData projectData) throws IllegalArgumentFault, PersistenceFault {
+
         logEnter("createProject(ProjectData)");
         logParameters("project data: {0}", formatProjectData(projectData));
 
         try {
+            // Validate
             checkProjectData(projectData, true);
 
+            // Create a new Project, copy name and description
             Project project = new Project();
             project.setName(projectData.getName());
             project.setDescription(projectData.getDescription());
 
-            // Obtain the user profile principal
-            UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            // Obtain the user id of caller
+            long callerUserId = getCallerUserId();
 
-            // Obtain the user ID
-            long userId = principal.getUserId();
-            project.setUserId(userId);
+            // Set the user ID
+            project.setUserId(callerUserId);
 
+            // Set the creation date
             project.setCreateDate(new Date());
 
-            try {
-                project = projectPersistence.createProject(project);
-            } catch (PersistenceException e) {
-                logException(e);
-                throw new PersistenceFault(e.getMessage());
-            }
+            // Persist and flush
+            this.manageEntity(project, Action.CREATE);
 
-            ProjectData newProjectData = createProjectData(project);
-            logReturn(formatProjectData(newProjectData));
-            return newProjectData;
+            // Copy to a new ProjectData entity.
+            ProjectData resultProjectData = copyProjectData(project);
+
+            logReturn(formatProjectData(resultProjectData));
+            return resultProjectData;
         } finally {
             logExit("createProject(ProjectData)");
         }
@@ -290,26 +539,55 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      * <p>
      * Gets the project data for the project with the given Id.
      * </p>
+     *
      * <p>
      * Notes, only associated user can retrieve the specified project, administrator can retrieve any projects.
      * </p>
      *
+     * <p>
+     *     <strong>Version History:</strong>
+     *     <ul>
+     *         <li>Introduced since version 1.0.</li>
+     *         <li>Modified in version 1.1:</li>
+     *             <ul>
+     *               <li>Uses a container injected/managed <code>EntityManager</code> to perform persistence tasks
+     *               directly;</li>
+     *               <li>The allowed roles are pre-defined as "<b>Cockpit User</b>" and "<b>Cockpit Administrator
+     *               </b>". Note this can be overridden in deployment descriptor.</li>
+     *             </ul>
+     *     </ul>
+     * </p>
+     *
      * @param projectId
-     *            The ID of the project.
-     * @return The project data for the project with the given Id.
+     *            The ID of the project to be retrieved.
+     *
+     * @return The project data for the project with the given Id. Will never be null.
+     *
      * @throws PersistenceFault
      *             If a generic persistence error.
      * @throws ProjectNotFoundFault
      *             If no project with the given ID exists.
      * @throws AuthorizationFailedFault
      *             If the calling principal is not authorized to retrieve the project.
+     * @throws NullPointerException
+     *             If there is no caller principal.
+     * @throws ClassCastException
+     *             If the caller principal is not type of <code>UserProfilePrincipal</code>.
+     *
+     * @since 1.0
      */
-    public ProjectData getProject(long projectId) throws PersistenceFault, ProjectNotFoundFault,
-        AuthorizationFailedFault {
+    public ProjectData getProject(long projectId)
+        throws ProjectNotFoundFault, AuthorizationFailedFault, PersistenceFault {
+
         logEnter("getProject(long)");
         logParameters("project id: {0}", projectId);
+
         try {
-            ProjectData projectData = createProjectData(getProjectById(projectId));
+            // Authorization is already done in getProjectById.
+            Project project = getProjectById(projectId);
+
+            ProjectData projectData = copyProjectData(project);
+
             logReturn(formatProjectData(projectData));
             return projectData;
         } finally {
@@ -321,45 +599,56 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      * <p>
      * Gets the project data for all projects of the given user.
      * </p>
+     *
      * <p>
      * Notes, only administrator can do this.
      * </p>
      *
+     * <p>
+     *     <strong>Version History:</strong>
+     *     <ul>
+     *         <li>Introduced since version 1.0.</li>
+     *         <li>Modified in version 1.1:</li>
+     *             <ul>
+     *               <li>Uses a container injected/managed <code>EntityManager</code> to perform persistence tasks
+     *               directly;</li>
+     *               <li>The allowed role is pre-defined as "<b>Cockpit Administrator</b>". Note this can be overridden
+     *               in deployment descriptor;</li>
+     *               <li>This method no longer performs role-based authorization in code. It relies instead (as always
+     *               did) on EJB declarative security.</li>
+     *             </ul>
+     *     </ul>
+     * </p>
+     *
      * @param userId
      *            The ID of the user whose projects are to be retrieved.
-     * @return The project data for all projects of the given user.
-     * @throws PersistenceFault
-     *             If a generic persistence error.
-     * @throws AuthorizationFailedFault
-     *             If the calling principal is not authorized to retrieve the projects.
+     *
+     * @return The project data for all projects of the given user. The returned collection will not
+     *         be null or contain nulls. Will never be empty.
+     *
      * @throws UserNotFoundFault
      *             If there are no projects linked to the given user.
+     * @throws PersistenceFault
+     *             If a generic persistence error occurs.
+     *
+     * @since 1.0
      */
-    @SuppressWarnings("unchecked")
-    @RolesAllowed("Cockpit Administrator")
-    public List<ProjectData> getProjectsForUser(long userId) throws PersistenceFault, AuthorizationFailedFault,
-        UserNotFoundFault {
+    @RolesAllowed({"Cockpit Administrator" })
+    public List < ProjectData > getProjectsForUser(long userId) throws PersistenceFault, UserNotFoundFault {
+
         logEnter("getProjectsForUser(long)");
         logParameters("user id: {0}", userId);
 
         try {
-            List<Project> projects = projectPersistence.getProjectsForUser(userId);
+            List < ProjectData > projectDatas = doGetProjects(userId);
 
-            if (projects.isEmpty()) {
-                throw logException(new UserNotFoundFault("No projects present with the given user " + userId));
-            }
-
-            List<ProjectData> projectDatas = new ArrayList<ProjectData>();
-
-            for (Project project : projects) {
-                projectDatas.add(createProjectData(project));
+            // If there is no project linked to user, throw UserNotFoundFault
+            if (projectDatas.isEmpty()) {
+                throw logException(new UserNotFoundFault("No projects linked with the given user " + userId));
             }
 
             logReturn(formatProjectDatas(projectDatas));
             return projectDatas;
-        } catch (PersistenceException e) {
-            logException(e);
-            throw new PersistenceFault(e.getMessage());
         } finally {
             logExit("getProjectsForUser(long)");
         }
@@ -367,43 +656,111 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
 
     /**
      * <p>
-     * Gets the project data for all projects viewable from the calling principal.
-     * </p>
-     * <p>
-     * Notes, for user, it will return all the projects associated with him,
-     * administrator will return all the projects.
+     * Get projects by given user id. If given user id is null, then all projects will be retrieved.
      * </p>
      *
-     * @return The project data for all projects viewable from the calling principal. The returned collection will not
-     *         be null or contain nulls. Possibly empty.
+     * <p>
+     * Called by <code>getProjectsForUser()</code> and <code>getAllProjects()</code>.
+     * </p>
+     *
+     * <p>
+     * Introduced in version 1.1 to retrieve projects by using <code>Query</code>.
+     * </p>
+     *
+     * @param userId
+     *            The ID of the user whose projects are to be retrieved. May be null if want to retrieve all projects.
+     *
+     * @return The projects retrieved. The returned collection will not be null or contain nulls. Possibly empty.
+     *
      * @throws PersistenceFault
-     *             If a generic persistence error.
+     *             If a generic persistence error occurs.
+     *
+     * @since 1.1
      */
     @SuppressWarnings("unchecked")
-    public List<ProjectData> getAllProjects() throws PersistenceFault {
-        logEnter("getAllProjects()");
+    private List < ProjectData > doGetProjects(Long userId) throws PersistenceFault {
+
+        Query query = null;
 
         try {
-            List<Project> projects = null;
-            if (!sessionContext.isCallerInRole(administratorRole)) {
-                // not administrator
-                UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                projects = projectPersistence.getProjectsForUser(principal.getUserId());
+            if (userId != null) {
+                query = entityManager.createQuery(QUERY + WHERE_CLAUSE);
+                query.setParameter("userId", userId);
             } else {
-                projects = projectPersistence.getAllProjects();
+                query = entityManager.createQuery(QUERY);
             }
 
-            List<ProjectData> projectDatas = new ArrayList<ProjectData>();
+            // Invoke an unchecked conversion
+            List < Project > resultList = query.getResultList();
 
-            for (Project project : projects) {
-                projectDatas.add(createProjectData(project));
+            // Copy each Project
+            List < ProjectData > projectDatas = new ArrayList();
+
+            for (Project project : resultList) {
+                projectDatas.add(copyProjectData(project));
             }
 
-            logReturn(formatProjectDatas(projectDatas));
             return projectDatas;
         } catch (PersistenceException e) {
             logException(e);
             throw new PersistenceFault(e.getMessage());
+        }
+    }
+
+    /**
+     * <p>
+     * Gets the project data for all projects viewable from the calling principal.
+     * </p>
+     *
+     * <p>
+     * Notes, for user, it will retrieve only the projects associated with him;
+     * For administrator, it will retrieve all the projects.
+     * </p>
+     *
+     * <p>
+     *     <strong>Version History:</strong>
+     *     <ul>
+     *         <li>Introduced since version 1.0.</li>
+     *         <li>Modified in version 1.1:</li>
+     *             <ul>
+     *               <li>Uses a container injected/managed <code>EntityManager</code> to perform persistence tasks
+     *               directly;</li>
+     *               <li>The allowed roles are pre-defined as "<b>Cockpit User</b>" and "<b>Cockpit Administrator
+     *               </b>". Note this can be overridden in deployment descriptor.</li>
+     *             </ul>
+     *     </ul>
+     * </p>
+     *
+     * @return The project data for all projects viewable from the calling principal. The returned collection will not
+     *         be null or contain nulls. Possibly empty.
+     *
+     * @throws PersistenceFault
+     *             If a generic persistence error occurs.
+     * @throws NullPointerException
+     *             If there is no caller principal.
+     * @throws ClassCastException
+     *             If the caller principal is not type of <code>UserProfilePrincipal</code>.
+     *
+     * @since 1.0
+     */
+    public List < ProjectData > getAllProjects() throws PersistenceFault {
+
+        logEnter("getAllProjects()");
+
+        try {
+            List < ProjectData > projectDatas = null;
+            if (!sessionContext.isCallerInRole(getAdministratorRole())) {
+                // Not administrator, retrieve the projects associated with him
+                // Obtain the user id of caller
+                long callerUserId = getCallerUserId();
+                projectDatas = doGetProjects(callerUserId);
+            } else {
+                // Administrator, retrieve all the projects
+                projectDatas = doGetProjects(null);
+            }
+
+            logReturn(formatProjectDatas(projectDatas));
+            return projectDatas;
         } finally {
             logExit("getAllProjects()");
         }
@@ -413,45 +770,66 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      * <p>
      * Updates the project data for the given project.
      * </p>
+     *
      * <p>
      * Notes, only project-associated user can update that project, but administrator can update any project.
      * </p>
      *
+     * <p>
+     *     <strong>Version History:</strong>
+     *     <ul>
+     *         <li>Introduced since version 1.0.</li>
+     *         <li>Modified in version 1.1:</li>
+     *             <ul>
+     *               <li>Uses a container injected/managed <code>EntityManager</code> to perform persistence tasks
+     *               directly;</li>
+     *               <li>The allowed roles are pre-defined as "<b>Cockpit User</b>" and "<b>Cockpit Administrator
+     *               </b>". Note this can be overridden in deployment descriptor.</li>
+     *             </ul>
+     *     </ul>
+     * </p>
+     *
      * @param projectData
-     *            The project data. Must not be null. The name,description must also not be null/empty. The ProjectId
-     *            must be non-null.
-     * @throws PersistenceFault
-     *             If a generic persistence error.
+     *            The project data to be updated. Must not be null.
+     *            The <code>ProjectData.name</code> must not be null/empty.
+     *            The <code>ProjectData.projectId</code> must be non-null.
+     *
+     * @throws IllegalArgumentFault
+     *             If the given <code>ProjectData</code> is illegal.
      * @throws ProjectNotFoundFault
      *             If no project with the given ID exists.
      * @throws AuthorizationFailedFault
      *             If the calling principal is not authorized to update the project.
-     * @throws IllegalArgumentFault
-     *             If the arg given was illegal.
+     * @throws PersistenceFault
+     *             If a generic persistence error.
+     * @throws NullPointerException
+     *             If there is no caller principal.
+     * @throws ClassCastException
+     *             If the caller principal is not type of <code>UserProfilePrincipal</code>.
+     *
+     * @since 1.0
      */
-    public void updateProject(ProjectData projectData) throws PersistenceFault, ProjectNotFoundFault,
-        AuthorizationFailedFault, IllegalArgumentFault {
+    public void updateProject(ProjectData projectData)
+        throws IllegalArgumentFault, ProjectNotFoundFault, AuthorizationFailedFault, PersistenceFault {
+
         logEnter("updateProject(ProjectData)");
-        logParameters("project data: ", formatProjectData(projectData));
+        logParameters("project data: {0}", formatProjectData(projectData));
+
         try {
             checkProjectData(projectData, false);
 
-            // This will check that the project is owned by the user or the user is an admin.
-            Project project = getProjectById(projectData.getProjectId());
+            // Authorization is already done in getProjectById.
+            Project managedProject = getProjectById(projectData.getProjectId());
 
-            // update the data.
-            project.setName(projectData.getName());
-            project.setDescription(projectData.getDescription());
-            // update the modify date.
-            project.setModifyDate(new Date());
+            // Update the data into managed project entity.
+            managedProject.setName(projectData.getName());
+            managedProject.setDescription(projectData.getDescription());
 
-            projectPersistence.updateProject(project);
-        } catch (ProjectNotFoundException e) {
-            logException(e);
-            throw new ProjectNotFoundFault(e.getMessage());
-        } catch (PersistenceException e) {
-            logException(e);
-            throw new PersistenceFault(e.getMessage());
+            // Update the modify date.
+            managedProject.setModifyDate(new Date());
+
+            this.manageEntity(managedProject, Action.UPDATE);
+
         } finally {
             logExit("updateProject(ProjectData)");
         }
@@ -461,45 +839,66 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      * <p>
      * Deletes the project data for the project with the given Id.
      * </p>
+     *
      * <p>
      * Notes, only project-associated user can delete that project, but administrator can delete any project.
      * </p>
      *
+     * <p>
+     *     <strong>Version History:</strong>
+     *     <ul>
+     *         <li>Introduced since version 1.0.</li>
+     *         <li>Modified in version 1.1:</li>
+     *             <ul>
+     *               <li>Uses a container injected/managed <code>EntityManager</code> to perform persistence tasks
+     *               directly;</li>
+     *               <li>The allowed roles are pre-defined as "<b>Cockpit User</b>" and "<b>Cockpit Administrator
+     *               </b>". Note this can be overridden in deployment descriptor.</li>
+     *             </ul>
+     *     </ul>
+     * </p>
+     *
      * @param projectId
-     *            The ID of the project.
+     *            The ID of the project to be deleted.
      * @return Whether the project was found, and thus deleted.
-     * @throws PersistenceFault
-     *             If a generic persistence error.
+     *
      * @throws AuthorizationFailedFault
      *             If the calling principal is not authorized to delete the project.
      * @throws ProjectHasCompetitionsFault
      *             If the project cannot be deleted since it has competitions associated with it.
+     * @throws PersistenceFault
+     *             If a generic persistence error.
+     * @throws NullPointerException
+     *             If there is no caller principal.
+     * @throws ClassCastException
+     *             If the caller principal is not type of <code>UserProfilePrincipal</code>.
+     *
+     * @since 1.0
      */
-    @SuppressWarnings("unchecked")
-    public boolean deleteProject(long projectId) throws PersistenceFault, ProjectHasCompetitionsFault,
-        AuthorizationFailedFault {
+    public boolean deleteProject(long projectId)
+        throws AuthorizationFailedFault, ProjectHasCompetitionsFault, PersistenceFault {
+
         logEnter("deleteProject(long)");
         logParameters("project id: {0}", projectId);
 
         try {
 
-            // authorization is already done in getProjectById.
+            // Authorization is already done in getProjectById.
             Project project = getProjectById(projectId);
 
-            // project never null here.
+            // If project has competitions associated, then it can not be deleted.
             if (!project.getCompetitions().isEmpty()) {
                 throw logException(new ProjectHasCompetitionsFault("There are related competitions for this project."));
             }
 
-            boolean deleted = projectPersistence.deleteProject(projectId);
-            logReturn(String.valueOf(deleted));
-            return deleted;
+            this.manageEntity(project, Action.DELETE);
+
+            logReturn("true");
+            return true;
         } catch (ProjectNotFoundFault e) {
-            logReturn(String.valueOf(false));
+            // If project is not found, return false
+            logReturn("false");
             return false;
-        } catch (PersistenceException e) {
-            logException(e);
-            throw new PersistenceFault(e.getMessage());
         } finally {
             logExit("deleteProject(long)");
         }
@@ -507,14 +906,37 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
 
     /**
      * <p>
-     * Gets the persistence object used by this bean to persist Project entities. This method is protected so that
-     * sub-classes may access the persistence if required.
+     * Create/update/delete project entity.
      * </p>
      *
-     * @return the persistence object used by this bean to persist Project entities.
+     * @param project The <code>Project</code> entity to be created/updated/deleted.
+     * @param action The enum indicates the desired action.
+     *
+     * @throws PersistenceFault
+     *             If a generic persistence error.
+     *
+     * @since 1.1
      */
-    protected ProjectPersistence getProjectPersistence() {
-        return projectPersistence;
+    private void manageEntity(Project project, Action action) throws PersistenceFault {
+
+        try {
+            if (action == Action.CREATE) {
+                // Persist entity
+                entityManager.persist(project);
+            } else if (action == Action.DELETE) {
+                // Remove entity
+                entityManager.remove(project);
+            }
+
+            // For update, no need call EntityManager.merge() explicitly since we pushed the new properties
+            // into the managed entity directly(see updateProject()), only flush() is sufficient.
+
+            // Flush EntityManager
+            entityManager.flush();
+        } catch (PersistenceException e) {
+            logException(e);
+            throw new PersistenceFault(e.getMessage());
+        }
     }
 
     /**
@@ -523,7 +945,9 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      * log if required.
      * </p>
      *
-     * @return the log used by this bean to log information.
+     * @return The log used by this bean to log information.
+     *
+     * @since 1.0
      */
     protected Log getLog() {
         return log;
@@ -531,87 +955,42 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
 
     /**
      * <p>
-     * Gets the roles key used by this bean to get the roles attribute from the profile of the user profile principal.
+     * Gets the name of the administrator role used by this bean when checking for administrator role.
      * </p>
      *
-     * @return the roles key used by this bean to get the roles attribute from the profile of the user profile
-     *         principal.
-     */
-    public String getRolesKey() {
-        return rolesKey;
-    }
-
-    /**
      * <p>
-     * Gets the name of the administrator role used by this bean to when checking for role fulfillment.
+     *     <strong>Version History:</strong>
+     *     <ul>
+     *         <li>Introduced since version 1.0.</li>
+     *         <li>Modified in version 1.1:</li>
+     *             <ul>
+     *               <li>This method is made protected.</li>
+     *             </ul>
+     *     </ul>
      * </p>
      *
-     * @return the name of the administrator role used by this bean to when checking for role fulfillment.
+     * @return The name of the administrator role used by this bean when checking for administrator role.
+     *
+     * @since 1.0
      */
-    public String getAdministratorRole() {
+    protected String getAdministratorRole() {
         return administratorRole;
     }
 
     /**
      * <p>
-     * Gets the name of the user role used by this bean to when checking for role fulfillment.
-     * </p>
-     *
-     * @return the name of the user role used by this bean to when checking for role fulfillment.
-     */
-    public String getUserRole() {
-        return userRole;
-    }
-
-    /**
-     * <p>
-     * Retrieve the required configuration string from context.
-     * </p>
-     *
-     * @param ctx
-     *            the context to retrieve.
-     * @param name
-     *            the name of the object to look up
-     * @param required
-     *            whether this property is required.
-     * @return the configured object.
-     * @throws ConfigurationException
-     *             If the required property is missing or is not desired type, or any naming exception occurs.
-     */
-    private static String getConfigString(InitialContext ctx, String name, boolean required)
-        throws ConfigurationException {
-        try {
-            String value = (String) ctx.lookup("java:comp/env/" + name);
-
-            if (value == null || 0 == value.trim().length()) {
-                throw new ConfigurationException(MessageFormat.format("The '{0}' property is empty.", name));
-            }
-
-            return value;
-        } catch (NameNotFoundException e) {
-            if (required) {
-                throw new ConfigurationException("A naming problem occurs.", e);
-            }
-
-            return null;
-        } catch (NamingException e) {
-            throw new ConfigurationException("A naming problem occurs.", e);
-        } catch (ClassCastException e) {
-            throw new ConfigurationException(MessageFormat.format("The '{0}' property is not String type.", name), e);
-        }
-    }
-
-    /**
-     * <p>
-     * Checks the ProjectData object, validate it does all the required information.
+     * Checks the <code>ProjectData</code> object, validate it contains all the required information.
      * </p>
      *
      * @param projectData
-     *            the project data to validate.
+     *            The project data to validate.
      * @param isCreate
-     *            whether is creation operation.
+     *            Whether is creation operation.
+     *
      * @throws IllegalArgumentFault
      *             If the projectData is illegal
+     *
+     * @since 1.0
      */
     private void checkProjectData(ProjectData projectData, boolean isCreate) throws IllegalArgumentFault {
         if (projectData == null) {
@@ -632,113 +1011,65 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
 
     /**
      * <p>
-     * Logs the entrance of a method.
-     * </p>
-     *
-     * @param methodName
-     *            the method to enter.
-     */
-    private void logEnter(String methodName) {
-        if (log != null) {
-            log.log(Level.INFO, "Enter into method [ProjectServiceBean#{0}]", methodName);
-        }
-    }
-
-    /**
-     * <p>
-     * Logs the exit of a method.
-     * </p>
-     *
-     * @param methodName
-     *            the method name
-     */
-    private void logExit(String methodName) {
-        if (log != null) {
-            log.log(Level.INFO, "Exit method [ProjectServiceBean#{0}].", methodName);
-        }
-    }
-
-    /**
-     * <p>
-     * Logs the parameters that when calling the specified method.
-     * </p>
-     *
-     * @param pattern
-     *            the pattern to fill the parameter values.
-     * @param parameters
-     *            an array of objects to be formatted and substituted.
-     */
-    private void logParameters(String pattern, Object... parameters) {
-        if (log != null) {
-            log.log(Level.INFO, "Parameters: {0}", MessageFormat.format(pattern, parameters));
-        }
-    }
-
-    /**
-     * <p>
-     * Logs the returned value by a method call.
-     * </p>
-     *
-     * @param message
-     *            the message to log.
-     */
-    private void logReturn(String message) {
-        if (log != null) {
-            log.log(Level.INFO, "Returns: {0}", message);
-        }
-    }
-
-    /**
-     * <p>
-     * Logs the exception thrown.
-     * </p>
-     *
-     * @param exception
-     *            the exception thrown.
-     * @param <T> the exception type
-     * @return the logged exception
-     */
-    private <T extends Exception> T logException(T exception) {
-        if (log != null) {
-            log.log(Level.ERROR, exception, exception.getMessage());
-        }
-
-        return exception;
-    }
-
-    /**
-     * <p>
      * Gets the project with the given Id.
+     * </p>
+     *
+     * <p>
+     * This will check that the project is owned by the user or the user is an administrator.
+     * </p>
+     *
+     * <p>
+     *     <strong>Version History:</strong>
+     *     <ul>
+     *         <li>Introduced since version 1.0.</li>
+     *         <li>Modified in version 1.1:</li>
+     *             <ul>
+     *               <li>Use container managed <code>EntityManager</code> to find project.</li>
+     *             </ul>
+     *     </ul>
      * </p>
      *
      * @param projectId
      *            The ID of the project.
+     *
      * @return The project with the given Id.
+     *
      * @throws PersistenceFault
      *             If a generic persistence error.
      * @throws ProjectNotFoundFault
      *             If no project with the given ID exists.
      * @throws AuthorizationFailedFault
      *             If the calling principal is not authorized to retrieve the project.
+     * @throws NullPointerException
+     *             If there is no caller principal.
+     * @throws ClassCastException
+     *             If the caller principal is not type of <code>UserProfilePrincipal</code>.
+     *
+     * @since 1.0
      */
-    @SuppressWarnings("unchecked")
     private Project getProjectById(long projectId) throws PersistenceFault, ProjectNotFoundFault,
         AuthorizationFailedFault {
-        Project project = null;
         try {
-            project = projectPersistence.getProject(projectId);
+            Project project = entityManager.find(Project.class, projectId);
 
-            // Obtain the user profile principal
-            UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            if (project == null) {
+                throw logException(new ProjectNotFoundFault(
+                        MessageFormat.format("Project with id {0} does not exist", projectId + "")));
+            }
 
-            if (principal.getUserId() != project.getUserId() &&  !sessionContext.isCallerInRole(administratorRole)) {
-                throw logException(new AuthorizationFailedFault("User is is not administrator or own this project."));
+            // Obtain the user id of caller
+            long callerUserId = getCallerUserId();
+
+            // The user can only retrieve his own projects
+            // The administrator can retrieve any projects
+            if (callerUserId != project.getUserId() && !sessionContext.isCallerInRole(getAdministratorRole())) {
+                throw logException(new AuthorizationFailedFault(
+                    MessageFormat.format(
+                        "User [userId = {0}] is not administrator and does not own the project [projectId = {1}]",
+                            callerUserId, project.getProjectId())));
             }
 
             return project;
-        } catch (ProjectNotFoundException e) {
-            logException(e);
-            throw new ProjectNotFoundFault(e.getMessage());
         } catch (PersistenceException e) {
             logException(e);
             throw new PersistenceFault(e.getMessage());
@@ -747,39 +1078,259 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
 
     /**
      * <p>
-     * Creates a new ProjectData instance by copying data from the passed project.
+     * Get the user id of caller.
      * </p>
      *
-     * @param project
-     *            the project instance to copy data.
-     * @return the newly created ProjectData instance.
+     * @return The user id of caller.
+     *
+     * @throws NullPointerException
+     *             If there is no caller principal.
+     * @throws ClassCastException
+     *             If the caller principal is not type of <code>UserProfilePrincipal</code>.
+     *
+     * @since 1.1
      */
-    private ProjectData createProjectData(Project project) {
-        ProjectData projectData = new ProjectData();
-        projectData.setDescription(project.getDescription());
-        projectData.setName(project.getName());
-        projectData.setProjectId(project.getProjectId());
-        return projectData;
-    }
+    private long getCallerUserId() {
 
+        // Obtain the user profile principal
+        UserProfilePrincipal principal = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+
+        // Return UserProfilePrincipal#userId
+        return principal.getUserId();
+    }
 
     /**
      * <p>
-     * Formats the ProjectData instance into string representation.
+     * Creates a new <code>ProjectData</code> instance by copying data from the passed <code>ProjectData</code>.
+     * </p>
+     *
+     * <p>
+     * Version 1.1 renames the <code>createProjectData()</code> method to <code>copyProjectData()</code>.
+     * </p>
+     *
+     * @param project The <code>ProjectData</code> instance to be copied.
+     *
+     * @return The newly created <code>ProjectData</code> instance with data copied.
+     *
+     * @since 1.1
+     */
+    private ProjectData copyProjectData(ProjectData project) {
+        ProjectData projectData = new ProjectData();
+
+        projectData.setName(project.getName());
+        projectData.setDescription(project.getDescription());
+        projectData.setProjectId(project.getProjectId());
+
+        return projectData;
+    }
+
+    /**
+     * <p>
+     * Logs the entrance of a method.
+     * </p>
+     *
+     * <p>
+     *     <strong>Version History:</strong>
+     *     <ul>
+     *         <li>Introduced since version 1.0.</li>
+     *         <li>Modified in version 1.1:</li>
+     *             <ul>
+     *               <li>Check whether the <code>Level.INFO</code> is enabled before logging.</li>
+     *             </ul>
+     *     </ul>
+     * </p>
+     *
+     * @param methodName
+     *            The method to enter.
+     *
+     * @since 1.0
+     */
+    private void logEnter(String methodName) {
+        doLog(this.getLog(), Level.INFO, null, "Enter into method [ProjectServiceBean#{0}]", methodName);
+    }
+
+    /**
+     * <p>
+     * Logs the exit of a method.
+     * </p>
+     *
+     * <p>
+     *     <strong>Version History:</strong>
+     *     <ul>
+     *         <li>Introduced since version 1.0.</li>
+     *         <li>Modified in version 1.1:</li>
+     *             <ul>
+     *               <li>Check whether the <code>Level.INFO</code> is enabled before logging.</li>
+     *             </ul>
+     *     </ul>
+     * </p>
+     *
+     * @param methodName
+     *            The method to exit.
+     *
+     * @since 1.0
+     */
+    private void logExit(String methodName) {
+        doLog(this.getLog(), Level.INFO, null, "Exit into method [ProjectServiceBean#{0}]", methodName);
+    }
+
+    /**
+     * <p>
+     * Logs the parameters that passed into the specified method.
+     * </p>
+     *
+     * <p>
+     *     <strong>Version History:</strong>
+     *     <ul>
+     *         <li>Introduced since version 1.0.</li>
+     *         <li>Modified in version 1.1:</li>
+     *             <ul>
+     *               <li>Check whether the <code>Level.INFO</code> is enabled before logging.</li>
+     *             </ul>
+     *     </ul>
+     * </p>
+     *
+     * @param pattern
+     *            The pattern to fill the parameter values.
+     * @param parameters
+     *            An array of objects to be formatted and substituted.
+     *
+     * @since 1.0
+     */
+    private void logParameters(String pattern, Object... parameters) {
+        doLog(this.getLog(), Level.INFO, null, "Parameters: " + pattern, parameters);
+    }
+
+    /**
+     * <p>
+     * Logs the returned value by a method call.
+     * </p>
+     *
+     * <p>
+     *     <strong>Version History:</strong>
+     *     <ul>
+     *         <li>Introduced since version 1.0.</li>
+     *         <li>Modified in version 1.1:</li>
+     *             <ul>
+     *               <li>Check whether the <code>Level.INFO</code> is enabled before logging.</li>
+     *             </ul>
+     *     </ul>
+     * </p>
+     *
+     * @param message
+     *            The message to log.
+     *
+     * @since 1.0
+     */
+    private void logReturn(String message) {
+        doLog(this.getLog(), Level.INFO, null, "Returns: {0}", message);
+    }
+
+    /**
+     * <p>
+     * Logs the exception thrown.
+     * </p>
+     *
+     * <p>
+     *     <strong>Version History:</strong>
+     *     <ul>
+     *         <li>Introduced since version 1.0.</li>
+     *         <li>Modified in version 1.1:</li>
+     *             <ul>
+     *               <li>Check whether the <code>Level.ERROR</code> is enabled before logging.</li>
+     *             </ul>
+     *     </ul>
+     * </p>
+     *
+     * @param <T> The exception type.
+     * @param exception
+     *            The exception thrown.
+     *
+     * @return The logged exception.
+     *
+     * @since 1.0
+     */
+    private < T extends Exception > T logException(T exception) {
+        doLog(this.getLog(), Level.ERROR, exception, "{0}", exception.getMessage());
+
+        return exception;
+    }
+
+    /**
+     * <p>
+     * Logs the given exception and message with given level and given format.
+     * </p>
+     *
+     * <p>
+     * If <code>logger</code> is null, this method does nothing.
+     * </p>
+     *
+     * @param logger The <code>Log</code> to perform logging.
+     * @param level The log <code>Level</code>.
+     * @param exception The <code>Exception</code> to be logged.
+     * @param format The format pattern.
+     * @param message The message to be logged.
+     *
+     * @since 1.1
+     */
+    private static void doLog(Log logger, Level level, Exception exception, String format, Object... message) {
+        //This minimizes the overhead by allowing the formatting to happen as late as possible
+        //(certainly after a check to see if logging is enabled).
+        //See Logging Wrapper 2.0 CS 4.3.4 for details
+        if (canPerformLogging(logger, level)) {
+            logger.log(level, exception, format, message);
+        }
+    }
+
+    /**
+     * <p>
+     * Check whether can perform logging with given <code>Log</code> at given <code>Level</code>.
+     * </p>
+     *
+     * @param logger The <code>Log</code> to perform logging.
+     * @param level The logging <code>Level</code>.
+     *
+     * @return True if can perform logging with given <code>Log</code> at given <code>Level</code>.
+     *         False otherwise.
+     *
+     * @since 1.1
+     */
+    private static boolean canPerformLogging(Log logger, Level level) {
+        return logger != null && logger.isEnabled(level);
+    }
+
+    /**
+     * <p>
+     * Formats the <code>ProjectData</code> instance into string representation.
+     * </p>
+     *
+     * <p>
+     *     <strong>Version History:</strong>
+     *     <ul>
+     *         <li>Introduced since version 1.0.</li>
+     *         <li>Modified in version 1.1:</li>
+     *             <ul>
+     *               <li>Return fast if can not perform logging.</li>
+     *             </ul>
+     *     </ul>
      * </p>
      *
      * @param projectData
-     *            the ProjectData instance to format.
-     * @return the string representation of the ProjectData instance.
+     *            The <code>ProjectData</code> instance to format.
+     * @return The string representation of the <code>ProjectData</code> instance.
+     *
+     * @since 1.0
      */
-    private static String formatProjectData(ProjectData projectData) {
-        if (null == projectData) {
+    private String formatProjectData(ProjectData projectData) {
+
+        // Return fast
+        if (null == projectData || !canPerformLogging(getLog(), Level.INFO)) {
             return null;
         }
 
         StringBuilder builder = new StringBuilder();
         builder.append("<");
-        builder.append("project id: ").append(projectData.getName());
+        builder.append("project id: ").append(projectData.getProjectId());
         builder.append(", name: ").append(projectData.getName());
         builder.append(", description: ").append(projectData.getDescription());
         builder.append(">");
@@ -789,15 +1340,33 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
 
     /**
      * <p>
-     * Formats the ProjectData instance list into string representation.
+     * Formats the <code>ProjectData</code> instances list into string representation.
+     * </p>
+     *
+     * <p>
+     *     <strong>Version History:</strong>
+     *     <ul>
+     *         <li>Introduced since version 1.0.</li>
+     *         <li>Modified in version 1.1:</li>
+     *             <ul>
+     *               <li>Return fast if can not perform logging.</li>
+     *             </ul>
+     *     </ul>
      * </p>
      *
      * @param projectDatas
-     *            the ProjectData instance list to format.
-     * @return the string representation of the ProjectData instance list.
+     *            The <code>ProjectData</code> instances list to format.
+     * @return The string representation of the <code>ProjectData</code> instances list.
+     *
+     * @since 1.0
      */
-    private static String formatProjectDatas(List<ProjectData> projectDatas) {
-        // projectDatas never null.
+    private String formatProjectDatas(List < ProjectData > projectDatas) {
+        // The list of projectDatas never null.
+
+        // Return fast
+        if (0 == projectDatas.size() || !canPerformLogging(getLog(), Level.INFO)) {
+            return "[]";
+        }
 
         StringBuilder builder = new StringBuilder();
         builder.append("[");
@@ -816,5 +1385,39 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
         builder.append("]");
 
         return builder.toString();
+    }
+
+    /**
+     * <p>
+     * The enum represents the action to create/update/delete entity. It is only used within this class and
+     * is not exposed to external.
+     * </p>
+     *
+     * @author TCSDEVELOPER
+     * @version 1.1
+     * @since 1.1
+     */
+    private static enum Action {
+
+        /**
+         * <p>
+         * Enum represents the action to create entity.
+         * </p>
+         */
+        CREATE,
+
+        /**
+         * <p>
+         * Enum represents the action to update entity.
+         * </p>
+         */
+        UPDATE,
+
+        /**
+         * <p>
+         * Enum represents the action to delete entity.
+         * </p>
+         */
+        DELETE
     }
 }

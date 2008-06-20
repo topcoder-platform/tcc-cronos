@@ -22,9 +22,9 @@ import com.topcoder.service.project.UserNotFoundFault;
  * <p>
  * Failure test for <code>{@link ProjectServiceBean}</code> class.
  * </p>
- *
- * @author liuliquan
- * @version 1.0
+ * @author TCSDEVELOPER
+ * @version 1.1
+ * @since 1.0
  */
 public class ProjectServiceBeanFailureTests extends BaseTestCase {
 
@@ -485,6 +485,13 @@ public class ProjectServiceBeanFailureTests extends BaseTestCase {
                 , "INSERT INTO competition (competition_id, project_id) values (1, 1)"});
 
         try {
+            Properties env = new Properties();
+            env.setProperty(Context.SECURITY_PRINCIPAL, "admin");
+            env.setProperty(Context.SECURITY_CREDENTIALS, "password");
+            env.setProperty(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.security.jndi.JndiLoginInitialContextFactory");
+            InitialContext initCtx = new InitialContext(env);
+            projectService = (ProjectService) initCtx.lookup("remote/ProjectServiceBean");
+
             projectService.deleteProject(1);
             fail("Expect ProjectHasCompetitionsFault.");
         } catch (ProjectHasCompetitionsFault e) {

@@ -3,34 +3,47 @@
  */
 package com.topcoder.service.project;
 
-import java.io.File;
+import java.net.URL;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.ejb.EJBAccessException;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.xml.ws.WebServiceRef;
+import javax.persistence.Query;
+import javax.xml.namespace.QName;
+import javax.xml.ws.BindingProvider;
+import javax.xml.ws.Service;
+import javax.xml.ws.soap.SOAPFaultException;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import org.jboss.ws.core.StubExt;
+
+import com.topcoder.service.project.impl.ProjectServiceLocalBridge;
+
 /**
  * <p>
- * This is the demo for this component.
+ * This is the demo for this component:
+ *   <ul>
+ *     <li>Remote EJB;</li>
+ *     <li>Local EJB;</li>
+ *     <li>WebService client;</li>
+ *     <li>Security roles overridden by deployment descriptor;</li>
+ *     <li>Manage entity with a J2SE <code>EntityManager</code>.</li>
+ *   </ul>
  * </p>
  *
  * @author humblefool, FireIce
- * @version 1.0
+ * @author ThinMan, TCSDEVELOPER
+ * @version 1.1
+ * @since 1.0
  */
 public class Demo extends BaseTestCase {
-
-    /**
-     * <p>
-     * Represents the <code>ProjectPersistence</code> instance for testing.
-     * </p>
-     */
-    private ProjectPersistence projectPersistence;
 
     /**
      * <p>
@@ -38,9 +51,6 @@ public class Demo extends BaseTestCase {
      * </p>
      */
     private InitialContext ctx;
-
-    @WebServiceRef(wsdlLocation="http://127.0.0.1:8080/project_service-project_service/ProjectServiceBean?wsdl")
-    ProjectService service;
 
     /**
      * <p>
@@ -65,15 +75,8 @@ public class Demo extends BaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        executeScriptFile("/clean.sql");
+        executeScript("/clean.sql");
 
-        Properties env = new Properties();
-        env.setProperty(Context.SECURITY_PRINCIPAL, "username");
-        env.setProperty(Context.SECURITY_CREDENTIALS, "password");
-        env.setProperty(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.security.jndi.JndiLoginInitialContextFactory");
-        ctx = new InitialContext(env);
-
-        projectPersistence = (ProjectPersistence) ctx.lookup("project_service/ProjectPersistenceBean/remote");
     }
 
     /**
@@ -86,29 +89,35 @@ public class Demo extends BaseTestCase {
      */
     @Override
     protected void tearDown() throws Exception {
-        ctx.close();
+        if (ctx != null) {
+            ctx.close();
+        }
 
-        executeScriptFile("test_files" + File.separator + "clean.sql");
+        executeScript("/clean.sql");
 
         super.tearDown();
     }
 
     /**
      * <p>
-     * Demonstrates the usage of the JPAProjectPersistence.
+     * Demonstrates the usage of manage <code>Project</code> with the
+     * JPA <code>EntityManager</code> in J2SE environment.
      * </p>
      *
      * @throws Exception
      *             pass any unexpected exception to JUnit.
      */
-    public void testJPAProjectPersistence() throws Exception {
+    @SuppressWarnings("unchecked")
+    public void testDemoJPAEntityManager() throws Exception {
         Project project = new Project();
+        project.setUserId(1L);
         project.setName("Arena");
         project.setDescription("A new competition arena");
+        project.setCreateDate(new Date());
         /* Similarly set the other properties */
 
         /* We assume DesignCompetition and StudioCompetition are subclasses of Competition */
-        Set<Competition> competitions = new HashSet<Competition>();
+        Set < Competition > competitions = new HashSet();
         competitions.add(new DesignCompetition("GUI design"));
         competitions.add(new DesignCompetition("Backend design"));
         competitions.add(new StudioCompetition("Arena skins"));
@@ -116,16 +125,45 @@ public class Demo extends BaseTestCase {
             c.setProject(project);
         }
 
+        project.setCompetitions(competitions);
+
         /*
          * Create everything. Note that to fully persist the Competition subclasses, custom Hibernate configuration will
-         * be required.
+         * be required. E.g., set the "cascade" to "all"(See /test_files/META-INF/mapping.xml).
          */
-        // JPAProjectPersistence persistence = new JPAProjectPersistence();
-        projectPersistence.createProject(project);
+        getEntityTransaction().begin();
+        getEntityManager().persist(project);
+        getEntityTransaction().commit();
 
         /* This will create 4 records in the database - 1 in the project table and 3 in the competition table. */
+        getEntityManager().clear();
+        getEntityTransaction().begin();
+        Project created = getEntityManager().find(Project.class, project.getProjectId());
+
+        System.out.println("Size of competitions: " + created.getCompetitions().size());
 
         /* Similarly we may update, delete, and retrieve by different criteria as shown in the demo above. */
+
+        // Update project
+        created.setName("new name");
+        created.setModifyDate(new Date());
+
+        getEntityManager().flush();
+
+        // Delete project
+        getEntityManager().remove(created);
+
+        getEntityManager().flush();
+
+        // Retrieve by name
+        Query query = getEntityManager().createQuery("select p from Project p where p.name=:name");
+        query.setParameter("name", "new name");
+        List < Project > list = query.getResultList();
+
+        System.out.println("Size of projects: " + list.size());
+
+        getEntityTransaction().commit();
+        getEntityManager().clear();
     }
 
     /**
@@ -136,13 +174,223 @@ public class Demo extends BaseTestCase {
      * @throws Exception
      *             pass any unexpected exception to JUnit.
      */
-    public void testWebService() throws Exception {
+    public void testDemoWebService() throws Exception {
         ProjectData projectData = new ProjectData();
         projectData.setName("Arena");
         projectData.setDescription("A new competition arena");
 
+        ProjectService service = Service.create(
+            new URL("http://127.0.0.1:8080/project_service-project_service/ProjectServiceBean?wsdl"),
+            new QName("http://impl.project.service.topcoder.com/", "ProjectServiceBeanService"))
+            .getPort(ProjectService.class);
+
+        // Provide the username/password
+        URL securityURL = Demo.class.getResource("/jboss-wsse-client.xml");
+        ((StubExt) service).setSecurityConfig(securityURL.toURI().toString());
+        ((StubExt) service).setConfigName("Standard WSSecurity Client");
+        ((BindingProvider) service).getRequestContext().put(BindingProvider.USERNAME_PROPERTY, "username");
+        ((BindingProvider) service).getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, "password");
+
+        // Create project
         projectData = service.createProject(projectData);
 
         System.out.println("Project created with id - " + projectData.getProjectId());
+
+        // Get project by id
+        service.getProject(projectData.getProjectId());
+
+        // Get all projects own by user
+        service.getAllProjects();
+
+        projectData.setName("new name");
+        projectData.setDescription("new description");
+
+        // Update project
+        service.updateProject(projectData);
+
+        // Only administrator can get projects for user
+        try {
+            service.getProjectsForUser(1L);
+        } catch (SOAPFaultException e) {
+            System.err.println("Only administrator can get projects for user");
+        }
+
+        // Delete project
+        service.deleteProject(projectData.getProjectId());
+    }
+
+    /**
+     * <p>
+     * Demonstrates the usage of the remote EJB.
+     * </p>
+     *
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
+     */
+    public void testDemoRemoteEJB() throws Exception {
+        ProjectData projectData = new ProjectData();
+        projectData.setName("Arena");
+        projectData.setDescription("A new competition arena");
+
+        Properties env = new Properties();
+
+        // Specify principal
+        env.setProperty(Context.SECURITY_PRINCIPAL, "username");
+
+        // Specify credential
+        env.setProperty(Context.SECURITY_CREDENTIALS, "password");
+
+        // The initial factory and provider url are specified in /test_files/jndi.properties
+
+        ctx = new InitialContext(env);
+
+        // Get the remote EJB
+        ProjectServiceRemote service = (ProjectServiceRemote) ctx.lookup("remote/ProjectServiceBean");
+
+        // Create project
+        projectData = service.createProject(projectData);
+
+        System.out.println("Project created with id - " + projectData.getProjectId());
+
+        // Get project by id
+        service.getProject(projectData.getProjectId());
+
+        // Get all projects own by user
+        service.getAllProjects();
+
+        projectData.setName("new name");
+        projectData.setDescription("new description");
+
+        // Update project
+        service.updateProject(projectData);
+
+        // Only administrator can get projects for user
+        try {
+            service.getProjectsForUser(1L);
+        } catch (EJBAccessException e) {
+            System.err.println("Only administrator can get projects for user");
+        }
+
+        // Delete project
+        service.deleteProject(projectData.getProjectId());
+    }
+
+    /**
+     * <p>
+     * Demonstrates the usage of the local EJB.
+     * </p>
+     *
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
+     */
+    public void testDemoLocalEJB() throws Exception {
+        ProjectData projectData = new ProjectData();
+        projectData.setName("Arena");
+        projectData.setDescription("A new competition arena");
+
+        Properties env = new Properties();
+
+        // Specify principal
+        env.setProperty(Context.SECURITY_PRINCIPAL, "username");
+
+        // Specify credential
+        env.setProperty(Context.SECURITY_CREDENTIALS, "password");
+
+        // The initial factory and provider url are specified in /test_files/jndi.properties
+
+        ctx = new InitialContext(env);
+
+        // Get the bridge for local EJB
+        ProjectServiceLocalBridge localBridge =
+            (ProjectServiceLocalBridge) ctx.lookup("project_service/ProjectServiceLocalBridgeBean/remote");
+
+        // Create project
+        projectData = localBridge.createProject(projectData);
+
+        System.out.println("Project created with id - " + projectData.getProjectId());
+
+        // Get project by id
+        localBridge.getProject(projectData.getProjectId());
+
+        // Get all projects own by user
+        localBridge.getAllProjects();
+
+        projectData.setName("new name");
+        projectData.setDescription("new description");
+
+        // Update project
+        localBridge.updateProject(projectData);
+
+        // Only administrator can get projects for user
+        try {
+            localBridge.getProjectsForUser(1L);
+        } catch (EJBAccessException e) {
+            System.err.println("Only administrator can get projects for user");
+        }
+
+        // Delete project
+        localBridge.deleteProject(projectData.getProjectId());
+    }
+
+    /**
+     * <p>
+     * Demonstrates the usage of the overridden security roles.
+     * </p>
+     *
+     * <p>
+     * See the "ProjectServiceBeanRoleOverridden" ejb in /test_files/ejb/ejb-jar.xml.
+     * </p>
+     *
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
+     */
+    public void testDemoRolesOverridden() throws Exception {
+        ProjectData projectData = new ProjectData();
+        projectData.setName("Arena");
+        projectData.setDescription("A new competition arena");
+
+        Properties env = new Properties();
+
+        // Specify principal.
+        // See /test_files/lib/mock.jar/MockUserGroupManager
+        env.setProperty(Context.SECURITY_PRINCIPAL, "user");
+
+        // Specify credential
+        env.setProperty(Context.SECURITY_CREDENTIALS, "password");
+
+        // The initial factory and provider url are specified in /test_files/jndi.properties
+
+        ctx = new InitialContext(env);
+
+        // Get the remote EJB
+        ProjectServiceRemote service = (ProjectServiceRemote) ctx.lookup(
+            "project_service/ProjectServiceBeanRoleOverridden/remote");
+
+        // Create project
+        projectData = service.createProject(projectData);
+
+        System.out.println("Project created with id - " + projectData.getProjectId());
+
+        // Get project by id
+        service.getProject(projectData.getProjectId());
+
+        // Get all projects own by user
+        service.getAllProjects();
+
+        projectData.setName("new name");
+        projectData.setDescription("new description");
+
+        // Update project
+        service.updateProject(projectData);
+
+        // Only administrator can get projects for user
+        try {
+            service.getProjectsForUser(1L);
+        } catch (EJBAccessException e) {
+            System.err.println("Only administrator can get projects for user");
+        }
+
+        // Delete project
+        service.deleteProject(projectData.getProjectId());
     }
 }

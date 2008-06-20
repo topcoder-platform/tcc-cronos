@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="Cronos Java Generic Build" default="dist" basedir=".">
     <property file="${basedir}/build.version"/>
-    <property file="../topcoder_global.properties"/>
+    <property file="topcoder_global.properties"/>
     <!-- Import the dependencies of this build file -->
     <import file="${basedir}/build-dependencies.xml"/>
 
@@ -84,6 +84,8 @@
     <path id="buildlibs">
         <path refid="component.tcs-dependencies"/>
         <path refid="component.3rdParty-dependencies"/>
+        <pathelement location="${configdir}" />
+        <pathelement location="${testfiles}" />
     </path>
 
     <!-- classes needed to compile the test code -->
@@ -107,7 +109,7 @@
         </fileset>
     </path>
     <taskdef classpathref="cobertura.classpath" resource="tasks.properties"/>
-    <property name="cobertura.datafile" value="${testlogdir}/cobertura.ser"/>
+    <property name="cobertura.datafile" value="${testlogdir}/cobertura.ser" />
     <property name="instrumented.dir" value="${builddir}/instrumented"/>
 
     <target name="compile">
@@ -206,9 +208,8 @@
     </macrodef>
 
     <target name="test" depends="compile_tests">
-        <test.setup/>
+
         <test.execute/>
-        <test.teardown/>
     </target>
 
     <target name="coveragereport" depends="test">
@@ -378,10 +379,10 @@
         <copy file="${component.dist.jar}" todir="${target_libdir}/${component_path}/dist"/>
     </target>
 
-    <target name="dev_submission" depends="test">
+    <target name="dev_submission" depends="">
         <jar jarfile="${dev_submission.jar}"
              basedir="."
-             includes="build-dependencies.xml,
+             includes="build-dependencies.xml,build.xml,build-override.xml,build.version,
 		       README,   
                        ${configdir}/**,
                        ${javamain}/**/*.java,

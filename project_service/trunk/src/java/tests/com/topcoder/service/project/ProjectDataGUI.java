@@ -6,8 +6,12 @@ package com.topcoder.service.project;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Properties;
 
 import javax.ejb.EJB;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -50,6 +54,23 @@ public class ProjectDataGUI implements ActionListener {
      * </p>
      */
     public ProjectDataGUI() {
+        /*
+        * Correctly setting up this InitialContext without specifying any properties
+        * in code can be accomplished by putting the properties in a file
+        * 'jndi.properties' in the classpath
+        */
+        Properties env = new Properties();
+        env.setProperty(Context.SECURITY_PRINCIPAL, "username");
+        env.setProperty(Context.SECURITY_CREDENTIALS, "password");
+        env.setProperty(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.security.jndi.JndiLoginInitialContextFactory");
+
+        try {
+            Context context = new InitialContext(env);
+            remote = (ProjectServiceRemote) context.lookup("remote/ProjectServiceBean");
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+
         /* Setup a frame, add the widgets, setup button listeners etc. */
     }
 
@@ -83,15 +104,15 @@ public class ProjectDataGUI implements ActionListener {
                 projectData = remote.createProject(projectData);
                 show(projectData);
             } else if (command.equals("retrieve")) {
-                long id = Long.parseLong(this.id.getText());
-                ProjectData projectData = remote.getProject(id);
+                long projectId = Long.parseLong(this.id.getText());
+                ProjectData projectData = remote.getProject(projectId);
                 show(projectData);
             } else if (command.equals("retrieveUser")) {
                 long userId = Long.parseLong(this.userId.getText());
-                List<ProjectData> projectData = remote.getProjectsForUser(userId);
+                List < ProjectData > projectData = remote.getProjectsForUser(userId);
                 show(projectData);
             } else if (command.equals("retrieveAll")) {
-                List<ProjectData> projectData = remote.getAllProjects();
+                List < ProjectData > projectData = remote.getAllProjects();
                 show(projectData);
             } else if (command.equals("update")) {
                 ProjectData projectData = new ProjectData();
@@ -101,8 +122,8 @@ public class ProjectDataGUI implements ActionListener {
                 remote.updateProject(projectData);
                 show(projectData);
             } else if (command.equals("D")) {
-                long id = Long.parseLong(this.id.getText());
-                boolean result = remote.deleteProject(id);
+                long projectId = Long.parseLong(this.id.getText());
+                boolean result = remote.deleteProject(projectId);
                 if (result) {
                     alert("Project found and deleted.");
                 } else {
@@ -134,7 +155,7 @@ public class ProjectDataGUI implements ActionListener {
      * @param projectDatas
      *            the project data list.
      */
-    public static void show(List<ProjectData> projectDatas) {
+    public static void show(List < ProjectData > projectDatas) {
         /* Clear the JList and show the given items */
     }
 

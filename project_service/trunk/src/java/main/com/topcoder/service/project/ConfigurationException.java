@@ -3,26 +3,46 @@
  */
 package com.topcoder.service.project;
 
+import com.topcoder.util.errorhandling.BaseRuntimeException;
 import com.topcoder.util.errorhandling.ExceptionData;
 
 /**
  * <p>
- * This exception is thrown to indicate a configuration error in the component. It is thrown by constructors of the
- * <code>{@link com.topcoder.service.project.impl.ProjectServiceBean}</code> and
- * <code>{@link com.topcoder.service.project.persistence.JPAProjectPersistence}</code> classes.
+ * This exception is thrown to indicate a configuration error in the component.
  * </p>
+ *
  * <p>
- * It extends <code>{@link ProjectServiceException}</code> to get the functionality of error messages, cause wrapping
+ * It is thrown by <code>initialize()</code> method of the
+ * <code>{@link com.topcoder.service.project.impl.ProjectServiceBean}</code> class.
+ * </p>
+ *
+ * <p>
+ * It extends <code>{@link BaseRuntimeException}</code> to get the functionality of error messages, cause wrapping
  * and exception data. We also declare four constructors that map onto super class constructors of the same signature.
  * </p>
+ *
+ * <p>
+ *     <strong>Version History:</strong>
+ *     <ul>
+ *         <li>Introduced since version 1.0.</li>
+ *         <li>Modified in version 1.1:</li>
+ *             <ul>
+ *               <li>Change to runtime(unchecked) exception by extending <code>BaseRuntimeException</code>.</li>
+ *             </ul>
+ *     </ul>
+ * </p>
+ *
  * <p>
  * <b>Thread Safety</b>: This class is thread safe as it has no state and the super class is thread safe.
  * </p>
  *
  * @author humblefool, FireIce
- * @version 1.0
+ * @author ThinMan, TCSDEVELOPER
+ * @version 1.1
+ * @since 1.0
  */
-public class ConfigurationException extends ProjectServiceException {
+public class ConfigurationException extends BaseRuntimeException {
+
     /**
      * <p>
      * Represents the serial version unique id.

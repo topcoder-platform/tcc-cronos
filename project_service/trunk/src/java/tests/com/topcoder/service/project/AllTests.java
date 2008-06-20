@@ -11,16 +11,18 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+
 /**
  * <p>
  * This test case aggregates all test cases.
  * </p>
  *
- * @author FireIce
- * @version 1.0
+ * @author TCSDEVELOPER
+ * @version 1.1
+ *
+ * @since 1.0
  */
 public class AllTests extends TestCase {
-
     /**
      * <p>
      * Aggregates all tests.
@@ -45,5 +47,4 @@ public class AllTests extends TestCase {
 
         return suite;
     }
-
 }

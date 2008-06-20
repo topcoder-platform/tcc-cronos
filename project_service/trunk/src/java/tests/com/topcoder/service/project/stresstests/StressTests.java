@@ -10,15 +10,21 @@ import junit.framework.TestSuite;
 /**
  * Stress tests for Project Service.
  *
- * @author 80x86
- * @version 1.0
+ * @author TCSDEVELOPER
+ * @version 1.1
+ * @since 1.0
  */
 public class StressTests extends TestCase {
 
     /**
-     * Int value for the stress tests, loop TIMES times for each test.
+     * Number for the stress tests, loop TIMES times for each test.
      */
     public static final int TIMES = 10;
+
+    /**
+     * Represents double value of one thousand.
+     */
+    public static final double ONE_THOUSAND = 1000;
 
     /**
      * Runs all stress tests.
@@ -28,8 +34,7 @@ public class StressTests extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
 
-        //suite.addTestSuite(JPAProjectPersistenceUnitTests.class);
-        suite.addTestSuite(ProjectServiceBeanUnitTests.class);
+        suite.addTestSuite(ProjectServiceBeanStressTests.class);
         return suite;
     }
 }
