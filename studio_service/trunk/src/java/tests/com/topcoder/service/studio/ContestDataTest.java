@@ -86,15 +86,6 @@ public class ContestDataTest extends TestCase {
     }
 
     /**
-     * Tests setter/getter for contestCategoryId field.
-     */
-    public void testContestCategoryId() {
-        assertEquals("default value", -1, target.getContestCategoryId());
-        target.setContestCategoryId(35);
-        assertEquals("new value", 35, target.getContestCategoryId());
-    }
-
-    /**
      * Tests setter/getter for creatorUserId field.
      */
     public void testCreatorUserId() {
@@ -275,5 +266,15 @@ public class ContestDataTest extends TestCase {
         } catch (IllegalArgumentException ex) {
             // success
         }
+    }
+
+
+    /**
+     * Tests setter/getter for submissionCount field.
+     */
+    public void testSubmissionCount() {
+        assertEquals("default value", 0, target.getSubmissionCount());
+        target.setSubmissionCount(33);
+        assertEquals("new value", 33, target.getSubmissionCount());
     }
 }

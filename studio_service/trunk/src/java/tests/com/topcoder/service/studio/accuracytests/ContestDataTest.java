@@ -77,16 +77,6 @@ public class ContestDataTest extends TestCase {
 
     /**
      * <p>
-     * Tests setter/getter for contestCategoryId field.
-     * </p>
-     */
-    public void testContestCategoryId() {
-        data.setContestCategoryId(35);
-        assertEquals("The category id is wrong.", 35, data.getContestCategoryId());
-    }
-
-    /**
-     * <p>
      * Tests setter/getter for creatorUserId field.
      * </p>
      */

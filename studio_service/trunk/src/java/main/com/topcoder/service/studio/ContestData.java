@@ -33,7 +33,7 @@ import java.util.List;
         "contestDescriptionAndRequirements", "requiredOrRestrictedColors",
         "requiredOrRestrictedFonts", "sizeRequirements",
         "otherRequirementsOrRestrictions", "creatorUserId", "finalFileFormat",
-        "otherFileFormats", "statusId" })
+        "otherFileFormats", "statusId", "submissionCount"  })
 public class ContestData implements Serializable {
     /**
      * <p>
@@ -679,5 +679,29 @@ public class ContestData implements Serializable {
      */
     public void setContestTypeId(long contestTypeId) {
         this.contestTypeId = contestTypeId;
+    }
+
+    /**
+     * Represents submission count of this contest.
+     */
+    private long submissionCount;
+
+    /**
+     * Returns submission count of this contest.
+     * 
+     * @return submission count of this contest.
+     */
+    public long getSubmissionCount() {
+        return submissionCount;
+    }
+
+    /**
+     * Sets submission count of this contest.
+     * 
+     * @param submissionCount
+     *            submission count of this contest.
+     */
+    public void setSubmissionCount(long submissionCount) {
+        this.submissionCount = submissionCount;
     }
 }

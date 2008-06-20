@@ -266,9 +266,20 @@ public class StudioServiceBeanTest extends TestCase {
      */
     public void testGetContestWithDocuments() throws Exception {
         target.createContest(newContestData(), 5);
+   
+        Set<Submission> submissions = new HashSet<Submission>();
+        Submission submission = new Submission();
+        submission.setSubmissionId(1L);
+        submissions.add(submission);
+        submission.setSubmissionId(2L);
+        submissions.add(submission);
+        ContestManagerImpl.contests.get(
+                newContestData().getContestId()).setSubmissions(submissions );
 
         // retrieve result and check it
         ContestData contestData = target.getContest(33);
+        assertEquals("submissionCount", 2, contestData.getSubmissionCount());
+
         assertEquals("name of contest", "contestName", contestData.getName());
         assertEquals("contestId", 33, contestData.getContestId());
     }
@@ -325,14 +336,23 @@ public class StudioServiceBeanTest extends TestCase {
         cd.setContestId(2);
         target.createContest(cd, 5);
 
+        Set<Submission> submissions = new HashSet<Submission>();
+        Submission submission = new Submission();
+        submissions.add(submission);
+        ContestManagerImpl.contests.get(
+                33L).setSubmissions(submissions );
+
         // retrieve result and check it
         List<ContestData> contests = target.getContestsForProject(5);
         Set<Long> ids = new HashSet<Long>();
         for (ContestData contestData : contests) {
             ids.add(contestData.getContestId());
         }
+        
         assertTrue("right ids were returned", ids.contains(33l));
         assertTrue("right ids were returned", ids.contains(2l));
+        assertEquals("submissionCount", 0, contests.get(0).getSubmissionCount());
+        assertEquals("submissionCount", 1, contests.get(1).getSubmissionCount());
     }
 
     /**

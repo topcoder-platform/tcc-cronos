@@ -53,8 +53,6 @@ import com.topcoder.util.log.LogManager;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.RunAs;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -1050,6 +1048,10 @@ public class StudioServiceBean implements StudioService {
         ContestType contestType = contest.getContestType();
         contestData.setContestTypeId(contestType == null? -1 : unbox(contestType.getContestType()));
 
+        if(contest.getSubmissions() != null){
+            contestData.setSubmissionCount(contest.getSubmissions().size());
+        }
+        
          // Since 1.0.3, Bug Fix 27074484-14
         for (ContestConfig cc : contest.getConfig()) {
 
@@ -1847,8 +1849,8 @@ public class StudioServiceBean implements StudioService {
                 // from the Studio Contest Manager should be used to create the
                 // list of ContestPayload instances.
                 ArrayList<ContestPayload> payloads = new ArrayList<ContestPayload>();
-                for (ContestConfig cfg : type.getConfig()) {
-                    long contestTypeConfigId = cfg.getContestConfigId();
+                for (ContestTypeConfig cfg : type.getConfig()) {
+                    long contestTypeConfigId = cfg.getContestTypeConfigId();
                     ContestTypeConfig typeConfig = contestManager
                             .getContestTypeConfig(contestTypeConfigId);
 
@@ -1859,7 +1861,7 @@ public class StudioServiceBean implements StudioService {
                             .getDescription());
                     payload.setValue(typeConfig.getPropertyValue());
                     payload.setRequired(typeConfig.isRequired());
-                    payload.setName(cfg.getContest().getName());
+                    payload.setName(cfg.getType().getDescription());
 
                     payloads.add(payload);
                 }
@@ -2005,16 +2007,16 @@ public class StudioServiceBean implements StudioService {
         checkParameter("documentId", documentId);
 
         try {
-            return contestManager.removeDocument(documentId);
-            
+            boolean ret = contestManager.removeDocument(documentId);
+            logExit("removeDocument");
+            return ret;
         } catch (ContestManagementException e) {
             handlePersistenceError(
                     "contestManager reports error while removing document.",
                     e);
-        } finally {
-        	logExit("removeDocument");
         }
         
-        return true; // never reached
+        // never happen.
+        return false;
     }
 }
