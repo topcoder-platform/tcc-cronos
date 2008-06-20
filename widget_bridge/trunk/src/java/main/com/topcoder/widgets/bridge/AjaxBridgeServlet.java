@@ -1399,7 +1399,8 @@ public class AjaxBridgeServlet extends HttpServlet {
                 .getLaunchDateAndTime()));
         respJSON.setString("winnerAnnouncementDeadline", getDateString(contest
                 .getWinnerAnnoucementDeadline()));
-
+        respJSON.setLong("submissionCount", contest.getSubmissionCount());
+        
         // set up ARRAYS
         // Prizes[]
         // setup the JSONArray of prizes

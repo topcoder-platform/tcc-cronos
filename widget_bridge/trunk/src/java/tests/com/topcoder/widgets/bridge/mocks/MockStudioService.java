@@ -460,7 +460,8 @@ public class MockStudioService implements StudioService {
         contest.setOtherRequirementsOrRestrictions("other reqs");
         contest.setTcDirectProjectId(10000);
         contest.setCreatorUserId(30000);
-
+        contest.setSubmissionCount(55);
+        
         try {
             contest.setLaunchDateAndTime(TestHelper.getXMLGregorianCalendar("2008-04-01 09:00"));
             contest.setWinnerAnnoucementDeadline(TestHelper.getXMLGregorianCalendar("2008-05-01 09:00"));
@@ -643,5 +644,12 @@ public class MockStudioService implements StudioService {
     public UploadedDocument uploadDocument(UploadedDocument data)
             throws PersistenceException {
         return data;
+    }
+
+    /* (non-Javadoc)
+     * @see com.topcoder.service.studio.StudioService#removeDocument(long)
+     */
+    public boolean removeDocument(long documentId) throws PersistenceException {
+        return true;
     }
 }

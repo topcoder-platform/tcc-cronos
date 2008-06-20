@@ -833,8 +833,51 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 		        + "\"sizeRequirements\" : \"" + that.getSizeRequirements() + "\", "
 		        + "\"otherRequirementsOrRestrictions\" : \"" + that.getOtherRequirementsOrRestrictions() + "\", "
 		        + "\"tcDirectProjectID\" : " + that.getTcDirectProjectID() + ", "
+		        + "\"submissionCount\" : " + that.getSubmissionCount() + ", "		        
 		        + "\"creatorUserID\" : " + that.getCreatorUserID()
 		        + "}";
 	}
 
+
+    /**
+     * <p>Returns formatted winnerAnnouncementDeadline.</p>
+     */
+    this.getWinnerAnnouncementDeadlineAsDate = function /* String */ (){
+	    var results = that.winnerAnnouncementDeadline.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) +(\d{1,2}):(\d{1,2}) *$/);    
+      var dt = new Date(parseInt(results[1]),parseInt(results[2]) -1,parseInt(results[3]),parseInt(results[4]),parseInt(results[5]),0);
+      return dt.toString();
+	}    
+
+    /**
+     * <p>Returns formatted launchDateAndTime.</p>
+     */
+    this.getLaunchDateAndTimeAsDate = function /* String */ (){
+	    var results = that.launchDateAndTime.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) +(\d{1,2}):(\d{1,2}) *$/);    
+      var dt = new Date(parseInt(results[1]),parseInt(results[2]) -1,parseInt(results[3]),parseInt(results[4]),parseInt(results[5]),0);
+      return dt.toString();
+	}
+	
+	/**
+	 * <p>Represents the submissions count</p>
+	 * <p>Initial Value: -1, means that is not set</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 * <p>Valid Values: must be greater or  -1</p>
+	 */
+	var submissionCount /* long */ = -1;
+
+  /**
+   * <p>Returns the submissionCount .</p>
+   */
+  this.getSubmissionCount  = function /* long */ () {
+      return that.submissionCount ;
+  }
+
+  /**
+   * <p>Sets the submissionCount .</p>
+   */
+  this.setSubmissionCount  = function /* void */ (/* long */ submissionCount ) {
+      that.submissionCount  = submissionCount ;
+  }	    
 } // end

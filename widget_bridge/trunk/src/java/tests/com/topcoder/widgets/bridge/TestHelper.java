@@ -472,6 +472,7 @@ public final class TestHelper {
         contest.setLaunchDateAndTime(getXMLGregorianCalendar(jsonContest.getString("launchDateAndTime")));
         contest.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(jsonContest
             .getString("winnerAnnouncementDeadline")));
+        contest.setSubmissionCount(jsonContest.getLong("submissionCount"));
         // no contestTypeID available in Contest.java but architect specified to add this
         // jsonContest.getLong("contestTypeID");
 

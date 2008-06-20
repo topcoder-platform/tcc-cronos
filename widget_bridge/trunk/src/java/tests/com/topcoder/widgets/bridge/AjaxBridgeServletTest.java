@@ -17,7 +17,6 @@ import com.topcoder.json.object.JSONObject;
 import com.topcoder.service.project.ProjectData;
 import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.SubmissionData;
-import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.widgets.bridge.mocks.MockStudioService;
 
 /**
@@ -981,6 +980,8 @@ public class AjaxBridgeServletTest extends TestCase {
         JSONObject jsonContest = checkValidJSONSuccessResponse();
         assertNotNull("The 'json' parameter should not be null", jsonContest);
         ContestData contest = TestHelper.getContestFromJSON(jsonContest);
+        assertEquals("submissionCount is missing.", 55, contest
+                .getSubmissionCount());
         assertNotNull("The 'contest' should not be null", contest);
     }
 
@@ -1070,6 +1071,8 @@ public class AjaxBridgeServletTest extends TestCase {
         for (int i = 0; i < object.length; i++) {
             ContestData contest = TestHelper
                     .getContestFromJSON((JSONObject) object[i]);
+            assertEquals("submissionCount is missing.", 55, contest
+                    .getSubmissionCount());
             assertNotNull("The 'contest' should not be null", contest);
         }
     }
@@ -1112,65 +1115,6 @@ public class AjaxBridgeServletTest extends TestCase {
     
     /**
      * <p>
-     * Tests execution of Studio - getContestsForClient.
-     * </p>
-     *
-     * @throws Exception wraps all exception
-     */
-    public void testStudioGetContestsForClientSuccess() throws Exception {
-        // initialize the servlet
-        initializeValidAjaxBridgeServlet();
-        // set invalid service
-        request.setParameter("service", "studio");
-        request.setParameter("method", "getContestsForClient");
-        // set the contest ID
-        request.setParameter("clientID", "1");
-        request.setParameter("contestStatusID", "1");
-        // call doPost
-        ajaxServlet.doPost(request, response);
-
-        // not supported yet
-        // check if error response is valid
-        // get response as Array
-        JSONArray jsonContest = checkValidJSONArraySuccessResponse();
-        assertNotNull("The 'json' parameter should not be null", jsonContest);
-        Object[] object = jsonContest.getObjects();
-        for (int i = 0; i < object.length; i++) {
-            ContestData contest = TestHelper.getContestFromJSON((JSONObject) object[i]);
-            assertNotNull("The 'contest' should not be null", contest);
-        }
-    }
-
-    /**
-     * <p>
-     * Tests unsuccessful execution of Studio - getContestsForClient.
-     * </p>
-     *
-     * @throws Exception wraps all exception
-     */
-    public void testStudioGetContestsForClientFail() throws Exception {
-        // initialize the servlet
-        initializeValidAjaxBridgeServlet();
-        // set invalid service
-        request.setParameter("service", "studio");
-        request.setParameter("method", "getContestsForClient");
-        // set the contest ID
-        request.setParameter("clientID", "50");
-        // call doPost
-        ajaxServlet.doPost(request, response);
-        // check if error response is valid
-        checkValidErrorResponse();
-
-        // set the contest ID
-        request.setParameter("clientID", "-1");
-        // call doPost
-        ajaxServlet.doPost(request, response);
-        // check if error response is valid
-        checkValidErrorResponse();
-    }
-
-    /**
-     * <p>
      * Tests successful execution of Studio - getContestsForProject.
      * </p>
      *
@@ -1194,6 +1138,8 @@ public class AjaxBridgeServletTest extends TestCase {
         for (int i = 0; i < object.length; i++) {
             ContestData contest = TestHelper.getContestFromJSON((JSONObject) object[i]);
             assertNotNull("The 'contest' should not be null", contest);
+            assertEquals("submissionCount is missing.", 55, contest
+                    .getSubmissionCount());
         }
     }
 
