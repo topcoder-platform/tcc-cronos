@@ -48,15 +48,14 @@
 		<property name="submissionDate" column="submission_date"
 			not-null="true" />
 
-		<property name="height" not-null="true" />
+		<property name="height" />
 
-		<property name="width" not-null="true" />
+		<property name="width" />
 
 		<property name="modifyDate" column="modify_date" generated="always"
 			not-null="true" />
 
-		<property name="orSubmission" column="or_submission_id"
-			not-null="true" />
+		<property name="orSubmission" column="or_submission_id" />
 			
 		<many-to-one name="fullSubmissionPath"
 			class="com.topcoder.service.studio.contest.FilePath"
