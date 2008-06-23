@@ -2019,4 +2019,28 @@ public class StudioServiceBean implements StudioService {
         // never happen.
         return false;
     }
+
+	/**
+	 * <p>
+	 * Get all the MimeType objects.
+	 * </p>
+	 *
+	 * @return the list of all available MimeType
+	 *
+	 * @throws PersistenceException if any error occurs when getting MimeType
+	 */
+	public List<MimeType> getAllMimeTypes() throws PersistenceException
+	{
+		try {
+			List<MimeType> allMimeTypes = contestManager.getAllMimeTypes();
+			logExit("getAllMimeTypes");
+			return allMimeTypes;
+		} catch (ContestManagementException e) {
+			handlePersistenceError(
+					"contestManager reports error while getAllMimeTypes.", e);
+		}
+
+		// never happen.
+		return null;
+	}
 }

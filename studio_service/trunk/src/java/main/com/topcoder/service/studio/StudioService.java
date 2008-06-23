@@ -8,6 +8,8 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.service.studio.contest.ContestManagementException;
+import com.topcoder.service.studio.contest.MimeType;
 
 /**
  * <p>
@@ -387,4 +389,15 @@ public interface StudioService {
      *             if some persistence errors occur
      */
     public boolean removeDocument(long documentId) throws PersistenceException;
+
+    /**
+     * <p>
+     * Get all the MimeType objects.
+     * </p>
+     *
+     * @return the list of all available MimeType
+     *
+     * @throws PersistenceException if any error occurs when getting MimeType
+     */
+    public List<MimeType> getAllMimeTypes() throws PersistenceException;
 }
