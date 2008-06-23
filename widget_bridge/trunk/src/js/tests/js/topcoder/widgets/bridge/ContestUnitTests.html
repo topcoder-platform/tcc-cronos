@@ -165,6 +165,7 @@
             	var json = eval("(" + validJSON + ")");
             	try {
             		var jsonObj = new js.topcoder.widgets.bridge.Contest(json);
+                assertEquals("submissionCount is incorrect.",555,jsonObj.submissionCount);
             		assertNotNull("Unable to instantiate Contest.", jsonObj);
             	} catch(x) {
             		fail("There should be no exception generated");
@@ -183,8 +184,6 @@
             		// expected
             	}
             }
-
-
 
             /**
              * Tests getWinnerAnnouncementDeadlineAsDate.

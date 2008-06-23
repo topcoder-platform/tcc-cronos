@@ -438,6 +438,14 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.tcDirectProjectID",
 			"json.tcDirectProjectID does not exists");
 		}
+		
+		// sets the tcDirectProjectID
+		if (typeof(json.submissionCount) != "undefined" && typeof(json.submissionCount) == "number") {
+		    that.submissionCount /* long */ = json.submissionCount;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.submissionCount",
+			"json.submissionCount does not exists");
+		}		
 
 		// sets the creatorUserID
 		if (typeof(json.creatorUserID) != "undefined" && typeof(json.creatorUserID) == "number") {
