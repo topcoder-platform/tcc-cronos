@@ -43,11 +43,13 @@ import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.ContestPayload;
 import com.topcoder.service.studio.ContestStatusData;
 import com.topcoder.service.studio.ContestTypeData;
+import com.topcoder.service.studio.PersistenceException;
 import com.topcoder.service.studio.PrizeData;
 import com.topcoder.service.studio.StudioService;
 import com.topcoder.service.studio.StudioServiceException;
 import com.topcoder.service.studio.SubmissionData;
 import com.topcoder.service.studio.UploadedDocument;
+import com.topcoder.service.studio.contest.MimeType;
 import com.topcoder.servlet.request.FileUploadResult;
 import com.topcoder.servlet.request.HttpRequestParser;
 import com.topcoder.servlet.request.MemoryFileUpload;
@@ -743,9 +745,16 @@ public class AjaxBridgeServlet extends HttpServlet {
                         // get the uploaded file
                         UploadedFile uploadedFile = result
                                 .getUploadedFile("document");
-                        // Initialize the UploadedDocument
-                        UploadedDocument document = new UploadedDocument();
-                        String contestID = result.getParameter("contestID");
+						// Initialize the UploadedDocument
+						UploadedDocument document = new UploadedDocument();
+
+						// Fix bug [27074484-35]
+						MimeType mimeType = getMimeType(uploadedFile);
+						if (mimeType != null) {
+							document.setMimeTypeId(mimeType.getMimeTypeId());
+						}
+						
+						String contestID = result.getParameter("contestID");
                         String documentID = result.getParameter("documentID");
                         String description = result.getParameter("description");
                         if (checkLongIfLessThanZero(contestID, "contestID",
@@ -773,6 +782,7 @@ public class AjaxBridgeServlet extends HttpServlet {
                         // uploadDocumentForContest
                         UploadedDocument respDoc = studioService
                                 .uploadDocumentForContest(document);
+						
                         // now create the corresponding JSON object for the
                         // response
                         JSONObject respJSON = getJSONFromUploadedDocument(respDoc);
@@ -967,10 +977,17 @@ public class AjaxBridgeServlet extends HttpServlet {
                         JSONObject jsonDocument = jsonDecoder
                                 .decodeObject(strDocument);
                         UploadedDocument document = getDocumentUploadsFromJSON(jsonDocument);
-                        
+
                         // get the uploaded file
                         UploadedFile uploadedFile = result
                                 .getUploadedFile("document");
+
+						// Fix bug [27074484-35]
+						MimeType mimeType = getMimeType(uploadedFile);
+						if (mimeType != null) {
+							document.setMimeTypeId(mimeType.getMimeTypeId());
+						}
+						
                         // Initialize the UploadedDocument
                         // set the File here
                         document.setFile(readContent(uploadedFile
@@ -2247,4 +2264,27 @@ public class AjaxBridgeServlet extends HttpServlet {
     private String getString(String str) {
         return str == null ? "" : str;
     }
+
+    /**
+     * <p>
+     * Get the matched mime type for uploaded file.
+     * </p>
+     *
+	 * @param file uploaded file.
+     * @return the matched mime type.
+     *
+     * @throws PersistenceException if any error occurs when getting MimeType
+     */
+	private MimeType getMimeType(UploadedFile file)
+			throws PersistenceException {
+		for (MimeType type : studioService.getAllMimeTypes()) {
+			// We assume only one file is here.
+			if (type.getDescription().equals(
+					file.getContentType())) {
+				return type;
+			}
+		}
+
+		return null;
+	}
 }
