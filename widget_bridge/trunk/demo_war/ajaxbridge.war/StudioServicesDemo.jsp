@@ -44,7 +44,7 @@ contest.setContestID(-1);
 function testStudioCreateContestError() {
     // initialize the studio service
     var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
-    var projectID = 50;
+    var projectID = 2011;
 
     // success callback 
     var success = function(contest) {
@@ -66,7 +66,7 @@ function testStudioCreateContestError() {
 function testStudioGetContest() {
     // initialize the studio service
     var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
-    var contestID = 50;
+    var contestID = 2011;
 
     // success callback 
     var success = function(contest) {
@@ -650,6 +650,7 @@ function getContest1() {
     contest.setOtherRequirementsOrRestrictions("other reqs");
     contest.setTcDirectProjectID(1000);
     contest.setCreatorUserID(7000);
+    contest.setSubmissionCount(3);
     
     return contest;
 }
