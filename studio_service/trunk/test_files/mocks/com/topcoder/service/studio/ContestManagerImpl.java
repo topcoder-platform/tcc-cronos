@@ -1062,4 +1062,16 @@ public class ContestManagerImpl implements ContestManagerRemote {
     public List<MimeType> getAllMimeTypes() throws ContestManagementException {
         return mimeTypes;
     }
+
+	public Contest createContest(Contest contest, String documentBasePath)
+			throws ContestManagementException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void fillToStatuses(ContestStatus status)
+			throws ContestManagementException {
+		// TODO Auto-generated method stub
+		
+	}
 }
