@@ -51,7 +51,7 @@ public interface ContestManager {
      * @throws ContestManagementException if any other error occurs.
      */
     public Contest createContest(Contest contest) throws ContestManagementException;
-
+    
     /**
      * <p>
      * Gets contest by id, and return the retrieved contest. If the contest doesn't exist, null is returned.

@@ -585,4 +585,10 @@ public class SocketDocumentContentManager implements DocumentContentManager {
 
         throw new DocumentContentManagementException(decodeString(msgBuf));
     }
+
+	public void moveDocumentToContestFolder(String filename, long contestId)
+			throws IOException, DocumentContentManagementException {
+		throw new UnsupportedOperationException(
+				"moveDocumentToContestFolder method is unsupported now for SocketDocumentContentManager.");
+	}
 }
