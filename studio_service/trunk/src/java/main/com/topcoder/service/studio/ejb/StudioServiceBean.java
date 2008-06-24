@@ -101,7 +101,7 @@ import java.util.List;
 @RunAs("Cockpit Administrator")
 @RolesAllowed("Cockpit User")
 @DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
-@TransactionManagement(TransactionManagementType.CONTAINER)
+// @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @Stateless
 public class StudioServiceBean implements StudioService {
@@ -2090,25 +2090,39 @@ public class StudioServiceBean implements StudioService {
 
 	/**
 	 * <p>
-	 * Get all the MimeType objects.
+	 * Get matched the MimeType id.
 	 * </p>
 	 * 
-	 * @return the list of all available MimeType
+	 * @param ContentType.
+	 * @return the matched MimeType id. -1 if not found.
 	 * 
 	 * @throws PersistenceException
-	 *             if any error occurs when getting MimeType
+	 *             if any error occurs when getting MimeType.
+	 * 
+	 * @throws IllegalArgumentWSException
+	 *             if the argument is null or empty
 	 */
-	public List<MimeType> getAllMimeTypes() throws PersistenceException {
+	public long getMimeTypeId(String contentType) throws PersistenceException {
+		logEnter("getMimeTypeId", contentType);
+		checkParameter("contentType", contentType);
 		try {
 			List<MimeType> allMimeTypes = contestManager.getAllMimeTypes();
+			long ret = -1;
+			for (MimeType mime : allMimeTypes) {
+				if (mime.getDescription().equals(contentType)) {
+					ret = mime.getMimeTypeId();
+					break;
+				}
+			}
+
 			logExit("getAllMimeTypes");
-			return allMimeTypes;
+			return ret;
 		} catch (ContestManagementException e) {
 			handlePersistenceError(
 					"contestManager reports error while getAllMimeTypes.", e);
 		}
 
 		// never happen.
-		return null;
+		return -1;
 	}
 }
