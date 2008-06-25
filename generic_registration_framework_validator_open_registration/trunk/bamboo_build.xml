@@ -23,9 +23,11 @@
     <property name="javadocsdir" value="${docsdir}/javadocs"/>
     <property name="reports" value="${testlogdir}/reports"/>
 
-    <!-- Import the dependencies of this build file -->
-    <import file="${basedir}/build-dependencies.xml"/>
-
+    <!-- Import the dependencies of this build file. This is optional because it will be
+    created at runtime.-->
+    <property name="temp-build-dependencies-file" value="${basedir}/temp-build-dependencies.xml"/>
+    <import file="${temp-build-dependencies-file}" optional="true"/>
+    
     <!-- COMPONENT PARAMETERS -->
     <property name="component" value="${component.name}"/>
     <property name="package" value="${component.package}"/>
@@ -107,6 +109,21 @@
     <taskdef classpathref="cobertura.classpath" resource="tasks.properties"/>
     <property name="cobertura.datafile" value="${testlogdir}/cobertura.ser"/>
     <property name="instrumented.dir" value="${builddir}/instrumented"/>
+
+    <!-- target used for updating the dependencies used from something like
+     ${tcs_libdir}\component_name\major.minor.micro\component.jar.name
+     to
+     ${tcs_libdir}\component_name\major\component.jar.name
+      -->
+    <target name="import.build-dependencies">
+        <delete file="temp-build-dependencies.xml"/>
+        <copy file="build-dependencies.xml" tofile="${temp-build-dependencies-file}"/>
+
+        <replaceregexp file="${temp-build-dependencies-file}"
+                       byline="true"
+                       match="\$\{tcs_libdir\}([\\\/])([a-zA-Z_0-9\-]*)\1(\d)[.](\d\.){0,1}\d\1(.*\.jar)"
+                       replace="&#036;{tcs_libdir}\1\2\1\3\1\5"/>
+    </target>
 
     <target name="compile">
         <mkdir dir="${build_classdir}"/>
@@ -237,25 +254,6 @@
         <echo>The execution of reports is complete. Reports are available in /${reports}</echo>
     </target>
 
-    <target name="manifest">
-        <mkdir dir="${manifest_file_path}"/>
-        <manifest file="${manifest_file}">
-            <attribute name="Component-Vendor" value="TopCoder Inc."/>
-            <attribute name="Component-Name" value="${component}"/>
-            <attribute name="Component-Version" value="${component_version}.${component.version.build}"/>
-        </manifest>
-    </target>
-
-    <target name="dist" depends="compile, manifest">
-        <mkdir dir="${dist_lib}/${component_path}"/>
-        <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}"/>
-    </target>
-
-    <target name="dist_tests" depends="compile_tests">
-        <mkdir dir="${dist_lib}"/>
-        <jar jarfile="${component.tests.jar}" basedir="${build_testclassdir}"/>
-    </target>
-
     <target name="javadoc" depends="compile">
         <mkdir dir="${dist_javadocs}"/>
         <javadoc packagenames="${package}.*"
@@ -276,154 +274,106 @@
 
     <target name="clean">
         <delete dir="${builddir}"/>
-        <delete dir="${testlogdir}"/>
     </target>
+
 
     <!-- ************************************************************************** -->
     <!-- ************ DEPLOYMENT RELATED TARGETS  ******************************* -->
     <!-- ************************************************************************** -->
-    <macrodef name="deployCommand">
-        <!-- standard deploy command -->
+    <target name="manifest">
+        <mkdir dir="${manifest_file_path}"/>
+        <manifest file="${manifest_file}">
+            <attribute name="Component-Vendor" value="TopCoder Inc."/>
+            <attribute name="Component-Name" value="${component}"/>
+            <attribute name="Component-Version" value="${component_version}.${component.version.build}"/>
+        </manifest>
+    </target>
+
+    <target name="dist" depends="compile, manifest">
+        <mkdir dir="${dist_lib}/${component_path}"/>
+        <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}"/>
+    </target>
+
+    <target name="dist_tests" depends="compile_tests">
+        <mkdir dir="${dist_lib}"/>
+        <jar jarfile="${component.tests.jar}" basedir="${build_testclassdir}"/>
+    </target>
+
+    <target name="deploy_lib" depends="dist">
+        <mkdir dir="${target_libdir}/${component_path}"/>
+        <copy file="${component.jar}" todir="${target_libdir}/${component_path}"/>
+    </target>
+
+    <!-- ************************************************************************** -->
+    <!-- ************ END DEPLOYMENT RELATED TARGETS  ***************************** -->
+    <!-- ************************************************************************** -->
+
+    <!-- ************************************************************************** -->
+    <!-- ************ BAMBOO RELATED TARGETS  ************************************* -->
+    <!-- ************************************************************************** -->
+
+    <macrodef name="bamboo.task">
+        <attribute name="target"/>
         <sequential>
-            <antcall target="dist"/>
+            <ant antfile="bamboo_build.xml" target="@{target}"/>
+            <delete file="${temp-build-dependencies-file}"/>
         </sequential>
     </macrodef>
 
-    <target name="deploy">
-        <deployCommand/>
+    <target name="bamboo_compile" depends="import.build-dependencies">
+        <bamboo.task target="compile"/>
     </target>
 
-    <target name="deploy-lib" depends="deploy,test">
-        <mkdir dir="${target_libdir}/${component_path}"/>
-        <copy file="${component.jar}" todir="${target_libdir}/${component_path}"/>
+    <target name="bamboo_compile_tests" depends="import.build-dependencies">
+        <bamboo.task target="compile_tests"/>
     </target>
 
-    <target name="distclean">
-        <delete dir="${builddir}"/>
+    <target name="bamboo_compile_targets" depends="import.build-dependencies">
+        <bamboo.task target="compile_targets"/>
     </target>
 
-    <target name="dist_tcs" depends="distclean,dist,javadoc">
-        <!-- define tcs distribution format -->
-        <mkdir dir="${build_tcsdistdir}"/>
-        <copy todir="${build_tcsdistdir}">
-            <fileset dir="${basedir}">
-                <include name="${configdir}/**/*"/>
-                <include name="${docsdir}/**/*"/>
-                <include name="${srcdir}/**/*"/>
-                <include name="${testfiles}/**/*"/>
-                <include name="${test_reflib}/**/*"/>
-                <include name="build.version"/>
-                <include name="build-dependencies.xml"/>
-                <include name="README"/>
-                <include name="build.version"/>
-            </fileset>
-        </copy>
-        <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml"/>
-
-        <mkdir dir="${dist_coverage}"/>
-        <copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
-        <copy todir="${dist_coverage}">
-            <fileset dir="${testlogdir}/coverage"/>
-        </copy>
-
-        <mkdir dir="${dist_javadocs}"/>
-        <copy todir="${dist_javadocs}">
-            <fileset dir="${javadocsdir}"/>
-        </copy>
-
-        <antcall target="package_docs"/>
-
-        <jar jarfile="${component.dist.jar}" basedir="${build_distdir}" manifest="${manifest_file}" excludes="*.jar"/>
-
-        <antcall target="move_to_tcs"/>
+    <target name="bamboo_coveragetest" depends="import.build-dependencies">
+        <bamboo.task target="coveragetest"/>
     </target>
 
-    <target name="package_docs" depends="javadoc">
-        <mkdir dir="${dist_docpackage}"/>
-        <jar jarfile="${dist_docpackage}/${javadoc.jar}" basedir="${build_tcsdistdir}/${javadocsdir}"/>
-        <copy todir="${dist_docpackage}">
-            <fileset dir="${docsdir}" casesensitive="no">
-                <include name="${distfilename}_Class_Diagram*"/>
-                <include name="${distfilename}_Use_Case_Diagram*"/>
-                <include name="${distfilename}_Sequence_Diagram*"/>
-                <include name="${distfilename}_Requirements_Specification.pdf"/>
-                <include name="${distfilename}_Component_Specification.pdf"/>
-            </fileset>
-        </copy>
-        <jar jarfile="${builddir}/${docpackage.jar}" basedir="${dist_docpackage}"/>
+    <target name="bamboo_test" depends="import.build-dependencies">
+        <bamboo.task target="test"/>
     </target>
 
-    <target name="move_to_tcs">
-        <mkdir dir="${target_libdir}/${component_path}"/>
-        <mkdir dir="${target_libdir}/${component_path}/dist"/>
-
-        <copy file="${component.jar}" todir="${target_libdir}/${component_path}"/>
-        <copy file="${component.dist.jar}" todir="${target_libdir}/${component_path}/dist"/>
+    <target name="bamboo_coveragereport" depends="import.build-dependencies">
+        <bamboo.task target="coveragereport"/>
     </target>
 
-    <target name="dev_submission" depends="test">
-        <jar jarfile="${dev_submission.jar}"
-             basedir="."
-             includes="build-dependencies.xml,
-                       README,
-                       ${configdir}/**,
-                       ${javamain}/**/*.java,
-                       ${javatests}/${packagedir}/**,
-                       ${testlogdir}/**,
-                       ${testfiles}/**,
-                       ${docsdir}/**,
-                       ${test_reflib}/**"
-             excludes="${javatests}/${packagedir}/AllTests.java,
-                       ${javatests}/${packagedir}/stresstests/*,
-                       ${javatests}/${packagedir}/failuretests/*,
-                       ${javatests}/${packagedir}/accuracytests/*"
-            />
+    <target name="bamboo_reports" depends="import.build-dependencies">
+        <bamboo.task target="reports"/>
     </target>
 
-    <target name="design_submission">
-        <jar jarfile="${design_submission.jar}"
-             basedir="."
-             includes="build-dependencies.xml,
-                       ${configdir}/**,
-                       ${javamain}/**,
-                       ${docsdir}/**,
-                       ${testfiles}/**"
-            />
+    <target name="bamboo_reports-all" depends="import.build-dependencies">
+        <bamboo.task target="reports-all"/>
     </target>
 
-    <target name="dev_dist">
-        <!-- copy TCS Dependencies -->
-        <jar jarfile="${dev_dist.jar}"
-             basedir="."
-             includes="build.xml,
-                       README,
-                       build.version,
-                       build-dependencies.xml,
-                       ${configdir}/**,
-                       ${srcdir}/**,
-                       ${docsdir}/**,
-                       ${testfiles}/**"
-            />
+    <target name="bamboo_javadoc" depends="import.build-dependencies">
+        <bamboo.task target="javadoc"/>
     </target>
 
-    <target name="design_dist">
-        <jar jarfile="${design_dist.jar}"
-             basedir="."
-             includes="build.xml,
-                       build.version,
-                       build-dependencies.xml,
-                       ${configdir}/**,
-                       ${srcdir}/**,
-                       ${docsdir}/**,
-                       ${testfiles}/**"
-            />
+    <target name="bamboo_dist" depends="import.build-dependencies">
+        <bamboo.task target="dist"/>
+    </target>
+
+    <target name="bamboo_dist_tests" depends="import.build-dependencies">
+        <bamboo.task target="dist_tests"/>
+    </target>
+
+    <target name="bamboo_deploy_lib" depends="import.build-dependencies">
+        <bamboo.task target="deploy_lib"/>
     </target>
 
     <!-- ************************************************************************** -->
-    <!-- ************ END DEPLOYMENT RELATED TARGETS  *************************** -->
+    <!-- ************ END BAMBOO RELATED TARGETS    ******************************* -->
     <!-- ************************************************************************** -->
 
     <!-- Import the macro definitions used to override standard behaviour of
-    some of the targets of this build file. -->
+        some of the targets of this build file.
+    -->
     <import file="${basedir}/build-override.xml" optional="true"/>
 </project>
