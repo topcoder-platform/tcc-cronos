@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -138,7 +139,8 @@ import com.topcoder.util.log.LogManager;
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-@RolesAllowed("Administrator")
+@DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
+@RolesAllowed("Cockpit Administrator")
 public class SubmissionManagerBean implements SubmissionManagerLocal, SubmissionManagerRemote {
     /**
      * <p>
