@@ -1250,6 +1250,13 @@ public class ContestManagerBean implements ContestManagerRemote,
                         + contestId + "' doesn't exist.");
             }
 
+            // When moving the document, 
+            // the path in the database must be changed to the new location (stored in document.path).
+            FilePath path = document.getPath();
+            path.setPath(path.getPath() + File.separator + contestId);
+            document.setPath(path);
+            em.persist(document);
+
             contest.getDocuments().add(document);
             document.getContests().add(contest);
 

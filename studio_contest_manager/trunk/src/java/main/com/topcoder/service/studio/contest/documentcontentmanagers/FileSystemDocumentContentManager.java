@@ -181,6 +181,13 @@ public class FileSystemDocumentContentManager implements DocumentContentManager 
 			throw new DocumentContentManagementException(filePath
 					+ " is a directory.");
 		}
+		
+		// Create folder if unexist.
+		File folder = new File(new File(filePath).getParent());
+		if (!folder.exists()) {
+			folder.mkdir();
+		}
+		
 		FileOutputStream stream = new FileOutputStream(filePath);
 
 		try {
