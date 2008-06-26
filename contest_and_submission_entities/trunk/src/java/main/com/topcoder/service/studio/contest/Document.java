@@ -47,6 +47,11 @@ public class Document implements Serializable {
     private String systemFileName;
 
     /**
+     * Represents the description.
+     */
+    private String description;
+    
+    /**
      * Represents the document path.
      */
     private FilePath path;
@@ -149,6 +154,25 @@ public class Document implements Serializable {
         this.systemFileName = systemFileName;
     }
 
+    /**
+     * Returns the description.
+     *
+     * @return the description.
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Updates the description with the specified value.
+     *
+     * @param description
+     *            the description to set.
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
     /**
      * Returns the path.
      *
