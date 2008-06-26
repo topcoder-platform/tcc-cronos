@@ -79,9 +79,6 @@ public class TestHelper {
      */
     public static void populateContestCategory(ContestChannel entity, StudioFileType fileType) {
         entity.setDescription("description");
-        entity.setFileType(fileType);
-        entity.setName("name");
-        entity.setParentChannelId(101L);
     }
 
     /**

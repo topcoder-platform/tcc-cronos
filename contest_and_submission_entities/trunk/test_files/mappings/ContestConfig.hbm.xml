@@ -18,6 +18,6 @@
 					column="property_id" />
 		</composite-id>
 				
-		<property name="value" not-null="true" column="property_value" />
+		<property name="value" not-null="false" column="property_value" />
 	</class>
 </hibernate-mapping>

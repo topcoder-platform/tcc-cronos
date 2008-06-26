@@ -1,211 +1,200 @@
-CREATE TABLE contest_config (
-  contest_config_id   DECIMAL(5,0) NOT NULL,
-  property_id 		  DECIMAL(5,0) NOT NULL,
-  contest_id 		  DECIMAL(10,0) NOT NULL,
-  property_value      LVARCHAR(1000) NOT NULL
+CREATE TABLE  contest  (
+        contest_id decimal(10) NOT NULL ,
+        contest_channel_id decimal(5) NOT NULL ,
+        name varchar(254) NOT NULL ,
+        contest_type_id decimal(3) NOT NULL ,
+        project_id int NOT NULL ,
+        tc_direct_project_id decimal(10) NOT NULL ,
+        contest_status_id decimal(3) NOT NULL ,
+        forum_id int,
+        event_id decimal(10),
+        start_time DATETIME YEAR to FRACTION(3) NOT NULL, 
+        end_time DATETIME YEAR to FRACTION(3) NOT NULL, 
+        winner_annoucement_time DATETIME YEAR to FRACTION(3) NOT NULL,
+        create_user_id decimal(10) NOT NULL 
 );
 
-CREATE TABLE contest_document_xref (
-  contest_id DECIMAL(10,0) NOT NULL,
-  document_id DECIMAL(10,0) NOT NULL,
-  create_date DATETIME YEAR to FRACTION(3) NOT NULL
+CREATE TABLE  contest_channel_lu  (
+        contest_channel_id decimal(5) NOT NULL ,
+        contest_channel_desc varchar(254)
 );
 
-CREATE TABLE contest_file_type_xref (
-  contest_id      DECIMAL(10,0) NOT NULL,
-  file_type_id    DECIMAL(3,0) NOT NULL,
-  create_date     DATETIME YEAR to FRACTION(3) NOT NULL
+CREATE TABLE  contest_config  (
+        property_id decimal(5) NOT NULL ,
+        contest_id decimal(10) NOT NULL ,
+        property_value lvarchar(1000) NOT NULL 
 );
 
-CREATE TABLE contest_type_lu (
-  contest_type_id         DECIMAL(3,0) NOT NULL,
-  contest_type_desc       VARCHAR(100),
-  require_preview_image   BOOLEAN,
-  require_preview_file    BOOLEAN
+CREATE TABLE  contest_document_xref  (
+        contest_id decimal(10) NOT NULL ,
+        document_id decimal(10) NOT NULL ,
+        create_date DATETIME YEAR to FRACTION(3) NOT NULL
 );
 
-CREATE TABLE document_type_lu (
-  document_type_id        DECIMAL(3,0) NOT NULL,
-  document_type_desc      VARCHAR(100) NOT NULL
+CREATE TABLE  contest_file_type_xref  (
+        contest_id decimal(10) NOT NULL ,
+        file_type_id decimal(3) NOT NULL ,
+        create_date DATETIME YEAR to FRACTION(3) NOT NULL
 );
 
-CREATE TABLE contest_status_lu (
-  contest_status_id DECIMAL(3,0) NOT NULL,
-  contest_status_desc VARCHAR(100) NOT NULL,
-  name VARCHAR(100)
+CREATE TABLE  contest_prize_xref  (
+        contest_id decimal(10) NOT NULL ,
+        prize_id decimal(10) NOT NULL ,
+        create_date DATETIME YEAR to FRACTION(3) NOT NULL
 );
 
-CREATE TABLE prize_type_lu (
-  prize_type_id DECIMAL(3,0) NOT NULL,
-  prize_type_desc VARCHAR(100) NOT NULL
+CREATE TABLE  contest_property_lu  (
+        property_id decimal(5) NOT NULL ,
+        property_desc varchar(100) NOT NULL 
 );
 
-CREATE TABLE path (
-  path_id         DECIMAL(10,0) NOT NULL,
-  path            VARCHAR(254) NOT NULL,
-  modify_date     DATETIME YEAR to FRACTION(3) NOT NULL
+CREATE TABLE  contest_registration  (
+        contest_id decimal(10) NOT NULL ,
+        user_id decimal(10) NOT NULL ,
+        terms_of_use_id decimal(5) NOT NULL ,
+        create_date DATETIME YEAR to FRACTION(3) NOT NULL
 );
 
-CREATE TABLE payment_status (
-  payment_status_id DECIMAL(10,0) NOT NULL,
-  payments_status_desc VARCHAR(100)
+CREATE TABLE  contest_result  (
+        contest_id decimal(10) NOT NULL ,
+        submission_id decimal(10) NOT NULL ,
+        create_date DATETIME YEAR to FRACTION(3) NOT NULL, 
+        placed int NOT NULL ,
+        final_score float NOT NULL 
 );
 
-CREATE TABLE file_type_lu (
-  file_type_id DECIMAL(3,0) NOT NULL,
-  file_type_desc VARCHAR(100) NOT NULL,
-  sort DECIMAL(3,0) NOT NULL,
-  image_file_ind DECIMAL(1,0) NOT NULL,
-  extension VARCHAR(10) NOT NULL
+CREATE TABLE  contest_status_lu  (
+        contest_status_id decimal(3) NOT NULL ,
+        contest_status_desc varchar(100) NOT NULL ,
+        name varchar(100)
 );
 
-CREATE TABLE mime_type_lu (
-  mime_type_id DECIMAL(5,0) NOT NULL,
-  file_type_id DECIMAL(3,0) NOT NULL,
-  mime_type_desc VARCHAR(100) NOT NULL
+CREATE TABLE  contest_status_relation  (
+        from_contest_status_id decimal(3) NOT NULL ,
+        to_contest_status_id decimal(3) NOT NULL ,
+        contest_status_id decimal(3) NOT NULL 
 );
 
-CREATE TABLE review_status_lu (
-  review_status_id DECIMAL(3,0) NOT NULL,
-  review_status_desc VARCHAR(100) NOT NULL
+CREATE TABLE  contest_type_config  (
+        contest_type_config_id decimal(5) NOT NULL ,
+        property_id decimal(5) NOT NULL ,
+        contest_type_id decimal(3) NOT NULL ,
+        property_value lvarchar(1000) NOT NULL ,
+        required boolean(1) NOT NULL 
 );
 
-CREATE TABLE contest_property_lu (
-  property_id DECIMAL(5,0) NOT NULL,
-  property_desc VARCHAR(100) NOT NULL
+CREATE TABLE  contest_type_lu  (
+        contest_type_id decimal(3) NOT NULL ,
+        contest_type_desc varchar(100),
+        require_preview_image boolean(1),
+        require_preview_file boolean(1)
 );
 
-CREATE TABLE submission_status_lu (
-  submission_status_id DECIMAL(3,0) NOT NULL,
-  submission_status_desc VARCHAR(100) NOT NULL,
-  PRIMARY KEY(submission_status_id)
+CREATE TABLE  document  (
+        document_id decimal(10) NOT NULL ,
+        path_id decimal(10) NOT NULL ,
+        original_file_name varchar(254) NOT NULL ,
+        system_file_name varchar(254) NOT NULL ,
+        document_type_id decimal(3) NOT NULL ,
+        create_date DATETIME YEAR to FRACTION(3) NOT NULL, 
+        mime_type_id decimal(5) NOT NULL 
 );
 
-CREATE TABLE submission_type_lu (
-  submission_type_id DECIMAL(3,0) NOT NULL,
-  submission_type_desc VARCHAR(100) NOT NULL,
-  PRIMARY KEY(submission_type_id)
+CREATE TABLE  document_type_lu  (
+        document_type_id decimal(3) NOT NULL ,
+        document_type_desc varchar(100) NOT NULL 
 );
 
-CREATE TABLE contest_channel_lu (
-  contest_channel_id DECIMAL(5,0) NOT NULL,
-  file_type_id DECIMAL(3,0) NOT NULL,
-  channel_name VARCHAR(100),
-  channel_description VARCHAR(254),
-  parent_channel DECIMAL(5,0)
+CREATE TABLE  file_type_lu  (
+        file_type_id decimal(3) NOT NULL ,
+        file_type_desc varchar(100) NOT NULL ,
+        sort decimal(3) NOT NULL ,
+        image_file_ind decimal(1) NOT NULL ,
+        extension varchar(10) NOT NULL 
 );
 
-CREATE TABLE prize (
-  prize_id DECIMAL(10,0) NOT NULL,
-  place INTEGER NOT NULL,
-  amount DECIMAL(10,2) NOT NULL,
-  prize_type_id DECIMAL(3,0) NOT NULL,
-  create_date DATETIME YEAR to FRACTION(3) NOT NULL
+CREATE TABLE  mime_type_lu  (
+        mime_type_id decimal(5) NOT NULL ,
+        file_type_id decimal(3) NOT NULL ,
+        mime_type_desc varchar(100) NOT NULL 
 );
 
-CREATE TABLE contest_status_relation (
-  from_contest_status_id DECIMAL(3,0) NOT NULL,
-  to_contest_status_id DECIMAL(3,0) NOT NULL,
-  contest_status_id DECIMAL(3,0) NOT NULL
+CREATE TABLE  path  (
+        path_id decimal(10) NOT NULL ,
+        path varchar(254) NOT NULL ,
+        modify_date DATETIME YEAR to FRACTION(3) NOT NULL
 );
 
-
-CREATE TABLE contest_type_config (
-  contest_type_config_id DECIMAL(5,0) NOT NULL,
-  property_id DECIMAL(5,0) NOT NULL,
-  contest_type_id DECIMAL(3,0) NOT NULL,
-  property_value LVARCHAR(1000) NOT NULL,
-  required BOOLEAN NOT NULL);
-  
-  
-CREATE TABLE document (
-  document_id DECIMAL(10,0) NOT NULL,
-  path_id DECIMAL(10,0) NOT NULL,
-  original_file_name VARCHAR(254) NOT NULL,
-  system_file_name VARCHAR(254) NOT NULL,
-  document_type_id DECIMAL(3,0) NOT NULL,
-  create_date DATETIME YEAR to FRACTION(3) NOT NULL,
-  mime_type_id DECIMAL(5,0) NOT NULL
+CREATE TABLE  payment_status  (
+        payment_status_id decimal(10) NOT NULL ,
+        payments_status_desc varchar(100)
 );
 
-CREATE TABLE contest (
-  contest_id DECIMAL(10,0) NOT NULL,
-  contest_channel_id DECIMAL(5,0) NOT NULL,
-  name VARCHAR(254) NOT NULL,
-  contest_type_id DECIMAL(3,0) NOT NULL,
-  project_id INTEGER NOT NULL,
-  tc_direct_project_id DECIMAL(10,0) NOT NULL,
-  contest_status_id DECIMAL(3,0) NOT NULL,
-  forum_id INTEGER,
-  event_id DECIMAL(10,0),
-  start_time DATETIME YEAR to FRACTION(3) NOT NULL,
-  end_date DATETIME YEAR to FRACTION(3) NOT NULL,
-  winner_annoucement_deadline DATETIME YEAR to FRACTION(3) NOT NULL,
-  creator_user_id DECIMAL(10,0) NOT NULL
+CREATE TABLE  prize  (
+        prize_id decimal(10) NOT NULL ,
+        place int NOT NULL ,
+        amount decimal(10,2) NOT NULL ,
+        prize_type_id decimal(3) NOT NULL ,
+        create_date DATETIME YEAR to FRACTION(3) NOT NULL
 );
 
-
-CREATE TABLE submission (
-  submission_id DECIMAL(10,0) NOT NULL,
-  submission_status_id DECIMAL(3,0) NOT NULL,
-  submitter_id DECIMAL(10,0) NOT NULL,
-  contest_id DECIMAL(10,0) NOT NULL,
-  create_date DATETIME YEAR to FRACTION(3) NOT NULL,
-  original_file_name VARCHAR(254) NOT NULL,
-  system_file_name VARCHAR(254) NOT NULL,
-  submission_type_id DECIMAL(3,0) NOT NULL,
-  mime_type_id DECIMAL(5,0) NOT NULL,
-  rank DECIMAL(5,0),
-  submission_date DATETIME YEAR to FRACTION(3) NOT NULL,
-  height INTEGER NOT NULL,
-  width INTEGER NOT NULL,
-  modify_date DATETIME YEAR to FRACTION(3) NOT NULL,
-  or_submission_id INTEGER NOT NULL,
-  path_id DECIMAL(10, 0) NOT NULL
+CREATE TABLE  prize_type_lu  (
+        prize_type_id decimal(3) NOT NULL ,
+        prize_type_desc varchar(100) NOT NULL 
 );
 
-
-CREATE TABLE contest_registration (
-  contest_id DECIMAL(10,0) NOT NULL,
-  user_id DECIMAL(10,0) NOT NULL,
-  terms_of_use_id DECIMAL(5,0) NOT NULL,
-  create_date DATETIME YEAR to FRACTION(3) NOT NULL
+CREATE TABLE  review_status_lu  (
+        review_status_id decimal(3) NOT NULL ,
+        review_status_desc varchar(100) NOT NULL 
 );
 
-
-CREATE TABLE submission_payments (
-  submission_id DECIMAL(10,0) NOT NULL,
-  payment_status_id DECIMAL(10,0) NOT NULL,
-  price DECIMAL(10,2)
+CREATE TABLE  submission  (
+        submission_id decimal(10) NOT NULL ,
+        submission_status_id decimal(3) NOT NULL ,
+        submitter_id decimal(10) NOT NULL ,
+        contest_id decimal(10) NOT NULL ,
+        create_date DATETIME YEAR to FRACTION(3) NOT NULL, 
+        original_file_name varchar(254) NOT NULL ,
+        system_file_name varchar(254) NOT NULL ,
+        submission_type_id decimal(3) NOT NULL ,
+        mime_type_id decimal(5) NOT NULL ,
+        rank decimal(5),
+        submission_date DATETIME YEAR to FRACTION(3) NOT NULL, 
+        height int NOT NULL ,
+        width int NOT NULL ,
+        modify_date DATETIME YEAR to FRACTION(3) NOT NULL, 
+        or_submission_id int NOT NULL ,
+        path_id decimal(10) NOT NULL 
 );
 
+CREATE TABLE  submission_payments  (
+        submission_id decimal(10) NOT NULL ,
+        payment_status_id decimal(10) NOT NULL ,
+        price decimal(10,2)
+);
 
-CREATE TABLE submission_prize_xref (
-        submission_id   DECIMAL(10,0) NOT NULL,
-        prize_id        DECIMAL(10,0) NOT NULL,
-        create_date     DATETIME YEAR to FRACTION(3) NOT NULL
-        );
+CREATE TABLE  submission_prize_xref  (
+        prize_id decimal(10) NOT NULL ,
+        submission_id decimal(10) NOT NULL ,
+        create_date DATETIME YEAR to FRACTION(3) NOT NULL
+);
 
-CREATE TABLE submission_review (
-        submission_id           DECIMAL(10,0) NOT NULL,
-        reviewer_id             DECIMAL(10,0) NOT NULL,
-        text                    LVARCHAR(1000) NOT NULL,
-        review_status_id        DECIMAL(3,0) NOT NULL,
-        modify_date             DATETIME YEAR to FRACTION(3) NOT NULL
-        );
+CREATE TABLE  submission_review  (
+        reviewer_id decimal(10) NOT NULL ,
+        submission_id decimal(10) NOT NULL ,
+        text lvarchar(1000) NOT NULL ,
+        review_status_id decimal(3) NOT NULL ,
+        modify_date DATETIME YEAR to FRACTION(3) NOT NULL
+);
 
-CREATE TABLE contest_prize_xref (
-        contest_id      DECIMAL(10,0) NOT NULL,
-        prize_id        DECIMAL(10,0) NOT NULL,
-        create_date     DATETIME YEAR to FRACTION(3) NOT NULL
-        );
+CREATE TABLE  submission_status_lu  (
+        submission_status_id decimal(3) NOT NULL ,
+        submission_status_desc varchar(100) NOT NULL 
+);
 
-CREATE TABLE contest_result (
-  submission_id DECIMAL(10,0) NOT NULL,
-  contest_id DECIMAL(10,0) NOT NULL,
-  create_date DATETIME YEAR to FRACTION(3) NOT NULL,
-  placed INTEGER NOT NULL,
-  final_score FLOAT NOT NULL
+CREATE TABLE  submission_type_lu  (
+        submission_type_id decimal(3) NOT NULL ,
+        submission_type_desc varchar(100) NOT NULL 
 );
 
 ALTER TABLE contest_config
@@ -234,10 +223,6 @@ ALTER TABLE review_status_lu
 ;
 ALTER TABLE prize
         ADD CONSTRAINT ( PRIMARY KEY (prize_id) CONSTRAINT PK_prize )
-;
-ALTER TABLE contest_status_relation
-        ADD CONSTRAINT ( PRIMARY KEY(from_contest_status_id, to_contest_status_id, contest_status_id)
-		CONSTRAINT PK_contest_status_relation )
 ;
 ALTER TABLE document
         ADD CONSTRAINT ( PRIMARY KEY (document_id) CONSTRAINT PK_document )
