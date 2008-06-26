@@ -2166,12 +2166,13 @@ public class StudioServiceBean implements StudioService {
 			submissionPayment.setPrice(price);
 
 			PaymentStatus status = new PaymentStatus();
-			status.setPaymentStatusId(3L);
 
 			// NOTE Use 3 temporarily till submission manager provides the
 			// method of
 			// retrieving payment statuses.
 			// TODO FIX ME
+			status.setPaymentStatusId(3L);
+
 			submissionPayment.setStatus(status);
 			submissionManager.addSubmissionPayment(submissionPayment);
 		} catch (SubmissionManagementException e) {
