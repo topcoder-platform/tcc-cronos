@@ -58,7 +58,6 @@ import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
-import javax.jws.WebService;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -1286,7 +1285,7 @@ public class StudioServiceBean implements StudioService {
 		FilePath fp = new FilePath();
 
 		// [BUG TCCC-134]
-		fp.setPath(documentBasePath + File.separator + data.getPath());
+		fp.setPath(documentBasePath + File.separator + contest.getContestId());
 
 		doc.setPath(fp);
 
@@ -2008,7 +2007,7 @@ public class StudioServiceBean implements StudioService {
 	 */
 	public UploadedDocument uploadDocument(UploadedDocument data)
 			throws PersistenceException {
-		logEnter("uploadDocument");
+		logEnter("uploadDocument(UploadedDocument data)");
 
 		checkParameter("data", data);
 
@@ -2021,7 +2020,7 @@ public class StudioServiceBean implements StudioService {
 		FilePath fp = new FilePath();
 
 		// [BUG TCCC-134]
-		fp.setPath(documentBasePath + File.separator + data.getPath());
+		fp.setPath(documentBasePath);
 
 		doc.setPath(fp);
 
@@ -2059,7 +2058,7 @@ public class StudioServiceBean implements StudioService {
 		}
 
 		UploadedDocument ret = convertDocument(doc);
-		logExit("uploadDocument", ret);
+		logExit("uploadDocument(UploadedDocument data)", ret);
 		// return uploaded document
 		return ret;
 	}
