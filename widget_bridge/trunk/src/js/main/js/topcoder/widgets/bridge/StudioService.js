@@ -1187,5 +1187,135 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	     	}
 	     });
 	}
+
+
+	/**
+	 * <p>
+	 * Purchases submission.
+	 * onSuccess callback function will be called, otherwise onError will be called.</p>
+	 *
+	 * @throws IllegalArgumentException if any argument is null
+	 * @throws InvalidResponseException if the received response is invalid.
+	 */
+	this.purchaseSubmission = purchaseSubmission;
+	function /* void */ purchaseSubmission(/* Submission Id */ submissionId, /* price */ price, /* VoidHandler */ onSuccess, /* ErrorHandler */ onError ) {
+		// check first the validity of parameters
+		if (submissionId == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.submissionId","submissionId should not be null");
+		}
+		if (price == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.price","price should not be null");
+		}
+		// check onSuccess
+		if (onSuccess == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onSuccess","onSuccess callback should not be null");
+		}
+		// check onError
+		if (onError == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onError","onError callback should not be null");
+		}
+		// Create AJAXProcessor object
+		var processor = new AJAXProcessor();
+		// Send a request asynchronously
+		processor.request({
+	    	url:  servletUrlString,
+	    	async: true,
+	     	method: "POST",
+	     	// the json string should be escaped properly here. 
+	     	sendingText: "service=studio&method=purchaseSubmission&submissionId=" + submissionId + "&price=" + price,
+	     	onStateChange: function() {
+	        	// Handle the response
+	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
+	            	var response = processor.getResponseText();
+	                var jsonResp = eval("(" + response + ")");
+	                // check response
+	                if (jsonResp == null) {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","purchaseSubmission","Invalid response");
+	                }
+	                if (typeof(jsonResp.success) == "undefined") {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","purchaseSubmission","Invalid response");
+	                }	                
+	                // now check if valid or not
+	                if (jsonResp.success == false) {
+		                if (typeof(jsonResp.error) == "undefined") {
+		                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","purchaseSubmission","Invalid response");
+		                }	                
+	                	// errors
+	                	// call error handler with error message
+	                	onError(jsonResp.error);
+	                } else {
+	                	// success
+	                	// call the success callback 
+	                	onSuccess();
+	                }
+	           }
+	     	}
+	     });
+	}
+
+
+	/**
+	 * <p>
+	 * Selects winner.
+	 * onSuccess callback function will be called, otherwise onError will be called.</p>
+	 *
+	 * @throws IllegalArgumentException if any argument is null
+	 * @throws InvalidResponseException if the received response is invalid.
+	 */
+	this.selectWinner = selectWinner;
+	function /* void */ selectWinner(/* Submission Id */ submissionId, /* place */ place, /* VoidHandler */ onSuccess, /* ErrorHandler */ onError ) {
+		// check first the validity of parameters
+		if (submissionId == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.submissionId","submissionId should not be null");
+		}
+		if (place == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.place","place should not be null");
+		}
+		// check onSuccess
+		if (onSuccess == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onSuccess","onSuccess callback should not be null");
+		}
+		// check onError
+		if (onError == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onError","onError callback should not be null");
+		}
+		// Create AJAXProcessor object
+		var processor = new AJAXProcessor();
+		// Send a request asynchronously
+		processor.request({
+	    	url:  servletUrlString,
+	    	async: true,
+	     	method: "POST",
+	     	// the json string should be escaped properly here. 
+	     	sendingText: "service=studio&method=selectWinner&submissionId=" + submissionId + "&place=" + place,
+	     	onStateChange: function() {
+	        	// Handle the response
+	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
+	            	var response = processor.getResponseText();
+	                var jsonResp = eval("(" + response + ")");
+	                // check response
+	                if (jsonResp == null) {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","selectWinner","Invalid response");
+	                }
+	                if (typeof(jsonResp.success) == "undefined") {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","selectWinner","Invalid response");
+	                }	                
+	                // now check if valid or not
+	                if (jsonResp.success == false) {
+		                if (typeof(jsonResp.error) == "undefined") {
+		                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","selectWinner","Invalid response");
+		                }	                
+	                	// errors
+	                	// call error handler with error message
+	                	onError(jsonResp.error);
+	                } else {
+	                	// success
+	                	// call the success callback 
+	                	onSuccess();
+	                }
+	           }
+	     	}
+	     });
+	}
 	
 } // end
