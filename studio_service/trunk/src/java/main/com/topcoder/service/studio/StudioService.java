@@ -6,11 +6,8 @@ package com.topcoder.service.studio;
 import java.util.List;
 
 import javax.ejb.Remote;
-import javax.jws.WebService;
 
 import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.service.studio.contest.ContestManagementException;
-import com.topcoder.service.studio.contest.MimeType;
 
 /**
  * <p>
@@ -35,7 +32,7 @@ import com.topcoder.service.studio.contest.MimeType;
  * @author fabrizyo, TCSDEVELOPER
  * @version 1.0
  */
-//@WebService
+// @WebService
 @Remote
 public interface StudioService {
 	/**
@@ -404,6 +401,48 @@ public interface StudioService {
 	 * @throws IllegalArgumentWSException
 	 *             if the argument is null or empty.
 	 */
-	public long getMimeTypeId(String contentType)
+	public long getMimeTypeId(String contentType) throws PersistenceException;
+
+	/**
+	 * <p>
+	 * Purchase submission.
+	 * </p>
+	 * <p>
+	 * set the price of submission. create an entry at submission payment table
+	 * </p>
+	 * 
+	 * @param submissionId
+	 *            the id of submission to remove
+	 * @param price
+	 *            Price of submission.
+	 * 
+	 * @throws PersistenceException
+	 *             if any error occurs when purchasing submission.
+	 * @throws IllegalArgumentWSException
+	 *             if the submissionId is less than 0 or price is negative.
+	 */
+	public void purchaseSubmission(long submissionId, double price)
+			throws PersistenceException;
+
+	/**
+	 * <p>
+	 * Select winner.
+	 * </p>
+	 * <p>
+	 * 1, set the placement field of submission. 2, set the price of submission (I'm
+	 * not sure about this). 3, create an entry at submission payment table
+	 * </p>
+	 * 
+	 * @param submissionId
+	 *            the id of submission to remove
+	 * @param place
+	 *            place of submission.
+	 * 
+	 * @throws PersistenceException
+	 *             if any error occurs when selecting winner.
+	 * @throws IllegalArgumentWSException
+	 *             if the submissionId is less than 0 or place is not positive.
+	 */
+	public void selectWinner(long submissionId, int place)
 			throws PersistenceException;
 }

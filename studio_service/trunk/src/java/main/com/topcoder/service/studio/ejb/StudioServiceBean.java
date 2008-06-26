@@ -69,6 +69,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This is the EJB implementation of the StudioService interface webservice
@@ -99,7 +100,7 @@ import java.util.List;
  * @author fabrizyo, TCSDEVELOPER
  * @version 1.0
  */
-//@WebService(endpointInterface = "com.topcoder.service.studio.StudioService")
+// @WebService(endpointInterface = "com.topcoder.service.studio.StudioService")
 @RunAs("Cockpit Administrator")
 @RolesAllowed("Cockpit User")
 @DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
@@ -1309,6 +1310,7 @@ public class StudioServiceBean implements StudioService {
 								+ data.getDocumentTypeId(), "");
 			}
 			doc.setType(dt);
+            doc.setDescription(data.getDescription());
 
 			// save document
 			doc = contestManager.addDocument(doc);
@@ -2033,6 +2035,7 @@ public class StudioServiceBean implements StudioService {
 			DocumentType dt = contestManager.getDocumentType(data
 					.getDocumentTypeId());
 			doc.setType(dt);
+			doc.setDescription(data.getDescription());
 
 			// save document
 			doc = contestManager.addDocument(doc);
@@ -2041,7 +2044,6 @@ public class StudioServiceBean implements StudioService {
 					"ContestManager reports error while adding document in persistence.",
 					e);
 		}
-
 		// persist document content where necessary
 		try {
 			if (!contestManager
@@ -2126,5 +2128,103 @@ public class StudioServiceBean implements StudioService {
 
 		// never happen.
 		return -1;
+	}
+
+	/**
+	 * <p>
+	 * Purchase submission.
+	 * </p>
+	 * <p>
+	 * set the price of submission. create an entry at submission payment table
+	 * </p>
+	 * 
+	 * @param submissionId
+	 *            the id of submission to remove
+	 * @param price
+	 *            Price of submission.
+	 * 
+	 * @throws PersistenceException
+	 *             if any error occurs when purchasing submission.
+	 * @throws IllegalArgumentWSException
+	 *             if the submissionId is less than 0 or price is negative.
+	 */
+	public void purchaseSubmission(long submissionId, double price)
+			throws PersistenceException {
+		logEnter("purchaseSubmission", submissionId, price);
+		checkParameter("submissionId", submissionId);
+		checkParameter("price", price);
+
+		try {
+			SubmissionPayment submissionPayment = new SubmissionPayment();
+			Submission submission = submissionManager
+					.getSubmission(submissionId);
+			if (submission == null) {
+				handleIllegalWSArgument("Submission with id " + submissionId
+						+ " is not found");
+			}
+
+			submissionPayment.setSubmission(submission);
+			submissionPayment.setPrice(price);
+
+			PaymentStatus status = new PaymentStatus();
+			status.setPaymentStatusId(3L);
+
+			// NOTE Use 3 temporarily till submission manager provides the
+			// method of
+			// retrieving payment statuses.
+			// TODO FIX ME
+			submissionPayment.setStatus(status);
+			submissionManager.addSubmissionPayment(submissionPayment);
+		} catch (SubmissionManagementException e) {
+			handlePersistenceError("SubmissionManager reports error.", e);
+		}
+		logExit("purchaseSubmission");
+	}
+
+	/**
+	 * <p>
+	 * Select winner.
+	 * </p>
+	 * <p>
+	 * 1, set the placement field of submission. 2, set the price of submission
+	 * (I'm not sure about this). 3, create an entry at submission payment table
+	 * </p>
+	 * 
+	 * @param submissionId
+	 *            the id of submission to remove
+	 * @param place
+	 *            place of submission.
+	 * 
+	 * @throws PersistenceException
+	 *             if any error occurs when selecting winner.
+	 * @throws IllegalArgumentWSException
+	 *             if the submissionId is less than 0 or place is not positive.
+	 */
+	public void selectWinner(long submissionId, int place)
+			throws PersistenceException {
+		logEnter("selectWinner", submissionId, place);
+		checkParameter("submissionId", submissionId);
+		checkParameter("place", place);
+
+		try {
+			Submission submission = submissionManager
+					.getSubmission(submissionId);
+			if (submission == null) {
+				handleIllegalWSArgument("Submission with id " + submissionId
+						+ " is not found");
+			}
+			// set the placement field of submission.
+			submission.setRank(place);
+
+			// QUESTION: set the price of submission. How to set it?
+			submissionManager.updateSubmission(submission);
+
+			// create an entry at submission payment table
+			// QUESTION: what price should be used.
+		} catch (SubmissionManagementException e) {
+			handlePersistenceError("SubmissionManager reports error.", e);
+		}
+
+		logExit("selectWinner");
 	}
 }
