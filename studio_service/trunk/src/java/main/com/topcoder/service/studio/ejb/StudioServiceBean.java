@@ -8,6 +8,8 @@ import javax.annotation.security.RolesAllowed;
 import javax.annotation.security.RunAs;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
@@ -97,11 +99,11 @@ import java.util.List;
  * @author fabrizyo, TCSDEVELOPER
  * @version 1.0
  */
-@WebService(endpointInterface = "com.topcoder.service.studio.StudioService")
+//@WebService(endpointInterface = "com.topcoder.service.studio.StudioService")
 @RunAs("Cockpit Administrator")
 @RolesAllowed("Cockpit User")
 @DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
-// @TransactionManagement(TransactionManagementType.CONTAINER)
+@TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @Stateless
 public class StudioServiceBean implements StudioService {
@@ -2115,7 +2117,7 @@ public class StudioServiceBean implements StudioService {
 				}
 			}
 
-			logExit("getAllMimeTypes");
+			logExit("getMimeTypeId");
 			return ret;
 		} catch (ContestManagementException e) {
 			handlePersistenceError(

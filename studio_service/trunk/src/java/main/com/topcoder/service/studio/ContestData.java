@@ -33,7 +33,7 @@ import java.util.List;
         "contestDescriptionAndRequirements", "requiredOrRestrictedColors",
         "requiredOrRestrictedFonts", "sizeRequirements",
         "otherRequirementsOrRestrictions", "creatorUserId", "finalFileFormat",
-        "otherFileFormats", "statusId", "submissionCount"  })
+        "otherFileFormats", "statusId", "submissionCount", "contestTypeId"  })
 public class ContestData implements Serializable {
     /**
      * <p>

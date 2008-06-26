@@ -6,6 +6,7 @@ package com.topcoder.service.studio;
 import java.util.List;
 
 import javax.ejb.Remote;
+import javax.jws.WebService;
 
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.service.studio.contest.ContestManagementException;
@@ -34,7 +35,7 @@ import com.topcoder.service.studio.contest.MimeType;
  * @author fabrizyo, TCSDEVELOPER
  * @version 1.0
  */
-// @WebService
+//@WebService
 @Remote
 public interface StudioService {
 	/**
