@@ -669,9 +669,13 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                         // Fix bug [27074484-35]
                         long mimeTypeId = getMimeTypeId(uploadedFile);
-                        if (mimeTypeId != -1) {
-                            document.setMimeTypeId(mimeTypeId);
+                        if (mimeTypeId == -1) {
+                            sendErrorJSONResponse("No matched mime type found in database for "
+                                    + uploadedFile.getContentType(), response);
+                            return;
                         }
+
+                        document.setMimeTypeId(mimeTypeId);
 
                         String contestID = result.getParameter("contestID");
                         String documentID = result.getParameter("documentID");
