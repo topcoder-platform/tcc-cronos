@@ -26,3 +26,5 @@ DROP TABLE submission_prize_xref;
 DROP TABLE submission_review;
 DROP TABLE submission_status_lu;
 DROP TABLE submission_type_lu;
+DROP TABLE contest_detailed_status_xref;
+DROP TABLE contest_detailed_status_lu;

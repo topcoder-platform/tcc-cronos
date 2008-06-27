@@ -71,6 +71,13 @@
                 class="com.topcoder.service.studio.contest.Document" />
         </set>
 
+        <!-- TCCC-142 -->
+        <set name="contestDetailedStatuses" table="contest_detailed_status_xref">
+            <key column="contest_id" />
+            <many-to-many column="contest_detailed_status_id"
+                class="com.topcoder.service.studio.contest.ContestDetailedStatus" />
+        </set>
+
         <set name="config" cascade="all-delete-orphan">
             <key column="contest_id" />
             <one-to-many

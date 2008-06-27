@@ -4,7 +4,7 @@ create sequence STUDIO_CONTEST_SEQ;
 create sequence STUDIO_PRIZE_SEQ;
 create sequence STUDIO_SUBMISSION_SEQ;
 
-
+create sequence STUDIO_CONTEST_DETAILED_STATUS_SEQ;
 
 
 CREATE SEQUENCE sq_mime_type_lu;
@@ -27,3 +27,4 @@ CREATE SEQUENCE sq_submission;
 CREATE SEQUENCE sq_contest_property_lu;
 CREATE SEQUENCE sq_contest_config;
 CREATE SEQUENCE sq_contest_type_config;
+

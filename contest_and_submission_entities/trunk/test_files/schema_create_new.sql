@@ -197,6 +197,24 @@ CREATE TABLE  submission_type_lu  (
         submission_type_desc varchar(100) NOT NULL 
 );
 
+create table contest_detailed_status_lu ( 
+    contest_detailed_status_id DECIMAL(3,0) not null, 
+    contest_detailed_status_desc VARCHAR(100) not null, 
+    contest_status_id DECIMAL(3,0) not null 
+) 
+
+create table contest_detailed_status_xref ( 
+    contest_id DECIMAL(10,0) not null, 
+    contest_detailed_status_id DECIMAL(3,0) not null 
+) 
+
+alter table contest_detailed_status_xref add constraint foreign key 
+    (contest_detailed_status_id) 
+    references contest_detailed_status_lu 
+    (contest_detailed_status_id) 
+    constraint contestdetailedstatusxref_contestdetailedstatuslu_fk; 
+
+
 ALTER TABLE contest_config
         ADD CONSTRAINT ( PRIMARY KEY (contest_config_id) CONSTRAINT PK_contest_config )
 ;
@@ -393,3 +411,24 @@ ALTER TABLE submission
         ADD CONSTRAINT ( FOREIGN KEY(path_id)
         REFERENCES path(path_id) CONSTRAINT FK_submission_4 )
 ;
+
+
+alter table contest_detailed_status_lu add constraint primary key 
+    (contest_detailed_status_id) 
+    constraint contestdetailedstatuslu_pk; 
+
+alter table contest_detailed_status_lu add constraint foreign key 
+    (contest_status_id) 
+    references contest_status_lu 
+    (contest_status_id) 
+    constraint contestdetailedstatuslu_conteststatuslu_fk; 
+
+alter table contest_detailed_status_xref add constraint primary key 
+    (contest_id, contest_detailed_status_id) 
+    constraint contestdetailedstatusxref_pk; 
+
+alter table contest_detailed_status_xref add constraint foreign key 
+    (contest_id) 
+    references contest 
+    (contest_id) 
+    constraint contestdetailedstatusxref_contest_fk;
