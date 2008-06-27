@@ -96,6 +96,11 @@ public class Contest implements Serializable {
     private Set<ContestConfig> config = new HashSet<ContestConfig>();
 
     /**
+     * Represents the list of contest detailed status.
+     */
+    private Set<ContestDetailedStatus> contestDetailedStatuses = new HashSet<ContestDetailedStatus>();
+
+    /**
      * Represents the contest type.
      */
     private ContestType contestType;
@@ -374,6 +379,25 @@ public class Contest implements Serializable {
         this.config = config;
     }
 
+    /**
+     * Returns the contestDetailedStatuses.
+     *
+     * @return the contestDetailedStatuses.
+     */
+    public Set<ContestDetailedStatus> getContestDetailedStatuses() {
+        return contestDetailedStatuses;
+    }
+
+    /**
+     * Updates the contestDetailStatus with the specified value.
+     *
+     * @param contestDetailStatuses
+     *            the contestDetailStatuses to set.
+     */
+    public void setContestDetailedStatuses(Set<ContestDetailedStatus> contestDetailedStatuses) {
+        this.contestDetailedStatuses = contestDetailedStatuses;
+    }
+    
     /**
      * Returns the contestType.
      *
