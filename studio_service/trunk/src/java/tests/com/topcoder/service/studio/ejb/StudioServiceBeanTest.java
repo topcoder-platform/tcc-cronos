@@ -4,6 +4,7 @@
 package com.topcoder.service.studio.ejb;
 
 import com.topcoder.service.studio.ContestData;
+import com.topcoder.service.studio.ContestDetailedStatusData;
 import com.topcoder.service.studio.ContestManagerImpl;
 import com.topcoder.service.studio.ContestNotFoundException;
 import com.topcoder.service.studio.ContestStatusData;
@@ -127,12 +128,9 @@ public class StudioServiceBeanTest extends TestCase {
      * ContestManager and SessionContext.
      */
     public void testGetters() {
-        assertTrue("correct submission manager",
-                target.getSubmissionManager() instanceof SubmissionManagerImpl);
-        assertTrue("correct contest manager",
-                target.getContestManager() instanceof ContestManagerImpl);
-        assertTrue("correct session context",
-                target.getSessionContext() instanceof MockSessionContext);
+        assertTrue("correct submission manager", target.getSubmissionManager() instanceof SubmissionManagerImpl);
+        assertTrue("correct contest manager", target.getContestManager() instanceof ContestManagerImpl);
+        assertTrue("correct session context", target.getSessionContext() instanceof MockSessionContext);
     }
 
     /**
@@ -145,8 +143,46 @@ public class StudioServiceBeanTest extends TestCase {
         ContestData result = target.createContest(newContestData(), 5);
 
         // check if contest saved in persistence
-        assertEquals("name of saved contest", "contestName",
-                ContestManagerImpl.contests.get(33l).getName());
+        assertEquals("name of saved contest", "contestName", ContestManagerImpl.contests.get(33l).getName());
+
+        // check result
+        assertEquals("name of contest", "contestName", result.getName());
+        assertEquals("contestId", 33, result.getContestId());
+    }
+
+    /**
+     * Tests createContest method for valid data.
+     * 
+     * @throws Exception
+     *             when it occurs deeper
+     */
+    public void testCreateContestWithContestDetailedStatus() throws Exception {
+        ContestData contestData = newContestData();
+
+        List<ContestDetailedStatusData> detailStatuses = new ArrayList<ContestDetailedStatusData>();
+        ContestDetailedStatusData detailedStatus = new ContestDetailedStatusData();
+        detailedStatus.setContestData(contestData);
+        detailedStatus.setContestDetailedStatusId(1L);
+        detailedStatus.setDescription("desc");
+
+        ContestStatusData contestStatus = new ContestStatusData();
+        contestStatus.setStatusId(5L);
+        detailedStatus.setContestStatusData(contestStatus);
+        detailStatuses.add(detailedStatus);
+
+        contestData.setDetailedStatuses(detailStatuses);
+
+        ContestData result = target.createContest(contestData, 5);
+
+        assertEquals(1, result.getDetailedStatuses().size());
+        ContestDetailedStatusData contestDetailedStatusData = result.getDetailedStatuses().get(0);
+        assertEquals("desc", contestDetailedStatusData.getDescription());
+        assertEquals(1L, contestDetailedStatusData.getContestDetailedStatusId());
+        assertNotNull(contestDetailedStatusData.getContestStatusData());
+        assertEquals(contestStatus.getStatusId(), contestDetailedStatusData.getContestStatusData().getStatusId());
+
+        // check if contest saved in persistence
+        assertEquals("name of saved contest", "contestName", ContestManagerImpl.contests.get(33l).getName());
 
         // check result
         assertEquals("name of contest", "contestName", result.getName());
@@ -175,26 +211,20 @@ public class StudioServiceBeanTest extends TestCase {
         target.createContest(cd, 5);
 
         // check if contest saved in persistence
-        assertEquals("number of documents", 2, ContestManagerImpl.documents
-                .size());
-        assertEquals("file name", "someFile", ContestManagerImpl.documents.get(
-                7l).getOriginalFileName());
-        assertEquals("file path", "/work/tc", ContestManagerImpl.documents.get(
-                7l).getPath().getPath());
+        assertEquals("number of documents", 2, ContestManagerImpl.documents.size());
+        assertEquals("file name", "someFile", ContestManagerImpl.documents.get(7l).getOriginalFileName());
+        assertEquals("file path", "/work/tc", ContestManagerImpl.documents.get(7l).getPath().getPath());
 
-        assertNull("file name", ContestManagerImpl.documents.get(50l)
-                .getOriginalFileName());
-        assertNull("file path", ContestManagerImpl.documents.get(50l).getPath()
-                .getPath());
+        assertNull("file name", ContestManagerImpl.documents.get(50l).getOriginalFileName());
+        assertNull("file path", ContestManagerImpl.documents.get(50l).getPath().getPath());
 
         // check doc contents
-        assertEquals("content of the first document", "abc", new String(
-                (byte[]) ContestManagerImpl.documentsContent.get(7l)));
-        assertEquals("content of the second document", "xyz", new String(
-                (byte[]) ContestManagerImpl.documentsContent.get(50l)));
+        assertEquals("content of the first document", "abc", new String((byte[]) ContestManagerImpl.documentsContent
+                .get(7l)));
+        assertEquals("content of the second document", "xyz", new String((byte[]) ContestManagerImpl.documentsContent
+                .get(50l)));
 
-        assertEquals("name of saved contest", "contestName",
-                ContestManagerImpl.contests.get(33l).getName());
+        assertEquals("name of saved contest", "contestName", ContestManagerImpl.contests.get(33l).getName());
     }
 
     /**
@@ -241,8 +271,7 @@ public class StudioServiceBeanTest extends TestCase {
         assertEquals("contestId", 33, contestData.getContestId());
 
         // check returned documents
-        assertEquals("number of documents", 2, contestData
-                .getDocumentationUploads().size());
+        assertEquals("number of documents", 2, contestData.getDocumentationUploads().size());
         Map<Long, UploadedDocument> resDocs = new HashMap<Long, UploadedDocument>();
         for (UploadedDocument doc : contestData.getDocumentationUploads()) {
             resDocs.put(doc.getDocumentId(), doc);
@@ -250,12 +279,10 @@ public class StudioServiceBeanTest extends TestCase {
 
         assertEquals("file name", "someFile", resDocs.get(7l).getFileName());
         assertEquals("file path", "/work/tc", resDocs.get(7l).getPath());
-        assertEquals("document data", "abc", new String(resDocs.get(7l)
-                .getFile()));
+        assertEquals("document data", "abc", new String(resDocs.get(7l).getFile()));
         assertNull("file name", resDocs.get(50l).getFileName());
         assertNull("file path", resDocs.get(50l).getPath());
-        assertEquals("document data", "xyz", new String(resDocs.get(50l)
-                .getFile()));
+        assertEquals("document data", "xyz", new String(resDocs.get(50l).getFile()));
     }
 
     /**
@@ -266,15 +293,14 @@ public class StudioServiceBeanTest extends TestCase {
      */
     public void testGetContestWithDocuments() throws Exception {
         target.createContest(newContestData(), 5);
-   
+
         Set<Submission> submissions = new HashSet<Submission>();
         Submission submission = new Submission();
         submission.setSubmissionId(1L);
         submissions.add(submission);
         submission.setSubmissionId(2L);
         submissions.add(submission);
-        ContestManagerImpl.contests.get(
-                newContestData().getContestId()).setSubmissions(submissions );
+        ContestManagerImpl.contests.get(newContestData().getContestId()).setSubmissions(submissions);
 
         // retrieve result and check it
         ContestData contestData = target.getContest(33);
@@ -339,8 +365,7 @@ public class StudioServiceBeanTest extends TestCase {
         Set<Submission> submissions = new HashSet<Submission>();
         Submission submission = new Submission();
         submissions.add(submission);
-        ContestManagerImpl.contests.get(
-                33L).setSubmissions(submissions );
+        ContestManagerImpl.contests.get(33L).setSubmissions(submissions);
 
         // retrieve result and check it
         List<ContestData> contests = target.getContestsForProject(5);
@@ -348,7 +373,7 @@ public class StudioServiceBeanTest extends TestCase {
         for (ContestData contestData : contests) {
             ids.add(contestData.getContestId());
         }
-        
+
         assertTrue("right ids were returned", ids.contains(33l));
         assertTrue("right ids were returned", ids.contains(2l));
         assertEquals("submissionCount", 0, contests.get(0).getSubmissionCount());
@@ -417,10 +442,8 @@ public class StudioServiceBeanTest extends TestCase {
         assertEquals("name of contest", "anotherName", contestData.getName());
         assertEquals("contestId", 33, contestData.getContestId());
 
-        assertEquals("number of documents", 1, contestData
-                .getDocumentationUploads().size());
-        assertEquals("file name", "someFile", contestData
-                .getDocumentationUploads().get(0).getFileName());
+        assertEquals("number of documents", 1, contestData.getDocumentationUploads().size());
+        assertEquals("file name", "someFile", contestData.getDocumentationUploads().get(0).getFileName());
     }
 
     /**
@@ -471,8 +494,7 @@ public class StudioServiceBeanTest extends TestCase {
 
         // perform update
         target.updateContestStatus(33, 7);
-        assertEquals("contestManager call", "updateContestStatus(33, 7)",
-                ContestManagerImpl.lastCall);
+        assertEquals("contestManager call", "updateContestStatus(33, 7)", ContestManagerImpl.lastCall);
     }
 
     /**
@@ -564,8 +586,7 @@ public class StudioServiceBeanTest extends TestCase {
     public void testUploadDocumentForContest() throws Exception {
         target.createContest(newContestData(), 5);
         target.uploadDocumentForContest(newUploadedDocument());
-        assertEquals("number of documents", 1,
-                ContestManagerImpl.documentsForContest.get(33l).size());
+        assertEquals("number of documents", 1, ContestManagerImpl.documentsForContest.get(33l).size());
     }
 
     /**
@@ -610,10 +631,8 @@ public class StudioServiceBeanTest extends TestCase {
         target.removeDocumentFromContest(ud);
 
         // check result
-        assertEquals("number of documents", 1,
-                ContestManagerImpl.documentsForContest.get(33l).size());
-        assertTrue("valid document removed",
-                ContestManagerImpl.documentsForContest.get(33l).contains(7l));
+        assertEquals("number of documents", 1, ContestManagerImpl.documentsForContest.get(33l).size());
+        assertTrue("valid document removed", ContestManagerImpl.documentsForContest.get(33l).contains(7l));
     }
 
     /**
@@ -623,8 +642,7 @@ public class StudioServiceBeanTest extends TestCase {
      * @throws Exception
      *             when it occurs deeper
      */
-    public void testRemoveDocumentFromContestForMissedDocument()
-            throws Exception {
+    public void testRemoveDocumentFromContestForMissedDocument() throws Exception {
         target.createContest(newContestData(), 5);
         try {
             target.removeDocumentFromContest(newUploadedDocument());
@@ -768,8 +786,7 @@ public class StudioServiceBeanTest extends TestCase {
      * @throws Exception
      *             when it occurs deeper
      */
-    public void testRetrieveAllSubmissionsByMemberForNotAdmin()
-            throws Exception {
+    public void testRetrieveAllSubmissionsByMemberForNotAdmin() throws Exception {
         MockSessionContext.isAdmin = false;
         try {
             target.retrieveAllSubmissionsByMember(3);
@@ -786,8 +803,7 @@ public class StudioServiceBeanTest extends TestCase {
      *             when it occurs deeper
      */
     public void testSubmissionFileTypes() throws Exception {
-        assertEquals("file types", "ex0,ex1,ex2", target
-                .getSubmissionFileTypes());
+        assertEquals("file types", "ex0,ex1,ex2", target.getSubmissionFileTypes());
     }
 
     /**
@@ -1006,8 +1022,7 @@ public class StudioServiceBeanTest extends TestCase {
      * @throws Exception
      *             when it occurs deeper
      */
-    public void testRetrieveAllSubmissionsByMemberForNegative()
-            throws Exception {
+    public void testRetrieveAllSubmissionsByMemberForNegative() throws Exception {
         try {
             target.retrieveAllSubmissionsByMember(-15);
             fail("IllegalArgumentWSException expected.");
@@ -1234,8 +1249,7 @@ public class StudioServiceBeanTest extends TestCase {
      * @throws Exception
      *             when it occurs deeper
      */
-    public void setPrivateField(String fieldName, Object value)
-            throws Exception {
+    public void setPrivateField(String fieldName, Object value) throws Exception {
         Field f = StudioServiceBean.class.getDeclaredField(fieldName);
         f.setAccessible(true);
         f.set(target, value);
@@ -1309,8 +1323,7 @@ public class StudioServiceBeanTest extends TestCase {
      */
     public void testUploadDocument() throws Exception {
         UploadedDocument doc = target.uploadDocument(newUploadedDocument());
-        assertNotNull("uploadDocument fails.", ContestManagerImpl.documents
-                .get(doc.getDocumentId()));
+        assertNotNull("uploadDocument fails.", ContestManagerImpl.documents.get(doc.getDocumentId()));
     }
 
     /**
@@ -1323,16 +1336,13 @@ public class StudioServiceBeanTest extends TestCase {
         // prepare data for test
         ContestData cd = newContestData();
         target.createContest(cd, 5);
-        
+
         UploadedDocument doc = target.uploadDocument(newUploadedDocument());
-        assertNotNull("uploadDocument fails.", ContestManagerImpl.documents
-                .get(doc.getDocumentId()));
-        
+        assertNotNull("uploadDocument fails.", ContestManagerImpl.documents.get(doc.getDocumentId()));
+
         target.addDocumentToContest(doc.getDocumentId(), cd.getContestId());
-        assertEquals("number of documents", 1,
-                ContestManagerImpl.documentsForContest.get(33l).size());
+        assertEquals("number of documents", 1, ContestManagerImpl.documentsForContest.get(33l).size());
     }
-    
 
     /**
      * Tests removeSubmission method for accuracy.

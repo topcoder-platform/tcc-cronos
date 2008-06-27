@@ -14,6 +14,7 @@ import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
 import com.topcoder.service.studio.ContestData;
+import com.topcoder.service.studio.ContestDetailedStatusData;
 import com.topcoder.service.studio.ContestNotFoundException;
 import com.topcoder.service.studio.ContestPayload;
 import com.topcoder.service.studio.ContestStatusData;
@@ -30,6 +31,7 @@ import com.topcoder.service.studio.UploadedDocument;
 import com.topcoder.service.studio.UserNotAuthorizedException;
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestConfig;
+import com.topcoder.service.studio.contest.ContestDetailedStatus;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.ContestManagerLocal;
 import com.topcoder.service.studio.contest.ContestProperty;
@@ -67,6 +69,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -1047,6 +1050,26 @@ public class StudioServiceBean implements StudioService {
 
 		result.setContestType(getContestType(data.getContestTypeId()));
 
+		// FIX [TCCC-142]
+		Set<ContestDetailedStatus> detailedStatuses = new HashSet<ContestDetailedStatus>();
+		for(ContestDetailedStatusData detailedStatus : data.getDetailedStatuses())
+		{
+		    ContestDetailedStatus status = new ContestDetailedStatus();
+		    status.setContestDetailedStatusId(detailedStatus.getContestDetailedStatusId());
+		    status.setDescription(detailedStatus.getDescription());
+		    
+		    ContestStatusData contestStatusData = detailedStatus.getContestStatusData();
+		    ContestStatus newStatus = new ContestStatus();
+		    newStatus.setContestStatusId(contestStatusData.getStatusId());
+		    newStatus.setDescription(contestStatusData.getDescription());
+		    newStatus.setName(contestStatusData.getName());
+		    
+		    status.setContestStatus(newStatus);
+		    
+		    detailedStatuses.add(status);
+		}
+		result.setContestDetailedStatuses(detailedStatuses);
+		
 		return result;
 	}
 
@@ -1139,6 +1162,26 @@ public class StudioServiceBean implements StudioService {
 			payload.setDescription("");
 		}
 
+        // FIX [TCCC-142]
+        List<ContestDetailedStatusData> detailedStatuses = new ArrayList<ContestDetailedStatusData>();
+        for(ContestDetailedStatus detailedStatus : contest.getContestDetailedStatuses())
+        {
+            ContestDetailedStatusData status = new ContestDetailedStatusData();
+            status.setContestDetailedStatusId(detailedStatus.getContestDetailedStatusId());
+            status.setDescription(detailedStatus.getDescription());
+            
+            ContestStatus contestStatus = detailedStatus.getContestStatus();
+            ContestStatusData statusData = new ContestStatusData ();
+            statusData.setDescription(contestStatus.getDescription());
+            statusData.setName(contestStatus.getName());
+            statusData.setStatusId(contestStatus.getContestStatusId());
+            
+            status.setContestStatusData(statusData);
+            
+            detailedStatuses.add(status);
+        }
+        contestData.setDetailedStatuses(detailedStatuses);
+                
 		return contestData;
 	}
 

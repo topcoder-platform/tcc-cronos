@@ -33,7 +33,7 @@ import java.util.List;
         "contestDescriptionAndRequirements", "requiredOrRestrictedColors",
         "requiredOrRestrictedFonts", "sizeRequirements",
         "otherRequirementsOrRestrictions", "creatorUserId", "finalFileFormat",
-        "otherFileFormats", "statusId", "submissionCount", "contestTypeId"  })
+        "otherFileFormats", "statusId", "submissionCount", "contestTypeId", "detailStatuses"  })
 public class ContestData implements Serializable {
     /**
      * <p>
@@ -69,6 +69,13 @@ public class ContestData implements Serializable {
      * </p>
      */
     private final List<PrizeData> prizes = new ArrayList<PrizeData>();
+
+    /**
+     * <p>
+     * Represents the contest detailed statuses
+     * </p>
+     */
+    private final List<ContestDetailedStatusData> detailStatuses = new ArrayList<ContestDetailedStatusData>();
 
     /**
      * <p>
@@ -309,6 +316,33 @@ public class ContestData implements Serializable {
         this.prizes.addAll(prizes);
     }
 
+    /**
+     * <p>
+     * Return the detailStatuses
+     * </p>
+     *
+     * @return the detailStatuses
+     */
+    public List<ContestDetailedStatusData> getDetailedStatuses() {
+        return new ArrayList<ContestDetailedStatusData>(detailStatuses);
+    }
+
+    /**
+     * <p>
+     * Set the detailStatuses
+     * </p>
+     *
+     * @param detailStatuses
+     *            the detailStatuses to set
+     * @throws IllegalArgumentException
+     *             if the argument is null
+     */
+    public void setDetailedStatuses(List<ContestDetailedStatusData> detailStatuses) {
+        Util.checkNull("detailStatuses", detailStatuses);
+        this.detailStatuses.clear();
+        this.detailStatuses.addAll(detailStatuses);
+    }
+    
     /**
      * <p>
      * Return the launchDateAndTime

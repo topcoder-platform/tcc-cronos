@@ -6,6 +6,7 @@ package com.topcoder.service.studio;
 import com.topcoder.service.studio.submission.Submission;
 import com.topcoder.service.studio.submission.SubmissionManagementException;
 import com.topcoder.service.studio.submission.Prize;
+import com.topcoder.service.studio.submission.SubmissionManagerLocal;
 import com.topcoder.service.studio.submission.SubmissionPayment;
 import com.topcoder.service.studio.submission.SubmissionReview;
 import com.topcoder.service.studio.submission.SubmissionManagerRemote;
@@ -21,7 +22,7 @@ import java.util.List;
  * @author superZZ
  * @version 1.0
  */
-public class SubmissionManagerImpl implements SubmissionManagerRemote {
+public class SubmissionManagerImpl implements SubmissionManagerLocal {
     public static List<Submission> submissions;
 
 

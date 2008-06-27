@@ -6,6 +6,7 @@ package com.topcoder.service.studio;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestManagementException;
+import com.topcoder.service.studio.contest.ContestManagerLocal;
 import com.topcoder.service.studio.contest.ContestProperty;
 import com.topcoder.service.studio.contest.ContestStatus;
 import com.topcoder.service.studio.contest.ContestType;
@@ -36,7 +37,7 @@ import java.util.HashSet;
  * @author superZZ
  * @version 1.0
  */
-public class ContestManagerImpl implements ContestManagerRemote {
+public class ContestManagerImpl implements ContestManagerLocal {
     public static List<MimeType> mimeTypes;
     public static List<ContestType> contestTypes;
     public static List<Contest> filteredContests;
