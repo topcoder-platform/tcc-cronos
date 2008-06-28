@@ -817,10 +817,10 @@ public class ContestManagerImpl implements ContestManagerLocal {
             ContestTypeConfig contestTypeConfig)
             throws ContestManagementException {
         checkErrorRequest();
-        if (contestTypeConfigs.get(contestTypeConfig.getContestTypeConfigId()) != null) {
+        if (contestTypeConfigs.get(contestTypeConfig.getId().getContestType().getContestType()) != null) {
             throw new EntityAlreadyExistsException("Duplicated entity.");
         }
-        contestTypeConfigs.put(contestTypeConfig.getContestTypeConfigId(),
+        contestTypeConfigs.put(contestTypeConfig.getId().getContestType().getContestType(),
                 contestTypeConfig);
         return contestTypeConfig;
     }
@@ -841,11 +841,11 @@ public class ContestManagerImpl implements ContestManagerLocal {
     public void updateContestTypeConfig(ContestTypeConfig contestTypeConfig)
             throws ContestManagementException {
         checkErrorRequest();
-        if (contestTypeConfigs.get(contestTypeConfig.getContestTypeConfigId()) == null) {
+        if (contestTypeConfigs.get(contestTypeConfig.getId().getContestType().getContestType()) == null) {
             throw new EntityNotFoundException("No contest with such id.");
         }
 
-        contestTypeConfigs.put(contestTypeConfig.getContestTypeConfigId(),
+        contestTypeConfigs.put(contestTypeConfig.getId().getContestType().getContestType(),
                 contestTypeConfig);
     }
 
