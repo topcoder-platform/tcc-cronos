@@ -22,6 +22,7 @@ import com.topcoder.service.studio.ContestTypeData;
 import com.topcoder.service.studio.DocumentNotFoundException;
 import com.topcoder.service.studio.IllegalArgumentWSException;
 import com.topcoder.service.studio.PersistenceException;
+import com.topcoder.service.studio.PrizeData;
 import com.topcoder.service.studio.StatusNotAllowedException;
 import com.topcoder.service.studio.StatusNotFoundException;
 import com.topcoder.service.studio.StudioService;
@@ -1161,6 +1162,17 @@ public class StudioServiceBean implements StudioService {
 			// leave the ContestPayload.description field and empty string.
 			payload.setDescription("");
 		}
+		
+        // FIX [TCCC-146]
+//        List<PrizeData> prizes = new ArrayList<PrizeData>();
+//        for (PrizeData prizeData : contest..getPrizes()) {
+//            Prize prize = new Prize();
+//            prize.setAmount(prizeData.getAmount());
+//            prize.setPlace(prizeData.getPlace());
+//            prizes.add(prize);
+//        }
+//
+//        contestData.setPrizes(prizes);
 
         // FIX [TCCC-142]
         List<ContestDetailedStatusData> detailedStatuses = new ArrayList<ContestDetailedStatusData>();
@@ -1963,7 +1975,7 @@ public class StudioServiceBean implements StudioService {
 				// list of ContestPayload instances.
 				ArrayList<ContestPayload> payloads = new ArrayList<ContestPayload>();
 				for (ContestTypeConfig cfg : type.getConfig()) {
-					long contestTypeConfigId = cfg.getContestTypeConfigId();
+					long contestTypeConfigId = cfg.getId().getContestType().getContestType();
 					ContestTypeConfig typeConfig = contestManager
 							.getContestTypeConfig(contestTypeConfigId);
 
