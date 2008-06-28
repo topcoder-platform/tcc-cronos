@@ -1,9 +1,0 @@
-#property file defining the component's information
-component.name=Generic Registration Framework Validator Open Registration
-component.distfilename=generic_registration_framework_validator_open_registration
-component.package=com.topcoder.registration.validators
-component.packagedir=com/topcoder/registration/validators
-component.version.major=1
-component.version.minor=0
-component.version.micro=0
-component.version.build=1
