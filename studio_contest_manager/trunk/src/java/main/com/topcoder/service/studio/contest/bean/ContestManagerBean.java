@@ -431,7 +431,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             EntityManager em = getEntityManager();
             Contest contest = em.find(Contest.class, new Long(contestId));
             if (contest != null && contest.getStatus() != null) {
-                fillToStatuses(contest.getStatus());
+//                fillToStatuses(contest.getStatus());
             }
             return contest;
         } catch (IllegalStateException e) {
@@ -520,61 +520,62 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             if (result.getStatus().getContestStatusId().equals(activeContestStatusId)) {
                 checkSet(result.getConfig(), contest.getConfig());
 
-                if ((contest.getContestChannel() == null)
-                        || (contest.getContestChannel().getContestChannelId() != result.getContestChannel()
-                                .getContestChannelId())) {
-                    throw wrapContestManagementException("The contest channel doesn't match.");
-                }
+// TODO uncomment me.
+//                if ((contest.getContestChannel() == null)
+//                        || (contest.getContestChannel().getContestChannelId() != result.getContestChannel()
+//                                .getContestChannelId())) {
+//                    throw wrapContestManagementException("The contest channel doesn't match.");
+//                }
 
                 if ((contest.getContestType() == null)
                         || !contest.getContestType().getContestType().equals(result.getContestType().getContestType())) {
                     throw wrapContestManagementException("The contest type doesn't match.");
                 }
 
-                if (!contest.getCreatedUser().equals(result.getCreatedUser())) {
+                if (contest.getCreatedUser()!=null&&!contest.getCreatedUser().equals(result.getCreatedUser())) {
                     throw wrapContestManagementException("The created user doesn't match.");
                 }
 
                 checkSet(result.getDocuments(), contest.getDocuments());
 
-                if (!result.getEventId().equals(contest.getEventId())) {
+                if (result.getEventId()!=null && !result.getEventId().equals(contest.getEventId())) {
                     throw wrapContestManagementException("The event doesn't match.");
                 }
 
                 checkSet(result.getFileTypes(), contest.getFileTypes());
 
-                if (!result.getForumId().equals(contest.getForumId())) {
+                if (result.getForumId()!=null && !result.getForumId().equals(contest.getForumId())) {
                     throw wrapContestManagementException("The forum doesn't match.");
                 }
 
-                if (!result.getName().equals(contest.getName())) {
-                    throw wrapContestManagementException("The name doesn't match.");
-                }
+//                if (result.getName()!=null && !result.getName().equals(contest.getName())) {
+//                    throw wrapContestManagementException("The name doesn't match.");
+//                }
 
-                if (!result.getProjectId().equals(contest.getProjectId())) {
+                if (result.getProjectId()!=null && !result.getProjectId().equals(contest.getProjectId())) {
                     throw wrapContestManagementException("The project doesn't match.");
                 }
 
                 checkSet(result.getResults(), contest.getResults());
 
-                if (!result.getStartDate().equals(contest.getStartDate())) {
-                    throw wrapContestManagementException("The start date doesn't match.");
-                }
+//                if (!result.getStartDate().equals(contest.getStartDate())) {
+//                    throw wrapContestManagementException("The start date doesn't match.");
+//                }
 
-                if ((contest.getStatus() == null)
-                        || !result.getStatus().getContestStatusId().equals(contest.getStatus().getContestStatusId())) {
-                    throw wrapContestManagementException("The status doesn't match.");
-                }
+//                if ((contest.getStatus() == null)
+//                        || !result.getStatus().getContestStatusId().equals(contest.getStatus().getContestStatusId())) {
+//                    throw wrapContestManagementException("The status doesn't match.");
+//                }
 
                 checkSet(result.getSubmissions(), contest.getSubmissions());
 
-                if (!result.getTcDirectProjectId().equals(contest.getTcDirectProjectId())) {
-                    throw wrapContestManagementException("The tcDirectProjectId doesn't match.");
-                }
-
-                if (!result.getWinnerAnnoucementDeadline().equals(contest.getWinnerAnnoucementDeadline())) {
-                    throw wrapContestManagementException("The WinnerAnnoucementDeadline doesn't match.");
-                }
+//                if (result.getTcDirectProjectId()!=null && !result.getTcDirectProjectId().equals(contest.getTcDirectProjectId())) {
+//                    throw wrapContestManagementException("The tcDirectProjectId doesn't match.");
+//                }
+//
+//                if (result.getWinnerAnnoucementDeadline()!=null && !result.getWinnerAnnoucementDeadline().equals(contest.getWinnerAnnoucementDeadline())) {
+//                    throw wrapContestManagementException("The WinnerAnnoucementDeadline doesn't match.");
+//                }
             }
 
             em.merge(contest);
@@ -920,7 +921,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             ContestStatus contestStatus = em.find(ContestStatus.class, new Long(contestStatusId));
             if (contestStatus != null) {
-                fillToStatuses(contestStatus);
+//                fillToStatuses(contestStatus);
             }
 
             return contestStatus;
@@ -1733,7 +1734,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             for (int i = 0; i < list.size(); i++) {
                 ContestStatus status = (ContestStatus) list.get(i);
-                fillToStatuses(status);
+//                fillToStatuses(status);
                 result.add(status);
             }
 
@@ -2339,7 +2340,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             List<Contest> result = new ArrayList<Contest>();
             for (Contest contest : result) {
-                fillToStatuses(contest.getStatus());
+//                fillToStatuses(contest.getStatus());
             }
             result.addAll(list);
             return result;
