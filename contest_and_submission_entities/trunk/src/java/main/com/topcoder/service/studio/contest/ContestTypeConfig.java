@@ -24,9 +24,9 @@ public class ContestTypeConfig implements Serializable {
     private static final long serialVersionUID = -6399784187021922758L;
 
     /**
-     * Represents the contest type config id.
+     * Represents the composite identifier for this entity.
      */
-    private long contestTypeConfigId;
+    private Identifier id;
 
     /**
      * Represents the property.
@@ -53,6 +53,25 @@ public class ContestTypeConfig implements Serializable {
      */
     public ContestTypeConfig() {
         // empty
+    }
+
+    /**
+     * Return the identifier.
+     * 
+     * @return the identifier.
+     */
+    public Identifier getId() {
+        return id;
+    }
+
+
+    /**
+     * Set the identifier
+     * 
+     * @param id the identifier
+     */
+    public void setId(Identifier id) {
+        this.id = id;
     }
 
     /**
@@ -161,21 +180,95 @@ public class ContestTypeConfig implements Serializable {
     }
 
     /**
-     * Returns the contestTypeConfigId.
-     *
-     * @return the contestTypeConfigId.
+     * Composite identifier for a ContestTypeConfig
+     * 
+     * @since 1.1
      */
-    public long getContestTypeConfigId() {
-        return contestTypeConfigId;
-    }
+    public static class Identifier implements Serializable {
+        /**
+         * Generated serial version id.
+         */
+        private static final long serialVersionUID = -1512528048724458809L;
 
-    /**
-     * Updates the contestTypeConfigId with the specified value.
-     *
-     * @param contestTypeConfigId
-     *            the contestTypeConfigId to set.
-     */
-    public void setContestTypeConfigId(long contestTypeConfigId) {
-        this.contestTypeConfigId = contestTypeConfigId;
+        /**
+         * ContestType to which this configuration belongs
+         */
+        private ContestType contestType;
+        
+        /**
+         * Property being configured
+         */
+        private ContestProperty property;
+
+        /**
+         * Returns the contestType.
+         *
+         * @return the contestType.
+         */
+        public ContestType getContestType() {
+            return contestType;
+        }
+
+        /**
+         * Updates the contestType with the specified value.
+         *
+         * @param contest
+         *            the contest to set.
+         */
+        public void setContestType(ContestType contestType) {
+            this.contestType = contestType;
+        }
+
+        /**
+         * Returns the property.
+         *
+         * @return the property.
+         */
+        public ContestProperty getProperty() {
+            return property;
+        }
+
+        /**
+         * Updates the property with the specified value.
+         *
+         * @param property
+         *            the property to set.
+         */
+        public void setProperty(ContestProperty property) {
+            this.property = property;
+        }
+        
+        /**
+         * Override the equals method to be consistent with this class definition
+         * 
+         * @param obj object to compare to this
+         * @return true if obj is equal to this object
+         */
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            
+            if ((obj == null) || (obj.getClass() != this.getClass())) {
+                return false;
+            }
+            
+            Identifier id = (Identifier) obj;
+            
+            return id.getContestType().getContestType().equals(contestType.getContestType()) &&
+                id.getProperty().getPropertyId() == property.getPropertyId();
+        }
+        
+        /**
+         * Override the hashCode method to provide a hash code based on the identifier.
+         * 
+         * @return a hashcode for this identifier
+         */
+        @Override
+        public int hashCode() {
+            return (contestType.getContestType() + "-" + property.getPropertyId()).hashCode();
+        }
+        
     }
 }
