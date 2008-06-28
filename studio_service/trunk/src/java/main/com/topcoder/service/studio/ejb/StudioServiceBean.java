@@ -417,7 +417,7 @@ public class StudioServiceBean implements StudioService {
                 Set<Contest> contests = prize.getContests();
                 contests.add(contest);
                 prize.setContests(contests);
-                
+
                 contestManager.createPrize(prize);
             }
 
@@ -2120,11 +2120,11 @@ public class StudioServiceBean implements StudioService {
 
             PaymentStatus status = new PaymentStatus();
 
-            // NOTE Use 3 temporarily till submission manager provides the
+            // NOTE Use 1 temporarily till submission manager provides the
             // method of
             // retrieving payment statuses.
             // TODO FIX ME
-            status.setPaymentStatusId(3L);
+            status.setPaymentStatusId(1L);
 
             submissionPayment.setStatus(status);
             submissionManager.addSubmissionPayment(submissionPayment);
@@ -2166,11 +2166,23 @@ public class StudioServiceBean implements StudioService {
             // set the placement field of submission.
             submission.setRank(place);
 
-            // QUESTION: set the price of submission. How to set it?
             submissionManager.updateSubmission(submission);
 
             // create an entry at submission payment table
-            // QUESTION: what price should be used.
+            // If the submission is anything other than 1st place, the price should be the 2nd place payment. 
+            for (Prize prize : submission.getPrizes()) {
+                if (place == 1) {
+                    if (prize.getPlace().equals(1L)) {
+                        purchaseSubmission(submissionId, prize.getAmount());
+                        break;
+                    }
+                } else {
+                    if (prize.getPlace().equals(2L)) {
+                        purchaseSubmission(submissionId, prize.getAmount());
+                        break;
+                    }
+                }
+            }
         } catch (SubmissionManagementException e) {
             handlePersistenceError("SubmissionManager reports error.", e);
         }
