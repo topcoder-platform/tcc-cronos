@@ -297,12 +297,19 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
         final String methodName = "getSubmissionsForContest(long, boolean)";
         logEnter(methodName);
 
-        List<Submission> submissions = getSubmissionsForContest(getEntityManager(methodName), contestId, methodName);
+        List<Submission> submissions = getSubmissionsForContest(
+                getEntityManager(methodName), contestId, methodName);
 
         if (!selectFullSubmission) {
+            // Fix [TCCC-137]
+            List<Submission> ret = new ArrayList<Submission>();
             for (Submission submission : submissions) {
-                submission.setFullSubmissionPath(null);
+                Submission clonedSubmission = cloneSubmission(submission);
+                clonedSubmission.setFullSubmissionPath(null);
+                ret.add(clonedSubmission);
             }
+
+            return ret;
         }
 
         logExit(methodName);
@@ -1493,5 +1500,39 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
                 "SELECT s FROM Submission s WHERE s.contest.contestId=:contestId"
                         + " AND s.status.description != :description", parameters, methodName);
         return submissions;
+    }
+    
+
+    /**
+     * Clones submission.
+     * Fix [TCCC-137]
+     * 
+     * @param submission
+     *            Submission to be cloned.
+     * @return cloned submission.
+     */
+    private Submission cloneSubmission(Submission submission) {
+        Submission ret = new Submission();
+        ret.setContest(submission.getContest());
+        ret.setCreateDate(submission.getCreateDate());
+        ret.setFullSubmissionPath(submission.getFullSubmissionPath());
+        ret.setHeight(submission.getHeight());
+        ret.setMimeType(submission.getMimeType());
+        ret.setModifyDate(submission.getModifyDate());
+        ret.setOriginalFileName(submission.getOriginalFileName());
+        ret.setOrSubmission(submission.getOrSubmission());
+        ret.setPrizes(submission.getPrizes());
+        ret.setRank(submission.getRank());
+        ret.setResult(submission.getResult());
+        ret.setReview(submission.getReview());
+        ret.setStatus(submission.getStatus());
+        ret.setSubmissionDate(submission.getSubmissionDate());
+        ret.setSubmissionId(submission.getSubmissionId());
+        ret.setSubmitterId(submission.getSubmitterId());
+        ret.setSystemFileName(submission.getSystemFileName());
+        ret.setType(submission.getType());
+        ret.setWidth(submission.getWidth());
+
+        return ret;
     }
 }
