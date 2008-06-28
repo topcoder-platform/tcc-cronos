@@ -2624,4 +2624,52 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
         return ce;
     }
+
+
+    /**
+     * <p>
+     * Creates a new prize, and return the created prize.
+     * </p>
+     * 
+     * @param prize
+     *            the prize to create
+     * @return the created prize
+     * 
+     * @throws IllegalArgumentException
+     *             if the argument is null.
+     * @throws EntityAlreadyExistsException
+     *             if the entity already exists in the persistence.
+     * @throws ContestManagementException
+     *             if any other error occurs.
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public Prize createPrize(Prize prize) throws ContestManagementException {
+        try {
+            logEnter("createPrize()");
+
+            Helper.checkNull(prize, "prize");
+
+//            if ((prize.getPrizeId() != null) && (getContest(contest.getContestId()) != null)) {
+//                EntityAlreadyExistsException e = new EntityAlreadyExistsException("The contest already exist.");
+//                logException(e, "The contest already exist.");
+//                sessionContext.setRollbackOnly();
+//
+//                throw e;
+//            }
+
+            EntityManager em = getEntityManager();
+            em.persist(prize);
+
+            return prize;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (TransactionRequiredException e) {
+            throw wrapContestManagementException(e, "This method is required to run in transaction.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("createPrize()");
+        }
+    }
 }

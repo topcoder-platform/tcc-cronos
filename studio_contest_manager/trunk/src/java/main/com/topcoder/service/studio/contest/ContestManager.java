@@ -608,4 +608,18 @@ public interface ContestManager {
      * @since 1.1.2
      */
     public void fillToStatuses(ContestStatus status) throws ContestManagementException;
+
+    /**
+     * <p>
+     * Creates a new prize and returns the created prize.
+     * </p>
+     *
+     * @param prize the prize to create
+     * @return the created prize
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityAlreadyExistsException if the entity already exists in the persistence.
+     * @throws ContestManagementException if any other error occurs.
+     */
+    public Prize createPrize(Prize prize) throws ContestManagementException;
 }
