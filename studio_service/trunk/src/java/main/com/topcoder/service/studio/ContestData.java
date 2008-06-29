@@ -33,7 +33,7 @@ import java.util.List;
         "contestDescriptionAndRequirements", "requiredOrRestrictedColors",
         "requiredOrRestrictedFonts", "sizeRequirements",
         "otherRequirementsOrRestrictions", "creatorUserId", "finalFileFormat",
-        "otherFileFormats", "statusId", "submissionCount", "contestTypeId", "detailStatuses"  })
+        "otherFileFormats", "statusId", "submissionCount", "contestTypeId", "contestChannelId", "detailStatuses"  })
 public class ContestData implements Serializable {
     /**
      * <p>
@@ -105,6 +105,14 @@ public class ContestData implements Serializable {
      * [27074484-20]
      */
     private long contestTypeId = -1;
+
+    /**
+     * <p>
+     * Represents the id of the channel of contest
+     * </p>
+     * [TCCC-147 ]
+     */
+    private long contestChannelId = -1;
 
     /**
      * <p>
@@ -713,6 +721,24 @@ public class ContestData implements Serializable {
      */
     public void setContestTypeId(long contestTypeId) {
         this.contestTypeId = contestTypeId;
+    }
+
+    /**
+     * Get contestChannelId
+     *
+     * @return the contestChannelId
+     */
+    public long getContestChannelId() {
+        return contestChannelId;
+    }
+
+    /**
+     * Set contestChannelId
+     *
+     * @param contestChannelId the contestChannelId to set
+     */
+    public void setContestChannelId(long contestChannelId) {
+        this.contestChannelId = contestChannelId;
     }
 
     /**
