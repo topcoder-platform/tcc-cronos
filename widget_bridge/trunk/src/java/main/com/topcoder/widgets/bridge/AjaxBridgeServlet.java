@@ -40,6 +40,7 @@ import com.topcoder.service.prerequisite.PrerequisiteService;
 import com.topcoder.service.project.ProjectData;
 import com.topcoder.service.project.ProjectService;
 import com.topcoder.service.studio.ContestData;
+import com.topcoder.service.studio.ContestDetailedStatusData;
 import com.topcoder.service.studio.ContestPayload;
 import com.topcoder.service.studio.ContestStatusData;
 import com.topcoder.service.studio.ContestTypeData;
@@ -537,6 +538,8 @@ public class AjaxBridgeServlet extends HttpServlet {
                     if (checkLongIfLessThanZero(strProjectID, "projectID", response)) {
                         return;
                     }
+                    debug("contest json received = " + strContest);
+                    
                     JSONObject jsonContest = jsonDecoder.decodeObject(strContest);
                     debug("received IDs = [contest ID] : " + jsonContest.getLong("contestID") + " [project ID] : "
                             + strProjectID);
@@ -1004,6 +1007,7 @@ public class AjaxBridgeServlet extends HttpServlet {
      *             long.
      */
     private ContestData getContestFromJSON(JSONObject jsonContest) throws ParseException, JSONDecodingException {
+        debug("received contest json string = " + jsonContest.toJSONString());
         ContestData contest = new ContestData();
         contest.setContestId(jsonContest.getLong("contestID"));
         contest.setProjectId(jsonContest.getLong("projectID"));
@@ -1024,7 +1028,8 @@ public class AjaxBridgeServlet extends HttpServlet {
                 .getString("winnerAnnouncementDeadline")));
 
         contest.setContestTypeId(jsonContest.getLong("contestTypeID")); // [27128642-6]
-
+        contest.setContestChannelId(jsonContest.getLong("contestChannelID")); // [TCCC-147]
+        
         JSONArray jsonPrizes = jsonContest.getArray("prizes");
         if (jsonPrizes != null) {
             Object[] prizes = jsonPrizes.getObjects();
@@ -1072,6 +1077,22 @@ public class AjaxBridgeServlet extends HttpServlet {
                 }
             }
             contest.setContestPayloads(listOfPayloads);
+        }
+
+        // FIX [TCCC-142]
+        if (jsonContest.isKeyDefined("contestDetailedStatuses") && jsonContest.isAvailableAsArray("contestDetailedStatuses")) {
+            JSONArray jsonContestDetailedStatuses = jsonContest.getArray("contestDetailedStatuses");
+            if (jsonContestDetailedStatuses != null) {
+                Object[] contestDetailedStatuses = jsonContestDetailedStatuses.getObjects();
+                List<ContestDetailedStatusData> listOfStatuses = new ArrayList<ContestDetailedStatusData>();
+                if (contestDetailedStatuses != null) {
+                    for (int i = 0; i < contestDetailedStatuses.length; i++) {
+                        // listOfStatuses.add(getContestPayloadFromJSON((JSONObject)
+                        // contestDetailedStatuses[i]));
+                    }
+                }
+                contest.setDetailedStatuses(listOfStatuses);
+            }
         }
 
         return contest;
@@ -1312,6 +1333,8 @@ public class AjaxBridgeServlet extends HttpServlet {
         respJSON.setLong("tcDirectProjectID", contest.getTcDirectProjectId());
         respJSON.setLong("creatorUserID", contest.getCreatorUserId());
         respJSON.setLong("contestTypeID", contest.getContestTypeId()); // [27128642-6]
+        respJSON.setLong("contestChannelID", contest.getContestChannelId()); // [TCCC-147 ]
+        
         respJSON.setString("launchDateAndTime", getDateString(contest.getLaunchDateAndTime()));
         respJSON.setString("winnerAnnouncementDeadline", getDateString(contest.getWinnerAnnoucementDeadline()));
         respJSON.setLong("submissionCount", contest.getSubmissionCount());
@@ -1364,6 +1387,18 @@ public class AjaxBridgeServlet extends HttpServlet {
             }
         }
         respJSON.setArray("contestPayloads", jsonPayloads);
+
+        // ContestDetailedStatuses[]
+        // setup the JSONArray of ContestDetailedStatus
+        JSONArray jsonContestDetailedStatuses = new JSONArray();
+        List<ContestDetailedStatusData> contestDetailedStatuses = contest.getDetailedStatuses();
+        // check if it is null
+        if (contestDetailedStatuses != null) {
+            for (ContestDetailedStatusData status : contestDetailedStatuses) {
+                // jsonContestDetailedStatuses.addJSONObject(getJSONFromPrize(status));
+            }
+        }
+        respJSON.setArray("contestDetailedStatuses", jsonContestDetailedStatuses);
 
         return respJSON;
     }

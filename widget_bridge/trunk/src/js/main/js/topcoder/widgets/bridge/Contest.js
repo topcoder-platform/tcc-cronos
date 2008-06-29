@@ -115,6 +115,16 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 	var contestTypeID /* long */ = -1;
 
 	/**
+	 * <p>Represents the contest Channel ID.</p>
+	 * <p>Initial Value: -1, means that is not set</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 * <p>Valid Values:  must be greater or equal than 0 or -1 (not set)</p>
+	 */
+	var contestChannelID /* long */ = -1;
+	
+	/**
 	 * <p>Represents the final file format list.</p>
 	 * <p>Initial Value: empty array; it's final , it's empty at beginning</p>
 	 * <p>Accessed In: getter method</p>
@@ -322,6 +332,14 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 			"json.contestTypeID does not exists");
 		}
 
+	    // set the contest channel ID
+		if (typeof(json.contestChannelID) != "undefined" && typeof(json.contestChannelID) == "number") {
+		    that.contestChannelID = json.contestChannelID;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.contestChannelID",
+			"json.contestChannelID does not exists");
+		}
+		
 		// sets the finalFileFormatList
 		// since this has already been evaluated, we convert the json object to a json string
 		if (typeof(json.finalFileFormatList) != "undefined" && typeof(json.finalFileFormatList) == "object") {
@@ -752,6 +770,20 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
         that.contestTypeID = contestTypeID;
     }    
 
+    /**
+     * <p>Returns the contestChannelID.</p>
+     */
+    this.getContestChannelID = function /* long */ () {
+        return that.contestChannelID;
+    }
+
+    /**
+     * <p>Sets the contestTypeID.</p>
+     */
+    this.setContestChannelID = function /* void */ (/* long */ contestChannelID) {
+        that.contestChannelID = contestChannelID;
+    }    
+    
 	/**
 	 * <p>Convert this JavaScript object to a JSON string and return.
 	 *
@@ -830,6 +862,7 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 		        + "\"durationInHours\" : " + that.getDurationInHours() + ", "
 		        + "\"winnerAnnouncementDeadline\" : \"" + that.getWinnerAnnouncementDeadline() + "\", "
 		        + "\"contestTypeID\" : " + that.getContestTypeID() + ", "
+		        + "\"contestChannelID\" : " + that.getContestChannelID() + ", "
 		        + "\"finalFileFormatList\" : " + locFileFomat + ", "
 		        + "\"finalFileFormatOther\" : \"" + that.getFinalFileFormatOther() + "\", "
 		        + "\"documentationUploads\" : " + locUpDoc + ", "
