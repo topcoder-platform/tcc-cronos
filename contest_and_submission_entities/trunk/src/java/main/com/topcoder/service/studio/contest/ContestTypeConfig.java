@@ -29,16 +29,6 @@ public class ContestTypeConfig implements Serializable {
     private Identifier id;
 
     /**
-     * Represents the property.
-     */
-    private ContestProperty property;
-
-    /**
-     * Represents the contest type.
-     */
-    private ContestType type;
-
-    /**
      * Represents the property value.
      */
     private String propertyValue;
@@ -72,44 +62,6 @@ public class ContestTypeConfig implements Serializable {
      */
     public void setId(Identifier id) {
         this.id = id;
-    }
-
-    /**
-     * Returns the property.
-     *
-     * @return the property.
-     */
-    public ContestProperty getProperty() {
-        return property;
-    }
-
-    /**
-     * Updates the property with the specified value.
-     *
-     * @param property
-     *            the property to set.
-     */
-    public void setProperty(ContestProperty property) {
-        this.property = property;
-    }
-
-    /**
-     * Returns the type.
-     *
-     * @return the type.
-     */
-    public ContestType getType() {
-        return type;
-    }
-
-    /**
-     * Updates the type with the specified value.
-     *
-     * @param type
-     *            the type to set.
-     */
-    public void setType(ContestType type) {
-        this.type = type;
     }
 
     /**
@@ -159,12 +111,17 @@ public class ContestTypeConfig implements Serializable {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof ContestTypeConfig) {
-            ContestTypeConfig result = (ContestTypeConfig) obj;
-            return (property != null && getProperty().equals(result.getProperty()))
-                    && (type != null && getType().equals(result.getType()));
-        }
-        return false;
+    	if (this == obj) {
+    		return true;
+    	}
+    	
+    	if ((obj == null) || (obj.getClass() != this.getClass())) {
+    		return false;
+    	}
+
+    	ContestTypeConfig other = (ContestTypeConfig) obj;
+    	
+    	return id.equals(other.getId());
     }
 
     /**
@@ -175,8 +132,7 @@ public class ContestTypeConfig implements Serializable {
      */
     @Override
     public int hashCode() {
-        return Helper.calculateHash(property != null ? property.getPropertyId() : null, type != null ? type
-                .getContestType() : null);
+    	return id.hashCode();
     }
 
     /**
