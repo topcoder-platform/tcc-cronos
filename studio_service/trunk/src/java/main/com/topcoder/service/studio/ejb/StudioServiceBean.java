@@ -1895,16 +1895,13 @@ public class StudioServiceBean implements StudioService {
                 // list of ContestPayload instances.
                 ArrayList<ContestPayload> payloads = new ArrayList<ContestPayload>();
                 for (ContestTypeConfig cfg : type.getConfig()) {
-                    long contestTypeConfigId = cfg.getId().getContestType().getContestType();
-                    ContestTypeConfig typeConfig = contestManager.getContestTypeConfig(contestTypeConfigId);
-
                     ContestPayload payload = new ContestPayload();
 
-                    payload.setContestTypeId(contestTypeConfigId);
-                    payload.setDescription(typeConfig.getProperty().getDescription());
-                    payload.setValue(typeConfig.getPropertyValue());
-                    payload.setRequired(typeConfig.isRequired());
-                    payload.setName(cfg.getType().getDescription());
+                    payload.setContestTypeId(cfg.getId().getContestType().getContestType());
+                    payload.setDescription(cfg.getId().getProperty().getDescription());
+                    payload.setValue(cfg.getPropertyValue());
+                    payload.setRequired(cfg.isRequired());
+                    payload.setName(cfg.getId().getProperty().getDescription());
 
                     payloads.add(payload);
                 }
