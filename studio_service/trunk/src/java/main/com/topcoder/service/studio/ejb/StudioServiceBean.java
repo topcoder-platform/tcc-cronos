@@ -1175,6 +1175,7 @@ public class StudioServiceBean implements StudioService {
 
         to.setDocumentId(unbox(from.getDocumentId()));
         to.setFileName(from.getOriginalFileName());
+        to.setDescription(from.getDescription());
         if (from.getPath() != null) {
             to.setPath(from.getPath().getPath());
         }
