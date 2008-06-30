@@ -43,7 +43,7 @@ import com.topcoder.service.project.impl.ProjectServiceLocalBridge;
  * @version 1.1
  * @since 1.0
  */
-public class Demo extends BaseTestCase {
+public class Demo extends BaseUnitTestCase {
 
     /**
      * <p>

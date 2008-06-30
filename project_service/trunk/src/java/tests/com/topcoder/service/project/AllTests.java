@@ -3,14 +3,13 @@
  */
 package com.topcoder.service.project;
 
-import com.topcoder.service.project.accuracytests.AccuracyTests;
-import com.topcoder.service.project.failuretests.FailureTests;
-import com.topcoder.service.project.stresstests.StressTests;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import com.topcoder.service.project.accuracytests.AccuracyTests;
+import com.topcoder.service.project.failuretests.FailureTests;
+import com.topcoder.service.project.stresstests.StressTests;
 
 /**
  * <p>
@@ -19,10 +18,10 @@ import junit.framework.TestSuite;
  *
  * @author TCSDEVELOPER
  * @version 1.1
- *
  * @since 1.0
  */
 public class AllTests extends TestCase {
+
     /**
      * <p>
      * Aggregates all tests.
@@ -34,6 +33,7 @@ public class AllTests extends TestCase {
         final TestSuite suite = new TestSuite();
 
         // unit tests
+        // ignored as unit test is not in the scope of this competition
         suite.addTest(UnitTests.suite());
 
         // failure tests
@@ -47,4 +47,5 @@ public class AllTests extends TestCase {
 
         return suite;
     }
+
 }

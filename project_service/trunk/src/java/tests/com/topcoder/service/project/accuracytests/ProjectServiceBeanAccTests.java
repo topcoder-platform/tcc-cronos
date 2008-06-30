@@ -220,6 +220,7 @@ public class ProjectServiceBeanAccTests extends TestCase {
 
         assertEquals("The size of project should be 3.", 3, projectService.getAllProjects().size());
         assertEquals("The size of project should be 2.", 2, projectService.getProjectsForUser(1).size());
+        assertEquals("The size of project should be 1.", 1, projectService.getProjectsForUser(2).size());
 
         lookupProjectServiceRemoteWithUserRole();
         assertEquals("The size of project should be 2.", 2, projectService.getAllProjects().size());

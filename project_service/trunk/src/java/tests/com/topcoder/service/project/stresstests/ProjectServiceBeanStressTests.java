@@ -108,7 +108,7 @@ public class ProjectServiceBeanStressTests extends BaseTestCase {
         long start = System.currentTimeMillis();
         for (int i = 0; i < StressTests.TIMES; i++) {
             // 3 is pre-inserted
-            ProjectData projectData = projectService.getProject(1);
+            ProjectData projectData = projectService.getProject(3);
             assertNotNull("Should not return null.", projectData);
         }
         long end = System.currentTimeMillis();
@@ -151,7 +151,7 @@ public class ProjectServiceBeanStressTests extends BaseTestCase {
         for (int i = 0; i < StressTests.TIMES; i++) {
             List<ProjectData> projectDatas = projectService.getAllProjects();
             assertNotNull("Null is not expected.", projectDatas);
-            assertTrue("should contain 1 result", projectDatas.size() == 1);
+            assertTrue("should contain 2 results", projectDatas.size() == 2);
         }
         long end = System.currentTimeMillis();
         System.out.println("Running getAllProjects with not an admin for " + StressTests.TIMES + " times costs "

@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.topcoder.service.project.BaseTestCase;
+import com.topcoder.service.project.BaseUnitTestCase;
 import com.topcoder.service.project.Competition;
 import com.topcoder.service.project.Project;
 import com.topcoder.service.project.ProjectData;
@@ -20,7 +20,7 @@ import com.topcoder.service.project.ProjectData;
  * @author TCSDEVELOPER
  * @version 1.1
  */
-public class ProjectServiceWSTestAcc extends BaseTestCase {
+public class ProjectServiceWSTestAcc extends BaseUnitTestCase {
 
     /**
      * <p>

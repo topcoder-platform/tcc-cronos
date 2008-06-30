@@ -6,7 +6,7 @@ package com.topcoder.service.project.impl;
 import javax.xml.ws.soap.SOAPFaultException;
 
 import com.topcoder.service.project.AuthorizationFailedFault;
-import com.topcoder.service.project.BaseTestCase;
+import com.topcoder.service.project.BaseUnitTestCase;
 import com.topcoder.service.project.Competition;
 import com.topcoder.service.project.IllegalArgumentFault;
 import com.topcoder.service.project.MockUserGroupManager;
@@ -24,7 +24,7 @@ import com.topcoder.service.project.UserNotFoundFault;
  * @author TCSDEVELOPER
  * @version 1.1
  */
-public class ProjectServiceWSTestExp extends BaseTestCase {
+public class ProjectServiceWSTestExp extends BaseUnitTestCase {
 
     /**
      * <p>

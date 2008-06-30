@@ -481,17 +481,10 @@ public class ProjectServiceBeanFailureTests extends BaseTestCase {
      */
     public void testDeleteProject_HasCompetitions() throws Exception {
         executeSQL(new String[] {"INSERT INTO tc_direct_project (project_id, name, user_id, create_date)"
-                + " values (1, 'Project Service', 0, '2008-02-20 12:53:45')"
+                + " values (1, 'Project Service', 1, '2008-02-20 12:53:45')"
                 , "INSERT INTO competition (competition_id, project_id) values (1, 1)"});
 
         try {
-            Properties env = new Properties();
-            env.setProperty(Context.SECURITY_PRINCIPAL, "admin");
-            env.setProperty(Context.SECURITY_CREDENTIALS, "password");
-            env.setProperty(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.security.jndi.JndiLoginInitialContextFactory");
-            InitialContext initCtx = new InitialContext(env);
-            projectService = (ProjectService) initCtx.lookup("remote/ProjectServiceBean");
-
             projectService.deleteProject(1);
             fail("Expect ProjectHasCompetitionsFault.");
         } catch (ProjectHasCompetitionsFault e) {

@@ -7,7 +7,7 @@ import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import com.topcoder.service.project.BaseTestCase;
+import com.topcoder.service.project.BaseUnitTestCase;
 
 /**
  * <p>
@@ -29,7 +29,7 @@ import com.topcoder.service.project.BaseTestCase;
  * @author TCSDEVELOPER
  * @version 1.1
  */
-public class ProjectServiceUnitTests extends BaseTestCase {
+public class ProjectServiceUnitTests extends BaseUnitTestCase {
 
     /**
      * <p>
