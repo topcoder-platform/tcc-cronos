@@ -84,8 +84,6 @@
     <path id="buildlibs">
         <path refid="component.tcs-dependencies"/>
         <path refid="component.3rdParty-dependencies"/>
-        <pathelement location="${configdir}" />
-        <pathelement location="${testfiles}" />
     </path>
 
     <!-- classes needed to compile the test code -->
@@ -208,8 +206,9 @@
     </macrodef>
 
     <target name="test" depends="compile_tests">
-
+        <!--<test.setup/>-->
         <test.execute/>
+        <!--<test.teardown/>-->
     </target>
 
     <target name="coveragereport" depends="test">
@@ -391,10 +390,6 @@
                        ${testfiles}/**,
                        ${docsdir}/**,
                        ${test_reflib}/**"
-             excludes="${javatests}/${packagedir}/AllTests.java,
-                       ${javatests}/${packagedir}/stresstests/*,
-                       ${javatests}/${packagedir}/failuretests/*,
-                       ${javatests}/${packagedir}/accuracytests/*"
             />
     </target>
 

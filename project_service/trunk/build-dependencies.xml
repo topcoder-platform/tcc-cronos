@@ -1,6 +1,6 @@
 <project name="Dependency Import" default="dist" basedir=".">
     <!-- property file defining the component's dependencies -->
-    <property name="jboss_home" value="f:/tool/jboss-4.2.2.GA"/>
+    <property name="jboss_home" value="F:tool/jboss-4.2.2.GA"/>
     <property name="jboss_config_name" value="default"/>
 
     <!-- Properties used in compile_targets ANT target for JDK version 5 -->

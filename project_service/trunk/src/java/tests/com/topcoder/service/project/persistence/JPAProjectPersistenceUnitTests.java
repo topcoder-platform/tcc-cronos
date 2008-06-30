@@ -419,7 +419,7 @@ public class JPAProjectPersistenceUnitTests extends BaseTestCase {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = getDBConnectionFactory().createConnection();
+            conn = getConnection();
             pstmt = conn.prepareStatement("SELECT * FROM tc_direct_project WHERE project_id=?");
             pstmt.setLong(1, project.getProjectId());
 
@@ -743,7 +743,7 @@ public class JPAProjectPersistenceUnitTests extends BaseTestCase {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = getDBConnectionFactory().createConnection();
+            conn = getConnection();
             pstmt = conn.prepareStatement("SELECT * FROM tc_direct_project WHERE project_id=?");
             pstmt.setLong(1, project.getProjectId());
 
@@ -800,7 +800,7 @@ public class JPAProjectPersistenceUnitTests extends BaseTestCase {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = getDBConnectionFactory().createConnection();
+            conn = getConnection();
             pstmt = conn.prepareStatement("SELECT * FROM tc_direct_project WHERE project_id=?");
             pstmt.setLong(1, 1L);
 

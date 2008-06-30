@@ -805,7 +805,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = getDBConnectionFactory().createConnection();
+            conn = getConnection();
             pstmt = conn.prepareStatement("SELECT * FROM tc_direct_project WHERE project_id=?");
             pstmt.setLong(1, newPrjData.getProjectId());
 
@@ -1227,7 +1227,7 @@ public class ProjectServiceBeanUnitTests extends BaseTestCase {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = getDBConnectionFactory().createConnection();
+            conn = getConnection();
             pstmt = conn.prepareStatement("SELECT * FROM tc_direct_project WHERE project_id=?");
             pstmt.setLong(1, projectData.getProjectId());
 
