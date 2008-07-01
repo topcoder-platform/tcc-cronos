@@ -6,6 +6,7 @@ package com.topcoder.service.studio.contest.bean;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -539,70 +540,25 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             if (result.getStatus().getContestStatusId().equals(activeContestStatusId)) {
                 checkSet(result.getConfig(), contest.getConfig());
 
-                // TODO uncomment me.
-                // if ((contest.getContestChannel() == null)
-                // || (contest.getContestChannel().getContestChannelId() !=
-                // result.getContestChannel()
-                // .getContestChannelId())) {
-                // throw wrapContestManagementException(
-                // "The contest channel doesn't match.");
-                // }
-
-                if ((contest.getContestType() == null)
-                        || !contest.getContestType().getContestType().equals(result.getContestType().getContestType())) {
-                    throw wrapContestManagementException("The contest type doesn't match.");
-                }
-
-                if (contest.getCreatedUser() != null && !contest.getCreatedUser().equals(result.getCreatedUser())) {
-                    throw wrapContestManagementException("The created user doesn't match.");
+                 if (contest.getContestChannel() == null){
+                     throw wrapContestManagementException("contest.contestChannel is null.");
+                 }
+                 if ((contest.getContestChannel().getContestChannelId() != result.getContestChannel()
+                                .getContestChannelId())) {
+                    throw wrapContestManagementException(MessageFormat
+                            .format(
+                                    "The contest channel doesn't match. persisted contest channel id: {0} updated contest channel id : {1}",
+                                    result.getContestChannel().getContestChannelId(),
+                                    contest.getContestChannel().getContestChannelId()));
                 }
 
                 checkSet(result.getDocuments(), contest.getDocuments());
 
-                if (result.getEventId() != null && !result.getEventId().equals(contest.getEventId())) {
-                    throw wrapContestManagementException("The event doesn't match.");
-                }
-
                 checkSet(result.getFileTypes(), contest.getFileTypes());
-
-                if (result.getForumId() != null && !result.getForumId().equals(contest.getForumId())) {
-                    throw wrapContestManagementException("The forum doesn't match.");
-                }
-
-                if (result.getProjectId() != null && !result.getProjectId().equals(contest.getProjectId())) {
-                    throw wrapContestManagementException("The project doesn't match.");
-                }
 
                 checkSet(result.getResults(), contest.getResults());
 
-                // if (!result.getStartDate().equals(contest.getStartDate())) {
-                // throw
-                // wrapContestManagementException("The start date doesn't match."
-                // );
-                // }
-
-                // if ((contest.getStatus() == null)
-                // || !result.getStatus().getContestStatusId().equals(contest.
-                // getStatus().getContestStatusId())) {
-                // throw
-                // wrapContestManagementException("The status doesn't match.");
-                // }
-
                 checkSet(result.getSubmissions(), contest.getSubmissions());
-
-                // if (result.getTcDirectProjectId()!=null &&
-                // !result.getTcDirectProjectId
-                // ().equals(contest.getTcDirectProjectId())) {
-                // throw wrapContestManagementException(
-                // "The tcDirectProjectId doesn't match.");
-                // }
-                //
-                // if (result.getWinnerAnnoucementDeadline()!=null &&
-                // !result.getWinnerAnnoucementDeadline
-                // ().equals(contest.getWinnerAnnoucementDeadline())) {
-                // throw wrapContestManagementException(
-                // "The WinnerAnnoucementDeadline doesn't match.");
-                // }
             }
 
             em.merge(contest);
