@@ -898,7 +898,12 @@ public class AjaxBridgeServlet extends HttpServlet {
                     // get the submissionId and price parameter from request
                     String submissionId = request.getParameter("submissionId");
                     String price = request.getParameter("price");
+                    // [TCCC-125]
+                    String payPalOrderId = request.getParameter("payPalOrderId");
                     if (checkLongIfLessThanZero(submissionId, "submissionId", response)) {
+                        return;
+                    }
+                    if (checkLongIfLessThanZero(payPalOrderId, "payPalOrderId", response)) {
                         return;
                     }
                     if (checkDoubleIfLessThanZero(price, "price", response)) {
@@ -908,8 +913,9 @@ public class AjaxBridgeServlet extends HttpServlet {
                     // log the received ID
                     debug("received ID = [submissionId ID] : " + submissionId);
                     debug("received price = [price] : " + price);
+                    debug("received payPalOrderId = [payPalOrderId] : " + payPalOrderId);
 
-                    studioService.purchaseSubmission(Long.parseLong(submissionId), Double.parseDouble(price));
+                    studioService.purchaseSubmission(Long.parseLong(submissionId), Double.parseDouble(price),Long.parseLong(payPalOrderId));
 
                     printSuccessResponse(getSuccessJSONResponse(), response);
                     debug("purchaseSubmission success!");
@@ -917,7 +923,12 @@ public class AjaxBridgeServlet extends HttpServlet {
                     // get the submissionId and price parameter from request
                     String submissionId = request.getParameter("submissionId");
                     String place = request.getParameter("place");
+                    // [TCCC-125]
+                    String payPalOrderId = request.getParameter("payPalOrderId");
                     if (checkLongIfLessThanZero(submissionId, "submissionId", response)) {
+                        return;
+                    }
+                    if (checkLongIfLessThanZero(payPalOrderId, "payPalOrderId", response)) {
                         return;
                     }
                     if (checkIntegerIfLessThanZero(submissionId, "place", response)) {
@@ -927,8 +938,9 @@ public class AjaxBridgeServlet extends HttpServlet {
                     // log the received ID
                     debug("received ID = [submissionId ID] : " + submissionId);
                     debug("received place = [place] : " + place);
+                    debug("received payPalOrderId = [payPalOrderId] : " + payPalOrderId);
 
-                    studioService.selectWinner(Long.parseLong(submissionId), Integer.parseInt(place));
+                    studioService.selectWinner(Long.parseLong(submissionId), Integer.parseInt(place),Long.parseLong(payPalOrderId));
 
                     printSuccessResponse(getSuccessJSONResponse(), response);
                     debug("selectWinner success!");
