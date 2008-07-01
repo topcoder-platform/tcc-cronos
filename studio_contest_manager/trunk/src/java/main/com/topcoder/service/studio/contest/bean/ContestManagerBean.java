@@ -60,40 +60,46 @@ import com.topcoder.util.log.LogManager;
 /**
  * <p>
  * This bean class implements the <code>ContestManagerLocal</code> and
- * <code>ContestManagerRemote</code> interfaces. It is a stateless session
- * bean with
+ * <code>ContestManagerRemote</code> interfaces. It is a stateless session bean
+ * with
  * 
  * @Stateless annotation. It would simply use the JPA to manage the entities in
  *            the persistence. It uses contains to maintain the transaction
  *            issues.
  *            </p>
  * 
- * <p>
- * It should have annotations:<br/> 1.
+ *            <p>
+ *            It should have annotations:<br/> 1.
  * @Stateless<br/> 2.
  * @TransactionManagement(TransactionManagementType.CONTAINER)<br/> 3.
- * @DeclareRoles("Administrator")<br/>
- *                                </p>
+ * @DeclareRoles("Administrator")<br/> </p>
  * 
- * <p>
- * And all public methods in this bean should have the following annotations:<br/>
- * 1.
+ *                                     <p>
+ *                                     And all public methods in this bean
+ *                                     should have the following
+ *                                     annotations:<br/> 1.
  * @PermitAll -- indicating only "Administrator" role is allowed to perform the
  *            operation.<br/> 2.
  * @TransactionAttribute(TransactionAttributeType.REQUIRED) -- indicating the
- *                                                          transaction is
- *                                                          required.
- *                                                          </p>
+ *                                                             transaction is
+ *                                                             required.
+ *                                                             </p>
  * 
- * <p>
- * 1.1 change: 2 new methods <code>searchContests(Filter)</code> and
- * <code>getAllContests()</code> are added.
- * </p>
+ *                                                             <p>
+ *                                                             1.1 change: 2 new
+ *                                                             methods
+ *                                                             <code>searchContests(Filter)</code>
+ *                                                             and
+ *                                                             <code>getAllContests()</code>
+ *                                                             are added.
+ *                                                             </p>
  * 
- * <p>
- * It should be configured before loaded:
+ *                                                             <p>
+ *                                                             It should be
+ *                                                             configured before
+ *                                                             loaded:
  * 
- * <pre>
+ *                                                             <pre>
  *         &lt;env-entry&gt;
  *                         &lt;env-entry-name&gt;unitName&lt;/env-entry-name&gt;
  *                         &lt;env-entry-type&gt;java.lang.String&lt;/env-entry-type&gt;
@@ -138,15 +144,32 @@ import com.topcoder.util.log.LogManager;
  *                 &lt;/env-entry&gt;
  * </pre>
  * 
- * </p>
+ *                                                             </p>
  * 
- * <p>
- * <strong>Thread safety:</strong> The variables in this class are initialized
- * once in the initialize method after the bean is instantiated by EJB
- * container. They would be never be changed afterwards. So they won't affect
- * the thread-safety of this class when its EJB methods are called. So this
- * class can be used thread-safely in EJB container.
- * </p>
+ *                                                             <p>
+ *                                                             <strong>Thread
+ *                                                             safety:</strong>
+ *                                                             The variables in
+ *                                                             this class are
+ *                                                             initialized once
+ *                                                             in the initialize
+ *                                                             method after the
+ *                                                             bean is
+ *                                                             instantiated by
+ *                                                             EJB container.
+ *                                                             They would be
+ *                                                             never be changed
+ *                                                             afterwards. So
+ *                                                             they won't affect
+ *                                                             the thread-safety
+ *                                                             of this class
+ *                                                             when its EJB
+ *                                                             methods are
+ *                                                             called. So this
+ *                                                             class can be used
+ *                                                             thread-safely in
+ *                                                             EJB container.
+ *                                                             </p>
  * 
  * @author Standlove, TCSDEVELOPER
  * @author AleaActaEst, BeBetter
@@ -159,8 +182,8 @@ import com.topcoder.util.log.LogManager;
 public class ContestManagerBean implements ContestManagerRemote, ContestManagerLocal {
     /**
      * <p>
-     * This field represents the <code>SessionContext</code> injected by the
-     * EJB container automatically. It is marked with
+     * This field represents the <code>SessionContext</code> injected by the EJB
+     * container automatically. It is marked with
      * 
      * @Resource annotation. It's non-null after injected when this bean is
      *           instantiated. And its reference is not changed afterwards. It
@@ -173,10 +196,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
     /**
      * <p>
      * This field represent the default document path id, it is used to retrieve
-     * the <code>FilePath</code> object to set to the added document if its
-     * path is not set. It is initialized in the initialize method, and never
-     * changed afterwards. It can be any long value. It must be non-null after
-     * set.
+     * the <code>FilePath</code> object to set to the added document if its path
+     * is not set. It is initialized in the initialize method, and never changed
+     * afterwards. It can be any long value. It must be non-null after set.
      * </p>
      */
     private Long defaultDocumentPathId;
@@ -184,8 +206,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
     /**
      * <p>
      * This field represents the persistence unit name to lookup the
-     * <code>EntityManager</code> from the <code>SessionContext</code>. It
-     * is initialized in the <code>initialize</code> method, and never changed
+     * <code>EntityManager</code> from the <code>SessionContext</code>. It is
+     * initialized in the <code>initialize</code> method, and never changed
      * afterwards. It must be non-null, non-empty string.
      * </p>
      */
@@ -204,8 +226,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * <p>
      * This field represents the <code>DocumentContentManager</code> object to
      * manage the document content. It is initialized in the
-     * <code>initialize</code> method, and never changed afterwards. It must
-     * be non-null after set.
+     * <code>initialize</code> method, and never changed afterwards. It must be
+     * non-null after set.
      * </p>
      */
     private DocumentContentManager documentContentManager;
@@ -430,9 +452,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             EntityManager em = getEntityManager();
             Contest contest = em.find(Contest.class, new Long(contestId));
-            if (contest != null && contest.getStatus() != null) {
-//                fillToStatuses(contest.getStatus());
-            }
             return contest;
         } catch (IllegalStateException e) {
             throw wrapContestManagementException(e, "The EntityManager is closed.");
@@ -520,62 +539,70 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             if (result.getStatus().getContestStatusId().equals(activeContestStatusId)) {
                 checkSet(result.getConfig(), contest.getConfig());
 
-// TODO uncomment me.
-//                if ((contest.getContestChannel() == null)
-//                        || (contest.getContestChannel().getContestChannelId() != result.getContestChannel()
-//                                .getContestChannelId())) {
-//                    throw wrapContestManagementException("The contest channel doesn't match.");
-//                }
+                // TODO uncomment me.
+                // if ((contest.getContestChannel() == null)
+                // || (contest.getContestChannel().getContestChannelId() !=
+                // result.getContestChannel()
+                // .getContestChannelId())) {
+                // throw wrapContestManagementException(
+                // "The contest channel doesn't match.");
+                // }
 
                 if ((contest.getContestType() == null)
                         || !contest.getContestType().getContestType().equals(result.getContestType().getContestType())) {
                     throw wrapContestManagementException("The contest type doesn't match.");
                 }
 
-                if (contest.getCreatedUser()!=null&&!contest.getCreatedUser().equals(result.getCreatedUser())) {
+                if (contest.getCreatedUser() != null && !contest.getCreatedUser().equals(result.getCreatedUser())) {
                     throw wrapContestManagementException("The created user doesn't match.");
                 }
 
                 checkSet(result.getDocuments(), contest.getDocuments());
 
-                if (result.getEventId()!=null && !result.getEventId().equals(contest.getEventId())) {
+                if (result.getEventId() != null && !result.getEventId().equals(contest.getEventId())) {
                     throw wrapContestManagementException("The event doesn't match.");
                 }
 
                 checkSet(result.getFileTypes(), contest.getFileTypes());
 
-                if (result.getForumId()!=null && !result.getForumId().equals(contest.getForumId())) {
+                if (result.getForumId() != null && !result.getForumId().equals(contest.getForumId())) {
                     throw wrapContestManagementException("The forum doesn't match.");
                 }
 
-//                if (result.getName()!=null && !result.getName().equals(contest.getName())) {
-//                    throw wrapContestManagementException("The name doesn't match.");
-//                }
-
-                if (result.getProjectId()!=null && !result.getProjectId().equals(contest.getProjectId())) {
+                if (result.getProjectId() != null && !result.getProjectId().equals(contest.getProjectId())) {
                     throw wrapContestManagementException("The project doesn't match.");
                 }
 
                 checkSet(result.getResults(), contest.getResults());
 
-//                if (!result.getStartDate().equals(contest.getStartDate())) {
-//                    throw wrapContestManagementException("The start date doesn't match.");
-//                }
+                // if (!result.getStartDate().equals(contest.getStartDate())) {
+                // throw
+                // wrapContestManagementException("The start date doesn't match."
+                // );
+                // }
 
-//                if ((contest.getStatus() == null)
-//                        || !result.getStatus().getContestStatusId().equals(contest.getStatus().getContestStatusId())) {
-//                    throw wrapContestManagementException("The status doesn't match.");
-//                }
+                // if ((contest.getStatus() == null)
+                // || !result.getStatus().getContestStatusId().equals(contest.
+                // getStatus().getContestStatusId())) {
+                // throw
+                // wrapContestManagementException("The status doesn't match.");
+                // }
 
                 checkSet(result.getSubmissions(), contest.getSubmissions());
 
-//                if (result.getTcDirectProjectId()!=null && !result.getTcDirectProjectId().equals(contest.getTcDirectProjectId())) {
-//                    throw wrapContestManagementException("The tcDirectProjectId doesn't match.");
-//                }
-//
-//                if (result.getWinnerAnnoucementDeadline()!=null && !result.getWinnerAnnoucementDeadline().equals(contest.getWinnerAnnoucementDeadline())) {
-//                    throw wrapContestManagementException("The WinnerAnnoucementDeadline doesn't match.");
-//                }
+                // if (result.getTcDirectProjectId()!=null &&
+                // !result.getTcDirectProjectId
+                // ().equals(contest.getTcDirectProjectId())) {
+                // throw wrapContestManagementException(
+                // "The tcDirectProjectId doesn't match.");
+                // }
+                //
+                // if (result.getWinnerAnnoucementDeadline()!=null &&
+                // !result.getWinnerAnnoucementDeadline
+                // ().equals(contest.getWinnerAnnoucementDeadline())) {
+                // throw wrapContestManagementException(
+                // "The WinnerAnnoucementDeadline doesn't match.");
+                // }
             }
 
             em.merge(contest);
@@ -920,10 +947,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             EntityManager em = getEntityManager();
 
             ContestStatus contestStatus = em.find(ContestStatus.class, new Long(contestStatusId));
-            if (contestStatus != null) {
-//                fillToStatuses(contestStatus);
-            }
-
             return contestStatus;
         } catch (IllegalStateException e) {
             throw wrapContestManagementException(e, "The EntityManager is closed.");
@@ -1734,7 +1757,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             for (int i = 0; i < list.size(); i++) {
                 ContestStatus status = (ContestStatus) list.get(i);
-//                fillToStatuses(status);
                 result.add(status);
             }
 
@@ -1745,46 +1767,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "There are errors while persisting the entity.");
         } finally {
             logExit("getAllContestSatuses()");
-        }
-    }
-
-    /**
-     * <p>
-     * Fill status's statuses field (To statuses).
-     * </p>
-     * 
-     * @param status
-     *            status whose statuses field to be filled.
-     * @throws ContestManagementException
-     *             if any error occurs when filling the status.
-     * @since 1.1.2
-     */
-    @PermitAll
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void fillToStatuses(ContestStatus status) throws ContestManagementException {
-        try {
-            logEnter("fillToStatuses(ContestStsta)");
-            logOneParameter(status);
-
-            EntityManager em = getEntityManager();
-            Query query = em.createNativeQuery("SELECT csl.* FROM contest_status_lu csl, "
-                    + "contest_status_relation csr " + "WHERE "
-                    + "csl.contest_status_id = csr.from_contest_status_id AND "
-                    + "csr.from_contest_status_id = ? AND csl.contest_status_group_id = 2", ContestStatus.class);
-            query.setParameter(1, status.getContestStatusId());
-            List<ContestStatus> list = query.getResultList();
-            if (list != null) {
-                for (ContestStatus s : list) {
-                    fillToStatuses(s);
-                }
-                status.setStatuses(list);
-            }
-        } catch (IllegalStateException e) {
-            throw wrapContestManagementException(e, "The EntityManager is closed.");
-        } catch (PersistenceException e) {
-            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
-        } finally {
-            logExit("fillToStatuses(ContestStatus)");
         }
     }
 
@@ -1940,8 +1922,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             EntityManager em = getEntityManager();
 
             if (em.find(ContestTypeConfig.class, contestTypeConfig.getId()) == null) {
-                throw wrapEntityNotFoundException("The contest type config with id '"
-                        + contestTypeConfig.getId() + "' doesn't exist");
+                throw wrapEntityNotFoundException("The contest type config with id '" + contestTypeConfig.getId()
+                        + "' doesn't exist");
             }
 
             em.merge(contestTypeConfig);
@@ -2339,9 +2321,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             List list = query.getResultList();
 
             List<Contest> result = new ArrayList<Contest>();
-            for (Contest contest : result) {
-//                fillToStatuses(contest.getStatus());
-            }
             result.addAll(list);
             return result;
         } catch (IllegalStateException e) {
@@ -2565,6 +2544,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         if (logger != null) {
             // This will log the message and StackTrace of the exception.
             logger.log(Level.ERROR, e, message);
+
+            while (e != null) {
+                logger.log(Level.ERROR, "INNER: " + e.getMessage());
+                e = e.getCause();
+            }
         }
     }
 
@@ -2588,9 +2572,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * <p>
-     * Creates a <code>ContestManagementException</code> with the error
-     * message. It will log the exception, and set the sessionContext to
-     * rollback only.
+     * Creates a <code>ContestManagementException</code> with the error message.
+     * It will log the exception, and set the sessionContext to rollback only.
      * </p>
      * 
      * @param message
@@ -2626,7 +2609,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         return ce;
     }
 
-
     /**
      * <p>
      * Creates a new prize, and return the created prize.
@@ -2651,13 +2633,15 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             Helper.checkNull(prize, "prize");
 
-//            if ((prize.getPrizeId() != null) && (getContest(contest.getContestId()) != null)) {
-//                EntityAlreadyExistsException e = new EntityAlreadyExistsException("The contest already exist.");
-//                logException(e, "The contest already exist.");
-//                sessionContext.setRollbackOnly();
-//
-//                throw e;
-//            }
+            // if ((prize.getPrizeId() != null) &&
+            // (getContest(contest.getContestId()) != null)) {
+            // EntityAlreadyExistsException e = new
+            // EntityAlreadyExistsException("The contest already exist.");
+            // logException(e, "The contest already exist.");
+            // sessionContext.setRollbackOnly();
+            //
+            // throw e;
+            // }
 
             EntityManager em = getEntityManager();
             em.persist(prize);
