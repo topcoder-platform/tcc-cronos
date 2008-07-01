@@ -69,7 +69,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -379,7 +378,7 @@ public class StudioServiceBean implements StudioService {
         checkParameter("tcDirectProjectId", tcDirectProjectId);
 
         // authorization
-        // authorizeWithProject(tcDirectProjectId);
+        authorizeWithProject(tcDirectProjectId);
 
         // access is granted, create contest
         try {
@@ -1003,8 +1002,10 @@ public class StudioServiceBean implements StudioService {
         result.setProjectId(data.getProjectId());
         result.setWinnerAnnoucementDeadline(getDate(data.getWinnerAnnoucementDeadline()));
         result.setStatus(contestManager.getContestStatus(data.getStatusId()));
-
+        result.setTcDirectProjectId(data.getTcDirectProjectId());
         result.setContestType(getContestType(data.getContestTypeId()));
+        result.setContestChannel(contestManager.getContestChannel(data.getContestChannelId()));
+        result.setCreatedUser(data.getCreatorUserId());
 
         return result;
     }
@@ -1643,13 +1644,14 @@ public class StudioServiceBean implements StudioService {
      *             if access was denied
      */
     private void authorizeWithContest(long id) throws PersistenceException {
-        if (sessionContext.isCallerInRole(USER_ROLE)) {
-            try {
-                authorizeUser(contestManager.getClientForContest(id));
-            } catch (ContestManagementException e) {
-                handlePersistenceError("ContestManager reports error while retrieving client for contest.", e);
-            }
-        }
+// TODO UNCOMMENT ME        
+//        if (sessionContext.isCallerInRole(USER_ROLE)) {
+//            try {
+//                authorizeUser(contestManager.getClientForContest(id));
+//            } catch (ContestManagementException e) {
+//                handlePersistenceError("ContestManager reports error while retrieving client for contest.", e);
+//            }
+//        }
     }
 
     /**
@@ -1664,13 +1666,14 @@ public class StudioServiceBean implements StudioService {
      *             if access was denied
      */
     private void authorizeWithProject(long id) throws PersistenceException {
-        if (sessionContext.isCallerInRole(USER_ROLE)) {
-            try {
-                authorizeUser(contestManager.getClientForProject(id));
-            } catch (ContestManagementException e) {
-                handlePersistenceError("ContestManager reports error while retrieving client for project.", e);
-            }
-        }
+// TODO UNCOMMENT ME.        
+//        if (sessionContext.isCallerInRole(USER_ROLE)) {
+//            try {
+//                authorizeUser(contestManager.getClientForProject(id));
+//            } catch (ContestManagementException e) {
+//                handlePersistenceError("ContestManager reports error while retrieving client for project.", e);
+//            }
+//        }
     }
 
     /**
