@@ -40,7 +40,6 @@ import com.topcoder.service.prerequisite.PrerequisiteService;
 import com.topcoder.service.project.ProjectData;
 import com.topcoder.service.project.ProjectService;
 import com.topcoder.service.studio.ContestData;
-import com.topcoder.service.studio.ContestDetailedStatusData;
 import com.topcoder.service.studio.ContestPayload;
 import com.topcoder.service.studio.ContestStatusData;
 import com.topcoder.service.studio.ContestTypeData;
@@ -1079,22 +1078,6 @@ public class AjaxBridgeServlet extends HttpServlet {
             contest.setContestPayloads(listOfPayloads);
         }
 
-        // FIX [TCCC-142]
-        if (jsonContest.isKeyDefined("contestDetailedStatuses") && jsonContest.isAvailableAsArray("contestDetailedStatuses")) {
-            JSONArray jsonContestDetailedStatuses = jsonContest.getArray("contestDetailedStatuses");
-            if (jsonContestDetailedStatuses != null) {
-                Object[] contestDetailedStatuses = jsonContestDetailedStatuses.getObjects();
-                List<ContestDetailedStatusData> listOfStatuses = new ArrayList<ContestDetailedStatusData>();
-                if (contestDetailedStatuses != null) {
-                    for (int i = 0; i < contestDetailedStatuses.length; i++) {
-                        // listOfStatuses.add(getContestPayloadFromJSON((JSONObject)
-                        // contestDetailedStatuses[i]));
-                    }
-                }
-                contest.setDetailedStatuses(listOfStatuses);
-            }
-        }
-
         return contest;
     }
 
@@ -1387,18 +1370,6 @@ public class AjaxBridgeServlet extends HttpServlet {
             }
         }
         respJSON.setArray("contestPayloads", jsonPayloads);
-
-        // ContestDetailedStatuses[]
-        // setup the JSONArray of ContestDetailedStatus
-        JSONArray jsonContestDetailedStatuses = new JSONArray();
-        List<ContestDetailedStatusData> contestDetailedStatuses = contest.getDetailedStatuses();
-        // check if it is null
-        if (contestDetailedStatuses != null) {
-            for (ContestDetailedStatusData status : contestDetailedStatuses) {
-                // jsonContestDetailedStatuses.addJSONObject(getJSONFromPrize(status));
-            }
-        }
-        respJSON.setArray("contestDetailedStatuses", jsonContestDetailedStatuses);
 
         return respJSON;
     }
