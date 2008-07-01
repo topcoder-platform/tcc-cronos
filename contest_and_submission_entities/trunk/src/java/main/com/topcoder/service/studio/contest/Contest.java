@@ -115,6 +115,7 @@ public class Contest implements Serializable {
      */
     private Date winnerAnnoucementDeadline;
 
+    
     /**
      * Represents the created user id.
      */
