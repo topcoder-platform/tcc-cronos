@@ -415,13 +415,14 @@ public interface StudioService {
 	 *            the id of submission to remove
 	 * @param price
 	 *            Price of submission.
-	 * 
+     * @param payPalOrderId PayPal order id.
+     *
 	 * @throws PersistenceException
 	 *             if any error occurs when purchasing submission.
 	 * @throws IllegalArgumentWSException
 	 *             if the submissionId is less than 0 or price is negative.
 	 */
-	public void purchaseSubmission(long submissionId, double price)
+	public void purchaseSubmission(long submissionId, double price, long payPalOrderId)
 			throws PersistenceException;
 
 	/**
@@ -437,12 +438,13 @@ public interface StudioService {
 	 *            the id of submission to remove
 	 * @param place
 	 *            place of submission.
+     * @param payPalOrderId PayPal order id.
 	 * 
 	 * @throws PersistenceException
 	 *             if any error occurs when selecting winner.
 	 * @throws IllegalArgumentWSException
 	 *             if the submissionId is less than 0 or place is not positive.
 	 */
-	public void selectWinner(long submissionId, int place)
+	public void selectWinner(long submissionId, int place, long payPalOrderId)
 			throws PersistenceException;
 }

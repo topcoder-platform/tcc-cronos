@@ -90,8 +90,7 @@ import java.util.Set;
  * be consumed as SOAP message, this is necessary because it's a webservices.
  * This implementations is designed to be used by the related interface and also
  * by a different webservices client: all the response, request and exceptions
- * are automatically transformed to SOAP element.
- * </p>
+ * are automatically transformed to SOAP element. </p>
  * 
  * <p>
  * Thread safety: this class is thread safe if the managers used are thread
@@ -175,69 +174,60 @@ public class StudioServiceBean implements StudioService {
     private long draftStatusId;
 
     /**
-     * Represents the id of status of a submission paid.
-     * </p>
+     * Represents the id of status of a submission paid. </p>
      */
     @Resource(name = "submissionPaidStatusId")
     private long submissionPaidStatusId;
 
     /**
-     * Represents the id of status of a submission unpaid.
-     * </p>
+     * Represents the id of status of a submission unpaid. </p>
      */
     @Resource(name = "submissionUnpaidStatusId")
     private long submissionUnpaidStatusId;
 
     /**
-     * Represents the id of status of a submission marked for purchase.
-     * </p>
+     * Represents the id of status of a submission marked for purchase. </p>
      */
     @Resource(name = "submissionMarkedForPurchaseStatusId")
     private long submissionMarkedForPurchaseStatusId;
 
     /**
      * Represents the id of submission status of a submission that passed the
-     * review.
-     * </p>
+     * review. </p>
      */
     @Resource(name = "submissionPassedStatus")
     private long submissionPassedStatus;
 
     /**
-     * Represents the base URI used to construct the submission content.
-     * </p>
+     * Represents the base URI used to construct the submission content. </p>
      */
     @Resource(name = "submissionContentBaseURI")
     private String submissionContentBaseURI;
 
     /**
      * Represents the parameter name of the submission id, it will be used in
-     * the constructrion of submission URI content.
-     * </p>
+     * the constructrion of submission URI content. </p>
      */
     @Resource(name = "submissionContentSubmissionIdParameterName")
     private String submissionContentSubmissionIdParameterName;
 
     /**
      * Represents the parameter name of the submission type, it will be used in
-     * the constructrion of submission URI content.
-     * </p>
+     * the constructrion of submission URI content. </p>
      */
     @Resource(name = "submissionContentSubmissionTypeParameterName")
     private String submissionContentSubmissionTypeParameterName;
 
     /**
      * Represents the parameter value of the submission paid parameter, it will
-     * be used in the constructrion of submission URI content.
-     * </p>
+     * be used in the constructrion of submission URI content. </p>
      */
     @Resource(name = "submissionContentPaidParameterValue")
     private String submissionContentPaidParameterValue;
 
     /**
      * Represents the parameter value of the submission unpaid parameter, it
-     * will be used in the constructrion of submission URI content.
-     * </p>
+     * will be used in the constructrion of submission URI content. </p>
      */
     @Resource(name = "submissionContentUnpaidParameterValue")
     private String submissionContentUnpaidParameterValue;
@@ -387,9 +377,9 @@ public class StudioServiceBean implements StudioService {
         logEnter("createContest", contestData, tcDirectProjectId);
         checkParameter("contestData", contestData);
         checkParameter("tcDirectProjectId", tcDirectProjectId);
-        
+
         // authorization
-//        authorizeWithProject(tcDirectProjectId);
+        // authorizeWithProject(tcDirectProjectId);
 
         // access is granted, create contest
         try {
@@ -1653,14 +1643,13 @@ public class StudioServiceBean implements StudioService {
      *             if access was denied
      */
     private void authorizeWithContest(long id) throws PersistenceException {
-        // TODO uncomment me
-//        if (sessionContext.isCallerInRole(USER_ROLE)) {
-//            try {
-//                authorizeUser(contestManager.getClientForContest(id));
-//            } catch (ContestManagementException e) {
-//                handlePersistenceError("ContestManager reports error while retrieving client for contest.", e);
-//            }
-//        }
+        if (sessionContext.isCallerInRole(USER_ROLE)) {
+            try {
+                authorizeUser(contestManager.getClientForContest(id));
+            } catch (ContestManagementException e) {
+                handlePersistenceError("ContestManager reports error while retrieving client for contest.", e);
+            }
+        }
     }
 
     /**
@@ -2013,7 +2002,8 @@ public class StudioServiceBean implements StudioService {
      * Get matched the MimeType id.
      * </p>
      * 
-     * @param ContentType.
+     * @param ContentType
+     *            .
      * @return the matched MimeType id. -1 if not found.
      * 
      * @throws PersistenceException
@@ -2057,15 +2047,16 @@ public class StudioServiceBean implements StudioService {
      *            the id of submission to remove
      * @param price
      *            Price of submission.
-     * 
+     * @param payPalOrderId PayPal order id.
      * @throws PersistenceException
      *             if any error occurs when purchasing submission.
      * @throws IllegalArgumentWSException
      *             if the submissionId is less than 0 or price is negative.
      */
-    public void purchaseSubmission(long submissionId, double price) throws PersistenceException {
+    public void purchaseSubmission(long submissionId, double price, long payPalOrderId) throws PersistenceException {
         logEnter("purchaseSubmission", submissionId, price);
         checkParameter("submissionId", submissionId);
+        checkParameter("payPalOrderId", payPalOrderId);
         checkParameter("price", price);
 
         try {
@@ -2077,6 +2068,8 @@ public class StudioServiceBean implements StudioService {
 
             submissionPayment.setSubmission(submission);
             submissionPayment.setPrice(price);
+            // [ TCCC-125 ]
+            submissionPayment.setPayPalOrderId(payPalOrderId);
 
             PaymentStatus status = new PaymentStatus();
 
@@ -2107,15 +2100,17 @@ public class StudioServiceBean implements StudioService {
      *            the id of submission to remove
      * @param place
      *            place of submission.
+     * @param payPalOrderId PayPal order id.
      * 
      * @throws PersistenceException
      *             if any error occurs when selecting winner.
      * @throws IllegalArgumentWSException
      *             if the submissionId is less than 0 or place is not positive.
      */
-    public void selectWinner(long submissionId, int place) throws PersistenceException {
+    public void selectWinner(long submissionId, int place, long payPalOrderId) throws PersistenceException {
         logEnter("selectWinner", submissionId, place);
         checkParameter("submissionId", submissionId);
+        checkParameter("payPalOrderId", payPalOrderId);
         checkParameter("place", place);
 
         try {
@@ -2129,16 +2124,17 @@ public class StudioServiceBean implements StudioService {
             submissionManager.updateSubmission(submission);
 
             // create an entry at submission payment table
-            // If the submission is anything other than 1st place, the price should be the 2nd place payment. 
+            // If the submission is anything other than 1st place, the price
+            // should be the 2nd place payment.
             for (Prize prize : submission.getPrizes()) {
                 if (place == 1) {
                     if (prize.getPlace().equals(1L)) {
-                        purchaseSubmission(submissionId, prize.getAmount());
+                        purchaseSubmission(submissionId, prize.getAmount(), payPalOrderId);
                         break;
                     }
                 } else {
                     if (prize.getPlace().equals(2L)) {
-                        purchaseSubmission(submissionId, prize.getAmount());
+                        purchaseSubmission(submissionId, prize.getAmount(), payPalOrderId);
                         break;
                     }
                 }
