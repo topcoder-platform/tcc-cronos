@@ -102,7 +102,7 @@ public class ContestFilterFactory {
      * Column name constant for contest status id.
      * </p>
      */
-    private static final String COLUMN_CONTEST_STATUS_ID = TABLE_CONTEST + ".contest_status_id";
+    private static final String COLUMN_CONTEST_STATUS_ID = TABLE_CONTEST + ".contest_detailed_status_id";
 
     /**
      * <p>
