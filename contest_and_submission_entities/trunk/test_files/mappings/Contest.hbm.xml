@@ -30,8 +30,8 @@
         <property name="tcDirectProjectId" column="tc_direct_project_id"
             not-null="true" />
 
-        <many-to-one name="status" column="contest_detailed_status_id"
-            class="com.topcoder.service.studio.contest.ContestStatus" />
+        <many-to-one name="status" column="contest_status_id"
+            class="com.topcoder.service.studio.contest.ContestStatus" not-null="true"/>
 
         <property name="forumId" column="forum_id" />
 
