@@ -65,6 +65,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import java.io.File;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -1001,7 +1002,15 @@ public class StudioServiceBean implements StudioService {
         result.setName(data.getName());
         result.setProjectId(data.getProjectId());
         result.setWinnerAnnoucementDeadline(getDate(data.getWinnerAnnoucementDeadline()));
-        result.setStatus(contestManager.getContestStatus(data.getStatusId()));
+        
+        logError("ContestData.status: " + data.getStatusId());
+        ContestStatus contestStatus = contestManager.getContestStatus(data.getStatusId());
+        logError(MessageFormat.format("Retrieved contest status: desc:[{0}] name:[{1}] id:[{2}]", 
+                contestStatus.getDescription(), 
+                contestStatus.getName(), 
+                contestStatus.getContestStatusId()));
+        
+        result.setStatus(contestStatus);
         result.setTcDirectProjectId(data.getTcDirectProjectId());
         result.setContestType(getContestType(data.getContestTypeId()));
         result.setContestChannel(contestManager.getContestChannel(data.getContestChannelId()));
