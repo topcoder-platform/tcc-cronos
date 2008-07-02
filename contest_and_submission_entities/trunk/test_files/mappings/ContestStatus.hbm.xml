@@ -12,5 +12,7 @@
 			column="contest_detailed_status_desc" />
 
 		<property name="name" length="100" column="name"/>
+		
+		<property name="statusId" column="contest_status_id" type="long" />
 	</class>
 </hibernate-mapping>

@@ -22,6 +22,6 @@
 
 		<property name="price" not-null="true" />
 
-		<property name="paypalOrderId" column="paypal_order_id" not-null="true" />
+		<property name="PayPalOrderId" column="paypal_order_id" not-null="true" />
 	</class>
 </hibernate-mapping>
