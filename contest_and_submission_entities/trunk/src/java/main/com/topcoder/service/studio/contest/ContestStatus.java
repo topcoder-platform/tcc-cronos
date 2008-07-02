@@ -30,6 +30,11 @@ public class ContestStatus implements Serializable {
     private Long contestStatusId;
 
     /**
+     * Represents the status id.
+     */
+    private Long statusId;
+    
+    /**
      * Represents the status description.
      */
     private String description;
@@ -68,6 +73,25 @@ public class ContestStatus implements Serializable {
      */
     public void setContestStatusId(Long contestStatusId) {
         this.contestStatusId = contestStatusId;
+    }
+
+    /**
+     * Returns the statusId.
+     *
+     * @return the statusId.
+     */
+    public Long getStatusId() {
+        return statusId;
+    }
+
+    /**
+     * Updates the statusId with the specified value.
+     *
+     * @param statusId
+     *            the statusId to set.
+     */
+    public void setStatusId(Long statusId) {
+        this.statusId = statusId;
     }
 
     /**

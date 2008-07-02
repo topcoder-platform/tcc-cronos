@@ -61,6 +61,11 @@ public class Contest implements Serializable {
     private ContestStatus status;
 
     /**
+     * Represents the status id.
+     */
+    private Long statusId;
+    
+    /**
      * Represents the forum id.
      */
     private Long forumId;
@@ -147,6 +152,25 @@ public class Contest implements Serializable {
         this.contestId = contestId;
     }
 
+    /**
+     * Returns the statusId.
+     *
+     * @return the statusId.
+     */
+    public Long getStatusId() {
+        return statusId;
+    }
+
+    /**
+     * Updates the statusId with the specified value.
+     *
+     * @param statusId
+     *            the statusId to set.
+     */
+    public void setStatusId(Long statusId) {
+        this.statusId = statusId;
+    }
+    
     /**
      * Returns the name.
      *
@@ -240,6 +264,9 @@ public class Contest implements Serializable {
      */
     public void setStatus(ContestStatus status) {
         this.status = status;
+        if (status != null) {
+            statusId = status.getStatusId();
+        }
     }
 
     /**
