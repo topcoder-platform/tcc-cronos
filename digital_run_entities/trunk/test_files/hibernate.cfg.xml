@@ -1,0 +1,39 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory name="dr_Points">
+		<!-- Database connection settings -->
+		<property name="connection.driver_class">
+			com.informix.jdbc.IfxDriver
+		</property>
+		<property name="connection.url">
+			jdbc:informix-sqli://[::1]:1526/test:INFORMIXSERVER=topcoder
+		</property>
+		<property name="connection.username">informix</property>
+		<property name="connection.password">redstar</property>
+
+		<!-- SQL dialect -->
+		<property name="dialect">
+			org.hibernate.dialect.InformixDialect
+		</property>
+		<property name="use_sql_comments">true</property>
+		<property name="show_sql">true</property>
+		
+        <mapping resource="META-INF/DigitalRunPointsStatus.hbm.xml"/>
+        <mapping resource="META-INF/DigitalRunPointsOperation.hbm.xml"/>
+        <mapping resource="META-INF/DigitalRunPointsReferenceType.hbm.xml"/>
+        <mapping resource="META-INF/DigitalRunPointsType.hbm.xml"/>
+        <mapping resource="META-INF/TrackContestType.hbm.xml"/>
+        <mapping resource="META-INF/TrackStatus.hbm.xml"/>
+        <mapping resource="META-INF/TrackType.hbm.xml"/>
+        <mapping resource="META-INF/PointsCalculator.hbm.xml"/>
+        <mapping resource="META-INF/ProjectType.hbm.xml"/>
+        <mapping resource="META-INF/TrackContestResultCalculator.hbm.xml"/>
+        <mapping resource="META-INF/Track.hbm.xml"/>
+        <mapping resource="META-INF/TrackContest.hbm.xml"/>
+        <mapping resource="META-INF/DigitalRunPoints.hbm.xml"/>
+         
+	</session-factory>
+</hibernate-configuration>

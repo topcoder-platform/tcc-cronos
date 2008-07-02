@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping
+>
+    <class
+        name="com.topcoder.service.digitalrun.entity.TrackContestResultCalculator"
+		table="track_contest_result_calculator_lu"
+    >
+
+        <id
+            name="id"
+            column="track_contest_result_calculator_id"
+            type="long"
+        >
+            <generator class="com.topcoder.service.digitalrun.entity.idgenerator.DigitalRunEntityIDGenerator">
+				<param name="id_generator_name">TrackContestResultCalculator_IDGenerator</param>
+			</generator>
+        </id>
+
+        <property
+            name="className"
+            type="java.lang.String"
+            update="true"
+            insert="true"
+            column="class_name"
+			length="100"
+			non-null="true"
+        />
+
+        <property
+            name="creationDate"
+            type="java.util.Date"
+            update="false"
+            insert="false"
+            column="create_date"
+        />
+
+        <property
+            name="modificationDate"
+            type="java.util.Date"
+            update="false"
+            insert="false"
+            column="modify_date"
+        />
+
+        <property
+            name="description"
+            type="java.lang.String"
+            update="true"
+            insert="true"
+            column="track_contest_result_calculator_desc"
+			length="50"
+			non-null="true"
+        />
+
+    </class>
+
+</hibernate-mapping>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping
+>
+    <class
+        name="com.topcoder.service.digitalrun.entity.Track"
+		table="track"
+    >
+
+        <id
+            name="id"
+            column="track_id"
+            type="long"
+        >
+            <generator class="com.topcoder.service.digitalrun.entity.idgenerator.DigitalRunEntityIDGenerator">
+				<param name="id_generator_name">Track_IDGenerator</param>
+			</generator>
+        </id>
+
+        <many-to-one name="trackContestResultCalculator" column="track_contest_result_calculator_id"/>
+		<many-to-one name="trackType" column="track_type_id"/>
+		<many-to-one name="trackStatus" column="track_status_id"/>
+		<many-to-one name="pointsCalculator" column="points_calculator_id"/>
+
+        <property
+            name="startDate"
+            type="java.util.Date"
+            update="true"
+            insert="true"
+            column="start_date"
+			non-null="true"
+        />
+
+        <property
+            name="endDate"
+            type="java.util.Date"
+            update="true"
+            insert="true"
+            column="end_date"
+			non-null="true"
+        />
+
+		<bag name="digitalRunPoints" inverse="true">
+            <key column="dr_points_id"/>
+            <one-to-many class="com.topcoder.service.digitalrun.entity.DigitalRunPoints"/>
+        </bag>
+
+		<bag name="trackContests" inverse="true">
+            <key column="track_contest_id"/>
+            <one-to-many class="com.topcoder.service.digitalrun.entity.TrackContest"/>
+        </bag>
+
+		<bag name="projectTypes" table="track_project_type_xref">
+            <key column="track_id"/>
+            <many-to-many class="com.topcoder.service.digitalrun.entity.ProjectType"
+                          column="project_type_id"
+						  unique="true"/>
+        </bag>
+
+        <property
+            name="creationDate"
+            type="java.util.Date"
+            update="false"
+            insert="false"
+            column="create_date"
+        />
+
+        <property
+            name="modificationDate"
+            type="java.util.Date"
+            update="false"
+            insert="false"
+            column="modify_date"
+        />
+
+        <property
+            name="description"
+            type="java.lang.String"
+            update="true"
+            insert="true"
+            column="track_desc"
+			length="50"
+			non-null="true"
+        />
+
+    </class>
+
+</hibernate-mapping>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping
+>
+    <class
+        name="com.topcoder.service.digitalrun.entity.DigitalRunPointsStatus"
+		table="dr_points_status_lu"
+    >
+
+        <id
+            name="id"
+            column="dr_points_status_id"
+            type="long"
+        >
+            <generator class="com.topcoder.service.digitalrun.entity.idgenerator.DigitalRunEntityIDGenerator">
+				<param name="id_generator_name">DigitalRunPointsStatus_IDGenerator</param>
+			</generator>
+        </id>
+
+        <property
+            name="creationDate"
+            type="java.util.Date"
+            update="false"
+            insert="false"
+            column="create_date"
+        />
+
+        <property
+            name="modificationDate"
+            type="java.util.Date"
+            update="false"
+            insert="false"
+            column="modify_date"
+        />
+
+        <property
+            name="description"
+            type="java.lang.String"
+            update="true"
+            insert="true"
+            column="dr_points_status_desc"
+			length="50"
+			non-null="true"
+        />
+
+    </class>
+
+</hibernate-mapping>
