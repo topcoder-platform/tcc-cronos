@@ -56,7 +56,7 @@ Here, database is ready.
 JBoss
 
 1. Download and install JBoss 4.2.2.
-2. modify <jboss-home\server\default\conf\login-config.xml, adding
+2. modify <jboss-home>\server\default\conf\login-config.xml, adding
 
    <application-policy name="JBossLoginModule">
 	    <authentication>

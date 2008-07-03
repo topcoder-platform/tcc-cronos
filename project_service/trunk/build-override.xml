@@ -107,6 +107,7 @@
                   <include name="**/*.jar"/>
               </fileset>
             </copy>
+            <sleep seconds="20"/>            
         </sequential>
     </macrodef>
 

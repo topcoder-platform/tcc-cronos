@@ -27,7 +27,7 @@
         <param name="sequence">competition_sequence</param>
       </generator>
     </id>
-    <many-to-one name="tc_direct_project"
+    <many-to-one name="project"
       class="com.topcoder.service.project.Project" column="project_id" />
   </class>
 </hibernate-mapping>
