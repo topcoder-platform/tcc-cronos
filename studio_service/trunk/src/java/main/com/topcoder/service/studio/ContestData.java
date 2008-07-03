@@ -89,7 +89,7 @@ public class ContestData implements Serializable {
      * Represents the duration In Hours
      * </p>
      */
-    private int durationInHours = -1;
+    private double durationInHours = -1;
 
     /**
      * <p>
@@ -371,7 +371,7 @@ public class ContestData implements Serializable {
      *
      * @return the durationInHours
      */
-    public int getDurationInHours() {
+    public double getDurationInHours() {
         return durationInHours;
     }
 
@@ -383,7 +383,7 @@ public class ContestData implements Serializable {
      * @param durationInHours
      *            the durationInHours to set
      */
-    public void setDurationInHours(int durationInHours) {
+    public void setDurationInHours(double durationInHours) {
         this.durationInHours = durationInHours;
     }
 
