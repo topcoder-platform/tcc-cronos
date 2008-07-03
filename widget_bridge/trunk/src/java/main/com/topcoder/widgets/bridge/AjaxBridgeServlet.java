@@ -1024,7 +1024,7 @@ public class AjaxBridgeServlet extends HttpServlet {
         contest.setProjectId(jsonContest.getLong("projectID"));
         contest.setName(jsonContest.getString("name"));
         contest.setShortSummary(jsonContest.getString("shortSummary"));
-        contest.setDurationInHours(jsonContest.getInt("durationInHours"));
+        contest.setDurationInHours(jsonContest.getDouble("durationInHours"));
         contest.setOtherFileFormats(jsonContest.getString("finalFileFormatOther"));
         contest.setStatusId(jsonContest.getLong("statusID"));
         contest.setContestDescriptionAndRequirements(jsonContest.getString("contestDescriptionAndRequirements"));
@@ -1317,7 +1317,7 @@ public class AjaxBridgeServlet extends HttpServlet {
         respJSON.setLong("projectID", contest.getProjectId());
         respJSON.setString("name", contest.getName());
         respJSON.setString("shortSummary", contest.getShortSummary());
-        respJSON.setInt("durationInHours", contest.getDurationInHours());
+        respJSON.setDouble("durationInHours", contest.getDurationInHours());
         respJSON.setString("finalFileFormatOther", contest.getOtherFileFormats());
         respJSON.setLong("statusID", contest.getStatusId());
         respJSON.setString("contestDescriptionAndRequirements", contest.getContestDescriptionAndRequirements());
