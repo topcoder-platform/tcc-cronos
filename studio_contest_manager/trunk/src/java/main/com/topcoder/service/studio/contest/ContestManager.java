@@ -611,4 +611,55 @@ public interface ContestManager {
      * @throws ContestManagementException if any other error occurs.
      */
     public Prize createPrize(Prize prize) throws ContestManagementException;
+    
+
+    /**
+     * <p>
+     * Creates a new contest payment and returns the created contest payment.
+     * </p>
+     *
+     * @param contestPayment the contest payment to create
+     * @return the created contest payment.
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityAlreadyExistsException if the entity already exists in the persistence.
+     * @throws ContestManagementException if any other error occurs.
+     */
+    public ContestPayment createContestPayment(ContestPayment contestPayment) throws ContestManagementException;
+    
+    /**
+     * <p>
+     * Gets contest payment by id, and return the retrieved contest payment. If the contest payment doesn't exist, null is returned.
+     * </p>
+     *
+     * @param contestPaymentId the contest payment id
+     * @return the retrieved contest, or null if id doesn't exist
+     *
+     * @throws ContestManagementException if any error occurs when getting contest.
+     */
+    public ContestPayment getContestPayment(long contestPaymentId) throws ContestManagementException;
+
+    /**
+     * <p>
+     * Updates contest payment data.
+     * </p>
+     *
+     * @param contestPayment the contest payment to update
+     * @throws IllegalArgumentException if the argument is null.
+     * @throws EntityNotFoundException if the contest payment doesn't exist in persistence.
+     * @throws ContestManagementException if any error occurs when updating contest payment.
+     */
+    public void editContestPayment(ContestPayment contestPayment) throws ContestManagementException;
+
+    /**
+     * <p>
+     * Removes contest payment, return true if the contest payment exists and removed successfully, return false if it
+     * doesn't exist.
+     * </p>
+     *
+     * @param contestPaymentId the contest payment id
+     * @return true if the contest payment exists and removed successfully, return false if it doesn't exist
+     * @throws ContestManagementException if any error occurs.
+     */
+    public boolean removeContestPayment(long contestPaymentId) throws ContestManagementException;
 }

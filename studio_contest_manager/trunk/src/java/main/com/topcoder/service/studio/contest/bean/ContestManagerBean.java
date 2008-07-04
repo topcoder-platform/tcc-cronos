@@ -38,6 +38,7 @@ import com.topcoder.service.studio.contest.ContestConfigurationException;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.ContestManagerLocal;
 import com.topcoder.service.studio.contest.ContestManagerRemote;
+import com.topcoder.service.studio.contest.ContestPayment;
 import com.topcoder.service.studio.contest.ContestStatus;
 import com.topcoder.service.studio.contest.ContestStatusTransitionException;
 import com.topcoder.service.studio.contest.ContestType;
@@ -453,6 +454,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             EntityManager em = getEntityManager();
             Contest contest = em.find(Contest.class, new Long(contestId));
+            if (contest != null && contest.getStatus() != null) {
+                fillNextStatuses(contest.getStatus());
+            }
             return contest;
         } catch (IllegalStateException e) {
             throw wrapContestManagementException(e, "The EntityManager is closed.");
@@ -540,16 +544,16 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             if (result.getStatus().getContestStatusId().equals(activeContestStatusId)) {
                 checkSet(result.getConfig(), contest.getConfig());
 
-                 if (contest.getContestChannel() == null){
-                     throw wrapContestManagementException("contest.contestChannel is null.");
-                 }
-                 if ((contest.getContestChannel().getContestChannelId() != result.getContestChannel()
-                                .getContestChannelId())) {
+                if (contest.getContestChannel() == null) {
+                    throw wrapContestManagementException("contest.contestChannel is null.");
+                }
+                if ((contest.getContestChannel().getContestChannelId() != result.getContestChannel()
+                        .getContestChannelId())) {
                     throw wrapContestManagementException(MessageFormat
                             .format(
                                     "The contest channel doesn't match. persisted contest channel id: {0} updated contest channel id : {1}",
-                                    result.getContestChannel().getContestChannelId(),
-                                    contest.getContestChannel().getContestChannelId()));
+                                    result.getContestChannel().getContestChannelId(), contest.getContestChannel()
+                                            .getContestChannelId()));
                 }
 
                 checkSet(result.getDocuments(), contest.getDocuments());
@@ -642,7 +646,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             if (!status.getStatuses().contains(contestStatus)) {
                 ContestStatusTransitionException e = new ContestStatusTransitionException(
-                        "The contest's status can't be change to dest status.");
+                        "The contest's status can't be change to dest status: " + contestStatus.getName());
                 logException(e, "The contest's status can't be change to dest status.");
                 sessionContext.setRollbackOnly();
 
@@ -903,6 +907,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             EntityManager em = getEntityManager();
 
             ContestStatus contestStatus = em.find(ContestStatus.class, new Long(contestStatusId));
+            if (contestStatus != null) {
+                fillNextStatuses(contestStatus);
+            }
             return contestStatus;
         } catch (IllegalStateException e) {
             throw wrapContestManagementException(e, "The EntityManager is closed.");
@@ -1710,9 +1717,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             List list = query.getResultList();
 
             List<ContestStatus> result = new ArrayList<ContestStatus>();
-
             for (int i = 0; i < list.size(); i++) {
                 ContestStatus status = (ContestStatus) list.get(i);
+                fillNextStatuses(status);
                 result.add(status);
             }
 
@@ -2277,6 +2284,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             List list = query.getResultList();
 
             List<Contest> result = new ArrayList<Contest>();
+            for (Contest contest : result) {
+                fillNextStatuses(contest.getStatus());
+            }
             result.addAll(list);
             return result;
         } catch (IllegalStateException e) {
@@ -2611,6 +2621,243 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "There are errors while persisting the entity.");
         } finally {
             logExit("createPrize()");
+        }
+    }
+
+    /**
+     * <p>
+     * Creates a new contest payment and returns the created contest payment.
+     * </p>
+     * 
+     * @param contestPayment
+     *            the contest payment to create
+     * @return the created contest payment.
+     * 
+     * @throws IllegalArgumentException
+     *             if the arg is null.
+     * @throws EntityAlreadyExistsException
+     *             if the entity already exists in the persistence.
+     * @throws ContestManagementException
+     *             if any other error occurs.
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public ContestPayment createContestPayment(ContestPayment contestPayment) throws ContestManagementException {
+        try {
+            logEnter("createContestPayment()");
+
+            Helper.checkNull(contestPayment, "contestPayment");
+            logOneParameter(contestPayment.getPayPalOrderId());
+
+            // if ((contest.getContestId() != null) &&
+            // (getContest(contest.getContestId()) != null)) {
+            // EntityAlreadyExistsException e = new
+            // EntityAlreadyExistsException("The contest already exist.");
+            // logException(e, "The contest already exist.");
+            // sessionContext.setRollbackOnly();
+            //
+            // throw e;
+            // }
+
+            EntityManager em = getEntityManager();
+            em.persist(contestPayment);
+
+            return contestPayment;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (TransactionRequiredException e) {
+            throw wrapContestManagementException(e, "This method is required to run in transaction.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("createContestPayment()");
+        }
+    }
+
+    /**
+     * <p>
+     * Gets contest payment by id, and return the retrieved contest payment. If
+     * the contest payment doesn't exist, null is returned.
+     * </p>
+     * 
+     * @param contestPaymentId
+     *            the contest payment id
+     * @return the retrieved contest, or null if id doesn't exist
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest.
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public ContestPayment getContestPayment(long contestPaymentId) throws ContestManagementException {
+        try {
+            logEnter("getContestPayment()");
+            logOneParameter(contestPaymentId);
+
+            EntityManager em = getEntityManager();
+            ContestPayment contestPayment = em.find(ContestPayment.class, new Long(contestPaymentId));
+            return contestPayment;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("getContestPayment()");
+        }
+    }
+
+    /**
+     * <p>
+     * Updates contest payment data.
+     * </p>
+     * 
+     * @param contestPayment
+     *            the contest payment to update
+     * @throws IllegalArgumentException
+     *             if the argument is null.
+     * @throws EntityNotFoundException
+     *             if the contest payment doesn't exist in persistence.
+     * @throws ContestManagementException
+     *             if any error occurs when updating contest payment.
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void editContestPayment(ContestPayment contestPayment) throws ContestManagementException {
+        try {
+            logEnter("editContestPayment()");
+            Helper.checkNull(contestPayment, "contestPayment");
+
+            // if ((contest.getContestId() == null) ||
+            // (getContest(contest.getContestId()) == null)) {
+            // throw wrapEntityNotFoundException("The contest of id '" +
+            // contest.getContestId() + "' doesn't exist.");
+            // }
+
+            EntityManager em = getEntityManager();
+
+            // Contest result = getContest(contest.getContestId());
+            //
+            // if (result.getStatus().getContestStatusId().equals(
+            // activeContestStatusId)) {
+            // checkSet(result.getConfig(), contest.getConfig());
+            //
+            // if (contest.getContestChannel() == null) {
+            // throw
+            // wrapContestManagementException("contest.contestChannel is null."
+            // );
+            // }
+            // if ((contest.getContestChannel().getContestChannelId() !=
+            // result.getContestChannel()
+            // .getContestChannelId())) {
+            // throw wrapContestManagementException(MessageFormat
+            // .format(
+            // "The contest channel doesn't match. persisted contest channel id: {0} updated contest channel id : {1}"
+            // ,
+            // result.getContestChannel().getContestChannelId(),
+            // contest.getContestChannel()
+            // .getContestChannelId()));
+            // }
+            //
+            // checkSet(result.getDocuments(), contest.getDocuments());
+            //
+            // checkSet(result.getFileTypes(), contest.getFileTypes());
+            //
+            // checkSet(result.getResults(), contest.getResults());
+            //
+            // checkSet(result.getSubmissions(), contest.getSubmissions());
+            // }
+
+            em.merge(contestPayment);
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (TransactionRequiredException e) {
+            throw wrapContestManagementException(e, "This method is required to run in transaction.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("editContestPayment()");
+        }
+    }
+
+    /**
+     * <p>
+     * Removes contest payment, return true if the contest payment exists and
+     * removed successfully, return false if it doesn't exist.
+     * </p>
+     * 
+     * @param contestPaymentId
+     *            the contest payment id
+     * @return true if the contest payment exists and removed successfully,
+     *         return false if it doesn't exist
+     * @throws ContestManagementException
+     *             if any error occurs.
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public boolean removeContestPayment(long contestPaymentId) throws ContestManagementException {
+        try {
+            logEnter("removeContestPayment()");
+            logOneParameter(contestPaymentId);
+
+            EntityManager em = getEntityManager();
+
+            ContestPayment payment = em.find(ContestPayment.class, new Long(contestPaymentId));
+
+            if (payment == null) {
+                return false;
+            }
+
+            em.remove(payment);
+
+            return true;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (TransactionRequiredException e) {
+            throw wrapContestManagementException(e, "This method is required to run in transaction.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("removeContestPayment()");
+        }
+    }
+
+    /**
+     * <p>
+     * Fill status's statuses field (next statuses).
+     * </p>
+     * 
+     * @param status
+     *            status whose statuses field to be filled.
+     * @throws ContestManagementException
+     *             if any error occurs when filling the status.
+     * @since 1.1.2
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void fillNextStatuses(ContestStatus status) throws ContestManagementException {
+        try {
+            logEnter("fillToStatuses(ContestStsta)");
+            logOneParameter(status);
+
+            EntityManager em = getEntityManager();
+            Query query = em.createNativeQuery("SELECT csl.* FROM contest_detailed_status_lu csl, "
+                    + "contest_detailed_status_relation csr " + "WHERE "
+                    + "csl.contest_detailed_status_id = csr.from_contest_status_id AND "
+                    + "csr.from_contest_status_id = ?", ContestStatus.class);
+            query.setParameter(1, status.getContestStatusId());
+            List<ContestStatus> list = query.getResultList();
+            if (list != null) {
+                for (ContestStatus s : list) {
+                    fillNextStatuses(s);
+                }
+                status.setStatuses(list);
+            }
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("fillToStatuses(ContestStatus)");
         }
     }
 }
