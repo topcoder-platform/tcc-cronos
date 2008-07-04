@@ -2842,14 +2842,16 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             EntityManager em = getEntityManager();
             Query query = em.createNativeQuery("SELECT csl.* FROM contest_detailed_status_lu csl, "
                     + "contest_detailed_status_relation csr " + "WHERE "
-                    + "csl.contest_detailed_status_id = csr.from_contest_status_id AND "
+                    + "csl.contest_detailed_status_id = csr.to_contest_status_id AND "
                     + "csr.from_contest_status_id = ?", ContestStatus.class);
             query.setParameter(1, status.getContestStatusId());
             List<ContestStatus> list = query.getResultList();
             if (list != null) {
-                for (ContestStatus s : list) {
+            	/*
+            	for (ContestStatus s : list) {
                     fillNextStatuses(s);
                 }
+                */
                 status.setStatuses(list);
             }
         } catch (IllegalStateException e) {
