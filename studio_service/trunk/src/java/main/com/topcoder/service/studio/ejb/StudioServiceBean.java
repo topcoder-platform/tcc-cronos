@@ -16,6 +16,7 @@ import com.topcoder.security.auth.module.UserProfilePrincipal;
 import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.ContestNotFoundException;
 import com.topcoder.service.studio.ContestPayload;
+import com.topcoder.service.studio.ContestPaymentData;
 import com.topcoder.service.studio.ContestStatusData;
 import com.topcoder.service.studio.ContestTypeData;
 import com.topcoder.service.studio.DocumentNotFoundException;
@@ -33,6 +34,7 @@ import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestConfig;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.ContestManagerLocal;
+import com.topcoder.service.studio.contest.ContestPayment;
 import com.topcoder.service.studio.contest.ContestProperty;
 import com.topcoder.service.studio.contest.ContestStatus;
 import com.topcoder.service.studio.contest.ContestStatusTransitionException;
@@ -40,6 +42,7 @@ import com.topcoder.service.studio.contest.ContestType;
 import com.topcoder.service.studio.contest.ContestTypeConfig;
 import com.topcoder.service.studio.contest.Document;
 import com.topcoder.service.studio.contest.DocumentType;
+import com.topcoder.service.studio.contest.EntityAlreadyExistsException;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.contest.FilePath;
 import com.topcoder.service.studio.contest.MimeType;
@@ -979,7 +982,7 @@ public class StudioServiceBean implements StudioService {
         Date startDate = getDate(data.getLaunchDateAndTime());
         result.setStartDate(startDate);
         if (startDate != null) {
-            result.setEndDate(new Date((long)(startDate.getTime() + 60l * 60 * data.getDurationInHours())));
+            result.setEndDate(new Date((long) (startDate.getTime() + 60l * 60 * data.getDurationInHours())));
         }
 
         addContestConfig(result, contestPropertyShortSummaryId, data.getShortSummary());
@@ -1002,14 +1005,12 @@ public class StudioServiceBean implements StudioService {
         result.setName(data.getName());
         result.setProjectId(data.getProjectId());
         result.setWinnerAnnoucementDeadline(getDate(data.getWinnerAnnoucementDeadline()));
-        
+
         logError("ContestData.status: " + data.getStatusId());
         ContestStatus contestStatus = contestManager.getContestStatus(data.getStatusId());
-        logError(MessageFormat.format("Retrieved contest status: desc:[{0}] name:[{1}] id:[{2}]", 
-                contestStatus.getDescription(), 
-                contestStatus.getName(), 
-                contestStatus.getContestStatusId()));
-        
+        logError(MessageFormat.format("Retrieved contest status: desc:[{0}] name:[{1}] id:[{2}]", contestStatus
+                .getDescription(), contestStatus.getName(), contestStatus.getContestStatusId()));
+
         result.setStatus(contestStatus);
         result.setTcDirectProjectId(data.getTcDirectProjectId());
         result.setContestType(getContestType(data.getContestTypeId()));
@@ -1653,14 +1654,16 @@ public class StudioServiceBean implements StudioService {
      *             if access was denied
      */
     private void authorizeWithContest(long id) throws PersistenceException {
-// TODO UNCOMMENT ME        
-//        if (sessionContext.isCallerInRole(USER_ROLE)) {
-//            try {
-//                authorizeUser(contestManager.getClientForContest(id));
-//            } catch (ContestManagementException e) {
-//                handlePersistenceError("ContestManager reports error while retrieving client for contest.", e);
-//            }
-//        }
+        // TODO UNCOMMENT ME
+        // if (sessionContext.isCallerInRole(USER_ROLE)) {
+        // try {
+        // authorizeUser(contestManager.getClientForContest(id));
+        // } catch (ContestManagementException e) {
+        // handlePersistenceError(
+        // "ContestManager reports error while retrieving client for contest.",
+        // e);
+        // }
+        // }
     }
 
     /**
@@ -1675,14 +1678,16 @@ public class StudioServiceBean implements StudioService {
      *             if access was denied
      */
     private void authorizeWithProject(long id) throws PersistenceException {
-// TODO UNCOMMENT ME.        
-//        if (sessionContext.isCallerInRole(USER_ROLE)) {
-//            try {
-//                authorizeUser(contestManager.getClientForProject(id));
-//            } catch (ContestManagementException e) {
-//                handlePersistenceError("ContestManager reports error while retrieving client for project.", e);
-//            }
-//        }
+        // TODO UNCOMMENT ME.
+        // if (sessionContext.isCallerInRole(USER_ROLE)) {
+        // try {
+        // authorizeUser(contestManager.getClientForProject(id));
+        // } catch (ContestManagementException e) {
+        // handlePersistenceError(
+        // "ContestManager reports error while retrieving client for project.",
+        // e);
+        // }
+        // }
     }
 
     /**
@@ -2059,7 +2064,8 @@ public class StudioServiceBean implements StudioService {
      *            the id of submission to remove
      * @param price
      *            Price of submission.
-     * @param payPalOrderId PayPal order id.
+     * @param payPalOrderId
+     *            PayPal order id.
      * @throws PersistenceException
      *             if any error occurs when purchasing submission.
      * @throws IllegalArgumentWSException
@@ -2112,7 +2118,8 @@ public class StudioServiceBean implements StudioService {
      *            the id of submission to remove
      * @param place
      *            place of submission.
-     * @param payPalOrderId PayPal order id.
+     * @param payPalOrderId
+     *            PayPal order id.
      * 
      * @throws PersistenceException
      *             if any error occurs when selecting winner.
@@ -2156,5 +2163,148 @@ public class StudioServiceBean implements StudioService {
         }
 
         logExit("selectWinner");
+    }
+
+    /**
+     * <p>
+     * Creates a new contest payment and returns the created contest payment.
+     * </p>
+     * 
+     * @param contestPaymentData
+     *            the contest payment to create
+     * @return the created contest payment.
+     * 
+     * @throws IllegalArgumentException
+     *             if the arg is null.
+     * @throws PersistenceException
+     *             if any other error occurs.
+     */
+    public ContestPaymentData createContestPayment(ContestPaymentData contestPaymentData) throws PersistenceException {
+        logEnter("createContestPayment", contestPaymentData);
+        checkParameter("contestPaymentData", contestPaymentData);
+
+        // authorization
+        authorizeWithContest(contestPaymentData.getContestId());
+
+        // access is granted, create contest
+        try {
+            ContestPayment contestPayment = null;//convertContestData(contestData
+                                                 // );
+            contestPayment = contestManager.createContestPayment(contestPayment);
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while creating new ContestPayment.", e);
+        }
+
+        logExit("createContestPayment", contestPaymentData);
+        return contestPaymentData;
+    }
+
+    /**
+     * <p>
+     * Gets contest payment by id, and return the retrieved contest payment. If
+     * the contest payment doesn't exist, null is returned.
+     * </p>
+     * 
+     * @param contestPaymentId
+     *            the contest payment id
+     * @return the retrieved contest, or null if id doesn't exist
+     * 
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     */
+    public ContestPaymentData getContestPayment(long contestPaymentId) throws PersistenceException {
+        logEnter("getContestPayment", contestPaymentId);
+        checkParameter("contestPaymentId", contestPaymentId);
+
+        try {
+            ContestPayment contestPayment = contestManager.getContestPayment(contestPaymentId);
+            // authorization
+            authorizeWithContest(contestPayment.getContest().getContestId());
+            if (contestPayment == null) {
+                // handleContestNotFoundError(null, contestPaymentId);
+            }
+
+            ContestPaymentData result = null;// convertContest(contest);
+            logExit("getContestPayment", result);
+            return result;
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while retrieving contest.", e);
+        }
+
+        // never reached
+        return null;
+    }
+
+    /**
+     * <p>
+     * Updates contest payment data.
+     * </p>
+     * 
+     * @param contestPayment
+     *            the contest payment to update
+     * @throws IllegalArgumentException
+     *             if the argument is null.
+     * @throws EntityNotFoundException
+     *             if the contest payment doesn't exist in persistence.
+     * @throws ContestManagementException
+     *             if any error occurs when updating contest payment.
+     */
+    public void editContestPayment(ContestPaymentData contestPayment) throws PersistenceException {
+        logEnter("editContestPayment", contestPayment);
+        checkParameter("contestPayment", contestPayment);
+
+        // authorization
+        authorizeWithContest(contestPayment.getContestId());
+
+        Contest c = null;
+        try {
+            contestManager.editContestPayment(null);// convertContestData(
+                                                    // contestData));
+        } catch (EntityNotFoundException e) {
+            // handleContestNotFoundError(e, contestData.getContestId());
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while updating contest.", e);
+        }
+
+        logExit("editContestPayment");
+    }
+
+    /**
+     * <p>
+     * Removes contest payment, return true if the contest payment exists and
+     * removed successfully, return false if it doesn't exist.
+     * </p>
+     * 
+     * @param contestPaymentId
+     *            the contest payment id
+     * @return true if the contest payment exists and removed successfully,
+     *         return false if it doesn't exist
+     * @throws PersistenceException
+     *             if any error occurs.
+     */
+    public boolean removeContestPayment(long contestPaymentId) throws PersistenceException {
+        logEnter("removeContestPayment", contestPaymentId);
+        checkParameter("contestPaymentId", contestPaymentId);
+
+        // authorization
+        // authorizeWithContest(document.getContestId());
+
+        try {
+            boolean ret = contestManager.removeContestPayment(contestPaymentId);
+            logExit("removeContestPayment");
+            return ret;
+        } catch (EntityNotFoundException ex) {
+            // no such document in persistence
+            String message = "can't find contest payment with id " + contestPaymentId + " in persistence.";
+            logError(ex, message);
+            DocumentNotFoundFault fault = new DocumentNotFoundFault();
+            // fault.setDocumentIdNotFound(document.getDocumentId());
+            // throw new DocumentNotFoundException(message, fault, ex);
+
+        } catch (ContestManagementException ex) {
+            handlePersistenceError("ContestManager reports error while removing document from contest.", ex);
+        }
+
+        return false;
     }
 }

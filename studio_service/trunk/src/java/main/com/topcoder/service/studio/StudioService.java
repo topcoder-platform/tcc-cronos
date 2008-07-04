@@ -8,6 +8,10 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.service.studio.contest.ContestManagementException;
+import com.topcoder.service.studio.contest.ContestPayment;
+import com.topcoder.service.studio.contest.EntityAlreadyExistsException;
+import com.topcoder.service.studio.contest.EntityNotFoundException;
 
 /**
  * <p>
@@ -447,4 +451,56 @@ public interface StudioService {
 	 */
 	public void selectWinner(long submissionId, int place, long payPalOrderId)
 			throws PersistenceException;
+	
+    
+
+    /**
+     * <p>
+     * Creates a new contest payment and returns the created contest payment.
+     * </p>
+     *
+     * @param contestPayment the contest payment to create
+     * @return the created contest payment.
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws EntityAlreadyExistsException if the entity already exists in the persistence.
+     * @throws ContestManagementException if any other error occurs.
+     */
+    public ContestPaymentData createContestPayment(ContestPaymentData contestPayment) throws PersistenceException;
+    
+    /**
+     * <p>
+     * Gets contest payment by id, and return the retrieved contest payment. If the contest payment doesn't exist, null is returned.
+     * </p>
+     *
+     * @param contestPaymentId the contest payment id
+     * @return the retrieved contest, or null if id doesn't exist
+     *
+     * @throws ContestManagementException if any error occurs when getting contest.
+     */
+    public ContestPaymentData getContestPayment(long contestPaymentId) throws PersistenceException;
+
+    /**
+     * <p>
+     * Updates contest payment data.
+     * </p>
+     *
+     * @param contestPayment the contest payment to update
+     * @throws IllegalArgumentException if the argument is null.
+     * @throws EntityNotFoundException if the contest payment doesn't exist in persistence.
+     * @throws ContestManagementException if any error occurs when updating contest payment.
+     */
+    public void editContestPayment(ContestPaymentData contestPayment) throws PersistenceException;
+
+    /**
+     * <p>
+     * Removes contest payment, return true if the contest payment exists and removed successfully, return false if it
+     * doesn't exist.
+     * </p>
+     *
+     * @param contestPaymentId the contest payment id
+     * @return true if the contest payment exists and removed successfully, return false if it doesn't exist
+     * @throws ContestManagementException if any error occurs.
+     */
+    public boolean removeContestPayment(long contestPaymentId) throws PersistenceException;
 }
