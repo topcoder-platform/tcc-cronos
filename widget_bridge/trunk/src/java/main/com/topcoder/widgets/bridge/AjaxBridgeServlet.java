@@ -41,6 +41,7 @@ import com.topcoder.service.project.ProjectData;
 import com.topcoder.service.project.ProjectService;
 import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.ContestPayload;
+import com.topcoder.service.studio.ContestPaymentData;
 import com.topcoder.service.studio.ContestStatusData;
 import com.topcoder.service.studio.ContestTypeData;
 import com.topcoder.service.studio.PersistenceException;
@@ -548,6 +549,22 @@ public class AjaxBridgeServlet extends HttpServlet {
                     sendJSONObjectAsResponse(getJSONFromContest(respContest), response);
 
                     debug("createContest success!");
+                }
+                else if ("createContestPayment".equals(method)) {
+                    String strContestPayment = request.getParameter("contestPayment");
+                    if (checkIfNullOrEmpty(strContestPayment, "strContestPayment", response)) {
+                        return;
+                    }
+                    debug("contest payment json received = " + strContestPayment);
+                    
+                    JSONObject jsonContestPayment = jsonDecoder.decodeObject(strContestPayment);
+                    debug("received IDs = [contest ID] : " + jsonContestPayment.getLong("contestID"));
+
+                    ContestPaymentData contestPayment = getContestPaymentFromJSON(jsonContestPayment);
+                    ContestPaymentData respContestPayment = studioService.createContestPayment(contestPayment);
+                    sendJSONObjectAsResponse(getJSONFromContestPayment(respContestPayment), response);
+
+                    debug("createContestPayment success!");
                 } else if ("getContest".equals(method)) {
                     String strContestID = request.getParameter("contestID");
                     if (checkLongIfLessThanZero(strContestID, "contestID", response)) {
@@ -2191,5 +2208,64 @@ public class AjaxBridgeServlet extends HttpServlet {
      */
     private long getMimeTypeId(UploadedFile file) throws PersistenceException {
         return studioService.getMimeTypeId(file.getContentType());
+    }
+    
+    /**
+     * <p>
+     * Convenience method in getting a ContestPayment object from a JSONObject.
+     * </p>
+     * 
+     * @param jsonContestPayment
+     *            the JSONObject where the values will be coming from
+     * @return the project object created from this json object
+     * @throws ParseException
+     *             when parsing the date gets an error
+     * @throws JSONDecodingException
+     *             when an exception occurs while decoding a json string
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code> or <code>value</code>
+     *             is NaN, positive infinity, or negative infinity.
+     * @throws JSONInvalidKeyException
+     *             If there is no data for the given key.
+     * @throws JSONDataAccessTypeException
+     *             If the data associated with the key can not be retrieved as a
+     *             long.
+     */
+    private ContestPaymentData getContestPaymentFromJSON(JSONObject jsonContestPayment) throws ParseException, JSONDecodingException {
+        debug("received contest json string = " + jsonContestPayment.toJSONString());
+        ContestPaymentData contestPayment = new ContestPaymentData();
+        contestPayment.setContestId(jsonContestPayment.getLong("contestID"));
+        contestPayment.setPaymentStatusId(jsonContestPayment.getLong("paymentStatusId"));
+        contestPayment.setPaypalOrderId(jsonContestPayment.getLong("paypalOrderId"));
+        contestPayment.setPrice(jsonContestPayment.getDouble("price"));
+
+        return contestPayment;
+    }
+
+    /**
+     * <p>
+     * Convenience method in getting a JSON object from a Prize.
+     * </p>
+     * 
+     * @param contestPayment
+     *            the Prize object where the values will be coming from
+     * @return the json object created from this prize object
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code> or <code>value</code>
+     *             is NaN, positive infinity, or negative infinity.
+     * @throws JSONInvalidKeyException
+     *             If there is no data for the given key.
+     * @throws JSONDataAccessTypeException
+     *             If the data associated with the key can not be retrieved as a
+     *             long.
+     */
+    private JSONObject getJSONFromContestPayment(ContestPaymentData contestPayment) {
+        // initialize the JSON object using the ContestPayment
+        JSONObject respJSON = new JSONObject();
+        respJSON.setLong("contestId", contestPayment.getContestId());
+        respJSON.setLong("paypalOrderId", contestPayment.getPaypalOrderId());
+        respJSON.setLong("paymentStatusId", contestPayment.getPaymentStatusId());
+        respJSON.setDouble("price", contestPayment.getPrice());
+        return respJSON;
     }
 }
