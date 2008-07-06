@@ -4,9 +4,9 @@
 package com.topcoder.service.studio.ejb;
 
 import com.topcoder.service.studio.ContestData;
-import com.topcoder.service.studio.ContestDetailedStatusData;
 import com.topcoder.service.studio.ContestManagerImpl;
 import com.topcoder.service.studio.ContestNotFoundException;
+import com.topcoder.service.studio.ContestPaymentData;
 import com.topcoder.service.studio.ContestStatusData;
 import com.topcoder.service.studio.DocumentNotFoundException;
 import com.topcoder.service.studio.IllegalArgumentWSException;
@@ -19,7 +19,6 @@ import com.topcoder.service.studio.SubmissionManagerImpl;
 import com.topcoder.service.studio.UploadedDocument;
 import com.topcoder.service.studio.UserNotAuthorizedException;
 import com.topcoder.service.studio.contest.Contest;
-import com.topcoder.service.studio.contest.Document;
 import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.service.studio.submission.Submission;
 import junit.framework.Test;
@@ -141,45 +140,6 @@ public class StudioServiceBeanTest extends TestCase {
      */
     public void testCreateContest() throws Exception {
         ContestData result = target.createContest(newContestData(), 5);
-
-        // check if contest saved in persistence
-        assertEquals("name of saved contest", "contestName", ContestManagerImpl.contests.get(33l).getName());
-
-        // check result
-        assertEquals("name of contest", "contestName", result.getName());
-        assertEquals("contestId", 33, result.getContestId());
-    }
-
-    /**
-     * Tests createContest method for valid data.
-     * 
-     * @throws Exception
-     *             when it occurs deeper
-     */
-    public void testCreateContestWithContestDetailedStatus() throws Exception {
-        ContestData contestData = newContestData();
-
-        List<ContestDetailedStatusData> detailStatuses = new ArrayList<ContestDetailedStatusData>();
-        ContestDetailedStatusData detailedStatus = new ContestDetailedStatusData();
-        detailedStatus.setContestData(contestData);
-        detailedStatus.setContestDetailedStatusId(1L);
-        detailedStatus.setDescription("desc");
-
-        ContestStatusData contestStatus = new ContestStatusData();
-        contestStatus.setStatusId(5L);
-        detailedStatus.setContestStatusData(contestStatus);
-        detailStatuses.add(detailedStatus);
-
-        contestData.setDetailedStatuses(detailStatuses);
-
-        ContestData result = target.createContest(contestData, 5);
-
-        assertEquals(1, result.getDetailedStatuses().size());
-        ContestDetailedStatusData contestDetailedStatusData = result.getDetailedStatuses().get(0);
-        assertEquals("desc", contestDetailedStatusData.getDescription());
-        assertEquals(1L, contestDetailedStatusData.getContestDetailedStatusId());
-        assertNotNull(contestDetailedStatusData.getContestStatusData());
-        assertEquals(contestStatus.getStatusId(), contestDetailedStatusData.getContestStatusData().getStatusId());
 
         // check if contest saved in persistence
         assertEquals("name of saved contest", "contestName", ContestManagerImpl.contests.get(33l).getName());
@@ -1369,5 +1329,26 @@ public class StudioServiceBeanTest extends TestCase {
         } catch (IllegalArgumentWSException ex) {
             // success
         }
+    }
+
+    /**
+     * Tests createContestPayment method for valid data.
+     * 
+     * @throws Exception
+     *             Exception to JUnit.
+     */
+    public void testCreateContestPayment() throws Exception {
+        ContestData contest = target.createContest(newContestData(), 5);
+        
+        ContestPaymentData data = new ContestPaymentData();
+        data.setContestId(contest.getContestId());
+        data.setPaymentStatusId(1L);
+        data.setPaypalOrderId(3L);
+        data.setPrice(500.34);
+        
+        ContestPaymentData result = target.createContestPayment(data);
+
+        // check if contest saved in persistence
+        assertEquals(3, ContestManagerImpl.contestPayments.get(contest.getContestId()).getPayPalOrderId());
     }
 }

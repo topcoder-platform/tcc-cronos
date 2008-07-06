@@ -2188,8 +2188,7 @@ public class StudioServiceBean implements StudioService {
 
         // access is granted, create contest
         try {
-            ContestPayment contestPayment = null;//convertContestData(contestData
-                                                 // );
+            ContestPayment contestPayment = convertContestPaymentData(contestPaymentData);
             contestPayment = contestManager.createContestPayment(contestPayment);
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while creating new ContestPayment.", e);
@@ -2224,7 +2223,7 @@ public class StudioServiceBean implements StudioService {
                 // handleContestNotFoundError(null, contestPaymentId);
             }
 
-            ContestPaymentData result = null;// convertContest(contest);
+            ContestPaymentData result = convertContestPayment(contestPayment);
             logExit("getContestPayment", result);
             return result;
         } catch (ContestManagementException e) {
@@ -2258,8 +2257,7 @@ public class StudioServiceBean implements StudioService {
 
         Contest c = null;
         try {
-            contestManager.editContestPayment(null);// convertContestData(
-                                                    // contestData));
+            contestManager.editContestPayment(convertContestPaymentData(contestPayment));
         } catch (EntityNotFoundException e) {
             // handleContestNotFoundError(e, contestData.getContestId());
         } catch (ContestManagementException e) {
@@ -2306,5 +2304,51 @@ public class StudioServiceBean implements StudioService {
         }
 
         return false;
+    }
+
+    /**
+     * This method used to convert ContestPaymentData object into ContestPayment
+     * object.
+     * 
+     * @param data
+     *            ContestPaymentData object to convert.
+     * @return converted ContestPayment instance
+     * @throws PersistenceException
+     *             when error reported by manager
+     * @throws ContestManagementException
+     *             when error reported by manager
+     */
+    private ContestPayment convertContestPaymentData(ContestPaymentData data) throws PersistenceException,
+            ContestManagementException {
+        ContestPayment result = new ContestPayment();
+        Contest contest = this.contestManager.getContest(data.getContestId());
+        result.setContest(contest);
+        result.setPayPalOrderId(data.getPaypalOrderId());
+        result.setPrice(data.getPrice());
+        PaymentStatus status = new PaymentStatus();
+        status.setPaymentStatusId(status.getPaymentStatusId());
+        result.setStatus(status);
+
+        return result;
+    }
+
+    /**
+     * This method converts ContestPayment object into ContestPaymentData
+     * object.
+     * 
+     * @param contest
+     *            ContestPayment instance to convert
+     * @return converted ContestPaymentDate object
+     * @throws ContestManagementException
+     *             error occurred from ContestManager
+     */
+    private ContestPaymentData convertContestPayment(ContestPayment contestPayment) throws ContestManagementException {
+        ContestPaymentData contestPaymentData = new ContestPaymentData();
+        contestPaymentData.setContestId(contestPayment.getContest().getContestId());
+        contestPaymentData.setPaymentStatusId(contestPayment.getStatus().getPaymentStatusId());
+        contestPaymentData.setPaypalOrderId(contestPayment.getPayPalOrderId());
+        contestPaymentData.setPrice(contestPayment.getPrice());
+
+        return contestPaymentData;
     }
 }

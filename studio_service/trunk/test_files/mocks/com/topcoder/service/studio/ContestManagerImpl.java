@@ -7,6 +7,7 @@ import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.ContestManagerLocal;
+import com.topcoder.service.studio.contest.ContestPayment;
 import com.topcoder.service.studio.contest.ContestProperty;
 import com.topcoder.service.studio.contest.ContestStatus;
 import com.topcoder.service.studio.contest.ContestType;
@@ -43,6 +44,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
     public static List<Contest> filteredContests;
     public static Map<Long, ContestConfig> configs;
     public static Map<Long, Contest> contests;
+    public static Map<Long, ContestPayment> contestPayments;
     public static Map<Long, ContestStatus> contestStatuses;
     public static Map<Long, ContestProperty> contestProperties;
     public static Map<Long, ContestChannel> contestChannels;
@@ -62,6 +64,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      */
     public ContestManagerImpl() {
         contests = new HashMap<Long, Contest>();
+        contestPayments = new HashMap<Long, ContestPayment>(); 
         prizes = new HashMap<Long, Prize>();
         documents = new HashMap<Long, Document>();
         contestStatuses = new HashMap<Long, ContestStatus>();
@@ -96,8 +99,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * EntityAlreadyExistsException if the entity already exists in the
      * persistence. throw ContestManagementException if any other error occurs.
      */
-    public Contest createContest(Contest contest)
-            throws ContestManagementException {
+    public Contest createContest(Contest contest) throws ContestManagementException {
         checkErrorRequest();
         if (contests.get(contest.getContestId()) != null) {
             throw new EntityAlreadyExistsException("");
@@ -147,8 +149,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * #exception throw ContestManagementException if any error occurs when
      * getting contests.
      */
-    public List<Contest> getContestsForProject(long tcDirectProjectId)
-            throws ContestManagementException {
+    public List<Contest> getContestsForProject(long tcDirectProjectId) throws ContestManagementException {
         checkErrorRequest();
         List<Contest> result = new ArrayList<Contest>();
         for (Contest contest : contests.values()) {
@@ -173,8 +174,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * 
      * @param contest
      */
-    public void updateContest(Contest contest)
-            throws ContestManagementException {
+    public void updateContest(Contest contest) throws ContestManagementException {
         checkErrorRequest();
         if (contests.get(contest.getContestId()) == null) {
             throw new EntityNotFoundException("No contest with such id.");
@@ -196,8 +196,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * @param contestId
      * @param newStatusId
      */
-    public void updateContestStatus(long contestId, long newStatusId)
-            throws ContestManagementException {
+    public void updateContestStatus(long contestId, long newStatusId) throws ContestManagementException {
         checkErrorRequest();
         if (newStatusId % 2 == 0) {
             throw new EntityNotFoundException("No even stutus ids.");
@@ -208,8 +207,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
         if (newStatusId % 3 == 0) {
             throw new ContestStatusTransitionException("Can't set such status.");
         }
-        lastCall = "updateContestStatus(" + contestId + ", " + newStatusId
-                + ")";
+        lastCall = "updateContestStatus(" + contestId + ", " + newStatusId + ")";
     }
 
     /**
@@ -226,8 +224,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * @param contestId
      * @return
      */
-    public long getClientForContest(long contestId)
-            throws ContestManagementException {
+    public long getClientForContest(long contestId) throws ContestManagementException {
         checkErrorRequest();
         if (contestId == 101) {
             throw new EntityNotFoundException("");
@@ -252,8 +249,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * project in persistence. throw ContestManagementException if any error
      * occurs when retrieving the client id.
      */
-    public long getClientForProject(long projectId)
-            throws ContestManagementException {
+    public long getClientForProject(long projectId) throws ContestManagementException {
         checkErrorRequest();
         if (projectId == 101) {
             throw new EntityNotFoundException("");
@@ -278,8 +274,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * @param contestStatus
      * @return
      */
-    public ContestStatus addContestStatus(ContestStatus contestStatus)
-            throws ContestManagementException {
+    public ContestStatus addContestStatus(ContestStatus contestStatus) throws ContestManagementException {
         checkErrorRequest();
         if (contestStatuses.get(contestStatus.getContestStatusId()) != null) {
             throw new EntityAlreadyExistsException("Duplicated entity.");
@@ -299,8 +294,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * 
      * @param contestStatus
      */
-    public void updateContestStatus(ContestStatus contestStatus)
-            throws ContestManagementException {
+    public void updateContestStatus(ContestStatus contestStatus) throws ContestManagementException {
         checkErrorRequest();
         if (contestStatuses.get(contestStatus.getContestStatusId()) == null) {
             throw new EntityNotFoundException("No contest with such id.");
@@ -322,8 +316,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * @param contestStatusId
      * @return
      */
-    public boolean removeContestStatus(long contestStatusId)
-            throws ContestManagementException {
+    public boolean removeContestStatus(long contestStatusId) throws ContestManagementException {
         checkErrorRequest();
 
         Object removed = contestStatuses.remove(contestStatusId);
@@ -344,8 +337,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * @param contestStatusId
      * @return
      */
-    public ContestStatus getContestStatus(long contestStatusId)
-            throws ContestManagementException {
+    public ContestStatus getContestStatus(long contestStatusId) throws ContestManagementException {
         ContestStatus status = new ContestStatus();
         status.setContestStatusId(new Long(1));
         return status;
@@ -362,8 +354,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * EntityAlreadyExistsException if the entity already exists in the
      * persistence. throw ContestManagementException if any other error occurs.
      */
-    public Document addDocument(Document document)
-            throws ContestManagementException {
+    public Document addDocument(Document document) throws ContestManagementException {
         checkErrorRequest();
         if (documents.get(document.getDocumentId()) != null) {
             throw new EntityAlreadyExistsException("Duplicated entity.");
@@ -383,8 +374,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * 
      * @param document
      */
-    public void updateDocument(Document document)
-            throws ContestManagementException {
+    public void updateDocument(Document document) throws ContestManagementException {
         checkErrorRequest();
 
         if (documents.get(document.getDocumentId()) == null) {
@@ -407,8 +397,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * @param documentId
      * @return
      */
-    public Document getDocument(long documentId)
-            throws ContestManagementException {
+    public Document getDocument(long documentId) throws ContestManagementException {
         checkErrorRequest();
         return documents.get(documentId);
     }
@@ -427,8 +416,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * @param documentId
      * @return
      */
-    public boolean removeDocument(long documentId)
-            throws ContestManagementException {
+    public boolean removeDocument(long documentId) throws ContestManagementException {
         checkErrorRequest();
         Document d = documents.remove(documentId);
         return d == null;
@@ -444,8 +432,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * document or contest in persistence. throw ContestManagementException if
      * any other error occurs.
      */
-    public void addDocumentToContest(long documentId, long contestId)
-            throws ContestManagementException {
+    public void addDocumentToContest(long documentId, long contestId) throws ContestManagementException {
         checkErrorRequest();
         if (documents.get(documentId) == null) {
             throw new EntityNotFoundException("no such document");
@@ -474,8 +461,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * document or contest in persistence. throw ContestManagementException if
      * any other error occurs.
      */
-    public boolean removeDocumentFromContest(long documentId, long contestId)
-            throws ContestManagementException {
+    public boolean removeDocumentFromContest(long documentId, long contestId) throws ContestManagementException {
         checkErrorRequest();
         if (documents.get(documentId) == null) {
             throw new EntityNotFoundException("no such document");
@@ -501,15 +487,13 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * @param contestCategory
      * @return
      */
-    public ContestChannel addContestCategory(ContestChannel contestCategory)
-            throws ContestManagementException {
+    public ContestChannel addContestCategory(ContestChannel contestCategory) throws ContestManagementException {
         checkErrorRequest();
 
         if (contestChannels.get(contestCategory.getContestChannelId()) != null) {
             throw new EntityAlreadyExistsException("Duplicated entity.");
         }
-        contestChannels.put(contestCategory.getContestChannelId(),
-                contestCategory);
+        contestChannels.put(contestCategory.getContestChannelId(), contestCategory);
         return contestCategory;
     }
 
@@ -524,15 +508,13 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * 
      * @param contestCategory
      */
-    public void updateContestCategory(ContestChannel contestCategory)
-            throws ContestManagementException {
+    public void updateContestCategory(ContestChannel contestCategory) throws ContestManagementException {
         checkErrorRequest();
         if (contestChannels.get(contestCategory.getContestChannelId()) == null) {
             throw new EntityNotFoundException("No contest with such id.");
         }
 
-        contestChannels.put(contestCategory.getContestChannelId(),
-                contestCategory);
+        contestChannels.put(contestCategory.getContestChannelId(), contestCategory);
     }
 
     /**
@@ -549,8 +531,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * 
      * @param contestCategoryId
      */
-    public boolean removeContestCategory(long contestCategoryId)
-            throws ContestManagementException {
+    public boolean removeContestCategory(long contestCategoryId) throws ContestManagementException {
         checkErrorRequest();
 
         Object obj = contestChannels.remove(contestCategoryId);
@@ -571,8 +552,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * @param contestCategoryId
      * @return
      */
-    public ContestChannel getContestCategory(long contestCategoryId)
-            throws ContestManagementException {
+    public ContestChannel getContestCategory(long contestCategoryId) throws ContestManagementException {
         checkErrorRequest();
         return contestChannels.get(contestCategoryId);
     }
@@ -592,15 +572,13 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * @param contestConfig
      * @return
      */
-    public ContestConfig addConfig(ContestConfig contestConfig)
-            throws ContestManagementException {
+    public ContestConfig addConfig(ContestConfig contestConfig) throws ContestManagementException {
         checkErrorRequest();
         if (configs.get(contestConfig.getId().getProperty().getPropertyId()) != null) {
             throw new EntityAlreadyExistsException("Duplicated entity.");
         }
 
-        configs.put(contestConfig.getId().getProperty().getPropertyId(),
-                contestConfig);
+        configs.put(contestConfig.getId().getProperty().getPropertyId(), contestConfig);
         return contestConfig;
     }
 
@@ -616,15 +594,13 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * 
      * @param contestConfig
      */
-    public void updateConfig(ContestConfig contestConfig)
-            throws ContestManagementException {
+    public void updateConfig(ContestConfig contestConfig) throws ContestManagementException {
         checkErrorRequest();
         if (configs.get(contestConfig.getId().getProperty().getPropertyId()) == null) {
             throw new EntityNotFoundException("No contest with such id.");
         }
 
-        configs.put(contestConfig.getId().getProperty().getPropertyId(),
-                contestConfig);
+        configs.put(contestConfig.getId().getProperty().getPropertyId(), contestConfig);
     }
 
     /**
@@ -642,8 +618,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * @param contestConfigId
      * @return
      */
-    public ContestConfig getConfig(long contestConfigId)
-            throws ContestManagementException {
+    public ContestConfig getConfig(long contestConfigId) throws ContestManagementException {
         return configs.get(contestConfigId);
     }
 
@@ -660,8 +635,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * occurs. throw - let exceptions from
      * DocumentContentManager.saveDocumentContent propagate.
      */
-    public void saveDocumentContent(long documentId, byte[] documentContent)
-            throws ContestManagementException {
+    public void saveDocumentContent(long documentId, byte[] documentContent) throws ContestManagementException {
         checkErrorRequest();
 
         if (documentContent == null || documentContent.length == 0) {
@@ -690,8 +664,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * throw - let exceptions from DocumentContentManager.getDocumentContent
      * propagate.
      */
-    public byte[] getDocumentContent(long documentId)
-            throws ContestManagementException {
+    public byte[] getDocumentContent(long documentId) throws ContestManagementException {
         checkErrorRequest();
         if (documents.get(documentId) == null) {
             throw new EntityNotFoundException("no such document");
@@ -713,8 +686,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * throw - let exceptions from DocumentContentManager.existDocumentContent
      * propagate.
      */
-    public boolean existDocumentContent(long documentId)
-            throws ContestManagementException {
+    public boolean existDocumentContent(long documentId) throws ContestManagementException {
         return getDocumentContent(documentId) != null;
     }
 
@@ -727,8 +699,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * #exception throw ContestManagementException if any error occurs when
      * getting contest statuses.
      */
-    public List<ContestStatus> getAllContestStatuses()
-            throws ContestManagementException {
+    public List<ContestStatus> getAllContestStatuses() throws ContestManagementException {
         checkErrorRequest();
 
         List<ContestStatus> result = new ArrayList<ContestStatus>();
@@ -755,8 +726,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * #exception throw ContestManagementException if any error occurs when
      * getting contest categories.
      */
-    public List<ContestChannel> getAllContestCategories()
-            throws ContestManagementException {
+    public List<ContestChannel> getAllContestCategories() throws ContestManagementException {
         checkErrorRequest();
 
         List<ContestChannel> result = new ArrayList<ContestChannel>();
@@ -782,8 +752,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * #exception throw ContestManagementException if any error occurs when
      * getting studio file types.
      */
-    public List<StudioFileType> getAllStudioFileTypes()
-            throws ContestManagementException {
+    public List<StudioFileType> getAllStudioFileTypes() throws ContestManagementException {
         checkErrorRequest();
 
         List<StudioFileType> result = new ArrayList<StudioFileType>();
@@ -813,15 +782,13 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * @param contestTypeConfig
      * @return
      */
-    public ContestTypeConfig addContestTypeConfig(
-            ContestTypeConfig contestTypeConfig)
+    public ContestTypeConfig addContestTypeConfig(ContestTypeConfig contestTypeConfig)
             throws ContestManagementException {
         checkErrorRequest();
         if (contestTypeConfigs.get(contestTypeConfig.getId().getContestType().getContestType()) != null) {
             throw new EntityAlreadyExistsException("Duplicated entity.");
         }
-        contestTypeConfigs.put(contestTypeConfig.getId().getContestType().getContestType(),
-                contestTypeConfig);
+        contestTypeConfigs.put(contestTypeConfig.getId().getContestType().getContestType(), contestTypeConfig);
         return contestTypeConfig;
     }
 
@@ -838,15 +805,13 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * 
      * @param contestTypeConfig
      */
-    public void updateContestTypeConfig(ContestTypeConfig contestTypeConfig)
-            throws ContestManagementException {
+    public void updateContestTypeConfig(ContestTypeConfig contestTypeConfig) throws ContestManagementException {
         checkErrorRequest();
         if (contestTypeConfigs.get(contestTypeConfig.getId().getContestType().getContestType()) == null) {
             throw new EntityNotFoundException("No contest with such id.");
         }
 
-        contestTypeConfigs.put(contestTypeConfig.getId().getContestType().getContestType(),
-                contestTypeConfig);
+        contestTypeConfigs.put(contestTypeConfig.getId().getContestType().getContestType(), contestTypeConfig);
     }
 
     /**
@@ -864,8 +829,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * @param contestTypeConfigId
      * @return
      */
-    public ContestTypeConfig getContestTypeConfig(long contestTypeConfigId)
-            throws ContestManagementException {
+    public ContestTypeConfig getContestTypeConfig(long contestTypeConfigId) throws ContestManagementException {
         return contestTypeConfigs.get(contestTypeConfigId);
     }
 
@@ -882,8 +846,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * @param contestId
      * @param prizeId
      */
-    public void addPrizeToContest(long contestId, long prizeId)
-            throws ContestManagementException {
+    public void addPrizeToContest(long contestId, long prizeId) throws ContestManagementException {
         checkErrorRequest();
         if (contests.get(contestId) == null) {
             throw new EntityNotFoundException("no such contest");
@@ -915,8 +878,7 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * @param prizeId
      * @return
      */
-    public boolean removePrizeFromContest(long contestId, long prizeId)
-            throws ContestManagementException {
+    public boolean removePrizeFromContest(long contestId, long prizeId) throws ContestManagementException {
         checkErrorRequest();
         if (prizes.get(prizeId) == null) {
             throw new EntityNotFoundException("no such prize");
@@ -943,10 +905,13 @@ public class ContestManagerImpl implements ContestManagerLocal {
      * @param contestId
      * @return
      */
-    public List<Prize> getContestPrizes(long contestId)
-            throws ContestManagementException {
+    public List<Prize> getContestPrizes(long contestId) throws ContestManagementException {
         checkErrorRequest();
         List<Prize> ret = new ArrayList<Prize>();
+        if ( prizesForContest.get(contestId) ==null)
+        {
+            return new ArrayList<Prize>();
+        }
         Iterator<Long> iterator = prizesForContest.get(contestId).iterator();
         while (iterator.hasNext()) {
             ret.add(prizes.get(iterator.next()));
@@ -958,10 +923,11 @@ public class ContestManagerImpl implements ContestManagerLocal {
     /*
      * (non-Javadoc)
      * 
-     * @see com.topcoder.service.studio.contest.ContestManager#getAllContestChannels()
+     * @see
+     * com.topcoder.service.studio.contest.ContestManager#getAllContestChannels
+     * ()
      */
-    public List<ContestChannel> getAllContestChannels()
-            throws ContestManagementException {
+    public List<ContestChannel> getAllContestChannels() throws ContestManagementException {
         checkErrorRequest();
         List<ContestChannel> ret = new ArrayList<ContestChannel>();
         Iterator<Long> iterator = contestChannels.keySet().iterator();
@@ -975,7 +941,8 @@ public class ContestManagerImpl implements ContestManagerLocal {
     /*
      * (non-Javadoc)
      * 
-     * @see com.topcoder.service.studio.contest.ContestManager#getAllContestTypes()
+     * @see
+     * com.topcoder.service.studio.contest.ContestManager#getAllContestTypes()
      */
     public List<ContestType> getAllContestTypes() {
         return contestTypes;
@@ -1000,10 +967,11 @@ public class ContestManagerImpl implements ContestManagerLocal {
     /*
      * (non-Javadoc)
      * 
-     * @see com.topcoder.service.studio.contest.ContestManager#searchContests(com.topcoder.search.builder.filter.Filter)
+     * @see
+     * com.topcoder.service.studio.contest.ContestManager#searchContests(com
+     * .topcoder.search.builder.filter.Filter)
      */
-    public List<Contest> searchContests(Filter filter)
-            throws ContestManagementException {
+    public List<Contest> searchContests(Filter filter) throws ContestManagementException {
         checkErrorRequest();
         return filteredContests;
     }
@@ -1020,36 +988,28 @@ public class ContestManagerImpl implements ContestManagerLocal {
         return new MimeType();
     }
 
-    public ContestChannel addContestChannel(ContestChannel contestChannel)
-            throws ContestManagementException {
-        contestChannels.put(contestChannel.getContestChannelId(),
-                contestChannel);
+    public ContestChannel addContestChannel(ContestChannel contestChannel) throws ContestManagementException {
+        contestChannels.put(contestChannel.getContestChannelId(), contestChannel);
         return contestChannel;
     }
 
-    public ContestChannel getContestChannel(long contestChannelId)
-            throws ContestManagementException {
+    public ContestChannel getContestChannel(long contestChannelId) throws ContestManagementException {
         return contestChannels.get(contestChannelId);
     }
 
-    public boolean removeContestChannel(long contestChannelId)
-            throws ContestManagementException {
+    public boolean removeContestChannel(long contestChannelId) throws ContestManagementException {
         return contestChannels.remove(contestChannelId) == null;
     }
 
-    public void updateContestChannel(ContestChannel contestChannel)
-            throws ContestManagementException {
-        contestChannels.put(contestChannel.getContestChannelId(),
-                contestChannel);
+    public void updateContestChannel(ContestChannel contestChannel) throws ContestManagementException {
+        contestChannels.put(contestChannel.getContestChannelId(), contestChannel);
     }
 
-    public List<ContestProperty> getAllContestProperties()
-            throws ContestManagementException {
+    public List<ContestProperty> getAllContestProperties() throws ContestManagementException {
         return new ArrayList<ContestProperty>();
     }
 
-    public List<DocumentType> getAllDocumentTypes()
-            throws ContestManagementException {
+    public List<DocumentType> getAllDocumentTypes() throws ContestManagementException {
         checkErrorRequest();
         List<DocumentType> ret = new ArrayList<DocumentType>();
         Iterator<Long> iterator = documentTypes.keySet().iterator();
@@ -1064,15 +1024,35 @@ public class ContestManagerImpl implements ContestManagerLocal {
         return mimeTypes;
     }
 
-	public Contest createContest(Contest contest, String documentBasePath)
-			throws ContestManagementException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public Contest createContest(Contest contest, String documentBasePath) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	public void fillToStatuses(ContestStatus status)
-			throws ContestManagementException {
-		// TODO Auto-generated method stub
-		
-	}
+    public void fillToStatuses(ContestStatus status) throws ContestManagementException {
+        // TODO Auto-generated method stub
+
+    }
+
+    public Prize createPrize(Prize prize) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public ContestPayment createContestPayment(ContestPayment contestPayment) throws ContestManagementException {
+        contestPayments.put(contestPayment.getContest().getContestId(), contestPayment);
+        return contestPayment;
+    }
+
+    public void editContestPayment(ContestPayment contestPayment) throws ContestManagementException {
+        contestPayments.put(contestPayment.getContest().getContestId(), contestPayment);
+    }
+
+    public ContestPayment getContestPayment(long contestPaymentId) throws ContestManagementException {
+        return contestPayments.get(contestPaymentId);
+    }
+
+    public boolean removeContestPayment(long contestPaymentId) throws ContestManagementException {
+        return contestPayments.remove(contestPaymentId)==null;
+    }
 }
