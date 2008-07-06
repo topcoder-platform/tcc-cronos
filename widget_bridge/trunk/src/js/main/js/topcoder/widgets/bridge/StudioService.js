@@ -1419,7 +1419,7 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	    	async: true,
 	     	method: "POST",
 	     	// the json string should be escaped properly here. 
-	     	sendingText: "service=studio&method=getContestPayment&contestPaymentID=" + contestPaymentID),
+	     	sendingText: "service=studio&method=getContestPayment&contestPaymentID=" + contestPaymentID,
 	     	onStateChange: function() {
 	        	// Handle the response
 	           	if (processor.getState() == 4 && processor.getStatus() == 200) {

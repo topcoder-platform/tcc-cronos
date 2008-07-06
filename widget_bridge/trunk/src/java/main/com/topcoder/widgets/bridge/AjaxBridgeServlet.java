@@ -191,10 +191,10 @@ public class AjaxBridgeServlet extends HttpServlet {
      * @param config
      *            the servlet config object passed by the container for this
      *            servlet
-     * @throws ServletException -
-     *             if an exception occurs when initializing instance variables,
-     *             or the configured value is invalid. All exceptions that
-     *             occurred here in init are wrapped in a ServletException
+     * @throws ServletException
+     *             - if an exception occurs when initializing instance
+     *             variables, or the configured value is invalid. All exceptions
+     *             that occurred here in init are wrapped in a ServletException
      *             object since this is the only exception that can be thrown
      *             here.
      */
@@ -358,9 +358,11 @@ public class AjaxBridgeServlet extends HttpServlet {
             debug("main parameters = [service] : " + service + " [method] : " + method);
 
             if ("project".equals(service)) {
-                // *********************************************************************************************
+                //**************************************************************
+                // *******************************
                 // ::Project Service::
-                // *********************************************************************************************
+                //**************************************************************
+                // *******************************
                 if ("createProject".equals(method)) {
                     String strProject = request.getParameter("project");
                     if (checkIfNullOrEmpty(strProject, "project", response)) {
@@ -449,9 +451,11 @@ public class AjaxBridgeServlet extends HttpServlet {
                 }
 
             } else if ("prerequisite".equals(service)) {
-                // *********************************************************************************************
+                //**************************************************************
+                // *******************************
                 // ::Prerequisite Service::
-                // *********************************************************************************************
+                //**************************************************************
+                // *******************************
                 if ("getAllPrerequisiteDocuments".equals(method)) {
                     debug("Handle request of getAllPrerequisiteDocuments");
 
@@ -526,9 +530,11 @@ public class AjaxBridgeServlet extends HttpServlet {
                     sendErrorJSONResponse("The 'method' param passed is invalid.", response);
                 }
             } else if ("studio".equals(service)) { // for STUDIO SERVICES
-                // *********************************************************************************************
+                //**************************************************************
+                // *******************************
                 // ::Studio Service::
-                // *********************************************************************************************
+                //**************************************************************
+                // *******************************
                 if ("createContest".equals(method)) {
                     String strContest = request.getParameter("contest");
                     String strProjectID = request.getParameter("projectID");
@@ -539,7 +545,7 @@ public class AjaxBridgeServlet extends HttpServlet {
                         return;
                     }
                     debug("contest json received = " + strContest);
-                    
+
                     JSONObject jsonContest = jsonDecoder.decodeObject(strContest);
                     debug("received IDs = [contest ID] : " + jsonContest.getLong("contestID") + " [project ID] : "
                             + strProjectID);
@@ -549,14 +555,13 @@ public class AjaxBridgeServlet extends HttpServlet {
                     sendJSONObjectAsResponse(getJSONFromContest(respContest), response);
 
                     debug("createContest success!");
-                }
-                else if ("createContestPayment".equals(method)) {
+                } else if ("createContestPayment".equals(method)) {
                     String strContestPayment = request.getParameter("contestPayment");
                     if (checkIfNullOrEmpty(strContestPayment, "strContestPayment", response)) {
                         return;
                     }
                     debug("contest payment json received = " + strContestPayment);
-                    
+
                     JSONObject jsonContestPayment = jsonDecoder.decodeObject(strContestPayment);
                     debug("received IDs = [contest ID] : " + jsonContestPayment.getLong("contestID"));
 
@@ -565,6 +570,33 @@ public class AjaxBridgeServlet extends HttpServlet {
                     sendJSONObjectAsResponse(getJSONFromContestPayment(respContestPayment), response);
 
                     debug("createContestPayment success!");
+                } else if ("getContestPayment".equals(method)) {
+                    String strContestPaymentID = request.getParameter("contestPaymentID");
+                    if (checkLongIfLessThanZero(strContestPaymentID, "contestPaymentID", response)) {
+                        return;
+                    }
+                    debug("received ID = [contest payment ID] : " + strContestPaymentID);
+
+                    ContestPaymentData respContest = studioService.getContestPayment(Long
+                            .parseLong(strContestPaymentID));
+                    sendJSONObjectAsResponse(getJSONFromContestPayment(respContest), response);
+
+                    debug("getContestPayment success!");
+                } else if ("editContestPayment".equals(method)) {
+                    String strContestPayment = request.getParameter("contestPayment");
+                    if (checkIfNullOrEmpty(strContestPayment, "contestPayment", response)) {
+                        return;
+                    }
+                    JSONObject jsonContestPayment = jsonDecoder.decodeObject(strContestPayment);
+                    debug("received ID = [contestPayment ID] : " + jsonContestPayment.getLong("contestID"));
+
+                    ContestPaymentData contestPayment = getContestPaymentFromJSON(jsonContestPayment);
+                    studioService.editContestPayment(contestPayment);
+
+                    JSONObject succJson = getSuccessJSONResponse();
+                    printSuccessResponse(succJson, response);
+
+                    debug("editContestPayment success!");
                 } else if ("getContest".equals(method)) {
                     String strContestID = request.getParameter("contestID");
                     if (checkLongIfLessThanZero(strContestID, "contestID", response)) {
@@ -932,7 +964,8 @@ public class AjaxBridgeServlet extends HttpServlet {
                     debug("received price = [price] : " + price);
                     debug("received payPalOrderId = [payPalOrderId] : " + payPalOrderId);
 
-                    studioService.purchaseSubmission(Long.parseLong(submissionId), Double.parseDouble(price),Long.parseLong(payPalOrderId));
+                    studioService.purchaseSubmission(Long.parseLong(submissionId), Double.parseDouble(price), Long
+                            .parseLong(payPalOrderId));
 
                     printSuccessResponse(getSuccessJSONResponse(), response);
                     debug("purchaseSubmission success!");
@@ -957,7 +990,8 @@ public class AjaxBridgeServlet extends HttpServlet {
                     debug("received place = [place] : " + place);
                     debug("received payPalOrderId = [payPalOrderId] : " + payPalOrderId);
 
-                    studioService.selectWinner(Long.parseLong(submissionId), Integer.parseInt(place),Long.parseLong(payPalOrderId));
+                    studioService.selectWinner(Long.parseLong(submissionId), Integer.parseInt(place), Long
+                            .parseLong(payPalOrderId));
 
                     printSuccessResponse(getSuccessJSONResponse(), response);
                     debug("selectWinner success!");
@@ -1055,9 +1089,15 @@ public class AjaxBridgeServlet extends HttpServlet {
         contest.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(jsonContest
                 .getString("winnerAnnouncementDeadline")));
 
-        contest.setContestTypeId(jsonContest.getLong("contestTypeID")); // [27128642-6]
-        contest.setContestChannelId(jsonContest.getLong("contestChannelID")); // [TCCC-147]
-        
+        contest.setContestTypeId(jsonContest.getLong("contestTypeID")); // [
+                                                                        // 27128642
+                                                                        // -6]
+        contest.setContestChannelId(jsonContest.getLong("contestChannelID")); // [
+                                                                              // TCCC
+                                                                              // -
+                                                                              // 147
+                                                                              // ]
+
         JSONArray jsonPrizes = jsonContest.getArray("prizes");
         if (jsonPrizes != null) {
             Object[] prizes = jsonPrizes.getObjects();
@@ -1344,9 +1384,15 @@ public class AjaxBridgeServlet extends HttpServlet {
         respJSON.setString("otherRequirementsOrRestrictions", contest.getOtherRequirementsOrRestrictions());
         respJSON.setLong("tcDirectProjectID", contest.getTcDirectProjectId());
         respJSON.setLong("creatorUserID", contest.getCreatorUserId());
-        respJSON.setLong("contestTypeID", contest.getContestTypeId()); // [27128642-6]
-        respJSON.setLong("contestChannelID", contest.getContestChannelId()); // [TCCC-147 ]
-        
+        respJSON.setLong("contestTypeID", contest.getContestTypeId()); // [
+                                                                       // 27128642
+                                                                       // -6]
+        respJSON.setLong("contestChannelID", contest.getContestChannelId()); // [
+                                                                             // TCCC
+                                                                             // -
+                                                                             // 147
+                                                                             // ]
+
         respJSON.setString("launchDateAndTime", getDateString(contest.getLaunchDateAndTime()));
         respJSON.setString("winnerAnnouncementDeadline", getDateString(contest.getWinnerAnnoucementDeadline()));
         respJSON.setLong("submissionCount", contest.getSubmissionCount());
@@ -1544,7 +1590,8 @@ public class AjaxBridgeServlet extends HttpServlet {
         submission.setPrice(jsonSubmission.getDouble("price"));
         submission.setMarkedForPurchase(jsonSubmission.getBoolean("markedForPurchase"));
         submission.setPassedScreening(jsonSubmission.getBoolean("passedReview"));
-        // http://forums.topcoder.com/?module=Thread&threadID=614379&start=0&mc=3#979412
+        //http://forums.topcoder.com/?module=Thread&threadID=614379&start=0&mc=3
+        // #979412
         // ignore it for now
         // submission.setRemoved(jsonSubmission.getBoolean("removed"));
 
@@ -1580,7 +1627,8 @@ public class AjaxBridgeServlet extends HttpServlet {
         respJSON.setBoolean("paidFor", submission.isPaidFor());
         respJSON.setDouble("price", submission.getPrice());
         respJSON.setBoolean("markedForPurchase", submission.isMarkedForPurchase());
-        // http://forums.topcoder.com/?module=Thread&threadID=614379&start=0&mc=1#979408
+        //http://forums.topcoder.com/?module=Thread&threadID=614379&start=0&mc=1
+        // #979408
         // make the removed as false all the time now
         respJSON.setBoolean("removed", false);
 
@@ -1614,9 +1662,9 @@ public class AjaxBridgeServlet extends HttpServlet {
      * <p>
      * This is a helper method in getting the init parameters from the servlet
      * config. When the init parameter is null/empty and default value is null,
-     * throw an <code>IllegalArgumentException</code> or if the default value
-     * is not null, return the default value. If the init parameter is neither
-     * null nor empty, return it.
+     * throw an <code>IllegalArgumentException</code> or if the default value is
+     * not null, return the default value. If the init parameter is neither null
+     * nor empty, return it.
      * </p>
      * 
      * <p>
@@ -1725,8 +1773,8 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
-     * Convenience method to get Success <code>JSONObject</code> to return to
-     * as a response. This by default sets "success" to true.
+     * Convenience method to get Success <code>JSONObject</code> to return to as
+     * a response. This by default sets "success" to true.
      * </p>
      * 
      * @return json object that corresponds to a success operation.
@@ -1739,8 +1787,8 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
-     * Convenience method to get Error <code>JSONObject</code> to return to as
-     * a response. This by default sets "success" to false.
+     * Convenience method to get Error <code>JSONObject</code> to return to as a
+     * response. This by default sets "success" to false.
      * </p>
      * 
      * @param errorMsg
@@ -2209,7 +2257,7 @@ public class AjaxBridgeServlet extends HttpServlet {
     private long getMimeTypeId(UploadedFile file) throws PersistenceException {
         return studioService.getMimeTypeId(file.getContentType());
     }
-    
+
     /**
      * <p>
      * Convenience method in getting a ContestPayment object from a JSONObject.
@@ -2231,7 +2279,8 @@ public class AjaxBridgeServlet extends HttpServlet {
      *             If the data associated with the key can not be retrieved as a
      *             long.
      */
-    private ContestPaymentData getContestPaymentFromJSON(JSONObject jsonContestPayment) throws ParseException, JSONDecodingException {
+    private ContestPaymentData getContestPaymentFromJSON(JSONObject jsonContestPayment) throws ParseException,
+            JSONDecodingException {
         debug("received contest json string = " + jsonContestPayment.toJSONString());
         ContestPaymentData contestPayment = new ContestPaymentData();
         contestPayment.setContestId(jsonContestPayment.getLong("contestID"));
