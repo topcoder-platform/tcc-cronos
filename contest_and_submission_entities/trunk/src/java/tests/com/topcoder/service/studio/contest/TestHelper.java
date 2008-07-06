@@ -52,6 +52,7 @@ public class TestHelper {
         entity.setProjectId(101L);
         entity.setStartDate(date);
         entity.setStatus(status);
+        entity.setStatusId(1L);
         entity.setTcDirectProjectId(1101L);
         entity.setWinnerAnnoucementDeadline(date);
     }
