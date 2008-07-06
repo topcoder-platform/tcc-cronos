@@ -6,9 +6,7 @@
 	<class name="MimeType" table="mime_type_lu" lazy="true">
 		<comment>This table describes mime type</comment>
 
-		<id name="mimeTypeId" column="mime_type_id" type="long">
-			<generator class="increment"/>
-		</id>
+		<id name="mimeTypeId" column="mime_type_id" type="long" />
 
 		<property name="description" not-null="true" length="100"
 			column="mime_type_desc" />

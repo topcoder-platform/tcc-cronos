@@ -10,10 +10,7 @@
 			INITIAL_CONTEST_SUBMISSION_TYPE 2. FINAL_SUBMISSION_TYPE
 		</comment>
 
-		<id name="submissionTypeId" column="submission_type_id"
-			type="long">
-			<generator class="increment"/>
-		</id>
+		<id name="submissionTypeId" column="submission_type_id" type="long" />
 
 		<property name="description" length="100" not-null="true"
 			column="submission_type_desc" />

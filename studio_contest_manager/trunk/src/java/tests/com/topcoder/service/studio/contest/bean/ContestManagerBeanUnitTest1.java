@@ -7,6 +7,7 @@ import com.topcoder.service.project.Project;
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestChannel;
 import com.topcoder.service.studio.contest.ContestManagementException;
+import com.topcoder.service.studio.contest.ContestPayment;
 import com.topcoder.service.studio.contest.ContestStatus;
 import com.topcoder.service.studio.contest.ContestType;
 import com.topcoder.service.studio.contest.Document;
@@ -14,6 +15,7 @@ import com.topcoder.service.studio.contest.EntityAlreadyExistsException;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.contest.FilePath;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.studio.submission.PaymentStatus;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -535,8 +537,6 @@ public class ContestManagerBeanUnitTest1 extends TestCase {
 
         ContestChannel contestChannel = new ContestChannel();
         contestChannel.setDescription("desc");
-        contestChannel.setName("name");
-        contestChannel.setFileType(fileType);
 
         ContestType contestType = new ContestType();
         contestType.setDescription("desc");
@@ -2579,5 +2579,33 @@ public class ContestManagerBeanUnitTest1 extends TestCase {
         } catch (ContestManagementException e) {
             // success
         }
+    }
+
+    /**
+     * <p>
+     * Accuracy test for <code>createContestPayment(ContestPayment)</code>.
+     * </p>
+     *
+     * <p>
+     * Verify that the contest is added to the persistence.
+     * </p>
+     *
+     * @throws Exception to JUnit.
+     */
+    public void testCreateContestPayment() throws Exception {
+        initContext();
+        Contest contest = bean.getContest(1L);
+        ContestPayment entity = new ContestPayment();
+        entity.setContest(contest);
+        PaymentStatus paymentStatus = new PaymentStatus();
+        paymentStatus.setPaymentStatusId(1L);
+        entity.setStatus(paymentStatus );
+        entity.setPayPalOrderId(3L);
+        entity.setPrice(500.0);
+
+        bean.createContestPayment(entity);
+
+        ContestPayment persist = bean.getContestPayment(entity.getContest().getContestId());
+        assertEquals("The persist should match", 3L, persist.getPayPalOrderId());
     }
 }

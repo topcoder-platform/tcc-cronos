@@ -9,9 +9,7 @@
 			Contest 2. Bonus
 		</comment>
 
-		<id name="prizeTypeId" column="prize_type_id" type="long">
-			<generator class="increment"/>
-		</id>
+		<id name="prizeTypeId" column="prize_type_id" type="long" />
 
 		<property name="description" length="100" not-null="true"
 			column="prize_type_desc" />
