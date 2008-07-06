@@ -9,10 +9,10 @@
 			com.informix.jdbc.IfxDriver
 		</property>
 		<property name="connection.url">
-			jdbc:informix-sqli://192.168.18.48:1526/cockpit:informixserver=tcs
+			jdbc:informix-sqli://63.118.154.250:1526/studio_cockpit:informixserver=informix_shm
 		</property>
-		<property name="connection.username">informix</property>
-		<property name="connection.password">topcoder</property>
+		<property name="connection.username">cockpit</property>
+		<property name="connection.password">gMxRfzpW</property>
 
 		<!-- SQL dialect -->
 		<property name="dialect">
@@ -46,8 +46,7 @@
 		<mapping resource="mappings/SubmissionPayment.hbm.xml" />
 		<mapping resource="mappings/ContestRegistration.hbm.xml" />
 		
-		<mapping resource="mappings/ContestDetailedStatus.hbm.xml" />
-		
+		<mapping resource="mappings/ContestPayment.hbm.xml" />
 		
 	</session-factory>
 </hibernate-configuration>

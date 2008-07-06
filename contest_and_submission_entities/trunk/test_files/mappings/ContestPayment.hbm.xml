@@ -6,12 +6,14 @@
 	<class name="ContestPayment" table="contest_payment" lazy="true">
 		<comment> This table describes contest payment. It contain payments
 			status and price. </comment>
-        <id name="payPalOrderId" column="paypal_order_id" unsaved-value="-1">
-        </id>
-		<many-to-one name="contest"
-			class="com.topcoder.service.studio.contest.Contest" column="contest_id" />
+		<composite-id>
+			<key-many-to-one name="contest"
+				class="com.topcoder.service.studio.contest.Contest"
+				column="contest_id" />
+		</composite-id>
 		<many-to-one name="status" column="payment_status_id"
 			class="com.topcoder.service.studio.submission.PaymentStatus" />
 		<property name="price" not-null="true" />
+		<property name="payPalOrderId" column="paypal_order_id" not-null="true" />
 	</class>
 </hibernate-mapping>
