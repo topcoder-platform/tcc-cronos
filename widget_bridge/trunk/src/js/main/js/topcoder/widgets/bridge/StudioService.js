@@ -1451,4 +1451,69 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	     	}
 	     });
 	}
+	
+
+	/**
+	 * <p>
+	 * Update a contest payment of the specified type asynchronously, if the contest payment is updated
+	 * successfully, onSuccess callback function will be called, otherwise onError will be called.</p>
+	 *
+	 * @throws IllegalArgumentException if any argument is null or projectID < 0
+	 * @throws InvalidResponseException if the received response is invalid.
+	 */
+	this.editContestPayment = editContestPayment;
+	function /* void */ createContestPayment(/* ContestPayment object*/ contestPayment, /* VoidHandler */ onSuccess, /* ErrorHandler */ onError ) {
+		// check first the validity of parameters
+		// check contestPayment
+		if (contestPayment == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.contestPayment","contestPayment should not be null");
+		}
+		// check onSuccess
+		if (onSuccess == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onSuccess","onSuccess callback should not be null");
+		}
+		// check onError
+		if (onError == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onError","onError callback should not be null");
+		}
+		// Create AJAXProcessor object
+		var processor = new AJAXProcessor();
+		// Send a request asynchronously
+		processor.request({
+	    	url:  servletUrlString,
+	    	async: true,
+	     	method: "POST",
+	     	// the json string should be escaped properly here. 
+	     	sendingText: "service=studio&method=editContestPayment&contestPayment=" + escape(contestPayment.toJSON()),
+	     	onStateChange: function() {
+	        	// Handle the response
+	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
+	            	var response = processor.getResponseText();
+	                var jsonResp = eval("(" + response + ")");
+	                // check response
+	                if (jsonResp == null) {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","createContestPayment","Invalid response");
+	                }
+	                if (typeof(jsonResp.success) == "undefined") {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","createContestPayment","Invalid response");
+	                }
+	                // now check if valid or not
+	                if (jsonResp.success == false) {
+		                if (typeof(jsonResp.error) == "undefined") {
+		                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","createContestPayment","Invalid response");
+		                }
+	                	// errors
+	                	// call error handler with error message
+	                	onError(jsonResp.error);
+	                } else {
+	                	// success
+	                	// create a contest payment.
+	                	var retContestPayment = new js.topcoder.widgets.bridge.ContestPayment(jsonResp.json);	                	
+	                	// call the success callback
+	                	onSuccess(retContestPayment);
+	                }
+	           }
+	     	}
+	     });
+	}
 } // end

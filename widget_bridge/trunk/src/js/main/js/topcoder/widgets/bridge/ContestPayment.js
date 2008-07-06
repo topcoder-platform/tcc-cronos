@@ -19,7 +19,12 @@
  * <p>If this constructor is called without a parameter, it serves as an empty default constructor.</p>
  */ 
 js.topcoder.widgets.bridge.ContestPayment = function (/* JSON Object */ json) {
-	/**
+    /**
+     * Abbreviation for Helper class.
+     */
+    var Helper = js.topcoder.widgets.bridge.Helper;
+    
+    /**
 	 * This is to make the object available to private methods.
 	 */
 	var that = this;
@@ -114,6 +119,7 @@ js.topcoder.widgets.bridge.ContestPayment = function (/* JSON Object */ json) {
      * <p>Sets the paymentStatusId.</p>
      */
     this.setPaymentStatusId = function /* void */ (/* long */ paymentStatusId) {
+        Helper.checkGreaterOrEqual(paymentStatusId, "paymentStatusId", 0);
         that.paymentStatusId = paymentStatusId;
     }
     
@@ -128,7 +134,8 @@ js.topcoder.widgets.bridge.ContestPayment = function (/* JSON Object */ json) {
      * <p>Sets the contestId.</p>
      */
     this.setContestId = function /* void */ (/* long */ contestId) {
-        that.contestId = contestId;
+    	Helper.checkGreaterOrEqual(contestId, "contestId", 0);
+    	that.contestId = contestId;
     }
 
     /**
@@ -142,6 +149,7 @@ js.topcoder.widgets.bridge.ContestPayment = function (/* JSON Object */ json) {
      * <p>Sets the price.</p>
      */
     this.setPrize = function /* void */ (/* double */ price) {
+    	Helper.checkGreaterOrEqual(price, "price", 0);
         that.price = price;
     }
 
@@ -156,6 +164,7 @@ js.topcoder.widgets.bridge.ContestPayment = function (/* JSON Object */ json) {
      * <p>Sets the paypalOrderId.</p>
      */
     this.setPaypalOrderId = function /* void */ (/* int */ paypalOrderId) {
+    	Helper.checkGreaterOrEqual(paypalOrderId, "paypalOrderId", 0);
         that.paypalOrderId = paypalOrderId;
     }
 
