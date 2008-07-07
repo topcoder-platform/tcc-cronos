@@ -573,8 +573,7 @@ public class StudioServiceBean implements StudioService {
         checkParameter("contestId", contestId);
         checkParameter("newStatusId", newStatusId);
 
-        // authorization
-        authorizeAdmin();
+        authorizeWithContest(contestId);
 
         try {
             if (contestManager.getContest(contestId) == null) {
