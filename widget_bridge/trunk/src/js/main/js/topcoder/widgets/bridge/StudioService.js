@@ -1462,7 +1462,7 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	 * @throws InvalidResponseException if the received response is invalid.
 	 */
 	this.editContestPayment = editContestPayment;
-	function /* void */ createContestPayment(/* ContestPayment object*/ contestPayment, /* VoidHandler */ onSuccess, /* ErrorHandler */ onError ) {
+	function /* void */ editContestPayment(/* ContestPayment object*/ contestPayment, /* VoidHandler */ onSuccess, /* ErrorHandler */ onError ) {
 		// check first the validity of parameters
 		// check contestPayment
 		if (contestPayment == null) {
