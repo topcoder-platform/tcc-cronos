@@ -982,9 +982,9 @@ public class StudioServiceBean implements StudioService {
         Date startDate = getDate(data.getLaunchDateAndTime());
         result.setStartDate(startDate);
         if (startDate != null) {
-            result.setEndDate(new Date((long) (startDate.getTime() + 60l * 60 * data.getDurationInHours())));
+            result.setEndDate(new Date((long) (startDate.getTime() + 60l * 60 * 1000 * data.getDurationInHours())));
         }
-
+        
         addContestConfig(result, contestPropertyShortSummaryId, data.getShortSummary());
 
         addContestConfig(result, contestPropertyContestOverviewTextId, data.getContestDescriptionAndRequirements());
