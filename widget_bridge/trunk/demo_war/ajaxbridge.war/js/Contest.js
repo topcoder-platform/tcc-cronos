@@ -115,6 +115,16 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 	var contestTypeID /* long */ = -1;
 
 	/**
+	 * <p>Represents the contest Channel ID.</p>
+	 * <p>Initial Value: -1, means that is not set</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 * <p>Valid Values:  must be greater or equal than 0 or -1 (not set)</p>
+	 */
+	var contestChannelID /* long */ = -1;
+	
+	/**
 	 * <p>Represents the final file format list.</p>
 	 * <p>Initial Value: empty array; it's final , it's empty at beginning</p>
 	 * <p>Accessed In: getter method</p>
@@ -322,6 +332,14 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 			"json.contestTypeID does not exists");
 		}
 
+	    // set the contest channel ID
+		if (typeof(json.contestChannelID) != "undefined" && typeof(json.contestChannelID) == "number") {
+		    that.contestChannelID = json.contestChannelID;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.contestChannelID",
+			"json.contestChannelID does not exists");
+		}
+		
 		// sets the finalFileFormatList
 		// since this has already been evaluated, we convert the json object to a json string
 		if (typeof(json.finalFileFormatList) != "undefined" && typeof(json.finalFileFormatList) == "object") {
@@ -438,6 +456,14 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.tcDirectProjectID",
 			"json.tcDirectProjectID does not exists");
 		}
+		
+		// sets the tcDirectProjectID
+		if (typeof(json.submissionCount) != "undefined" && typeof(json.submissionCount) == "number") {
+		    that.submissionCount /* long */ = json.submissionCount;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.submissionCount",
+			"json.submissionCount does not exists");
+		}		
 
 		// sets the creatorUserID
 		if (typeof(json.creatorUserID) != "undefined" && typeof(json.creatorUserID) == "number") {
@@ -744,6 +770,20 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
         that.contestTypeID = contestTypeID;
     }    
 
+    /**
+     * <p>Returns the contestChannelID.</p>
+     */
+    this.getContestChannelID = function /* long */ () {
+        return that.contestChannelID;
+    }
+
+    /**
+     * <p>Sets the contestTypeID.</p>
+     */
+    this.setContestChannelID = function /* void */ (/* long */ contestChannelID) {
+        that.contestChannelID = contestChannelID;
+    }    
+    
 	/**
 	 * <p>Convert this JavaScript object to a JSON string and return.
 	 *
@@ -822,6 +862,7 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 		        + "\"durationInHours\" : " + that.getDurationInHours() + ", "
 		        + "\"winnerAnnouncementDeadline\" : \"" + that.getWinnerAnnouncementDeadline() + "\", "
 		        + "\"contestTypeID\" : " + that.getContestTypeID() + ", "
+		        + "\"contestChannelID\" : " + that.getContestChannelID() + ", "
 		        + "\"finalFileFormatList\" : " + locFileFomat + ", "
 		        + "\"finalFileFormatOther\" : \"" + that.getFinalFileFormatOther() + "\", "
 		        + "\"documentationUploads\" : " + locUpDoc + ", "
@@ -833,8 +874,51 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 		        + "\"sizeRequirements\" : \"" + that.getSizeRequirements() + "\", "
 		        + "\"otherRequirementsOrRestrictions\" : \"" + that.getOtherRequirementsOrRestrictions() + "\", "
 		        + "\"tcDirectProjectID\" : " + that.getTcDirectProjectID() + ", "
+		        + "\"submissionCount\" : " + that.getSubmissionCount() + ", "		        
 		        + "\"creatorUserID\" : " + that.getCreatorUserID()
 		        + "}";
 	}
 
+
+    /**
+     * <p>Returns formatted winnerAnnouncementDeadline.</p>
+     */
+    this.getWinnerAnnouncementDeadlineAsDate = function /* String */ (){
+	    var results = that.winnerAnnouncementDeadline.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) +(\d{1,2}):(\d{1,2}) *$/);    
+      var dt = new Date(parseInt(results[1]),parseInt(results[2]) -1,parseInt(results[3]),parseInt(results[4]),parseInt(results[5]),0);
+      return dt.toString();
+	}    
+
+    /**
+     * <p>Returns formatted launchDateAndTime.</p>
+     */
+    this.getLaunchDateAndTimeAsDate = function /* String */ (){
+	    var results = that.launchDateAndTime.match(/^ *(\d{4})-(\d{1,2})-(\d{1,2}) +(\d{1,2}):(\d{1,2}) *$/);    
+      var dt = new Date(parseInt(results[1]),parseInt(results[2]) -1,parseInt(results[3]),parseInt(results[4]),parseInt(results[5]),0);
+      return dt.toString();
+	}
+	
+	/**
+	 * <p>Represents the submissions count</p>
+	 * <p>Initial Value: -1, means that is not set</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 * <p>Valid Values: must be greater or  -1</p>
+	 */
+	var submissionCount /* long */ = -1;
+
+  /**
+   * <p>Returns the submissionCount .</p>
+   */
+  this.getSubmissionCount  = function /* long */ () {
+      return that.submissionCount ;
+  }
+
+  /**
+   * <p>Sets the submissionCount .</p>
+   */
+  this.setSubmissionCount  = function /* void */ (/* long */ submissionCount ) {
+      that.submissionCount  = submissionCount ;
+  }	    
 } // end

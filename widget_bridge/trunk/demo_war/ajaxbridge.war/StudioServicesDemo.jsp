@@ -4,6 +4,7 @@
 <script language='javascript' src="js/WidgetBridgeNamespace.js"></script>
 <script language='javascript' src="js/Helper.js"></script>
 <script language='javascript' src="js/StudioService.js"></script>
+<script language='javascript' src="js/ContestPayment.js"></script>
 <script language='javascript' src="js/Contest.js"></script>
 <script language='javascript' src="js/ContestPayload.js"></script>
 <script language='javascript' src="js/ContestStatus.js"></script>
@@ -37,6 +38,7 @@ function testStudioCreateContest() {
 contest.setContestID(-1);
     studioService.createContest(contest,projectID,success,error);
 }
+
 
 /**
  * <p>Tests Erro Studio.createContest().</p>
@@ -78,6 +80,26 @@ function testStudioGetContest() {
     }
     
     studioService.getContest(contestID,success,error);
+}
+
+/**
+ * <p>Tests Studio.getContestPayment().</p>
+ */
+function testStudioGetContestPayment() {
+    // initialize the studio service
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var contestID = 2011;
+
+    // success callback 
+    var success = function(contestPayment) {
+        alert("Success = Contest Payment retrieved : "+contestPayment.toJSON());
+    }
+    // error callback
+    var error = function(errMsg) {
+        alert("Error = "+errMsg);
+    }
+    
+    studioService.getContestPayment(contestID,success,error);
 }
 
 /**
@@ -672,6 +694,51 @@ function getSubmission1() {
     return submission;
 }
 
+
+/**
+ * <p>Tests Studio.createContestPayment().</p>
+ */
+function testStudioCreateContestPayment() {
+    // initialize the studio service
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+
+    // success callback 
+    var success = function(contest) {
+        alert("Success = Contest retrieved : "+contest.toJSON());
+    }
+    // error callback
+    var error = function(errMsg) {
+        alert("Error = "+errMsg);
+    }
+    
+    var contestPayment = new js.topcoder.widgets.bridge.ContestPayment();
+    contestPayment.setPaymentStatusId(1);
+    contestPayment.setContestId(2011);
+    contestPayment.setPrize(123.34);
+    contestPayment.setPaypalOrderId(1);
+    studioService.createContestPayment(contestPayment,success,error);
+}
+
+/**
+ * <p>Tests Studio.removeContestPayment().</p>
+ */
+function testStudioRemoveContestPayment() {
+
+    // initialize the studio service
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+
+    // success callback 
+    var success = function() {
+        alert("Success = ContestPayment removed!");
+    }
+    // error callback
+    var error = function(errMsg) {
+        alert("Error = "+errMsg);
+    }
+    
+    studioService.removeContestPayment(2011,success,error);
+}
+
 </script>
 </head>
 
@@ -697,6 +764,11 @@ Widget Webservices Bridge Demo
     <li>Studio.retrieveAllSubmissionsByMember() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioRetrieveAllSubmissionsByMember()" /></li>
     <li>Studio.getSubmissionFileTypes() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetSubmissionFileTypes()" /></li>
     <li>Studio.getContestStatuses() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetContestStatuses()" /></li>
+    
+    <li>Studio.createContestPayment() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioCreateContestPayment()" /></li>
+    <li>Studio.editContestPayment() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioEditContestPayment()" /></li>
+    <li>Studio.removeContestPayment() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioRemoveContestPayment()" /></li>
+    <li>Studio.getContestPayment() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetContestPayment()" /></li>
 </ul>
 <br />
 <span style="color:red;"><b>Some Studio Services Error Demo</b></span>
