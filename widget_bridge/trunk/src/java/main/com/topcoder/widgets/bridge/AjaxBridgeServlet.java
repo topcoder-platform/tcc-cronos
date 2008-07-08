@@ -563,7 +563,7 @@ public class AjaxBridgeServlet extends HttpServlet {
                     debug("contest payment json received = " + strContestPayment);
 
                     JSONObject jsonContestPayment = jsonDecoder.decodeObject(strContestPayment);
-                    debug("received IDs = [contest ID] : " + jsonContestPayment.getLong("contestID"));
+                    debug("received IDs = [contest ID] : " + jsonContestPayment.getLong("contestId"));
 
                     ContestPaymentData contestPayment = getContestPaymentFromJSON(jsonContestPayment);
                     ContestPaymentData respContestPayment = studioService.createContestPayment(contestPayment);
@@ -571,8 +571,8 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                     debug("createContestPayment success!");
                 } else if ("getContestPayment".equals(method)) {
-                    String strContestPaymentID = request.getParameter("contestPaymentID");
-                    if (checkLongIfLessThanZero(strContestPaymentID, "contestPaymentID", response)) {
+                    String strContestPaymentID = request.getParameter("contestPaymentId");
+                    if (checkLongIfLessThanZero(strContestPaymentID, "contestPaymentId", response)) {
                         return;
                     }
                     debug("received ID = [contest payment ID] : " + strContestPaymentID);
@@ -597,6 +597,19 @@ public class AjaxBridgeServlet extends HttpServlet {
                     printSuccessResponse(succJson, response);
 
                     debug("editContestPayment success!");
+                } else if ("removeContestPayment".equals(method)) {
+                    String strContestPaymentID = request.getParameter("contestPaymentID");
+                    if (checkLongIfLessThanZero(strContestPaymentID, "contestPaymentID", response)) {
+                        return;
+                    }
+                    debug("received ID = [contest payment ID] : " + strContestPaymentID);
+
+                    studioService.removeContestPayment(Long.parseLong(strContestPaymentID));
+
+                    JSONObject succJson = getSuccessJSONResponse();
+                    printSuccessResponse(succJson, response);
+
+                    debug("removeContestPayment success!");
                 } else if ("getContest".equals(method)) {
                     String strContestID = request.getParameter("contestID");
                     if (checkLongIfLessThanZero(strContestID, "contestID", response)) {
@@ -1090,13 +1103,13 @@ public class AjaxBridgeServlet extends HttpServlet {
                 .getString("winnerAnnouncementDeadline")));
 
         contest.setContestTypeId(jsonContest.getLong("contestTypeID")); // [
-                                                                        // 27128642
-                                                                        // -6]
+        // 27128642
+        // -6]
         contest.setContestChannelId(jsonContest.getLong("contestChannelID")); // [
-                                                                              // TCCC
-                                                                              // -
-                                                                              // 147
-                                                                              // ]
+        // TCCC
+        // -
+        // 147
+        // ]
 
         JSONArray jsonPrizes = jsonContest.getArray("prizes");
         if (jsonPrizes != null) {
@@ -1385,13 +1398,13 @@ public class AjaxBridgeServlet extends HttpServlet {
         respJSON.setLong("tcDirectProjectID", contest.getTcDirectProjectId());
         respJSON.setLong("creatorUserID", contest.getCreatorUserId());
         respJSON.setLong("contestTypeID", contest.getContestTypeId()); // [
-                                                                       // 27128642
-                                                                       // -6]
+        // 27128642
+        // -6]
         respJSON.setLong("contestChannelID", contest.getContestChannelId()); // [
-                                                                             // TCCC
-                                                                             // -
-                                                                             // 147
-                                                                             // ]
+        // TCCC
+        // -
+        // 147
+        // ]
 
         respJSON.setString("launchDateAndTime", getDateString(contest.getLaunchDateAndTime()));
         respJSON.setString("winnerAnnouncementDeadline", getDateString(contest.getWinnerAnnoucementDeadline()));
@@ -2283,7 +2296,7 @@ public class AjaxBridgeServlet extends HttpServlet {
             JSONDecodingException {
         debug("received contest json string = " + jsonContestPayment.toJSONString());
         ContestPaymentData contestPayment = new ContestPaymentData();
-        contestPayment.setContestId(jsonContestPayment.getLong("contestID"));
+        contestPayment.setContestId(jsonContestPayment.getLong("contestId"));
         contestPayment.setPaymentStatusId(jsonContestPayment.getLong("paymentStatusId"));
         contestPayment.setPaypalOrderId(jsonContestPayment.getLong("paypalOrderId"));
         contestPayment.setPrice(jsonContestPayment.getDouble("price"));
