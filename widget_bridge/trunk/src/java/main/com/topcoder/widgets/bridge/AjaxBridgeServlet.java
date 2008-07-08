@@ -1397,18 +1397,13 @@ public class AjaxBridgeServlet extends HttpServlet {
         respJSON.setString("otherRequirementsOrRestrictions", contest.getOtherRequirementsOrRestrictions());
         respJSON.setLong("tcDirectProjectID", contest.getTcDirectProjectId());
         respJSON.setLong("creatorUserID", contest.getCreatorUserId());
-        respJSON.setLong("contestTypeID", contest.getContestTypeId()); // [
-        // 27128642
-        // -6]
-        respJSON.setLong("contestChannelID", contest.getContestChannelId()); // [
-        // TCCC
-        // -
-        // 147
-        // ]
+        respJSON.setLong("contestTypeID", contest.getContestTypeId()); 
+        respJSON.setLong("contestChannelID", contest.getContestChannelId()); 
 
         respJSON.setString("launchDateAndTime", getDateString(contest.getLaunchDateAndTime()));
         respJSON.setString("winnerAnnouncementDeadline", getDateString(contest.getWinnerAnnoucementDeadline()));
         respJSON.setLong("submissionCount", contest.getSubmissionCount());
+        respJSON.setLong("numberOfRegistrants", contest.getNumberOfRegistrants());
 
         // set up ARRAYS
         // Prizes[]

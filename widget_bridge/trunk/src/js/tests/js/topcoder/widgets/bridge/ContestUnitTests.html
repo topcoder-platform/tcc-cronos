@@ -40,7 +40,7 @@
 				" {\"name\" : \"JSON Payload Name2\",\"value\" : \"JSON Payload Value2\",\"description\" : \"JSON Payload Desc2\",\"required\" : true,"+
 				" \"contestTypeID\" : 4444}], \"contestCategoryID\" : 2, \"contestDescriptionAndRequirements\" : \"This is a long desc\", "+
 				" \"requiredOrRestrictedColors\" : \"red\", \"requiredOrRestrictedFonts\" : \"arial\", \"sizeRequirements\" : \"11 pt.\", "+
-				" \"otherRequirementsOrRestrictions\" : \"other reqs\", \"tcDirectProjectID\" : 1000, \"submissionCount\" : 555, \"creatorUserID\" : 7000}";
+				" \"otherRequirementsOrRestrictions\" : \"other reqs\", \"tcDirectProjectID\" : 1000, \"submissionCount\" : 555, \"numberOfRegistrants\" : 41, \"creatorUserID\" : 7000}";
 				
             /**
              * Invalid JSON.
@@ -156,6 +156,19 @@
             function test_submissionCount() {
             	// should not be seen, private variable
             	assertEquals("Should not be seen, private variable!", "undefined", typeof(instance.submissionCount));
+            }
+            
+            /**
+             * Test private variable numberOfRegistrants .
+             */
+            function test_numberOfRegistrants() {
+            	// should not be seen, private variable
+            	assertEquals("Should not be seen, private variable!", "undefined", typeof(instance.numberOfRegistrants ));
+
+            	var json = eval("(" + validJSON + ")");
+           		var jsonObj = new js.topcoder.widgets.bridge.Contest(json);
+           		jsonObj.setNumberOfRegistrants(41);
+           		assertEquals("numberOfRegistrants is incorrect.", 41, jsonObj.getNumberOfRegistrants());
             }
             
             /**
