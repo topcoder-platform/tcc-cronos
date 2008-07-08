@@ -133,7 +133,7 @@ public class Contest implements Serializable {
     /**
      * Represents ContestRegistration list.
      */
-    private Set<ContestRegistration> contestRegistrations;
+    private Set<ContestRegistration> contestRegistrations = new HashSet<ContestRegistration>();
     
     /**
      * Default constructor.
