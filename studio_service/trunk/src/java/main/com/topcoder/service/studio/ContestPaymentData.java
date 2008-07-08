@@ -3,6 +3,7 @@
  */
 package com.topcoder.service.studio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "contestPaymentData", propOrder = { "contestId",
         "paymentStatusId", "price", "paypalOrderId" })
-public class ContestPaymentData {
+public class ContestPaymentData implements Serializable {
     /**
      * Represents contestId id.
      */

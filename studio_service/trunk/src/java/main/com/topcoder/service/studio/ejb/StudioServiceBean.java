@@ -42,7 +42,6 @@ import com.topcoder.service.studio.contest.ContestType;
 import com.topcoder.service.studio.contest.ContestTypeConfig;
 import com.topcoder.service.studio.contest.Document;
 import com.topcoder.service.studio.contest.DocumentType;
-import com.topcoder.service.studio.contest.EntityAlreadyExistsException;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.contest.FilePath;
 import com.topcoder.service.studio.contest.MimeType;
@@ -573,7 +572,8 @@ public class StudioServiceBean implements StudioService {
         checkParameter("contestId", contestId);
         checkParameter("newStatusId", newStatusId);
 
-        authorizeWithContest(contestId);
+        // authorization
+        authorizeAdmin();
 
         try {
             if (contestManager.getContest(contestId) == null) {
@@ -983,7 +983,7 @@ public class StudioServiceBean implements StudioService {
         if (startDate != null) {
             result.setEndDate(new Date((long) (startDate.getTime() + 60l * 60 * 1000 * data.getDurationInHours())));
         }
-        
+
         addContestConfig(result, contestPropertyShortSummaryId, data.getShortSummary());
 
         addContestConfig(result, contestPropertyContestOverviewTextId, data.getContestDescriptionAndRequirements());
@@ -2191,6 +2191,8 @@ public class StudioServiceBean implements StudioService {
             contestPayment = contestManager.createContestPayment(contestPayment);
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while creating new ContestPayment.", e);
+        } catch (SubmissionManagementException e) {
+            handlePersistenceError("SubmissionManager reports error while creating new ContestPayment.", e);
         }
 
         logExit("createContestPayment", contestPaymentData);
@@ -2217,7 +2219,7 @@ public class StudioServiceBean implements StudioService {
         try {
             ContestPayment contestPayment = contestManager.getContestPayment(contestPaymentId);
             // authorization
-            authorizeWithContest(contestPayment.getContest().getContestId());
+            authorizeWithContest(contestPayment.getContestId());
             if (contestPayment == null) {
                 // handleContestNotFoundError(null, contestPaymentId);
             }
@@ -2226,7 +2228,7 @@ public class StudioServiceBean implements StudioService {
             logExit("getContestPayment", result);
             return result;
         } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManager reports error while retrieving contest.", e);
+            handlePersistenceError("ContestManager reports error while retrieving contest payment.", e);
         }
 
         // never reached
@@ -2260,7 +2262,9 @@ public class StudioServiceBean implements StudioService {
         } catch (EntityNotFoundException e) {
             // handleContestNotFoundError(e, contestData.getContestId());
         } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManager reports error while updating contest.", e);
+            handlePersistenceError("ContestManager reports error while updating contest payment.", e);
+        } catch (SubmissionManagementException e) {
+            handlePersistenceError("SubmissionManager reports error while updating contest payment.", e);
         }
 
         logExit("editContestPayment");
@@ -2316,16 +2320,16 @@ public class StudioServiceBean implements StudioService {
      *             when error reported by manager
      * @throws ContestManagementException
      *             when error reported by manager
+     * @throws SubmissionManagementException
+     *             when error reported by manager
      */
     private ContestPayment convertContestPaymentData(ContestPaymentData data) throws PersistenceException,
-            ContestManagementException {
+            ContestManagementException, SubmissionManagementException {
         ContestPayment result = new ContestPayment();
-        Contest contest = this.contestManager.getContest(data.getContestId());
-        result.setContest(contest);
+        result.setContestId(data.getContestId());
         result.setPayPalOrderId(data.getPaypalOrderId());
         result.setPrice(data.getPrice());
-        PaymentStatus status = new PaymentStatus();
-        status.setPaymentStatusId(status.getPaymentStatusId());
+        PaymentStatus status = submissionManager.getPaymentStatus(data.getPaymentStatusId());
         result.setStatus(status);
 
         return result;
@@ -2343,7 +2347,7 @@ public class StudioServiceBean implements StudioService {
      */
     private ContestPaymentData convertContestPayment(ContestPayment contestPayment) throws ContestManagementException {
         ContestPaymentData contestPaymentData = new ContestPaymentData();
-        contestPaymentData.setContestId(contestPayment.getContest().getContestId());
+        contestPaymentData.setContestId(contestPayment.getContestId());
         contestPaymentData.setPaymentStatusId(contestPayment.getStatus().getPaymentStatusId());
         contestPaymentData.setPaypalOrderId(contestPayment.getPayPalOrderId());
         contestPaymentData.setPrice(contestPayment.getPrice());
