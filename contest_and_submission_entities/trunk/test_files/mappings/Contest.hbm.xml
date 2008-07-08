@@ -79,5 +79,10 @@
                 class="com.topcoder.service.studio.contest.ContestConfig" />
         </set>
 
+        <set name="contestRegistrations" cascade="all-delete-orphan">
+            <key column="contest_id" />
+            <one-to-many
+                class="com.topcoder.service.studio.contest.ContestRegistration" />
+        </set>
     </class>
 </hibernate-mapping>

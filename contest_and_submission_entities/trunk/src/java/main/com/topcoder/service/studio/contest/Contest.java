@@ -24,6 +24,10 @@ import com.topcoder.service.studio.submission.Submission;
  * @author tushak, cyberjag
  * @version 1.0
  */
+/**
+ * @author lenovo
+ *
+ */
 public class Contest implements Serializable {
     /**
      * Generated serial version id.
@@ -126,6 +130,11 @@ public class Contest implements Serializable {
      */
     private Long createdUser;
 
+    /**
+     * Represents ContestRegistration list.
+     */
+    private Set<ContestRegistration> contestRegistrations;
+    
     /**
      * Default constructor.
      */
@@ -521,5 +530,23 @@ public class Contest implements Serializable {
     @Override
     public int hashCode() {
         return Helper.calculateHash(contestId);
+    }
+
+    /**
+     * Sets contestRegistrations.
+     * 
+     * @param contestRegistrations the contestRegistrations to set.
+     */
+    public void setContestRegistrations(Set<ContestRegistration> contestRegistrations) {
+        this.contestRegistrations = contestRegistrations;
+    }
+
+    /**
+     * Returns contestRegistrations.
+     * 
+     * @return the contestRegistrations.
+     */
+    public Set<ContestRegistration> getContestRegistrations() {
+        return contestRegistrations;
     }
 }

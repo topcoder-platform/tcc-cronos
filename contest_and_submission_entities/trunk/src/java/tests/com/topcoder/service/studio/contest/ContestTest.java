@@ -651,6 +651,22 @@ public class ContestTest extends TestCase {
         assertFalse("failed equals", contest.equals(contest1));
     }
 
+
+    /**
+     * <p>
+     * Persistence tests for the entity <code>{@link Contest}</code>.
+     * </p>
+     */
+    public void test_persistence_find() {
+        try {
+            HibernateUtil.getManager().getTransaction().begin();
+            Contest persisted = HibernateUtil.getManager().find(Contest.class, 2011L);
+            System.out.println(persisted.getContestRegistrations().toArray()[0]);
+        } finally {
+            HibernateUtil.getManager().getTransaction().commit();
+        }
+    }
+    
     /**
      * <p>
      * Persistence tests for the entity <code>{@link Contest}</code>.
