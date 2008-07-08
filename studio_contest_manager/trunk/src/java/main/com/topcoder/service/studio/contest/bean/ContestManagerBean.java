@@ -2676,26 +2676,26 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * <p>
-     * Gets contest payment by id, and return the retrieved contest payment. If
+     * Gets contest payment by contest id, and return the retrieved contest payment. If
      * the contest payment doesn't exist, null is returned.
      * </p>
      * 
-     * @param contestPaymentId
-     *            the contest payment id
-     * @return the retrieved contest, or null if id doesn't exist
+     * @param contestId
+     *            the contest id.
+     * @return the retrieved contest payment, or null if id doesn't exist
      * 
      * @throws ContestManagementException
      *             if any error occurs when getting contest.
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public ContestPayment getContestPayment(long contestPaymentId) throws ContestManagementException {
+    public ContestPayment getContestPayment(long contestId) throws ContestManagementException {
         try {
             logEnter("getContestPayment()");
-            logOneParameter(contestPaymentId);
+            logOneParameter(contestId);
 
             EntityManager em = getEntityManager();
-            ContestPayment contestPayment = em.find(ContestPayment.class, new Long(contestPaymentId));
+            ContestPayment contestPayment = em.find(ContestPayment.class, new Long(contestId));
             return contestPayment;
         } catch (IllegalStateException e) {
             throw wrapContestManagementException(e, "The EntityManager is closed.");
@@ -2785,8 +2785,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * removed successfully, return false if it doesn't exist.
      * </p>
      * 
-     * @param contestPaymentId
-     *            the contest payment id
+     * @param contestId
+     *            the contest id.
      * @return true if the contest payment exists and removed successfully,
      *         return false if it doesn't exist
      * @throws ContestManagementException
@@ -2794,14 +2794,14 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public boolean removeContestPayment(long contestPaymentId) throws ContestManagementException {
+    public boolean removeContestPayment(long contestId) throws ContestManagementException {
         try {
             logEnter("removeContestPayment()");
-            logOneParameter(contestPaymentId);
+            logOneParameter(contestId);
 
             EntityManager em = getEntityManager();
 
-            ContestPayment payment = em.find(ContestPayment.class, new Long(contestPaymentId));
+            ContestPayment payment = em.find(ContestPayment.class, new Long(contestId));
 
             if (payment == null) {
                 return false;
