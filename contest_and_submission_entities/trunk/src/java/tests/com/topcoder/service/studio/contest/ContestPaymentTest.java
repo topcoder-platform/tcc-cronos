@@ -91,26 +91,8 @@ public class ContestPaymentTest extends TestCase {
      */
     public void test_accuracy_getContest() {
         // set the value to test
-        contestPayment.setContest(null);
-        assertEquals("getContest and setContest failure occured", null, contestPayment.getContest());
-    }
-
-    /**
-     * <p>
-     * Accuracy test for {@link ContestPayment#setContest(Contest)} and
-     * {@link ContestPayment#getContest()} method.
-     * </p>
-     * <p>
-     * Sets the value and expects the same while retrieving. Input value is
-     * Valid.
-     * </p>
-     */
-    public void test_accuracy_setContest() {
-        // set the value to test
-        Contest sub = new Contest();
-        sub.setContestId(1L);
-        contestPayment.setContest(sub);
-        assertEquals("getContest and setContest failure occured", 1L, (long) contestPayment.getContest().getContestId());
+        contestPayment.setContestId(1);
+        assertEquals("getContest and setContest failure occured", 1, contestPayment.getContestId());
     }
 
     /**
@@ -188,26 +170,9 @@ public class ContestPaymentTest extends TestCase {
      */
     public void test_equals_1() {
         ContestPayment payment = new ContestPayment();
-        Contest sub = new Contest();
-        sub.setContestId(1L);
-        payment.setContest(sub);
-        contestPayment.setContest(sub);
+        payment.setContestId(1L);
         assertTrue("failed equals", contestPayment.equals(payment));
         assertTrue("failed hashCode", contestPayment.hashCode() == payment.hashCode());
-    }
-
-    /**
-     * <p>
-     * Accuracy test for {@link ContestPayment#equals(Object)}. Objects are
-     * unequal.
-     * </p>
-     */
-    public void test_equals_3() {
-        Object payment = new Object();
-        Contest sub = new Contest();
-        sub.setContestId(1L);
-        contestPayment.setContest(sub);
-        assertFalse("failed equals", contestPayment.equals(payment));
     }
 
     /**
@@ -218,10 +183,9 @@ public class ContestPaymentTest extends TestCase {
     public void test_persistence() {
         try {
             HibernateUtil.getManager().getTransaction().begin();
-            Contest contest = HibernateUtil.getManager().find(Contest.class, 1L);
             PaymentStatus paymentStatus = HibernateUtil.getManager().find(PaymentStatus.class, 1L);
             ContestPayment entity = new ContestPayment();
-            entity.setContest(contest);
+            entity.setContestId(2011);
             entity.setStatus(paymentStatus);
             entity.setPrice(500.0);
 
@@ -232,7 +196,7 @@ public class ContestPaymentTest extends TestCase {
             ContestPayment persisted = (ContestPayment) query.getResultList().get(0);
 
             assertEquals("Failed to persist - price mismatch", entity.getPrice(), persisted.getPrice());
-            assertEquals("Failed to persist - contest mismatch", entity.getContest(), persisted.getContest());
+            assertEquals("Failed to persist - contest mismatch", entity.getContestId(), persisted.getContestId());
             assertEquals("Failed to persist - status mismatch", entity.getStatus(), persisted.getStatus());
 
             // update the entity

@@ -27,9 +27,9 @@ public class ContestPayment implements Serializable {
     private static final long serialVersionUID = 2575579887608597669L;
 
     /**
-     * Represents the contest.
+     * Represents the contest id.
      */
-    private Contest contest;
+    private long contestId;
 
     /**
      * Represents the payment status.
@@ -54,22 +54,22 @@ public class ContestPayment implements Serializable {
     }
 
     /**
-     * Returns the contest.
+     * Returns the contest id.
      * 
-     * @return the contest.
+     * @return the contest id.
      */
-    public Contest getContest() {
-        return contest;
+    public long getContestId() {
+        return contestId;
     }
 
     /**
-     * Updates the contest with the specified value.
+     * Updates the contest id with the specified value.
      * 
-     * @param contest
-     *            the contest to set.
+     * @param contestId
+     *            the contest id to set.
      */
-    public void setContest(Contest contest) {
-        this.contest = contest;
+    public void setContestId(long contestId) {
+        this.contestId = contestId;
     }
 
     /**
@@ -140,7 +140,7 @@ public class ContestPayment implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof ContestPayment) {
-            return (getPayPalOrderId() == ((ContestPayment) obj).getPayPalOrderId());
+            return (getContestId() == ((ContestPayment) obj).getContestId());
         }
         return false;
     }
