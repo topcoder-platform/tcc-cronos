@@ -1535,4 +1535,27 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
 
         return ret;
     }
+    
+
+    /**
+     * <p>
+     * Gets the payment status with the given id. Returns null if not found.
+     * </p>
+     *
+     * @param paymentStatusId
+     *            The id of the payment status to get
+     * @return The PaymentStatus with the given id.
+     * @throws SubmissionManagementException
+     *             If any error occurs during the retrieval
+     */
+    public PaymentStatus getPaymentStatus(long paymentStatusId) throws SubmissionManagementException
+    {
+        final String methodName = "getPaymentStatus(long)";
+        logEnter(methodName);
+
+        PaymentStatus ret = getEntity(getEntityManager(methodName), PaymentStatus.class, paymentStatusId, methodName);
+
+        logExit(methodName);
+        return ret;        
+    }
 }

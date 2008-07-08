@@ -353,4 +353,17 @@ public interface SubmissionManager {
      *             If any error occurs during the retrieval
      */
     List<Prize> getSubmissionPrizes(long submissionId) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Gets the payment status with the given id. Returns null if not found.
+     * </p>
+     *
+     * @param paymentStatusId
+     *            The id of the payment status to get
+     * @return The PaymentStatus with the given id.
+     * @throws SubmissionManagementException
+     *             If any error occurs during the retrieval
+     */
+    PaymentStatus getPaymentStatus(long paymentStatusId) throws SubmissionManagementException;
 }
