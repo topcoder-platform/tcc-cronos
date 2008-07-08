@@ -191,6 +191,10 @@ public class ContestData implements Serializable {
     private long statusId;
 
     /**
+     * Represents number of registrants.
+     */
+    private long numberOfRegistrants;
+    /**
      * <p>
      * This is the default constructor. It does nothing.
      * </p>
@@ -729,5 +733,23 @@ public class ContestData implements Serializable {
      */
     public void setSubmissionCount(long submissionCount) {
         this.submissionCount = submissionCount;
+    }
+
+    /**
+     * Sets number of registrants.
+     * 
+     * @param numberOfRegistrants the numberOfRegistrants to set
+     */
+    public void setNumberOfRegistrants(long numberOfRegistrants) {
+        this.numberOfRegistrants = numberOfRegistrants;
+    }
+
+    /**
+     * Returns number of registrants.
+     * 
+     * @return the numberOfRegistrants
+     */
+    public long getNumberOfRegistrants() {
+        return numberOfRegistrants;
     }
 }

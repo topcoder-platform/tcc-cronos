@@ -1060,6 +1060,7 @@ public class StudioServiceBean implements StudioService {
         contestData.setProjectId(unbox(contest.getProjectId()));
         contestData.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(contest.getWinnerAnnoucementDeadline()));
         contestData.setStatusId(contest.getStatus().getContestStatusId());
+        contestData.setNumberOfRegistrants(contest.getContestRegistrations().size());
 
         // [27074484-20]
         ContestType contestType = contest.getContestType();
