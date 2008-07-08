@@ -1,0 +1,66 @@
+<CMConfig>
+<Config name = "MessageBoard">
+    <!-- The maximum size of a message. Optional. -->
+        <Property name="max_message_size">
+            <Value>1000</Value>
+        </Property>
+        
+        <!-- The maximum number of messages to be returned for a request. Optional. -->
+        <Property name="message_count">
+            <Value>20</Value>
+        </Property>
+        
+       <!-- Used to get the configuration child necessary for ObjectFactory. Required. -->
+        <Property name="object_factory_child_name">
+            <Value>object_factory_configration</Value>
+        </Property>
+        
+        
+        <Property name="object_factory_configration">
+            <Property name="InformixMessageBoardPersistence">
+            <Property name="type">
+                <Value>com.topcoder.messaging.persistence.InformixMessageBoardPersistence</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>test_files/config.properties</Value>
+                    </Property>
+                </Property>
+                <Property name="param2">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>InformixMessageBoardPersistence</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        </Property>
+        
+       <!-- Used to get the configuration child necessary for ObjectFactory. Required. -->
+        <Property name="persistence_key">
+            <Value>InformixMessageBoardPersistence</Value>
+        </Property>
+        
+        
+        
+               <!-- Used to get the configuration child necessary for ObjectFactory. Required. -->
+        <Property name="error_messages_child_name">
+            <Value>error_messages</Value>
+        </Property>
+        
+        <Property name="error_messages">
+                <Property name="error_message_1">
+                   <Value>error_message_1</Value>
+                </Property>
+                <Property name="error_message_2">
+                   <Value>error_message_2</Value>
+                </Property>
+        </Property>
+</Config>
+</CMConfig>
