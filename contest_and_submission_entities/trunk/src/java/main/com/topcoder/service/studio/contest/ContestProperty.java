@@ -34,6 +34,11 @@ public class ContestProperty implements Serializable {
     private String description;
 
     /**
+     * Represents the name.
+     */
+    private String name;
+    
+    /**
      * Default constructor.
      */
     public ContestProperty() {
@@ -78,6 +83,25 @@ public class ContestProperty implements Serializable {
         this.description = description;
     }
 
+    /**
+     * Returns the name.
+     *
+     * @return the name.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Updates the name with the specified value.
+     *
+     * @param name
+     *            the name to set.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     /**
      * Compares this object with the passed object for equality. Only the id will be compared.
      *
