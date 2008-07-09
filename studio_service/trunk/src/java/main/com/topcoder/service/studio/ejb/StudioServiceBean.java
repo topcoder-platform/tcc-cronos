@@ -1865,7 +1865,7 @@ public class StudioServiceBean implements StudioService {
                     payload.setDescription(cfg.getId().getProperty().getDescription());
                     payload.setValue(cfg.getPropertyValue());
                     payload.setRequired(cfg.isRequired());
-                    payload.setName(cfg.getId().getProperty().getDescription());
+                    payload.setName(cfg.getId().getProperty().getName());
 
                     payloads.add(payload);
                 }
@@ -2218,6 +2218,9 @@ public class StudioServiceBean implements StudioService {
 
         try {
             ContestPayment contestPayment = contestManager.getContestPayment(contestPaymentId);
+            if (contestPayment == null) {
+                throw new EntityNotFoundException("ContestPayment with id " + contestPaymentId + " is not found.");
+            }
             // authorization
             authorizeWithContest(contestPayment.getContestId());
             if (contestPayment == null) {
