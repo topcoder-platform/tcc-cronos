@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=TC Bulletin
+component.distfilename=tc_bulletin
+component.package=com.topcoder.messaging
+component.packagedir=com/topcoder/messaging
+component.version.major=2
+component.version.minor=0
+component.version.micro=0
+component.version.build=1
