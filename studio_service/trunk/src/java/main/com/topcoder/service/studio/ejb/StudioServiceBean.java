@@ -868,6 +868,14 @@ public class StudioServiceBean implements StudioService {
                     // prevent NPE
                     data.setStatusId(status.getContestStatusId());
                 }
+                
+                
+                List<Long> nextStatuses = new ArrayList<Long>();
+                for (ContestStatus cs : status.getStatuses()) {
+                	nextStatuses.add(cs.getContestStatusId());
+                }
+                
+				data.setAllowableNextStatus(nextStatuses );
                 result.add(data);
             }
 
