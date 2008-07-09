@@ -703,8 +703,38 @@ function testStudioCreateContestPayment() {
     var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
 
     // success callback 
-    var success = function(contest) {
-        alert("Success = Contest retrieved : "+contest.toJSON());
+    var success = function(contestPayment) {
+        alert("Success = contestPayment retrieved : "+contestPayment.toJSON());
+    }
+    // error callback
+    var error = function(errMsg) {
+        alert("Error = "+errMsg);
+    }
+    
+    // success callback 
+    var removesuccess = function() {
+    }
+    // remove first.
+    studioService.removeContestPayment(2011,removesuccess,error);
+    
+    var contestPayment = new js.topcoder.widgets.bridge.ContestPayment();
+    contestPayment.setPaymentStatusId(1);
+    contestPayment.setContestId(2011);
+    contestPayment.setPrize(123.34);
+    contestPayment.setPaypalOrderId(1);
+    studioService.createContestPayment(contestPayment,success,error);
+}
+
+/**
+ * <p>Tests Studio.editContestPayment().</p>
+ */
+function testStudioEditContestPayment() {
+    // initialize the studio service
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+
+    // success callback 
+    var success = function() {
+        alert("Success = ContestPayment edited");
     }
     // error callback
     var error = function(errMsg) {
@@ -714,9 +744,9 @@ function testStudioCreateContestPayment() {
     var contestPayment = new js.topcoder.widgets.bridge.ContestPayment();
     contestPayment.setPaymentStatusId(1);
     contestPayment.setContestId(2011);
-    contestPayment.setPrize(123.34);
-    contestPayment.setPaypalOrderId(1);
-    studioService.createContestPayment(contestPayment,success,error);
+    contestPayment.setPrize(333.34);
+    contestPayment.setPaypalOrderId(2);
+    studioService.editContestPayment(contestPayment,success,error);
 }
 
 /**

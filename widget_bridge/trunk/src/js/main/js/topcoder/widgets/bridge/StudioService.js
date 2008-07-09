@@ -1506,11 +1506,9 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	                	// call error handler with error message
 	                	onError(jsonResp.error);
 	                } else {
-	                	// success
-	                	// create a contest payment.
-	                	var retContestPayment = new js.topcoder.widgets.bridge.ContestPayment(jsonResp.json);	                	
+	                	// success	                	
 	                	// call the success callback
-	                	onSuccess(retContestPayment);
+	                	onSuccess();
 	                }
 	           }
 	     	}

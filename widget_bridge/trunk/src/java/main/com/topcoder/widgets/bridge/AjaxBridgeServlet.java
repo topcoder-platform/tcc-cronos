@@ -588,7 +588,7 @@ public class AjaxBridgeServlet extends HttpServlet {
                         return;
                     }
                     JSONObject jsonContestPayment = jsonDecoder.decodeObject(strContestPayment);
-                    debug("received ID = [contestPayment ID] : " + jsonContestPayment.getLong("contestID"));
+                    debug("received ID = [contestPayment Id] : " + jsonContestPayment.getLong("contestId"));
 
                     ContestPaymentData contestPayment = getContestPaymentFromJSON(jsonContestPayment);
                     studioService.editContestPayment(contestPayment);
