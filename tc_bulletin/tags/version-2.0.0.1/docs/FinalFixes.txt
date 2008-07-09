@@ -1,0 +1,49 @@
+Round 2 comments:
+
+- Added a sequence diagram for message retrieval.
+- Added "final" modifiers to MessageBoardDbPersistence members.
+- I integrated null checking comments into the documentation for the argumen being checked, as follows: "Must not be null, empty, or contain leading or trailing whitespace characters, otherwise an IAE is thrown."
+
+Round 1 comments:
+
+Javier asked me to work for no more than two hours on the final fixes, and then stop.
+This is why I have left several items not fixed.
+
+Q 1.1.1
+- Added fields for configuration parameters from section 3.1.1. Since the component does not produce error messages visible to the user, the third bullet point from 3.1.1 does not require changes.
+- Added the generated skeleton of the web service to the class diagram.
+
+Q 1.1.3
+- Fixed the "Updat ..." use case (in general, I noticed that TC UML tool sometimes "eats" keystrokes).
+- I think the request to add an "obtaining the XML version of the Message" use case comes from the poorly worded requirement 1.2.2.1. I am certain that the requirements are talking about the SOAP representation of the message, which the web service infrastructure does "for free."
+
+Q 1.1.4
+- I was unable to get to sequence diagrams within the allocated time.
+
+Q 2.1.1
+- Since the component uses a rather scaled down version of the DAO/DTO pattern, I think that mentioning the pattern would be counterproductive: only the DTOs and the business objects are introduced; the DAOs are not part of the design.
+
+Q 3.1.4
+- The "new yList<MessageAttribute>" is another example of TC UML "eating" keystrokes - several at a time; I was unable to fix this in the tool, so I moved the explanation of the initial value into the variable documentation.
+- Fixed the name of the configuration exception and the constructor parameter of the MessageBoard class.
+
+Q 3.1.5
+- This is addressed in Q 1.1.1 (the skeleton is on the diagram now, together with all its dependencies).
+
+Q 3.1.6
+- Renamed Bulletin...Exception to MessageBoard...Exception
+- Fixed "namespce" and "dat" typos
+- This is addressed as part of Q 3.1.4 fixes.
+
+Q 4.1.2
+- Wrote method documentation (somewhat short for my taste, but that's all I had time for).
+
+Q 4.1.3
+- Wrote variable documentation (again somewhat short, but should be sufficient).
+
+Q 4.1.5
+- A good demo for this one should be a few pages long, with web service client calls etc. Unfortunately, I couldn't do it in the allocated time.
+
+Q 4.1.7
+- Removed StringTemplate references from the component specification (I reused one of my old specs).
+

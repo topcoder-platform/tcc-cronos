@@ -1,0 +1,46 @@
+<CMConfig>
+<Config name = "InformixMessageBoardPersistence">
+    <!-- Configuration for creating connection factory, This child configuration is required if connection need to be used-->
+        <Property name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+             <Property name="connections">
+                  <Property name="default">
+                        <Value>tcbulletin</Value>
+                  </Property>
+                <!--
+                    The following Property configures the ConnectionProducer obtaining the Connections
+                    from a JDBC URL
+                -->
+                <Property name="tcbulletin">
+                    <Property name="producer">
+                        <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+                    </Property>
+                    <Property name="parameters">
+                            <Property name="jdbc_driver">
+                                <Value>com.informix.jdbc.IfxDriver</Value>
+                            </Property>
+                            <Property name="jdbc_url">
+                                <Value>jdbc:informix-sqli://192.168.1.100:1526/tcbulletin:informixserver=tcs</Value>
+                            </Property>
+                            <Property name="user">
+                                <Value>informix</Value>
+                            </Property>
+                            <Property name="password">
+                                <Value>topcoder</Value>
+                            </Property>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        
+        <!-- The name used to obtain a connection. Required. -->
+        <Property name="connection_name">
+            <Value>tcbulletin</Value>
+        </Property>
+        
+        
+        <!-- The name passed to the IDGeneratorFactory to create a IDGenerator implementation. Required. -->
+        <Property name="id_generator_name">
+            <Value>tcbulletin</Value>
+        </Property>
+</Config>
+</CMConfig>
