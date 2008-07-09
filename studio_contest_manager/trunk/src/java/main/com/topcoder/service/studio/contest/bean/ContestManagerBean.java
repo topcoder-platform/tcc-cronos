@@ -2660,7 +2660,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             // }
 
             EntityManager em = getEntityManager();
-            em.persist(contestPayment);
+            em.merge(contestPayment);
 
             return contestPayment;
         } catch (IllegalStateException e) {
