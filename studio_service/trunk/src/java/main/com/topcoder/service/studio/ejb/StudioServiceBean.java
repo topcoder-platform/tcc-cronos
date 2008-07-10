@@ -1732,18 +1732,21 @@ public class StudioServiceBean implements StudioService {
 
         try {
             List<ContestData> result = new ArrayList<ContestData>();
+            List<Contest> contests;
             if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
-                List<Contest> contests;
+                logError("User is admin.");
                 contests = contestManager.getAllContests();
-                for (Contest contest : contests) {
-                    result.add(convertContest(contest));
-                }
             } else {
                 UserProfilePrincipal p = (UserProfilePrincipal) sessionContext
                         .getCallerPrincipal();
-                result = getContestsForClient(p.getUserId());
+                logError("User " + p.getUserId() + " is non-admin.");
+                contests = contestManager.getContestsForUser(p.getUserId());
             }
 
+            for (Contest contest : contests) {
+                result.add(convertContest(contest));
+            }
+            
             logExit("getAllContests", result);
             return result;
         } catch (ContestManagementException e) {
