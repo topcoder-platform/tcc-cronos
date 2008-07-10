@@ -79,6 +79,18 @@ public interface ContestManager {
 
     /**
      * <p>
+     * Gets contests by the created user. If there is no such contests, an empty list should be returned.
+     * </p>
+     *
+     * @param createdUser the created user.
+     * @return a list of associated contests
+     *
+     * @throws ContestManagementException if any error occurs when getting contests
+     */
+    public List<Contest> getContestsForUser(long createdUser) throws ContestManagementException;
+
+    /**
+     * <p>
      * Updates contest data. Note that all data can be updated only if contest is not active. If contest is active it is
      * possible to increase prize amount and duration.
      * </p>

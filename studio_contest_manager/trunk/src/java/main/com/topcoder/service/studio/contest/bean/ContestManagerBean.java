@@ -2862,4 +2862,41 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             logExit("fillToStatuses(ContestStatus)");
         }
     }
+
+
+    /**
+     * <p>
+     * Gets contests by the created user. If there is no such contests, an empty list should be returned.
+     * </p>
+     *
+     * @param createdUser the created user.
+     * @return a list of associated contests
+     *
+     * @throws ContestManagementException if any error occurs when getting contests
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<Contest> getContestsForUser(long createdUser) throws ContestManagementException
+    {
+        try {
+            logEnter("getContestsForUser(createdUser)");
+            logOneParameter(createdUser);
+            
+            EntityManager em = getEntityManager();
+
+            Query query = em.createQuery("select c from Contest c where c.createdUser = " + createdUser);
+
+            List list = query.getResultList();
+
+            List<Contest> result = new ArrayList<Contest>();
+            result.addAll(list);
+            return result;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while retrieving the contest.");
+        } finally {
+            logExit("getContestsForUser()");
+        }
+    }
 }
