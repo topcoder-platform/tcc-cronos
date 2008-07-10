@@ -1731,15 +1731,24 @@ public class StudioServiceBean implements StudioService {
         logEnter("getAllContests");
 
         try {
-            List<Contest> contests = contestManager.getAllContests();
-            ArrayList<ContestData> result = new ArrayList<ContestData>();
-            for (Contest contest : contests) {
-                result.add(convertContest(contest));
+            List<ContestData> result = new ArrayList<ContestData>();
+            if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
+                List<Contest> contests;
+                contests = contestManager.getAllContests();
+                for (Contest contest : contests) {
+                    result.add(convertContest(contest));
+                }
+            } else {
+                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext
+                        .getCallerPrincipal();
+                result = getContestsForClient(p.getUserId());
             }
+
             logExit("getAllContests", result);
             return result;
         } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManager reports error while retrieving contest.", e);
+            handlePersistenceError(
+                    "ContestManager reports error while retrieving contest.", e);
         }
 
         return null;
@@ -1794,18 +1803,21 @@ public class StudioServiceBean implements StudioService {
         logEnter("getContestsForClient");
 
         try {
-            EqualToFilter filter = new EqualToFilter("clientId", clientId);
-            List<Contest> contests = contestManager.searchContests(filter);
+            List<Contest> contests = contestManager.getAllContests();
 
             ArrayList<ContestData> result = new ArrayList<ContestData>();
             for (Contest contest : contests) {
-                result.add(convertContest(contest));
+                if (clientId == contestManager.getClientForContest(contest
+                        .getContestId())) {
+                    result.add(convertContest(contest));
+                }
             }
 
             logExit("getContestsForClient", result);
             return result;
         } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManager reports error while retrieving contest.", e);
+            handlePersistenceError(
+                    "ContestManager reports error while retrieving contest.", e);
         }
 
         return null;
