@@ -341,6 +341,16 @@
        </war>
     </target>
     
+    <taskdef classpath="lib/tcs/javascript_compressor.jar" resource="tasks.properties"/>
+    <target name="compress_javascript">
+        <mkdir dir="${builddir}/js"/>
+        <delete file="${builddir}/js/widgetbridge-all.js"/>
+        <compress-js tofile="${builddir}/js/widgetbridge-all.js"
+                     order="WidgetBridgeNamespace.js,Helper.js,IllegalArgumentException.js,InvalidResponseException.js">
+            <fileset dir="src/js/main/js/topcoder/widgets/bridge" >
+            </fileset>
+        </compress-js>
+    </target>
 
     <!-- Import the macro definitions used to override standard behaviour of
     some of the targets of this build file. -->
