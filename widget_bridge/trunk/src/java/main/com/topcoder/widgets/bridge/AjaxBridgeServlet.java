@@ -573,6 +573,11 @@ public class AjaxBridgeServlet extends HttpServlet {
                     debug("received IDs = [contest ID] : " + jsonContestPayment.getLong("contestId"));
 
                     ContestPaymentData contestPayment = getContestPaymentFromJSON(jsonContestPayment);
+                    
+                    if (checkPaypalOrderIdFraud(contestPayment.getPaypalOrderId() + "", request, response)) {
+                        return;
+                    }
+                    
                     ContestPaymentData respContestPayment = studioService.createContestPayment(contestPayment);
                     sendJSONObjectAsResponse(getJSONFromContestPayment(respContestPayment), response);
 
@@ -629,23 +634,15 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                     debug("getContest success!");
                 } else if ("getAllContests".equals(method)) {
+                	// onlyDirectProjects is ignored [TCCC-257] 
                     String strOnlyDirectProjects = request.getParameter("onlyDirectProjects");
                     if (checkBoolean(strOnlyDirectProjects, "onlyDirectProjects", response)) {
                         return;
                     }
-                    List<ContestData> contests = null;
-
-                    // Fix bug [27128642-4]
-                    if ("true".equals(strOnlyDirectProjects)) {
-                        // Just get the contests having a related direct project
-                        Filter projectNotNullFilter = new NotFilter(new NullFilter("tc_direct_project_id"));
-
-                        contests = studioService.searchContests(projectNotNullFilter);
-                    } else {
-                        contests = studioService.getAllContests();
-                    }
+                    List<ContestData> contests = studioService.getAllContests();
 
                     JSONArray contestArr = new JSONArray();
+
                     for (ContestData contest : contests) {
                         try {
                             JSONObject respJSON = getJSONFromContest(contest);
