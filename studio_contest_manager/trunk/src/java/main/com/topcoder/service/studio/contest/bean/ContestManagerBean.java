@@ -2279,7 +2279,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             EntityManager em = getEntityManager();
 
-            Query query = em.createQuery("select c from Contest c");
+            Query query = em.createQuery("select c from Contest c where not c.tcDirectProjectId is null ");
 
             List list = query.getResultList();
 
@@ -2884,7 +2884,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             
             EntityManager em = getEntityManager();
 
-            Query query = em.createQuery("select c from Contest c where c.createdUser = " + createdUser);
+            Query query = em.createQuery("select c from Contest c where not c.tcDirectProjectId is null and c.createdUser = " + createdUser);
 
             List list = query.getResultList();
 
