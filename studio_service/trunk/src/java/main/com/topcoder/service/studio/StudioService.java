@@ -426,7 +426,7 @@ public interface StudioService {
 	 * @throws IllegalArgumentWSException
 	 *             if the submissionId is less than 0 or price is negative.
 	 */
-	public void purchaseSubmission(long submissionId, double price, long payPalOrderId)
+	public void purchaseSubmission(long submissionId, double price, String payPalOrderId)
 			throws PersistenceException;
 
 	/**
@@ -449,7 +449,7 @@ public interface StudioService {
 	 * @throws IllegalArgumentWSException
 	 *             if the submissionId is less than 0 or place is not positive.
 	 */
-	public void selectWinner(long submissionId, int place, long payPalOrderId)
+	public void selectWinner(long submissionId, int place, String payPalOrderId)
 			throws PersistenceException;
 	
     

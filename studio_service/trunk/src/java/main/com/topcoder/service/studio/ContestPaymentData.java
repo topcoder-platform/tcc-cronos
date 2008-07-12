@@ -41,7 +41,7 @@ public class ContestPaymentData implements Serializable {
     /**
      * Represents paypalOrderId id.
      */
-    private Long paypalOrderId;
+    private String paypalOrderId;
 
     /**
      * Represents price id.
@@ -72,7 +72,7 @@ public class ContestPaymentData implements Serializable {
      * 
      * @return the paypalOrderId
      */
-    public Long getPaypalOrderId() {
+    public String getPaypalOrderId() {
         return paypalOrderId;
     }
 
@@ -82,7 +82,7 @@ public class ContestPaymentData implements Serializable {
      * @param paypalOrderId
      *            the paypalOrderId to set
      */
-    public void setPaypalOrderId(Long paypalOrderId) {
+    public void setPaypalOrderId(String paypalOrderId) {
         this.paypalOrderId = paypalOrderId;
     }
     
