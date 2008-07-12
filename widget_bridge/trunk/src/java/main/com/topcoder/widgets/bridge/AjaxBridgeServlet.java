@@ -18,7 +18,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -93,12 +92,6 @@ public class AjaxBridgeServlet extends HttpServlet {
      * </p>
      */
     private static final String METHOD_PARAM_KEY = "method";
-
-    /**
-     * <p>A <code>String</code> providing the name of session attribute which may hold the order ID returned by
-     * <code>PayPal</code> service.</p>
-     */
-    private static final String PAYPAL_ORDER_ID_ATTR = "paypalOrderID";
 
     /**
      * <p>
@@ -573,11 +566,6 @@ public class AjaxBridgeServlet extends HttpServlet {
                     debug("received IDs = [contest ID] : " + jsonContestPayment.getLong("contestId"));
 
                     ContestPaymentData contestPayment = getContestPaymentFromJSON(jsonContestPayment);
-                    
-                    if (checkPaypalOrderIdFraud(contestPayment.getPaypalOrderId() + "", request, response)) {
-                        return;
-                    }
-                    
                     ContestPaymentData respContestPayment = studioService.createContestPayment(contestPayment);
                     sendJSONObjectAsResponse(getJSONFromContestPayment(respContestPayment), response);
 
@@ -634,15 +622,23 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                     debug("getContest success!");
                 } else if ("getAllContests".equals(method)) {
-                	// onlyDirectProjects is ignored [TCCC-257] 
                     String strOnlyDirectProjects = request.getParameter("onlyDirectProjects");
                     if (checkBoolean(strOnlyDirectProjects, "onlyDirectProjects", response)) {
                         return;
                     }
-                    List<ContestData> contests = studioService.getAllContests();
+                    List<ContestData> contests = null;
+
+                    // Fix bug [27128642-4]
+                    if ("true".equals(strOnlyDirectProjects)) {
+                        // Just get the contests having a related direct project
+                        Filter projectNotNullFilter = new NotFilter(new NullFilter("tc_direct_project_id"));
+
+                        contests = studioService.searchContests(projectNotNullFilter);
+                    } else {
+                        contests = studioService.getAllContests();
+                    }
 
                     JSONArray contestArr = new JSONArray();
-
                     for (ContestData contest : contests) {
                         try {
                             JSONObject respJSON = getJSONFromContest(contest);
@@ -969,13 +965,7 @@ public class AjaxBridgeServlet extends HttpServlet {
                     if (checkLongIfLessThanZero(submissionId, "submissionId", response)) {
                         return;
                     }
-                    if (checkLongIfLessThanZero(payPalOrderId, "payPalOrderId", response)) {
-                        return;
-                    }
                     if (checkDoubleIfLessThanZero(price, "price", response)) {
-                        return;
-                    }
-                    if (checkPaypalOrderIdFraud(payPalOrderId, request, response)) {
                         return;
                     }
 
@@ -984,8 +974,7 @@ public class AjaxBridgeServlet extends HttpServlet {
                     debug("received price = [price] : " + price);
                     debug("received payPalOrderId = [payPalOrderId] : " + payPalOrderId);
 
-                    studioService.purchaseSubmission(Long.parseLong(submissionId), Double.parseDouble(price), Long
-                            .parseLong(payPalOrderId));
+                    studioService.purchaseSubmission(Long.parseLong(submissionId), Double.parseDouble(price), payPalOrderId);
 
                     printSuccessResponse(getSuccessJSONResponse(), response);
                     debug("purchaseSubmission success!");
@@ -1004,17 +993,13 @@ public class AjaxBridgeServlet extends HttpServlet {
                     if (checkIntegerIfLessThanZero(submissionId, "place", response)) {
                         return;
                     }
-                    if (checkPaypalOrderIdFraud(payPalOrderId, request, response)) {
-                        return;
-                    }
 
                     // log the received ID
                     debug("received ID = [submissionId ID] : " + submissionId);
                     debug("received place = [place] : " + place);
                     debug("received payPalOrderId = [payPalOrderId] : " + payPalOrderId);
 
-                    studioService.selectWinner(Long.parseLong(submissionId), Integer.parseInt(place), Long
-                            .parseLong(payPalOrderId));
+                    studioService.selectWinner(Long.parseLong(submissionId), Integer.parseInt(place), payPalOrderId);
 
                     printSuccessResponse(getSuccessJSONResponse(), response);
                     debug("selectWinner success!");
@@ -2138,37 +2123,6 @@ public class AjaxBridgeServlet extends HttpServlet {
     }
 
     /**
-     * <p>Verifies that the specified <code>PayPal</code> order ID matches the one stored in current session.</p>
-     *
-     * @param payPalOrderId a <code>String</code> providing the order ID ot be verified.
-     * @param request an <code>HttpServletRequest</code> representing the incoming request from the client.
-     * @param response a <code>HttpServletResponse</code> representing the outgoing response.
-     * @return <code>true</code> if specified <code>PayPal</code> order ID does not match one stored in session or there
-     *         is no active session currently; <code>false</code> otherwise.
-     * @throws IOException if an I/O error occurs while sending response to client.
-     * @throws JSONEncodingException if an error occurs while encoding JSON response.
-     */
-    private boolean checkPaypalOrderIdFraud(String payPalOrderId, HttpServletRequest request,
-                                            HttpServletResponse response) throws IOException, JSONEncodingException {
-        boolean failed = false;
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            String validPaypalOrderId = (String) session.getAttribute(PAYPAL_ORDER_ID_ATTR);
-            if (!payPalOrderId.equals(validPaypalOrderId)) {
-                error("Paypal Order ID verification failed. Valid PayPal order ID = [" + validPaypalOrderId
-                      + "]. Submitted PayPal order ID = [" + payPalOrderId + "]");
-                failed = true;
-            }
-        } else {
-            failed = true;
-        }
-        if (failed) {
-            sendErrorJSONResponse("Paypal Order ID verification failed. Please contact TopCoder support", response);
-        }
-        return failed;
-    }
-
-    /**
      * <p>
      * Converts date string into XMLGregorianCalendar instance. Returns null if
      * parameter is null or empty.
@@ -2334,7 +2288,7 @@ public class AjaxBridgeServlet extends HttpServlet {
         ContestPaymentData contestPayment = new ContestPaymentData();
         contestPayment.setContestId(jsonContestPayment.getLong("contestId"));
         contestPayment.setPaymentStatusId(jsonContestPayment.getLong("paymentStatusId"));
-        contestPayment.setPaypalOrderId(jsonContestPayment.getLong("paypalOrderId"));
+        contestPayment.setPaypalOrderId(jsonContestPayment.getString("paypalOrderId"));
         contestPayment.setPrice(jsonContestPayment.getDouble("price"));
 
         return contestPayment;
@@ -2361,7 +2315,7 @@ public class AjaxBridgeServlet extends HttpServlet {
         // initialize the JSON object using the ContestPayment
         JSONObject respJSON = new JSONObject();
         respJSON.setLong("contestId", contestPayment.getContestId());
-        respJSON.setLong("paypalOrderId", contestPayment.getPaypalOrderId());
+        respJSON.setString("paypalOrderId", contestPayment.getPaypalOrderId());
         respJSON.setLong("paymentStatusId", contestPayment.getPaymentStatusId());
         respJSON.setDouble("price", contestPayment.getPrice());
         return respJSON;

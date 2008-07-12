@@ -51,13 +51,12 @@ js.topcoder.widgets.bridge.ContestPayment = function (/* JSON Object */ json) {
 
 	/**
 	 * <p>Represents the paypalOrderId</p>
-	 * <p>Initial Value: -1, means that is not set</p>
+	 * <p>Initial Value: null, means that is not set</p>
 	 * <p>Accessed In: getter method</p>
 	 * <p>Modified In: setter method</p>
 	 * <p>Utilized In: none</p>
-	 * <p>Valid Values: greater or equal than -1</p>
 	 */
-    var paypalOrderId /* long */ = -1;
+    var paypalOrderId /* string */ = null;
 
 	/**
 	 * <p>Represents the prize</p>
@@ -95,7 +94,7 @@ js.topcoder.widgets.bridge.ContestPayment = function (/* JSON Object */ json) {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.paymentStatusId","json.paymentStatusId does not exists");
 		}		
 		// set the paypalOrderId
-		if (typeof(json.paypalOrderId) != "undefined" && typeof(json.paypalOrderId) == "number") {		
+		if (typeof(json.paypalOrderId) != "undefined" && typeof(json.paypalOrderId) == "string") {		
 			that.paypalOrderId = json.paypalOrderId;
 		} else {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.paypalOrderId","json.paypalOrderId does not exists");
@@ -156,14 +155,14 @@ js.topcoder.widgets.bridge.ContestPayment = function (/* JSON Object */ json) {
     /**
      * <p>Returns the paypalOrderId.</p>
      */
-    this.getPaypalOrderId = function /* int */ () {
+    this.getPaypalOrderId = function /* string */ () {
         return that.paypalOrderId;
     }
 
     /**
      * <p>Sets the paypalOrderId.</p>
      */
-    this.setPaypalOrderId = function /* void */ (/* int */ paypalOrderId) {
+    this.setPaypalOrderId = function /* void */ (/* string */ paypalOrderId) {
     	Helper.checkGreaterOrEqual(paypalOrderId, "paypalOrderId", 0);
         that.paypalOrderId = paypalOrderId;
     }
