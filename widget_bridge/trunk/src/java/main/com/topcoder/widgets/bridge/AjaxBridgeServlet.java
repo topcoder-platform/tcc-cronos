@@ -573,7 +573,7 @@ public class AjaxBridgeServlet extends HttpServlet {
                     debug("received IDs = [contest ID] : " + jsonContestPayment.getLong("contestId"));
 
                     ContestPaymentData contestPayment = getContestPaymentFromJSON(jsonContestPayment);
-                    
+                
                     if (checkPaypalOrderIdFraud(contestPayment.getPaypalOrderId() + "", request, response)) {
                         return;
                     }
@@ -1393,13 +1393,13 @@ public class AjaxBridgeServlet extends HttpServlet {
         respJSON.setString("name", contest.getName());
         respJSON.setString("shortSummary", contest.getShortSummary());
         respJSON.setDouble("durationInHours", contest.getDurationInHours());
-        respJSON.setString("finalFileFormatOther", contest.getOtherFileFormats());
+        respJSON.setString("finalFileFormatOther", getString(contest.getOtherFileFormats()));
         respJSON.setLong("statusID", contest.getStatusId());
-        respJSON.setString("contestDescriptionAndRequirements", contest.getContestDescriptionAndRequirements());
-        respJSON.setString("requiredOrRestrictedColors", contest.getRequiredOrRestrictedColors());
-        respJSON.setString("requiredOrRestrictedFonts", contest.getRequiredOrRestrictedFonts());
-        respJSON.setString("sizeRequirements", contest.getSizeRequirements());
-        respJSON.setString("otherRequirementsOrRestrictions", contest.getOtherRequirementsOrRestrictions());
+        respJSON.setString("contestDescriptionAndRequirements", getString(contest.getContestDescriptionAndRequirements()));
+        respJSON.setString("requiredOrRestrictedColors", getString(contest.getRequiredOrRestrictedColors()));
+        respJSON.setString("requiredOrRestrictedFonts", getString(contest.getRequiredOrRestrictedFonts()));
+        respJSON.setString("sizeRequirements", getString(contest.getSizeRequirements()));
+        respJSON.setString("otherRequirementsOrRestrictions", getString(contest.getOtherRequirementsOrRestrictions()));
         respJSON.setLong("tcDirectProjectID", contest.getTcDirectProjectId());
         respJSON.setLong("creatorUserID", contest.getCreatorUserId());
         respJSON.setLong("contestTypeID", contest.getContestTypeId()); 
