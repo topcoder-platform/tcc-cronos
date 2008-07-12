@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd"
+	version="3.0">
+	<enterprise-beans>
+
+		<session>
+			<ejb-name>DigitalRunTrackManagerBean</ejb-name>
+			<remote>com.topcoder.service.digitalrun.track.DigitalRunTrackManagerRemote</remote>
+			<local>com.topcoder.service.digitalrun.track.DigitalRunTrackManagerLocal</local>
+			<ejb-class>com.topcoder.service.digitalrun.track.manager.bean.DigitalRunTrackManagerBean</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
+			<env-entry>
+				<env-entry-name>logName</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>logName</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<env-entry-name>unitName</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>HibernateDRTrackPersistence</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<env-entry-name>trackDAOKey</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>trackDAOKey</env-entry-value>
+			</env-entry>
+
+			<env-entry>
+				<env-entry-name>trackTypeDAOKey</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>trackTypeDAOKey</env-entry-value>
+			</env-entry>
+
+			<env-entry>
+				<env-entry-name>trackStatusDAOKey</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>trackStatusDAOKey</env-entry-value>
+			</env-entry>
+
+			<env-entry>
+				<env-entry-name>pointsCalculatorDAOKey</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>pointsCalculatorDAOKey</env-entry-value>
+			</env-entry>
+
+			<env-entry>
+				<env-entry-name>projectTypeDAOKey</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>projectTypeDAOKey</env-entry-value>
+			</env-entry>
+			<persistence-context-ref>
+				<persistence-context-ref-name>HibernateDRTrackPersistence</persistence-context-ref-name>
+				<persistence-unit-name>HibernateDRTrackPersistence</persistence-unit-name>
+				<persistence-context-type>Transaction</persistence-context-type>
+			</persistence-context-ref>
+		</session>
+
+	</enterprise-beans>
+
+</ejb-jar>

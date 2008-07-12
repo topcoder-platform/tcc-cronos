@@ -1,0 +1,81 @@
+<DigitalRunTrackManager>
+	<Config name="object_factory_child">
+		<Property name="dbStrategy">
+			<Property name="type">
+				<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>DBSearchStrategy</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="ageValidator">
+			<Property name="type">
+				<Value>com.topcoder.service.digitalrun.track.MockValidator</Value>
+			</Property>
+		</Property>
+		<Property name="trackDAOKey">
+			<Property name="type">
+				<Value>com.topcoder.service.digitalrun.track.dao.implementations.JPADigitalRunTrackDAO</Value>
+			</Property>
+		</Property>
+		<Property name="trackTypeDAOKey">
+			<Property name="type">
+				<Value>com.topcoder.service.digitalrun.track.dao.implementations.JPADigitalRunTrackTypeDAO</Value>
+			</Property>
+		</Property>
+		<Property name="pointsCalculatorDAOKey">
+			<Property name="type">
+				<Value>com.topcoder.service.digitalrun.track.dao.implementations.JPADigitalRunPointsCalculatorDAO</Value>
+			</Property>
+		</Property>
+		<Property name="trackStatusDAOKey">
+			<Property name="type">
+				<Value>com.topcoder.service.digitalrun.track.dao.implementations.JPADigitalRunTrackStatusDAO</Value>
+			</Property>
+		</Property>
+		<Property name="projectTypeDAOKey">
+			<Property name="type">
+				<Value>com.topcoder.service.digitalrun.track.dao.implementations.JPADigitalRunProjectTypeDAO</Value>
+			</Property>
+		</Property>
+		
+	</Config>
+
+	<Config name="search_bundle_child">
+		<Property name="name">
+			<Value>name</Value>
+		</Property>
+		<Property name="context">
+			<Value>context</Value>
+		</Property>
+		<Property name="search_strategy_key">
+			<Value>dbStrategy</Value>
+		</Property>
+	</Config>
+	<Config name="aliases">
+		<Property name="The ID">
+			<Value>peopleID</Value>
+		</Property>
+		<Property name="The name">
+			<Value>peopleName</Value>
+		</Property>
+		<Property name="The age">
+			<Value>age</Value>
+		</Property>
+		<Property name="The weight">
+			<Value>weight</Value>
+		</Property>
+	</Config>
+	<Config name="fields">
+		<Property name="age">
+			<Value>ageValidator</Value>
+		</Property>
+	</Config>
+</DigitalRunTrackManager>

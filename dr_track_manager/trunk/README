@@ -1,0 +1,33 @@
+1. Use /test_files/DRSchema.ddl and /test_files/id_sequences.sql to setup database
+
+2. Correct database url/username/password in:
+
+    /test_files/informix-ds.xml
+    /test_files/META-INF/hibernate.cfg.xml
+    /test_files/com/topcoder/db/connectionfactory/DBConnectionFactoryImpl.xml
+    
+3. Correct "jboss_home" and "jboss_config_name" in build-dependencies.xml
+
+4. Ensure all jars in build-dependencies.xml are present
+
+5. ant deployEAR
+
+6. Start JBoss
+
+7. ant test
+
+for final reviewer
+1. klw's the function for addTrackProjectType and removeTrackProjectType can not work, see my tests for detail.
+   please see this thread 'http://forums.topcoder.com/?module=Thread&threadID=617778&start=0'
+   the review response is incorrect. and the test cases should be updated. I have noticed the pm about this.
+   I will let them know again.
+2. for 'Please consider IllegalArgumentException from Field#set  Since new DAO's may not implement AbstractDAO, it's quite possible scenario.'
+   I changed the method in the last final fix as
+   'if (clz != null && clz.isAssignableFrom(instance.getClass())) {
+                field = clz.getDeclaredField(name);
+            } else {
+                field = instance.getClass().getDeclaredField(name);
+            }'
+   so if the dao does not implemente AbstractDAO, it will go to its own class to find the Field.
+   if this still not work, could you please simple let me know where the problem is?
+3. for 5.1.4, I think I already fixed this in last final fix
