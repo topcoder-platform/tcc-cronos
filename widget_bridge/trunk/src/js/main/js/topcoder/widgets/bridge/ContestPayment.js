@@ -178,7 +178,7 @@ js.topcoder.widgets.bridge.ContestPayment = function (/* JSON Object */ json) {
 	 * {"place" : $place,"amount" : $amount}
 	 */
 	this.toJSON = function /* String */ () {
-		return "{\"contestId\" : "+that.getContestId()+",\"paypalOrderId\" : " + this.getPaypalOrderId() +
-		        ",\"paymentStatusId\" : " + that.getPaymentStatusId() + ",\"price\" : "+that.getPrize()+"}";
+		return "{\"contestId\" : "+that.getContestId()+",\"paypalOrderId\" : \"" + this.getPaypalOrderId() +
+		        "\",\"paymentStatusId\" : " + that.getPaymentStatusId() + ",\"price\" : "+that.getPrize()+"}";
 	}
 } // end
