@@ -144,7 +144,7 @@ function testStudioGetAllContests() {
         alert("Error = "+errMsg);
     }
     
-    studioService.getAllContests(true, success,error);
+    studioService.getAllContests(false, success,error);
 }
 
 /**
@@ -721,7 +721,7 @@ function testStudioCreateContestPayment() {
     contestPayment.setPaymentStatusId(1);
     contestPayment.setContestId(2011);
     contestPayment.setPrize(123.34);
-    contestPayment.setPaypalOrderId(1);
+    contestPayment.setPaypalOrderId("1asdfewr34");
     studioService.createContestPayment(contestPayment,success,error);
 }
 
@@ -745,7 +745,7 @@ function testStudioEditContestPayment() {
     contestPayment.setPaymentStatusId(1);
     contestPayment.setContestId(2011);
     contestPayment.setPrize(333.34);
-    contestPayment.setPaypalOrderId(2);
+    contestPayment.setPaypalOrderId("newid");
     studioService.editContestPayment(contestPayment,success,error);
 }
 

@@ -163,7 +163,6 @@ js.topcoder.widgets.bridge.ContestPayment = function (/* JSON Object */ json) {
      * <p>Sets the paypalOrderId.</p>
      */
     this.setPaypalOrderId = function /* void */ (/* string */ paypalOrderId) {
-    	Helper.checkGreaterOrEqual(paypalOrderId, "paypalOrderId", 0);
         that.paypalOrderId = paypalOrderId;
     }
 
