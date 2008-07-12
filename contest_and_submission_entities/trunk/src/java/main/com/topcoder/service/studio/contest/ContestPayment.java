@@ -44,7 +44,7 @@ public class ContestPayment implements Serializable {
     /**
      * Represents the paypal order id.
      */
-    private long payPalOrderId;
+    private String payPalOrderId;
 
     /**
      * Default constructor.
@@ -106,7 +106,7 @@ public class ContestPayment implements Serializable {
      * @param price
      *            the PayPal order id to set.
      */
-    public void setPayPalOrderId(long payPalOrderId) {
+    public void setPayPalOrderId(String payPalOrderId) {
         this.payPalOrderId = payPalOrderId;
     }
 
@@ -115,7 +115,7 @@ public class ContestPayment implements Serializable {
      * 
      * @return the PayPalOrderId.
      */
-    public long getPayPalOrderId() {
+    public String getPayPalOrderId() {
         return payPalOrderId;
     }
 
@@ -153,6 +153,6 @@ public class ContestPayment implements Serializable {
      */
     @Override
     public int hashCode() {
-        return Helper.calculateHash(payPalOrderId);
+        return payPalOrderId.hashCode();
     }
 }

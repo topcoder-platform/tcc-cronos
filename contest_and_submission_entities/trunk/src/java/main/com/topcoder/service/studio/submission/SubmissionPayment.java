@@ -43,7 +43,7 @@ public class SubmissionPayment implements Serializable {
     /**
      * Represents the PayPal order id.
      */
-    private long PayPalOrderId;
+    private String PayPalOrderId;
 
     /**
      * Default constructor.
@@ -105,7 +105,7 @@ public class SubmissionPayment implements Serializable {
      * @param price
      *            the PayPal order id to set.
      */
-    public void setPayPalOrderId(long PayPalOrderId) {
+    public void setPayPalOrderId(String PayPalOrderId) {
         this.PayPalOrderId = PayPalOrderId;
     }
 
@@ -114,7 +114,7 @@ public class SubmissionPayment implements Serializable {
      * 
      * @return the PayPalOrderId.
      */
-    public long getPayPalOrderId() {
+    public String getPayPalOrderId() {
         return PayPalOrderId;
     }
 
