@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=DR Contest Manager
+component.distfilename=dr_contest_manager
+component.package=com.topcoder.service.digitalrun.contest
+component.packagedir=com/topcoder/service/digitalrun/contest
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

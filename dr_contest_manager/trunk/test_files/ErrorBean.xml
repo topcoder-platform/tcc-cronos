@@ -1,0 +1,75 @@
+<CMConfig>
+
+    <Config name="ErrorBean1">
+
+        <Property name="log_name">
+            <Value>logger</Value>
+        </Property>
+
+        <Property name="track_contest_dao_token">
+            <Value>TrackContestDAO</Value>
+        </Property>
+        <Property name="track_contest_type_dao_token">
+            <Value>TrackContestTypeDAO</Value>
+        </Property>
+        <Property name="result_calculator_dao_token">
+            <Value>ResultCalculatorDAO</Value>
+        </Property>
+
+        <Property name="object_factory_config">
+            <Property name="TrackContestDAO">
+                <Property name="type">
+                    <Value>java.lang.String</Value>
+                </Property>
+            </Property>
+            <Property name="TrackContestTypeDAO">
+                <Property name="type">
+                    <Value>java.lang.String</Value>
+                </Property>
+            </Property>
+            <Property name="ResultCalculatorDAO">
+                <Property name="type">
+                    <Value>java.lang.String</Value>
+                </Property>
+            </Property>
+        </Property>
+
+    </Config>
+
+    <Config name="ErrorBean2">
+
+        <Property name="log_name">
+            <Value>logger</Value>
+        </Property>
+
+        <Property name="track_contest_dao_token">
+            <Value>TrackContestDAO</Value>
+        </Property>
+        <Property name="track_contest_type_dao_token">
+            <Value>TrackContestTypeDAO</Value>
+        </Property>
+        <Property name="result_calculator_dao_token">
+            <Value>ResultCalculatorDAO</Value>
+        </Property>
+
+        <Property name="object_factory_config">
+            <Property name="TrackContestDAO">
+                <Property name="type">
+                    <Value>com.topcoder.service.digitalrun.contest.ErrorTrackContestDAO</Value>
+                </Property>
+            </Property>
+            <Property name="TrackContestTypeDAO">
+                <Property name="type">
+                    <Value>com.topcoder.service.digitalrun.contest.MockTrackContestTypeDAO</Value>
+                </Property>
+            </Property>
+            <Property name="ResultCalculatorDAO">
+                <Property name="type">
+                    <Value>com.topcoder.service.digitalrun.contest.MockResultCalculatorDAO</Value>
+                </Property>
+            </Property>
+        </Property>
+
+    </Config>
+
+</CMConfig>
