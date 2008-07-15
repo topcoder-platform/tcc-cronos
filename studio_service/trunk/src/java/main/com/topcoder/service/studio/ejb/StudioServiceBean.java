@@ -1150,6 +1150,11 @@ public class StudioServiceBean implements StudioService {
 
         contestData.setPrizes(prizes);
 
+        // TCCC-293
+        double durationInHours = (contest.getEndDate().getTime() - contest.getStartDate().getTime())
+                / (60 * 60 * 1000);
+        contestData.setDurationInHours(durationInHours);
+
         return contestData;
     }
 
