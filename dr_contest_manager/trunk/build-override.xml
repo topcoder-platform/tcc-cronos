@@ -101,17 +101,17 @@
             <copy file="${base_exception.jar}" todir="${component.ear.dir}" overwrite="true"/>
             <copy file="${logging_wrapper.jar}" todir="${component.ear.dir}" overwrite="true"/>
             <copy file="${object_formatter.jar}" todir="${component.ear.dir}" overwrite="true"/>
-            <copy file="${typesafe_enum.jar}" todir="${component.ear.dir}" overwrite="true"/>
+            <copy file="${test_reflib}/typesafe_enum/1.1.0/typesafe_enum.jar" todir="${component.ear.dir}" overwrite="true"/>
             <copy file="${auditor.jar}" todir="${component.ear.dir}" overwrite="true"/>
             <copy file="${search_builder.jar}" todir="${component.ear.dir}" overwrite="true"/>
             <copy file="${configuration_api.jar}" todir="${component.ear.dir}" overwrite="true"/>
             <copy file="${configuration_persistence.jar}" todir="${component.ear.dir}" overwrite="true"/>
             <copy file="${object_factory.jar}" todir="${component.ear.dir}" overwrite="true"/>
-            <copy file="${object_factory_config_manager_plugin.jar}" todir="${component.ear.dir}" overwrite="true"/>
+            <copy file="${test_reflib}/object_factory_config_manager_plugin/1.0.0/object_factory_config_manager_plugin.jar" todir="${component.ear.dir}" overwrite="true"/>
             <copy file="${object_factory_configuration_api_plugin.jar}" todir="${component.ear.dir}" overwrite="true"/>
-            <copy file="${data_validation.jar}" todir="${component.ear.dir}" overwrite="true"/>
-            <copy file="${class_associations.jar}" todir="${component.ear.dir}" overwrite="true"/>
-            <copy file="${configuration_manager.jar}" todir="${component.ear.dir}" overwrite="true"/>
+            <copy file="${test_reflib}/data_validation/1.1.1/data_validation.jar" todir="${component.ear.dir}" overwrite="true"/>
+            <copy file="${test_reflib}/class_associations/1.0.0/class_associations.jar" todir="${component.ear.dir}" overwrite="true"/>
+            <copy file="${test_reflib}/configuration_manager/2.1.5/configuration_manager.jar" todir="${component.ear.dir}" overwrite="true"/>
             <copy file="${id_generator.jar}" todir="${component.ear.dir}" overwrite="true"/>
             <copy file="${db_connection_factory.jar}" todir="${component.ear.dir}" overwrite="true"/>
 

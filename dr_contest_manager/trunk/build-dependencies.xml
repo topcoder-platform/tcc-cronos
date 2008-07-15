@@ -5,7 +5,7 @@
     <property name="component.target" value="1.5"/>
     <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
 
-    <property name="jboss_home" value="D:\development_tool\jboss-4.2.2.GA"/>
+    <property name="jboss_home" value="${ext_libdir}/jboss/4.2.2.GA"/>
     <property name="jboss_config_name" value="default"/>
 
     <!-- TCS dependencies -->
@@ -19,14 +19,14 @@
     <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.1.0/object_factory.jar"/>
     <property name="object_factory_configuration_api_plugin.jar" value="${tcs_libdir}/object_factory_configuration_api_plugin/1.0.0/object_factory_configuration_api_plugin.jar"/>
     <property name="id_generator.jar" value="${tcs_libdir}/id_generator/3.0/id_generator.jar"/>
-    <property name="db_connection_factory.jar" value="${tcs_libdir}/db_connection_factory/1.1/db_connection_factory.jar"/>
+    <property name="db_connection_factory.jar" value="${tcs_libdir}/db_connection_factory/1.1.0/db_connection_factory.jar"/>
 
     <property name="digital_run_entities.jar" value="${cronos_libdir}/digital_run_entities/1.0.0/digital_run_entities.jar"/>
 
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
     <property name="easymock.jar" value="${ext_libdir}/easymock/2.3/easymock.jar"/>
-    <property name="jdbc.informix.jar" value="${ext_libdir}/ifxjdbc/3.0/ifxjdbc.jar"/>
+    <property name="jdbc.informix.jar" value="${ext_libdir}/informix/ifxjdbc.jar"/>
 
     <property name="cglib.jar" value="${jboss_home}/server/${jboss_config_name}/lib/cglib.jar"/>
     <property name="dom4j.jar" value="${jboss_home}/server/${jboss_config_name}/lib/dom4j.jar"/>
