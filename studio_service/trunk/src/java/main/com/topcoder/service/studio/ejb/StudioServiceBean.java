@@ -10,6 +10,11 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+
+import com.topcoder.forum.service.CategoryConfiguration;
+import com.topcoder.forum.service.CategoryType;
+import com.topcoder.forum.service.JiveForumManagementException;
+import com.topcoder.forum.service.ejb.JiveForumServiceLocal;
 import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
@@ -166,6 +171,9 @@ public class StudioServiceBean implements StudioService {
      */
     @EJB
     private SubmissionManagerLocal submissionManager;
+
+    @EJB
+    private JiveForumServiceLocal jiveForumService;
 
     /**
      * <p>
@@ -418,8 +426,25 @@ public class StudioServiceBean implements StudioService {
             }
             contestData = convertContest(contest);
             contestData.setDocumentationUploads(documents);
+            
+            // [TCCC-287]
+            CategoryConfiguration categoryConfiguration = new CategoryConfiguration();
+            // Name: The name of the contest 
+            categoryConfiguration.setName(contest.getName());
+            // Description: "Forum for cockpit contest: " + name of contest 
+            categoryConfiguration.setDescription("Forum for cockpit contest: " + contest.getName());
+            // ComponentID: The ID of the contest 
+            categoryConfiguration.setComponentId(contest.getContestId());
+            // IsPublic: true 
+            categoryConfiguration.setPublic(true);
+            // CategoryType: Application
+            categoryConfiguration.setTemplateCategoryType(CategoryType.APPLICATION);
+            
+            jiveForumService.createCategory(categoryConfiguration);
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while creating new contest.", e);
+        } catch (JiveForumManagementException e) {
+            handlePersistenceError("JiveForumService reports error while creating new forum. " + e.getMessage(), e);
         }
 
         logExit("createContest", contestData);
