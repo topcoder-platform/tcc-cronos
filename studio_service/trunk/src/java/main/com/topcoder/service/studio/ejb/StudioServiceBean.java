@@ -1155,6 +1155,11 @@ public class StudioServiceBean implements StudioService {
                 / (60 * 60 * 1000);
         contestData.setDurationInHours(durationInHours);
 
+        // TCCC-299 Exception when Editing project
+        if (contest.getContestChannel() != null) {
+            contestData.setContestChannelId(contest.getContestChannel().getContestChannelId());
+        }
+        
         return contestData;
     }
 
