@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<!-- Configuration for ObjectFactory -->
+	<Config name="object_factory_child">
+		<Property name="PointsDAOImpl">
+			<Property name="type">
+				<Value>java.lang.String</Value>
+			</Property>
+		</Property>
+		<Property name="PointsTypeDAOImpl">
+			<Property name="type">
+				<Value>com.topcoder.service.digitalrun.points.dao.implementations.JPADigitalRunPointsTypeDAO</Value>
+			</Property>
+		</Property>
+		<Property name="PointsOperationDAOImpl">
+			<Property name="type">
+				<Value>com.topcoder.service.digitalrun.points.dao.implementations.JPADigitalRunPointsOperationDAO</Value>
+			</Property>
+		</Property>
+		<Property name="PointsReferenceTypeDAOImpl">
+			<Property name="type">
+				<Value>com.topcoder.service.digitalrun.points.dao.implementations.JPADigitalRunPointsReferenceTypeDAO</Value>
+			</Property>
+		</Property>
+		<Property name="PointsStatusDAOImpl">
+			<Property name="type">
+				<Value>com.topcoder.service.digitalrun.points.dao.implementations.JPADigitalRunPointsStatusDAO</Value>
+			</Property>
+		</Property>
+		<Property name="SearchStrategyImpl">
+			<Property name="type">
+				<Value>com.topcoder.service.digitalrun.points.dao.implementations.MockSearchStrategy</Value>
+			</Property>
+		</Property>
+		<Property name="ValidatorKey_1">
+			<Property name="type">
+				<Value>com.topcoder.service.digitalrun.points.dao.implementations.AlwaysTrueValidator</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<!-- Configuration for SearchBundle -->
+	<Config name="search_bundle_child">
+	    <Property name="name">
+		    <Value>Search_Name</Value>
+		</Property>
+		<Property name="context">
+		    <Value>Search_Context</Value>
+		</Property>
+		<Property name="search_strategy_key">
+		    <Value>SearchStrategyImpl</Value>
+		</Property>
+		<Property name="fields">
+		    <Property name="field_1">
+		        <Value>ValidatorKey_1</Value>
+		    </Property>
+		    <Property name="field_2">
+		        <Value>ValidatorKey_1</Value>
+		    </Property>
+		</Property>
+		<Property name="aliases">
+		    <Property name="alia_1">
+		        <Value>Name_1</Value>
+		    </Property>
+		    <Property name="alia_2">
+		        <Value>Name_2</Value>
+		    </Property>
+		</Property>
+	</Config>
+
+</CMConfig>
+

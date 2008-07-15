@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.topcoder.service.digitalrun.entity">
+    <class name="ProjectType" table="project_type_lu"
+        mutable="false">
+
+        <id name="id" column="project_type_id" type="long">
+            <generator class="assigned">
+                <!--  
+                    The project_type_lu table is immutable. the generator should be disable
+                -->
+            </generator>
+        </id>
+
+        <property name="name" type="java.lang.String" update="false" insert="true" column="name" />
+
+        <property name="creationUser" type="java.lang.String" update="false" insert="true"
+            column="create_user" />
+
+        <property name="modificationUser" type="java.lang.String" update="true" insert="true"
+            column="modify_user" />
+
+        <property name="creationDate" type="java.util.Date" update="false" insert="false"
+            column="create_date" />
+
+        <property name="modificationDate" type="java.util.Date" update="false" insert="false"
+            column="modify_date" />
+
+        <property name="description" type="java.lang.String" update="true" insert="true"
+            column="description" />
+
+    </class>
+
+</hibernate-mapping>

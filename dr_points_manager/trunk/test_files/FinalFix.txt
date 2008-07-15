@@ -1,0 +1,91 @@
+Final Fix5:
+
+As your wish.
+Add all assert in creation method in all JPAXXXDAOTest.
+
+
+Final Fix 4:
+1. It's so strange to say "In many tests, you did not assert the result after the CRUD"
+I have done in my submission.
+
+for example:
+com.topcoder.service.digitalrun.points.dao.implementations.JPADigitalRunPointsOperationDAOTest.testCreateDigitalRunPointsOperation_Accuracy()
+
+ public void testUpdateDigitalRunPointsOperation_Accuracy() throws Exception {
+        DigitalRunPointsOperation pointsOperation = new DigitalRunPointsOperation();
+        pointsOperation.setCreationDate(new Date());
+        pointsOperation.setModificationDate(new Date());
+        pointsOperation.setDescription("description");
+        impl.createDigitalRunPointsOperation(pointsOperation);
+
+        pointsOperation.setDescription("new description");
+        impl.updateDigitalRunPointsOperation(pointsOperation);
+
+        DigitalRunPointsOperation result = impl.getDigitalRunPointsOperation(pointsOperation.getId());
+        assertEquals("The description should be same as ", "new description", result.getDescription());
+
+        impl.removeDigitalRunPointsOperation(result.getId());
+    }
+
+2. I add missing in JPADigitalRunPointsDAOTest.
+
+3. I add tearDown to DAO tests.
+
+4. Add Demo with ejb.
+   Ant test.setup
+   Ant coveragetest.execute
+
+
+Final Fix3:
+1. I can pass all test case as usual. But I add em.clear at setup() while testing with DAO file.
+   I hope this can pass the test.
+
+2. "test and demo with ejb not fix"
+   I think it's not necessary with test the demo with ejb.
+   This component is work main with hibernate and database. The ejb is just use to give the EntityManager.
+   I mock the SessionContext but use Hibernate entity manager as real stituation.
+   So I think the test is strong enough. No need use ejb.
+
+
+---------------------------------------------------------------------------------------------------
+Final Fix2:
+1. Change the all dao test(includind demo) refer to database informix.
+   Please create database with test_files/DRSchema.ddl and test_files/id_sequences.sql
+
+2. Add simple config and simple code to DigitalRunPointsManagerBean.
+   I do not add the simple code to DigitalRunPointsFilterFactory. It's simple and just use it in static way.
+
+3. 4.1.7   KLW:  no demo updated.
+   I have update the demo in last fix. You can check the CS in submission/doc
+
+4. 7.1.1 moon.river: all the reviewers test cases can pass
+   Acc test, some test need to change.
+   The reviewer forget two thing:
+   1) do not use "em.getTransaction().begin()"
+   2} And when call "bean.createDigitalRunPoints(points);" we need create some other data in database first.
+      such as Track. You can see the DigitalRunPointsManagerBeanTest for details.
+   I change two file to show it and put them in my test_files
+
+-------------------------------------------------------------------------------------------------------------
+FinalFix:
+
+1: Change "select * from XXX" into "from DigitalRunPointsXXX"
+
+2: log input id parameter:
+   e.g. Helper.logEntranceInfo(getLogger(), methodName + " With Id[" + pointsTypeId + "]");
+
+3: Change the MockEntityManager.
+   It will use hibernate entity manager
+
+4: Add Demo
+
+5: Add lost tests
+
+
+-------------------------------------------------------------------------------------------------------------
+ReadMe.txt
+
+1. In DigitalRunPointsManagerBean
+   When error occurs, we should call sessionContext.setRollbackOnly().
+   I only do that while DigitalRunPointsManagerPersistenceException occurs.
+   Because IllegalArgumentException and EntityNotFoundException will not affect the context.
