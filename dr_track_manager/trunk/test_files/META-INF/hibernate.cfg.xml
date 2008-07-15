@@ -9,10 +9,10 @@
 			com.informix.jdbc.IfxDriver
 		</property>
 		<property name="connection.url">
-			jdbc:informix-sqli://localhost.localdomain:9088/sysmaster:INFORMIXSERVER=demo_on
+			jdbc:informix-sqli://192.168.1.106:1526/sysmaster:INFORMIXSERVER=demo_on
 		</property>
 		<property name="connection.username">informix</property>
-		<property name="connection.password">abcabcabc</property>
+		<property name="connection.password">topcoder</property>
 
 		<!-- SQL dialect -->
 		<property name="dialect">

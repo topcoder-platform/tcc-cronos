@@ -63,26 +63,26 @@
 
             <copy file="${base_exception.jar}" todir="${component.ear.dir}" overwrite="true"/>
             <copy file="${logging_wrapper.jar}" todir="${component.ear.dir}" overwrite="true"/>
-            <copy file="${object_formatter.jar}" todir="${component.ear.dir}" overwrite="true"/>
-            <copy file="${typesafe_enum.jar}" todir="${component.ear.dir}" overwrite="true"/>            
+            <copy file="${object_formatter.jar}" todir="${component.ear.dir}" overwrite="true"/>           
             <copy file="${search_builder.jar}" todir="${component.ear.dir}" overwrite="true"/>
             <copy file="${configuration_api.jar}" todir="${component.ear.dir}" overwrite="true"/>
             <copy file="${configuration_persistence.jar}" todir="${component.ear.dir}" overwrite="true"/>
             <copy file="${object_factory.jar}" todir="${component.ear.dir}" overwrite="true"/>
-            <copy file="${object_factory_config_manager_plugin.jar}" todir="${component.ear.dir}" overwrite="true"/>
             <copy file="${object_factory_configuration_api_plugin.jar}" todir="${component.ear.dir}" overwrite="true"/>
             <copy file="${data_validation.jar}" todir="${component.ear.dir}" overwrite="true"/>
-            <copy file="${class_associations.jar}" todir="${component.ear.dir}" overwrite="true"/>
-            <copy file="${configuration_manager.jar}" todir="${component.ear.dir}" overwrite="true"/>
-            <copy file="${id_generator.jar}" todir="${component.ear.dir}" overwrite="true"/>
-            <copy file="${db_connection_factory.jar}" todir="${component.ear.dir}" overwrite="true"/>
 
-            <copy file="${testfiles}/digital_run_entities.jar" todir="${component.ear.dir}" overwrite="true"/>
+            <copy file="${digital_run_entities.jar}" todir="${component.ear.dir}" overwrite="true"/>
             <copy file="${testfiles}/SaveCoberturaData.jar" todir="${component.ear.dir}" overwrite="true"/>
 
             <copy todir="${component.ear.dir}" overwrite="true">
                 <fileset dir="${testfiles}">
                     <include name="*.xml" />
+                </fileset>
+            </copy>
+            
+            <copy todir="${component.ear.dir}" overwrite="true">
+                <fileset dir="${test_reflib}">
+                    <include name="**/*.jar" />
                 </fileset>
             </copy>
 

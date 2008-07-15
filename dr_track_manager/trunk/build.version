@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=DR Track Manager
+component.distfilename=dr_track_manager
+component.package=com.topcoder.service.digitalrun.track
+component.packagedir=com/topcoder/service/digitalrun/track
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1
