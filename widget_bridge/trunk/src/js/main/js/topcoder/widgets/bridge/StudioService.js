@@ -89,7 +89,7 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 		if (onError == null) {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onError","onError callback should not be null");
 		}
-		// Create AJAXProcessor object
+        // Create AJAXProcessor object
 		var processor = new AJAXProcessor();
 		// Send a request asynchronously
 		processor.request({
@@ -97,7 +97,7 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	    	async: true,
 	     	method: "POST",
 	     	// the json string should be escaped properly here. 
-	     	sendingText: "service=studio&method=createContest&projectID=" + projectID + "&contest=" + escape(contest.toJSON()),
+	     	sendingText: "service=studio&method=createContest&projectID=" + projectID + "&contest=" + encodeURIComponent(contest.toJSON()),
 	     	onStateChange: function() {
 	        	// Handle the response
 	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
@@ -487,7 +487,7 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	    	async: true,
 	     	method: "POST",
 	     	// the json string should be escaped properly here. 
-	     	sendingText: "service=studio&method=removeDocumentFromContest&document="+ escape(document.toJSON()),
+	     	sendingText: "service=studio&method=removeDocumentFromContest&document="+ encodeURIComponent(document.toJSON()),
 	     	onStateChange: function() {
 	        	// Handle the response
 	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
@@ -624,7 +624,7 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	    	async: true,
 	     	method: "POST",
 	     	// the json string should be escaped properly here. 
-	     	sendingText: "service=studio&method=updateSubmission&submission="+ escape(submission.toJSON()),
+	     	sendingText: "service=studio&method=updateSubmission&submission="+ encodeURIComponent(submission.toJSON()),
 	     	onStateChange: function() {
 	        	// Handle the response
 	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
@@ -687,7 +687,7 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	    	async: true,
 	     	method: "POST",
 	     	// the json string should be escaped properly here. 
-	     	sendingText: "service=studio&method=updateContest&contest="+ escape(contest.toJSON()),
+	     	sendingText: "service=studio&method=updateContest&contest="+ encodeURIComponent(contest.toJSON()),
 	     	onStateChange: function() {
 	        	// Handle the response
 	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
@@ -1155,7 +1155,7 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	    	async: true,
 	     	method: "POST",
 	     	// the json string should be escaped properly here. 
-	     	sendingText: "service=studio&method=uploadDocument&document="+ escape(uploadedDocument.toJSON()),
+	     	sendingText: "service=studio&method=uploadDocument&document="+ encodeURIComponent(uploadedDocument.toJSON()),
 	     	onStateChange: function() {
 	        	// Handle the response
 	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
@@ -1355,7 +1355,7 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	    	async: true,
 	     	method: "POST",
 	     	// the json string should be escaped properly here. 
-	     	sendingText: "service=studio&method=createContestPayment&contestPayment=" + escape(contestPayment.toJSON()),
+	     	sendingText: "service=studio&method=createContestPayment&contestPayment=" + encodeURIComponent(contestPayment.toJSON()),
 	     	onStateChange: function() {
 	        	// Handle the response
 	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
@@ -1484,7 +1484,7 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	    	async: true,
 	     	method: "POST",
 	     	// the json string should be escaped properly here. 
-	     	sendingText: "service=studio&method=editContestPayment&contestPayment=" + escape(contestPayment.toJSON()),
+	     	sendingText: "service=studio&method=editContestPayment&contestPayment=" + encodeURIComponent(contestPayment.toJSON()),
 	     	onStateChange: function() {
 	        	// Handle the response
 	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
