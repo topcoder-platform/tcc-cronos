@@ -253,6 +253,36 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 	 * <p>Valid Values: must be greater or  -1</p>
 	 */
     var numberOfRegistrants /* long */ = -1;
+
+	/**
+	 * <p>Represents the opinion requires preview file.  It is added in the CID because it exists in the WSDL.</p>
+	 * <p>Initial Value: false, means not required</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 * <p>Valid Values: must be true or false.</p>
+	 */
+    var requiresPreviewFile /* bool */ = false;
+
+	/**
+	 * <p>Represents the opinion requires preview image.  It is added in the CID because it exists in the WSDL.</p>
+	 * <p>Initial Value: false, means not required</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 * <p>Valid Values: must be true or false.</p>
+	 */
+    var requiresPreviewImage /* bool */ = false;
+
+	/**
+	 * <p>Represents the maximum submissions. It is added in the CID because it exists in the WSDL.</p>
+	 * <p>Initial Value: -1, means not set.</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 * <p>Valid Values: must be equal to or greater than -1.</p>
+	 */
+    var maximumSubmissions /* long */ = -1;
     
 	/**
 	 * <p>Construct the js object with the json object.
@@ -489,7 +519,31 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 		} else {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.numberOfRegistrants",
 			"json.submissionCount does not exists");
-		}		
+		}
+		
+		// sets the maximumSubmissions
+		if (typeof(json.maximumSubmissions) != "undefined" && typeof(json.maximumSubmissions) == "number") {
+		    that.maximumSubmissions /* long */ = json.maximumSubmissions;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.maximumSubmissions",
+			"json.maximumSubmissions does not exists");
+		}
+
+		// sets the requiresPreviewImage
+		if (typeof(json.requiresPreviewImage) != "undefined" ) {
+		    that.requiresPreviewImage /* bool */ = json.requiresPreviewImage;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.requiresPreviewImage",
+			"json.requiresPreviewImage does not exists");
+		}
+		
+		// sets the requiresPreviewFile
+		if (typeof(json.requiresPreviewFile) != "undefined" ) {
+		    that.requiresPreviewFile /* bool */ = json.requiresPreviewFile;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.requiresPreviewFile",
+			"json.requiresPreviewFile does not exists");
+		}
 	}
 
 
@@ -796,6 +850,48 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
     }
 
     /**
+     * <p>Sets the maximumSubmissions.</p>
+     */
+    this.setMaximumSubmissions = function /* void */ (/* long */ maximumSubmissions) {
+        that.maximumSubmissions = maximumSubmissions;
+    }    
+
+    /**
+     * <p>Returns the maximumSubmissions.</p>
+     */
+    this.getMaximumSubmissions = function /* long */ () {
+        return that.maximumSubmissions;
+    }
+
+    /**
+     * <p>Sets the requiresPreviewFile.</p>
+     */
+    this.setRequiresPreviewFile = function /* void */ (/* bool */ requiresPreviewFile) {
+        that.requiresPreviewFile = requiresPreviewFile;
+    }    
+
+    /**
+     * <p>Returns the requiresPreviewFile.</p>
+     */
+    this.getRequiresPreviewFile = function /* bool */ () {
+        return that.requiresPreviewFile;
+    }
+
+    /**
+     * <p>Sets the requiresPreviewImage.</p>
+     */
+    this.setRequiresPreviewImage = function /* void */ (/* bool */ requiresPreviewImage) {
+        that.requiresPreviewImage = requiresPreviewImage;
+    }    
+
+    /**
+     * <p>Returns the requiresPreviewImage.</p>
+     */
+    this.getRequiresPreviewImage = function /* bool */ () {
+        return that.requiresPreviewImage;
+    }
+    
+    /**
      * <p>Sets the contestTypeID.</p>
      */
     this.setContestChannelID = function /* void */ (/* long */ contestChannelID) {
@@ -894,6 +990,9 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 		        + "\"tcDirectProjectID\" : " + that.getTcDirectProjectID() + ", "
 		        + "\"submissionCount\" : " + that.getSubmissionCount() + ", "
 		        + "\"numberOfRegistrants\" : " + that.getNumberOfRegistrants () + ", "
+		        + "\"maximumSubmissions\" : " + that.getMaximumSubmissions () + ", "
+		        + "\"requiresPreviewImage\" : " + that.getRequiresPreviewImage () + ", "
+		        + "\"requiresPreviewFile\" : " + that.getRequiresPreviewFile () + ", "
 		        + "\"creatorUserID\" : " + that.getCreatorUserID()
 		        + "}";
 	}
