@@ -673,6 +673,11 @@ function getContest1() {
     contest.setTcDirectProjectID(1000);
     contest.setCreatorUserID(7000);
     contest.setSubmissionCount(3);
+    contest.setRequiresPreviewFile(false);
+    contest.setRequiresPreviewImage(false);
+    contest.setMaximumSubmissions(100);
+    contest.setNumberOfRegistrants(100);
+    contest.setContestChannelID(1);
     
     return contest;
 }
