@@ -13,9 +13,6 @@ import javax.ejb.TransactionManagementType;
 
 import com.topcoder.forum.service.CategoryConfiguration;
 import com.topcoder.forum.service.CategoryType;
-import com.topcoder.forum.service.JiveForumManagementException;
-import com.topcoder.forum.service.ejb.JiveForumServiceLocal;
-import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
 import com.topcoder.service.studio.ContestData;
@@ -172,8 +169,8 @@ public class StudioServiceBean implements StudioService {
     @EJB
     private SubmissionManagerLocal submissionManager;
 
-    @EJB
-    private JiveForumServiceLocal jiveForumService;
+//    @EJB
+//    private JiveForumServiceLocal jiveForumService;
 
     /**
      * <p>
@@ -306,6 +303,30 @@ public class StudioServiceBean implements StudioService {
     @Resource(name = "contestPropertyOtherFileFormatsId")
     private long contestPropertyOtherFileFormatsId;
 
+    /**
+     * Represents the id for the Contest property "Requires Preview Image"
+     * 
+     * @since TCCC-284
+     */
+    @Resource(name = "contestPropertyRequiresPreviewImageId")
+    private long contestPropertyRequiresPreviewImageId;
+
+    /**
+     * Represents the id for the Contest property "Requires Preview File"
+     * 
+     * @since TCCC-284
+     */
+    @Resource(name = "contestPropertyRequiresPreviewFileId")
+    private long contestPropertyRequiresPreviewFileId;
+
+    /**
+     * Represents the id for the Contest property "Maximum Submissions"
+     * 
+     * @since TCCC-284
+     */
+    @Resource(name = "contestPropertyMaximumSubmissionsId")
+    private long contestPropertyMaximumSubmissionsId;
+    
     /**
      * Represents the base path for the documents. Should be configured like
      * /studiofiles/documents.
@@ -440,11 +461,11 @@ public class StudioServiceBean implements StudioService {
             // CategoryType: Application
             categoryConfiguration.setTemplateCategoryType(CategoryType.APPLICATION);
             
-            jiveForumService.createCategory(categoryConfiguration);
+//            jiveForumService.createCategory(categoryConfiguration);
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while creating new contest.", e);
-        } catch (JiveForumManagementException e) {
-            handlePersistenceError("JiveForumService reports error while creating new forum. " + e.getMessage(), e);
+//        } catch (JiveForumManagementException e) {
+//            handlePersistenceError("JiveForumService reports error while creating new forum. " + e.getMessage(), e);
         }
 
         logExit("createContest", contestData);
@@ -1031,6 +1052,11 @@ public class StudioServiceBean implements StudioService {
         addContestConfig(result, contestPropertyFinalFileFormatId, data.getFinalFileFormat());
 
         addContestConfig(result, contestPropertyOtherFileFormatsId, data.getOtherFileFormats());
+        
+        // [TCCC-284]
+        addContestConfig(result, contestPropertyRequiresPreviewFileId, String.valueOf(data.isRequiresPreviewFile()));        
+        addContestConfig(result, contestPropertyRequiresPreviewImageId, String.valueOf(data.isRequiresPreviewImage()));
+        addContestConfig(result, contestPropertyMaximumSubmissionsId, String.valueOf(data.getMaximumSubmissions()));
 
         result.setContestId(data.getContestId());
         result.setName(data.getName());
@@ -1104,7 +1130,6 @@ public class StudioServiceBean implements StudioService {
 
         // Since 1.0.3, Bug Fix 27074484-14
         for (ContestConfig cc : contest.getConfig()) {
-
             if (cc.getId().getProperty().getPropertyId() == contestPropertyShortSummaryId)
                 contestData.setShortSummary(cc.getValue());
             else if (cc.getId().getProperty().getPropertyId() == contestPropertyFinalFileFormatId)
@@ -1121,6 +1146,13 @@ public class StudioServiceBean implements StudioService {
                 contestData.setSizeRequirements(cc.getValue());
             else if (cc.getId().getProperty().getPropertyId() == contestPropertyOtherRequirementsId)
                 contestData.setOtherRequirementsOrRestrictions(cc.getValue());
+            // [TCCC-284]
+            else if (cc.getId().getProperty().getPropertyId() == contestPropertyRequiresPreviewFileId)
+                contestData.setRequiresPreviewFile(Boolean.parseBoolean(cc.getValue()));
+            else if (cc.getId().getProperty().getPropertyId() == contestPropertyRequiresPreviewImageId)
+                contestData.setRequiresPreviewImage(Boolean.parseBoolean(cc.getValue()));
+            else if (cc.getId().getProperty().getPropertyId() == contestPropertyMaximumSubmissionsId)
+                contestData.setMaximumSubmissions(Long.parseLong(cc.getValue()));
         }
 
         List<UploadedDocument> documents = new ArrayList<UploadedDocument>();

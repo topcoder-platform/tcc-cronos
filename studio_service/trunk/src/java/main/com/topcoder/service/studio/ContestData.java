@@ -186,6 +186,72 @@ public class ContestData implements Serializable {
     private String otherFileFormats;
 
     /**
+     * <p>
+     * Requires preview image.
+     * </p>
+     * @since TCCC-284
+     */
+    private boolean requiresPreviewImage;
+
+    /**
+     * <p>
+     * Requires preview file.
+     * </p>
+     * @since TCCC-284
+     */
+    private boolean requiresPreviewFile;
+
+    /**
+     * <p>
+     * Represents Maximum Submissions.
+     * </p>
+     * @since TCCC-284
+     */
+    private long maximumSubmissions;
+    
+    /**
+     * @return the requiresPreviewImage
+     */
+    public boolean isRequiresPreviewImage() {
+        return requiresPreviewImage;
+    }
+
+    /**
+     * @param requiresPreviewImage the requiresPreviewImage to set
+     */
+    public void setRequiresPreviewImage(boolean requiresPreviewImage) {
+        this.requiresPreviewImage = requiresPreviewImage;
+    }
+
+    /**
+     * @return the requiresPreviewFile
+     */
+    public boolean isRequiresPreviewFile() {
+        return requiresPreviewFile;
+    }
+
+    /**
+     * @param requiresPreviewFile the requiresPreviewFile to set
+     */
+    public void setRequiresPreviewFile(boolean requiresPreviewFile) {
+        this.requiresPreviewFile = requiresPreviewFile;
+    }
+
+    /**
+     * @return the maximumSubmissions
+     */
+    public long getMaximumSubmissions() {
+        return maximumSubmissions;
+    }
+
+    /**
+     * @param maximumSubmissions the maximumSubmissions to set
+     */
+    public void setMaximumSubmissions(long maximumSubmissions) {
+        this.maximumSubmissions = maximumSubmissions;
+    }
+
+    /**
      * Represents the status id.
      */
     private long statusId;
