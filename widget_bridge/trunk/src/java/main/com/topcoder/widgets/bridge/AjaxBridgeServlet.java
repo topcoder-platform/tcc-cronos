@@ -1106,15 +1106,16 @@ public class AjaxBridgeServlet extends HttpServlet {
         contest.setLaunchDateAndTime(getXMLGregorianCalendar(jsonContest.getString("launchDateAndTime")));
         contest.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(jsonContest
                 .getString("winnerAnnouncementDeadline")));
+        
+        // [TCCC-284]
+        contest.setRequiresPreviewFile(jsonContest.getBoolean("requiresPreviewFile"));
+        contest.setRequiresPreviewImage(jsonContest.getBoolean("requiresPreviewImage"));
+        contest.setMaximumSubmissions(jsonContest.getLong("maximumSubmissions"));
 
-        contest.setContestTypeId(jsonContest.getLong("contestTypeID")); // [
-        // 27128642
-        // -6]
-        contest.setContestChannelId(jsonContest.getLong("contestChannelID")); // [
-        // TCCC
-        // -
-        // 147
-        // ]
+        contest.setContestTypeId(jsonContest.getLong("contestTypeID"));
+        // [27128642-6]
+        contest.setContestChannelId(jsonContest.getLong("contestChannelID"));
+        // [TCCC-147]
 
         JSONArray jsonPrizes = jsonContest.getArray("prizes");
         if (jsonPrizes != null) {
