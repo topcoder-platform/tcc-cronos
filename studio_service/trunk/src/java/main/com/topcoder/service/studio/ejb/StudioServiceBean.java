@@ -1130,6 +1130,10 @@ public class StudioServiceBean implements StudioService {
 
         // Since 1.0.3, Bug Fix 27074484-14
         for (ContestConfig cc : contest.getConfig()) {
+
+        	// FIX [TCCC-326]
+        	if (cc.getValue() == null) continue;
+        	
             if (cc.getId().getProperty().getPropertyId() == contestPropertyShortSummaryId)
                 contestData.setShortSummary(cc.getValue());
             else if (cc.getId().getProperty().getPropertyId() == contestPropertyFinalFileFormatId)
