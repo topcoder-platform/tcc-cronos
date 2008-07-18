@@ -101,6 +101,12 @@ public class AjaxBridgeServlet extends HttpServlet {
     private static final String PAYPAL_ORDER_ID_ATTR = "paypalOrderID";
 
     /**
+     * <p>A <code>String</code> providing the name of session attribute which may hold the user ID returned by
+     * <code>PayPal</code> service.</p>
+     */
+    private static final String PAYPAL_ORDER_USER_ATTR = "paypalOrderUser";
+
+    /**
      * <p>
      * Serial version ID.
      * </p>
@@ -2148,14 +2154,26 @@ public class AjaxBridgeServlet extends HttpServlet {
                                             HttpServletResponse response) throws IOException, JSONEncodingException {
         boolean failed = false;
         HttpSession session = request.getSession(false);
-        if (session != null) {
-            String validPaypalOrderId = (String) session.getAttribute(PAYPAL_ORDER_ID_ATTR);
-            if (!payPalOrderId.equals(validPaypalOrderId)) {
-                error("Paypal Order ID verification failed. Valid PayPal order ID = [" + validPaypalOrderId
-                      + "]. Submitted PayPal order ID = [" + payPalOrderId + "]");
+        try {
+            if (session != null) {
+                final String validPaypalOrderId = (String) session.getAttribute(PAYPAL_ORDER_ID_ATTR);
+                if (!payPalOrderId.equals(validPaypalOrderId)) {
+                    error("Paypal Order ID verification failed. Valid PayPal order ID = [" + validPaypalOrderId
+                          + "]. Submitted PayPal order ID = [" + payPalOrderId + "]");
+                    failed = true;
+                } else {
+                    final String paypalUserId = (String) session.getAttribute(PAYPAL_ORDER_USER_ATTR);
+                    final String currentUserName = request.getUserPrincipal().getName();
+                    if (!currentUserName.equals(paypalUserId)) {
+                        error("Paypal Order ID verification failed. Current user ID = [" + currentUserName
+                              + "]. Submitted PayPal user ID = [" + paypalUserId + "]");
+                        failed = true;
+                    }
+                }
+            } else {
                 failed = true;
             }
-        } else {
+        } catch (Exception e) {
             failed = true;
         }
         if (failed) {
