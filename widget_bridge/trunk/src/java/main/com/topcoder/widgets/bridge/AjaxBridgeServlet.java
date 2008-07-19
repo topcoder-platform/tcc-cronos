@@ -15,6 +15,7 @@ import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -580,7 +581,10 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                     ContestPaymentData contestPayment = getContestPaymentFromJSON(jsonContestPayment);
                 
-                    if (checkPaypalOrderIdFraud(contestPayment.getPaypalOrderId() + "", request, response)) {
+                    if (checkPaypalOrderIdFraud(contestPayment.getPaypalOrderId() + "",
+                                                jsonContestPayment.getString("prize"),
+                                                jsonContestPayment.getString("contestId"),
+                                                request, response)) {
                         return;
                     }
                     
@@ -978,7 +982,7 @@ public class AjaxBridgeServlet extends HttpServlet {
                     if (checkDoubleIfLessThanZero(price, "price", response)) {
                         return;
                     }
-                    if (checkPaypalOrderIdFraud(payPalOrderId, request, response)) {
+                    if (checkPaypalOrderIdFraud(payPalOrderId, price, null, request, response)) {
                         return;
                     }
 
@@ -1006,7 +1010,7 @@ public class AjaxBridgeServlet extends HttpServlet {
                     if (checkIntegerIfLessThanZero(submissionId, "place", response)) {
                         return;
                     }
-                    if (checkPaypalOrderIdFraud(payPalOrderId, request, response)) {
+                    if (checkPaypalOrderIdFraud(payPalOrderId, null, null, request, response)) {
                         return;
                     }
 
@@ -2144,9 +2148,14 @@ public class AjaxBridgeServlet extends HttpServlet {
     }
 
     /**
-     * <p>Verifies that the specified <code>PayPal</code> order ID matches the one stored in current session.</p>
+     * <p>Verifies that the specified data for <code>PayPal</code> order ID matches the one stored in current
+     * application context to prevent fraud.</p>
      *
      * @param payPalOrderId a <code>String</code> providing the order ID ot be verified.
+     * @param amount a <code>String</code> providing the payment amount to be verified. May be <code>null</code> in case
+     *        amount verification has to be skipped.
+     * @param contestId a <code>String</code> providing the ID of a contest associated with payment to be verified. May
+     *        be <code>null</code> in case contest verification has to be skipped.
      * @param request an <code>HttpServletRequest</code> representing the incoming request from the client.
      * @param response a <code>HttpServletResponse</code> representing the outgoing response.
      * @return <code>true</code> if specified <code>PayPal</code> order ID does not match one stored in session or there
@@ -2154,34 +2163,83 @@ public class AjaxBridgeServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs while sending response to client.
      * @throws JSONEncodingException if an error occurs while encoding JSON response.
      */
-    private boolean checkPaypalOrderIdFraud(String payPalOrderId, HttpServletRequest request,
+    private boolean checkPaypalOrderIdFraud(String payPalOrderId, String amount, String contestId,
+                                            HttpServletRequest request,
                                             HttpServletResponse response) throws IOException, JSONEncodingException {
         boolean failed = false;
+        String message = null;
         HttpSession session = request.getSession(false);
         try {
             if (session != null) {
-                final String validPaypalOrderId = (String) session.getAttribute(PAYPAL_ORDER_ID_ATTR);
-                if (!payPalOrderId.equals(validPaypalOrderId)) {
-                    error("Paypal Order ID verification failed. Valid PayPal order ID = [" + validPaypalOrderId
-                          + "]. Submitted PayPal order ID = [" + payPalOrderId + "]");
-                    failed = true;
-                } else {
-                    final String paypalUserId = (String) session.getAttribute(PAYPAL_ORDER_USER_ATTR);
+                ServletContext servletContext = session.getServletContext();
+                PayPalResponseListener paypalListener
+                    = (PayPalResponseListener) servletContext.getAttribute("paypalListener");
+                String[] paypalOrderData = paypalListener.getPayPalOrderData(payPalOrderId);
+                if (paypalOrderData != null) {
+                    // Verify user principal name
+                    final String paypalUserId = paypalOrderData[1];
                     final String currentUserName = request.getUserPrincipal().getName();
-                    if (!currentUserName.equals(paypalUserId)) {
+                    if (!currentUserName.equalsIgnoreCase(paypalUserId)) {
                         error("Paypal Order ID verification failed. Current user ID = [" + currentUserName
-                              + "]. Submitted PayPal user ID = [" + paypalUserId + "]");
+                              + "]. User ID returned from PayPal = [" + paypalUserId + "]");
                         failed = true;
+                        message = "Wrong user";
+                    } else {
+                        // Verify user session ID
+                        final String sessionId = paypalOrderData[0];
+                        final String currentSessionId = session.getId();
+                        if (!currentSessionId.equals(sessionId)) {
+                            error("Paypal Order ID verification failed. Current session ID = [" + currentSessionId
+                                  + "]. Session ID returned from PayPal = [" + sessionId + "]");
+                            failed = true;
+                            message = "Wrong session";
+                        } else {
+                            // Verify payment amount
+                            if (amount != null) {
+                                final Double numericAmount = new Double(amount);
+                                final String paypalAmount = paypalOrderData[4];
+                                final Double numericPaypalAmount = new Double(paypalAmount);
+                                if (numericAmount.compareTo(numericPaypalAmount) != 0) {
+                                    error("Paypal Order ID verification failed. Submitted payment amount = ["
+                                          + numericAmount + "]. Payment amount returned by PayPal = ["
+                                          + numericPaypalAmount + "]");
+                                    failed = true;
+                                    message = "Wrong payment amount";
+                                }
+                            }
+                            // Verify contest ID
+                            if (contestId != null) {
+                                final String paypalContestId = paypalOrderData[2];
+                                if (!contestId.equals(paypalContestId)) {
+                                    error("Paypal Order ID verification failed. Submitted contest ID = ["
+                                          + contestId + "]. Contest ID returned by PayPal = ["
+                                          + paypalContestId + "]");
+                                    failed = true;
+                                    message = "Wrong contest";
+                                }
+                            }
+                        }
                     }
+                } else {
+                    error("Paypal Order ID verification failed. Submitted PayPal order ID = [" + payPalOrderId + "] "
+                          + "was not registered by PayPal first");
+                    failed = true;
+                    message = "Unknown order";
                 }
             } else {
+                error("Paypal Order ID verification failed. There is no active session.");
                 failed = true;
+                message = "No active session";
             }
         } catch (Exception e) {
+            e.printStackTrace();
+            error("Paypal Order ID verification failed. Unexpected error: " + e);
             failed = true;
+            message = "Unexpected error";
         }
         if (failed) {
-            sendErrorJSONResponse("Paypal Order ID verification failed. Please contact TopCoder support", response);
+            sendErrorJSONResponse("Paypal Order ID verification failed [" + message + "]. "
+                                  + "Please contact TopCoder support", response);
         }
         return failed;
     }
