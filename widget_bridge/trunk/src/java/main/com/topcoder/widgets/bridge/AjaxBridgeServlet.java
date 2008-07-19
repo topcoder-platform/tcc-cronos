@@ -582,8 +582,8 @@ public class AjaxBridgeServlet extends HttpServlet {
                     ContestPaymentData contestPayment = getContestPaymentFromJSON(jsonContestPayment);
                 
                     if (checkPaypalOrderIdFraud(contestPayment.getPaypalOrderId() + "",
-                                                jsonContestPayment.getString("prize"),
-                                                jsonContestPayment.getString("contestId"),
+                                                jsonContestPayment.getDouble("price") + "",
+                                                jsonContestPayment.getLong("contestId") + "",
                                                 request, response)) {
                         return;
                     }
