@@ -2916,7 +2916,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             
             EntityManager em = getEntityManager();
 
-            Query query = em.createQuery("select c from Medium");
+            Query query = em.createQuery("select m from Medium m");
 
             List list = query.getResultList();
             List<Medium> result = new ArrayList<Medium>();
