@@ -14,6 +14,7 @@
 <script language='javascript' src="js/UploadedDocument.js"></script>
 <script language='javascript' src="js/IllegalArgumentException.js"></script>
 <script language='javascript' src="js/InvalidResponseException.js"></script>
+<script language='javascript' src="js/Medium.js"></script>
 
 <script language="JavaScript">
 
@@ -35,7 +36,7 @@ function testStudioCreateContest() {
     }
     
     var contest = getContest1();
-contest.setContestID(-1);
+    contest.setContestID(-1);
     studioService.createContest(contest,projectID,success,error);
 }
 
@@ -649,6 +650,9 @@ function getContest1() {
         "{\"name\" : \"JSON Payload Name2\",\"value\" : \"JSON Payload Value2\",\"description\" : \"JSON Payload Desc2\","+
         "\"required\" : true, \"contestTypeID\" : 4444}";
     
+    var medium1 = "{\"mediumId\" : 1, \"description\" : \"Web\"}";
+    var medium2 = "{\"mediumId\" : 2, \"description\" : \"Application\"}";
+        
     var contest = new js.topcoder.widgets.bridge.Contest();
     contest.setContestID(1);
     contest.setProjectID(1);
@@ -665,6 +669,7 @@ function getContest1() {
     contest.setDocumentationUploads([]); // array
     contest.setStatusID(1);
     contest.setContestPayloads([payload1, payload2]); // array
+    contest.setMedia([medium1, medium2]); // medium array
     contest.setContestDescriptionAndRequirements("This is a long desc");
     contest.setRequiredOrRestrictedColors("red");
     contest.setRequiredOrRestrictedFonts("arial");

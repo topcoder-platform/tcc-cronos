@@ -46,6 +46,7 @@ import com.topcoder.service.studio.ContestPayload;
 import com.topcoder.service.studio.ContestPaymentData;
 import com.topcoder.service.studio.ContestStatusData;
 import com.topcoder.service.studio.ContestTypeData;
+import com.topcoder.service.studio.MediumData;
 import com.topcoder.service.studio.PersistenceException;
 import com.topcoder.service.studio.PrizeData;
 import com.topcoder.service.studio.StudioService;
@@ -732,6 +733,17 @@ public class AjaxBridgeServlet extends HttpServlet {
                     sendJSONObjectWithArrayAsResponse(typeArr, response);
 
                     debug("getAllContestTypes success!");
+                } else if ("getAllMedia".equals(method)) {
+                    debug("start to get all media.");
+                    List<MediumData> media = studioService.getAllMediums();
+                    JSONArray mediumArr = new JSONArray();
+                    for (MediumData medium : media) {
+                        JSONObject respJSON = getJSONFromMedium(medium);
+                        mediumArr.addJSONObject(respJSON);
+                    }
+                    sendJSONObjectWithArrayAsResponse(mediumArr, response);
+
+                    debug("getAllMedia success!");
                 } else if ("uploadDocumentForContest".equals(method)) {
                     // verify here again if the form we received is
                     // multipart/form-data
@@ -1176,6 +1188,17 @@ public class AjaxBridgeServlet extends HttpServlet {
             contest.setContestPayloads(listOfPayloads);
         }
 
+        JSONArray jsonMedia = jsonContest.getArray("media");
+        if (jsonMedia != null) {
+            Object[] media = jsonMedia.getObjects();
+            List<MediumData> listOfMedium = new ArrayList<MediumData>();
+            if (media != null) {
+                for (int i = 0; i < media.length; i++) {
+                    listOfMedium.add(getMediumFromJSON((JSONObject) media[i]));
+                }
+            }
+            contest.setMedia(listOfMedium);
+        }
         return contest;
     }
 
@@ -1316,6 +1339,30 @@ public class AjaxBridgeServlet extends HttpServlet {
 
     /**
      * <p>
+     * Convenience method in getting a medium object from a JSONObject.
+     * </p>
+     * 
+     * @param jsonMedium
+     *            the JSONObject where the values will be coming from
+     * @return the contest medium object created from this json object
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code> or <code>value</code>
+     *             is NaN, positive infinity, or negative infinity.
+     * @throws JSONInvalidKeyException
+     *             If there is no data for the given key.
+     * @throws JSONDataAccessTypeException
+     *             If the data associated with the key can not be retrieved as a
+     *             long.
+     */
+    private MediumData getMediumFromJSON(JSONObject jsonMedium) {
+        MediumData medium = new MediumData();
+        medium.setMediumId(jsonMedium.getLong("mediumId"));
+        medium.setDescription(jsonMedium.getString("description"));
+        return medium;
+    }
+    
+    /**
+     * <p>
      * Convenience method in getting a JSON object from an ContestPayload.
      * </p>
      * 
@@ -1338,6 +1385,30 @@ public class AjaxBridgeServlet extends HttpServlet {
         respJSON.setBoolean("required", payload.isRequired());
         respJSON.setString("description", getString(payload.getDescription()));
         respJSON.setLong("contestTypeID", payload.getContestTypeId());
+        return respJSON;
+    }
+
+    /**
+     * <p>
+     * Convenience method in getting a JSON object from an Medium.
+     * </p>
+     * 
+     * @param medium
+     *            the MediumData object where the values will be coming from
+     * @return the json object created from this medium object
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code> or <code>value</code>
+     *             is NaN, positive infinity, or negative infinity.
+     * @throws JSONInvalidKeyException
+     *             If there is no data for the given key.
+     * @throws JSONDataAccessTypeException
+     *             If the data associated with the key can not be retrieved as a
+     *             long.
+     */
+    private JSONObject getJSONFromMedium(MediumData medium) {
+        JSONObject respJSON = new JSONObject();
+        respJSON.setString("description", medium.getDescription());
+        respJSON.setLong("mediumId", medium.getMediumId());
         return respJSON;
     }
 
@@ -1473,6 +1544,18 @@ public class AjaxBridgeServlet extends HttpServlet {
             }
         }
         respJSON.setArray("contestPayloads", jsonPayloads);
+
+        // contest media
+        // setup the JSONArray of Contest media
+        JSONArray jsonMedia = new JSONArray();
+        List<MediumData> media = contest.getMedia();
+        // check if it is null
+        if (media != null) {
+            for (MediumData medium : media) {
+                jsonMedia.addJSONObject(getJSONFromMedium(medium));
+            }
+        }
+        respJSON.setArray("media", jsonMedia);
 
         return respJSON;
     }

@@ -1577,4 +1577,60 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	     	}
 	     });
 	}
+	
+	/**
+	 * <p>
+	 * Get all media asynchronously, if the media are retrieved successfully, onSuccess
+	 * callback function will be called with the retrieved media, otherwise onError will be called.
+	 * </p>
+	 *
+	 * @throws IllegalArgumentException if any argument is null
+	 * @throws InvalidResponseException if the received response is invalid.
+	 */
+	this.getAllMedia = getAllMedia;
+	function /* void */ getAllMedia(/* MediaHandler */ onSuccess, /* ErrorHandler */ onError ) {
+		if (onSuccess == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onSuccess","onSuccess callback should not be null");
+		}
+		if (onError == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onError","onError callback should not be null");
+		}
+		var processor = new AJAXProcessor();
+		processor.request({
+	    	url:  servletUrlString,
+	    	async: true,
+	     	method: "POST",
+	     	sendingText: "service=studio&method=getAllMedia",
+	     	onStateChange: function() {
+	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
+	            	var response = processor.getResponseText();
+	                var jsonResp = eval("(" + response + ")");
+	                if (jsonResp == null) {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getAllMedia","Invalid response");
+	                }
+	                if (typeof(jsonResp.success) == "undefined") {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getAllMedia","Invalid response");
+	                }	                
+	                if (jsonResp.success == false) {
+		                if (typeof(jsonResp.error) == "undefined") {
+		                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getAllMedia","Invalid response");
+		                }	                
+	                	onError(jsonResp.error);
+	                } else {
+		                if (typeof(jsonResp.json) == "undefined") {
+		                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getAllMedia","Invalid response");
+		                }	                
+	                	// success
+	                	var media = new Array();
+	                	var mediaJSONArray = jsonResp.json;
+	                	for(var x = 0; x < mediaJSONArray.length; x++) {
+	                		var medium = new js.topcoder.widgets.bridge.Medium(mediaJSONArray[x]);
+	                		media[x] = medium;
+	                	}
+	                	onSuccess(media );
+	                }
+	           }
+	     	}
+	     });
+	}	
 } // end

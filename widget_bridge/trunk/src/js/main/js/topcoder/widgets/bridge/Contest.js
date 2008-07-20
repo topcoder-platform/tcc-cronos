@@ -283,7 +283,17 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 	 * <p>Valid Values: must be equal to or greater than -1.</p>
 	 */
     var maximumSubmissions /* long */ = -1;
-    
+
+	/**
+	 * <p>Represents the the media of contest.</p>
+	 * <p>Initial Value: empty array; it's final , it's empty at beginning</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 * <p>Valid Values:  it's not null, can be empty, can't contain null values</p>
+	 */
+    var media /* Medium[] */ = new Array();
+
 	/**
 	 * <p>Construct the js object with the json object.
 	 * Set json's properties to the corresponding properties of this js object.
@@ -444,7 +454,21 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 			"json.contestPayloads does not exists");
 		}
 
-
+		// sets the media
+		// since this has already been evaluated, we convert the json object to a json string
+		if (typeof(json.media) != "undefined" && typeof(json.media) == "object") {
+			var tempMedia = json.media;
+			var mediumArray = new Array();
+			for (var x = 0; x < tempMedia.length; x++) {
+				mediumArray[x] = 
+					"{\"description\" : \"" + tempMedia[x].description + "\", \"mediumId\" : " + tempMedia[x].mediumId + "}";
+			}
+		    that.media /* Medium[] */ = mediumArray;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.media",
+			"json.media does not exists");
+		}
+		
 		// sets the contestDescriptionAndRequirements
 		if (typeof(json.contestDescriptionAndRequirements) != "undefined"
 		    && typeof(json.contestDescriptionAndRequirements) == "string") {
@@ -618,6 +642,20 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
         that.documentationUploads = documentationUploads;
     }
 
+    /**
+     * <p>Returns the media.</p>
+     */
+    this.getMedia = function /* Medium[] */ () {
+        return that.media;
+    }
+
+    /**
+     * <p>Sets the media.</p>
+     */
+    this.setMedia = function /* void */ (/* Medium[] */ media) {
+        that.media = media;
+    }
+    
     /**
      * <p>Returns the durationInHours.</p>
      */
@@ -966,12 +1004,29 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 		}
 		locContPay += "]";
 
+		// setup Contest medium json string
+		var locMed = "[";
+		var tempMed = that.getMedia();
+		if ( typeof(tempMed) == "undefined" )
+		{
+			tempMed = new Array();
+		}
+		for (var x = 0; x < tempMed.length;  x++) {
+			if (x == 0) {
+				locMed += tempMed[x];
+			} else {
+				locMed += ("," + tempMed[x]);
+			}
+		}
+		locMed += "]";
+		
 		return	"{"
 		        + "\"contestID\" : " + that.getContestID() + ", "
 		        + "\"projectID\" : " + that.getProjectID() + ", "
 		        + "\"name\" : \"" + that.getName() + "\", "
 		        + "\"shortSummary\" : \"" + that.getShortSummary() + "\", "
 		        + "\"prizes\" : " + locPrizes + ", "
+		        + "\"media\" : " + locMed + ", "
 		        + "\"launchDateAndTime\" : \"" + that.getLaunchDateAndTime() + "\", "
 		        + "\"durationInHours\" : " + that.getDurationInHours() + ", "
 		        + "\"winnerAnnouncementDeadline\" : \"" + that.getWinnerAnnouncementDeadline() + "\", "
