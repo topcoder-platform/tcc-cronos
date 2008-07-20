@@ -13,6 +13,8 @@ import javax.ejb.TransactionManagementType;
 
 import com.topcoder.forum.service.CategoryConfiguration;
 import com.topcoder.forum.service.CategoryType;
+import com.topcoder.forum.service.JiveForumManagementException;
+import com.topcoder.forum.service.ejb.JiveForumServiceLocal;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
 import com.topcoder.service.studio.ContestData;
@@ -23,6 +25,7 @@ import com.topcoder.service.studio.ContestStatusData;
 import com.topcoder.service.studio.ContestTypeData;
 import com.topcoder.service.studio.DocumentNotFoundException;
 import com.topcoder.service.studio.IllegalArgumentWSException;
+import com.topcoder.service.studio.MediumData;
 import com.topcoder.service.studio.PersistenceException;
 import com.topcoder.service.studio.PrizeData;
 import com.topcoder.service.studio.StatusNotAllowedException;
@@ -46,6 +49,7 @@ import com.topcoder.service.studio.contest.Document;
 import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.contest.FilePath;
+import com.topcoder.service.studio.contest.Medium;
 import com.topcoder.service.studio.contest.MimeType;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.submission.PaymentStatus;
@@ -74,6 +78,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -169,8 +174,8 @@ public class StudioServiceBean implements StudioService {
     @EJB
     private SubmissionManagerLocal submissionManager;
 
-//    @EJB
-//    private JiveForumServiceLocal jiveForumService;
+    // @EJB
+    // private JiveForumServiceLocal jiveForumService;
 
     /**
      * <p>
@@ -326,7 +331,7 @@ public class StudioServiceBean implements StudioService {
      */
     @Resource(name = "contestPropertyMaximumSubmissionsId")
     private long contestPropertyMaximumSubmissionsId;
-    
+
     /**
      * Represents the base path for the documents. Should be configured like
      * /studiofiles/documents.
@@ -447,25 +452,27 @@ public class StudioServiceBean implements StudioService {
             }
             contestData = convertContest(contest);
             contestData.setDocumentationUploads(documents);
-            
+
             // [TCCC-287]
             CategoryConfiguration categoryConfiguration = new CategoryConfiguration();
-            // Name: The name of the contest 
+            // Name: The name of the contest
             categoryConfiguration.setName(contest.getName());
-            // Description: "Forum for cockpit contest: " + name of contest 
+            // Description: "Forum for cockpit contest: " + name of contest
             categoryConfiguration.setDescription("Forum for cockpit contest: " + contest.getName());
-            // ComponentID: The ID of the contest 
+            // ComponentID: The ID of the contest
             categoryConfiguration.setComponentId(contest.getContestId());
-            // IsPublic: true 
+            // IsPublic: true
             categoryConfiguration.setPublic(true);
             // CategoryType: Application
             categoryConfiguration.setTemplateCategoryType(CategoryType.APPLICATION);
-            
-//            jiveForumService.createCategory(categoryConfiguration);
+
+            // jiveForumService.createCategory(categoryConfiguration);
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while creating new contest.", e);
-//        } catch (JiveForumManagementException e) {
-//            handlePersistenceError("JiveForumService reports error while creating new forum. " + e.getMessage(), e);
+            // } catch (JiveForumManagementException e) {
+            // handlePersistenceError(
+            // "JiveForumService reports error while creating new forum. " +
+            // e.getMessage(), e);
         }
 
         logExit("createContest", contestData);
@@ -914,14 +921,13 @@ public class StudioServiceBean implements StudioService {
                     // prevent NPE
                     data.setStatusId(status.getContestStatusId());
                 }
-                
-                
+
                 List<Long> nextStatuses = new ArrayList<Long>();
                 for (ContestStatus cs : status.getStatuses()) {
-                	nextStatuses.add(cs.getContestStatusId());
+                    nextStatuses.add(cs.getContestStatusId());
                 }
-                
-				data.setAllowableNextStatus(nextStatuses );
+
+                data.setAllowableNextStatus(nextStatuses);
                 result.add(data);
             }
 
@@ -1052,9 +1058,9 @@ public class StudioServiceBean implements StudioService {
         addContestConfig(result, contestPropertyFinalFileFormatId, data.getFinalFileFormat());
 
         addContestConfig(result, contestPropertyOtherFileFormatsId, data.getOtherFileFormats());
-        
+
         // [TCCC-284]
-        addContestConfig(result, contestPropertyRequiresPreviewFileId, String.valueOf(data.isRequiresPreviewFile()));        
+        addContestConfig(result, contestPropertyRequiresPreviewFileId, String.valueOf(data.isRequiresPreviewFile()));
         addContestConfig(result, contestPropertyRequiresPreviewImageId, String.valueOf(data.isRequiresPreviewImage()));
         addContestConfig(result, contestPropertyMaximumSubmissionsId, String.valueOf(data.getMaximumSubmissions()));
 
@@ -1074,6 +1080,14 @@ public class StudioServiceBean implements StudioService {
         result.setContestChannel(contestManager.getContestChannel(data.getContestChannelId()));
         result.setCreatedUser(data.getCreatorUserId());
 
+        Set<Medium> media = new HashSet<Medium>();
+        for (MediumData mediumData : data.getMedia()) {
+            Medium medium = new Medium();
+            medium.setDescription(mediumData.getDescription());
+            medium.setMediumId(mediumData.getMediumId());
+            media.add(medium);
+        }
+        result.setMedia(media);
         return result;
     }
 
@@ -1131,9 +1145,10 @@ public class StudioServiceBean implements StudioService {
         // Since 1.0.3, Bug Fix 27074484-14
         for (ContestConfig cc : contest.getConfig()) {
 
-        	// FIX [TCCC-326]
-        	if (cc.getValue() == null) continue;
-        	
+            // FIX [TCCC-326]
+            if (cc.getValue() == null)
+                continue;
+
             if (cc.getId().getProperty().getPropertyId() == contestPropertyShortSummaryId)
                 contestData.setShortSummary(cc.getValue());
             else if (cc.getId().getProperty().getPropertyId() == contestPropertyFinalFileFormatId)
@@ -1187,15 +1202,25 @@ public class StudioServiceBean implements StudioService {
         contestData.setPrizes(prizes);
 
         // TCCC-293
-        double durationInHours = (contest.getEndDate().getTime() - contest.getStartDate().getTime())
-                / (60 * 60 * 1000);
+        double durationInHours = (contest.getEndDate().getTime() - contest.getStartDate().getTime()) / (60 * 60 * 1000);
         contestData.setDurationInHours(durationInHours);
 
         // TCCC-299 Exception when Editing project
         if (contest.getContestChannel() != null) {
             contestData.setContestChannelId(contest.getContestChannel().getContestChannelId());
         }
-        
+
+        List<MediumData> mediums = new ArrayList<MediumData>();
+
+        for (Medium medium : contest.getMedia()) {
+            MediumData mediumData = new MediumData();
+            mediumData.setDescription(medium.getDescription());
+            mediumData.setMediumId(medium.getMediumId());
+            mediums.add(mediumData);
+        }
+
+        contestData.setMedia(mediums);
+
         return contestData;
     }
 
@@ -1808,8 +1833,7 @@ public class StudioServiceBean implements StudioService {
                 logError("User is admin.");
                 contests = contestManager.getAllContests();
             } else {
-                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext
-                        .getCallerPrincipal();
+                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
                 logError("User " + p.getUserId() + " is non-admin.");
                 contests = contestManager.getContestsForUser(p.getUserId());
             }
@@ -1817,12 +1841,11 @@ public class StudioServiceBean implements StudioService {
             for (Contest contest : contests) {
                 result.add(convertContest(contest));
             }
-            
+
             logExit("getAllContests", result);
             return result;
         } catch (ContestManagementException e) {
-            handlePersistenceError(
-                    "ContestManager reports error while retrieving contest.", e);
+            handlePersistenceError("ContestManager reports error while retrieving contest.", e);
         }
 
         return null;
@@ -1881,8 +1904,7 @@ public class StudioServiceBean implements StudioService {
 
             ArrayList<ContestData> result = new ArrayList<ContestData>();
             for (Contest contest : contests) {
-                if (clientId == contestManager.getClientForContest(contest
-                        .getContestId())) {
+                if (clientId == contestManager.getClientForContest(contest.getContestId())) {
                     result.add(convertContest(contest));
                 }
             }
@@ -1890,8 +1912,7 @@ public class StudioServiceBean implements StudioService {
             logExit("getContestsForClient", result);
             return result;
         } catch (ContestManagementException e) {
-            handlePersistenceError(
-                    "ContestManager reports error while retrieving contest.", e);
+            handlePersistenceError("ContestManager reports error while retrieving contest.", e);
         }
 
         return null;
@@ -2450,5 +2471,36 @@ public class StudioServiceBean implements StudioService {
         contestPaymentData.setPrice(contestPayment.getPrice());
 
         return contestPaymentData;
+    }
+
+    /**
+     * <p>
+     * This is going to fetch all the currently available media.
+     * </p>
+     * 
+     * @return the list of all available mediums (or empty if none found)
+     * 
+     * @throws PersistenceException
+     *             if any error occurs when getting medium.
+     */
+    public List<MediumData> getAllMediums() throws PersistenceException {
+        logEnter("getAllMediums");
+        try {
+            ArrayList<MediumData> result = new ArrayList<MediumData>();
+            for (Medium medium : contestManager.getAllMedia()) {
+                MediumData data = new MediumData();
+                data.setDescription(medium.getDescription());
+                data.setMediumId(medium.getMediumId());
+
+                result.add(data);
+            }
+
+            logExit("getAllMediums", result);
+            return result;
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManagement reports error while retrieving Mediums.", e);
+        }
+
+        return null;
     }
 }

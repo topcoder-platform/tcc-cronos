@@ -72,6 +72,13 @@ public class ContestData implements Serializable {
 
     /**
      * <p>
+     * Represents the media
+     * </p>
+     */
+    private final List<MediumData> media = new ArrayList<MediumData>();
+    
+    /**
+     * <p>
      * Represents the date of contest launch
      * </p>
      */
@@ -386,7 +393,35 @@ public class ContestData implements Serializable {
         this.prizes.clear();
         this.prizes.addAll(prizes);
     }
-    
+
+
+    /**
+     * <p>
+     * Return the media
+     * </p>
+     *
+     * @return the media
+     */
+    public List<MediumData> getMedia() {
+        return new ArrayList<MediumData>(media);
+    }
+
+    /**
+     * <p>
+     * Set the media
+     * </p>
+     *
+     * @param media
+     *            the media to set
+     * @throws IllegalArgumentException
+     *             if the argument is null
+     */
+    public void setMedia(List<MediumData> mediums) {
+        Util.checkNull("media", mediums);
+        this.media.clear();
+        this.media.addAll(mediums);
+    }
+
     /**
      * <p>
      * Return the launchDateAndTime

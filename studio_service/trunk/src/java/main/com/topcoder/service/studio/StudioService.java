@@ -503,4 +503,17 @@ public interface StudioService {
      * @throws ContestManagementException if any error occurs.
      */
     public boolean removeContestPayment(long contestPaymentId) throws PersistenceException;
+    
+
+    /**
+     * <p>
+     * This is going to fetch all the currently available media.
+     * </p>
+     * 
+     * @return the list of all available mediums (or empty if none found)
+     * 
+     * @throws PersistenceException
+     *             if any error occurs when getting medium.
+     */
+    public List<MediumData> getAllMediums() throws PersistenceException;
 }
