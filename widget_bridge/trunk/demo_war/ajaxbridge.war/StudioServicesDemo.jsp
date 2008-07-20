@@ -170,6 +170,27 @@ function testStudioGetAllContestTypes() {
 }
 
 
+/**
+ * <p>Tests Studio.testStudioGetAllMedia().</p>
+ */
+function testStudioGetAllMedia() {
+    // initialize the studio service
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+
+    // success callback 
+    var success = function(media) {
+        for (var i = 0; i < media.length; i++) {
+            alert("Success = Medium returned index["+i+"]: "+media[i].toJSON());
+        }
+    }
+    // error callback
+    var error = function(errMsg) {
+        alert("Error = "+errMsg);
+    }
+    
+    studioService.getAllMedia(success,error);
+}
+
 
 
 /**
@@ -809,6 +830,7 @@ Widget Webservices Bridge Demo
     <li>Studio.editContestPayment() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioEditContestPayment()" /></li>
     <li>Studio.removeContestPayment() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioRemoveContestPayment()" /></li>
     <li>Studio.getContestPayment() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetContestPayment()" /></li>
+    <li>Studio.getAllMedia() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetAllMedia()" /></li>
 </ul>
 <br />
 <span style="color:red;"><b>Some Studio Services Error Demo</b></span>
