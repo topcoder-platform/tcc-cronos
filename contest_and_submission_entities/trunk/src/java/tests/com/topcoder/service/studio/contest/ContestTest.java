@@ -18,7 +18,7 @@ import com.topcoder.service.studio.submission.Submission;
  * <p>
  * Tests the functionality of {@link Contest} class.
  * </p>
- *
+ * 
  * @author cyberjag
  * @version 1.0
  */
@@ -51,7 +51,7 @@ public class ContestTest extends TestCase {
      * <p>
      * Returns all tests.
      * </p>
-     *
+     * 
      * @return Test suite of all tests of this class.
      */
     public static Test suite() {
@@ -73,10 +73,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#getContestId()} and {@link Contest#setContestId(Long)} method.
+     * Accuracy test for {@link Contest#getContestId()} and
+     * {@link Contest#setContestId(Long)} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is new Long(1).
+     * Sets the value and expects the same while retrieving. Input value is new
+     * Long(1).
      * </p>
      */
     public void test_accuracy_getContestId() {
@@ -87,10 +89,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setContestId(Long)} and {@link Contest#getContestId()} method.
+     * Accuracy test for {@link Contest#setContestId(Long)} and
+     * {@link Contest#getContestId()} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is Valid.
+     * Sets the value and expects the same while retrieving. Input value is
+     * Valid.
      * </p>
      */
     public void test_accuracy_setContestId() {
@@ -101,10 +105,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#getName()} and {@link Contest#setName(String)} method.
+     * Accuracy test for {@link Contest#getName()} and
+     * {@link Contest#setName(String)} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is null.
+     * Sets the value and expects the same while retrieving. Input value is
+     * null.
      * </p>
      */
     public void test_accuracy_getName() {
@@ -115,10 +121,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setName(String)} and {@link Contest#getName()} method.
+     * Accuracy test for {@link Contest#setName(String)} and
+     * {@link Contest#getName()} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is "test".
+     * Sets the value and expects the same while retrieving. Input value is
+     * "test".
      * </p>
      */
     public void test_accuracy_setName() {
@@ -133,14 +141,14 @@ public class ContestTest extends TestCase {
      * {@link Contest#setContestChannel(ContestChannel)} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is null.
+     * Sets the value and expects the same while retrieving. Input value is
+     * null.
      * </p>
      */
     public void test_accuracy_getContestCategory() {
         // set the value to test
         contest.setContestChannel(null);
-        assertEquals("getContestCategory and setContestCategory failure occured", null, contest
-                .getContestChannel());
+        assertEquals("getContestCategory and setContestCategory failure occured", null, contest.getContestChannel());
     }
 
     /**
@@ -149,7 +157,8 @@ public class ContestTest extends TestCase {
      * {@link Contest#getContestChannel()} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is Valid.
+     * Sets the value and expects the same while retrieving. Input value is
+     * Valid.
      * </p>
      */
     public void test_accuracy_setContestCategory() {
@@ -163,10 +172,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#getProjectId()} and {@link Contest#setProjectId(Long)} method.
+     * Accuracy test for {@link Contest#getProjectId()} and
+     * {@link Contest#setProjectId(Long)} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is new Long(1).
+     * Sets the value and expects the same while retrieving. Input value is new
+     * Long(1).
      * </p>
      */
     public void test_accuracy_getProjectId() {
@@ -177,10 +188,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setProjectId(Long)} and {@link Contest#getProjectId()} method.
+     * Accuracy test for {@link Contest#setProjectId(Long)} and
+     * {@link Contest#getProjectId()} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is Valid.
+     * Sets the value and expects the same while retrieving. Input value is
+     * Valid.
      * </p>
      */
     public void test_accuracy_setProjectId() {
@@ -191,11 +204,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#getTcDirectProjectId()} and {@link Contest#setTcDirectProjectId(Long)}
-     * method.
+     * Accuracy test for {@link Contest#getTcDirectProjectId()} and
+     * {@link Contest#setTcDirectProjectId(Long)} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is new Long(1).
+     * Sets the value and expects the same while retrieving. Input value is new
+     * Long(1).
      * </p>
      */
     public void test_accuracy_getTcDirectProjectId() {
@@ -207,11 +221,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setTcDirectProjectId(Long)} and {@link Contest#getTcDirectProjectId()}
-     * method.
+     * Accuracy test for {@link Contest#setTcDirectProjectId(Long)} and
+     * {@link Contest#getTcDirectProjectId()} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is Valid.
+     * Sets the value and expects the same while retrieving. Input value is
+     * Valid.
      * </p>
      */
     public void test_accuracy_setTcDirectProjectId() {
@@ -223,10 +238,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#getStatus()} and {@link Contest#setStatus(ContestStatus)} method.
+     * Accuracy test for {@link Contest#getStatus()} and
+     * {@link Contest#setStatus(ContestStatus)} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is null.
+     * Sets the value and expects the same while retrieving. Input value is
+     * null.
      * </p>
      */
     public void test_accuracy_getStatus() {
@@ -237,10 +254,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setStatus(ContestStatus)} and {@link Contest#getStatus()} method.
+     * Accuracy test for {@link Contest#setStatus(ContestStatus)} and
+     * {@link Contest#getStatus()} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is Valid.
+     * Sets the value and expects the same while retrieving. Input value is
+     * Valid.
      * </p>
      */
     public void test_accuracy_setStatus() {
@@ -254,10 +273,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#getForumId()} and {@link Contest#setForumId(Long)} method.
+     * Accuracy test for {@link Contest#getForumId()} and
+     * {@link Contest#setForumId(Long)} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is new Long(1).
+     * Sets the value and expects the same while retrieving. Input value is new
+     * Long(1).
      * </p>
      */
     public void test_accuracy_getForumId() {
@@ -268,10 +289,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setForumId(Long)} and {@link Contest#getForumId()} method.
+     * Accuracy test for {@link Contest#setForumId(Long)} and
+     * {@link Contest#getForumId()} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is Valid.
+     * Sets the value and expects the same while retrieving. Input value is
+     * Valid.
      * </p>
      */
     public void test_accuracy_setForumId() {
@@ -282,10 +305,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#getEventId()} and {@link Contest#setEventId(Long)} method.
+     * Accuracy test for {@link Contest#getEventId()} and
+     * {@link Contest#setEventId(Long)} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is new Long(1).
+     * Sets the value and expects the same while retrieving. Input value is new
+     * Long(1).
      * </p>
      */
     public void test_accuracy_getEventId() {
@@ -296,10 +321,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setEventId(Long)} and {@link Contest#getEventId()} method.
+     * Accuracy test for {@link Contest#setEventId(Long)} and
+     * {@link Contest#getEventId()} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is Valid.
+     * Sets the value and expects the same while retrieving. Input value is
+     * Valid.
      * </p>
      */
     public void test_accuracy_setEventId() {
@@ -310,11 +337,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#getSubmissions()} and {@link Contest#setSubmissions(Set<Submission>)}
-     * method.
+     * Accuracy test for {@link Contest#getSubmissions()} and {@link
+     * Contest#setSubmissions(Set<Submission>)} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is null.
+     * Sets the value and expects the same while retrieving. Input value is
+     * null.
      * </p>
      */
     public void test_accuracy_getSubmissions() {
@@ -325,11 +353,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setSubmissions(Set<Submission>)} and {@link Contest#getSubmissions()}
-     * method.
+     * Accuracy test for {@link Contest#setSubmissions(Set<Submission>)} and
+     * {@link Contest#getSubmissions()} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is Valid.
+     * Sets the value and expects the same while retrieving. Input value is
+     * Valid.
      * </p>
      */
     public void test_accuracy_setSubmissions() {
@@ -337,17 +366,17 @@ public class ContestTest extends TestCase {
         Set<Submission> subs = new HashSet<Submission>();
         subs.add(new Submission());
         contest.setSubmissions(subs);
-        assertEquals("getSubmissions and setSubmissions failure occured", subs.size(), contest.getSubmissions()
-                .size());
+        assertEquals("getSubmissions and setSubmissions failure occured", subs.size(), contest.getSubmissions().size());
     }
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#getFileTypes()} and {@link Contest#setFileTypes(Set<StudioFileType>)}
-     * method.
+     * Accuracy test for {@link Contest#getFileTypes()} and {@link
+     * Contest#setFileTypes(Set<StudioFileType>)} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is null.
+     * Sets the value and expects the same while retrieving. Input value is
+     * null.
      * </p>
      */
     public void test_accuracy_getFileTypes() {
@@ -358,11 +387,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setFileTypes(Set<StudioFileType>)} and {@link Contest#getFileTypes()}
-     * method.
+     * Accuracy test for {@link Contest#setFileTypes(Set<StudioFileType>)} and
+     * {@link Contest#getFileTypes()} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is Valid.
+     * Sets the value and expects the same while retrieving. Input value is
+     * Valid.
      * </p>
      */
     public void test_accuracy_setFileTypes() {
@@ -375,10 +405,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#getResults()} and {@link Contest#setResults(Set<ContestResult>)} method.
+     * Accuracy test for {@link Contest#getResults()} and {@link
+     * Contest#setResults(Set<ContestResult>)} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is null.
+     * Sets the value and expects the same while retrieving. Input value is
+     * null.
      * </p>
      */
     public void test_accuracy_getResults() {
@@ -389,10 +421,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setResults(Set<ContestResult>)} and {@link Contest#getResults()} method.
+     * Accuracy test for {@link Contest#setResults(Set<ContestResult>)} and
+     * {@link Contest#getResults()} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is Valid.
+     * Sets the value and expects the same while retrieving. Input value is
+     * Valid.
      * </p>
      */
     public void test_accuracy_setResults() {
@@ -405,10 +439,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#getDocuments()} and {@link Contest#setDocuments(Set<Document>)} method.
+     * Accuracy test for {@link Contest#getDocuments()} and {@link
+     * Contest#setDocuments(Set<Document>)} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is null.
+     * Sets the value and expects the same while retrieving. Input value is
+     * null.
      * </p>
      */
     public void test_accuracy_getDocuments() {
@@ -419,10 +455,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setDocuments(Set<Document>)} and {@link Contest#getDocuments()} method.
+     * Accuracy test for {@link Contest#setDocuments(Set<Document>)} and
+     * {@link Contest#getDocuments()} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is Valid.
+     * Sets the value and expects the same while retrieving. Input value is
+     * Valid.
      * </p>
      */
     public void test_accuracy_setDocuments() {
@@ -435,10 +473,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#getConfig()} and {@link Contest#setConfig(Set<Config>)} method.
+     * Accuracy test for {@link Contest#getConfig()} and {@link
+     * Contest#setConfig(Set<Config>)} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is null.
+     * Sets the value and expects the same while retrieving. Input value is
+     * null.
      * </p>
      */
     public void test_accuracy_getConfig() {
@@ -449,10 +489,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setConfig(Set<Config>)} and {@link Contest#getConfig()} method.
+     * Accuracy test for {@link Contest#setConfig(Set<Config>)} and
+     * {@link Contest#getConfig()} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is Valid.
+     * Sets the value and expects the same while retrieving. Input value is
+     * Valid.
      * </p>
      */
     public void test_accuracy_setConfig() {
@@ -466,10 +508,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#getContestType()} and {@link Contest#setContestType(ContestType)} method.
+     * Accuracy test for {@link Contest#getContestType()} and
+     * {@link Contest#setContestType(ContestType)} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is null.
+     * Sets the value and expects the same while retrieving. Input value is
+     * null.
      * </p>
      */
     public void test_accuracy_getContestType() {
@@ -480,10 +524,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setContestType(ContestType)} and {@link Contest#getContestType()} method.
+     * Accuracy test for {@link Contest#setContestType(ContestType)} and
+     * {@link Contest#getContestType()} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is Valid.
+     * Sets the value and expects the same while retrieving. Input value is
+     * Valid.
      * </p>
      */
     public void test_accuracy_setContestType() {
@@ -497,10 +543,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#getStartDate()} and {@link Contest#setStartDate(Date)} method.
+     * Accuracy test for {@link Contest#getStartDate()} and
+     * {@link Contest#setStartDate(Date)} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is null.
+     * Sets the value and expects the same while retrieving. Input value is
+     * null.
      * </p>
      */
     public void test_accuracy_getStartDate() {
@@ -511,10 +559,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setStartDate(Date)} and {@link Contest#getStartDate()} method.
+     * Accuracy test for {@link Contest#setStartDate(Date)} and
+     * {@link Contest#getStartDate()} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is Valid.
+     * Sets the value and expects the same while retrieving. Input value is
+     * Valid.
      * </p>
      */
     public void test_accuracy_setStartDate() {
@@ -526,10 +576,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#getEndDate()} and {@link Contest#setEndDate(Date)} method.
+     * Accuracy test for {@link Contest#getEndDate()} and
+     * {@link Contest#setEndDate(Date)} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is null.
+     * Sets the value and expects the same while retrieving. Input value is
+     * null.
      * </p>
      */
     public void test_accuracy_getEndDate() {
@@ -540,10 +592,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setEndDate(Date)} and {@link Contest#getEndDate()} method.
+     * Accuracy test for {@link Contest#setEndDate(Date)} and
+     * {@link Contest#getEndDate()} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is Valid.
+     * Sets the value and expects the same while retrieving. Input value is
+     * Valid.
      * </p>
      */
     public void test_accuracy_setEndDate() {
@@ -559,14 +613,15 @@ public class ContestTest extends TestCase {
      * {@link Contest#setWinnerAnnoucementDeadline(Date)} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is null.
+     * Sets the value and expects the same while retrieving. Input value is
+     * null.
      * </p>
      */
     public void test_accuracy_getWinnerAnnoucementDeadline() {
         // set the value to test
         contest.setWinnerAnnoucementDeadline(null);
-        assertEquals("getWinnerAnnoucementDeadline and setWinnerAnnoucementDeadline failure occured", null,
-                contest.getWinnerAnnoucementDeadline());
+        assertEquals("getWinnerAnnoucementDeadline and setWinnerAnnoucementDeadline failure occured", null, contest
+                .getWinnerAnnoucementDeadline());
     }
 
     /**
@@ -575,23 +630,26 @@ public class ContestTest extends TestCase {
      * {@link Contest#getWinnerAnnoucementDeadline()} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is Valid.
+     * Sets the value and expects the same while retrieving. Input value is
+     * Valid.
      * </p>
      */
     public void test_accuracy_setWinnerAnnoucementDeadline() {
         // set the value to test
         Date date = new Date();
         contest.setWinnerAnnoucementDeadline(date);
-        assertEquals("getWinnerAnnoucementDeadline and setWinnerAnnoucementDeadline failure occured", date,
-                contest.getWinnerAnnoucementDeadline());
+        assertEquals("getWinnerAnnoucementDeadline and setWinnerAnnoucementDeadline failure occured", date, contest
+                .getWinnerAnnoucementDeadline());
     }
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#getCreatedUser()} and {@link Contest#setCreatedUser(Long)} method.
+     * Accuracy test for {@link Contest#getCreatedUser()} and
+     * {@link Contest#setCreatedUser(Long)} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is new Long(1).
+     * Sets the value and expects the same while retrieving. Input value is new
+     * Long(1).
      * </p>
      */
     public void test_accuracy_getCreatedUser() {
@@ -602,10 +660,12 @@ public class ContestTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test for {@link Contest#setCreatedUser(Long)} and {@link Contest#getCreatedUser()} method.
+     * Accuracy test for {@link Contest#setCreatedUser(Long)} and
+     * {@link Contest#getCreatedUser()} method.
      * </p>
      * <p>
-     * Sets the value and expects the same while retrieving. Input value is Valid.
+     * Sets the value and expects the same while retrieving. Input value is
+     * Valid.
      * </p>
      */
     public void test_accuracy_setCreatedUser() {
@@ -651,7 +711,6 @@ public class ContestTest extends TestCase {
         assertFalse("failed equals", contest.equals(contest1));
     }
 
-
     /**
      * <p>
      * Persistence tests for the entity <code>{@link Contest}</code>.
@@ -666,78 +725,88 @@ public class ContestTest extends TestCase {
             HibernateUtil.getManager().getTransaction().commit();
         }
     }
-    
+
     /**
      * <p>
      * Persistence tests for the entity <code>{@link Contest}</code>.
      * </p>
      */
     public void test_persistence() {
+        // try {
+        HibernateUtil.getManager().getTransaction().begin();
 
-        try {
-            HibernateUtil.getManager().getTransaction().begin();
+        StudioFileType fileType = new StudioFileType();
+        TestHelper.populateStudioFileType(fileType);
+        HibernateUtil.getManager().persist(fileType);
 
-            StudioFileType fileType = new StudioFileType();
-            TestHelper.populateStudioFileType(fileType);
-            HibernateUtil.getManager().persist(fileType);
+        ContestChannel contestCategory = new ContestChannel();
+        TestHelper.populateContestCategory(contestCategory, fileType);
+        contestCategory.setContestChannelId(1L);
+        HibernateUtil.getManager().persist(contestCategory);
 
-            ContestChannel contestCategory = new ContestChannel();
-            TestHelper.populateContestCategory(contestCategory, fileType);
-            HibernateUtil.getManager().persist(contestCategory);
+        ContestType contestType = new ContestType();
+        TestHelper.populateContestType(contestType);
+        contestType.setContestType(1L);
+        HibernateUtil.getManager().persist(contestType);
 
-            ContestType contestType = new ContestType();
-            TestHelper.populateContestType(contestType);
-            HibernateUtil.getManager().persist(contestType);
+        ContestStatus status = new ContestStatus();
+        status.setDescription("description");
+        status.setName("name");
+        status.setContestStatusId(1L);
+        HibernateUtil.getManager().persist(status);
 
-            ContestStatus status = new ContestStatus();
-            status.setDescription("description");
-            status.setName("name");
-            HibernateUtil.getManager().persist(status);
+        Date date = new Date();
+        Contest entity = new Contest();
 
-            Date date = new Date();
-            Contest entity = new Contest();
+        TestHelper.populateContest(entity, date, contestCategory, contestType, status);
+        Set<Medium> media = new HashSet<Medium>();
+        Medium medium = new Medium();
+        medium.setMediumId(1L);
+        medium.setDescription("Web");
+        media.add(medium);
+        medium = new Medium();
+        medium.setMediumId(2L);
+        medium.setDescription("Application");
+        media.add(medium);
+        entity.setMedia(media);
+        // save the entity
+        HibernateUtil.getManager().persist(entity);
 
-            TestHelper.populateContest(entity, date, contestCategory, contestType, status);
+        // load the persisted object
+        Contest persisted = (Contest) HibernateUtil.getManager().find(Contest.class, entity.getContestId());
+        assertEquals("Failed to persist - contestCategory mismatch", entity.getContestChannel(), persisted
+                .getContestChannel());
+        assertEquals("Failed to persist - name contestType", entity.getContestType(), persisted.getContestType());
+        assertEquals("Failed to persist - createdUser mismatch", entity.getCreatedUser(), persisted.getCreatedUser());
+        assertEquals("Failed to persist - endDate mismatch", entity.getEndDate(), persisted.getEndDate());
+        assertEquals("Failed to persist - eventId mismatch", entity.getEventId(), persisted.getEventId());
+        assertEquals("Failed to persist - forumId mismatch", entity.getForumId(), persisted.getForumId());
+        assertEquals("Failed to persist - projectId mismatch", entity.getProjectId(), persisted.getProjectId());
+        assertEquals("Failed to persist - name mismatch", entity.getName(), persisted.getName());
+        assertEquals("Failed to persist - startDate mismatch", entity.getStartDate(), persisted.getStartDate());
+        assertEquals("Failed to persist - status mismatch", entity.getStatus(), persisted.getStatus());
+        assertEquals("Failed to persist - tcDirectProjectId mismatch", entity.getTcDirectProjectId(), persisted
+                .getTcDirectProjectId());
+        assertEquals("Failed to persist - winnerAnnoucementDeadline mismatch", entity.getWinnerAnnoucementDeadline(),
+                persisted.getWinnerAnnoucementDeadline());
+        assertEquals("Failed to persist - media mismatch", 2, persisted.getMedia().size());
 
-            // save the entity
-            HibernateUtil.getManager().persist(entity);
+        // update the entity
+        entity.setName("new name");
+        HibernateUtil.getManager().merge(entity);
 
-            // load the persisted object
-            Contest persisted = (Contest) HibernateUtil.getManager().find(Contest.class, entity.getContestId());
-            assertEquals("Failed to persist - contestCategory mismatch", entity.getContestChannel(), persisted
-                    .getContestChannel());
-            assertEquals("Failed to persist - name contestType", entity.getContestType(), persisted
-                    .getContestType());
-            assertEquals("Failed to persist - createdUser mismatch", entity.getCreatedUser(), persisted
-                    .getCreatedUser());
-            assertEquals("Failed to persist - endDate mismatch", entity.getEndDate(), persisted.getEndDate());
-            assertEquals("Failed to persist - eventId mismatch", entity.getEventId(), persisted.getEventId());
-            assertEquals("Failed to persist - forumId mismatch", entity.getForumId(), persisted.getForumId());
-            assertEquals("Failed to persist - projectId mismatch", entity.getProjectId(), persisted.getProjectId());
-            assertEquals("Failed to persist - name mismatch", entity.getName(), persisted.getName());
-            assertEquals("Failed to persist - startDate mismatch", entity.getStartDate(), persisted.getStartDate());
-            assertEquals("Failed to persist - status mismatch", entity.getStatus(), persisted.getStatus());
-            assertEquals("Failed to persist - tcDirectProjectId mismatch", entity.getTcDirectProjectId(),
-                    persisted.getTcDirectProjectId());
-            assertEquals("Failed to persist - winnerAnnoucementDeadline mismatch", entity
-                    .getWinnerAnnoucementDeadline(), persisted.getWinnerAnnoucementDeadline());
+        persisted = (Contest) HibernateUtil.getManager().find(Contest.class, entity.getContestId());
+        assertEquals("Failed to update - name mismatch", entity.getName(), persisted.getName());
 
-            // update the entity
-            entity.setName("new name");
-            HibernateUtil.getManager().merge(entity);
+        // delete the entity
+        HibernateUtil.getManager().remove(entity);
+        HibernateUtil.getManager().remove(contestCategory);
+        HibernateUtil.getManager().remove(fileType);
+        HibernateUtil.getManager().remove(contestType);
+        HibernateUtil.getManager().remove(status);
 
-            persisted = (Contest) HibernateUtil.getManager().find(Contest.class, entity.getContestId());
-            assertEquals("Failed to update - name mismatch", entity.getName(), persisted.getName());
-
-            // delete the entity
-            HibernateUtil.getManager().remove(entity);
-            HibernateUtil.getManager().remove(contestCategory);
-            HibernateUtil.getManager().remove(fileType);
-            HibernateUtil.getManager().remove(contestType);
-            HibernateUtil.getManager().remove(status);
-
-        } finally {
-            HibernateUtil.getManager().getTransaction().commit();
-        }
+        // } finally {
+        // HibernateUtil.getManager().getTransaction().commit();
+        // }
     }
 }

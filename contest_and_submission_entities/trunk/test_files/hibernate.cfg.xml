@@ -47,6 +47,7 @@
 		<mapping resource="mappings/ContestRegistration.hbm.xml" />
 		
 		<mapping resource="mappings/ContestPayment.hbm.xml" />
+		<mapping resource="mappings/Medium.hbm.xml" />
 		
 	</session-factory>
 </hibernate-configuration>

@@ -73,6 +73,12 @@
                 class="com.topcoder.service.studio.contest.Document" />
         </set>
 
+        <set name="media" table="contest_medium_xref">
+            <key column="contest_id" />
+            <many-to-many column="medium_id"
+                class="com.topcoder.service.studio.contest.Medium" />
+        </set>
+
         <set name="config" cascade="all-delete-orphan">
             <key column="contest_id" />
             <one-to-many

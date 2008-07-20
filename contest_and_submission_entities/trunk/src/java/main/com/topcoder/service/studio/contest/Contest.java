@@ -100,6 +100,11 @@ public class Contest implements Serializable {
     private Set<Document> documents = new HashSet<Document>();
 
     /**
+     * Represents the list of media.
+     */
+    private Set<Medium> media = new HashSet<Medium>();
+    
+    /**
      * Represents the list of contest config.
      */
     private Set<ContestConfig> config = new HashSet<ContestConfig>();
@@ -380,6 +385,25 @@ public class Contest implements Serializable {
      */
     public Set<Document> getDocuments() {
         return documents;
+    }
+
+    /**
+     * Updates the media with the specified value.
+     *
+     * @param media
+     *            the media to set.
+     */
+    public void setMedia(Set<Medium> media) {
+        this.media = media;
+    }
+
+    /**
+     * Returns the media.
+     *
+     * @return the media.
+     */
+    public Set<Medium> getMedia() {
+        return media;
     }
 
     /**
