@@ -51,6 +51,7 @@ import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.EntityAlreadyExistsException;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.contest.FilePath;
+import com.topcoder.service.studio.contest.Medium;
 import com.topcoder.service.studio.contest.MimeType;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.utils.FilterToSqlConverter;
@@ -417,7 +418,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
                 throw e;
             }
-
+            
             EntityManager em = getEntityManager();
             em.persist(contest);
 
@@ -2897,6 +2898,36 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "There are errors while retrieving the contest.");
         } finally {
             logExit("getContestsForUser()");
+        }
+    }
+    
+
+    /**
+     * Returns all media.
+     * 
+     * @return all media.
+     * @throws ContestManagementException if any error occurs when getting contests 
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<Medium> getAllMedia() throws ContestManagementException{
+        try {
+            logEnter("getAllMedia()");
+            
+            EntityManager em = getEntityManager();
+
+            Query query = em.createQuery("select c from Medium");
+
+            List list = query.getResultList();
+            List<Medium> result = new ArrayList<Medium>();
+            result.addAll(list);
+            return result;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while retrieving medium.");
+        } finally {
+            logExit("getAllMedia()");
         }
     }
 }
