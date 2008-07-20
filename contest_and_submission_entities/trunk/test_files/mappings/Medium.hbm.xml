@@ -4,11 +4,7 @@
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.topcoder.service.studio.contest">
 	<class name="Medium" table="medium_lu" lazy="true">
-		<id name="mediumId" column="medium_id" type="long" unsaved-value="-1">
-			<generator class="sequence">
-				<param name="sequence">STUDIO_MEDIUM_SEQ</param>
-			</generator>
-		</id>
+		<id name="mediumId" column="medium_id" type="long" />
 
 		<property name="description" length="254"
 			column="medium_desc" />
