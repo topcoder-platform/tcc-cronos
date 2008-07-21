@@ -63,15 +63,15 @@ public class PayPalResponseListener {
                 this.paypalOrders.put(paypalOrderId, new String[] {originalSessionId, originalPrincipalName,
                                                                    originalContestId, originalPaymentType,
                                                                    originalPaymentAmount});
-                this.context.log("Saved data for PayPal order [" + originalSessionId + ", "
+                this.context.log("Saved data for PayPal order #" + paypalOrderId + " [" + originalSessionId + ", "
                                  + originalPrincipalName + ", " + originalContestId + ", " + originalPaymentType + ","
                                  + originalPaymentAmount + "]");
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
-                this.context.log("Failed to save data for PayPal order [" + originalSessionId + ", "
-                                 + originalPrincipalName + ", " + originalContestId + ", " + originalPaymentType + ","
-                                 + originalPaymentAmount + "] due to unexpected error", e);
+                this.context.log("Failed to save data for PayPal order #" + paypalOrderId + " [" + originalSessionId
+                                 + ", " + originalPrincipalName + ", " + originalContestId + ", " + originalPaymentType
+                                 + "," + originalPaymentAmount + "] due to unexpected error", e);
             }
         }
         return false;
