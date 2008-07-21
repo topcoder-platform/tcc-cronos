@@ -8,6 +8,14 @@
     <listener>
         <listener-class>com.topcoder.widgets.bridge.AjaxBridgeContextListener</listener-class>
     </listener>
+    <context-param>
+        <param-name>view-submissions-confirmation-page</param-name>
+        <param-value>/direct/cockpit/viewsubmissions/confirm_prize_payment.jsp</param-value>
+    </context-param>
+    <context-param>
+        <param-name>launch-project-confirmation-page</param-name>
+        <param-value>/direct/cockpit/launchproject/launch/payments/confirmation.jsp</param-value>
+    </context-param>
 
     <servlet> 
         <servlet-name>ajaxBridge</servlet-name>
