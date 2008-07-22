@@ -21,9 +21,10 @@
     for (int i = 0; i < params.length; i++) {
         String param = params[i];
         String[] paramData = param.split("=");
-        paramValues.put(paramData[0], URLDecoder.decode(paramData[1], "UTF-8"));
+        if (paramData.length > 1) {
+            paramValues.put(paramData[0], URLDecoder.decode(paramData[1], "UTF-8"));
+        }
     }
-
 
     boolean successful = false;
     // Verify that the original session ID matches the current session ID
