@@ -3,7 +3,7 @@
 <%@ page import="java.util.HashMap" %>
 <%
     ServletContext servletContext = pageContext.getServletContext();
-    servletContext.log("paypalConfirmation.jsp : Got following request from PayPal : ["
+    servletContext.log("paypalConfirmation.jsp : Got following Return Post request from PayPal : ["
                        + request.getQueryString() + "]");
     int c;
     StringBuilder body = new StringBuilder();
@@ -14,7 +14,7 @@
             body.append(new String(b, 0, c));
         }
     }
-    servletContext.log("paypalConfirmation.jsp : Body of Silent Post request from PayPal : [" + body + "]");
+    servletContext.log("paypalConfirmation.jsp : Body of Return Post request from PayPal : [" + body + "]");
 
     Map<String, String> paramValues = new HashMap<String, String>();
     String[] params = body.toString().split("&");
