@@ -90,6 +90,11 @@ js.topcoder.widgets.bridge.UploadedDocument = function (/* JSON Object */ json) 
 	 * <p>Valid Values: can be -1, can be greater or equal to 0</p>
 	 */
     var documentTypeID /* long */  = -1;
+
+    /**
+     * Abbreviation for Helper class.
+     */
+    var Helper = js.topcoder.widgets.bridge.Helper;
     
 	/**
 	 * <p>Construct the js object with the json object.
@@ -237,8 +242,10 @@ js.topcoder.widgets.bridge.UploadedDocument = function (/* JSON Object */ json) 
 	 * {"fileName" : $fileName,"documentID" : $documentID,"contestID" : $contestID,"documentTypeID" : $documentTypeID,"description" : "$description"}
 	 */
 	this.toJSON = function /* String */ () {
-		return "{\"fileName\" : \""+that.getFileName()+"\",\"path\" :\""+that.getPath()+"\",\"documentID\" : "+that.getDocumentID()+
-			",\"contestID\" : "+that.getContestID()+",\"documentTypeID\" : "+that.getdocumentTypeID()+", \"description\" : \""+that.getDescription()+"\"}";
+		return "{\"fileName\" : \"" + Helper.escapeJSONValue(that.getFileName())+"\",\"path\" :\""
+                +Helper.escapeJSONValue(that.getPath())+"\",\"documentID\" : "+that.getDocumentID()+
+			",\"contestID\" : "+that.getContestID()+",\"documentTypeID\" : "+that.getdocumentTypeID()+", \"description\" : \""
+                +Helper.escapeJSONValue(that.getDescription())+"\"}";
 	}
 
 } // end

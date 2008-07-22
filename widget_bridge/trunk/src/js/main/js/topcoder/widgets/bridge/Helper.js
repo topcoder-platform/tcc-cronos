@@ -101,4 +101,20 @@ js.topcoder.widgets.bridge.Helper = {
         }
         return str.replace(/^\s*/, "").replace(/\s*$/, "");
     }
+    ,
+    /**
+     * Helper method to escape the quote characters.
+     *
+     * @param {String} str the string to escape
+     * @return {String} the escaped string
+     */
+    escapeJSONValue: function(str){
+        if (str == null) {
+            return str;
+        }
+        if (str.indexOf('"') < 0) {
+            return str;
+        }
+        return str.replace(/"/g, "\\\"");
+    }
 }

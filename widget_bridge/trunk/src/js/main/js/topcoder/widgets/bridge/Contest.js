@@ -293,6 +293,11 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 	 * <p>Valid Values:  it's not null, can be empty, can't contain null values</p>
 	 */
     var media /* Medium[] */ = new Array();
+    
+    /**
+     * Abbreviation for Helper class.
+     */
+    var Helper = js.topcoder.widgets.bridge.Helper;
 
 	/**
 	 * <p>Construct the js object with the json object.
@@ -1023,8 +1028,8 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 		return	"{"
 		        + "\"contestID\" : " + that.getContestID() + ", "
 		        + "\"projectID\" : " + that.getProjectID() + ", "
-		        + "\"name\" : \"" + that.getName() + "\", "
-		        + "\"shortSummary\" : \"" + that.getShortSummary() + "\", "
+		        + "\"name\" : \"" + Helper.escapeJSONValue(that.getName()) + "\", "
+		        + "\"shortSummary\" : \"" + Helper.escapeJSONValue(that.getShortSummary()) + "\", "
 		        + "\"prizes\" : " + locPrizes + ", "
 		        + "\"media\" : " + locMed + ", "
 		        + "\"launchDateAndTime\" : \"" + that.getLaunchDateAndTime() + "\", "
@@ -1033,15 +1038,15 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 		        + "\"contestTypeID\" : " + that.getContestTypeID() + ", "
 		        + "\"contestChannelID\" : " + that.getContestChannelID() + ", "
 		        + "\"finalFileFormatList\" : " + locFileFomat + ", "
-		        + "\"finalFileFormatOther\" : \"" + that.getFinalFileFormatOther() + "\", "
+		        + "\"finalFileFormatOther\" : \"" + Helper.escapeJSONValue(that.getFinalFileFormatOther()) + "\", "
 		        + "\"documentationUploads\" : " + locUpDoc + ", "
 		        + "\"statusID\" : " + that.getStatusID() + ", "
 		        + "\"contestPayloads\" : " + locContPay + ", "
-		        + "\"contestDescriptionAndRequirements\" : \"" + that.getContestDescriptionAndRequirements() + "\", "
-		        + "\"requiredOrRestrictedColors\" : \"" + that.getRequiredOrRestrictedColors() + "\", "
-		        + "\"requiredOrRestrictedFonts\" : \"" + that.getRequiredOrRestrictedFonts() + "\", "
-		        + "\"sizeRequirements\" : \"" + that.getSizeRequirements() + "\", "
-		        + "\"otherRequirementsOrRestrictions\" : \"" + that.getOtherRequirementsOrRestrictions() + "\", "
+		        + "\"contestDescriptionAndRequirements\" : \"" + Helper.escapeJSONValue(that.getContestDescriptionAndRequirements()) + "\", "
+		        + "\"requiredOrRestrictedColors\" : \"" + Helper.escapeJSONValue(that.getRequiredOrRestrictedColors()) + "\", "
+		        + "\"requiredOrRestrictedFonts\" : \"" + Helper.escapeJSONValue(that.getRequiredOrRestrictedFonts()) + "\", "
+		        + "\"sizeRequirements\" : \"" + Helper.escapeJSONValue(that.getSizeRequirements()) + "\", "
+		        + "\"otherRequirementsOrRestrictions\" : \"" + Helper.escapeJSONValue(that.getOtherRequirementsOrRestrictions()) + "\", "
 		        + "\"tcDirectProjectID\" : " + that.getTcDirectProjectID() + ", "
 		        + "\"submissionCount\" : " + that.getSubmissionCount() + ", "
 		        + "\"numberOfRegistrants\" : " + that.getNumberOfRegistrants () + ", "

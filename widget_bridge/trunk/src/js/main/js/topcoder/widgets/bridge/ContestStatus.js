@@ -75,6 +75,11 @@ js.topcoder.widgets.bridge.ContestStatus = function (/* JSON Object */ json) {
 	 */
 	var displayIcon /* String */ = null;
 
+    /**
+     * Abbreviation for Helper class.
+     */
+    var Helper = js.topcoder.widgets.bridge.Helper;
+
 	/**
 	 * <p>Construct the js object with the json object.
 	 * Set json's properties to the corresponding properties of this js object.
@@ -208,8 +213,9 @@ js.topcoder.widgets.bridge.ContestStatus = function (/* JSON Object */ json) {
 		allowStatuses += tempStatuses.toString();
 		allowStatuses += "]";
 		
-		return "{\"statusID\" : "+that.getStatusID()+",\"name\" : \""+that.getName()+
-			"\",\"description\" : \""+that.getDescription()+"\",\"displayIcon\" : \""+that.getDisplayIcon()+"\""+
+		return "{\"statusID\" : "+that.getStatusID()+",\"name\" : \""+Helper.escapeJSONValue(that.getName())+
+			"\",\"description\" : \""+Helper.escapeJSONValue(that.getDescription())+"\",\"displayIcon\" : \""
+                +Helper.escapeJSONValue(that.getDisplayIcon())+"\""+
 			", allowableNextStatuses : "+allowStatuses+"}";
 	}
 

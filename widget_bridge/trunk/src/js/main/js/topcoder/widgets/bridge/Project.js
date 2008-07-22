@@ -54,6 +54,11 @@ js.topcoder.widgets.bridge.Project = function (/* JSON Object */ json) {
 	 */
 	var description /* String */ = null;
 
+    /**
+     * Abbreviation for Helper class.
+     */
+    var Helper = js.topcoder.widgets.bridge.Helper;
+
 	/**
 	 * <p>Construct the js object with the json object.
 	 * Set json's properties to the corresponding properties of this js object.</p>
@@ -145,7 +150,8 @@ js.topcoder.widgets.bridge.Project = function (/* JSON Object */ json) {
 	 * {"projectID" : $projectID,"name" : "$name","description" : "$description"}
 	 */
 	this.toJSON = function /* String */ () {
-		return "{\"projectID\" : "+that.getProjectID()+",\"name\" : \""+that.getName()+"\",\"description\" : \""+that.getDescription()+"\"}";
+		return "{\"projectID\" : "+that.getProjectID()+",\"name\" : \""+Helper.escapeJSONValue(that.getName())
+                +"\",\"description\" : \""+Helper.escapeJSONValue(that.getDescription())+"\"}";
 	}
 
 } // end

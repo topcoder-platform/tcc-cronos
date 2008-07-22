@@ -75,6 +75,11 @@ js.topcoder.widgets.bridge.ContestPayload = function (/* JSON Object */ json) {
 	 */
     var contestTypeID /* long */ = -1;
 
+    /**
+     * Abbreviation for Helper class.
+     */
+    var Helper = js.topcoder.widgets.bridge.Helper;
+
 	/**
 	 * <p>Construct the js object with the json object.
 	 * Set json's properties to the corresponding properties of this js object.
@@ -201,8 +206,9 @@ js.topcoder.widgets.bridge.ContestPayload = function (/* JSON Object */ json) {
 	 * {"name" : "$name","value" : "$value","description" : "$description","required" : $required,"contestTypeID" : $contestTypeID}
 	 */
 	this.toJSON = function /* String */ () {
-		return "{\"name\" : \""+that.getName()+"\",\"value\" : \""+that.getValue()+
-			"\",\"description\" : \""+that.getDescription()+"\",\"required\" : "+that.isRequired()+", \"contestTypeID\" : "+
+		return "{\"name\" : \""+Helper.escapeJSONValue(that.getName())+"\",\"value\" : \""
+                +Helper.escapeJSONValue(that.getValue())+
+			"\",\"description\" : \""+Helper.escapeJSONValue(that.getDescription())+"\",\"required\" : "+that.isRequired()+", \"contestTypeID\" : "+
 			that.getContestTypeID()+"}";
 	}
 

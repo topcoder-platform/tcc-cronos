@@ -145,6 +145,10 @@ js.topcoder.widgets.bridge.Submission = function (/* JSON Object */ json) {
 	 */
     var removed /* boolean */ = false;
 
+    /**
+     * Abbreviation for Helper class.
+     */
+    var Helper = js.topcoder.widgets.bridge.Helper;
 
 	/**
 	 * <p>Construct the js object with the json object.
@@ -421,7 +425,7 @@ js.topcoder.widgets.bridge.Submission = function (/* JSON Object */ json) {
 		    	" \"submissionID\" : "+that.getSubmissionID()+
 		    	", \"submitterID\" : "+that.getSubmitterID()+
 		    	", \"submissionTimeStamp\" : \""+that.getSubmissionTimeStamp()+"\" "+
-		    	", \"submissionContent\" : \""+that.getSubmissionContent()+"\" "+
+		    	", \"submissionContent\" : \""+Helper.escapeJSONValue(that.getSubmissionContent())+"\" "+
 		    	", \"contestID\" : "+that.getContestID()+
 		    	", \"passedScreening\" : "+that.isPassedScreening()+
 		    	", \"passedReview\" : "+that.isPassedReview()+

@@ -190,9 +190,9 @@ js.topcoder.widgets.bridge.PrerequisiteDocument = function(json){
         var result = "{";
         result += "\"documentID\":" + documentID;
         result += ",\"version\":" + version;
-        result += ",\"versionDate\":\"" + versionDate+"\"";
-        result += ",\"name\":\"" + name+"\"";
-        result += ",\"content\":\"" + content+"\"";
+        result += ",\"versionDate\":\"" + Helper.escapeJSONValue(versionDate)+"\"";
+        result += ",\"name\":\"" + Helper.escapeJSONValue(name)+"\"";
+        result += ",\"content\":\"" + Helper.escapeJSONValue(content)+"\"";
 		result += "}";
 		return result;
     }

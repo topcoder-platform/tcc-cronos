@@ -99,7 +99,7 @@ js.topcoder.widgets.bridge.Medium = function(json){
     this.toJSON = function(){
         var result = "{";
         result += "\"mediumId\":" + mediumId;
-        result += ",\"description\":\"" + description+"\"";
+        result += ",\"description\":\"" + Helper.escapeJSONValue(description)+"\"";
 		result += "}";
 		return result;
     }

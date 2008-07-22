@@ -99,14 +99,14 @@ js.topcoder.widgets.bridge.ContestChannel = function(json){
     this.toJSON = function(){
         var result = "{";
         result += "\"contestChannelID\":" + contestChannelID;
-        result += ",\"description\":\"" + description+"\"";
+        result += ",\"description\":\"" + Helper.escapeJSONValue(description)+"\"";
 		result += "}";
 		return result;
     }
 
     //constructor code
     if (json != null) {
-        this.setContestChannelId(json.contestChannelId);
+        this.setContestChannelID(json.contestChannelID);
         this.setDescription(json.description);
     }
 }
