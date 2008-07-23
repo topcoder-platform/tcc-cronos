@@ -309,6 +309,12 @@ public class StudioServiceBean implements StudioService {
     private long contestPropertyOtherFileFormatsId;
 
     /**
+     * Represents the id for the Contest property "Create User Handle"
+     */
+    @Resource(name = "contestPropertyCreateUserHandleId")
+    private long contestPropertyCreateUserHandleId;
+    
+    /**
      * Represents the id for the Contest property "Requires Preview Image"
      * 
      * @since TCCC-284
@@ -1058,6 +1064,9 @@ public class StudioServiceBean implements StudioService {
         addContestConfig(result, contestPropertyFinalFileFormatId, data.getFinalFileFormat());
 
         addContestConfig(result, contestPropertyOtherFileFormatsId, data.getOtherFileFormats());
+
+        // Create user handle.
+        addContestConfig(result, contestPropertyCreateUserHandleId, ((UserProfilePrincipal) sessionContext.getCallerPrincipal()).getName());
 
         // [TCCC-284]
         addContestConfig(result, contestPropertyRequiresPreviewFileId, String.valueOf(data.isRequiresPreviewFile()));
