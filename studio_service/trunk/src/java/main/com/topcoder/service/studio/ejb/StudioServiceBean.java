@@ -339,6 +339,22 @@ public class StudioServiceBean implements StudioService {
     private long contestPropertyMaximumSubmissionsId;
 
     /**
+     * Represents the id for the Contest property "Contest PrizeType Id"
+     * 
+     * @since TCCC-351
+     */
+    @Resource(name = "contestPrizeTypeId")
+    private long contestPrizeTypeId;
+
+    /**
+     * Represents the id for the Contest property "Client Selection PrizeType Id"
+     * 
+     * @since TCCC-351
+     */
+    @Resource(name = "clientSelectionPrizeTypeId")
+    private long clientSelectionPrizeTypeId;
+    
+    /**
      * Represents the base path for the documents. Should be configured like
      * /studiofiles/documents.
      * 
@@ -439,10 +455,9 @@ public class StudioServiceBean implements StudioService {
                 prize.setAmount(prizeData.getAmount());
                 prize.setPlace(prizeData.getPlace());
                 prize.setCreateDate(new Date());
-                PrizeType type = new PrizeType();
-                // TODO: Use 1 as "Contest" temporarily since there is no method
-                // supports retrieve PrizeType now.
-                type.setPrizeTypeId(1L);
+
+                // [TCCC-351]
+                PrizeType type = contestManager.getPrizeType(contestPrizeTypeId);
                 prize.setType(type);
                 Set<Contest> contests = prize.getContests();
                 contests.add(contest);
