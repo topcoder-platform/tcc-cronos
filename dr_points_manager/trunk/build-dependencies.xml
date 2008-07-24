@@ -5,8 +5,8 @@
 	<property name="component.target" value="1.x" />
 	<property name="component.bootclasspath" value="${java_1_x_bootclasspath}" />
 
-	<property name="jboss_home" value="D:\Tools\jboss-4.2.2.GA" />
-	<property name="jboss_config_name" value="default" />
+	<property name="jboss_home" value="c:/jboss/as/4.2.2.ga" />
+	<property name="jboss_config_name" value="all" />
 
 	<!-- TCS dependencies -->
 
@@ -55,19 +55,42 @@
 	<property name="object_formatter.jar.name" value="${object_formatter.name}.jar" />
 	<property name="object_formatter.jar" value="${tcs_libdir}/${object_formatter.name}/${object_formatter.version}/${object_formatter.jar.name}" />
 
-	<property name="search_builder.jar" value="${tcs_libdir}\search_builder\1.3.2\search_builder.jar" />
-	<property name="class_associations.jar" value="${tcs_libdir}\class_associations\1.0\class_associations.jar" />
-	<property name="typesafe_enum.jar" value="${tcs_libdir}\typesafe_enum\1.1\typesafe_enum.jar" />
-	<property name="data_validation.jar" value="${tcs_libdir}\data_validation\1.1.1\data_validation.jar" />
-	<property name="id_generator.jar" value="${tcs_libdir}\id_generator\3.0\id_generator.jar" />
-	<property name="db_connection_factory.jar" value="${tcs_libdir}\db_connection_factory\1.1\db_connection_factory.jar" />
+	<property name="search_builder.name" value="search_builder" />
+	<property name="search_builder.version" value="1.3.2" />
+	<property name="search_builder.jar.name" value="${search_builder.name}.jar" />
+	<property name="search_builder.jar" value="${tcs_libdir}/${search_builder.name}/${search_builder.version}/${search_builder.jar.name}" />
 
-	<property name="dr_entites.jar" value="${testfiles}\dr_entites.jar" />
+	<property name="class_associations.name" value="class_associations" />
+	<property name="class_associations.version" value="1.0" />
+	<property name="class_associations.jar.name" value="${class_associations.name}.jar" />
+	<property name="class_associations.jar" value="${tcs_libdir}/${class_associations.name}/${class_associations.version}/${class_associations.jar.name}" />
 
+	<property name="typesafe_enum.name" value="typesafe_enum" />
+	<property name="typesafe_enum.version" value="1.1" />
+	<property name="typesafe_enum.jar.name" value="${typesafe_enum.name}.jar" />
+	<property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.name}/${typesafe_enum.version}/${typesafe_enum.jar.name}" />
+
+	<property name="data_validation.name" value="data_validation" />
+	<property name="data_validation.version" value="1.1.1" />
+	<property name="data_validation.jar.name" value="${data_validation.name}.jar" />
+	<property name="data_validation.jar" value="${tcs_libdir}/${data_validation.name}/${data_validation.version}/${data_validation.jar.name}" />
+
+	<property name="id_generator.name" value="id_generator" />
+	<property name="id_generator.version" value="3.0" />
+	<property name="id_generator.jar.name" value="${id_generator.name}.jar" />
+	<property name="id_generator.jar" value="${tcs_libdir}/${id_generator.name}/${id_generator.version}/${id_generator.jar.name}" />
+
+	<property name="db_connection_factory.name" value="db_connection_factory" />
+	<property name="db_connection_factory.version" value="1.1" />
+	<property name="db_connection_factory.jar.name" value="${db_connection_factory.name}.jar" />
+	<property name="db_connection_factory.jar" value="${tcs_libdir}/${db_connection_factory.name}/${db_connection_factory.version}/${db_connection_factory.jar.name}" />
+
+	<property name="dr_entites.jar" value="${testfiles}/dr_entites.jar" />
+	
 	<!-- 3rd party dependencies -->
-	<property name="junit.jar" value="${ext_libdir}\junit\3.8.2\junit.jar" />
-	<property name="mock.jar" value="${testfiles}\mock.jar" />
-	<property name="jdbc.informix.jar" value="test_reflib\ifxjdbc.jar" />
+	<property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar" />
+	<property name="mock.jar" value="${testfiles}/mock.jar" />
+	<property name="jdbc.informix.jar" value="${ext_libdir}/informix/ifxjdbc.jar" />
 
 	<property name="cglib.jar" value="${jboss_home}/server/${jboss_config_name}/lib/cglib.jar" />
 	<property name="dom4j.jar" value="${jboss_home}/server/${jboss_config_name}/lib/dom4j.jar" />
