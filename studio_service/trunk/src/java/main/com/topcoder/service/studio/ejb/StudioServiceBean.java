@@ -2212,18 +2212,14 @@ public class StudioServiceBean implements StudioService {
             // [ TCCC-125 ]
             submissionPayment.setPayPalOrderId(payPalOrderId);
 
-            PaymentStatus status = new PaymentStatus();
-
-            // NOTE Use 1 temporarily till submission manager provides the
-            // method of
-            // retrieving payment statuses.
-            // TODO FIX ME
-            status.setPaymentStatusId(1L);
-
+            // [TCCC-350]
+            PaymentStatus status = contestManager.getPaymentStatus(1L);
             submissionPayment.setStatus(status);
             submissionManager.addSubmissionPayment(submissionPayment);
         } catch (SubmissionManagementException e) {
             handlePersistenceError("SubmissionManager reports error.", e);
+        } catch (ContestManagementException e) {
+            handlePersistenceError("contestManager reports error.", e);
         }
         logExit("purchaseSubmission");
     }
