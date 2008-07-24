@@ -55,7 +55,9 @@ import com.topcoder.service.studio.contest.Medium;
 import com.topcoder.service.studio.contest.MimeType;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.utils.FilterToSqlConverter;
+import com.topcoder.service.studio.submission.PaymentStatus;
 import com.topcoder.service.studio.submission.Prize;
+import com.topcoder.service.studio.submission.PrizeType;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogManager;
@@ -2154,7 +2156,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * @return the list of all available MimeType
      * 
      * @throws ContestManagementException
-     *             if any error occurs when getting MimeType
+     *             if any error occurs when getting MimeType.
      * 
      * @since 1.1.2
      */
@@ -2171,6 +2173,121 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         }
     }
 
+
+    /**
+     * <p>
+     * Get all the PrizeType objects.
+     * </p>
+     * 
+     * @return the list of all available PrizeType
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting PrizeType.
+     * @since TCCC-349            
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<PrizeType> getAllPrizeTypes() throws ContestManagementException {
+        try {
+            logEnter("getAllPrizeTypes()");
+
+            return getAll(PrizeType.class);
+
+        } finally {
+            logExit("getAllPrizeTypes()");
+        }
+    }
+
+    /**
+     * <p>
+     * Get the PrizeType with the specified id.
+     * </p>
+     * 
+     * @param prizeTypeId
+     *            id to look for
+     * @return the PrizeType with the specified id.
+     * @throws ContestManagementException
+     *             if any error occurs when getting PrizeType.
+     * @since TCCC-349
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public PrizeType getPrizeType(long prizeTypeId) throws ContestManagementException {
+        try {
+            logEnter("getPrizeType()");
+            logOneParameter(prizeTypeId);
+
+            EntityManager em = getEntityManager();
+
+            return em.find(PrizeType.class, prizeTypeId);
+
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("getPrizeType()");
+        }
+    }
+
+    /**
+     * <p>
+     * Get all the PaymentStatus  objects.
+     * </p>
+     * 
+     * @return the list of all available PaymentStatus 
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting PaymentStatus.
+     *             
+     * @since TCCC-349
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<PaymentStatus > getAllPaymentStatuses() throws ContestManagementException {
+        try {
+            logEnter("getAllPaymentStatuses()");
+
+            return getAll(PaymentStatus.class);
+
+        } finally {
+            logExit("getAllPaymentStatuses()");
+        }
+    }
+
+
+    /**
+     * <p>
+     * Get the PaymentStatus with the specified id.
+     * </p>
+     * 
+     * @param paymentStatusId
+     *            id to look for
+     * @return the PaymentStatus with the specified id.
+     * @throws ContestManagementException
+     *             if any error occurs when getting PaymentStatus
+     * @since TCCC-349
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public PaymentStatus getPaymentStatus(long paymentStatusId) throws ContestManagementException {
+        try {
+            logEnter("getPaymentStatus()");
+            logOneParameter(paymentStatusId);
+
+            EntityManager em = getEntityManager();
+
+            return em.find(PaymentStatus.class, paymentStatusId);
+
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("getPaymentStatus()");
+        }
+    }
+    
     /**
      * <p>
      * Get the MimeType with the specified id.

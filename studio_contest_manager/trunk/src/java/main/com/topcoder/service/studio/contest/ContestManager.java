@@ -5,8 +5,16 @@ package com.topcoder.service.studio.contest;
 
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
+
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.service.studio.submission.PaymentStatus;
 import com.topcoder.service.studio.submission.Prize;
+import com.topcoder.service.studio.submission.PrizeType;
 
 /**
  * <p>
@@ -862,4 +870,59 @@ public interface ContestManager {
      * @throws ContestManagementException if any error occurs when getting contests
      */
     public List<Medium> getAllMedia() throws ContestManagementException;
-}
+    
+
+    /**
+     * <p>
+     * Get all the PrizeType objects.
+     * </p>
+     * 
+     * @return the list of all available PrizeType
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting PrizeType.
+     * @since TCCC-349            
+     */
+    public List<PrizeType> getAllPrizeTypes() throws ContestManagementException;
+
+    /**
+     * <p>
+     * Get the PrizeType with the specified id.
+     * </p>
+     * 
+     * @param prizeTypeId
+     *            id to look for
+     * @return the PrizeType with the specified id.
+     * @throws ContestManagementException
+     *             if any error occurs when getting PrizeType.
+     * @since TCCC-349
+     */
+    public PrizeType getPrizeType(long prizeTypeId) throws ContestManagementException;
+
+    /**
+     * <p>
+     * Get all the PaymentStatus  objects.
+     * </p>
+     * 
+     * @return the list of all available PaymentStatus 
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting PaymentStatus.
+     *             
+     * @since TCCC-349
+     */
+    public List<PaymentStatus > getAllPaymentStatuses() throws ContestManagementException;
+
+    /**
+     * <p>
+     * Get the PaymentStatus with the specified id.
+     * </p>
+     * 
+     * @param paymentStatusId
+     *            id to look for
+     * @return the PaymentStatus with the specified id.
+     * @throws ContestManagementException
+     *             if any error occurs when getting PaymentStatus
+     * @since TCCC-349
+     */
+    public PaymentStatus getPaymentStatus(long paymentStatusId) throws ContestManagementException;}
