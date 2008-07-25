@@ -339,6 +339,54 @@ public class StudioServiceBean implements StudioService {
     private long contestPropertyMaximumSubmissionsId;
 
     /**
+     * Represents the id for the Contest property "Eligibility".
+     * 
+     * @since TCCC-283
+     */
+    @Resource(name = "contestPropertyEligibilityId")
+    private long contestPropertyEligibilityId;
+
+    /**
+     * Represents the id for the Contest property "Notes on Winner Selection".
+     * 
+     * @since TCCC-283
+     */
+    @Resource(name = "contestPropertyNotesOnWinnerSelectionId")
+    private long contestPropertyNotesOnWinnerSelectionId;
+
+    /**
+     * Represents the id for the Contest property "Prize Description".
+     * 
+     * @since TCCC-283
+     */
+    @Resource(name = "contestPropertyPrizeDescriptionId")
+    private long contestPropertyPrizeDescriptionId;
+
+    /**
+     * Represents the default text for the Contest property "Eligibility".
+     * 
+     * @since TCCC-283
+     */
+    @Resource(name = "defaultContestEligibilityText")
+    private String defaultContestEligibilityText;
+
+    /**
+     * Represents the default text for the Contest property "Notes on Winner Selection".
+     * 
+     * @since TCCC-283
+     */
+    @Resource(name = "defaultContestNotesOnWinnerSelectionText")
+    private String defaultContestNotesOnWinnerSelectionText;
+
+    /**
+     * Represents the default text for the Contest property "Prize Description".
+     * 
+     * @since TCCC-283
+     */
+    @Resource(name = "defaultContestPrizeDescriptionText")
+    private String  defaultContestPrizeDescriptionText;
+    
+    /**
      * Represents the id for the Contest property "Contest PrizeType Id"
      * 
      * @since TCCC-351
@@ -1088,6 +1136,11 @@ public class StudioServiceBean implements StudioService {
         addContestConfig(result, contestPropertyRequiresPreviewImageId, String.valueOf(data.isRequiresPreviewImage()));
         addContestConfig(result, contestPropertyMaximumSubmissionsId, String.valueOf(data.getMaximumSubmissions()));
 
+        // [TCCC-283]
+        addContestConfig(result, contestPropertyEligibilityId, defaultContestEligibilityText);
+        addContestConfig(result, contestPropertyNotesOnWinnerSelectionId, defaultContestNotesOnWinnerSelectionText);
+        addContestConfig(result, contestPropertyPrizeDescriptionId, defaultContestPrizeDescriptionText);
+        
         result.setContestId(data.getContestId());
         result.setName(data.getName());
         result.setProjectId(data.getProjectId());
@@ -1170,32 +1223,41 @@ public class StudioServiceBean implements StudioService {
         for (ContestConfig cc : contest.getConfig()) {
 
             // FIX [TCCC-326]
-            if (cc.getValue() == null)
+            String value = cc.getValue();
+            if (value == null)
                 continue;
 
-            if (cc.getId().getProperty().getPropertyId() == contestPropertyShortSummaryId)
-                contestData.setShortSummary(cc.getValue());
-            else if (cc.getId().getProperty().getPropertyId() == contestPropertyFinalFileFormatId)
-                contestData.setFinalFileFormat(cc.getValue());
-            else if (cc.getId().getProperty().getPropertyId() == contestPropertyOtherFileFormatsId)
-                contestData.setOtherFileFormats(cc.getValue());
-            else if (cc.getId().getProperty().getPropertyId() == contestPropertyColorRequirementsId)
-                contestData.setRequiredOrRestrictedColors(cc.getValue());
-            else if (cc.getId().getProperty().getPropertyId() == contestPropertyFontRequirementsId)
-                contestData.setRequiredOrRestrictedFonts(cc.getValue());
-            else if (cc.getId().getProperty().getPropertyId() == contestPropertyContestOverviewTextId)
-                contestData.setContestDescriptionAndRequirements(cc.getValue());
-            else if (cc.getId().getProperty().getPropertyId() == contestPropertySizeRequirementsId)
-                contestData.setSizeRequirements(cc.getValue());
-            else if (cc.getId().getProperty().getPropertyId() == contestPropertyOtherRequirementsId)
-                contestData.setOtherRequirementsOrRestrictions(cc.getValue());
+            long propertyId = cc.getId().getProperty().getPropertyId();
+            if (propertyId == contestPropertyShortSummaryId)
+                contestData.setShortSummary(value);
+            else if (propertyId == contestPropertyFinalFileFormatId)
+                contestData.setFinalFileFormat(value);
+            else if (propertyId == contestPropertyOtherFileFormatsId)
+                contestData.setOtherFileFormats(value);
+            else if (propertyId == contestPropertyColorRequirementsId)
+                contestData.setRequiredOrRestrictedColors(value);
+            else if (propertyId == contestPropertyFontRequirementsId)
+                contestData.setRequiredOrRestrictedFonts(value);
+            else if (propertyId == contestPropertyContestOverviewTextId)
+                contestData.setContestDescriptionAndRequirements(value);
+            else if (propertyId == contestPropertySizeRequirementsId)
+                contestData.setSizeRequirements(value);
+            else if (propertyId == contestPropertyOtherRequirementsId)
+                contestData.setOtherRequirementsOrRestrictions(value);
             // [TCCC-284]
-            else if (cc.getId().getProperty().getPropertyId() == contestPropertyRequiresPreviewFileId)
-                contestData.setRequiresPreviewFile(Boolean.parseBoolean(cc.getValue()));
-            else if (cc.getId().getProperty().getPropertyId() == contestPropertyRequiresPreviewImageId)
-                contestData.setRequiresPreviewImage(Boolean.parseBoolean(cc.getValue()));
-            else if (cc.getId().getProperty().getPropertyId() == contestPropertyMaximumSubmissionsId)
-                contestData.setMaximumSubmissions(Long.parseLong(cc.getValue()));
+            else if (propertyId == contestPropertyRequiresPreviewFileId)
+                contestData.setRequiresPreviewFile(Boolean.parseBoolean(value));
+            else if (propertyId == contestPropertyRequiresPreviewImageId)
+                contestData.setRequiresPreviewImage(Boolean.parseBoolean(value));
+            else if (propertyId == contestPropertyMaximumSubmissionsId)
+                contestData.setMaximumSubmissions(Long.parseLong(value));
+            // [TCCC-283]
+            else if (propertyId == contestPropertyEligibilityId)
+                contestData.setEligibility(value);
+            else if (propertyId == contestPropertyNotesOnWinnerSelectionId)
+                contestData.setNotesOnWinnerSelection(value);
+            else if (propertyId == contestPropertyPrizeDescriptionId)
+                contestData.setPrizeDescription(value);
         }
 
         List<UploadedDocument> documents = new ArrayList<UploadedDocument>();
@@ -2218,12 +2280,21 @@ public class StudioServiceBean implements StudioService {
         try {
             SubmissionPayment submissionPayment = new SubmissionPayment();
             Submission submission = submissionManager.getSubmission(submissionId);
+            for(Prize prize : submission.getPrizes()){
+            }
+            Prize prize = new Prize();
+            prize.setAmount(price);
+            prize.setCreateDate(new Date());
+            prize.setPlace(null);
+            prize.setType(contestManager.getPrizeType(clientSelectionPrizeTypeId));
+
             if (submission == null) {
-                handleIllegalWSArgument("Submission with id " + submissionId + " is not found");
+                handleIllegalWSArgument("Submission with id " + submissionId + " is not found.");
             }
 
             submissionPayment.setSubmission(submission);
             submissionPayment.setPrice(price);
+
             // [ TCCC-125 ]
             submissionPayment.setPayPalOrderId(payPalOrderId);
 
@@ -2273,7 +2344,6 @@ public class StudioServiceBean implements StudioService {
             }
             // set the placement field of submission.
             submission.setRank(place);
-
             submissionManager.updateSubmission(submission);
 
             // create an entry at submission payment table

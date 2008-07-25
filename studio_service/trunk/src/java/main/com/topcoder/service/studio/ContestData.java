@@ -33,7 +33,8 @@ import java.util.List;
         "contestDescriptionAndRequirements", "requiredOrRestrictedColors",
         "requiredOrRestrictedFonts", "sizeRequirements",
         "otherRequirementsOrRestrictions", "creatorUserId", "finalFileFormat",
-        "otherFileFormats", "statusId", "submissionCount", "contestTypeId", "contestChannelId"})
+        "otherFileFormats", "statusId", "submissionCount", "contestTypeId", "contestChannelId",
+        "eligibility","notesOnWinnerSelection","prizeDescription"})
 public class ContestData implements Serializable {
     /**
      * <p>
@@ -191,6 +192,75 @@ public class ContestData implements Serializable {
      * </p>
      */
     private String otherFileFormats;
+    
+    /**
+     * Represents eligibility.
+     */
+    private String eligibility;
+    
+    /**
+     * Returns eligibility.
+     * 
+     * @return the eligibility
+     */
+    public String getEligibility() {
+        return eligibility;
+    }
+
+    /**
+     * Sets eligibility.
+     * 
+     * @param eligibility the eligibility to set
+     */
+    public void setEligibility(String eligibility) {
+        this.eligibility = eligibility;
+    }
+
+    /**
+     * Represents notes on winner selection.
+     */
+    private String notesOnWinnerSelection;
+    
+    /**
+     * Returns notesOnWinnerSelection.
+     * 
+     * @return the notesOnWinnerSelection
+     */
+    public String getNotesOnWinnerSelection() {
+        return notesOnWinnerSelection;
+    }
+
+    /**
+     * Set notesOnWinnerSelection.
+     * 
+     * @param notesOnWinnerSelection the notesOnWinnerSelection to set
+     */
+    public void setNotesOnWinnerSelection(String notesOnWinnerSelection) {
+        this.notesOnWinnerSelection = notesOnWinnerSelection;
+    }
+
+    /**
+     * Represents prize description.
+     */
+    private String prizeDescription;
+    
+    /**
+     * Return prizeDescription.
+     * 
+     * @return the prizeDescription
+     */
+    public String getPrizeDescription() {
+        return prizeDescription;
+    }
+
+    /**
+     * Set prizeDescription.
+     * 
+     * @param prizeDescription the prizeDescription to set
+     */
+    public void setPrizeDescription(String prizeDescription) {
+        this.prizeDescription = prizeDescription;
+    }
 
     /**
      * <p>
