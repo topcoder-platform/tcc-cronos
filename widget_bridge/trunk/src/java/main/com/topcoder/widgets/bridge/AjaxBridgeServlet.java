@@ -1496,6 +1496,11 @@ public class AjaxBridgeServlet extends HttpServlet {
         respJSON.setBoolean("requiresPreviewImage", contest.isRequiresPreviewImage());
         respJSON.setLong("maximumSubmissions", contest.getMaximumSubmissions());
         
+        // [TCCC-283]
+        respJSON.setString("eligibility", contest.getEligibility());
+        respJSON.setString("notesOnWinnerSelection", contest.getNotesOnWinnerSelection());
+        respJSON.setString("prizeDescription", contest.getPrizeDescription());
+        
         // set up ARRAYS
         // Prizes[]
         // setup the JSONArray of prizes
