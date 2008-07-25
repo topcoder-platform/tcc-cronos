@@ -1124,7 +1124,23 @@ public class StudioServiceBean implements StudioService {
 
         addContestConfig(result, contestPropertyOtherRequirementsId, data.getOtherRequirementsOrRestrictions());
 
-        addContestConfig(result, contestPropertyFinalFileFormatId, data.getFinalFileFormat());
+        // [TCCC-325].
+        Set<StudioFileType> fileTypes = new HashSet<StudioFileType>();
+        List<StudioFileType> allFileTypes = contestManager.getAllStudioFileTypes();
+        for (String format : data.getFinalFileFormat().split(",")) {
+            boolean found = false;
+            for (StudioFileType type : allFileTypes) {
+                if (type.getExtension().equals(format)) {
+                    fileTypes.add(type);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                throw new ContestManagementException("Unknown studio file type: " + format);
+            }
+        }
+        result.setFileTypes(fileTypes);
 
         addContestConfig(result, contestPropertyOtherFileFormatsId, data.getOtherFileFormats());
 
@@ -1219,6 +1235,16 @@ public class StudioServiceBean implements StudioService {
             contestData.setSubmissionCount(contest.getSubmissions().size());
         }
 
+        // [TCCC-325]
+        Set<StudioFileType> fileTypes = contest.getFileTypes();
+        StringBuilder finalFileFormatSB = new StringBuilder();
+        for (StudioFileType fileType : fileTypes) {
+            finalFileFormatSB.append(fileType.getExtension() + ",");
+        }
+        String finalFileFormat = finalFileFormatSB.toString();
+        finalFileFormat = finalFileFormat.substring(0, finalFileFormat.length() - 1);
+        contestData.setFinalFileFormat(finalFileFormat);
+        
         // Since 1.0.3, Bug Fix 27074484-14
         for (ContestConfig cc : contest.getConfig()) {
 
@@ -1230,8 +1256,6 @@ public class StudioServiceBean implements StudioService {
             long propertyId = cc.getId().getProperty().getPropertyId();
             if (propertyId == contestPropertyShortSummaryId)
                 contestData.setShortSummary(value);
-            else if (propertyId == contestPropertyFinalFileFormatId)
-                contestData.setFinalFileFormat(value);
             else if (propertyId == contestPropertyOtherFileFormatsId)
                 contestData.setOtherFileFormats(value);
             else if (propertyId == contestPropertyColorRequirementsId)
