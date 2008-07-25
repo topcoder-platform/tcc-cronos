@@ -1540,7 +1540,7 @@ public class StudioServiceBean implements StudioService {
             if (s.getContest() != null) {
                 sd.setContestId(unbox(s.getContest().getContestId()));
             }
-            sd.setPlacement(unbox(s.getRank()));
+
             sd.setSubmissionId(unbox(s.getSubmissionId()));
             sd.setSubmittedDate(getXMLGregorianCalendar(s.getSubmissionDate()));
             sd.setSubmitterId(unbox(s.getSubmitterId()));
@@ -1549,6 +1549,10 @@ public class StudioServiceBean implements StudioService {
             double prizeAmount = 0;
             for (Prize p : s.getPrizes()) {
                 prizeAmount += p.getAmount();
+                
+                if (p.getPlace() != null && p.getPlace() > 0) {
+                	sd.setPlacement(p.getPlace());
+                }
             }
             sd.setPrice(prizeAmount);
 
