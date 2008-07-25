@@ -684,7 +684,7 @@ function getContest1() {
     contest.setDurationInHours(3);
     contest.setWinnerAnnouncementDeadline("2008-03-20 09:00");
     contest.setContestTypeID(2);
-    contest.setFinalFileFormatList(["\"format 1\"","\"format2\"","\"format3\""]); // array
+    contest.setFinalFileFormatList(["\"doc\"","\"txt\"","\"pdf\""]); // array
     contest.setFinalFileFormatOther("zip");
 //  contest.setDocumentationUploads([docup1, docup2]); // array
     contest.setDocumentationUploads([]); // array
