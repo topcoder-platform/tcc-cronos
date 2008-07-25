@@ -225,6 +225,36 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
     var otherRequirementsOrRestrictions /* String */ = null;
 
 	/**
+	 * <p>Represents the Eligibility .</p>
+	 * <p>Initial Value: null, means that is not set</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 * <p>Valid Values: all values, can be null, can be empty</p>
+	 */
+    var eligibility /* String */ = null;
+
+	/**
+	 * <p>Represents the Notes on Winner Selection.</p>
+	 * <p>Initial Value: null, means that is not set</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 * <p>Valid Values: all values, can be null, can be empty</p>
+	 */
+    var notesOnWinnerSelection /* String */ = null;
+
+	/**
+	 * <p>Represents the Prize Description.</p>
+	 * <p>Initial Value: null, means that is not set</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 * <p>Valid Values: all values, can be null, can be empty</p>
+	 */
+    var prizeDescription /* String */ = null;
+    
+	/**
 	 * <p>Represents the tc Direct Project Id.  It is added in the CID because it exists in the WSDL.</p>
 	 * <p>Initial Value: -1, means that is not set</p>
 	 * <p>Accessed In: getter method</p>
@@ -573,6 +603,30 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.requiresPreviewFile",
 			"json.requiresPreviewFile does not exists");
 		}
+
+		// sets the Eligibility
+		if (typeof(json.eligibility) != "undefined" ) {
+		    that.eligibility /* String */ = json.eligibility;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.eligibility",
+			"json.eligibility does not exists");
+		}
+
+		// sets the notesOnWinnerSelection.
+		if (typeof(json.notesOnWinnerSelection) != "undefined" ) {
+		    that.notesOnWinnerSelection /* String */ = json.notesOnWinnerSelection;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.notesOnWinnerSelection",
+			"json.notesOnWinnerSelection does not exists");
+		}
+
+		// sets the Prize Description.
+		if (typeof(json.prizeDescription) != "undefined" ) {
+		    that.prizeDescription /* String */ = json.prizeDescription;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.prizeDescription",
+			"json.prizeDescription does not exists");
+		}
 	}
 
 
@@ -696,6 +750,49 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
         return that.finalFileFormatOther;
     }
 
+    /**
+     * <p>Sets the eligibility.</p>
+     */
+    this.setEligibility = function /* void */ (/* String */ eligibility ) {
+        that.eligibility = eligibility;
+    }
+
+    /**
+     * <p>Returns the eligibility.</p>
+     */
+    this.getEligibility = function /* String */ () {
+        return that.eligibility;
+    }
+
+    /**
+     * <p>Sets the Prize Description.</p>
+     */
+    this.setPrizeDescription = function /* void */ (/* String */ prizeDescription ) {
+        that.prizeDescription = prizeDescription;
+    }
+
+    /**
+     * <p>Returns the Prize Description .</p>
+     */
+    this.getPrizeDescription = function /* String */ () {
+        return that.prizeDescription;
+    }
+    
+    /**
+     * <p>Sets the Notes on Winner Selection.</p>
+     */
+    this.setNotesOnWinnerSelection = function /* void */ (/* String */ notesOnWinnerSelection ) {
+        that.notesOnWinnerSelection = notesOnWinnerSelection;
+    }
+
+    /**
+     * <p>Returns the Notes on Winner Selection.</p>
+     */
+    this.getNotesOnWinnerSelection = function /* String */ () {
+        return that.notesOnWinnerSelection;
+    }
+
+    
     /**
      * <p>Sets the finalFileFormatOther.</p>
      */
@@ -961,6 +1058,16 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 	 * "$otherRequirementsOrRestrictions","tcDirectProjectID" : $tcDirectProjectID,"creatorUserID" : $creatorUserID}
 	 */
 	this.toJSON = function /* String */ () {
+		if(typeof(that.getEligibility()) == "undefined"){
+			that.setEligibility('n/a'); 
+		}
+		if(typeof(that.getNotesOnWinnerSelection()) == "undefined"){
+			that.setNotesOnWinnerSelection('n/a'); 
+		}
+		if(typeof(that.getPrizeDescription()) == "undefined"){
+			that.setPrizeDescription('n/a'); 
+		}
+		
 		// setup Prizes json string
 		var locPrizes = "[";
 		var tempPrizes = that.getPrizes();
@@ -1053,6 +1160,9 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 		        + "\"maximumSubmissions\" : " + that.getMaximumSubmissions () + ", "
 		        + "\"requiresPreviewImage\" : " + that.getRequiresPreviewImage () + ", "
 		        + "\"requiresPreviewFile\" : " + that.getRequiresPreviewFile () + ", "
+		        + "\"eligibility\" : \"" + that.getEligibility() + "\", "
+		        + "\"notesOnWinnerSelection\" : \"" + that.getNotesOnWinnerSelection () + "\", "
+		        + "\"prizeDescription\" : \"" + that.getPrizeDescription() + "\", "
 		        + "\"creatorUserID\" : " + that.getCreatorUserID()
 		        + "}";
 	}
