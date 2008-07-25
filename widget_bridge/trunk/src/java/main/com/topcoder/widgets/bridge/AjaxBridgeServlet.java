@@ -1016,9 +1016,6 @@ public class AjaxBridgeServlet extends HttpServlet {
                     if (checkLongIfLessThanZero(submissionId, "submissionId", response)) {
                         return;
                     }
-                    if (checkLongIfLessThanZero(payPalOrderId, "payPalOrderId", response)) {
-                        return;
-                    }
                     if (checkIntegerIfLessThanZero(submissionId, "place", response)) {
                         return;
                     }
