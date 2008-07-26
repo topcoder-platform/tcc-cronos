@@ -13,6 +13,10 @@
         <param-value>/direct/cockpit/viewsubmissions/confirm_prize_payment.jsp</param-value>
     </context-param>
     <context-param>
+        <param-name>view-submissions-purchased-confirmation-page</param-name>
+        <param-value>/direct/cockpit/viewsubmissions/confirm_purchase_payment.jsp</param-value>
+    </context-param>
+    <context-param>
         <param-name>launch-project-confirmation-page</param-name>
         <param-value>/direct/cockpit/launchproject/launch/payments/confirmation.jsp</param-value>
     </context-param>
