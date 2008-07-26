@@ -31,6 +31,10 @@
         final String pageURL = servletContext.getInitParameter("view-submissions-confirmation-page");
         servletContext.log("paypalConfirmation.jsp : Redirecting to View Submissions Widget : [" + pageURL + "]");
         response.sendRedirect(pageURL + '?' + body);
+    } else if ("PurchasedSubmissions".equals(paymentType)) {
+        final String pageURL = servletContext.getInitParameter("view-submissions-purchased-confirmation-page");
+        servletContext.log("paypalConfirmation.jsp : Redirecting to View Submissions Widget : [" + pageURL + "]");
+        response.sendRedirect(pageURL + '?' + body);
     } else if ("Launch".equals(paymentType)) {
         final String pageURL = servletContext.getInitParameter("launch-project-confirmation-page");
         servletContext.log("paypalConfirmation.jsp : Redirecting to Launch Project Widget : [" + pageURL + "]");
