@@ -6,7 +6,8 @@
     <property name="cobertura.datafile.remote" value="${jboss_home}/bin/cobertura.ser" />
     <property name="cobertura.datafile.local" value="${testlogdir}/cobertura_local.ser" />
 
-    <target name="test.setup" depends="compile">
+    <macrodef name="test.setup">
+        <sequential>
             <property name="jboss_libdir" value="${jboss_home}/server/${jboss_config_name}/lib"/>
             <property name="deploy-dir" value="${jboss_home}/server/${jboss_config_name}/deploy"/>
             <property name="log4j.jar" value="${jboss_home}/server/${jboss_config_name}/lib/log4j.jar"/>
@@ -76,10 +77,9 @@
             <copy file="${db_connection_factory.jar}" todir="${component.ear.dir}" overwrite="true"/>
 
             <copy file="${testfiles}/dr_entites.jar" todir="${component.ear.dir}" overwrite="true"/>
-    	    <copy file="${testfiles}/mock.jar" todir="${component.ear.dir}" overwrite="true"/>
-            <!-- <copy file="${testfiles}/SaveCoberturaData.jar" todir="${component.ear.dir}" overwrite="true"/> 
-            -->
-    		<copy file="${testfiles}/informix-ds.xml" todir="${component.ear.dir}" overwrite="true"/>
+    	      <copy file="${testfiles}/mock.jar" todir="${component.ear.dir}" overwrite="true"/>
+            <copy file="${testfiles}/SaveCoberturaData.jar" todir="${component.ear.dir}" overwrite="true"/> 
+    	   	  <copy file="${testfiles}/informix-ds.xml" todir="${component.ear.dir}" overwrite="true"/>
             <copy todir="${component.ear.dir}/test_files/" overwrite="true">
                 <fileset dir="${testfiles}">
                     <include name="*.xml" />
@@ -110,14 +110,18 @@
                   <include name="**/*.jar"/>
               </fileset>
             </copy>
-    </target>
+        </sequential>
+    </macrodef>
 
-    <target name="test.teardown">
+    <macrodef name="test.teardown">
+        <sequential>
             <delete file="${deploy-dir}/${distfilename}.ear"/>
-    </target>
+        </sequential>
+    </macrodef>
 
-    <target name="coveragetest.execute">
+    <macrodef name="coveragetest.execute">
         <!-- standard test task -->
+        <sequential>
             <mkdir dir="${testlogdir}"/>
             <mkdir dir="${instrumented.dir}"/>
             <delete file="${cobertura.datafile.local}"/>
@@ -150,7 +154,8 @@
 					        <include name="cobertura_local.ser" />
 					    </fileset>
 						</cobertura-merge>
-    </target>
+        </sequential>
+    </macrodef>
 
     <target name="deployEAR" depends="compile_tests">
         <test.setup/>
