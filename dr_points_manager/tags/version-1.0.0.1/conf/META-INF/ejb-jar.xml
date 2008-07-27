@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd">
+
+	<enterprise-beans>
+		<session>
+			<ejb-name>DigitalRunPointsManagerBean</ejb-name>
+			<remote>com.topcoder.service.digitalrun.points.DigitalRunPointsManagerRemote</remote>
+			<local>com.topcoder.service.digitalrun.points.DigitalRunPointsManagerLocal</local>
+			<ejb-class>com.topcoder.service.digitalrun.points.manager.bean.DigitalRunPointsManagerBean</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
+
+
+			<env-entry>
+				<env-entry-name>unitName</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>dr_points_manager_ref</env-entry-value>
+			</env-entry>
+
+			<env-entry>
+				<env-entry-name>logName</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>submissionManagerLogName</env-entry-value>
+			</env-entry>
+
+			<env-entry>
+				<env-entry-name>pointsDAOKey</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>PointsDAOImpl</env-entry-value>
+			</env-entry>
+
+			<env-entry>
+				<env-entry-name>pointsTypeDAOKey</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>PointsTypeDAOImpl</env-entry-value>
+			</env-entry>
+
+			<env-entry>
+				<env-entry-name>pointsOperationDAOKey</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>PointsOperationDAOImpl</env-entry-value>
+			</env-entry>
+
+			<env-entry>
+				<env-entry-name>pointsReferenceTypeDAOKey</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>PointsReferenceTypeDAOImpl</env-entry-value>
+			</env-entry>
+
+			<env-entry>
+				<env-entry-name>pointsStatusDAOKey</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>PointsStatusDAOImpl</env-entry-value>
+			</env-entry>
+
+			<persistence-context-ref>
+				<persistence-context-ref-name>dr_points_manager_ref</persistence-context-ref-name>
+				<persistence-unit-name>dr_points_manager</persistence-unit-name>
+				<persistence-context-type>Transaction</persistence-context-type>
+			</persistence-context-ref>
+		</session>
+	</enterprise-beans>
+</ejb-jar>

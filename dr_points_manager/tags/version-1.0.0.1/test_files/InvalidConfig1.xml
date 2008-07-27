@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<!-- Configuration for ObjectFactory -->
+	<Config name="object_factory_child">
+		<Property name="PointsDAOImpl">
+			<Property name="type">
+				<Value>com.topcoder.service.digitalrun.points.dao.implementations.JPADigitalRunPointsDAO</Value>
+			</Property>
+		</Property>
+		<Property name="PointsTypeDAOImpl">
+			<Property name="type">
+				<Value>com.topcoder.service.digitalrun.points.dao.implementations.JPADigitalRunPointsTypeDAO</Value>
+			</Property>
+		</Property>
+		<Property name="PointsOperationDAOImpl">
+			<Property name="type">
+				<Value>com.topcoder.service.digitalrun.points.dao.implementations.JPADigitalRunPointsOperationDAO</Value>
+			</Property>
+		</Property>
+		<Property name="PointsReferenceTypeDAOImpl">
+			<Property name="type">
+				<Value>com.topcoder.service.digitalrun.points.dao.implementations.JPADigitalRunPointsReferenceTypeDAO</Value>
+			</Property>
+		</Property>
+		<Property name="PointsStatusDAOImpl">
+			<Property name="type">
+				<Value>com.topcoder.service.digitalrun.points.dao.implementations.JPADigitalRunPointsStatusDAO</Value>
+			</Property>
+		</Property>
+		<Property name="SearchStrategyImpl">
+			<Property name="type">
+				<Value>com.topcoder.service.digitalrun.points.dao.implementations.MockSearchStrategy</Value>
+			</Property>
+		</Property>
+		<Property name="ValidatorKey_1">
+			<Property name="type">
+				<Value>com.topcoder.service.digitalrun.points.dao.implementations.AlwaysTrueValidator</Value>
+			</Property>
+		</Property>
+	</Config>
+
+</CMConfig>
+

@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=DR Points Manager
+component.distfilename=dr_points_manager
+component.package=com.topcoder.service.digitalrun.points
+component.packagedir=com/topcoder/service/digitalrun/points
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1
