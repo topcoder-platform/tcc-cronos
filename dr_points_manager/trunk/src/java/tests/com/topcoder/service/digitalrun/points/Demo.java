@@ -25,10 +25,7 @@ import com.topcoder.service.digitalrun.entity.DigitalRunPointsOperation;
 import com.topcoder.service.digitalrun.entity.DigitalRunPointsReferenceType;
 import com.topcoder.service.digitalrun.entity.DigitalRunPointsStatus;
 import com.topcoder.service.digitalrun.entity.DigitalRunPointsType;
-import com.topcoder.service.digitalrun.entity.PointsCalculator;
 import com.topcoder.service.digitalrun.entity.Track;
-import com.topcoder.service.digitalrun.entity.TrackStatus;
-import com.topcoder.service.digitalrun.entity.TrackType;
 import com.topcoder.service.digitalrun.points.dao.implementations.AlwaysTrueValidator;
 import com.topcoder.service.digitalrun.points.dao.implementations.JPADigitalRunPointsDAO;
 import com.topcoder.service.digitalrun.points.dao.implementations.MockEntityManager;
@@ -122,84 +119,22 @@ public class Demo extends TestCase {
      *
      * @param points
      *            the points
-     * @throws Exception
-     *             to test
      */
-    public void setPoints(DigitalRunPoints points) throws Exception {
+    public void setPoints(DigitalRunPoints points) {
         points.setDescription("description");
         points.setApplicationDate(new Date());
         points.setModificationDate(new Date());
-        points.setDigitalRunPointsOperation(impl.createDigitalRunPointsOperation(getPO()));
-        points.setDigitalRunPointsReferenceType(impl.createDigitalRunPointsReferenceType(getReferenceType()));
-        points.setDigitalRunPointsStatus(impl.createDigitalRunPointsStatus(getStatus()));
-        points.setDigitalRunPointsType(impl.createDigitalRunPointsType(getType()));
-        Track track = getTrack();
-        TestHelper.persist(em, track);
+        points.setDigitalRunPointsOperation(getPO());
+        points.setDigitalRunPointsReferenceType(getReferenceType());
+        points.setDigitalRunPointsStatus(getStatus());
+        points.setDigitalRunPointsType(getType());
+        Track track = new Track();
+        track.setId(2);
         points.setTrack(track);
         points.setUserId(123);
         points.setReferenceId(234);
         points.setAwardDate(new Date());
         points.setCreationDate(new Date());
-    }
-
-    /**
-     * Creates the Track for testing purpose.
-     *
-     * @return the entity created
-     */
-    protected Track getTrack() {
-        PointsCalculator pointsCalculator = createPointsCalculator();
-        TestHelper.persist(em, pointsCalculator);
-
-        TrackStatus trackStatus = createTrackStatus();
-        TestHelper.persist(em, trackStatus);
-
-        TrackType trackType = createTrackType();
-        TestHelper.persist(em, trackType);
-        Track entity = new Track();
-        entity.setPointsCalculator(pointsCalculator);
-        entity.setTrackStatus(trackStatus);
-        entity.setTrackType(trackType);
-        entity.setDescription("description");
-        entity.setStartDate(new Date());
-        entity.setEndDate(new Date());
-        entity.setCreationDate(new Date());
-        entity.setModificationDate(new Date());
-        return entity;
-    }
-
-    /**
-     * Creates the TrackStatus for testing purpose.
-     *
-     * @return the entity created
-     */
-    protected TrackStatus createTrackStatus() {
-        TrackStatus entity = new TrackStatus();
-        entity.setDescription("description");
-        return entity;
-    }
-
-    /**
-     * Creates the TrackType for testing purpose.
-     *
-     * @return the entity created
-     */
-    protected TrackType createTrackType() {
-        TrackType entity = new TrackType();
-        entity.setDescription("description");
-        return entity;
-    }
-
-    /**
-     * Creates the PointsCalculator for testing purpose.
-     *
-     * @return the entity created
-     */
-    protected PointsCalculator createPointsCalculator() {
-        PointsCalculator entity = new PointsCalculator();
-        entity.setClassName("className");
-        entity.setDescription("description");
-        return entity;
     }
 
     /**
@@ -223,18 +158,20 @@ public class Demo extends TestCase {
             // ignore
         }
         em = new MockEntityManager(manager);
+        em.clear();
         sc.setEm(em);
         TestHelper.setPrivateField(DigitalRunPointsManagerBean.class, impl, "sessionContext", sc);
         TestHelper.setPrivateField(DigitalRunPointsManagerBean.class, impl, "unitName", "unit_name");
 
         TestHelper.setPrivateField(DigitalRunPointsManagerBean.class, impl, "pointsDAOKey", "PointsDAOImpl");
-        TestHelper.setPrivateField(DigitalRunPointsManagerBean.class, impl, "pointsTypeDAOKey", "PointsTypeDAOImpl");
+        TestHelper.setPrivateField(DigitalRunPointsManagerBean.class, impl, "pointsTypeDAOKey",
+                "PointsTypeDAOImpl");
         TestHelper.setPrivateField(DigitalRunPointsManagerBean.class, impl, "pointsOperationDAOKey",
                 "PointsOperationDAOImpl");
         TestHelper.setPrivateField(DigitalRunPointsManagerBean.class, impl, "pointsReferenceTypeDAOKey",
                 "PointsReferenceTypeDAOImpl");
-        TestHelper
-                .setPrivateField(DigitalRunPointsManagerBean.class, impl, "pointsStatusDAOKey", "PointsStatusDAOImpl");
+        TestHelper.setPrivateField(DigitalRunPointsManagerBean.class, impl, "pointsStatusDAOKey",
+                "PointsStatusDAOImpl");
 
         Method method = DigitalRunPointsManagerBean.class.getDeclaredMethod("initialize");
         method.setAccessible(true);
@@ -244,11 +181,13 @@ public class Demo extends TestCase {
         fields.put("key_1", new AlwaysTrueValidator());
         Map<String, String> alias = new HashMap<String, String>();
         alias.put("key_1", "value_1");
-        SearchBundle searchBundle = new SearchBundle("name", fields, alias, "context", new MockSearchStrategy());
+        SearchBundle searchBundle = new SearchBundle("name", fields, alias, "context",
+                new MockSearchStrategy());
 
         JPADigitalRunPointsDAO pointsDAO = (JPADigitalRunPointsDAO) TestHelper.getPrivateField(
                 DigitalRunPointsManagerBean.class, impl, "pointsDAO");
         pointsDAO.setSearchBundle(searchBundle);
+        em.getTransaction().begin();
     }
 
     /**
@@ -317,7 +256,7 @@ public class Demo extends TestCase {
         DigitalRunPointsType type1 = bean.getDigitalRunPointsType(type.getId());
 
         // get all digital run points types
-        List<DigitalRunPointsType> types = bean.getAllDigitalRunPointsTypes();
+        //List<DigitalRunPointsType> types = bean.getAllDigitalRunPointsTypes();
 
         // remove digital run points type
         bean.removeDigitalRunPointsType(type.getId());
@@ -325,16 +264,18 @@ public class Demo extends TestCase {
         // 1.3.3 How to manage DigitalRunPointsReferenceType instances
 
         // create digital run points reference type
-        DigitalRunPointsReferenceType referenceType = bean.createDigitalRunPointsReferenceType(getReferenceType());
+        DigitalRunPointsReferenceType referenceType = bean
+                .createDigitalRunPointsReferenceType(getReferenceType());
 
         // update digital run points reference type
         bean.updateDigitalRunPointsReferenceType(referenceType);
 
         // get digital run points reference type
-        DigitalRunPointsReferenceType referenceType1 = bean.getDigitalRunPointsReferenceType(referenceType.getId());
+        DigitalRunPointsReferenceType referenceType1 = bean.getDigitalRunPointsReferenceType(referenceType
+                .getId());
 
         // get all digital run points reference types
-        List<DigitalRunPointsReferenceType> referenceTypes = bean.getAllDigitalRunPointsReferenceTypes();
+        // List<DigitalRunPointsReferenceType> referenceTypes = bean.getAllDigitalRunPointsReferenceTypes();
 
         // remove digital run points reference type
         bean.removeDigitalRunPointsReferenceType(referenceType.getId());
@@ -351,7 +292,7 @@ public class Demo extends TestCase {
         DigitalRunPointsStatus status1 = bean.getDigitalRunPointsStatus(status.getId());
 
         // get all digital run points statuses
-        List<DigitalRunPointsStatus> statuses = bean.getAllDigitalRunPointsStatuses();
+        // List<DigitalRunPointsStatus> statuses = bean.getAllDigitalRunPointsStatuses();
 
         // remove digital run points status
         bean.removeDigitalRunPointsStatus(status.getId());
@@ -368,7 +309,7 @@ public class Demo extends TestCase {
         DigitalRunPointsOperation operation1 = bean.getDigitalRunPointsOperation(operation.getId());
 
         // get all digital run points operation
-        List<DigitalRunPointsOperation> operations = bean.getAllDigitalRunPointsOperations();
+        // List<DigitalRunPointsOperation> operations = bean.getAllDigitalRunPointsOperations();
 
         // remove digital run points operation
         bean.removeDigitalRunPointsOperation(operation.getId());

@@ -70,11 +70,8 @@ public class JPADigitalRunPointsOperationDAO extends AbstractDAO implements Digi
         EntityManager em = getEntityManager();
         // persist the digital run points operation entity in the database
         try {
-            em.getTransaction().begin();
             em.persist(pointsOperation);
-            em.getTransaction().commit();
         } catch (EntityExistsException e) {
-            em.getTransaction().rollback();
             Helper.throwPersitenceExceptionWithLog("EntityExistsException occurs while do persisting.", e,
                     getLogger(), methodName);
         }
@@ -109,11 +106,8 @@ public class JPADigitalRunPointsOperationDAO extends AbstractDAO implements Digi
         EntityManager em = this.getEntityManager();
         // update the entity
         try {
-            em.getTransaction().begin();
             em.merge(pointsOperation);
-            em.getTransaction().commit();
         } catch (IllegalArgumentException iae) {
-            em.getTransaction().rollback();
             Helper.throwEntityNotFoundExceptionWithLog("The pointsOperation is not exist.", iae, getLogger(),
                     methodName);
         }
@@ -153,9 +147,7 @@ public class JPADigitalRunPointsOperationDAO extends AbstractDAO implements Digi
                     + pointsOperationId + "] is not exist.", null, getLogger(), methodName);
         }
         // remove the entity
-        em.getTransaction().begin();
         em.remove(operations);
-        em.getTransaction().commit();
 
         // Log the exit
         Helper.logExitInfo(getLogger(), methodName);

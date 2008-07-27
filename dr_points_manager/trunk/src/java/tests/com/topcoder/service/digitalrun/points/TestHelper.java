@@ -8,11 +8,7 @@ import java.lang.reflect.Field;
 import java.util.Iterator;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
-import org.hibernate.ejb.Ejb3Configuration;
-
-import com.topcoder.service.digitalrun.points.dao.implementations.MockEntityManager;
 import com.topcoder.util.config.ConfigManager;
 
 /**
@@ -24,10 +20,6 @@ import com.topcoder.util.config.ConfigManager;
  * @version 1.0
  */
 public final class TestHelper {
-    /**
-     * A EntityManager instance for testing.
-     */
-    private static MockEntityManager em;
     /**
      * This private constructor prevents the creation of a new instance.
      */
@@ -146,44 +138,19 @@ public final class TestHelper {
     }
 
     /**
-     * Get entity manager.
-     * @return the entity manager.
-     */
-    public static EntityManager getEntityManager() {
-        if (em == null) {
-            EntityManager manager = null;
-            try {
-                Ejb3Configuration cfg = new Ejb3Configuration();
-                EntityManagerFactory emf = cfg.configure("hibernate.cfg.xml").buildEntityManagerFactory();
-                manager = emf.createEntityManager();
-            } catch (Exception e) {
-                // ignore
-            }
-            em = new MockEntityManager(manager);
-            
-        }
-        return em;
-    }
-    
-    /**
      * Helper method to persist the entity with transaction.
      *
      * @param em
      *            the entity manager
      * @param entity
      *            the entity to persist
-     * @return the entity
      */
-    public static Object persist(EntityManager em, Object entity) {
-        if (em == null) {
-            em = getEntityManager();
-        }
+    public static void persist(EntityManager em, Object entity) {
         if (!em.getTransaction().isActive()) {
             em.getTransaction().begin();
         }
         em.persist(entity);
         em.getTransaction().commit();
-        return entity;
     }
 
     /**
@@ -195,9 +162,6 @@ public final class TestHelper {
      *            the entity to persist
      */
     public static void delete(EntityManager em, Object entity) {
-        if (em == null) {
-            em = getEntityManager();
-        }
         if (!em.getTransaction().isActive()) {
             em.getTransaction().begin();
         }

@@ -33,10 +33,6 @@ public class UnitTests extends TestCase {
     public static Test suite() {
         final TestSuite suite = new TestSuite();
 
-        // DemoEJB
-        suite.addTest(Demo.suite());
-        suite.addTest(DemoEJB.suite());
-
         // package com.topcoder.service.digitalrun.points
         suite.addTest(ConfigurationProviderTest.suite());
         suite.addTest(DigitalRunPointsManagerBeanConfigurationExceptionTest.suite());
@@ -51,12 +47,15 @@ public class UnitTests extends TestCase {
 
         // package com.topcoder.service.digitalrun.points.dao.implementations
         suite.addTest(AbstractDAOTest.suite());
-        suite.addTest(JPADigitalRunPointsDAOTest.suite());
         suite.addTest(JPADigitalRunPointsOperationDAOTest.suite());
         suite.addTest(JPADigitalRunPointsReferenceTypeDAOTest.suite());
         suite.addTest(JPADigitalRunPointsStatusDAOTest.suite());
         suite.addTest(JPADigitalRunPointsTypeDAOTest.suite());
+        // Demo
+        
+        suite.addTest(JPADigitalRunPointsDAOTest.suite());
 
+        suite.addTest(Demo.suite());    
         return suite;
     }
 

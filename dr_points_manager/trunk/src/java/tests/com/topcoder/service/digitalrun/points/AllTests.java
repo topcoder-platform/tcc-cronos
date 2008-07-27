@@ -23,9 +23,6 @@ public class AllTests extends TestCase {
     public static Test suite() {
         final TestSuite suite = new TestSuite();
         
-        //unit tests
-        suite.addTest(UnitTests.suite());
-        
         //accuracy tests
         suite.addTest(AccuracyTests.suite());
 
@@ -34,6 +31,9 @@ public class AllTests extends TestCase {
 
         //failure tests
         suite.addTest(FailureTests.suite());
+        
+        //unit tests
+        suite.addTest(UnitTests.suite());
         
         return suite;
     }

@@ -69,14 +69,11 @@ public class JPADigitalRunPointsTypeDAOTest extends TestCase {
             }
             em = new MockEntityManager(manager);
         }
-        if (!em.getTransaction().isActive()) {
-            em.getTransaction().begin();
-            Query res = em.createNativeQuery("delete from dr_points_type_lu");
-            res.executeUpdate();
-            em.getTransaction().commit();
-        }
         em.SetExceptionFlag(false);
         em.clear();
+        if (!em.getTransaction().isActive()) {
+            em.getTransaction().begin();
+        }
         MockSessionContext sc = new MockSessionContext();
         sc.setEm(em);
         impl.setSessionContext(sc);
@@ -91,7 +88,6 @@ public class JPADigitalRunPointsTypeDAOTest extends TestCase {
             em.getTransaction().begin();
             Query res = em.createNativeQuery("delete from dr_points_type_lu");
             res.executeUpdate();
-            em.getTransaction().commit();
         }
     }
 
@@ -398,7 +394,7 @@ public class JPADigitalRunPointsTypeDAOTest extends TestCase {
 
         result = impl.getAllDigitalRunPointsTypes();
         assertNotNull("The result should not be null.", result);
-        assertEquals("The list should not be empty. ", 1, result.size());
+        assertEquals("The list should be empty. ", 1, result.size());
     }
 
 }

@@ -95,6 +95,9 @@ public class DigitalRunPointsManagerBeanTest extends TestCase {
         }
         em.SetExceptionFlag(false);
         em.clear();
+        if (!em.getTransaction().isActive()) {
+            em.getTransaction().begin();
+        }
         sc.setEm(em);
         TestHelper.setPrivateField(DigitalRunPointsManagerBean.class, impl, "sessionContext", sc);
         TestHelper.setPrivateField(DigitalRunPointsManagerBean.class, impl, "unitName", "unit_name");
@@ -130,7 +133,6 @@ public class DigitalRunPointsManagerBeanTest extends TestCase {
             res.executeUpdate();
             res = em.createNativeQuery("delete from dr_points");
             res.executeUpdate();
-            em.getTransaction().commit();
         }
     }
 

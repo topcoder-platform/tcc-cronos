@@ -105,10 +105,10 @@ public class MockSessionContext implements SessionContext {
         }
         try{
         Ejb3Configuration cfg = new Ejb3Configuration();
+        
         EntityManagerFactory emf = cfg.configure("hibernate.cfg.xml").buildEntityManagerFactory();
         manager = emf.createEntityManager();
         }catch(Exception e){
-            System.out.println(e);
             //ignore
         }
         return manager;
@@ -116,7 +116,7 @@ public class MockSessionContext implements SessionContext {
 
     public void setRollbackOnly() throws IllegalStateException {
         // TODO Auto-generated method stub
-
+        
     }
 
     public Object getBusinessObject(Class arg0) throws IllegalStateException {

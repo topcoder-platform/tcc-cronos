@@ -4,6 +4,9 @@
     <display-name>DR Points Manager</display-name>
 
     <!-- DataSource -->
+    <!-- 
+     -->
+    
     <module>
         <java>informix-ds.xml</java>
     </module>

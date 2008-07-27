@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ejb-jar version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<ejb-jar version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd">
 
 	<enterprise-beans>
@@ -13,11 +12,11 @@
 			<transaction-type>Container</transaction-type>
 
 
-       <env-entry>
-        <env-entry-name>unitName</env-entry-name>
-        <env-entry-type>java.lang.String</env-entry-type>
-        <env-entry-value>HibernateDRPointsPersistence</env-entry-value>
-       </env-entry>
+			<env-entry>
+				<env-entry-name>unitName</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>dr_points_manager_ref</env-entry-value>
+			</env-entry>
 
 			<env-entry>
 				<env-entry-name>logName</env-entry-name>
@@ -56,8 +55,8 @@
 			</env-entry>
 
 			<persistence-context-ref>
-				<persistence-context-ref-name>HibernateDRPointsPersistence</persistence-context-ref-name>
-				<persistence-unit-name>HibernateDRPointsPersistence</persistence-unit-name>
+				<persistence-context-ref-name>dr_points_manager_ref</persistence-context-ref-name>
+				<persistence-unit-name>dr_points_manager</persistence-unit-name>
 				<persistence-context-type>Transaction</persistence-context-type>
 			</persistence-context-ref>
 		</session>

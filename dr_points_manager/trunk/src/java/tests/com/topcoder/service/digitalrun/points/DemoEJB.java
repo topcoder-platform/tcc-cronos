@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ */
 package com.topcoder.service.digitalrun.points;
 
 import java.util.Date;
@@ -145,8 +148,8 @@ public class DemoEJB extends TestCase {
         // 1.3.3 How to manage DigitalRunPointsReferenceType instances
 
         // create digital run points reference type
-        DigitalRunPointsReferenceType referenceType = remote
-                .createDigitalRunPointsReferenceType(getReferenceType());
+        DigitalRunPointsReferenceType referenceType = this.getReferenceType();
+        referenceType = remote.createDigitalRunPointsReferenceType(getReferenceType());
 
         // update digital run points reference type
         remote.updateDigitalRunPointsReferenceType(referenceType);

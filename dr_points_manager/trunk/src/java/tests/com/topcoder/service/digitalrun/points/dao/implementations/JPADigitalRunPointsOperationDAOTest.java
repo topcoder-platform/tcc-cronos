@@ -70,6 +70,9 @@ public class JPADigitalRunPointsOperationDAOTest extends TestCase {
         }
         em.SetExceptionFlag(false);
         em.clear();
+        if (!em.getTransaction().isActive()) {
+            em.getTransaction().begin();
+        }
         MockSessionContext sc = new MockSessionContext();
         sc.setEm(em);
         impl.setSessionContext(sc);
@@ -84,7 +87,6 @@ public class JPADigitalRunPointsOperationDAOTest extends TestCase {
             em.getTransaction().begin();
             Query res = em.createNativeQuery("delete from dr_points_operation_lu");
             res.executeUpdate();
-            em.getTransaction().commit();
         }
     }
 
@@ -397,7 +399,7 @@ public class JPADigitalRunPointsOperationDAOTest extends TestCase {
 
         result = impl.getAllDigitalRunPointsOperations();
         assertNotNull("The result should not be null.", result);
-        assertEquals("The list should not be empty. ", 1, result.size());
+        assertEquals("The list should be empty. ", 1, result.size());
     }
 
 }

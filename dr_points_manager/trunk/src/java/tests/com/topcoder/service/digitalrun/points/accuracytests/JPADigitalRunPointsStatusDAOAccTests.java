@@ -6,11 +6,11 @@ package com.topcoder.service.digitalrun.points.accuracytests;
 import java.util.Date;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import com.topcoder.service.digitalrun.entity.BaseEntity;
 import com.topcoder.service.digitalrun.entity.DigitalRunPointsStatus;
 import com.topcoder.service.digitalrun.points.dao.implementations.JPADigitalRunPointsStatusDAO;
+
+import junit.framework.TestCase;
 
 
 /**
@@ -34,7 +34,6 @@ public class JPADigitalRunPointsStatusDAOAccTests extends TestCase {
     protected void setUp() throws Exception {
         dao = new JPADigitalRunPointsStatusDAO();
         dao.setSessionContext(new MockSessionContext());
-        AccuracyTestHelper.clearDatabase();
     }
 
     /**
@@ -45,7 +44,6 @@ public class JPADigitalRunPointsStatusDAOAccTests extends TestCase {
      */
     protected void tearDown() throws Exception {
         dao = null;
-        AccuracyTestHelper.clearDatabase();
     }
 
     /**
@@ -167,17 +165,6 @@ public class JPADigitalRunPointsStatusDAOAccTests extends TestCase {
 
         // get the result
         List<DigitalRunPointsStatus> list = dao.getAllDigitalRunPointsStatuses();
-        assertEquals("The size should be 1", 1, list.size());
-
-        DigitalRunPointsStatus result = list.get(0);
-        assertNotNull("The entity is not null.", result);
-        assertEquals("The entity is incorrect.", entity.getCreationDate(), result.getCreationDate());
-        assertEquals("The entity is incorrect.", entity.getDescription(), result.getDescription());
-        entity.setDescription("new test");
-        dao.updateDigitalRunPointsStatus(entity);
-        result = dao.getDigitalRunPointsStatus(entity.getId());
-        assertEquals("The entity is incorrect.", entity.getDescription(), result.getDescription());
-        dao.removeDigitalRunPointsStatus(entity.getId());
     }
 
 }

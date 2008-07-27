@@ -68,11 +68,8 @@ public class JPADigitalRunPointsStatusDAO extends AbstractDAO implements Digital
         EntityManager em = getEntityManager();
         // persist the digital run points status entity in the database
         try {
-            em.getTransaction().begin();
             em.persist(pointsStatus);
-            em.getTransaction().commit();
         } catch (EntityExistsException e) {
-            em.getTransaction().rollback();
             Helper.throwPersitenceExceptionWithLog("EntityExistsException occurs while do persisting.", e,
                     getLogger(), methodName);
         }
@@ -106,11 +103,8 @@ public class JPADigitalRunPointsStatusDAO extends AbstractDAO implements Digital
         EntityManager em = this.getEntityManager();
         // update the entity
         try {
-            em.getTransaction().begin();
             em.merge(pointsStatus);
-            em.getTransaction().commit();
         } catch (IllegalArgumentException iae) {
-            em.getTransaction().rollback();
             Helper.throwEntityNotFoundExceptionWithLog("The pointsStatus is not exist.", iae, getLogger(),
                     methodName);
         }
@@ -146,10 +140,8 @@ public class JPADigitalRunPointsStatusDAO extends AbstractDAO implements Digital
             Helper.throwEntityNotFoundExceptionWithLog("DigitalRunPointsStatus with id[" + pointsStatusId
                     + "] is not exist.", null, getLogger(), methodName);
         }
-        em.getTransaction().begin();
         // remove the entity
         em.remove(pointsStatus);
-        em.getTransaction().commit();
 
         // Log the exit
         Helper.logExitInfo(getLogger(), methodName);

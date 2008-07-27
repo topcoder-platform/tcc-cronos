@@ -70,11 +70,8 @@ public class JPADigitalRunPointsTypeDAO extends AbstractDAO implements DigitalRu
         EntityManager em = getEntityManager();
         // persist the digital run points type entity in the database
         try {
-            em.getTransaction().begin();
             em.persist(pointsType);
-            em.getTransaction().commit();
         } catch (EntityExistsException e) {
-            em.getTransaction().rollback();
             Helper.throwPersitenceExceptionWithLog("EntityExistsException occurs while do persisting.", e,
                     getLogger(), methodName);
         }
@@ -109,11 +106,8 @@ public class JPADigitalRunPointsTypeDAO extends AbstractDAO implements DigitalRu
         EntityManager em = this.getEntityManager();
         // update the entity
         try {
-            em.getTransaction().begin();
             em.merge(pointsType);
-            em.getTransaction().commit();
         } catch (IllegalArgumentException iae) {
-            em.getTransaction().rollback();
             Helper.throwEntityNotFoundExceptionWithLog("The pointsType is not exist.", iae, getLogger(),
                     methodName);
         }
@@ -151,9 +145,7 @@ public class JPADigitalRunPointsTypeDAO extends AbstractDAO implements DigitalRu
                     + "] is not exist.", null, getLogger(), methodName);
         }
         // remove the entity
-        em.getTransaction().begin();
         em.remove(pointsType);
-        em.getTransaction().commit();
 
         // Log the exit
         Helper.logExitInfo(getLogger(), methodName);

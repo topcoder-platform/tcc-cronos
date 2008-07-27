@@ -82,22 +82,11 @@ public class JPADigitalRunPointsDAOTest extends TestCase {
             }
             em = new MockEntityManager(manager);
         }
-        if (!em.getTransaction().isActive()) {
-            em.getTransaction().begin();
-            Query res = em.createNativeQuery("delete from dr_points_status_lu");
-            res.executeUpdate();
-            res = em.createNativeQuery("delete from dr_points_reference_type_lu");
-            res.executeUpdate();
-            res = em.createNativeQuery("delete from dr_points_operation_lu");
-            res.executeUpdate();
-            res = em.createNativeQuery("delete from dr_points_type_lu");
-            res.executeUpdate();
-            res = em.createNativeQuery("delete from dr_points");
-            res.executeUpdate();
-            em.getTransaction().commit();
-        }
         em.SetExceptionFlag(false);
         em.clear();
+        if (!em.getTransaction().isActive()) {
+            em.getTransaction().begin();
+        }
         MockSessionContext sc = new MockSessionContext();
         sc.setEm(em);
         impl.setSessionContext(sc);
@@ -120,7 +109,6 @@ public class JPADigitalRunPointsDAOTest extends TestCase {
             res.executeUpdate();
             res = em.createNativeQuery("delete from dr_points");
             res.executeUpdate();
-            em.getTransaction().commit();
         }
     }
 
@@ -154,67 +142,7 @@ public class JPADigitalRunPointsDAOTest extends TestCase {
 
         DigitalRunPointsStatus digitalRunPointsStatus = new DigitalRunPointsStatus();
         digitalRunPointsStatus.setDescription("description");
-        TestHelper.persist(em, digitalRunPointsStatus);
         points.setDigitalRunPointsStatus(digitalRunPointsStatus);
-
-        DigitalRunPointsType digitalRunPointsType = new DigitalRunPointsType();
-        digitalRunPointsType.setDescription("description");
-        TestHelper.persist(em, digitalRunPointsType);
-        points.setDigitalRunPointsType(digitalRunPointsType);
-
-        DigitalRunPointsReferenceType digitalRunPointsReferenceType = new DigitalRunPointsReferenceType();
-        digitalRunPointsReferenceType.setDescription("description");
-        TestHelper.persist(em, digitalRunPointsReferenceType);
-        points.setDigitalRunPointsReferenceType(digitalRunPointsReferenceType);
-
-        DigitalRunPointsOperation digitalRunPointsOperation = new DigitalRunPointsOperation();
-        digitalRunPointsOperation.setDescription("description");
-        TestHelper.persist(em, digitalRunPointsOperation);
-        points.setDigitalRunPointsOperation(digitalRunPointsOperation);
-
-        PointsCalculator pointsCalculator = createPointsCalculator();
-        TestHelper.persist(em, pointsCalculator);
-
-        TrackStatus trackStatus = createTrackStatus();
-        TestHelper.persist(em, trackStatus);
-
-        TrackType trackType = createTrackType();
-        TestHelper.persist(em, trackType);
-
-        Track track = createTrack(pointsCalculator, trackStatus, trackType);
-        TestHelper.persist(em, track);
-
-        System.out.println(track.getId());
-
-        points.setTrack(track);
-        points.setUserId(123);
-        points.setReferenceId(234);
-
-        impl.createDigitalRunPoints(points);
-
-        System.out.println("The entity id is: " + points.getId());
-        assertEquals("The result should be same", "description", points.getDescription());
-        assertEquals("The result should be same", 1.1, points.getAmount());
-        assertEquals("The result should be same", 234, points.getReferenceId());
-        assertEquals("The result should be same", 123, points.getUserId());
-        assertEquals("The result should be same", track, points.getTrack());
-        assertEquals("The result should be same", digitalRunPointsOperation, points
-                .getDigitalRunPointsOperation());
-        assertEquals("The result should be same", digitalRunPointsReferenceType, points
-                .getDigitalRunPointsReferenceType());
-        assertEquals("The result should be same", digitalRunPointsStatus, points.getDigitalRunPointsStatus());
-        assertEquals("The result should be same", digitalRunPointsType, points.getDigitalRunPointsType());
-
-        impl.removeDigitalRunPoints(points.getId());
-
-        TestHelper.delete(em, digitalRunPointsStatus);
-        TestHelper.delete(em, digitalRunPointsType);
-        TestHelper.delete(em, digitalRunPointsReferenceType);
-        TestHelper.delete(em, digitalRunPointsOperation);
-        TestHelper.delete(em, track);
-        TestHelper.delete(em, pointsCalculator);
-        TestHelper.delete(em, trackStatus);
-        TestHelper.delete(em, trackType);
     }
 
     /**
@@ -298,62 +226,7 @@ public class JPADigitalRunPointsDAOTest extends TestCase {
 
         DigitalRunPointsStatus digitalRunPointsStatus = new DigitalRunPointsStatus();
         digitalRunPointsStatus.setDescription("description");
-        TestHelper.persist(em, digitalRunPointsStatus);
         points.setDigitalRunPointsStatus(digitalRunPointsStatus);
-
-        DigitalRunPointsType digitalRunPointsType = new DigitalRunPointsType();
-        digitalRunPointsType.setDescription("description");
-        TestHelper.persist(em, digitalRunPointsType);
-        points.setDigitalRunPointsType(digitalRunPointsType);
-
-        DigitalRunPointsReferenceType digitalRunPointsReferenceType = new DigitalRunPointsReferenceType();
-        digitalRunPointsReferenceType.setDescription("description");
-        TestHelper.persist(em, digitalRunPointsReferenceType);
-        points.setDigitalRunPointsReferenceType(digitalRunPointsReferenceType);
-
-        DigitalRunPointsOperation digitalRunPointsOperation = new DigitalRunPointsOperation();
-        digitalRunPointsOperation.setDescription("description");
-        TestHelper.persist(em, digitalRunPointsOperation);
-        points.setDigitalRunPointsOperation(digitalRunPointsOperation);
-
-        PointsCalculator pointsCalculator = createPointsCalculator();
-        TestHelper.persist(em, pointsCalculator);
-
-        TrackStatus trackStatus = createTrackStatus();
-        TestHelper.persist(em, trackStatus);
-
-        TrackType trackType = createTrackType();
-        TestHelper.persist(em, trackType);
-
-        Track track = createTrack(pointsCalculator, trackStatus, trackType);
-        TestHelper.persist(em, track);
-
-        System.out.println(track.getId());
-
-        points.setTrack(track);
-        points.setUserId(123);
-        points.setReferenceId(234);
-
-        impl.createDigitalRunPoints(points);
-
-        points.setAmount(100.0);
-        points.setDescription("new description");
-        impl.updateDigitalRunPoints(points);
-
-        DigitalRunPoints result = impl.getDigitalRunPoints(points.getId());
-        assertEquals("The amount should be same as ", 100.0, result.getAmount());
-        assertEquals("The description should be same as ", "new description", result.getDescription());
-
-        impl.removeDigitalRunPoints(result.getId());
-
-        TestHelper.delete(em, digitalRunPointsStatus);
-        TestHelper.delete(em, digitalRunPointsType);
-        TestHelper.delete(em, digitalRunPointsReferenceType);
-        TestHelper.delete(em, digitalRunPointsOperation);
-        TestHelper.delete(em, track);
-        TestHelper.delete(em, pointsCalculator);
-        TestHelper.delete(em, trackStatus);
-        TestHelper.delete(em, trackType);
     }
 
     /**
@@ -415,63 +288,7 @@ public class JPADigitalRunPointsDAOTest extends TestCase {
 
         DigitalRunPointsStatus digitalRunPointsStatus = new DigitalRunPointsStatus();
         digitalRunPointsStatus.setDescription("description");
-        TestHelper.persist(em, digitalRunPointsStatus);
         points.setDigitalRunPointsStatus(digitalRunPointsStatus);
-
-        DigitalRunPointsType digitalRunPointsType = new DigitalRunPointsType();
-        digitalRunPointsType.setDescription("description");
-        TestHelper.persist(em, digitalRunPointsType);
-        points.setDigitalRunPointsType(digitalRunPointsType);
-
-        DigitalRunPointsReferenceType digitalRunPointsReferenceType = new DigitalRunPointsReferenceType();
-        digitalRunPointsReferenceType.setDescription("description");
-        TestHelper.persist(em, digitalRunPointsReferenceType);
-        points.setDigitalRunPointsReferenceType(digitalRunPointsReferenceType);
-
-        DigitalRunPointsOperation digitalRunPointsOperation = new DigitalRunPointsOperation();
-        digitalRunPointsOperation.setDescription("description");
-        TestHelper.persist(em, digitalRunPointsOperation);
-        points.setDigitalRunPointsOperation(digitalRunPointsOperation);
-
-        PointsCalculator pointsCalculator = createPointsCalculator();
-        TestHelper.persist(em, pointsCalculator);
-
-        TrackStatus trackStatus = createTrackStatus();
-        TestHelper.persist(em, trackStatus);
-
-        TrackType trackType = createTrackType();
-        TestHelper.persist(em, trackType);
-
-        Track track = createTrack(pointsCalculator, trackStatus, trackType);
-        TestHelper.persist(em, track);
-
-        System.out.println(track.getId());
-
-        points.setTrack(track);
-        points.setUserId(123);
-        points.setReferenceId(234);
-
-        impl.createDigitalRunPoints(points);
-
-        assertNotNull("The result should not be null.", impl.getDigitalRunPoints(points.getId()));
-
-        impl.removeDigitalRunPoints(points.getId());
-
-        try {
-            impl.getDigitalRunPoints(points.getId());
-            fail("The result should be not exist");
-        } catch (EntityNotFoundException e) {
-            // expected
-        }
-
-        TestHelper.delete(em, digitalRunPointsStatus);
-        TestHelper.delete(em, digitalRunPointsType);
-        TestHelper.delete(em, digitalRunPointsReferenceType);
-        TestHelper.delete(em, digitalRunPointsOperation);
-        TestHelper.delete(em, track);
-        TestHelper.delete(em, pointsCalculator);
-        TestHelper.delete(em, trackStatus);
-        TestHelper.delete(em, trackType);
     }
 
     /**
@@ -532,59 +349,7 @@ public class JPADigitalRunPointsDAOTest extends TestCase {
 
         DigitalRunPointsStatus digitalRunPointsStatus = new DigitalRunPointsStatus();
         digitalRunPointsStatus.setDescription("description");
-        TestHelper.persist(em, digitalRunPointsStatus);
         points.setDigitalRunPointsStatus(digitalRunPointsStatus);
-
-        DigitalRunPointsType digitalRunPointsType = new DigitalRunPointsType();
-        digitalRunPointsType.setDescription("description");
-        TestHelper.persist(em, digitalRunPointsType);
-        points.setDigitalRunPointsType(digitalRunPointsType);
-
-        DigitalRunPointsReferenceType digitalRunPointsReferenceType = new DigitalRunPointsReferenceType();
-        digitalRunPointsReferenceType.setDescription("description");
-        TestHelper.persist(em, digitalRunPointsReferenceType);
-        points.setDigitalRunPointsReferenceType(digitalRunPointsReferenceType);
-
-        DigitalRunPointsOperation digitalRunPointsOperation = new DigitalRunPointsOperation();
-        digitalRunPointsOperation.setDescription("description");
-        TestHelper.persist(em, digitalRunPointsOperation);
-        points.setDigitalRunPointsOperation(digitalRunPointsOperation);
-
-        PointsCalculator pointsCalculator = createPointsCalculator();
-        TestHelper.persist(em, pointsCalculator);
-
-        TrackStatus trackStatus = createTrackStatus();
-        TestHelper.persist(em, trackStatus);
-
-        TrackType trackType = createTrackType();
-        TestHelper.persist(em, trackType);
-
-        Track track = createTrack(pointsCalculator, trackStatus, trackType);
-        TestHelper.persist(em, track);
-
-        System.out.println(track.getId());
-
-        points.setTrack(track);
-        points.setUserId(123);
-        points.setReferenceId(234);
-
-        impl.createDigitalRunPoints(points);
-
-        DigitalRunPoints result = impl.getDigitalRunPoints(points.getId());
-
-        assertEquals("The amount should be same as ", 1.1, result.getAmount());
-        assertEquals("The description should be same as ", "description", result.getDescription());
-
-        impl.removeDigitalRunPoints(points.getId());
-
-        TestHelper.delete(em, digitalRunPointsStatus);
-        TestHelper.delete(em, digitalRunPointsType);
-        TestHelper.delete(em, digitalRunPointsReferenceType);
-        TestHelper.delete(em, digitalRunPointsOperation);
-        TestHelper.delete(em, track);
-        TestHelper.delete(em, pointsCalculator);
-        TestHelper.delete(em, trackStatus);
-        TestHelper.delete(em, trackType);
     }
 
     /**

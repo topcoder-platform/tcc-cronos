@@ -73,11 +73,8 @@ public class JPADigitalRunPointsReferenceTypeDAO extends AbstractDAO implements
         EntityManager em = getEntityManager();
         // persist the digital run points reference type entity in the database
         try {
-            em.getTransaction().begin();
             em.persist(pointsReferenceType);
-            em.getTransaction().commit();
         } catch (EntityExistsException e) {
-            em.getTransaction().rollback();
             Helper.throwPersitenceExceptionWithLog("EntityExistsException occurs while do persisting.", e,
                     getLogger(), methodName);
         }
@@ -112,11 +109,8 @@ public class JPADigitalRunPointsReferenceTypeDAO extends AbstractDAO implements
         EntityManager em = this.getEntityManager();
         // update the entity
         try {
-            em.getTransaction().begin();
             em.merge(pointsReferenceType);
-            em.getTransaction().commit();
         } catch (IllegalArgumentException iae) {
-            em.getTransaction().rollback();
             Helper.throwEntityNotFoundExceptionWithLog("The pointsReferenceType is not exist.", iae,
                     getLogger(), methodName);
         }
@@ -156,9 +150,7 @@ public class JPADigitalRunPointsReferenceTypeDAO extends AbstractDAO implements
                     + pointsReferenceTypeId + "] is not exist.", null, getLogger(), methodName);
         }
         // remove the entity
-        em.getTransaction().begin();
         em.remove(referenceType);
-        em.getTransaction().commit();
 
         // Log the exit
         Helper.logExitInfo(getLogger(), methodName);
