@@ -6,7 +6,7 @@
     <property name="cobertura.datafile.remote" value="${jboss_home}/bin/cobertura.ser" />
     <property name="cobertura.datafile.local" value="${testlogdir}/cobertura_local.ser" />
 
-    <target name="test.setup">
+    <target name="test.setup" depends="compile">
             <property name="jboss_libdir" value="${jboss_home}/server/${jboss_config_name}/lib"/>
             <property name="deploy-dir" value="${jboss_home}/server/${jboss_config_name}/deploy"/>
             <property name="log4j.jar" value="${jboss_home}/server/${jboss_config_name}/lib/log4j.jar"/>
@@ -77,7 +77,8 @@
 
             <copy file="${testfiles}/dr_entites.jar" todir="${component.ear.dir}" overwrite="true"/>
     	    <copy file="${testfiles}/mock.jar" todir="${component.ear.dir}" overwrite="true"/>
-            <copy file="${testfiles}/SaveCoberturaData.jar" todir="${component.ear.dir}" overwrite="true"/>
+            <!-- <copy file="${testfiles}/SaveCoberturaData.jar" todir="${component.ear.dir}" overwrite="true"/> 
+            -->
     		<copy file="${testfiles}/informix-ds.xml" todir="${component.ear.dir}" overwrite="true"/>
             <copy todir="${component.ear.dir}/test_files/" overwrite="true">
                 <fileset dir="${testfiles}">
