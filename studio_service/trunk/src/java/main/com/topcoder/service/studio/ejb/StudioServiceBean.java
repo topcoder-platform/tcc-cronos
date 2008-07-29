@@ -79,6 +79,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
 
@@ -859,9 +860,62 @@ public class StudioServiceBean implements StudioService {
             List<SubmissionData> result = convertSubmissions(submissionManager.getSubmissionsForContest(contestId,
                     selectFullSubmission));
             logExit("retrieveSubmissionsForContest", result);
+            
+            // Get all contest ids.
+            HashSet<Long> contestIds = new HashSet<Long>();
+            for (SubmissionData submissionData : result) {
+                contestIds.add(submissionData.getContestId());
+            }
+
+            Hashtable<Long, Integer> contestMaxSubmissions = new Hashtable<Long, Integer>();
+            // Retrieve max submissions.
+            for (long id : contestIds) {
+                Contest contest = contestManager.getContest(id);
+                int maxSubmissions = 0;
+                for (ContestConfig config : contest.getConfig()) {
+                    if (config.getId().getProperty().getPropertyId() == 8) {
+                        try {
+                            maxSubmissions = Integer.parseInt(config.getValue());
+                        } catch (NumberFormatException e) {
+                            maxSubmissions = 0;
+                        }
+                        break;
+                    }
+                }
+                contestMaxSubmissions.put(id, maxSubmissions);
+            }
+
+            Hashtable<Long, Integer> contestSubmissionCounter = new Hashtable<Long, Integer>();
+            List<SubmissionData> submissionsToBeRemoved = new ArrayList<SubmissionData>();
+
+            // Get submissions need to be removed.
+            for (SubmissionData submissionData : result) {
+                long id = submissionData.getContestId();
+                Integer count = contestSubmissionCounter.get(id);
+                if (count == null) {
+                    count = new Integer(1);
+                } else {
+                    count = new Integer(count + 1);
+                }
+                // update counter.
+                contestSubmissionCounter.put(id, count);
+                
+                int maxSubmission = contestMaxSubmissions.get(id);
+                if ( count > maxSubmission){
+                    submissionsToBeRemoved.add(submissionData);
+                }
+            }
+
+            // Remove.
+            for (SubmissionData submissionData : submissionsToBeRemoved) {
+                result.remove(submissionData);
+            }
+            
             return result;
         } catch (SubmissionManagementException e) {
             handlePersistenceError("SubmissionManager reports error while retrieving submissions for contest.", e);
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while retrieving contest.", e);
         }
 
         // never reached
