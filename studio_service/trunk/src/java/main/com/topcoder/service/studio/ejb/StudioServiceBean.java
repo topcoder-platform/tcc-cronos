@@ -314,7 +314,7 @@ public class StudioServiceBean implements StudioService {
      */
     @Resource(name = "contestPropertyCreateUserHandleId")
     private long contestPropertyCreateUserHandleId;
-    
+
     /**
      * Represents the id for the Contest property "Requires Preview Image"
      * 
@@ -372,7 +372,8 @@ public class StudioServiceBean implements StudioService {
     private String defaultContestEligibilityText;
 
     /**
-     * Represents the default text for the Contest property "Notes on Winner Selection".
+     * Represents the default text for the Contest property
+     * "Notes on Winner Selection".
      * 
      * @since TCCC-283
      */
@@ -385,7 +386,7 @@ public class StudioServiceBean implements StudioService {
      * @since TCCC-283
      */
     @Resource(name = "defaultContestPrizeDescriptionText")
-    private String  defaultContestPrizeDescriptionText;
+    private String defaultContestPrizeDescriptionText;
 
     /**
      * Represents the default text for the Contest property "Other File Types".
@@ -393,15 +394,16 @@ public class StudioServiceBean implements StudioService {
      * @since TCCC-384
      */
     @Resource(name = "defaultContestOtherFileTypes")
-    private String  defaultContestOtherFileTypes;
+    private String defaultContestOtherFileTypes;
 
     /**
-     * Represents the default text for the Contest property "*Notes on Submission File(s)".
+     * Represents the default text for the Contest property
+     * "*Notes on Submission File(s)".
      * 
      * @since TCCC-384
      */
     @Resource(name = "defaultContestNotesOnSubmissionFiles")
-    private String  defaultContestNotesOnSubmissionFiles;
+    private String defaultContestNotesOnSubmissionFiles;
 
     /**
      * Represents the id for the Contest property "Contest PrizeType Id"
@@ -412,13 +414,14 @@ public class StudioServiceBean implements StudioService {
     private long contestPrizeTypeId;
 
     /**
-     * Represents the id for the Contest property "Client Selection PrizeType Id"
+     * Represents the id for the Contest property
+     * "Client Selection PrizeType Id"
      * 
      * @since TCCC-351
      */
     @Resource(name = "clientSelectionPrizeTypeId")
     private long clientSelectionPrizeTypeId;
-    
+
     /**
      * Represents the base path for the documents. Should be configured like
      * /studiofiles/documents.
@@ -876,7 +879,7 @@ public class StudioServiceBean implements StudioService {
             List<SubmissionData> result = convertSubmissions(submissionManager.getSubmissionsForContest(contestId,
                     selectFullSubmission));
             logExit("retrieveSubmissionsForContest", result);
-            
+
             // Get all contest ids.
             HashSet<Long> contestIds = new HashSet<Long>();
             for (SubmissionData submissionData : result) {
@@ -915,9 +918,9 @@ public class StudioServiceBean implements StudioService {
                 }
                 // update counter.
                 contestSubmissionCounter.put(id, count);
-                
+
                 int maxSubmission = contestMaxSubmissions.get(id);
-                if ( count > maxSubmission){
+                if (count > maxSubmission) {
                     submissionsToBeRemoved.add(submissionData);
                 }
             }
@@ -926,7 +929,7 @@ public class StudioServiceBean implements StudioService {
             for (SubmissionData submissionData : submissionsToBeRemoved) {
                 result.remove(submissionData);
             }
-            
+
             return result;
         } catch (SubmissionManagementException e) {
             handlePersistenceError("SubmissionManager reports error while retrieving submissions for contest.", e);
@@ -1218,7 +1221,8 @@ public class StudioServiceBean implements StudioService {
         addContestConfig(result, contestPropertyFinalFileFormatId, defaultContestNotesOnSubmissionFiles);
 
         // Create user handle.
-        addContestConfig(result, contestPropertyCreateUserHandleId, ((UserProfilePrincipal) sessionContext.getCallerPrincipal()).getName());
+        addContestConfig(result, contestPropertyCreateUserHandleId, ((UserProfilePrincipal) sessionContext
+                .getCallerPrincipal()).getName());
 
         // [TCCC-284]
         addContestConfig(result, contestPropertyRequiresPreviewFileId, String.valueOf(data.isRequiresPreviewFile()));
@@ -1229,7 +1233,7 @@ public class StudioServiceBean implements StudioService {
         addContestConfig(result, contestPropertyEligibilityId, defaultContestEligibilityText);
         addContestConfig(result, contestPropertyNotesOnWinnerSelectionId, defaultContestNotesOnWinnerSelectionText);
         addContestConfig(result, contestPropertyPrizeDescriptionId, defaultContestPrizeDescriptionText);
-        
+
         result.setContestId(data.getContestId());
         result.setName(data.getName());
         result.setProjectId(data.getProjectId());
@@ -1317,7 +1321,7 @@ public class StudioServiceBean implements StudioService {
         String finalFileFormat = finalFileFormatSB.toString();
         finalFileFormat = finalFileFormat.substring(0, finalFileFormat.length() - 1);
         contestData.setFinalFileFormat(finalFileFormat);
-        
+
         // Since 1.0.3, Bug Fix 27074484-14
         for (ContestConfig cc : contest.getConfig()) {
 
@@ -1622,9 +1626,9 @@ public class StudioServiceBean implements StudioService {
             double prizeAmount = 0;
             for (Prize p : s.getPrizes()) {
                 prizeAmount += p.getAmount();
-                
+
                 if (p.getPlace() != null && p.getPlace() > 0) {
-                	sd.setPlacement(p.getPlace());
+                    sd.setPlacement(p.getPlace());
                 }
             }
             sd.setPrice(prizeAmount);
@@ -2362,7 +2366,7 @@ public class StudioServiceBean implements StudioService {
      * </p>
      * 
      * @param submissionId
-     *            the id of submission to remove
+     *            the id of submission to purchase.
      * @param price
      *            Price of submission.
      * @param payPalOrderId
@@ -2381,16 +2385,32 @@ public class StudioServiceBean implements StudioService {
         try {
             SubmissionPayment submissionPayment = new SubmissionPayment();
             Submission submission = submissionManager.getSubmission(submissionId);
-            for(Prize prize : submission.getPrizes()){
-            }
-            Prize prize = new Prize();
-            prize.setAmount(price);
-            prize.setCreateDate(new Date());
-            prize.setPlace(null);
-            prize.setType(contestManager.getPrizeType(clientSelectionPrizeTypeId));
 
             if (submission == null) {
                 handleIllegalWSArgument("Submission with id " + submissionId + " is not found.");
+            }
+            
+            Prize prize = null;
+            // if the prize exists, we will update it, otherwise create.
+            for (Prize p : submission.getPrizes()) {
+                if (p.getPlace() == null && p.getType().getPrizeTypeId() == clientSelectionPrizeTypeId) {
+                    prize = p;
+                    break;
+                }
+            }
+            if (prize == null) {
+                // Create prize.
+                prize = new Prize();
+                prize.setCreateDate(new Date());
+                prize.setAmount(price);
+                prize.setPlace(null);
+                prize.setType(contestManager.getPrizeType(clientSelectionPrizeTypeId));
+                
+                Set<Submission> submissions = new HashSet<Submission>();
+                submissions.add(submission);
+                prize.setSubmissions(submissions);
+                
+                submissionManager.addPrize(prize);
             }
 
             submissionPayment.setSubmission(submission);
@@ -2401,6 +2421,9 @@ public class StudioServiceBean implements StudioService {
 
             // [TCCC-350]
             PaymentStatus status = contestManager.getPaymentStatus(submissionPaidStatusId);
+            if (status == null) {
+                throw new ContestManagementException("PaymentStatus with id " + submissionPaidStatusId + " is missing.");
+            }
             submissionPayment.setStatus(status);
             submissionManager.addSubmissionPayment(submissionPayment);
         } catch (SubmissionManagementException e) {
