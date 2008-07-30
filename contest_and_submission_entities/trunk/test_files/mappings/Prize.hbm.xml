@@ -15,7 +15,7 @@
 			</generator>
 		</id>
 
-		<property name="place" not-null="true" />
+		<property name="place"/>
 
 		<property name="amount" not-null="true" />
 
