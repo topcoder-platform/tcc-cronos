@@ -800,6 +800,25 @@ function testStudioRemoveContestPayment() {
     studioService.removeContestPayment(2011,success,error);
 }
 
+/**
+ * <p>Tests Studio.purchaseSubmission().</p>
+ */
+function testStudioPurchaseSubmission() {
+    // initialize the studio service
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+
+    // success callback 
+    var success = function() {
+        alert("Success = purchaseSubmission succeed!");
+    }
+    // error callback
+    var error = function(errMsg) {
+        alert("Error = "+errMsg);
+    }
+    
+    studioService.purchaseSubmission(10651,123.43,"superZZ",success,error);
+}
+
 </script>
 </head>
 
@@ -831,6 +850,8 @@ Widget Webservices Bridge Demo
     <li>Studio.removeContestPayment() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioRemoveContestPayment()" /></li>
     <li>Studio.getContestPayment() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetContestPayment()" /></li>
     <li>Studio.getAllMedia() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetAllMedia()" /></li>
+    
+    <li>Studio.purchaseSubmission() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioPurchaseSubmission()" /></li>
 </ul>
 <br />
 <span style="color:red;"><b>Some Studio Services Error Demo</b></span>
