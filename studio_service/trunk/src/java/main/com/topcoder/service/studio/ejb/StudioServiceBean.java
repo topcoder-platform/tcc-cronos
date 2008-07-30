@@ -389,14 +389,6 @@ public class StudioServiceBean implements StudioService {
     private String defaultContestPrizeDescriptionText;
 
     /**
-     * Represents the default text for the Contest property "Other File Types".
-     * 
-     * @since TCCC-384
-     */
-    @Resource(name = "defaultContestOtherFileTypes")
-    private String defaultContestOtherFileTypes;
-
-    /**
      * Represents the default text for the Contest property
      * "*Notes on Submission File(s)".
      * 
