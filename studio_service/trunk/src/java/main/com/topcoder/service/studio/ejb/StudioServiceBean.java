@@ -187,6 +187,14 @@ public class StudioServiceBean implements StudioService {
     private long draftStatusId;
 
     /**
+     * <p>
+     * Represents the unactive status used to retrieve the check the draft status.
+     * </p>
+     */
+    @Resource(name = "unactiveStatusId")
+    private long unactiveStatusId;
+    
+    /**
      * Represents the id of status of a submission paid. </p>
      */
     @Resource(name = "submissionPaidStatusId")
@@ -777,8 +785,10 @@ public class StudioServiceBean implements StudioService {
 
         // last authentication check
         if (sessionContext.isCallerInRole(USER_ROLE)) {
-            if (c.getStatus() == null || c.getStatus().getContestStatusId() != draftStatusId) {
-                handleAuthorizationError("draft check was failed.");
+            // [TCCC-385]
+            if (c.getStatus() == null
+                    || (c.getStatus().getContestStatusId() != draftStatusId && c.getStatus().getContestStatusId() != unactiveStatusId)) {
+                handleAuthorizationError("contest must be in draft status or unactive status.");
             }
         }
 
@@ -1311,7 +1321,9 @@ public class StudioServiceBean implements StudioService {
             finalFileFormatSB.append(fileType.getExtension() + ",");
         }
         String finalFileFormat = finalFileFormatSB.toString();
-        finalFileFormat = finalFileFormat.substring(0, finalFileFormat.length() - 1);
+        if (finalFileFormat.length() > 0) {
+            finalFileFormat = finalFileFormat.substring(0, finalFileFormat.length() - 1);
+        }
         contestData.setFinalFileFormat(finalFileFormat);
 
         // Since 1.0.3, Bug Fix 27074484-14
@@ -2375,7 +2387,6 @@ public class StudioServiceBean implements StudioService {
         checkParameter("price", price);
 
         try {
-            SubmissionPayment submissionPayment = new SubmissionPayment();
             Submission submission = submissionManager.getSubmission(submissionId);
 
             if (submission == null) {
@@ -2403,8 +2414,10 @@ public class StudioServiceBean implements StudioService {
                 prize.setSubmissions(submissions);
                 
                 submissionManager.addPrize(prize);
+                submissionManager.addPrizeToSubmission(submissionId, prize.getPrizeId());
             }
 
+            SubmissionPayment submissionPayment = new SubmissionPayment();
             submissionPayment.setSubmission(submission);
             submissionPayment.setPrice(price);
 
@@ -2458,28 +2471,44 @@ public class StudioServiceBean implements StudioService {
             if (submission == null) {
                 handleIllegalWSArgument("Submission with id " + submissionId + " is not found");
             }
-            // set the placement field of submission.
-            submission.setRank(place);
-            submissionManager.updateSubmission(submission);
 
-            // create an entry at submission payment table
-            // If the submission is anything other than 1st place, the price
-            // should be the 2nd place payment.
-            for (Prize prize : submission.getPrizes()) {
-                if (place == 1) {
-                    if (prize.getPlace().equals(1L)) {
-                        purchaseSubmission(submissionId, prize.getAmount(), payPalOrderId);
-                        break;
-                    }
-                } else {
-                    if (prize.getPlace().equals(2L)) {
-                        purchaseSubmission(submissionId, prize.getAmount(), payPalOrderId);
-                        break;
-                    }
+            Prize prize = null;
+            for (Prize p : submission.getPrizes()) {
+                if (p.getPlace() != null && p.getPlace().equals(place)) {
+                    prize = p;
+                    break;
                 }
             }
+            if (prize == null) {
+                prize = new Prize();
+                prize.setCreateDate(new Date());
+                prize.setAmount(null);
+                prize.setPlace(place);
+                prize.setType(contestManager.getPrizeType(contestPrizeTypeId));
+
+                Set<Submission> submissions = new HashSet<Submission>();
+                submissions.add(submission);
+                prize.setSubmissions(submissions);
+
+                submissionManager.addPrize(prize);
+                submissionManager.addPrizeToSubmission(submissionId, prize.getPrizeId());
+            }
+            
+            SubmissionPayment submissionPayment = new SubmissionPayment();
+            submissionPayment.setSubmission(submission);
+            // TODO Set price.
+            submissionPayment.setPrice(1.23434);
+            submissionPayment.setPayPalOrderId(payPalOrderId);
+            PaymentStatus status = contestManager.getPaymentStatus(submissionPaidStatusId);
+            if (status == null) {
+                throw new ContestManagementException("PaymentStatus with id " + submissionPaidStatusId + " is missing.");
+            }
+            submissionPayment.setStatus(status);
+            submissionManager.addSubmissionPayment(submissionPayment);
         } catch (SubmissionManagementException e) {
             handlePersistenceError("SubmissionManager reports error.", e);
+        } catch (ContestManagementException e) {
+            handlePersistenceError("contestManager reports error.", e);
         }
 
         logExit("selectWinner");
