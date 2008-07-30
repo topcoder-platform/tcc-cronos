@@ -20,9 +20,9 @@
     <property name="commons-collections.jar" value="${jboss.dir}/commons-collections.jar"/>
     <property name="commons-logging.jar" value="${jboss.dir}/commons-logging.jar"/>
     
-    <property name="cactus.jar" value="${ext_libdir}/cactus/1.7.2/j2ee1.3/lib/cactus-1.7.2.jar"/>
-    <property name="mockejb.jar" value="${ext_libdir}/mockejb/0.6/mockejb.jar"/>
-    <property name="jakarta-oro.jar" value="${ext_libdir}/mockejb/0.6/jakarta-oro-2.0.8.jar"/>
+    <property name="cactus.jar" value="${ext_libdir}/cactus/1.7.2/j2ee1.3/cactus-1.7.2.jar"/>
+    <property name="mockejb.jar" value="${ext_libdir}/mockejb/0.6-beta2/mockejb.jar"/>
+    <property name="jakarta-oro.jar" value="${ext_libdir}/mockejb/0.6-beta2/jakarta-oro-2.0.8.jar"/>
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
         
     <path id="component.tcs-dependencies">
