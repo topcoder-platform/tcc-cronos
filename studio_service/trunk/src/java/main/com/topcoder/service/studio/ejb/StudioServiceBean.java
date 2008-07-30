@@ -386,7 +386,23 @@ public class StudioServiceBean implements StudioService {
      */
     @Resource(name = "defaultContestPrizeDescriptionText")
     private String  defaultContestPrizeDescriptionText;
-    
+
+    /**
+     * Represents the default text for the Contest property "Other File Types".
+     * 
+     * @since TCCC-384
+     */
+    @Resource(name = "defaultContestOtherFileTypes")
+    private String  defaultContestOtherFileTypes;
+
+    /**
+     * Represents the default text for the Contest property "*Notes on Submission File(s)".
+     * 
+     * @since TCCC-384
+     */
+    @Resource(name = "defaultContestNotesOnSubmissionFiles")
+    private String  defaultContestNotesOnSubmissionFiles;
+
     /**
      * Represents the id for the Contest property "Contest PrizeType Id"
      * 
@@ -1197,6 +1213,9 @@ public class StudioServiceBean implements StudioService {
         result.setFileTypes(fileTypes);
 
         addContestConfig(result, contestPropertyOtherFileFormatsId, data.getOtherFileFormats());
+
+        // [TCCC-384]
+        addContestConfig(result, contestPropertyFinalFileFormatId, defaultContestNotesOnSubmissionFiles);
 
         // Create user handle.
         addContestConfig(result, contestPropertyCreateUserHandleId, ((UserProfilePrincipal) sessionContext.getCallerPrincipal()).getName());
