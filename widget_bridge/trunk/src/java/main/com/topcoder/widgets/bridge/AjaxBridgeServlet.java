@@ -561,12 +561,17 @@ public class AjaxBridgeServlet extends HttpServlet {
                     }
                     debug("contest json received = " + strContest);
 
+                    long projectID = Long.parseLong(strProjectID);
+                    
+                    // Get the project just to check that the user is authorized to use it
+                    projectService.getProject(projectID);
+                    
                     JSONObject jsonContest = jsonDecoder.decodeObject(strContest);
                     debug("received IDs = [contest ID] : " + jsonContest.getLong("contestID") + " [project ID] : "
                             + strProjectID);
 
                     ContestData contest = getContestFromJSON(jsonContest);
-                    ContestData respContest = studioService.createContest(contest, Long.parseLong(strProjectID));
+                    ContestData respContest = studioService.createContest(contest, projectID);
                     sendJSONObjectAsResponse(getJSONFromContest(respContest), response);
 
                     debug("createContest success!");
