@@ -504,10 +504,6 @@ public class StudioServiceBean implements StudioService {
         checkParameter("contestData", contestData);
         checkParameter("tcDirectProjectId", tcDirectProjectId);
 
-        // authorization
-        authorizeWithProject(tcDirectProjectId);
-
-        // access is granted, create contest
         try {
             Contest contest = convertContestData(contestData);
             contest.setTcDirectProjectId(tcDirectProjectId);
@@ -589,14 +585,9 @@ public class StudioServiceBean implements StudioService {
         logEnter("getContest", contestId);
         checkParameter("contestId", contestId);
 
-        // authorization
-        authorizeWithContest(contestId);
-
         try {
-            Contest contest = contestManager.getContest(contestId);
-            if (contest == null) {
-                handleContestNotFoundError(null, contestId);
-            }
+        	// check for the authorization, which also returns the contest.
+        	Contest contest = authorizeWithContest(contestId);
 
             ContestData result = convertContest(contest);
             logExit("getContest", result);
@@ -717,9 +708,6 @@ public class StudioServiceBean implements StudioService {
         authorizeWithContest(contestId);
 
         try {
-            if (contestManager.getContest(contestId) == null) {
-                handleContestNotFoundError(null, contestId);
-            }
             contestManager.updateContestStatus(contestId, newStatusId);
 
         } catch (EntityNotFoundException e) {
@@ -767,21 +755,10 @@ public class StudioServiceBean implements StudioService {
         logEnter("uploadDocumentForContest", uploadedDocument);
         checkParameter("uploadedDocument", uploadedDocument);
 
-        // authorization
-        authorizeWithContest(uploadedDocument.getContestId());
 
-        // retrieve contest (for farther usage also)
-        Contest c = null;
-        try {
-            c = contestManager.getContest(uploadedDocument.getContestId());
-        } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManager reports error while fetching contest.", e);
-        }
+        // retrieve contest and authorize
+        Contest c = authorizeWithContest(uploadedDocument.getContestId());
 
-        if (c == null) {
-            // no contest, error
-            handleContestNotFoundError(null, uploadedDocument.getContestId());
-        }
 
         // last authentication check
         if (sessionContext.isCallerInRole(USER_ROLE)) {
@@ -819,10 +796,11 @@ public class StudioServiceBean implements StudioService {
         logEnter("removeDocumentFromContest", document);
         checkParameter("document", document);
 
-        // authorization
-        authorizeWithContest(document.getContestId());
 
         try {
+            // authorization
+            authorizeWithContest(document.getContestId());
+
             contestManager.removeDocumentFromContest(document.getDocumentId(), document.getContestId());
 
         } catch (EntityNotFoundException ex) {
@@ -835,6 +813,9 @@ public class StudioServiceBean implements StudioService {
 
         } catch (ContestManagementException ex) {
             handlePersistenceError("ContestManager reports error while removing document from contest.", ex);
+        
+        } catch (ContestNotFoundException e) {
+        	handlePersistenceError("Contest not found when trying to remove document from contest", e);
         }
 
         logExit("removeDocumentFromContest");
@@ -996,14 +977,18 @@ public class StudioServiceBean implements StudioService {
         logEnter("updateSubmission", submission);
         checkParameter("submission", submission);
 
-        // authorization
-        authorizeWithContest(submission.getContestId());
 
         try {
-            submissionManager.updateSubmission(convertSubmissionData(submission));
+            authorizeWithContest(submission.getContestId());
+
+        	submissionManager.updateSubmission(convertSubmissionData(submission));
         } catch (SubmissionManagementException e) {
             handlePersistenceError("SubmissionManager reports error while updating submission.", e);
+       
+        } catch (ContestNotFoundException e) {
+        	handlePersistenceError("Contest not found when trying to remove document from contest", e);
         }
+
 
         logExit("updateSubmission");
     }
@@ -1951,61 +1936,33 @@ public class StudioServiceBean implements StudioService {
      * @throws UserNotAuthorizedException
      *             if access was denied
      */
-    private void authorizeWithContest(long id) throws PersistenceException {
-        // TODO UNCOMMENT ME
-        // if (sessionContext.isCallerInRole(USER_ROLE)) {
-        // try {
-        // authorizeUser(contestManager.getClientForContest(id));
-        // } catch (ContestManagementException e) {
-        // handlePersistenceError(
-        // "ContestManager reports error while retrieving client for contest.",
-        // e);
-        // }
-        // }
-    }
+    private Contest authorizeWithContest(long id) throws PersistenceException, ContestNotFoundException {    	
 
-    /**
-     * Implements statdard algorithm of authorization based on fetching client
-     * id from project id. Only admin and client may pass.
-     * 
-     * @param id
-     *            project id to identify client (if necessary)
-     * @throws PersistenceException
-     *             when ContestManager reports some error
-     * @throws UserNotAuthorizedException
-     *             if access was denied
-     */
-    private void authorizeWithProject(long id) throws PersistenceException {
-        // TODO UNCOMMENT ME.
-        // if (sessionContext.isCallerInRole(USER_ROLE)) {
-        // try {
-        // authorizeUser(contestManager.getClientForProject(id));
-        // } catch (ContestManagementException e) {
-        // handlePersistenceError(
-        // "ContestManager reports error while retrieving client for project.",
-        // e);
-        // }
-        // }
-    }
+        try {
+        	Contest contest = contestManager.getContest(id);
 
-    /**
-     * Endpoint of authorizeWithContest and authorizeWithProject methods,
-     * authorize current user only if he is project/contest client.
-     * 
-     * @param clientId
-     *            id of client to compare
-     * @throws UserNotAuthorizedException
-     *             if access was denied
-     */
-    private void authorizeUser(long clientId) {
-        UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-        long userId = p.getUserId();
-        if (userId != clientId) {
-            logError("Access was denied to the user.");
-            UserNotAuthorizedFault bean = new UserNotAuthorizedFault();
-            bean.setUserIdNotAuthorized(userId);
-            throw new UserNotAuthorizedException("Access was denied to the user.", bean);
-        }
+        	if (contest == null) {
+        		handleContestNotFoundError(null, id);
+        	}
+
+        	// Admin is always authorized
+            if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
+            	return contest;
+            }
+        	
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+
+        	if (contest.getCreatedUser() != userId) {
+        		throw new UserNotAuthorizedException("Access denied for the contest " + id, userId);
+        	}
+        	
+        	return contest;
+        	
+        } catch (ContestManagementException e) {
+            handlePersistenceError("Error when trying to get the the contest", e);
+            return null;
+        } 
     }
 
     /**
@@ -2532,18 +2489,20 @@ public class StudioServiceBean implements StudioService {
         logEnter("createContestPayment", contestPaymentData);
         checkParameter("contestPaymentData", contestPaymentData);
 
-        // authorization
-        authorizeWithContest(contestPaymentData.getContestId());
 
-        // access is granted, create contest
         try {
+            authorizeWithContest(contestPaymentData.getContestId());
+
             ContestPayment contestPayment = convertContestPaymentData(contestPaymentData);
             contestPayment = contestManager.createContestPayment(contestPayment);
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while creating new ContestPayment.", e);
         } catch (SubmissionManagementException e) {
             handlePersistenceError("SubmissionManager reports error while creating new ContestPayment.", e);
+        } catch (ContestNotFoundException e) {
+        	handlePersistenceError("Contest not found when trying to remove document from contest", e);
         }
+
 
         logExit("createContestPayment", contestPaymentData);
         return contestPaymentData;
@@ -2582,7 +2541,10 @@ public class StudioServiceBean implements StudioService {
             return result;
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while retrieving contest payment.", e);
+        } catch (ContestNotFoundException e) {
+        	handlePersistenceError("Contest not found when trying to remove document from contest", e);
         }
+
 
         // never reached
         return null;
@@ -2607,17 +2569,18 @@ public class StudioServiceBean implements StudioService {
         checkParameter("contestPayment", contestPayment);
 
         // authorization
-        authorizeWithContest(contestPayment.getContestId());
 
-        Contest c = null;
         try {
+            authorizeWithContest(contestPayment.getContestId());
+
             contestManager.editContestPayment(convertContestPaymentData(contestPayment));
-        } catch (EntityNotFoundException e) {
-            // handleContestNotFoundError(e, contestData.getContestId());
+
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while updating contest payment.", e);
         } catch (SubmissionManagementException e) {
             handlePersistenceError("SubmissionManager reports error while updating contest payment.", e);
+        } catch (ContestNotFoundException e) {
+        	handlePersistenceError("Contest not found when trying to remove document from contest", e);
         }
 
         logExit("editContestPayment");
