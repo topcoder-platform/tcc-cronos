@@ -755,7 +755,7 @@ public class CockpitPhaseManager implements PhaseManager {
                             if (configs != null) {
                                 for (ContestConfig config : configs) {
                                     if (config != null) {
-                                        ContestProperty property = config.getProperty();
+                                        ContestProperty property = config.getId().getProperty();
 
                                         // the attribute is: config.value + " " + property.propertId
                                         // -> property.description
