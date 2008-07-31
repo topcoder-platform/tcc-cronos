@@ -13,6 +13,7 @@ import com.topcoder.service.studio.contest.ContestManager;
 import com.topcoder.service.studio.contest.ContestProperty;
 import com.topcoder.service.studio.contest.ContestStatus;
 import com.topcoder.service.studio.contest.ContestType;
+import com.topcoder.service.studio.contest.ContestConfig.Identifier;
 import com.topcoder.service.studio.submission.Submission;
 
 import com.topcoder.util.config.ConfigManager;
@@ -105,7 +106,9 @@ final class TestHelper {
         property.setPropertyId(contestId);
         property.setDescription("property");
         config.setValue("value");
-        config.setProperty(property);
+        config.setId(new Identifier());
+        config.getId().setContest(contest);
+        config.getId().setProperty(property);
 
         Set<ContestConfig> configs = new HashSet<ContestConfig>();
         configs.add(config);

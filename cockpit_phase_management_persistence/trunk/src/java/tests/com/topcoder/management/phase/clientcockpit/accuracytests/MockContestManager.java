@@ -12,19 +12,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestChannel;
 import com.topcoder.service.studio.contest.ContestConfig;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.ContestManager;
+import com.topcoder.service.studio.contest.ContestPayment;
 import com.topcoder.service.studio.contest.ContestProperty;
 import com.topcoder.service.studio.contest.ContestStatus;
 import com.topcoder.service.studio.contest.ContestType;
 import com.topcoder.service.studio.contest.ContestTypeConfig;
 import com.topcoder.service.studio.contest.Document;
+import com.topcoder.service.studio.contest.DocumentType;
+import com.topcoder.service.studio.contest.Medium;
+import com.topcoder.service.studio.contest.MimeType;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.studio.contest.ContestConfig.Identifier;
 import com.topcoder.service.studio.submission.ContestResult;
+import com.topcoder.service.studio.submission.PaymentStatus;
 import com.topcoder.service.studio.submission.Prize;
+import com.topcoder.service.studio.submission.PrizeType;
 import com.topcoder.service.studio.submission.Submission;
 
 /**
@@ -269,7 +277,10 @@ public class MockContestManager implements ContestManager {
         ContestProperty property = new ContestProperty();
         property.setPropertyId(1);
         property.setDescription("description1");
-        config.setProperty(property);
+        Identifier id = new Identifier();
+        id.setContest(contest);
+        config.setId(id);
+        config.getId().setProperty(property);
         configs.add(config);
 
         config = new ContestConfig();
@@ -277,8 +288,111 @@ public class MockContestManager implements ContestManager {
         property = new ContestProperty();
         property.setPropertyId(2);
         property.setDescription("description2");
-        config.setProperty(property);
+        id = new Identifier();
+        id.setContest(contest);
+        config.setId(id);
+        config.getId().setProperty(property);
         configs.add(config);
         contest.setConfig(configs);
+    }
+
+    public ContestPayment createContestPayment(ContestPayment contestPayment) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Prize createPrize(Prize prize) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public void editContestPayment(ContestPayment contestPayment) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public List<ContestProperty> getAllContestProperties() throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public List<ContestType> getAllContestTypes() throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public List<Contest> getAllContests() throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public List<DocumentType> getAllDocumentTypes() throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public List<Medium> getAllMedia() throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public List<MimeType> getAllMimeTypes() throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public List<PaymentStatus> getAllPaymentStatuses() throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public List<PrizeType> getAllPrizeTypes() throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public ContestPayment getContestPayment(long contestPaymentId) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public ContestProperty getContestProperty(long contestPropertyId) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public List<Contest> getContestsForUser(long createdUser) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public DocumentType getDocumentType(long documentTypeId) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public MimeType getMimeType(long mimeTypeId) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public PaymentStatus getPaymentStatus(long paymentStatusId) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public PrizeType getPrizeType(long prizeTypeId) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public boolean removeContestPayment(long contestPaymentId) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    public List<Contest> searchContests(Filter filter) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

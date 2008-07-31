@@ -458,7 +458,7 @@ public class CockpitPhaseManagerTest extends TestCase {
         assertEquals("Incorrect startDate", contest.getStartDate(), project.getStartDate());
 
         for (ContestConfig config : contest.getConfig()) {
-            ContestProperty property = config.getProperty();
+            ContestProperty property = config.getId().getProperty();
             assertEquals("Incorrect config attribute", property.getDescription(),
                 project.getAttribute(config.getValue() + " " + property.getPropertyId()));
         }
