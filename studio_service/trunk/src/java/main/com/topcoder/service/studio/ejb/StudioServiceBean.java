@@ -432,6 +432,14 @@ public class StudioServiceBean implements StudioService {
     private String documentBasePath = DEFAULT_DOCUMENT_BASE_PATH;
 
     /**
+     * Represents the id for the Contest property "Maximum Submissions".
+     * 
+     * @since TCCC-369
+     */
+    @Resource(name = "contestPropertyMaxSubmissionsId")
+    private long contestPropertyMaxSubmissionsId;
+
+    /**
      * Returns base path for document files.
      * 
      * [BUG TCCC-134]
@@ -875,7 +883,7 @@ public class StudioServiceBean implements StudioService {
                 Contest contest = contestManager.getContest(id);
                 int maxSubmissions = 0;
                 for (ContestConfig config : contest.getConfig()) {
-                    if (config.getId().getProperty().getPropertyId() == 8) {
+                    if (config.getId().getProperty().getPropertyId() == contestPropertyMaxSubmissionsId) {
                         try {
                             maxSubmissions = Integer.parseInt(config.getValue());
                         } catch (NumberFormatException e) {
@@ -903,7 +911,7 @@ public class StudioServiceBean implements StudioService {
                 contestSubmissionCounter.put(id, count);
 
                 int maxSubmission = contestMaxSubmissions.get(id);
-                if (count > maxSubmission) {
+                if (maxSubmission > 0 && count > maxSubmission) {
                     submissionsToBeRemoved.add(submissionData);
                 }
             }
