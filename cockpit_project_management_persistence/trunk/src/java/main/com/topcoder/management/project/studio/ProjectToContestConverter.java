@@ -114,7 +114,7 @@ public interface ProjectToContestConverter {
      * @throws ConversionException
      *         If a problem occurs while performing the conversion
      */
-    public ProjectCategory convertContestChannelToProjectCategory(ContestChannel contestChannel)
+    public ProjectCategory convertFileTypeToProjectCategory(StudioFileType fileType)
         throws ConversionException;;
 
     /**

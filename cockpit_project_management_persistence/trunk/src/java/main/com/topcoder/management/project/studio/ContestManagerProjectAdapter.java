@@ -590,28 +590,24 @@ public class ContestManagerProjectAdapter implements ProjectManager {
 
     /**
      * <p>
-     * Retrieves all the ProjectCategories that exist in persistence. For this implementation, the
-     * <code>ContestChannel</code> corresponds to the <code>ProjectCategory</code>, so the implementation will
-     * call <code>ContestManager#getAllContestChannels</code> and convert the returned ContestChannels to
-     * ProjectCategories.
+     * Retrieves all the ProjectCategories that exist in persistence.
      * </p>
      * <p>
      * Empty array is returned if no such entities currently exist in persistence.
      * </p>
-     * @return An array of all ContestChannels converted to an array of ProjectCategory
+     * @return An array of all StudioFileType converted to an array of ProjectCategory
      * @throws PersistenceException
      *         If a problem occurs while performing the operation
      */
     public ProjectCategory[] getAllProjectCategories() throws PersistenceException {
         checkManager();
         try {
-            // gets all contest channels
-            List<ContestChannel> channels = manager.getAllContestChannels();
+            List<StudioFileType> allStudioFileTypes = manager.getAllStudioFileTypes();
 
             // converts ContestChannel to ProjectCategory
-            ProjectCategory[] categories = new ProjectCategory[channels.size()];
-            for (int i = 0; i < channels.size(); i++) {
-                categories[i] = converter.convertContestChannelToProjectCategory(channels.get(i));
+            ProjectCategory[] categories = new ProjectCategory[allStudioFileTypes.size()];
+            for (int i = 0; i < allStudioFileTypes.size(); i++) {
+                categories[i] = converter.convertFileTypeToProjectCategory(allStudioFileTypes.get(i));
             }
 
             return categories;

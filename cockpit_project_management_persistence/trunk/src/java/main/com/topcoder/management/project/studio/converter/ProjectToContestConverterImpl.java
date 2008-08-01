@@ -52,6 +52,37 @@ import com.topcoder.util.errorhandling.ExceptionUtils;
  */
 public class ProjectToContestConverterImpl implements ProjectToContestConverter {
 
+    public static final String STUDIO_FILE_TYPE_ID = "STUDIO_FILE_TYPE_ID";
+
+    public static final String STUDIO_FILE_TYPE_EXTENSION = "STUDIO_FILE_TYPE_EXTENSION";
+
+    public static final String STUDIO_CONTEST_CHANNEL_ID = "STUDIO_CONTEST_CHANNEL_ID";
+
+    public static final String STUDIO_CONTEST_CHANNEL_NAME = "STUDIO_CONTEST_CHANNEL_NAME";
+
+    public static final String STUDIO_CONTEST_STATUS_ID = "STUDIO_CONTEST_STATUS_ID";
+
+    public static final String STUDIO_CONTEST_STATUS_NAME = "STUDIO_CONTEST_STATUS_NAME";
+
+    public static final String STUDIO_CONTEST_ID = "STUDIO_CONTEST_ID";
+
+    public static final String STUDIO_CONTEST_NAME = "STUDIO_CONTEST_NAME";
+
+    public static final String STUDIO_CONTEST_PROJECT_ID = "STUDIO_CONTEST_PROJECT_ID";
+
+    public static final String STUDIO_CONTEST_DIRECT_PROJECT_ID = "STUDIO_CONTEST_DIRECT_PROJECT_ID";
+
+    public static final String STUDIO_CONTEST_FORUM_ID = "STUDIO_CONTEST_FORUM_ID";
+
+    public static final String STUDIO_CONTEST_EVENT_ID = "STUDIO_CONTEST_EVENT_ID";
+
+    public static final String STUDIO_CONTEST_START_DATE = "STUDIO_CONTEST_START_DATE";
+
+    public static final String STUDIO_CONTEST_END_DATE = "STUDIO_CONTEST_END_DATE";
+
+    public static final String STUDIO_CONTEST_WINNER_ANNOUNCEMENT_DEADLINE = "STUDIO_CONTEST_WINNER_ANNOUNCEMENT"
+        + "_DEADLINE";
+
     /**
      * <p>
      * This is a static String contest that is used as the property key when adding a custom property to a
@@ -191,7 +222,7 @@ public class ProjectToContestConverterImpl implements ProjectToContestConverter 
      * Represents the filter that always represents "true", so it will not restrict the search results.
      * </p>
      */
-    private static final Filter TRUE_FILTER = new NotFilter(new NullFilter(ContestManager.STUDIO_CONTEST_ID));
+    private static final Filter TRUE_FILTER = new NotFilter(new NullFilter(STUDIO_CONTEST_ID));
 
     /**
      * <p>
@@ -199,7 +230,7 @@ public class ProjectToContestConverterImpl implements ProjectToContestConverter 
      * applied.
      * </p>
      */
-    private static final Filter FALSE_FILTER = new NullFilter(ContestManager.STUDIO_CONTEST_ID);
+    private static final Filter FALSE_FILTER = new NullFilter(STUDIO_CONTEST_ID);
 
     /**
      * <p>
@@ -218,14 +249,14 @@ public class ProjectToContestConverterImpl implements ProjectToContestConverter 
      * </p>
      */
     private static final List<String> CONTEST_PROPERTY_NAMES = Arrays.asList(new String[] {
-        ContestManager.STUDIO_CONTEST_CHANNEL_ID, ContestManager.STUDIO_CONTEST_CHANNEL_NAME,
-        ContestManager.STUDIO_CONTEST_DIRECT_PROJECT_ID, ContestManager.STUDIO_CONTEST_END_DATE,
-        ContestManager.STUDIO_CONTEST_EVENT_ID, ContestManager.STUDIO_CONTEST_FORUM_ID,
-        ContestManager.STUDIO_CONTEST_ID, ContestManager.STUDIO_CONTEST_NAME,
-        ContestManager.STUDIO_CONTEST_PROJECT_ID, ContestManager.STUDIO_CONTEST_START_DATE,
-        ContestManager.STUDIO_CONTEST_STATUS_ID, ContestManager.STUDIO_CONTEST_STATUS_NAME,
-        ContestManager.STUDIO_CONTEST_WINNER_ANNOUNCEMENT_DEADLINE, ContestManager.STUDIO_FILE_TYPE_EXTENSION,
-        ContestManager.STUDIO_FILE_TYPE_ID });
+        STUDIO_CONTEST_CHANNEL_ID, STUDIO_CONTEST_CHANNEL_NAME,
+        STUDIO_CONTEST_DIRECT_PROJECT_ID, STUDIO_CONTEST_END_DATE,
+        STUDIO_CONTEST_EVENT_ID, STUDIO_CONTEST_FORUM_ID,
+        STUDIO_CONTEST_ID, STUDIO_CONTEST_NAME,
+        STUDIO_CONTEST_PROJECT_ID, STUDIO_CONTEST_START_DATE,
+        STUDIO_CONTEST_STATUS_ID, STUDIO_CONTEST_STATUS_NAME,
+        STUDIO_CONTEST_WINNER_ANNOUNCEMENT_DEADLINE, STUDIO_FILE_TYPE_EXTENSION,
+        STUDIO_FILE_TYPE_ID });
 
     /**
      * <p>
@@ -270,16 +301,16 @@ public class ProjectToContestConverterImpl implements ProjectToContestConverter 
      * </p>
      */
     static {
-        PROJECT_PROPERTY_NAME_TO_CONTEST.put(PROPERTY_CONTEST_NAME, ContestManager.STUDIO_CONTEST_NAME);
-        PROJECT_PROPERTY_NAME_TO_CONTEST.put(PROPERTY_PROJECT_ID, ContestManager.STUDIO_CONTEST_PROJECT_ID);
+        PROJECT_PROPERTY_NAME_TO_CONTEST.put(PROPERTY_CONTEST_NAME, STUDIO_CONTEST_NAME);
+        PROJECT_PROPERTY_NAME_TO_CONTEST.put(PROPERTY_PROJECT_ID, STUDIO_CONTEST_PROJECT_ID);
         PROJECT_PROPERTY_NAME_TO_CONTEST.put(PROPERTY_TC_DIRECT_PROJECT_ID,
-            ContestManager.STUDIO_CONTEST_DIRECT_PROJECT_ID);
-        PROJECT_PROPERTY_NAME_TO_CONTEST.put(PROPERTY_FORUM_ID, ContestManager.STUDIO_CONTEST_FORUM_ID);
-        PROJECT_PROPERTY_NAME_TO_CONTEST.put(PROPERTY_EVENT_ID, ContestManager.STUDIO_CONTEST_EVENT_ID);
-        PROJECT_PROPERTY_NAME_TO_CONTEST.put(PROPERTY_START_DATE, ContestManager.STUDIO_CONTEST_START_DATE);
-        PROJECT_PROPERTY_NAME_TO_CONTEST.put(PROPERTY_END_DATE, ContestManager.STUDIO_CONTEST_END_DATE);
+            STUDIO_CONTEST_DIRECT_PROJECT_ID);
+        PROJECT_PROPERTY_NAME_TO_CONTEST.put(PROPERTY_FORUM_ID, STUDIO_CONTEST_FORUM_ID);
+        PROJECT_PROPERTY_NAME_TO_CONTEST.put(PROPERTY_EVENT_ID, STUDIO_CONTEST_EVENT_ID);
+        PROJECT_PROPERTY_NAME_TO_CONTEST.put(PROPERTY_START_DATE, STUDIO_CONTEST_START_DATE);
+        PROJECT_PROPERTY_NAME_TO_CONTEST.put(PROPERTY_END_DATE, STUDIO_CONTEST_END_DATE);
         PROJECT_PROPERTY_NAME_TO_CONTEST.put(PROPERTY_WINNER_ANNOUNCEMENT_DEADLINE,
-            ContestManager.STUDIO_CONTEST_WINNER_ANNOUNCEMENT_DEADLINE);
+            STUDIO_CONTEST_WINNER_ANNOUNCEMENT_DEADLINE);
     }
 
     /**
@@ -478,7 +509,13 @@ public class ProjectToContestConverterImpl implements ProjectToContestConverter 
             throw new ConversionException("The status of given Contest should not be null.");
         }
         // creates a Project instance
-        ProjectCategory category = convertContestChannelToProjectCategory(contest.getContestChannel());
+        StudioFileType[] types = contest.getFileTypes().toArray(
+                new StudioFileType[] {});
+        if ( types.length == 0)
+        {
+            throw new ConversionException("Contest must have a file type. contest id: " + contest.getContestId());
+        }
+        ProjectCategory category = convertFileTypeToProjectCategory(types[0]);
         ProjectStatus status = convertContestStatusToProjectStatus(contest.getStatus());
         Project project = null;
         if (contest.getContestId() == null) {
@@ -602,8 +639,6 @@ public class ProjectToContestConverterImpl implements ProjectToContestConverter 
         ContestChannel channel = new ContestChannel();
         channel.setContestChannelId(projectCategory.getId());
         channel.setDescription(projectCategory.getDescription());
-        channel.setName(projectCategory.getName());
-        channel.setFileType(convertProjectTypeToStudioFileType(projectCategory.getProjectType()));
 
         return channel;
     }
@@ -620,25 +655,15 @@ public class ProjectToContestConverterImpl implements ProjectToContestConverter 
      * @throws ConversionException
      *         If a problem occurs while performing the conversion
      */
-    public ProjectCategory convertContestChannelToProjectCategory(ContestChannel channel)
+    public ProjectCategory convertFileTypeToProjectCategory(StudioFileType fileType)
         throws ConversionException {
-        ExceptionUtils.checkNull(channel, null, null, "[channel] should not be null.");
-
-        if (channel.getContestChannelId() == null || channel.getContestChannelId() <= 0) {
-            throw new ConversionException("The channel ID of given ContestChannel should be a positive number.");
-        }
-        if (channel.getName() == null || channel.getName().trim().length() == 0) {
-            throw new ConversionException("The name of given channel should be non-null/non-empty string.");
-        }
-        if (channel.getFileType() == null) {
-            throw new ConversionException("The file type of given Channel should not be null.");
-        }
+        ExceptionUtils.checkNull(fileType, null, null, "[fileType] should not be null.");
 
         // creates a project category
-        ProjectCategory category = new ProjectCategory(channel.getContestChannelId(), channel.getName(),
-            convertStudioFileTypeToProjectType(channel.getFileType()));
+        ProjectCategory category = new ProjectCategory(fileType.getStudioFileType(), fileType.getDescription(),
+            convertStudioFileTypeToProjectType(fileType));
         // sets the description
-        category.setDescription(channel.getDescription() == null ? "" : channel.getDescription());
+        category.setDescription(fileType.getDescription() == null ? "" : fileType.getDescription());
 
         return category;
     }
@@ -813,27 +838,27 @@ public class ProjectToContestConverterImpl implements ProjectToContestConverter 
     private Filter processEqualToFilter(EqualToFilter theFilter) {
         // PROJECT_TYPE_ID
         if (theFilter.getName().equals(ProjectFilterUtility.PROJECT_TYPE_ID)) {
-            return new EqualToFilter(ContestManager.STUDIO_FILE_TYPE_ID, theFilter.getValue());
+            return new EqualToFilter(STUDIO_FILE_TYPE_ID, theFilter.getValue());
         }
         // PROJECT_TYPE_NAME
         if (theFilter.getName().equals(ProjectFilterUtility.PROJECT_TYPE_NAME)) {
-            return new EqualToFilter(ContestManager.STUDIO_FILE_TYPE_EXTENSION, theFilter.getValue());
+            return new EqualToFilter(STUDIO_FILE_TYPE_EXTENSION, theFilter.getValue());
         }
         // PROJECT_CATEGORY_ID
         if (theFilter.getName().equals(ProjectFilterUtility.PROJECT_CATEGORY_ID)) {
-            return new EqualToFilter(ContestManager.STUDIO_CONTEST_CHANNEL_ID, theFilter.getValue());
+            return new EqualToFilter(STUDIO_CONTEST_CHANNEL_ID, theFilter.getValue());
         }
         // PROJECT_CATEGORY_NAME
         if (theFilter.getName().equals(ProjectFilterUtility.PROJECT_CATEGORY_NAME)) {
-            return new EqualToFilter(ContestManager.STUDIO_CONTEST_CHANNEL_NAME, theFilter.getValue());
+            return new EqualToFilter(STUDIO_CONTEST_CHANNEL_NAME, theFilter.getValue());
         }
         // PROJECT_STATUS_ID
         if (theFilter.getName().equals(ProjectFilterUtility.PROJECT_STATUS_ID)) {
-            return new EqualToFilter(ContestManager.STUDIO_CONTEST_STATUS_ID, theFilter.getValue());
+            return new EqualToFilter(STUDIO_CONTEST_STATUS_ID, theFilter.getValue());
         }
         // PROJECT_STATUS_NAME
         if (theFilter.getName().equals(ProjectFilterUtility.PROJECT_STATUS_NAME)) {
-            return new EqualToFilter(ContestManager.STUDIO_CONTEST_STATUS_NAME, theFilter.getValue());
+            return new EqualToFilter(STUDIO_CONTEST_STATUS_NAME, theFilter.getValue());
         }
         // PROJECT_PROPERTY_NAME
         if (theFilter.getName().equals(ProjectFilterUtility.PROJECT_PROPERTY_NAME)) {
@@ -861,27 +886,27 @@ public class ProjectToContestConverterImpl implements ProjectToContestConverter 
     private Filter processInFilter(InFilter theFilter) {
         // STUDIO_CONTEST_ID
         if (theFilter.getName().equals(ProjectFilterUtility.PROJECT_TYPE_ID)) {
-            return new InFilter(ContestManager.STUDIO_FILE_TYPE_ID, theFilter.getList());
+            return new InFilter(STUDIO_FILE_TYPE_ID, theFilter.getList());
         }
         // PROJECT_TYPE_NAME
         if (theFilter.getName().equals(ProjectFilterUtility.PROJECT_TYPE_NAME)) {
-            return new InFilter(ContestManager.STUDIO_FILE_TYPE_EXTENSION, theFilter.getList());
+            return new InFilter(STUDIO_FILE_TYPE_EXTENSION, theFilter.getList());
         }
         // PROJECT_CATEGORY_ID
         if (theFilter.getName().equals(ProjectFilterUtility.PROJECT_CATEGORY_ID)) {
-            return new InFilter(ContestManager.STUDIO_CONTEST_CHANNEL_ID, theFilter.getList());
+            return new InFilter(STUDIO_CONTEST_CHANNEL_ID, theFilter.getList());
         }
         // PROJECT_CATEGORY_NAME
         if (theFilter.getName().equals(ProjectFilterUtility.PROJECT_CATEGORY_NAME)) {
-            return new InFilter(ContestManager.STUDIO_CONTEST_CHANNEL_NAME, theFilter.getList());
+            return new InFilter(STUDIO_CONTEST_CHANNEL_NAME, theFilter.getList());
         }
         // PROJECT_STATUS_ID
         if (theFilter.getName().equals(ProjectFilterUtility.PROJECT_STATUS_ID)) {
-            return new InFilter(ContestManager.STUDIO_CONTEST_STATUS_ID, theFilter.getList());
+            return new InFilter(STUDIO_CONTEST_STATUS_ID, theFilter.getList());
         }
         // PROJECT_STATUS_NAME
         if (theFilter.getName().equals(ProjectFilterUtility.PROJECT_STATUS_NAME)) {
-            return new InFilter(ContestManager.STUDIO_CONTEST_STATUS_NAME, theFilter.getList());
+            return new InFilter(STUDIO_CONTEST_STATUS_NAME, theFilter.getList());
         }
         // PROJECT_PROPERTY_NAME
         if (theFilter.getName().equals(ProjectFilterUtility.PROJECT_PROPERTY_NAME)) {
