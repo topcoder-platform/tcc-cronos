@@ -869,49 +869,28 @@ public class StudioServiceBean implements StudioService {
         try {
             List<SubmissionData> result = convertSubmissions(submissionManager.getSubmissionsForContest(contestId,
                     selectFullSubmission));
-            logExit("retrieveSubmissionsForContest", result);
 
-            // Get all contest ids.
-            HashSet<Long> contestIds = new HashSet<Long>();
-            for (SubmissionData submissionData : result) {
-                contestIds.add(submissionData.getContestId());
-            }
-
-            Hashtable<Long, Integer> contestMaxSubmissions = new Hashtable<Long, Integer>();
-            // Retrieve max submissions.
-            for (long id : contestIds) {
-                Contest contest = contestManager.getContest(id);
-                int maxSubmissions = 0;
-                for (ContestConfig config : contest.getConfig()) {
-                    if (config.getId().getProperty().getPropertyId() == contestPropertyMaxSubmissionsId) {
-                        try {
-                            maxSubmissions = Integer.parseInt(config.getValue());
-                        } catch (NumberFormatException e) {
-                            maxSubmissions = 0;
-                        }
-                        break;
+            // Retrieve max submissions per user.
+            Contest contest = contestManager.getContest(contestId);
+            int maxSubmissionsPerUser = 0;
+            for (ContestConfig config : contest.getConfig()) {
+                if (config.getId().getProperty().getPropertyId() == contestPropertyMaxSubmissionsId) {
+                    try {
+                        maxSubmissionsPerUser = Integer.parseInt(config.getValue());
+                    } catch (NumberFormatException e) {
+                        maxSubmissionsPerUser = 0;
                     }
+                    break;
                 }
-                contestMaxSubmissions.put(id, maxSubmissions);
             }
 
-            Hashtable<Long, Integer> contestSubmissionCounter = new Hashtable<Long, Integer>();
+            log.log(Level.DEBUG, "Max Submissions for contest is " + maxSubmissionsPerUser + ", contest id:"
+                    + contestId);
             List<SubmissionData> submissionsToBeRemoved = new ArrayList<SubmissionData>();
 
             // Get submissions need to be removed.
             for (SubmissionData submissionData : result) {
-                long id = submissionData.getContestId();
-                Integer count = contestSubmissionCounter.get(id);
-                if (count == null) {
-                    count = new Integer(1);
-                } else {
-                    count = new Integer(count + 1);
-                }
-                // update counter.
-                contestSubmissionCounter.put(id, count);
-
-                int maxSubmission = contestMaxSubmissions.get(id);
-                if (maxSubmission > 0 && count > maxSubmission) {
+                if (maxSubmissionsPerUser > 0 && submissionData.getRank()!= null && submissionData.getRank() > maxSubmissionsPerUser) {
                     submissionsToBeRemoved.add(submissionData);
                 }
             }
@@ -920,6 +899,8 @@ public class StudioServiceBean implements StudioService {
             for (SubmissionData submissionData : submissionsToBeRemoved) {
                 result.remove(submissionData);
             }
+
+            logExit("retrieveSubmissionsForContest", result);
 
             return result;
         } catch (SubmissionManagementException e) {
@@ -1615,6 +1596,8 @@ public class StudioServiceBean implements StudioService {
                 sd.setContestId(unbox(s.getContest().getContestId()));
             }
 
+            // Set rank.
+            sd.setRank(s.getRank());
             sd.setSubmissionId(unbox(s.getSubmissionId()));
             sd.setSubmittedDate(getXMLGregorianCalendar(s.getSubmissionDate()));
             sd.setSubmitterId(unbox(s.getSubmitterId()));
