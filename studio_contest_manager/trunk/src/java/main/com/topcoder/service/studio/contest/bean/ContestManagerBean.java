@@ -550,6 +550,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     contest.getConfig().add(config);
                 }
             }
+
+            // Restore documents.
+            contest.setDocuments(result.getDocuments());
             
             if (result.getStatus().getContestStatusId().equals(activeContestStatusId)) {
                 checkSet(result.getConfig(), contest.getConfig());
