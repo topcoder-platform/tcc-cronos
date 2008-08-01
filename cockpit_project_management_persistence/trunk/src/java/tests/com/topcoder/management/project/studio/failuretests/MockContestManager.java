@@ -5,7 +5,9 @@ package com.topcoder.management.project.studio.failuretests;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.service.studio.contest.Contest;
@@ -13,15 +15,22 @@ import com.topcoder.service.studio.contest.ContestChannel;
 import com.topcoder.service.studio.contest.ContestConfig;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.ContestManager;
+import com.topcoder.service.studio.contest.ContestPayment;
+import com.topcoder.service.studio.contest.ContestProperty;
 import com.topcoder.service.studio.contest.ContestStatus;
 import com.topcoder.service.studio.contest.ContestStatusTransitionException;
 import com.topcoder.service.studio.contest.ContestType;
 import com.topcoder.service.studio.contest.ContestTypeConfig;
 import com.topcoder.service.studio.contest.Document;
+import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.EntityAlreadyExistsException;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
+import com.topcoder.service.studio.contest.Medium;
+import com.topcoder.service.studio.contest.MimeType;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.studio.submission.PaymentStatus;
 import com.topcoder.service.studio.submission.Prize;
+import com.topcoder.service.studio.submission.PrizeType;
 
 /**
  * This is a mock implementation of ContestManager class.
@@ -105,8 +114,6 @@ public class MockContestManager implements ContestManager {
         ContestChannel channel = new ContestChannel();
         channel.setContestChannelId(new Long(2));
         channel.setDescription("This is a channel");
-        channel.setFileType(fileType);
-        channel.setName("news");
 
         ContestStatus contestStatus = new ContestStatus();
         contestStatus.setContestStatusId(new Long(24));
@@ -126,6 +133,10 @@ public class MockContestManager implements ContestManager {
         contest.setStatus(contestStatus);
         contest.setStartDate(new Date());
 
+        Set<StudioFileType> fileTypes = new HashSet<StudioFileType>();
+        fileTypes.add(fileType);
+        contest.setFileTypes(fileTypes);
+        
         if (invalid) {
             contest.setContestId(new Long(-1));
         }
@@ -158,8 +169,6 @@ public class MockContestManager implements ContestManager {
         ContestChannel channel = new ContestChannel();
         channel.setContestChannelId(new Long(2));
         channel.setDescription("This is a channel");
-        channel.setFileType(fileType);
-        channel.setName("news");
 
         ContestStatus contestStatus = new ContestStatus();
         contestStatus.setContestStatusId(new Long(24));
@@ -662,8 +671,6 @@ public class MockContestManager implements ContestManager {
         ContestChannel channel = new ContestChannel();
         channel.setContestChannelId(new Long(2));
         channel.setDescription("This is a channel");
-        channel.setFileType(fileType);
-        channel.setName("news");
 
         if (invalid) {
             channel.setContestChannelId(new Long(-1));
@@ -842,8 +849,6 @@ public class MockContestManager implements ContestManager {
         ContestChannel channel = new ContestChannel();
         channel.setContestChannelId(new Long(2));
         channel.setDescription("This is a channel");
-        channel.setFileType(fileType);
-        channel.setName("news");
 
         ContestStatus contestStatus = new ContestStatus();
         contestStatus.setContestStatusId(new Long(24));
@@ -863,10 +868,104 @@ public class MockContestManager implements ContestManager {
         contest.setStatus(contestStatus);
         contest.setStartDate(new Date());
 
+        Set<StudioFileType> fileTypes = new HashSet<StudioFileType>();
+        fileTypes.add(fileType);
+        contest.setFileTypes(fileTypes);
+        
         if (invalid) {
             contestStatus.setContestStatusId(new Long(-1));
         }
 
         return Arrays.asList(new Contest[] { contest });
+    }
+
+    public ContestPayment createContestPayment(ContestPayment contestPayment) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Prize createPrize(Prize prize) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public void editContestPayment(ContestPayment contestPayment) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public List<ContestProperty> getAllContestProperties() throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public List<ContestType> getAllContestTypes() throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public List<DocumentType> getAllDocumentTypes() throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public List<Medium> getAllMedia() throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public List<MimeType> getAllMimeTypes() throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public List<PaymentStatus> getAllPaymentStatuses() throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public List<PrizeType> getAllPrizeTypes() throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public ContestPayment getContestPayment(long contestPaymentId) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public ContestProperty getContestProperty(long contestPropertyId) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public List<Contest> getContestsForUser(long createdUser) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public DocumentType getDocumentType(long documentTypeId) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public MimeType getMimeType(long mimeTypeId) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public PaymentStatus getPaymentStatus(long paymentStatusId) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public PrizeType getPrizeType(long prizeTypeId) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public boolean removeContestPayment(long contestPaymentId) throws ContestManagementException {
+        // TODO Auto-generated method stub
+        return false;
     }
 }

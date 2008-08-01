@@ -15,11 +15,14 @@ import com.topcoder.management.project.ProjectType;
 import com.topcoder.management.project.studio.ContestManagerProjectAdapter;
 import com.topcoder.management.project.studio.converter.ProjectToContestConverterImpl;
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestConfig;
 import com.topcoder.service.studio.contest.ContestManager;
+import com.topcoder.service.studio.contest.ContestProperty;
 import com.topcoder.service.studio.contest.ContestType;
 import com.topcoder.service.studio.contest.Document;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.studio.contest.ContestConfig.Identifier;
 import com.topcoder.service.studio.submission.ContestResult;
 import com.topcoder.service.studio.submission.Submission;
 
@@ -94,7 +97,11 @@ public class ContestManagerProjectAdapterTests extends BaseStressTest {
         project.setProperty(ProjectToContestConverterImpl.PROPERTY_SUBMISSIONS,
                 submissions);
         Set<StudioFileType> fileTypes = new HashSet<StudioFileType>();
-        fileTypes.add(new StudioFileType());
+        StudioFileType fileType = new StudioFileType();
+        fileType.setStudioFileType(1);
+        fileType.setExtension("txt");
+        fileType.setDescription("desc");
+        fileTypes.add(fileType);
         project.setProperty(ProjectToContestConverterImpl.PROPERTY_FILE_TYPES,
                 fileTypes);
         Set<ContestResult> results = new HashSet<ContestResult>();
@@ -106,7 +113,13 @@ public class ContestManagerProjectAdapterTests extends BaseStressTest {
         project.setProperty(ProjectToContestConverterImpl.PROPERTY_DOCUMENTS,
                 docs);
         Set<ContestConfig> configs = new HashSet<ContestConfig>();
-        configs.add(new ContestConfig());
+
+        ContestConfig o = new ContestConfig();
+        Identifier id = new Identifier();
+        id.setContest(new Contest());
+        id.setProperty(new ContestProperty());
+        o.setId(id);
+        configs.add(o);
         project.setProperty(ProjectToContestConverterImpl.PROPERTY_CONFIG,
                 configs);
         project.setProperty(

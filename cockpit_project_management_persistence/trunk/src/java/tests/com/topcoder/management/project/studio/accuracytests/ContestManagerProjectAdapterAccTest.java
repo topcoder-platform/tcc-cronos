@@ -20,9 +20,11 @@ import com.topcoder.search.builder.filter.OrFilter;
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestConfig;
 import com.topcoder.service.studio.contest.ContestManager;
+import com.topcoder.service.studio.contest.ContestProperty;
 import com.topcoder.service.studio.contest.ContestType;
 import com.topcoder.service.studio.contest.Document;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.studio.contest.ContestConfig.Identifier;
 import com.topcoder.service.studio.submission.ContestResult;
 import com.topcoder.service.studio.submission.Submission;
 
@@ -128,21 +130,14 @@ public class ContestManagerProjectAdapterAccTest extends TestCase {
      */
     public void testgetAllProjectCategories() throws Exception {
         ProjectCategory[] categories = instance.getAllProjectCategories();
-        assertEquals("The size of categories is invalid.", 2, categories.length);
+        assertEquals("The size of categories is invalid.", 1, categories.length);
 
-        assertEquals("The desc is invalid.", "This is channel 1", categories[0].getDescription());
-        assertEquals("The name is invalid.", "news", categories[0].getName());
+        assertEquals("The desc is invalid.", "PS", categories[0].getDescription());
+        assertEquals("The name is invalid.", "PS", categories[0].getName());
         assertEquals("The id is invalid.", 1, categories[0].getId());
-        assertEquals("The id is invalid.", 34, categories[0].getProjectType().getId());
+        assertEquals("The id is invalid.", 1, categories[0].getProjectType().getId());
         assertEquals("The desc is invalid.", "PS", categories[0].getProjectType().getDescription());
         assertEquals("The desc is invalid.", ".ps", categories[0].getProjectType().getName());
-
-        assertEquals("The desc is invalid.", "This is channel 2", categories[1].getDescription());
-        assertEquals("The name is invalid.", "annoncement", categories[1].getName());
-        assertEquals("The id is invalid.", 2, categories[1].getId());
-        assertEquals("The id is invalid.", 34, categories[1].getProjectType().getId());
-        assertEquals("The desc is invalid.", "PS", categories[1].getProjectType().getDescription());
-        assertEquals("The desc is invalid.", ".ps", categories[1].getProjectType().getName());
     }
 
     /**
@@ -453,7 +448,13 @@ public class ContestManagerProjectAdapterAccTest extends TestCase {
         project.setProperty(ProjectToContestConverterImpl.PROPERTY_SUBMISSIONS, submissions);
 
         Set<StudioFileType> fileTypes = new HashSet<StudioFileType>();
-        fileTypes.add(new StudioFileType());
+        StudioFileType fileType = new StudioFileType();
+        fileType.setDescription("PS");
+        fileType.setExtension(".ps");
+        fileType.setImageFile(false);
+        fileType.setStudioFileType(34);
+
+        fileTypes.add(fileType);
         project.setProperty(ProjectToContestConverterImpl.PROPERTY_FILE_TYPES, fileTypes);
 
         Set<ContestResult> results = new HashSet<ContestResult>();
@@ -465,7 +466,13 @@ public class ContestManagerProjectAdapterAccTest extends TestCase {
         project.setProperty(ProjectToContestConverterImpl.PROPERTY_DOCUMENTS, docs);
 
         Set<ContestConfig> configs = new HashSet<ContestConfig>();
-        configs.add(new ContestConfig());
+
+        ContestConfig o = new ContestConfig();
+        Identifier id = new Identifier();
+        id.setContest(new Contest());
+        id.setProperty(new ContestProperty());
+        o.setId(id);
+        configs.add(o);
         project.setProperty(ProjectToContestConverterImpl.PROPERTY_CONFIG, configs);
 
         return project;

@@ -17,11 +17,14 @@ import com.topcoder.management.project.ProjectType;
 import com.topcoder.management.project.studio.converter.ProjectToContestConverterImpl;
 import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestConfig;
 import com.topcoder.service.studio.contest.ContestManager;
+import com.topcoder.service.studio.contest.ContestProperty;
 import com.topcoder.service.studio.contest.ContestType;
 import com.topcoder.service.studio.contest.Document;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.studio.contest.ContestConfig.Identifier;
 import com.topcoder.service.studio.submission.ContestResult;
 import com.topcoder.service.studio.submission.Submission;
 
@@ -105,7 +108,12 @@ public class ContestManagerProjectAdapterTest extends TestCase {
         docs.add(new Document());
         project.setProperty(ProjectToContestConverterImpl.PROPERTY_DOCUMENTS, docs);
         Set<ContestConfig> configs = new HashSet<ContestConfig>();
-        configs.add(new ContestConfig());
+        ContestConfig o = new ContestConfig();
+        Identifier id = new Identifier();
+        id.setContest(new Contest());
+        id.setProperty(new ContestProperty());
+        o.setId(id);
+        configs.add(o);
         project.setProperty(ProjectToContestConverterImpl.PROPERTY_CONFIG, configs);
         project.setProperty(ProjectToContestConverterImpl.PROPERTY_CONTEST_TYPE, new ContestType());
         project.setProperty(ProjectToContestConverterImpl.PROPERTY_START_DATE, new Date());
@@ -340,7 +348,7 @@ public class ContestManagerProjectAdapterTest extends TestCase {
 
         Project theProject = adapter.getProject(4);
         assertEquals("Create user mismatched.", "34654", theProject.getCreationUser());
-        assertEquals("Description of category is invalid.", "This is a channel", theProject.getProjectCategory()
+        assertEquals("Description of category is invalid.", "PS", theProject.getProjectCategory()
             .getDescription());
         assertEquals("Project type description is invalid.", "PS", theProject.getProjectCategory()
             .getProjectType().getDescription());
@@ -412,8 +420,6 @@ public class ContestManagerProjectAdapterTest extends TestCase {
 
         Project theProject = adapter.getProject(4);
         assertEquals("Create user mismatched.", "34654", theProject.getCreationUser());
-        assertEquals("Description of category is invalid.", "This is a channel", theProject.getProjectCategory()
-            .getDescription());
         assertEquals("Project type description is invalid.", "PS", theProject.getProjectCategory()
             .getProjectType().getDescription());
     }
@@ -483,10 +489,6 @@ public class ContestManagerProjectAdapterTest extends TestCase {
         Project theProject = adapter.getProject(1);
 
         assertEquals("Create user mismatched.", "34654", theProject.getCreationUser());
-        assertEquals("Description of category is invalid.", "This is a channel", theProject.getProjectCategory()
-            .getDescription());
-        assertEquals("Project type description is invalid.", "PS", theProject.getProjectCategory()
-            .getProjectType().getDescription());
     }
 
     /**
@@ -536,8 +538,6 @@ public class ContestManagerProjectAdapterTest extends TestCase {
 
         assertEquals("There should be one project.", 1, ps.length);
         assertEquals("Create user mismatched.", "34654", ps[0].getCreationUser());
-        assertEquals("Description of category is invalid.", "This is a channel", ps[0].getProjectCategory()
-            .getDescription());
         assertEquals("Project type description is invalid.", "PS", ps[0].getProjectCategory().getProjectType()
             .getDescription());
     }
@@ -610,8 +610,6 @@ public class ContestManagerProjectAdapterTest extends TestCase {
 
         assertEquals("There should be one project.", 1, ps.length);
         assertEquals("Create user mismatched.", "34654", ps[0].getCreationUser());
-        assertEquals("Description of category is invalid.", "This is a channel", ps[0].getProjectCategory()
-            .getDescription());
         assertEquals("Project type description is invalid.", "PS", ps[0].getProjectCategory().getProjectType()
             .getDescription());
     }
@@ -665,8 +663,6 @@ public class ContestManagerProjectAdapterTest extends TestCase {
 
         assertEquals("There should be one project.", 1, ps.length);
         assertEquals("Create user mismatched.", "34654", ps[0].getCreationUser());
-        assertEquals("Description of category is invalid.", "This is a channel", ps[0].getProjectCategory()
-            .getDescription());
         assertEquals("Project type description is invalid.", "PS", ps[0].getProjectCategory().getProjectType()
             .getDescription());
     }
@@ -771,8 +767,7 @@ public class ContestManagerProjectAdapterTest extends TestCase {
         ProjectCategory[] cs = adapter.getAllProjectCategories();
 
         assertEquals("Should have one type.", 1, cs.length);
-        assertEquals("Description mismatched.", "This is a channel", cs[0].getDescription());
-        assertEquals("Name mismatched.", "news", cs[0].getName());
+        assertEquals("Name mismatched.", "PS", cs[0].getName());
     }
 
     /**

@@ -23,10 +23,12 @@ import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestChannel;
 import com.topcoder.service.studio.contest.ContestConfig;
 import com.topcoder.service.studio.contest.ContestManager;
+import com.topcoder.service.studio.contest.ContestProperty;
 import com.topcoder.service.studio.contest.ContestStatus;
 import com.topcoder.service.studio.contest.ContestType;
 import com.topcoder.service.studio.contest.Document;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.studio.contest.ContestConfig.Identifier;
 import com.topcoder.service.studio.submission.ContestResult;
 import com.topcoder.service.studio.submission.Submission;
 
@@ -127,7 +129,13 @@ public class ProjectToContestConverterImplTest extends TestCase {
         docs.add(new Document());
         project.setProperty(ProjectToContestConverterImpl.PROPERTY_DOCUMENTS, docs);
         Set<ContestConfig> configs = new HashSet<ContestConfig>();
-        configs.add(new ContestConfig());
+
+        ContestConfig o = new ContestConfig();
+        Identifier id = new Identifier();
+        id.setContest(new Contest());
+        id.setProperty(new ContestProperty());
+        o.setId(id);
+        configs.add(o);
         project.setProperty(ProjectToContestConverterImpl.PROPERTY_CONFIG, configs);
         project.setProperty(ProjectToContestConverterImpl.PROPERTY_CONTEST_TYPE, new ContestType());
         project.setProperty(ProjectToContestConverterImpl.PROPERTY_START_DATE, new Date());
@@ -144,8 +152,6 @@ public class ProjectToContestConverterImplTest extends TestCase {
         channel = new ContestChannel();
         channel.setContestChannelId(new Long(2));
         channel.setDescription("This is a channel");
-        channel.setFileType(fileType);
-        channel.setName("news");
 
         contestStatus = new ContestStatus();
         contestStatus.setContestStatusId(new Long(24));
@@ -165,6 +171,8 @@ public class ProjectToContestConverterImplTest extends TestCase {
         contest.setStatus(contestStatus);
         contest.setStartDate(date);
 
+        fileTypes.add(fileType);
+        contest.setFileTypes(fileTypes);
     }
 
     /**
@@ -602,7 +610,6 @@ public class ProjectToContestConverterImplTest extends TestCase {
         ContestChannel theChannel = converter.convertProjectCategoryToContestChannel(category);
 
         assertEquals("Channel id mismatched.", new Long(2), theChannel.getContestChannelId());
-        assertEquals("Channel name mismatched.", "j2ee", theChannel.getName());
     }
 
     /**
@@ -615,85 +622,9 @@ public class ProjectToContestConverterImplTest extends TestCase {
      */
     public void testConvertContestChannelToProjectCategoryWithNullArgument() throws Exception {
         try {
-            converter.convertContestChannelToProjectCategory(null);
+            converter.convertFileTypeToProjectCategory(null);
             fail("IAE should be thrown.");
         } catch (IllegalArgumentException e) {
-            // success
-        }
-    }
-
-    /**
-     * Test for <code>convertContestChannelToProjectCategory</code> method.
-     * <p>
-     * Tests it against channel id not set, expects ConversionException.
-     * </p>
-     * @throws Exception
-     *         to JUnit
-     */
-    public void testConvertContestChannelToProjectCategoryWithIDNotSet() throws Exception {
-        channel.setContestChannelId(null);
-
-        try {
-            converter.convertContestChannelToProjectCategory(channel);
-            fail("Conversion exception should be thrown.");
-        } catch (ConversionException e) {
-            // success
-        }
-    }
-
-    /**
-     * Test for <code>convertContestChannelToProjectCategory</code> method.
-     * <p>
-     * Tests it against channel id negative, expects ConversionException.
-     * </p>
-     * @throws Exception
-     *         to JUnit
-     */
-    public void testConvertContestChannelToProjectCategoryWithIDNegative() throws Exception {
-        channel.setContestChannelId(new Long(-1));
-
-        try {
-            converter.convertContestChannelToProjectCategory(channel);
-            fail("Conversion exception should be thrown.");
-        } catch (ConversionException e) {
-            // success
-        }
-    }
-
-    /**
-     * Test for <code>convertContestChannelToProjectCategory</code> method.
-     * <p>
-     * Tests it against channel name null, expects ConversionException.
-     * </p>
-     * @throws Exception
-     *         to JUnit
-     */
-    public void testConvertContestChannelToProjectCategoryWithNullName() throws Exception {
-        channel.setName(null);
-
-        try {
-            converter.convertContestChannelToProjectCategory(channel);
-            fail("Conversion exception should be thrown.");
-        } catch (ConversionException e) {
-            // success
-        }
-    }
-
-    /**
-     * Test for <code>convertContestChannelToProjectCategory</code> method.
-     * <p>
-     * Tests it against channel file type not set, expects ConversionException.
-     * </p>
-     * @throws Exception
-     *         to JUnit
-     */
-    public void testConvertContestChannelToProjectCategoryWithNullFileType() throws Exception {
-        channel.setFileType(null);
-
-        try {
-            converter.convertContestChannelToProjectCategory(channel);
-            fail("Conversion exception should be thrown.");
-        } catch (ConversionException e) {
             // success
         }
     }
@@ -901,7 +832,7 @@ public class ProjectToContestConverterImplTest extends TestCase {
         assertTrue("Should be a NotFilter", filter instanceof NotFilter);
         Filter inner = ((NotFilter) filter).getFilter();
         assertTrue("Should be a NullFilter", inner instanceof NullFilter);
-        assertEquals("filter name mismatched.", ContestManager.STUDIO_CONTEST_ID, ((NullFilter) inner)
+        assertEquals("filter name mismatched.", ProjectToContestConverterImpl.STUDIO_CONTEST_ID, ((NullFilter) inner)
             .getName());
     }
 }
