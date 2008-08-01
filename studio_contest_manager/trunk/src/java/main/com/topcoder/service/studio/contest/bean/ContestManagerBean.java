@@ -420,7 +420,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
                 throw e;
             }
-            
+
             EntityManager em = getEntityManager();
             em.persist(contest);
 
@@ -544,6 +544,13 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             Contest result = getContest(contest.getContestId());
 
+            // Add missing contest configurations.
+            for (ContestConfig config : result.getConfig()) {
+                if (!contest.getConfig().contains(config)) {
+                    contest.getConfig().add(config);
+                }
+            }
+            
             if (result.getStatus().getContestStatusId().equals(activeContestStatusId)) {
                 checkSet(result.getConfig(), contest.getConfig());
 
@@ -567,6 +574,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
                 checkSet(result.getSubmissions(), contest.getSubmissions());
             }
+
+            // Restore submissions.
+            contest.setSubmissions(result.getSubmissions());
 
             em.merge(contest);
         } catch (IllegalStateException e) {
@@ -593,8 +603,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      *             if two sets don't match
      */
     private void checkSet(Set<?> src, Set<?> dest) throws ContestManagementException {
-        if ((dest == null) || (dest.size() != src.size()) || !src.containsAll(dest)) {
-            throw wrapContestManagementException("The set doesn't match.");
+        if ((dest == null)) {
+            throw wrapContestManagementException("Contest config set to be saved is null.");
         }
     }
 
@@ -2173,7 +2183,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         }
     }
 
-
     /**
      * <p>
      * Get all the PrizeType objects.
@@ -2183,7 +2192,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * 
      * @throws ContestManagementException
      *             if any error occurs when getting PrizeType.
-     * @since TCCC-349            
+     * @since TCCC-349
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -2232,19 +2241,19 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * <p>
-     * Get all the PaymentStatus  objects.
+     * Get all the PaymentStatus objects.
      * </p>
      * 
-     * @return the list of all available PaymentStatus 
+     * @return the list of all available PaymentStatus
      * 
      * @throws ContestManagementException
      *             if any error occurs when getting PaymentStatus.
-     *             
+     * 
      * @since TCCC-349
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public List<PaymentStatus > getAllPaymentStatuses() throws ContestManagementException {
+    public List<PaymentStatus> getAllPaymentStatuses() throws ContestManagementException {
         try {
             logEnter("getAllPaymentStatuses()");
 
@@ -2254,7 +2263,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             logExit("getAllPaymentStatuses()");
         }
     }
-
 
     /**
      * <p>
@@ -2287,7 +2295,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             logExit("getPaymentStatus()");
         }
     }
-    
+
     /**
      * <p>
      * Get the MimeType with the specified id.
@@ -2794,8 +2802,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
     /**
      * <p>
-     * Gets contest payment by contest id, and return the retrieved contest payment. If
-     * the contest payment doesn't exist, null is returned.
+     * Gets contest payment by contest id, and return the retrieved contest
+     * payment. If the contest payment doesn't exist, null is returned.
      * </p>
      * 
      * @param contestId
@@ -2965,11 +2973,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             query.setParameter(1, status.getContestStatusId());
             List<ContestStatus> list = query.getResultList();
             if (list != null) {
-            	/*
-            	for (ContestStatus s : list) {
-                    fillNextStatuses(s);
-                }
-                */
+                /*
+                 * for (ContestStatus s : list) { fillNextStatuses(s); }
+                 */
                 status.setStatuses(list);
             }
         } catch (IllegalStateException e) {
@@ -2981,28 +2987,31 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         }
     }
 
-
     /**
      * <p>
-     * Gets contests by the created user. If there is no such contests, an empty list should be returned.
+     * Gets contests by the created user. If there is no such contests, an empty
+     * list should be returned.
      * </p>
-     *
-     * @param createdUser the created user.
+     * 
+     * @param createdUser
+     *            the created user.
      * @return a list of associated contests
-     *
-     * @throws ContestManagementException if any error occurs when getting contests
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contests
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public List<Contest> getContestsForUser(long createdUser) throws ContestManagementException
-    {
+    public List<Contest> getContestsForUser(long createdUser) throws ContestManagementException {
         try {
             logEnter("getContestsForUser(createdUser)");
             logOneParameter(createdUser);
-            
+
             EntityManager em = getEntityManager();
 
-            Query query = em.createQuery("select c from Contest c where not c.tcDirectProjectId is null and c.createdUser = " + createdUser);
+            Query query = em
+                    .createQuery("select c from Contest c where not c.tcDirectProjectId is null and c.createdUser = "
+                            + createdUser);
 
             List list = query.getResultList();
 
@@ -3017,20 +3026,20 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             logExit("getContestsForUser()");
         }
     }
-    
 
     /**
      * Returns all media.
      * 
      * @return all media.
-     * @throws ContestManagementException if any error occurs when getting contests 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contests
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public List<Medium> getAllMedia() throws ContestManagementException{
+    public List<Medium> getAllMedia() throws ContestManagementException {
         try {
             logEnter("getAllMedia()");
-            
+
             EntityManager em = getEntityManager();
 
             Query query = em.createQuery("select m from Medium m");
