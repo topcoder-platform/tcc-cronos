@@ -581,6 +581,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             // Restore submissions.
             contest.setSubmissions(result.getSubmissions());
 
+            // Ensure that the created user isn't updated.
+            contest.setCreatedUser(result.getCreatedUser());
+            
             em.merge(contest);
         } catch (IllegalStateException e) {
             throw wrapContestManagementException(e, "The EntityManager is closed.");
