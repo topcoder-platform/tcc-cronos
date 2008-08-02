@@ -983,7 +983,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             if (document.getSystemFileName() == null) {
                 document.setSystemFileName(UUID.randomUUID().toString());
             }
-
+            
             em.persist(document);
 
             return document;
@@ -1153,11 +1153,19 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                 throw wrapEntityNotFoundException("The contest with id '" + contestId + "' doesn't exist.");
             }
 
+            // [BUG TCCC-134]
+            documentContentManager.moveDocumentToContestFolder(formPath(document), contestId);
+
             // When moving the document,
             // the path in the database must be changed to the new location
             // (stored in document.path).
             FilePath path = document.getPath();
-            path.setPath(path.getPath() + File.separator + contestId);
+            String initialPath = path.getPath();
+            if (!initialPath.endsWith(File.separator)) {
+            	initialPath = initialPath + File.separator;
+            }
+                                   
+            path.setPath(initialPath + contestId + File.separator);
             document.setPath(path);
             em.persist(document);
 
@@ -1166,8 +1174,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             em.merge(contest);
 
-            // [BUG TCCC-134]
-            documentContentManager.moveDocumentToContestFolder(formPath(document), contestId);
         } catch (IllegalStateException e) {
             throw wrapContestManagementException(e, "The EntityManager is closed.");
         } catch (TransactionRequiredException e) {
