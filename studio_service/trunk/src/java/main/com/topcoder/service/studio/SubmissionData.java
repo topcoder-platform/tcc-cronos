@@ -23,6 +23,29 @@ import java.io.Serializable;
         propOrder = {"submissionId", "submitterId", "contestId", "submittedDate", "submissionContent", "passedScreening", "placement", "paidFor", "price", "markedForPurchase"})
 public class SubmissionData implements Serializable {
     /**
+     * Represents submission rank.
+     */
+    private Integer rank;
+    
+    /**
+     * Returns submission rank.
+     * 
+     * @return the rank
+     */
+    public Integer getRank() {
+        return rank;
+    }
+
+    /**
+     * Set submission rank.
+     * 
+     * @param rank the rank to set
+     */
+    public void setRank(Integer rank) {
+        this.rank = rank;
+    }
+
+    /**
      * <p> Represents the submission Id</p>
      */
     private long submissionId = -1;
