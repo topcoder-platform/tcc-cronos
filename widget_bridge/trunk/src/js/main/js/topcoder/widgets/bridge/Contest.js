@@ -454,9 +454,12 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 			var upDocArray = new Array();
 			for (var x = 0; x < tempUpDoc.length; x++) {
 				upDocArray[x] = 
-					"{\"fileName\" : \"" + tempUpDoc[x].fileName + "\",\"path\" : \""+ tempUpDoc[x].path + "\",\"documentID\" : " + tempUpDoc[x].documentID
-					+ ",\"contestID\" : " + tempUpDoc[x].contestID + ", \"description\" : \""
-					+ tempUpDoc[x].description+"\"}";
+					"{\"fileName\" : \"" + Helper.escapeJSONValue(tempUpDoc[x].fileName)
+                            + "\",\"path\" : \""+ Helper.escapeJSONValue(tempUpDoc[x].path)
+                            + "\",\"documentID\" : " + tempUpDoc[x].documentID
+                            + ",\"documentTypeID\" : " + tempUpDoc[x].documentTypeID
+                            + ",\"contestID\" : " + tempUpDoc[x].contestID
+                            + ", \"description\" : \"" + Helper.escapeJSONValue(tempUpDoc[x].description)+"\"}";
 			}
 		    that.documentationUploads /* UploadedDocument[] */ = upDocArray;
 		} else {
