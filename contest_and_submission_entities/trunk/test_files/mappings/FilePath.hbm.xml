@@ -16,7 +16,7 @@
 
 		<property name="modifyDate" column="modify_date"
 			not-null="true"
-			generated="insert" />
+			generated="always" />
 
 	</class>
 </hibernate-mapping>
