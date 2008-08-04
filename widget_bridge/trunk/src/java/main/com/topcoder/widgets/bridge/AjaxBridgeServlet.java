@@ -1280,6 +1280,7 @@ public class AjaxBridgeServlet extends HttpServlet {
         upDoc.setFileName(jsonUpDoc.getString("fileName"));
         upDoc.setPath(jsonUpDoc.getString("path"));
         upDoc.setDocumentTypeId(jsonUpDoc.getLong("documentTypeID"));
+        upDoc.setMimeTypeId(jsonUpDoc.getLong("mimeTypeID"));
         return upDoc;
     }
 
@@ -1309,6 +1310,7 @@ public class AjaxBridgeServlet extends HttpServlet {
         respJSON.setString("fileName", getString(upDoc.getFileName()));
         respJSON.setString("path", getString(upDoc.getPath()));
         respJSON.setLong("documentTypeID", upDoc.getDocumentTypeId());
+        respJSON.setLong("mimeTypeID", upDoc.getMimeTypeId());
         return respJSON;
     }
 
