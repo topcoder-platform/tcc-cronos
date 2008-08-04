@@ -819,6 +819,46 @@ function testStudioPurchaseSubmission() {
     studioService.purchaseSubmission(10651,123.43,"superZZ",success,error);
 }
 
+
+/**
+ * <p>Tests Studio.setSubmissionPlacement().</p>
+ */
+function testStudioSetSubmissionPlacement() {
+    // initialize the studio service
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+
+    // success callback 
+    var success = function() {
+        alert("Success = purchaseSubmission succeed!");
+    }
+    // error callback
+    var error = function(errMsg) {
+        alert("Error = "+errMsg);
+    }
+    
+    studioService.setSubmissionPlacement(10651,1,success,error);
+}
+
+
+
+/**
+ * <p>Tests Studio.markForPurchase().</p>
+ */
+function testStudioMarkForPurchase() {
+    // initialize the studio service
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+
+    // success callback 
+    var success = function() {
+        alert("Success = purchaseSubmission succeed!");
+    }
+    // error callback
+    var error = function(errMsg) {
+        alert("Error = "+errMsg);
+    }
+
+    studioService.markForPurchase(10651,success,error);
+}
 </script>
 </head>
 
@@ -852,6 +892,9 @@ Widget Webservices Bridge Demo
     <li>Studio.getAllMedia() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetAllMedia()" /></li>
     
     <li>Studio.purchaseSubmission() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioPurchaseSubmission()" /></li>
+    
+    <li>Studio.setSubmissionPlacement() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioSetSubmissionPlacement()" /></li>
+    <li>Studio.markForPurchase() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioMarkForPurchase()" /></li>
 </ul>
 <br />
 <span style="color:red;"><b>Some Studio Services Error Demo</b></span>
