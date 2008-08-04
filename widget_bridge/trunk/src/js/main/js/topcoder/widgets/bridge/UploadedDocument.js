@@ -91,6 +91,16 @@ js.topcoder.widgets.bridge.UploadedDocument = function (/* JSON Object */ json) 
 	 */
     var documentTypeID /* long */  = -1;
 
+	/**
+	 * <p>Represents the mimeTypeId</p>
+	 * <p>Initial Value: -1, means that is not set</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 * <p>Valid Values: can be -1, can be greater or equal to 0</p>
+	 */
+    var mimeTypeID /* long */  = -1;
+    
     /**
      * Abbreviation for Helper class.
      */
@@ -121,11 +131,17 @@ js.topcoder.widgets.bridge.UploadedDocument = function (/* JSON Object */ json) 
 		} else {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.contestID","json.contestID does not exist");
 		}			
-		// set the contest id
+		// set the document type id
 		if (typeof(json.documentTypeID) != "undefined" && typeof(json.documentTypeID) == "number") {		
 			that.documentTypeID = json.documentTypeID;
 		} else {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.documentTypeID","json.documentTypeID does not exist");
+		}			
+		// set the mime type id
+		if (typeof(json.mimeTypeID) != "undefined" && typeof(json.mimeTypeID) == "number") {		
+			that.mimeTypeID = json.mimeTypeID;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.mimeTypeID","json.mimeTypeID does not exist");
 		}			
 		// set the description
 		if (typeof(json.description) != "undefined" && typeof(json.description) == "string") {		
@@ -203,6 +219,21 @@ js.topcoder.widgets.bridge.UploadedDocument = function (/* JSON Object */ json) 
         that.documentTypeID = documentTypeID;
     }
 
+
+    /**
+     * <p>Returns the mimeTypeID.</p>
+     */
+    this.getMimeTypeID = function /* long */ () {
+        return that.mimeTypeID;
+    }
+
+    /**
+     * <p>Sets the mimeTypeID.</p>
+     */
+    this.setMimeTypeID = function /* void */ (/* long */ mimeTypeID) {
+        that.mimeTypeID = mimeTypeID;
+    }
+    
     /**
      * <p>Returns the fileName.</p>
      */
@@ -244,7 +275,7 @@ js.topcoder.widgets.bridge.UploadedDocument = function (/* JSON Object */ json) 
 	this.toJSON = function /* String */ () {
 		return "{\"fileName\" : \"" + Helper.escapeJSONValue(that.getFileName())+"\",\"path\" :\""
                 +Helper.escapeJSONValue(that.getPath())+"\",\"documentID\" : "+that.getDocumentID()+
-			",\"contestID\" : "+that.getContestID()+",\"documentTypeID\" : "+that.getdocumentTypeID()+", \"description\" : \""
+			",\"contestID\" : "+that.getContestID()+",\"documentTypeID\" : "+that.getdocumentTypeID()+",\"mimeTypeID\" : "+that.getMimeTypeID()+", \"description\" : \""
                 +Helper.escapeJSONValue(that.getDescription())+"\"}";
 	}
 

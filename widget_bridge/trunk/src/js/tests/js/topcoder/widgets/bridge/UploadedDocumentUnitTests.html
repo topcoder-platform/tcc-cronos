@@ -20,6 +20,8 @@
         </script>
         <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/UploadedDocument.js">
         </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/Helper.js">
+        </script>
         <script language="JavaScript" type="text/javascript">
             /** 
              * The UploadedDocument instance.
@@ -30,7 +32,7 @@
              * Valid JSON.
              */
             var validJSON = 
-				"{\"fileName\" : \"JSON file name\",\"path\" :\"path\",\"documentID\" : 321321,\"contestID\" : 77777,\"documentTypeID\" : 3, \"description\" : \"JSON descrip\"}";
+				"{\"fileName\" : \"JSON file name\",\"path\" :\"path\",\"documentID\" : 321321,\"contestID\" : 77777,\"documentTypeID\" : 3,\"mimeTypeID\" : 3, \"description\" : \"JSON descrip\"}";
 
             /**
              * Invalid JSON.
@@ -60,6 +62,14 @@
             	assertEquals("Should not be seen, private variable!", "undefined", typeof(instance.documentID));
             }
 
+            /**
+             * Test private variable mimeTypeId.
+             */
+            function test_mimeTypeId() {
+            	// should not be seen, private variable
+            	assertEquals("Should not be seen, private variable!", "undefined", typeof(instance.mimeTypeId));
+            }
+            
             /**
              * Test private variable contestID.
              */
