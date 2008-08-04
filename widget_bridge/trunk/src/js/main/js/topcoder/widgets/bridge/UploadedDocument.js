@@ -273,9 +273,13 @@ js.topcoder.widgets.bridge.UploadedDocument = function (/* JSON Object */ json) 
 	 * {"fileName" : $fileName,"documentID" : $documentID,"contestID" : $contestID,"documentTypeID" : $documentTypeID,"description" : "$description"}
 	 */
 	this.toJSON = function /* String */ () {
-		return "{\"fileName\" : \"" + Helper.escapeJSONValue(that.getFileName())+"\",\"path\" :\""
+        var mimeTypeId = that.getMimeTypeID();
+        if (!mimeTypeId) {
+            mimeTypeId = -1;
+        }
+        return "{\"fileName\" : \"" + Helper.escapeJSONValue(that.getFileName())+"\",\"path\" :\""
                 +Helper.escapeJSONValue(that.getPath())+"\",\"documentID\" : "+that.getDocumentID()+
-			",\"contestID\" : "+that.getContestID()+",\"documentTypeID\" : "+that.getdocumentTypeID()+",\"mimeTypeID\" : "+that.getMimeTypeID()+", \"description\" : \""
+			",\"contestID\" : "+that.getContestID()+",\"documentTypeID\" : "+that.getdocumentTypeID()+",\"mimeTypeID\" : "+mimeTypeId+", \"description\" : \""
                 +Helper.escapeJSONValue(that.getDescription())+"\"}";
 	}
 
