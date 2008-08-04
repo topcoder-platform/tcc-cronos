@@ -429,31 +429,6 @@ public interface StudioService {
 	public void purchaseSubmission(long submissionId, double price, String payPalOrderId)
 			throws PersistenceException;
 
-	/**
-	 * <p>
-	 * Select winner.
-	 * </p>
-	 * <p>
-	 * 1, set the placement field of submission. 2, set the price of submission (I'm
-	 * not sure about this). 3, create an entry at submission payment table
-	 * </p>
-	 * 
-	 * @param submissionId
-	 *            the id of submission to remove
-	 * @param place
-	 *            place of submission.
-     * @param payPalOrderId PayPal order id.
-	 * 
-	 * @throws PersistenceException
-	 *             if any error occurs when selecting winner.
-	 * @throws IllegalArgumentWSException
-	 *             if the submissionId is less than 0 or place is not positive.
-	 */
-	public void selectWinner(long submissionId, int place, String payPalOrderId)
-			throws PersistenceException;
-	
-    
-
     /**
      * <p>
      * Creates a new contest payment and returns the created contest payment.
@@ -516,4 +491,24 @@ public interface StudioService {
      *             if any error occurs when getting medium.
      */
     public List<MediumData> getAllMediums() throws PersistenceException;
+    
+    /**
+     * Set submission placement.
+     * 
+     * @param submissionId Submission Id.
+     * @param placement placement
+     * @throws PersistenceException if any error occurs when setting placement.
+     * @since TCCC-353
+     */
+    public void setSubmissionPlacement(long submissionId,int placement)throws PersistenceException;
+    
+    /**
+     * Marks submission for purchase.
+     * 
+     * @param submissionId Submission Id.
+     * @throws PersistenceException if any error occurs when marking for purchase. 
+     * 
+     *  @since TCCC-353
+     */
+    public void markForPurchase(long submissionId)throws PersistenceException; 
 }

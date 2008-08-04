@@ -2389,81 +2389,6 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * <p>
-     * Select winner.
-     * </p>
-     * <p>
-     * 1, set the placement field of submission. 2, set the price of submission
-     * (I'm not sure about this). 3, create an entry at submission payment table
-     * </p>
-     * 
-     * @param submissionId
-     *            the id of submission to remove
-     * @param place
-     *            place of submission.
-     * @param payPalOrderId
-     *            PayPal order id.
-     * 
-     * @throws PersistenceException
-     *             if any error occurs when selecting winner.
-     * @throws IllegalArgumentWSException
-     *             if the submissionId is less than 0 or place is not positive.
-     */
-    public void selectWinner(long submissionId, int place, String payPalOrderId) throws PersistenceException {
-        logEnter("selectWinner", submissionId, place);
-        checkParameter("submissionId", submissionId);
-        checkParameter("payPalOrderId", payPalOrderId);
-        checkParameter("place", place);
-
-        try {
-            Submission submission = submissionManager.getSubmission(submissionId);
-            if (submission == null) {
-                handleIllegalWSArgument("Submission with id " + submissionId + " is not found");
-            }
-
-            Prize prize = null;
-            for (Prize p : submission.getPrizes()) {
-                if (p.getPlace() != null && p.getPlace().equals(place)) {
-                    prize = p;
-                    break;
-                }
-            }
-            if (prize == null) {
-                prize = new Prize();
-                prize.setCreateDate(new Date());
-                prize.setAmount(null);
-                prize.setPlace(place);
-                prize.setType(contestManager.getPrizeType(contestPrizeTypeId));
-
-                Set<Submission> submissions = new HashSet<Submission>();
-                submissions.add(submission);
-                prize.setSubmissions(submissions);
-
-                submissionManager.addPrize(prize);
-                submissionManager.addPrizeToSubmission(submissionId, prize.getPrizeId());
-            }
-            
-            SubmissionPayment submissionPayment = new SubmissionPayment();
-            submissionPayment.setSubmission(submission);
-            // TODO Set price.
-            submissionPayment.setPrice(1.23434);
-            submissionPayment.setPayPalOrderId(payPalOrderId);
-            PaymentStatus status = contestManager.getPaymentStatus(submissionPaidStatusId);
-            if (status == null) {
-                throw new ContestManagementException("PaymentStatus with id " + submissionPaidStatusId + " is missing.");
-            }
-            submissionPayment.setStatus(status);
-            submissionManager.addSubmissionPayment(submissionPayment);
-        } catch (SubmissionManagementException e) {
-            handlePersistenceError("SubmissionManager reports error.", e);
-        } catch (ContestManagementException e) {
-            handlePersistenceError("contestManager reports error.", e);
-        }
-
-        logExit("selectWinner");
-    }
-
-    /**
-     * <p>
      * Creates a new contest payment and returns the created contest payment.
      * </p>
      * 
@@ -2691,5 +2616,93 @@ public class StudioServiceBean implements StudioService {
         }
 
         return null;
+    }
+
+    /**
+     * Set submission placement.
+     * 
+     * @param submissionId Submission Id.
+     * @param placement placement
+     * @throws PersistenceException if any error occurs when setting placement.
+     * @since TCCC-353
+     */
+    public void setSubmissionPlacement(long submissionId, int placement) throws PersistenceException {
+        logEnter("setSubmissionPlacement");
+        try {
+            Submission submission = submissionManager.getSubmission(submissionId);
+            // if the submission has a prize associated
+            Set<Prize> prizes = submission.getPrizes();
+            if (prizes.size() > 0) {
+                Prize prize = prizes.toArray(new Prize[] {})[0];
+                // if the placement is the same, return (no need to do anything,
+                // since the placement is already set)
+                if (prize.getPlace().equals(placement)) {
+                    logExit("setSubmissionPlacement");
+                    return;
+                } else {
+                    // otherwise, remove the association (but not the prize)
+                    prizes.remove(prize);
+                    submissionManager.updateSubmission(submission);
+                }
+            }
+            // get the contest for the submission
+            Contest contest = submission.getContest();
+            Long contestId = contest.getContestId();
+            List<Prize> contestPrizes = contestManager.getContestPrizes(contestId);
+
+            for (Prize prize : contestPrizes) {
+                if (prize.getPlace().equals(placement)) {
+                    logExit("setSubmissionPlacement");
+                    return;
+                }
+            }
+
+            // if the contest doesn't have a prize for the placement:
+            // create the prize with amount=0 and associate it with the contest.
+            Prize prize = new Prize();
+            prize.setAmount(0d);
+            prize.setPlace(placement);
+            prize = contestManager.createPrize(prize);
+
+            Long prizeId = prize.getPrizeId();
+            contestManager.addPrizeToContest(contestId, prizeId);
+
+            // associate the submission with the prize.
+            submissionManager.addPrizeToSubmission(submissionId, prizeId);
+
+            logExit("setSubmissionPlacement");
+            return;
+        } catch (SubmissionManagementException e) {
+            handlePersistenceError("SubmissionManagement reports error.", e);
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManagement reports error while retrieving contest.", e);
+        }
+    }
+
+    /**
+     * Marks submission for purchase.
+     * 
+     * @param submissionId Submission Id.
+     * @throws PersistenceException if any error occurs when marking for purchase. 
+     * 
+     *  @since TCCC-353
+     */
+    public void markForPurchase(long submissionId) throws PersistenceException {
+        // create/update a submission payment 
+        // (submission id is the PK) row with status Marked For Purchase (3),
+        // amount=0, paypal order id = null.
+
+        SubmissionPayment payment = new SubmissionPayment();
+        try {
+            payment.setSubmission(submissionManager.getSubmission(submissionId));
+            payment.setStatus(submissionManager.getPaymentStatus(3));
+            payment.setPrice(0d);
+            payment.setPayPalOrderId(null);
+            submissionManager.addSubmissionPayment(payment);
+            logExit("setSubmissionPlacement");
+            return;
+        } catch (SubmissionManagementException e) {
+            handlePersistenceError("SubmissionManagement reports error.", e);
+        }
     }
 }
