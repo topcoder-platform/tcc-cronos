@@ -1198,13 +1198,10 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	 * @throws InvalidResponseException if the received response is invalid.
 	 */
 	this.purchaseSubmission = purchaseSubmission;
-	function /* void */ purchaseSubmission(/* Submission Id */ submissionId, /* price */ price, /* payPalOrderId */ payPalOrderId, /* VoidHandler */ onSuccess, /* ErrorHandler */ onError ) {
+	function /* void */ purchaseSubmission(/* Submission Id */ submissionId, /* payPalOrderId */ payPalOrderId, /* VoidHandler */ onSuccess, /* ErrorHandler */ onError ) {
 		// check first the validity of parameters
 		if (submissionId == null) {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.submissionId","submissionId should not be null");
-		}
-		if (price == null) {
-			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.price","price should not be null");
 		}
 		if (payPalOrderId == null) {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.payPalOrderId","payPalOrderId should not be null");
@@ -1225,7 +1222,7 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	    	async: true,
 	     	method: "POST",
 	     	// the json string should be escaped properly here. 
-	     	sendingText: "service=studio&method=purchaseSubmission&submissionId=" + submissionId + "&price=" + price + "&payPalOrderId=" + payPalOrderId,
+	     	sendingText: "service=studio&method=purchaseSubmission&submissionId=" + submissionId + "&payPalOrderId=" + payPalOrderId,
 	     	onStateChange: function() {
 	        	// Handle the response
 	           	if (processor.getState() == 4 && processor.getStatus() == 200) {

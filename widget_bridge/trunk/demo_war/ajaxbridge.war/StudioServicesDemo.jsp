@@ -816,7 +816,7 @@ function testStudioPurchaseSubmission() {
         alert("Error = "+errMsg);
     }
     
-    studioService.purchaseSubmission(10651,123.43,"superZZ",success,error);
+    studioService.purchaseSubmission(10651,"superZZ",success,error);
 }
 
 
@@ -829,7 +829,7 @@ function testStudioSetSubmissionPlacement() {
 
     // success callback 
     var success = function() {
-        alert("Success = purchaseSubmission succeed!");
+        alert("Success = setSubmissionPlacement succeed!");
     }
     // error callback
     var error = function(errMsg) {
@@ -850,7 +850,7 @@ function testStudioMarkForPurchase() {
 
     // success callback 
     var success = function() {
-        alert("Success = purchaseSubmission succeed!");
+        alert("Success = markForPurchase succeed!");
     }
     // error callback
     var error = function(errMsg) {

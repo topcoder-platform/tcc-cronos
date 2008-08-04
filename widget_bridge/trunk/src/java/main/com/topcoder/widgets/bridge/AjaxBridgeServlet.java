@@ -990,25 +990,20 @@ public class AjaxBridgeServlet extends HttpServlet {
                 } else if ("purchaseSubmission".equals(method)) {
                     // get the submissionId and price parameter from request
                     String submissionId = request.getParameter("submissionId");
-                    String price = request.getParameter("price");
                     // [TCCC-125]
                     String payPalOrderId = request.getParameter("payPalOrderId");
                     if (checkLongIfLessThanZero(submissionId, "submissionId", response)) {
                         return;
                     }
-                    if (checkDoubleIfLessThanZero(price, "price", response)) {
-                        return;
-                    }
-                    if (checkPaypalOrderIdFraud(payPalOrderId, price, null, request, response)) {
+                    if (checkPaypalOrderIdFraud(payPalOrderId, null, null, request, response)) {
                         return;
                     }
 
                     // log the received ID
                     debug("received ID = [submissionId ID] : " + submissionId);
-                    debug("received price = [price] : " + price);
                     debug("received payPalOrderId = [payPalOrderId] : " + payPalOrderId);
 
-                    studioService.purchaseSubmission(Long.parseLong(submissionId), Double.parseDouble(price), payPalOrderId);
+                    studioService.purchaseSubmission(Long.parseLong(submissionId), payPalOrderId);
 
                     printSuccessResponse(getSuccessJSONResponse(), response);
                     debug("purchaseSubmission success!");
