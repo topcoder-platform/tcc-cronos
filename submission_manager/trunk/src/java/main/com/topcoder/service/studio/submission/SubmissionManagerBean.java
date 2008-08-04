@@ -738,15 +738,6 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
 
         Submission submission = getActiveSubmission(entityManager, submissionId, methodName);
 
-        Integer rank = submission.getRank();
-        if (null == rank) {
-            throw logException(new IllegalArgumentException("The rank of the submission is not assigned yet."),
-                    methodName);
-        } else if (prize.getPlace() != null && !prize.getPlace().equals(rank)) {
-            throw logException(new IllegalArgumentException("The prize is not for this rank of submission."),
-                    methodName);
-        }
-
         if (!submission.getPrizes().contains(prize)) {
             submission.getPrizes().add(prize);
             updateEntity(entityManager, submission, methodName);
