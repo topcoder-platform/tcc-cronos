@@ -1012,31 +1012,41 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                     printSuccessResponse(getSuccessJSONResponse(), response);
                     debug("purchaseSubmission success!");
-                } else if ("selectWinner".equals(method)) {
+                } else if ("setSubmissionPlacement".equals(method)) {
                     // get the submissionId and price parameter from request
                     String submissionId = request.getParameter("submissionId");
-                    String place = request.getParameter("place");
-                    // [TCCC-125]
-                    String payPalOrderId = request.getParameter("payPalOrderId");
+                    String placement = request.getParameter("placement");
+
                     if (checkLongIfLessThanZero(submissionId, "submissionId", response)) {
                         return;
                     }
-                    if (checkIntegerIfLessThanZero(submissionId, "place", response)) {
-                        return;
-                    }
-                    if (checkPaypalOrderIdFraud(payPalOrderId, null, null, request, response)) {
+                    if (checkLongIfLessThanZero(submissionId, "placement", response)) {
                         return;
                     }
 
                     // log the received ID
                     debug("received ID = [submissionId ID] : " + submissionId);
-                    debug("received place = [place] : " + place);
-                    debug("received payPalOrderId = [payPalOrderId] : " + payPalOrderId);
+                    debug("received placement = [placement] : " + placement);
 
-                    studioService.selectWinner(Long.parseLong(submissionId), Integer.parseInt(place), payPalOrderId);
+                    studioService.setSubmissionPlacement(Long.parseLong(submissionId), Integer.parseInt(placement));
 
                     printSuccessResponse(getSuccessJSONResponse(), response);
-                    debug("selectWinner success!");
+                    debug("setSubmissionPlacement success!");
+                } else if ("markForPurchase".equals(method)) {
+                    // get the submissionId and price parameter from request
+                    String submissionId = request.getParameter("submissionId");
+
+                    if (checkLongIfLessThanZero(submissionId, "submissionId", response)) {
+                        return;
+                    }
+
+                    // log the received ID
+                    debug("received ID = [submissionId ID] : " + submissionId);
+
+                    studioService.markForPurchase(Long.parseLong(submissionId));
+
+                    printSuccessResponse(getSuccessJSONResponse(), response);
+                    debug("markForPurchase success!");
                 } else {
                     // if we reach here this means the service param is invalid
                     sendErrorJSONResponse("The 'service' param passed is invalid.", response);
