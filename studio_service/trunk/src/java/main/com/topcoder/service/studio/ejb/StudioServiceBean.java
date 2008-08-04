@@ -2661,7 +2661,7 @@ public class StudioServiceBean implements StudioService {
 
             for (Prize prize : contestPrizes) {
                 if (prize.getPlace().equals(placement)) {
-                    logDebug("Same placement found in contest. placement: " + placement);
+                    logDebug("Same placement found in contest. placement: " + placement + ", contest id:" + contest.getContestId());
                     logExit("setSubmissionPlacement");
                     return;
                 }
@@ -2672,6 +2672,8 @@ public class StudioServiceBean implements StudioService {
             Prize prize = new Prize();
             prize.setAmount(0d);
             prize.setPlace(placement);
+            PrizeType prizeType = contestManager.getPrizeType(clientSelectionPrizeTypeId);
+            prize.setType(prizeType );
             prize = contestManager.createPrize(prize);
 
             Long prizeId = prize.getPrizeId();
@@ -2685,7 +2687,7 @@ public class StudioServiceBean implements StudioService {
         } catch (SubmissionManagementException e) {
             handlePersistenceError("SubmissionManagement reports error.", e);
         } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManagement reports error while retrieving contest.", e);
+            handlePersistenceError("ContestManagement reports error.", e);
         }
     }
 
