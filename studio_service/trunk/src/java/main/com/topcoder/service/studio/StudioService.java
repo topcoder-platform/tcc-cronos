@@ -417,8 +417,6 @@ public interface StudioService {
 	 * 
 	 * @param submissionId
 	 *            the id of submission to remove
-	 * @param price
-	 *            Price of submission.
      * @param payPalOrderId PayPal order id.
      *
 	 * @throws PersistenceException
@@ -426,7 +424,7 @@ public interface StudioService {
 	 * @throws IllegalArgumentWSException
 	 *             if the submissionId is less than 0 or price is negative.
 	 */
-	public void purchaseSubmission(long submissionId, double price, String payPalOrderId)
+	public void purchaseSubmission(long submissionId, String payPalOrderId)
 			throws PersistenceException;
 
     /**

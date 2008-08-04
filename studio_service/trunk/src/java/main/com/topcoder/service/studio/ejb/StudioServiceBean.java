@@ -667,19 +667,12 @@ public class StudioServiceBean implements StudioService {
         // authorization
         authorizeWithContest(contestData.getContestId());
 
-        Contest c = null;
         try {
             contestManager.updateContest(convertContestData(contestData));
-            c = contestManager.getContest(contestData.getContestId());
         } catch (EntityNotFoundException e) {
             handleContestNotFoundError(e, contestData.getContestId());
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while updating contest.", e);
-        }
-
-        // persist documents
-        for (UploadedDocument doc : contestData.getDocumentationUploads()) {
-            uploadDocument(doc, c);
         }
 
         logExit("updateContest");
@@ -2325,8 +2318,6 @@ public class StudioServiceBean implements StudioService {
      * 
      * @param submissionId
      *            the id of submission to purchase.
-     * @param price
-     *            Price of submission.
      * @param payPalOrderId
      *            PayPal order id.
      * @throws PersistenceException
@@ -2334,11 +2325,10 @@ public class StudioServiceBean implements StudioService {
      * @throws IllegalArgumentWSException
      *             if the submissionId is less than 0 or price is negative.
      */
-    public void purchaseSubmission(long submissionId, double price, String payPalOrderId) throws PersistenceException {
-        logEnter("purchaseSubmission", submissionId, price);
+    public void purchaseSubmission(long submissionId, String payPalOrderId) throws PersistenceException {
+        logEnter("purchaseSubmission", submissionId, payPalOrderId);
         checkParameter("submissionId", submissionId);
         checkParameter("payPalOrderId", payPalOrderId);
-        checkParameter("price", price);
 
         try {
             Submission submission = submissionManager.getSubmission(submissionId);
@@ -2347,38 +2337,70 @@ public class StudioServiceBean implements StudioService {
                 handleIllegalWSArgument("Submission with id " + submissionId + " is not found.");
             }
             
-            Prize prize = null;
-            // if the prize exists, we will update it, otherwise create.
-            for (Prize p : submission.getPrizes()) {
-                if (p.getPlace() == null && p.getType().getPrizeTypeId() == clientSelectionPrizeTypeId) {
-                    prize = p;
+            // There must be a payment for the submission in Marked for Purchase (3) status. 
+            // Otherwise (no payment or another status), throw exception.
+            SubmissionPayment submissionPayment = submissionManager.getSubmissionPayment(submissionId);
+            // TODO: Read me from ejb configuration.
+            if (submissionPayment == null && submissionPayment.getStatus().getPaymentStatusId() != 3) {
+                throw new SubmissionManagementException(
+                        "There must be a payment for the submission in Marked for Purchase (3) status. Submission id: "
+                                + submissionId);
+            }
+
+            // get the contest that the submission belongs to
+            Contest contest = submission.getContest();
+
+            // get the first place prize amount for the contest
+            Double firstPlacePrize = null;
+
+            for (Prize prize : contestManager.getContestPrizes(contest.getContestId())) {
+                if (prize.getPlace() != null && prize.getPlace().equals(1)) {
+                    firstPlacePrize = prize.getAmount();
                     break;
                 }
             }
-            if (prize == null) {
-                // Create prize.
-                prize = new Prize();
-                prize.setCreateDate(new Date());
-                prize.setAmount(price);
-                prize.setPlace(null);
-                prize.setType(contestManager.getPrizeType(clientSelectionPrizeTypeId));
-                
-                Set<Submission> submissions = new HashSet<Submission>();
-                submissions.add(submission);
-                prize.setSubmissions(submissions);
-                
-                submissionManager.addPrize(prize);
+
+            if (firstPlacePrize == null) {
+                throw new ContestManagementException(
+                        "There must be a first placement prize for the contest. Contest id: " + contest.getContestId());
+            }
+            
+            // If the submission doesn't have a prize associated (this means
+            // that the user is purchasing additional submissions)
+            if (submission.getPrizes().size() == 0) {
+
+                Prize prize = null;
+                // If the contest has a prize with null place and prize_type_id
+                // = 2, that prize will be used.
+                for (Prize p : submission.getPrizes()) {
+                    if (p.getPlace() == null && p.getType().getPrizeTypeId() == clientSelectionPrizeTypeId) {
+                        prize = p;
+                        break;
+                    }
+                }
+                if (prize == null) {
+                    // Create prize.
+                    prize = new Prize();
+                    prize.setCreateDate(new Date());
+                    prize.setAmount(firstPlacePrize);
+                    prize.setPlace(null);
+                    prize.setType(contestManager.getPrizeType(this.contestPrizeTypeId));
+                    
+                    Set<Submission> submissions = new HashSet<Submission>();
+                    submissions.add(submission);
+                    prize.setSubmissions(submissions);
+                    
+                    prize = submissionManager.addPrize(prize);
+                    contestManager.addPrizeToContest(contest.getContestId(), prize.getPrizeId());
+                }
+
                 submissionManager.addPrizeToSubmission(submissionId, prize.getPrizeId());
             }
-
-            SubmissionPayment submissionPayment = new SubmissionPayment();
+                    
+            submissionPayment = new SubmissionPayment();
             submissionPayment.setSubmission(submission);
-            submissionPayment.setPrice(price);
-
-            // [ TCCC-125 ]
+            submissionPayment.setPrice(firstPlacePrize);
             submissionPayment.setPayPalOrderId(payPalOrderId);
-
-            // [TCCC-350]
             PaymentStatus status = contestManager.getPaymentStatus(submissionPaidStatusId);
             if (status == null) {
                 throw new ContestManagementException("PaymentStatus with id " + submissionPaidStatusId + " is missing.");
