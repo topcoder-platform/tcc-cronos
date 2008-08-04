@@ -1772,6 +1772,12 @@ public class StudioServiceBean implements StudioService {
         }
     }
 
+    private void logDebug(String msg) {
+        if (log != null) {
+            log.log(Level.DEBUG, msg);
+        }
+    }
+    
     /**
      * <p>
      * This method used to log leave of method. It will persist method name.
@@ -2627,8 +2633,9 @@ public class StudioServiceBean implements StudioService {
      * @since TCCC-353
      */
     public void setSubmissionPlacement(long submissionId, int placement) throws PersistenceException {
-        logEnter("setSubmissionPlacement");
+        logEnter("setSubmissionPlacement", submissionId, placement);
         try {
+            
             Submission submission = submissionManager.getSubmission(submissionId);
             // if the submission has a prize associated
             Set<Prize> prizes = submission.getPrizes();
@@ -2636,11 +2643,13 @@ public class StudioServiceBean implements StudioService {
                 Prize prize = prizes.toArray(new Prize[] {})[0];
                 // if the placement is the same, return (no need to do anything,
                 // since the placement is already set)
-                if (prize.getPlace().equals(placement)) {
+                if (prize.getPlace() != null && prize.getPlace().equals(placement)) {
+                    logDebug("Same placement found in submission. placement: " + placement);
                     logExit("setSubmissionPlacement");
                     return;
                 } else {
                     // otherwise, remove the association (but not the prize)
+                    logDebug("Remove prize association from submission.");
                     prizes.remove(prize);
                     submissionManager.updateSubmission(submission);
                 }
@@ -2652,6 +2661,7 @@ public class StudioServiceBean implements StudioService {
 
             for (Prize prize : contestPrizes) {
                 if (prize.getPlace().equals(placement)) {
+                    logDebug("Same placement found in contest. placement: " + placement);
                     logExit("setSubmissionPlacement");
                     return;
                 }
@@ -2695,6 +2705,7 @@ public class StudioServiceBean implements StudioService {
         SubmissionPayment payment = new SubmissionPayment();
         try {
             payment.setSubmission(submissionManager.getSubmission(submissionId));
+            // TODO read me from ejb configuration. 
             payment.setStatus(submissionManager.getPaymentStatus(3));
             payment.setPrice(0d);
             payment.setPayPalOrderId(null);
