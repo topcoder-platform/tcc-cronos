@@ -440,6 +440,14 @@ public class StudioServiceBean implements StudioService {
     private long contestPropertyMaxSubmissionsId;
 
     /**
+     * Represents the additionalSubmissionPurchasePriceRatio. Used in purchaseSubmission method.
+     * 
+     * @since TCCC-353
+     */
+    @Resource(name = "additionalSubmissionPurchasePriceRatio")
+    private float additionalSubmissionPurchasePriceRatio;
+    
+    /**
      * Returns base path for document files.
      * 
      * [BUG TCCC-134]
@@ -2340,8 +2348,7 @@ public class StudioServiceBean implements StudioService {
             // There must be a payment for the submission in Marked for Purchase (3) status. 
             // Otherwise (no payment or another status), throw exception.
             SubmissionPayment submissionPayment = submissionManager.getSubmissionPayment(submissionId);
-            // TODO: Read me from ejb configuration.
-            if (submissionPayment == null && submissionPayment.getStatus().getPaymentStatusId() != 3) {
+            if (submissionPayment == null || submissionPayment.getStatus().getPaymentStatusId() != submissionMarkedForPurchaseStatusId) {
                 throw new SubmissionManagementException(
                         "There must be a payment for the submission in Marked for Purchase (3) status. Submission id: "
                                 + submissionId);
@@ -2365,6 +2372,9 @@ public class StudioServiceBean implements StudioService {
                         "There must be a first placement prize for the contest. Contest id: " + contest.getContestId());
             }
             
+            // multiply it by "additionalSubmissionPurchasePriceRatio.
+            firstPlacePrize = firstPlacePrize * additionalSubmissionPurchasePriceRatio;
+
             // If the submission doesn't have a prize associated (this means
             // that the user is purchasing additional submissions)
             if (submission.getPrizes().size() == 0) {
@@ -2381,14 +2391,9 @@ public class StudioServiceBean implements StudioService {
                 if (prize == null) {
                     // Create prize.
                     prize = new Prize();
-                    prize.setCreateDate(new Date());
                     prize.setAmount(firstPlacePrize);
                     prize.setPlace(null);
-                    prize.setType(contestManager.getPrizeType(this.contestPrizeTypeId));
-                    
-                    Set<Submission> submissions = new HashSet<Submission>();
-                    submissions.add(submission);
-                    prize.setSubmissions(submissions);
+                    prize.setType(contestManager.getPrizeType(clientSelectionPrizeTypeId));
                     
                     prize = submissionManager.addPrize(prize);
                     contestManager.addPrizeToContest(contest.getContestId(), prize.getPrizeId());
@@ -2396,9 +2401,7 @@ public class StudioServiceBean implements StudioService {
 
                 submissionManager.addPrizeToSubmission(submissionId, prize.getPrizeId());
             }
-                    
-            submissionPayment = new SubmissionPayment();
-            submissionPayment.setSubmission(submission);
+
             submissionPayment.setPrice(firstPlacePrize);
             submissionPayment.setPayPalOrderId(payPalOrderId);
             PaymentStatus status = contestManager.getPaymentStatus(submissionPaidStatusId);
@@ -2406,7 +2409,7 @@ public class StudioServiceBean implements StudioService {
                 throw new ContestManagementException("PaymentStatus with id " + submissionPaidStatusId + " is missing.");
             }
             submissionPayment.setStatus(status);
-            submissionManager.addSubmissionPayment(submissionPayment);
+            submissionManager.updateSubmissionPayment(submissionPayment);
         } catch (SubmissionManagementException e) {
             handlePersistenceError("SubmissionManager reports error.", e);
         } catch (ContestManagementException e) {
@@ -2667,6 +2670,7 @@ public class StudioServiceBean implements StudioService {
                 // since the placement is already set)
                 if (prize.getPlace() != null && prize.getPlace().equals(placement)) {
                     logDebug("Same placement found in submission. placement: " + placement);
+
                     logExit("setSubmissionPlacement");
                     return;
                 } else {
@@ -2684,6 +2688,10 @@ public class StudioServiceBean implements StudioService {
             for (Prize prize : contestPrizes) {
                 if (prize.getPlace().equals(placement)) {
                     logDebug("Same placement found in contest. placement: " + placement + ", contest id:" + contest.getContestId());
+
+                    // Associate with submission.
+                    submissionManager.addPrizeToSubmission(submissionId, prize.getPrizeId());
+                    
                     logExit("setSubmissionPlacement");
                     return;
                 }
@@ -2694,7 +2702,7 @@ public class StudioServiceBean implements StudioService {
             Prize prize = new Prize();
             prize.setAmount(0d);
             prize.setPlace(placement);
-            PrizeType prizeType = contestManager.getPrizeType(clientSelectionPrizeTypeId);
+            PrizeType prizeType = contestManager.getPrizeType(this.contestPrizeTypeId);
             prize.setType(prizeType );
             prize = contestManager.createPrize(prize);
 
@@ -2726,14 +2734,22 @@ public class StudioServiceBean implements StudioService {
         // (submission id is the PK) row with status Marked For Purchase (3),
         // amount=0, paypal order id = null.
 
-        SubmissionPayment payment = new SubmissionPayment();
         try {
-            payment.setSubmission(submissionManager.getSubmission(submissionId));
-            // TODO read me from ejb configuration. 
-            payment.setStatus(submissionManager.getPaymentStatus(3));
-            payment.setPrice(0d);
-            payment.setPayPalOrderId(null);
-            submissionManager.addSubmissionPayment(payment);
+            SubmissionPayment submissionPayment = submissionManager.getSubmissionPayment(submissionId);
+            if (submissionPayment != null) {
+                submissionPayment.setStatus(submissionManager.getPaymentStatus(submissionMarkedForPurchaseStatusId));
+                submissionPayment.setPrice(0d);
+                submissionPayment.setPayPalOrderId(null);
+                submissionManager.updateSubmissionPayment(submissionPayment);
+            } else {
+                submissionPayment = new SubmissionPayment();
+                submissionPayment.setSubmission(submissionManager.getSubmission(submissionId));
+                submissionPayment.setStatus(submissionManager.getPaymentStatus(submissionMarkedForPurchaseStatusId));
+                submissionPayment.setPrice(0d);
+                submissionPayment.setPayPalOrderId(null);
+                submissionManager.addSubmissionPayment(submissionPayment);
+            }
+
             logExit("setSubmissionPlacement");
             return;
         } catch (SubmissionManagementException e) {
