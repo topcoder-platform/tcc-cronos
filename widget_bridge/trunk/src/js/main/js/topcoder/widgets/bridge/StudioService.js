@@ -1593,7 +1593,7 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 		// Send a request asynchronously
 		processor.request({
 	    	url:  servletUrlString,
-	    	async: true,
+	    	async: false,
 	     	method: "POST",
 	     	// the json string should be escaped properly here. 
 	     	sendingText: "service=studio&method=setSubmissionPlacement&submissionId=" + submissionId + "&placement=" + placement,
@@ -1652,7 +1652,7 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 		// Send a request asynchronously
 		processor.request({
 	    	url:  servletUrlString,
-	    	async: true,
+	    	async: false,
 	     	method: "POST",
 	     	// the json string should be escaped properly here. 
 	     	sendingText: "service=studio&method=markForPurchase&submissionId=" + submissionId,
