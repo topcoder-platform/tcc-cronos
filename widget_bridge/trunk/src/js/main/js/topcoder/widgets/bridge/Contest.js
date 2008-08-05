@@ -458,6 +458,7 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
                             + "\",\"path\" : \""+ Helper.escapeJSONValue(tempUpDoc[x].path)
                             + "\",\"documentID\" : " + tempUpDoc[x].documentID
                             + ",\"documentTypeID\" : " + tempUpDoc[x].documentTypeID
+                            + ",\"mimeTypeID\" : " + tempUpDoc[x].mimeTypeID
                             + ",\"contestID\" : " + tempUpDoc[x].contestID
                             + ", \"description\" : \"" + Helper.escapeJSONValue(tempUpDoc[x].description)+"\"}";
 			}
