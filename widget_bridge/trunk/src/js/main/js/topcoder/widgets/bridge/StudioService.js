@@ -1742,7 +1742,7 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	                } else {
 	                	// success
 	                	// call the success callback 
-	                	onSuccess();
+	                	onSuccess(documentId);
 	                }
 	           }
 	     	}
