@@ -2371,12 +2371,13 @@ public class StudioServiceBean implements StudioService {
                         "There must be a first placement prize for the contest. Contest id: " + contest.getContestId());
             }
             
-            // multiply it by "additionalSubmissionPurchasePriceRatio.
-            firstPlacePrize = firstPlacePrize * additionalSubmissionPurchasePriceRatio;
+            double amount = firstPlacePrize;
 
             // If the submission doesn't have a prize associated (this means
             // that the user is purchasing additional submissions)
             if (submission.getPrizes().size() == 0) {
+            	// the amount of the additional submission is a fraction of the first place prize.
+            	amount = firstPlacePrize * additionalSubmissionPurchasePriceRatio;
 
                 Prize prize = null;
                 // If the contest has a prize with null place and prize_type_id
@@ -2390,7 +2391,7 @@ public class StudioServiceBean implements StudioService {
                 if (prize == null) {
                     // Create prize.
                     prize = new Prize();
-                    prize.setAmount(firstPlacePrize);
+                    prize.setAmount(amount);
                     prize.setPlace(null);
                     prize.setType(contestManager.getPrizeType(clientSelectionPrizeTypeId));
                     
@@ -2401,7 +2402,7 @@ public class StudioServiceBean implements StudioService {
                 submissionManager.addPrizeToSubmission(submissionId, prize.getPrizeId());
             }
 
-            submissionPayment.setPrice(firstPlacePrize);
+            submissionPayment.setPrice(amount);
             submissionPayment.setPayPalOrderId(payPalOrderId);
             PaymentStatus status = contestManager.getPaymentStatus(submissionPaidStatusId);
             if (status == null) {
