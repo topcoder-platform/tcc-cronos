@@ -1532,8 +1532,7 @@ public class StudioServiceBean implements StudioService {
         // set file path
         FilePath fp = new FilePath();
 
-        // [BUG TCCC-134]
-        fp.setPath(documentBasePath + File.separator + contest.getContestId());
+        fp.setPath(documentBasePath);
 
         doc.setPath(fp);
 
