@@ -532,6 +532,28 @@ function testStudioRemoveSubmission() {
     studioService.removeSubmission(submissionID,success,error);
 }
 
+
+/**
+ * <p>Tests Studio.removeDocument().</p>
+ */
+function testStudioRemoveDocument() {
+
+    // initialize the studio service
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var documentId = 1;
+
+    // success callback 
+    var success = function() {
+        alert("Success = Document removed!");
+    }
+    // error callback
+    var error = function(errMsg) {
+        alert("Error = "+errMsg);
+    }
+    
+    studioService.removeDocument(documentId,success,error);
+}
+
 /**
  * <p>Tests Error Studio.removeSubmission().</p>
  */
@@ -895,6 +917,7 @@ Widget Webservices Bridge Demo
     
     <li>Studio.setSubmissionPlacement() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioSetSubmissionPlacement()" /></li>
     <li>Studio.markForPurchase() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioMarkForPurchase()" /></li>
+    <li>Studio.removeDocument() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioRemoveDocument()" /></li>
 </ul>
 <br />
 <span style="color:red;"><b>Some Studio Services Error Demo</b></span>

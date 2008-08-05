@@ -1685,4 +1685,67 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	     	}
 	     });
 	}
+	
+
+	/**
+	 * <p>
+	 * Remove the document asynchronously, if the document is removed successfully, onSuccess
+	 * callback function will be called, otherwise onError will be called.</p>
+	 *
+	 * @throws IllegalArgumentException if any argument is null or documentId < 0
+	 * @throws InvalidResponseException if the received response is invalid.
+	 */
+	this.removeDocument = removeDocument;
+	function /* void */ removeDocument(/* long */ documentId, /* VoidHandler */ onSuccess, /* ErrorHandler */ onError ) {
+		// check first the validity of parameters
+		// check documentId
+		if (documentId < 0) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.documentId","documentId should not be less than 0");
+		}
+		// check onSuccess
+		if (onSuccess == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onSuccess","onSuccess callback should not be null");
+		}
+		// check onError
+		if (onError == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onError","onError callback should not be null");
+		}
+		// Create AJAXProcessor object
+		var processor = new AJAXProcessor();
+		// Send a request asynchronously
+		processor.request({
+	    	url:  servletUrlString,
+	    	async: true,
+	     	method: "POST",
+	     	// the json string should be escaped properly here. 
+	     	sendingText: "service=studio&method=removeDocument&documentId="+documentId,
+	     	onStateChange: function() {
+	        	// Handle the response
+	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
+	            	var response = processor.getResponseText();
+	                var jsonResp = eval("(" + response + ")");
+	                // check response
+	                if (jsonResp == null) {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","removeDocument","Invalid response");
+	                }
+	                if (typeof(jsonResp.success) == "undefined") {
+		               	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","removeDocument","Invalid response");
+		            }	                
+	                // now check if valid or not
+	                if (jsonResp.success == false) {
+		                if (typeof(jsonResp.error) == "undefined") {
+			               	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","removeDocument","Invalid response");
+			            }	                
+	                	// errors
+	                	// call error handler with error message
+	                	onError(jsonResp.error);
+	                } else {
+	                	// success
+	                	// call the success callback 
+	                	onSuccess();
+	                }
+	           }
+	     	}
+	     });
+	}
 } // end

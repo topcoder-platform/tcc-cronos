@@ -893,6 +893,17 @@ public class AjaxBridgeServlet extends HttpServlet {
                     printSuccessResponse(getSuccessJSONResponse(), response);
 
                     debug("removeSubmission success!");
+                } else if ("removeDocument".equals(method)) {
+                    String strDocumentId = request.getParameter("documentId");
+                    if (checkLongIfLessThanZero(strDocumentId, "documentId", response)) {
+                        return;
+                    }
+                    debug("received ID = [document ID] : " + strDocumentId);
+
+                    studioService.removeDocument(Long.parseLong(strDocumentId));
+                    printSuccessResponse(getSuccessJSONResponse(), response);
+
+                    debug("removeDocument success!");
                 } else if ("retrieveAllSubmissionsByMember".equals(method)) {
                     // get the userID parameter from request
                     String userID = request.getParameter("userID");
