@@ -1285,19 +1285,34 @@ public class StudioServiceBean implements StudioService {
         ContestType contestType = contest.getContestType();
         contestData.setContestTypeId(contestType == null ? -1 : unbox(contestType.getContestType()));
 
-        if (contest.getSubmissions() != null) {
+        Set<Submission> submissions = contest.getSubmissions();
+        if (submissions != null) {
             // [TCCC-369]
-            try {
-                List<SubmissionData> retrieveSubmissionsForContest = retrieveSubmissionsForContest(contest
-                        .getContestId());
-                contestData.setSubmissionCount(retrieveSubmissionsForContest.size());
-                logDebug(retrieveSubmissionsForContest.size() + " valid submissions found for contest id: "
-                        + contest.getContestId());
-            } catch (PersistenceException e) {
-                throw new ContestManagementException("Error occurred when retrieving submissions.", e);
-            } catch (ContestNotFoundException e) {
-                throw new ContestManagementException("Error occurred when retrieving submissions.", e);
+            int maxSubmissionsPerUser = 0;
+            for (ContestConfig config : contest.getConfig()) {
+                if (config.getId().getProperty().getPropertyId() == contestPropertyMaxSubmissionsId) {
+                    try {
+                        maxSubmissionsPerUser = Integer.parseInt(config.getValue());
+                    } catch (NumberFormatException e) {
+                        maxSubmissionsPerUser = 0;
+                    }
+                    break;
+                }
             }
+
+            int submissionsToBeRemoved = 0;
+
+            // Get submissions need to be removed.
+            for (Submission submission : submissions) {
+                if (maxSubmissionsPerUser > 0 && submission.getRank() != null
+                        && submission.getRank() > maxSubmissionsPerUser) {
+                    submissionsToBeRemoved++;
+                }
+            }
+
+            contestData.setSubmissionCount(submissions.size() - submissionsToBeRemoved);
+            logDebug(contestData.getSubmissionCount() + " valid submissions found for contest. contest id: "
+                    + contest.getContestId() + " ; Total submission: " + submissions.size());
         }
 
         // [TCCC-325]
