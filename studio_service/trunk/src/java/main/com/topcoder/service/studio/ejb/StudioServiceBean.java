@@ -1360,8 +1360,9 @@ public class StudioServiceBean implements StudioService {
 
         for (Prize prize : contestManager.getContestPrizes(contest.getContestId())) {
             PrizeData prizeData = new PrizeData();
-            prizeData.setAmount(prize.getAmount());
-            prizeData.setPlace(prize.getPlace());
+            prizeData.setAmount(prize.getAmount() == null ? 0 : prize.getAmount());
+            log.log(Level.DEBUG, "prize.getPlace(): " + prize.getPlace() + ", unbox: " + unbox(prize.getPlace()));
+            prizeData.setPlace(unbox(prize.getPlace()));
             prizes.add(prizeData);
         }
 
@@ -2373,16 +2374,25 @@ public class StudioServiceBean implements StudioService {
             
             double amount = firstPlacePrize;
 
-            // If the submission doesn't have a prize associated (this means
-            // that the user is purchasing additional submissions)
-            if (submission.getPrizes().size() == 0) {
+            // check if the submission has a winner prize
+            boolean isWinner = false;
+            for (Prize p : submission.getPrizes()) {
+            	if (p.getType().getPrizeTypeId() == contestPrizeTypeId && p.getAmount() > 0) {
+            		isWinner = true;
+            		break;
+            	}
+            }
+            
+            // if it doesn't have a winner prize, it's an additional purchase.
+            if (!isWinner) {
             	// the amount of the additional submission is a fraction of the first place prize.
             	amount = firstPlacePrize * additionalSubmissionPurchasePriceRatio;
 
                 Prize prize = null;
+                
                 // If the contest has a prize with null place and prize_type_id
-                // = 2, that prize will be used.
-                for (Prize p : submission.getPrizes()) {
+                // = 2, that prize will be used.                
+                for (Prize p : contestManager.getContestPrizes(contest.getContestId())) {
                     if (p.getPlace() == null && p.getType().getPrizeTypeId() == clientSelectionPrizeTypeId) {
                         prize = p;
                         break;
