@@ -1286,7 +1286,18 @@ public class StudioServiceBean implements StudioService {
         contestData.setContestTypeId(contestType == null ? -1 : unbox(contestType.getContestType()));
 
         if (contest.getSubmissions() != null) {
-            contestData.setSubmissionCount(contest.getSubmissions().size());
+            // [TCCC-369]
+            try {
+                List<SubmissionData> retrieveSubmissionsForContest = retrieveSubmissionsForContest(contest
+                        .getContestId());
+                contestData.setSubmissionCount(retrieveSubmissionsForContest.size());
+                logDebug(retrieveSubmissionsForContest.size() + " valid submissions found for contest id: "
+                        + contest.getContestId());
+            } catch (PersistenceException e) {
+                throw new ContestManagementException("Error occurred when retrieving submissions.", e);
+            } catch (ContestNotFoundException e) {
+                throw new ContestManagementException("Error occurred when retrieving submissions.", e);
+            }
         }
 
         // [TCCC-325]
@@ -1659,7 +1670,7 @@ public class StudioServiceBean implements StudioService {
         submission.setSubmissionId(submissionData.getSubmissionId());
         submission.setSubmitterId(submissionData.getSubmitterId());
         submission.setSubmissionDate(getDate(submissionData.getSubmittedDate()));
-        submission.setRank(submissionData.getPlacement());
+        submission.setRank(submissionData.getRank());
 
         return submission;
     }
