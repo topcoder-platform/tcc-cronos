@@ -446,6 +446,14 @@ public class StudioServiceBean implements StudioService {
      */
     @Resource(name = "additionalSubmissionPurchasePriceRatio")
     private float additionalSubmissionPurchasePriceRatio;
+
+    /**
+     * Represents the id for submission status "removed".
+     * 
+     * @since TCCC-411
+     */
+    @Resource(name = "submissionRemovedStatusId")
+    private long submissionRemovedStatusId;
     
     /**
      * Returns base path for document files.
@@ -1629,6 +1637,9 @@ public class StudioServiceBean implements StudioService {
             sd.setSubmittedDate(getXMLGregorianCalendar(s.getSubmissionDate()));
             sd.setSubmitterId(unbox(s.getSubmitterId()));
 
+            // [TCCC-411]
+            sd.setRemoved(unbox(s.getStatus().getSubmissionStatusId()) == submissionRemovedStatusId);
+            
             // compute price
             double prizeAmount = 0;
             for (Prize p : s.getPrizes()) {

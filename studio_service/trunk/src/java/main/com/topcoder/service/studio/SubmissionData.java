@@ -61,6 +61,33 @@ public class SubmissionData implements Serializable {
     private long contestId = -1;
 
     /**
+     * <p> Represents the removed.</p>
+     * 
+     * @since TCCC-411
+     */
+    private boolean removed = false;
+    
+    /**
+     * Returns whether has been removed.
+     * 
+     * @return whether has been removed.
+     * @since TCCC-411
+     */
+    public boolean isRemoved() {
+        return removed;
+    }
+
+    /**
+     * Sets removed.
+     * 
+     * @param removed the removed to set
+     * @since TCCC-411
+     */
+    public void setRemoved(boolean removed) {
+        this.removed = removed;
+    }
+
+    /**
      * <p> Represents the Submitted date</p>
      */
     private XMLGregorianCalendar submittedDate;
