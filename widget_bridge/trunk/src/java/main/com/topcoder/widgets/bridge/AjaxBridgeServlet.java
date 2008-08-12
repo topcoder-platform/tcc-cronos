@@ -1729,10 +1729,7 @@ public class AjaxBridgeServlet extends HttpServlet {
         submission.setPrice(jsonSubmission.getDouble("price"));
         submission.setMarkedForPurchase(jsonSubmission.getBoolean("markedForPurchase"));
         submission.setPassedScreening(jsonSubmission.getBoolean("passedReview"));
-        //http://forums.topcoder.com/?module=Thread&threadID=614379&start=0&mc=3
-        // #979412
-        // ignore it for now
-        // submission.setRemoved(jsonSubmission.getBoolean("removed"));
+        submission.setRemoved(jsonSubmission.getBoolean("removed"));
 
         return submission;
     }
@@ -1769,7 +1766,7 @@ public class AjaxBridgeServlet extends HttpServlet {
         //http://forums.topcoder.com/?module=Thread&threadID=614379&start=0&mc=1
         // #979408
         // make the removed as false all the time now
-        respJSON.setBoolean("removed", false);
+        respJSON.setBoolean("removed", submission.isRemoved());
 
         return respJSON;
     }
