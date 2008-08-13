@@ -10,7 +10,7 @@
     <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
     <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
     <property name="class_associations.jar" value="${tcs_libdir}/class_associations/1.0/class_associations.jar"/>
-    <property name="project_service.jar" value="${cronos_libdir}/project_service/1.0.0/project_service.jar"/>
+    <property name="project_service.jar" value="test_files/lib/project_service.jar"/>
 
     <property name="search_builder.jar" value="${tcs_libdir}/search_builder/1.3.2/search_builder.jar"/>
 
