@@ -1315,6 +1315,10 @@ public class StudioServiceBean implements StudioService {
                 if (maxSubmissionsPerUser > 0 && submission.getRank() != null
                         && submission.getRank() > maxSubmissionsPerUser) {
                     submissionsToBeRemoved++;
+                } else if (submission.getStatus() != null
+                        && submission.getStatus().getSubmissionStatusId() == submissionRemovedStatusId) {
+                    // TCCC-414
+                    submissionsToBeRemoved++;
                 }
             }
 
