@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE web-app 
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" 
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app> 
+
+    <listener>
+        <listener-class>com.topcoder.widgets.bridge.AjaxBridgeContextListener</listener-class>
+    </listener>
+    <context-param>
+        <param-name>view-submissions-confirmation-page</param-name>
+        <param-value>/direct/cockpit/viewsubmissions/confirm_prize_payment.jsp</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view-submissions-purchased-confirmation-page</param-name>
+        <param-value>/direct/cockpit/viewsubmissions/confirm_purchase_payment.jsp</param-value>
+    </context-param>
+    <context-param>
+        <param-name>launch-project-confirmation-page</param-name>
+        <param-value>/direct/cockpit/launchproject/launch/payments/confirmation.jsp</param-value>
+    </context-param>
+
+
+    <servlet> 
+        <servlet-name>ajaxBridge</servlet-name>
+        <servlet-class>com.topcoder.widgets.bridge.AjaxBridgeServlet</servlet-class>
+        <init-param>
+            <param-name>ajaxBridgeConfigFile</param-name>
+            <param-value>com/topcoder/configuration/persistence/ConfigurationFileManager.properties</param-value>
+        </init-param>
+        <init-param>
+            <param-name>objectFactoryNamespace</param-name>
+            <param-value>com.topcoder.widgets.objectfactory</param-value>
+        </init-param>
+        <init-param>
+            <param-name>jsonEncoderKey</param-name>
+            <param-value>jsonEncoder</param-value>
+        </init-param>
+        <init-param>
+            <param-name>jsonDecoderKey</param-name>
+            <param-value>jsonDecoder</param-value>
+        </init-param>
+        <init-param>
+            <param-name>projectServiceKey</param-name>
+            <param-value>projectService</param-value>
+        </init-param>
+        <init-param>
+            <param-name>prerequisiteServiceKey</param-name>
+            <param-value>prerequisiteService</param-value>
+        </init-param>
+        <init-param>
+            <param-name>studioServiceKey</param-name>
+            <param-value>studioService</param-value>
+        </init-param>
+        <init-param>
+            <param-name>loggerName</param-name>
+            <param-value>com.topcoder.widget.AjaxBridgeServlet</param-value>
+        </init-param>
+        <init-param>
+            <param-name>fileUploadNamespace</param-name>            
+            <param-value>com.topcoder.servlet.request</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ajaxBridge</servlet-name>
+        <url-pattern>/ajaxBridge</url-pattern>
+    </servlet-mapping>
+
+
+  <security-constraint>
+   <web-resource-collection>
+     <web-resource-name>widgets_servlet</web-resource-name>
+<!--     <url-pattern>/*</url-pattern> -->
+     <url-pattern>/ajaxBridge</url-pattern>
+     <http-method>GET</http-method>
+     <http-method>POST</http-method>
+   </web-resource-collection>
+   <auth-constraint>
+                <role-name>Cockpit User</role-name>
+        </auth-constraint>
+  </security-constraint>
+
+    <login-config>
+     <auth-method>BASIC</auth-method>
+     <realm-name>cockpitDomain</realm-name>
+    </login-config>
+
+<!--
+    <login-config>
+     <auth-method>FORM</auth-method>
+     <realm-name>cockpitDomain</realm-name>
+     <form-login-config>
+      <form-login-page>/login.jsp</form-login-page>
+      <form-error-page>/login.jsp?error=true</form-error-page>
+     </form-login-config>
+    </login-config>
+--> 
+
+
+<security-role>
+        <description>Role</description>
+<role-name>Cockpit User</role-name>
+</security-role>
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+</web-app>
