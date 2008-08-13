@@ -1,46 +1,84 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." default="dist" name="Dependency Import">
-    <!--property file defining the component's dependencies-->
-    <!--Properties used in compile_targets ANT target for JDK version x-->
-    <property name="component.target" value="1.3"/>
-    <property name="component.bootclasspath" value="${java_1_3_bootclasspath}"/>
+<project name="Dependency Import"  basedir=".">
+    <!-- property file defining the component's dependencies -->
 
-    <!--TCS dependencies-->
-	<property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
-	<property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
-	<property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
-	<property name="jboss_login_module.jar" value="${tcs_libdir}/jboss_login_module/2.0.0/jboss_login_module.jar"/>
-	<property name="failure_test_generator.jar" value="${test_reflib}/failure_test_generator/1.0.0/failure_test_generator.jar"/>
-	<property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.1.0/object_factory.jar"/>
-	<property name="user_group_manager.jar" value="${tcs_libdir}/user_group_manager/1.0.1/user_group_manager.jar"/>
+    <!-- Properties used in compile_targets ANT target for JDK version 5 -->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
 
-	<property name="contest_and_submission_entities.jar" value="${tcs_libdir}/contest_and_submission_entities/1.0.1/contest_and_submission_entities.jar"/>
-	<property name="studio_contest_manager.jar" value="test_files/mocks.jar"/>
-	<property name="submission_manager.jar" value="${tcs_libdir}/submission_manager/1.0.0/submission_manager.jar"/>
+    <!-- TCS dependencies -->
+	<!--
+    <property name="contest_and_submission_entities.jar" value="lib/contest_and_submission_entities.jar"/>
+    <property name="studio_contest_manager.jar" value="../lib/studio_contest_manager/1.1.0/studio_contest_manager.jar"/>
+    <property name="submission_manager.jar" value="lib/submission_manager.jar"/>
+    <property name="project_service.jar" value="lib/project_service.jar"/>
+-->
+    <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    <property name="jboss_login_module.jar" value="${tcs_libdir}/jboss_login_module/2.0.0/jboss_login_module.jar"/>
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
+    <property name="user_group_manager.jar" value="${tcs_libdir}/user_group_manager/1.0.1/user_group_manager.jar"/>
+    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+    <property name="auditor.jar" value="${tcs_libdir}/auditor/2.0.1/auditor.jar"/>
+    <property name="security_facade.jar" value="${tcs_libdir}/security_facade/2.1.3/security_facade.jar"/>
+    <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.1.0/object_factory.jar"/>
+    <property name="configuration_manager.jar" value="${tcs_libdir}/configuration_manager/2.1.5/configuration_manager.jar"/>
+    <property name="db_connection_factory.jar" value="${tcs_libdir}/db_connection_factory/1.1/db_connection_factory.jar"/>
+    <property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar"/>
+    <property name="search_builder.jar" value="${tcs_libdir}/search_builder/1.3.2/search_builder.jar"/>
+    
+    
+    <!-- 3rd party dependencies -->
+    <property name="jax-ws_dir" value="c:/program files/jaxws-ri" />
+    <property name="junit.jar" value="${ext_libdir}/junit/4.4/junit-4.4.jar"/>
+    <property name="log4j.jar" value="${ext_libdir}/log4j/1.2.9/log4j-1.2.9.jar"/>
+    <property name="jaxb-api.jar" value="${jax-ws_dir}/lib/jaxb-api.jar"/>
+    <property name="jaxws-api.jar" value="${jax-ws_dir}/lib/jaxws-api.jar"/>
+    <property name="jsr250-api.jar" value="${jax-ws_dir}/lib/jsr250-api.jar"/>
+    <property name="jsr181-api.jar" value="${jax-ws_dir}/lib/jsr181-api.jar"/>
+    
+    <!-- property name="j2ee.jar" value="${ext_libdir}/j2ee/1.4/j2ee.jar"/ -->
+    <property name="j2ee.jar" value="${ext_libdir}/jboss/as/4.2.2.GA/server/all/lib/jboss-j2ee.jar" />
+    <property name="jboss-ejb3x.jar" value="${ext_libdir}/jboss/as/4.2.2.GA/server/all/lib/jboss-ejb3x.jar"/>
 
-    <!--3rd party dependencies-->
-    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
-    <property name="javaee.jar" value="${ext_libdir}/javaee.jar"/>
+    <property name="mockejb.jar" value="${ext_libdir}/mockejb/0.6-beta2/mockejb.jar"/>
 
-    <!--Path declarations which are to be used in the master build file.-->
     <path id="component.tcs-dependencies">
-		<pathelement location="${base_exception.jar}"/>
-		<pathelement location="${logging_wrapper.jar}"/>
-		<pathelement location="${object_formatter.jar}"/>
-		<pathelement location="${jboss_login_module.jar}"/>
-
-		<pathelement location="${contest_and_submission_entities.jar}"/>
-		<pathelement location="${studio_contest_manager.jar}"/>
-		<pathelement location="${submission_manager.jar}"/>
-
-		<pathelement location="${failure_test_generator.jar}"/>
-		<pathelement location="${object_factory.jar}"/>
-		<pathelement location="${user_group_manager.jar}"/>
-	</path>
-    <path id="component.3rdParty-dependencies">
-        <pathelement location="${javaee.jar}"/>
+        <pathelement location="${studio_contest_manager.jar}"/>
+        <pathelement location="${contest_and_submission_entities.jar}"/>
+        <pathelement location="${submission_manager.jar}"/>
+        <pathelement location="${auditor.jar}"/>
+        <pathelement location="${object_factory.jar}"/>
+        <pathelement location="${security_facade.jar}"/>
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${logging_wrapper.jar}"/>
+        <pathelement location="${object_formatter.jar}"/>
+        <pathelement location="${jboss_login_module.jar}"/>
+        <pathelement location="${user_group_manager.jar}"/>
+        <pathelement location="${typesafe_enum.jar}"/>
+        <pathelement location="${configuration_api.jar}"/>
+        <pathelement location="${search_builder.jar}"/>
+    	<pathelement location="${project_service.jar}"/>
     </path>
+
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${jboss-ejb3x.jar}"/>
+        <pathelement location="${ejb3-persistence.jar}"/>
+        <pathelement location="${jbossall-client.jar}"/>
+        <pathelement location="${jboss-jaxws.jar}"/>
+        <pathelement location="${log4j.jar}"/>
+        <pathelement location="${j2ee.jar}"/>
+        <pathelement location="${jaxb-api.jar}"/>
+        <pathelement location="${jaxws-api.jar}"/>
+        <pathelement location="${jsr250-api.jar}"/>
+        <pathelement location="${jsr181-api.jar}"/>
+    </path>
+
     <path id="component.test.3rdParty-dependencies">
         <pathelement location="${junit.jar}"/>
+        <pathelement location="${jdbc.informix.jar}"/>
+        <pathelement location="${mockejb.jar}"/>
+        <pathelement location="${cglib-2.1.3.jar}"/>
+        <pathelement location="${asm.jar}"/>
     </path>
+
 </project>

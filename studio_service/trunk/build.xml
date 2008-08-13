@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="Cronos Java Generic Build" default="dist" basedir=".">
+<project name="Studio Service Build" default="dist" basedir=".">
     <property file="${basedir}/build.version"/>
     <property file="../topcoder_global.properties"/>
 
@@ -245,7 +245,9 @@
 
     <target name="dist" depends="compile, manifest">
         <mkdir dir="${dist_lib}/${component_path}"/>
-        <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}"/>
+        <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}">
+           <metainf dir="conf/META-INF" includes="**"/>
+        </jar>
     </target>
 
     <target name="dist_tests" depends="compile_tests">

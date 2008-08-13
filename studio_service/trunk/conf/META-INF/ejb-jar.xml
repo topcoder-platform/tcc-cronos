@@ -1,0 +1,231 @@
+<ejb-jar xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd"
+         version="3.0">
+
+    <!-- This is the EJB declaration. It's minimal because the component uses the annotations to declare
+         home and local interface -->
+    <enterprise-beans>
+
+        <session>
+            <ejb-name>StudioServiceBean</ejb-name>
+            <transaction-type>Container</transaction-type>
+            <env-entry>
+                <env-entry-name>logName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>studio_log</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>unactiveStatusId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>1</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>draftStatusId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>2</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>submissionPaidStatusId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>1</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>submissionUnpaidStatusId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>2</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>submissionMarkedForPurchaseStatusId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>3</env-entry-value>
+            </env-entry>
+           <env-entry>
+                <env-entry-name>contestPropertyRequiresPreviewImageId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>10</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>contestPropertyRequiresPreviewFileId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>11</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>contestPropertyMaximumSubmissionsId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>8</env-entry-value>
+            </env-entry>            
+            <env-entry>
+                <env-entry-name>submissionPassedStatus</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>21</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>submissionContentBaseURI</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>http://studio.topcoder.com/?module=DownloadSubmission</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>submissionContentSubmissionIdParameterName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>sbmid</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>submissionContentSubmissionTypeParameterName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>sbt</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>submissionContentPaidParameterValue</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>full</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>submissionContentUnpaidParameterValue</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>tiny</env-entry-value>
+            </env-entry>
+
+            <env-entry>
+                <env-entry-name>documentBasePath</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>/studiofiles/documents/</env-entry-value>
+            </env-entry>
+
+            <env-entry>
+                <env-entry-name>additionalSubmissionPurchasePriceRatio</env-entry-name>
+                <env-entry-type>java.lang.Float</env-entry-type>
+                <env-entry-value>0.5</env-entry-value>
+            </env-entry>
+
+
+            <!-- Configuration for the ids in the contest_property_lu table -->
+            <env-entry>
+                <env-entry-name>contestPropertyShortSummaryId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>1</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>contestPropertyOtherFileFormatsId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>12</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>contestPropertyContestOverviewTextId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>13</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>contestPropertyColorRequirementsId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>14</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>contestPropertyFontRequirementsId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>15</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>contestPropertySizeRequirementsId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>16</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>contestPropertyOtherRequirementsId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>18</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>contestPropertyFinalFileFormatId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>19</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>contestPropertyCreateUserHandleId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>22</env-entry-value>
+            </env-entry>             
+            <env-entry>
+                <env-entry-name>contestPrizeTypeId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>1</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>clientSelectionPrizeTypeId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>2</env-entry-value>
+            </env-entry>             
+            <env-entry>
+                <env-entry-name>contestPropertyEligibilityId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>21</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>contestPropertyNotesOnWinnerSelectionId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>20</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>contestPropertyPrizeDescriptionId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>2</env-entry-value>
+            </env-entry>
+            
+            <env-entry>
+                <env-entry-name>defaultContestPrizeDescriptionText</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>The payment will be distributed in one full installment once the final version of the winning submission has been downloaded by the client. Any and all applicable taxes on prizes are the sole responsibility of the prizewinner(s).</env-entry-value>
+            </env-entry>
+            
+            <env-entry>
+                <env-entry-name>defaultContestEligibilityText</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>You must be a TopCoder Studio member, at least 18 years of age, meeting all of the membership requirements. In addition, you must fit into one of the following categories. If you reside in the United States, you must be either: &lt;ul&gt;&lt;li&gt;A US Citizen&lt;/li&gt; &lt;li&gt;A Lawful Permanent Resident of the US&lt;/li&gt; &lt;li&gt;A temporary resident, asylee, refugee of the U.S., or have a lawfully issued work authorization card permitting unrestricted employment in the U.S.&lt;/li&gt;&lt;/ul&gt; If you do not reside in the United States: &lt;ul&gt;&lt;li&gt;You must be authorized to perform services as an independent contractor. (Note: In most cases you will not need to do anything to become authorized)&lt;/li&gt;&lt;/ul&gt;</env-entry-value>
+            </env-entry>
+            
+            <env-entry>
+                <env-entry-name>defaultContestNotesOnWinnerSelectionText</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>Submissions are viewable to the client as they are entered into the contest. Winners are selected by the client and are chosen solely at the Client's discretion.</env-entry-value>
+            </env-entry> 
+            <env-entry>
+                <env-entry-name>submissionRemovedStatusId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>2</env-entry-value>
+            </env-entry>            
+            <env-entry>
+                <env-entry-name>defaultContestNotesOnSubmissionFiles</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>                              
+&lt;b&gt;Overall Submission&lt;/b&gt;:Your file upload must consist of ONE (1) zip file, which must contain BOTH your submission file (will be displayed on Studio) and your final source file(s) (given to client if you win).
+
+Within this zip file, you must follow this directory structure:
+&lt;font color="red"&gt;&lt;b&gt;Mysubmission.zip
+&lt;font color="#eff8fd"&gt;.....&lt;/font&gt;  /submission
+&lt;font color="#eff8fd"&gt;..........&lt;/font&gt; /submission file.jpg
+&lt;font color="#eff8fd"&gt;.....&lt;/font&gt; /source
+&lt;font color="#eff8fd"&gt;..........&lt;/font&gt;/source file(s).zip
+&lt;/font&gt;&lt;/b&gt;
+Please &lt;a href="http://studio.topcoder.com/?module=Static&amp;d1=support&amp;d2=formatSubmission"&gt;read this help file&lt;/a&gt; which will help you to format your submission. &lt;b&gt;If you do not format your submission exactly as above, your submission will not be accepted by the Studio system.&lt;/b&gt;
+
+&lt;hr&gt;
+&lt;b&gt;/submission Folder:&lt;/b&gt;
+
+For this contest, your submission must consist of one (1) single JPG screen. &lt;b&gt;If this contest requires more than one design, you must include all designs on a single screen. &lt;/b&gt;
+
+&lt;hr&gt;
+&lt;b&gt;/source Folder:&lt;/b&gt;
+You must submit all original source files of the submitted design. Acceptable file formats chosen by the client are listed in the next section. You must include the formats listed below, and you should also include the following files which will allow the client to make any edits to the design at a later date: Files created in Adobe Photoshop, Gimp, Adobe Illustrator or Inkscape and saved as layered PSD files, AI or EPS files. Logo contests MUST include an EPS file of the design created in vector format.
+
+&lt;B&gt;Fonts&lt;/b&gt;: All fonts used (with the exception of Windows standard fonts) in your design must also be submitted in this zip. If you do not have permission to release the fonts, you must provide a text file including the name of the font and a link to where the font can be purchased.                </env-entry-value>
+            </env-entry>
+            
+            
+            <persistence-context-ref>
+                <persistence-context-ref-name>persistence/contest_submission</persistence-context-ref-name>
+                <persistence-unit-name>contest_submission</persistence-unit-name>                     
+            </persistence-context-ref>            
+        </session>
+        
+    </enterprise-beans>
+</ejb-jar>
