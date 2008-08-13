@@ -10,11 +10,12 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
-
+/* TODO: uncomment when jive forums are deployed
 import com.topcoder.forum.service.CategoryConfiguration;
 import com.topcoder.forum.service.CategoryType;
 import com.topcoder.forum.service.JiveForumManagementException;
 import com.topcoder.forum.service.ejb.JiveForumServiceLocal;
+*/
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
 import com.topcoder.service.studio.ContestData;
@@ -553,7 +554,7 @@ public class StudioServiceBean implements StudioService {
             }
             contestData = convertContest(contest);
             contestData.setDocumentationUploads(documents);
-
+/* TODO: uncomment when jive forums are deployed
             // [TCCC-287]
             CategoryConfiguration categoryConfiguration = new CategoryConfiguration();
             // Name: The name of the contest
@@ -566,7 +567,7 @@ public class StudioServiceBean implements StudioService {
             categoryConfiguration.setPublic(true);
             // CategoryType: Application
             categoryConfiguration.setTemplateCategoryType(CategoryType.APPLICATION);
-
+*/
             // jiveForumService.createCategory(categoryConfiguration);
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while creating new contest.", e);
