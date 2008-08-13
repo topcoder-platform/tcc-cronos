@@ -432,14 +432,6 @@ public class StudioServiceBean implements StudioService {
     private String documentBasePath = DEFAULT_DOCUMENT_BASE_PATH;
 
     /**
-     * Represents the id for the Contest property "Maximum Submissions".
-     * 
-     * @since TCCC-369
-     */
-    @Resource(name = "contestPropertyMaxSubmissionsId")
-    private long contestPropertyMaxSubmissionsId;
-
-    /**
      * Represents the additionalSubmissionPurchasePriceRatio. Used in purchaseSubmission method.
      * 
      * @since TCCC-353
@@ -883,7 +875,7 @@ public class StudioServiceBean implements StudioService {
             Contest contest = contestManager.getContest(contestId);
             int maxSubmissionsPerUser = 0;
             for (ContestConfig config : contest.getConfig()) {
-                if (config.getId().getProperty().getPropertyId() == contestPropertyMaxSubmissionsId) {
+                if (config.getId().getProperty().getPropertyId() == contestPropertyMaximumSubmissionsId) {
                     try {
                         maxSubmissionsPerUser = Integer.parseInt(config.getValue());
                     } catch (NumberFormatException e) {
@@ -1298,7 +1290,7 @@ public class StudioServiceBean implements StudioService {
             // [TCCC-369]
             int maxSubmissionsPerUser = 0;
             for (ContestConfig config : contest.getConfig()) {
-                if (config.getId().getProperty().getPropertyId() == contestPropertyMaxSubmissionsId) {
+                if (config.getId().getProperty().getPropertyId() == contestPropertyMaximumSubmissionsId) {
                     try {
                         maxSubmissionsPerUser = Integer.parseInt(config.getValue());
                     } catch (NumberFormatException e) {
@@ -1399,7 +1391,6 @@ public class StudioServiceBean implements StudioService {
         for (Prize prize : contestManager.getContestPrizes(contest.getContestId())) {
             PrizeData prizeData = new PrizeData();
             prizeData.setAmount(prize.getAmount() == null ? 0 : prize.getAmount());
-            log.log(Level.DEBUG, "prize.getPlace(): " + prize.getPlace() + ", unbox: " + unbox(prize.getPlace()));
             prizeData.setPlace(unbox(prize.getPlace()));
             prizes.add(prizeData);
         }
