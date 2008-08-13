@@ -1,4 +1,4 @@
-<project name="Dependency Import" default="dist" basedir=".">
+<project name="Dependency Import" basedir=".">
     <!-- property file defining the component's dependencies -->
 
     <!-- Properties used in compile_targets ANT target for JDK version 5 -->
@@ -39,6 +39,8 @@
     <path id="component.3rdParty-dependencies">
         <pathelement location="${javaee.jar}"/>
         <pathelement location="${jboss-ejb3x.jar}"/>      
+        <pathelement location="${ejb3-persistence.jar}"/>  
+        <pathelement location="${jbossall-client.jar}"/>        
     </path>
 
     <path id="component.test.3rdParty-dependencies">

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="Cronos Java Generic Build" default="dist" basedir=".">
+<project name="Submission Manager" default="dist" basedir=".">
     <property file="${basedir}/build.version"/>
     <property file="../topcoder_global.properties"/>
     <!-- Import the dependencies of this build file -->
@@ -112,6 +112,7 @@
     <property name="instrumented.dir" value="${builddir}/instrumented"/>
 
     <target name="compile">
+        <echo message="${ejb3-persistence.jar}"/>
         <mkdir dir="${build_classdir}"/>
         <javac srcdir="${javamain}" destdir="${build_classdir}" includes="${packagedir}/**" debug="true"
                verbose="${verbose}" includeAntRuntime="no">
@@ -249,7 +250,10 @@
 
     <target name="dist" depends="compile, manifest">
         <mkdir dir="${dist_lib}/${component_path}"/>
-        <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}"/>
+        <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}">
+            <metainf dir="conf/META-INF" includes="**"/>
+        </jar>
+
     </target>
 
     <target name="dist_tests" depends="compile_tests">
@@ -384,7 +388,7 @@
         <jar jarfile="${dev_submission.jar}"
              basedir="."
              includes="build-dependencies.xml,
-		       README,   
+               README,   
                        ${configdir}/**,
                        ${javamain}/**/*.java,
                        ${javatests}/${packagedir}/**,
@@ -415,7 +419,7 @@
         <jar jarfile="${dev_dist.jar}"
              basedir="."
              includes="build.xml,
-		       README,
+               README,
                        build.version,
                        build-dependencies.xml,
                        ${configdir}/**,
