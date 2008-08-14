@@ -112,9 +112,6 @@ js.topcoder.widgets.bridge.Helper = {
         if (str == null) {
             return str;
         }
-        if (str.indexOf('"') < 0) {
-            return str;
-        }
-        return str.replace(/"/g, "\\\"");
+        return str.replace(/"/g, "\\\"").replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\\/g, "\\\\").replace(/\t/g, "\\t");
     }
 }
