@@ -554,6 +554,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             // Restore documents.
             contest.setDocuments(result.getDocuments());
             
+            // [TCCC-435] Restore registrations.
+            contest.setContestRegistrations(result.getContestRegistrations());
+            
             if (result.getStatus().getContestStatusId().equals(activeContestStatusId)) {
                 checkSet(result.getConfig(), contest.getConfig());
 
