@@ -60,6 +60,7 @@ import com.topcoder.service.studio.submission.Submission;
 import com.topcoder.service.studio.submission.SubmissionManagementException;
 import com.topcoder.service.studio.submission.SubmissionManagerLocal;
 import com.topcoder.service.studio.submission.SubmissionPayment;
+import com.topcoder.service.studio.submission.SubmissionReview;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogManager;
@@ -220,6 +221,13 @@ public class StudioServiceBean implements StudioService {
     @Resource(name = "submissionPassedStatus")
     private long submissionPassedStatus;
 
+    /**
+     * Represents the id of review status of a submission that failed the
+     * screen. </p>
+     */
+    @Resource(name = "reviewFailedStatusId")
+    private long reviewFailedStatusId;
+    
     /**
      * Represents the base URI used to construct the submission content. </p>
      */
@@ -892,7 +900,11 @@ public class StudioServiceBean implements StudioService {
 
             // Get submissions need to be removed.
             for (SubmissionData submissionData : result) {
-                if (maxSubmissionsPerUser > 0 && submissionData.getRank()!= null && submissionData.getRank() > maxSubmissionsPerUser) {
+                if (maxSubmissionsPerUser > 0 && submissionData.getRank() != null
+                        && submissionData.getRank() > maxSubmissionsPerUser) {
+                    submissionsToBeRemoved.add(submissionData);
+                } else if (!submissionData.isPassedScreening()) {
+                    // TCCC-445
                     submissionsToBeRemoved.add(submissionData);
                 }
             }
@@ -1312,6 +1324,14 @@ public class StudioServiceBean implements StudioService {
                         && submission.getStatus().getSubmissionStatusId() == submissionRemovedStatusId) {
                     // TCCC-414
                     submissionsToBeRemoved++;
+                } else if (submission.getReview() != null) {
+                    // TCCC-445
+                    for (SubmissionReview review : submission.getReview()) {
+                        if (review.getStatus().getReviewStatusId() == reviewFailedStatusId) {
+                            submissionsToBeRemoved++;
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -1662,7 +1682,14 @@ public class StudioServiceBean implements StudioService {
                 }
             }
             if (s.getStatus() != null) {
-                sd.setPassedScreening(s.getStatus().getSubmissionStatusId() == submissionPassedStatus);
+                // TCCC-445
+                sd.setPassedScreening(true);
+                for (SubmissionReview review : s.getReview()) {
+                    if (review.getStatus().getReviewStatusId() == reviewFailedStatusId) {
+                        sd.setPassedScreening(false);
+                        break;
+                    }
+                }
             }
 
             // create content
