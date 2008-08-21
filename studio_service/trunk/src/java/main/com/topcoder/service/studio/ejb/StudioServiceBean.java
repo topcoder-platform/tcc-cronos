@@ -53,6 +53,7 @@ import com.topcoder.service.studio.contest.FilePath;
 import com.topcoder.service.studio.contest.Medium;
 import com.topcoder.service.studio.contest.MimeType;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.studio.submission.ContestResult;
 import com.topcoder.service.studio.submission.PaymentStatus;
 import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.service.studio.submission.PrizeType;
@@ -78,6 +79,7 @@ import java.io.File;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -2782,6 +2784,15 @@ public class StudioServiceBean implements StudioService {
             // associate the submission with the prize.
             submissionManager.addPrizeToSubmission(submissionId, prizeId);
 
+            // TCCC-425 
+            ContestResult cr = new ContestResult();
+            cr.setContest(contest);
+            cr.setPlaced(placement);
+            cr.setFinalScore(new Float(100));
+            cr.setSubmission(submission);
+            contest.getResults().add(cr);
+            contestManager.updateContest(contest);
+            
             logExit("setSubmissionPlacement");
             return;
         } catch (SubmissionManagementException e) {
