@@ -2788,7 +2788,6 @@ public class StudioServiceBean implements StudioService {
             ContestResult cr = new ContestResult();
             cr.setContest(contest);
             cr.setPlaced(placement);
-            cr.setFinalScore(new Float(100));
             cr.setSubmission(submission);
             contest.getResults().add(cr);
             contestManager.updateContest(contest);
