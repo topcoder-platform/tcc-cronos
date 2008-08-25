@@ -18,7 +18,7 @@
 		</composite-id>
 
 		<many-to-one name="status" column="payment_status_id"
-			class="com.topcoder.service.studio.submission.PaymentStatus" />
+			class="com.topcoder.service.studio.submission.PaymentStatus"  fetch="join"/>
 
 		<property name="price" not-null="true" />
 

@@ -9,7 +9,7 @@
 		<id name="contestId" column="contest_id" type="long" unsaved-value="-1">
 		</id>
 		<many-to-one name="status" column="payment_status_id"
-			class="com.topcoder.service.studio.submission.PaymentStatus" />
+			class="com.topcoder.service.studio.submission.PaymentStatus" fetch="join"/>
 		<property name="price" not-null="true" />
 		<property name="payPalOrderId" column="paypal_order_id" not-null="true" />
 	</class>

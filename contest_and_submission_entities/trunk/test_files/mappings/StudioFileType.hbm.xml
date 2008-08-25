@@ -18,7 +18,7 @@
 			length="100" not-null="true" />
 		<property name="extension" length="10" not-null="true" />
 
-		<set name="mimeTypes"  inverse="true">
+		<set name="mimeTypes"  inverse="true" fetch="join">
 			<key column="file_type_id" not-null="true"/>
 			<one-to-many
 				class="com.topcoder.service.studio.contest.MimeType" />

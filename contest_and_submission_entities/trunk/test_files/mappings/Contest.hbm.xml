@@ -18,12 +18,12 @@
         </id>
 
         <many-to-one name="contestChannel" column="contest_channel_id"
-            class="com.topcoder.service.studio.contest.ContestChannel" />
+            class="com.topcoder.service.studio.contest.ContestChannel" fetch="join" />
 
         <property name="name" length="254" not-null="true" />
 
         <many-to-one name="contestType" column="contest_type_id"
-            class="com.topcoder.service.studio.contest.ContestType" />
+            class="com.topcoder.service.studio.contest.ContestType" fetch="join"/>
 
         <property name="projectId" column="project_id" not-null="true" />
 
@@ -31,7 +31,7 @@
             not-null="true" />
 
         <many-to-one name="status" column="contest_detailed_status_id"
-            class="com.topcoder.service.studio.contest.ContestStatus" not-null="true"/>
+            class="com.topcoder.service.studio.contest.ContestStatus" not-null="true" fetch="join"/>
 
         <property name="forumId" column="forum_id" />
 
@@ -49,43 +49,43 @@
         <property name="createdUser" column="create_user_id"
             not-null="true" />
 
-        <set name="submissions">
+        <set name="submissions" fetch="join">
             <key column="contest_id" />
             <one-to-many
                 class="com.topcoder.service.studio.submission.Submission" />
         </set>
 
-        <set name="fileTypes" table="contest_file_type_xref">
+        <set name="fileTypes" table="contest_file_type_xref" fetch="join">
             <key column="contest_id" />
             <many-to-many column="file_type_id"
                 class="com.topcoder.service.studio.contest.StudioFileType" />
         </set>
 
-        <set name="results">
+        <set name="results" fetch="join">
             <key column="contest_id" />
             <one-to-many
                 class="com.topcoder.service.studio.submission.ContestResult" />
         </set>
 
-        <set name="documents" table="contest_document_xref">
+        <set name="documents" table="contest_document_xref" fetch="join">
             <key column="contest_id" />
             <many-to-many column="document_id"
                 class="com.topcoder.service.studio.contest.Document" />
         </set>
 
-        <set name="media" table="contest_medium_xref">
+        <set name="media" table="contest_medium_xref" fetch="join">
             <key column="contest_id" />
             <many-to-many column="medium_id"
                 class="com.topcoder.service.studio.contest.Medium" />
         </set>
 
-        <set name="config" cascade="all-delete-orphan">
+        <set name="config" cascade="all-delete-orphan" fetch="join">
             <key column="contest_id" />
             <one-to-many
                 class="com.topcoder.service.studio.contest.ContestConfig" />
         </set>
 
-        <set name="contestRegistrations" cascade="all-delete-orphan">
+        <set name="contestRegistrations" cascade="all-delete-orphan" fetch="join">
             <key column="contest_id" />
             <one-to-many
                 class="com.topcoder.service.studio.contest.ContestRegistration" />

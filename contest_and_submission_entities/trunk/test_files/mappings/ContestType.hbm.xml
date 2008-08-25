@@ -23,7 +23,7 @@
 		<property name="requirePreviewImage"
 			column="require_preview_image" />
 
-		<bag name="config">
+		<bag name="config" fetch="subselect">
 			<key column="contest_type_id" />
 			<one-to-many
 				class="com.topcoder.service.studio.contest.ContestTypeConfig" />
