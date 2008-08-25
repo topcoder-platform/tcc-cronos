@@ -98,7 +98,12 @@
                 <env-entry-value>0.5</env-entry-value>
             </env-entry>
 
-
+            <env-entry>
+                <env-entry-name>reviewFailedStatusId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>2</env-entry-value>
+            </env-entry> 
+            
             <!-- Configuration for the ids in the contest_property_lu table -->
             <env-entry>
                 <env-entry-name>contestPropertyShortSummaryId</env-entry-name>
