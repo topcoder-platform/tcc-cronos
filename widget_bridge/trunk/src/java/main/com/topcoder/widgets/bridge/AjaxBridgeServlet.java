@@ -2520,7 +2520,9 @@ public class AjaxBridgeServlet extends HttpServlet {
         contestPayment.setPaymentStatusId(jsonContestPayment.getLong("paymentStatusId"));
         contestPayment.setPaypalOrderId(jsonContestPayment.getString("paypalOrderId"));
         contestPayment.setPrice(jsonContestPayment.getDouble("price"));
-
+        contestPayment.setUsername(jsonContestPayment.getString("username"));
+        contestPayment.setPaymentType(jsonContestPayment.getString("paymentType"));
+        
         return contestPayment;
     }
 
@@ -2548,6 +2550,9 @@ public class AjaxBridgeServlet extends HttpServlet {
         respJSON.setString("paypalOrderId", contestPayment.getPaypalOrderId());
         respJSON.setLong("paymentStatusId", contestPayment.getPaymentStatusId());
         respJSON.setDouble("price", contestPayment.getPrice());
+        respJSON.setString("username", contestPayment.getUsername());
+        respJSON.setString("paymentType", contestPayment.getPaymentType());
+        
         return respJSON;
     }
 }

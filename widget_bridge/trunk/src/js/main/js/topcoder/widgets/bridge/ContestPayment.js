@@ -59,6 +59,24 @@ js.topcoder.widgets.bridge.ContestPayment = function (/* JSON Object */ json) {
     var paypalOrderId /* string */ = null;
 
 	/**
+	 * <p>Represents the username</p>
+	 * <p>Initial Value: null, means that is not set</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 */
+    var username /* string */ = null;
+
+	/**
+	 * <p>Represents the payment type.</p>
+	 * <p>Initial Value: null, means that is not set</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 */
+    var paymentType /* string */ = null;
+    
+	/**
 	 * <p>Represents the prize</p>
 	 * <p>Initial Value: -1, means that is not set</p>
 	 * <p>Accessed In: getter method</p>
@@ -98,13 +116,25 @@ js.topcoder.widgets.bridge.ContestPayment = function (/* JSON Object */ json) {
 			that.paypalOrderId = json.paypalOrderId;
 		} else {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.paypalOrderId","json.paypalOrderId does not exists");
-		}		
+		}
 		// set the price
 		if (typeof(json.price) != "undefined" && typeof(json.price) == "number") {		
 			that.price = json.price;
 		} else {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.price","json.price does not exists");
-		}		
+		}
+		// set the username
+		if (typeof(json.username) != "undefined" && typeof(json.username) == "string") {		
+			that.username = json.username;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.username","json.username does not exists");
+		}
+		// set the paymentType
+		if (typeof(json.paymentType) != "undefined" && typeof(json.paymentType) == "string") {		
+			that.paymentType = json.paymentType;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.paymentType","json.paymentType does not exists");
+		}
 	}
 
     /**
@@ -166,6 +196,34 @@ js.topcoder.widgets.bridge.ContestPayment = function (/* JSON Object */ json) {
         that.paypalOrderId = paypalOrderId;
     }
 
+    /**
+     * <p>Returns the username.</p>
+     */
+    this.getUsername = function /* string */ () {
+        return that.username;
+    }
+
+    /**
+     * <p>Sets the username.</p>
+     */
+    this.setUsername = function /* void */ (/* string */ username) {
+        that.username = username;
+    }
+
+    /**
+     * <p>Returns the payment type.</p>
+     */
+    this.getPaymentType = function /* string */ () {
+        return that.paymentType;
+    }
+
+    /**
+     * <p>Sets the payment type.</p>
+     */
+    this.setPaymentType = function /* void */ (/* string */ paymentType) {
+        that.paymentType = paymentType;
+    }
+    
 	/**
 	 * <p>Convert this JavaScript object to a JSON string and return.
 	 *
@@ -174,10 +232,11 @@ js.topcoder.widgets.bridge.ContestPayment = function (/* JSON Object */ json) {
 	 * NOTE: the string-value needs to be enclosed by double-quotes according to JSON format.  Properties with null
 	 * value should also be added to the generated json string with null value. 
 	 *
-	 * {"place" : $place,"amount" : $amount}
+	 * {"place" : $place,"amount" : $amount, "username" : $username, "paymentType" : $paymentType}
 	 */
 	this.toJSON = function /* String */ () {
 		return "{\"contestId\" : "+that.getContestId()+",\"paypalOrderId\" : \"" + this.getPaypalOrderId() +
-		        "\",\"paymentStatusId\" : " + that.getPaymentStatusId() + ",\"price\" : "+that.getPrize()+"}";
+		        "\",\"paymentStatusId\" : " + that.getPaymentStatusId() + ",\"price\" : "+that.getPrize()+
+		        ",\"username\" : \""+that.getUsername()+"\",\"paymentType\" : \""+that.getPaymentType()+"\"}";
 	}
 } // end

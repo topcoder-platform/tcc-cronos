@@ -775,6 +775,9 @@ function testStudioCreateContestPayment() {
     contestPayment.setContestId(2011);
     contestPayment.setPrize(123.34);
     contestPayment.setPaypalOrderId("1asdfewr34");
+    contestPayment.setUsername("topcoder client");
+    contestPayment.setPaymentType("contest fee");
+    
     studioService.createContestPayment(contestPayment,success,error);
 }
 
