@@ -10,335 +10,311 @@
 */
 -->
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>ContestPayment - Unit Tests</title>
-<link rel="stylesheet" type="text/css"
-	href="../../../../../../../test_files/jsunit/css/jsUnitStyle.css" />
-<script language="JavaScript" type="text/javascript"
-	src="../../../../../../../test_files/jsunit/app/jsUnitCore.js">
-	
-</script>
-<script language="JavaScript" type="text/javascript"
-	src="../../../../../main/js/topcoder/widgets/bridge/WidgetBridgeNamespace.js">
-	
-</script>
-<script language="JavaScript" type="text/javascript"
-	src="../../../../../main/js/topcoder/widgets/bridge/IllegalArgumentException.js">
-	
-</script>
-<script language="JavaScript" type="text/javascript"
-	src="../../../../../main/js/topcoder/widgets/bridge/Helper.js">
-	
-</script>
-<script language="JavaScript" type="text/javascript"
-	src="../../../../../main/js/topcoder/widgets/bridge/ContestPayload.js">
-	
-</script>
-<script language="JavaScript" type="text/javascript"
-	src="../../../../../main/js/topcoder/widgets/bridge/ContestPayment.js">
-	
-</script>
-<script language="JavaScript" type="text/javascript">
-	/**
-	 * <p><code>ContestPayment</code> instance used for testing.</p>
-	 */
-	var ContestPayment = null;
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>ContestPayment - Unit Tests</title>
+        <link rel="stylesheet" type="text/css" href="../../../../../../../test_files/jsunit/css/jsUnitStyle.css" />
+        <script language="JavaScript" type="text/javascript" src="../../../../../../../test_files/jsunit/app/jsUnitCore.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/WidgetBridgeNamespace.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/IllegalArgumentException.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/Helper.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/ContestPayload.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/ContestPayment.js">
+        </script>
+        <script language="JavaScript" type="text/javascript">
+            /**
+             * <p><code>ContestPayment</code> instance used for testing.</p>
+             */
+            var ContestPayment = null;
 
-	/**
-	 * abbreviation
-	 */
-	var IllegalArgumentException = js.topcoder.widgets.bridge.IllegalArgumentException;
+            /**
+             * abbreviation
+             */
+            var IllegalArgumentException = js.topcoder.widgets.bridge.IllegalArgumentException;
 
-	/**
-	 * <p>Sets up environment.</p>
-	 */
-	function setUp() {
-		ContestPayment = new js.topcoder.widgets.bridge.ContestPayment();
-	}
+            /**
+             * <p>Sets up environment.</p>
+             */
+            function setUp(){
+                ContestPayment = new js.topcoder.widgets.bridge.ContestPayment();
+            }
 
-	/**
-	 * <p>Test of <code>setPaymentStatusId</code>.Set with undefined value
-	 * and should throw exception.</p>
-	 */
-	function testSetPaymentStatusIdWithUndefined() {
-		try {
-			ContestPayment.setPaymentStatusId(undefined);
-			fail("It should fail when set with undefined.");
-		} catch (e) {
-			assertTrue("it should fail", e instanceof IllegalArgumentException);
-		}
-	}
+            /**
+             * <p>Test of <code>setPaymentStatusId</code>.Set with undefined value
+             * and should throw exception.</p>
+             */
+            function testSetPaymentStatusIdWithUndefined(){
+                try {
+                    ContestPayment.setPaymentStatusId(undefined);
+                    fail("It should fail when set with undefined.");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
 
-	/**
-	 * <p>Test of <code>setPaymentStatusId</code>. Set with null
-	 * and should throw exception.</p>
-	 */
-	function testSetPaymentStatusIdWithNull() {
-		try {
-			ContestPayment.setPaymentStatusId(null);
-			fail("it should fail");
-		} catch (e) {
-			assertTrue("it should fail", e instanceof IllegalArgumentException);
-		}
-	}
+            /**
+             * <p>Test of <code>setPaymentStatusId</code>. Set with null
+             * and should throw exception.</p>
+             */
+            function testSetPaymentStatusIdWithNull(){
+                try {
+                    ContestPayment.setPaymentStatusId(null);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
 
-	/**
-	 * <p>Test of <code>setPaymentStatusId</code>. Set with negative value and
-	 * should throw exception.</p>
-	 */
-	function testSetPaymentStatusIdWithNegative() {
-		try {
-			ContestPayment.setPaymentStatusId(-39);
-			fail("it should fail");
-		} catch (e) {
-			assertTrue("it should fail", e instanceof IllegalArgumentException);
-		}
-	}
+            /**
+             * <p>Test of <code>setPaymentStatusId</code>. Set with negative value and
+             * should throw exception.</p>
+             */
+            function testSetPaymentStatusIdWithNegative(){
+                try {
+                    ContestPayment.setPaymentStatusId(-39);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
 
-	/**
-	 * <p>Test of <code>setPaymentStatusId</code>. Set with 0.</p>
-	 */
-	function testSetPaymentStatusIdWithZero() {
-		ContestPayment.setPaymentStatusId(0);
-		assertEquals("Fail to set ContestStatusId.", 0, ContestPayment
-				.getPaymentStatusId());
-	}
+            /**
+             * <p>Test of <code>setPaymentStatusId</code>. Set with 0.</p>
+             */
+            function testSetPaymentStatusIdWithZero(){
+                ContestPayment.setPaymentStatusId(0);
+                assertEquals("Fail to set ContestStatusId.", 0, ContestPayment.getPaymentStatusId());
+            }
 
-	/**
-	 * <p>Test of <code>setPaymentStatusId</code>. Set with positive value.</p>
-	 */
-	function testSetPaymentStatusIdIDWithPositive() {
-		ContestPayment.setPaymentStatusId(88);
-		assertEquals("Fail to set ContestStatusId.", 88, ContestPayment
-				.getPaymentStatusId());
-	}
+            /**
+             * <p>Test of <code>setPaymentStatusId</code>. Set with positive value.</p>
+             */
+            function testSetPaymentStatusIdIDWithPositive(){
+                ContestPayment.setPaymentStatusId(88);
+                assertEquals("Fail to set ContestStatusId.", 88, ContestPayment.getPaymentStatusId());
+            }
 
-	/**
-	 * <p>Test of <code>setPaymentStatusId</code>.Set with non-number value and
-	 * it should throw exception.</p>
-	 */
-	function testSetPaymentStatusIdWithNonNumberValue() {
-		try {
-			ContestPayment.setPaymentStatusId("non-number");
-			fail("it should fail");
-		} catch (e) {
-			assertTrue("it should fail", e instanceof IllegalArgumentException);
-		}
-	}
+            /**
+             * <p>Test of <code>setPaymentStatusId</code>.Set with non-number value and
+             * it should throw exception.</p>
+             */
+            function testSetPaymentStatusIdWithNonNumberValue(){
+                try {
+                    ContestPayment.setPaymentStatusId("non-number");
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
 
-	/**
-	 * <p>Test of <code>setContestId</code>.Set with undefined value
-	 * and should throw exception.</p>
-	 */
-	function testSetContestIdWithUndefined() {
-		try {
-			ContestPayment.setContestId(undefined);
-			fail("It should fail when set with undefined.");
-		} catch (e) {
-			assertTrue("it should fail", e instanceof IllegalArgumentException);
-		}
-	}
 
-	/**
-	 * <p>Test of <code>setContestId</code>. Set with null
-	 * and should throw exception.</p>
-	 */
-	function testSetContestIdWithNull() {
-		try {
-			ContestPayment.setContestId(null);
-			fail("it should fail");
-		} catch (e) {
-			assertTrue("it should fail", e instanceof IllegalArgumentException);
-		}
-	}
+             /**
+              * <p>Test of <code>setContestId</code>.Set with undefined value
+              * and should throw exception.</p>
+              */
+             function testSetContestIdWithUndefined(){
+                 try {
+                     ContestPayment.setContestId(undefined);
+                     fail("It should fail when set with undefined.");
+                 }
+                 catch (e) {
+                     assertTrue("it should fail", e instanceof IllegalArgumentException);
+                 }
+             }
 
-	/**
-	 * <p>Test of <code>setContestId</code>. Set with negative value and
-	 * should throw exception.</p>
-	 */
-	function testSetContestIdWithNegative() {
-		try {
-			ContestPayment.setContestId(-39);
-			fail("it should fail");
-		} catch (e) {
-			assertTrue("it should fail", e instanceof IllegalArgumentException);
-		}
-	}
+             /**
+              * <p>Test of <code>setContestId</code>. Set with null
+              * and should throw exception.</p>
+              */
+             function testSetContestIdWithNull(){
+                 try {
+                     ContestPayment.setContestId(null);
+                     fail("it should fail");
+                 }
+                 catch (e) {
+                     assertTrue("it should fail", e instanceof IllegalArgumentException);
+                 }
+             }
 
-	/**
-	 * <p>Test of <code>setContestId</code>. Set with 0.</p>
-	 */
-	function testSetContestIdWithZero() {
-		ContestPayment.setContestId(0);
-		assertEquals("Fail to set ContestStatusId.", 0, ContestPayment
-				.getContestId());
-	}
+             /**
+              * <p>Test of <code>setContestId</code>. Set with negative value and
+              * should throw exception.</p>
+              */
+             function testSetContestIdWithNegative(){
+                 try {
+                     ContestPayment.setContestId(-39);
+                     fail("it should fail");
+                 }
+                 catch (e) {
+                     assertTrue("it should fail", e instanceof IllegalArgumentException);
+                 }
+             }
 
-	/**
-	 * <p>Test of <code>setContestId</code>. Set with positive value.</p>
-	 */
-	function testSetContestIdIDWithPositive() {
-		ContestPayment.setContestId(88);
-		assertEquals("Fail to set ContestStatusId.", 88, ContestPayment
-				.getContestId());
-	}
+             /**
+              * <p>Test of <code>setContestId</code>. Set with 0.</p>
+              */
+             function testSetContestIdWithZero(){
+                 ContestPayment.setContestId(0);
+                 assertEquals("Fail to set ContestStatusId.", 0, ContestPayment.getContestId());
+             }
 
-	/**
-	 * <p>Test of <code>setContestId</code>.Set with non-number value and
-	 * it should throw exception.</p>
-	 */
-	function testSetContestIdWithNonNumberValue() {
-		try {
-			ContestPayment.setContestId("non-number");
-			fail("it should fail");
-		} catch (e) {
-			assertTrue("it should fail", e instanceof IllegalArgumentException);
-		}
-	}
+             /**
+              * <p>Test of <code>setContestId</code>. Set with positive value.</p>
+              */
+             function testSetContestIdIDWithPositive(){
+                 ContestPayment.setContestId(88);
+                 assertEquals("Fail to set ContestStatusId.", 88, ContestPayment.getContestId());
+             }
 
-	/**
-	 * <p>Test of <code>setPaypalOrderId</code>.Set with undefined value
-	 * and should throw exception.</p>
-	 */
-	function testSetPaypalOrderIdWithUndefined() {
-		try {
-			ContestPayment.setPaypalOrderId(undefined);
-			fail("It should fail when set with undefined.");
-		} catch (e) {
-			assertTrue("it should fail", e instanceof IllegalArgumentException);
-		}
-	}
+             /**
+              * <p>Test of <code>setContestId</code>.Set with non-number value and
+              * it should throw exception.</p>
+              */
+             function testSetContestIdWithNonNumberValue(){
+                 try {
+                     ContestPayment.setContestId("non-number");
+                     fail("it should fail");
+                 }
+                 catch (e) {
+                     assertTrue("it should fail", e instanceof IllegalArgumentException);
+                 }
+             }
 
-	/**
-	 * <p>Test of <code>setPaypalOrderId</code>. Set with null
-	 * and should throw exception.</p>
-	 */
-	function testSetPaypalOrderIdWithNull() {
-		try {
-			ContestPayment.setPaypalOrderId(null);
-			fail("it should fail");
-		} catch (e) {
-			assertTrue("it should fail", e instanceof IllegalArgumentException);
-		}
-	}
 
-	/**
-	 * <p>Test of <code>setPaypalOrderId</code>. Set with negative value and
-	 * should throw exception.</p>
-	 */
-	function testSetPaypalOrderIdWithNegative() {
-		try {
-			ContestPayment.setPaypalOrderId(-39);
-			fail("it should fail");
-		} catch (e) {
-			assertTrue("it should fail", e instanceof IllegalArgumentException);
-		}
-	}
+              /**
+               * <p>Test of <code>setPaypalOrderId</code>.Set with undefined value
+               * and should throw exception.</p>
+               */
+              function testSetPaypalOrderIdWithUndefined(){
+                  try {
+                      ContestPayment.setPaypalOrderId(undefined);
+                      fail("It should fail when set with undefined.");
+                  }
+                  catch (e) {
+                      assertTrue("it should fail", e instanceof IllegalArgumentException);
+                  }
+              }
 
-	/**
-	 * <p>Test of <code>setPaypalOrderId</code>. Set with 0.</p>
-	 */
-	function testSetPaypalOrderIdWithZero() {
-		ContestPayment.setPaypalOrderId(0);
-		assertEquals("Fail to set ContestStatusId.", 0, ContestPayment
-				.getPaypalOrderId());
-	}
+              /**
+               * <p>Test of <code>setPaypalOrderId</code>. Set with null
+               * and should throw exception.</p>
+               */
+              function testSetPaypalOrderIdWithNull(){
+                  try {
+                      ContestPayment.setPaypalOrderId(null);
+                      fail("it should fail");
+                  }
+                  catch (e) {
+                      assertTrue("it should fail", e instanceof IllegalArgumentException);
+                  }
+              }
 
-	/**
-	 * <p>Test of <code>setPaypalOrderId</code>. Set with positive value.</p>
-	 */
-	function testSetPaypalOrderIdIDWithPositive() {
-		ContestPayment.setPaypalOrderId(88);
-		assertEquals("Fail to set ContestStatusId.", 88, ContestPayment
-				.getPaypalOrderId());
-	}
+              /**
+               * <p>Test of <code>setPaypalOrderId</code>. Set with negative value and
+               * should throw exception.</p>
+               */
+              function testSetPaypalOrderIdWithNegative(){
+                  try {
+                      ContestPayment.setPaypalOrderId(-39);
+                      fail("it should fail");
+                  }
+                  catch (e) {
+                      assertTrue("it should fail", e instanceof IllegalArgumentException);
+                  }
+              }
 
-	/**
-	 * <p>Test of <code>setUsername</code>.</p>
-	 */
-	function testSetUsername() {
-		ContestPayment.setUsername("topcoder");
-		assertEquals("Fail to set username.", "topcoder", ContestPayment
-				.getUsername());
-	}
+              /**
+               * <p>Test of <code>setPaypalOrderId</code>. Set with 0.</p>
+               */
+              function testSetPaypalOrderIdWithZero(){
+                  ContestPayment.setPaypalOrderId(0);
+                  assertEquals("Fail to set ContestStatusId.", 0, ContestPayment.getPaypalOrderId());
+              }
 
-	/**
-	 * <p>Test of <code>setPaymentType</code>.</p>
-	 */
-	function testSetPaymentType() {
-		ContestPayment.setPaymentType("topcoder");
-		assertEquals("Fail to set PaymentType.", "topcoder", ContestPayment
-				.getPaymentType());
-	}
+              /**
+               * <p>Test of <code>setPaypalOrderId</code>. Set with positive value.</p>
+               */
+              function testSetPaypalOrderIdIDWithPositive(){
+                  ContestPayment.setPaypalOrderId(88);
+                  assertEquals("Fail to set ContestStatusId.", 88, ContestPayment.getPaypalOrderId());
+              }
 
-	 /**
-	 * <p>Test of <code>setPaypalOrderId</code>.Set with non-number value and
-	 * it should throw exception.</p>
-	 */
-	function testSetPaypalOrderIdWithNonNumberValue() {
-		try {
-			ContestPayment.setPaypalOrderId("non-number");
-			fail("it should fail");
-		} catch (e) {
-			assertTrue("it should fail", e instanceof IllegalArgumentException);
-		}
-	}
+              /**
+               * <p>Test of <code>setPaypalOrderId</code>.Set with non-number value and
+               * it should throw exception.</p>
+               */
+              function testSetPaypalOrderIdWithNonNumberValue(){
+                  try {
+                      ContestPayment.setPaypalOrderId("non-number");
+                      fail("it should fail");
+                  }
+                  catch (e) {
+                      assertTrue("it should fail", e instanceof IllegalArgumentException);
+                  }
+              }
 
-	/**
-	 * Valid JSON.
-	 */
-	var validJSON = "{\"contestId\" : 1,\"paypalOrderId\" : \"3ab\",\"paymentStatusId\" : 2,\"price\" : 5034.234"
-			+ ",\"username\" : \"topcoder\""
-			+ ",\"paymentType\" : \"contest fee\"" + "}";
+              /**
+               * Valid JSON.
+               */
+              var validJSON = 
+  				"{\"contestId\" : 1,\"paypalOrderId\" : \"3ab\",\"paymentStatusId\" : 2,\"price\" : 5034.234"+
+  				"}";
 
-	/**
-	 * Invalid JSON.
-	 */
-	var invalidJSON = "{\"z\" : 123}";
+              /**
+               * Invalid JSON.
+               */
+              var invalidJSON = "{\"z\" : 123}";
+  				
+              /**
+               * Tests Contructor with valid JSON for accuracy.
+               */
+              function test_Contructor_validJSON() {
+              	var json = eval("(" + validJSON + ")");
+              	try {
+              		var jsonObj = new js.topcoder.widgets.bridge.ContestPayment(json);
+              		assertNotNull("Unable to instantiate ContestPayment.", jsonObj);
+              	} catch(x) {
+              		fail("There should be no exception generated");
+              	}
+              }
 
-	/**
-	 * Tests Contructor with valid JSON for accuracy.
-	 */
-	function test_Contructor_validJSON() {
-		var json = eval("(" + validJSON + ")");
-		try {
-			var jsonObj = new js.topcoder.widgets.bridge.ContestPayment(json);
-			assertNotNull("Unable to instantiate ContestPayment.", jsonObj);
-		} catch (x) {
-			fail("There should be no exception generated");
-		}
-	}
+              /**
+               * Tests Contructor with invalid JSON for accuracy.
+               */
+              function test_Contructor_invalidJSON() {
+              	var json = eval("(" + invalidJSON + ")");
+              	try {
+              		var jsonObj = new js.topcoder.widgets.bridge.ContestPayment(json);
+              		fail("There should be an exception generated");
+              	} catch(x) {
+              		// expected
+              	}
+              }
 
-	/**
-	 * Tests Contructor with invalid JSON for accuracy.
-	 */
-	function test_Contructor_invalidJSON() {
-		var json = eval("(" + invalidJSON + ")");
-		try {
-			var jsonObj = new js.topcoder.widgets.bridge.ContestPayment(json);
-			fail("There should be an exception generated");
-		} catch (x) {
-			// expected
-		}
-	}
+              /**
+               * Tests toJSON method for accuracy.
+               */
+              function test_toJSON() {
+              	var json = eval("(" + validJSON + ")");
 
-	/**
-	 * Tests toJSON method for accuracy.
-	 */
-	function test_toJSON() {
-		var json = eval("(" + validJSON + ")");
-
-		var jsonObj = new js.topcoder.widgets.bridge.ContestPayment(json);
-		assertEquals(
-				"JSON string should be equal with the json passed in constructor.",
-				validJSON, jsonObj.toJSON());
-	}
-</script>
-</head>
-<body>
-<h1>ContestPayment - Unit Tests</h1>
-<p>This page contains unit tests for the js Class
-PrerequsiteDocument. To see them, take a look at the source.</p>
-</body>
+             		var jsonObj = new js.topcoder.widgets.bridge.ContestPayment(json);
+             		assertEquals("JSON string should be equal with the json passed in constructor.", validJSON, jsonObj.toJSON());
+              }
+        </script>
+    </head>
+    <body>
+        <h1>ContestPayment - Unit Tests</h1>
+        <p>
+            This page contains unit tests for the js Class PrerequsiteDocument. To see them, take a look at the source.
+        </p>
+    </body>
 </html>
