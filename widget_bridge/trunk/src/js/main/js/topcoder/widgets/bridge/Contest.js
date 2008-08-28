@@ -302,7 +302,7 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 	 * <p>Utilized In: none</p>
 	 * <p>Valid Values: must be true or false.</p>
 	 */
-    var requiresPreviewImage /* bool */ = false;
+    var requiresPreviewImage /* bool */ = true;
 
 	/**
 	 * <p>Represents the maximum submissions. It is added in the CID because it exists in the WSDL.</p>
