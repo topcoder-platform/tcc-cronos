@@ -1071,6 +1071,9 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 		if(typeof(that.getPrizeDescription()) == "undefined"){
 			that.setPrizeDescription('n/a'); 
 		}
+		if(typeof(that.getRequiresPreviewImage()) == "undefined"){
+			that.setRequiresPreviewImage(true); 
+		}
 		
 		// setup Prizes json string
 		var locPrizes = "[";
