@@ -1,0 +1,29 @@
+<CMConfig>
+<!-- Namespace for SimpleChatContactManager class -->
+    <Config name="client">
+    
+     <Property name="object_factory_configuration">
+         <Property name="ObjectFactory">
+        </Property>
+     </Property>
+     
+        <Property name="id_generator_name">
+            <Value>client_id</Value>
+        </Property>
+        <Property name="logger_name">
+            <Value>log</Value>
+        </Property>
+        
+          <Property name="client_dao">
+            <Value>com.topcoder.clients.manager.MockClientDAO</Value>
+        </Property>
+        
+          <Property name="client_status_dao">
+            <Value>com.topcoder.clients.manager.MockClientStatusDAO</Value>
+        </Property>
+       
+    </Config>
+    
+    
+         					
+</CMConfig>
