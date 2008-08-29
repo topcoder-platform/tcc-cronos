@@ -2758,7 +2758,7 @@ public class StudioServiceBean implements StudioService {
             List<Prize> contestPrizes = contestManager.getContestPrizes(contestId);
 
             for (Prize prize : contestPrizes) {
-                if (prize.getPlace().equals(placement)) {
+                if (prize.getPlace() != null && prize.getPlace().equals(placement)) {
                     logDebug("Same placement found in contest. placement: " + placement + ", contest id:" + contest.getContestId());
 
                     // Associate with submission.
