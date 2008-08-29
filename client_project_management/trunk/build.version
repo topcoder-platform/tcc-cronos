@@ -1,9 +1,0 @@
-#property file defining the components information
-component.name=Client Project Management
-component.distfilename=client_project_management
-component.package=com.topcoder.clients.manager
-component.packagedir=com/topcoder/clients/manager
-component.version.major=1
-component.version.minor=0
-component.version.micro=0
-component.version.build=1
