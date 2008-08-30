@@ -33,15 +33,16 @@
 				"{\"contestID\" : 222, \"projectID\" : 333, \"name\" : \"contest name\", \"shortSummary\" : \"short summary\","+
 				" \"prizes\" : [{\"place\" : 1,\"amount\" : 20000},{\"place\" : 2,\"amount\" : 10000}], \"launchDateAndTime\" : \"2008-03-07 01:00\","+
 				" \"durationInHours\" : 3, \"winnerAnnouncementDeadline\" : \"2008-03-20 01:00\",\"contestTypeID\" : 1,\"contestChannelID\" : 1,\"finalFileFormatList\" : [\"format 1\",\"format2\",\"format3\"],"+
-				" \"finalFileFormatOther\" : \"zip\", \"documentationUploads\" : [{\"fileName\" : \"JSON file name1\",\"documentID\" : 321321,\"contestID\" : "+
-				" 77777, \"description\" : \"JSON descrip1\"},{\"fileName\" : \"JSON file name2\",\"documentID\" : 321321,\"contestID\" : 77777, \"description\" "+
-				" : \"JSON descrip2\"}], \"statusID\" : 3221123, \"contestPayloads\" : [{\"name\" : \"JSON Payload Name1\",\"value\" : "+
+				" \"finalFileFormatOther\" : \"zip\", \"documentationUploads\" : [], \"statusID\" : 3221123, \"contestPayloads\" : [{\"name\" : \"JSON Payload Name1\",\"value\" : "+
 				" \"JSON Payload Value1\",\"description\" : \"JSON Payload Desc1\",\"required\" : true, \"contestTypeID\" : 4444},"+
 				" {\"name\" : \"JSON Payload Name2\",\"value\" : \"JSON Payload Value2\",\"description\" : \"JSON Payload Desc2\",\"required\" : true,"+
 				" \"contestTypeID\" : 4444}], \"contestCategoryID\" : 2, \"contestDescriptionAndRequirements\" : \"This is a long desc\", "+
 				" \"requiredOrRestrictedColors\" : \"red\", \"requiredOrRestrictedFonts\" : \"arial\", \"sizeRequirements\" : \"11 pt.\", "+
+				" \"eligibility\" : \"red\"," +
+				" \"notesOnWinnerSelection\" : \"red\"," +
+				" \"prizeDescription\" : \"red\"," +
 				" \"media\" : [{\"mediaId\" : 1,\"description\" : \"Web\"},{\"mediaId\" : 2,\"description\" : \"Application\"}], "+
-				" \"otherRequirementsOrRestrictions\" : \"other reqs\", \"tcDirectProjectID\" : 1000, \"requiresPreviewFile\" : false, \"requiresPreviewImage\" : false, \"maximumSubmissions\" : 100, \"submissionCount\" : 555, \"numberOfRegistrants\" : 41, \"creatorUserID\" : 7000}";
+				" \"otherRequirementsOrRestrictions\" : \"other reqs\", \"tcDirectProjectID\" : 1000, \"requiresPreviewFile\" : false, \"requiresPreviewImage\" : false, \"maximumSubmissions\" : 100, \"submissionCount\" : 555, \"numberOfRegistrants\" : 41, \"forumId\" : 1 , \"forumPostCount\" : 34 , \"creatorUserID\" : 7000}";
 				
             /**
              * Invalid JSON.
@@ -177,13 +178,11 @@
              */
             function test_Contructor_validJSON() {
             	var json = eval("(" + validJSON + ")");
-            	try {
+
             		var jsonObj = new js.topcoder.widgets.bridge.Contest(json);
                 assertEquals("submissionCount is incorrect.",555,jsonObj.submissionCount);
             		assertNotNull("Unable to instantiate Contest.", jsonObj);
-            	} catch(x) {
-            		fail("There should be no exception generated");
-            	}
+
             }
 
             /**

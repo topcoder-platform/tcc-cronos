@@ -323,7 +323,27 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 	 * <p>Valid Values:  it's not null, can be empty, can't contain null values</p>
 	 */
     var media /* Medium[] */ = new Array();
-    
+
+	/**
+	 * <p>Represents the contest forum ID.</p>
+	 * <p>Initial Value: -1, means that is not set</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 * <p>Valid Values:  must be greater or equal than 0 or -1 (not set)</p>
+	 */
+	var forumId /* long */ = -1;
+
+	/**
+	 * <p>Represents the contest forum post count.</p>
+	 * <p>Initial Value: -1, means that is not set</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 * <p>Valid Values:  must be greater or equal than 0 or -1 (not set)</p>
+	 */
+	var forumPostCount /* long */ = -1;
+	
     /**
      * Abbreviation for Helper class.
      */
@@ -630,6 +650,22 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 		} else {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.prizeDescription",
 			"json.prizeDescription does not exists");
+		}
+		
+		// sets the forumId
+		if (typeof(json.forumId) != "undefined" && typeof(json.forumId) == "number") {
+		    that.forumId /* long */ = json.forumId;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.forumId",
+			"json.forumId does not exists");
+		}
+
+		// sets the forumPostCount
+		if (typeof(json.forumPostCount) != "undefined" && typeof(json.forumPostCount) == "number") {
+		    that.forumPostCount /* long */ = json.forumPostCount;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.forumPostCount",
+			"json.forumPostCount does not exists");
 		}
 	}
 
@@ -1170,6 +1206,8 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 		        + "\"eligibility\" : \"" + that.getEligibility() + "\", "
 		        + "\"notesOnWinnerSelection\" : \"" + that.getNotesOnWinnerSelection () + "\", "
 		        + "\"prizeDescription\" : \"" + that.getPrizeDescription() + "\", "
+		        + "\"forumId\" : " + that.getForumId() + ", "
+		        + "\"forumPostCount\" : " + that.getForumPostCount() + ", "
 		        + "\"creatorUserID\" : " + that.getCreatorUserID()
 		        + "}";
 	}
@@ -1231,4 +1269,32 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
   this.setNumberOfRegistrants = function /* void */ (/* long */ numberOfRegistrants ) {
       that.numberOfRegistrants  = numberOfRegistrants ;
   }	    
+  
+  /**
+   * <p>Returns the forumId .</p>
+   */
+  this.getForumId = function /* long */ () {
+      return that.forumId;
+  }
+
+  /**
+   * <p>Sets the forumId .</p>
+   */
+  this.setForumId = function /* void */ (/* long */ forumId ) {
+      that.forumId  = forumId ;
+  }
+
+  /**
+   * <p>Returns the forumPostCount.</p>
+   */
+  this.getForumPostCount = function /* long */ () {
+      return that.forumPostCount;
+  }
+
+  /**
+   * <p>Sets the forumPostCount.</p>
+   */
+  this.setForumPostCount = function /* void */ (/* long */ forumPostCount ) {
+      that.forumPostCount  = forumPostCount ;
+  }
 } // end

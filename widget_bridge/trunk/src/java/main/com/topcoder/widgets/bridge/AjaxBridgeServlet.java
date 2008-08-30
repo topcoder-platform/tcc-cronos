@@ -1584,6 +1584,10 @@ public class AjaxBridgeServlet extends HttpServlet {
             }
         }
         respJSON.setArray("media", jsonMedia);
+        
+        // TCCC-457
+        respJSON.setLong("forumId", contest.getForumId());
+        respJSON.setBigDecimal("forumPostCount", contest.getForumPostCount());
 
         return respJSON;
     }
