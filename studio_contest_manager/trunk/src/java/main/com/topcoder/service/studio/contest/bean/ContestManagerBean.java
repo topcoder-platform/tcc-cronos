@@ -6,6 +6,7 @@ package com.topcoder.service.studio.contest.bean;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -3069,6 +3070,36 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "There are errors while retrieving medium.");
         } finally {
             logExit("getAllMedia()");
+        }
+    }
+
+
+    /**
+     * Returns contest post count.
+     * 
+     * @return contest post count.
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest post count.
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public BigDecimal getContestPostCount(long forumId) throws ContestManagementException {
+        try {
+            logEnter("getContestPostCount()");
+
+            EntityManager em = getEntityManager();
+
+            Query query = em.createNativeQuery("select count(*) from jivemessage where forumid=?");
+            query.setParameter(1, 1);
+
+            BigDecimal count = (BigDecimal) query.getSingleResult();
+            return count;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while retrieving medium.");
+        } finally {
+            logExit("getContestPostCount()");
         }
     }
 }

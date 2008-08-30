@@ -3,6 +3,7 @@
  */
 package com.topcoder.service.studio.contest;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
@@ -925,4 +926,14 @@ public interface ContestManager {
      *             if any error occurs when getting PaymentStatus
      * @since TCCC-349
      */
-    public PaymentStatus getPaymentStatus(long paymentStatusId) throws ContestManagementException;}
+    public PaymentStatus getPaymentStatus(long paymentStatusId) throws ContestManagementException;
+
+    /**
+     * Returns contest post count.
+     * 
+     * @return contest post count.
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest post count.
+     */
+    public BigDecimal getContestPostCount(long forumId) throws ContestManagementException;
+}
