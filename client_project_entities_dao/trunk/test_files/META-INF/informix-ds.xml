@@ -10,10 +10,10 @@
 <datasources>
 	<local-tx-datasource>
 		<jndi-name>InformixDS</jndi-name>
-		<connection-url>jdbc:informix-sqli://192.168.1.103:1526/client_project_entities_dao:INFORMIXSERVER=tcstest</connection-url>
+		<connection-url>jdbc:informix-sqli://192.168.18.100:1526/tcs:INFORMIXSERVER=ol_tcs</connection-url>
 		<driver-class>com.informix.jdbc.IfxDriver</driver-class>
 		<user-name>informix</user-name>
-		<password>informix</password>
+		<password>topcoder</password>
 		<exception-sorter-class-name>org.jboss.resource.adapter.jdbc.vendor.InformixExceptionSorter</exception-sorter-class-name>
 		<!-- sql to call when connection is created -->
 		<new-connection-sql>set lock mode to wait</new-connection-sql>

@@ -5,83 +5,27 @@
 	<property name="component.target" value="1.5" />
 	<property name="component.bootclasspath" value="${java_1_5_bootclasspath}" />
 
-	<property name="jboss_home" value="D:\Program Files\jboss-4.2.2.GA"/>
+	<property name="jboss_home" value="C:\TCS\Soft\jboss-4.2.2.GA"/>
 	<property name="jboss_config_name" value="default" />
 
 	<!-- TCS dependencies -->
+	<property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar" />
+	<property name="configuration_manager.jar" value="${tcs_libdir}/configuration_manager/2.1.5/configuration_manager.jar" />
+	<property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar" />
+	<property name="configuration_persistence.jar" value="${tcs_libdir}/configuration_persistence/1.0.1/configuration_persistence.jar" />
+	<property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.1.2/object_factory.jar" />
+	<property name="object_factory_config_manager_plugin.jar" value="${tcs_libdir}/object_factory_config_manager_plugin/1.0.0/object_factory_config_manager_plugin.jar" />
+	<property name="object_factory_configuration_api_plugin.jar" value="${tcs_libdir}/object_factory_configuration_api_plugin/1.0.0/object_factory_configuration_api_plugin.jar" />
+	<property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar" />
+	<property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar" />
+	<property name="class_associations.jar" value="${tcs_libdir}/class_associations/1.0.0/class_associations.jar" />
+	<property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar" />
+	<property name="data_validation.jar" value="${tcs_libdir}/data_validation/1.1.1/data_validation.jar" />
 
-	<property name="base_exception.name" value="base_exception" />
-	<property name="base_exception.version" value="2.0" />
-	<property name="base_exception.jar.name" value="${base_exception.name}.jar" />
-	<property name="base_exception.jar" value="${tcs_libdir}/${base_exception.name}/${base_exception.version}/${base_exception.jar.name}" />
-
-	<property name="configuration_manager.name" value="configuration_manager" />
-	<property name="configuration_manager.version" value="2.1.5" />
-	<property name="configuration_manager.jar.name" value="${configuration_manager.name}.jar" />
-	<property name="configuration_manager.jar" value="${tcs_libdir}/${configuration_manager.name}/${configuration_manager.version}/${configuration_manager.jar.name}" />
-
-	<property name="configuration_api.name" value="configuration_api" />
-	<property name="configuration_api.version" value="1.0" />
-	<property name="configuration_api.jar.name" value="${configuration_api.name}.jar" />
-	<property name="configuration_api.jar" value="${tcs_libdir}/${configuration_api.name}/${configuration_api.version}/${configuration_api.jar.name}" />
-
-	<property name="configuration_persistence.name" value="configuration_persistence" />
-	<property name="configuration_persistence.version" value="1.0.1" />
-	<property name="configuration_persistence.jar.name" value="${configuration_persistence.name}.jar" />
-	<property name="configuration_persistence.jar" value="${tcs_libdir}/${configuration_persistence.name}/${configuration_persistence.version}/${configuration_persistence.jar.name}" />
-
-	<property name="object_factory.name" value="object_factory" />
-	<property name="object_factory.version" value="2.1.0" />
-	<property name="object_factory.jar.name" value="${object_factory.name}.jar" />
-	<property name="object_factory.jar" value="${tcs_libdir}/${object_factory.name}/${object_factory.version}/${object_factory.jar.name}" />
-
-	<property name="object_factory_config_manager_plugin.name" value="object_factory_config_manager_plugin" />
-	<property name="object_factory_config_manager_plugin.version" value="1.0" />
-	<property name="object_factory_config_manager_plugin.jar.name" value="${object_factory_config_manager_plugin.name}.jar" />
-	<property name="object_factory_config_manager_plugin.jar" value="${tcs_libdir}/${object_factory_config_manager_plugin.name}/${object_factory_config_manager_plugin.version}/${object_factory_config_manager_plugin.jar.name}" />
-
-	<property name="object_factory_configuration_api_plugin.name" value="object_factory_configuration_api_plugin" />
-	<property name="object_factory_configuration_api_plugin.version" value="1.0" />
-	<property name="object_factory_configuration_api_plugin.jar.name" value="${object_factory_configuration_api_plugin.name}.jar" />
-	<property name="object_factory_configuration_api_plugin.jar" value="${tcs_libdir}/${object_factory_configuration_api_plugin.name}/${object_factory_configuration_api_plugin.version}/${object_factory_configuration_api_plugin.jar.name}" />
-	
-	<property name="object_factory_config_manager_plugin.jar" value="${tcs_libdir}/object_factory_config_manager_plugin/1.0/object_factory_config_manager_plugin.jar" />
-
-	<property name="logging_wrapper.name" value="logging_wrapper" />
-	<property name="logging_wrapper.version" value="2.0" />
-	<property name="logging_wrapper.jar.name" value="${logging_wrapper.name}.jar" />
-	<property name="logging_wrapper.jar" value="${tcs_libdir}/${logging_wrapper.name}/${logging_wrapper.version}/${logging_wrapper.jar.name}" />
-
-	<property name="object_formatter.name" value="object_formatter" />
-	<property name="object_formatter.version" value="1.0" />
-	<property name="object_formatter.jar.name" value="${object_formatter.name}.jar" />
-	<property name="object_formatter.jar" value="${tcs_libdir}/${object_formatter.name}/${object_formatter.version}/${object_formatter.jar.name}" />
-
-	 <property name="search_builder.name" value="search_builder" />
-	<property name="search_builder.version" value="1.4.0" />
-	<property name="search_builder.jar.name" value="${search_builder.name}.jar" />
-	<property name="search_builder.jar" value="${tcs_libdir}/${search_builder.name}/${search_builder.version}/${search_builder.jar.name}" />
-<!-- 
- 	<property name="search_builder.jar" value="lib/search_builder_1.4_modified.jar"/>
- 	 -->
-	<property name="class_associations.name" value="class_associations" />
-	<property name="class_associations.version" value="1.0" />
-	<property name="class_associations.jar.name" value="${class_associations.name}.jar" />
-	<property name="class_associations.jar" value="${tcs_libdir}/${class_associations.name}/${class_associations.version}/${class_associations.jar.name}" />
-
-	<property name="typesafe_enum.name" value="typesafe_enum" />
-	<property name="typesafe_enum.version" value="1.1" />
-	<property name="typesafe_enum.jar.name" value="${typesafe_enum.name}.jar" />
-	<property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.name}/${typesafe_enum.version}/${typesafe_enum.jar.name}" />
-
-	<property name="data_validation.name" value="data_validation" />
-	<property name="data_validation.version" value="1.1.1" />
-	<property name="data_validation.jar.name" value="${data_validation.name}.jar" />
-	<property name="data_validation.jar" value="${tcs_libdir}/${data_validation.name}/${data_validation.version}/${data_validation.jar.name}" />
-
+    <property name="search_builder.jar" value="${testfiles}/search_builder1.4/search_builder_1.4_modified.jar" />
 	<!-- 3rd party dependencies -->
 	<property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar" />
-	<property name="javaee.jar" value="${ext_libdir}/j2ee/EE_5/javaee.jar" />
+	<property name="javaee.jar" value="${ext_libdir}/javaee/javaee.jar" />
 	<property name="SaveCoberturaData.jar" value="${testfiles}/SaveCoberturaData.jar"/>
 
 	
@@ -120,26 +64,19 @@
     </path>
     
 	<path id="component.tcs-dependencies">
-		
 		<pathelement location="${base_exception.jar}" />
 		<pathelement location="${configuration_manager.jar}" />
 		<pathelement location="${configuration_api.jar}" />
 		<pathelement location="${configuration_persistence.jar}" />
 		<pathelement location="${object_factory.jar}" />
 		<pathelement location="${object_factory_configuration_api_plugin.jar}" />
-		<pathelement location="${object_factory_config_manager_plugin.jar}" />
 		<pathelement location="${logging_wrapper.jar}" />
 		<pathelement location="${object_formatter.jar}" />
-
 		<pathelement location="${search_builder.jar}" />
-		<pathelement location="${class_associations.jar}" />
-		<pathelement location="${typesafe_enum.jar}" />
-		<pathelement location="${data_validation.jar}" />
 	</path>
 
 	<path id="component.3rdParty-dependencies">
 		<path refid="jboss.classpath"/>  
-	
 		<pathelement location="${jboss-ejb3x.jar}" />
 		<pathelement location="${ejb3-persistence.jar}" />
 		<pathelement location="${jbossall-client.jar}" />
@@ -149,7 +86,6 @@
 	<path id="component.test.3rdParty-dependencies">
 		<pathelement location="${junit.jar}" />
 		<pathelement location="${jdbc.informix.jar}" />
-		<pathelement location="${testfiles}/SaveCoberturaData.jar" />
 		<pathelement location="${xercesImpl.jar}" />
 		<pathelement location="${antlr.jar}" />
 		<pathelement location="${jboss-jaxrpc.jar}" />
@@ -161,6 +97,7 @@
 		<pathelement location="${hibernate-annotations.jar}" />
 		<pathelement location="${hibernate-entitymanager.jar}" />
 		<pathelement location="${javaee.jar}" />
+		<pathelement location="${testfiles}/SaveCoberturaData.jar" />
 	</path>
 
 </project>
