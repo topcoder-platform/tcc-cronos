@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ import java.util.List;
         "requiredOrRestrictedFonts", "sizeRequirements",
         "otherRequirementsOrRestrictions", "creatorUserId", "finalFileFormat",
         "otherFileFormats", "statusId", "submissionCount", "contestTypeId", "contestChannelId",
-        "eligibility","notesOnWinnerSelection","prizeDescription"})
+        "eligibility","notesOnWinnerSelection","prizeDescription","forumPostCount","forumId"})
 public class ContestData implements Serializable {
     /**
      * <p>
@@ -57,6 +58,20 @@ public class ContestData implements Serializable {
      */
     private long projectId = -1;
 
+    /**
+     * <p>
+     * Represents the forum Id
+     * </p>
+     */
+    private long forumId = -1;
+
+    /**
+     * <p>
+     * Represents the forum post count
+     * </p>
+     */
+    private BigDecimal forumPostCount;
+    
     /**
      * <p>
      * Represents the TC Direct Project Id
@@ -844,6 +859,44 @@ public class ContestData implements Serializable {
      */
     public void setStatusId(long statusId) {
         this.statusId = statusId;
+    }
+
+    /**
+     * Returns forum id.
+     *
+     * @return the forumId
+     */
+    public long getForumId() {
+        return forumId;
+    }
+
+    /**
+     * Sets forum id.
+     *
+     * @param forumId
+     *            the forum to set
+     */
+    public void setForumId(long forumId) {
+        this.forumId = forumId;
+    }
+
+    /**
+     * Returns forum PostCount.
+     *
+     * @return the forumPostCount
+     */
+    public BigDecimal getForumPostCount() {
+        return forumPostCount;
+    }
+
+    /**
+     * Sets forum PostCount.
+     *
+     * @param PostCount
+     *            the PostCount to set
+     */
+    public void setForumPostCount(BigDecimal forumPostCount) {
+        this.forumPostCount = forumPostCount;
     }
 
     /**

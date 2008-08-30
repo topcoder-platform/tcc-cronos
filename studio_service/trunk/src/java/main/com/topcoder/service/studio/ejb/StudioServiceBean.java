@@ -75,15 +75,12 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import java.io.File;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
 
@@ -613,10 +610,11 @@ public class StudioServiceBean implements StudioService {
         checkParameter("contestId", contestId);
 
         try {
-        	// check for the authorization, which also returns the contest.
-        	Contest contest = authorizeWithContest(contestId);
+            // check for the authorization, which also returns the contest.
+            Contest contest = authorizeWithContest(contestId);
 
             ContestData result = convertContest(contest);
+
             logExit("getContest", result);
             return result;
         } catch (ContestManagementException e) {
@@ -1440,6 +1438,10 @@ public class StudioServiceBean implements StudioService {
 
         contestData.setMedia(mediums);
 
+        // TCCC-457
+        contestData.setForumId(contest.getForumId());
+        contestData.setForumPostCount(contestManager.getContestPostCount(contest.getForumId()));
+        
         return contestData;
     }
 
