@@ -2791,9 +2791,9 @@ public class StudioServiceBean implements StudioService {
             cr.setContest(contest);
             cr.setPlaced(placement);
             cr.setSubmission(submission);
-            contest.getResults().add(cr);
-            contestManager.updateContest(contest);
             
+            // TCCC-484
+            contestManager.createContestResult(cr);
             logExit("setSubmissionPlacement");
             return;
         } catch (SubmissionManagementException e) {
