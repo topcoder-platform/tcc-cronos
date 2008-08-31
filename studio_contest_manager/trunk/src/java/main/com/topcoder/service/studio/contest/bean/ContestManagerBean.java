@@ -56,6 +56,7 @@ import com.topcoder.service.studio.contest.Medium;
 import com.topcoder.service.studio.contest.MimeType;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.utils.FilterToSqlConverter;
+import com.topcoder.service.studio.submission.ContestResult;
 import com.topcoder.service.studio.submission.PaymentStatus;
 import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.service.studio.submission.PrizeType;
@@ -3100,6 +3101,47 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "There are errors while retrieving medium.");
         } finally {
             logExit("getContestPostCount()");
+        }
+    }
+    
+
+    /**
+     * <p>
+     * Creates a new contest result and returns the created contest result.
+     * </p>
+     * 
+     * @param contestResult
+     *            the contest result to create
+     * @return the created contest result.
+     * 
+     * @throws IllegalArgumentException
+     *             if the arg is null.
+     * @throws EntityAlreadyExistsException
+     *             if the entity already exists in the persistence.
+     * @throws ContestManagementException
+     *             if any other error occurs.
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public ContestResult createContestResult(ContestResult contestResult) throws ContestManagementException
+    {
+        try {
+            logEnter("createContestResult()");
+
+            Helper.checkNull(contestResult, "contestResult");
+
+            EntityManager em = getEntityManager();
+            em.persist(contestResult);
+
+            return contestResult;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (TransactionRequiredException e) {
+            throw wrapContestManagementException(e, "This method is required to run in transaction.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("createContestResult()");
         }
     }
 }

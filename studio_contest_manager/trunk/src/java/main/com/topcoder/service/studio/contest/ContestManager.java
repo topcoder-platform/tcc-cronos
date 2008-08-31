@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.service.studio.submission.ContestResult;
 import com.topcoder.service.studio.submission.PaymentStatus;
 import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.service.studio.submission.PrizeType;
@@ -936,4 +937,22 @@ public interface ContestManager {
      *             if any error occurs when getting contest post count.
      */
     public BigDecimal getContestPostCount(long forumId) throws ContestManagementException;
+
+    /**
+     * <p>
+     * Creates a new contest result and returns the created contest result.
+     * </p>
+     * 
+     * @param contestResult
+     *            the contest result to create
+     * @return the created contest result.
+     * 
+     * @throws IllegalArgumentException
+     *             if the arg is null.
+     * @throws EntityAlreadyExistsException
+     *             if the entity already exists in the persistence.
+     * @throws ContestManagementException
+     *             if any other error occurs.
+     */
+    public ContestResult createContestResult(ContestResult contestResult) throws ContestManagementException;
 }
