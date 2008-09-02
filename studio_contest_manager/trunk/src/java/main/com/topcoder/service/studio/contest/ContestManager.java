@@ -955,4 +955,41 @@ public interface ContestManager {
      *             if any other error occurs.
      */
     public ContestResult createContestResult(ContestResult contestResult) throws ContestManagementException;
+
+    /**
+     * Creates security token.
+     * 
+     * @param token
+     *            security token.
+     * @throws ContestManagementException
+     *             if any other error occurs.
+     * 
+     * @since TCCC-428
+     */
+    public void createSecurityToken(String token) throws ContestManagementException;
+
+    /**
+     * Removes security token.
+     * 
+     * @param token
+     *            security token.
+     * @throws ContestManagementException
+     *             if any other error occurs.
+     * 
+     * @since TCCC-428
+     */
+    public void removeSecurityToken(String token) throws ContestManagementException;
+
+    /**
+     * Matches security token.
+     * 
+     * @param token
+     *            security token.
+     * @return true if the given token exists in db, otherwise false.
+     * @throws ContestManagementException
+     *             if any other error occurs.
+     * 
+     * @since TCCC-428
+     */
+    public boolean matchSecurityToken(String token) throws ContestManagementException;
 }

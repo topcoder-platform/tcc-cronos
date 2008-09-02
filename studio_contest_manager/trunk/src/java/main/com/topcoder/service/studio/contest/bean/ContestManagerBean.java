@@ -2591,7 +2591,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      */
     private void logEnter(String methodName) {
         if (logger != null) {
-            logger.log(Level.INFO, "[Enter method: " + methodName + "]");
+            logger.log(Level.INFO, "[Enter method: ContestManagerBean." + methodName + "]");
         }
     }
 
@@ -3142,6 +3142,114 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "There are errors while persisting the entity.");
         } finally {
             logExit("createContestResult()");
+        }
+    }
+
+    /**
+     * Creates security token.
+     * 
+     * @param token
+     *            security token.
+     * @throws ContestManagementException
+     *             if any other error occurs.
+     * 
+     * @since TCCC-428
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void createSecurityToken(String token) throws ContestManagementException {
+        try {
+            logEnter("createSecurityToken()");
+
+            Helper.checkNull(token, "token");
+
+            EntityManager em = getEntityManager();
+            Query query = em.createNativeQuery(MessageFormat.format("INSERT INTO security_token VALUES(?)", token));
+            query.setParameter(1, token);
+            query.executeUpdate();
+            
+            return;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (TransactionRequiredException e) {
+            throw wrapContestManagementException(e, "This method is required to run in transaction.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("createSecurityToken()");
+        }        
+    }
+
+    /**
+     * Removes security token.
+     * 
+     * @param token
+     *            security token.
+     * @throws ContestManagementException
+     *             if any other error occurs.
+     * 
+     * @since TCCC-428
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void removeSecurityToken(String token) throws ContestManagementException {
+        try {
+            logEnter("removeSecurityToken()");
+
+            Helper.checkNull(token, "token");
+
+            EntityManager em = getEntityManager();
+            Query query = em.createNativeQuery("DELETE FROM security_token WHERE token = ?");
+            query.setParameter(1, token);
+            
+            query.executeUpdate();
+
+            return;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (TransactionRequiredException e) {
+            throw wrapContestManagementException(e, "This method is required to run in transaction.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("removeSecurityToken()");
+        }        
+    }
+
+    /**
+     * Matches security token.
+     * 
+     * @param token
+     *            security token.
+     * @return true if the given token exists in db, otherwise false.
+     * @throws ContestManagementException
+     *             if any other error occurs.
+     * 
+     * @since TCCC-428
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public boolean matchSecurityToken(String token) throws ContestManagementException {
+
+        try {
+            logEnter("matchSecurityToken()");
+
+            Helper.checkNull(token, "token");
+
+            EntityManager em = getEntityManager();
+            Query query = em.createNativeQuery("SELECT COUNT(*) FROM security_token WHERE token = ?");
+            query.setParameter(1, token);
+            
+            BigDecimal count = (BigDecimal) query.getSingleResult();
+            return count.intValue() >= 1;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (TransactionRequiredException e) {
+            throw wrapContestManagementException(e, "This method is required to run in transaction.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while retrieving the entity.");
+        } finally {
+            logExit("matchSecurityToken()");
         }
     }
 }
