@@ -1198,13 +1198,16 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	 * @throws InvalidResponseException if the received response is invalid.
 	 */
 	this.purchaseSubmission = purchaseSubmission;
-	function /* void */ purchaseSubmission(/* Submission Id */ submissionId, /* payPalOrderId */ payPalOrderId, /* VoidHandler */ onSuccess, /* ErrorHandler */ onError ) {
+	function /* void */ purchaseSubmission(/* Submission Id */ submissionId, /* payPalOrderId */ payPalOrderId, /* securityToken */ securityToken, /* VoidHandler */ onSuccess, /* ErrorHandler */ onError ) {
 		// check first the validity of parameters
 		if (submissionId == null) {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.submissionId","submissionId should not be null");
 		}
 		if (payPalOrderId == null) {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.payPalOrderId","payPalOrderId should not be null");
+		}
+		if (securityToken == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.securityToken","securityToken should not be null");
 		}
 		// check onSuccess
 		if (onSuccess == null) {
@@ -1222,7 +1225,7 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	    	async: true,
 	     	method: "POST",
 	     	// the json string should be escaped properly here. 
-	     	sendingText: "service=studio&method=purchaseSubmission&submissionId=" + submissionId + "&payPalOrderId=" + payPalOrderId,
+	     	sendingText: "service=studio&method=purchaseSubmission&submissionId=" + submissionId + "&payPalOrderId=" + payPalOrderId + "&securityToken=" + securityToken,
 	     	onStateChange: function() {
 	        	// Handle the response
 	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
@@ -1263,11 +1266,14 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	 * @throws InvalidResponseException if the received response is invalid.
 	 */
 	this.createContestPayment = createContestPayment;
-	function /* void */ createContestPayment(/* ContestPayment object*/ contestPayment, /* VoidHandler */ onSuccess, /* ErrorHandler */ onError ) {
+	function /* void */ createContestPayment(/* ContestPayment object*/ contestPayment, /* String */ securityToken, /* VoidHandler */ onSuccess, /* ErrorHandler */ onError ) {
 		// check first the validity of parameters
 		// check contestPayment
 		if (contestPayment == null) {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.contestPayment","contestPayment should not be null");
+		}
+		if (securityToken == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.securityToken","securityToken should not be null");
 		}
 		// check onSuccess
 		if (onSuccess == null) {
@@ -1285,7 +1291,7 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	    	async: true,
 	     	method: "POST",
 	     	// the json string should be escaped properly here. 
-	     	sendingText: "service=studio&method=createContestPayment&contestPayment=" + encodeURIComponent(contestPayment.toJSON()),
+	     	sendingText: "service=studio&method=createContestPayment&contestPayment=" + encodeURIComponent(contestPayment.toJSON()) + "&securityToken=" + securityToken,
 	     	onStateChange: function() {
 	        	// Handle the response
 	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
@@ -1557,7 +1563,7 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	                		var medium = new js.topcoder.widgets.bridge.Medium(mediaJSONArray[x]);
 	                		media[x] = medium;
 	                	}
-	                	onSuccess(media );
+	                	onSuccess(media);
 	                }
 	           }
 	     	}
@@ -1743,6 +1749,64 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	                	// success
 	                	// call the success callback 
 	                	onSuccess(documentId);
+	                }
+	           }
+	     	}
+	     });
+	}
+
+	/**
+	 * <p>
+	 * Generates temporary security token.
+	 * </p>
+	 *
+	 * @throws InvalidResponseException if the received response is invalid.
+	 */
+	this.generateSecurityToken = generateSecurityToken;
+	function /* void */ generateSecurityToken(/* ContestHandler */ onSuccess, /* ErrorHandler */ onError ) {
+		// check onSuccess
+		if (onSuccess == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onSuccess","onSuccess callback should not be null");
+		}
+		// check onError
+		if (onError == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onError","onError callback should not be null");
+		}
+		// Create AJAXProcessor object
+		var processor = new AJAXProcessor();
+		// Send a request asynchronously
+		processor.request({
+	    	url:  servletUrlString,
+	    	async: true,
+	     	method: "POST",
+	     	// the json string should be escaped properly here. 
+	     	sendingText: "service=studio&method=generateSecurityToken",
+	     	onStateChange: function() {
+	        	// Handle the response
+	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
+	            	var response = processor.getResponseText();
+	                var jsonResp = eval("(" + response + ")");
+	                // check response
+	                if (jsonResp == null) {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","generateSecurityToken","Invalid response");
+	                }
+	                if (typeof(jsonResp.success) == "undefined") {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","generateSecurityToken","Invalid response");
+	                }
+	                // now check if valid or not
+	                if (jsonResp.success == false) {
+		                if (typeof(jsonResp.error) == "undefined") {
+		                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","generateSecurityToken","Invalid response");
+		                }
+	                	// errors
+	                	// call error handler with error message
+	                	onError(jsonResp.error);
+	                } else {
+		                if (typeof(jsonResp.json) == "undefined") {
+		                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","generateSecurityToken","Invalid response");
+		                }
+	                	// success
+	                	onSuccess(jsonResp.json);
 	                }
 	           }
 	     	}

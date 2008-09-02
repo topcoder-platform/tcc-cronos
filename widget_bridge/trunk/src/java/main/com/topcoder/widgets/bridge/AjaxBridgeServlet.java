@@ -34,9 +34,6 @@ import com.topcoder.json.object.io.JSONDecoder;
 import com.topcoder.json.object.io.JSONDecodingException;
 import com.topcoder.json.object.io.JSONEncoder;
 import com.topcoder.json.object.io.JSONEncodingException;
-import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.search.builder.filter.NotFilter;
-import com.topcoder.search.builder.filter.NullFilter;
 import com.topcoder.service.prerequisite.PrerequisiteDocument;
 import com.topcoder.service.prerequisite.PrerequisiteService;
 import com.topcoder.service.project.ProjectData;
@@ -584,6 +581,7 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                     JSONObject jsonContestPayment = jsonDecoder.decodeObject(strContestPayment);
                     debug("received IDs = [contest ID] : " + jsonContestPayment.getLong("contestId"));
+                    String securityToken = request.getParameter("securityToken");
 
                     ContestPaymentData contestPayment = getContestPaymentFromJSON(jsonContestPayment);
                 
@@ -594,7 +592,7 @@ public class AjaxBridgeServlet extends HttpServlet {
                         return;
                     }
                     
-                    ContestPaymentData respContestPayment = studioService.createContestPayment(contestPayment);
+                    ContestPaymentData respContestPayment = studioService.createContestPayment(contestPayment,securityToken);
                     sendJSONObjectAsResponse(getJSONFromContestPayment(respContestPayment), response);
 
                     debug("createContestPayment success!");
@@ -1001,6 +999,8 @@ public class AjaxBridgeServlet extends HttpServlet {
                 } else if ("purchaseSubmission".equals(method)) {
                     // get the submissionId and price parameter from request
                     String submissionId = request.getParameter("submissionId");
+                    String securityToken = request.getParameter("securityToken");
+                    
                     // [TCCC-125]
                     String payPalOrderId = request.getParameter("payPalOrderId");
                     if (checkLongIfLessThanZero(submissionId, "submissionId", response)) {
@@ -1014,7 +1014,7 @@ public class AjaxBridgeServlet extends HttpServlet {
                     debug("received ID = [submissionId ID] : " + submissionId);
                     debug("received payPalOrderId = [payPalOrderId] : " + payPalOrderId);
 
-                    studioService.purchaseSubmission(Long.parseLong(submissionId), payPalOrderId);
+                    studioService.purchaseSubmission(Long.parseLong(submissionId), payPalOrderId, securityToken);
 
                     printSuccessResponse(getSuccessJSONResponse(), response);
                     debug("purchaseSubmission success!");
@@ -1053,6 +1053,15 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                     printSuccessResponse(getSuccessJSONResponse(), response);
                     debug("markForPurchase success!");
+                } else if ("generateSecurityToken".equals(method)) {
+                    String generateSecurityToken = studioService.generateSecurityToken();
+
+                    JSONObject respJSON =  new JSONObject();
+                    respJSON.setString("securityToken", generateSecurityToken);
+                    // send the JSONObject as a response
+                    sendJSONObjectAsResponse(respJSON, response);
+                    
+                    debug("generateSecurityToken success!");
                 } else {
                     // if we reach here this means the service param is invalid
                     sendErrorJSONResponse("The 'service' param passed is invalid.", response);
