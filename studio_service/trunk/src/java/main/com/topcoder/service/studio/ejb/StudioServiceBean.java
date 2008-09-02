@@ -83,6 +83,7 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * This is the EJB implementation of the StudioService interface webservice
@@ -1836,7 +1837,7 @@ public class StudioServiceBean implements StudioService {
      */
     private void logEnter(String method, Object... params) {
         if (log != null) {
-            log.log(Level.DEBUG, "Enter method {0} with parameters {1}.", method, Arrays.deepToString(params));
+            log.log(Level.DEBUG, "Enter method StudioServiceBean.{0} with parameters {1}.", method, Arrays.deepToString(params));
         }
     }
 
@@ -2395,17 +2396,21 @@ public class StudioServiceBean implements StudioService {
      *            the id of submission to purchase.
      * @param payPalOrderId
      *            PayPal order id.
+     * @param securityToken the security token.
+     * 
      * @throws PersistenceException
      *             if any error occurs when purchasing submission.
      * @throws IllegalArgumentWSException
      *             if the submissionId is less than 0 or price is negative.
      */
-    public void purchaseSubmission(long submissionId, String payPalOrderId) throws PersistenceException {
+    public void purchaseSubmission(long submissionId, String payPalOrderId, String securityToken) throws PersistenceException {
         logEnter("purchaseSubmission", submissionId, payPalOrderId);
         checkParameter("submissionId", submissionId);
         checkParameter("payPalOrderId", payPalOrderId);
 
         try {
+            authorizeWithSecurityToken(securityToken);
+            
             Submission submission = submissionManager.getSubmission(submissionId);
 
             if (submission == null) {
@@ -2502,6 +2507,7 @@ public class StudioServiceBean implements StudioService {
      * 
      * @param contestPaymentData
      *            the contest payment to create
+     * @param securityToken the security token.
      * @return the created contest payment.
      * 
      * @throws IllegalArgumentException
@@ -2509,14 +2515,15 @@ public class StudioServiceBean implements StudioService {
      * @throws PersistenceException
      *             if any other error occurs.
      */
-    public ContestPaymentData createContestPayment(ContestPaymentData contestPaymentData) throws PersistenceException {
+    public ContestPaymentData createContestPayment(ContestPaymentData contestPaymentData, String securityToken)
+            throws PersistenceException {
         logEnter("createContestPayment", contestPaymentData);
         checkParameter("contestPaymentData", contestPaymentData);
 
-
         try {
+            authorizeWithSecurityToken(securityToken);
             authorizeWithContest(contestPaymentData.getContestId());
-
+            
             ContestPayment contestPayment = convertContestPaymentData(contestPaymentData);
             contestPayment = contestManager.createContestPayment(contestPayment);
         } catch (ContestManagementException e) {
@@ -2839,6 +2846,55 @@ public class StudioServiceBean implements StudioService {
             return;
         } catch (SubmissionManagementException e) {
             handlePersistenceError("SubmissionManagement reports error.", e);
+        }
+    }
+
+    /**
+     * Generates temporary security token.
+     * 
+     * @return an temporary security token.
+     * 
+     * @since TCCC-428
+     */
+    public String generateSecurityToken() throws PersistenceException {
+        logEnter("generateSecurityToken");
+
+        try {
+            UUID randomUUID = UUID.randomUUID();
+            contestManager.createSecurityToken(randomUUID.toString());
+            logExit("generateSecurityToken");
+            return randomUUID.toString();
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while retrieving contest.", e);
+        }
+
+        return null;
+    }
+
+    /**
+     * Implements standard algorithm of authorization based on security token.
+     * The token will be removed if matched.
+     * 
+     * @param token
+     *            security token.
+     * @throws PersistenceException
+     *             when ContestManager reports some error
+     * @throws UserNotAuthorizedException
+     *             if access was denied
+     */
+    private void authorizeWithSecurityToken(String token) throws PersistenceException {
+        try {
+            boolean pass = contestManager.matchSecurityToken(token);
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            long userId = p.getUserId();
+
+            if (!pass) {
+                throw new UserNotAuthorizedException("Access denied for the security token " + token, userId);
+            } else {
+                contestManager.removeSecurityToken(token);
+            }
+        } catch (ContestManagementException e) {
+            handlePersistenceError("Error when trying to match security token.", e);
         }
     }
 }

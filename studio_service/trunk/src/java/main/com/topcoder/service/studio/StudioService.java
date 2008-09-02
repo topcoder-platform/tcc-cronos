@@ -418,13 +418,14 @@ public interface StudioService {
 	 * @param submissionId
 	 *            the id of submission to remove
      * @param payPalOrderId PayPal order id.
+     * @param securityToken the security token.
      *
 	 * @throws PersistenceException
 	 *             if any error occurs when purchasing submission.
 	 * @throws IllegalArgumentWSException
 	 *             if the submissionId is less than 0 or price is negative.
 	 */
-	public void purchaseSubmission(long submissionId, String payPalOrderId)
+	public void purchaseSubmission(long submissionId, String payPalOrderId, String securityToken)
 			throws PersistenceException;
 
     /**
@@ -432,14 +433,16 @@ public interface StudioService {
      * Creates a new contest payment and returns the created contest payment.
      * </p>
      *
-     * @param contestPayment the contest payment to create
+     * @param contestPayment the contest payment to create.
+     * @param securityToken the security token.
+     * 
      * @return the created contest payment.
      *
      * @throws IllegalArgumentException if the arg is null.
      * @throws EntityAlreadyExistsException if the entity already exists in the persistence.
      * @throws ContestManagementException if any other error occurs.
      */
-    public ContestPaymentData createContestPayment(ContestPaymentData contestPayment) throws PersistenceException;
+    public ContestPaymentData createContestPayment(ContestPaymentData contestPayment,String securityToken) throws PersistenceException;
     
     /**
      * <p>
@@ -508,5 +511,15 @@ public interface StudioService {
      * 
      *  @since TCCC-353
      */
-    public void markForPurchase(long submissionId)throws PersistenceException; 
+    public void markForPurchase(long submissionId)throws PersistenceException;
+    
+    /**
+     * Generates temporary security token.
+     * 
+     * @return an temporary security token.
+     * @throws PersistenceException 
+     * 
+     * @since TCCC-428
+     */
+    public String generateSecurityToken() throws PersistenceException;
 }
