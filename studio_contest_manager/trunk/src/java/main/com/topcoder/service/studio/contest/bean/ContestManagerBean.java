@@ -3084,7 +3084,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public BigDecimal getContestPostCount(long forumId) throws ContestManagementException {
+    public int getContestPostCount(long forumId) throws ContestManagementException {
         try {
             logEnter("getContestPostCount()");
 
@@ -3094,7 +3094,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             query.setParameter(1, 1);
 
             BigDecimal count = (BigDecimal) query.getSingleResult();
-            return count;
+            return count.intValue();
         } catch (IllegalStateException e) {
             throw wrapContestManagementException(e, "The EntityManager is closed.");
         } catch (PersistenceException e) {

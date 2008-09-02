@@ -936,7 +936,7 @@ public interface ContestManager {
      * @throws ContestManagementException
      *             if any error occurs when getting contest post count.
      */
-    public BigDecimal getContestPostCount(long forumId) throws ContestManagementException;
+    public int getContestPostCount(long forumId) throws ContestManagementException;
 
     /**
      * <p>
