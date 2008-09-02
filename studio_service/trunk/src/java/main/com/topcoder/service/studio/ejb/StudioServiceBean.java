@@ -1439,8 +1439,11 @@ public class StudioServiceBean implements StudioService {
         contestData.setMedia(mediums);
 
         // TCCC-457
-        contestData.setForumId(contest.getForumId());
-        contestData.setForumPostCount(contestManager.getContestPostCount(contest.getForumId()));
+        Long forumId = contest.getForumId();
+        if (forumId != null) {
+            contestData.setForumId(forumId);
+            contestData.setForumPostCount(contestManager.getContestPostCount(forumId));
+        }
         
         return contestData;
     }

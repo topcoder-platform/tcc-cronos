@@ -70,7 +70,7 @@ public class ContestData implements Serializable {
      * Represents the forum post count
      * </p>
      */
-    private BigDecimal forumPostCount;
+    private int forumPostCount = -1;
     
     /**
      * <p>
@@ -885,7 +885,7 @@ public class ContestData implements Serializable {
      *
      * @return the forumPostCount
      */
-    public BigDecimal getForumPostCount() {
+    public int getForumPostCount() {
         return forumPostCount;
     }
 
@@ -895,7 +895,7 @@ public class ContestData implements Serializable {
      * @param PostCount
      *            the PostCount to set
      */
-    public void setForumPostCount(BigDecimal forumPostCount) {
+    public void setForumPostCount(int forumPostCount) {
         this.forumPostCount = forumPostCount;
     }
 
