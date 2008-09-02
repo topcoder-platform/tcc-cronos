@@ -19,6 +19,65 @@
 <script language="JavaScript">
 
 /**
+ * <p>Tests Studio.generateSecurityToken().</p>
+ */
+function testStudioGenerateSecurityToken() {
+    // initialize the studio service
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+
+    // success callback 
+    var success = function(token) {
+        alert("Success = token retrieved : " + token.securityToken);
+    }
+    // error callback
+    var error = function(errMsg) {
+        alert("Error = " + errMsg);
+    }
+    
+    studioService.generateSecurityToken(success,error);
+}
+
+
+/**
+ * <p>Tests Studio.setSubmissionPlacement().</p>
+ */
+function testStudioSetSubmissionPlacement() {
+    // initialize the studio service
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+
+    // success callback 
+    var success = function() {
+        alert("Success");
+    }
+    // error callback
+    var error = function(errMsg) {
+        alert("Error = " + errMsg);
+    }
+    
+    studioService.setSubmissionPlacement(10733,3,success,error);
+}
+
+
+/**
+ * <p>Tests Studio.setSubmissionPlacement().</p>
+ */
+function testStudioSetSubmissionPlacement() {
+    // initialize the studio service
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+
+    // success callback 
+    var success = function() {
+        alert("Success");
+    }
+    // error callback
+    var error = function(errMsg) {
+        alert("Error = " + errMsg);
+    }
+    
+    studioService.setSubmissionPlacement(10733,3,success,error);
+}
+
+/**
  * <p>Tests Studio.createContest().</p>
  */
 function testStudioCreateContest() {
@@ -442,7 +501,7 @@ function testStudioUpdateContest() {
     }
     
     var contest = getContest1();
-    
+    contest.setContestID(260);
     studioService.updateContest(contest,success,error);
 }
 
@@ -530,28 +589,6 @@ function testStudioRemoveSubmission() {
     }
     
     studioService.removeSubmission(submissionID,success,error);
-}
-
-
-/**
- * <p>Tests Studio.removeDocument().</p>
- */
-function testStudioRemoveDocument() {
-
-    // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
-    var documentId = 1;
-
-    // success callback 
-    var success = function() {
-        alert("Success = Document removed!");
-    }
-    // error callback
-    var error = function(errMsg) {
-        alert("Error = "+errMsg);
-    }
-    
-    studioService.removeDocument(documentId,success,error);
 }
 
 /**
@@ -722,7 +759,6 @@ function getContest1() {
     contest.setCreatorUserID(7000);
     contest.setSubmissionCount(3);
     contest.setRequiresPreviewFile(false);
-    contest.setRequiresPreviewImage(false);
     contest.setMaximumSubmissions(100);
     contest.setNumberOfRegistrants(100);
     contest.setContestChannelID(1);
@@ -768,17 +804,14 @@ function testStudioCreateContestPayment() {
     var removesuccess = function() {
     }
     // remove first.
-    studioService.removeContestPayment(2011,removesuccess,error);
+    // studioService.removeContestPayment(2011,removesuccess,error);
     
     var contestPayment = new js.topcoder.widgets.bridge.ContestPayment();
     contestPayment.setPaymentStatusId(1);
     contestPayment.setContestId(2011);
     contestPayment.setPrize(123.34);
     contestPayment.setPaypalOrderId("1asdfewr34");
-    contestPayment.setUsername("topcoder client");
-    contestPayment.setPaymentType("contest fee");
-    
-    studioService.createContestPayment(contestPayment,success,error);
+    studioService.createContestPayment(contestPayment,"20c6c322-d0db-4498-b48e-de78339083dc",success,error);
 }
 
 /**
@@ -825,65 +858,6 @@ function testStudioRemoveContestPayment() {
     studioService.removeContestPayment(2011,success,error);
 }
 
-/**
- * <p>Tests Studio.purchaseSubmission().</p>
- */
-function testStudioPurchaseSubmission() {
-    // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
-
-    // success callback 
-    var success = function() {
-        alert("Success = purchaseSubmission succeed!");
-    }
-    // error callback
-    var error = function(errMsg) {
-        alert("Error = "+errMsg);
-    }
-    
-    studioService.purchaseSubmission(10651,"superZZ",success,error);
-}
-
-
-/**
- * <p>Tests Studio.setSubmissionPlacement().</p>
- */
-function testStudioSetSubmissionPlacement() {
-    // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
-
-    // success callback 
-    var success = function() {
-        alert("Success = setSubmissionPlacement succeed!");
-    }
-    // error callback
-    var error = function(errMsg) {
-        alert("Error = "+errMsg);
-    }
-    
-    studioService.setSubmissionPlacement(10651,1,success,error);
-}
-
-
-
-/**
- * <p>Tests Studio.markForPurchase().</p>
- */
-function testStudioMarkForPurchase() {
-    // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
-
-    // success callback 
-    var success = function() {
-        alert("Success = markForPurchase succeed!");
-    }
-    // error callback
-    var error = function(errMsg) {
-        alert("Error = "+errMsg);
-    }
-
-    studioService.markForPurchase(10651,success,error);
-}
 </script>
 </head>
 
@@ -915,12 +889,10 @@ Widget Webservices Bridge Demo
     <li>Studio.removeContestPayment() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioRemoveContestPayment()" /></li>
     <li>Studio.getContestPayment() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetContestPayment()" /></li>
     <li>Studio.getAllMedia() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetAllMedia()" /></li>
+    <li>Studio.setSubmissionPlacement() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioSetSubmissionPlacement()" /></li>    
+    <li>Studio.generateSecurityToken() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGenerateSecurityToken()" /></li>    
     
-    <li>Studio.purchaseSubmission() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioPurchaseSubmission()" /></li>
     
-    <li>Studio.setSubmissionPlacement() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioSetSubmissionPlacement()" /></li>
-    <li>Studio.markForPurchase() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioMarkForPurchase()" /></li>
-    <li>Studio.removeDocument() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioRemoveDocument()" /></li>
 </ul>
 <br />
 <span style="color:red;"><b>Some Studio Services Error Demo</b></span>
