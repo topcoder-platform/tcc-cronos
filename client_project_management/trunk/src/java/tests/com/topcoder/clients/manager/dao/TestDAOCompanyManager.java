@@ -874,24 +874,6 @@ public class TestDAOCompanyManager extends TestCase {
     /**
      * Test method for 'retrieveCompany(long)'.
      * <p>
-     * Non-company is returned, CompanyManagerException is expected.
-     * </p>
-     *
-     * @throws Exception
-     *             to junit
-     */
-    public void testRetrieveCompany_F_4() throws Exception {
-        try {
-            manager.retrieveCompany(3L);
-            fail("CompanyManagerException is expected.");
-        } catch (CompanyManagerException e) {
-            // ok
-        }
-    }
-
-    /**
-     * Test method for 'retrieveCompany(long)'.
-     * <p>
      * A company should be returned.
      * </p>
      *

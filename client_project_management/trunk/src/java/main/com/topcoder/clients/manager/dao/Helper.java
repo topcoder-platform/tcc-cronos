@@ -712,7 +712,6 @@ final class Helper {
         builder.append(" id=" + project.getId());
         builder.append(" name=" + project.getName());
         builder.append(" description=" + project.getDescription());
-        builder.append(" parentProjectId=" + project.getParentProjectId());
         builder.append(" salesTax=" + project.getSalesTax());
 
         // log the client.

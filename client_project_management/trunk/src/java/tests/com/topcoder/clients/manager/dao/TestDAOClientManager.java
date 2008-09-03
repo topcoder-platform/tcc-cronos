@@ -804,31 +804,6 @@ public class TestDAOClientManager extends TestCase {
     /**
      * Test method for 'com.topcoder.clients.manager.dao.DAOClientManager.createClient(Client)'.
      * <p>
-     * In this test case, ClassCastException will be thrown. ClientManagerException is expected.
-     * <p>
-     *
-     * @throws Exception
-     *             to junit
-     */
-    public void testCreateClient_Failure_8() throws Exception {
-        Client client = new Client();
-        client.setStartDate(new Date(System.currentTimeMillis() - 10000000000L));
-        client.setEndDate(new Date(System.currentTimeMillis() + 10000000L));
-        client.setName("ClassCastException");
-        client.setDeleted(false);
-        client.setId(999);
-
-        try {
-            manager.createClient(client);
-            fail("ClientManagerException is expected.");
-        } catch (ClientManagerException e) {
-            // ok
-        }
-    }
-
-    /**
-     * Test method for 'com.topcoder.clients.manager.dao.DAOClientManager.createClient(Client)'.
-     * <p>
      * In this test case, the Client should be saved.
      * <p>
      *
@@ -1114,31 +1089,6 @@ public class TestDAOClientManager extends TestCase {
             manager.updateClient(client);
             fail("ClientEntityNotFoundException is expected.");
         } catch (ClientEntityNotFoundException e) {
-            // ok
-        }
-    }
-
-    /**
-     * Test method for 'com.topcoder.clients.manager.dao.DAOClientManager.updateClient(Client)'.
-     * <p>
-     * ClassCastException will be thrown, ClientManagerException is expected.
-     * </p>
-     *
-     * @throws Exception
-     *             to junit
-     */
-    public void testUpdateClient_Failure_9() throws Exception {
-        try {
-            Client client = new Client();
-            client.setStartDate(new Date(System.currentTimeMillis() - 10000000000L));
-            client.setEndDate(new Date(System.currentTimeMillis() + 10000000L));
-            client.setName("ClassCastException");
-            client.setDeleted(false);
-            client.setId(1L);
-
-            manager.updateClient(client);
-            fail("ClientManagerException is expected.");
-        } catch (ClientManagerException e) {
             // ok
         }
     }
@@ -1806,25 +1756,6 @@ public class TestDAOClientManager extends TestCase {
     /**
      * Test method for 'com.topcoder.clients.manager.dao.DAOClientManager.retrieveClient(long)'.
      * <p>
-     * ClientManagerException is expected as non-client is returned.
-     * </p>
-     *
-     * @throws Exception
-     *             to junit
-     */
-    public void testRetrieveClient_F_2() throws Exception {
-        try {
-            manager.retrieveClient(999);
-            fail("ClientManagerException is expected.");
-        } catch (ClientManagerException e) {
-
-            // ok
-        }
-    }
-
-    /**
-     * Test method for 'com.topcoder.clients.manager.dao.DAOClientManager.retrieveClient(long)'.
-     * <p>
      * ClientManagerException is expected as DAOConfigurationException will be raised.
      * </p>
      *
@@ -2164,25 +2095,6 @@ public class TestDAOClientManager extends TestCase {
     public void testGetClientStatus_F_3() throws Exception {
         try {
             manager.getClientStatus(10002);
-            fail(" ClientManagerException is expected.");
-        } catch (ClientManagerException e) {
-
-            // ok
-        }
-    }
-
-    /**
-     * Test method for 'com.topcoder.clients.manager.dao.DAOClientManager.getClientStatus(long)'.
-     * <p>
-     * Inner ClassCastException is thrown, ClientManagerException is expected.
-     * </p>
-     *
-     * @throws Exception
-     *             to junit
-     */
-    public void testGetClientStatus_F_4() throws Exception {
-        try {
-            manager.getClientStatus(101);
             fail(" ClientManagerException is expected.");
         } catch (ClientManagerException e) {
 
@@ -2921,56 +2833,6 @@ public class TestDAOClientManager extends TestCase {
             manager.updateClientStatus(status);
             fail("ClientEntityNotFoundException is expected.");
         } catch (ClientEntityNotFoundException e) {
-
-            // ok
-        }
-    }
-
-    /**
-     * Test method for 'com.topcoder.clients.manager.dao.DAOClientManager.updateClientStatus(ClientStatus)'.
-     * <p>
-     * the clientStatus cannot be found in the persistence, ClientEntityNotFoundException is expected.
-     * </p>
-     *
-     * @throws Exception
-     *             to junit
-     */
-    public void testUpdateClientStatus_11() throws Exception {
-        try {
-            ClientStatus status = new ClientStatus();
-            status.setName("DAOConfigurationException");
-            status.setDeleted(false);
-            status.setDescription("d");
-            status.setId(1000L);
-
-            manager.updateClientStatus(status);
-            fail("ClientEntityNotFoundException is expected.");
-        } catch (ClientEntityNotFoundException e) {
-
-            // ok
-        }
-    }
-
-    /**
-     * Test method for 'com.topcoder.clients.manager.dao.DAOClientManager.updateClientStatus(ClientStatus)'.
-     * <p>
-     * ClassCastException will be thrown, ClientManagerException is expected.
-     * </p>
-     *
-     * @throws Exception
-     *             to junit
-     */
-    public void testUpdateClientStatus_12() throws Exception {
-        try {
-            ClientStatus status = new ClientStatus();
-            status.setName("ClassCastException");
-            status.setDeleted(false);
-            status.setDescription("d");
-            status.setId(3L);
-
-            manager.updateClientStatus(status);
-            fail("ClientManagerException is expected.");
-        } catch (ClientManagerException e) {
 
             // ok
         }

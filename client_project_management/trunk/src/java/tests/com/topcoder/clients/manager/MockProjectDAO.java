@@ -3,7 +3,6 @@
  */
 package com.topcoder.clients.manager;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import com.topcoder.clients.dao.DAOConfigurationException;
 import com.topcoder.clients.dao.DAOException;
 import com.topcoder.clients.dao.EntityNotFoundException;
 import com.topcoder.clients.dao.ProjectDAO;
-import com.topcoder.clients.model.AuditableEntity;
 import com.topcoder.clients.model.Client;
 import com.topcoder.clients.model.Project;
 import com.topcoder.search.builder.filter.EqualToFilter;
@@ -24,7 +22,7 @@ import com.topcoder.search.builder.filter.Filter;
  * @version 1.0
  *
  */
-public class MockProjectDAO implements ProjectDAO<Project, Long> {
+public class MockProjectDAO implements ProjectDAO {
     /**
      * The flag to control exception thrown.
      */
@@ -69,7 +67,7 @@ public class MockProjectDAO implements ProjectDAO<Project, Long> {
      * @throws DAOException
      *             to junit
      */
-    public AuditableEntity retrieveById(Serializable id) throws DAOException {
+    public Project retrieveById(Long id) throws DAOException {
         long value = new Long(String.valueOf(id)).longValue();
 
         if (value < 0) {
@@ -89,7 +87,7 @@ public class MockProjectDAO implements ProjectDAO<Project, Long> {
         }
 
         if (value == 4) {
-            throw new EntityNotFoundException("not found.", 4L);
+            throw new EntityNotFoundException("not found.");
         }
 
         return null;
@@ -157,11 +155,11 @@ public class MockProjectDAO implements ProjectDAO<Project, Long> {
      * Save the entry.
      *
      * @param entry
-     *            the AuditableEntity to save.
+     *            the Project to save.
      * @return entity
      * @throws DAOException for testing
      */
-    public AuditableEntity save(AuditableEntity entry) throws DAOException {
+    public Project save(Project entry) throws DAOException {
         if ("DAOException".equals(entry.getName())) {
 
             throw new DAOException("Throw for testing", new NullPointerException("NPE Raised "));
@@ -171,7 +169,7 @@ public class MockProjectDAO implements ProjectDAO<Project, Long> {
             throw new DAOConfigurationException("Throw for testing", new NullPointerException("NPE Raised "));
         }
         if ("ClassCastException".equals(entry.getName())) {
-            return new Client();
+           throw new ClassCastException("for testing");
         }
 
         entry.setModifyUsername("saved");
@@ -179,16 +177,16 @@ public class MockProjectDAO implements ProjectDAO<Project, Long> {
     }
 
     /**
-     * Delete the AuditableEntity.
+     * Delete the Project.
      *
      * @param entity
-     *            the AuditableEntity to delete
+     *            the Project to delete
      * @throws DAOException
      *             if anything goes wrong
      */
-    public void delete(AuditableEntity entity) throws DAOException {
+    public void delete(Project entity) throws DAOException {
         if ("entityNotFound".equals(entity.getName())) {
-            throw new EntityNotFoundException("The entity is not found.", new IllegalArgumentException("IAE"), 1L);
+            throw new EntityNotFoundException("The entity is not found.", new IllegalArgumentException("IAE"));
         }
 
         if ("DAOException".equals(entity.getName())) {
@@ -223,6 +221,8 @@ public class MockProjectDAO implements ProjectDAO<Project, Long> {
             throw new DAOConfigurationException("For testing");
         }
 
-        return null;
+        Project project = new Project();
+        project.setParentProjectId(11);
+        return project;
     }
 }

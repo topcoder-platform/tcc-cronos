@@ -3,13 +3,11 @@
  */
 package com.topcoder.clients.manager.accuracytests;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.topcoder.clients.dao.CompanyDAO;
 import com.topcoder.clients.dao.DAOException;
-import com.topcoder.clients.model.AuditableEntity;
 import com.topcoder.clients.model.Client;
 import com.topcoder.clients.model.Company;
 import com.topcoder.clients.model.Project;
@@ -22,7 +20,7 @@ import com.topcoder.search.builder.filter.Filter;
  * @author onsky
  * @version 1.0
  */
-public class MockCompanyDAO implements CompanyDAO<Company, Long> {
+public class MockCompanyDAO implements CompanyDAO {
     /**
      * Mock Method.
      *
@@ -63,7 +61,7 @@ public class MockCompanyDAO implements CompanyDAO<Company, Long> {
      *
      * @throws DAOException if such error
      */
-    public void delete(AuditableEntity entity) throws DAOException {
+    public void delete(Company entity) throws DAOException {
     }
 
     /**
@@ -92,7 +90,7 @@ public class MockCompanyDAO implements CompanyDAO<Company, Long> {
      *
      * @throws DAOException if such error
      */
-    public AuditableEntity retrieveById(Serializable id)
+    public Company retrieveById(Long id)
         throws DAOException {
         return getSampleCompany((Long) id);
     }
@@ -106,7 +104,7 @@ public class MockCompanyDAO implements CompanyDAO<Company, Long> {
      *
      * @throws DAOException if such error
      */
-    public AuditableEntity save(AuditableEntity entity)
+    public Company save(Company entity)
         throws DAOException {
         entity.setId(10L);
 

@@ -21,7 +21,7 @@ import com.topcoder.search.builder.filter.Filter;
  * @version 1.0
  *
  */
-public class MockProjectStatusDAOAcc implements ProjectStatusDAO<ProjectStatus, Long> {
+public class MockProjectStatusDAOAcc implements ProjectStatusDAO {
 
     /**
      * Get the ProjectStatus with id.
@@ -32,7 +32,7 @@ public class MockProjectStatusDAOAcc implements ProjectStatusDAO<ProjectStatus, 
      * @throws DAOException
      *             to junit
      */
-    public ProjectStatus retrieveById(Serializable id) throws DAOException {
+    public ProjectStatus retrieveById(Long id) throws DAOException {
         long value = new Long(String.valueOf(id)).longValue();
 
         if (value == 1) {
@@ -85,7 +85,7 @@ public class MockProjectStatusDAOAcc implements ProjectStatusDAO<ProjectStatus, 
      *            the entity to save
      * @return the entity
      */
-    public AuditableEntity save(AuditableEntity entity) {
+    public ProjectStatus save(ProjectStatus entity) {
         entity.setCreateUsername("status");
 
         return entity;
@@ -97,7 +97,7 @@ public class MockProjectStatusDAOAcc implements ProjectStatusDAO<ProjectStatus, 
      * @param entity
      *            the entity
      */
-    public void delete(AuditableEntity entity) {
+    public void delete(ProjectStatus entity) {
     }
 
     /**

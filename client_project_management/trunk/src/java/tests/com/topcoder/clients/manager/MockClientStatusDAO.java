@@ -3,16 +3,13 @@
  */
 package com.topcoder.clients.manager;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.topcoder.clients.dao.ClientStatusDAO;
 import com.topcoder.clients.dao.DAOConfigurationException;
 import com.topcoder.clients.dao.DAOException;
 import com.topcoder.clients.dao.EntityNotFoundException;
-import com.topcoder.clients.model.AuditableEntity;
 import com.topcoder.clients.model.Client;
 import com.topcoder.clients.model.ClientStatus;
 import com.topcoder.search.builder.filter.Filter;
@@ -24,7 +21,7 @@ import com.topcoder.search.builder.filter.Filter;
  * @version 1.0
  *
  */
-public class MockClientStatusDAO implements ClientStatusDAO<ClientStatus, Long> {
+public class MockClientStatusDAO implements ClientStatusDAO {
 
     /**
      * The flag to control exception thrown.
@@ -52,7 +49,7 @@ public class MockClientStatusDAO implements ClientStatusDAO<ClientStatus, Long> 
      * @throws DAOConfigurationException
      *             for testing purpose
      */
-    public AuditableEntity retrieveById(Serializable id) throws DAOException {
+    public ClientStatus retrieveById(Long id) throws DAOException {
 
         long value = new Long(String.valueOf(id)).longValue();
 
@@ -60,15 +57,6 @@ public class MockClientStatusDAO implements ClientStatusDAO<ClientStatus, Long> 
             throw new IllegalArgumentException("The parameter id should not < 0");
         }
 
-        if (value == 1) {
-            Client client = new Client();
-            client.setStartDate(new Date(System.currentTimeMillis() - 10000000000L));
-            client.setEndDate(new Date(System.currentTimeMillis() + 10000000L));
-            client.setName("ok");
-            client.setDeleted(false);
-
-            return client;
-        }
 
         if (value == 2) {
             return null;
@@ -84,9 +72,6 @@ public class MockClientStatusDAO implements ClientStatusDAO<ClientStatus, Long> 
             return status;
         }
 
-        if (value == 101) {
-            return new Client();
-        }
 
         if (value == 999) {
             ClientStatus status = new ClientStatus();
@@ -94,9 +79,6 @@ public class MockClientStatusDAO implements ClientStatusDAO<ClientStatus, Long> 
             return status;
         }
 
-        if (value == 1000) {
-            throw new EntityNotFoundException("Throw for testing", 1000L);
-        }
 
         if (value == 10001) {
             throw new DAOException("Throw for testing", new NullPointerException("NPE Raised "));
@@ -159,27 +141,23 @@ public class MockClientStatusDAO implements ClientStatusDAO<ClientStatus, Long> 
     }
 
     /**
-     * Save the AuditableEntity.
+     * Save the ClientStatus.
      *
      * @param entity
-     *            the AuditableEntity to save
-     * @return AuditableEntity instance
+     *            the ClientStatus to save
+     * @return ClientStatus instance
      * @throws DAOException
      *             for testing purpose
      * @throws DAOConfigurationException
      *             for testing purpose
      */
-    public AuditableEntity save(AuditableEntity entity) throws DAOException {
+    public ClientStatus save(ClientStatus entity) throws DAOException {
         if ("DAOException".equals(entity.getName())) {
             throw new DAOException("Throw for testing");
         }
 
         if ("DAOConfigurationException".equals(entity.getName())) {
             throw new DAOConfigurationException("Throw for testing");
-        }
-
-        if ("ClassCastException".equals(entity.getName())) {
-            return new Client();
         }
         entity.setCreateUsername("test");
         return entity;
@@ -196,10 +174,10 @@ public class MockClientStatusDAO implements ClientStatusDAO<ClientStatus, Long> 
      *             for testing purpose
      * @throws EntityNotFoundException for testing
      */
-    public void delete(AuditableEntity entity) throws DAOException {
+    public void delete(ClientStatus entity) throws DAOException {
 
         if ("EntityNotFoundException".equals(entity.getName())) {
-            throw new EntityNotFoundException("Throw for testing", 1L);
+            throw new EntityNotFoundException("Throw for testing");
         }
 
         if ("DAOException".equals(entity.getName())) {
@@ -226,7 +204,7 @@ public class MockClientStatusDAO implements ClientStatusDAO<ClientStatus, Long> 
      */
     public List<Client> getClientsWithStatus(ClientStatus status) throws DAOException {
         if ("entity".equals(status.getName())) {
-            throw new EntityNotFoundException("The entity is not found.", new IllegalArgumentException("IAE"), 1L);
+            throw new EntityNotFoundException("The entity is not found.", new IllegalArgumentException("IAE"));
         }
 
         if ("DAOException".equals(status.getName())) {

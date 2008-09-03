@@ -3,7 +3,6 @@
  */
 package com.topcoder.clients.manager;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +10,6 @@ import com.topcoder.clients.dao.DAOConfigurationException;
 import com.topcoder.clients.dao.DAOException;
 import com.topcoder.clients.dao.EntityNotFoundException;
 import com.topcoder.clients.dao.ProjectStatusDAO;
-import com.topcoder.clients.model.AuditableEntity;
-import com.topcoder.clients.model.Client;
 import com.topcoder.clients.model.Project;
 import com.topcoder.clients.model.ProjectStatus;
 import com.topcoder.search.builder.filter.Filter;
@@ -24,7 +21,7 @@ import com.topcoder.search.builder.filter.Filter;
  * @version 1.0
  *
  */
-public class MockProjectStatusDAO implements ProjectStatusDAO<ProjectStatus, Long> {
+public class MockProjectStatusDAO implements ProjectStatusDAO {
     /**
      * The flag to control exception thrown.
      */
@@ -49,7 +46,7 @@ public class MockProjectStatusDAO implements ProjectStatusDAO<ProjectStatus, Lon
      * @throws DAOException
      *             to junit
      */
-    public AuditableEntity retrieveById(Serializable id) throws DAOException {
+    public ProjectStatus retrieveById(Long id) throws DAOException {
         long value = new Long(String.valueOf(id)).longValue();
 
         if (value < 0) {
@@ -59,11 +56,11 @@ public class MockProjectStatusDAO implements ProjectStatusDAO<ProjectStatus, Lon
             return null;
         }
         if (value == 4) {
-            return new Client();
+            throw new ClassCastException("for testing");
         }
 
         if (value == 2) {
-            throw new EntityNotFoundException("Throw for testing", 2L);
+            throw new EntityNotFoundException("Throw for testing");
         }
         if (value == 1001) {
             throw new DAOConfigurationException("Throw for testing", new NullPointerException("NPE Raised "));
@@ -133,7 +130,7 @@ public class MockProjectStatusDAO implements ProjectStatusDAO<ProjectStatus, Lon
      * @throws DAOConfigurationException
      *             for testing
      */
-    public AuditableEntity save(AuditableEntity entity) throws DAOException {
+    public ProjectStatus save(ProjectStatus entity) throws DAOException {
         if ("DAOException".equals(entity.getName())) {
 
             throw new DAOException("Throw for testing", new NullPointerException("NPE Raised "));
@@ -143,7 +140,7 @@ public class MockProjectStatusDAO implements ProjectStatusDAO<ProjectStatus, Lon
             throw new DAOConfigurationException("Throw for testing", new NullPointerException("NPE Raised "));
         }
         if ("ClassCastException".equals(entity.getName())) {
-            return new Client();
+           throw new ClassCastException("For testing");
         }
 
         entity.setCreateUsername("status");
@@ -162,9 +159,9 @@ public class MockProjectStatusDAO implements ProjectStatusDAO<ProjectStatus, Lon
      * @throws DAOException
      *             for testing
      */
-    public void delete(AuditableEntity entity) throws DAOException {
+    public void delete(ProjectStatus entity) throws DAOException {
         if ("entityNotFound".equals(entity.getName())) {
-            throw new EntityNotFoundException("The entity is not found.", new IllegalArgumentException("IAE"), 1L);
+            throw new EntityNotFoundException("The entity is not found.", new IllegalArgumentException("IAE"));
         }
 
         if ("DAOException".equals(entity.getName())) {

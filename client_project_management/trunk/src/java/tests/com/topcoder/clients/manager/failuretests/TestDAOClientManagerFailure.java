@@ -1331,24 +1331,6 @@ public class TestDAOClientManagerFailure extends TestCase {
     /**
      * Test method for 'com.topcoder.clients.manager.dao.DAOClientManager.retrieveClient(long)'.
      * <p>
-     * ClientManagerException is expected as non-client is returned.
-     * </p>
-     *
-     * @throws Exception
-     *             to junit
-     */
-    public void testRetrieveClientWithInvalid2() throws Exception {
-        try {
-            manager.retrieveClient(999);
-            fail("ClientManagerException is expected.");
-        } catch (ClientManagerException e) {
-            // expected
-        }
-    }
-
-    /**
-     * Test method for 'com.topcoder.clients.manager.dao.DAOClientManager.retrieveClient(long)'.
-     * <p>
      * ClientManagerException is expected as DAOConfigurationException will be raised.
      * </p>
      *
@@ -1627,25 +1609,6 @@ public class TestDAOClientManagerFailure extends TestCase {
     public void testGetClientStatusFailure3() throws Exception {
         try {
             manager.getClientStatus(10002);
-            fail(" ClientManagerException is expected.");
-        } catch (ClientManagerException e) {
-
-            // expected
-        }
-    }
-
-    /**
-     * Test method for 'com.topcoder.clients.manager.dao.DAOClientManager.getClientStatus(long)'.
-     * <p>
-     * Inner ClassCastException is thrown, ClientManagerException is expected.
-     * </p>
-     *
-     * @throws Exception
-     *             to junit
-     */
-    public void testGetClientStatusFailure4() throws Exception {
-        try {
-            manager.getClientStatus(101);
             fail(" ClientManagerException is expected.");
         } catch (ClientManagerException e) {
 

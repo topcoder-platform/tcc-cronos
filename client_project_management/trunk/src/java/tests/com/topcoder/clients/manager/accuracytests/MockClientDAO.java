@@ -3,7 +3,6 @@
  */
 package com.topcoder.clients.manager.accuracytests;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.List;
 import com.topcoder.clients.dao.ClientDAO;
 import com.topcoder.clients.dao.DAOException;
 import com.topcoder.clients.dao.EntityNotFoundException;
-import com.topcoder.clients.model.AuditableEntity;
 import com.topcoder.clients.model.Client;
 import com.topcoder.clients.model.ClientStatus;
 import com.topcoder.clients.model.Project;
@@ -24,7 +22,7 @@ import com.topcoder.search.builder.filter.Filter;
  * @author onsky
  * @version 1.0
   */
-public class MockClientDAO implements ClientDAO<Client, Long> {
+public class MockClientDAO implements ClientDAO {
     /**
      * Mock Method.
      *
@@ -51,7 +49,7 @@ public class MockClientDAO implements ClientDAO<Client, Long> {
      *
      * @throws DAOException if such error
      */
-    public void delete(AuditableEntity entity) throws DAOException {
+    public void delete(Client entity) throws DAOException {
         entity.setId(0);
     }
 
@@ -81,7 +79,7 @@ public class MockClientDAO implements ClientDAO<Client, Long> {
      *
      * @throws DAOException if such error
      */
-    public AuditableEntity retrieveById(Serializable id)
+    public Client retrieveById(Long id)
         throws DAOException {
         return getSampleClient((Long) id);
     }
@@ -95,7 +93,7 @@ public class MockClientDAO implements ClientDAO<Client, Long> {
      *
      * @throws DAOException if such error
      */
-    public AuditableEntity save(AuditableEntity entity)
+    public Client save(Client entity)
         throws DAOException {
         entity.setId(1L);
 

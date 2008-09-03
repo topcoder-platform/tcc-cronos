@@ -57,7 +57,7 @@ public class StressTestHelper {
         clearConfig();
 
         ConfigManager configManager = ConfigManager.getInstance();
-        configManager.add(new File(CONFIG).getCanonicalPath());
+        // configManager.add(new File(CONFIG).getCanonicalPath());
     }
 
     /**

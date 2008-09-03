@@ -3,13 +3,11 @@
  */
 package com.topcoder.clients.manager.accuracytests;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.topcoder.clients.dao.DAOException;
 import com.topcoder.clients.dao.ProjectDAO;
-import com.topcoder.clients.model.AuditableEntity;
 import com.topcoder.clients.model.Project;
 import com.topcoder.clients.model.ProjectStatus;
 import com.topcoder.search.builder.filter.Filter;
@@ -21,7 +19,7 @@ import com.topcoder.search.builder.filter.Filter;
  * @author onsky
  * @version 1.0
  */
-public class MockProjectDAO implements ProjectDAO<Project, Long> {
+public class MockProjectDAO implements ProjectDAO {
     /**
      * Mock Method.
      *
@@ -64,7 +62,7 @@ public class MockProjectDAO implements ProjectDAO<Project, Long> {
      *
      * @throws DAOException if such error
      */
-    public void delete(AuditableEntity entity) throws DAOException {
+    public void delete(Project entity) throws DAOException {
     }
 
     /**
@@ -88,7 +86,7 @@ public class MockProjectDAO implements ProjectDAO<Project, Long> {
      *
      * @throws DAOException if such error
      */
-    public AuditableEntity retrieveById(Serializable id)
+    public Project retrieveById(Long id)
         throws DAOException {
         return getSampleProject((Long) id);
     }
@@ -102,7 +100,7 @@ public class MockProjectDAO implements ProjectDAO<Project, Long> {
      *
      * @throws DAOException if such error
      */
-    public AuditableEntity save(AuditableEntity entity)
+    public Project save(Project entity)
         throws DAOException {
         entity.setId(10L);
 

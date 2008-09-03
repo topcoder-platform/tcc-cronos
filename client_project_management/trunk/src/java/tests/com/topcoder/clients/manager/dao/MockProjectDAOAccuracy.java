@@ -21,7 +21,7 @@ import com.topcoder.search.builder.filter.Filter;
  * @version 1.0
  *
  */
-public class MockProjectDAOAccuracy implements ProjectDAO<Project, Long> {
+public class MockProjectDAOAccuracy implements ProjectDAO {
 
     /**
      * Get all the Project.
@@ -64,7 +64,7 @@ public class MockProjectDAOAccuracy implements ProjectDAO<Project, Long> {
      * @throws DAOException
      *             to junit
      */
-    public AuditableEntity retrieveById(Serializable id) throws DAOException {
+    public Project retrieveById(Long id) throws DAOException {
         long value = new Long(String.valueOf(id)).longValue();
 
         if (value == 10) {
@@ -143,10 +143,10 @@ public class MockProjectDAOAccuracy implements ProjectDAO<Project, Long> {
      * Save the entry.
      *
      * @param entity
-     *            the AuditableEntity to save.
+     *            the Project to save.
      * @return entity
      */
-    public AuditableEntity save(AuditableEntity entity) {
+    public Project save(Project entity) {
         entity.setCreateDate(new Date());
         entity.setCreateUsername("tester");
         entity.setModifyUsername("projectDAO");
@@ -154,14 +154,14 @@ public class MockProjectDAOAccuracy implements ProjectDAO<Project, Long> {
     }
 
     /**
-     * Delete the AuditableEntity.
+     * Delete the Project.
      *
      * @param entity
-     *            the AuditableEntity to delete
+     *            the Project to delete
      * @throws DAOException
      *             if anything goes wrong
      */
-    public void delete(AuditableEntity entity) throws DAOException {
+    public void delete(Project entity) throws DAOException {
         entity.setModifyUsername("deleted");
     }
 

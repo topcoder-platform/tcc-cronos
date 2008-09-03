@@ -3,14 +3,12 @@
  */
 package com.topcoder.clients.manager.stresstests;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.topcoder.clients.dao.CompanyDAO;
 import com.topcoder.clients.dao.DAOException;
-import com.topcoder.clients.model.AuditableEntity;
 import com.topcoder.clients.model.Client;
 import com.topcoder.clients.model.Company;
 import com.topcoder.clients.model.Project;
@@ -23,7 +21,7 @@ import com.topcoder.search.builder.filter.Filter;
  * @version 1.0
  *
  */
-public class MockCompanyDAOStress implements CompanyDAO<Company, Long> {
+public class MockCompanyDAOStress implements CompanyDAO {
 
     /**
      * Defines the operation that performs the retrieval of an entity using the given id from the persistence.
@@ -31,7 +29,7 @@ public class MockCompanyDAOStress implements CompanyDAO<Company, Long> {
      * @param id the id
      * @return AuditableEntity
      */
-    public AuditableEntity retrieveById(Serializable id) throws DAOException {
+    public Company retrieveById(Long id) throws DAOException {
         return createCompany();
     }
 
@@ -70,7 +68,7 @@ public class MockCompanyDAOStress implements CompanyDAO<Company, Long> {
      * @param entity the AuditableEntity to save.
      * @return the saved entity
      */
-    public AuditableEntity save(AuditableEntity entity) throws DAOException {
+    public Company save(Company entity) throws DAOException {
         entity.setCreateDate(new Date());
         entity.setCreateUsername("test");
         entity.setModifyUsername("stress");
@@ -82,7 +80,7 @@ public class MockCompanyDAOStress implements CompanyDAO<Company, Long> {
      *
      * @param entity the entity to delete
      */
-    public void delete(AuditableEntity entity) throws DAOException {
+    public void delete(Company entity) throws DAOException {
         entity.setModifyUsername("stress");
     }
 

@@ -3,7 +3,6 @@
  */
 package com.topcoder.clients.manager;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import com.topcoder.clients.dao.CompanyDAO;
 import com.topcoder.clients.dao.DAOConfigurationException;
 import com.topcoder.clients.dao.DAOException;
 import com.topcoder.clients.dao.EntityNotFoundException;
-import com.topcoder.clients.model.AuditableEntity;
 import com.topcoder.clients.model.Client;
 import com.topcoder.clients.model.Company;
 import com.topcoder.clients.model.Project;
@@ -25,7 +23,7 @@ import com.topcoder.search.builder.filter.Filter;
  * @version 1.0
  *
  */
-public class MockCompanyDAO implements CompanyDAO<Company, Long> {
+public class MockCompanyDAO implements CompanyDAO {
 
     /**
      * Get the entity with id.
@@ -38,7 +36,7 @@ public class MockCompanyDAO implements CompanyDAO<Company, Long> {
      * @throws DAOConfigurationException
      *             for testing
      */
-    public AuditableEntity retrieveById(Serializable id) throws DAOException {
+    public Company retrieveById(Long id) throws DAOException {
         long value = new Long(String.valueOf(id)).longValue();
 
         if (value < 0) {
@@ -67,9 +65,7 @@ public class MockCompanyDAO implements CompanyDAO<Company, Long> {
             return c;
         }
 
-        if (value == 3) {
-            return new Client();
-        }
+
 
         if (value == 4) {
             throw new DAOException("for test");
@@ -80,7 +76,7 @@ public class MockCompanyDAO implements CompanyDAO<Company, Long> {
         }
 
         if (value == 6) {
-            throw new EntityNotFoundException("For test", 6L);
+            throw new EntityNotFoundException("For test");
         }
 
         return null;
@@ -158,7 +154,7 @@ public class MockCompanyDAO implements CompanyDAO<Company, Long> {
      * @throws DAOConfigurationException
      *             for testing
      */
-    public AuditableEntity save(AuditableEntity entity) throws DAOException {
+    public Company save(Company entity) throws DAOException {
 
         if ("DAOException".equals(entity.getName())) {
             throw new DAOException("Throw for testing");
@@ -168,7 +164,7 @@ public class MockCompanyDAO implements CompanyDAO<Company, Long> {
             throw new DAOConfigurationException("Throw for testing");
         }
         if ("ClassCastException".equals(entity.getName())) {
-            return new Client();
+            throw new ClassCastException("ee");
         }
         entity.setCreateUsername("test");
         return entity;
@@ -186,10 +182,10 @@ public class MockCompanyDAO implements CompanyDAO<Company, Long> {
      *             for testing
      * @throws EntityNotFoundException for testing
      */
-    public void delete(AuditableEntity entity) throws DAOException {
+    public void delete(Company entity) throws DAOException {
 
         if ("EntityNotFoundException".equals(entity.getName())) {
-            throw new EntityNotFoundException("Throw for testing", 1L);
+            throw new EntityNotFoundException("Throw for testing");
         }
 
         if ("DAOException".equals(entity.getName())) {

@@ -3,13 +3,11 @@
  */
 package com.topcoder.clients.manager.stresstests;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.topcoder.clients.dao.ClientDAO;
-import com.topcoder.clients.model.AuditableEntity;
 import com.topcoder.clients.model.Client;
 import com.topcoder.clients.model.Project;
 import com.topcoder.search.builder.filter.Filter;
@@ -21,7 +19,7 @@ import com.topcoder.search.builder.filter.Filter;
  * @version 1.0
  *
  */
-public class MockClientDAOStress implements ClientDAO<Client, Long> {
+public class MockClientDAOStress implements ClientDAO {
 
     /**
      * Defines the operation that performs the retrieval of an entity using the given id from the persistence.
@@ -29,7 +27,7 @@ public class MockClientDAOStress implements ClientDAO<Client, Long> {
      * @param id the id
      * @return AuditableEntity
      */
-    public AuditableEntity retrieveById(Serializable id) {
+    public Client retrieveById(Long id) {
         return createClient();
     }
 
@@ -68,7 +66,7 @@ public class MockClientDAOStress implements ClientDAO<Client, Long> {
      * @param entity the AuditableEntity to save.
      * @return the saved entity
      */
-    public AuditableEntity save(AuditableEntity entity) {
+    public Client save(Client entity) {
         entity.setCreateDate(new Date());
         entity.setCreateUsername("test");
         entity.setModifyUsername("stress");
@@ -80,7 +78,7 @@ public class MockClientDAOStress implements ClientDAO<Client, Long> {
      *
      * @param entity the entity to delete
      */
-    public void delete(AuditableEntity entity) {
+    public void delete(Client entity) {
         entity.setModifyUsername("stress");
     }
 

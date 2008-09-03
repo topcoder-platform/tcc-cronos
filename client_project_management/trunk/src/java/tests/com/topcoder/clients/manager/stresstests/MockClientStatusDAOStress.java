@@ -3,14 +3,12 @@
  */
 package com.topcoder.clients.manager.stresstests;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.topcoder.clients.dao.ClientStatusDAO;
 import com.topcoder.clients.dao.DAOException;
-import com.topcoder.clients.model.AuditableEntity;
 import com.topcoder.clients.model.Client;
 import com.topcoder.clients.model.ClientStatus;
 import com.topcoder.search.builder.filter.Filter;
@@ -22,7 +20,7 @@ import com.topcoder.search.builder.filter.Filter;
  * @version 1.0
  *
  */
-public class MockClientStatusDAOStress implements ClientStatusDAO<ClientStatus, Long> {
+public class MockClientStatusDAOStress implements ClientStatusDAO {
 
     /**
      * Defines the operation that performs the retrieval of an entity using the given id from the persistence.
@@ -30,7 +28,7 @@ public class MockClientStatusDAOStress implements ClientStatusDAO<ClientStatus, 
      * @param id the id
      * @return AuditableEntity
      */
-    public AuditableEntity retrieveById(Serializable id) throws DAOException {
+    public ClientStatus retrieveById(Long id) throws DAOException {
         return createClientStatus();
     }
 
@@ -69,7 +67,7 @@ public class MockClientStatusDAOStress implements ClientStatusDAO<ClientStatus, 
      * @param entity the AuditableEntity to save.
      * @return the saved entity
      */
-    public AuditableEntity save(AuditableEntity entity) throws DAOException {
+    public ClientStatus save(ClientStatus entity) throws DAOException {
         entity.setCreateDate(new Date());
         entity.setCreateUsername("test");
         entity.setModifyUsername("stress");
@@ -81,7 +79,7 @@ public class MockClientStatusDAOStress implements ClientStatusDAO<ClientStatus, 
      *
      * @param entity the entity to delete
      */
-    public void delete(AuditableEntity entity) throws DAOException {
+    public void delete(ClientStatus entity) throws DAOException {
         entity.setModifyUsername("stress");
     }
 

@@ -21,7 +21,7 @@ import com.topcoder.search.builder.filter.Filter;
  * @version 1.0
  *
  */
-public class MockClientDAOAcc implements ClientDAO<Client, Long> {
+public class MockClientDAOAcc implements ClientDAO {
 
     /**
      * get entity with id.
@@ -30,7 +30,7 @@ public class MockClientDAOAcc implements ClientDAO<Client, Long> {
      *            the id
      * @return null
      */
-    public AuditableEntity retrieveById(Serializable id) {
+    public Client retrieveById(Long id) {
 
         return null;
     }
@@ -73,10 +73,10 @@ public class MockClientDAOAcc implements ClientDAO<Client, Long> {
      * Save the entry.
      *
      * @param entity
-     *            the AuditableEntity to save.
+     *            the Client to save.
      * @return the saved entity
      */
-    public AuditableEntity save(AuditableEntity entity) {
+    public Client save(Client entity) {
         entity.setCreateDate(new Date());
         entity.setCreateUsername("tester");
         entity.setModifyUsername("unittester");
@@ -89,7 +89,7 @@ public class MockClientDAOAcc implements ClientDAO<Client, Long> {
      * @param entity
      *            the entity to delete
      */
-    public void delete(AuditableEntity entity) {
+    public void delete(Client entity) {
         // empty
     }
 
