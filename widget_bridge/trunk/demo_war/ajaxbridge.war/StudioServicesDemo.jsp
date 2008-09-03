@@ -23,7 +23,7 @@
  */
 function testStudioGenerateSecurityToken() {
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
 
     // success callback 
     var success = function(token) {
@@ -37,13 +37,31 @@ function testStudioGenerateSecurityToken() {
     studioService.generateSecurityToken(success,error);
 }
 
+/**
+ * <p>Tests Studio.purchaseSubmission().</p>
+ */
+function testStudioPurchaseSubmission() {
+    // initialize the studio service
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+
+    // success callback 
+    var success = function(token) {
+        alert("Success");
+    }
+    // error callback
+    var error = function(errMsg) {
+        alert("Error = " + errMsg);
+    }
+    
+    studioService.purchaseSubmission(34,123,'b4a70be7-ec57-474e-8c28-81bdc4ebd549', success,error);
+}
 
 /**
  * <p>Tests Studio.setSubmissionPlacement().</p>
  */
 function testStudioSetSubmissionPlacement() {
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
 
     // success callback 
     var success = function() {
@@ -63,7 +81,7 @@ function testStudioSetSubmissionPlacement() {
  */
 function testStudioSetSubmissionPlacement() {
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
 
     // success callback 
     var success = function() {
@@ -82,7 +100,7 @@ function testStudioSetSubmissionPlacement() {
  */
 function testStudioCreateContest() {
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
     var projectID = 1;
 
     // success callback 
@@ -105,7 +123,7 @@ function testStudioCreateContest() {
  */
 function testStudioCreateContestError() {
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
     var projectID = 2011;
 
     // success callback 
@@ -127,7 +145,7 @@ function testStudioCreateContestError() {
  */
 function testStudioGetContest() {
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
     var contestID = 2011;
 
     // success callback 
@@ -147,7 +165,7 @@ function testStudioGetContest() {
  */
 function testStudioGetContestPayment() {
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
     var contestID = 2011;
 
     // success callback 
@@ -167,7 +185,7 @@ function testStudioGetContestPayment() {
  */
 function testStudioGetContestError() {
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
     var contestID = 50;
 
     // success callback 
@@ -187,7 +205,7 @@ function testStudioGetContestError() {
  */
 function testStudioGetAllContests() {
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
 
     // success callback 
     var success = function(contests) {
@@ -212,7 +230,7 @@ function testStudioGetAllContests() {
  */
 function testStudioGetAllContestTypes() {
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
 
     // success callback 
     var success = function(types) {
@@ -234,7 +252,7 @@ function testStudioGetAllContestTypes() {
  */
 function testStudioGetAllMedia() {
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
 
     // success callback 
     var success = function(media) {
@@ -257,7 +275,7 @@ function testStudioGetAllMedia() {
  */
 function testStudioGetContestsForProject() {
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
     var projectID = 1;
 
     // success callback 
@@ -279,7 +297,7 @@ function testStudioGetContestsForProject() {
  */
 function testStudioGetContestsForProjectError() {
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
     var projectID = 50;
 
     // success callback 
@@ -301,7 +319,7 @@ function testStudioGetContestsForProjectError() {
  */
 function testStudioUpdateContestStatus() {
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
     var contestID = 1;
     var newStatusID = 1;
 
@@ -322,7 +340,7 @@ function testStudioUpdateContestStatus() {
  */
 function testStudioUpdateContestStatusError() {
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
     var contestID = 50;
     var newStatusID = 50;
 
@@ -351,7 +369,7 @@ function testStudioRemoveDocumentFromContest() {
     updoc.setPath("path");
 
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
 
     // success callback 
     var success = function() {
@@ -378,7 +396,7 @@ function testStudioRemoveDocumentFromContestError() {
     updoc.setPath("path");
 
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
 
     // success callback 
     var success = function() {
@@ -398,7 +416,7 @@ function testStudioRemoveDocumentFromContestError() {
 function testStudioRetrieveSubmissionsForContest() {
 
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
     var contestID = 1;
 
     // success callback 
@@ -421,7 +439,7 @@ function testStudioRetrieveSubmissionsForContest() {
 function testStudioRetrieveSubmissionsForContestError() {
 
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
     var contestID = 50;
 
     // success callback 
@@ -444,7 +462,7 @@ function testStudioRetrieveSubmissionsForContestError() {
 function testStudioUpdateSubmission() {
 
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
 
     // success callback 
     var success = function() {
@@ -466,7 +484,7 @@ function testStudioUpdateSubmission() {
 function testStudioUpdateSubmissionError() {
 
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
 
     // success callback 
     var success = function() {
@@ -489,7 +507,7 @@ function testStudioUpdateSubmissionError() {
 function testStudioUpdateContest() {
 
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
 
     // success callback 
     var success = function() {
@@ -511,7 +529,7 @@ function testStudioUpdateContest() {
 function testStudioUpdateContestError() {
 
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
 
     // success callback 
     var success = function() {
@@ -534,7 +552,7 @@ function testStudioUpdateContestError() {
 function testStudioRetrieveSubmission() {
 
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
     var submissionID = 1;
 
     // success callback 
@@ -555,7 +573,7 @@ function testStudioRetrieveSubmission() {
 function testStudioRetrieveSubmissionError() {
 
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
     var submissionID = 50;
 
     // success callback 
@@ -576,7 +594,7 @@ function testStudioRetrieveSubmissionError() {
 function testStudioRemoveSubmission() {
 
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
     var submissionID = 1;
 
     // success callback 
@@ -597,7 +615,7 @@ function testStudioRemoveSubmission() {
 function testStudioRemoveSubmissionError() {
 
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
     var submissionID = 50;
 
     // success callback 
@@ -618,7 +636,7 @@ function testStudioRemoveSubmissionError() {
 function testStudioRetrieveAllSubmissionsByMember() {
 
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
     var userID = 1;
 
     // success callback 
@@ -641,7 +659,7 @@ function testStudioRetrieveAllSubmissionsByMember() {
 function testStudioRetrieveAllSubmissionsByMemberError() {
 
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
     var userID = 50;
 
     // success callback 
@@ -665,7 +683,7 @@ function testStudioRetrieveAllSubmissionsByMemberError() {
 function testStudioGetSubmissionFileTypes() {
 
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
 
     // success callback 
     var success = function(fileTypes) {
@@ -687,7 +705,7 @@ function testStudioGetSubmissionFileTypes() {
 function testStudioGetContestStatuses() {
 
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
 
     // success callback 
     var success = function(contestStatuses) {
@@ -789,7 +807,7 @@ function getSubmission1() {
  */
 function testStudioCreateContestPayment() {
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
 
     // success callback 
     var success = function(contestPayment) {
@@ -819,7 +837,7 @@ function testStudioCreateContestPayment() {
  */
 function testStudioEditContestPayment() {
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
 
     // success callback 
     var success = function() {
@@ -844,7 +862,7 @@ function testStudioEditContestPayment() {
 function testStudioRemoveContestPayment() {
 
     // initialize the studio service
-    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge");
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
 
     // success callback 
     var success = function() {
@@ -891,7 +909,7 @@ Widget Webservices Bridge Demo
     <li>Studio.getAllMedia() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetAllMedia()" /></li>
     <li>Studio.setSubmissionPlacement() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioSetSubmissionPlacement()" /></li>    
     <li>Studio.generateSecurityToken() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGenerateSecurityToken()" /></li>    
-    
+    <li>Studio.purchaseSubmission() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioPurchaseSubmission()" /></li>    
     
 </ul>
 <br />

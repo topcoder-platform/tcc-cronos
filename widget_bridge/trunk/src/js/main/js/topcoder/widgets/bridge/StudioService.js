@@ -26,7 +26,7 @@
  *
  * @throws IllegalArgumentException if the argument is null or empty string.
  */ 
-js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString) {
+js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString, /*String*/ impersonationServletUrlString, /*String*/ fullAjaxBridgeServletUrlString) {
 
 	/**
 	 * <p>Represents the servlet url to communicate with.
@@ -36,6 +36,24 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	 * @private
 	 */
 	this.servletUrlString = null;
+
+	/**
+	 * <p>Represents the full servlet url to communicate with.
+	 * Initialized in constructor, and never changed afterwards.
+	 * It must be non-null, non-empty string.</p>
+	 *
+	 * @private
+	 */
+	this.fullAjaxBridgeServletUrlString = null;
+	
+	/**
+	 * <p>Represents the impersonationServlet to communicate with.
+	 * Initialized in constructor, and never changed afterwards.
+	 * It must be non-null, non-empty string.</p>
+	 *
+	 * @private
+	 */
+	this.impersonationServletUrlString = null;
 	
 	/**
 	 * <p>Construction code.</p>
@@ -45,6 +63,18 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	} else {
 		this.servletUrlString = servletUrlString;
 	}
+
+	if (impersonationServletUrlString == null || impersonationServletUrlString == "") {
+		impersonationServletUrlString = "../../../ImpersonationServlet/ImpersonationServlet";
+	}
+
+	this.impersonationServletUrlString = impersonationServletUrlString;
+
+	if (fullAjaxBridgeServletUrlString == null || fullAjaxBridgeServletUrlString == "") {
+		fullAjaxBridgeServletUrlString = "http://localhost:8085/direct/cockpit/ajaxbridge/ajaxBridge";
+	}
+
+	this.fullAjaxBridgeServletUrlString = encodeURIComponent(fullAjaxBridgeServletUrlString);
 
 	/**
 	 * <p>Remember this for all responses from Servlet.</p>
@@ -1221,11 +1251,12 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 		var processor = new AJAXProcessor();
 		// Send a request asynchronously
 		processor.request({
-	    	url:  servletUrlString,
+	    	url:  impersonationServletUrlString,
 	    	async: true,
 	     	method: "POST",
-	     	// the json string should be escaped properly here. 
-	     	sendingText: "service=studio&method=purchaseSubmission&submissionId=" + submissionId + "&payPalOrderId=" + payPalOrderId + "&securityToken=" + securityToken,
+	     	// the json string should be escaped properly here.
+	     	sendingText: "TargetUrl=" + fullAjaxBridgeServletUrlString + "%3Fservice%3Dstudio%26method%3DpurchaseSubmission%26submissionId%3D" + submissionId + "%26payPalOrderId%3D" + payPalOrderId + "%26securityToken%3D" + securityToken,
+	     	// sendingText: "service=studio&method=purchaseSubmission&submissionId=" + submissionId + "&payPalOrderId=" + payPalOrderId + "&securityToken=" + securityToken,
 	     	onStateChange: function() {
 	        	// Handle the response
 	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
@@ -1287,11 +1318,12 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 		var processor = new AJAXProcessor();
 		// Send a request asynchronously
 		processor.request({
-	    	url:  servletUrlString,
+			url:  impersonationServletUrlString,
 	    	async: true,
 	     	method: "POST",
 	     	// the json string should be escaped properly here. 
-	     	sendingText: "service=studio&method=createContestPayment&contestPayment=" + encodeURIComponent(contestPayment.toJSON()) + "&securityToken=" + securityToken,
+	     	sendingText: "TargetUrl=" + fullAjaxBridgeServletUrlString + "%3Fservice%3Dstudio%26method%3DcreateContestPayment%26contestId%3D" + contestPayment.getContestId() + "%26paymentStatusId%3D" + contestPayment.getPaymentStatusId() + "%26paypalOrderId%3D" + contestPayment.getPaypalOrderId() + "%26price%3D" + contestPayment.getPrize() + "%26securityToken%3D" + securityToken,
+
 	     	onStateChange: function() {
 	        	// Handle the response
 	           	if (processor.getState() == 4 && processor.getStatus() == 200) {

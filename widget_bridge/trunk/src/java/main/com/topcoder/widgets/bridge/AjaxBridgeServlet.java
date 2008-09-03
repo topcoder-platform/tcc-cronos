@@ -573,25 +573,21 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                     debug("createContest success!");
                 } else if ("createContestPayment".equals(method)) {
-                    String strContestPayment = request.getParameter("contestPayment");
-                    if (checkIfNullOrEmpty(strContestPayment, "strContestPayment", response)) {
-                        return;
-                    }
-                    debug("contest payment json received = " + strContestPayment);
-
-                    JSONObject jsonContestPayment = jsonDecoder.decodeObject(strContestPayment);
-                    debug("received IDs = [contest ID] : " + jsonContestPayment.getLong("contestId"));
                     String securityToken = request.getParameter("securityToken");
 
-                    ContestPaymentData contestPayment = getContestPaymentFromJSON(jsonContestPayment);
-                
+                    ContestPaymentData contestPayment = new ContestPaymentData();
+                    contestPayment.setContestId(Long.parseLong(request.getParameter("contestId")));
+                    contestPayment.setPaymentStatusId(Long.parseLong(request.getParameter("paymentStatusId")));
+                    contestPayment.setPaypalOrderId(request.getParameter("paypalOrderId"));
+                    contestPayment.setPrice(Double.parseDouble(request.getParameter("price")));
+
                     if (checkPaypalOrderIdFraud(contestPayment.getPaypalOrderId() + "",
-                                                jsonContestPayment.getDouble("price") + "",
-                                                jsonContestPayment.getLong("contestId") + "",
+                                                contestPayment.getPrice() + "",
+                                                contestPayment.getContestId() + "",
                                                 request, response)) {
                         return;
                     }
-                    
+
                     ContestPaymentData respContestPayment = studioService.createContestPayment(contestPayment,securityToken);
                     sendJSONObjectAsResponse(getJSONFromContestPayment(respContestPayment), response);
 
