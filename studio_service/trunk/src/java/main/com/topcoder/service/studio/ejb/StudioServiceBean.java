@@ -2769,6 +2769,15 @@ public class StudioServiceBean implements StudioService {
             Long contestId = contest.getContestId();
             List<Prize> contestPrizes = contestManager.getContestPrizes(contestId);
 
+            // TCCC-425 
+            ContestResult cr = new ContestResult();
+            cr.setContest(contest);
+            cr.setPlaced(placement);
+            cr.setSubmission(submission);
+            
+            // TCCC-484
+            contestManager.createContestResult(cr);
+
             for (Prize prize : contestPrizes) {
                 if (prize.getPlace() != null && prize.getPlace().equals(placement)) {
                     logDebug("Same placement found in contest. placement: " + placement + ", contest id:" + contest.getContestId());
@@ -2796,14 +2805,6 @@ public class StudioServiceBean implements StudioService {
             // associate the submission with the prize.
             submissionManager.addPrizeToSubmission(submissionId, prizeId);
 
-            // TCCC-425 
-            ContestResult cr = new ContestResult();
-            cr.setContest(contest);
-            cr.setPlaced(placement);
-            cr.setSubmission(submission);
-            
-            // TCCC-484
-            contestManager.createContestResult(cr);
             logExit("setSubmissionPlacement");
             return;
         } catch (SubmissionManagementException e) {
