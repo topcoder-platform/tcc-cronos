@@ -225,7 +225,16 @@ You must submit all original source files of the submitted design. Acceptable fi
 &lt;B&gt;Fonts&lt;/b&gt;: All fonts used (with the exception of Windows standard fonts) in your design must also be submitted in this zip. If you do not have permission to release the fonts, you must provide a text file including the name of the font and a link to where the font can be purchased.                </env-entry-value>
             </env-entry>
             
-            
+           <env-entry>
+                <env-entry-name>contestPropertyContestAdministrationFeeId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>25</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>contestPropertyDigitalRunPointsId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>24</env-entry-value>
+            </env-entry>             
             <persistence-context-ref>
                 <persistence-context-ref-name>persistence/contest_submission</persistence-context-ref-name>
                 <persistence-unit-name>contest_submission</persistence-unit-name>                     
