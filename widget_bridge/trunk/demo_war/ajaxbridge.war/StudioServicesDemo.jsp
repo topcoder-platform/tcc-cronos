@@ -780,6 +780,10 @@ function getContest1() {
     contest.setMaximumSubmissions(100);
     contest.setNumberOfRegistrants(100);
     contest.setContestChannelID(1);
+    contest.setDigitalRunPoints(500.34);    
+    contest.setContestAdministrationFee(123.34);    
+    contest.setForumId(1);    
+    contest.setForumPostCount(1);    
     
     return contest;
 }
