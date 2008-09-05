@@ -9,13 +9,12 @@ import javax.annotation.security.RunAs;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
-/* TODO: uncomment when jive forums are deployed
-import com.topcoder.forum.service.CategoryConfiguration;
-import com.topcoder.forum.service.CategoryType;
-import com.topcoder.forum.service.JiveForumManagementException;
-import com.topcoder.forum.service.ejb.JiveForumServiceLocal;
-*/
+import javax.ejb.TransactionManagementType; /* TODO: uncomment when jive forums are deployed
+ import com.topcoder.forum.service.CategoryConfiguration;
+ import com.topcoder.forum.service.CategoryType;
+ import com.topcoder.forum.service.JiveForumManagementException;
+ import com.topcoder.forum.service.ejb.JiveForumServiceLocal;
+ */
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
 import com.topcoder.service.studio.ContestData;
@@ -190,12 +189,13 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * <p>
-     * Represents the unactive status used to retrieve the check the draft status.
+     * Represents the unactive status used to retrieve the check the draft
+     * status.
      * </p>
      */
     @Resource(name = "unactiveStatusId")
     private long unactiveStatusId;
-    
+
     /**
      * Represents the id of status of a submission paid. </p>
      */
@@ -227,7 +227,7 @@ public class StudioServiceBean implements StudioService {
      */
     @Resource(name = "reviewFailedStatusId")
     private long reviewFailedStatusId;
-    
+
     /**
      * Represents the base URI used to construct the submission content. </p>
      */
@@ -441,7 +441,8 @@ public class StudioServiceBean implements StudioService {
     private String documentBasePath = DEFAULT_DOCUMENT_BASE_PATH;
 
     /**
-     * Represents the additionalSubmissionPurchasePriceRatio. Used in purchaseSubmission method.
+     * Represents the additionalSubmissionPurchasePriceRatio. Used in
+     * purchaseSubmission method.
      * 
      * @since TCCC-353
      */
@@ -455,6 +456,22 @@ public class StudioServiceBean implements StudioService {
      */
     @Resource(name = "submissionRemovedStatusId")
     private long submissionRemovedStatusId;
+
+    /**
+     * Represents the id for the Contest property "Digital Run Points".
+     * 
+     * @since TCCC-499
+     */
+    @Resource(name = "contestPropertyDigitalRunPointsId")
+    private long contestPropertyDigitalRunPointsId;
+
+    /**
+     * Represents the id for the Contest property "Contest Administration Fee ".
+     * 
+     * @since TCCC-499
+     */
+    @Resource(name = "contestPropertyContestAdministrationFeeId")
+    private long contestPropertyContestAdministrationFeeId;
     
     /**
      * Returns base path for document files.
@@ -562,20 +579,21 @@ public class StudioServiceBean implements StudioService {
             }
             contestData = convertContest(contest);
             contestData.setDocumentationUploads(documents);
-/* TODO: uncomment when jive forums are deployed
-            // [TCCC-287]
-            CategoryConfiguration categoryConfiguration = new CategoryConfiguration();
-            // Name: The name of the contest
-            categoryConfiguration.setName(contest.getName());
-            // Description: "Forum for cockpit contest: " + name of contest
-            categoryConfiguration.setDescription("Forum for cockpit contest: " + contest.getName());
-            // ComponentID: The ID of the contest
-            categoryConfiguration.setComponentId(contest.getContestId());
-            // IsPublic: true
-            categoryConfiguration.setPublic(true);
-            // CategoryType: Application
-            categoryConfiguration.setTemplateCategoryType(CategoryType.APPLICATION);
-*/
+            /*
+             * TODO: uncomment when jive forums are deployed // [TCCC-287]
+             * CategoryConfiguration categoryConfiguration = new
+             * CategoryConfiguration(); // Name: The name of the contest
+             * categoryConfiguration.setName(contest.getName()); // Description:
+             * "Forum for cockpit contest: " + name of contest
+             * categoryConfiguration
+             * .setDescription("Forum for cockpit contest: " +
+             * contest.getName()); // ComponentID: The ID of the contest
+             * categoryConfiguration.setComponentId(contest.getContestId()); //
+             * IsPublic: true categoryConfiguration.setPublic(true); //
+             * CategoryType: Application
+             * categoryConfiguration.setTemplateCategoryType
+             * (CategoryType.APPLICATION);
+             */
             // jiveForumService.createCategory(categoryConfiguration);
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while creating new contest.", e);
@@ -774,10 +792,8 @@ public class StudioServiceBean implements StudioService {
         logEnter("uploadDocumentForContest", uploadedDocument);
         checkParameter("uploadedDocument", uploadedDocument);
 
-
         // retrieve contest and authorize
         Contest c = authorizeWithContest(uploadedDocument.getContestId());
-
 
         // last authentication check
         if (sessionContext.isCallerInRole(USER_ROLE)) {
@@ -815,7 +831,6 @@ public class StudioServiceBean implements StudioService {
         logEnter("removeDocumentFromContest", document);
         checkParameter("document", document);
 
-
         try {
             // authorization
             authorizeWithContest(document.getContestId());
@@ -832,9 +847,9 @@ public class StudioServiceBean implements StudioService {
 
         } catch (ContestManagementException ex) {
             handlePersistenceError("ContestManager reports error while removing document from contest.", ex);
-        
+
         } catch (ContestNotFoundException e) {
-        	handlePersistenceError("Contest not found when trying to remove document from contest", e);
+            handlePersistenceError("Contest not found when trying to remove document from contest", e);
         }
 
         logExit("removeDocumentFromContest");
@@ -981,18 +996,16 @@ public class StudioServiceBean implements StudioService {
         logEnter("updateSubmission", submission);
         checkParameter("submission", submission);
 
-
         try {
             authorizeWithContest(submission.getContestId());
 
-        	submissionManager.updateSubmission(convertSubmissionData(submission));
+            submissionManager.updateSubmission(convertSubmissionData(submission));
         } catch (SubmissionManagementException e) {
             handlePersistenceError("SubmissionManager reports error while updating submission.", e);
-       
-        } catch (ContestNotFoundException e) {
-        	handlePersistenceError("Contest not found when trying to remove document from contest", e);
-        }
 
+        } catch (ContestNotFoundException e) {
+            handlePersistenceError("Contest not found when trying to remove document from contest", e);
+        }
 
         logExit("updateSubmission");
     }
@@ -1187,6 +1200,10 @@ public class StudioServiceBean implements StudioService {
         addContestConfig(result, contestPropertySizeRequirementsId, data.getSizeRequirements());
 
         addContestConfig(result, contestPropertyOtherRequirementsId, data.getOtherRequirementsOrRestrictions());
+
+        // [TCCC-499]
+        addContestConfig(result, contestPropertyDigitalRunPointsId, String.valueOf(data.getDrPoints()));
+        addContestConfig(result, contestPropertyContestAdministrationFeeId, String.valueOf(data.getContestAdministrationFee()));
 
         // [TCCC-325].
         Set<StudioFileType> fileTypes = new HashSet<StudioFileType>();
@@ -1390,6 +1407,11 @@ public class StudioServiceBean implements StudioService {
                 contestData.setNotesOnWinnerSelection(value);
             else if (propertyId == contestPropertyPrizeDescriptionId)
                 contestData.setPrizeDescription(value);
+            // [TCCC-499]
+            else if (propertyId == contestPropertyDigitalRunPointsId)
+                contestData.setDrPoints(Double.parseDouble(value));
+            else if (propertyId == contestPropertyContestAdministrationFeeId)
+                contestData.setContestAdministrationFee(Double.parseDouble(value));
         }
 
         List<UploadedDocument> documents = new ArrayList<UploadedDocument>();
@@ -1445,7 +1467,7 @@ public class StudioServiceBean implements StudioService {
             contestData.setForumId(forumId);
             contestData.setForumPostCount(contestManager.getContestPostCount(forumId));
         }
-        
+
         return contestData;
     }
 
@@ -1663,7 +1685,7 @@ public class StudioServiceBean implements StudioService {
 
             // [TCCC-411]
             sd.setRemoved(unbox(s.getStatus().getSubmissionStatusId()) == submissionRemovedStatusId);
-            
+
             // compute price
             double prizeAmount = 0;
             for (Prize p : s.getPrizes()) {
@@ -1837,7 +1859,8 @@ public class StudioServiceBean implements StudioService {
      */
     private void logEnter(String method, Object... params) {
         if (log != null) {
-            log.log(Level.DEBUG, "Enter method StudioServiceBean.{0} with parameters {1}.", method, Arrays.deepToString(params));
+            log.log(Level.DEBUG, "Enter method StudioServiceBean.{0} with parameters {1}.", method, Arrays
+                    .deepToString(params));
         }
     }
 
@@ -1846,7 +1869,7 @@ public class StudioServiceBean implements StudioService {
             log.log(Level.DEBUG, msg);
         }
     }
-    
+
     /**
      * <p>
      * This method used to log leave of method. It will persist method name.
@@ -2002,33 +2025,33 @@ public class StudioServiceBean implements StudioService {
      * @throws UserNotAuthorizedException
      *             if access was denied
      */
-    private Contest authorizeWithContest(long id) throws PersistenceException, ContestNotFoundException {    	
+    private Contest authorizeWithContest(long id) throws PersistenceException, ContestNotFoundException {
 
         try {
-        	Contest contest = contestManager.getContest(id);
+            Contest contest = contestManager.getContest(id);
 
-        	if (contest == null) {
-        		handleContestNotFoundError(null, id);
-        	}
-
-        	// Admin is always authorized
-            if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
-            	return contest;
+            if (contest == null) {
+                handleContestNotFoundError(null, id);
             }
-        	
+
+            // Admin is always authorized
+            if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
+                return contest;
+            }
+
             UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
             long userId = p.getUserId();
 
-        	if (contest.getCreatedUser() != userId) {
-        		throw new UserNotAuthorizedException("Access denied for the contest " + id, userId);
-        	}
-        	
-        	return contest;
-        	
+            if (contest.getCreatedUser() != userId) {
+                throw new UserNotAuthorizedException("Access denied for the contest " + id, userId);
+            }
+
+            return contest;
+
         } catch (ContestManagementException e) {
             handlePersistenceError("Error when trying to get the the contest", e);
             return null;
-        } 
+        }
     }
 
     /**
@@ -2396,31 +2419,35 @@ public class StudioServiceBean implements StudioService {
      *            the id of submission to purchase.
      * @param payPalOrderId
      *            PayPal order id.
-     * @param securityToken the security token.
+     * @param securityToken
+     *            the security token.
      * 
      * @throws PersistenceException
      *             if any error occurs when purchasing submission.
      * @throws IllegalArgumentWSException
      *             if the submissionId is less than 0 or price is negative.
      */
-    public void purchaseSubmission(long submissionId, String payPalOrderId, String securityToken) throws PersistenceException {
+    public void purchaseSubmission(long submissionId, String payPalOrderId, String securityToken)
+            throws PersistenceException {
         logEnter("purchaseSubmission", submissionId, payPalOrderId);
         checkParameter("submissionId", submissionId);
         checkParameter("payPalOrderId", payPalOrderId);
 
         try {
             authorizeWithSecurityToken(securityToken);
-            
+
             Submission submission = submissionManager.getSubmission(submissionId);
 
             if (submission == null) {
                 handleIllegalWSArgument("Submission with id " + submissionId + " is not found.");
             }
-            
-            // There must be a payment for the submission in Marked for Purchase (3) status. 
+
+            // There must be a payment for the submission in Marked for Purchase
+            // (3) status.
             // Otherwise (no payment or another status), throw exception.
             SubmissionPayment submissionPayment = submissionManager.getSubmissionPayment(submissionId);
-            if (submissionPayment == null || submissionPayment.getStatus().getPaymentStatusId() != submissionMarkedForPurchaseStatusId) {
+            if (submissionPayment == null
+                    || submissionPayment.getStatus().getPaymentStatusId() != submissionMarkedForPurchaseStatusId) {
                 throw new SubmissionManagementException(
                         "There must be a payment for the submission in Marked for Purchase (3) status. Submission id: "
                                 + submissionId);
@@ -2443,27 +2470,28 @@ public class StudioServiceBean implements StudioService {
                 throw new ContestManagementException(
                         "There must be a first placement prize for the contest. Contest id: " + contest.getContestId());
             }
-            
+
             double amount = firstPlacePrize;
 
             // check if the submission has a winner prize
             boolean isWinner = false;
             for (Prize p : submission.getPrizes()) {
-            	if (p.getType().getPrizeTypeId() == contestPrizeTypeId && p.getAmount() > 0) {
-            		isWinner = true;
-            		break;
-            	}
+                if (p.getType().getPrizeTypeId() == contestPrizeTypeId && p.getAmount() > 0) {
+                    isWinner = true;
+                    break;
+                }
             }
-            
+
             // if it doesn't have a winner prize, it's an additional purchase.
             if (!isWinner) {
-            	// the amount of the additional submission is a fraction of the first place prize.
-            	amount = firstPlacePrize * additionalSubmissionPurchasePriceRatio;
+                // the amount of the additional submission is a fraction of the
+                // first place prize.
+                amount = firstPlacePrize * additionalSubmissionPurchasePriceRatio;
 
                 Prize prize = null;
-                
+
                 // If the contest has a prize with null place and prize_type_id
-                // = 2, that prize will be used.                
+                // = 2, that prize will be used.
                 for (Prize p : contestManager.getContestPrizes(contest.getContestId())) {
                     if (p.getPlace() == null && p.getType().getPrizeTypeId() == clientSelectionPrizeTypeId) {
                         prize = p;
@@ -2476,7 +2504,7 @@ public class StudioServiceBean implements StudioService {
                     prize.setAmount(amount);
                     prize.setPlace(null);
                     prize.setType(contestManager.getPrizeType(clientSelectionPrizeTypeId));
-                    
+
                     prize = submissionManager.addPrize(prize);
                     contestManager.addPrizeToContest(contest.getContestId(), prize.getPrizeId());
                 }
@@ -2507,7 +2535,8 @@ public class StudioServiceBean implements StudioService {
      * 
      * @param contestPaymentData
      *            the contest payment to create
-     * @param securityToken the security token.
+     * @param securityToken
+     *            the security token.
      * @return the created contest payment.
      * 
      * @throws IllegalArgumentException
@@ -2523,7 +2552,7 @@ public class StudioServiceBean implements StudioService {
         try {
             authorizeWithSecurityToken(securityToken);
             authorizeWithContest(contestPaymentData.getContestId());
-            
+
             ContestPayment contestPayment = convertContestPaymentData(contestPaymentData);
             contestPayment = contestManager.createContestPayment(contestPayment);
         } catch (ContestManagementException e) {
@@ -2531,9 +2560,8 @@ public class StudioServiceBean implements StudioService {
         } catch (SubmissionManagementException e) {
             handlePersistenceError("SubmissionManager reports error while creating new ContestPayment.", e);
         } catch (ContestNotFoundException e) {
-        	handlePersistenceError("Contest not found when trying to remove document from contest", e);
+            handlePersistenceError("Contest not found when trying to remove document from contest", e);
         }
-
 
         logExit("createContestPayment", contestPaymentData);
         return contestPaymentData;
@@ -2573,9 +2601,8 @@ public class StudioServiceBean implements StudioService {
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while retrieving contest payment.", e);
         } catch (ContestNotFoundException e) {
-        	handlePersistenceError("Contest not found when trying to remove document from contest", e);
+            handlePersistenceError("Contest not found when trying to remove document from contest", e);
         }
-
 
         // never reached
         return null;
@@ -2611,7 +2638,7 @@ public class StudioServiceBean implements StudioService {
         } catch (SubmissionManagementException e) {
             handlePersistenceError("SubmissionManager reports error while updating contest payment.", e);
         } catch (ContestNotFoundException e) {
-        	handlePersistenceError("Contest not found when trying to remove document from contest", e);
+            handlePersistenceError("Contest not found when trying to remove document from contest", e);
         }
 
         logExit("editContestPayment");
@@ -2736,15 +2763,18 @@ public class StudioServiceBean implements StudioService {
     /**
      * Set submission placement.
      * 
-     * @param submissionId Submission Id.
-     * @param placement placement
-     * @throws PersistenceException if any error occurs when setting placement.
+     * @param submissionId
+     *            Submission Id.
+     * @param placement
+     *            placement
+     * @throws PersistenceException
+     *             if any error occurs when setting placement.
      * @since TCCC-353
      */
     public void setSubmissionPlacement(long submissionId, int placement) throws PersistenceException {
         logEnter("setSubmissionPlacement", submissionId, placement);
         try {
-            
+
             Submission submission = submissionManager.getSubmission(submissionId);
             // if the submission has a prize associated
             Set<Prize> prizes = submission.getPrizes();
@@ -2769,22 +2799,23 @@ public class StudioServiceBean implements StudioService {
             Long contestId = contest.getContestId();
             List<Prize> contestPrizes = contestManager.getContestPrizes(contestId);
 
-            // TCCC-425 
+            // TCCC-425
             ContestResult cr = new ContestResult();
             cr.setContest(contest);
             cr.setPlaced(placement);
             cr.setSubmission(submission);
-            
+
             // TCCC-484
             contestManager.createContestResult(cr);
 
             for (Prize prize : contestPrizes) {
                 if (prize.getPlace() != null && prize.getPlace().equals(placement)) {
-                    logDebug("Same placement found in contest. placement: " + placement + ", contest id:" + contest.getContestId());
+                    logDebug("Same placement found in contest. placement: " + placement + ", contest id:"
+                            + contest.getContestId());
 
                     // Associate with submission.
                     submissionManager.addPrizeToSubmission(submissionId, prize.getPrizeId());
-                    
+
                     logExit("setSubmissionPlacement");
                     return;
                 }
@@ -2796,7 +2827,7 @@ public class StudioServiceBean implements StudioService {
             prize.setAmount(0d);
             prize.setPlace(placement);
             PrizeType prizeType = contestManager.getPrizeType(this.contestPrizeTypeId);
-            prize.setType(prizeType );
+            prize.setType(prizeType);
             prize = contestManager.createPrize(prize);
 
             Long prizeId = prize.getPrizeId();
@@ -2817,13 +2848,15 @@ public class StudioServiceBean implements StudioService {
     /**
      * Marks submission for purchase.
      * 
-     * @param submissionId Submission Id.
-     * @throws PersistenceException if any error occurs when marking for purchase. 
+     * @param submissionId
+     *            Submission Id.
+     * @throws PersistenceException
+     *             if any error occurs when marking for purchase.
      * 
-     *  @since TCCC-353
+     * @since TCCC-353
      */
     public void markForPurchase(long submissionId) throws PersistenceException {
-        // create/update a submission payment 
+        // create/update a submission payment
         // (submission id is the PK) row with status Marked For Purchase (3),
         // amount=0, paypal order id = null.
 
