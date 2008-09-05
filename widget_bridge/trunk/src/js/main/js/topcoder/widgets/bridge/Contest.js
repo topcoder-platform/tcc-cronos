@@ -343,7 +343,27 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 	 * <p>Valid Values:  must be greater or equal than 0 or -1 (not set)</p>
 	 */
 	var forumPostCount /* long */ = -1;
-	
+
+	/**
+	 * <p>Represents the Contest Administration Fee of the contest.</p>
+	 * <p>Initial Value: -1, means that is not set</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 * <p>Valid Values:  must be greater or equal than 0 or -1 (not set)</p>
+	 */
+    var contestAdministrationFee /* double */ = -1;
+
+	/**
+	 * <p>Represents the Digital Run points of the contest.</p>
+	 * <p>Initial Value: -1, means that is not set</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 * <p>Valid Values:  must be greater or equal than 0 or -1 (not set)</p>
+	 */
+    var digitalRunPoints /* double */ = -1;
+    
     /**
      * Abbreviation for Helper class.
      */
@@ -666,6 +686,22 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 		} else {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.forumPostCount",
 			"json.forumPostCount does not exists");
+		}
+		
+
+		// sets the Digital Run points.
+		if (typeof(json.digitalRunPoints) != "undefined" && typeof(json.digitalRunPoints) == "number") {
+		    that.digitalRunPoints /* long */ = json.digitalRunPoints;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.digitalRunPoints",
+			"json.digitalRunPoints does not exists");
+		}
+		// sets the Contest Administration Fee 
+		if (typeof(json.contestAdministrationFee) != "undefined" && typeof(json.contestAdministrationFee) == "number") {
+		    that.contestAdministrationFee /* long */ = json.contestAdministrationFee;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.contestAdministrationFee",
+			"json.contestAdministrationFee does not exists");
 		}
 	}
 
@@ -1208,6 +1244,8 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 		        + "\"prizeDescription\" : \"" + that.getPrizeDescription() + "\", "
 		        + "\"forumId\" : " + that.getForumId() + ", "
 		        + "\"forumPostCount\" : " + that.getForumPostCount() + ", "
+		        + "\"contestAdministrationFee\" : " + that.getContestAdministrationFee() + ", "
+		        + "\"digitalRunPoints\" : " + that.getDigitalRunPoints() + ", "
 		        + "\"creatorUserID\" : " + that.getCreatorUserID()
 		        + "}";
 	}
@@ -1296,5 +1334,34 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
    */
   this.setForumPostCount = function /* void */ (/* long */ forumPostCount ) {
       that.forumPostCount  = forumPostCount ;
+  }
+  
+
+  /**
+   * <p>Returns the Digital Run Points.</p>
+   */
+  this.getDigitalRunPoints = function /* double */ () {
+      return that.digitalRunPoints;
+  }
+
+  /**
+   * <p>Sets the Digital Run Points.</p>
+   */
+  this.setDigitalRunPoints = function /* void */ (/* double */ digitalRunPoints ) {
+      that.digitalRunPoints  = digitalRunPoints ;
+  }
+
+  /**
+   * <p>Returns the Contest Administration Fee.</p>
+   */
+  this.getContestAdministrationFee = function /* double */ () {
+      return that.contestAdministrationFee;
+  }
+
+  /**
+   * <p>Sets the Contest Administration Fee.</p>
+   */
+  this.setContestAdministrationFee = function /* void */ (/* double */ contestAdministrationFee ) {
+      that.contestAdministrationFee  = contestAdministrationFee ;
   }
 } // end

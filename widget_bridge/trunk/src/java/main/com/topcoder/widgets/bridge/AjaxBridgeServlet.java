@@ -1157,6 +1157,10 @@ public class AjaxBridgeServlet extends HttpServlet {
         contest.setRequiresPreviewImage(jsonContest.getBoolean("requiresPreviewImage"));
         contest.setMaximumSubmissions(jsonContest.getLong("maximumSubmissions"));
 
+        // [TCCC-499]
+        contest.setContestAdministrationFee(jsonContest.getDouble("contestAdministrationFee"));
+        contest.setDrPoints(jsonContest.getDouble("digitalRunPoints"));
+
         contest.setContestTypeId(jsonContest.getLong("contestTypeID"));
         // [27128642-6]
         contest.setContestChannelId(jsonContest.getLong("contestChannelID"));
@@ -1528,6 +1532,10 @@ public class AjaxBridgeServlet extends HttpServlet {
         respJSON.setString("eligibility", contest.getEligibility());
         respJSON.setString("notesOnWinnerSelection", contest.getNotesOnWinnerSelection());
         respJSON.setString("prizeDescription", contest.getPrizeDescription());
+
+        // [TCCC-499]
+        respJSON.setDouble("contestAdministrationFee",contest.getContestAdministrationFee());
+        respJSON.setDouble("digitalRunPoints",contest.getDrPoints());
         
         // set up ARRAYS
         // Prizes[]
