@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -547,7 +548,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             Contest result = getContest(contest.getContestId());
 
             // Add missing contest configurations.
-            for (ContestConfig config : result.getConfig()) {
+            for (ContestConfig config : new HashSet<ContestConfig>(result.getConfig())) {
                 if (!contest.getConfig().contains(config)) {
                     contest.getConfig().add(config);
                 }
