@@ -9,12 +9,11 @@ import javax.annotation.security.RunAs;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType; /* TODO: uncomment when jive forums are deployed
- import com.topcoder.forum.service.CategoryConfiguration;
- import com.topcoder.forum.service.CategoryType;
- import com.topcoder.forum.service.JiveForumManagementException;
- import com.topcoder.forum.service.ejb.JiveForumServiceLocal;
- */
+import javax.ejb.TransactionManagementType; 
+import com.topcoder.forum.service.CategoryConfiguration;
+import com.topcoder.forum.service.CategoryType;
+import com.topcoder.forum.service.JiveForumManagementException;
+import com.topcoder.forum.service.ejb.JiveForumServiceRemote;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
 import com.topcoder.service.studio.ContestData;
@@ -70,6 +69,7 @@ import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
+import javax.naming.InitialContext;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -176,8 +176,9 @@ public class StudioServiceBean implements StudioService {
     @EJB
     private SubmissionManagerLocal submissionManager;
 
-    // @EJB
-    // private JiveForumServiceLocal jiveForumService;
+//    @EJB
+//    @JndiInject(jndiName="JiveForumService/remote")
+    private JiveForumServiceRemote jiveForumService;
 
     /**
      * <p>
@@ -472,6 +473,30 @@ public class StudioServiceBean implements StudioService {
      */
     @Resource(name = "contestPropertyContestAdministrationFeeId")
     private long contestPropertyContestAdministrationFeeId;
+
+    /**
+     * Represents the jive forum version text.
+     * 
+     * @since TCCC-287
+     */
+    @Resource(name = "forumVersionText")
+    private String forumVersionText;
+    
+    /**
+     * Represents the jive forum RootCategoryId.
+     * 
+     * @since TCCC-287
+     */
+    @Resource(name = "forumRootCategoryId")
+    private long forumRootCategoryId;
+
+    /**
+     * Represents the jive forum VersionId.
+     * 
+     * @since TCCC-287
+     */
+    @Resource(name = "forumVersionId")
+    private long forumVersionId;
     
     /**
      * Returns base path for document files.
@@ -511,7 +536,7 @@ public class StudioServiceBean implements StudioService {
      * </p>
      */
     @PostConstruct
-    private void init() {
+    private void init(){
         if (logName != null) {
             if (logName.trim().length() == 0) {
                 throw new IllegalStateException("logName parameter not supposed to be empty.");
@@ -519,6 +544,15 @@ public class StudioServiceBean implements StudioService {
             log = LogManager.getLog(logName);
         }
 
+        try{
+        InitialContext ctx = new InitialContext();
+        jiveForumService = (JiveForumServiceRemote) ctx.lookup("JiveForumService/remote");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        
         // first record in logger
         logExit("init");
     }
@@ -548,6 +582,7 @@ public class StudioServiceBean implements StudioService {
 
         try {
             Contest contest = convertContestData(contestData);
+
             contest.setTcDirectProjectId(tcDirectProjectId);
 
             // use the logged user [27074484-16]
@@ -555,6 +590,27 @@ public class StudioServiceBean implements StudioService {
 
             contest = contestManager.createContest(contest);
 
+            // [TCCC-287]
+            CategoryConfiguration categoryConfiguration = new CategoryConfiguration();
+            // Name: The name of the contest
+            categoryConfiguration.setName(contest.getName());
+            // Description:
+            // "Forum for cockpit contest: " + name of contest
+            categoryConfiguration.setDescription("Forum for cockpit contest: " + contest.getName());
+            // ComponentID: The ID of the contest
+            categoryConfiguration.setComponentId(contest.getContestId());
+            // IsPublic: true categoryConfiguration.setPublic(true);
+            // CategoryType: Application
+            categoryConfiguration.setTemplateCategoryType(CategoryType.APPLICATION);
+            categoryConfiguration.setVersionText(forumVersionText);
+            categoryConfiguration.setVersionId(forumVersionId);
+            categoryConfiguration.setRootCategoryId(forumRootCategoryId);
+            
+            logDebug("Create forum category: " + categoryConfiguration.getName());
+            contest.setForumId(jiveForumService.createCategory(categoryConfiguration));
+            logDebug("Created forum id: " + contest.getForumId());
+            contestManager.updateContest(contest);
+            
             // FIX [TCCC-146]
             for (PrizeData prizeData : contestData.getPrizes()) {
                 Prize prize = new Prize();
@@ -579,28 +635,10 @@ public class StudioServiceBean implements StudioService {
             }
             contestData = convertContest(contest);
             contestData.setDocumentationUploads(documents);
-            /*
-             * TODO: uncomment when jive forums are deployed // [TCCC-287]
-             * CategoryConfiguration categoryConfiguration = new
-             * CategoryConfiguration(); // Name: The name of the contest
-             * categoryConfiguration.setName(contest.getName()); // Description:
-             * "Forum for cockpit contest: " + name of contest
-             * categoryConfiguration
-             * .setDescription("Forum for cockpit contest: " +
-             * contest.getName()); // ComponentID: The ID of the contest
-             * categoryConfiguration.setComponentId(contest.getContestId()); //
-             * IsPublic: true categoryConfiguration.setPublic(true); //
-             * CategoryType: Application
-             * categoryConfiguration.setTemplateCategoryType
-             * (CategoryType.APPLICATION);
-             */
-            // jiveForumService.createCategory(categoryConfiguration);
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while creating new contest.", e);
-            // } catch (JiveForumManagementException e) {
-            // handlePersistenceError(
-            // "JiveForumService reports error while creating new forum. " +
-            // e.getMessage(), e);
+        } catch (JiveForumManagementException e) {
+            handlePersistenceError("JiveForumService reports error while creating new forum. " + e.getMessage(), e);
         }
 
         logExit("createContest", contestData);
