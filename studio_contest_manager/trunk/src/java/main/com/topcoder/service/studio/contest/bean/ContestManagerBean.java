@@ -3092,7 +3092,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             EntityManager em = getEntityManager();
 
             Query query = em.createNativeQuery("select count(*) from jivemessage where forumid=?");
-            query.setParameter(1, 1);
+            query.setParameter(1, forumId);
 
             BigDecimal count = (BigDecimal) query.getSingleResult();
             return count.intValue();
