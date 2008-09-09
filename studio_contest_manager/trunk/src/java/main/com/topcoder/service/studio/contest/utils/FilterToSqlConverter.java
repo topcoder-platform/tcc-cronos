@@ -58,8 +58,11 @@ public class FilterToSqlConverter {
     	+ "SELECT contest.contest_id,contest.contest_channel_id,contest.name,contest.contest_type_id, "  
         + "contest.project_id,contest.tc_direct_project_id,contest.contest_status_id,contest.contest_detailed_status_id,contest.forum_id, " 
         + "contest.event_id,contest.start_time,contest.end_time,contest.winner_announcement_time, "  
-        + "contest.create_user_id "  
-        + "FROM contest WHERE ";  
+        + "contest.create_user_id "
+        + "FROM contest "
+        + "INNER JOIN contest_status_lu ON contest.contest_status_id = contest_status_lu.contest_status_id "
+        + "INNER JOIN contest_channel_lu ON contest.contest_channel_id = contest_channel_lu.contest_channel_id "
+        + "WHERE ";
 
 
     /**
