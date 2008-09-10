@@ -2039,7 +2039,9 @@ public class AjaxBridgeServlet extends HttpServlet {
         // encode the json object for response
         String strResponse = jsonEncoder.encode(succJson);
         // log the ajax response
-        logger.log(Level.INFO, "the Ajax Response is : " + strResponse);
+        if (logger.isEnabled(Level.INFO)) {
+        	logger.log(Level.INFO, "the Ajax Response is : " + strResponse);
+        }
         // now we encode the success response
         printAjaxResponseString(strResponse, response);
     }
