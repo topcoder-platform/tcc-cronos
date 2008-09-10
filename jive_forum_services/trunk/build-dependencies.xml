@@ -2,25 +2,35 @@
     <!-- property file defining the component's dependencies -->
 
     <!-- Properties used in compile_targets ANT target for JDK version x -->
-    <property name="component.target" value="1.x"/>
-    <property name="component.bootclasspath" value="${java_1_x_bootclasspath}"/>
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
 
     <!-- TCS dependencies -->
-
+	  <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
     <!-- 3rd party dependencies -->
-    <property name="junit.jar" value="${ext_libdir}/junit-4.4.jar"/>
+    <property name="jboss.home" value="${ext_libdir}/jboss/4.2.2.ga/client"/>
+    <property name="jboss-j2ee.jar" value="${jboss.home}/jboss-j2ee.jar"/>
+    <property name="jboss-ejb3x.jar" value="${jboss.home}/jboss-ejb3x.jar"/>
+    <property name="jboss-jaxrpc.jar" value="${jboss.home}/jboss-jaxrpc.jar"/>
+
+    <!-- mock jiveforums -->
+    <property name="mock.jar" value="${testfiles}/mock.jar"/>
+    <!-- got it in http://forums.topcoder.com/?module=Thread&threadID=606259&mc=1#943481 -->
+    <property name="jivebase.jar" value="${ext_libdir}/jive/jivebase.jar"/>
+                
+    <property name="junit.jar" value="${ext_libdir}/junit/4.4/junit-4.4.jar"/>
 
     <path id="component.tcs-dependencies">
-        <pathelement location="${tcs_libdir}/base_exception/2.0/base_exception.jar"/>
-        <pathelement location="${tcs_libdir}/jivebase.jar"/>
-        <pathelement location="${testfiles}/mock.jar"/>
-        <pathelement location="${ext_libdir}/jboss-j2ee.jar"/>
-        <pathelement location="${ext_libdir}/jboss-ejb3x.jar"/>
-        <pathelement location="${ext_libdir}/jboss-jaxrpc.jar"/>
+        <pathelement location="${base_exception.jar}"/>
     </path>
 
-    <path id="component.3rdParty-dependencies"/>
-
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${jboss-j2ee.jar}"/>
+        <pathelement location="${jboss-ejb3x.jar}"/>
+        <pathelement location="${jboss-jaxrpc.jar}"/>
+        <pathelement location="${mock.jar}"/>
+        <pathelement location="${jivebase.jar}"/>
+    </path>
     <path id="component.test.3rdParty-dependencies">
         <pathelement location="${junit.jar}"/>
     </path>
