@@ -1,45 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="IBM-3C31F3D567B" name="com.topcoder.forum.service.AllTests" tests="331" time="1.0" timestamp="2008-01-06T13:34:06">
+<testsuite errors="0" failures="0" hostname="IBM-3C31F3D567B" name="com.topcoder.forum.service.AllTests" tests="252" time="0.922" timestamp="2008-09-10T04:18:40">
   <properties>
     <property name="java.vendor" value="Sun Microsystems Inc." />
     <property name="package" value="com.topcoder.forum.service" />
     <property name="docpackage.jar" value="jive_forum_services_docs.jar" />
-    <property name="checkstyle.dir" value="D:/Topcoder/Java/lib/checkstyle-4.3" />
     <property name="sun.management.compiler" value="HotSpot Client Compiler" />
+    <property name="manifest_file_path" value="build/dist/jive_forum_services-1.1.0/META-INF/" />
     <property name="verbose" value="no" />
     <property name="os.name" value="Windows XP" />
     <property name="sun.boot.class.path" value="D:\jdk1.5\jre\lib\rt.jar;D:\jdk1.5\jre\lib\i18n.jar;D:\jdk1.5\jre\lib\sunrsasign.jar;D:\jdk1.5\jre\lib\jsse.jar;D:\jdk1.5\jre\lib\jce.jar;D:\jdk1.5\jre\lib\charsets.jar;D:\jdk1.5\jre\classes" />
     <property name="docsdir" value="docs" />
     <property name="javadoc.jar" value="javadocs.jar" />
-    <property name="design_submission.jar" value="Jive_Forum_Services_1.0_design_submission.jar" />
+    <property name="design_submission.jar" value="jive_forum_services_1.1.0_design_submission.jar" />
     <property name="sun.desktop" value="windows" />
     <property name="component.tests.jar" value="build/dist/lib/tcs/jive_forum_services_tests.jar" />
     <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
-    <property name="net.sourceforge.cobertura.datafile" value="D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\log\cobertura.ser" />
+    <property name="net.sourceforge.cobertura.datafile" value="D:\Topcoder\review\jivesvn\log\cobertura.ser" />
     <property name="ant.home" value="D:\Topcoder\Java\apache-ant-1.7.0\bin\.." />
     <property name="java.runtime.version" value="1.5.0_06-b05" />
-    <property name="component_path" value="jive_forum_services/1.0" />
-    <property name="jboss-jaxrpc.jar" value="D:/Topcoder/Java/lib/jboss-jaxrpc.jar" />
+    <property name="component_path" value="jive_forum_services/1.1.0" />
     <property name="cobertura.dir" value="D:/Topcoder/Java/lib/cobertura-1.9" />
+    <property name="component.version.micro" value="0" />
     <property name="user.name" value="IBM" />
+    <property name="manifest_file" value="build/dist/jive_forum_services-1.1.0/META-INF//MANIFEST.MF" />
     <property name="debug" value="off" />
-    <property name="reports" value="reports" />
+    <property name="reports" value="log/reports" />
     <property name="testfiles" value="test_files" />
-    <property name="dist_conf" value="build/dist/jive_forum_services-1.0/conf" />
-    <property name="component_version" value="1.0" />
-    <property name="jalopy.dir" value="D:/Topcoder/Java/lib/jalopy-ant-0.1-1.5rc3" />
+    <property name="component.version.major" value="1" />
+    <property name="component_version" value="1.1.0" />
+    <property name="dist_coverage" value="build/dist/jive_forum_services-1.1.0/docs/coverage" />
+    <property name="component.packagedir" value="com/topcoder/forum/service" />
     <property name="user.language" value="zh" />
     <property name="cobertura.datafile" value="log/cobertura.ser" />
+    <property name="javadoc.locale" value="en_US" />
     <property name="sun.boot.library.path" value="D:\jdk1.5\jre\bin" />
     <property name="tcs_libdir" value="D:/Topcoder/Java/lib/tcs" />
     <property name="srcdir" value="src" />
-    <property name="ant.project.name" value="Jive Forum Services" />
+    <property name="ant.project.name" value="TopCoder Java Generic Build" />
+    <property name="component.bootclasspath" value="${java_1_x_bootclasspath}" />
+    <property name="component.version.minor" value="1" />
     <property name="java.version" value="1.5.0_06" />
     <property name="user.timezone" value="" />
-    <property name="dev_dist.jar" value="Jive_Forum_Services_1.0_dev_dist.jar" />
+    <property name="dev_dist.jar" value="jive_forum_services_1.1.0_dev_dist.jar" />
     <property name="sun.arch.data.model" value="32" />
-    <property name="build_lib" value="build/lib" />
-    <property name="webdir" value="web" />
     <property name="java.endorsed.dirs" value="D:\jdk1.5\jre\lib\endorsed" />
     <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86" />
     <property name="packagedir" value="com/topcoder/forum/service" />
@@ -48,87 +51,85 @@
     <property name="file.separator" value="\" />
     <property name="java.specification.name" value="Java Platform API Specification" />
     <property name="build_docsdir" value="build/docs" />
-    <property name="dev_submission.jar" value="Jive_Forum_Services_1.0_dev_submission.jar" />
+    <property name="dev_submission.jar" value="jive_forum_services_1.1.0_dev_submission.jar" />
     <property name="java.class.version" value="49.0" />
     <property name="build_testclassdir" value="build/testClasses" />
     <property name="user.country" value="CN" />
     <property name="java.home" value="D:\jdk1.5\jre" />
+    <property name="component.distfilename" value="jive_forum_services" />
+    <property name="component.version.build" value="1" />
     <property name="java.vm.info" value="mixed mode" />
-    <property name="jar_tcs_libdir" value="lib/tcs" />
-    <property name="ant.file" value="D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\build.xml" />
+    <property name="ant.file" value="D:\Topcoder\review\jivesvn\build.xml" />
     <property name="os.version" value="5.1" />
     <property name="build_distdir" value="build/dist" />
     <property name="dist_docpackage" value="build/doc_package" />
-    <property name="build_tcsdistdir" value="build/dist/jive_forum_services-1.0" />
+    <property name="build_tcsdistdir" value="build/dist/jive_forum_services-1.1.0" />
     <property name="path.separator" value=";" />
-    <property name="jivebase.jar" value="D:/Topcoder/Java/lib/tcs/jivebase.jar" />
     <property name="java.vm.version" value="1.5.0_06-b05" />
     <property name="testlogdir" value="log" />
-    <property name="jboss-j2ee.jar" value="D:/Topcoder/Java/lib/jboss-j2ee.jar" />
     <property name="user.variant" value="" />
     <property name="ant.library.dir" value="D:\Topcoder\Java\apache-ant-1.7.0\lib" />
+    <property name="component.name" value="Jive Forum Services" />
     <property name="javamain" value="src/java/main" />
-    <property name="base_exception.jar" value="D:/Topcoder/Java/lib/tcs/base_exception/2.0/base_exception.jar" />
     <property name="dist_lib" value="build/dist/lib/tcs" />
-    <property name="dist_testfiles" value="build/dist/jive_forum_services-1.0/test_files" />
-    <property name="dist_javadocs" value="build/dist/jive_forum_services-1.0/docs/javadocs" />
+    <property name="dist_javadocs" value="build/dist/jive_forum_services-1.1.0/docs/javadocs" />
     <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
     <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
-    <property name="component" value="Jive_Forum_Services" />
-    <property name="component.war" value="${dist_examples}/jive_forum_services.war" />
+    <property name="component" value="Jive Forum Services" />
     <property name="user.home" value="C:\Documents and Settings\IBM" />
     <property name="java.specification.vendor" value="Sun Microsystems Inc." />
-    <property name="java.library.path" value="D:\jdk1.5\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Microsoft Visual Studio 8\Common7\IDE;C:\Program Files\Microsoft Visual Studio 8\VC\BIN;C:\Program Files\Microsoft Visual Studio 8\Common7\Tools;C:\Program Files\Microsoft Visual Studio 8\Common7\Tools\bin;C:\Program Files\Microsoft Visual Studio 8\VC\PlatformSDK\bin;C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0\bin;C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727;C:\Program Files\Microsoft Visual Studio 8\VC\VCPackages;D:\Topcoder\Java\apache-ant-1.7.0\bin;D:\nant-0.85\bin;D:\NUnit-2.2.8\bin;D:\ADS\bin;D:\ActivePerl\bin\;D:\jdk1.5\bin;C:\Program Files\ThinkPad\Utilities;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\Intel\Wireless\Bin\;C:\Program Files\ATI Technologies\ATI Control Panel;C:\WINDOWS\Downloaded Program Files;C:\IBMTOOLS\Python22;C:\Program Files\PC-Doctor for Windows\services;C:\Program Files\Intel\Wireless\Bin\;D:\Program Files\Microsoft SDK\Bin\.;D:\Program Files\Microsoft SDK\Bin\WinNT\.;C:\Program Files\Microsoft SQL Server\90\Tools\binn\;D:\F-Secure\SSHTRI~1;D:\oracle\ora92\bin;C:\Program Files\Oracle\jre\1.3.1\bin;C:\Program Files\Oracle\jre\1.1.8\bin;d:\php;d:\php\ext;C:\PROGRA~1\Tcl\bin;D:\Program Files\Microsoft Visual Studio\Common\Tools\WinNT;D:\Program Files\Microsoft Visual Studio\Common\MSDev98\Bin;D:\Program Files\Microsoft Visual Studio\Common\Tools;D:\Program Files\Microsoft Visual Studio\VC98\bin;D:\Program Files\Microsoft SDK\Bin\.;D:\Program Files\Microsoft SDK\Bin\WinNT\.;d:\php;d:\php\ext;d:\wave\bluepc\bin;d:\wave\bluepc\gnu\bin;c:/progra~1/tcl/bin" />
     <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="java.library.path" value="D:\jdk1.5\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;D:\oracle\product\10.2.0\db_2\bin;D:\Topcoder\Java\apache-ant-1.7.0\bin;D:\nant-0.85\bin;D:\NUnit-2.2.8\bin;D:\ADS\bin;D:\ActivePerl\bin\;D:\jdk1.5\bin;C:\Program Files\ThinkPad\Utilities;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\Intel\Wireless\Bin\;C:\Program Files\ATI Technologies\ATI Control Panel;C:\WINDOWS\Downloaded Program Files;C:\IBMTOOLS\Python22;C:\Program Files\PC-Doctor for Windows\services;C:\Program Files\Intel\Wireless\Bin\;D:\Program Files\Microsoft SDK\Bin\.;D:\Program Files\Microsoft SDK\Bin\WinNT\.;C:\Program Files\Microsoft SQL Server\90\Tools\binn\;D:\F-Secure\SSHTRI~1;D:\oracle\ora92\bin;C:\Program Files\Oracle\jre\1.3.1\bin;C:\Program Files\Oracle\jre\1.1.8\bin;d:\php;d:\php\ext;C:\PROGRA~1\Tcl\bin;C:\Program Files\Gemplus\GemSafe Libraries\BIN;C:\Program Files\IBM\Informix\Client-SDK\bin;C:\Program Files\TortoiseSVN\bin;D:\Program Files\Microsoft Visual Studio\Common\Tools\WinNT;D:\Program Files\Microsoft Visual Studio\Common\MSDev98\Bin;D:\Program Files\Microsoft Visual Studio\Common\Tools;D:\Program Files\Microsoft Visual Studio\VC98\bin;D:\Program Files\Microsoft SDK\Bin\.;D:\Program Files\Microsoft SDK\Bin\WinNT\.;d:\php;d:\php\ext;d:\wave\bluepc\bin;d:\wave\bluepc\gnu\bin;c:/progra~1/tcl/bin" />
     <property name="build_javadocsdir" value="build/docs/javadocs" />
     <property name="configdir" value="conf" />
     <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="ant.file.TopCoder Java Generic Build" value="D:\Topcoder\review\jivesvn\build.xml" />
     <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition" />
+    <property name="java.class.path" value="D:\Topcoder\review\jivesvn\build\instrumented;D:\Topcoder\review\jivesvn\build\testClasses;D:\Topcoder\Java\lib\junit-4.4.jar;D:\Topcoder\Java\lib\tcs\base_exception\2.0\base_exception.jar;D:\Topcoder\Java\lib\tcs\jivebase.jar;D:\Topcoder\review\jivesvn\test_files\mock.jar;D:\Topcoder\Java\lib\jboss-j2ee.jar;D:\Topcoder\Java\lib\jboss-ejb3x.jar;D:\Topcoder\Java\lib\jboss-jaxrpc.jar;D:\Topcoder\review\jivesvn\build\classes;D:\Topcoder\review\jivesvn\conf;D:\Topcoder\review\jivesvn\test_files;D:\Topcoder\Java\lib\cobertura-1.9\cobertura.jar;D:\Topcoder\Java\lib\cobertura-1.9\lib\asm-2.2.1.jar;D:\Topcoder\Java\lib\cobertura-1.9\lib\asm-tree-2.2.1.jar;D:\Topcoder\Java\lib\cobertura-1.9\lib\jakarta-oro-2.0.8.jar;D:\Topcoder\Java\lib\cobertura-1.9\lib\log4j-1.2.9.jar;D:\Topcoder\review\jivesvn;D:\Topcoder\Java\apache-ant-1.7.0\lib\ant-launcher.jar;D:\Topcoder\Java\apache-ant-1.7.0\lib\ant.jar;D:\Topcoder\Java\apache-ant-1.7.0\lib\ant-junit.jar" />
     <property name="ant.version" value="Apache Ant version 1.7.0 compiled on December 13 2006" />
-    <property name="java.class.path" value="D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\build\instrumented;D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\build\testClasses;D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\build\classes;D:\Topcoder\Java\lib\tcs\base_exception\2.0\base_exception.jar;D:\Topcoder\Java\lib\tcs\jivebase.jar;D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\test_files\mock.jar;D:\Topcoder\Java\lib\junit-4.4.jar;D:\Topcoder\Java\lib\jboss-j2ee.jar;D:\Topcoder\Java\lib\jboss-ejb3x.jar;D:\Topcoder\Java\lib\jboss-jaxrpc.jar;D:\Topcoder\Java\lib\cobertura-1.9\cobertura.jar;D:\Topcoder\Java\lib\cobertura-1.9\lib\asm-2.2.1.jar;D:\Topcoder\Java\lib\cobertura-1.9\lib\asm-tree-2.2.1.jar;D:\Topcoder\Java\lib\cobertura-1.9\lib\jakarta-oro-2.0.8.jar;D:\Topcoder\Java\lib\cobertura-1.9\lib\log4j-1.2.9.jar;D:\aspectj1.5\lib\aspectjrt.jar;D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist;D:\Topcoder\Java\apache-ant-1.7.0\lib\ant-launcher.jar;D:\Topcoder\Java\apache-ant-1.7.0\lib\ant.jar;D:\Topcoder\Java\apache-ant-1.7.0\lib\ant-junit.jar" />
-    <property name="jboss-ejb3x.jar" value="D:/Topcoder/Java/lib/jboss-ejb3x.jar" />
-    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
-    <property name="builddir" value="build" />
     <property name="ext_libdir" value="D:/Topcoder/Java/lib" />
+    <property name="builddir" value="build" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
     <property name="java.vm.specification.version" value="1.0" />
+    <property name="component.dist.jar" value="build/dist/jive_forum_services-1.1.0.jar" />
     <property name="junit.jar" value="D:/Topcoder/Java/lib/junit-4.4.jar" />
-    <property name="component.dist.jar" value="build/dist/jive_forum_services-1.0.jar" />
-    <property name="sun.cpu.endian" value="little" />
     <property name="sun.os.patch.level" value="Service Pack 2" />
+    <property name="sun.cpu.endian" value="little" />
     <property name="log4j.jar" value="D:/Topcoder/Java/lib/log4j-1.2.14.jar" />
     <property name="java.io.tmpdir" value="C:\DOCUME~1\IBM\LOCALS~1\Temp\" />
+    <property name="component.target" value="1.x" />
     <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
     <property name="build_targetclassdir" value="build/targetclasses" />
+    <property name="javac.encoding" value="UTF-8" />
     <property name="javatests" value="src/java/tests" />
     <property name="build_classdir" value="build/classes" />
     <property name="javadocsdir" value="docs/javadocs" />
+    <property name="instrumented.dir" value="build/instrumented" />
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
     <property name="os.arch" value="x86" />
-    <property name="instrumented.dir" value="build/instrumented" />
-    <property name="build_webdir" value="build/web" />
+    <property name="test_reflib" value="test_reflib" />
     <property name="java.ext.dirs" value="D:\jdk1.5\jre\lib\ext" />
-    <property name="dist_src" value="build/dist/jive_forum_services-1.0/src" />
-    <property name="user.dir" value="D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist" />
-    <property name="design_dist.jar" value="Jive_Forum_Services_1.0_design_dist.jar" />
+    <property name="user.dir" value="D:\Topcoder\review\jivesvn" />
+    <property name="design_dist.jar" value="jive_forum_services_1.1.0_design_dist.jar" />
+    <property name="libdir" value="../tcs/lib" />
     <property name="javasrc" value="src/java" />
-    <property name="jar_ext_libdir" value="lib" />
     <property name="line.separator" value="
 " />
     <property name="java.vm.name" value="Java HotSpot(TM) Client VM" />
     <property name="distfilename" value="jive_forum_services" />
-    <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar" />
-    <property name="basedir" value="D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist" />
-    <property name="ant.file.Jive Forum Services" value="D:\Topcoder\Java\Jive_Forum_Services_1.0_dev_dist\build.xml" />
+    <property name="basedir" value="D:\Topcoder\review\jivesvn" />
     <property name="ant.java.version" value="1.5" />
     <property name="ant.core.lib" value="D:\Topcoder\Java\apache-ant-1.7.0\lib\ant.jar" />
     <property name="file.encoding" value="GBK" />
-    <property name="jiveforums.jar" value="test_files/mock.jar" />
-    <property name="dist_docs" value="build/dist/jive_forum_services-1.0/docs" />
-    <property name="component.jar" value="build/dist/lib/tcs/jive_forum_services/1.0/jive_forum_services.jar" />
+    <property name="dist_docs" value="build/dist/jive_forum_services-1.1.0/docs" />
+    <property name="component.jar" value="build/dist/lib/tcs/jive_forum_services/1.1.0/jive_forum_services.jar" />
     <property name="java.specification.version" value="1.5" />
+    <property name="target_libdir" value="D:/Topcoder/Java/lib/tcs" />
+    <property name="ant.file.Dependency Import" value="D:\Topcoder\review\jivesvn\build-dependencies.xml" />
+    <property name="component.package" value="com.topcoder.forum.service" />
   </properties>
-  <testcase classname="com.topcoder.forum.service.CategoryConfigurationUnitTest" name="testCtor" time="0.016" />
+  <testcase classname="com.topcoder.forum.service.CategoryConfigurationUnitTest" name="testCtor" time="0.015" />
   <testcase classname="com.topcoder.forum.service.CategoryConfigurationUnitTest" name="testGetName" time="0.0" />
   <testcase classname="com.topcoder.forum.service.CategoryConfigurationUnitTest" name="testSetName" time="0.0" />
   <testcase classname="com.topcoder.forum.service.CategoryConfigurationUnitTest" name="testSetName_Null" time="0.0" />
@@ -146,7 +147,7 @@
   <testcase classname="com.topcoder.forum.service.CategoryConfigurationUnitTest" name="testGetVersionText" time="0.0" />
   <testcase classname="com.topcoder.forum.service.CategoryConfigurationUnitTest" name="testSetVersionText" time="0.0" />
   <testcase classname="com.topcoder.forum.service.CategoryConfigurationUnitTest" name="testSetVersionText_Null" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.CategoryConfigurationUnitTest" name="testSetVersionText_Empty" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.CategoryConfigurationUnitTest" name="testSetVersionText_Empty" time="0.016" />
   <testcase classname="com.topcoder.forum.service.CategoryConfigurationUnitTest" name="testGetVersionId" time="0.0" />
   <testcase classname="com.topcoder.forum.service.CategoryConfigurationUnitTest" name="testSetVersionId" time="0.0" />
   <testcase classname="com.topcoder.forum.service.CategoryConfigurationUnitTest" name="testSetVersionId_Failure" time="0.0" />
@@ -160,7 +161,7 @@
   <testcase classname="com.topcoder.forum.service.CategoryConfigurationUnitTest" name="testSetModeratorUserId" time="0.0" />
   <testcase classname="com.topcoder.forum.service.CategoryConfigurationUnitTest" name="testSetModeratorUserId_Failure" time="0.0" />
   <testcase classname="com.topcoder.forum.service.CategoryConfigurationUnitTest" name="testSetModeratorUserId_Failure1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.CategoryConfigurationUnitTest" name="testGetTemplateCategoryType" time="0.016" />
+  <testcase classname="com.topcoder.forum.service.CategoryConfigurationUnitTest" name="testGetTemplateCategoryType" time="0.0" />
   <testcase classname="com.topcoder.forum.service.CategoryConfigurationUnitTest" name="testSetTemplateCategoryType" time="0.0" />
   <testcase classname="com.topcoder.forum.service.CategoryConfigurationUnitTest" name="testSetTemplateCategoryType_Failure" time="0.0" />
   <testcase classname="com.topcoder.forum.service.CategoryTypeUnitTest" name="testAPPLICATION" time="0.0" />
@@ -188,7 +189,7 @@
   <testcase classname="com.topcoder.forum.service.JiveForumManagementExceptionUnitTest" name="testCtorStrThrowable_Null" time="0.0" />
   <testcase classname="com.topcoder.forum.service.JiveForumManagementExceptionUnitTest" name="testCtorStrThrowableExp" time="0.0" />
   <testcase classname="com.topcoder.forum.service.JiveForumManagementExceptionUnitTest" name="testCtorStrThrowableExp_Null" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testCtor" time="0.047" />
+  <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testCtor" time="0.031" />
   <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testCtor_Failure1" time="0.0" />
   <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testCtor_Failure2" time="0.0" />
   <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testCtor_Failure3" time="0.0" />
@@ -203,7 +204,7 @@
   <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testWatch_Failure2" time="0.0" />
   <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testWatch_Failure3" time="0.0" />
   <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testWatch_Failure4" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testWatch_Failure5" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testWatch_Failure5" time="0.016" />
   <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testWatch_Failure6" time="0.0" />
   <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testWatch_Failure7" time="0.0" />
   <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testWatch_Failure8" time="0.0" />
@@ -234,8 +235,8 @@
   <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testGetUserRole_Failure2" time="0.0" />
   <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testGetUserRole_Failure3" time="0.0" />
   <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testGetUserRole_Failure4" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testCreateCategory" time="0.015" />
-  <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testCreateCategory1" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testCreateCategory" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testCreateCategory1" time="0.016" />
   <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testCreateCategory_Failure1" time="0.0" />
   <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testCreateCategory_Failure2" time="0.0" />
   <testcase classname="com.topcoder.forum.service.JiveForumManagerUnitTest" name="testCreateCategory_Failure3" time="0.0" />
@@ -260,7 +261,7 @@
   <testcase classname="com.topcoder.forum.service.UserRoleUnitTest" name="testNO_ACCESS" time="0.0" />
   <testcase classname="com.topcoder.forum.service.UserRoleUnitTest" name="testCONTRIBUTOR" time="0.0" />
   <testcase classname="com.topcoder.forum.service.UserRoleUnitTest" name="testMODERATOR" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.HelperUnitTest" name="testCheckNull_Accuracy" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.HelperUnitTest" name="testCheckNull_Accuracy" time="0.016" />
   <testcase classname="com.topcoder.forum.service.HelperUnitTest" name="testCheckNull_Failure" time="0.0" />
   <testcase classname="com.topcoder.forum.service.HelperUnitTest" name="testCheckString" time="0.0" />
   <testcase classname="com.topcoder.forum.service.HelperUnitTest" name="testCheckString_Failure1" time="0.0" />
@@ -279,14 +280,14 @@
   <testcase classname="com.topcoder.forum.service.TCAuthTokenUnitTest" name="testCtor_Failure" time="0.0" />
   <testcase classname="com.topcoder.forum.service.TCAuthTokenUnitTest" name="testGetUserID" time="0.0" />
   <testcase classname="com.topcoder.forum.service.TCAuthTokenUnitTest" name="testIsAnonymous" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.ejb.ServiceConfigurationExceptionUnitTest" name="testCtorStr" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.ServiceConfigurationExceptionUnitTest" name="testCtorStr" time="0.016" />
   <testcase classname="com.topcoder.forum.service.ejb.ServiceConfigurationExceptionUnitTest" name="testCtorStr_Null" time="0.0" />
   <testcase classname="com.topcoder.forum.service.ejb.ServiceConfigurationExceptionUnitTest" name="testCtorStrExp" time="0.0" />
   <testcase classname="com.topcoder.forum.service.ejb.ServiceConfigurationExceptionUnitTest" name="testCtorStrExp_Null" time="0.0" />
   <testcase classname="com.topcoder.forum.service.ejb.ServiceConfigurationExceptionUnitTest" name="testCtorStrThrowable" time="0.0" />
   <testcase classname="com.topcoder.forum.service.ejb.ServiceConfigurationExceptionUnitTest" name="testCtorStrThrowable_Null" time="0.0" />
   <testcase classname="com.topcoder.forum.service.ejb.ServiceConfigurationExceptionUnitTest" name="testCtorStrThrowableExp" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.ejb.ServiceConfigurationExceptionUnitTest" name="testCtorStrThrowableExp_Null" time="0.016" />
+  <testcase classname="com.topcoder.forum.service.ejb.ServiceConfigurationExceptionUnitTest" name="testCtorStrThrowableExp_Null" time="0.0" />
   <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testCtor" time="0.0" />
   <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testSetUserRole" time="0.0" />
   <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testCreateCategory" time="0.0" />
@@ -297,7 +298,7 @@
   <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testInitialize_Failure1" time="0.0" />
   <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testInitialize_Failure2" time="0.0" />
   <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testInitialize_Failure3" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testInitialize_Failure4" time="0.016" />
+  <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testInitialize_Failure4" time="0.0" />
   <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testInitialize_Failure5" time="0.0" />
   <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testInitialize_Failure6" time="0.0" />
   <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testInitialize_Failure7" time="0.0" />
@@ -306,7 +307,7 @@
   <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testInitialize_Failure10" time="0.0" />
   <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testInitialize_Failure11" time="0.0" />
   <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testInitialize_Failure12" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testInitialize_Failure13" time="0.015" />
+  <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testInitialize_Failure13" time="0.0" />
   <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testInitialize_Failure14" time="0.0" />
   <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testInitialize_Failure15" time="0.0" />
   <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testInitialize_Failure16" time="0.0" />
@@ -315,153 +316,74 @@
   <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testInitialize_Failure19" time="0.0" />
   <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testInitialize_Failure20" time="0.0" />
   <testcase classname="com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest" name="testInitialize_Failure21" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_Ctor" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_GetName" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_SetName" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_GetDescription" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_SetDescription" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_GetRootCategoryId" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_SetRootCategoryId" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_GetComponentId" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_SetComponentId" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_GetVersionText" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_SetVersionText" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_GetVersionId" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_SetVersionId" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_IsPublic" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_SetPublic" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_GetTemplateCategoryId" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_SetTemplateCategoryId" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_GetModeratorUserId" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_SetModeratorUserId" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_GetTemplateCategoryType" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.CategoryConfigurationAccuracyTest" name="test_SetTemplateCategoryType" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.ForumEntityNotFoundExceptionAccuracyTest" name="testCtorWithMsg" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.ForumEntityNotFoundExceptionAccuracyTest" name="testCtorWithMsgAndCause" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.ForumEntityNotFoundExceptionAccuracyTest" name="testCtorWithMsgAndExceptionData" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.ForumEntityNotFoundExceptionAccuracyTest" name="testCtorWithMsgCauseAndExceptionData" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumManagementExceptionAccuracyTest" name="testCtorWithMsg" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumManagementExceptionAccuracyTest" name="testCtorWithMsgAndCause" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumManagementExceptionAccuracyTest" name="testCtorWithMsgAndExceptionData" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumManagementExceptionAccuracyTest" name="testCtorWithMsgCauseAndExceptionData" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumManagerAccuracyTest" name="test_Ctor" time="0.016" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumManagerAccuracyTest" name="test_Watch_FORUM" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumManagerAccuracyTest" name="test_Watch_FORUM_CATEGORY" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumManagerAccuracyTest" name="test_Watch_FORUM_THREAD" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumManagerAccuracyTest" name="test_IsWatched_FORUM" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumManagerAccuracyTest" name="test_IsWatched_FORUM_CATEGORY" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumManagerAccuracyTest" name="test_IsWatched_FORUM_THREAD" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumManagerAccuracyTest" name="test_SetUserRole_NO_ACCESS" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumManagerAccuracyTest" name="test_SetUserRole_Moderator" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumManagerAccuracyTest" name="test_SetUserRole_Contributor" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumManagerAccuracyTest" name="test_GetUserRole_NO_ACCESS" time="0.016" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumManagerAccuracyTest" name="test_GetUserRole_MODERATOR" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumManagerAccuracyTest" name="test_GetUserRole_CONTRIBUTOR" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumManagerAccuracyTest" name="test_CreateCategory2" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumManagerAccuracyTest" name="test_CreateCategory1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumServiceBeanAccuracyTest" name="testCtor" time="0.015" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumServiceBeanAccuracyTest" name="testInitialize" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumServiceBeanAccuracyTest" name="test_Watch" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumServiceBeanAccuracyTest" name="test_IsWatched" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumServiceBeanAccuracyTest" name="test_SetUserRole" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumServiceBeanAccuracyTest" name="test_GetUserRole" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.JiveForumServiceBeanAccuracyTest" name="test_CreateCategory" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.ServiceConfigurationExceptionAccuracyTest" name="testCtorWithMsg" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.ServiceConfigurationExceptionAccuracyTest" name="testCtorWithMsgAndCause" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.ServiceConfigurationExceptionAccuracyTest" name="testCtorWithMsgAndExceptionData" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.ServiceConfigurationExceptionAccuracyTest" name="testCtorWithMsgCauseAndExceptionData" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.UserNotFoundExceptionAccuracyTest" name="testCtorWithMsg" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.UserNotFoundExceptionAccuracyTest" name="testCtorWithMsgAndCause" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.UserNotFoundExceptionAccuracyTest" name="testCtorWithMsgAndExceptionData" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.accuracytests.UserNotFoundExceptionAccuracyTest" name="testCtorWithMsgCauseAndExceptionData" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.CategoryConfigurationFailureTests" name="testSetRootCategoryId_zero" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.CategoryConfigurationFailureTests" name="testSetRootCategoryId_neg" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.CategoryConfigurationFailureTests" name="testSetComponentId_zero" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.CategoryConfigurationFailureTests" name="testSetComponentId_neg" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.CategoryConfigurationFailureTests" name="testSetVersionText_String_Null1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.CategoryConfigurationFailureTests" name="testSetVersionText_String_Empty1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.CategoryConfigurationFailureTests" name="testSetVersionId_long_zero" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.CategoryConfigurationFailureTests" name="testSetVersionId_long_neg" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.CategoryConfigurationFailureTests" name="testSetTemplateCategoryId_long_neg" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.CategoryConfigurationFailureTests" name="testSetModeratorUserId_long_neg" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.CategoryConfigurationFailureTests" name="testSetTemplateCategoryType_CategoryType_Null1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.CategoryConfigurationFailureTests" name="testSetName_String_Null1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.CategoryConfigurationFailureTests" name="testSetName_String_Empty1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.CategoryConfigurationFailureTests" name="testSetDescription_String_Null1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.CategoryConfigurationFailureTests" name="testSetDescription_String_Empty1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testJiveForumManager_JiveForumManagementException" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testJiveForumManager_zero" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testJiveForumManager_Null2" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testJiveForumManager_empty" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testJiveForumManager_nullKey" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testJiveForumManager_nullValue" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testWatch_JiveForumManagementException" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testWatch_ForumEntityNotFoundException1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testWatch_ForumEntityNotFoundException2" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testWatch_ForumEntityNotFoundException3" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testWatch_zero1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testWatch_zero2" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testWatch_Null3" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testIsWatched_JiveForumManagementException" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testIsWatched_ForumEntityNotFoundException1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testIsWatched_ForumEntityNotFoundException2" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testIsWatched_ForumEntityNotFoundException3" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testIsWatched_zero1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testIsWatched_zero2" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testIsWatched_Null3" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testSetUserRole_JiveForumManagementException" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testSetUserRole_GroupNotFoundException1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testSetUserRole_GroupNotFoundException2" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testSetUserRole_GroupNotFoundException3" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testSetUserRole_zero0" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testSetUserRole_zero1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testSetUserRole_Null3" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testGetUserRole_JiveForumManagementException" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testGetUserRole_zero1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testGetUserRole_zero2" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testCreateCategory_Null1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testCreateCategory_IAE1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testCreateCategory_IAE2" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testCreateCategory_IAE3" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testCreateCategory_IAE4" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testCreateCategory_IAE5" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testCreateCategory_IAE6" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumManagerFailureTests" name="testCreateCategory_IAE7" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testWatch_JiveForumManagementException" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testWatch_ForumEntityNotFoundException1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testWatch_zero1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testWatch_zero2" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testWatch_Null3" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testSetUserRole_JiveForumManagementException" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testSetUserRole_GroupNotFoundException1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testSetUserRole_GroupNotFoundException2" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testSetUserRole_GroupNotFoundException3" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testSetUserRole_zero0" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testSetUserRole_zero1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testSetUserRole_Null3" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testWatch_JiveForumManagementException2" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testWatch_JiveForumManagementException3" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testInitialize_fail1" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testInitialize_fail2" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testInitialize_fail3" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testInitialize_fail4" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testInitialize_fail5" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testInitialize_fail6" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testInitialize_fail7" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testInitialize_fail8" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testInitialize_fail9" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testInitialize_fail10" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testInitialize_fail11" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testInitialize_fail12" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testInitialize_fail13" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testInitialize_fail14" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.failuretests.JiveForumServiceBeanFailureTests" name="testInitialize_fail15" time="0.0" />
-  <testcase classname="com.topcoder.forum.service.stresstests.JiveForumServiceStressTests" name="testSetGetName" time="0.016" />
-  <testcase classname="com.topcoder.forum.service.stresstests.JiveForumServiceStressTests" name="testSetGetRootCategoryId" time="0.016" />
-  <testcase classname="com.topcoder.forum.service.stresstests.JiveForumServiceStressTests" name="testSetGetComponentId" time="0.0" />
-  <system-out><![CDATA[The test testSetGetName running 1000 times, took time: 16 ms
-The test testSetGetRootCategoryId running 1000 times, took time: 16 ms
-The test testSetGetComponentId( running 1000 times, took time: 0 ms
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testEmptyCtorAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testWatchAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testWatchAccuracy2" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testWatchFailure1" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testWatchFailure2" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testWatchFailure3" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testIsWatchedAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testIsWatchedFailure1" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testIsWatchedFailure2" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testIsWatchedFailure3" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testSetUserRoleAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testSetUserRoleAccuracy2" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testSetUserRoleFailure1" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testSetUserRoleFailure2" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testSetUserRoleFailure3" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testGetUserRoleAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testGetUserRoleFailure1" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testGetUserRoleFailure2" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testCreateCategoryAccuracy1" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testCreateCategoryAccuracy2" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testCreateCategoryFailure1" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testCreateCategoryFailure2" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testCreateCategoryFailure3" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testCreateCategoryFailure4" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testCreateCategoryFailure5" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testCreateCategoryFailure6" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testCreateCategoryFailure7" time="0.016" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testClassLevelAnnotation" time="0.016" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testWatchAnnotation" time="0.015" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testIsWatchedAnnotation" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testSetUserRoleAnnotation" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testGetUserRoleAnnotation" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest" name="testCreateCategoryAnnotation" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.accuracytests.AccuracyMockJiveForumService" name="testWatchAccuracy" time="0.016" />
+  <testcase classname="com.topcoder.forum.service.accuracytests.AccuracyMockJiveForumService" name="testUserRoleAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.accuracytests.AccuracyMockJiveForumService" name="testCreateCategoryAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testWatch_Failure1" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testWatch_Failure2" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testWatch_Failure3" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testWatch_Failure4" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testWatch_Failure5" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testIsWatched_Failure1" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testIsWatched_Failure2" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testIsWatched_Failure3" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testIsWatched_Failure4" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testIsWatched_Failure5" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testSetUserRole_Failure1" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testSetUserRole_Failure2" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testSetUserRole_Failure3" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testSetUserRole_Failure4" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testSetUserRole_Failure5" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testGetUserRole_Failure1" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testGetUserRole_Failure2" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testGetUserRole_Failure3" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testGetUserRole_Failure4" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testCreateCategory_Failure1" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testCreateCategory_Failure2" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testCreateCategory_Failure3" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testCreateCategory_Failure4" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testCreateCategory_Failure5" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testCreateCategory_Failure6" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.failuretests.MockJiveForumServiceFailure" name="testCreateCategory_Failure7" time="0.0" />
+  <testcase classname="com.topcoder.forum.service.stresstests.MockJiveForumServiceStressTest" name="testCreateCategory" time="0.016" />
+  <testcase classname="com.topcoder.forum.service.stresstests.MockJiveForumServiceStressTest" name="testManageWatch" time="0.031" />
+  <testcase classname="com.topcoder.forum.service.stresstests.MockJiveForumServiceStressTest" name="testManageUserRole" time="0.0" />
+  <system-out><![CDATA[Stress test for the createCategory 500 times, cost 16 milliseconds
+Stress test for the watch/isWatched 500 times, cost 31 milliseconds
+Stress test for the setUserRole/getUserRole 500 times, cost 0 milliseconds
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

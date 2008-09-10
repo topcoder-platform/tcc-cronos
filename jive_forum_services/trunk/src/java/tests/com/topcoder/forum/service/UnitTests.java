@@ -1,21 +1,24 @@
 /*
- * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.forum.service;
-
-import com.topcoder.forum.service.ejb.ServiceConfigurationExceptionUnitTest;
-import com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import com.topcoder.forum.service.ejb.ServiceConfigurationExceptionUnitTest;
+import com.topcoder.forum.service.ejb.bean.JiveForumServiceBeanUnitTest;
+import com.topcoder.forum.service.ejb.mock.MockJiveForumServiceTest;
 
 
 /**
  * <p>This test case aggregates all Unit test cases.</p>
  *
  * @author TCSDEVELOPER
- * @version 1.0
+ * @author TCSDEVELOPER
+ * @version 1.1
+ * @since 1.0
  */
 public class UnitTests extends TestCase {
     /**
@@ -42,6 +45,7 @@ public class UnitTests extends TestCase {
 
         suite.addTest(JiveForumServiceBeanUnitTest.suite());
 
+        suite.addTest(MockJiveForumServiceTest.suite());
         return suite;
     }
 }
