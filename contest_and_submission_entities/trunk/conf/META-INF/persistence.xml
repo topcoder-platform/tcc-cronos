@@ -9,8 +9,6 @@
 
         <properties>        
             <property name="hibernate.dialect" value="org.hibernate.dialect.InformixDialect" />
-            <property name="hibernate.use_sql_comments" value="true" />
-            <property name="hibernate.show_sql" value="true" />
 
             <property name="jboss.entity.manager.jndi.name" value="java:/contest_submission"/>
             <property name="jboss.entity.manager.factory.jndi.name" value="java:/contestManagerFactory"/>           
