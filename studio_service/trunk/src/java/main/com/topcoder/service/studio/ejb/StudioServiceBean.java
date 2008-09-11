@@ -12,6 +12,7 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType; 
 import com.topcoder.forum.service.CategoryConfiguration;
 import com.topcoder.forum.service.CategoryType;
+import com.topcoder.forum.service.EntityType;
 import com.topcoder.forum.service.JiveForumManagementException;
 import com.topcoder.forum.service.ejb.JiveForumServiceRemote;
 import com.topcoder.search.builder.filter.Filter;
@@ -586,7 +587,8 @@ public class StudioServiceBean implements StudioService {
             contest.setTcDirectProjectId(tcDirectProjectId);
 
             // use the logged user [27074484-16]
-            contest.setCreatedUser(((UserProfilePrincipal) sessionContext.getCallerPrincipal()).getUserId());
+            long userId = ((UserProfilePrincipal) sessionContext.getCallerPrincipal()).getUserId();
+            contest.setCreatedUser(userId);
 
             contest = contestManager.createContest(contest);
 
@@ -608,7 +610,12 @@ public class StudioServiceBean implements StudioService {
             
             logDebug("Create forum category: " + categoryConfiguration.getName());
             contest.setForumId(jiveForumService.createCategory(categoryConfiguration));
+            
             logDebug("Created forum id: " + contest.getForumId());
+
+            // TCCC-511
+            jiveForumService.watch(userId, contest.getForumId(), EntityType.FORUM_CATEGORY);
+            
             contestManager.updateContest(contest);
             
             // FIX [TCCC-146]
