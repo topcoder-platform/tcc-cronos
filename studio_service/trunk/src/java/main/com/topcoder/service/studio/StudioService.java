@@ -512,14 +512,4 @@ public interface StudioService {
      *  @since TCCC-353
      */
     public void markForPurchase(long submissionId)throws PersistenceException;
-    
-    /**
-     * Generates temporary security token.
-     * 
-     * @return an temporary security token.
-     * @throws PersistenceException 
-     * 
-     * @since TCCC-428
-     */
-    public String generateSecurityToken() throws PersistenceException;
 }

@@ -2464,29 +2464,32 @@ public class StudioServiceBean implements StudioService {
      *            the id of submission to purchase.
      * @param payPalOrderId
      *            PayPal order id.
-     * @param securityToken
-     *            the security token.
+     * @param username
+     *            the username.
      * 
      * @throws PersistenceException
      *             if any error occurs when purchasing submission.
      * @throws IllegalArgumentWSException
      *             if the submissionId is less than 0 or price is negative.
      */
-    public void purchaseSubmission(long submissionId, String payPalOrderId, String securityToken)
+    public void purchaseSubmission(long submissionId, String payPalOrderId, String username)
             throws PersistenceException {
         logEnter("purchaseSubmission", submissionId, payPalOrderId);
         checkParameter("submissionId", submissionId);
         checkParameter("payPalOrderId", payPalOrderId);
+        checkParameter("username", username);
 
         try {
-            authorizeWithSecurityToken(securityToken);
-
             Submission submission = submissionManager.getSubmission(submissionId);
-
+            // get the contest that the submission belongs to
             if (submission == null) {
                 handleIllegalWSArgument("Submission with id " + submissionId + " is not found.");
             }
 
+            Contest contest = submission.getContest();
+
+            authorizeWithUsername(username, contest);
+            
             // There must be a payment for the submission in Marked for Purchase
             // (3) status.
             // Otherwise (no payment or another status), throw exception.
@@ -2497,9 +2500,6 @@ public class StudioServiceBean implements StudioService {
                         "There must be a payment for the submission in Marked for Purchase (3) status. Submission id: "
                                 + submissionId);
             }
-
-            // get the contest that the submission belongs to
-            Contest contest = submission.getContest();
 
             // get the first place prize amount for the contest
             Double firstPlacePrize = null;
@@ -2580,8 +2580,8 @@ public class StudioServiceBean implements StudioService {
      * 
      * @param contestPaymentData
      *            the contest payment to create
-     * @param securityToken
-     *            the security token.
+     * @param username
+     *            username.
      * @return the created contest payment.
      * 
      * @throws IllegalArgumentException
@@ -2589,14 +2589,15 @@ public class StudioServiceBean implements StudioService {
      * @throws PersistenceException
      *             if any other error occurs.
      */
-    public ContestPaymentData createContestPayment(ContestPaymentData contestPaymentData, String securityToken)
+    public ContestPaymentData createContestPayment(ContestPaymentData contestPaymentData, String username)
             throws PersistenceException {
         logEnter("createContestPayment", contestPaymentData);
         checkParameter("contestPaymentData", contestPaymentData);
+        checkParameter("username", username);
 
         try {
-            authorizeWithSecurityToken(securityToken);
-            authorizeWithContest(contestPaymentData.getContestId());
+            Contest contest = authorizeWithContest(contestPaymentData.getContestId());
+            authorizeWithUsername(username, contest);
 
             ContestPayment contestPayment = convertContestPaymentData(contestPaymentData);
             contestPayment = contestManager.createContestPayment(contestPayment);
@@ -2929,51 +2930,22 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
-     * Generates temporary security token.
-     * 
-     * @return an temporary security token.
-     * 
-     * @since TCCC-428
-     */
-    public String generateSecurityToken() throws PersistenceException {
-        logEnter("generateSecurityToken");
-
-        try {
-            UUID randomUUID = UUID.randomUUID();
-            contestManager.createSecurityToken(randomUUID.toString());
-            logExit("generateSecurityToken");
-            return randomUUID.toString();
-        } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManager reports error while retrieving contest.", e);
-        }
-
-        return null;
-    }
-
-    /**
      * Implements standard algorithm of authorization based on security token.
      * The token will be removed if matched.
      * 
      * @param token
      *            security token.
-     * @throws PersistenceException
-     *             when ContestManager reports some error
      * @throws UserNotAuthorizedException
      *             if access was denied
      */
-    private void authorizeWithSecurityToken(String token) throws PersistenceException {
-        try {
-            boolean pass = contestManager.matchSecurityToken(token);
-            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-            long userId = p.getUserId();
-
-            if (!pass) {
-                throw new UserNotAuthorizedException("Access denied for the security token " + token, userId);
-            } else {
-                contestManager.removeSecurityToken(token);
-            }
-        } catch (ContestManagementException e) {
-            handlePersistenceError("Error when trying to match security token.", e);
+    private void authorizeWithUsername(String username, Contest contest) {
+        UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+        long userId = p.getUserId();
+        if (!username.equals(p.getName())) {
+            throw new UserNotAuthorizedException("Username does not match the user assigned for current session.", userId);
+        }
+        if (!contest.getCreatedUser().equals(userId)) {
+            throw new UserNotAuthorizedException("Access denied for the contest " + userId, userId);
         }
     }
 }
