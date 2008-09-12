@@ -572,26 +572,6 @@ public class AjaxBridgeServlet extends HttpServlet {
                     sendJSONObjectAsResponse(getJSONFromContest(respContest), response);
 
                     debug("createContest success!");
-                } else if ("createContestPayment".equals(method)) {
-                    String securityToken = request.getParameter("securityToken");
-
-                    ContestPaymentData contestPayment = new ContestPaymentData();
-                    contestPayment.setContestId(Long.parseLong(request.getParameter("contestId")));
-                    contestPayment.setPaymentStatusId(Long.parseLong(request.getParameter("paymentStatusId")));
-                    contestPayment.setPaypalOrderId(request.getParameter("paypalOrderId"));
-                    contestPayment.setPrice(Double.parseDouble(request.getParameter("price")));
-
-                    if (checkPaypalOrderIdFraud(contestPayment.getPaypalOrderId() + "",
-                                                contestPayment.getPrice() + "",
-                                                contestPayment.getContestId() + "",
-                                                request, response)) {
-                        return;
-                    }
-
-                    ContestPaymentData respContestPayment = studioService.createContestPayment(contestPayment,securityToken);
-                    sendJSONObjectAsResponse(getJSONFromContestPayment(respContestPayment), response);
-
-                    debug("createContestPayment success!");
                 } else if ("getContestPayment".equals(method)) {
                     String strContestPaymentID = request.getParameter("contestPaymentId");
                     if (checkLongIfLessThanZero(strContestPaymentID, "contestPaymentId", response)) {
@@ -992,28 +972,6 @@ public class AjaxBridgeServlet extends HttpServlet {
                         sendErrorJSONResponse("The 'method' param passed is invalid.", response);
                     }
 
-                } else if ("purchaseSubmission".equals(method)) {
-                    // get the submissionId and price parameter from request
-                    String submissionId = request.getParameter("submissionId");
-                    String securityToken = request.getParameter("securityToken");
-                    
-                    // [TCCC-125]
-                    String payPalOrderId = request.getParameter("payPalOrderId");
-                    if (checkLongIfLessThanZero(submissionId, "submissionId", response)) {
-                        return;
-                    }
-                    if (checkPaypalOrderIdFraud(payPalOrderId, null, null, request, response)) {
-                        return;
-                    }
-
-                    // log the received ID
-                    debug("received ID = [submissionId ID] : " + submissionId);
-                    debug("received payPalOrderId = [payPalOrderId] : " + payPalOrderId);
-
-                    studioService.purchaseSubmission(Long.parseLong(submissionId), payPalOrderId, securityToken);
-
-                    printSuccessResponse(getSuccessJSONResponse(), response);
-                    debug("purchaseSubmission success!");
                 } else if ("setSubmissionPlacement".equals(method)) {
                     // get the submissionId and price parameter from request
                     String submissionId = request.getParameter("submissionId");
@@ -1049,15 +1007,6 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                     printSuccessResponse(getSuccessJSONResponse(), response);
                     debug("markForPurchase success!");
-                } else if ("generateSecurityToken".equals(method)) {
-                    String generateSecurityToken = studioService.generateSecurityToken();
-
-                    JSONObject respJSON =  new JSONObject();
-                    respJSON.setString("securityToken", generateSecurityToken);
-                    // send the JSONObject as a response
-                    sendJSONObjectAsResponse(respJSON, response);
-                    
-                    debug("generateSecurityToken success!");
                 } else {
                     // if we reach here this means the service param is invalid
                     sendErrorJSONResponse("The 'service' param passed is invalid.", response);
@@ -2272,103 +2221,6 @@ public class AjaxBridgeServlet extends HttpServlet {
         }
 
         return false;
-    }
-
-    /**
-     * <p>Verifies that the specified data for <code>PayPal</code> order ID matches the one stored in current
-     * application context to prevent fraud.</p>
-     *
-     * @param payPalOrderId a <code>String</code> providing the order ID ot be verified.
-     * @param amount a <code>String</code> providing the payment amount to be verified. May be <code>null</code> in case
-     *        amount verification has to be skipped.
-     * @param contestId a <code>String</code> providing the ID of a contest associated with payment to be verified. May
-     *        be <code>null</code> in case contest verification has to be skipped.
-     * @param request an <code>HttpServletRequest</code> representing the incoming request from the client.
-     * @param response a <code>HttpServletResponse</code> representing the outgoing response.
-     * @return <code>true</code> if specified <code>PayPal</code> order ID does not match one stored in session or there
-     *         is no active session currently; <code>false</code> otherwise.
-     * @throws IOException if an I/O error occurs while sending response to client.
-     * @throws JSONEncodingException if an error occurs while encoding JSON response.
-     */
-    private boolean checkPaypalOrderIdFraud(String payPalOrderId, String amount, String contestId,
-                                            HttpServletRequest request,
-                                            HttpServletResponse response) throws IOException, JSONEncodingException {
-        boolean failed = false;
-        String message = null;
-        HttpSession session = request.getSession(false);
-        try {
-            if (session != null) {
-                ServletContext servletContext = session.getServletContext();
-                PayPalResponseListener paypalListener
-                    = (PayPalResponseListener) servletContext.getAttribute("paypalListener");
-                String[] paypalOrderData = paypalListener.getPayPalOrderData(payPalOrderId);
-                if (paypalOrderData != null) {
-                    // Verify user principal name
-                    final String paypalUserId = paypalOrderData[1];
-                    final String currentUserName = request.getUserPrincipal().getName();
-                    if (!currentUserName.equalsIgnoreCase(paypalUserId)) {
-                        error("Paypal Order ID verification failed. Current user ID = [" + currentUserName
-                              + "]. User ID returned from PayPal = [" + paypalUserId + "]");
-                        failed = true;
-                        message = "Wrong user";
-                    } else {
-                        // Verify user session ID
-                        final String sessionId = paypalOrderData[0];
-                        final String currentSessionId = session.getId();
-                        if (!currentSessionId.equals(sessionId)) {
-                            error("Paypal Order ID verification failed. Current session ID = [" + currentSessionId
-                                  + "]. Session ID returned from PayPal = [" + sessionId + "]");
-                            failed = true;
-                            message = "Wrong session";
-                        } else {
-                            // Verify payment amount
-                            if (amount != null) {
-                                final Double numericAmount = new Double(amount);
-                                final String paypalAmount = paypalOrderData[4];
-                                final Double numericPaypalAmount = new Double(paypalAmount);
-                                if (numericAmount.compareTo(numericPaypalAmount) != 0) {
-                                    error("Paypal Order ID verification failed. Submitted payment amount = ["
-                                          + numericAmount + "]. Payment amount returned by PayPal = ["
-                                          + numericPaypalAmount + "]");
-                                    failed = true;
-                                    message = "Wrong payment amount";
-                                }
-                            }
-                            // Verify contest ID
-                            if (contestId != null) {
-                                final String paypalContestId = paypalOrderData[2];
-                                if (!contestId.equals(paypalContestId)) {
-                                    error("Paypal Order ID verification failed. Submitted contest ID = ["
-                                          + contestId + "]. Contest ID returned by PayPal = ["
-                                          + paypalContestId + "]");
-                                    failed = true;
-                                    message = "Wrong contest";
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    error("Paypal Order ID verification failed. Submitted PayPal order ID = [" + payPalOrderId + "] "
-                          + "was not registered by PayPal first");
-                    failed = true;
-                    message = "Unknown order";
-                }
-            } else {
-                error("Paypal Order ID verification failed. There is no active session.");
-                failed = true;
-                message = "No active session";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            error("Paypal Order ID verification failed. Unexpected error: " + e);
-            failed = true;
-            message = "Unexpected error";
-        }
-        if (failed) {
-            sendErrorJSONResponse("Paypal Order ID verification failed [" + message + "]. "
-                                  + "Please contact TopCoder support", response);
-        }
-        return failed;
     }
 
     /**
