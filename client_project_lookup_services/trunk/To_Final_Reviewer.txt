@@ -1,0 +1,28 @@
+Steps to let JBoss know about TopCoder JBoss Login Module:
+
+1. Add following fragment to %JBOSS_HOME%/server/default/conf/login-config.xml into <policy> section:
+
+<!-- ============================ TopCoder JBoss Login Module =============================-->
+<application-policy name="topcoder-security">
+<authentication>
+<login-module code="com.topcoder.security.auth.module.JBossLoginModule"
+          flag="required">
+         <module-option name="fileName">F:\jboss-4.2.2.GA\server\default\deploy\client_project_lookup_services.ear\config.properties</module-option>
+         <module-option name="configNamespace">DemoNamespace</module-option>
+         <module-option name="password-stacking">
+              useFirstPass
+          </module-option>
+          <module-option name="unauthenticatedIdentity">anonymous</module-option>
+       </login-module>
+</authentication>
+</application-policy>
+
+Of course, fileName value should be changed corresponding to your JBoss location.
+In general, it's config.properties from the directory where component is deployed.
+
+2. Copy all libs from test_files/libs_for_login_module to %JBOSS_HOME%/server/default/lib
+
+3. Follow previous instructions from toReviewers.txt
+
+
+

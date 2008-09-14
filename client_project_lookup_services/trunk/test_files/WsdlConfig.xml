@@ -1,0 +1,18 @@
+<CMConfig>
+
+	<Config name="WsdlConfig">
+		<Property name="EARAddress">
+			<Value>http://127.0.0.1:8080/client_project_lookup_services</Value>
+		</Property>
+		<Property name="ClientStatusServiceBean">
+			<Value>client_project_lookup_services/ClientStatusServiceBean?wsdl</Value>
+		</Property>
+		<Property name="LookupServiceBean">
+			<Value>client_project_lookup_services/LookupServiceBean?wsdl</Value>
+		</Property>
+		<Property name="ProjectStatusServiceBean">
+			<Value>client_project_lookup_services/ProjectStatusServiceBean?wsdl</Value>
+		</Property>
+	</Config>
+
+</CMConfig>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd"
+	version="3.0">
+
+	<enterprise-beans>
+
+		<session>
+			<ejb-name>ClientStatusServiceBean</ejb-name>
+			<remote>com.topcoder.clients.webservices.ClientStatusServiceRemote</remote>
+			<local>com.topcoder.clients.webservices.ClientStatusServiceLocal</local>
+			<ejb-class>
+				com.topcoder.clients.webservices.beans.ClientStatusServiceBean</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
+			<env-entry>
+				<description>The name of the log to use</description>
+				<env-entry-name>logName</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>log_Name</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>The client manager file to use</description>
+				<env-entry-name>clientManagerFile</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>config.properties</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>The client manager namespace to use</description>
+				<env-entry-name>clientManagerNamespace</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>ClientStatusServiceBean</env-entry-value>
+			</env-entry>
+		</session>
+
+		<session>
+			<ejb-name>LookupServiceBean</ejb-name>
+			<remote>com.topcoder.clients.webservices.LookupServiceRemote</remote>
+			<local>com.topcoder.clients.webservices.LookupServiceLocal</local>
+			<ejb-class>com.topcoder.clients.webservices.beans.LookupServiceBean</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
+			<env-entry>
+				<description>The name of the log to use</description>
+				<env-entry-name>logName</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>log_Name</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>The client manager file to use</description>
+				<env-entry-name>clientManagerFile</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>config.properties</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>The project manager file to use</description>
+				<env-entry-name>projectManagerFile</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>config.properties</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>The company manager file to use</description>
+				<env-entry-name>companyManagerFile</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>config.properties</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>The client manager namespace to use</description>
+				<env-entry-name>clientManagerNamespace</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>LookupServiceBean</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>The project manager namespace to use</description>
+				<env-entry-name>projectManagerNamespace</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>LookupServiceBean</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>The company manager namespace to use</description>
+				<env-entry-name>companyManagerNamespace</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>LookupServiceBean</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>The user mapping retriever file to use</description>
+				<env-entry-name>userMappingRetrieverFile</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>config.properties</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>The user mapping retriever namespace to use</description>
+				<env-entry-name>userMappingRetrieverNamespace</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>LookupServiceBean</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>The name of the administrator role</description>
+				<env-entry-name>administratorRole</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>Admin</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>The name of the client and project user role</description>
+				<env-entry-name>clientAndProjectUserRole</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>User</env-entry-value>
+			</env-entry>
+		</session>
+
+		<session>
+			<ejb-name>ProjectStatusServiceBean</ejb-name>
+			<remote>com.topcoder.clients.webservices.ProjectStatusServiceRemote</remote>
+			<local>com.topcoder.clients.webservices.ProjectStatusServiceLocal</local>
+			<ejb-class>
+				com.topcoder.clients.webservices.beans.ProjectStatusServiceBean</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
+			<env-entry>
+				<description>The name of the log to use</description>
+				<env-entry-name>logName</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>log_Name</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>The project manager file to use</description>
+				<env-entry-name>projectManagerFile</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>config.properties</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<description>The project manager namespace to use</description>
+				<env-entry-name>projectManagerNamespace</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>ProjectStatusServiceBean</env-entry-value>
+			</env-entry>
+		</session>
+
+	</enterprise-beans>
+
+</ejb-jar>

@@ -1,0 +1,31 @@
+<CMConfig>
+
+	<Config name="ClientStatusServiceBean">
+
+		<Property name="DAOClientManager">
+			<Property name="type">
+				<Value>com.topcoder.clients.webservices.beans.ClientManagerMock</Value>
+			</Property>
+		</Property>
+
+		<Property name="client_manager_token">
+			<Value>DAOClientManager</Value>
+		</Property>
+
+	</Config>
+
+	<Config name="BrokenClientStatusServiceBean">
+
+		<Property name="DAOClientManager">
+			<Property name="type">
+				<Value>java.lang.String</Value>
+			</Property>
+		</Property>
+
+		<Property name="client_manager_token">
+			<Value>DAOClientManager</Value>
+		</Property>
+
+	</Config>
+	
+</CMConfig>
