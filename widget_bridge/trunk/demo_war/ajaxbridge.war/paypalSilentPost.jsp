@@ -1,7 +1,18 @@
-<%@ page import="com.topcoder.widgets.bridge.PayPalResponseListener" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.net.URLDecoder" %>
+<%@ page import="javax.security.auth.Subject" %>
+<%@ page import="javax.security.auth.login.LoginContext" %>
+<%@ page import="javax.security.auth.callback.CallbackHandler" %>
+<%@ page import="javax.security.auth.callback.Callback" %>
+<%@ page import="java.io.IOException" %>
+<%@ page import="javax.security.auth.callback.UnsupportedCallbackException" %>
+<%@ page import="javax.security.auth.callback.TextOutputCallback" %>
+<%@ page import="javax.security.auth.callback.NameCallback" %>
+<%@ page import="javax.security.auth.callback.PasswordCallback" %>
+<%@ page import="com.topcoder.widgets.bridge.StudioServiceEJBLocator" %>
+<%@ page import="com.topcoder.service.studio.StudioService" %>
+<%@ page import="com.topcoder.service.studio.ContestPaymentData" %>
 <%
     pageContext.getServletContext().log("paypalSilentPost.jsp : Got following Silent Post request from PayPal : ["
                                         + request.getQueryString() + "]");
@@ -36,11 +47,79 @@
     final String originalPaymentType = paramValues.get("USER3");
     final String originalContestId = paramValues.get("USER4");
     final String originalPaymentAmount = paramValues.get("USER5");
+    final String originalSubmissionIds = paramValues.get("USER7");
 
-    PayPalResponseListener paypalListener
-            = (PayPalResponseListener) pageContext.getServletContext().getAttribute("paypalListener");
-    successful = paypalListener.savePayPalOrder(originalSessionId, originalPrincipalName, originalContestId,
-                                                originalPaymentType, originalPaymentAmount, paypalOrderId);
+    // Get the parameters for establishing a security context
+    final String clientLoginDomainName = "client-login";
+    final String ejbContextUsername = "heffan";
+    final String ejbContextPassword = "password";
+
+    try {
+        Subject subject = new Subject();
+        LoginContext loginContext = new LoginContext(clientLoginDomainName, subject,
+                                                     new CallbackHandler() {
+                                                         public void handle(Callback[] callbacks)
+                                                                 throws IOException, UnsupportedCallbackException {
+                                                             for (int i = 0; i < callbacks.length; i++) {
+                                                                 if (callbacks[i] instanceof TextOutputCallback) {
+                                                                 } else if (callbacks[i] instanceof NameCallback) {
+                                                                     // prompt the user for a username
+                                                                     NameCallback nc = (NameCallback) callbacks[i];
+                                                                     nc.setName(ejbContextUsername);
+                                                                 } else if (callbacks[i] instanceof PasswordCallback) {
+                                                                     // prompt the user for sensitive information
+                                                                     PasswordCallback pc = (PasswordCallback) callbacks[i];
+                                                                     pc.setPassword(ejbContextPassword.toCharArray());
+                                                                 } else {
+                                                                     throw new UnsupportedCallbackException(callbacks[i], "Unrecognized Callback");
+                                                                 }
+                                                             }
+                                                         }
+                                                     });
+        loginContext.login();
+
+        StudioServiceEJBLocator locator = new StudioServiceEJBLocator();
+        StudioService studioService = locator.getService();
+
+        if ("Launch".equals(originalPaymentType)) {
+            ContestPaymentData payment = new ContestPaymentData();
+            payment.setContestId(new Long(originalContestId));
+            payment.setPaypalOrderId(paypalOrderId);
+            payment.setPrice(new Double(originalPaymentAmount));
+            payment.setPaymentStatusId(1L);
+            studioService.createContestPayment(payment, originalPrincipalName);
+            pageContext.getServletContext().log("paypalSilentPost.jsp : Created contest payment of $"
+                                                + originalPaymentAmount + " for contest " + originalContestId
+                                                + " on behalf of " + originalPrincipalName
+                                                + " as confirmed by PayPal order ID " + paypalOrderId);
+            successful = true;
+        } else if ("Submission".equals(originalPaymentType) || ("PurchasedSubmissions".equals(originalPaymentType))) {
+            if (originalSubmissionIds != null) {
+                String[] ids = originalSubmissionIds.split(",");
+                for (int i = 0; i < ids.length; i++) {
+                    String id = ids[i].trim();
+                    studioService.purchaseSubmission(Long.parseLong(id), paypalOrderId, originalPrincipalName);
+                    pageContext.getServletContext().log("paypalSilentPost.jsp : Purchased submission "
+                                                        + id + " on behalf of " + originalPrincipalName
+                                                        + " as confirmed by PayPal order ID " + paypalOrderId);
+                }
+                successful = true;
+            }
+        }
+
+    } catch (Throwable e) {
+        pageContext.getServletContext().log("paypalSilentPost.jsp : An error encountered while processing Silent Post "
+                                            + "request for contest = " + originalContestId + ", payment type = "
+                                            + originalPaymentType + ", user = " + originalPrincipalName + ", amount = "
+                                            + originalPaymentAmount + ", PayPal order ID = " + paypalOrderId);
+        e.printStackTrace();
+        successful = false;
+    }
+
+//    PayPalResponseListener paypalListener
+//            = (PayPalResponseListener) pageContext.getServletContext().getAttribute("paypalListener");
+//    successful = paypalListener.savePayPalOrder(originalSessionId, originalPrincipalName, originalContestId,
+//                                                originalPaymentType, originalPaymentAmount, paypalOrderId);
     if (successful) {
         pageContext.getServletContext().log("paypalSilentPost.jsp : Paypal Silent Post request has been processed successfully ; Responding with status code " + HttpServletResponse.SC_OK);
         response.setStatus(HttpServletResponse.SC_OK);
