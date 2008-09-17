@@ -14,8 +14,11 @@
 <%@ page import="com.topcoder.service.studio.StudioService" %>
 <%@ page import="com.topcoder.service.studio.ContestPaymentData" %>
 <%
-    pageContext.getServletContext().log("paypalSilentPost.jsp : Got following Silent Post request from PayPal : ["
-                                        + request.getQueryString() + "]");
+    ServletContext servletContext = pageContext.getServletContext();
+    servletContext.log("paypalSilentPost.jsp : Got following Silent Post request from PayPal : ["
+                       + request.getQueryString() + "]");
+    System.out.println("paypalSilentPost.jsp : Got following Silent Post request from PayPal : ["
+                       + request.getQueryString() + "]");
     int c;
     StringBuilder body = new StringBuilder();
     byte[] b = new byte[4096];
@@ -25,7 +28,8 @@
             body.append(new String(b, 0, c));
         }
     }
-    pageContext.getServletContext().log("paypalSilentPost.jsp : Body of Silent Post request from PayPal : [" + body + "]");
+    servletContext.log("paypalSilentPost.jsp : Body of Silent Post request from PayPal : [" + body + "]");
+    System.out.println("paypalSilentPost.jsp : Body of Silent Post request from PayPal : [" + body + "]");
 
     Map<String, String> paramValues = new HashMap<String, String>();
     String[] params = body.toString().split("&");
@@ -88,7 +92,7 @@
             payment.setPrice(new Double(originalPaymentAmount));
             payment.setPaymentStatusId(1L);
             studioService.createContestPayment(payment, originalPrincipalName);
-            pageContext.getServletContext().log("paypalSilentPost.jsp : Created contest payment of $"
+            servletContext.log("paypalSilentPost.jsp : Created contest payment of $"
                                                 + originalPaymentAmount + " for contest " + originalContestId
                                                 + " on behalf of " + originalPrincipalName
                                                 + " as confirmed by PayPal order ID " + paypalOrderId);
@@ -99,7 +103,7 @@
                 for (int i = 0; i < ids.length; i++) {
                     String id = ids[i].trim();
                     studioService.purchaseSubmission(Long.parseLong(id), paypalOrderId, originalPrincipalName);
-                    pageContext.getServletContext().log("paypalSilentPost.jsp : Purchased submission "
+                    servletContext.log("paypalSilentPost.jsp : Purchased submission "
                                                         + id + " on behalf of " + originalPrincipalName
                                                         + " as confirmed by PayPal order ID " + paypalOrderId);
                 }
@@ -108,7 +112,11 @@
         }
 
     } catch (Throwable e) {
-        pageContext.getServletContext().log("paypalSilentPost.jsp : An error encountered while processing Silent Post "
+        servletContext.log("paypalSilentPost.jsp : An error [" + e + "] encountered while processing Silent Post "
+                                            + "request for contest = " + originalContestId + ", payment type = "
+                                            + originalPaymentType + ", user = " + originalPrincipalName + ", amount = "
+                                            + originalPaymentAmount + ", PayPal order ID = " + paypalOrderId);
+        System.out.println("paypalSilentPost.jsp : An error [" + e + "] encountered while processing Silent Post "
                                             + "request for contest = " + originalContestId + ", payment type = "
                                             + originalPaymentType + ", user = " + originalPrincipalName + ", amount = "
                                             + originalPaymentAmount + ", PayPal order ID = " + paypalOrderId);
@@ -117,14 +125,16 @@
     }
 
 //    PayPalResponseListener paypalListener
-//            = (PayPalResponseListener) pageContext.getServletContext().getAttribute("paypalListener");
+//            = (PayPalResponseListener) servletContext.getAttribute("paypalListener");
 //    successful = paypalListener.savePayPalOrder(originalSessionId, originalPrincipalName, originalContestId,
 //                                                originalPaymentType, originalPaymentAmount, paypalOrderId);
     if (successful) {
-        pageContext.getServletContext().log("paypalSilentPost.jsp : Paypal Silent Post request has been processed successfully ; Responding with status code " + HttpServletResponse.SC_OK);
+        servletContext.log("paypalSilentPost.jsp : Paypal Silent Post request has been processed successfully ; Responding with status code " + HttpServletResponse.SC_OK);
+        System.out.println("paypalSilentPost.jsp : Paypal Silent Post request has been processed successfully ; Responding with status code " + HttpServletResponse.SC_OK);
         response.setStatus(HttpServletResponse.SC_OK);
     } else {
-        pageContext.getServletContext().log("paypalSilentPost.jsp : failed to process Paypal Silent Post request successfully : Responding with status code " + HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        servletContext.log("paypalSilentPost.jsp : failed to process Paypal Silent Post request successfully : Responding with status code " + HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        System.out.println("paypalSilentPost.jsp : failed to process Paypal Silent Post request successfully : Responding with status code " + HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
 %>
