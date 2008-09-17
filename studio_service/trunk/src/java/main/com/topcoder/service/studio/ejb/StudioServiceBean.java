@@ -616,8 +616,6 @@ public class StudioServiceBean implements StudioService {
             // TCCC-511
             jiveForumService.watch(userId, contest.getForumId(), EntityType.FORUM_CATEGORY);
             
-            contestManager.updateContest(contest);
-            
             // FIX [TCCC-146]
             for (PrizeData prizeData : contestData.getPrizes()) {
                 Prize prize = new Prize();
