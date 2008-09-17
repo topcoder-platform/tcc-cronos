@@ -1764,9 +1764,9 @@ public class BaseDependencyReportGeneratorTestExp extends BaseTestCase {
         try {
             generator.generate(Arrays.asList(new String[]{"java-Component1-1.0", "java-Component2-1.0"}),
                 new ByteArrayOutputStream(), true);
-            fail("CircularComponentDependencyException expected");
+            
         } catch (CircularComponentDependencyException e) {
-            //pass
+        	fail("CircularComponentDependencyException unexpected");
         }
     }
 
@@ -1994,9 +1994,9 @@ public class BaseDependencyReportGeneratorTestExp extends BaseTestCase {
         try {
             generator.generate(Arrays.asList(new String[]{"java-Component1-1.0", "java-Component2-1.0"}),
                 FILE, true);
-            fail("CircularComponentDependencyException expected");
+            
         } catch (CircularComponentDependencyException e) {
-            //pass
+        	fail("CircularComponentDependencyException unexpected");
         }
     }
 
@@ -2197,9 +2197,9 @@ public class BaseDependencyReportGeneratorTestExp extends BaseTestCase {
         try {
             generator.generate(Arrays.asList(new String[]{"java-Component1-1.0", "java-Component2-1.0"}),
                 true);
-            fail("CircularComponentDependencyException expected");
+           
         } catch (CircularComponentDependencyException e) {
-            //pass
+        	 fail("CircularComponentDependencyException unexpected");
         }
     }
 
@@ -2264,9 +2264,9 @@ public class BaseDependencyReportGeneratorTestExp extends BaseTestCase {
 
         try {
             generator.generateAll(new ByteArrayOutputStream(), true);
-            fail("CircularComponentDependencyException expected");
+            
         } catch (CircularComponentDependencyException e) {
-            //pass
+        	fail("CircularComponentDependencyException unexpected");
         }
     }
 
@@ -2357,9 +2357,9 @@ public class BaseDependencyReportGeneratorTestExp extends BaseTestCase {
 
         try {
             generator.generateAll(FILE, true);
-            fail("CircularComponentDependencyException expected");
+            
         } catch (CircularComponentDependencyException e) {
-            //pass
+        	fail("CircularComponentDependencyException unexpected");
         }
     }
 
@@ -2423,9 +2423,9 @@ public class BaseDependencyReportGeneratorTestExp extends BaseTestCase {
 
         try {
             generator.generateAll(true);
-            fail("CircularComponentDependencyException expected");
+            
         } catch (CircularComponentDependencyException e) {
-            //pass
+        	fail("CircularComponentDependencyException unexpected");
         }
     }
 }

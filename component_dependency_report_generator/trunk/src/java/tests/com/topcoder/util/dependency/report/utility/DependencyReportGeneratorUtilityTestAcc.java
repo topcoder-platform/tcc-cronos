@@ -446,7 +446,7 @@ public class DependencyReportGeneratorUtilityTestAcc extends BaseTestCase {
      * @throws Exception to JUnit.
      */
     public void testMain_GenerateReport_EmptyConfiguration() throws Exception {
-        DependencyReportGeneratorUtility.main(new String[]{"-c", "empty_config.xml", "-i", "/dependencies.xml"});
+        DependencyReportGeneratorUtility.main(new String[]{"-c", "empty_config.xml", "-i", "test_files/dependencies.xml"});
 
         String report = this.byteStream.toString();
 

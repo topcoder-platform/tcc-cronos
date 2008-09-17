@@ -600,9 +600,9 @@ public class BaseDependencyReportGeneratorFailureTest extends TestCase {
         indirect = true;
         try {
             generator.generate(componentIds, os, indirect);
-            fail("CircularComponentDependencyException expected.");
+            
         } catch (CircularComponentDependencyException e) {
-            // expected
+        	fail("CircularComponentDependencyException unexpected.");
         }
     }
 
@@ -618,9 +618,9 @@ public class BaseDependencyReportGeneratorFailureTest extends TestCase {
         indirect = true;
         try {
             generator.generate(componentIds, os, indirect);
-            fail("CircularComponentDependencyException expected.");
+            
         } catch (CircularComponentDependencyException e) {
-            // expected
+        	fail("CircularComponentDependencyException unexpected.");
         }
     }
 
@@ -636,9 +636,9 @@ public class BaseDependencyReportGeneratorFailureTest extends TestCase {
         indirect = true;
         try {
             generator.generate(componentIds, os, indirect);
-            fail("CircularComponentDependencyException expected.");
+            
         } catch (CircularComponentDependencyException e) {
-            // expected
+        	fail("CircularComponentDependencyException unexpected.");
         }
     }
 
@@ -738,9 +738,9 @@ public class BaseDependencyReportGeneratorFailureTest extends TestCase {
         indirect = true;
         try {
             generator.generate(componentIds, fileName, indirect);
-            fail("CircularComponentDependencyException expected.");
+            
         } catch (CircularComponentDependencyException e) {
-            // expected
+        	fail("CircularComponentDependencyException unexpected.");
         }
     }
 
@@ -756,9 +756,9 @@ public class BaseDependencyReportGeneratorFailureTest extends TestCase {
         indirect = true;
         try {
             generator.generate(componentIds, fileName, indirect);
-            fail("CircularComponentDependencyException expected.");
+            
         } catch (CircularComponentDependencyException e) {
-            // expected
+        	fail("CircularComponentDependencyException unexpected.");
         }
     }
 
@@ -774,9 +774,9 @@ public class BaseDependencyReportGeneratorFailureTest extends TestCase {
         indirect = true;
         try {
             generator.generate(componentIds, fileName, indirect);
-            fail("CircularComponentDependencyException expected.");
+            
         } catch (CircularComponentDependencyException e) {
-            // expected
+        	fail("CircularComponentDependencyException unexpected.");
         }
     }
 
@@ -877,9 +877,9 @@ public class BaseDependencyReportGeneratorFailureTest extends TestCase {
         indirect = true;
         try {
             generator.generate(componentIds, indirect);
-            fail("CircularComponentDependencyException expected.");
+            
         } catch (CircularComponentDependencyException e) {
-            // expected
+        	fail("CircularComponentDependencyException unexpected.");
         }
     }
 
@@ -895,9 +895,9 @@ public class BaseDependencyReportGeneratorFailureTest extends TestCase {
         indirect = true;
         try {
             generator.generate(componentIds, indirect);
-            fail("CircularComponentDependencyException expected.");
+            
         } catch (CircularComponentDependencyException e) {
-            // expected
+        	fail("CircularComponentDependencyException unexpected.");
         }
     }
 
@@ -913,9 +913,9 @@ public class BaseDependencyReportGeneratorFailureTest extends TestCase {
         indirect = true;
         try {
             generator.generate(componentIds, indirect);
-            fail("CircularComponentDependencyException expected.");
+            
         } catch (CircularComponentDependencyException e) {
-            // expected
+        	fail("CircularComponentDependencyException unexpected.");
         }
     }
 
@@ -930,9 +930,9 @@ public class BaseDependencyReportGeneratorFailureTest extends TestCase {
         indirect = true;
         try {
             generator.generateAll(os, indirect);
-            fail("CircularComponentDependencyException expected.");
+            
         } catch (CircularComponentDependencyException e) {
-            // expected
+        	fail("CircularComponentDependencyException unexpected.");
         }
     }
 
@@ -963,9 +963,9 @@ public class BaseDependencyReportGeneratorFailureTest extends TestCase {
         indirect = true;
         try {
             generator.generateAll(fileName, indirect);
-            fail("CircularComponentDependencyException expected.");
+            
         } catch (CircularComponentDependencyException e) {
-            // expected
+        	fail("CircularComponentDependencyException unexpected.");
         }
     }
 
@@ -996,9 +996,9 @@ public class BaseDependencyReportGeneratorFailureTest extends TestCase {
         indirect = true;
         try {
             generator.generateAll(indirect);
-            fail("CircularComponentDependencyException expected.");
+            
         } catch (CircularComponentDependencyException e) {
-            // expected
+        	fail("CircularComponentDependencyException unexpected.");
         }
     }
 

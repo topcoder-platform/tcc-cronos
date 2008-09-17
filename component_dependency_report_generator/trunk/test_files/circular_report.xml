@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<components>
+<component language="java" name="circular_A" version="1.0">
+<dependency category="compile" name="circular_B" path="path" type="internal" version="1.0"/>
+<dependency category="compile" name="circular_C" path="path" type="internal" version="1.0"/>
+</component>
+<component language="java" name="circular_B" version="1.0">
+<dependency category="compile" name="circular_C" path="path" type="internal" version="1.0"/>
+<dependency category="compile" name="circular_x" path="path" type="internal" version="1.0"/>
+</component>
+<component language="java" name="circular_C" version="1.0">
+<dependency category="compile" name="circular_D" path="path" type="internal" version="1.0"/>
+<dependency category="compile" name="circular_y" path="path" type="internal" version="1.0"/>
+</component>
+<component language="java" name="circular_D" version="1.0">
+<dependency category="compile" name="circular_B" path="path" type="internal" version="1.0"/>
+</component>
+<component language="java" name="circular_x" version="1.0">
+</component>
+<component language="java" name="circular_y" version="1.0">
+</component>
+</components>

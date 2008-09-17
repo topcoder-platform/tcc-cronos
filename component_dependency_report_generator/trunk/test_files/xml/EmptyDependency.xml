@@ -10,4 +10,3 @@
     <dependency category="compile" name="Component3_dependency2" type="internal" version="2.0"/>
   </component>
 </components>
-

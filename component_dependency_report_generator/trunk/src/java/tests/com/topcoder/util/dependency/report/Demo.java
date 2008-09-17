@@ -56,7 +56,7 @@ public class Demo extends BaseTestCase {
         config.setPropertyValue("include_dependency_path", "true");
 
         //Get dependency entries persistence (see docs of Component Dependency Extractor)
-        DependenciesEntryPersistence persistence = new DefaultXmlDependenciesEntryPersistence("/dependencies.xml");
+        DependenciesEntryPersistence persistence = new DefaultXmlDependenciesEntryPersistence("test_files/dependencies.xml");
 
         //Get dependency entries from persistence
         List < DependenciesEntry > entries = persistence.load();
@@ -148,6 +148,7 @@ public class Demo extends BaseTestCase {
      * @throws Exception to JUnit.
      */
     public void testDemoCommandLineUtility() throws Exception {
+    	
         //This command line can be used to print out the usage string:
         DependencyReportGeneratorUtility.main(new String[]{"-help"});
 
@@ -195,5 +196,15 @@ public class Demo extends BaseTestCase {
             "-i", "/dependencies.xml",
             "-o", "test_files/report.xml",
             "-id", "dot_net-command_line_executor-1.0;java-logging_wrapper-2.0.0"});
+    }
+    
+    public void testRealCommandLineUtility() throws Exception {
+    	DependencyReportGeneratorUtility.main(new String[]{
+                "-c", "custom_config.xml",
+                "-f", "html",
+                "-i", "test_files/report2.xml",
+                "-o", "test_files/report2.html",
+                });
+    
     }
 }

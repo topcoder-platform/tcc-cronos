@@ -318,6 +318,27 @@ public class DependencyReportGeneratorUtility {
      * </p>
      */
     private static final String DEPENDENCY_CATEGORIES_PROPERTY = "dependency_categories";
+    
+    /**
+     * <p>
+     * Represents the "circularwarning_color" property .
+     * </p>
+     */
+    private static final String CIRCULAR_WARN_PROPERTY = "circularwarning_color";
+    
+    /**
+     * <p>
+     * Represents the "pathwarning_color" property .
+     * </p>
+     */
+    private static final String PATH_WARN_PROPERTY = "pathwarning_color";
+    
+    /**
+     * <p>
+     * Represents the "version_conflict_color" property .
+     * </p>
+     */
+    private static final String VERSION_WARN_PROPERTY = "version_conflict_color";
 
     /**
      * <p>
@@ -659,7 +680,7 @@ public class DependencyReportGeneratorUtility {
             printError(e);
         }
     }
-
+    
     /**
      * <p>
      * Generate report.
@@ -676,6 +697,16 @@ public class DependencyReportGeneratorUtility {
         // Get DependenciesEntryPersistence and DependencyReportGenerator
         DependencyReportGenerator generator = getDependencyReportGenerator(config, switchesMap,
             getDependenciesEntryPersistence(config, switchesMap));
+        
+        String color=Helper.getStringProperty(config, CIRCULAR_WARN_PROPERTY, "0000FF");
+        String pathcolor=Helper.getStringProperty(config, PATH_WARN_PROPERTY, "00FF00");
+        String versioncolor=Helper.getStringProperty(config, VERSION_WARN_PROPERTY, "FF0000");
+        
+        if(generator instanceof HtmlDependencyReportGenerator){
+        	((HtmlDependencyReportGenerator)generator).setCircularColor(color);
+        	((HtmlDependencyReportGenerator)generator).setPath_warn_color(pathcolor);
+        	((HtmlDependencyReportGenerator)generator).setVersion_warn_color(versioncolor);
+        }
 
         // Get output file name of generated report
         String outputFileName = getParameter(switchesMap, OUTPUT_FILE_SWITCH, config, REPORT_FILE_NAME_PROPERTY, null);

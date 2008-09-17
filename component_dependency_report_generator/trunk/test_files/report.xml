@@ -9,10 +9,5 @@
     <dependency category="compile" name="object_formatter" path="../tcs/lib/tcs/object_formatter/1.0.0/object_formatter.jar" type="internal" version="1.0.0"/>
     <dependency category="compile" name="log4j" path="../tcs/lib/third_party/log4j/1.2.14/log4j-1.2.14.jar" type="external" version="1.2.14"/>
     <dependency category="compile" name="junit" path="../tcs/lib/third_party/junit/3.8.2/junit.jar" type="external" version="3.8.2"/>
-    <dependency category="test" name="base_exception" path="../tcs/lib/tcs/base_exception/2.0.0/base_exception.jar" type="internal" version="2.0.0"/>
-    <dependency category="test" name="typesafe_enum" path="../tcs/lib/tcs/typesafe_enum/1.1.0/typesafe_enum.jar" type="internal" version="1.1.0"/>
-    <dependency category="test" name="object_formatter" path="../tcs/lib/tcs/object_formatter/1.0.0/object_formatter.jar" type="internal" version="1.0.0"/>
-    <dependency category="test" name="log4j" path="../tcs/lib/third_party/log4j/1.2.14/log4j-1.2.14.jar" type="external" version="1.2.14"/>
-    <dependency category="test" name="junit" path="../tcs/lib/third_party/junit/3.8.2/junit.jar" type="external" version="3.8.2"/>
   </component>
 </components>

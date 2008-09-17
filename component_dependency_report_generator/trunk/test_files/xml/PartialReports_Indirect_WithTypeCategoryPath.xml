@@ -15,4 +15,3 @@
     <dependency category="compile" name="Component2_dependency2_dependency2" path="tcs/Component2_dependency2_dependency2/2.0/Component2_dependency2_dependency2.dll" type="internal" version="2.0"/>
   </component>
 </components>
-

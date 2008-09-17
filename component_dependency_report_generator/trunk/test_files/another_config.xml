@@ -8,7 +8,7 @@
 
     <Property name="persistence_config">
         <Property name="file_name">
-            <Value>/dependencies.xml</Value>
+            <Value>test_files/dependencies.xml</Value>
         </Property>
     </Property>
 

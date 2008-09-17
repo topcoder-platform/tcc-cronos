@@ -37,5 +37,17 @@
     <Property name="indirect">
         <Value>true</Value>
     </Property>
+    
+    <Property name="circularwarning_color">
+        <Value>0000FF</Value>
+    </Property>
+    
+     <Property name="pathwarning_color">
+        <Value>00FF00</Value>
+    </Property>
+    
+     <Property name="version_conflict_color">
+        <Value>FF0000</Value>
+    </Property>
   </Config>
 </CMConfig>
