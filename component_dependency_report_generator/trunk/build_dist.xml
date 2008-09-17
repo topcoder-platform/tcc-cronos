@@ -273,6 +273,7 @@
 
     <target name="clean">
         <delete dir="${builddir}"/>
+        <delete dir="${testlogdir}"/>
     </target>
 
     <!-- Import the macro definitions used to override standard behaviour of

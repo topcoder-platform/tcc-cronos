@@ -273,6 +273,7 @@
 
     <target name="clean">
         <delete dir="${builddir}"/>
+        <delete dir="${testlogdir}"/>
     </target>
 
     <!-- ************************************************************************** -->
@@ -294,7 +295,11 @@
         <copy file="${component.jar}" todir="${target_libdir}/${component_path}"/>
     </target>
 
-    <target name="dist_tcs" depends="clean,dist,javadoc">
+    <target name="distclean">
+        <delete dir="${builddir}"/>
+    </target>
+
+    <target name="dist_tcs" depends="distclean,dist,javadoc">
         <!-- define tcs distribution format -->
         <mkdir dir="${build_tcsdistdir}"/>
         <copy todir="${build_tcsdistdir}">
@@ -306,6 +311,7 @@
                 <include name="${test_reflib}/**/*"/>
                 <include name="build.version"/>
                 <include name="build-dependencies.xml"/>
+                <include name="build-override.xml"/>
                 <include name="README"/>
                 <include name="build.version"/>
             </fileset>
@@ -357,6 +363,7 @@
         <jar jarfile="${dev_submission.jar}"
              basedir="."
              includes="build-dependencies.xml,
+                       build-override.xml,
                        README,
                        ${configdir}/**,
                        ${javamain}/**/*.java,
@@ -376,6 +383,8 @@
         <jar jarfile="${design_submission.jar}"
              basedir="."
              includes="build-dependencies.xml,
+                       build.version,
+                       build.xml,
                        ${configdir}/**,
                        ${javamain}/**,
                        ${docsdir}/**,

@@ -6,13 +6,11 @@
     <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
 
     <!-- TCS dependencies -->
-
     <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
     <property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar"/>
     <property name="configuration_persistence.jar" value="${tcs_libdir}/configuration_persistence/1.0.1/configuration_persistence.jar"/>
-    <property name="command_line_utility.jar" value="${tcs_libdir}/command_line_utility/1.0/command_line_utility.jar"/>
+    <property name="command_line_utility.jar" value="${tcs_libdir}/command_line_utility/1.0.0/command_line_utility.jar"/>
     <property name="component_dependency_extractor.jar" value="${cronos_libdir}/component_dependency_extractor/1.0.0/component_dependency_extractor.jar"/>
-
 
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
