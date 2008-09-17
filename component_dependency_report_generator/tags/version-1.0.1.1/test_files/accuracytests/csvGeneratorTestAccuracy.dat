@@ -1,0 +1,4 @@
+java-A-1.0,[int][compile]B-1.0[path_for_B],[int][compile]C-1.0[path_for_C],[int][compile]D-1.0[path_for_D]
+java-C-1.0,[int][compile]D-1.0[path_for_D],[int][compile]B-1.0[path_for_B]
+java-D-1.0,[int][compile]B-1.0[path_for_B]
+dot_net-X-1.0,[int][compile]Y-1.0[path_for_Y],[int][compile]Z-1.0[path_for_Z]

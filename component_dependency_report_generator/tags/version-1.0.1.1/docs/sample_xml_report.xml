@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<components>
+  <component name="logging_wrapper" version="2.0.0" language="java" >
+    <dependency type="internal" category="compile" name="base_exception" version="2.0.0" />
+    <dependency type="internal" category="compile" name="typesafe_enum" version="1.1.0" />
+    <dependency type="internal" category="compile" name="object_formatter" version="1.0.0" />
+    <dependency type="external" category="compile" name="log4j" version="1.2.14" />
+    <dependency type="external" category="compile" name="junit" version="3.8.2" />
+    <dependency type="internal" category="test" name="base_exception" version="2.0.0" />
+    <dependency type="internal" category="test" name="typesafe_enum" version="1.1.0" />
+    <dependency type="internal" category="test" name="object_formatter" version="1.0.0" />
+    <dependency type="external" category="test" name="log4j" version="1.2.14" />
+    <dependency type="external" category="test" name="junit" version="3.8.2" />
+  </component>
+</components>

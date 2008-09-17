@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components>
+  <component language="java" name="Component1" version="1.0">
+    <dependency name="Component1_dependency1" version="1.0"/>
+    <dependency name="Component1_dependency2" version="2.0"/>
+    <dependency name="Component1_dependency1_dependency1" version="1.0"/>
+    <dependency name="Component1_dependency1_dependency2" version="2.0"/>
+  </component>
+  <component language="dot_net" name="Component2" version="2.0">
+    <dependency name="Component2_dependency1" version="1.0"/>
+    <dependency name="Component2_dependency2" version="2.0"/>
+    <dependency name="Component2_dependency2_dependency1" version="1.0"/>
+    <dependency name="Component2_dependency2_dependency2" version="2.0"/>
+  </component>
+  <component language="java" name="Component1_dependency1" version="1.0">
+    <dependency name="Component1_dependency1_dependency1" version="1.0"/>
+    <dependency name="Component1_dependency1_dependency2" version="2.0"/>
+  </component>
+  <component language="dot_net" name="Component2_dependency2" version="2.0">
+    <dependency name="Component2_dependency2_dependency1" version="1.0"/>
+    <dependency name="Component2_dependency2_dependency2" version="2.0"/>
+  </component>
+  <component language="dot_net" name="Component3" version="3.0">
+    <dependency name="Component1_dependency1" version="1.0"/>
+    <dependency name="Component2_dependency2" version="2.0"/>
+    <dependency name="Component1_dependency1_dependency1" version="1.0"/>
+    <dependency name="Component1_dependency1_dependency2" version="2.0"/>
+    <dependency name="Component2_dependency2_dependency1" version="1.0"/>
+    <dependency name="Component2_dependency2_dependency2" version="2.0"/>
+  </component>
+</components>

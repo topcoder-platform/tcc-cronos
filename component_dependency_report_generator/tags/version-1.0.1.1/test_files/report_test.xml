@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<components>
+
+<component language="java" name="new_A" version="1.0.0">
+<dependency category="compile" name="new_B" path="path" type="internal" version="1.0.0"/>
+<dependency category="compile" name="new_C" path="path" type="internal" version="1.0.0"/>
+</component>
+
+<component language="java" name="new_B" version="1.0.0">
+<dependency category="compile" name="new_D" path="path" type="internal" version="1.0.0"/>
+<dependency category="compile" name="new_E" path="path" type="internal" version="1.0.0"/>
+</component>
+
+<component language="java" name="new_C" version="1.0.0">
+<dependency category="compile" name="new_D" path="path" type="internal" version="1.0.0"/>
+<dependency category="compile" name="new_F" path="path" type="internal" version="1.0.0"/>
+</component>
+<component language="java" name="new_D" version="1.0.0">
+<dependency category="compile" name="new_E" path="path" type="internal" version="1.0.0"/>
+</component>
+
+<component language="java" name="circular_ref_1_self" version="1.0.0">
+<dependency category="compile" name="circular_ref_1_self" path="path" type="internal" version="1.0.0"/>
+</component>
+
+<component language="java" name="circular_ref_2_A" version="1.0.0">
+<dependency category="compile" name="circular_ref_2_B" path="path" type="internal" version="1.0.0"/>
+<dependency category="compile" name="AA" path="path" type="internal" version="1.0.0"/>
+</component>
+<component language="java" name="circular_ref_2_B" version="1.0.0">
+<dependency category="compile" name="circular_ref_2_A" path="path" type="internal" version="1.0.0"/>
+<dependency category="compile" name="BB" path="path" type="internal" version="1.0.0"/>
+</component>
+
+<component language="java" name="circular_ref_3_A" version="1.0.0">
+<dependency category="compile" name="circular_ref_3_B" path="path" type="internal" version="1.0.0"/>
+<dependency category="compile" name="AA" path="path" type="internal" version="1.0.0"/>
+</component>
+<component language="java" name="circular_ref_3_B" version="1.0.0">
+<dependency category="compile" name="circular_ref_3_C" path="path" type="internal" version="1.0.0"/>
+<dependency category="compile" name="BB" path="path" type="internal" version="1.0.0"/>
+</component>
+<component language="java" name="circular_ref_3_C" version="1.0.0">
+<dependency category="compile" name="circular_ref_3_B" path="path" type="internal" version="1.0.0"/>
+<dependency category="compile" name="CC" path="path" type="internal" version="1.0.0"/>
+</component>
+
+
+<component language="java" name="conflict_ref_1_comp2" version="1.0">
+<dependency category="compile" name="conflict_ref_1_comp3" path="path" type="internal" version="1.0"/>
+<dependency category="compile" name="libA" path="path" type="internal" version="1.0.0"/>
+</component>
+<component language="java" name="conflict_ref_1_comp3" version="1.0">
+<dependency category="compile" name="AA" path="path" type="internal" version="1.0.0"/>
+<dependency category="compile" name="libA" path="path" type="internal" version="4.0.0"/>
+</component>
+
+<component language="java" name="conflict_ref_2_comp2" version="1.0">
+<dependency category="compile" name="libA" path="path" type="internal" version="2.0.0"/>
+<dependency category="compile" name="libA" path="path" type="internal" version="1.0.0"/>
+</component>
+
+<component language="java" name="conflict_ref_3_comp3" version="1.0">
+<dependency category="compile" name="conflict_ref_3_comp1" path="path" type="internal" version="1.0"/>
+<dependency category="compile" name="conflict_ref_3_comp2" path="path" type="internal" version="1.0"/>
+<dependency category="compile" name="libA" path="path" type="internal" version="3.0.0"/>
+</component>
+<component language="java" name="conflict_ref_3_comp1" version="1.0">
+<dependency category="compile" name="libA" path="path" type="internal" version="1.0.0"/>
+</component>
+<component language="java" name="conflict_ref_3_comp2" version="1.0">
+<dependency category="compile" name="libA" path="path" type="internal" version="2.0.0"/>
+</component>
+
+<component language="java" name="circular_and_conflict_1_A" version="1.0">
+<dependency category="compile" name="circular_and_conflict_1_B" path="path" type="internal" version="1.0"/>
+<dependency category="compile" name="circular_and_conflict_1_C" path="path" type="internal" version="2.0"/>
+<dependency category="compile" name="circular_and_conflict_1_C" path="path" type="internal" version="1.0"/>
+</component>
+<component language="java" name="circular_and_conflict_1_B" version="1.0">
+<dependency category="compile" name="circular_and_conflict_1_C" path="path" type="internal" version="1.0"/>
+</component>
+<component language="java" name="circular_and_conflict_1_C" version="1.0">
+<dependency category="compile" name="circular_and_conflict_1_B" path="path" type="internal" version="1.0"/>
+</component>
+
+<component language="java" name="circular_A" version="1.0">
+<dependency category="compile" name="circular_B" path="path" type="internal" version="1.0"/>
+<dependency category="compile" name="circular_C" path="path" type="internal" version="1.0"/>
+</component>
+<component language="java" name="circular_B" version="1.0">
+<dependency category="compile" name="circular_C" path="path" type="internal" version="1.0"/>
+<dependency category="compile" name="circular_x" path="path" type="internal" version="1.0"/>
+</component>
+<component language="java" name="circular_C" version="1.0">
+<dependency category="compile" name="circular_D" path="path" type="internal" version="1.0"/>
+<dependency category="compile" name="circular_y" path="path" type="internal" version="1.0"/>
+</component>
+<component language="java" name="circular_D" version="1.0">
+<dependency category="compile" name="circular_B" path="path" type="internal" version="1.0"/>
+</component>
+</components>

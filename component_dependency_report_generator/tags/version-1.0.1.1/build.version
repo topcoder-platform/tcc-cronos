@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Component Dependency Report Generator
+component.distfilename=component_dependency_report_generator
+component.package=com.topcoder.util.dependency.report
+component.packagedir=com/topcoder/util/dependency/report
+component.version.major=1
+component.version.minor=0
+component.version.micro=1
+component.version.build=1

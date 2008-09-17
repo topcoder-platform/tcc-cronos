@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components>
+  <component language="dot_net" name="command_line_executor" version="1.0">
+    <dependency category="test" name="NUnit" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" type="external" version="2.1"/>
+  </component>
+  <component language="java" name="logging_wrapper" version="2.0.0">
+    <dependency category="compile" name="base_exception" path="../tcs/lib/tcs/base_exception/2.0.0/base_exception.jar" type="internal" version="2.0.0"/>
+    <dependency category="compile" name="typesafe_enum" path="../tcs/lib/tcs/typesafe_enum/1.1.0/typesafe_enum.jar" type="internal" version="1.1.0"/>
+    <dependency category="compile" name="object_formatter" path="../tcs/lib/tcs/object_formatter/1.0.0/object_formatter.jar" type="internal" version="1.0.0"/>
+    <dependency category="compile" name="log4j" path="../tcs/lib/third_party/log4j/1.2.14/log4j-1.2.14.jar" type="external" version="1.2.14"/>
+    <dependency category="compile" name="junit" path="../tcs/lib/third_party/junit/3.8.2/junit.jar" type="external" version="3.8.2"/>
+  </component>
+</components>

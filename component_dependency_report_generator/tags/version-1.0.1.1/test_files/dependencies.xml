@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<components>
+  <component name="logging_wrapper" version="2.0.0" language="java">
+    <dependency type="internal" category="compile" name="base_exception" version="2.0.0" path="../tcs/lib/tcs/base_exception/2.0.0/base_exception.jar" />
+    <dependency type="internal" category="compile" name="typesafe_enum" version="1.1.0" path="../tcs/lib/tcs/typesafe_enum/1.1.0/typesafe_enum.jar" />
+    <dependency type="internal" category="compile" name="object_formatter" version="1.0.0" path="../tcs/lib/tcs/object_formatter/1.0.0/object_formatter.jar" />
+    <dependency type="external" category="compile" name="log4j" version="1.2.14" path="../tcs/lib/third_party/log4j/1.2.14/log4j-1.2.14.jar" />
+    <dependency type="external" category="compile" name="junit" version="3.8.2" path="../tcs/lib/third_party/junit/3.8.2/junit.jar" />
+    <dependency type="internal" category="test" name="base_exception" version="2.0.0" path="../tcs/lib/tcs/base_exception/2.0.0/base_exception.jar" />
+    <dependency type="internal" category="test" name="typesafe_enum" version="1.1.0" path="../tcs/lib/tcs/typesafe_enum/1.1.0/typesafe_enum.jar" />
+    <dependency type="internal" category="test" name="object_formatter" version="1.0.0" path="../tcs/lib/tcs/object_formatter/1.0.0/object_formatter.jar" />
+    <dependency type="external" category="test" name="log4j" version="1.2.14" path="../tcs/lib/third_party/log4j/1.2.14/log4j-1.2.14.jar" />
+    <dependency type="external" category="test" name="junit" version="3.8.2" path="../tcs/lib/third_party/junit/3.8.2/junit.jar" />
+  </component>
+  <component name="command_line_executor" version="1.0" language="dot_net">
+    <dependency type="external" category="test" name="NUnit" version="2.1" path="C:\Program Files\NUnit\2.1\bin\nunit.framework.dll" />
+  </component>
+  <component name="xdsp_file_manager" version="1.0" language="dot_net">
+    <dependency type="internal" category="compile" name="command_line_executor" version="1.0" path="../tcs/lib/tcs/command_line_executor/1.0/command_line_executor.dll" />
+  </component>
+</components>
