@@ -547,8 +547,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             Contest result = getContest(contest.getContestId());
 
+            ContestConfig[] contestConfigs = result.getConfig().toArray(new ContestConfig[] {});
             // Add missing contest configurations.
-            for (ContestConfig config : new HashSet<ContestConfig>(result.getConfig())) {
+            for (int i = 0; i < contestConfigs.length; ++i) {
+                ContestConfig config = contestConfigs[i];
                 if (!contest.getConfig().contains(config)) {
                     contest.getConfig().add(config);
                 }
@@ -556,7 +558,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             // Restore documents.
             contest.setDocuments(result.getDocuments());
-            
+
             // [TCCC-435] Restore registrations.
             contest.setContestRegistrations(result.getContestRegistrations());
             
