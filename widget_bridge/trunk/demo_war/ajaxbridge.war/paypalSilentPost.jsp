@@ -13,6 +13,7 @@
 <%@ page import="com.topcoder.widgets.bridge.StudioServiceEJBLocator" %>
 <%@ page import="com.topcoder.service.studio.StudioService" %>
 <%@ page import="com.topcoder.service.studio.ContestPaymentData" %>
+<%@ page import="javax.security.auth.login.LoginException" %>
 <%
     ServletContext servletContext = pageContext.getServletContext();
     servletContext.log("paypalSilentPost.jsp : Got following Silent Post request from PayPal : ["
@@ -58,28 +59,29 @@
     final String ejbContextUsername = "heffan";
     final String ejbContextPassword = "password";
 
+    LoginContext loginContext = null;
     try {
         Subject subject = new Subject();
-        LoginContext loginContext = new LoginContext(clientLoginDomainName, subject,
-                                                     new CallbackHandler() {
-                                                         public void handle(Callback[] callbacks)
-                                                                 throws IOException, UnsupportedCallbackException {
-                                                             for (int i = 0; i < callbacks.length; i++) {
-                                                                 if (callbacks[i] instanceof TextOutputCallback) {
-                                                                 } else if (callbacks[i] instanceof NameCallback) {
-                                                                     // prompt the user for a username
-                                                                     NameCallback nc = (NameCallback) callbacks[i];
-                                                                     nc.setName(ejbContextUsername);
-                                                                 } else if (callbacks[i] instanceof PasswordCallback) {
-                                                                     // prompt the user for sensitive information
-                                                                     PasswordCallback pc = (PasswordCallback) callbacks[i];
-                                                                     pc.setPassword(ejbContextPassword.toCharArray());
-                                                                 } else {
-                                                                     throw new UnsupportedCallbackException(callbacks[i], "Unrecognized Callback");
-                                                                 }
-                                                             }
-                                                         }
-                                                     });
+        loginContext = new LoginContext(clientLoginDomainName, subject,
+                                        new CallbackHandler() {
+                                            public void handle(Callback[] callbacks)
+                                                    throws IOException, UnsupportedCallbackException {
+                                                for (int i = 0; i < callbacks.length; i++) {
+                                                    if (callbacks[i] instanceof TextOutputCallback) {
+                                                    } else if (callbacks[i] instanceof NameCallback) {
+                                                        // prompt the user for a username
+                                                        NameCallback nc = (NameCallback) callbacks[i];
+                                                        nc.setName(ejbContextUsername);
+                                                    } else if (callbacks[i] instanceof PasswordCallback) {
+                                                        // prompt the user for sensitive information
+                                                        PasswordCallback pc = (PasswordCallback) callbacks[i];
+                                                        pc.setPassword(ejbContextPassword.toCharArray());
+                                                    } else {
+                                                        throw new UnsupportedCallbackException(callbacks[i], "Unrecognized Callback");
+                                                    }
+                                                }
+                                            }
+                                        });
         loginContext.login();
 
         StudioServiceEJBLocator locator = new StudioServiceEJBLocator();
@@ -93,9 +95,9 @@
             payment.setPaymentStatusId(1L);
             studioService.createContestPayment(payment, originalPrincipalName);
             servletContext.log("paypalSilentPost.jsp : Created contest payment of $"
-                                                + originalPaymentAmount + " for contest " + originalContestId
-                                                + " on behalf of " + originalPrincipalName
-                                                + " as confirmed by PayPal order ID " + paypalOrderId);
+                               + originalPaymentAmount + " for contest " + originalContestId
+                               + " on behalf of " + originalPrincipalName
+                               + " as confirmed by PayPal order ID " + paypalOrderId);
             successful = true;
         } else if ("Submission".equals(originalPaymentType) || ("PurchasedSubmissions".equals(originalPaymentType))) {
             if (originalSubmissionIds != null) {
@@ -104,8 +106,8 @@
                     String id = ids[i].trim();
                     studioService.purchaseSubmission(Long.parseLong(id), paypalOrderId, originalPrincipalName);
                     servletContext.log("paypalSilentPost.jsp : Purchased submission "
-                                                        + id + " on behalf of " + originalPrincipalName
-                                                        + " as confirmed by PayPal order ID " + paypalOrderId);
+                                       + id + " on behalf of " + originalPrincipalName
+                                       + " as confirmed by PayPal order ID " + paypalOrderId);
                 }
                 successful = true;
             }
@@ -113,15 +115,23 @@
 
     } catch (Throwable e) {
         servletContext.log("paypalSilentPost.jsp : An error [" + e + "] encountered while processing Silent Post "
-                                            + "request for contest = " + originalContestId + ", payment type = "
-                                            + originalPaymentType + ", user = " + originalPrincipalName + ", amount = "
-                                            + originalPaymentAmount + ", PayPal order ID = " + paypalOrderId);
+                           + "request for contest = " + originalContestId + ", payment type = "
+                           + originalPaymentType + ", user = " + originalPrincipalName + ", amount = "
+                           + originalPaymentAmount + ", PayPal order ID = " + paypalOrderId);
         System.out.println("paypalSilentPost.jsp : An error [" + e + "] encountered while processing Silent Post "
-                                            + "request for contest = " + originalContestId + ", payment type = "
-                                            + originalPaymentType + ", user = " + originalPrincipalName + ", amount = "
-                                            + originalPaymentAmount + ", PayPal order ID = " + paypalOrderId);
+                           + "request for contest = " + originalContestId + ", payment type = "
+                           + originalPaymentType + ", user = " + originalPrincipalName + ", amount = "
+                           + originalPaymentAmount + ", PayPal order ID = " + paypalOrderId);
         e.printStackTrace();
         successful = false;
+    } finally {
+        if (loginContext != null) {
+            try {
+                loginContext.logout();
+            } catch (LoginException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 //    PayPalResponseListener paypalListener
