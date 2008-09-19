@@ -2747,6 +2747,7 @@ public class StudioServiceBean implements StudioService {
         result.setContestId(data.getContestId());
         result.setPayPalOrderId(data.getPaypalOrderId());
         result.setPrice(data.getPrice());
+        result.setCreateDate(data.getCreateDate());
         PaymentStatus status = submissionManager.getPaymentStatus(data.getPaymentStatusId());
         result.setStatus(status);
 

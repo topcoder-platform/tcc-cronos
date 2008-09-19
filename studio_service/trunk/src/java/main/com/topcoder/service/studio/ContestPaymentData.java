@@ -6,6 +6,7 @@ package com.topcoder.service.studio;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -47,6 +48,11 @@ public class ContestPaymentData implements Serializable {
      * Represents price id.
      */
     private Double price;
+
+    /**
+     * Represents the create date.
+     */
+    private Date createDate;
 
     /**
      * Returns price.
@@ -122,5 +128,23 @@ public class ContestPaymentData implements Serializable {
      */
     public void setPaymentStatusId(Long paymentStatusId) {
         this.paymentStatusId = paymentStatusId;
+    }
+
+    /**
+     * Returns create date.
+     *
+     * @return the create date
+     */
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    /**
+     * Set create date.
+     *
+     * @param createDate the createDate to set
+     */
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 }
