@@ -14,6 +14,7 @@
 <%@ page import="com.topcoder.service.studio.StudioService" %>
 <%@ page import="com.topcoder.service.studio.ContestPaymentData" %>
 <%@ page import="javax.security.auth.login.LoginException" %>
+<%@ page import="java.util.Date" %>
 <%
     ServletContext servletContext = pageContext.getServletContext();
     servletContext.log("paypalSilentPost.jsp : Got following Silent Post request from PayPal : ["
@@ -91,6 +92,7 @@
             payment.setPaypalOrderId(paypalOrderId);
             payment.setPrice(new Double(originalPaymentAmount));
             payment.setPaymentStatusId(1L);
+            payment.setCreateDate(new Date());
             studioService.createContestPayment(payment, originalPrincipalName);
             studioService.updateContestStatus(numericContestId, 9); // Update status to Scheduled
             servletContext.log("paypalSilentPost.jsp : Created contest payment of $"
