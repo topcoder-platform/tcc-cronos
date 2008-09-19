@@ -85,12 +85,14 @@
         StudioService studioService = locator.getService();
 
         if ("Launch".equals(originalPaymentType)) {
+            Long numericContestId = new Long(originalContestId);
             ContestPaymentData payment = new ContestPaymentData();
-            payment.setContestId(new Long(originalContestId));
+            payment.setContestId(numericContestId);
             payment.setPaypalOrderId(paypalOrderId);
             payment.setPrice(new Double(originalPaymentAmount));
             payment.setPaymentStatusId(1L);
             studioService.createContestPayment(payment, originalPrincipalName);
+            studioService.updateContestStatus(numericContestId, 9); // Update status to Scheduled
             servletContext.log("paypalSilentPost.jsp : Created contest payment of $"
                                + originalPaymentAmount + " for contest " + originalContestId
                                + " on behalf of " + originalPrincipalName
