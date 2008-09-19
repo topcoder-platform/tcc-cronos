@@ -4,6 +4,7 @@
 package com.topcoder.service.studio.submission;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.topcoder.service.studio.contest.Helper;
 
@@ -44,6 +45,11 @@ public class SubmissionPayment implements Serializable {
      * Represents the PayPal order id.
      */
     private String PayPalOrderId;
+
+    /**
+     * Represents the create date.
+     */
+    private Date createDate;
 
     /**
      * Default constructor.
@@ -153,5 +159,23 @@ public class SubmissionPayment implements Serializable {
     @Override
     public int hashCode() {
         return Helper.calculateHash(submission != null ? submission.getSubmissionId() : null);
+    }
+
+    /**
+     * Returns create date.
+     * 
+     * @return the create date
+     */
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    /**
+     * Set create date.
+     * 
+     * @param paymentDate the createDate to set
+     */
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 }
