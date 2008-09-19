@@ -4,8 +4,8 @@
 package com.topcoder.service.studio.contest;
 
 import java.io.Serializable;
+import java.util.Date;
 
-import com.topcoder.service.studio.contest.Helper;
 import com.topcoder.service.studio.submission.PaymentStatus;
 
 /**
@@ -45,6 +45,11 @@ public class ContestPayment implements Serializable {
      * Represents the paypal order id.
      */
     private String payPalOrderId;
+
+    /**
+     * Represents the create date.
+     */
+    private Date createDate;
 
     /**
      * Default constructor.
@@ -127,6 +132,25 @@ public class ContestPayment implements Serializable {
      */
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    
+    /**
+     * Returns create date.
+     * 
+     * @return the create date
+     */
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    /**
+     * Set create date.
+     * 
+     * @param paymentDate the createDate to set
+     */
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     /**

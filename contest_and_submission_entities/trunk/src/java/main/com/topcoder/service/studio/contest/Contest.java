@@ -24,10 +24,6 @@ import com.topcoder.service.studio.submission.Submission;
  * @author tushak, cyberjag
  * @version 1.0
  */
-/**
- * @author lenovo
- *
- */
 public class Contest implements Serializable {
     /**
      * Generated serial version id.
