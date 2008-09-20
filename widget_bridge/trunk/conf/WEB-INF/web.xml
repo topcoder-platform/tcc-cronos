@@ -20,8 +20,19 @@
         <param-name>launch-project-confirmation-page</param-name>
         <param-value>/direct/cockpit/launchproject/launch/payments/confirmation.jsp</param-value>
     </context-param>
-
-
+    <context-param>
+        <param-name>clientLoginDomainName</param-name>
+        <param-value>client-login</param-value>
+    </context-param>
+    <context-param>
+        <param-name>ejbContextUsername</param-name>
+        <param-value>heffan</param-value>
+    </context-param>
+    <context-param>
+        <param-name>ejbContextPassword</param-name>
+        <param-value>password</param-value>
+    </context-param>
+    
     <servlet> 
         <servlet-name>ajaxBridge</servlet-name>
         <servlet-class>com.topcoder.widgets.bridge.AjaxBridgeServlet</servlet-class>
