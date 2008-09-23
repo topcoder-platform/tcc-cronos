@@ -1,0 +1,1 @@
+To run the test, please deploy the bean to JBoss with JNDI binding name "ClientAssociationServiceStatelessSessionBean"

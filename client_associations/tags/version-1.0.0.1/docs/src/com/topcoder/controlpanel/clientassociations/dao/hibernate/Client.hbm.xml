@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping
+    PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+	<class name="com.topcoder.controlpanel.clientassociations.dao.hibernate.Client" table="client">
+		<id name="clientId" type="java.lang.Integer" column="client_id">
+			<generator class="assigned"/>
+		</id>
+		<property name="name" type="java.lang.String" column="name" not-null="true" length="64"/>
+		<!-- Associations -->
+		<!-- bi-directional one-to-many association to CompClient -->
+		<set name="compClients" lazy="true" inverse="true" cascade="none">
+			<key>
+				<column name="client_id"/>
+			</key>
+			<one-to-many class="com.topcoder.controlpanel.clientassociations.dao.hibernate.CompClient"/>
+		</set>
+		<!-- bi-directional one-to-many association to UserClient -->
+		<set name="userClients" lazy="true" inverse="true" cascade="none">
+			<key>
+				<column name="client_id"/>
+			</key>
+			<one-to-many class="com.topcoder.controlpanel.clientassociations.dao.hibernate.UserClient"/>
+		</set>
+	</class>
+</hibernate-mapping>

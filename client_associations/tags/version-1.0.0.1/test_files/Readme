@@ -1,0 +1,27 @@
+Dear Reviewer, 
+
+I have the following things to clarify.
+
+1. some checkstyle problems is raised by auto-generated class. I should not change it. like 
+
+F:\Download\Client_Associations_1.0_dev_dist\src\java\main\com\topcoder\controlpanel\clientassociations\dao\hibernate\CompClient.java:27:26: warning: Name 'comp_id' must match pattern '^[a-z][a-zA-Z0-9]*$'
+
+2. see http://www.hibernate.org/hib_docs/reference/en/html/session-configuration.html, "For use inside an application server, you should almost always configure Hibernate to obtain connections from an application server Datasource registered in JNDI."
+
+3. build.xml is modified to ease the build process. in order to test it.
+Following thing need to be changed.
+	3.1 in build.xml, "jboss_home" property should point to the base directory of jboss. all the other libs will resolved based on this dir.
+	3.2 Database configuration should be changed according to your environment. 
+		3.2.1 test_files/hibernate.cfg.xml
+		3.2.2 test_files/informix-ds.xml
+	3.3 the latest ear file, was always backed for rescure. If any problem occurs, you can modify the informix-ds.xml in the ear file, and deploy it to jboss manually. Then run the test.
+  3.4 the test_files/jndi.properties, is used for jndi set. (normally, it not need to change, if you use jboss without any change.)
+4. How to test it? If you finish all the configuraiton change, two steps need to run the test.
+	4.1 start the jboss.
+	4.2 run 'ant test'
+
+
+That's all!
+
+Thanks for your review.
+

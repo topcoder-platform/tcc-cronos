@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss>
+    <enterprise-beans>
+        <session>
+            <ejb-name>ClientAssociationServiceStatelessSessionBean</ejb-name>
+            <jndi-name>ClientAssociationServiceStatelessSessionBean</jndi-name>
+        </session>
+    </enterprise-beans>
+</jboss>

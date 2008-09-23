@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping
+    PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+	<class name="com.topcoder.controlpanel.clientassociations.dao.hibernate.CompClient" table="comp_client">
+		<composite-id name="comp_id" class="com.topcoder.controlpanel.clientassociations.dao.hibernate.CompClientPK">
+			<key-property name="componentId" column="component_id" type="java.lang.Long" length="12"/>
+			<key-property name="clientId" column="client_id" type="java.lang.Integer" length="11"/>
+		</composite-id>
+		<!-- Associations -->
+		<!-- derived association(s) for compound key -->
+		<!-- bi-directional many-to-one association to Client -->
+		<many-to-one name="client" class="com.topcoder.controlpanel.clientassociations.dao.hibernate.Client" update="false" insert="false">
+			<column name="client_id"/>
+		</many-to-one>
+		<!-- end of derived association(s) -->
+	</class>
+</hibernate-mapping>
