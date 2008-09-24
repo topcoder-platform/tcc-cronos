@@ -6,7 +6,7 @@
     <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
 
     <!-- TCS dependencies -->
-	<!--
+    <!--
     <property name="contest_and_submission_entities.jar" value="lib/contest_and_submission_entities.jar"/>
     <property name="studio_contest_manager.jar" value="../lib/studio_contest_manager/1.1.0/studio_contest_manager.jar"/>
     <property name="submission_manager.jar" value="lib/submission_manager.jar"/>
@@ -41,6 +41,7 @@
     <property name="jboss-ejb3x.jar" value="${ext_libdir}/jboss/as/4.2.2.GA/server/all/lib/jboss-ejb3x.jar"/>
 
     <property name="mockejb.jar" value="${ext_libdir}/mockejb/0.6-beta2/mockejb.jar"/>
+    <property name="forums.jar" value="lib/forums.jar"/>
 
     <path id="component.tcs-dependencies">
         <pathelement location="${studio_contest_manager.jar}"/>
@@ -57,7 +58,8 @@
         <pathelement location="${typesafe_enum.jar}"/>
         <pathelement location="${configuration_api.jar}"/>
         <pathelement location="${search_builder.jar}"/>
-    	<pathelement location="${project_service.jar}"/>
+        <pathelement location="${project_service.jar}"/>
+        <pathelement location="${forums.jar}"/>
     </path>
 
     <path id="component.3rdParty-dependencies">

@@ -230,19 +230,9 @@ Please &lt;a href="http://tcstudioblogs.com/?page_id=31"&gt;read this page&lt;/a
                 <env-entry-value>24</env-entry-value>
             </env-entry>             
             <env-entry>
-                <env-entry-name>forumRootCategoryId</env-entry-name>
-                <env-entry-type>java.lang.Long</env-entry-type>
-                <env-entry-value>3</env-entry-value>
-            </env-entry>
-            <env-entry>
-                <env-entry-name>forumVersionId</env-entry-name>
-                <env-entry-type>java.lang.Long</env-entry-type>
-                <env-entry-value>1</env-entry-value>
-            </env-entry>
-            <env-entry>
-                <env-entry-name>forumVersionText</env-entry-name>
+                <env-entry-name>forumBeanProviderUrl</env-entry-name>
                 <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>v1</env-entry-value>
+                <env-entry-value>jnp://63.118.154.182:1099</env-entry-value>
             </env-entry> 
             <persistence-context-ref>
                 <persistence-context-ref-name>persistence/contest_submission</persistence-context-ref-name>
