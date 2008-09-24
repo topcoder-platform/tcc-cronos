@@ -29,7 +29,7 @@
             <env-entry>
                 <env-entry-name>env/draftStatusId</env-entry-name>
                 <env-entry-type>java.lang.Long</env-entry-type>
-                <env-entry-value>2</env-entry-value>
+                <env-entry-value>15</env-entry-value>
             </env-entry>
             <env-entry>
                 <env-entry-name>submissionPaidStatusId</env-entry-name>
