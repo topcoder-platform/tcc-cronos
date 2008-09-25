@@ -19,12 +19,12 @@
 
 		<property name="amount" not-null="false" />
 
-		<set name="contests" table="contest_prize_xref" fetch="join">
+		<set name="contests" table="contest_prize_xref" fetch="select">
 			<key column="prize_id" />
 			<many-to-many column="contest_id" class="com.topcoder.service.studio.contest.Contest" />
 		</set>
 
-		<set name="submissions" table="submission_prize_xref" inverse="true" fetch="join">
+		<set name="submissions" table="submission_prize_xref" inverse="true" fetch="select">
 			<key column="prize_id" />
 			<many-to-many
 				class="com.topcoder.service.studio.submission.Submission" 
@@ -32,7 +32,7 @@
 		</set>
 
 		<many-to-one name="type" column="prize_type_id"
-			class="com.topcoder.service.studio.submission.PrizeType" fetch="join"
+			class="com.topcoder.service.studio.submission.PrizeType" fetch="select"
 			 />
 
 		<property name="createDate" column="create_date" generated="insert"

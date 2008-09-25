@@ -18,12 +18,11 @@
 		</composite-id>
 
 		<many-to-one name="status" column="payment_status_id"
-			class="com.topcoder.service.studio.submission.PaymentStatus"  fetch="join"/>
+			class="com.topcoder.service.studio.submission.PaymentStatus"  fetch="select"/>
 
 		<property name="price" not-null="true" />
 
 		<property name="PayPalOrderId" column="paypal_order_id" not-null="false" />
-		
 		<property name="createDate" column="create_date" not-null="true" generated="insert"/>
 	</class>
 </hibernate-mapping>
