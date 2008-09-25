@@ -1,0 +1,55 @@
+<CMConfig>
+	<Config name="com.topcoder.clients.manager.dao.DAOProjectManager">
+
+		<!--Child configuration for object factory-->
+		<Property name="object_factory_configuration">
+			<!--Configuration for ClientDAO-->
+
+			<Property name="Default_Client_DAO">
+				<Property name="type">
+				<Value>com.topcoder.clients.webservices.mock.MockClientDAO</Value>
+				</Property>
+			</Property>
+
+			<!--Configuration for ProjectDAO-->
+			<Property name="Default_Project_DAO">
+				<Property name="type">
+                       <Value>com.topcoder.clients.webservices.mock.MockProjectDAO</Value>
+				</Property>
+			</Property>
+
+			<!--Configuration for ProjectStatusDAO-->
+			<Property name="Default_Project_Status_DAO">
+				<Property name="type">
+                       <Value>com.topcoder.clients.webservices.mock.MockProjectStatusDAO</Value>
+				</Property>
+			</Property>
+		</Property>
+
+		<!--Name of IDGenerator, used to create IDGenerator with IDGeneratorFactory-->
+		<Property name="id_generator_name">
+			<Value>com.topcoder.clients.manager.dao.DAOProjectManager</Value>
+		</Property>
+
+		<!--Name of the logger, used to create Log with LogManager-->
+		<Property name="logger_name">
+			<Value>System.out</Value>
+	    </Property>
+
+		<!--Key used to create ClientDAO instance with ObjectFactory-->
+		<Property name="client_dao">
+			<Value>Default_Client_DAO</Value>
+		</Property>
+
+		<!--Key used to create ProjectDAO instance with ObjectFactory-->
+		<Property name="project_dao">
+			<Value>Default_Project_DAO</Value>
+		</Property>
+
+		<!--Key used to create ProjectStatusDAO instance with ObjectFactory-->
+        <Property name="project_status_dao">
+            <Value>Default_Project_Status_DAO</Value>
+        </Property>
+
+	</Config>
+</CMConfig>

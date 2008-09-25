@@ -1,0 +1,13 @@
+<CMConfig>
+	<Config name="clientManagerNamespace">
+		<property name="client_manager_token">
+			<value>client_manager</value>
+		</property>
+
+		<property name="client_manager">
+			<property name="type">
+				<value>com.topcoder.clients.manager.dao.DAOClientManager</value>
+			</property>
+		</property>
+	</Config>
+</CMConfig>

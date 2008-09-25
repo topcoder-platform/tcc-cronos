@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Client Project Management Services
+component.distfilename=client_project_management_services
+component.package=com.topcoder.clients.webservices
+component.packagedir=com/topcoder/clients/webservices
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

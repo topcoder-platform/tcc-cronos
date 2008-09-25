@@ -1,0 +1,31 @@
+<CMConfig>
+	<Config name="projectManagerNamespace">
+		<property name="project_manager_token">
+			<value>project_manager</value>
+		</property>
+
+		<property name="project_manager">
+			<property name="type">
+				<value>com.topcoder.clients.manager.dao.DAOProjectManager</value>
+			</property>
+			<property name="params">
+				<property name="param1">
+					<property name="type">
+						<value>java.lang.String</value>
+					</property>
+					<property name="value">
+						<value>projectManagerFileLocal.properties</value>
+					</property>
+				</property>
+				<property name="param2">
+					<property name="type">
+						<value>java.lang.String</value>
+					</property>
+					<property name="value">
+						<value>com.topcoder.clients.manager.dao.DAOProjectManager</value>
+					</property>
+				</property>
+			</property>
+		</property>
+	</Config>
+</CMConfig>

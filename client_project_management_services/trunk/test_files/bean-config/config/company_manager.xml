@@ -1,0 +1,13 @@
+<CMConfig>
+	<Config name="companyManagerNamespace">
+		<property name="company_manager_token">
+			<value>company_manager</value>
+		</property>
+
+		<property name="company_manager">
+			<property name="type">
+				<value>com.topcoder.clients.manager.dao.DAOCompanyManager</value>
+			</property>
+		</property>
+	</Config>
+</CMConfig>

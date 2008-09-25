@@ -1,0 +1,67 @@
+<project name="Override Macrodef Standard Behaviour Import" basedir=".">
+	<!-- macrodef override definition in order to change the standard behaviour from
+         build.xml/build_dist.xml
+     -->
+ 
+ 	<property name="jboss.server" value="${jboss_home}/server/default" />
+	<property name="jboss.deployment" value="${jboss.server}/deploy" />
+	<property name="ear.package" value="services" />
+	<property name="build.j2ee" value="build/j2ee" />
+	<property name="build.ear" value="build/ear" />
+	<property name="bean.config" value="test_files/bean-config" />
+	<property name="lib_driver" value="lib/lib_driver"/>
+	<property name="lib_mockup" value="lib/lib_mockup"/>
+	<property name="lib_tcs" value="lib/lib_tcs"/>
+	
+	<target name="deployEAR" depends="clean, compile_tests">
+		<!-- create folder -->
+		<mkdir dir="${build.j2ee}"/>
+		<mkdir dir="${build.ear}"/>
+
+		<!-- Prepare needed resources to build ${distfilename}.jar -->
+		<copydir dest="${build.j2ee}" src="${build_classdir}" />
+		<copydir dest="${build.j2ee}" src="${build_testclassdir}">
+			<include name="com/**/mock/**"/>
+		</copydir>
+		<copydir dest="${build.j2ee}" src="${bean.config}">
+			<include name="com/**"/>
+		</copydir>
+		<copydir dest="${build.j2ee}" src="${bean.config}">
+			<include name="META-INF/*.xml"/>
+			<exclude name="META-INF/application.xml"/>
+		</copydir>
+
+		<!-- Prepare resources to build EAR -->
+		<jar destfile="${build.ear}/${distfilename}.jar">
+			<fileset dir="${build.j2ee}">
+				<include name="**/*"/>
+			</fileset>
+		</jar>
+
+		<copydir dest="build/ear" src="${lib_driver}" />
+		<copydir dest="build/ear" src="${lib_mockup}" />
+		<copydir dest="build/ear" src="${lib_tcs}" />
+
+		<copydir dest="build/ear" src="test_files/bean-config">
+			<include name="META-INF/application.xml"/>
+			<include name="*.properties"/>
+			<include name="*.xml"/>
+			<include name="config/**"/>
+		</copydir>
+
+		<!-- copy MBean for JBoss Login Module -->
+		<copydir dest="${jboss.server}/lib" src="lib">
+			<include name="mock_JBossLoginModuleDemoConfigMBean.jar"/>
+		</copydir>
+
+		<!-- Deploy EAR in JBoss server -->
+		<mkdir dir="${jboss.deployment}/${ear.package}.ear"/>
+		<copydir dest="${jboss.deployment}/${ear.package}.ear" src="${build.ear}">
+			<include name="**/*"/>
+		</copydir>
+	</target>
+ 
+	<target name="undeployEAR">
+		<delete file="${jboss.deployment}/${ear.package}.ear" />
+	</target>
+</project>

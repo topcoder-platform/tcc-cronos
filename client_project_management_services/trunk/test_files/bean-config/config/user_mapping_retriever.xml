@@ -1,0 +1,12 @@
+<CMConfig>
+	<Config name="userMappingRetrieverNamespace">
+		<property name="user_mapping_retriever_token">
+			<value>user_mapping_retriever</value>
+		</property>
+		<property name="user_mapping_retriever">
+			<property name="type">
+				<value>com.topcoder.clients.webservices.usermapping.impl.JPAUserMappingRetriever</value>
+			</property>
+		</property>
+	</Config>
+</CMConfig>

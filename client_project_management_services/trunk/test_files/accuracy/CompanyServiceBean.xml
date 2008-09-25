@@ -1,0 +1,17 @@
+<CMConfig>
+
+    <Config name="CompanyServiceBean">
+
+        <Property name="DAOCompanyManager">
+            <Property name="type">
+                <Value>com.topcoder.clients.webservices.accuracytests.mock.MockCompanyManager</Value>
+            </Property>
+        </Property>
+
+        <Property name="company_manager_token">
+            <Value>DAOCompanyManager</Value>
+        </Property>
+
+    </Config>
+    
+</CMConfig>

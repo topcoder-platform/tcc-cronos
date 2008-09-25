@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE application PUBLIC
+   "-//Sun Microsystems, Inc.//DTD J2EE Application 1.3//EN"
+   "http://java.sun.com/dtd/application_1_3.dtd">
+<application>
+   <display-name>Client Project Management Services 1.0</display-name>
+
+	<!-- Library for driver -->
+	<module>
+		<java>log4j.jar</java>
+	</module>
+	<module>
+		<java>ifxjdbc.jar</java>
+	</module>
+	<module>
+		<java>jnpserver.jar</java>
+	</module>
+
+	<!-- Datasource configuration -->
+	<module>
+		<java>informix-ds.xml</java>
+	</module>
+
+	<!-- Mockup Library -->
+	<module>
+		<java>mock_functional_entitlement.jar</java>
+	</module>
+	<module>
+		<java>mock_mockup_jboss_login.jar</java>
+	</module>
+	<module>
+		<java>mock_roles.jar</java>
+	</module>
+	<module>
+		<java>mock_security_facade.jar</java>
+	</module>
+	<module>
+		<java>mockup_client_manager.jar</java>
+	</module>
+	 <module>
+ 		<ejb>mockup_client_model.jar</ejb>
+ 	</module>
+	<module>
+		<java>user_group_manager.jar</java>
+	</module>
+
+	<!-- TCS Library -->
+	<module>
+ 		<java>auditor_201.jar</java>
+ 	</module>
+ 	 <module>
+ 		<java>authentication_manager-103.jar</java>
+ 	</module>
+	<module>
+		<java>base_exception_20.jar</java>
+	</module>
+	<module>
+		<java>class_associations_10.jar</java>
+	</module>
+ 	<module>
+ 		<java>configuration_api_10.jar</java>
+ 	</module>
+  	<module>
+ 		<java>configuration_manager_215.jar</java>
+ 	</module>
+ 	<module>
+ 		<java>configuration_persistence_10.jar</java>
+ 	</module>
+  	<module>
+ 		<java>data_entitlement_101.jar</java>
+ 	</module>
+  	<module>
+ 		<java>data_validation_111.jar</java>
+ 	</module>
+  	<module>
+ 		<java>db_connection_factory_11.jar</java>
+ 	</module>
+ 	<module>
+ 		<java>entitlement_102.jar</java>
+ 	</module>
+  	<module>
+ 		<java>id_generator_30.jar</java>
+ 	</module>
+ 	<module>
+ 		<java>jboss_login_module_20.jar</java>
+ 	</module>
+ 	<module>
+		<java>logging_wrapper_20.jar</java>
+	</module>
+	<module>
+		<java>object_factory_201.jar</java>
+	</module>
+	<module>
+		<java>object_factory_configuration_api_plugin_10.jar</java>
+	</module>
+	<module>
+		<java>object_formatter_10.jar</java>
+	</module>
+	<module>
+		<java>search_builder_14.jar</java>
+	</module>
+	<module>
+		<java>typesafe_enum_11.jar</java>
+	</module>
+
+	<!-- Component distribution -->
+	<module>
+      <ejb>client_project_management_services.jar</ejb>
+   </module>
+</application>
