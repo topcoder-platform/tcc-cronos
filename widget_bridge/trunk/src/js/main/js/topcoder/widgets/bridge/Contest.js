@@ -45,6 +45,15 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
     var projectID /* long */ = -1;
 
 	/**
+	 * <p>Represents the flag whether launch immediately</p>
+	 * <p>Initial Value: false</p>
+	 * <p>Accessed In: getter method</p>
+	 * <p>Modified In: setter method</p>
+	 * <p>Utilized In: none</p>
+	 */
+    var launchImmediately /* boolean */ = false;
+    
+	/**
 	 * <p>Represents the contest's name.</p>
 	 * <p>Initial Value: null, means that is not set</p>
 	 * <p>Accessed In: getter method</p>
@@ -703,6 +712,14 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.contestAdministrationFee",
 			"json.contestAdministrationFee does not exists");
 		}
+
+		// sets the launchImmediately
+		if (typeof(json.launchImmediately) != "undefined" && typeof(json.launchImmediately) == "boolean") {
+		    that.launchImmediately /* boolean */ = json.launchImmediately;
+		} else {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("json.forumId",
+			"json.launchImmediately does not exists");
+		}
 	}
 
 
@@ -1137,6 +1154,9 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 		if(typeof(that.getEligibility()) == "undefined"){
 			that.setEligibility('n/a'); 
 		}
+		if(typeof(that.isLaunchImmediately()) == "undefined"){
+			that.setLaunchImmediately(false); 
+		}
 		if(typeof(that.getNotesOnWinnerSelection()) == "undefined"){
 			that.setNotesOnWinnerSelection('n/a'); 
 		}
@@ -1246,6 +1266,7 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
 		        + "\"forumPostCount\" : " + that.getForumPostCount() + ", "
 		        + "\"contestAdministrationFee\" : " + that.getContestAdministrationFee() + ", "
 		        + "\"digitalRunPoints\" : " + that.getDigitalRunPoints() + ", "
+		        + "\"launchImmediately\" : " + that.isLaunchImmediately() + ", "
 		        + "\"creatorUserID\" : " + that.getCreatorUserID()
 		        + "}";
 	}
@@ -1364,4 +1385,20 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
   this.setContestAdministrationFee = function /* void */ (/* double */ contestAdministrationFee ) {
       that.contestAdministrationFee  = contestAdministrationFee ;
   }
+  
+
+  /**
+   * <p>Returns the launchImmediately.</p>
+   */
+  this.isLaunchImmediately = function /* boolean */ () {
+      return launchImmediately;
+  }
+
+  /**
+   * <p>Sets the launchImmediately.</p>
+   */
+  this.setLaunchImmediately = function /* void */ (/* boolean */ launchImmediately ) {
+      this.launchImmediately = launchImmediately;
+  }
+
 } // end
