@@ -1651,13 +1651,18 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 
 	/**
 	 * <p>
-	 * Generates temporary security token.
-	 * </p>
+	 * Returns change history entity list asynchronously, if the change histories are retrieved successfully,
+	 * onSuccess callback function will be called with the retrieved change histories, otherwise
+	 * onError will be called.</p>
+	 * 
+	 * @param contestId contest id to search for.
 	 *
+	 * @throws IllegalArgumentException if any argument is null
 	 * @throws InvalidResponseException if the received response is invalid.
 	 */
-	this.generateSecurityToken = generateSecurityToken;
-	function /* void */ generateSecurityToken(/* ContestHandler */ onSuccess, /* ErrorHandler */ onError ) {
+	this.getChangeHistory = getChangeHistory;
+	function /* void */ getChangeHistory(/* long */ contestId, /* ChangeHistoryHandler */ onSuccess, /* ErrorHandler */ onError ) {
+		// check first the validity of parameters
 		// check onSuccess
 		if (onSuccess == null) {
 			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onSuccess","onSuccess callback should not be null");
@@ -1674,7 +1679,7 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	    	async: true,
 	     	method: "POST",
 	     	// the json string should be escaped properly here. 
-	     	sendingText: "service=studio&method=generateSecurityToken",
+	     	sendingText: "service=studio&method=getChangeHistory&contestId=" + contestId,
 	     	onStateChange: function() {
 	        	// Handle the response
 	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
@@ -1682,25 +1687,36 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	                var jsonResp = eval("(" + response + ")");
 	                // check response
 	                if (jsonResp == null) {
-	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","generateSecurityToken","Invalid response");
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getChangeHistory","Invalid response");
 	                }
 	                if (typeof(jsonResp.success) == "undefined") {
-	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","generateSecurityToken","Invalid response");
-	                }
+		               	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getChangeHistory","Invalid response");
+		            }	                
 	                // now check if valid or not
 	                if (jsonResp.success == false) {
 		                if (typeof(jsonResp.error) == "undefined") {
-		                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","generateSecurityToken","Invalid response");
-		                }
+			               	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getChangeHistory","Invalid response");
+			            }	                
 	                	// errors
 	                	// call error handler with error message
 	                	onError(jsonResp.error);
 	                } else {
 		                if (typeof(jsonResp.json) == "undefined") {
-		                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","generateSecurityToken","Invalid response");
-		                }
+			               	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getChangeHistory","Invalid response");
+			            }
 	                	// success
-	                	onSuccess(jsonResp.json);
+	                	// create new array of change history.
+	                	var newChangeHistories = new Array();
+	                	// get the array of JSON objects
+	                	var changeHistories = jsonResp.json;
+	                	// convert the array of JSON to array of ChangeHistories.
+	                	for(var x = 0; x < changeHistories.length; x++) {
+	                		var retChangeHistory = new js.topcoder.widgets.bridge.ChangeHistory(changeHistories[x]);
+	                		// set to new array
+	                		newChangeHistories[x] = retChangeHistory;
+	                	}
+	                	// call the success callback passing the project
+	                	onSuccess(newChangeHistories);
 	                }
 	           }
 	     	}
