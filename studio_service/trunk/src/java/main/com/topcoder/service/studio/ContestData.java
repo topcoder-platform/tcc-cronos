@@ -234,6 +234,11 @@ public class ContestData implements Serializable {
     }
 
     /**
+     * Represents whether the contest should be launched immediately after creation.
+     */
+    private boolean launchImmediately;
+    
+    /**
      * Sets eligibility.
      * 
      * @param eligibility
@@ -1021,5 +1026,24 @@ public class ContestData implements Serializable {
      */
     public void setContestAdministrationFee(double contestAdministrationFee) {
         this.contestAdministrationFee = contestAdministrationFee;
+    }
+    
+    /**
+     * Updates the LaunchImmediately with the specified value.
+     * 
+     * @param launchImmediately
+     *            the launchImmediately to set.
+     */
+    public void setLaunchImmediately(boolean launchImmediately) {
+        this.launchImmediately = launchImmediately;
+    }
+
+    /**
+     * Returns the launchImmediately.
+     * 
+     * @return the launchImmediately.
+     */
+    public boolean isLaunchImmediately() {
+        return launchImmediately;
     }
 }

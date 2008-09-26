@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.service.studio.contest.ChangeHistory;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.ContestPayment;
 import com.topcoder.service.studio.contest.EntityAlreadyExistsException;
@@ -512,4 +513,38 @@ public interface StudioService {
      *  @since TCCC-353
      */
     public void markForPurchase(long submissionId)throws PersistenceException;
+    
+    /**
+     * Add a change history entity.
+     * 
+     * @param history
+     *            Change history entity to be added.
+     * 
+     * @throws PersistenceException
+     *             if any other error occurs.
+     */
+    public void addChangeHistory(List<ChangeHistoryData> history) throws PersistenceException;
+
+    /**
+     * Returns change history entity list.
+     * 
+     * @param contestId
+     *            contest id to search for.
+     * @return Change history entities match the contest id.
+     * @throws PersistenceException
+     *             if any other error occurs.
+     */
+    public List<ChangeHistoryData> getChangeHistory(long contestId) throws PersistenceException;
+
+    /**
+     * Returns latest change history entity list.
+     * 
+     * @param contestId
+     *            contest id to search for.
+     * 
+     * @return Latest change history entities match the contest id and transaction id.
+     * @throws PersistenceException
+     *             if any other error occurs.
+     */
+    public List<ChangeHistoryData> getLatestChanges(long contestId) throws PersistenceException;
 }

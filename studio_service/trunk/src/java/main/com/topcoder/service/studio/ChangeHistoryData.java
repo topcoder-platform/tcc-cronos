@@ -6,6 +6,8 @@ package com.topcoder.service.studio;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.xml.datatype.XMLGregorianCalendar;
+
 /**
  * <p>
  * It is the DTO class which is used to transfer change history data. The
@@ -77,7 +79,7 @@ public class ChangeHistoryData implements Serializable {
     /**
      * Represents the Timestamp .
      */
-    private Date timestamp;
+    private XMLGregorianCalendar timestamp;
 
     /**
      * Updates the Timestamp with the specified value.
@@ -85,7 +87,7 @@ public class ChangeHistoryData implements Serializable {
      * @param timestamp
      *            the timestamp to set.
      */
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(XMLGregorianCalendar timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -94,7 +96,7 @@ public class ChangeHistoryData implements Serializable {
      * 
      * @return the timestamp.
      */
-    public Date getTimestamp() {
+    public XMLGregorianCalendar getTimestamp() {
         return timestamp;
     }
 
