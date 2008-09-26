@@ -1,0 +1,23 @@
+The EJB container is jboss-4.2.1 GA.
+
+1. Deploy the JiveForumServiceBean
+    Just copy the folder test_files/JiveForumService.jar to JBOSS_HOME/server/default/deploy
+
+2. Start the jboss
+
+3. Run demo
+--Enter the older test_files/demo
+--Modify the build.xml's classpath (Only change the jbossall-client.jar and jivebase.jar's path)
+
+    3.1 Compile demo
+        : ant compile
+    3.2 Run demo
+        : ant run
+
+4. Result:
+Watched: true
+The role: MODERATOR
+
+(It should process successfully.)
+
+5. End.

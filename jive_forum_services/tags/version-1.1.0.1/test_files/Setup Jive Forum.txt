@@ -1,0 +1,32 @@
+1. Install the Jive Forum
+  1.1 Download the Jive Forum.zip. Move the jive4.war to test_files/JiveForumDemo.ear; And rename it to JiveForum.war, or you
+      can modify the test_files/JiveForumDemo.ear/META-INF/application.xml to point to your jiveforum.war;
+  
+  1.2 Remove the  JiveForum.war/WEB-INF/lib/common-logging.jar
+  
+  1.3 copy the test_files/jboss-web.xml to JiveForum.war/WEB-INF/   (It's used to solve the uncompatible between jboss and jive forum).
+
+  1.4 Copy the folder /jivehome from Jive Forum.zip to your favorite place.
+
+  1.5 Copy the test_files/JiveForumDemo.ear to your ${JBOSS_HOME}/server/default/deploy
+
+  1.6 Start the JBoss
+
+  1.7 Configure the Jive forum. Type http://localhost:8080/JiveForum/admin/setup in the browser.
+      (In this step you have to set up the jivehome place, license, and database (use embedded db for testing.)
+
+  Note: If you can proceed successfully, means the jive forum is ok.
+
+2. Set up the environment for testing
+Enter the admin tool. http://localhost:8080/JiveForum/admin
+
+2.1 Create the first forum, which id should 1.
+
+2.2 Creates 3 groups first. (this is for testing.)
+    "Software_Users_1", "Software_Moderators_1", "Software Admins"
+
+2.3 Create 3 categories. In the demo, I use categoryId 3 as the template category. So you can add sub forum/ category to the
+category 3. And then add sub thread, messages, attachment to the forum.
+
+3. Run demo
+    ant run

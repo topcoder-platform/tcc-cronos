@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+	http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd"
+	version="3.0">
+	<enterprise-beans>
+		<session>
+			<ejb-name>JiveForumService</ejb-name>
+			<remote>com.topcoder.forum.service.ejb.JiveForumServiceRemote</remote>
+			<local>com.topcoder.forum.service.ejb.JiveForumServiceLocal</local>
+			<ejb-class>
+				com.topcoder.forum.service.ejb.bean.JiveForumServiceBean
+			</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
+			<env-entry>
+				<env-entry-name>AdminUserId</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>1</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<env-entry-name>ApplicationCategoryId</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>3</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<env-entry-name>ComponentCategoryId</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>3</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<env-entry-name>AssemblyCompetitionCategoryId</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>3</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<env-entry-name>TestingCompetitionCategoryId</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>3</env-entry-value>
+			</env-entry>
+		</session>
+	</enterprise-beans>
+</ejb-jar>
