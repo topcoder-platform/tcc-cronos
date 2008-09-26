@@ -3,14 +3,7 @@
  */
 package com.topcoder.service.studio.contest;
 
-import java.math.BigDecimal;
 import java.util.List;
-
-import javax.annotation.security.PermitAll;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceException;
 
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.service.studio.submission.ContestResult;
@@ -955,4 +948,40 @@ public interface ContestManager {
      *             if any other error occurs.
      */
     public ContestResult createContestResult(ContestResult contestResult) throws ContestManagementException;
+    
+    /**
+     * Add a change history entity.
+     * 
+     * @param history
+     *            Change history entity to be added.
+     * 
+     * @throws ContestManagementException
+     *             if any other error occurs.
+     */
+    public void addChangeHistory(List<ChangeHistory> history) throws ContestManagementException;
+
+    /**
+     * Returns change history entity list.
+     * 
+     * @param contestId
+     *            contest id to search for.
+     * @return Change history entities match the contest id.
+     * @throws ContestManagementException
+     *             if any other error occurs.
+     */
+    public List<ChangeHistory> getChangeHistory(long contestId) throws ContestManagementException;
+
+    /**
+     * Returns change history entity list.
+     * 
+     * @param contestId
+     *            contest id to search for.
+     * @param transactionId
+     *            transaction id to search for.
+     * 
+     * @return Change history entities match the contest id and transaction id.
+     * @throws ContestManagementException
+     *             if any other error occurs.
+     */
+    public List<ChangeHistory> getChangeHistory(long contestId, long transactionId) throws ContestManagementException;
 }

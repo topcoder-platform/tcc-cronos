@@ -9,8 +9,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,6 +33,7 @@ import javax.persistence.TransactionRequiredException;
 
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.service.project.Project;
+import com.topcoder.service.studio.contest.ChangeHistory;
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestChannel;
 import com.topcoder.service.studio.contest.ContestConfig;
@@ -3145,6 +3146,113 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "There are errors while persisting the entity.");
         } finally {
             logExit("createContestResult()");
+        }
+    }
+
+    /**
+     * Add a change history entity.
+     * 
+     * @param history
+     *            Change history entity to be added.
+     * 
+     * @throws ContestManagementException
+     *             if any other error occurs.
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void addChangeHistory(List<ChangeHistory> history) throws ContestManagementException {
+        try {
+            logEnter("addChangeHistory()");
+
+            Helper.checkNull(history, "history");
+
+            EntityManager em = getEntityManager();
+            em.persist(history);
+
+            return;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (TransactionRequiredException e) {
+            throw wrapContestManagementException(e, "This method is required to run in transaction.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("addChangeHistory()");
+        }
+    }
+
+    /**
+     * Returns change history entity list.
+     * 
+     * @param contestId
+     *            contest id to search for.
+     * @return Change history entities match the contest id.
+     * @throws ContestManagementException
+     *             if any other error occurs.
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<ChangeHistory> getChangeHistory(long contestId) throws ContestManagementException {
+        try {
+            logEnter("getChangeHistory()");
+            logOneParameter(contestId);
+
+            EntityManager em = getEntityManager();
+            Query query = em.createQuery("select ch from ChangeHistory ch");
+            List list = query.getResultList();
+
+            List<ChangeHistory> result = new ArrayList<ChangeHistory>();
+
+            for (int i = 0; i < list.size(); i++) {
+                result.add((ChangeHistory) list.get(i));
+            }
+
+            return result;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("getChangeHistory()");
+        }
+    }
+
+    /**
+     * Returns change history entity list.
+     * 
+     * @param contestId
+     *            contest id to search for.
+     * @param transactionId
+     *            transaction id to search for.
+     * 
+     * @return Change history entities match the contest id and transaction id.
+     * @throws ContestManagementException
+     *             if any other error occurs.
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<ChangeHistory> getChangeHistory(long contestId, long transactionId) throws ContestManagementException {
+        try {
+            logEnter("getChangeHistory()");
+            logTwoParameters(contestId, transactionId);
+
+            EntityManager em = getEntityManager();
+            Query query = em.createQuery("select ch from ChangeHistory ch");
+            List list = query.getResultList();
+
+            List<ChangeHistory> result = new ArrayList<ChangeHistory>();
+
+            for (int i = 0; i < list.size(); i++) {
+                result.add((ChangeHistory) list.get(i));
+            }
+
+            return result;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("getChangeHistory()");
         }
     }
 }
