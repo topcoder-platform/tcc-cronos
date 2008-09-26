@@ -19,6 +19,7 @@ import com.topcoder.forum.service.ejb.JiveForumServiceRemote;
 */
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
+import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.ContestNotFoundException;
 import com.topcoder.service.studio.ContestPayload;
@@ -37,6 +38,7 @@ import com.topcoder.service.studio.StudioServiceException;
 import com.topcoder.service.studio.SubmissionData;
 import com.topcoder.service.studio.UploadedDocument;
 import com.topcoder.service.studio.UserNotAuthorizedException;
+import com.topcoder.service.studio.contest.ChangeHistory;
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestConfig;
 import com.topcoder.service.studio.contest.ContestManagementException;
@@ -183,8 +185,8 @@ public class StudioServiceBean implements StudioService {
     @EJB
     private SubmissionManagerLocal submissionManager;
 
-//    @EJB
-//    @JndiInject(jndiName="JiveForumService/remote")
+    // @EJB
+    // @JndiInject(jndiName="JiveForumService/remote")
   //  private JiveForumServiceRemote jiveForumService;
 
     /**
@@ -505,7 +507,7 @@ public class StudioServiceBean implements StudioService {
  //   @Resource(name = "forumVersionId")
  //   private long forumVersionId;
 
-    
+
     @Resource(name = "forumBeanProviderUrl")
     private String forumBeanProviderUrl;
 
@@ -548,7 +550,7 @@ public class StudioServiceBean implements StudioService {
      * </p>
      */
     @PostConstruct
-    private void init(){
+    private void init() {
         if (logName != null) {
             if (logName.trim().length() == 0) {
                 throw new IllegalStateException("logName parameter not supposed to be empty.");
@@ -1287,7 +1289,8 @@ public class StudioServiceBean implements StudioService {
 
         // [TCCC-499]
         addContestConfig(result, contestPropertyDigitalRunPointsId, String.valueOf(data.getDrPoints()));
-        addContestConfig(result, contestPropertyContestAdministrationFeeId, String.valueOf(data.getContestAdministrationFee()));
+        addContestConfig(result, contestPropertyContestAdministrationFeeId, String.valueOf(data
+                .getContestAdministrationFee()));
 
         // [TCCC-325].
         Set<StudioFileType> fileTypes = new HashSet<StudioFileType>();
@@ -1341,6 +1344,7 @@ public class StudioServiceBean implements StudioService {
         result.setContestType(getContestType(data.getContestTypeId()));
         result.setContestChannel(contestManager.getContestChannel(data.getContestChannelId()));
         result.setCreatedUser(data.getCreatorUserId());
+        result.setLaunchImmediately(data.isLaunchImmediately());
 
         Set<Medium> media = new HashSet<Medium>();
         for (MediumData mediumData : data.getMedia()) {
@@ -1395,7 +1399,8 @@ public class StudioServiceBean implements StudioService {
         contestData.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(contest.getWinnerAnnoucementDeadline()));
         contestData.setStatusId(contest.getStatus().getContestStatusId());
         contestData.setNumberOfRegistrants(contest.getContestRegistrations().size());
-        
+        contestData.setLaunchImmediately(contestData.isLaunchImmediately());
+
         // [TCCC-585]
         contestData.setTcDirectProjectId(contest.getTcDirectProjectId());
         // [27074484-20]
@@ -2972,6 +2977,113 @@ public class StudioServiceBean implements StudioService {
     }
 
     /**
+     * Add a change history entity.
+     * 
+     * @param history
+     *            Change history entity to be added.
+     * 
+     * @throws PersistenceException
+     *             if any other error occurs.
+     */
+    public void addChangeHistory(List<ChangeHistoryData> history) throws PersistenceException {
+        logEnter("addChangeHistory");
+        try {
+            List<ChangeHistory> histories = new ArrayList<ChangeHistory>();
+            for (int i = 0; i < history.size(); ++i) {
+                histories.add(getChangeHistory(history.get(i)));
+            }
+            contestManager.addChangeHistory(histories);
+
+            logExit("addChangeHistory");
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManagement reports error while adding ChangeHistories.", e);
+        }
+    }
+
+    /**
+     * Returns change history entity list.
+     * 
+     * @param contestId
+     *            contest id to search for.
+     * @return Change history entities match the contest id.
+     * @throws PersistenceException
+     *             if any other error occurs.
+     */
+    public List<ChangeHistoryData> getChangeHistory(long contestId) throws PersistenceException {
+        logEnter("getChangeHistory");
+        try {
+            ArrayList<ChangeHistoryData> result = new ArrayList<ChangeHistoryData>();
+            for (ChangeHistory ch : contestManager.getChangeHistory(contestId)) {
+                ChangeHistoryData data = getChangeHistoryData(ch);
+                result.add(data);
+            }
+
+            logExit("getChangeHistory", result);
+            return result;
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManagement reports error while retrieving ChangeHistories.", e);
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns latest change history entity list.
+     * 
+     * @param contestId
+     *            contest id to search for.
+     * 
+     * @return Latest change history entities match the contest id and transaction id.
+     * @throws PersistenceException
+     *             if any other error occurs.
+     */
+    public List<ChangeHistoryData> getLatestChanges(long contestId) throws PersistenceException {
+        logEnter("getChangeHistory");
+        try {
+            ArrayList<ChangeHistoryData> result = new ArrayList<ChangeHistoryData>();
+            for (ChangeHistory ch : contestManager.getChangeHistory(contestId, 4234)) {
+                ChangeHistoryData data = getChangeHistoryData(ch);
+                result.add(data);
+            }
+
+            logExit("getChangeHistory", result);
+            return result;
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManagement reports error while retrieving ChangeHistories.", e);
+        }
+
+        return null;
+    }
+
+    private ChangeHistoryData getChangeHistoryData(ChangeHistory ch) {
+        ChangeHistoryData data = new ChangeHistoryData();
+
+        data.setContestId(ch.getContestId());
+        data.setFieldName(ch.getFieldName());
+        data.setNewData(ch.getNewData());
+        data.setOldData(ch.getOldData());
+        data.setTimestamp(ch.getTimestamp());
+        data.setTransactionId(ch.getTransactionId());
+        data.setUserAdmin(ch.isUserAdmin());
+        data.setUserName(ch.getUserName());
+        return data;
+    }
+
+    private ChangeHistory getChangeHistory(ChangeHistoryData ch) {
+        ChangeHistory data = new ChangeHistory();
+
+        data.setContestId(ch.getContestId());
+        data.setFieldName(ch.getFieldName());
+        data.setNewData(ch.getNewData());
+        data.setOldData(ch.getOldData());
+        data.setTimestamp(ch.getTimestamp());
+        data.setTransactionId(ch.getTransactionId());
+        data.setUserAdmin(ch.isUserAdmin());
+        data.setUserName(ch.getUserName());
+        return data;
+    }
+
+    /**
      * Implements standard algorithm of authorization based on security token.
      * The token will be removed if matched.
      *
@@ -2984,7 +3096,8 @@ public class StudioServiceBean implements StudioService {
         UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
         long userId = p.getUserId();
         if (!username.equals(p.getName())) {
-            throw new UserNotAuthorizedException("Username does not match the user assigned for current session.", userId);
+            throw new UserNotAuthorizedException("Username does not match the user assigned for current session.",
+                    userId);
         }
         if (!contest.getCreatedUser().equals(userId)) {
             throw new UserNotAuthorizedException("Access denied for the contest " + userId, userId);
