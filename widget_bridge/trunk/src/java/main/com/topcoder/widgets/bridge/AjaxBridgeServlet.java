@@ -15,11 +15,9 @@ import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -38,6 +36,7 @@ import com.topcoder.service.prerequisite.PrerequisiteDocument;
 import com.topcoder.service.prerequisite.PrerequisiteService;
 import com.topcoder.service.project.ProjectData;
 import com.topcoder.service.project.ProjectService;
+import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.ContestPayload;
 import com.topcoder.service.studio.ContestPaymentData;
@@ -547,7 +546,7 @@ public class AjaxBridgeServlet extends HttpServlet {
                 // ::Studio Service::
                 //**************************************************************
                 // *******************************
-                if ("createContest".equals(method)) {
+                if ("createContest".equals(method)) {                    
                     String strContest = request.getParameter("contest");
                     String strProjectID = request.getParameter("projectID");
                     if (checkIfNullOrEmpty(strContest, "contest", response)) {
@@ -613,6 +612,8 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                     debug("removeContestPayment success!");
                 } else if ("getContest".equals(method)) {
+                    long start = System.currentTimeMillis();
+                    
                     String strContestID = request.getParameter("contestID");
                     if (checkLongIfLessThanZero(strContestID, "contestID", response)) {
                         return;
@@ -622,6 +623,8 @@ public class AjaxBridgeServlet extends HttpServlet {
                     ContestData respContest = studioService.getContest(Long.parseLong(strContestID));
                     sendJSONObjectAsResponse(getJSONFromContest(respContest), response);
 
+                    long end = System.currentTimeMillis();
+                    debug("getContest takes " + (end-start));
                     debug("getContest success!");
                 } else if ("getAllContests".equals(method)) {
                 	// onlyDirectProjects is ignored [TCCC-257] 
@@ -1007,6 +1010,61 @@ public class AjaxBridgeServlet extends HttpServlet {
 
                     printSuccessResponse(getSuccessJSONResponse(), response);
                     debug("markForPurchase success!");
+                } else if ("addChangeHistory".equals(method)) {
+                    // get the submissionId and price parameter from request
+                    String strChangeHistories = request.getParameter("changeHistories");
+
+                    List<ChangeHistoryData> histories = new ArrayList<ChangeHistoryData>();
+                    
+                    JSONArray decodeArray = jsonDecoder.decodeArray(strChangeHistories);
+                    for(int i = 0 ; i < decodeArray.getSize() ; ++ i ){
+                        histories.add(getChangeHistoryFromJSON(decodeArray.getJSONObject(i)));
+                    }
+                    
+                    studioService.addChangeHistory(histories);
+
+                    printSuccessResponse(getSuccessJSONResponse(), response);
+                    debug("addChangeHistory success!");
+                } else if ("getChangeHistory".equals(method)) {
+                    // get the contestId and price parameter from request
+                    String contestId = request.getParameter("contestId");
+
+                    if (checkLongIfLessThanZero(contestId, "contestId", response)) {
+                        return;
+                    }
+
+                    // log the received ID
+                    debug("received ID = [contestId] : " + contestId);
+
+                    List<ChangeHistoryData> histories = studioService.getChangeHistory(Long.parseLong(contestId));
+
+                    JSONArray historyArr = new JSONArray();
+                    for (ChangeHistoryData data : histories) {
+                        JSONObject respJSON = getJSONFromChangeHistory(data);
+                        historyArr.addJSONObject(respJSON);
+                    }
+                    sendJSONObjectWithArrayAsResponse(historyArr, response);
+                    debug("getChangeHistory success!");
+                } else if ("getLatestChanges".equals(method)) {
+                    // get the contestId and price parameter from request
+                    String contestId = request.getParameter("contestId");
+
+                    if (checkLongIfLessThanZero(contestId, "contestId", response)) {
+                        return;
+                    }
+
+                    // log the received ID
+                    debug("received ID = [contestId] : " + contestId);
+
+                    List<ChangeHistoryData> histories = studioService.getLatestChanges(Long.parseLong(contestId));
+
+                    JSONArray historyArr = new JSONArray();
+                    for (ChangeHistoryData data : histories) {
+                        JSONObject respJSON = getJSONFromChangeHistory(data);
+                        historyArr.addJSONObject(respJSON);
+                    }
+                    sendJSONObjectWithArrayAsResponse(historyArr, response);
+                    debug("getChangeHistory success!");                    
                 } else {
                     // if we reach here this means the service param is invalid
                     sendErrorJSONResponse("The 'service' param passed is invalid.", response);
@@ -1100,6 +1158,7 @@ public class AjaxBridgeServlet extends HttpServlet {
         contest.setLaunchDateAndTime(getXMLGregorianCalendar(jsonContest.getString("launchDateAndTime")));
         contest.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(jsonContest
                 .getString("winnerAnnouncementDeadline")));
+        contest.setLaunchImmediately(jsonContest.getBoolean("launchImmediately"));
         
         // [TCCC-284]
         contest.setRequiresPreviewFile(jsonContest.getBoolean("requiresPreviewFile"));
@@ -1476,6 +1535,7 @@ public class AjaxBridgeServlet extends HttpServlet {
         respJSON.setBoolean("requiresPreviewFile", contest.isRequiresPreviewFile());
         respJSON.setBoolean("requiresPreviewImage", contest.isRequiresPreviewImage());
         respJSON.setLong("maximumSubmissions", contest.getMaximumSubmissions());
+        respJSON.setBoolean("launchImmediately", contest.isLaunchImmediately());
         
         // [TCCC-283]
         respJSON.setString("eligibility", contest.getEligibility());
@@ -2420,5 +2480,69 @@ public class AjaxBridgeServlet extends HttpServlet {
         respJSON.setLong("paymentStatusId", contestPayment.getPaymentStatusId());
         respJSON.setDouble("price", contestPayment.getPrice());
         return respJSON;
+    }
+    
+
+    /**
+     * <p>
+     * Convenience method in getting a JSON object from a ChangeHistory.
+     * </p>
+     * 
+     * @param data
+     *            the ChangeHistory object where the values will be coming from
+     * @return the json object created from this ChangeHistory object
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code>.
+     * @throws JSONInvalidKeyException
+     *             If there is no data for the given key.
+     * @throws JSONDataAccessTypeException
+     *             If the data associated with the key can not be retrieved as a
+     *             long.
+     */
+    private JSONObject getJSONFromChangeHistory(ChangeHistoryData data) {
+        JSONObject respJSON = new JSONObject();
+
+        respJSON.setLong("contestId", data.getContestId());
+        respJSON.setLong("transactionId", data.getTransactionId());
+        respJSON.setString("timestamp", getDateString(data.getTimestamp()));
+        respJSON.setString("userName", data.getUserName());
+        respJSON.setString("fieldName", data.getFieldName());
+        respJSON.setString("oldData", data.getOldData());
+        respJSON.setString("newData", data.getNewData());
+        respJSON.setBoolean("isUserAdmin", data.isUserAdmin());
+
+        return respJSON;
+    }
+
+    /**
+     * <p>
+     * Convenience method in getting a ChangeHistoryData object from a JSONObject.
+     * </p>
+     * 
+     * @param jsonPrize
+     *            the JSONObject where the values will be coming from
+     * @return the ChangeHistoryData object created from this json object
+     * @throws ParseException
+     *             when parsing the date gets an error
+     * @throws IllegalArgumentException
+     *             If any parameter is <code>null</code>.
+     * @throws JSONInvalidKeyException
+     *             If there is no data for the given key.
+     * @throws JSONDataAccessTypeException
+     *             If the data associated with the key can not be retrieved as a
+     *             long.
+     */
+    private ChangeHistoryData getChangeHistoryFromJSON(JSONObject json) throws ParseException {
+        ChangeHistoryData data = new ChangeHistoryData();
+        data.setContestId(json.getLong("contestId"));
+        data.setTransactionId(json.getLong("transactionId"));
+        data.setTimestamp(getXMLGregorianCalendar(json.getString("timestamp")));
+        data.setUserName(json.getString("userName"));
+        data.setFieldName(json.getString("fieldName"));
+        data.setOldData(json.getString("oldData"));
+        data.setNewData(json.getString("newData"));
+        data.setUserAdmin(json.getBoolean("isUserAdmin"));
+
+        return data;
     }
 }
