@@ -89,6 +89,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
@@ -1380,7 +1381,7 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * This method converts Contest object into ContestData object.
-     *
+     * 
      * @param contest
      *            Contest instance to convert
      * @return converted ContestDate object
@@ -1388,6 +1389,20 @@ public class StudioServiceBean implements StudioService {
      *             error occurred from ContestManager
      */
     private ContestData convertContest(Contest contest) throws ContestManagementException {
+        return convertContest(contest, true);
+    }
+
+    /**
+     * This method converts Contest object into ContestData object.
+     * 
+     * @param contest
+     *            Contest instance to convert
+     * @param Load forum info or not.
+     * @return converted ContestDate object
+     * @throws ContestManagementException
+     *             error occurred from ContestManager
+     */
+    private ContestData convertContest(Contest contest, boolean loadForumInfo) throws ContestManagementException {
         ContestData contestData = new ContestData();
 
         contestData.setLaunchDateAndTime(getXMLGregorianCalendar(contest.getStartDate()));
@@ -1399,10 +1414,12 @@ public class StudioServiceBean implements StudioService {
         contestData.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(contest.getWinnerAnnoucementDeadline()));
         contestData.setStatusId(contest.getStatus().getContestStatusId());
         contestData.setNumberOfRegistrants(contest.getContestRegistrations().size());
-        contestData.setLaunchImmediately(contestData.isLaunchImmediately());
+        contestData.setLaunchImmediately(contest.isLaunchImmediately());
 
         // [TCCC-585]
-        contestData.setTcDirectProjectId(contest.getTcDirectProjectId());
+        if(contest.getTcDirectProjectId()!=null){
+            contestData.setTcDirectProjectId(contest.getTcDirectProjectId());
+        }
         // [27074484-20]
         ContestType contestType = contest.getContestType();
         contestData.setContestTypeId(contestType == null ? -1 : unbox(contestType.getContestType()));
@@ -1507,7 +1524,7 @@ public class StudioServiceBean implements StudioService {
 
         List<UploadedDocument> documents = new ArrayList<UploadedDocument>();
         for (Document doc : contest.getDocuments()) {
-            documents.add(convertDocument(doc));
+            documents.add(convertDocument(doc, false));
         }
         contestData.setDocumentationUploads(documents);
 
@@ -1523,7 +1540,7 @@ public class StudioServiceBean implements StudioService {
         // FIX [TCCC-146]
         List<PrizeData> prizes = new ArrayList<PrizeData>();
 
-        for (Prize prize : contestManager.getContestPrizes(contest.getContestId())) {
+        for (Prize prize : contest.getPrizes()) {
             PrizeData prizeData = new PrizeData();
             prizeData.setAmount(prize.getAmount() == null ? 0 : prize.getAmount());
             prizeData.setPlace(unbox(prize.getPlace()));
@@ -1556,7 +1573,10 @@ public class StudioServiceBean implements StudioService {
         Long forumId = contest.getForumId();
         if (forumId != null) {
             contestData.setForumId(forumId);
-            contestData.setForumPostCount(contestManager.getContestPostCount(forumId));
+
+            if (loadForumInfo) {
+                contestData.setForumPostCount(contestManager.getContestPostCount(forumId));
+            }
         }
 
         return contestData;
@@ -1566,12 +1586,14 @@ public class StudioServiceBean implements StudioService {
      * Converts Document object into UploadedDocument instance. Simply sets
      * basic attributes and retrieves document data from contestManager. As
      * required by designer, errors are suppressed.
-     *
+     * 
      * @param from
      *            Document to convert
+     * @param setDocumentContent
+     *            If true, load document content.
      * @return converted UploadedDocument object
      */
-    private UploadedDocument convertDocument(Document from) {
+    private UploadedDocument convertDocument(Document from, boolean setDocumentContent) {
         UploadedDocument to = new UploadedDocument();
 
         to.setDocumentId(unbox(from.getDocumentId()));
@@ -1587,20 +1609,35 @@ public class StudioServiceBean implements StudioService {
             to.setDocumentTypeId(unbox(from.getType().getDocumentTypeId()));
         }
 
-        try {
-            to.setFile(contestManager.getDocumentContent(to.getDocumentId()));
-        } catch (ContestManagementException e) {
-            // no need to propagate exception
-            logError(e, "ContestManager reports error during getDocumentContent call.");
+        if (setDocumentContent) {
+            try {
+                to.setFile(contestManager.getDocumentContent(to.getDocumentId()));
+            } catch (ContestManagementException e) {
+                // no need to propagate exception
+                logError(e, "ContestManager reports error during getDocumentContent call.");
+            }
         }
 
         return to;
     }
 
+   /**
+    * Converts Document object into UploadedDocument instance. Simply sets
+    * basic attributes and retrieves document data from contestManager. As
+    * required by designer, errors are suppressed.
+    *
+    * @param from
+    *            Document to convert
+    * @return converted UploadedDocument object
+    */
+    private UploadedDocument convertDocument(Document from) {
+        return convertDocument(from, true);
+    }
+
     /**
      * Converts list of Contest objects into list of ContestData objects,
      * calling convertContest repeatly.
-     *
+     * 
      * @param contests
      *            list of contests to convert
      * @return converted list of contests
@@ -2170,10 +2207,24 @@ public class StudioServiceBean implements StudioService {
                 contests = contestManager.getContestsForUser(p.getUserId());
             }
 
+            List<Long> forumIds = new ArrayList<Long>();
             for (Contest contest : contests) {
-                result.add(convertContest(contest));
+                ContestData convertContest = convertContest(contest, true);
+                result.add(convertContest);
+
+                if (contest.getForumId() != null) {
+                    forumIds.add(contest.getForumId());
+                }
             }
 
+//            Map<Long, Long> contestPostCountMap = contestManager.getContestPostCount(forumIds);
+//            for (ContestData contest : result) {
+//                Long count = contestPostCountMap.get(contest.getForumId());
+//                if (count != null) {
+//                    contest.setForumPostCount(count.intValue());
+//                }
+//            }
+            
             logExit("getAllContests", result);
             return result;
         } catch (ContestManagementException e) {
