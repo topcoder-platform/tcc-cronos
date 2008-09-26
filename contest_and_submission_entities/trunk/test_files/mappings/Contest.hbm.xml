@@ -90,5 +90,11 @@
             <one-to-many
                 class="com.topcoder.service.studio.contest.ContestRegistration" />
         </set>
+        
+        <set name="prizes" table="contest_prize_xref" fetch="select">
+            <key column="contest_id" />
+            <many-to-many column="prize_id"
+                class="com.topcoder.service.studio.submission.Prize" />
+        </set>
     </class>
 </hibernate-mapping>
