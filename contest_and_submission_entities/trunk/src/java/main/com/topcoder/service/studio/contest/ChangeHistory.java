@@ -6,6 +6,8 @@ package com.topcoder.service.studio.contest;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.xml.datatype.XMLGregorianCalendar;
+
 /**
  * <p>
  * Represents the entity class contains information about changes made to a
@@ -33,14 +35,39 @@ public class ChangeHistory implements Serializable {
     private Long contestId;
 
     /**
-     * Updates the ContestId with the specified value.
-     * 
-     * @param contestId
-     *            the contestId to set.
+     * Represents the TransactionId.
      */
-    public void setContestId(Long contestId) {
-        this.contestId = contestId;
-    }
+    private Long transactionId;
+
+    /**
+     * Represents the Timestamp .
+     */
+    private XMLGregorianCalendar timestamp;
+
+    /**
+     * Represents the UserName.
+     */
+    private String userName;
+
+    /**
+     * Represents the IsUserAdmin.
+     */
+    private boolean isUserAdmin;
+
+    /**
+     * Represents the FieldName.
+     */
+    private String fieldName;
+
+    /**
+     * Represents the OldData.
+     */
+    private String oldData;
+
+    /**
+     * Represents the NewData.
+     */
+    private String newData;
 
     /**
      * Returns the contestId.
@@ -49,117 +76,6 @@ public class ChangeHistory implements Serializable {
      */
     public Long getContestId() {
         return contestId;
-    }
-
-    /**
-     * Represents the TransactionId.
-     */
-    private Long transactionId;
-
-    /**
-     * Updates the TransactionId with the specified value.
-     * 
-     * @param transactionId
-     *            the transactionId to set.
-     */
-    public void setTransactionId(Long transactionId) {
-        this.transactionId = transactionId;
-    }
-
-    /**
-     * Returns the transactionId.
-     * 
-     * @return the transactionId.
-     */
-    public Long getTransactionId() {
-        return transactionId;
-    }
-
-    /**
-     * Represents the Timestamp .
-     */
-    private Date timestamp;
-
-    /**
-     * Updates the Timestamp with the specified value.
-     * 
-     * @param timestamp
-     *            the timestamp to set.
-     */
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    /**
-     * Returns the timestamp.
-     * 
-     * @return the timestamp.
-     */
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    /**
-     * Represents the UserName.
-     */
-    private String userName;
-
-    /**
-     * Updates the UserName with the specified value.
-     * 
-     * @param userName
-     *            the userName to set.
-     */
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    /**
-     * Returns the userName.
-     * 
-     * @return the userName.
-     */
-    public String getUserName() {
-        return userName;
-    }
-
-    /**
-     * Represents the IsUserAdmin.
-     */
-    private boolean isUserAdmin;
-
-    /**
-     * Updates the IsUserAdmin with the specified value.
-     * 
-     * @param isUserAdmin
-     *            the isUserAdmin to set.
-     */
-    public void setUserAdmin(boolean isUserAdmin) {
-        this.isUserAdmin = isUserAdmin;
-    }
-
-    /**
-     * Returns the isUserAdmin.
-     * 
-     * @return the isUserAdmin.
-     */
-    public boolean isUserAdmin() {
-        return isUserAdmin;
-    }
-
-    /**
-     * Represents the FieldName.
-     */
-    private String fieldName;
-
-    /**
-     * Updates the FieldName with the specified value.
-     * 
-     * @param fieldName
-     *            the fieldName to set.
-     */
-    public void setFieldName(String fieldName) {
-        this.fieldName = fieldName;
     }
 
     /**
@@ -172,18 +88,12 @@ public class ChangeHistory implements Serializable {
     }
 
     /**
-     * Represents the OldData.
-     */
-    private String oldData;
-
-    /**
-     * Updates the OldData with the specified value.
+     * Returns the newData.
      * 
-     * @param oldData
-     *            the oldData to set.
+     * @return the newData.
      */
-    public void setOldData(String oldData) {
-        this.oldData = oldData;
+    public String getNewData() {
+        return newData;
     }
 
     /**
@@ -196,9 +106,60 @@ public class ChangeHistory implements Serializable {
     }
 
     /**
-     * Represents the NewData.
+     * Returns the timestamp.
+     * 
+     * @return the timestamp.
      */
-    private String newData;
+    public XMLGregorianCalendar getTimestamp() {
+        return timestamp;
+    }
+
+    /**
+     * Returns the transactionId.
+     * 
+     * @return the transactionId.
+     */
+    public Long getTransactionId() {
+        return transactionId;
+    }
+
+    /**
+     * Returns the userName.
+     * 
+     * @return the userName.
+     */
+    public String getUserName() {
+        return userName;
+    }
+
+    /**
+     * Returns the isUserAdmin.
+     * 
+     * @return the isUserAdmin.
+     */
+    public boolean isUserAdmin() {
+        return isUserAdmin;
+    }
+
+    /**
+     * Updates the ContestId with the specified value.
+     * 
+     * @param contestId
+     *            the contestId to set.
+     */
+    public void setContestId(Long contestId) {
+        this.contestId = contestId;
+    }
+
+    /**
+     * Updates the FieldName with the specified value.
+     * 
+     * @param fieldName
+     *            the fieldName to set.
+     */
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
 
     /**
      * Updates the NewData with the specified value.
@@ -211,11 +172,52 @@ public class ChangeHistory implements Serializable {
     }
 
     /**
-     * Returns the newData.
+     * Updates the OldData with the specified value.
      * 
-     * @return the newData.
+     * @param oldData
+     *            the oldData to set.
      */
-    public String getNewData() {
-        return newData;
+    public void setOldData(String oldData) {
+        this.oldData = oldData;
+    }
+
+    /**
+     * Updates the Timestamp with the specified value.
+     * 
+     * @param timestamp
+     *            the timestamp to set.
+     */
+    public void setTimestamp(XMLGregorianCalendar timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    /**
+     * Updates the TransactionId with the specified value.
+     * 
+     * @param transactionId
+     *            the transactionId to set.
+     */
+    public void setTransactionId(Long transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    /**
+     * Updates the IsUserAdmin with the specified value.
+     * 
+     * @param isUserAdmin
+     *            the isUserAdmin to set.
+     */
+    public void setUserAdmin(boolean isUserAdmin) {
+        this.isUserAdmin = isUserAdmin;
+    }
+
+    /**
+     * Updates the UserName with the specified value.
+     * 
+     * @param userName
+     *            the userName to set.
+     */
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

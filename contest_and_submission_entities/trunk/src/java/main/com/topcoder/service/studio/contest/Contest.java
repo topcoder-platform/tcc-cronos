@@ -137,6 +137,11 @@ public class Contest implements Serializable {
     private Set<ContestRegistration> contestRegistrations = new HashSet<ContestRegistration>();
     
     /**
+     * Represents whether the contest should be launched immediately after creation.
+     */
+    private boolean launchImmediately;
+    
+    /**
      * Default constructor.
      */
     public Contest() {
@@ -568,5 +573,24 @@ public class Contest implements Serializable {
      */
     public Set<ContestRegistration> getContestRegistrations() {
         return contestRegistrations;
+    }
+    
+    /**
+     * Updates the LaunchImmediately with the specified value.
+     * 
+     * @param launchImmediately
+     *            the launchImmediately to set.
+     */
+    public void setLaunchImmediately(boolean launchImmediately) {
+        this.launchImmediately = launchImmediately;
+    }
+
+    /**
+     * Returns the launchImmediately.
+     * 
+     * @return the launchImmediately.
+     */
+    public boolean isLaunchImmediately() {
+        return launchImmediately;
     }
 }
