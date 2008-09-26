@@ -4,6 +4,8 @@
 package com.topcoder.service.studio.contest;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.service.studio.submission.ContestResult;
@@ -930,6 +932,16 @@ public interface ContestManager {
      *             if any error occurs when getting contest post count.
      */
     public int getContestPostCount(long forumId) throws ContestManagementException;
+
+    /**
+     * Returns contest post count.
+     * 
+     * @param forumIds forum ids.
+     * @return contest post count.
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest post count.
+     */
+    public Map<Long, Long> getContestPostCount(List<Long> forumIds) throws ContestManagementException;
 
     /**
      * <p>

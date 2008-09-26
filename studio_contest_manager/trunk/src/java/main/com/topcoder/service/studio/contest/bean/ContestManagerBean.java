@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -3103,6 +3104,47 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "The EntityManager is closed.");
         } catch (PersistenceException e) {
             throw wrapContestManagementException(e, "There are errors while retrieving medium.");
+        } finally {
+            logExit("getContestPostCount()");
+        }
+    }
+    
+
+
+    /**
+     * Returns contest post count list.
+     * 
+     * @param forumIds forum ids.
+     * @return contest post count list.
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest post count.
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public Map<Long,Long> getContestPostCount(List<Long> forumIds) throws ContestManagementException{
+        try {
+            logEnter("getContestPostCount()");
+
+            EntityManager em = getEntityManager();
+
+            Query query = em.createNativeQuery("select forumid, count(*) from jivemessage where forumid in (?) group by forumid");
+            StringBuilder sb = new StringBuilder();
+            for (long forumId : forumIds) {
+                sb.append(forumId + ",");
+            }
+logEnter(sb.toString().substring(0, sb.toString().length() - 2));
+            query.setParameter(1, sb.toString().substring(0, sb.toString().length() - 2));
+
+            List resultList = query.getResultList();
+            logEnter("resultList type: " + resultList.getClass());
+            logEnter("resultList type: " + resultList.get(0).getClass());
+            
+            Map<Long, Long> ret = new HashMap<Long, Long>();
+            return ret;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while retrieving forum post count.");
         } finally {
             logExit("getContestPostCount()");
         }
