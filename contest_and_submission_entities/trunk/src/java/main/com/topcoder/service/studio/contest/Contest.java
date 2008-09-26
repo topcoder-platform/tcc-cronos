@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.topcoder.service.studio.submission.ContestResult;
+import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.service.studio.submission.Submission;
 
 /**
@@ -592,5 +593,30 @@ public class Contest implements Serializable {
      */
     public boolean isLaunchImmediately() {
         return launchImmediately;
+    }
+    
+
+    /**
+     * Represents the prizes.
+     */
+    private Set<Prize> prizes;
+    
+        /**
+     * Updates the prizes with the specified value.
+     * 
+     * @param prizes
+     *            the prizes to set.
+     */
+    public void setPrizes(Set<Prize> prizes) {
+        this.prizes = prizes;
+    }
+
+    /**
+     * Returns the prizes.
+     * 
+     * @return the prizes.
+     */
+    public Set<Prize> getPrizes() {
+        return prizes;
     }
 }
