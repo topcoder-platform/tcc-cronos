@@ -2,7 +2,7 @@ package com.topcoder.confluence.client;
 
 /**
  * <p>
- * This exception is thrown if the specified group does not exist in Jira.
+ * This exception is thrown if the specified group does not exist in Confluence.
  * </p>
  * 
  * @author romanoTC

@@ -2,7 +2,7 @@ package com.topcoder.confluence.client;
 
 /**
  * <p>
- * This exception is thrown if the specified user already exists in Jira.
+ * This exception is thrown if the specified user already exists in Confluence.
  * </p>
  * 
  * @author romanoTC
