@@ -1722,4 +1722,78 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	     	}
 	     });
 	}
+
+	/**
+	 * <p>
+	 * Returns latest change history entity list asynchronously, if the change histories are retrieved successfully,
+	 * onSuccess callback function will be called with the retrieved change histories, otherwise
+	 * onError will be called.</p>
+	 * 
+	 * @param contestId contest id to search for.
+	 *
+	 * @throws IllegalArgumentException if any argument is null
+	 * @throws InvalidResponseException if the received response is invalid.
+	 */
+	this.getLatestChanges = getLatestChanges;
+	function /* void */ getLatestChanges(/* long */ contestId, /* ChangeHistoryHandler */ onSuccess, /* ErrorHandler */ onError ) {
+		// check first the validity of parameters
+		// check onSuccess
+		if (onSuccess == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onSuccess","onSuccess callback should not be null");
+		}
+		// check onError
+		if (onError == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onError","onError callback should not be null");
+		}
+		// Create AJAXProcessor object
+		var processor = new AJAXProcessor();
+		// Send a request asynchronously
+		processor.request({
+	    	url:  servletUrlString,
+	    	async: true,
+	     	method: "POST",
+	     	// the json string should be escaped properly here. 
+	     	sendingText: "service=studio&method=getLatestChanges&contestId=" + contestId,
+	     	onStateChange: function() {
+	        	// Handle the response
+	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
+	            	var response = processor.getResponseText();
+	                var jsonResp = eval("(" + response + ")");
+	                // check response
+	                if (jsonResp == null) {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getLatestChanges","Invalid response");
+	                }
+	                if (typeof(jsonResp.success) == "undefined") {
+		               	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getLatestChanges","Invalid response");
+		            }	                
+	                // now check if valid or not
+	                if (jsonResp.success == false) {
+		                if (typeof(jsonResp.error) == "undefined") {
+			               	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getLatestChanges","Invalid response");
+			            }	                
+	                	// errors
+	                	// call error handler with error message
+	                	onError(jsonResp.error);
+	                } else {
+		                if (typeof(jsonResp.json) == "undefined") {
+			               	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getLatestChanges","Invalid response");
+			            }
+	                	// success
+	                	// create new array of change history.
+	                	var newChangeHistories = new Array();
+	                	// get the array of JSON objects
+	                	var changeHistories = jsonResp.json;
+	                	// convert the array of JSON to array of ChangeHistories.
+	                	for(var x = 0; x < changeHistories.length; x++) {
+	                		var retChangeHistory = new js.topcoder.widgets.bridge.ChangeHistory(changeHistories[x]);
+	                		// set to new array
+	                		newChangeHistories[x] = retChangeHistory;
+	                	}
+	                	// call the success callback passing the project
+	                	onSuccess(newChangeHistories);
+	                }
+	           }
+	     	}
+	     });
+	}
 } // end

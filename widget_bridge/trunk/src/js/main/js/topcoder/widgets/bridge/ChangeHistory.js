@@ -35,6 +35,72 @@ js.topcoder.widgets.bridge.ChangeHistory = function(json) {
 	var contestId;
 
 	/**
+	 * This variable represents TransactionId. It can not be undefiend or null.
+	 * 
+	 * @private
+	 * @type long
+	 */
+	var transactionId;
+
+	/**
+	 * This variable represents UserName. It can not be undefiend or null.
+	 * 
+	 * @private
+	 * @type string
+	 */
+	var userName;
+
+	/**
+	 * This variable represents timestamp. It can not be undefiend or null.
+	 * 
+	 * @private
+	 * @type Date
+	 */
+	var timestamp;
+
+	/**
+	 * This variable represents FieldName. It can not be undefiend or null.
+	 * 
+	 * @private
+	 * @type string
+	 */
+	var fieldName;
+
+	/**
+	 * This variable represents OldData. It can not be undefiend or null.
+	 * 
+	 * @private
+	 * @type string
+	 */
+	var oldData;
+
+	/**
+	 * This variable represents IsUserAdmin. It can not be undefiend or null.
+	 * 
+	 * @private
+	 * @type boolean
+	 */
+	var isUserAdmin;
+
+	/**
+	 * This variable represents NewData. It can not be undefiend or null.
+	 * 
+	 * @private
+	 * @type string
+	 */
+	var newData;
+
+	/**
+	 * Abbreviation for Helper class.
+	 */
+	var Helper = js.topcoder.widgets.bridge.Helper;
+
+	/**
+	 * Abbreviation for IllegalArgumentException class.
+	 */
+	var IllegalArgumentException = js.topcoder.widgets.bridge.IllegalArgumentException;
+
+	/**
 	 * <p>
 	 * Returns the ContestId.
 	 * </p>
@@ -52,13 +118,6 @@ js.topcoder.widgets.bridge.ChangeHistory = function(json) {
 		this.contestId = contestId;
 	}
 
-	/**
-	 * This variable represents TransactionId. It can not be undefiend or null.
-	 * 
-	 * @private
-	 * @type long
-	 */
-	var transactionId;
 
 	/**
 	 * <p>
@@ -79,14 +138,6 @@ js.topcoder.widgets.bridge.ChangeHistory = function(json) {
 	}
 
 	/**
-	 * This variable represents timestamp. It can not be undefiend or null.
-	 * 
-	 * @private
-	 * @type Date
-	 */
-	var timestamp;
-
-	/**
 	 * <p>
 	 * Returns the timestamp.
 	 * </p>
@@ -103,14 +154,6 @@ js.topcoder.widgets.bridge.ChangeHistory = function(json) {
 	this.setTimestamp = function /* void */(/* Date */timestamp) {
 		this.timestamp = timestamp;
 	}
-
-	/**
-	 * This variable represents UserName. It can not be undefiend or null.
-	 * 
-	 * @private
-	 * @type string
-	 */
-	var userName;
 
 	/**
 	 * <p>
@@ -131,14 +174,6 @@ js.topcoder.widgets.bridge.ChangeHistory = function(json) {
 	}
 
 	/**
-	 * This variable represents FieldName. It can not be undefiend or null.
-	 * 
-	 * @private
-	 * @type string
-	 */
-	var fieldName;
-
-	/**
 	 * <p>
 	 * Returns the FieldName.
 	 * </p>
@@ -155,14 +190,6 @@ js.topcoder.widgets.bridge.ChangeHistory = function(json) {
 	this.setFieldName = function /* void */(/* string */fieldName) {
 		this.fieldName = fieldName;
 	}
-
-	/**
-	 * This variable represents OldData. It can not be undefiend or null.
-	 * 
-	 * @private
-	 * @type string
-	 */
-	var oldData;
 
 	/**
 	 * <p>
@@ -183,14 +210,6 @@ js.topcoder.widgets.bridge.ChangeHistory = function(json) {
 	}
 
 	/**
-	 * This variable represents NewData. It can not be undefiend or null.
-	 * 
-	 * @private
-	 * @type string
-	 */
-	var newData;
-
-	/**
 	 * <p>
 	 * Returns the NewData.
 	 * </p>
@@ -207,14 +226,6 @@ js.topcoder.widgets.bridge.ChangeHistory = function(json) {
 	this.setNewData = function /* void */(/* string */newData) {
 		this.newData = newData;
 	}
-
-	/**
-	 * This variable represents IsUserAdmin. It can not be undefiend or null.
-	 * 
-	 * @private
-	 * @type boolean
-	 */
-	var isUserAdmin;
 
 	/**
 	 * <p>
@@ -235,16 +246,6 @@ js.topcoder.widgets.bridge.ChangeHistory = function(json) {
 	}
 
 	/**
-	 * Abbreviation for Helper class.
-	 */
-	var Helper = js.topcoder.widgets.bridge.Helper;
-
-	/**
-	 * Abbreviation for IllegalArgumentException class.
-	 */
-	var IllegalArgumentException = js.topcoder.widgets.bridge.IllegalArgumentException;
-
-	/**
 	 * Convert the current instance into JSON string.
 	 * 
 	 * @return a JSON string representing current object
@@ -252,19 +253,20 @@ js.topcoder.widgets.bridge.ChangeHistory = function(json) {
 	this.toJSON = function() {
 		var result = "{";
 
-		result += "\"contestId\":" + contestId;
-		result += "\"transactionId\":" + transactionId;
-		result += "\"timestamp\":" + timestamp;
-		result += "\"userName\"\":" + userName + "\"";
-		result += "\"fieldName\"\":" + fieldName + "\"";
-		result += "\"oldData\"\":" + oldData + "\"";
-		result += "\"newData\"\":" + newData + "\"";
-		result += "\"isUserAdmin\":" + isUserAdmin;
+		result += "\"contestId\" : " + this.contestId + ", ";
+		result += "\"transactionId\" : " + this.transactionId + ", ";
+		result += "\"timestamp\": \"" + this.timestamp + "\", ";
+		result += "\"userName\": \"" + this.userName + "\"" + ", ";
+		result += "\"fieldName\": \"" + this.fieldName + "\"" + ", ";
+		result += "\"oldData\": \"" + this.oldData + "\"" + ", ";
+		result += "\"newData\": \"" + this.newData + "\"" + ", ";
+		result += "\"isUserAdmin\": " + this.isUserAdmin;
 
 		result += "}";
 		return result;
 	}
 
+	
 	// constructor code
 	if (json != null) {
 		this.setContestId(json.contestId);
