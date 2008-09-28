@@ -11,6 +11,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,7 @@ import javax.persistence.TransactionRequiredException;
 
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.service.project.Project;
-import com.topcoder.service.studio.contest.ChangeHistory;
+import com.topcoder.service.studio.contest.ContestChangeHistory;
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestChannel;
 import com.topcoder.service.studio.contest.ContestConfig;
@@ -3202,7 +3203,7 @@ logEnter(sb.toString().substring(0, sb.toString().length() - 2));
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void addChangeHistory(List<ChangeHistory> history) throws ContestManagementException {
+    public void addChangeHistory(List<ContestChangeHistory> history) throws ContestManagementException {
         try {
             logEnter("addChangeHistory()");
 
@@ -3234,19 +3235,19 @@ logEnter(sb.toString().substring(0, sb.toString().length() - 2));
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public List<ChangeHistory> getChangeHistory(long contestId) throws ContestManagementException {
+    public List<ContestChangeHistory> getChangeHistory(long contestId) throws ContestManagementException {
         try {
             logEnter("getChangeHistory()");
             logOneParameter(contestId);
 
             EntityManager em = getEntityManager();
-            Query query = em.createQuery("select ch from ChangeHistory ch");
+            Query query = em.createQuery("select ch from ContestChangeHistory ch where ch.contestId = " + contestId);
             List list = query.getResultList();
 
-            List<ChangeHistory> result = new ArrayList<ChangeHistory>();
+            List<ContestChangeHistory> result = new ArrayList<ContestChangeHistory>();
 
             for (int i = 0; i < list.size(); i++) {
-                result.add((ChangeHistory) list.get(i));
+                result.add((ContestChangeHistory) list.get(i));
             }
 
             return result;
@@ -3273,19 +3274,19 @@ logEnter(sb.toString().substring(0, sb.toString().length() - 2));
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public List<ChangeHistory> getChangeHistory(long contestId, long transactionId) throws ContestManagementException {
+    public List<ContestChangeHistory> getChangeHistory(long contestId, long transactionId) throws ContestManagementException {
         try {
             logEnter("getChangeHistory()");
             logTwoParameters(contestId, transactionId);
 
             EntityManager em = getEntityManager();
-            Query query = em.createQuery("select ch from ChangeHistory ch");
+            Query query = em.createQuery("select ch from ContestChangeHistory ch where ch.contestId = " + contestId  + " AND ch.transactionId = " + transactionId);
             List list = query.getResultList();
 
-            List<ChangeHistory> result = new ArrayList<ChangeHistory>();
+            List<ContestChangeHistory> result = new ArrayList<ContestChangeHistory>();
 
             for (int i = 0; i < list.size(); i++) {
-                result.add((ChangeHistory) list.get(i));
+                result.add((ContestChangeHistory) list.get(i));
             }
 
             return result;
@@ -3295,6 +3296,43 @@ logEnter(sb.toString().substring(0, sb.toString().length() - 2));
             throw wrapContestManagementException(e, "There are errors while persisting the entity.");
         } finally {
             logExit("getChangeHistory()");
+        }
+    }
+
+    /**
+     * Returns latest transaction id.
+     * 
+     * @param contestId
+     *            contest id to search for.
+     * @return Transaction id.
+     * @throws ContestManagementException
+     *             if any other error occurs.
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public Long getLatestTransactionId(long contestId) throws ContestManagementException {
+        try {
+            logEnter("getLatestTransactionId()");
+            logOneParameter(contestId);
+
+            List<ContestChangeHistory> changeHistory = getChangeHistory(contestId);
+            Date latest = null;
+            Long transactionId = null;
+
+            for (ContestChangeHistory cch : changeHistory) {
+                if (latest == null || cch.getTimestamp().after(latest)) {
+                    latest = cch.getTimestamp();
+                    transactionId = cch.getTransactionId();
+                }
+            }
+            
+            return transactionId;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("getLatestTransactionId()");
         }
     }
 }

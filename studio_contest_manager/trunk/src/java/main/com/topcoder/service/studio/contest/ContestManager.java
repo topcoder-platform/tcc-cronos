@@ -970,7 +970,7 @@ public interface ContestManager {
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    public void addChangeHistory(List<ChangeHistory> history) throws ContestManagementException;
+    public void addChangeHistory(List<ContestChangeHistory> history) throws ContestManagementException;
 
     /**
      * Returns change history entity list.
@@ -981,7 +981,7 @@ public interface ContestManager {
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    public List<ChangeHistory> getChangeHistory(long contestId) throws ContestManagementException;
+    public List<ContestChangeHistory> getChangeHistory(long contestId) throws ContestManagementException;
 
     /**
      * Returns change history entity list.
@@ -995,5 +995,16 @@ public interface ContestManager {
      * @throws ContestManagementException
      *             if any other error occurs.
      */
-    public List<ChangeHistory> getChangeHistory(long contestId, long transactionId) throws ContestManagementException;
+    public List<ContestChangeHistory> getChangeHistory(long contestId, long transactionId) throws ContestManagementException;
+
+    /**
+     * Returns latest transaction id.
+     * 
+     * @param contestId
+     *            contest id to search for.
+     * @return Transaction id.
+     * @throws ContestManagementException
+     *             if any other error occurs.
+     */
+    public Long getLatestTransactionId(long contestId) throws ContestManagementException;
 }
