@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ */
 package com.topcoder.confluence.client;
 
 /**
