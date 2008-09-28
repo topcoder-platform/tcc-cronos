@@ -8,7 +8,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.service.studio.contest.ChangeHistory;
+import com.topcoder.service.studio.contest.ContestChangeHistory;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.ContestPayment;
 import com.topcoder.service.studio.contest.EntityAlreadyExistsException;

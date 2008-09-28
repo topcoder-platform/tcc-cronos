@@ -38,7 +38,7 @@ import com.topcoder.service.studio.StudioServiceException;
 import com.topcoder.service.studio.SubmissionData;
 import com.topcoder.service.studio.UploadedDocument;
 import com.topcoder.service.studio.UserNotAuthorizedException;
-import com.topcoder.service.studio.contest.ChangeHistory;
+import com.topcoder.service.studio.contest.ContestChangeHistory;
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestConfig;
 import com.topcoder.service.studio.contest.ContestManagementException;
@@ -3039,7 +3039,7 @@ public class StudioServiceBean implements StudioService {
     public void addChangeHistory(List<ChangeHistoryData> history) throws PersistenceException {
         logEnter("addChangeHistory");
         try {
-            List<ChangeHistory> histories = new ArrayList<ChangeHistory>();
+            List<ContestChangeHistory> histories = new ArrayList<ContestChangeHistory>();
             for (int i = 0; i < history.size(); ++i) {
                 histories.add(getChangeHistory(history.get(i)));
             }
@@ -3064,7 +3064,7 @@ public class StudioServiceBean implements StudioService {
         logEnter("getChangeHistory");
         try {
             ArrayList<ChangeHistoryData> result = new ArrayList<ChangeHistoryData>();
-            for (ChangeHistory ch : contestManager.getChangeHistory(contestId)) {
+            for (ContestChangeHistory ch : contestManager.getChangeHistory(contestId)) {
                 ChangeHistoryData data = getChangeHistoryData(ch);
                 result.add(data);
             }
@@ -3084,50 +3084,55 @@ public class StudioServiceBean implements StudioService {
      * @param contestId
      *            contest id to search for.
      * 
-     * @return Latest change history entities match the contest id and transaction id.
+     * @return Latest change history entities match the contest id and
+     *         transaction id.
      * @throws PersistenceException
      *             if any other error occurs.
      */
     public List<ChangeHistoryData> getLatestChanges(long contestId) throws PersistenceException {
-        logEnter("getChangeHistory");
+        logEnter("getLatestChanges");
         try {
+            Long latestTransactionId = contestManager.getLatestTransactionId(contestId);
+
             ArrayList<ChangeHistoryData> result = new ArrayList<ChangeHistoryData>();
-            for (ChangeHistory ch : contestManager.getChangeHistory(contestId, 4234)) {
-                ChangeHistoryData data = getChangeHistoryData(ch);
-                result.add(data);
+            if (latestTransactionId != null) {
+                for (ContestChangeHistory ch : contestManager.getChangeHistory(contestId, latestTransactionId)) {
+                    ChangeHistoryData data = getChangeHistoryData(ch);
+                    result.add(data);
+                }
             }
 
-            logExit("getChangeHistory", result);
+            logExit("getLatestChanges", result);
             return result;
         } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManagement reports error while retrieving ChangeHistories.", e);
+            handlePersistenceError("ContestManagement reports error while retrieving latest ChangeHistories.", e);
         }
 
         return null;
     }
 
-    private ChangeHistoryData getChangeHistoryData(ChangeHistory ch) {
+    private ChangeHistoryData getChangeHistoryData(ContestChangeHistory ch) {
         ChangeHistoryData data = new ChangeHistoryData();
 
         data.setContestId(ch.getContestId());
         data.setFieldName(ch.getFieldName());
         data.setNewData(ch.getNewData());
         data.setOldData(ch.getOldData());
-        data.setTimestamp(ch.getTimestamp());
+        data.setTimestamp(getXMLGregorianCalendar(ch.getTimestamp()));
         data.setTransactionId(ch.getTransactionId());
         data.setUserAdmin(ch.isUserAdmin());
         data.setUserName(ch.getUserName());
         return data;
     }
 
-    private ChangeHistory getChangeHistory(ChangeHistoryData ch) {
-        ChangeHistory data = new ChangeHistory();
+    private ContestChangeHistory getChangeHistory(ChangeHistoryData ch) {
+        ContestChangeHistory data = new ContestChangeHistory();
 
         data.setContestId(ch.getContestId());
         data.setFieldName(ch.getFieldName());
         data.setNewData(ch.getNewData());
         data.setOldData(ch.getOldData());
-        data.setTimestamp(ch.getTimestamp());
+        data.setTimestamp(getDate(ch.getTimestamp()));
         data.setTransactionId(ch.getTransactionId());
         data.setUserAdmin(ch.isUserAdmin());
         data.setUserName(ch.getUserName());
