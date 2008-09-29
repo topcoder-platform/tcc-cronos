@@ -537,7 +537,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void updateContest(Contest contest) throws ContestManagementException {
+    public void updateContest(Contest contest, int transactionId, String username, boolean userAdmin) throws ContestManagementException{
         try {
             logEnter("updateContest()");
             Helper.checkNull(contest, "contest");
@@ -548,6 +548,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             EntityManager em = getEntityManager();
 
+            transactionId = em.hashCode();
+            logEnter("transactionId: " + transactionId);
+            
             Contest result = getContest(contest.getContestId());
 
             ContestConfig[] contestConfigs = result.getConfig().toArray(new ContestConfig[] {});
@@ -559,6 +562,23 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                 }
             }
 
+            // Contest title:
+            auditChange(result.getName(), contest.getName(), transactionId, username, userAdmin, contest, "title");
+            
+            // Contest Type:
+            auditChange(result.getContestType().getDescription(), contest.getContestType().getDescription(),
+                    transactionId, username, userAdmin, contest, "contest_type");
+
+            // Contest Admin Fee:
+            // DR Points
+            
+            // Start Date of Contest:
+            auditChange(result.getStartDate().toString(), contest.getStartDate().toString(), transactionId, username, userAdmin, contest, "start_date");
+            
+            // End Date of Contest: 
+            auditChange(result.getEndDate().toString(), contest.getEndDate().toString(), transactionId, username, userAdmin, contest, "end_date");
+            
+            
             // Restore documents.
             contest.setDocuments(result.getDocuments());
 
@@ -604,6 +624,23 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "There are errors while persisting the entity.");
         } finally {
             logExit("updateContest()");
+        }
+    }
+
+    private void auditChange(String oldData, String newData, int transactionId, String username, boolean userAdmin,
+            Contest contest, String fieldName) throws ContestManagementException {
+        if (!oldData.equals(newData)) {
+            ContestChangeHistory cch = new ContestChangeHistory();
+            cch.setContestId(contest.getContestId());
+            cch.setFieldName(fieldName);
+            cch.setNewData(newData);
+            cch.setOldData(oldData);
+            cch.setTransactionId(Long.valueOf(transactionId));
+            cch.setUserAdmin(userAdmin);
+            cch.setUserName(username);
+
+            EntityManager em = getEntityManager();
+            em.persist(cch);
         }
     }
 
@@ -3126,21 +3163,31 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         try {
             logEnter("getContestPostCount()");
 
+            if (forumIds.isEmpty()) {
+                new HashMap<Long, Long>();
+            }
             EntityManager em = getEntityManager();
 
-            Query query = em.createNativeQuery("select forumid, count(*) from jivemessage where forumid in (?) group by forumid");
             StringBuilder sb = new StringBuilder();
             for (long forumId : forumIds) {
-                sb.append(forumId + ",");
+                sb.append("? , ");
             }
-logEnter(sb.toString().substring(0, sb.toString().length() - 2));
-            query.setParameter(1, sb.toString().substring(0, sb.toString().length() - 2));
 
-            List resultList = query.getResultList();
-            logEnter("resultList type: " + resultList.getClass());
-            logEnter("resultList type: " + resultList.get(0).getClass());
-            
+            Query query = em.createNativeQuery(MessageFormat.format(
+                    "select forumid, count(*) from jivemessage where forumid in ({0}) group by forumid", sb.toString()
+                            .substring(0, sb.toString().length() - 2)));
+
+            for (int i = 0; i < forumIds.size(); ++i) {
+                query.setParameter(i + 1, forumIds.get(i));
+            }
+
+            List<Object[]> resultList = query.getResultList();
             Map<Long, Long> ret = new HashMap<Long, Long>();
+
+            for (Object[] arr : resultList) {
+                ret.put(Long.parseLong(arr[0].toString()), Long.parseLong(arr[1].toString()));
+            }
+
             return ret;
         } catch (IllegalStateException e) {
             throw wrapContestManagementException(e, "The EntityManager is closed.");

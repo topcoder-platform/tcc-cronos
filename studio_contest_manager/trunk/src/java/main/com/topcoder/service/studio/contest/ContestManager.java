@@ -118,6 +118,9 @@ public interface ContestManager {
      * 
      * @param contest
      *            the contest to update
+     * @param userAdmin 
+     * @param username 
+     * @param transactionId 
      * @throws IllegalArgumentException
      *             if the argument is null.
      * @throws EntityNotFoundException
@@ -125,7 +128,7 @@ public interface ContestManager {
      * @throws ContestManagementException
      *             if any error occurs when updating contest.
      */
-    public void updateContest(Contest contest) throws ContestManagementException;
+    public void updateContest(Contest contest, int transactionId, String username, boolean userAdmin) throws ContestManagementException;
 
     /**
      * <p>
