@@ -25,7 +25,7 @@
         <many-to-one name="contestType" column="contest_type_id"
             class="com.topcoder.service.studio.contest.ContestType" fetch="select"/>
 
-        <property name="projectId" column="project_id" not-null="true" />
+        <property name="projectId" column="project_id" />
 
         <property name="tcDirectProjectId" column="tc_direct_project_id"
             not-null="true" />
