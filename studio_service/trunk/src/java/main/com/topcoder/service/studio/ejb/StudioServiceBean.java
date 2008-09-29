@@ -629,9 +629,12 @@ public class StudioServiceBean implements StudioService {
             // TCCC-511
             jiveForumService.watch(userId, contest.getForumId(), EntityType.FORUM_CATEGORY);
 */
+            /*
             long forumId = createForum(contest.getName(), userId);
             contest.setForumId(forumId);
+            */
             
+/*            
             // FIX [TCCC-146]
             for (PrizeData prizeData : contestData.getPrizes()) {
                 Prize prize = new Prize();
@@ -649,7 +652,7 @@ public class StudioServiceBean implements StudioService {
                 contestManager.createPrize(prize);
                 logError("Prize created. Id: " + prize.getPrizeId());
             }
-
+*/
             List<UploadedDocument> documents = new ArrayList<UploadedDocument>();
             for (UploadedDocument doc : contestData.getDocumentationUploads()) {
                 documents.add(uploadDocument(doc, contest));
@@ -1355,6 +1358,25 @@ public class StudioServiceBean implements StudioService {
             media.add(medium);
         }
         result.setMedia(media);
+        
+        Set<Prize> prizes = new HashSet<Prize>();
+        PrizeType type = contestManager.getPrizeType(contestPrizeTypeId);        
+        for (PrizeData prizeData : data.getPrizes()) {
+            Prize prize = new Prize();
+            prize.setAmount(prizeData.getAmount());
+            prize.setPlace(prizeData.getPlace());
+            prize.setCreateDate(new Date());
+
+            prizes.add(prize);
+            // [TCCC-351]
+            prize.setType(type);
+            Set<Contest> contests = prize.getContests();
+            contests.add(result);
+            prize.setContests(contests);
+        }
+        result.setPrizes(prizes);
+
+        
         return result;
     }
 
@@ -2216,15 +2238,15 @@ public class StudioServiceBean implements StudioService {
                     forumIds.add(contest.getForumId());
                 }
             }
-
-//            Map<Long, Long> contestPostCountMap = contestManager.getContestPostCount(forumIds);
-//            for (ContestData contest : result) {
-//                Long count = contestPostCountMap.get(contest.getForumId());
-//                if (count != null) {
-//                    contest.setForumPostCount(count.intValue());
-//                }
-//            }
-            
+/*
+            Map<Long, Long> contestPostCountMap = contestManager.getContestPostCount(forumIds);
+            for (ContestData contest : result) {
+                Long count = contestPostCountMap.get(contest.getForumId());
+                if (count != null) {
+                    contest.setForumPostCount(count.intValue());
+                }
+            }
+  */          
             logExit("getAllContests", result);
             return result;
         } catch (ContestManagementException e) {
