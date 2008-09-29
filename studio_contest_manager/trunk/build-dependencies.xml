@@ -19,9 +19,7 @@
     <!--
     <property name="search_builder.jar" value="${testfiles}/lib/search_builder.jar"/>
     -->
-    <!--
-    <property name="contest_and_submission_entities.jar" value="../lib/contest_and_submission_entities/1.0.1/contest_and_submission_entities.jar"/>
--->
+    <property name="contest_and_submission_entities.jar" value="${cronos_libdir}/contest_and_submission_entities/1.0.1/contest_and_submission_entities.jar"/>
     <!--3rd party dependencies-->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
     <property name="jdbc.jar" value="${ext_libdir}/jdbc/informix/1.4.1/ifxjdbc.jar"/>    
