@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+ <!DOCTYPE jboss-web PUBLIC "-//JBoss//DTD Web Application 2.3//EN" "http://www.jboss.org/j2ee/dtd/jboss-web_3_2.dtd">
+<jboss-web>
+    <ejb-local-ref>
+       <ejb-ref-name>PrincipalMgrEJB</ejb-ref-name>
+       <local-jndi-name>java:/com.topcoder.security.admin.PrincipalMgrLocalHome</local-jndi-name>
+       <jndi-name>com.topcoder.security.admin.PrincipalMgrRemoteHome</jndi-name>
+    </ejb-local-ref>
+    <ejb-local-ref>
+       <ejb-ref-name>PolicyMgrEJB</ejb-ref-name>
+       <local-jndi-name>java:/com.topcoder.security.admin.PolicyMgrRemoteHome</local-jndi-name>
+       <jndi-name>com.topcoder.security.admin.PolicyMgrRemoteHome</jndi-name>
+    </ejb-local-ref>
+    <ejb-local-ref>
+       <ejb-ref-name>PolicyEJB</ejb-ref-name>
+       <local-jndi-name>java:/com.topcoder.security.policy.PolicyRemoteHome</local-jndi-name>
+       <jndi-name>com.topcoder.security.policy.PolicyRemoteHome</jndi-name>
+    </ejb-local-ref>
+    <ejb-local-ref>
+       <ejb-ref-name>LoginEJB</ejb-ref-name>
+       <local-jndi-name>java:/com.topcoder.security.login.LoginRemoteHome</local-jndi-name>
+       <jndi-name>com.topcoder.security.login.LoginRemoteHome</jndi-name>
+    </ejb-local-ref>
+</jboss-web>

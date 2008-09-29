@@ -1,0 +1,2010 @@
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.1.1//EN" "http://www.opensymphony.com/xwork/xwork-1.1.1.dtd">
+
+<xwork>
+  <include file="webwork-default.xml"/>
+
+  <package name="default" extends="webwork-default">
+    <result-types>
+      <result-type name="velocity" class="com.atlassian.xwork.results.ProfiledVelocityResult"/>
+      <result-type name="velocity-xml" class="com.atlassian.xwork.results.XmlVelocityResult"/>
+      <result-type name="freemarker-xml" class="com.atlassian.bamboo.ww2.results.FreemarkerXmlResult"/>
+      <result-type name="freemarker-text" class="com.atlassian.bamboo.ww2.results.FreemarkerTextResult"/>
+      <result-type name="velocity-css" class="com.atlassian.xwork.results.CSSVelocityResult"/>
+      <result-type name="rss" class="com.atlassian.xwork.results.RssResult"/>
+      <result-type name="redirect" class="com.atlassian.bamboo.ww2.results.ReturnableRedirectResult"/>
+    </result-types>
+
+    <interceptors>
+      <!-- Generic Interceptors -->
+      <interceptor name="timer" class="com.opensymphony.xwork.interceptor.TimerInterceptor"/>
+      <interceptor name="profiling" class="com.atlassian.xwork.interceptors.XWorkProfilingInterceptor"/>
+      <interceptor name="logger" class="com.opensymphony.xwork.interceptor.LoggingInterceptor"/>
+      <interceptor name="chain" class="com.opensymphony.xwork.interceptor.ChainingInterceptor"/>
+      <interceptor name="static-params" class="com.opensymphony.xwork.interceptor.StaticParametersInterceptor"/>
+      <interceptor name="params" class="com.opensymphony.xwork.interceptor.ParametersInterceptor"/>
+      <interceptor name="servlet" class="com.opensymphony.webwork.interceptor.ServletConfigInterceptor"/>
+      <interceptor name="setup" class="com.atlassian.bamboo.ww2.interceptors.SetupCheckInterceptor"/>
+      <interceptor name="buildConfig" class="com.atlassian.bamboo.ww2.interceptors.BuildConfigurationInterceptor"/>
+      <interceptor name="buildConfigFromSession" class="com.atlassian.bamboo.ww2.interceptors.BuildConfigurationFromSessionInterceptor"/>
+      <interceptor name="buildConfigEdit" class="com.atlassian.bamboo.ww2.interceptors.BuildConfigurationEditInterceptor"/>
+      <interceptor name="buildFromSession" class="com.atlassian.bamboo.ww2.interceptors.BuildFromSessionInterceptor" />
+      <interceptor name="bambooValidation" class="com.atlassian.bamboo.ww2.interceptors.BambooValidationInterceptor"/>
+      <interceptor name="bambooWorkflow" class="com.atlassian.bamboo.ww2.interceptors.BambooWorkflowInterceptor"/>
+      <interceptor name="permissionExecAndWait" class="com.atlassian.bamboo.ww2.interceptors.DelegatingSecurityExecuteAndWaitInterceptor"/>
+
+      <!-- *Aware Interceptors. Order may be important here -->
+      <interceptor name="buildAware" class="com.atlassian.bamboo.ww2.interceptors.BuildAwareInterceptor"/>
+      <interceptor name="buildResultsSummaryAware" class="com.atlassian.bamboo.ww2.interceptors.BuildResultsSummaryAwareInteceptor" />
+      <interceptor name="testCaseAware" class="com.atlassian.bamboo.ww2.interceptors.TestCaseAwareInterceptor"/>
+      <interceptor name="resultsListAware" class="com.atlassian.bamboo.ww2.interceptors.ResultsListAwareInterceptor"/>
+      <interceptor name="statisticsAware" class="com.atlassian.bamboo.ww2.interceptors.StatisticsAwareInterceptor" />
+      <interceptor name="paginationAware" class="com.atlassian.bamboo.ww2.interceptors.PaginationAwareInterceptor" />
+      <interceptor-stack name="awareness">
+        <interceptor-ref name="buildAware"/>
+        <interceptor-ref name="buildResultsSummaryAware"/>
+        <interceptor-ref name="testCaseAware"/>
+        <interceptor-ref name="resultsListAware"/>
+        <interceptor-ref name="statisticsAware"/>
+        <interceptor-ref name="paginationAware"/>
+      </interceptor-stack>
+
+      <!-- Signup check interceptor -->
+      <interceptor name="signupCheck" class="com.atlassian.bamboo.ww2.interceptors.SignupAllowedCheckInterceptor"/>
+      <interceptor name="permissionCheck" class="com.atlassian.bamboo.security.acegi.intercept.web.WebworkSecurityInterceptorProxy"/>
+      <interceptor name="remoteApiCheck" class="com.atlassian.bamboo.ww2.interceptors.RemoteApiLoginInterceptor"/>
+
+      <!-- Default stack -->
+      <interceptor-stack name="defaultStack">
+        <interceptor-ref name="exception"/>
+        <interceptor-ref name="alias"/>
+        <interceptor-ref name="servlet-config"/>
+        <interceptor-ref name="awareness"/>
+        <interceptor-ref name="permissionCheck"/>
+        <interceptor-ref name="params"/>
+        <interceptor-ref name="i18n"/>
+        <interceptor-ref name="prepare"/>
+        <interceptor-ref name="chain"/>
+        <interceptor-ref name="model-driven"/>
+        <interceptor-ref name="fileUpload"/>
+        <interceptor-ref name="static-params"/>
+        <interceptor-ref name="params"/>
+        <interceptor-ref name="conversionError"/>
+        <interceptor-ref name="bambooValidation">
+          <param name="excludeMethods">default,input,back,cancel,browse,read,edit,add,delete</param>
+        </interceptor-ref>
+        <interceptor-ref name="bambooWorkflow">
+          <param name="excludeMethods">default,input,back,cancel,browse,read,edit,add,delete</param>
+        </interceptor-ref>
+      </interceptor-stack>
+
+      <interceptor name="apiException" class="com.atlassian.bamboo.ww2.interceptors.RemoteApiExceptionInterceptor"/>
+
+      <!-- Default API stack -->
+      <interceptor-stack name="defaultApiStack">
+        <interceptor-ref name="apiException"/>
+        <interceptor-ref name="alias"/>
+        <interceptor-ref name="servlet-config"/>
+        <interceptor-ref name="awareness"/>
+        <interceptor-ref name="permissionCheck"/>
+        <interceptor-ref name="params"/>
+        <interceptor-ref name="i18n"/>
+        <interceptor-ref name="prepare"/>
+        <interceptor-ref name="chain"/>
+        <interceptor-ref name="model-driven"/>
+        <interceptor-ref name="fileUpload"/>
+        <interceptor-ref name="static-params"/>
+        <interceptor-ref name="params"/>
+        <interceptor-ref name="conversionError"/>
+        <interceptor-ref name="bambooValidation">
+          <param name="excludeMethods">default,input,back,cancel,browse,read,edit,add,delete</param>
+        </interceptor-ref>
+        <interceptor-ref name="bambooWorkflow">
+          <param name="excludeMethods">default,input,back,cancel,browse,read,edit,add,delete</param>
+        </interceptor-ref>
+      </interceptor-stack>
+
+      <interceptor-stack name="errorStack">
+        <interceptor-ref name="alias"/>
+        <interceptor-ref name="servlet-config"/>
+        <interceptor-ref name="params"/>
+        <interceptor-ref name="i18n"/>
+        <interceptor-ref name="prepare"/>
+        <interceptor-ref name="chain"/>
+        <interceptor-ref name="model-driven"/>
+        <interceptor-ref name="static-params"/>
+        <interceptor-ref name="params"/>
+        <interceptor-ref name="conversionError"/>
+      </interceptor-stack>
+
+      <!-- Stack for the setup process -->
+      <interceptor-stack name="setupStack">
+        <interceptor-ref name="setup"/>
+        <interceptor-ref name="exception"/>
+        <interceptor-ref name="alias"/>
+        <interceptor-ref name="servlet-config"/>
+        <interceptor-ref name="params"/>
+        <interceptor-ref name="i18n"/>
+        <interceptor-ref name="prepare"/>
+        <interceptor-ref name="chain"/>
+        <interceptor-ref name="model-driven"/>
+        <interceptor-ref name="static-params"/>
+        <interceptor-ref name="params"/>
+        <interceptor-ref name="conversionError"/>
+        <interceptor-ref name="bambooValidation">
+          <param name="excludeMethods">default,input,back,cancel,browse,read,edit,add,delete</param>
+        </interceptor-ref>
+        <interceptor-ref name="bambooWorkflow">
+          <param name="excludeMethods">default,input,back,cancel,browse,read,edit,add,delete</param>
+        </interceptor-ref>
+      </interceptor-stack>
+
+      <!-- Stack for create and edit of projects and builds -->
+      <interceptor-stack name="buildConfigStack">
+        <interceptor-ref name="buildConfigFromSession" />
+        <interceptor-ref name="buildFromSession" />
+        <interceptor-ref name="buildConfig" />
+        <interceptor-ref name="defaultStack" />
+      </interceptor-stack>
+      <interceptor-stack name="buildConfigEditStack">
+        <interceptor-ref name="chain"/>
+        <interceptor-ref name="buildConfigEdit" />
+        <interceptor-ref name="buildConfig"/>
+        <interceptor-ref name="defaultStack" />
+      </interceptor-stack>
+      <interceptor-stack name="remoteApiStack">
+        <interceptor-ref name="remoteApiCheck" />
+        <interceptor-ref name="defaultApiStack" />
+      </interceptor-stack>
+
+      <interceptor-stack name="waitingAction">
+        <interceptor-ref name="defaultStack" />
+        <interceptor-ref name="permissionExecAndWait" />
+      </interceptor-stack>
+      
+    </interceptors>
+
+
+
+    <default-interceptor-ref name="defaultStack"/>
+
+    <global-results>
+      <result name="wait" type="freemarker" >/wait.ftl</result>
+
+      <result name="accessDenied" type="chain">
+        <param name="actionName">accessDenied</param>
+        <param name="namespace">/</param>
+      </result>
+      <result name="fiveOhOh" type="chain">
+        <param name="actionName">500</param>
+        <param name="namespace">/</param>
+      </result>
+    </global-results>
+
+    <global-exception-mappings>
+      <exception-mapping exception="org.acegisecurity.AccessDeniedException" result="accessDenied"/>
+      <exception-mapping exception="java.lang.Throwable" result="fiveOhOh"/>
+    </global-exception-mappings>
+
+  </package>
+
+
+  <!-- =========================================================================================== Bootstrap Actions -->
+  <package name="bootstrap" extends="default" namespace="/bootstrap">
+
+    <default-interceptor-ref name="setupStack"/>
+    
+    <global-results>
+      <result name="alreadySetup" type="freemarker">/setup/alreadySetup.ftl</result>
+    </global-results>
+
+    <action name="selectSetupStep" class="com.atlassian.bamboo.ww2.actions.setup.SelectSetupStepAction">
+      <interceptor-ref name="setupStack"/>
+      <result name="success" type="redirect">${currentStep}</result>
+      <result name="checklist" type="freemarker">/setup/checklist.ftl</result>
+    </action>
+
+  </package>
+
+
+
+  <!-- =============================================================================================== Error Actions -->
+
+  <package name="systemError" extends="default" namespace="/">
+
+    <default-interceptor-ref name="errorStack"/>
+
+    <action name="404" class="com.atlassian.bamboo.ww2.actions.error.ErrorAction">
+      <result name="input" type="freemarker">/error/404.ftl</result>
+      <result name="success" type="freemarker">/error/404.ftl</result>
+      <result name="error" type="freemarker">/error/404.ftl</result>
+    </action>
+
+    <action name="500" class="com.atlassian.bamboo.ww2.actions.error.FiveOhOh">
+      <result name="input" type="freemarker">/error/500.ftl</result>
+      <result name="success" type="freemarker">/error/500.ftl</result>
+      <result name="error" type="freemarker">/error/500.ftl</result>
+    </action>
+
+    <action name="accessDenied" class="com.atlassian.bamboo.ww2.actions.error.AccessDeniedAction">
+      <result name="accessDeniedLogin" type="redirect">/userlogin!default.action?os_destination=${encodedCurrentUrl}</result>
+      <result name="input" type="freemarker">/error/accessDenied.ftl</result>
+      <result name="success" type="freemarker">/error/accessDenied.ftl</result>
+      <result name="error" type="freemarker">/error/accessDenied.ftl</result>
+    </action>
+
+  </package>
+
+  <package name="error" extends="default" namespace="/error">
+    <action name="error" class="com.atlassian.bamboo.ww2.actions.error.ErrorAction">
+      <result name="error" type="freemarker">/error/error.ftl</result>
+    </action>
+  </package>
+
+  <!-- =============================================================================================== Setup Actions -->
+  <package name="setup" extends="bootstrap" namespace="/setup">
+
+    <global-results>
+      <result name="setupSuccess" type="redirect">/setup/welcomeWizard.action</result>
+    </global-results>
+
+    <action name="setupLicense" class="com.atlassian.bamboo.ww2.actions.setup.SetupLicenseAction" method="default">
+      <result name="input" type="freemarker">/setup/setupLicense.ftl</result>
+    </action>
+
+    <action name="validateLicense" class="com.atlassian.bamboo.ww2.actions.setup.SetupLicenseAction">
+      <result name="input" type="freemarker">/setup/setupLicense.ftl</result>
+      <result name="error" type="freemarker">/setup/setupLicense.ftl</result>
+      <result name="success" type="redirect">/setup/setupDatabase.action</result>
+    </action>
+
+    <action name="setupDatabase" class="com.atlassian.bamboo.ww2.actions.setup.SetupDatabaseAction" method="default">
+      <result name="error" type="freemarker">/setup/setupDatabase.ftl</result>
+      <result name="input" type="freemarker">/setup/setupDatabase.ftl</result>
+    </action>
+
+    <action name="chooseDatabaseType" class="com.atlassian.bamboo.ww2.actions.setup.SetupDatabaseAction">
+      <result name="error" type="freemarker">/setup/setupDatabase.ftl</result>
+      <result name="input" type="freemarker">/setup/setupDatabase.ftl</result>
+      <result name="standardDb" type="redirect">/setup/setupDatabaseConnection.action?selectedDatabase=${selectedDatabase}</result>
+      <result name="embeddedDb" type="redirect">/setup/setupEmbeddedDatabase.action</result>
+    </action>
+
+
+    <action name="setupDatabaseConnection" class="com.atlassian.bamboo.ww2.actions.setup.SetupDatabaseConnectionAction" method="default">
+      <result name="error" type="freemarker">/setup/setupDatabaseConnection.ftl</result>
+      <result name="input" type="freemarker">/setup/setupDatabaseConnection.ftl</result>
+      <result name="jdbc-connection" type="redirect">/setup/setupStandardDatabaseConfig.action?selectedDatabase=${selectedDatabase}</result>
+      <result name="datasource-connection" type="redirect">/setup/setupDatasourceDatabaseConfig.action?selectedDatabase=${selectedDatabase}</result>
+    </action>
+
+    <action name="setupStandardDatabaseConfig" class="com.atlassian.bamboo.ww2.actions.setup.SetupStandardDatabaseAction" method="default">
+      <result name="input" type="freemarker">/setup/setupStandardDatabase.ftl</result>
+      <result name="error" type="freemarker">/setup/setupStandardDatabase.ftl</result>
+    </action>
+
+    <action name="setupStandardDatabase" class="com.atlassian.bamboo.ww2.actions.setup.SetupStandardDatabaseAction">
+      <result name="error" type="freemarker">/setup/setupStandardDatabase.ftl</result>
+      <result name="input" type="freemarker">/setup/setupStandardDatabase.ftl</result>
+      <result name="success" type="redirect">/setup/setupSelectImport.action</result>
+    </action>
+
+    <action name="setupDatasourceDatabaseConfig" class="com.atlassian.bamboo.ww2.actions.setup.SetupDatasourceDatabaseAction" method="default">
+      <result name="error" type="freemarker">/setup/setupDatasourceDatabase.ftl</result>
+      <result name="input" type="freemarker">/setup/setupDatasourceDatabase.ftl</result>
+    </action>
+
+    <action name="setupDatasourceDatabase" class="com.atlassian.bamboo.ww2.actions.setup.SetupDatasourceDatabaseAction">
+      <result name="error" type="freemarker">/setup/setupDatasourceDatabase.ftl</result>
+      <result name="input" type="freemarker">/setup/setupDatasourceDatabase.ftl</result>
+      <result name="success" type="redirect">/setup/setupSelectImport.action</result>
+    </action>
+
+    <action name="setupEmbeddedDatabase" class="com.atlassian.bamboo.ww2.actions.setup.SetupEmbeddedDatabaseAction">
+      <result name="error" type="freemarker">/setup/setupEmbeddedDbFailed.ftl</result>
+      <result name="success" type="redirect">/setup/setupSelectImport.action</result>
+    </action>
+
+    <action name="setupSelectImport" class="com.atlassian.bamboo.ww2.actions.setup.SetupImportDataAction" method="default">
+      <result name="error" type="freemarker">/setup/setupSelectImport.ftl</result>
+      <result name="success" type="freemarker">/setup/setupSelectImport.ftl</result>
+    </action>
+
+    <action name="performImportData" class="com.atlassian.bamboo.ww2.actions.setup.SetupImportDataAction">
+      <result name="error" type="freemarker">/setup/importFinished.ftl</result>
+      <result name="input" type="freemarker">/setup/setupSelectImport.ftl</result>
+      <result name="success" type="redirect">/setup/setupPaths.action</result>
+    </action>
+
+    <action name="setupPaths" class="com.atlassian.bamboo.ww2.actions.setup.SetupPathsAction" method="default">
+      <result name="input" type="freemarker">/setup/setupPaths.ftl</result>
+      <result name="error" type="freemarker">/setup/setupPaths.ftl</result>
+    </action>
+
+    <action name="performSetupPaths" class="com.atlassian.bamboo.ww2.actions.setup.SetupPathsAction">
+      <result name="input" type="freemarker">/setup/setupPaths.ftl</result>
+      <result name="error" type="freemarker">/setup/setupPaths.ftl</result>
+      <!-- Temp hack to just finish the setup without setting up the data -->
+      <result name="quick-setup" type="redirect">/setup/finishsetup.action</result>
+      <!--<result name="quick-setup" type="redirect">setupdemocontent.action</result>-->
+      <!--<result name="success" type="redirect">setupdata-start.action</result>-->
+      <!--<result name="custom-setup" type="redirect">setupdata-start.action</result>-->
+    </action>
+
+    <action name="finishsetup" class="com.atlassian.bamboo.ww2.actions.setup.FinishSetupAction">
+      <!-- Redirect to the WW1 setup action -->
+      <result name="success" type="redirect">/setup/newInstall!default.action</result>
+      <!--<result name="success" type="freemarker">/setup/setupSuccess.ftl</result>-->
+    </action>
+
+  </package>
+
+  <!-- =============================================================================================== Agent Actions -->
+  <package name="agentAdmin" extends="default" namespace="/admin/agent">
+
+    <action name="viewBuilders" class="com.atlassian.bamboo.configuration.agent.ConfigureBuilder" method="default">
+      <result name="input" type="freemarker">/admin/agent/viewCapabilitiesByType.ftl</result>
+    </action>
+
+    <action name="viewCapabilityKey" class="com.atlassian.bamboo.configuration.agent.ConfigureCapabilityKey" method="default">
+      <result name="input" type="freemarker">/admin/agent/viewCapabilityKey.ftl</result>
+    </action>
+
+    <action name="removeCapability" class="com.atlassian.bamboo.configuration.agent.ConfigureCapability" method="remove">
+      <result name="input" type="freemarker">/admin/agent/viewCapabilityKey.ftl</result>
+      <result name="success" type="redirect">/admin/agent/viewAgents.action</result>
+    </action>
+
+    <action name="viewJdks" class="com.atlassian.bamboo.configuration.agent.ConfigureJdk" method="default">
+      <result name="input" type="freemarker">/admin/agent/viewCapabilitiesByType.ftl</result>
+    </action>
+
+    <action name="editCapability" class="com.atlassian.bamboo.configuration.agent.EditAgentCapability" method="default">
+      <result name="input" type="freemarker">/admin/agent/editCapability.ftl</result>
+    </action>
+    <action name="updateCapability" class="com.atlassian.bamboo.configuration.agent.EditAgentCapability" method="editCapability">
+      <result name="input" type="freemarker">/admin/agent/editCapability.ftl</result>
+      <result name="success" type="redirect">/admin/agent/viewAgent.action?agentId=${agent.id}</result>
+    </action>
+
+    <action name="editSharedCapability" class="com.atlassian.bamboo.configuration.agent.EditSharedCapability" method="default">
+      <result name="input" type="freemarker">/admin/agent/editCapability.ftl</result>
+    </action>
+    <action name="updateSharedCapability" class="com.atlassian.bamboo.configuration.agent.EditSharedCapability" method="editCapability">
+      <result name="input" type="freemarker">/admin/agent/editCapability.ftl</result>
+      <result name="success" type="redirect">/admin/agent/viewAgent.action?agentId=${agent.id}</result>
+    </action>
+
+    <action name="renameCapability" class="com.atlassian.bamboo.configuration.agent.RenameAgentCapability" method="default">
+      <result name="input" type="freemarker">/admin/agent/renameCapability.ftl</result>
+    </action>
+
+    <action name="confirmRename" class="com.atlassian.bamboo.configuration.agent.RenameAgentCapability" method="confirmRename">
+      <result name="input" type="freemarker">/admin/agent/renameCapability.ftl</result>
+      <result name="needConfirm" type="freemarker">/admin/agent/renameConfirmation.ftl</result>
+      <result name="success" type="chain">updateRenamedCapability</result>
+    </action>
+
+    <action name="updateRenamedCapability" class="com.atlassian.bamboo.configuration.agent.ExecuteRenameAgentCapability" method="renameCapability">
+      <result name="input" type="freemarker">/admin/agent/renameCapability.ftl</result>
+      <result name="success" type="redirect">/admin/agent/viewCapabilityKey.action?capabilityKey=${newCapabilityKey}</result>
+    </action>
+
+    <action name="viewAgents" class="com.atlassian.bamboo.configuration.agent.ConfigureAgents" method="default">
+      <result name="input" type="freemarker">/admin/agent/viewAgents.ftl</result>
+    </action>
+
+    <action name="configureAgents" class="com.atlassian.bamboo.configuration.agent.ConfigureAgents">
+      <result name="input" type="freemarker">/admin/agent/viewAgents.ftl</result>
+      <result name="error" type="freemarker">/admin/agent/viewAgents.ftl</result>
+      <result name="success" type="redirect">/admin/agent/configureAgents!default.action</result>
+    </action>
+
+    <action name="viewAgentPlanMatrix" class="com.atlassian.bamboo.configuration.agent.ViewAgentPlanMatrix">
+      <result name="input" type="freemarker">/admin/agent/viewAgentPlanMatrix.ftl</result>
+      <result name="error" type="freemarker">/admin/agent/viewAgentPlanMatrix.ftl</result>
+      <result name="success" type="freemarker">/admin/agent/viewAgentPlanMatrix.ftl</result>
+    </action>
+
+    <action name="removeAgent" class="com.atlassian.bamboo.configuration.agent.ConfigureAgentDetails" method="remove">
+      <result name="input" type="freemarker">/admin/agent/viewAgents.ftl</result>
+      <result name="error" type="freemarker">/admin/agent/viewAgents.ftl</result>
+      <result name="success" type="redirect">/admin/agent/configureAgents!default.action</result>
+    </action>
+
+    <action name="addLocalAgent" class="com.atlassian.bamboo.configuration.agent.ConfigureAgentDetails" method="default">
+      <result name="input" type="freemarker">/admin/agent/addAgent.ftl</result>
+      <result name="error" type="freemarker">/admin/agent/addAgent.ftl</result>
+    </action>
+
+    <action name="createLocalAgent" class="com.atlassian.bamboo.configuration.agent.ConfigureAgentDetails" method="create">
+      <result name="input" type="freemarker">/admin/agent/addAgent.ftl</result>
+      <result name="error" type="freemarker">/admin/agent/addAgent.ftl</result>
+      <result name="success" type="redirect">/admin/agent/viewAgent.action?agentId=${agent.id}</result>
+    </action>
+
+    <action name="controlRemoteAgentFunction" class="com.atlassian.bamboo.configuration.agent.ControlRemoteAgentsAvailability">
+      <result name="success" type="redirect">/admin/agent/configureAgents!default.action</result>
+    </action>
+
+    <action name="addRemoteAgent" class="com.atlassian.bamboo.configuration.agent.AddRemoteAgent" method="default">
+      <result name="input" type="freemarker">/admin/agent/addRemoteAgent.ftl</result>
+    </action>
+
+    <action name="viewAgent" class="com.atlassian.bamboo.configuration.agent.ViewAgentAdmin" method="default">
+      <result name="input" type="freemarker">/admin/agent/viewAgent.ftl</result>
+    </action>
+
+    <action name="editAgentDetails" class="com.atlassian.bamboo.configuration.agent.ConfigureAgentDetails" method="default">
+      <result name="input" type="freemarker">/admin/agent/editAgent.ftl</result>
+      <result name="error" type="freemarker">/admin/agent/editAgent.ftl</result>
+    </action>
+
+    <action name="updateAgentDetails" class="com.atlassian.bamboo.configuration.agent.ConfigureAgentDetails" method="save">
+      <result name="input" type="freemarker">/admin/agent/editAgent.ftl</result>
+      <result name="error" type="freemarker">/admin/agent/editAgent.ftl</result>
+      <result name="success" type="redirect">/admin/agent/viewAgent.action?agentId=${agent.id}</result>
+    </action>
+
+    <action name="enableAgent" class="com.atlassian.bamboo.configuration.agent.ConfigureAgentDetails" method="enable">
+      <result name="success" type="redirect">/admin/agent/configureAgents!default.action?agentId=${agent.id}</result>
+    </action>
+
+    <action name="disableAgent" class="com.atlassian.bamboo.configuration.agent.ConfigureAgentDetails" method="disable">
+      <result name="success" type="redirect">/admin/agent/configureAgents!default.action?agentId=${agent.id}</result>
+    </action>
+
+    <action name="configureAgentCapability" class="com.atlassian.bamboo.configuration.agent.ConfigureAgentCapability" method="default">
+      <result name="input" type="freemarker">/admin/agent/configureAgentCapability.ftl</result>
+    </action>
+
+    <action name="addAgentCapability" class="com.atlassian.bamboo.configuration.agent.ConfigureAgentCapability" method="addCapability">
+      <result name="input" type="freemarker">/admin/agent/configureAgentCapability.ftl</result>
+      <result name="error" type="freemarker">/admin/agent/configureAgentCapability.ftl</result>
+      <result name="success" type="redirect">/admin/agent/viewAgent.action?agentId=${agentId}</result>
+    </action>
+
+    <action name="deleteAgentCapability" class="com.atlassian.bamboo.configuration.agent.ConfigureAgentCapability" method="removeCapability">
+      <result name="input" type="freemarker">/admin/agent/configureAgentCapability.ftl</result>
+      <result name="error" type="freemarker">/admin/agent/configureAgentCapability.ftl</result>
+      <result name="success" type="redirect">/admin/agent/viewAgent.action?agentId=${agentId}</result>
+    </action>
+
+    <action name="configureSharedLocalCapabilities" class="com.atlassian.bamboo.configuration.agent.ConfigureSharedLocalCapability" method="default">
+      <result name="input" type="freemarker">/admin/agent/configureSharedCapabilities.ftl</result>
+    </action>
+
+    <action name="addSharedLocalCapability" class="com.atlassian.bamboo.configuration.agent.ConfigureSharedLocalCapability" method="addCapability">
+      <result name="input" type="freemarker">/admin/agent/configureSharedCapabilities.ftl</result>
+      <result name="error" type="freemarker">/admin/agent/configureSharedCapabilities.ftl</result>
+      <result name="success" type="redirect">/admin/agent/configureSharedLocalCapabilities.action?capabilityKey=${capabilityKey}</result>
+    </action>
+
+    <action name="updateDefaultsLocalCapability" class="com.atlassian.bamboo.configuration.agent.ConfigureSharedLocalCapability" method="updateDefaults">
+      <result name="input" type="freemarker">/admin/agent/configureSharedCapabilities.ftl</result>
+      <result name="error" type="freemarker">/admin/agent/configureSharedCapabilities.ftl</result>
+      <result name="success" type="redirect">/admin/agent/configureSharedLocalCapabilities.action</result>
+    </action>
+
+    <action name="deleteSharedLocalCapability" class="com.atlassian.bamboo.configuration.agent.ConfigureSharedLocalCapability" method="removeCapability">
+      <result name="input" type="freemarker">/admin/agent/configureSharedCapabilities.ftl</result>
+      <result name="error" type="freemarker">/admin/agent/configureSharedCapabilities.ftl</result>
+      <result name="success" type="redirect">/admin/agent/configureSharedLocalCapabilities.action</result>
+    </action>
+
+    <action name="configureSharedRemoteCapabilities" class="com.atlassian.bamboo.configuration.agent.ConfigureSharedRemoteCapability" method="default">
+      <result name="input" type="freemarker">/admin/agent/configureSharedCapabilities.ftl</result>
+    </action>
+
+    <action name="addSharedRemoteCapability" class="com.atlassian.bamboo.configuration.agent.ConfigureSharedRemoteCapability" method="addCapability">
+      <result name="input" type="freemarker">/admin/agent/configureSharedCapabilities.ftl</result>
+      <result name="error" type="freemarker">/admin/agent/configureSharedCapabilities.ftl</result>
+      <result name="success" type="redirect">/admin/agent/configureSharedRemoteCapabilities.action</result>
+    </action>
+
+    <action name="deleteSharedRemoteCapability" class="com.atlassian.bamboo.configuration.agent.ConfigureSharedRemoteCapability" method="removeCapability">
+      <result name="input" type="freemarker">/admin/agent/configureSharedCapabilities.ftl</result>
+      <result name="error" type="freemarker">/admin/agent/configureSharedCapabilities.ftl</result>
+      <result name="success" type="redirect">/admin/agent/configureSharedRemoteCapabilities.action</result>
+    </action>
+  </package>
+
+  <package name="agent" extends="default" namespace="/agent">
+
+    <action name="viewAgent" class="com.atlassian.bamboo.configuration.agent.ViewAgent" method="default">
+      <result name="input" type="freemarker">/agent/viewAgent.ftl</result>
+    </action>
+
+    <action name="viewAgents" class="com.atlassian.bamboo.configuration.agent.ViewAgents" method="default">
+      <result name="input" type="freemarker">/agent/viewAgents.ftl</result>
+    </action>
+
+  </package>
+
+  <!-- =============================================================================================== Admin Actions -->
+  <package name="admin" extends="default" namespace="/admin">
+
+    <action name="chooseBuildsToMove" class="com.atlassian.bamboo.ww2.actions.build.admin.MoveBuilds" method="default">
+      <result name="input" type="freemarker">/build/move/chooseBuildsToMove.ftl</result>
+      <result name="error" type="freemarker">/build/move/chooseBuildsToMove.ftl</result>
+    </action>
+
+    <action name="viewAuditLog" class="com.atlassian.bamboo.ww2.actions.admin.ViewAuditLog">
+      <result name="input" type="freemarker">/admin/log/auditLog.ftl</result>
+      <result name="success" type="freemarker">/admin/log/auditLog.ftl</result>
+    </action>
+
+    <action name="selectBuildsToMove" class="com.atlassian.bamboo.ww2.actions.build.admin.MoveBuilds" method="selectBuilds">
+      <result name="input" type="freemarker">/build/move/chooseBuildsToMove.ftl</result>
+      <result name="error" type="freemarker">/build/move/chooseBuildsToMove.ftl</result>
+      <result name="success" type="freemarker">/build/move/chooseKeysForMove.ftl</result>
+    </action>
+
+    <action name="moveBuilds" class="com.atlassian.bamboo.ww2.actions.build.admin.MoveBuilds">
+      <result name="input" type="freemarker">/build/move/chooseKeysForMove.ftl</result>
+      <result name="error" type="freemarker">/build/move/chooseKeysForMove.ftl</result>
+      <result name="success" type="redirect">/admin/chooseBuildsToMove.action</result>
+    </action>
+
+    <action name="chooseBuildsToBulkEditPermissions" class="com.atlassian.bamboo.ww2.actions.build.admin.BulkEditBuildPermissions" method="default">
+      <result name="input" type="freemarker">/build/bulkEditPermissions/chooseBuildsToBulkEditPermissions.ftl</result>
+      <result name="error" type="freemarker">/build/bulkEditPermissions/chooseBuildsToBulkEditPermissions.ftl</result>
+    </action>
+
+    <action name="specifyBulkEditPermissions" class="com.atlassian.bamboo.ww2.actions.build.admin.BulkEditBuildPermissions" method="specifyPermissions">
+      <result name="input" type="freemarker">/build/bulkEditPermissions/chooseBuildsToBulkEditPermissions.ftl</result>
+      <result name="error" type="freemarker">/build/bulkEditPermissions/chooseBuildsToBulkEditPermissions.ftl</result>
+      <result name="success" type="freemarker">/build/bulkEditPermissions/specifyBulkEditPermissions.ftl</result>
+    </action>
+
+    <action name="confirmBulkEditPermissions" class="com.atlassian.bamboo.ww2.actions.build.admin.BulkEditBuildPermissions" method="confirmBulkEditPermissions">
+      <result name="input" type="freemarker">/build/bulkEditPermissions/specifyBulkEditPermissions.ftl</result>
+      <result name="error" type="freemarker">/build/bulkEditPermissions/specifyBulkEditPermissions.ftl</result>
+      <result name="success" type="freemarker">/build/bulkEditPermissions/confirmBulkEditPermissions.ftl</result>
+    </action>
+
+    <action name="saveBulkEditPermissions" class="com.atlassian.bamboo.ww2.actions.build.admin.BulkEditBuildPermissions" method="saveBulkEditPermissions">
+      <result name="error" type="freemarker">/build/bulkEditPermissions/confirmBulkEditPermissions.ftl</result>
+      <result name="success" type="redirect">/admin/chooseBuildsToBulkEditPermissions.action</result>
+    </action>
+
+    <action name="configureGlobalVariables" class="com.atlassian.bamboo.configuration.ConfigureGlobalVariables">
+      <result name="input" type="freemarker">/admin/configureGlobalVariables.ftl</result>
+      <result name="error" type="freemarker">/admin/configureGlobalVariables.ftl</result>
+      <result name="success" type="redirect">/admin/configureGlobalVariables!default.action</result>
+    </action>
+
+    <action name="updateLicense" class="com.atlassian.bamboo.ww2.actions.admin.UpdateLicenseAction">
+      <result name="input" type="freemarker">/admin/updateLicense.ftl</result>
+      <result name="success" type="redirect">/admin/updateLicense!default.action</result>
+      <result name="error" type="freemarker">/admin/updateLicense.ftl</result>
+    </action>
+
+    <action name="reindex" class="com.atlassian.bamboo.index.ReindexAction">
+      <result name="input" type="freemarker">/admin/index/reindex.ftl</result>
+      <result name="success" type="freemarker">/admin/index/reindex.ftl</result>
+    </action>
+
+    <!-- System Administration -->
+    <action name="configure" class="com.atlassian.bamboo.configuration.ConfigurationAction">
+      <result name="input" type="freemarker">/admin/generalConfiguration.ftl</result>
+      <result name="success" type="freemarker">/admin/generalConfiguration.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="viewDatabaseConfig" class="com.atlassian.bamboo.configuration.ConfigureDatabaseAction">
+      <result name="success" type="freemarker">/admin/databaseConfiguration.ftl</result>
+      <result name="error" type="freemarker">/admin/databaseConfiguration.ftl</result>
+    </action>
+
+    <action name="configureSecurity" class="com.atlassian.bamboo.configuration.ConfigureSecurity">
+      <result name="input" type="freemarker">/admin/configureSecurity.ftl</result>
+      <result name="success" type="freemarker">/admin/configureSecurity.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="configureGlobalPermissions" class="com.atlassian.bamboo.configuration.ConfigureGlobalPermissions">
+      <result name="input" type="freemarker">/admin/configureGlobalPermissions.ftl</result>
+      <result name="success" type="freemarker">/admin/viewGlobalPermissions.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="viewGlobalPermissions" class="com.atlassian.bamboo.configuration.ConfigureGlobalPermissions" method="default">
+      <result name="input" type="freemarker">/admin/viewGlobalPermissions.ftl</result>
+    </action>
+
+    <action name="administer" class="com.atlassian.bamboo.configuration.AdministerAction">
+      <result name="success" type="freemarker">/admin/administer.ftl</result>
+      <result name="error" type="freemarker">/admin/administer.ftl</result>
+    </action>
+
+    <action name="systemInfo" class="com.atlassian.bamboo.configuration.SystemInfoAction">
+      <result name="success" type="freemarker">/admin/systemInfo.ftl</result>
+    </action>
+
+    <action name="buildExpiry" class="com.atlassian.bamboo.build.expiry.BuildExpiryAction">
+      <result name="input" type="freemarker">/admin/build/editBuildExpiry.ftl</result>
+      <result name="error" type="freemarker">/admin/build/editBuildExpiry.ftl</result>
+      <result name="read" type="freemarker">/admin/build/viewBuildExpiry.ftl</result>
+      <result name="success" type="redirect">/admin/buildExpiry!read.action</result>
+    </action>
+
+    <action name="runBuildExpiry" class="com.atlassian.bamboo.build.expiry.BuildExpiryAction" method="run">
+      <result name="input" type="freemarker">/admin/build/editBuildExpiry.ftl</result>
+      <result name="success" type="freemarker">/admin/build/viewBuildExpiry.ftl</result>
+    </action>
+
+    <action name="deleteBuilds" class="com.atlassian.bamboo.build.DeleteBuilds">
+      <result name="input" type="freemarker">/admin/deleteBuilds.ftl</result>
+      <result name="success" type="redirect">/admin/deleteBuilds!default.action</result>
+      <result name="confirm" type="freemarker">/admin/deleteBuildsConfirmation.ftl</result>
+      <result name="error" type="freemarker">/admin/deleteBuilds.ftl</result>
+    </action>
+
+    <action name="bulkPlan" class="com.atlassian.bamboo.build.BulkPlanAction">
+      <result name="input" type="freemarker">/admin/bulkPlan.ftl</result>
+      <result name="success" type="freemarker">/admin/bulkPlan.ftl</result>
+      <result name="error" type="freemarker">/admin/bulkPlan.ftl</result>
+    </action>
+
+    <action name="viewMailServer" class="com.atlassian.bamboo.ww2.actions.admin.mail.ConfigureMailServer" method="default">
+      <result name="input" type="freemarker">/admin/mail/viewMailServer.ftl</result>
+      <result name="success" type="freemarker">/admin/mail/viewMailServer.ftl</result>
+      <result name="error" type="freemarker">/admin/mail/viewMailServer.ftl</result>
+    </action>
+
+    <action name="configureMailServer" class="com.atlassian.bamboo.ww2.actions.admin.mail.ConfigureMailServer" method="edit">
+      <result name="success" type="freemarker">/admin/mail/configureMailServer.ftl</result>
+      <result name="input" type="freemarker">/admin/mail/viewMailServer.ftl</result>
+      <result name="error" type="freemarker">/admin/mail/configureMailServer.ftl</result>
+    </action>
+
+    <action name="saveMailServer" class="com.atlassian.bamboo.ww2.actions.admin.mail.ConfigureMailServer" method="save">
+      <result name="input" type="freemarker">/admin/mail/configureMailServer.ftl</result>
+      <result name="success" type="redirect">/admin/viewMailServer.action</result>
+      <result name="error" type="freemarker">/admin/mail/configureMailServer.ftl</result>
+    </action>
+
+  <action name="viewBackups" class="com.atlassian.bamboo.ww2.actions.admin.migration.Backup" method="default">
+     <result name="input" type="freemarker">/admin/backups/configureBackups.ftl</result>
+     <result name="view" type="freemarker">/admin/backups/viewBackups.ftl</result>
+    <result name="error" type="freemarker">/admin/backups/viewBackups.ftl</result>
+  </action>
+
+    <action name="configureBackups" class="com.atlassian.bamboo.ww2.actions.admin.migration.Backup" method="edit">
+      <result name="input" type="freemarker">/admin/backups/configureBackups.ftl</result>
+      <result name="error" type="freemarker">/admin/backups/configureBackups.ftl</result>
+    </action>
+
+    <action name="saveBackups" class="com.atlassian.bamboo.ww2.actions.admin.migration.Backup" method="save">
+      <result name="error" type="freemarker">/admin/backups/configureBackups.ftl</result>
+      <result name="input" type="freemarker">/admin/backups/configureBackups.ftl</result>
+      <result name="success" type="redirect">/admin/viewBackups.action</result>
+    </action>
+
+    <action name="import" class="com.atlassian.bamboo.ww2.actions.admin.migration.Import">
+      <result name="input" type="freemarker">/admin/import.ftl</result>
+      <result name="confirm" type="freemarker">/admin/importConfirmation.ftl</result>
+      <result name="success" type="redirect">/start.action</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="export" class="com.atlassian.bamboo.ww2.actions.admin.migration.Export">
+      <result name="input" type="freemarker">/admin/export.ftl</result>
+      <result name="success" type="freemarker">/admin/export.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+  </package>
+  <!-- ==============================================================================================Builder Admin -->
+  <package name="builderAdmin" extends="admin" namespace="/admin/builder">
+    <global-results>
+      <result name="success" type="redirect">/admin/builder/viewBuilders!default.action</result>
+    </global-results>
+
+    <!--<action name="viewBuilders" class="com.atlassian.bamboo.configuration.plugins.ConfigureBuilder">-->
+      <!--<result name="input" type="freemarker">/admin/builder/viewCapabilitiesByType.ftl</result>-->
+      <!--<result name="error" type="freemarker">/admin/builder/viewCapabilitiesByType.ftl</result>-->
+    <!--</action>-->
+
+    <!--<action name="configureBuilder" class="com.atlassian.bamboo.configuration.plugins.ConfigureBuilder" method="default">-->
+      <!--<result name="error" type="freemarker">/admin/builder/configureBuilder.ftl</result>-->
+      <!--<result name="input" type="freemarker">/admin/builder/configureBuilder.ftl</result>-->
+    <!--</action>-->
+
+    <!--<action name="editBuilder" class="com.atlassian.bamboo.configuration.plugins.ConfigureBuilder" method="edit">-->
+      <!--<param name="mode">edit</param>-->
+      <!--<result name="input" type="freemarker">/admin/builder/configureBuilder.ftl</result>-->
+    <!--</action>-->
+
+    <!--<action name="createBuilder" class="com.atlassian.bamboo.configuration.plugins.ConfigureBuilder" method="save">-->
+      <!--<result name="error" type="freemarker">/admin/builder/viewCapabilitiesByType.ftl</result>-->
+      <!--<result name="input" type="freemarker">/admin/builder/viewCapabilitiesByType.ftl</result>-->
+    <!--</action>-->
+
+    <!--<action name="updateBuilder" class="com.atlassian.bamboo.configuration.plugins.ConfigureBuilder" method="save">-->
+      <!--<result name="error" type="freemarker">/admin/builder/configureBuilder.ftl</result>-->
+      <!--<result name="input" type="freemarker">/admin/builder/configureBuilder.ftl</result>-->
+    <!--</action>-->
+  </package>
+  <!-- ================================================================================================ User Admin -->
+  <package name="userAdmin" extends="admin" namespace="/admin/user">
+    <global-results>
+      <result name="input" type="freemarker">/admin/user/configureUser.ftl</result>
+      <result name="error" type="freemarker">/admin/user/configureUser.ftl</result>
+      <result name="success" type="redirect">viewUsers.action?affectedUsername=${username}</result>
+    </global-results>
+
+    <action name="viewUsers" class="com.atlassian.bamboo.ww2.actions.admin.user.ConfigureUser" method="default">
+      <result name="input" type="freemarker">/admin/user/viewUsers.ftl</result>
+    </action>
+
+    <action name="addUser" class="com.atlassian.bamboo.ww2.actions.admin.user.ConfigureUser" method="default"></action>
+    <action name="createUser" class="com.atlassian.bamboo.ww2.actions.admin.user.ConfigureUser" method="create">
+      <result name="input" type="freemarker">/admin/user/viewUsers.ftl</result>
+    </action>
+    <action name="editUser" class="com.atlassian.bamboo.ww2.actions.admin.user.ConfigureUser" method="edit">
+      <param name="mode">edit</param>
+    </action>
+    <action name="updateUser" class="com.atlassian.bamboo.ww2.actions.admin.user.ConfigureUser" method="update"></action>
+    <action name="updateExternalUser" class="com.atlassian.bamboo.ww2.actions.admin.user.ConfigureUser" method="updateExternalUser"></action>
+    <action name="deleteUser" class="com.atlassian.bamboo.ww2.actions.admin.user.ConfigureUser" method="delete">
+      <result name="input" type="freemarker">/admin/user/viewUsers.ftl</result>
+    </action>
+
+    <action name="browseUsers" class="com.atlassian.bamboo.ww2.actions.admin.user.SearchUserAction" method="browse">
+      <result name="input" type="freemarker">/admin/user/viewPaginatedUsers.ftl</result>
+      <result name="success" type="freemarker">/admin/user/viewPaginatedUsers.ftl</result>
+    </action>
+
+    <action name="searchUsers" class="com.atlassian.bamboo.ww2.actions.admin.user.SearchUserAction" method="search">
+      <result name="input" type="freemarker">/admin/user/viewSearchUsers.ftl</result>
+      <result name="success" type="freemarker">/admin/user/viewSearchUsers.ftl</result>
+    </action>
+
+
+    <action name="userPickerSearch" class="com.atlassian.bamboo.ww2.actions.admin.user.UserPickerAction" method="search">
+      <result name="input" type="freemarker">/admin/user/userPickerResults.ftl</result>
+      <result name="success" type="freemarker">/admin/user/userPickerResults.ftl</result>
+    </action>
+
+    <action name="userPicker" class="com.atlassian.bamboo.ww2.actions.admin.user.UserPickerAction" method="default">
+      <result name="input" type="freemarker">/admin/user/userPicker.ftl</result>
+      <result name="success" type="freemarker">/admin/user/userPicker.ftl</result>
+    </action>
+
+  </package>
+
+
+  <!-- ================================================================================================= Group Admin -->
+  <package name="groupAdmin" extends="admin" namespace="/admin/group">
+    <global-results>
+      <result name="input" type="freemarker">/admin/group/configureGroup.ftl</result>
+      <result name="error" type="freemarker">/admin/group/configureGroup.ftl</result>
+      <result name="success" type="redirect">viewGroups.action?affectedGroupName=${groupName}</result>
+    </global-results>
+
+    <action name="viewGroups" class="com.atlassian.bamboo.ww2.actions.admin.group.ConfigureGroup" method="default">
+      <result name="input" type="freemarker">/admin/group/viewGroups.ftl</result>
+    </action>
+
+    <action name="addGroup" class="com.atlassian.bamboo.ww2.actions.admin.group.ConfigureGroup" method="default"></action>
+    <action name="createGroup" class="com.atlassian.bamboo.ww2.actions.admin.group.ConfigureGroup" method="create">
+      <result name="input" type="freemarker">/admin/group/viewGroups.ftl</result>
+    </action>
+    <action name="editGroup" class="com.atlassian.bamboo.ww2.actions.admin.group.ConfigureGroup" method="edit">
+      <param name="mode">edit</param>
+    </action>
+    <action name="updateGroup" class="com.atlassian.bamboo.ww2.actions.admin.group.ConfigureGroup" method="update">
+      <param name="mode">edit</param>
+    </action>
+    <action name="deleteGroup" class="com.atlassian.bamboo.ww2.actions.admin.group.ConfigureGroup" method="delete">
+      <result name="input" type="freemarker">/admin/group/viewGroups.ftl</result>
+    </action>
+
+    <action name="browseGroups" class="com.atlassian.bamboo.ww2.actions.admin.group.BrowseGroupsAction"  method="browse">
+      <result name="success" type="freemarker">/admin/group/viewPaginatedGroups.ftl</result>
+    </action>
+  </package>
+
+
+  <!-- ============================================================================================= IM Server Admin -->
+  <package name="instantMessagingServerAdmin" extends="admin" namespace="/admin/instantmessagingserver">
+    <global-results>
+      <result name="input" type="freemarker">/admin/instantmessagingserver/configureInstantMessagingServer.ftl</result>
+      <result name="error" type="freemarker">/admin/instantmessagingserver/configureInstantMessagingServer.ftl</result>
+      <result name="success" type="redirect">/admin/instantmessagingserver/viewInstantMessagingServers.action</result>
+      <!--<result name="success" type="redirect">viewInstantMessagingServers.action?affectedInstantMessagingServerId=${instantMessagingServerId}</result>-->
+    </global-results>
+
+    <action name="viewInstantMessagingServers" class="com.atlassian.bamboo.ww2.actions.admin.instantmessagingserver.ConfigureInstantMessagingServer" method="default">
+      <result name="input" type="freemarker">/admin/instantmessagingserver/viewInstantMessagingServer.ftl</result>
+      <!--<result name="input" type="freemarker">/admin/instantmessagingserver/viewInstantMessagingServers.ftl</result>-->
+    </action>
+
+    <action name="addInstantMessagingServer" class="com.atlassian.bamboo.ww2.actions.admin.instantmessagingserver.ConfigureInstantMessagingServer" method="default"></action>
+    <action name="createInstantMessagingServer" class="com.atlassian.bamboo.ww2.actions.admin.instantmessagingserver.ConfigureInstantMessagingServer" method="create"></action>
+    <action name="editInstantMessagingServer" class="com.atlassian.bamboo.ww2.actions.admin.instantmessagingserver.ConfigureInstantMessagingServer" method="edit">
+      <result name="input" type="freemarker">/admin/instantmessagingserver/viewInstantMessagingServer.ftl</result>
+      <result name="success" type="freemarker">/admin/instantmessagingserver/configureInstantMessagingServer.ftl</result>
+    </action>
+    <action name="deleteInstantMessagingServer" class="com.atlassian.bamboo.ww2.actions.admin.instantmessagingserver.ConfigureInstantMessagingServer" method="delete"></action>
+  </package>
+
+
+  <!-- ============================================================================================= JIRA Server Admin -->
+  <package name="jiraServerAdmin" extends="admin" namespace="/admin/jiraserver">
+    <global-results>
+      <result name="input" type="freemarker">/admin/jiraserver/configureJiraServer.ftl</result>
+      <result name="error" type="freemarker">/admin/jiraserver/configureJiraServer.ftl</result>
+      <result name="success" type="redirect">/admin/jiraserver/viewJiraServers.action</result>
+      <!--<result name="success" type="redirect">viewInstantMessagingServers.action?affectedInstantMessagingServerId=${instantMessagingServerId}</result>-->
+    </global-results>
+
+    <!-- view action -->
+    <action name="viewJiraServers" class="com.atlassian.bamboo.ww2.actions.admin.jiraserver.ConfigureJiraServer" method="default">
+      <result name="input" type="freemarker">/admin/jiraserver/viewJiraServers.ftl</result>
+    </action>
+
+    <!-- input actions -->
+    <action name="newJiraServer" class="com.atlassian.bamboo.ww2.actions.admin.jiraserver.ConfigureJiraServer" method="default"></action>
+    <action name="editJiraServer" class="com.atlassian.bamboo.ww2.actions.admin.jiraserver.ConfigureJiraServer" method="edit">
+      <result name="input" type="freemarker">/admin/jiraserver/viewJiraServers.ftl</result>
+      <result name="success" type="freemarker">/admin/jiraserver/configureJiraServer.ftl</result>
+    </action>
+
+    <!-- execute actions -->
+    <action name="saveJiraServer" class="com.atlassian.bamboo.ww2.actions.admin.jiraserver.ConfigureJiraServer" method="save"></action>
+    <action name="deleteJiraServer" class="com.atlassian.bamboo.ww2.actions.admin.jiraserver.ConfigureJiraServer" method="delete"></action>
+  </package>
+
+
+  <!-- ======================================================================================= Build Admin Actions -->
+  <package name="buildAdmin" extends="default" namespace="/build/admin">
+    <default-interceptor-ref name="defaultStack"/>
+    <global-results>
+      <result name="cancel" type="redirect">/start.action</result>
+    </global-results>
+
+    <!-- New Build edit actions -->
+    <action name="buildConfiguration" class="com.atlassian.bamboo.ww2.actions.build.admin.ViewBuildConfiguration">
+      <result name="input" type="freemarker">/build/view/buildConfiguration.ftl</result>
+      <result name="success" type="freemarker">/build/view/buildConfiguration.ftl</result>
+    </action>
+
+    <action name="removeBuildArtifacts" class="com.atlassian.bamboo.ww2.actions.build.admin.RemoveBuildArtifacts" >
+      <result name="error" type="freemarker">/error.ftl</result>
+      <result name="success" type="redirect">/build/viewBuildArtifacts.action?buildKey=${build.key}&amp;buildNumber=${buildNumber}</result>
+    </action>
+
+    <action name="suspendBuild" class="com.atlassian.bamboo.ww2.actions.build.admin.SuspendBuild"
+            method="suspendBuild" >
+      <result name="error" type="freemarker">/error.ftl</result>
+      <result name="success" type="redirect">/build/admin/buildConfiguration.action?buildKey=${build.key}</result>
+    </action>
+
+    <action name="resumeBuild" class="com.atlassian.bamboo.ww2.actions.build.admin.SuspendBuild"
+            method="resumeBuild" >
+      <result name="error" type="freemarker">/error.ftl</result>
+      <result name="success" type="redirect">/build/admin/buildConfiguration.action?buildKey=${build.key}</result>
+    </action>
+
+    <action name="deleteBuildResultsBuilds" class="com.atlassian.bamboo.build.DeleteBuildResults">
+      <result name="success" type="redirect">/build/viewBuildHistory.action?buildKey=${build.key}</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+
+    <action name="purgeBuildFiles" class="com.atlassian.bamboo.ww2.actions.build.admin.DeleteBuildFiles" method="purge">
+      <result name="success" type="redirect">/build/viewBuildFiles.action?buildKey=${buildKey}</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+
+    <action name="triggerManualBuild" class="com.atlassian.bamboo.v2.ww2.build.TriggerManualBuild">
+      <result name="success" type="redirect">/start.action</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="stopBuild" class="com.atlassian.bamboo.buildqueue.CancelBuild">
+      <result name="success" type="redirect">/start.action</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+  </package>
+
+  <package name="buildAdminAjax" extends="buildAdmin" namespace="/build/admin/ajax">
+  </package>
+
+
+  <!-- ======================================================================================== Create Build Actions -->
+
+  <package name="buildAdminCreate" extends="buildAdmin" namespace="/build/admin/create">
+
+    <default-interceptor-ref name="buildConfigStack"/>
+
+    <global-results>
+      <result name="buildSessionError" type="freemarker">/build/add/sessionError.ftl</result>
+    </global-results>
+
+    <!-- New Create Build actions -->
+    <action name="addBuild" class="com.atlassian.bamboo.ww2.actions.build.admin.create.CreateBuild"
+            method="default">
+      <result name="input" type="freemarker">/build/add/addBuild.ftl</result>
+      <result name="error" type="freemarker">/build/add/addBuild.ftl</result>
+    </action>
+
+    <action name="addBuildDetails" class="com.atlassian.bamboo.ww2.actions.build.admin.create.CreateBuild"
+            method="edit">
+      <result name="input" type="freemarker">/build/add/addBuild.ftl</result>
+      <result name="error" type="freemarker">/build/add/addBuild.ftl</result>
+    </action>
+
+    <action name="createBuild" class="com.atlassian.bamboo.ww2.actions.build.admin.create.CreateBuild"
+            method="createBuild">
+      <result name="error" type="freemarker">/build/add/addBuild.ftl</result>
+      <result name="input" type="freemarker">/build/add/addBuild.ftl</result>
+      <result name="success" type="redirect">/build/admin/create/addBuildRepository.action</result>
+    </action>
+
+    <action name="addBuildRepository" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildRepository"
+            method="default">
+      <result name="input" type="freemarker">/build/add/addBuildRepository.ftl</result>
+      <result name="error" type="freemarker">/build/add/addBuildRepository.ftl</result>
+    </action>
+
+    <action name="createBuildRepository" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildRepository"
+            method="create">
+      <result name="input" type="freemarker">/build/add/addBuildRepository.ftl</result>
+      <result name="error" type="freemarker">/build/add/addBuildRepository.ftl</result>
+      <result name="back" type="redirect">/build/admin/create/addBuildDetails.action</result>
+      <result name="success" type="redirect">/build/admin/create/addDefaultsForBuilder.action</result>
+    </action>
+
+    <action name="addDefaultsForBuilder" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildBuilder"
+            method="default">
+      <result name="input" type="chain">addBuildBuilder</result>
+    </action>
+
+    <action name="viewAddBuildBuilder" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildBuilder"
+            method="read">
+      <result name="input" type="freemarker">/build/add/addBuildBuilder.ftl</result>
+      <result name="error" type="freemarker">/build/add/addBuildBuilder.ftl</result>
+    </action>
+
+    <action name="addBuildBuilder" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildBuilder"
+            method="default">
+      <result name="input" type="freemarker">/build/add/addBuildBuilder.ftl</result>
+      <result name="error" type="freemarker">/build/add/addBuildBuilder.ftl</result>
+    </action>
+
+    <action name="createBuildBuilder" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildBuilder"
+            method="create">
+      <result name="input" type="freemarker">/build/add/addBuildBuilder.ftl</result>
+      <result name="error" type="freemarker">/build/add/addBuildBuilder.ftl</result>
+      <result name="back" type="redirect">/build/admin/create/addBuildRepository.action</result>
+      <result name="success" type="redirect">/build/admin/create/defaultBuildRequirement.action</result>
+    </action>
+
+    <action name="defaultBuildRequirement" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildRequirement"
+            method="default">
+      <param name="mode">create</param>
+      <result name="input" type="freemarker">/build/add/addBuildRequirement.ftl</result>
+      <result name="error" type="freemarker">/build/add/addBuildRequirement.ftl</result>
+    </action>
+
+    <action name="addBuildRequirement" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildRequirement"
+            method="addRequirement">
+      <interceptor-ref name="buildConfigFromSession"/>
+      <interceptor-ref name="defaultStack"/>
+      <param name="mode">create</param>
+      <result name="input" type="freemarker">/build/add/addBuildRequirement.ftl</result>
+      <result name="error" type="freemarker">/build/add/addBuildRequirement.ftl</result>
+      <result name="back" type="redirect">/build/admin/create/addBuildBuilder.action</result>
+      <result name="success" type="redirect">/build/admin/create/defaultBuildRequirement.action</result>
+    </action>
+
+    <action name="deleteBuildRequirement" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildRequirement"
+            method="removeRequirement">
+      <interceptor-ref name="buildConfigFromSession"/>
+      <interceptor-ref name="defaultStack"/>
+      <param name="mode">create</param>
+      <result name="input" type="freemarker">/build/edit/editBuildRequirement.ftl</result>
+      <result name="error" type="freemarker">/build/edit/editBuildRequirement.ftl</result>
+      <result name="success" type="redirect">/build/admin/create/defaultBuildRequirement.action
+      </result>
+    </action>
+
+    <action name="defaultBuildArtifact" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildArtifact"
+            method="default">
+      <result name="input" type="freemarker">/build/add/addBuildArtifact.ftl</result>
+      <result name="error" type="freemarker">/build/add/addBuildArtifact.ftl</result>
+    </action>
+
+    <action name="addBuildArtifact" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildArtifact"
+            method="create">
+      <result name="input" type="freemarker">/build/add/addBuildArtifact.ftl</result>
+      <result name="error" type="freemarker">/build/add/addBuildArtifact.ftl</result>
+      <result name="success" type="redirect">/build/admin/create/defaultBuildArtifact.action</result>
+    </action>
+
+    <action name="deleteBuildArtifact" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildArtifact"
+            method="delete">
+      <result name="input" type="freemarker">/build/add/addBuildArtifact.ftl</result>
+      <result name="error" type="freemarker">/build/add/addBuildArtifact.ftl</result>
+      <result name="success" type="redirect">/build/admin/create/defaultBuildArtifact.action</result>
+    </action>
+
+    <action name="defaultBuildNotification" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildNotification"
+            method="default">
+      <interceptor-ref name="buildConfigFromSession" />
+      <interceptor-ref name="defaultStack" />
+      <param name="mode">planCreate</param>
+      <result name="input" type="freemarker">/build/add/addBuildNotification.ftl</result>
+      <result name="error" type="freemarker">/build/add/addBuildNotification.ftl</result>
+      <result name="back" type="redirect">/build/admin/create/defaultBuildRequirement.action</result>
+    </action>
+
+    <action name="addBuildNotification" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildNotification"
+            method="create">
+      <interceptor-ref name="buildConfigFromSession"/>
+      <interceptor-ref name="defaultStack"/>
+      <param name="mode">planCreate</param>
+      <result name="input" type="freemarker">/build/add/addBuildNotification.ftl</result>
+      <result name="error" type="freemarker">/build/add/addBuildNotification.ftl</result>
+      <result name="success" type="redirect">/build/admin/create/defaultBuildNotification.action?lastModified=${lastModified}</result>
+    </action>
+
+    <action name="updateBuildNotification" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildNotification"
+            method="update">
+      <interceptor-ref name="buildConfigFromSession"/>
+      <interceptor-ref name="defaultStack"/>
+      <param name="mode">planCreate</param>
+      <result name="input" type="freemarker">/build/edit/changeBuildNotification.ftl</result>
+      <result name="error" type="freemarker">/build/edit/changeBuildNotification.ftl</result>
+      <result name="success" type="redirect">/build/admin/create/defaultBuildNotification.action?lastModified=${lastModified}</result>
+    </action>
+
+    <action name="deleteBuildNotification" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildNotification"
+            method="delete">
+      <interceptor-ref name="buildConfigFromSession"/>
+      <interceptor-ref name="defaultStack"/>
+      <param name="mode">planCreate</param>
+      <result name="input" type="freemarker">/build/add/addBuildNotification.ftl</result>
+      <result name="error" type="freemarker">/build/add/addBuildNotification.ftl</result>
+      <result name="success" type="redirect">/build/admin/create/defaultBuildNotification.action</result>
+    </action>
+
+    <action name="editBuildNotification" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildNotification"
+            method="edit">
+      <interceptor-ref name="buildConfigFromSession"/>
+      <interceptor-ref name="defaultStack"/>
+      <param name="mode">planCreate</param>
+      <result name="input" type="freemarker">/build/edit/changeBuildNotification.ftl</result>
+      <result name="error" type="freemarker">/build/edit/changeBuildNotification.ftl</result>
+      <result name="success" type="redirect">/build/admin/create/defaultBuildNotification.action</result>
+    </action>
+
+    <action name="addBuildPostAction" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildPostAction"
+            method="default">
+      <result name="input" type="freemarker">/build/add/addBuildPostAction.ftl</result>
+      <result name="error" type="freemarker">/build/add/addBuildPostAction.ftl</result>
+      <result name="back" type="redirect">/build/admin/create/defaultBuildArtifact.action</result>
+    </action>
+
+    <action name="createBuildPostAction" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildPostAction"
+            method="create">
+      <result name="input" type="freemarker">/build/add/addBuildPostAction.ftl</result>
+      <result name="error" type="freemarker">/build/add/addBuildPostAction.ftl</result>
+      <result name="back" type="redirect">/build/admin/create/defaultBuildNotification.action</result>
+      <result name="success" type="redirect">/build/admin/create/addBuildPermissions.action</result>
+    </action>
+
+    <action name="addBuildPermissions" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildPermissions"
+            method="default">
+      <param name="mode">create</param>
+      <result name="input" type="freemarker">/build/add/addBuildPermissions.ftl</result>
+      <result name="error" type="freemarker">/build/add/addBuildPermissions.ftl</result>
+      <result name="back" type="redirect">/build/admin/create/addBuildPostAction.action</result>
+    </action>
+
+    <action name="createBuildPermissions" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildPermissions"
+            method="updatePermissions">
+      <result name="input" type="freemarker">/build/add/addBuildPermissions.ftl</result>
+      <result name="error" type="freemarker">/build/add/addBuildPermissions.ftl</result>
+      <result name="back" type="redirect">/build/admin/create/addBuildPostAction.action</result>
+      <result name="editPermissions" type="redirect">/build/admin/create/addBuildPermissions.action</result>
+      <result name="success" type="redirect">/build/admin/create/saveNewProject.action</result>
+    </action>
+
+    <action name="saveNewProject" class="com.atlassian.bamboo.ww2.actions.build.admin.create.SaveNewProject">
+      <result name="input" type="freemarker">/build/add/addBuildPostAction.ftl</result>
+      <result name="error" type="freemarker">/build/add/addBuildPostAction.ftl</result>
+      <result name="success" type="redirect">/browse/${buildKey}/log</result>
+    </action>
+
+  </package>
+
+  <!-- ======================================================================================== Edit Build Actions -->
+  <package name="buildAdminEdit" extends="buildAdmin" namespace="/build/admin/edit">
+
+    <default-interceptor-ref name="buildConfigEditStack"/>
+
+    <action name="editBuildConfiguration" class="com.atlassian.bamboo.ww2.actions.build.admin.ViewBuildConfiguration">
+      <result name="input" type="freemarker">/build/add/editBuildConfiguration.ftl</result>
+      <result name="success" type="freemarker">/build/add/editBuildConfiguration.ftl</result>
+    </action>
+
+    <action name="editBuildRepository" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildRepository"
+            method="default">
+      <result name="input" type="freemarker">/build/edit/editBuildRepository.ftl</result>
+      <result name="error" type="freemarker">/build/edit/editBuildRepository.ftl</result>
+    </action>
+
+    <action name="updateBuildRepository" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildRepository"
+            method="create">
+      <result name="input" type="freemarker">/build/edit/editBuildRepository.ftl</result>
+      <result name="error" type="freemarker">/build/edit/editBuildRepository.ftl</result>
+      <result name="success" type="chain">saveConfig</result>
+    </action>
+
+    <action name="editDefaultsForBuilder" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildBuilder"
+            method="default">
+      <result name="input" type="chain">editBuildBuilder</result>
+    </action>
+
+    <action name="editBuildBuilder" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildBuilder"
+            method="default">
+      <result name="input" type="freemarker">/build/edit/editBuildBuilder.ftl</result>
+      <result name="error" type="freemarker">/build/edit/editBuildBuilder.ftl</result>
+    </action>
+
+    <action name="updateBuildBuilder" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildBuilder"
+            method="create">
+      <result name="input" type="freemarker">/build/edit/editBuildBuilder.ftl</result>
+      <result name="error" type="freemarker">/build/edit/editBuildBuilder.ftl</result>
+      <result name="success" type="chain">saveConfig</result>
+    </action>
+
+    <action name="defaultBuildRequirement" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildRequirement"
+            method="default">
+      <param name="mode">edit</param>
+      <result name="input" type="freemarker">/build/edit/editBuildRequirement.ftl</result>
+      <result name="error" type="freemarker">/build/edit/editBuildRequirement.ftl</result>
+    </action>
+
+    <action name="addBuildRequirement" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildRequirement"
+            method="addRequirement">
+      <interceptor-ref name="buildConfigEdit"/>
+      <interceptor-ref name="defaultStack"/>
+      <param name="mode">edit</param>
+      <result name="input" type="freemarker">/build/edit/editBuildRequirement.ftl</result>
+      <result name="error" type="freemarker">/build/edit/editBuildRequirement.ftl</result>
+      <result name="success" type="redirect">/build/admin/edit/editBuildConfiguration.action?buildKey=${build.key}&amp;lastModified=${lastModified}</result>
+      <result name="cancel" type="redirect">/build/admin/buildConfiguration.action?buildKey=${build.key}</result>
+    </action>
+
+    <action name="deleteBuildRequirement" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildRequirement"
+            method="removeRequirement">
+      <interceptor-ref name="buildConfigEdit"/>
+      <interceptor-ref name="defaultStack"/>
+      <param name="mode">edit</param>
+      <result name="input" type="freemarker">/build/edit/editBuildRequirement.ftl</result>
+      <result name="error" type="freemarker">/build/edit/editBuildRequirement.ftl</result>
+      <result name="success" type="redirect">/build/admin/edit/editBuildConfiguration.action?buildKey=${build.key}</result>
+    </action>
+
+
+    <action name="defaultBuildArtifact" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildArtifact"
+            method="default">
+      <result name="input" type="freemarker">/build/edit/editBuildArtifact.ftl</result>
+      <result name="error" type="freemarker">/build/edit/editBuildArtifact.ftl</result>
+    </action>
+
+    <action name="addBuildArtifact" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildArtifact"
+            method="create">
+      <result name="input" type="freemarker">/build/edit/editBuildArtifact.ftl</result>
+      <result name="error" type="freemarker">/build/edit/editBuildArtifact.ftl</result>
+      <result name="success" type="chain">saveConfigAndEdit</result>
+    </action>
+
+    <action name="deleteBuildArtifact" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildArtifact"
+            method="delete">
+      <result name="input" type="freemarker">/build/edit/editBuildArtifact.ftl</result>
+      <result name="error" type="freemarker">/build/edit/editBuildArtifact.ftl</result>
+      <result name="success" type="chain">saveConfigAndEdit</result>
+    </action>
+
+
+    <action name="defaultBuildNotification" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildNotification"
+            method="default">
+      <interceptor-ref name="buildConfigEdit"/>
+      <interceptor-ref name="defaultStack"/>
+      <result name="input" type="freemarker">/build/edit/editBuildNotification.ftl</result>
+      <result name="error" type="freemarker">/build/edit/editBuildNotification.ftl</result>
+    </action>
+
+    <action name="addBuildNotification" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildNotification"
+            method="create">
+      <interceptor-ref name="buildConfigEdit"/>
+      <interceptor-ref name="defaultStack"/>
+      <result name="input" type="freemarker">/build/edit/editBuildNotification.ftl</result>
+      <result name="error" type="freemarker">/build/edit/editBuildNotification.ftl</result>
+      <result name="success" type="redirect">/build/admin/edit/editBuildConfiguration.action?buildKey=${build.key}&amp;lastModified=${lastModified}</result>
+    </action>
+
+    <action name="updateBuildNotification" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildNotification"
+            method="update">
+      <interceptor-ref name="buildConfigEdit"/>
+      <interceptor-ref name="defaultStack"/>
+      <result name="input" type="freemarker">/build/edit/changeBuildNotification.ftl</result>
+      <result name="error" type="freemarker">/build/edit/changeBuildNotification.ftl</result>
+      <result name="success" type="redirect">/build/admin/edit/editBuildConfiguration.action?buildKey=${build.key}&amp;lastModified=${lastModified}</result>
+    </action>
+
+    <action name="deleteBuildNotification" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildNotification"
+            method="delete">
+      <interceptor-ref name="buildConfigEdit"/>
+      <interceptor-ref name="defaultStack"/>
+      <result name="input" type="freemarker">/build/edit/editBuildNotification.ftl</result>
+      <result name="error" type="freemarker">/build/edit/editBuildNotification.ftl</result>
+      <result name="success" type="redirect">/build/admin/edit/editBuildConfiguration.action?buildKey=${build.key}</result>
+    </action>
+
+    <action name="editBuildNotification" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildNotification"
+            method="edit">
+      <interceptor-ref name="buildConfigEdit"/>
+      <interceptor-ref name="defaultStack"/>
+      <result name="input" type="freemarker">/build/edit/changeBuildNotification.ftl</result>
+      <result name="error" type="freemarker">/build/edit/changeBuildNotification.ftl</result>
+      <result name="success" type="redirect">/build/admin/edit/editBuildConfiguration.action?buildKey=${build.key}</result>
+    </action>
+
+
+    <action name="editBuildPostAction" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildPostAction"
+            method="default">
+      <result name="input" type="freemarker">/build/edit/editBuildPostAction.ftl</result>
+      <result name="error" type="freemarker">/build/edit/editBuildPostAction.ftl</result>
+    </action>
+
+    <action name="updateBuildPostAction" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildPostAction"
+            method="create">
+      <result name="input" type="freemarker">/build/edit/editBuildPostAction.ftl</result>
+      <result name="error" type="freemarker">/build/edit/editBuildPostAction.ftl</result>
+      <result name="success" type="chain">saveConfig</result>
+    </action>
+
+    <action name="editBuildDependencies" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildDependencies"
+            method="default">
+      <result name="input" type="freemarker">/build/edit/editBuildDependencies.ftl</result>
+    </action>
+
+    <action name="updateBuildDependencies" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildDependencies"
+            method="create">
+      <result name="input" type="freemarker">/build/edit/editBuildDependencies.ftl</result>
+      <result name="error" type="freemarker">/build/edit/editBuildDependencies.ftl</result>
+      <result name="success" type="redirect">/build/admin/buildConfiguration.action?buildKey=${buildKey}</result>
+    </action>
+
+    <action name="viewBuildPermissions" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildPermissions"
+            method="default">
+      <param name="mode">edit</param>
+      <result name="input" type="freemarker">/build/view/viewBuildPermissions.ftl</result>
+    </action>
+
+
+    <action name="editBuildPermissions" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildPermissions"
+            method="default">
+      <param name="mode">edit</param>
+      <result name="input" type="freemarker">/build/edit/editBuildPermissions.ftl</result>
+    </action>
+
+    <action name="updateBuildPermissions" class="com.atlassian.bamboo.ww2.actions.build.admin.config.ConfigureBuildPermissions"
+            method="updatePermissions">
+      <result name="input" type="freemarker">/build/edit/editBuildPermissions.ftl</result>
+      <result name="editPermissions" type="redirect">/build/admin/edit/editBuildConfiguration.action?buildKey=${buildKey}</result>
+      <result name="success" type="redirect">/build/admin/buildConfiguration.action?buildKey=${buildKey}</result>
+    </action>
+
+    <action name="editBuildDetails" class="com.atlassian.bamboo.ww2.actions.build.admin.edit.EditProjectPlanName"
+            method="default">
+      <result name="input" type="freemarker">/build/edit/editBuildDetails.ftl</result>
+    </action>
+
+    <action name="updateBuildDetails" class="com.atlassian.bamboo.ww2.actions.build.admin.edit.EditProjectPlanName"
+            method="create">
+      <result name="input" type="freemarker">/build/edit/editBuildDetails.ftl</result>
+      <result name="error" type="freemarker">/build/edit/editBuildDetails.ftl</result>
+      <result name="success" type="redirect">/build/admin/buildConfiguration.action?buildKey=${buildKey}</result>
+    </action>
+
+
+    <action name="saveConfig" class="com.atlassian.bamboo.ww2.actions.build.admin.edit.SaveConfig">
+      <interceptor-ref name="defaultStack"/>
+      <result name="input" type="freemarker">/error.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+      <result name="success" type="redirect">/build/admin/buildConfiguration.action?buildKey=${buildKey}</result>
+    </action>
+
+    <action name="saveConfigAndEdit" class="com.atlassian.bamboo.ww2.actions.build.admin.edit.SaveConfig">
+      <interceptor-ref name="defaultStack"/>
+      <result name="input" type="freemarker">/error.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+      <result name="success" type="redirect">/build/admin/edit/editBuildConfiguration.action?buildKey=${buildKey}</result>
+    </action>
+
+  </package>
+
+
+
+  <!-- ================================================================================================ Ajax Actions -->
+  <!-- These don't get decorated -->
+  <package name="ajax" extends="default" namespace="/ajax">
+
+    <action name="viewPlanUpdates" class="com.atlassian.bamboo.js.ViewPlanUpdates">
+      <result name="success" type="freemarker">/fragments/json/viewPlanUpdates.ftl</result>
+    </action>
+
+    <action name="viewActivityLogSnippet" class="com.atlassian.bamboo.build.ViewBuildActivityLog">
+      <result name="success" type="freemarker">/fragments/current/activityLogs.ftl</result>
+    </action>
+
+    <action name="viewActivityLogHeader" class="com.atlassian.bamboo.build.ViewCurrentRunningBuild">
+      <result name="success" type="freemarker">/fragments/current/logHeader.ftl</result>
+    </action>
+
+    <action name="setCookie" class="com.atlassian.bamboo.ww2.actions.FilterCookieWriterAction">
+      <result name="success" type="redirect">/start.action</result>
+    </action>
+
+    <!--Status bar on top right-->
+    <action name="showLatestBuildStatus" class="com.atlassian.bamboo.build.ShowLatestBuildStatus">
+      <result name="success" type="freemarker">/fragments/plan/latestStatus.ftl</result>
+    </action>
+
+    <!--Tabs on Dash-->
+    <action name="displayMyBuildSummaries" class="com.atlassian.bamboo.webwork.StarterAction">
+        <result name="success" type="freemarker">/displayMyBuildSummaries.ftl</result>
+    </action>
+
+    <action name="displayAllBuildSummaries" class="com.atlassian.bamboo.webwork.StarterAction">
+      <result name="success" type="freemarker">/displayAllBuildSummaries.ftl</result>
+    </action>
+
+    <action name="displayCurrentActivity" class="com.atlassian.bamboo.webwork.StarterAction">
+      <result name="success" type="freemarker">/displayCurrentActivity.ftl</result>
+    </action>
+
+    <!--Individual portlets on Dash "My Bamboo" Tab-->
+    <action name="myFavourites" class="com.atlassian.bamboo.webwork.StarterAction">
+      <result name="success" type="freemarker">/fragments/user/favourites.ftl</result>
+    </action>
+
+    <action name="myChanges" class="com.atlassian.bamboo.ww2.actions.admin.user.ConfigureProfile" method="default">
+      <result name="input" type="freemarker">/fragments/user/changes.ftl</result>
+    </action>
+
+    <action name="myBreakages" class="com.atlassian.bamboo.ww2.actions.admin.user.ConfigureProfile" method="default">
+      <result name="input" type="freemarker">/fragments/user/breakages.ftl</result>
+    </action>
+
+    <action name="myResponsibilities" class="com.atlassian.bamboo.webwork.StarterAction">
+      <result name="success" type="freemarker">/fragments/user/responsibilities.ftl</result>
+    </action>
+
+    <!--Individual portlets on "All Plans" Tab-->
+    <action name="showAllPlans" class="com.atlassian.bamboo.webwork.StarterAction">
+      <result name="success" type="freemarker">/fragments/showAllPlans.ftl</result>
+    </action>
+
+    <!--Individual portlets on "Current Activity" Tab-->
+    <action name="showBuilders" class="com.atlassian.bamboo.webwork.StarterAction">
+      <result name="success" type="freemarker">/fragments/showBuildQueue.ftl</result>
+    </action>
+
+    <action name="showRecentlyCompleted" class="com.atlassian.bamboo.ww2.actions.build.ViewRecentlyCompletedBuilds">
+      <result name="success" type="freemarker">/fragments/showRecentlyCompleted.ftl</result>
+    </action>
+
+    <!--External summary portlets-->
+    <action name="jsBuildSummaryFavourites" class="com.atlassian.bamboo.webwork.StarterAction">
+      <result name="success" type="freemarker">/fragments/jsBuildSummaryFavourites.ftl</result>
+    </action>
+
+    <action name="jsBuildSummaryAll" class="com.atlassian.bamboo.webwork.StarterAction">
+      <result name="success" type="freemarker">/fragments/jsBuildSummaryAll.ftl</result>
+    </action>
+
+  </package>
+
+  <!-- ============================================================================================= Project Actions -->
+  <package name="projectView" extends="default" namespace="/project">
+    <action name="viewProject" class="com.atlassian.bamboo.ww2.actions.project.ViewProject">
+      <result name="input" type="freemarker">/project/viewProject.ftl</result>
+      <result name="success" type="freemarker">/project/viewProject.ftl</result>
+      <result name="singlebuild" type="redirect">/browse/${singleBuildKey}</result>
+    </action>
+  </package>
+
+  <!-- =============================================================================================== Build Actions -->
+  <package name="buildView" extends="default" namespace="/build">
+
+    <!--filter-->
+    <action name="setResultsFitler" class="com.atlassian.bamboo.builder.resultsfilter.SetResultsFilter">
+      <result name="success" type="redirect">/start.action</result>
+    </action>
+
+    <!-- The various build tab views use the same action class, with different page views -->
+
+    <action name="viewBuildHistory" class="com.atlassian.bamboo.build.ViewBuild">
+      <result name="input" type="freemarker">/viewBuildHistory.ftl</result>
+      <result name="success" type="redirect">/build/viewBuildHistory!default.action?buildKey=${build.key}</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="viewBuildSummary" class="com.atlassian.bamboo.build.ViewBuild">
+      <result name="input" type="freemarker">/viewBuildSummary.ftl</result>
+      <result name="success" type="redirect">/build/viewBuildSummary!default.action?buildKey=${build.key}</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="viewBuildResults" class="com.atlassian.bamboo.build.ViewBuildResults">
+      <result name="success" type="freemarker">/viewBuildResults.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <!--Fragment actions-->
+    <action name="viewBuildResultsTable" class="com.atlassian.bamboo.ww2.actions.build.ViewBuildResultsTable">
+      <result name="success" type="freemarker">/fragments/buildResults/buildResultsTable.ftl</result>
+    </action>
+
+    <action name="viewBuildResultsTableByPlans" class="com.atlassian.bamboo.ww2.actions.build.ViewBuildResultsTableByPlans">
+      <result name="success" type="freemarker">/fragments/buildResults/buildResultsTableByPlans.ftl</result>
+    </action>
+
+    <action name="viewBuildResultsIssueFocussed" class="com.atlassian.bamboo.ww2.actions.build.ViewBuildResultsTable">
+      <result name="success" type="freemarker">/fragments/buildResults/issueFocussedBuildResults.ftl</result>
+    </action>
+
+    <!--Navigation Action-->
+
+    <action name="gotoBuildResult" class="com.atlassian.bamboo.build.GotoBuildResult">
+      <result name="success" type="redirect">/viewBuildResults.ftl</result>
+    </action>
+
+    <action name="viewPreviousBuildResults" class="com.atlassian.bamboo.build.ViewPreviousBuildResults">
+      <result name="success" type="redirect">/viewBuildResults.ftl</result>
+    </action>
+
+    <action name="viewNextBuildResults" class="com.atlassian.bamboo.build.ViewNextBuildResults">
+      <result name="success" type="redirect">/viewBuildResults.ftl</result>
+    </action>
+
+    <action name="viewBuildArtifacts" class="com.atlassian.bamboo.build.ViewBuildResults">
+      <result name="success" type="freemarker">/viewBuildArtifacts.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="viewBuildCommits" class="com.atlassian.bamboo.build.ViewBuildResults">
+      <result name="success" type="freemarker">/viewBuildResultsChanges.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="viewPreviousBuildResultsChanges" class="com.atlassian.bamboo.build.ViewPreviousBuildResults">
+      <result name="success" type="freemarker">/viewBuildResultsChanges.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="viewNextBuildResultsChanges" class="com.atlassian.bamboo.build.ViewNextBuildResults">
+      <result name="success" type="freemarker">/viewBuildResultsChanges.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="viewBuildLog" class="com.atlassian.bamboo.build.ViewBuildLogs">
+      <result name="success" type="freemarker">/viewBuildLog.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="viewNextBuildLog" class="com.atlassian.bamboo.build.ViewNextBuildResults">
+      <result name="success" type="freemarker">/viewBuildLog.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="viewPreviousBuildLog" class="com.atlassian.bamboo.build.ViewPreviousBuildResults">
+      <result name="success" type="freemarker">/viewBuildLog.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="viewBuildFiles" class="com.atlassian.bamboo.build.ViewBuildFiles">
+      <result name="success" type="freemarker">/viewBuildFiles.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="viewBuildResultsTests" class="com.atlassian.bamboo.build.ViewBuildResultsTests">
+      <result name="show_successes" type="redirect">viewBuildResultsSuccessfulTests.action?buildKey=${build.key}&amp;buildNumber=${buildNumber}</result>
+      <result name="show_failures" type="redirect">viewBuildResultsFailedTests.action?buildKey=${build.key}&amp;buildNumber=${buildNumber}</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="viewBuildResultsFailedTests" class="com.atlassian.bamboo.build.ViewBuildResults">
+      <result name="success" type="freemarker">/viewBuildResultsFailedTests.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="viewBuildResultsSuccessfulTests" class="com.atlassian.bamboo.build.ViewBuildResultsSuccessfulTests">
+      <result name="success" type="freemarker">/viewBuildResultsSuccessfulTests.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="viewTestCaseResult" class="com.atlassian.bamboo.build.ViewTestCaseResultAction">
+      <result name="success" type="freemarker">/viewTestCaseResult.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="viewTestClassResult" class="com.atlassian.bamboo.build.ViewTestClassResultAction">
+      <result name="success" type="freemarker">/viewTestClassResult.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="viewCurrentRunningBuild" class="com.atlassian.bamboo.build.ViewCurrentRunningBuild">
+      <result name="success" type="freemarker">/build/viewLiveActivityLog.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="viewTestCase" class="com.atlassian.bamboo.build.tests.ViewTestCaseAction">
+      <result name="input" type="freemarker">/build/tests/viewTestCase.ftl</result>
+      <result name="success" type="redirect">/build/viewTestCase!default.action?buildKey=${build.key}&amp;testCaseKey=${testCase.key}</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="viewTestsSummary" class="com.atlassian.bamboo.build.tests.ViewTestsSummary">
+      <result name="success" type="freemarker">/build/tests/viewTestsSummary.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="viewComments" class="com.atlassian.bamboo.ww2.actions.comment.EditCommentAction" method="browse">
+      <result name="input" type="freemarker">/comment/viewComments.ftl</result>
+    </action>
+
+    <action name="createComment" class="com.atlassian.bamboo.ww2.actions.comment.EditCommentAction" method="create">
+      <result name="input" type="freemarker">/comment/viewComments.ftl</result>
+      <result name="success" type="redirect">/build/viewComments.action?buildKey=${build.key}&amp;buildNumber=${buildNumber}</result>
+      <result name="error" type="freemarker">/comment/viewComments.ftl</result>
+    </action>
+
+    <action name="viewBuildResultsMetaData" class="com.atlassian.bamboo.build.ViewBuildResults">
+      <result name="success" type="freemarker">/viewBuildResultsMetaData.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+  </package>
+
+  <!-- ======================================================================================== Label Actions -->
+  <package name="labelFragments" extends="buildView" namespace="/build/label/ajax">
+    <action name="addLabels" class="com.atlassian.bamboo.ww2.actions.labels.EditLabelsAction" method="addLabels">
+      <result name="success" type="redirect">/build/label/ajax/viewLabels.action?buildKey=${build.key}&amp;buildNumber=${buildNumber}</result>
+      <result name="input" type="freemarker">/fragments/labels/labelInput.ftl</result>
+      <result name="error" type="freemarker">/fragments/labels/labelInput.ftl</result>
+    </action>
+    <action name="viewLabels" class="com.atlassian.bamboo.ww2.actions.labels.EditLabelsAction" method="viewLabels">
+      <result name="input" type="freemarker">/fragments/labels/labelView.ftl</result>
+    </action>
+    <action name="editLabels" class="com.atlassian.bamboo.ww2.actions.labels.EditLabelsAction" method="viewLabels">
+      <result name="input" type="freemarker">/fragments/labels/labelInput.ftl</result>
+    </action>
+    <action name="deleteLabel" class="com.atlassian.bamboo.ww2.actions.labels.EditLabelsAction" method="deleteLabel">
+      <result name="success" type="freemarker">/fragments/labels/labelInput.ftl</result>
+    </action>
+    <action name="indicateFavourite" class="com.atlassian.bamboo.ww2.actions.labels.SetFavouriteAction" method="view">
+      <result name="input" type="freemarker">/fragments/labels/favouriteIndicator.ftl</result>
+    </action>
+  </package>
+
+  <package name="labels" extends="buildView" namespace="/build/label">
+    <action name="viewBuildsForLabel" class="com.atlassian.bamboo.ww2.actions.labels.ViewBuildResultsForLabelAction">
+      <result name="error" type="freemarker">/error.ftl</result>
+      <result name="success" type="freemarker">/labels/viewBuildsForLabel.ftl</result>
+    </action>
+
+    <action name="viewLabels" class="com.atlassian.bamboo.ww2.actions.labels.ViewLabels">
+      <result name="error" type="freemarker">/error.ftl</result>
+      <result name="success" type="freemarker">/labels/viewLabels.ftl</result>
+    </action>
+
+    <action name="setFavourite" class="com.atlassian.bamboo.ww2.actions.labels.SetFavouriteAction">
+      <result name="success" type="redirect">/start.action</result>
+    </action>
+
+
+  </package>
+  <!-- ======================================================================================== Chart Actions -->
+  <package name="charts" extends="default" namespace="/charts">
+    <action name="viewCombinedByBuildNumberChart" class="com.atlassian.bamboo.ww2.actions.charts.ViewCombinedByBuildNumberChart">
+      <result name="success" type="freemarker">/fragments/charts/combinedByBuildNumberChart.ftl</result>
+    </action>
+    <action name="viewCombinedByTimePeriodChart" class="com.atlassian.bamboo.ww2.actions.charts.ViewCombinedByTimePeriodChart">
+      <result name="success" type="freemarker">/fragments/charts/combinedByTimePeriodChart.ftl</result>
+    </action>
+    <action name="viewReportChart" class="com.atlassian.bamboo.ww2.actions.charts.ViewReportChart">
+      <result name="success" type="freemarker">/fragments/charts/reportChart.ftl</result>
+    </action>
+    <action name="viewAuthorChart" class="com.atlassian.bamboo.ww2.actions.charts.ViewAuthorChart">
+      <result name="success" type="freemarker">/fragments/charts/reportChart.ftl</result>
+    </action>
+
+  </package>
+
+  <!-- ============================================================================================ JS Widget Actions-->
+  <!-- Actions in here get rendered by the jsWriter as a series of document.write("blah") js codes. -->
+  <package name="jsWidgets" extends="ajax" namespace="/js">
+    <action name="viewCombinedByBuildNumberChart" class="com.atlassian.bamboo.ww2.actions.charts.ViewCombinedByBuildNumberChart">
+      <result name="success" type="freemarker">/fragments/charts/combinedByBuildNumberChart.ftl</result>
+    </action>
+    <action name="jsViewCombinedByTimePeriodChart" class="com.atlassian.bamboo.ww2.actions.charts.ViewCombinedByTimePeriodChart">
+      <result name="success" type="freemarker">/fragments/charts/jsCombinedByTimePeriodChart.ftl</result>
+    </action>
+    <action name="showLatestBuildStatus" class="com.atlassian.bamboo.build.ShowLatestBuildStatus">
+      <result name="success" type="freemarker">/fragments/plan/latestStatus.ftl</result>
+    </action>
+
+  </package>
+
+  <package name="jsWidgets2" extends="jsWidgets" namespace="/">
+  </package>
+
+  <!-- ============================================================================================== Author Actions -->
+
+  <package name="authors" extends="default" namespace="/authors">
+    <action name="viewAuthors" class="com.atlassian.bamboo.ww2.actions.author.ViewAuthors" method="list">
+      <result name="success" type="freemarker">/author/viewAuthors.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+    <action name="viewAuthor" class="com.atlassian.bamboo.ww2.actions.author.ViewAuthor">
+      <result name="success" type="freemarker">/author/viewAuthor.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+    <action name="viewAuthorReport" class="com.atlassian.bamboo.ww2.actions.author.ViewAuthors" method="report">
+      <result name="success" type="freemarker">/author/authorReport.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+    <action name="generateAuthorReport" class="com.atlassian.bamboo.ww2.actions.author.ViewAuthors" method="generate">
+      <result name="success" type="freemarker">/author/authorReport.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="gotoAuthorReport" class="com.atlassian.bamboo.ww2.actions.author.GotoAuthors">
+      <result name="list" type="redirect">/authors/viewAuthors.action</result>
+      <result name="report" type="redirect">/authors/viewAuthorReport.action</result>
+    </action>
+
+  </package>
+
+  <!-- ======================================================================================== User Profile Actions -->
+
+  <package name="profile" extends="default" namespace="/profile">
+    <global-results>
+        <result name="success" type="redirect">/profile/userProfile.action</result>
+        <result name="input" type="freemarker">/admin/user/changeProfile.ftl</result>
+        <result name="error" type="freemarker">/error.ftl</result>
+    </global-results>
+
+    <action name="changePassword" class="com.atlassian.bamboo.security.ChangePassword" >
+        <result name="input" type="freemarker">/admin/changePassword.ftl</result>
+        <result name="error" type="freemarker">/admin/changePassword.ftl</result>
+    </action>
+
+    <action name="userProfile" class="com.atlassian.bamboo.ww2.actions.admin.user.ConfigureProfile" method="default">
+      <result name="input" type="freemarker">/admin/user/userProfile.ftl</result>
+    </action>
+
+    <action name="profile" class="com.atlassian.bamboo.ww2.actions.admin.user.ConfigureProfile" method="default" >
+      <result name="input" type="freemarker">/admin/user/profile.ftl</result>
+    </action>
+
+    <action name="editProfile" class="com.atlassian.bamboo.ww2.actions.admin.user.ConfigureProfile" method="edit" />
+    <action name="updateProfile" class="com.atlassian.bamboo.ww2.actions.admin.user.ConfigureProfile" method="update" />
+    <action name="updateExternalProfile" class="com.atlassian.bamboo.ww2.actions.admin.user.ConfigureProfile" method="update" />
+  </package>
+
+
+  <!-- ======================================================================================== Reports Actions -->
+
+  <package name="reports" extends="default" namespace="/reports">
+    <action name="viewReport" class="com.atlassian.bamboo.ww2.actions.reports.ViewReport" method="view">
+      <result name="success" type="freemarker">/reports/viewReport.ftl</result>
+      <result name="input" type="freemarker">/reports/viewReport.ftl</result>
+    </action>
+
+    <action name="generateReport" class="com.atlassian.bamboo.ww2.actions.reports.ViewReport" method="generate">
+      <result name="success" type="freemarker">/reports/viewReport.ftl</result>
+      <result name="error" type="freemarker">/reports/viewReport.ftl</result>
+      <result name="input" type="freemarker">/reports/viewReport.ftl</result>
+    </action>
+  </package>
+
+  <!-- ========================================================================================= Generic WW2 Actions -->
+  <!-- Generic Actions that's been converted to Freemarker-->
+  <package name="ww2" extends="default">
+
+    <interceptors>
+      <interceptor-stack name="signupStack">
+        <interceptor-ref name="defaultStack"/>
+        <interceptor-ref name="signupCheck"/>
+      </interceptor-stack>
+    </interceptors>
+
+    <action name="start" class="com.atlassian.bamboo.webwork.StarterAction">
+      <result name="success" type="freemarker">/start.ftl</result>
+      <!--@TODO - Temporarily disable the choice of upgrade vs new install-->
+      <!--<result name="installWizard" type="redirect">/setup/welcomeWizard!default.action</result>-->
+      <result name="installWizard" type="redirect">/setup/newInstall!default.action</result>
+    </action>
+
+    <action name="signupUser" class="com.atlassian.bamboo.ww2.actions.admin.user.signup.SignupUser">
+      <interceptor-ref name="signupStack"/>
+      <result name="input" type="freemarker">/admin/user/signupUser.ftl</result>
+      <result name="success" type="redirect">/userlogin.action?os_username=${username}&amp;os_password=${password}&amp;os_destination=/start.action&amp;os_cookie=true</result>
+    </action>
+
+    <action name="viewAdministrators" class="com.atlassian.bamboo.ww2.actions.admin.user.ViewAdministrators">
+      <result name="success" type="freemarker">/admin/user/viewAdministrators.ftl</result>
+    </action>
+
+    <action name="updateLicense" class="com.atlassian.bamboo.ww2.actions.admin.UpdateLicenseAction">
+      <result name="input" type="freemarker">/admin/updateLicense.ftl</result>
+      <result name="success" type="redirect">/start.action</result>
+      <result name="error" type="freemarker">/admin/updateLicense.ftl</result>
+    </action>
+
+  </package>
+
+  <!-- ================================================================================================= Rss Actions -->
+  <package name="rss" extends="default" namespace="/rss">
+    <action name="rssFeed" class="com.atlassian.bamboo.ww2.actions.rss.RssFeedAction">
+      <result type="rss" name="rss">
+        <param name="location">rss_2.0</param>
+      </result>
+    </action>
+
+    <action name="createLabelRssFeed" class="com.atlassian.bamboo.ww2.actions.rss.LabelRssFeedAction">
+      <result type="rss" name="rss">
+        <param name="location">rss_2.0</param>
+      </result>
+    </action>
+
+    <action name="createAllBuildsRssFeed" class="com.atlassian.bamboo.ww2.actions.rss.AllBuildsRssFeedAction">
+      <result type="rss" name="rss">
+        <param name="location">rss_2.0</param>
+      </result>
+    </action>
+  </package>
+
+  <!-- ================================================================================================= WW1 Actions -->
+  <!-- These are the webwork 1 actions that has been quickly converted to use WebWork2-->
+  <package name="ww1" extends="default">
+
+    <default-interceptor-ref name="defaultStack"/>
+
+    <!-- Setup Stuff -->
+    <action name="welcomeWizard" class="com.atlassian.bamboo.configuration.wizard.WelcomeWizard">
+      <result name="success" type="redirect">/start.action</result>
+      <result name="input" type="redirect">/newInstall!default.action</result>
+      <result name="error" type="redirect">/start.action</result>
+      <result name="new" type="redirect">newInstall!default.action</result>
+      <result name="existing" type="redirect">existingUpgrade!default.action</result>
+    </action>
+
+    <action name="newInstall" class="com.atlassian.bamboo.configuration.wizard.WelcomeWizard1">
+      <result name="input" type="freemarker">/welcomeWizard1.ftl</result>
+      <result name="success" type="redirect">/start.action</result>
+      <result name="error" type="freemarker">/welcomeWizard1.ftl</result>
+    </action>
+
+    <!-- Alternative views -->
+    <action name="telemetry" class="com.atlassian.bamboo.webwork.ViewTelemetryAction">
+      <result name="success" type="freemarker">/telemetry.ftl</result>
+    </action>
+
+    <action name="jsExport" class="com.atlassian.bamboo.webwork.StarterAction">
+      <result name="success" type="freemarker">/jsExport.ftl</result>
+    </action>
+
+    <!-- Login and Password actions  -->
+
+    <action name="userlogin" class="com.atlassian.bamboo.security.Login">
+      <result name="input" type="freemarker">/login.ftl</result>
+      <result name="success" type="freemarker">/login.ftl</result>
+      <result name="error" type="freemarker">/login.ftl</result>
+    </action>
+
+    <action name="forgotPassword" class="com.atlassian.bamboo.security.ForgotPassword">
+      <result name="success" type="freemarker">/sendingNewPassword.ftl</result>
+      <result name="input" type="freemarker">/forgotPassword.ftl</result>
+      <result name="error" type="freemarker">/forgotPassword.ftl</result>
+    </action>
+
+    <action name="userLogout" class="com.atlassian.bamboo.security.Logout">
+      <result name="success" type="redirect">/start.action</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+   <!-- error reporting -->
+
+    <action name="viewError" class="com.atlassian.bamboo.logger.ViewBuildError">
+      <result name="success" type="freemarker">/admin/viewError.ftl</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="removeErrorFromLog" class="com.atlassian.bamboo.logger.RemoveBuildError">
+      <result name="success" type="redirect">/start.action</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <action name="adminErrors" class="com.atlassian.bamboo.logger.AdminErrorAction">
+      <result name="success" type="redirect">/start.action</result>
+      <result name="error" type="freemarker">/error.ftl</result>
+    </action>
+
+    <!-- Update and build is in the default packge so that old triggers will still work -->
+    <action name="updateAndBuild" class="com.atlassian.bamboo.v2.ww2.build.TriggerRemoteBuild">
+      <!--<interceptor-ref name="waitingAction" />-->
+      <result name="success" type="freemarker">/api/rest/updateAndBuild.ftl</result>
+      <result name="error" type="freemarker">/api/rest/error.ftl</result>
+    </action>
+
+  </package>
+
+  <!-- RESTful api actions -->
+
+  <package name="api" extends="default" namespace="/api">
+
+    <action name="index" class="com.atlassian.bamboo.ww2.BambooActionSupport">
+      <result name="success" type="freemarker">/api/index.ftl</result>
+    </action>
+
+  </package>
+
+  <package name="rest" extends="default" namespace="/api/rest">
+
+    <default-interceptor-ref name="remoteApiStack"/>
+
+    <global-results>
+      <result name="accessDenied" type="freemarker-xml">/api/rest/accessDenied.ftl</result>
+      <result name="error" type="freemarker-xml">/api/rest/error.ftl</result>
+    </global-results>
+
+    <action name="login" class="com.atlassian.bamboo.rest.Login">
+      <result name="success" type="freemarker-xml">/api/rest/login.ftl</result>
+    </action>
+
+    <action name="logout" class="com.atlassian.bamboo.rest.Logout">
+      <result name="success" type="freemarker-xml">/api/rest/login.ftl</result>
+    </action>
+
+    <action name="listBuildNames" class="com.atlassian.bamboo.rest.ListBuildNames">
+      <result name="success" type="freemarker-xml">/api/rest/listBuilds.ftl</result>
+    </action>
+
+    <action name="listProjectNames" class="com.atlassian.bamboo.rest.ListProjectNames">
+      <result name="success" type="freemarker-xml">/api/rest/listProjects.ftl</result>
+    </action>
+
+    <action name="getProjectDetails" class="com.atlassian.bamboo.rest.GetProjectDetails">
+      <result name="success" type="freemarker-xml">/api/rest/projectDetails.ftl</result>
+    </action>
+
+    <action name="getLatestUserBuilds" class="com.atlassian.bamboo.rest.GetLatestUserBuilds">
+      <result name="success" type="freemarker-xml">/api/rest/userBuilds.ftl</result>
+    </action>
+
+    <action name="getLatestBuildResults" class="com.atlassian.bamboo.rest.GetLatestBuildResults">
+      <result name="success" type="freemarker-xml">/api/rest/latestBuildResults.ftl</result>
+    </action>
+
+    <action name="getLatestBuildResultsForProject" class="com.atlassian.bamboo.rest.GetLatestBuildResultsForProject">
+      <result name="success" type="freemarker-xml">/api/rest/latestBuildResultsForProject.ftl</result>
+    </action>
+
+    <action name="getRecentlyCompletedBuildResultsForProject" class="com.atlassian.bamboo.rest.GetRecentlyCompletedBuildResultsForProject">
+      <result name="success" type="freemarker-xml">/api/rest/recentlyCompletedBuildResultsForProject.ftl</result>
+    </action>
+
+    <action name="getRecentlyCompletedBuildResultsForBuild" class="com.atlassian.bamboo.rest.GetRecentlyCompletedBuildResultsForBuild">
+        <result name="success" type="freemarker-xml">/api/rest/recentlyCompletedBuildResultsForBuild.ftl</result>
+    </action>
+
+    <action name="getLatestBuildsByUser" class="com.atlassian.bamboo.rest.GetLatestBuildsByUser">
+        <result name="success" type="freemarker-xml">/api/rest/latestBuildsByUser.ftl</result>
+    </action>
+
+    <action name="executeBuild" class="com.atlassian.bamboo.rest.ExecuteBuild">
+      <result name="success" type="freemarker-xml">/api/rest/response.ftl</result>
+      <result name="error" type="freemarker-xml">/api/rest/error.ftl</result>
+    </action>
+
+    <action name="logToServer" class="com.atlassian.bamboo.rest.LogToServer">
+      <result name="success" type="freemarker-xml">/api/rest/logToServer.ftl</result>
+    </action>
+
+    <action name="getBambooBuildNumber" class="com.atlassian.bamboo.rest.GetBambooBuildNumber">
+      <result name="success" type="freemarker-xml">/api/rest/bambooBuildNumber.ftl</result>
+    </action>
+
+    <action name="getBuildResultsDetails" class="com.atlassian.bamboo.rest.GetBuildResultsDetails">
+      <result name="success" type="freemarker-xml">/api/rest/buildResultsDetails.ftl</result>
+    </action>
+
+    <action name="addCommentToBuildResults" class="com.atlassian.bamboo.rest.AddCommentToBuildResults">
+      <result name="success" type="freemarker-xml">/api/rest/response.ftl</result>
+    </action>
+
+    <action name="addLabelToBuildResults" class="com.atlassian.bamboo.rest.AddLabelToBuildResults">
+      <result name="success" type="freemarker-xml">/api/rest/response.ftl</result>
+    </action>
+
+    <!-- Extended by TopCoder -->
+    <action name="hasuser" class="com.topcoder.bamboo.rest.HasUser">
+      <result name="success" type="freemarker-xml">/api/rest/hasuser.ftl</result>
+    </action>
+    
+  </package>
+
+  <package name="funcMaster" extends="default" namespace="/func">
+
+    <default-interceptor-ref name="errorStack"/>
+
+    <action name="funcMaster" class="com.opensymphony.xwork.ActionSupport">
+      <result name="success" type="freemarker">/func/func.ftl</result>
+    </action>
+  </package>
+
+  <package name="textDownloads" extends="default" namespace="/textdownloads">
+    <action name="downloadBuildLog" class="com.atlassian.bamboo.build.ViewBuildResults">
+      <param name="fileName">${buildKey}-${buildNumber}-console-log.txt</param>
+      <result name="success" type="freemarker-text">/textdownloads/buildLog.ftl</result>
+    </action>
+  </package>
+
+  <package name="agentServer" extends="default" namespace="/agentServer">
+    <global-results>
+      <result name="error" type="httpheader">
+        <param name="status">500</param>
+      </result>
+      <result name="invalid fingerprint" type="httpheader">
+        <param name="status">410</param>
+      </result>
+      <result name="none" type="httpheader">
+        <param name="status">404</param>
+      </result>
+    </global-results>
+    <action name="GetFingerprint" class="com.atlassian.bamboo.agent.classserver.GetFingerprintAction" method="default">
+      <result name="success" type="freemarker">
+        <param name="contentType">text/plain</param>
+        <param name="location">/agentServer/fingerprint.ftl</param>
+      </result>
+    </action>
+    <action name="GetPackage" class="com.atlassian.bamboo.agent.classserver.GetPackageAction">
+      <result name="success" type="stream">
+        <param name="contentLength">${contentLength}</param>
+        <param name="contentType">application/octet-stream</param>
+      </result>
+    </action>
+    <action name="GetResource" class="com.atlassian.bamboo.agent.classserver.GetResourceAction">
+      <result name="success" type="stream">
+        <param name="contentLength">${contentLength}</param>
+        <param name="contentType">application/octet-stream</param>
+      </result>
+    </action>
+    <action name="GetResources" class="com.atlassian.bamboo.agent.classserver.GetResourcesAction">
+      <result name="success" type="stream">
+        <param name="contentLength">${contentLength}</param>
+        <param name="contentType">application/octet-stream</param>
+      </result>
+    </action>
+    <action name="ResolveURL" class="com.atlassian.bamboo.agent.classserver.ResolveURLAction">
+      <result name="success" type="stream">
+        <param name="contentLength">${contentLength}</param>
+        <param name="contentType">${contentType}</param>
+      </result>
+    </action>
+  </package>
+
+</xwork>
