@@ -9,6 +9,7 @@
 <script language='javascript' src="js/ContestPayload.js"></script>
 <script language='javascript' src="js/ContestStatus.js"></script>
 <script language='javascript' src="js/ContestType.js"></script>
+<script language='javascript' src="js/ChangeHistory.js"></script>
 <script language='javascript' src="js/Prize.js"></script>
 <script language='javascript' src="js/Submission.js"></script>
 <script language='javascript' src="js/UploadedDocument.js"></script>
@@ -17,11 +18,52 @@
 <script language='javascript' src="js/Medium.js"></script>
 
 <script language="JavaScript">
+/**
+ * <p>Tests Studio.getChangeHistory().</p>
+ */
+function testStudioGetChangeHistory() {
+    // initialize the studio service
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
+
+    // success callback 
+    var success = function(changeHistories) {
+        for (var i = 0; i < changeHistories.length; i++) {
+            alert("Success = ChangeHistory returned index["+i+"]: " + changeHistories[i].toJSON());
+        }
+    }
+    // error callback
+    var error = function(errMsg) {
+        alert("Error = " + errMsg);
+    }
+    
+    studioService.getChangeHistory(2011, success,error);
+}
 
 /**
- * <p>Tests Studio.generateSecurityToken().</p>
+ * <p>Tests Studio.getLatestChanges().</p>
  */
-function testStudioGenerateSecurityToken() {
+function testStudioGetLatestChanges() {
+    // initialize the studio service
+    var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
+
+    // success callback 
+    var success = function(changeHistories) {
+        for (var i = 0; i < changeHistories.length; i++) {
+            alert("Success = ChangeHistory returned index["+i+"]: " + changeHistories[i].toJSON());
+        }
+    }
+    // error callback
+    var error = function(errMsg) {
+        alert("Error = " + errMsg);
+    }
+    
+    studioService.getLatestChanges(2011, success,error);
+}
+
+/**
+ * <p>Tests Studio.markForPurchase().</p>
+ */
+function testStudioMarkForPurchase() {
     // initialize the studio service
     var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
 
@@ -34,7 +76,7 @@ function testStudioGenerateSecurityToken() {
         alert("Error = " + errMsg);
     }
     
-    studioService.generateSecurityToken(success,error);
+    studioService.markForPurchase(10590, success,error);
 }
 
 /**
@@ -53,13 +95,13 @@ function testStudioPurchaseSubmission() {
         alert("Error = " + errMsg);
     }
     
-    studioService.purchaseSubmission(34,123,'b4a70be7-ec57-474e-8c28-81bdc4ebd549', success,error);
+    studioService.purchaseSubmission(2015,123,'scamp', success,error);
 }
 
 /**
  * <p>Tests Studio.setSubmissionPlacement().</p>
  */
-function testStudioSetSubmissionPlacement() {
+function testStudioSetSubmissionPlacementPlacement() {
     // initialize the studio service
     var studioService = new js.topcoder.widgets.bridge.StudioService("ajaxBridge","../../../ImpersonationServlet/ImpersonationServlet");
 
@@ -911,9 +953,14 @@ Widget Webservices Bridge Demo
     <li>Studio.removeContestPayment() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioRemoveContestPayment()" /></li>
     <li>Studio.getContestPayment() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetContestPayment()" /></li>
     <li>Studio.getAllMedia() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetAllMedia()" /></li>
-    <li>Studio.setSubmissionPlacement() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioSetSubmissionPlacement()" /></li>    
+    <li>Studio.setSubmissionPlacement(submissionId,placement) &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioSetSubmissionPlacementPlacement()" /></li>    
+    <li>Studio.setSubmissionPlacement(submissionId,prizeId) &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioSetSubmissionPlacementPrize()" /></li>    
     <li>Studio.generateSecurityToken() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGenerateSecurityToken()" /></li>    
     <li>Studio.purchaseSubmission() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioPurchaseSubmission()" /></li>    
+    <li>Studio.markForPurchase() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioMarkForPurchase()" /></li>    
+    <li>Studio.getChangeHistory() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetChangeHistory()" /></li>    
+    <li>Studio.getLatestChanges() &nbsp; : &nbsp;<input type="button" value="Execute" onclick="testStudioGetLatestChanges()" /></li>    
+    
     
 </ul>
 <br />
