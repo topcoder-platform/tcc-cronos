@@ -140,7 +140,7 @@ public class Contest implements Serializable {
     /**
      * Represents whether the contest should be launched immediately after creation.
      */
-    private boolean launchImmediately;
+    private Boolean launchImmediately;
     
     /**
      * Default constructor.
@@ -582,8 +582,8 @@ public class Contest implements Serializable {
      * @param launchImmediately
      *            the launchImmediately to set.
      */
-    public void setLaunchImmediately(boolean launchImmediately) {
-        this.launchImmediately = launchImmediately;
+    public void setLaunchImmediately(Boolean launchImmediately) {
+        this.launchImmediately = launchImmediately == null ? false : launchImmediately.booleanValue();
     }
 
     /**
@@ -591,10 +591,9 @@ public class Contest implements Serializable {
      * 
      * @return the launchImmediately.
      */
-    public boolean isLaunchImmediately() {
+    public Boolean isLaunchImmediately() {
         return launchImmediately;
     }
-    
 
     /**
      * Represents the prizes.
