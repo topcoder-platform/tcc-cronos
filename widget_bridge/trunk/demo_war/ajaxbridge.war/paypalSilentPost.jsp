@@ -15,6 +15,10 @@
 <%@ page import="com.topcoder.service.studio.ContestPaymentData" %>
 <%@ page import="javax.security.auth.login.LoginException" %>
 <%@ page import="java.util.Date" %>
+<%@ page import="com.topcoder.service.studio.ContestData" %>
+<%@ page import="java.util.GregorianCalendar" %>
+<%@ page import="javax.xml.datatype.DatatypeFactory" %>
+<%@ page import="javax.xml.datatype.XMLGregorianCalendar" %>
 <%
     ServletContext servletContext = pageContext.getServletContext();
     servletContext.log("paypalSilentPost.jsp : Got following Silent Post request from PayPal : ["
@@ -95,6 +99,16 @@
             payment.setCreateDate(new Date());
             studioService.createContestPayment(payment, originalPrincipalName);
             studioService.updateContestStatus(numericContestId, 9); // Update status to Scheduled
+
+            // Load the contest details and check if it has to be launched immediately
+            ContestData contest = studioService.getContest(numericContestId);
+            if (contest.isLaunchImmediately()) {
+                GregorianCalendar cal = new GregorianCalendar();
+                XMLGregorianCalendar xmlCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
+                contest.setLaunchDateAndTime(xmlCalendar);
+                studioService.updateContest(contest);
+            }
+            
             servletContext.log("paypalSilentPost.jsp : Created contest payment of $"
                                + originalPaymentAmount + " for contest " + originalContestId
                                + " on behalf of " + originalPrincipalName
