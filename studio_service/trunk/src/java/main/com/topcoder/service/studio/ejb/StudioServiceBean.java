@@ -793,8 +793,11 @@ public class StudioServiceBean implements StudioService {
         // authorization
         authorizeWithContest(contestData.getContestId());
 
+        String username = sessionContext.getCallerPrincipal().getName();
+        boolean userAdmin = sessionContext.isCallerInRole(ADMIN_ROLE);
+
         try {
-            contestManager.updateContest(convertContestData(contestData));
+            contestManager.updateContest(convertContestData(contestData), 1, username, userAdmin);
         } catch (EntityNotFoundException e) {
             handleContestNotFoundError(e, contestData.getContestId());
         } catch (ContestManagementException e) {
@@ -2231,14 +2234,14 @@ public class StudioServiceBean implements StudioService {
 
             List<Long> forumIds = new ArrayList<Long>();
             for (Contest contest : contests) {
-                ContestData convertContest = convertContest(contest, true);
+                ContestData convertContest = convertContest(contest, false);
                 result.add(convertContest);
 
                 if (contest.getForumId() != null) {
                     forumIds.add(contest.getForumId());
                 }
             }
-/*
+
             Map<Long, Long> contestPostCountMap = contestManager.getContestPostCount(forumIds);
             for (ContestData contest : result) {
                 Long count = contestPostCountMap.get(contest.getForumId());
@@ -2246,7 +2249,7 @@ public class StudioServiceBean implements StudioService {
                     contest.setForumPostCount(count.intValue());
                 }
             }
-  */          
+            
             logExit("getAllContests", result);
             return result;
         } catch (ContestManagementException e) {
