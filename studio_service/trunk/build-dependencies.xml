@@ -6,12 +6,15 @@
     <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
 
     <!-- TCS dependencies -->
-    <!--
-    <property name="contest_and_submission_entities.jar" value="lib/contest_and_submission_entities.jar"/>
-    <property name="studio_contest_manager.jar" value="../lib/studio_contest_manager/1.1.0/studio_contest_manager.jar"/>
-    <property name="submission_manager.jar" value="lib/submission_manager.jar"/>
+    <property name="contest_and_submission_entities.jar"
+              value="${cronos_libdir}/contest_and_submission_entities/1.0.1/contest_and_submission_entities.jar"/>
+    <property name="studio_contest_manager.jar"
+              value="${cronos_libdir}/studio_contest_manager/1.1.0/studio_contest_manager.jar"/>
+    <property name="submission_manager.jar" value="${cronos_libdir}/submission_manager/1.0.0/submission_manager.jar"/>
+<!--
     <property name="project_service.jar" value="lib/project_service.jar"/>
 -->
+
     <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
     <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
     <property name="jboss_login_module.jar" value="${tcs_libdir}/jboss_login_module/2.0.0/jboss_login_module.jar"/>
