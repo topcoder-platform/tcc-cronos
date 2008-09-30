@@ -5,6 +5,8 @@ package com.topcoder.clientcockpit.phases;
 
 import com.topcoder.util.errorhandling.ExceptionUtils;
 
+import java.io.Serializable;
+
 
 /**
  * <p>
@@ -20,7 +22,7 @@ import com.topcoder.util.errorhandling.ExceptionUtils;
  * @author TCSDESIGNER, TCSDEVELOPER
  * @version 1.0
  */
-class CockpitPhase {
+class CockpitPhase implements Serializable {
 
     /**
      * <p>
@@ -48,14 +50,14 @@ class CockpitPhase {
      * Represents the "Action Required" phase.
      * </p>
      */
-    static final CockpitPhase ACTION_REQUIRED = new CockpitPhase("Action Required", "ActionRequired");
+    static final CockpitPhase ACTION_REQUIRED = new CockpitPhase("Action Required", "Action Required");
 
     /**
      * <p>
      * Represents the "In Danger" phase.
      * </p>
      */
-    static final CockpitPhase IN_DANGER = new CockpitPhase("In Danger", "InDanger");
+    static final CockpitPhase IN_DANGER = new CockpitPhase("In Danger", "In Danger");
 
     /**
      * <p>
@@ -63,7 +65,7 @@ class CockpitPhase {
      * </p>
      */
     static final CockpitPhase INSUFFICIENT_SUBMISSIONS_RE_RUN_POSSIBLE = new CockpitPhase(
-        "Insufficient Submissions - ReRun Possible", "InsufficientSubmissionsReRunPossible");
+        "Insufficient Submissions - ReRun Possible", "Insufficient Submissions - ReRun Possible");
 
     /**
      * <p>
@@ -77,7 +79,7 @@ class CockpitPhase {
      * Represents the "Repost" phase.
      * </p>
      */
-    static final CockpitPhase REPOST = new CockpitPhase("Repost", "Repost");
+    static final CockpitPhase REPOST = new CockpitPhase("No Submissions - Repost", "No Submissions - Repost");
 
     /**
      * <p>
@@ -92,14 +94,14 @@ class CockpitPhase {
      * </p>
      */
     static final CockpitPhase INSUFFICIENT_SUBMISSIONS = new CockpitPhase(
-        "Insufficient Submissions", "InsufficientSubmissions");
+        "Insufficient Submissions", "Insufficient Submissions");
 
     /**
      * <p>
      * Represents the "No Winner Chosen" phase.
      * </p>
      */
-    static final CockpitPhase NO_WINNER_CHOSEN = new CockpitPhase("No Winner Chosen", "NoWinnerChosen");
+    static final CockpitPhase NO_WINNER_CHOSEN = new CockpitPhase("No Winner Chosen", "No Winner Chosen");
 
     /**
      * <p>

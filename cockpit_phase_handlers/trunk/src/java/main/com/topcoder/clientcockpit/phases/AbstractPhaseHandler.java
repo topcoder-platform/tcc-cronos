@@ -209,7 +209,7 @@ import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
  * @author TCSDESIGNER, TCSDEVELOPER
  * @version 1.0
  */
-public abstract class AbstractPhaseHandler implements PhaseHandler {
+public abstract class AbstractPhaseHandler implements PhaseHandler, Serializable {
 
     /**
      * <p>
@@ -407,6 +407,13 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      * </p>
      */
     private static final String ONE_HOUR_EMAIL_FROM_ADDRESS = "one_hour_email_from_address";
+
+    /**
+     * <p>
+     * Represents the property: "use_cache".
+     * </p>
+     */
+    private static final String FORUM_BEAN_PROVIDER_URL = "forum_bean_provider_url";
 
     /**
      * <p>
@@ -630,6 +637,11 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
     private final Map < String, ContestStatus > statusesCache;
 
     /**
+     * <p>A <code>String</code> providing the URL for the <code>Forum EJB</code> provider.</p>
+     */
+    private String forumBeanProviderUrl;
+
+    /**
      * <p>
      * This is a private common constructor called by all the other four public constructors.
      * </p>
@@ -671,6 +683,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
 
         //Load USE_CACHE property
         this.useCache = loadBooleanProperty(namespace, USE_CACHE);
+        this.forumBeanProviderUrl = loadProperty(namespace, FORUM_BEAN_PROVIDER_URL, true);
         this.statusesCache = this.useCache ? new HashMap < String, ContestStatus >() : null;
 
         //Load start email related properties
@@ -982,7 +995,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      * @throws EmailMessageGenerationException If errors occur while generating the message to be sent.
      * @throws EmailSendingException If errors occur while sending the email message.
      */
-    private void sendEmail(String templateSource, String templateName, String subject, String fromAddr, Phase phase)
+    protected void sendEmail(String templateSource, String templateName, String subject, String fromAddr, Phase phase)
         throws EmailMessageGenerationException, EmailSendingException {
 
         boolean messageGenerated = false;
@@ -1016,6 +1029,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 ExceptionUtils.checkNull(toAddress, null, null, "To address must be non-null.");
                 email.addToAddress(toAddress.toString(), TCSEmailMessage.TO);
             }
+            email.addToAddress("cockpit-admins@topcoder.com", TCSEmailMessage.BCC);
 
             //Now the email message is generated successfully
             messageGenerated = true;
@@ -1069,8 +1083,19 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
 
         //When PhaseStatus is SCHEDULED, it means the phase is about to be started, so send start email
         if (PhaseStatus.SCHEDULED.getName().equals(phaseStatus) && this.sendStartPhaseEmail) {
-            this.sendEmail(this.startEmailTemplateSource, this.startEmailTemplateName, this.startEmailSubject,
-                this.startEmailFromAddress, phase);
+            if (phase.getPhaseType().getName().equals(CockpitPhase.ACTIVE.getPhaseType())) {
+                this.sendEmail(this.startEmailTemplateSource, "templates/contestActive.txt",
+                               "[TopCoder Cockpit] Your Contest is Active", this.startEmailFromAddress, phase);
+            } else if (phase.getPhaseType().getName().equals(CockpitPhase.ACTION_REQUIRED.getPhaseType())) {
+                this.sendEmail(this.startEmailTemplateSource, "templates/contestActionRequired.txt",
+                               "[TopCoder Cockpit] Your Action is Required", this.startEmailFromAddress, phase);
+            } else if (phase.getPhaseType().getName().equals(CockpitPhase.COMPLETED.getPhaseType())) {
+                this.sendEmail(this.startEmailTemplateSource, "templates/contestCompleted.txt",
+                               "[TopCoder Cockpit] Contest Closed", this.startEmailFromAddress, phase);
+            } else {
+                this.sendEmail(this.startEmailTemplateSource, this.startEmailTemplateName, this.startEmailSubject,
+                    this.startEmailFromAddress, phase);
+            }
         } else if (PhaseStatus.OPEN.getName().equals(phaseStatus) && this.sendEndPhaseEmail) {
         //When PhaseStatus is OPEN, it means the phase is about to be ended, so send end email
             this.sendEmail(this.endEmailTemplateSource, this.endEmailTemplateName, this.endEmailSubject,
@@ -1111,6 +1136,34 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
 
     /**
      * <p>
+     * This method will be used by subclasses to send an email to the client if there are less than 8 hours
+     * before the winner announcement deadline.
+     * </p>
+     *
+     * <p>
+     * The <code>phase.project.attributes["ResourceEmails"]</code> attribute is expected to be the list of valid
+     * recipient email addresses(according to RFC822).
+     * </p>
+     *
+     * @param phase The phase.
+     *
+     * @throws IllegalArgumentException If phase is null.
+     * @throws PhaseHandlingException If phase's <code>phaseType</code> or <code>phaseStatus</code> property is null.
+     *         Or if its project does not contain a valid <em>contest</em> attribute.
+     * @throws EmailMessageGenerationException If errors occur while generating the message to be sent.
+     * @throws EmailSendingException If errors occur while sending the email message.
+     *
+     * @see #validatePhase(Phase, String, Object[])
+     */
+    protected void sendTwentyFourHoursReminderEmail(Phase phase) throws PhaseHandlingException {
+        validatePhase(phase, null);
+        this.sendEmail(this.eightHoursReminderEmailTemplateSource, "templates/contest24HoursLeft.txt",
+                       "[TopCoder Cockpit] You Have 24 Hours to Pick Winners", this.eightHoursReminderEmailFromAddress,
+                       phase);
+    }
+
+    /**
+     * <p>
      * This method will be used by subclasses to send an email to the client if there is less than 1 hour before the
      * winner announcement deadline.
      * </p>
@@ -1147,6 +1200,15 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      */
     protected ContestManager getContestManager() {
         return this.bean;
+    }
+
+    /**
+     * <p>Gets the URL for the provider of the <code>Forum EJB</code>.</p>
+     *
+     * @return a <code>String</code> providing the URL for the <code>Forum EJB</code> provider.
+     */
+    protected String getForumBeanProviderUrl() {
+        return this.forumBeanProviderUrl;
     }
 
     /**
@@ -1353,7 +1415,10 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         ExceptionUtils.checkNull(phase, null, null, "Phase should not be null.");
         ExceptionUtils.checkNull(contest, null, null, "Contest should not be null.");
 
-        Number requiredMinimum = getProjectAttribute(phase, Number.class, PROJECT_ATTR_MINIMUM_SUBMISSIONS, true);
+        // ISV : TODO : Restore the code once the Contest entities are populated with MinimumSubmissions properties
+        // For now 1 is used as minimum submissions number
+//        Number requiredMinimum = getProjectAttribute(phase, Number.class, PROJECT_ATTR_MINIMUM_SUBMISSIONS, true);
+        Number requiredMinimum = new Long(1);
 
         return contest.getSubmissions() != null && contest.getSubmissions().size() >= requiredMinimum.intValue();
     }
@@ -1450,7 +1515,8 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 checkNull(newContestStatus, "Contest status entity : " + cockpitPhase.getContestStatus());
 
                 contest.setStatus(newContestStatus);
-                this.getContestManager().updateContest(contest);
+                this.getContestManager().updateContestStatus(contest.getContestId(),
+                                                             newContestStatus.getContestStatusId());
             } catch (ContestManagementException e) {
                 throw new PhaseHandlingException("Error while updating contest status.", e);
             }

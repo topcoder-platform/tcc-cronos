@@ -259,8 +259,13 @@ public class CompletedPhaseHandler extends AbstractPhaseHandler {
         //Start case: if the contest has ended (Contest.endDate has been reached),
         //and the minimum number of submissions has been reached
         //and the client has chosen a winner
-        return isEndDateReached(contest) && isEnoughSubmissionsReceived(phase, contest)
-            && (contest.getResults() != null && !contest.getResults().isEmpty());
+        // ISV : Temporary Fix : For now Insufficient Submissions - Re-Run Possible phase is not supported. Therefore
+        // if there are no sufficient number submissions received the contest is closed
+//        return isEndDateReached(contest) && isEnoughSubmissionsReceived(phase, contest)
+//            && (contest.getResults() != null && !contest.getResults().isEmpty());
+        return isEndDateReached(contest)
+               && ((isEnoughSubmissionsReceived(phase, contest) && (contest.getResults() != null && !contest.getResults().isEmpty()))
+                   || (!isEnoughSubmissionsReceived(phase, contest) && isContestStatusMatch(contest, CockpitPhase.ACTIVE)));
     }
 
     /**

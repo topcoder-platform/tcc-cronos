@@ -254,7 +254,9 @@ public class AbandonedPhaseHandler extends AbstractPhaseHandler {
 
         //Start case: if the Contest.winnerAnnouncementDeadline is reached
 
-        return computeWinnerAnnouncementDeadlineRemain(contest) <= 0;
+        // ISV : Need to take into consideration that the winner is not chosen
+//        return computeWinnerAnnouncementDeadlineRemain(contest) <= 0;
+        return computeWinnerAnnouncementDeadlineRemain(contest) <= 0 && !isWinnerChosen(contest);
     }
 
     /**
