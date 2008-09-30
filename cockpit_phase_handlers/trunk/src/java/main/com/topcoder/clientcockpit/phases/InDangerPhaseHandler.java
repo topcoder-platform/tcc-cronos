@@ -133,6 +133,13 @@ public class InDangerPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * <p>
+     * The milliseconds of twenty four hours.
+     * </p>
+     */
+    private static final long TWENTY_FOUR_HOURS = 24 * ActionRequiredPhaseHandler.ONE_HOUR;
+
+    /**
+     * <p>
      * Creates a new instance. The {@link AbstractPhaseHandler#DEFAULT_NAMESPACE} is used as the namespace to
      * load properties.
      * </p>
@@ -447,6 +454,9 @@ public class InDangerPhaseHandler extends AbstractPhaseHandler {
         } else if (remain > ActionRequiredPhaseHandler.ONE_HOUR && remain <= EIGHT_HOURS) {
             //Send eight hours reminder email
             this.sendEightHoursReminderEmail(phase);
+        } else if (remain > EIGHT_HOURS && remain <= TWENTY_FOUR_HOURS) {
+            //Send eight hours reminder email
+            this.sendTwentyFourHoursReminderEmail(phase);
         }
     }
 }
