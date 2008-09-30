@@ -1940,10 +1940,23 @@
       <result name="success" type="freemarker-xml">/api/rest/response.ftl</result>
     </action>
 
-    <!-- Extended by TopCoder -->
+    <!-- Extended by TopCoder (Start) -->
     <action name="hasuser" class="com.topcoder.bamboo.rest.HasUser">
       <result name="success" type="freemarker-xml">/api/rest/hasuser.ftl</result>
     </action>
+    
+    <action name="hasgroup" class="com.topcoder.bamboo.rest.HasGroup">
+      <result name="success" type="freemarker-xml">/api/rest/hasgroup.ftl</result>
+    </action>
+
+    <action name="adduser" class="com.topcoder.bamboo.rest.AddUser">
+      <result name="success" type="freemarker-xml">/api/rest/adduser.ftl</result>
+    </action>
+
+    <action name="addusertogroup" class="com.topcoder.bamboo.rest.AddUserToGroup">
+      <result name="success" type="freemarker-xml">/api/rest/addusertogroup.ftl</result>
+    </action>
+    <!-- Extended by TopCoder (End) -->
     
   </package>
 
