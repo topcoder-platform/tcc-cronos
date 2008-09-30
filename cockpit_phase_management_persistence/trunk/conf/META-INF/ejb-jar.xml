@@ -15,6 +15,11 @@
                 <env-entry-type>java.lang.String</env-entry-type>
                 <env-entry-value>studio_log</env-entry-value>
             </env-entry>
+            <env-entry>
+                <env-entry-name>unitName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>persistence/contest_submission</env-entry-value>
+            </env-entry>
             <persistence-context-ref>
                 <persistence-context-ref-name>persistence/contest_submission</persistence-context-ref-name>
                 <persistence-unit-name>contest_submission</persistence-unit-name>                     
