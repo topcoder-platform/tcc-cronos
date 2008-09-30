@@ -37,6 +37,9 @@ import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.submission.ContestResult;
 import com.topcoder.service.studio.submission.Submission;
 import com.topcoder.util.errorhandling.ExceptionUtils;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.classic.Session;
+import org.hibernate.Transaction;
 
 /**
  * <p>
@@ -56,32 +59,31 @@ public class ProjectToContestConverterImpl implements ProjectToContestConverter 
 
     public static final String STUDIO_FILE_TYPE_EXTENSION = "STUDIO_FILE_TYPE_EXTENSION";
 
-    public static final String STUDIO_CONTEST_CHANNEL_ID = "STUDIO_CONTEST_CHANNEL_ID";
+    public static final String STUDIO_CONTEST_CHANNEL_ID = "CONTEST.CONTEST_CHANNEL_ID";
 
-    public static final String STUDIO_CONTEST_CHANNEL_NAME = "STUDIO_CONTEST_CHANNEL_NAME";
+    public static final String STUDIO_CONTEST_CHANNEL_NAME = "CONTEST_CHANNEL_LU.CONTEST_CHANNEL_DESC";
 
-    public static final String STUDIO_CONTEST_STATUS_ID = "STUDIO_CONTEST_STATUS_ID";
+    public static final String STUDIO_CONTEST_STATUS_ID = "CONTEST.CONTEST_STATUS_ID";
 
-    public static final String STUDIO_CONTEST_STATUS_NAME = "STUDIO_CONTEST_STATUS_NAME";
+    public static final String STUDIO_CONTEST_STATUS_NAME = "CONTEST_STATUS_LU.NAME";
 
-    public static final String STUDIO_CONTEST_ID = "STUDIO_CONTEST_ID";
+    public static final String STUDIO_CONTEST_ID = "CONTEST.CONTEST_ID";
 
-    public static final String STUDIO_CONTEST_NAME = "STUDIO_CONTEST_NAME";
+    public static final String STUDIO_CONTEST_NAME = "CONTEST.NAME";
 
-    public static final String STUDIO_CONTEST_PROJECT_ID = "STUDIO_CONTEST_PROJECT_ID";
+    public static final String STUDIO_CONTEST_PROJECT_ID = "CONTEST.PROJECT_ID";
 
-    public static final String STUDIO_CONTEST_DIRECT_PROJECT_ID = "STUDIO_CONTEST_DIRECT_PROJECT_ID";
+    public static final String STUDIO_CONTEST_DIRECT_PROJECT_ID = "CONTEST.TC_DIRECT_PROJECT_ID";
 
-    public static final String STUDIO_CONTEST_FORUM_ID = "STUDIO_CONTEST_FORUM_ID";
+    public static final String STUDIO_CONTEST_FORUM_ID = "CONTEST.FORUM_ID";
 
-    public static final String STUDIO_CONTEST_EVENT_ID = "STUDIO_CONTEST_EVENT_ID";
+    public static final String STUDIO_CONTEST_EVENT_ID = "CONTEST.EVENT_ID";
 
-    public static final String STUDIO_CONTEST_START_DATE = "STUDIO_CONTEST_START_DATE";
+    public static final String STUDIO_CONTEST_START_DATE = "CONTEST.START_TIME";
 
-    public static final String STUDIO_CONTEST_END_DATE = "STUDIO_CONTEST_END_DATE";
+    public static final String STUDIO_CONTEST_END_DATE = "CONTEST.END_TIME";
 
-    public static final String STUDIO_CONTEST_WINNER_ANNOUNCEMENT_DEADLINE = "STUDIO_CONTEST_WINNER_ANNOUNCEMENT"
-        + "_DEADLINE";
+    public static final String STUDIO_CONTEST_WINNER_ANNOUNCEMENT_DEADLINE = "CONTEST.WINNER_ANNOUNCEMENT_TIME";
 
     /**
      * <p>
