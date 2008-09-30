@@ -34,7 +34,7 @@ import com.topcoder.util.file.fieldconfig.TemplateFields;
  * @author TCSDESIGNER, TCSDEVELOPER
  * @version 1.0
  */
-public class DefaultEmailMessageGenerator implements EmailMessageGenerator {
+public class DefaultEmailMessageGenerator implements EmailMessageGenerator, Serializable {
 
     /**
      * <p>
