@@ -21,6 +21,7 @@ import com.topcoder.service.studio.contest.ContestStatus;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.ContestManager;
 import com.topcoder.service.studio.contest.ContestManagerLocal;
+import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.submission.Submission;
 import com.topcoder.date.workdays.Workdays;
 import com.topcoder.date.workdays.DefaultWorkdaysFactory;
@@ -41,12 +42,12 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
-import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.naming.NameNotFoundException;
 import javax.naming.InitialContext;
+import javax.persistence.EntityManager;
 import java.util.Date;
 import java.util.Set;
 import java.util.HashSet;
@@ -414,6 +415,9 @@ public class CockpitPhaseManagerBean implements CockpitPhaseManagerInterface {
 
     private Context jndiContext;
 
+    @Resource(name = "unitName")
+    private String unitName;
+
     public CockpitPhaseManagerBean() {
         draftPhaseTypeName = DRAFT;
         scheduledPhaseTypeName = SCHEDULED;
@@ -578,7 +582,8 @@ public class CockpitPhaseManagerBean implements CockpitPhaseManagerInterface {
                                 fieldValue = new HashSet((Collection) fieldValue);
                             }
 
-                            project.setAttribute(formatAttributeName(fieldName), (Serializable) fieldValue);
+                            // ISV : We never use those attributes
+//                            project.setAttribute(formatAttributeName(fieldName), (Serializable) fieldValue);
                         }
                     }
                 }
@@ -673,6 +678,7 @@ public class CockpitPhaseManagerBean implements CockpitPhaseManagerInterface {
      * @throws CockpitPhaseManagementException if any error occurs while testing the phase for starting.
      */
     public boolean canStart(Phase phase) throws CockpitPhaseManagementException {
+        refreshPhase(phase);
         return canPerform(phase, PhaseOperationEnum.START);
     }
 
@@ -688,6 +694,7 @@ public class CockpitPhaseManagerBean implements CockpitPhaseManagerInterface {
      * @throws CockpitPhaseManagementException if any error occurs when starting the phase.
      */
     public void start(Phase phase, String operator) throws CockpitPhaseManagementException {
+        refreshPhase(phase);
         perform(phase, operator, PhaseOperationEnum.START, PhaseStatus.OPEN);
     }
 
@@ -702,6 +709,7 @@ public class CockpitPhaseManagerBean implements CockpitPhaseManagerInterface {
      * @throws CockpitPhaseManagementException if any error occurs while testing the phase for ending.
      */
     public boolean canEnd(Phase phase) throws CockpitPhaseManagementException {
+        refreshPhase(phase);
         return canPerform(phase, PhaseOperationEnum.END);
     }
 
@@ -716,6 +724,7 @@ public class CockpitPhaseManagerBean implements CockpitPhaseManagerInterface {
      * @throws CockpitPhaseManagementException if any error occurs when end the phase.
      */
     public void end(Phase phase, String operator) throws CockpitPhaseManagementException {
+        refreshPhase(phase);
         perform(phase, operator, PhaseOperationEnum.END, PhaseStatus.CLOSED);
     }
 
@@ -1381,5 +1390,117 @@ public class CockpitPhaseManagerBean implements CockpitPhaseManagerInterface {
 
     private UserPersistence getCockpitUserPersistence() {
         return new CockpitUserPersistenceImpl();
+    }
+
+    /**
+     * <p>
+     * Returns the <code>EntityManager</code> looked up from the session
+     * context.
+     * </p>
+     *
+     * @return the EntityManager looked up from the session context
+     * @throws ContestManagementException
+     *             if fail to get the EntityManager from the sessionContext.
+     */
+    private EntityManager getEntityManager() throws CockpitPhaseManagementException {
+        try {
+            Object obj = sessionContext.lookup(unitName);
+
+            if (obj == null) {
+                throw wrapContestManagementException("The object for jndi name '" + unitName + "' doesn't exist.");
+            }
+
+            return (EntityManager) obj;
+        } catch (ClassCastException e) {
+            throw wrapContestManagementException(e, "The jndi name for '" + unitName
+                    + "' should be EntityManager instance.");
+        }
+    }
+
+    /**
+     * <p>
+     * Creates an <code>EntityNotFoundException</code> with specified message,
+     * and log the exception, set the sessionContext to correct state.
+     * </p>
+     *
+     * @param message
+     *            the error message
+     * @return the created EntityNotFoundException
+     */
+    private EntityNotFoundException wrapEntityNotFoundException(String message) {
+        EntityNotFoundException e = new EntityNotFoundException(message);
+        logException(e, message);
+        sessionContext.setRollbackOnly();
+
+        return e;
+    }
+
+    /**
+     * <p>
+     * Creates a <code>ContestManagementException</code> with the error message.
+     * It will log the exception, and set the sessionContext to rollback only.
+     * </p>
+     *
+     * @param message
+     *            the error message
+     * @return the created exception
+     */
+    private CockpitPhaseManagementException wrapContestManagementException(String message) {
+        CockpitPhaseManagementException e = new CockpitPhaseManagementException(message);
+        logException(e, message);
+        sessionContext.setRollbackOnly();
+
+        return e;
+    }
+
+    /**
+     * <p>
+     * Creates a <code>ContestManagementException</code> with inner exception
+     * and message. It will log the exception, and set the sessionContext to
+     * rollback only.
+     * </p>
+     *
+     * @param e
+     *            the inner exception
+     * @param message
+     *            the error message
+     * @return the created exception
+     */
+    private CockpitPhaseManagementException wrapContestManagementException(Exception e, String message) {
+        CockpitPhaseManagementException ce = new CockpitPhaseManagementException(message, e);
+        logException(ce, message);
+        sessionContext.setRollbackOnly();
+
+        return ce;
+    }
+
+    /**
+     * <p>
+     * Log the exception.
+     * </p>
+     *
+     * @param e
+     *            the exception to log
+     * @param message
+     *            the string message
+     */
+    private void logException(Throwable e, String message) {
+        if (log != null) {
+            // This will log the message and StackTrace of the exception.
+            log.log(Level.ERROR, e, message);
+
+            while (e != null) {
+                log.log(Level.ERROR, "INNER: " + e.getMessage());
+                e = e.getCause();
+            }
+        }
+    }
+
+    private void refreshPhase(Phase phase) throws CockpitPhaseManagementException {
+        EntityManager entityManager = getEntityManager();
+        Contest contest = (Contest) phase.getProject().getAttribute("contest");
+        contest = entityManager.merge(contest);
+        entityManager.refresh(contest);
+        phase.getProject().setAttribute("contest", contest);
     }
 }
