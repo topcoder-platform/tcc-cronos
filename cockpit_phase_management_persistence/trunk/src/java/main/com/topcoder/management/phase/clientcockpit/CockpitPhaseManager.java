@@ -3,63 +3,47 @@
  */
 package com.topcoder.management.phase.clientcockpit;
 
-import com.topcoder.date.workdays.DefaultWorkdaysFactory;
-import com.topcoder.date.workdays.Workdays;
-
-import com.topcoder.management.phase.HandlerRegistryInfo;
-import com.topcoder.management.phase.PhaseHandler;
-import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.phase.PhaseManager;
+import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.phase.PhaseOperationEnum;
+import com.topcoder.management.phase.PhaseHandler;
+import com.topcoder.management.phase.HandlerRegistryInfo;
 import com.topcoder.management.phase.PhaseValidator;
-
-import com.topcoder.naming.jndiutility.ConfigurationException;
-import com.topcoder.naming.jndiutility.JNDIUtil;
-import com.topcoder.naming.jndiutility.JNDIUtils;
-
-import com.topcoder.project.phases.Phase;
-import com.topcoder.project.phases.PhaseStatus;
-import com.topcoder.project.phases.PhaseType;
-import com.topcoder.project.phases.Project;
-
-import com.topcoder.service.studio.contest.Contest;
-import com.topcoder.service.studio.contest.ContestConfig;
-import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.ContestManager;
-import com.topcoder.service.studio.contest.ContestProperty;
-import com.topcoder.service.studio.contest.ContestStatus;
-
-import com.topcoder.util.cache.Cache;
-import com.topcoder.util.config.ConfigManager;
-import com.topcoder.util.config.Property;
-import com.topcoder.util.config.UnknownNamespaceException;
-import com.topcoder.util.log.Level;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogManager;
-import com.topcoder.util.objectfactory.InvalidClassSpecificationException;
 import com.topcoder.util.objectfactory.ObjectFactory;
+import com.topcoder.util.objectfactory.InvalidClassSpecificationException;
 import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
 import com.topcoder.util.objectfactory.impl.IllegalReferenceException;
 import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
-
-import java.io.Serializable;
-
-import java.lang.reflect.Field;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.topcoder.util.config.Property;
+import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.config.UnknownNamespaceException;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.cache.Cache;
+import com.topcoder.project.phases.Project;
+import com.topcoder.project.phases.PhaseType;
+import com.topcoder.project.phases.PhaseStatus;
+import com.topcoder.project.phases.Phase;
+import com.topcoder.naming.jndiutility.JNDIUtils;
+import com.topcoder.naming.jndiutility.JNDIUtil;
+import com.topcoder.naming.jndiutility.ConfigurationException;
 
 import javax.naming.NamingException;
-
+import javax.security.auth.callback.CallbackHandler;
+import javax.security.auth.callback.UnsupportedCallbackException;
+import javax.security.auth.callback.Callback;
+import javax.security.auth.callback.TextOutputCallback;
+import javax.security.auth.callback.NameCallback;
+import javax.security.auth.callback.PasswordCallback;
+import javax.security.auth.Subject;
+import javax.security.auth.login.LoginContext;
+import javax.security.auth.login.LoginException;
+import javax.rmi.PortableRemoteObject;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+import java.io.IOException;
 
 /**
  * <p>
@@ -264,334 +248,8 @@ import javax.naming.NamingException;
  * @version 1.0
  */
 public class CockpitPhaseManager implements PhaseManager {
-    /**
-     * <p>
-     * Represents default phase type name for Completed phase.
-     * </p>
-     */
-    private static final String COMPLETED = "Completed";
 
-    /**
-     * <p>
-     * Represents default phase type name for No Winner Chosen phase.
-     * </p>
-     */
-    private static final String NO_WINNER_CHOSEN = "No Winner Chosen";
-
-    /**
-     * <p>
-     * Represents default phase type name for Insufficient Submissions phase.
-     * </p>
-     */
-    private static final String INSUFFICIENT_SUBMISSIONS = "Insufficient Submissions";
-
-    /**
-     * <p>
-     * Represents default phase type name for Repost phase.
-     * </p>
-     */
-    private static final String REPOST = "Repost";
-
-    /**
-     * <p>
-     * Represents default phase type name for Extended phase.
-     * </p>
-     */
-    private static final String EXTENDED = "Extended";
-
-    /**
-     * <p>
-     * Represents default phase type name for Insufficient Submissions - ReRun Possible phase.
-     * </p>
-     */
-    private static final String INSUFFICIENT_SUBMISSIONS_RE_RUN_POSSIBLE = "Insufficient Submissions - ReRun Possible";
-
-    /**
-     * <p>
-     * Represents default phase type name for In Danger phase.
-     * </p>
-     */
-    private static final String IN_DANGER = "In Danger";
-
-    /**
-     * <p>
-     * Represents default phase type name for Action Required phase.
-     * </p>
-     */
-    private static final String ACTION_REQUIRED = "Action Required";
-
-    /**
-     * <p>
-     * Represents default phase type name for Active Required phase.
-     * </p>
-     */
-    private static final String ACTIVE = "Active";
-
-    /**
-     * <p>
-     * Represents default phase type name for Scheduled phase.
-     * </p>
-     */
-    private static final String SCHEDULED = "Scheduled";
-
-    /**
-     * <p>
-     * Represents default phase type name for Draft phase.
-     * </p>
-     */
-    private static final String DRAFT = "Draft";
-
-    /**
-     * <p>
-     * Represents default phase type name for Abandoned phase.
-     * </p>
-     */
-    private static final String ABANDONED = "Abandoned";
-
-    /**
-     * <p>
-     * Represents default phase type name for Cancelled phase.
-     * </p>
-     */
-    private static final String CANCELLED = "Cancelled";
-
-    /**
-     * <p>
-     * Mapping from HandlerRegistryInfo keys to PhaseHandler values.
-     * </p>
-     * <p>
-     * This is used to look up phase handlers when performing operations. It is not mutable and and its value
-     * is an empty map. This map is filled in the constructor with the phase handlers and it is modified in
-     * the register and unregister method or in the setter. The keys and the values can not be null.
-     * </p>
-     */
-    private final Map<HandlerRegistryInfo, PhaseHandler> handlers = new HashMap<HandlerRegistryInfo, PhaseHandler>();
-
-    /**
-     * <p>
-     * Mapping from ContestStatus name keys to PhaseType name values.
-     * </p>
-     * <p>
-     * This is used to look up mapped phase type name when mapping the ContestStatus to a Phase operation. It
-     * is not mutable and and its value is an empty map. This map is filled in the constructor with the
-     * mapping specified in class documentation. The keys and the values can not be null.
-     * </p>
-     */
-    private final Map<String, String[]> statusMapping = new HashMap<String, String[]>();
-
-    /**
-     * <p>
-     * Represents the ContestManager adapted by this phase manager. All methods delegate the work to the
-     * methods of this instance.
-     * </p>
-     * <p>
-     * It is initialized to null. And can be set in the setter or defined in constructor. It is accessed and
-     * modified in corresponding getter and setter. It can not be null.
-     * </p>
-     */
-    private ContestManager contestManager;
-
-    /**
-     * <p>
-     * Represents the log used to log the operations.
-     * </p>
-     * <p>
-     * It is initialized to null. Or it can be defined in constructor. It is accessed and modified in
-     * corresponding getter and setter. It can be null.
-     * </p>
-     */
-    private Log log;
-
-    /**
-     * <p>
-     * Represents the cache used to cache the contest statuses. This cache will contains only one object with
-     * the key "contestStatuses".
-     * </p>
-     * <p>
-     * Only one Object is used because all contest statuses are loaded in a single operation. This object is a
-     * List of ContestStatus instances, they are all contest status instances from the contest manager.
-     * </p>
-     * <p>
-     * These instances are loaded in lazy mode: if a method needs these statuses and they are null then they
-     * are loaded in the cacheContestStatuses. This cache is optional, therefore if it's null then it is not
-     * used.
-     * </p>
-     * <p>
-     * It is initialized to null or it can be defined in constructor. It is accessed and modified in
-     * corresponding getter and setter. It is utilized in methods which need the contest statuses. It can be
-     * null, it's optional.
-     * </p>
-     */
-    private Cache cachedContestStatuses;
-
-    /**
-     * <p>
-     * This is the phase type name for the Draft PhaseType/ContestStatus. It is used to map the contest status
-     * to the phase type.
-     * </p>
-     * <p>
-     * It is defined at beginning and it doesn't change. It is configurable. It can't be null or empty. Since
-     * this fields is final, the initial value is only the default value if the field is not configured in the
-     * constructor.
-     * </p>
-     */
-    private final String draftPhaseTypeName;
-
-    /**
-     * <P>
-     * This is the phase type name for the Scheduled PhaseType/ContestStatus. It is used to map the contest
-     * status to the phase type.
-     * </p>
-     * <p>
-     * It is defined at beginning and it doesn't change. It is configurable. It can't be null or empty. Since
-     * this fields is final, the initial value is only the default value if the field is not configured in the
-     * constructor.
-     * </p>
-     */
-    private final String scheduledPhaseTypeName;
-
-    /**
-     * <p>
-     * This is the phase type name for the Active PhaseType/ContestStatus. It is used to map the contest
-     * status to the phase type.
-     * </p>
-     * <p>
-     * It is defined at beginning and it doesn't change. It is configurable. It can't be null or empty. Since
-     * this fields is final, the initial value is only the default value if the field is not configured in the
-     * constructor.
-     * </p>
-     */
-    private final String activePhaseTypeName;
-
-    /**
-     * <p>
-     * This is the phase type name for the Action Required PhaseType/ContestStatus. It is used to map the
-     * contest status to the phase type.
-     * </p>
-     * <p>
-     * It is defined at beginning and it doesn't change. It is configurable. It can't be null or empty. Since
-     * this fields is final, the initial value is only the default value if the field is not configured in the
-     * constructor.
-     * </p>
-     */
-    private final String actionRequiredPhaseTypeName;
-
-    /**
-     * <p>
-     * This is the phase type name for the In Danger PhaseType/ContestStatus. It is used to map the contest
-     * status to the phase type.
-     * </p>
-     * <p>
-     * It is defined at beginning and it doesn't change. It is configurable. It can't be null or empty. Since
-     * this fields is final, the initial value is only the default value if the field is not configured in the
-     * constructor.
-     * </p>
-     */
-    private final String inDangerPhaseTypeName;
-
-    /**
-     * <p>
-     * This is the phase type name for the Insufficient Submission - ReRun Possible PhaseType/ContestStatus.
-     * It is used to map the contest status to the phase type.
-     * </p>
-     * <p>
-     * It is defined at beginning and it doesn't change. It is configurable. It can't be null or empty. Since
-     * this fields is final, the initial value is only the default value if the field is not configured in the
-     * constructor.
-     * </p>
-     */
-    private final String insufficientSubmissionsReRunPossiblePhaseTypeName;
-
-    /**
-     * <p>
-     * This is the phase type name for the Extended PhaseType/ContestStatus. It is used to map the contest
-     * status to the phase type.
-     * </p>
-     * <p>
-     * It is defined at beginning and it doesn't change. It is configurable. It can't be null or empty. Since
-     * this fields is final, the initial value is only the default value if the field is not configured in the
-     * constructor.
-     * </p>
-     */
-    private final String extendedPhaseTypeName;
-
-    /**
-     * <p>
-     * This is the phase type name for the Repost PhaseType/ContestStatus. It is used to map the contest
-     * status to the phase type.
-     * </p>
-     * <p>
-     * It is defined at beginning and it doesn't change. It is configurable. It can't be null or empty. Since
-     * this fields is final, the initial value is only the default value if the field is not configured in the
-     * constructor.
-     * </p>
-     */
-    private final String repostPhaseTypeName;
-
-    /**
-     * <p>
-     * This is the phase type name for the Insufficient Submissions PhaseType/ContestStatus. It is used to map
-     * the contest status to the phase type.
-     * </p>
-     * <p>
-     * It is defined at beginning and it doesn't change. It is configurable. It can't be null or empty. Since
-     * this fields is final, the initial value is only the default value if the field is not configured in the
-     * constructor.
-     * </p>
-     */
-    private final String insufficientSubmissionsPhaseTypeName;
-
-    /**
-     * <p>
-     * This is the phase type name for the No Winner Chosen PhaseType/ContestStatus. It is used to map the
-     * contest status to the phase type.
-     * </p>
-     * <p>
-     * It is defined at beginning and it doesn't change. It is configurable. It can't be null or empty. Since
-     * this fields is final, the initial value is only the default value if the field is not configured in the
-     * constructor.
-     * </p>
-     */
-    private final String noWinnerChosenPhaseTypeName;
-
-    /**
-     * <p>
-     * This is the phase type name for the Completed PhaseType/ContestStatus. It is used to map the contest
-     * status to the phase type.
-     * </p>
-     * <p>
-     * It is defined at beginning and it doesn't change. It is configurable. It can't be null or empty. Since
-     * this fields is final, the initial value is only the default value if the field is not configured in the
-     * constructor.
-     * </p>
-     */
-    private final String completedPhaseTypeName;
-
-    /**
-     * <p>
-     * This is the phase type name for the Abandoned PhaseType/ContestStatus. It is used to map the contest
-     * status to the phase type.
-     * </p>
-     * <p>
-     * It is defined at beginning and it doesn't change. It is configurable. It can't be null or empty. Since
-     * this fields is final, the initial value is only the default value if the field is not configured in the
-     * constructor.
-     * </p>
-     */
-    private final String abandonedPhaseTypeName;
-
-    /**
-     * <p>
-     * This is the phase type name for the Cancelled PhaseType/ContestStatus. It is used to map the contest
-     * status to the phase type.
-     * </p>
-     * <p>
-     * It is defined at beginning and it doesn't change. It is configurable. It can't be null or empty. Since
-     * this fields is final, the initial value is only the default value if the field is not configured in the
-     * constructor.
-     * </p>
-     */
-    private final String cancelledPhaseTypeName;
+    private CockpitPhaseManagerInterface delegate;
 
     /**
      * <p>
@@ -599,22 +257,6 @@ public class CockpitPhaseManager implements PhaseManager {
      * </p>
      */
     public CockpitPhaseManager() {
-        // init all the phase type names with default value.
-        draftPhaseTypeName = DRAFT;
-        scheduledPhaseTypeName = SCHEDULED;
-        activePhaseTypeName = ACTIVE;
-        actionRequiredPhaseTypeName = ACTION_REQUIRED;
-        inDangerPhaseTypeName = IN_DANGER;
-        insufficientSubmissionsReRunPossiblePhaseTypeName = INSUFFICIENT_SUBMISSIONS_RE_RUN_POSSIBLE;
-        extendedPhaseTypeName = EXTENDED;
-        repostPhaseTypeName = REPOST;
-        insufficientSubmissionsPhaseTypeName = INSUFFICIENT_SUBMISSIONS;
-        noWinnerChosenPhaseTypeName = NO_WINNER_CHOSEN;
-        completedPhaseTypeName = COMPLETED;
-        abandonedPhaseTypeName = ABANDONED;
-        cancelledPhaseTypeName = CANCELLED;
-
-        initStatusMapping();
     }
 
     /**
@@ -632,30 +274,20 @@ public class CockpitPhaseManager implements PhaseManager {
      */
     public CockpitPhaseManager(String namespace)
         throws CockpitConfigurationException, CockpitPhaseManagementException {
-        checkNullOrEmpty(namespace, "namespace");
-
         // loads the configuration from the namespace
+        String username = getPropertyValue(namespace, "EJBContextUsername", null);
+        String password = getPropertyValue(namespace, "EJBContextPassword", null);
+        String clientLoginDomain = getPropertyValue(namespace, "ClientLoginAppPolicyName", null);
+        try {
+            LoginContext loginContext = new LoginContext(clientLoginDomain, new Subject(),
+                                                         new CallbackHandlerImpl(username, password));
+            loginContext.login();
+        } catch (LoginException e) {
+            e.printStackTrace();
+            throw new CockpitPhaseManagementException("Could not establish security context", e);
+        }
+
         loadConfiguration(namespace);
-
-        // init the phaseType/contestStatus name from configuration
-        // if it is not configured, the default value will be used.
-        draftPhaseTypeName = getPropertyValue(namespace, "draftPhaseTypeName", DRAFT);
-        scheduledPhaseTypeName = getPropertyValue(namespace, "scheduledPhaseTypeName", SCHEDULED);
-        activePhaseTypeName = getPropertyValue(namespace, "activePhaseTypeName", ACTIVE);
-        actionRequiredPhaseTypeName = getPropertyValue(namespace, "actionRequiredPhaseTypeName", ACTION_REQUIRED);
-        inDangerPhaseTypeName = getPropertyValue(namespace, "inDangerPhaseTypeName", IN_DANGER);
-        insufficientSubmissionsReRunPossiblePhaseTypeName = getPropertyValue(namespace,
-                "insufficientSubmissionsReRunPossiblePhaseTypeName", INSUFFICIENT_SUBMISSIONS_RE_RUN_POSSIBLE);
-        extendedPhaseTypeName = getPropertyValue(namespace, "extendedPhaseTypeName", EXTENDED);
-        repostPhaseTypeName = getPropertyValue(namespace, "repostPhaseTypeName", REPOST);
-        insufficientSubmissionsPhaseTypeName = getPropertyValue(namespace, "insufficientSubmissionsPhaseTypeName",
-                INSUFFICIENT_SUBMISSIONS);
-        noWinnerChosenPhaseTypeName = getPropertyValue(namespace, "noWinnerChosenPhaseTypeName", NO_WINNER_CHOSEN);
-        completedPhaseTypeName = getPropertyValue(namespace, "completedPhaseTypeName", COMPLETED);
-        abandonedPhaseTypeName = getPropertyValue(namespace, "abandonedPhaseTypeName", ABANDONED);
-        cancelledPhaseTypeName = getPropertyValue(namespace, "cancelledPhaseTypeName", CANCELLED);
-
-        initStatusMapping();
     }
 
     /**
@@ -671,18 +303,18 @@ public class CockpitPhaseManager implements PhaseManager {
      * @throws IllegalArgumentException if <code>contestManager</code> is <code>null</code>, or if
      *         <code>logName</code> is empty.
      */
-    public CockpitPhaseManager(ContestManager contestManager, String logName, Cache cacheContestStatuses) {
-        this();
-        checkNull(contestManager, "contestManager");
-        this.contestManager = contestManager;
-
-        if (logName != null) {
-            checkEmpty(logName, "logName should not be empty");
-            log = LogManager.getLog(logName);
-        }
-
-        this.cachedContestStatuses = cacheContestStatuses;
-    }
+//    public CockpitPhaseManager(ContestManager contestManager, String logName, Cache cacheContestStatuses) {
+//        this();
+////        checkNull(contestManager, "contestManager");
+//        this.contestManager = contestManager;
+//
+//        if (logName != null) {
+//            checkEmpty(logName, "logName should not be empty");
+//            log = LogManager.getLog(logName);
+//        }
+//
+//        this.cachedContestStatuses = cacheContestStatuses;
+//    }
 
     /**
      * <p>
@@ -692,8 +324,8 @@ public class CockpitPhaseManager implements PhaseManager {
      * @param project project for which to update phases. It is unused.
      * @param operator the operator performing the action. It is unused.
      */
-    public void updatePhases(Project project, String operator) {
-        // does nothing.
+    public void updatePhases(Project project, String operator) throws PhaseManagementException {
+        this.delegate.updatePhases(project, operator);
     }
 
     /**
@@ -709,118 +341,8 @@ public class CockpitPhaseManager implements PhaseManager {
      *         manager, or if a required contest status can not be found in contest manager for mapping the
      *         project's phase, or if no start date specified in the contest.
      */
-    public Project getPhases(long contestId) throws CockpitPhaseManagementException {
-        // checks if a contest manager has been set.
-        checkContestManager();
-
-        Project project = null;
-
-        try {
-            // retrieves contest with specified Id.
-            Contest contest = contestManager.getContest(contestId);
-
-            // if contest exists
-            if (contest != null) {
-                // creates project workdays using default workdays.
-                Workdays workdays = new DefaultWorkdaysFactory().createWorkdaysInstance();
-
-                // The contest startDate will be the project's start date
-                Date startDate = contest.getStartDate();
-
-                if (startDate == null) {
-                    throw new CockpitPhaseManagementException("contest Start Date is not specified");
-                }
-
-                // creates the project with id of contestId
-                project = new Project(startDate, workdays);
-                project.setId(contestId);
-
-                // gets all the Contest fields reflectively
-                Field[] fields = Contest.class.getDeclaredFields();
-
-                for (Field field : fields) {
-                    String fieldName = field.getName();
-
-                    if (!fieldName.equals("serialVersionUID") && !fieldName.equals("contestId")) {
-                        field.setAccessible(true);
-
-                        // gets the fieldValue
-                        Object fieldValue = field.get(contest);
-
-                        if (fieldName.equals("config")) {
-                            // for Contest configs
-                            // map each of configs into separate attribute.
-                            Set<ContestConfig> configs = (Set<ContestConfig>) fieldValue;
-
-                            if (configs != null) {
-                                for (ContestConfig config : configs) {
-                                    if (config != null) {
-                                        ContestProperty property = config.getId().getProperty();
-
-                                        // the attribute is: config.value + " " + property.propertId
-                                        // -> property.description
-                                        project.setAttribute(config.getValue() + " " + property.getPropertyId(),
-                                            property.getDescription());
-                                    }
-                                }
-                            }
-                        } else if (fieldName.equals("status")) {
-                            // the status is mapped to a phase
-                            if (fieldValue == null) {
-                                throw new CockpitPhaseManagementException(
-                                    "Missing contest status from contest with given id '" + contestId + "'");
-                            }
-
-                            // maps the status to required phases
-                            mapContestStatusToPhases(project, getPhaseLength(contest), (ContestStatus) fieldValue);
-                        } else if (fieldValue != null) {
-                            // for other Contest property simply add them as the
-                            // project's attribute
-                            if (fieldValue instanceof Set) {
-                                // if the Contest property is a Set, it is
-                                // wrapped with HashSet
-                                fieldValue = new HashSet((Collection) fieldValue);
-                            }
-
-                            project.setAttribute(formatAttributeName(fieldName), (Serializable) fieldValue);
-                        }
-                    }
-                }
-            }
-        } catch (ContestManagementException e) {
-            throw new CockpitPhaseManagementException("A contest management exception is encountered"
-                + " while retrieving contest from ContestManager", e);
-        } catch (IllegalArgumentException e) {
-            // should never happen since the passed object is always an instance
-            // of ContestStatus
-        } catch (IllegalAccessException e) {
-            // should never happen since the field has been made accessible
-        }
-
-        return project;
-    }
-
-    /**
-     * <p>
-     * This helper method calculates the phase length from the contest endDate. The phase length is calculated
-     * as contest.endDate - System.currentTimeMillis(). In case of the result is negative or endDate is null,
-     * the length will be zero.
-     * @param contest the contest.
-     * @return phase length
-     */
-    private long getPhaseLength(Contest contest) {
-        Date endDate = contest.getEndDate();
-        long length = -1;
-
-        if (endDate != null) {
-            length = endDate.getTime() - System.currentTimeMillis();
-        }
-
-        if (length < 0) {
-            length = 0;
-        }
-
-        return length;
+    public Project getPhases(long contestId) throws PhaseManagementException {
+        return this.delegate.getPhases(contestId);
     }
 
     /**
@@ -839,18 +361,8 @@ public class CockpitPhaseManager implements PhaseManager {
      *         manager, or if a required contest status can not be found in contest manager for mapping the
      *         project's phase, or if no start date specified in the contest.
      */
-    public Project[] getPhases(long[] contestIds) throws CockpitPhaseManagementException {
-        checkNull(contestIds, "contestIds");
-
-        checkContestManager();
-
-        Project[] projects = new Project[contestIds.length];
-
-        for (int i = 0; i < projects.length; i++) {
-            projects[i] = getPhases(contestIds[i]);
-        }
-
-        return projects;
+    public Project[] getPhases(long[] contestIds) throws PhaseManagementException {
+        return this.delegate.getPhases(contestIds);
     }
 
     /**
@@ -861,20 +373,8 @@ public class CockpitPhaseManager implements PhaseManager {
      * @throws CockpitPhaseManagementException if any error occurs while retrieving contest status from
      *         contest manager.
      */
-    public PhaseType[] getAllPhaseTypes() throws CockpitPhaseManagementException {
-        checkContestManager();
-
-        List<ContestStatus> statuses = getAllContestStatuses();
-        PhaseType[] types = new PhaseType[statuses.size()];
-
-        int count = 0;
-
-        for (ContestStatus status : statuses) {
-            PhaseType phaseType = new PhaseType(status.getContestStatusId(), status.getName());
-            types[count++] = phaseType;
-        }
-
-        return types;
+    public PhaseType[] getAllPhaseTypes() throws PhaseManagementException {
+        return this.delegate.getAllPhaseTypes();
     }
 
     /**
@@ -883,8 +383,8 @@ public class CockpitPhaseManager implements PhaseManager {
      * </p>
      * @return an array of all phase statuses which can be used by a phase.
      */
-    public PhaseStatus[] getAllPhaseStatuses() {
-        return new PhaseStatus[] {PhaseStatus.OPEN, PhaseStatus.CLOSED, PhaseStatus.SCHEDULED};
+    public PhaseStatus[] getAllPhaseStatuses() throws PhaseManagementException {
+        return this.delegate.getAllPhaseStatuses();
     }
 
     /**
@@ -897,8 +397,8 @@ public class CockpitPhaseManager implements PhaseManager {
      *         <code>phase</code> does not have a phase type.
      * @throws CockpitPhaseManagementException if any error occurs while testing the phase for starting.
      */
-    public boolean canStart(Phase phase) throws CockpitPhaseManagementException {
-        return canPerform(phase, PhaseOperationEnum.START);
+    public boolean canStart(Phase phase) throws PhaseManagementException {
+        return this.delegate.canStart(phase);
     }
 
     /**
@@ -912,8 +412,8 @@ public class CockpitPhaseManager implements PhaseManager {
      *         does not have a phase type, or if <code>operator</code> is empty.
      * @throws CockpitPhaseManagementException if any error occurs when starting the phase.
      */
-    public void start(Phase phase, String operator) throws CockpitPhaseManagementException {
-        perform(phase, operator, PhaseOperationEnum.START, PhaseStatus.OPEN);
+    public void start(Phase phase, String operator) throws PhaseManagementException {
+        this.delegate.start(phase, operator);
     }
 
     /**
@@ -926,8 +426,8 @@ public class CockpitPhaseManager implements PhaseManager {
      *         <code>phase</code> does not have a phase type.
      * @throws CockpitPhaseManagementException if any error occurs while testing the phase for ending.
      */
-    public boolean canEnd(Phase phase) throws CockpitPhaseManagementException {
-        return canPerform(phase, PhaseOperationEnum.END);
+    public boolean canEnd(Phase phase) throws PhaseManagementException {
+        return this.delegate.canEnd(phase);
     }
 
     /**
@@ -940,8 +440,8 @@ public class CockpitPhaseManager implements PhaseManager {
      *         does not have a phase type, or if <code>operator</code> is empty.
      * @throws CockpitPhaseManagementException if any error occurs when end the phase.
      */
-    public void end(Phase phase, String operator) throws CockpitPhaseManagementException {
-        perform(phase, operator, PhaseOperationEnum.END, PhaseStatus.CLOSED);
+    public void end(Phase phase, String operator) throws PhaseManagementException {
+        this.delegate.end(phase, operator);
     }
 
     /**
@@ -952,8 +452,8 @@ public class CockpitPhaseManager implements PhaseManager {
      * @param phase a phase to test. This is unused.
      * @return <code>false</code>.
      */
-    public boolean canCancel(Phase phase) {
-        return false;
+    public boolean canCancel(Phase phase) throws PhaseManagementException {
+        return this.delegate.canCancel(phase);
     }
 
     /**
@@ -963,8 +463,8 @@ public class CockpitPhaseManager implements PhaseManager {
      * @param phase the phase to end. This is unused.
      * @param operator the operator of the operation. This is unused.
      */
-    public void cancel(Phase phase, String operator) {
-        // does nothing.
+    public void cancel(Phase phase, String operator) throws PhaseManagementException {
+        this.delegate.cancel(phase, operator);
     }
 
     /**
@@ -983,10 +483,7 @@ public class CockpitPhaseManager implements PhaseManager {
      * @throws IllegalArgumentException if any argument is <code>null</code>.
      */
     public void registerHandler(PhaseHandler handler, PhaseType type, PhaseOperationEnum operation) {
-        checkNull(handler, "handler");
-
-        HandlerRegistryInfo info = new HandlerRegistryInfo(type, operation);
-        handlers.put(info, handler);
+        this.delegate.registerHandler(handler, type, operation);
     }
 
     /**
@@ -1001,9 +498,7 @@ public class CockpitPhaseManager implements PhaseManager {
      * @throws IllegalArgumentException if any argument is <code>null</code>.
      */
     public PhaseHandler unregisterHandler(PhaseType type, PhaseOperationEnum operation) {
-        HandlerRegistryInfo info = new HandlerRegistryInfo(type, operation);
-
-        return handlers.remove(info);
+        return this.delegate.unregisterHandler(type, operation);
     }
 
     /**
@@ -1015,13 +510,7 @@ public class CockpitPhaseManager implements PhaseManager {
      * @return all of the currently registered phase handlers.
      */
     public PhaseHandler[] getAllHandlers() {
-        Set<PhaseHandler> handlerSet = new HashSet<PhaseHandler>();
-
-        for (PhaseHandler handler : handlers.values()) {
-            handlerSet.add(handler);
-        }
-
-        return handlerSet.toArray(new PhaseHandler[handlerSet.size()]);
+        return this.delegate.getAllHandlers();
     }
 
     /**
@@ -1034,17 +523,7 @@ public class CockpitPhaseManager implements PhaseManager {
      * @throws IllegalArgumentException if <code>handler</code> is <code>null</code>.
      */
     public HandlerRegistryInfo[] getHandlerRegistrationInfo(PhaseHandler handler) {
-        checkNull(handler, "handler");
-
-        List<HandlerRegistryInfo> infoList = new ArrayList<HandlerRegistryInfo>();
-
-        for (Map.Entry<HandlerRegistryInfo, PhaseHandler> entry : handlers.entrySet()) {
-            if (handler.equals(entry.getValue())) {
-                infoList.add(entry.getKey());
-            }
-        }
-
-        return infoList.toArray(new HandlerRegistryInfo[infoList.size()]);
+        return this.delegate.getHandlerRegistrationInfo(handler);
     }
 
     /**
@@ -1054,7 +533,7 @@ public class CockpitPhaseManager implements PhaseManager {
      * @param phaseValidator the validator to use for this manager. This is unused.
      */
     public void setPhaseValidator(PhaseValidator phaseValidator) {
-        // does nothing.
+        this.delegate.setPhaseValidator(phaseValidator);
     }
 
     /**
@@ -1064,7 +543,7 @@ public class CockpitPhaseManager implements PhaseManager {
      * @return <code>null</code>.
      */
     public PhaseValidator getPhaseValidator() {
-        return null;
+        return this.delegate.getPhaseValidator();
     }
 
     /**
@@ -1074,7 +553,7 @@ public class CockpitPhaseManager implements PhaseManager {
      * @return the contest manager in this manager.
      */
     public ContestManager getContestManager() {
-        return contestManager;
+        return this.delegate.getContestManager();
     }
 
     /**
@@ -1085,32 +564,7 @@ public class CockpitPhaseManager implements PhaseManager {
      * @throws IllegalArgumentException if <code>contestManager</code> is <code>null</code>.
      */
     public void setContestManager(ContestManager contestManager) {
-        checkNull(contestManager, "contestManager");
-        this.contestManager = contestManager;
-    }
-
-    /**
-     * <p>
-     * Sets the contestManager using JNDI.
-     * </p>
-     * <p>
-     * In this case a JNDIUtil instance is created with default namespace <code>JNDIUtils#NAMESPACE</code>
-     * </p>
-     * @param contestManagerName the contestManager's name used to retrieve the contest manager
-     * @throws IllegalArgumentException if <code>contestManagerName</code> is <code>null</code> or an
-     *         empty string.
-     * @throws CockpitPhaseManagementException if any error occurs while creating JNDIUtil or while retrieving
-     *         <code>ContestManager</code> from a JNDI context.
-     */
-    public void setContestManager(String contestManagerName)
-        throws CockpitPhaseManagementException {
-        checkNullOrEmpty(contestManagerName, "contestManagerName");
-
-        try {
-            createContestManager(contestManagerName, null);
-        } catch (CockpitConfigurationException e) {
-            throw new CockpitPhaseManagementException(e.getMessage());
-        }
+        this.delegate.setContestManager(contestManager);
     }
 
     /**
@@ -1120,7 +574,7 @@ public class CockpitPhaseManager implements PhaseManager {
      * @return the possibly <code>null</code> log used by this manager.
      */
     public Log getLog() {
-        return log;
+        return this.delegate.getLog();
     }
 
     /**
@@ -1130,7 +584,7 @@ public class CockpitPhaseManager implements PhaseManager {
      * @param log the log to set, can be <code>null</code>.
      */
     public void setLog(Log log) {
-        this.log = log;
+        this.delegate.setLog(log);
     }
 
     /**
@@ -1143,10 +597,7 @@ public class CockpitPhaseManager implements PhaseManager {
      * @throws IllegalArgumentException if <code>logName</code> is empty.
      */
     public void setLog(String logName) {
-        if (logName != null) {
-            checkEmpty(logName, "logName");
-            log = LogManager.getLog(logName);
-        }
+        this.delegate.setLog(logName);
     }
 
     /**
@@ -1157,7 +608,7 @@ public class CockpitPhaseManager implements PhaseManager {
      * @return the possibly <code>null</code> cache used for ContestStatuses instances.
      */
     public Cache getCachedContestStatuses() {
-        return cachedContestStatuses;
+        return this.delegate.getCachedContestStatuses();
     }
 
     /**
@@ -1167,7 +618,7 @@ public class CockpitPhaseManager implements PhaseManager {
      * @param cachedContestStatuses the cache used for ContestStatus instances, can be <code>null</code>.
      */
     public void setCachedContestStatuses(Cache cachedContestStatuses) {
-        this.cachedContestStatuses = cachedContestStatuses;
+        this.delegate.setCachedContestStatuses(cachedContestStatuses);
     }
 
     /**
@@ -1177,7 +628,7 @@ public class CockpitPhaseManager implements PhaseManager {
      * @return the handlers.
      */
     public Map<HandlerRegistryInfo, PhaseHandler> getHandlers() {
-        return new HashMap<HandlerRegistryInfo, PhaseHandler>(handlers);
+        return this.delegate.getHandlers();
     }
 
     /**
@@ -1189,18 +640,7 @@ public class CockpitPhaseManager implements PhaseManager {
      *         <code>handlers</code> contains <code>null</code> keys or values.
      */
     public void setHandlers(Map<HandlerRegistryInfo, PhaseHandler> handlers) {
-        checkNull(handlers, "handlers");
-
-        this.handlers.clear();
-
-        for (Map.Entry<HandlerRegistryInfo, PhaseHandler> entry : handlers.entrySet()) {
-            HandlerRegistryInfo key = entry.getKey();
-            checkNull(key, "key in handlers");
-
-            PhaseHandler value = entry.getValue();
-            checkNull(value, "value in handlers");
-            this.handlers.put(key, value);
-        }
+        this.delegate.setHandlers(handlers);
     }
 
     /**
@@ -1232,21 +672,21 @@ public class CockpitPhaseManager implements PhaseManager {
         } else {
             // otherwise, use ObjectFactory to create the ContestManager
             String contestManagerKey = getPropertyValue(namespace, "contestManagerKey", null);
-            contestManager = (ContestManager) createObject(objectFactory, contestManagerKey, ContestManager.class);
+            delegate = (CockpitPhaseManagerInterface) createObject(objectFactory, contestManagerKey, ContestManager.class);
         }
 
         // creates the Log if it is configured
         String logName = getPropertyValue(namespace, "logName", "");
 
         if (logName.length() > 0) {
-            log = LogManager.getLog(logName);
+//            this.delegate.setLog(LogManager.getLog(logName));
         }
 
         // creates the Cache if it is configured
         String cachedContestStatusesKey = getPropertyValue(namespace, "cachedContestStatusesKey", "");
 
         if (cachedContestStatusesKey.length() > 0) {
-            cachedContestStatuses = (Cache) createObject(objectFactory, cachedContestStatusesKey, Cache.class);
+//            this.delegate.setCachedContestStatuses((Cache) createObject(objectFactory, cachedContestStatusesKey, Cache.class));
         }
 
         // loads phase handlers configuration values
@@ -1273,14 +713,16 @@ public class CockpitPhaseManager implements PhaseManager {
             // retrieves ContestManager from context
             Object value = util.getObject(contestManagerName);
 
+            Object value2 = PortableRemoteObject.narrow(value, CockpitPhaseManagerInterface.class);
+
             // verifies if it is a ContestManager instance
-            if (!(value instanceof ContestManager)) {
+            if (!(value2 instanceof CockpitPhaseManagerInterface)) {
                 throw new CockpitPhaseManagementException("Expecting object in a type of "
                     + ContestManager.class.getName() + " bound to the name '" + contestManagerName
-                    + "' in JNDI context, but found '" + (value == null ? null : value.getClass().getName()) + "'");
+                    + "' in JNDI context, but found '" + (value2 == null ? null : value2.getClass().getName()) + "'");
             }
 
-            contestManager = (ContestManager) value;
+            delegate = (CockpitPhaseManagerInterface) value;
         } catch (NamingException e) {
             throw new CockpitPhaseManagementException("A naming exception is encountered"
                 + " while retrieving contest manager bean from jndi context", e);
@@ -1321,7 +763,7 @@ public class CockpitPhaseManager implements PhaseManager {
                     PhaseHandler.class);
 
             // put the mapping to the handlers.
-            handlers.put(info, phaseHandler);
+            this.delegate.registerHandler(phaseHandler, info.getType(), info.getOperation());
         }
     }
 
@@ -1337,7 +779,7 @@ public class CockpitPhaseManager implements PhaseManager {
         throws CockpitConfigurationException {
         // compile the regex pattern for
         // 'phaseTypeId,phaseTypeName,phaseOperationEnumName' format.
-        Pattern pattern = Pattern.compile("^(\\d+),(\\w+),(\\w+)$");
+        Pattern pattern = Pattern.compile("^(\\d+),([[\\w*][\\W*]]+),(\\w+)$");
 
         // create matcher
         Matcher matcher = pattern.matcher(propName);
@@ -1518,330 +960,60 @@ public class CockpitPhaseManager implements PhaseManager {
     }
 
     /**
-     * <p>
-     * This helper method maps the contest status into project's phases. A status of a Contest is mapped to
-     * many phase in Project.
-     * </p>
-     * @param project the project which the phases belong to.
-     * @param length the length of the phase.
-     * @param contestStatus the contest status to map.
-     * @throws CockpitPhaseManagementException if a required contest status is not found in ContestManager.
+     * <p>A callback handler which always provides the same username/password pair (as set by initial parameters of
+     * <code>Cockpit</code> web application context) for authenticating to EJB container.</p>
+     *
+     * @author isv
+     * @version 1.0
      */
-    private void mapContestStatusToPhases(Project project, long length, ContestStatus contestStatus)
-        throws CockpitPhaseManagementException {
-        List<ContestStatus> contestStatuses = getAllContestStatuses();
+    private static class CallbackHandlerImpl implements CallbackHandler {
 
-        Phase phase = mapContestStatusToPhase(project, contestStatus, length);
-        project.addPhase(phase);
+        /**
+         * <p>A <code>String</code> providing the username to be used for authenticating to EJB container.</p>
+         */
+        private final String username;
 
-        String[] mappedTypes = statusMapping.get(contestStatus.getName());
+        /**
+         * <p>A <code>String</code> providing the password to be used for authenticating to EJB container.</p>
+         */
+        private final String password;
 
-        for (String typeName : mappedTypes) {
-            contestStatus = findContestStatusByName(contestStatuses, typeName);
-            phase = mapContestStatusToPhase(project, contestStatus, length);
-            project.addPhase(phase);
-        }
-    }
-
-    /**
-     * <p>
-     * This helper method finds a contest status by specified name in the given list.
-     * </p>
-     * @param contestStatuses the list of contest status.
-     * @param name the name of contest status to find.
-     * @return ContestStatus instance.
-     * @throws CockpitPhaseManagementException if no contest status is found.
-     */
-    private ContestStatus findContestStatusByName(List<ContestStatus> contestStatuses, String name)
-        throws CockpitPhaseManagementException {
-        for (ContestStatus status : contestStatuses) {
-            if (status.getName().equals(name)) {
-                return status;
-            }
+        /**
+         * <p>Constructs new <code>CallbackHandlerImpl</code> instance to be set the callbacks with specified user
+         * name and password.</p>
+         *
+         * @param username a <code>String</code> providing the username to be used for authenticating to EJB container.
+         * @param password a <code>String</code> providing the password to be used for authenticating to EJB container.
+         */
+        private CallbackHandlerImpl(String username, String password) {
+            this.username = username;
+            this.password = password;
         }
 
-        throw new CockpitPhaseManagementException("No contest status found in ContestManager with name of '"
-            + name + "'");
-    }
-
-    /**
-     * <p>
-     * This helper method finds a contest status by specified phaseType in the given list.
-     * </p>
-     * @param contestStatuses the list of contest status.
-     * @param phaseType the phaseType which maps to contest status to find.
-     * @return ContestStatus instance.
-     * @throws CockpitPhaseManagementException if no contest status is found.
-     */
-    private ContestStatus findContestStatusByPhaseType(List<ContestStatus> contestStatuses, PhaseType phaseType)
-        throws CockpitPhaseManagementException {
-        for (ContestStatus status : contestStatuses) {
-            if (status.getName().equals(phaseType.getName()) && status.getContestStatusId() == phaseType.getId()) {
-                return status;
-            }
-        }
-
-        throw new CockpitPhaseManagementException("No contest status found in ContestManager with phase type of ["
-            + phaseType.getId() + ":" + phaseType.getName() + "]");
-    }
-
-    /**
-     * <p>
-     * This helper method maps a ContestStatus to a Phase.
-     * </p>
-     * @param project the project which the phase belong to.
-     * @param contestStatus the contest status to map.
-     * @param length the length of the phase.
-     * @return the mapped Phase instance.
-     */
-    private Phase mapContestStatusToPhase(Project project, ContestStatus contestStatus, long length) {
-        String statusName = contestStatus.getName();
-        Long statusId = contestStatus.getContestStatusId();
-
-        // creates Phase in the project with given length
-        Phase phase = new Phase(project, length);
-
-        // phase id is contestStatusId
-        phase.setId(statusId);
-
-        // map the status to PhaseType
-        PhaseType phaseType = new PhaseType(statusId, statusName);
-        phase.setPhaseType(phaseType);
-
-        // sets the phase attribute
-        phase.setAttribute("name", statusName);
-        phase.setAttribute("description", contestStatus.getDescription());
-        phase.setAttribute(statusName + "Statuses", new ArrayList<ContestStatus>(contestStatus.getStatuses()));
-        phase.setPhaseStatus(PhaseStatus.OPEN);
-
-        return phase;
-    }
-
-    /**
-     * <p>
-     * This helper method retrieves all contest statuses from ContestManager. If the cache is not null then
-     * the statuses are put into the cache for later use
-     * </p>
-     * @return a list of contest statuses
-     * @throws CockpitPhaseManagementException if any error occurs while retrieving contest status from
-     *         contest manager.
-     */
-    private List<ContestStatus> getAllContestStatuses()
-        throws CockpitPhaseManagementException {
-        // if cached is specified and it is not empty
-        // simply retrieves statuses from the cache
-        if (cachedContestStatuses != null && cachedContestStatuses.getSize() > 0) {
-            return (List<ContestStatus>) cachedContestStatuses.get("contestStatuses");
-        } else {
-            // otherwise, obtains statuses from contest manager
-            try {
-                List<ContestStatus> list = contestManager.getAllContestStatuses();
-
-                // if there is a cache, put the statuses to it
-                if (cachedContestStatuses != null) {
-                    cachedContestStatuses.put("contestStatuses", list);
+        /**
+         * <p>Handles the callbacks. Sets the username and password to be used for autthenticating to EJB container.</p>
+         *
+         * @param callbacks an array of <code>Callback</code> objects provided by an underlying security service which
+         *        contains the information requested to be retrieved or displayed.
+         * @throws IOException if an input or output error occurs.
+         * @throws UnsupportedCallbackException if the implementation of this method does not support one or more of the
+         *         callbacks specified in the <code>callbacks</code> parameter.
+         */
+        public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
+            for (int i = 0; i < callbacks.length; i++) {
+                if (callbacks[i] instanceof TextOutputCallback) {
+                } else if (callbacks[i] instanceof NameCallback) {
+                    // prompt the user for a username
+                    NameCallback nc = (NameCallback) callbacks[i];
+                    nc.setName(this.username);
+                } else if (callbacks[i] instanceof PasswordCallback) {
+                    // prompt the user for sensitive information
+                    PasswordCallback pc = (PasswordCallback) callbacks[i];
+                    pc.setPassword(this.password.toCharArray());
+                } else {
+                    throw new UnsupportedCallbackException(callbacks[i], "Unrecognized Callback");
                 }
-
-                return list;
-            } catch (ContestManagementException e) {
-                throw new CockpitPhaseManagementException("A contest management exception is encountered"
-                    + " while getting all contest statuses", e);
             }
         }
-    }
-
-    /**
-     * <p>
-     * This helper methods formats the given field name, capitalizes the first character. It is used in
-     * getPhase() method when setting project attributes.
-     * </p>
-     * @param fieldName the field name to format.
-     * @return formatted field name.
-     */
-    private String formatAttributeName(String fieldName) {
-        StringBuilder builder = new StringBuilder("contest");
-        builder.append(Character.toUpperCase(fieldName.charAt(0)));
-        builder.append(fieldName.substring(1));
-
-        return builder.toString();
-    }
-
-    /**
-     * <p>
-     * This helper method handles start/end operation on given phase.
-     * </p>
-     * @param phase the phase to handle.
-     * @param operator the operator of the operation.
-     * @param operation the operation mode (start or end).
-     * @param phaseStatus the phase status to be assigned to phase.
-     * @throws CockpitPhaseManagementException if any error occurs when handling the phase.
-     */
-    private void perform(Phase phase, String operator, PhaseOperationEnum operation, PhaseStatus phaseStatus)
-        throws CockpitPhaseManagementException {
-        checkNull(phase, "phase");
-        checkNullOrEmpty(operator, "operator");
-
-        checkContestManager();
-
-        // checks if the given phase has a phase type
-        PhaseType phaseType = phase.getPhaseType();
-        checkNull(phaseType, "The phase type of given phase");
-
-        // gets the Project which the phase belongs to
-        Project project = phase.getProject();
-        long projectId = project.getId();
-
-        try {
-            // creates HandlerRegistryInfo with the phaseType and operation to
-            // get the handler
-            HandlerRegistryInfo info = new HandlerRegistryInfo(phaseType, operation);
-            PhaseHandler handler = handlers.get(info);
-
-            if (handler != null) {
-                // find a ContestStatus which is the phase type is mapped to.
-                ContestStatus contestStatus = findContestStatusByPhaseType(getAllContestStatuses(), phaseType);
-
-                // updates the contest status
-                logInfo("updating the contest status", phase.getId(), phaseType.getName(), projectId, true);
-                contestManager.updateContestStatus(projectId, contestStatus.getContestStatusId());
-
-                logInfo(operation.getName() + " the phase", phase.getId(), phaseType.getName(), projectId, false);
-                // handles the phase
-                handler.perform(phase, operator);
-
-                // set the phase status
-                phase.setPhaseStatus(phaseStatus);
-            }
-        } catch (ContestManagementException e) {
-            throw new CockpitPhaseManagementException("A contest management exception is encountered"
-                + " when updating the contest status", e);
-        } catch (PhaseHandlingException e) {
-            throw new CockpitPhaseManagementException("A phase handling exception is encountered"
-                + " when starting the phase", e);
-        }
-    }
-
-    /**
-     * <p>
-     * Determines whether it is possible to perform the given operation on the specified phase.
-     * </p>
-     * @param phase the phase to test.
-     * @param operation the operation to be performed.
-     * @return <code>true</code> if the specified phase can be performed; <code>false</code> otherwise
-     * @throws CockpitPhaseManagementException if any error occurs while testing the phase.
-     */
-    private boolean canPerform(Phase phase, PhaseOperationEnum operation)
-        throws CockpitPhaseManagementException {
-        checkNull(phase, "phase");
-
-        // checks if the given phase has a phase type
-        PhaseType phaseType = phase.getPhaseType();
-        checkNull(phaseType, "The phase type of given phase");
-
-        // creates HandlerRegistryInfo as a key to get the handler.
-        HandlerRegistryInfo info = new HandlerRegistryInfo(phaseType, operation);
-        PhaseHandler handler = handlers.get(info);
-
-        if (handler != null) {
-            try {
-                return handler.canPerform(phase);
-            } catch (PhaseHandlingException e) {
-                throw new CockpitPhaseManagementException("A phase handling exception is encountered"
-                    + " when determining if the phase can be handled or not", e);
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * <p>
-     * This helper method logs the given message and value with INFO level.
-     * </p>
-     * @param message the log message.
-     * @param phaseId the phase id.
-     * @param phaseTypeName the phase type name.
-     * @param projectId the project id.
-     * @param contestStatus whether to log contest status or phase.
-     */
-    private void logInfo(String message, long phaseId, String phaseTypeName, long projectId, boolean contestStatus) {
-        if (log != null) {
-            Object[] params = new Object[] {message, phaseId, phaseTypeName, projectId};
-            String format = contestStatus ? "{0} with contest status [id={1}, name={2}] in contest with id of {3}"
-                                          : "{0} with phase type [id={1}, name={2}] in project with id of {3}";
-            log.log(Level.INFO, format, params);
-        }
-    }
-
-    /**
-     * <p>
-     * This helper method checks if a contest manager has been set in this manager.
-     * </p>
-     * @throws IllegalStateException if no contest manager is set.
-     */
-    private void checkContestManager() {
-        if (contestManager == null) {
-            throw new IllegalStateException("No contest manager has been set up for this cockpit phase manager");
-        }
-    }
-
-    /**
-     * Checks if the given object is not null.
-     * @param value the object to check.
-     * @param name the name of object.
-     * @throws IllegalArgumentException if value is null.
-     */
-    private void checkNull(Object value, String name) {
-        if (value == null) {
-            throw new IllegalArgumentException(name + " should not be null");
-        }
-    }
-
-    /**
-     * Checks if the given String is not null and not empty.
-     * @param value the string to check.
-     * @param name the name of object.
-     * @throws IllegalArgumentException if value is null or empty.
-     */
-    private void checkNullOrEmpty(String value, String name) {
-        checkNull(value, name);
-        checkEmpty(value, name);
-    }
-
-    /**
-     * Checks if the given String is not empty.
-     * @param value the string to check.
-     * @param name the name of object.
-     * @throws IllegalArgumentException if value is empty.
-     */
-    private void checkEmpty(String value, String name) {
-        if (value.trim().length() == 0) {
-            throw new IllegalArgumentException(name + " should not be empty");
-        }
-    }
-
-    /**
-     * <p>
-     * Fills the status mapping which is used to hold the mapping between ContestStatus name to PhaseType name
-     * as specified in class documentation.
-     * </p>
-     */
-    private void initStatusMapping() {
-        statusMapping.put(draftPhaseTypeName, new String[] {scheduledPhaseTypeName});
-        statusMapping.put(scheduledPhaseTypeName, new String[] {activePhaseTypeName});
-        statusMapping.put(activePhaseTypeName,
-            new String[] {actionRequiredPhaseTypeName, insufficientSubmissionsReRunPossiblePhaseTypeName});
-        statusMapping.put(actionRequiredPhaseTypeName, new String[] {completedPhaseTypeName, inDangerPhaseTypeName});
-        statusMapping.put(inDangerPhaseTypeName, new String[] {completedPhaseTypeName, abandonedPhaseTypeName});
-        statusMapping.put(insufficientSubmissionsReRunPossiblePhaseTypeName,
-            new String[] {extendedPhaseTypeName, abandonedPhaseTypeName});
-        statusMapping.put(extendedPhaseTypeName,
-            new String[] {actionRequiredPhaseTypeName, insufficientSubmissionsPhaseTypeName});
-        statusMapping.put(repostPhaseTypeName,
-            new String[] {actionRequiredPhaseTypeName, insufficientSubmissionsReRunPossiblePhaseTypeName});
-        statusMapping.put(insufficientSubmissionsPhaseTypeName,
-            new String[] {cancelledPhaseTypeName, abandonedPhaseTypeName});
-        statusMapping.put(noWinnerChosenPhaseTypeName,
-            new String[] {cancelledPhaseTypeName, abandonedPhaseTypeName, repostPhaseTypeName});
     }
 }
