@@ -8,11 +8,15 @@
     <!--TCS dependencies-->
     <property name="json_object.jar" value="${tcs_libdir}/json_object/1.0/json_object.jar"/>
     <property name="configuration_api.jar"  value="${tcs_libdir}/configuration_api/1.0/configuration_api.jar"/>
+    <property name="configuration_manager.jar" value="${tcs_libdir}/configuration_manager/2.1.5/configuration_manager.jar"/>
     <property name="configuration_persistence.jar" value="${tcs_libdir}/configuration_persistence/1.0.1/configuration_persistence.jar"/>
     <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.0.1/object_factory.jar"/>
     <property name="object_factory_configuration_api_plugin.jar"  value="${tcs_libdir}/object_factory_configuration_api_plugin/1.0/object_factory_configuration_api_plugin.jar"/>
     <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0/logging_wrapper.jar"/>
+    <property name="file_system_server.jar" value="${tcs_libdir}/file_system_server/1.0/file_system_server.jar"/>
     <property name="file_upload.jar" value="${tcs_libdir}/file_upload/2.2.0/file_upload.jar"/>
+    <property name="guid_generator.jar" value="${tcs_libdir}/guid_generator/1.0/guid_generator.jar"/>
+    <property name="ip_server.jar" value="${tcs_libdir}/ip_server/2.0.1/ip_server.jar"/>
     <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0/base_exception.jar"/>
     <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0/object_formatter.jar"/>
     <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1/typesafe_enum.jar"/>
@@ -20,8 +24,8 @@
     <property name="project_service.jar" value="lib/tcs/project_service.jar"/>
 
     <!-- Service dependencies -->
+    <property name="studio_service.jar" value="${cronos_libdir}/studio_service/1.0.2/studio_service.jar"/>
     <!--
-    <property name="studio_service.jar" value="../libd/studio_service/1.0.2/studio_service.jar"/>
     <property name="project_service.jar" value="${cronos_libdir}/project_service/1.0.0/project_service.jar"/>
     -->
     <property name="prerequisite_service.jar" value="${cronos_libdir}/prerequisite_service/1.0.0/prerequisite_service.jar"/>
