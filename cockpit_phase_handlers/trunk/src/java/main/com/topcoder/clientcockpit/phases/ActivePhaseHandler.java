@@ -356,13 +356,10 @@ public class ActivePhaseHandler extends AbstractPhaseHandler {
                 } catch (ContestManagementException e) {
                     alertLog.log(Level.SEVERE, "Failed to save ID [" + forumId + "] of forum created for contest "
                                                + "[" + contest.getContestId() + "]", e);
-                    throw new PhaseHandlingException("Failed to save ID [" + forumId + "] of forum created for contest "
-                                                     + "[" + contest.getContestId() + "]", e);
                 }
             } else {
-                alertLog.log(Level.SEVERE, "*** Could not create a forum for contest [" + contest.getName() + "]");
-                throw new PhaseHandlingException("Failed to create forum for contest [" + contest.getContestId()
-                                                 + "]. See log for details");
+                alertLog.log(Level.SEVERE, "*** Could not create a forum for contest [" + contest.getName() + "]. " +
+                                           "Contest ID: " + contest.getContestId());
             }
         }
     }

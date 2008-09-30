@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -210,6 +212,11 @@ import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
  * @version 1.0
  */
 public abstract class AbstractPhaseHandler implements PhaseHandler, Serializable {
+
+    /**
+     * <p>A <code>Logger</code> to be used for logging the errors encountered while handler performs it's action.</p>
+     */
+    private static final Logger alertLog = Logger.getLogger("ALERT." + AbstractPhaseHandler.class.getName());
 
     /**
      * <p>
@@ -962,17 +969,26 @@ public abstract class AbstractPhaseHandler implements PhaseHandler, Serializable
      * @param e The root error cause to be wrapped and re thrown.
      * @param messageGenerated Indicates whether the email message has been generated successfully.
      *
+     * @param phase
      * @throws EmailMessageGenerationException If <code>messageGenerated</code> is false.
      * @throws EmailSendingException If <code>messageGenerated</code> is true.
      */
-    private static void rethrowEmailError(Throwable e, boolean messageGenerated)
+    private static void rethrowEmailError(Throwable e, boolean messageGenerated, Phase phase)
         throws EmailMessageGenerationException, EmailSendingException {
-        if (messageGenerated) {
-            throw e instanceof EmailSendingException ? (EmailSendingException) e
-                : new EmailSendingException("Error while sending email.", e);
-        } else {
-            throw e instanceof EmailMessageGenerationException ? (EmailMessageGenerationException) e
-                : new EmailMessageGenerationException("Error while generating email to be sent.", e);
+        Contest contest = null;
+        try {
+            contest = (Contest) phase.getProject().getAttribute("contest");
+            if (messageGenerated) {
+                throw e instanceof EmailSendingException ? (EmailSendingException) e
+                    : new EmailSendingException("Error while sending email.", e);
+            } else {
+                throw e instanceof EmailMessageGenerationException ? (EmailMessageGenerationException) e
+                    : new EmailMessageGenerationException("Error while generating email to be sent.", e);
+            }
+        } catch (Exception e1) {
+            e1.printStackTrace();
+            alertLog.log(Level.SEVERE, "*** Could not generate or send an email to creator of contest ["
+                                       + contest.getName() + "]. Contest ID: " + contest.getContestId(), e1);
         }
     }
 
@@ -1037,11 +1053,11 @@ public abstract class AbstractPhaseHandler implements PhaseHandler, Serializable
             //Send email
             EmailEngine.send(email);
         } catch (BaseException e) {
-            rethrowEmailError(e, messageGenerated);
+            rethrowEmailError(e, messageGenerated, phase);
         } catch (ConfigManagerException e) {
-            rethrowEmailError(e, messageGenerated);
+            rethrowEmailError(e, messageGenerated, phase);
         } catch (IllegalArgumentException e) {
-            rethrowEmailError(e, messageGenerated);
+            rethrowEmailError(e, messageGenerated, phase);
         }
     }
 
