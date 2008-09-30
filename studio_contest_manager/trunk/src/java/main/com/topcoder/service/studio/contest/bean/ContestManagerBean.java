@@ -3164,7 +3164,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             logEnter("getContestPostCount()");
 
             if (forumIds.isEmpty()) {
-                new HashMap<Long, Long>();
+                return new HashMap<Long, Long>();
             }
             EntityManager em = getEntityManager();
 
