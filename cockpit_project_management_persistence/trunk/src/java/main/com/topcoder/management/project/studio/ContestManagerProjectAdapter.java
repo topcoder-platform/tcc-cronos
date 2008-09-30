@@ -5,6 +5,7 @@ package com.topcoder.management.project.studio;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -204,6 +205,8 @@ public class ContestManagerProjectAdapter implements ProjectManager {
      */
     private ProjectToContestConverter converter = new ProjectToContestConverterImpl();
 
+    private Random randomizer = new Random(System.currentTimeMillis());
+
     /**
      * <p>
      * Constructs an instance of this class.
@@ -373,7 +376,7 @@ public class ContestManagerProjectAdapter implements ProjectManager {
             Contest contest = converter.convertProjectToContest(project);
 
             // updates the Contest
-            manager.updateContest(contest);
+            manager.updateContest(contest, this.randomizer.nextInt(), operator, false);
         } catch (ConversionException e) {
             throw new PersistenceException("Error occurred when converting Project to Contest.", e);
         } catch (ContestManagementException e) {
@@ -519,7 +522,12 @@ public class ContestManagerProjectAdapter implements ProjectManager {
         Project[] projects = new Project[contests.size()];
 
         for (int i = 0; i < projects.length; i++) {
-            projects[i] = converter.convertContestToProject(contests.get(i));
+//            projects[i] = converter.convertContestToProject(contests.get(i));
+            Contest contest = contests.get(i);
+            ProjectType t = new ProjectType(2, "TopCoder Direct");
+            ProjectCategory c = new ProjectCategory(1, "x", t);
+            ProjectStatus s = new ProjectStatus(2, "x");
+            projects[i] = new Project(contest.getContestId(), c, s);
         }
 
         return projects;
