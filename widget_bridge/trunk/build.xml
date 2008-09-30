@@ -294,48 +294,28 @@
         <delete dir="${builddir}"/>
     </target>
     
-    <target name="war" depends="compile_tests">
+    <target name="war" depends="compile">
+        <mkdir dir="${build_distdir}"/>
       <property name="war.path" value="${build_distdir}"/>  
       <property name="war.name" value="ajaxbridge.war"/>
-        <war destfile="${war.path}/${war.name}" webxml="test_files/WEB-INF/web.xml">
+        <war destfile="${war.path}/${war.name}" webxml="conf/WEB-INF/web.xml">
+            <webinf file="conf/WEB-INF/jboss-web.xml"/>
             <classes dir="${build_classdir}"/>
-            <classes dir="${build_testclassdir}"/>
-            <classes file="conf/ajax_bridge.xml"/>
-            <classes file="conf/FileUpload.xml"/>
             <classes dir="conf">
                 <include name="com/**" />
             </classes>
-            
-            <lib file="${json_object.jar}" />
             <lib file="${configuration_api.jar}"/>
-            <lib file="${configuration_persistence.jar}"/>            
-            <lib file="${object_formatter.jar}"/>
+            <lib file="${configuration_manager.jar}"/>
+            <lib file="${configuration_persistence.jar}"/>
+            <lib file="${file_upload.jar}"/>
+            <lib file="${file_system_server.jar}"/>
+            <lib file="${guid_generator.jar}"/>
+            <lib file="${ip_server.jar}"/>
             <lib file="${object_factory.jar}"/>
             <lib file="${object_factory_configuration_api_plugin.jar}"/>
-            <lib file="${typesafe_enum.jar}"/>
-            <lib file="${logging_wrapper.jar}"/>
-            <lib file="${file_upload.jar}"/>
-            <lib file="${base_exception.jar}"/>
-            <lib file="${widget_webservices_wrapper.jar}"/>
-            <lib file="${project_service.jar}"/>          
-
-            <!-- 
-
-            <lib dir="test_files">      
-                 <include name="widget_layout_wrapper.jar" />
-            </lib>
-
-            
-
-            <lib file="${project_service.jar}"/>          
-            <lib dir="test_files/WEB-INF/lib">      
-            </lib>
--->
-
-            <fileset dir="src/js/main" />
-            
-            <fileset file="test_files/AJAXProcessor.js" />
-            <fileset dir="test_files">
+            <lib file="${object_formatter.jar}"/>
+            <lib file="${prerequisite_service.jar}"/>
+            <fileset dir="demo_war/ajaxbridge.war">
                 <include name="*.jsp" />
             </fileset>
        </war>
