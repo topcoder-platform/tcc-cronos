@@ -1595,6 +1595,7 @@ public class StudioServiceBean implements StudioService {
         contestData.setMedia(mediums);
 
         // TCCC-457
+        /*
         Long forumId = contest.getForumId();
         if (forumId != null) {
             contestData.setForumId(forumId);
@@ -1603,7 +1604,7 @@ public class StudioServiceBean implements StudioService {
                 contestData.setForumPostCount(contestManager.getContestPostCount(forumId));
             }
         }
-
+*/
         return contestData;
     }
 
