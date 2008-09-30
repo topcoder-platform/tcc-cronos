@@ -9,7 +9,16 @@ import com.topcoder.project.phases.Phase;
 
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestManager;
+import com.topcoder.service.studio.contest.ContestManagementException;
+import com.topcoder.web.ejb.forums.Forums;
+import com.topcoder.web.ejb.forums.ForumsHome;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import java.util.Properties;
+import java.util.Random;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  * <p>
@@ -95,6 +104,20 @@ import com.topcoder.service.studio.contest.ContestManager;
  * @see AbstractPhaseHandler
  */
 public class ActivePhaseHandler extends AbstractPhaseHandler {
+
+    /**
+     * <p>A <code>Logger</code> to be used for logging the errors encountered while handler performs it's action.</p>
+     */
+    private static final Logger alertLog = Logger.getLogger("ALERT." + ActivePhaseHandler.class.getName());
+
+    /**
+     * <p>
+     * The attribute name of contest within project attributes.
+     * </p>
+     */
+    private static final String PROJECT_ATTR_CONTEST = "contest";
+    
+    private Random randomizer = new Random(System.currentTimeMillis());
 
     /**
      * <p>
@@ -323,5 +346,55 @@ public class ActivePhaseHandler extends AbstractPhaseHandler {
      */
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         super.perform(phase, CockpitPhase.ACTIVE);
+        Contest contest = getProjectAttribute(phase, Contest.class, PROJECT_ATTR_CONTEST, true);
+        if (contest.getForumId() == null) {
+            long forumId = createForum(contest.getName(), contest.getCreatedUser());
+            if (forumId > 0) {
+                contest.setForumId(forumId);
+                try {
+                    getContestManager().updateContest(contest, this.randomizer.nextInt(), operator, false);
+                } catch (ContestManagementException e) {
+                    alertLog.log(Level.SEVERE, "Failed to save ID [" + forumId + "] of forum created for contest "
+                                               + "[" + contest.getContestId() + "]", e);
+                    throw new PhaseHandlingException("Failed to save ID [" + forumId + "] of forum created for contest "
+                                                     + "[" + contest.getContestId() + "]", e);
+                }
+            } else {
+                alertLog.log(Level.SEVERE, "*** Could not create a forum for contest [" + contest.getName() + "]");
+                throw new PhaseHandlingException("Failed to create forum for contest [" + contest.getContestId()
+                                                 + "]. See log for details");
+            }
+        }
     }
+
+    /**
+     * <p>Creates</p>
+     *
+     * @param name a <code>String</code> providing the name of the forum to be created.
+     * @param userId a <code>long</code> providing the ID of a user on whose behalf the forum is to be created.
+     * @return a <code>long</code> providing the ID of created forum.
+     */
+    private long createForum(String name, long userId) {
+        try {
+			Properties p = new Properties();
+			p.put(Context.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
+			p.put(Context.URL_PKG_PREFIXES,"org.jboss.naming:org.jnp.interfaces");
+			p.put(Context.PROVIDER_URL, getForumBeanProviderUrl());
+
+			Context c = new InitialContext(p);
+			ForumsHome forumsHome = (ForumsHome) c.lookup(ForumsHome.EJB_REF_NAME);
+
+			Forums forums = forumsHome.create();
+
+			long forumId = forums.createStudioForum(name);
+			if (forumId < 0) {
+                throw new Exception("createStudioForum returned negative forum ID: " + forumId);
+            }
+			forums.createForumWatch(userId, forumId);
+			return forumId;
+		} catch (Exception e) {
+            alertLog.log(Level.SEVERE, "*** Could not create a forum for contest [" + name + "]", e);
+			return -1;
+		}
+	}
 }
