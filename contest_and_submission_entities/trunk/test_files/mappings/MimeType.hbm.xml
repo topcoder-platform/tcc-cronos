@@ -3,7 +3,7 @@
 	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.topcoder.service.studio.contest">
-	<class name="MimeType" table="mime_type_lu" lazy="true">
+	<class name="MimeType" table="mime_type_lu" lazy="false">
 		<comment>This table describes mime type</comment>
 
 		<id name="mimeTypeId" column="mime_type_id" type="long" />

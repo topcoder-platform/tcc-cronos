@@ -24,7 +24,7 @@
 
 		<many-to-one name="contest"
 			class="com.topcoder.service.studio.contest.Contest"
-			column="contest_id" fetch="select"/>
+			column="contest_id" fetch="select" not-null="true"/>
 
 		<property name="createDate" column="create_date" generated="insert"
 			not-null="true" />

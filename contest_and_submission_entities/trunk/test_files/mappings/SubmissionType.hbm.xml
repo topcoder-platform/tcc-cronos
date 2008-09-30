@@ -4,7 +4,7 @@
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.topcoder.service.studio.submission">
 	<class name="SubmissionType" table="submission_type_lu"
-		lazy="true">
+		lazy="false">
 		<comment>
 			Tables which describe submission type. Possible values: 1.
 			INITIAL_CONTEST_SUBMISSION_TYPE 2. FINAL_SUBMISSION_TYPE

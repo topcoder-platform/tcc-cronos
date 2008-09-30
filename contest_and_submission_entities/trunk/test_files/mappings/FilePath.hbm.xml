@@ -3,7 +3,7 @@
 	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.topcoder.service.studio.contest">
-	<class name="FilePath" table="path" lazy="true">
+	<class name="FilePath" table="path" lazy="false">
 		<comment>This table describe URL path to file.</comment>
 
 		<id name="filePathId" column="path_id" type="long" unsaved-value="-1">
