@@ -1391,7 +1391,7 @@ js.topcoder.widgets.bridge.Contest = function (/* JSON Object */ json) {
    * <p>Returns the launchImmediately.</p>
    */
   this.isLaunchImmediately = function /* boolean */ () {
-      return launchImmediately;
+      return that.launchImmediately;
   }
 
   /**
