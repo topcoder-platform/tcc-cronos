@@ -632,7 +632,7 @@ public class AjaxBridgeServlet extends HttpServlet {
                     if (checkBoolean(strOnlyDirectProjects, "onlyDirectProjects", response)) {
                         return;
                     }
-                    List<ContestData> contests = studioService.getAllContests();
+                    List<ContestData> contests = studioService.getAllContestHeaders();
 
                     JSONArray contestArr = new JSONArray();
 
@@ -1065,6 +1065,20 @@ public class AjaxBridgeServlet extends HttpServlet {
                     }
                     sendJSONObjectWithArrayAsResponse(historyArr, response);
                     debug("getChangeHistory success!");                    
+                } else if ("deleteContest".equals(method)) {
+                    String contestId = request.getParameter("contestId");
+
+                    if (checkLongIfLessThanZero(contestId, "contestId", response)) {
+                        return;
+                    }
+
+                    // log the received ID
+                    debug("received ID = [contest ID] : " + contestId);
+
+                    studioService.deleteContest(Long.parseLong(contestId));
+
+                    printSuccessResponse(getSuccessJSONResponse(), response);
+                    debug("setSubmissionPlacement success!");
                 } else {
                     // if we reach here this means the service param is invalid
                     sendErrorJSONResponse("The 'service' param passed is invalid.", response);
