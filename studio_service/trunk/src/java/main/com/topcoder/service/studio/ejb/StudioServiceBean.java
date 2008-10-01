@@ -91,8 +91,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * This is the EJB implementation of the StudioService interface webservice
@@ -130,6 +130,11 @@ import java.util.UUID;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @Stateless
 public class StudioServiceBean implements StudioService {
+    /**
+     * Random generator.
+     */
+    private static final Random RANDOM = new Random();
+
     /**
      * Private constant specifying user role.
      */
@@ -797,7 +802,8 @@ public class StudioServiceBean implements StudioService {
         boolean userAdmin = sessionContext.isCallerInRole(ADMIN_ROLE);
 
         try {
-            contestManager.updateContest(convertContestData(contestData), 1, username, userAdmin);
+            long timestamp = System.currentTimeMillis()*100 + RANDOM.nextInt(1000);
+            contestManager.updateContest(convertContestData(contestData), timestamp, username, userAdmin);
         } catch (EntityNotFoundException e) {
             handleContestNotFoundError(e, contestData.getContestId());
         } catch (ContestManagementException e) {
@@ -1608,6 +1614,126 @@ public class StudioServiceBean implements StudioService {
         return contestData;
     }
 
+
+    /**
+     * This method converts Contest object into ContestData object.
+     * 
+     * @param contest
+     *            Contest instance to convert
+     * @param Load forum info or not.
+     * @return converted ContestDate object
+     * @throws ContestManagementException
+     *             error occurred from ContestManager
+     */
+    private ContestData convertContestHeader(Contest contest, boolean loadForumInfo) throws ContestManagementException {
+        ContestData contestData = new ContestData();
+
+        contestData.setLaunchDateAndTime(getXMLGregorianCalendar(contest.getStartDate()));
+
+        contestData.setContestId(unbox(contest.getContestId()));
+        contestData.setCreatorUserId(unbox(contest.getCreatedUser()));
+        contestData.setName(contest.getName());
+        contestData.setProjectId(unbox(contest.getProjectId()));
+        contestData.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(contest.getWinnerAnnoucementDeadline()));
+        contestData.setStatusId(contest.getStatus().getContestStatusId());
+        contestData.setNumberOfRegistrants(contest.getContestRegistrations().size());
+        contestData.setLaunchImmediately(contest.isLaunchImmediately());
+
+        // [TCCC-585]
+        if(contest.getTcDirectProjectId()!=null){
+            contestData.setTcDirectProjectId(contest.getTcDirectProjectId());
+        }
+        // [27074484-20]
+        ContestType contestType = contest.getContestType();
+        contestData.setContestTypeId(contestType == null ? -1 : unbox(contestType.getContestType()));
+
+        Set<Submission> submissions = contest.getSubmissions();
+        if (submissions != null) {
+            // [TCCC-369]
+            int maxSubmissionsPerUser = 0;
+            for (ContestConfig config : contest.getConfig()) {
+                if (config.getId().getProperty().getPropertyId() == contestPropertyMaximumSubmissionsId) {
+                    try {
+                        maxSubmissionsPerUser = Integer.parseInt(config.getValue());
+                    } catch (NumberFormatException e) {
+                        maxSubmissionsPerUser = 0;
+                    }
+                    break;
+                }
+            }
+
+            int submissionsToBeRemoved = 0;
+
+            // Get submissions need to be removed.
+            for (Submission submission : submissions) {
+                if (maxSubmissionsPerUser > 0 && submission.getRank() != null
+                        && submission.getRank() > maxSubmissionsPerUser) {
+                    submissionsToBeRemoved++;
+                } else if (submission.getStatus() != null
+                        && submission.getStatus().getSubmissionStatusId() == submissionRemovedStatusId) {
+                    // TCCC-414
+                    submissionsToBeRemoved++;
+                } else if (submission.getReview() != null) {
+                    // TCCC-445
+                    for (SubmissionReview review : submission.getReview()) {
+                        if (review.getStatus().getReviewStatusId() == reviewFailedStatusId) {
+                            submissionsToBeRemoved++;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            contestData.setSubmissionCount(submissions.size() - submissionsToBeRemoved);
+            logDebug(contestData.getSubmissionCount() + " valid submissions found for contest. contest id: "
+                    + contest.getContestId() + " ; Total submission: " + submissions.size());
+        }
+
+        contestData.setFinalFileFormat("");
+        contestData.setShortSummary("");
+        contestData.setOtherFileFormats("");
+        contestData.setRequiredOrRestrictedColors("");
+        contestData.setRequiredOrRestrictedFonts("");
+        contestData.setContestDescriptionAndRequirements("");
+        contestData.setSizeRequirements("");
+        contestData.setOtherRequirementsOrRestrictions("");
+        contestData.setRequiresPreviewFile(false);
+        contestData.setRequiresPreviewImage(false);
+        contestData.setMaximumSubmissions(0);
+        contestData.setEligibility("");
+        contestData.setNotesOnWinnerSelection("");
+        contestData.setPrizeDescription("");
+        contestData.setDrPoints(0);
+        contestData.setContestAdministrationFee(0);
+
+        contestData.setDocumentationUploads(new ArrayList<UploadedDocument>());
+
+        contestData.setPrizes(new ArrayList<PrizeData>());
+
+        // TCCC-293
+        double durationInHours = (contest.getEndDate().getTime() - contest.getStartDate().getTime()) / (60 * 60 * 1000);
+        contestData.setDurationInHours(durationInHours);
+
+        // TCCC-299 Exception when Editing project
+        if (contest.getContestChannel() != null) {
+            contestData.setContestChannelId(contest.getContestChannel().getContestChannelId());
+        }
+        List<MediumData> mediums = new ArrayList<MediumData>();
+        contestData.setMedia(mediums);
+        // TCCC-457
+        /*
+        Long forumId = contest.getForumId();
+        if (forumId != null) {
+            contestData.setForumId(forumId);
+
+            if (loadForumInfo) {
+                contestData.setForumPostCount(contestManager.getContestPostCount(forumId));
+            }
+        }
+*/
+        return contestData;
+    }
+
     /**
      * Converts Document object into UploadedDocument instance. Simply sets
      * basic attributes and retrieves document data from contestManager. As
@@ -1678,10 +1804,11 @@ public class StudioServiceBean implements StudioService {
         return result;
     }
 
+
     /**
      * Converts standard java Date object into XMLGregorianCalendar instance.
      * Returns null if parameter is null.
-     *
+     * 
      * @param date
      *            Date object to convert
      * @return converted calendar instance
@@ -3185,4 +3312,77 @@ public class StudioServiceBean implements StudioService {
             throw new UserNotAuthorizedException("Access denied for the contest " + userId, userId);
         }
     }
+
+    /**
+     * Delete contest.
+     * 
+     * @param contestId
+     *            contest id to delete.
+     * @throws PersistenceException
+     *             if any other error occurs.
+     */
+    public void deleteContest(long contestId) throws PersistenceException {
+        logEnter("deleteContest");
+        try {
+            contestManager.deleteContest(contestId);
+
+            logExit("deleteContest");
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManagement reports error while deleting contest.", e);
+        }
+    }
+
+
+    /**
+     * <p>
+     * This is going to fetch all the currently available contests.
+     * This method only return values used in my project widget.
+     * </p>
+     *
+     * @return the list of all available contents (or empty if none found)
+     *
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     */
+    public List<ContestData> getAllContestHeaders() throws PersistenceException {
+        logEnter("getAllContestHeaders");
+
+        try {
+            List<ContestData> result = new ArrayList<ContestData>();
+            List<Contest> contests;
+            if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
+                logError("User is admin.");
+                contests = contestManager.getAllContests();
+            } else {
+                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                logError("User " + p.getUserId() + " is non-admin.");
+                contests = contestManager.getContestsForUser(p.getUserId());
+            }
+
+            List<Long> forumIds = new ArrayList<Long>();
+            for (Contest contest : contests) {
+                ContestData convertContest = convertContestHeader(contest, false);
+                result.add(convertContest);
+
+                if (contest.getForumId() != null) {
+                    forumIds.add(contest.getForumId());
+                }
+            }
+
+            Map<Long, Long> contestPostCountMap = contestManager.getContestPostCount(forumIds);
+            for (ContestData contest : result) {
+                Long count = contestPostCountMap.get(contest.getForumId());
+                if (count != null) {
+                    contest.setForumPostCount(count.intValue());
+                }
+            }
+            
+            logExit("getAllContestHeaders", result);
+            return result;
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while retrieving contest.", e);
+        }
+
+        return null;
+    }    
 }

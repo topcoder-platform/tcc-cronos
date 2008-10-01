@@ -547,4 +547,26 @@ public interface StudioService {
      *             if any other error occurs.
      */
     public List<ChangeHistoryData> getLatestChanges(long contestId) throws PersistenceException;
+
+    /**
+     * Delete contest.
+     * 
+     * @param contestId
+     *            contest id to delete.
+     * @throws PersistenceException
+     *             if any other error occurs.
+     */
+    public void deleteContest(long contestId) throws PersistenceException;
+
+    /**
+     * <p>
+     * This is going to fetch all the currently available contests. This method only return values used in my project widget.
+     * </p>
+     * 
+     * @return the list of all available contents (or empty if none found)
+     * 
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     */
+    public List<ContestData> getAllContestHeaders() throws PersistenceException;
 }
