@@ -65,6 +65,8 @@ public class ProjectToContestConverterImpl implements ProjectToContestConverter 
 
     public static final String STUDIO_CONTEST_STATUS_ID = "CONTEST.CONTEST_STATUS_ID";
 
+    public static final String STUDIO_CONTEST_DETAILED_STATUS_ID = "CONTEST.CONTEST_DETAILED_STATUS_ID";
+
     public static final String STUDIO_CONTEST_STATUS_NAME = "CONTEST_STATUS_LU.NAME";
 
     public static final String STUDIO_CONTEST_ID = "CONTEST.CONTEST_ID";
@@ -904,7 +906,7 @@ public class ProjectToContestConverterImpl implements ProjectToContestConverter 
         }
         // PROJECT_STATUS_ID
         if (theFilter.getName().equals(ProjectFilterUtility.PROJECT_STATUS_ID)) {
-            return new InFilter(STUDIO_CONTEST_STATUS_ID, theFilter.getList());
+            return new InFilter(STUDIO_CONTEST_DETAILED_STATUS_ID, theFilter.getList());
         }
         // PROJECT_STATUS_NAME
         if (theFilter.getName().equals(ProjectFilterUtility.PROJECT_STATUS_NAME)) {
