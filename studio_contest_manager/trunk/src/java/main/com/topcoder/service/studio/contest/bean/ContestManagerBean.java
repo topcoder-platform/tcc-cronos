@@ -9,8 +9,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -537,7 +535,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void updateContest(Contest contest, int transactionId, String username, boolean userAdmin) throws ContestManagementException{
+    public void updateContest(Contest contest, long transactionId, String username, boolean userAdmin) throws ContestManagementException{
         try {
             logEnter("updateContest()");
             Helper.checkNull(contest, "contest");
@@ -548,9 +546,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             EntityManager em = getEntityManager();
 
-            transactionId = em.hashCode();
-            logEnter("transactionId: " + transactionId);
-            
             Contest result = getContest(contest.getContestId());
 
             ContestConfig[] contestConfigs = result.getConfig().toArray(new ContestConfig[] {});
@@ -562,22 +557,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                 }
             }
 
-            // Contest title:
-            auditChange(result.getName(), contest.getName(), transactionId, username, userAdmin, contest, "title");
-            
-            // Contest Type:
-            auditChange(result.getContestType().getDescription(), contest.getContestType().getDescription(),
-                    transactionId, username, userAdmin, contest, "contest_type");
-
-            // Contest Admin Fee:
-            // DR Points
-            
-            // Start Date of Contest:
-            auditChange(result.getStartDate().toString(), contest.getStartDate().toString(), transactionId, username, userAdmin, contest, "start_date");
-            
-            // End Date of Contest: 
-            auditChange(result.getEndDate().toString(), contest.getEndDate().toString(), transactionId, username, userAdmin, contest, "end_date");
-            
+//            auditChanges(contest, transactionId, username, userAdmin, result);
             
             // Restore documents.
             contest.setDocuments(result.getDocuments());
@@ -625,6 +605,94 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         } finally {
             logExit("updateContest()");
         }
+    }
+
+    private void auditChanges(Contest contest, int transactionId, String username, boolean userAdmin, Contest result)
+            throws ContestManagementException {
+        // Contest title:
+        auditChange(result.getName(), contest.getName(), transactionId, username, userAdmin, contest, "title");
+        
+        // Contest Type:
+        auditChange(result.getContestType().getDescription(), contest.getContestType().getDescription(),
+                transactionId, username, userAdmin, contest, "contest_type");
+
+        // Contest Admin Fee:
+        // 25
+        long propertyId = 25;
+        auditChange(getSpecificProperty(result, propertyId), getSpecificProperty(result, propertyId), transactionId,
+                username, userAdmin, contest, "contest_admin_fee");
+
+        // DR Points
+        // 24
+        propertyId = 24;
+        auditChange(getSpecificProperty(result, propertyId), getSpecificProperty(result, propertyId), transactionId,
+                username, userAdmin, contest, "dr_points");
+        
+        // Start Date of Contest:
+        auditChange(result.getStartDate().toString(), contest.getStartDate().toString(), transactionId, username, userAdmin, contest, "start_date");
+        
+        // End Date of Contest: 
+        auditChange(result.getEndDate().toString(), contest.getEndDate().toString(), transactionId, username, userAdmin, contest, "end_date");
+        
+        // 1st Place Prize dollar amount
+        
+        // Brief one-paragraph description of your contest
+        // 1
+        propertyId = 1;
+        auditChange(getSpecificProperty(result, propertyId), getSpecificProperty(result, propertyId), transactionId,
+                username, userAdmin, contest, "contest_description");
+        
+        // Upload new files or images and create files description.
+        
+        // Delete existing files or images.
+        
+        // Overwrite and replace existing file.
+        
+        // Edit Existing File Description
+        
+        // Colors requirements, preferences or restrictions  
+        // 14
+        propertyId = 14;
+        auditChange(getSpecificProperty(result, propertyId), getSpecificProperty(result, propertyId), transactionId,
+                username, userAdmin, contest, "color_requirement");
+        
+        // Fonts requirements, preferences or restrictions  
+        // 15
+        propertyId = 15;
+        auditChange(getSpecificProperty(result, propertyId), getSpecificProperty(result, propertyId), transactionId,
+                username, userAdmin, contest, "fonts_requirement");
+        
+        // Size requirements, preferences or restrictions   
+        // 16
+        propertyId = 16;
+        auditChange(getSpecificProperty(result, propertyId), getSpecificProperty(result, propertyId), transactionId,
+                username, userAdmin, contest, "size_requirement");
+        
+        // Other requirements or restrictions?
+        // 18
+        propertyId = 18;
+        auditChange(getSpecificProperty(result, propertyId), getSpecificProperty(result, propertyId), transactionId,
+                username, userAdmin, contest, "other_requirements");
+        
+        // Add (check) a new file format type
+        
+        // Remove (uncheck) an existing file format type
+     
+        // Modify the "Other formats not listed above" textbox
+        // 23
+        propertyId = 23;
+        auditChange(getSpecificProperty(result, propertyId), getSpecificProperty(result, propertyId), transactionId,
+                username, userAdmin, contest, "other_formats");
+    }
+
+    private String getSpecificProperty(Contest contest, long propertyId) {
+        String value = null;
+        for (ContestConfig cc : contest.getConfig()) {
+            if (cc.getId().getProperty().getPropertyId() == propertyId) {
+                value = cc.getValue();
+            }
+        }
+        return value;
     }
 
     private void auditChange(String oldData, String newData, int transactionId, String username, boolean userAdmin,
@@ -2465,7 +2533,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             EntityManager em = getEntityManager();
 
-            Query query = em.createQuery("select c from Contest c where not c.tcDirectProjectId is null ");
+            Query query = em.createQuery("select c from Contest c where not c.tcDirectProjectId is null and c.deleted = false");
 
             List list = query.getResultList();
 
@@ -3070,7 +3138,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             EntityManager em = getEntityManager();
 
             Query query = em
-                    .createQuery("select c from Contest c where not c.tcDirectProjectId is null and c.createdUser = "
+                    .createQuery("select c from Contest c where not c.tcDirectProjectId is null and c.deleted = false and c.createdUser = "
                             + createdUser);
 
             List list = query.getResultList();
@@ -3380,6 +3448,36 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "There are errors while persisting the entity.");
         } finally {
             logExit("getLatestTransactionId()");
+        }
+    }
+    
+
+    /**
+     * Delete contest.
+     * 
+     * @param contestId
+     *            contest id to delete.
+     * @throws ContestManagementException
+     *             if any other error occurs.
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void deleteContest(long contestId) throws ContestManagementException{
+        try {
+            logEnter("deleteContest()");
+            logOneParameter(contestId);
+
+            Contest contest = this.getContest(contestId);
+            contest.setDeleted(true);
+
+            EntityManager em = getEntityManager();
+            em.merge(contest);
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while deleting the contest.");
+        } finally {
+            logExit("deleteContest()");
         }
     }
 }

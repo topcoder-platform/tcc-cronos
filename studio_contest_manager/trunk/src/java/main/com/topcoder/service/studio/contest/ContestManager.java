@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.security.PermitAll;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.service.studio.submission.ContestResult;
 import com.topcoder.service.studio.submission.PaymentStatus;
@@ -128,7 +132,7 @@ public interface ContestManager {
      * @throws ContestManagementException
      *             if any error occurs when updating contest.
      */
-    public void updateContest(Contest contest, int transactionId, String username, boolean userAdmin) throws ContestManagementException;
+    public void updateContest(Contest contest, long transactionId, String username, boolean userAdmin) throws ContestManagementException;
 
     /**
      * <p>
@@ -1010,4 +1014,14 @@ public interface ContestManager {
      *             if any other error occurs.
      */
     public Long getLatestTransactionId(long contestId) throws ContestManagementException;
+    
+    /**
+     * Delete contest.
+     * 
+     * @param contestId
+     *            contest id to search for.
+     * @throws ContestManagementException
+     *             if any other error occurs.
+     */
+    public void deleteContest(long contestId) throws ContestManagementException;
 }
