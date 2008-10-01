@@ -689,7 +689,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             EntityManager em = getEntityManager();
 
-            Contest contest = em.find(Contest.class, new Long(contestId));
+            Contest contest = getContest(contestId);
 
             if (contest == null) {
                 throw wrapEntityNotFoundException("The contest with id '" + contestId + "' doesn't exist.");
