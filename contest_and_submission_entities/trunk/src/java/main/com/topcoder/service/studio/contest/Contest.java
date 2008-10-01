@@ -141,6 +141,11 @@ public class Contest implements Serializable {
      * Represents whether the contest should be launched immediately after creation.
      */
     private Boolean launchImmediately;
+
+    /**
+     * Represents whether the contest has been deleted
+     */
+    private Boolean deleted;
     
     /**
      * Default constructor.
@@ -595,6 +600,25 @@ public class Contest implements Serializable {
         return launchImmediately;
     }
 
+    /**
+     * Updates the deleted with the specified value.
+     * 
+     * @param deleted
+     *            the deleted to set.
+     */
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted == null ? false : deleted.booleanValue();
+    }
+
+    /**
+     * Returns the deleted.
+     * 
+     * @return the deleted.
+     */
+    public Boolean isDeleted() {
+        return deleted;
+    }
+    
     /**
      * Represents the prizes.
      */

@@ -43,6 +43,8 @@
         <property name="endDate" column="end_time" not-null="true" />
         
         <property name="launchImmediately" column="launch_immediately" not-null="false" />
+        
+        <property name="deleted" column="deleted" not-null="false" />
 
         <property name="winnerAnnoucementDeadline"
             column="winner_announcement_time" not-null="true" />
