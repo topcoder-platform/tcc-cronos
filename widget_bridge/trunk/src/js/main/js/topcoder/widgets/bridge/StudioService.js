@@ -283,7 +283,63 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	     });
 	}	
 
-	
+
+	/**
+	 * <p>
+	 * Get all contest headers asynchronously, if the contests are retrieved successfully, onSuccess
+	 * callback function will be called with the retrieved contests, otherwise onError will be called.
+	 * </p>
+	 *
+	 * @throws IllegalArgumentException if any argument is null
+	 * @throws InvalidResponseException if the received response is invalid.
+	 */
+	this.getAllContestHeaders = getAllContestHeaders;
+	function /* void */ getAllContestHeaders(/* boolean */ onlyDirectProjects, /* ContestsHandler */ onSuccess, /* ErrorHandler */ onError ) {
+		if (onSuccess == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onSuccess","onSuccess callback should not be null");
+		}
+		if (onError == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onError","onError callback should not be null");
+		}
+		var processor = new AJAXProcessor();
+		processor.request({
+	    	url:  servletUrlString,
+	    	async: true,
+	     	method: "POST",
+	     	sendingText: "service=studio&method=getAllContestHeaders&onlyDirectProjects=" + onlyDirectProjects,
+	     	onStateChange: function() {
+	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
+	            	var response = processor.getResponseText();
+	                var jsonResp = eval("(" + response + ")");
+	                if (jsonResp == null) {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getAllContestHeaders","Invalid response");
+	                }
+	                if (typeof(jsonResp.success) == "undefined") {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getAllContestHeaders","Invalid response");
+	                }	                
+	                if (jsonResp.success == false) {
+		                if (typeof(jsonResp.error) == "undefined") {
+		                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getAllContestHeaders","Invalid response");
+		                }	                
+	                	onError(jsonResp.error);
+	                } else {
+		                if (typeof(jsonResp.json) == "undefined") {
+		                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","getAllContestHeaders","Invalid response");
+		                }	                
+	                	// success
+	                	var newContests = new Array();
+	                	var contests = jsonResp.json;
+	                	for(var x = 0; x < contests.length; x++) {
+	                		var retContest = new js.topcoder.widgets.bridge.Contest(contests[x]);
+	                		newContests[x] = retContest;
+	                	}
+	                	onSuccess(newContests);
+	                }
+	           }
+	     	}
+	     });
+	}	
+
 	/**
 	 * <p>
 	 * Get the contest for project asynchronously, if the contests are retrieved successfully, onSuccess

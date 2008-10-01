@@ -632,7 +632,7 @@ public class AjaxBridgeServlet extends HttpServlet {
                     if (checkBoolean(strOnlyDirectProjects, "onlyDirectProjects", response)) {
                         return;
                     }
-                    List<ContestData> contests = studioService.getAllContestHeaders();
+                    List<ContestData> contests = studioService.getAllContests();
 
                     JSONArray contestArr = new JSONArray();
 
@@ -656,7 +656,36 @@ public class AjaxBridgeServlet extends HttpServlet {
                     sendJSONObjectWithArrayAsResponse(contestArr, response);
 
                     debug("getAllContests success!");
-                } else if ("getContestsForProject".equals(method)) {
+                } else if ("getAllContestHeaders".equals(method)) {
+                    String strOnlyDirectProjects = request.getParameter("onlyDirectProjects");
+                    if (checkBoolean(strOnlyDirectProjects, "onlyDirectProjects", response)) {
+                        return;
+                    }
+                    List<ContestData> contests = studioService.getAllContestHeaders();
+
+                    JSONArray contestArr = new JSONArray();
+
+                    for (ContestData contest : contests) {
+                        try {
+                            JSONObject respJSON = getJSONFromContest(contest);
+                            contestArr.addJSONObject(respJSON);
+                        } catch (JSONDataAccessTypeException ex) {
+                            error("JSONDataAccessTypeException " + ex.getMessage()
+                                    + " occurred while parsed json from contest.");
+                        } catch (JSONInvalidKeyException ex) {
+                            error("JSONDataAccessTypeException " + ex.getMessage()
+                                    + " occurred while parsed json from contest.");
+                        } catch (IllegalArgumentException ex) {
+                            error("JSONDataAccessTypeException " + ex.getMessage()
+                                    + " occurred while parsed json from contest.");
+                        } catch (RuntimeException ex) {
+                            error("RuntimeException " + ex.getMessage() + " occurred while parsed json from contest.");
+                        }
+                    }
+                    sendJSONObjectWithArrayAsResponse(contestArr, response);
+
+                    debug("getAllContests success!");                    
+                } else if ("getAllContestHeaders".equals(method)) {
                     String projectID = request.getParameter("projectID");
                     if (checkLongIfLessThanZero(projectID, "projectID", response)) {
                         return;
