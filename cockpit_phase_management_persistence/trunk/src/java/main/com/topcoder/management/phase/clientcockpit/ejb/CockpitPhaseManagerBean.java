@@ -23,6 +23,7 @@ import com.topcoder.service.studio.contest.ContestManager;
 import com.topcoder.service.studio.contest.ContestManagerLocal;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.submission.Submission;
+import com.topcoder.service.studio.submission.ContestResult;
 import com.topcoder.date.workdays.Workdays;
 import com.topcoder.date.workdays.DefaultWorkdaysFactory;
 import com.topcoder.util.log.Log;
@@ -506,6 +507,9 @@ public class CockpitPhaseManagerBean implements CockpitPhaseManagerInterface {
                 // creates the project with id of contestId
                 project = new Project(startDate, workdays);
                 project.setId(contestId);
+                contest.getStatus();
+                contest.getSubmissions();
+                contest.getResults();
                 project.setAttribute("contest", contest);
                 // Get author handle and email
                 UserPersistence userPersistence = getCockpitUserPersistence();
@@ -1497,10 +1501,10 @@ public class CockpitPhaseManagerBean implements CockpitPhaseManagerInterface {
     }
 
     private void refreshPhase(Phase phase) throws CockpitPhaseManagementException {
-        EntityManager entityManager = getEntityManager();
-        Contest contest = (Contest) phase.getProject().getAttribute("contest");
-        contest = entityManager.merge(contest);
-        entityManager.refresh(contest);
-        phase.getProject().setAttribute("contest", contest);
+//        EntityManager entityManager = getEntityManager();
+//        Contest contest = (Contest) phase.getProject().getAttribute("contest");
+//        contest = entityManager.merge(contest);
+//        entityManager.refresh(contest);
+//        phase.getProject().setAttribute("contest", contest);
     }
 }
