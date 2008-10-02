@@ -7,21 +7,39 @@ import com.atlassian.bamboo.ww2.BambooActionSupport;
 import com.atlassian.bamboo.ww2.aware.RestActionAware;
 
 /**
- * Returns the basic project details for a given key
+ * Adds a new user.
+ * 
+ * @author romanoTC
+ * @version 1.0
  */
 public class AddUser extends BambooActionSupport implements RestActionAware {
+    /**
+     * The new username.
+     */
     private String username;
 
+    /**
+     * The user's password.
+     */
     private String password;
 
+    /**
+     * The user's full name.
+     */
     private String fullName;
 
+    /**
+     * The user's email.
+     */
     private String email;
 
+    /**
+     * The authentication token.
+     */
     private String auth;
 
     /**
-     * Execute the rest api call
+     * Execute the rest API call
      * 
      * @return The webwork status code
      * @throws Exception A generic failure
@@ -42,65 +60,91 @@ public class AddUser extends BambooActionSupport implements RestActionAware {
         return SUCCESS;
     }
 
+    /**
+     * Returns the authentication token.
+     * 
+     * @return the authentication token.
+     */
     public String getAuth() {
         return auth;
     }
 
-    public void setAuth(final String auth) {
+    /**
+     * Sets the authentication token.
+     * 
+     * @param auth the authentication token.
+     */
+    public void setAuth(String auth) {
         this.auth = auth;
     }
 
     /**
-     * @return the userName
+     * Returns the username.
+     * 
+     * @return the username.
      */
     public String getUsername() {
         return this.username;
     }
 
     /**
-     * @param username the userName to set
+     * Sets the username.
+     * 
+     * @param username the username.
      */
     public void setUsername(String username) {
         this.username = username;
     }
 
     /**
-     * @return the password
+     * Returns the user's password.
+     * 
+     * @return the user's password.
      */
     public String getPassword() {
         return this.password;
     }
 
     /**
-     * @param password the password to set
+     * Sets the user's password.
+     * 
+     * @param password the user's password.
      */
     public void setPassword(String password) {
         this.password = password;
     }
 
     /**
-     * @return the fullName
+     * Returns the user's full name.
+     * 
+     * @return the user's full name.
      */
     public String getFullName() {
         return this.fullName;
     }
 
     /**
-     * @param fullName the fullName to set
+     * Sets the user's full name.
+     * 
+     * @param fullName the user's full name.
      */
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
     /**
-     * @return the email
+     * Returns the user's email.
+     * 
+     * @return the user's email.
      */
     public String getEmail() {
         return this.email;
     }
 
     /**
-     * @param email the email to set
+     * Sets the user's email.
+     * 
+     * @param email the user's email.
      */
     public void setEmail(String email) {
         this.email = email;

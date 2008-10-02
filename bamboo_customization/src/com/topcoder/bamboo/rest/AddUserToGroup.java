@@ -7,17 +7,29 @@ import com.atlassian.bamboo.ww2.BambooActionSupport;
 import com.atlassian.bamboo.ww2.aware.RestActionAware;
 
 /**
- * Returns the basic project details for a given key
+ * Adds an user to a given group.
+ * 
+ * @author romanoTC
+ * @version 1.0
  */
 public class AddUserToGroup extends BambooActionSupport implements RestActionAware {
+    /**
+     * The user being added to the group.
+     */
     private String username;
 
+    /**
+     * The group to add the user.
+     */
     private String group;
 
+    /**
+     * The authentication token.
+     */
     private String auth;
 
     /**
-     * Execute the rest api call
+     * Execute the rest API call
      * 
      * @return The webwork status code
      * @throws Exception A generic failure
@@ -38,37 +50,55 @@ public class AddUserToGroup extends BambooActionSupport implements RestActionAwa
         return SUCCESS;
     }
 
+    /**
+     * Returns the authentication token.
+     * 
+     * @return the authentication token.
+     */
     public String getAuth() {
         return auth;
     }
 
-    public void setAuth(final String auth) {
+    /**
+     * Sets the authentication token.
+     * 
+     * @param auth the authentication token.
+     */
+    public void setAuth(String auth) {
         this.auth = auth;
     }
 
     /**
-     * @return the username
+     * Returns the username of the user being added to the group.
+     * 
+     * @return the username of the user being added to the group.
      */
     public String getUsername() {
         return this.username;
     }
 
     /**
-     * @param username the username to set
+     * Sets the username of the user being added to the group.
+     * 
+     * @param username the username of the user being added to the group.
      */
     public void setUsername(String username) {
         this.username = username;
     }
 
     /**
-     * @return the group
+     * Returns the group to add the user.
+     * 
+     * @return the group to add the user.
      */
     public String getGroup() {
         return this.group;
     }
 
     /**
-     * @param group the group to set
+     * Sets the group to add the user.
+     * 
+     * @param group the group to add the user.
      */
     public void setGroup(String group) {
         this.group = group;
