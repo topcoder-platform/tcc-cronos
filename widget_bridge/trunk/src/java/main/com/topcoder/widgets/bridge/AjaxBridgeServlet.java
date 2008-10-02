@@ -1107,7 +1107,7 @@ public class AjaxBridgeServlet extends HttpServlet {
                     studioService.deleteContest(Long.parseLong(contestId));
 
                     printSuccessResponse(getSuccessJSONResponse(), response);
-                    debug("setSubmissionPlacement success!");
+                    debug("deleteContest success!");
                 } else {
                     // if we reach here this means the service param is invalid
                     sendErrorJSONResponse("The 'service' param passed is invalid.", response);

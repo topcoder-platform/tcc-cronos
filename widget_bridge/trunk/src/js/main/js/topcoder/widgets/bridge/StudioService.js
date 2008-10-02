@@ -1852,4 +1852,66 @@ js.topcoder.widgets.bridge.StudioService = function (/*String*/ servletUrlString
 	     	}
 	     });
 	}
+
+
+	/**
+	 * <p>
+	 * Delete contest asynchronously, if the contest is deleted successfully,
+	 * onSuccess callback function will be called with the retrieved change histories, otherwise
+	 * onError will be called.</p>
+	 * 
+	 * @param contestId contest id to delete.
+	 *
+	 * @throws IllegalArgumentException if any argument is null
+	 * @throws InvalidResponseException if the received response is invalid.
+	 */
+	this.deleteContest = deleteContest;
+	function /* void */ deleteContest(/* long */ contestId, /* ChangeHistoryHandler */ onSuccess, /* ErrorHandler */ onError ) {
+		// check first the validity of parameters
+		// check onSuccess
+		if (onSuccess == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onSuccess","onSuccess callback should not be null");
+		}
+		// check onError
+		if (onError == null) {
+			throw new js.topcoder.widgets.bridge.IllegalArgumentException("parameter.onError","onError callback should not be null");
+		}
+		// Create AJAXProcessor object
+		var processor = new AJAXProcessor();
+		// Send a request asynchronously
+		processor.request({
+	    	url:  servletUrlString,
+	    	async: true,
+	     	method: "POST",
+	     	// the json string should be escaped properly here. 
+	     	sendingText: "service=studio&method=deleteContest&contestId=" + contestId,
+	     	onStateChange: function() {
+	        	// Handle the response
+	           	if (processor.getState() == 4 && processor.getStatus() == 200) {
+	            	var response = processor.getResponseText();
+	                var jsonResp = eval("(" + response + ")");
+	                // check response
+	                if (jsonResp == null) {
+	                	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","deleteContest","Invalid response");
+	                }
+	                if (typeof(jsonResp.success) == "undefined") {
+		               	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","deleteContest","Invalid response");
+		            }	                     
+	                // now check if valid or not
+	                if (jsonResp.success == false) {
+		                if (typeof(jsonResp.error) == "undefined") {
+			               	throw new js.topcoder.widgets.bridge.InvalidResponseException("studio","deleteContest","Invalid response");
+			            }	                
+	                	// errors
+	                	// call error handler with error message
+	                	onError(jsonResp.error);
+	                } else {
+	                	// success
+	                	// call the success callback 
+	                	onSuccess(documentId);
+	                }
+	           }
+	     	}
+	     });
+	}
 } // end
