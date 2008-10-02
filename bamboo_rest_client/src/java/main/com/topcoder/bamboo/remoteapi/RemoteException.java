@@ -3,6 +3,14 @@
  */
 package com.topcoder.bamboo.remoteapi;
 
+/**
+ * <p>
+ * Exception that is thrown if an error occurred while access Bamboo's REST service.
+ * </p>
+ * 
+ * @author romanoTC
+ * @since 1.0
+ */
 public class RemoteException extends Exception {
     /**
      * <p>

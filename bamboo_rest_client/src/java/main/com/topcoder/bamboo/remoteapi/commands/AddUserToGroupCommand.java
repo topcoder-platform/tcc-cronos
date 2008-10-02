@@ -12,7 +12,7 @@ import com.topcoder.bamboo.remoteapi.RemoteException;
  * 
  * 
  */
-public class AddUserToGroupCommand extends AbstractCommand {
+public class AddUserToGroupCommand extends AbstractRESTCommand {
 
     /**
      * Uses the remote api to login to the bamboo server

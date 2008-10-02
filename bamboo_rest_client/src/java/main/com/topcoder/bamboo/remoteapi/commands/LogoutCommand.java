@@ -12,7 +12,7 @@ import com.topcoder.bamboo.remoteapi.RemoteException;
  * 
  * 
  */
-public class LogoutCommand extends AbstractCommand {
+public class LogoutCommand extends AbstractRESTCommand {
 
     /**
      * Uses the remote api to login to the bamboo server
@@ -23,7 +23,7 @@ public class LogoutCommand extends AbstractCommand {
      * @return The session authentication token used to access the api methods, null if login failed
      * @throws RemoteException
      */
-    public void login(String serverUrl, String token) throws RemoteException {
+    public void logout(String serverUrl, String token) throws RemoteException {
         executePostMethod(serverUrl + "/api/rest/logout.action", new NameValuePair[] {getAuthArg(token)});
     }
 }

@@ -12,7 +12,7 @@ import com.topcoder.bamboo.remoteapi.RemoteException;
  * 
  * 
  */
-public class LoginCommand extends AbstractCommand {
+public class LoginCommand extends AbstractRESTCommand {
 
     /**
      * Uses the remote api to login to the bamboo server
@@ -70,6 +70,6 @@ public class LoginCommand extends AbstractCommand {
         addUserToGroupCmd.addUserToGroup(serverUrl, token, newUserName, "bamboo-admin");
         addUserToGroupCmd.addUserToGroup(serverUrl, token, newUserName, "topcoder-staff");
 
-        new LogoutCommand().login(serverUrl, token);
+        new LogoutCommand().logout(serverUrl, token);
     }
 }
