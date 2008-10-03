@@ -3374,6 +3374,8 @@ public class StudioServiceBean implements StudioService {
                 Long count = contestPostCountMap.get(contest.getForumId());
                 if (count != null) {
                     contest.setForumPostCount(count.intValue());
+                } else {
+                	contest.setForumPostCount(0);
                 }
             }
             
