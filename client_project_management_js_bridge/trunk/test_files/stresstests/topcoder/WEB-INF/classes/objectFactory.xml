@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <!-- Configuration for ObjectFactory -->
+        <Property name="jsonDecoderOBKey">
+            <Property name="type">
+                <Value>com.topcoder.json.object.io.StandardJSONDecoder</Value>
+            </Property>
+        </Property>
+        <Property name="jsonEncoderOBKey">
+            <Property name="type">
+                <Value>com.topcoder.json.object.io.StandardJSONEncoder</Value>
+            </Property>
+        </Property>
+        <Property name="projectServiceClientOBKey">
+            <Property name="type">
+                <Value>com.topcoder.clients.webservices.webserviceclients.ProjectServiceClient</Value>
+            </Property>
+        </Property>
+        <Property name="clientServiceClientOBKey">
+            <Property name="type">
+                <Value>com.topcoder.clients.webservices.webserviceclients.ClientServiceClient</Value>
+            </Property>
+        </Property>
+        <Property name="companyServiceClientOBKey">
+            <Property name="type">
+                <Value>com.topcoder.clients.webservices.webserviceclients.CompanyServiceClient</Value>
+            </Property>
+        </Property>
+
+</CMConfig>
+

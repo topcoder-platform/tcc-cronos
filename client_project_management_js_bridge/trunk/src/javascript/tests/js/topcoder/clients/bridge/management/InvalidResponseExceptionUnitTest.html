@@ -1,0 +1,79 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Management 1.0
+
+Author TCSDEVELOPER
+-->
+<html>
+<head>
+<title>InvalidResponseException Unit Test</title>
+<script language="JavaScript" type="text/javascript" src="jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../main/js/topcoder/clients/bridge/management/client_project_management.js"></script>
+<script language="JavaScript" type="text/javascript">
+    /**
+     * <p>Test of constructor <code>InvalidResponseException(serviceName, methodName, message)</code>.</p>
+     */
+    function testCtor() {
+        var exception = new js.topcoder.clients.bridge.management.InvalidResponseException("serviceUrl", "method", "message");
+        assertNotNull("Fail to create InvalidResponseException.", exception);
+    }
+
+    /**
+     * <p>Test of constructor <code>InvalidResponseException(serviceName, methodName, message)</code>
+     * with <code>null</code> <code>message</code>.
+     * No exception is expected.</p>
+     */
+    function testCtorWithNullMessage() {
+        var exception = new js.topcoder.clients.bridge.management.InvalidResponseException("serviceUrl", "method", null);
+        assertNotNull("Fail to create InvalidResponseException.", exception);
+    }
+
+    /**
+     * <p>Test of <code>getServiceName</code>.</p>
+     */
+    function testGetServiceName() {
+        assertEquals("Fail to getServiceName.", "serviceUrl",
+            new js.topcoder.clients.bridge.management.InvalidResponseException("serviceUrl", "method", "message")
+            .getServiceName());
+
+        assertNull("Fail to getServiceName.",
+            (new js.topcoder.clients.bridge.management.InvalidResponseException(null, "method", "message"))
+            .getServiceName());
+    }
+
+    /**
+     * <p>Test of <code>getMethodName</code>.</p>
+     */
+    function testGetMethodName() {
+        assertEquals("Fail to getArgumentName.", "method",
+            new js.topcoder.clients.bridge.management.InvalidResponseException("serviceUrl", "method", "message")
+            .getMethodName());
+
+        assertNull("Fail to getArgumentName.",
+            (new js.topcoder.clients.bridge.management.InvalidResponseException("serviceUrl", null, "message"))
+            .getMethodName());
+    }
+
+    /**
+     * <p>Test of <code>getMessage</code>.</p>
+     */
+    function testGetMessage() {
+        assertEquals("Fail to getmessage.", "message",
+            new js.topcoder.clients.bridge.management.InvalidResponseException("serviceUrl", "method", "message")
+            .getMessage());
+
+        assertNull("Fail to getmessage.",
+            (new js.topcoder.clients.bridge.management.InvalidResponseException("serviceUrl", "method", null))
+            .getMessage());
+    }
+
+    </script>
+</head>
+<body>
+<h1><b>InvalidResponseException</b> Unit Test</h1>
+
+<p>This page contains Unit Test for <code>InvalidResponseException</code> class.</p>
+</body>
+</html>

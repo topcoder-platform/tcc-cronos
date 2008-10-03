@@ -1,0 +1,19 @@
+Final Fix 1:
+
+1) About parent project id
+I check the codes again.
+It's a bug in this component.
+private Long parentProjectId;
+But in getter/setter it's used as long.
+So I can not check the variable when it's null, exception will occur.
+
+In my component. I change it into long and compile it into client_project_entities_do.jar.
+I put in test_files/lib and remove original file about entities.
+Then all test passed.
+
+
+2) I use real servlet instead of the mock one.
+
+3) Add Log
+
+4) Add more failure test. Such as service is null and method is null.

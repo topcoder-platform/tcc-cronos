@@ -1,0 +1,25 @@
+Testsuite: com.topcoder.clients.bridge.management.AllTests
+Tests run: 20, Failures: 0, Errors: 0, Time elapsed: 0.931 sec
+------------- Standard Output ---------------
+{"success":true, "json":{"deleted":true,"passcode":"666","createUsername":"ivern","modifyDate":"1222483449970","createDate":"1222483449970","name":"world","id":"123","modifyUsername":"ketty"}}------------- ---------------- ---------------
+
+Testcase: testCtor_Accuracy took 0.271 sec
+Testcase: testInit_Accuracy took 0.05 sec
+Testcase: testInit_WithNull took 0.01 sec
+Testcase: testDoPost_CreateCompany_Accuracy took 0.08 sec
+Testcase: testDoPost_UpdateCompany_Accuracy took 0.02 sec
+Testcase: testDoPost_DeleteCompany_Accuracy took 0.01 sec
+Testcase: testDoPost_WithInvalidCompanyMethod took 0.03 sec
+Testcase: testDoPost_CreateClient_Accuracy took 0.03 sec
+Testcase: testDoPost_UpdateClient_Accuracy took 0.02 sec
+Testcase: testDoPost_DeleteClient_Accuracy took 0.03 sec
+Testcase: testDoPost_SetClientCodeName_Accuracy took 0.01 sec
+Testcase: testDoPost_SetClientStatus_Accuracy took 0.08 sec
+Testcase: testDoPost_WithInvalidClientMethod took 0.01 sec
+Testcase: testDoPost_CreateProject_Accuracy took 0.03 sec
+Testcase: testDoPost_UpdateProject_Accuracy took 0.02 sec
+Testcase: testDoPost_DeleteProject_Accuracy took 0.03 sec
+Testcase: testDoPost_SetProjectStatus_Accuracy took 0.02 sec
+Testcase: testDoPost_WithInvalidProjectMethod took 0.01 sec
+Testcase: testDoPost_WithInvalidService took 0.02 sec
+Testcase: testDoGet_Accuracy took 0.01 sec

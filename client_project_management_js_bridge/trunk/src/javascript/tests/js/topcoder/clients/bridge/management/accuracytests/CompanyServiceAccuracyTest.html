@@ -1,0 +1,88 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Management 1.0
+
+Author onsky
+-->
+<html>
+<head>
+<title>CompanyService Accuracy Test</title>
+<script language="JavaScript" type="text/javascript" src="../jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../../test_files/AjaxProcessor.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../../main/js/topcoder/clients/bridge/management/client_project_management.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+    /**
+     * <p><code>CompanyService</code> instance used for testing.</p>
+     */
+    var companyService;
+
+    /**
+     * <p><code>Company</code> instance used for testing.</p>
+     */
+    var company;
+
+    /**
+     * <p>Sets up environment.</p>
+     */
+    function setUp() {
+        var url = "http://localhost:8080/topcoder/servlet";
+        companyService = new js.topcoder.clients.bridge.management.CompanyService(url);
+        var config = {"passcode":"pcode"};
+        company = new js.topcoder.clients.bridge.management.model.Company(config);
+    }
+
+    /**
+     * <p>Accuracy test of constructor <code>CompanyService()</code>.</p>
+     */
+    function testCtor() {
+        assertNotNull(companyService);
+    }
+
+    /**
+     * <p>Accuracy test of method <code>createCompany()</code>.</p>
+     */
+    function testCreateCompany() {
+        companyService.createCompany(company, onSuccess, onError);
+    }
+
+    /**
+     * <p>Accuracy test of method <code>updateCompany()</code>.</p>
+     */
+    function testUpdateCompany() {
+        companyService.updateCompany(company, onSuccess, onError);
+    }
+
+    /**
+     * <p>Accuracy test of method <code>deleteCompany()</code>.</p>
+     */
+    function testDeleteCompany() {
+        companyService.deleteCompany(company, onSuccess, onError);
+    }
+
+    /**
+     * Success Handling.
+     */
+    function onSuccess(/* Object */ obj) {
+		assertNotNull(JSON.stringify(obj.toJSON()));
+    }
+
+    /**
+     * Error handling.
+     */
+    function onError(/* String */ message) {
+        alert("error " + message);
+    }
+
+
+    </script>
+</head>
+<body>
+<h1><b>CompanyService</b> Accuracy Test</h1>
+
+<p>This page contains Accuracy Test for <code>CompanyService</code> class.</p>
+</body>
+</html>

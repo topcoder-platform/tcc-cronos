@@ -1,0 +1,58 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Management 1.0
+
+Author TCSDESIGNER, TCSDEVELOPER
+-->
+<html>
+<head>
+<title>Demo Test</title>
+<script language="JavaScript" type="text/javascript" src="jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../test_files/AjaxProcessor.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../main/js/topcoder/clients/bridge/management/client_project_management.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+    /**
+     * <p>Demo Test</code>.</p>
+     */
+    function testDemo() {
+        var url = "http://localhost:8080/topcoder/servlet";
+        var projectService = new js.topcoder.clients.bridge.management.ProjectService(url);
+
+        // create a Project to update:
+        var project = new js.topcoder.clients.bridge.management.model.Project();
+        project.setID("1");
+        project.setName("Millennium Wheel");
+        project.setDescription("Creation of the Millennium Wheel Experience");
+        project.setModifyUsername("mess");
+        project.setModifyDate(new Date());
+        project.setIsActive(false);
+        // update project
+        projectService.updateProject(project, onSuccess, onError);
+    }
+
+    /**
+     * The function use to test.
+     */
+    function onSuccess(/* Object */ obj) {
+        alert("Demo is Success!");
+    }
+
+    /**
+     * The function use to test.
+     */
+    function onError(/* String */ message) {
+        alert("onError:" + message);
+    }
+
+    </script>
+</head>
+<body>
+<h1><b>Demo</b> Test</h1>
+
+<p>This page contains Unit Test for <code>Demo</code> class.</p>
+</body>
+</html>
