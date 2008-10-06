@@ -2579,8 +2579,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             EntityManager em = getEntityManager();
 
             Object[] searchSQLResult = FilterToSqlConverter.convert(filter);
+            logger.log(Level.DEBUG,searchSQLResult[0]);
+            
             Query query = em.createNativeQuery((String) searchSQLResult[0], Contest.class);
-
+            
             List bindVariableValues = (List) searchSQLResult[1];
             int index = 1;
             // set all the parameter
@@ -2702,7 +2704,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      */
     private void logEnter(String methodName) {
         if (logger != null) {
-            logger.log(Level.INFO, "[Enter method: ContestManagerBean." + methodName + "]");
+            logger.log(Level.DEBUG, "[Enter method: ContestManagerBean." + methodName + "]");
         }
     }
 
@@ -2716,7 +2718,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      */
     private void logExit(String methodName) {
         if (logger != null) {
-            logger.log(Level.INFO, "[Exit method: " + methodName + "]");
+            logger.log(Level.DEBUG, "[Exit method: " + methodName + "]");
         }
     }
 
@@ -2730,7 +2732,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      */
     private void logOneParameter(Object param) {
         if (logger != null) {
-            logger.log(Level.INFO, "[param1: {0}]", param);
+            logger.log(Level.DEBUG, "[param1: {0}]", param);
         }
     }
 
@@ -2746,7 +2748,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      */
     private void logTwoParameters(Object param1, Object param2) {
         if (logger != null) {
-            logger.log(Level.INFO, "[param1: {0}, param2: {1}]", param1, param2);
+            logger.log(Level.DEBUG, "[param1: {0}, param2: {1}]", param1, param2);
         }
     }
 
