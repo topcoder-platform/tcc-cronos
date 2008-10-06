@@ -886,18 +886,13 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
         logEnter(methodName);
 
         SubmissionPayment submissionPayment = null;
-        try {
-            Map<String, Object> parameters = new HashMap<String, Object>();
-            parameters.put("submissionId", submissionId);
-            submissionPayment = (SubmissionPayment) getSingleResult(getEntityManager(methodName),
-                    "SELECT sp FROM SubmissionPayment sp WHERE sp.submission.submissionId=:submissionId", parameters,
-                    methodName);
-            if (DELETED_STATUS.equals(submissionPayment.getStatus().getDescription())) {
-                submissionPayment = null;
-            }
 
-        } catch (EntityNotFoundException e) {
-            // ignore it.
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("submissionId", submissionId);
+        submissionPayment = (SubmissionPayment) getSingleOrNoResult(getEntityManager(methodName),
+                "SELECT sp FROM SubmissionPayment sp WHERE sp.submission.submissionId=:submissionId", parameters,
+                methodName);
+        if (submissionPayment != null && DELETED_STATUS.equals(submissionPayment.getStatus().getDescription())) {
             submissionPayment = null;
         }
 
@@ -1137,7 +1132,7 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
      */
     private void logEnter(String methodName) {
         if (logger != null) {
-            logger.log(Level.INFO, "Entering method [SubmissionManagerBean.{0}]", methodName);
+            logger.log(Level.DEBUG, "Entering method [SubmissionManagerBean.{0}]", methodName);
         }
     }
 
@@ -1151,7 +1146,7 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
      */
     private void logExit(String methodName) {
         if (logger != null) {
-            logger.log(Level.INFO, "Exiting method [SubmissionManagerBean.{0}].", methodName);
+            logger.log(Level.DEBUG, "Exiting method [SubmissionManagerBean.{0}].", methodName);
         }
     }
 
@@ -1324,6 +1319,40 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
             return obj;
         } catch (NoResultException e) {
             throw logException(new EntityNotFoundException("entity does not found.", e), methodName);
+        } catch (NonUniqueResultException e) {
+            throw logException(new SubmissionManagementException("Multiple results exist.", e), methodName);
+        } catch (IllegalStateException e) {
+            throw logException(new SubmissionManagementException(
+                    "Called for a Java Persistence query language UPDATE or DELETE statement", e), methodName);
+        }
+    }
+
+    /**
+     * <p>
+     * Gets the single result from persistence.
+     * </p>
+     *
+     * @param entityManager
+     *            the entity manager
+     * @param qlString
+     *            the query string
+     * @param parameters
+     *            the key and value of parameters.
+     * @param methodName
+     *            this called method name
+     * @return the found entity, or null if not found.
+     * @throws SubmissionManagementException
+     *             If any error occurs except the NoResultException.
+     */
+    private Object getSingleOrNoResult(EntityManager entityManager, String qlString, Map<String, Object> parameters,
+        String methodName) throws SubmissionManagementException {
+        try {
+            Query query = buildQuery(entityManager, qlString, parameters, methodName);
+            Object obj = query.getSingleResult();
+
+            return obj;
+        } catch (NoResultException e) {
+            return null;
         } catch (NonUniqueResultException e) {
             throw logException(new SubmissionManagementException("Multiple results exist.", e), methodName);
         } catch (IllegalStateException e) {
