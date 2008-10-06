@@ -221,6 +221,14 @@ public class StudioServiceBean implements StudioService {
     private long unactiveStatusId;
 
     /**
+     * <p>
+     * Represents the active status 
+     * </p>
+     */
+    @Resource(name = "activeStatusId")
+    private long activeStatusId;
+
+    /**
      * Represents the id of status of a submission paid. </p>
      */
     @Resource(name = "submissionPaidStatusId")
