@@ -56,6 +56,7 @@ import com.topcoder.servlet.request.UploadedFile;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogManager;
+import com.topcoder.util.log.log4j.Log4jLogFactory;
 import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.objectfactory.impl.ConfigurationObjectSpecificationFactory;
 
@@ -245,8 +246,9 @@ public class AjaxBridgeServlet extends HttpServlet {
             studioService = getServiceObject(StudioService.class, objectFactory.createObject(getParameter(
                     "studioServiceKey", "studioService")));
 
+            LogManager.setLogFactory(new Log4jLogFactory());
             logger = LogManager.getLog(getParameter("loggerName", "com.topcoder.widget.bridge.AjaxBridgeServlet"));
-
+            
             // initialize the File Upload Configuration Object
             fileUploadConfig = cm.getConfiguration(getParameter("fileUploadNamespace", null));
         } catch (Exception e) {
@@ -366,7 +368,7 @@ public class AjaxBridgeServlet extends HttpServlet {
                 return;
             }
 
-            debug("main parameters = [service] : " + service + " [method] : " + method);
+            logger.log(Level.INFO, "enter AjaxBridgeServlet.doPost with parameters = [service] : " + service + " [method] : " + method);
 
             if ("project".equals(service)) {
                 //**************************************************************
@@ -1122,7 +1124,7 @@ public class AjaxBridgeServlet extends HttpServlet {
             handleException(e, response);
         }
 
-        debug("Exiting doPost() method.");
+        logger.log(Level.INFO, "exit AjaxBridgeServlet.doPost");
     }
 
     /**
@@ -2091,8 +2093,8 @@ public class AjaxBridgeServlet extends HttpServlet {
         // encode the json object for response
         String strResponse = jsonEncoder.encode(succJson);
         // log the ajax response
-        if (logger.isEnabled(Level.INFO)) {
-        	logger.log(Level.INFO, "the Ajax Response is : " + strResponse);
+        if (logger.isEnabled(Level.DEBUG)) {
+        	logger.log(Level.DEBUG, "the Ajax Response is : " + strResponse);
         }
         // now we encode the success response
         printAjaxResponseString(strResponse, response);
