@@ -205,6 +205,14 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * <p>
+     * Represents the scheduled status used to retrieve the check the draft status.
+     * </p>
+     */
+    @Resource(name = "scheduledStatusId")
+    private long scheduledStatusId;
+
+    /**
+     * <p>
      * Represents the unactive status used to retrieve the check the draft
      * status.
      * </p>
@@ -898,7 +906,10 @@ public class StudioServiceBean implements StudioService {
         if (sessionContext.isCallerInRole(USER_ROLE)) {
             // [TCCC-385]
             if (c.getStatus() == null
-                    || (c.getStatus().getContestStatusId() != draftStatusId && c.getStatus().getContestStatusId() != unactiveStatusId)) {
+                    || (c.getStatus().getContestStatusId() != draftStatusId 
+                    		&& c.getStatus().getContestStatusId() != unactiveStatusId
+                    		&& c.getStatus().getContestStatusId() != activeStatusId
+                    		&& c.getStatus().getContestStatusId() != scheduledStatusId)) {
                 handleAuthorizationError("contest must be in draft status or unactive status.");
             }
         }

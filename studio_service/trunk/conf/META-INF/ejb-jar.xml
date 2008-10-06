@@ -26,6 +26,11 @@
                 <env-entry-value>15</env-entry-value>
             </env-entry>
             <env-entry>
+                <env-entry-name>scheduledStatusId</env-entry-name>
+                <env-entry-type>java.lang.Long</env-entry-type>
+                <env-entry-value>9</env-entry-value>
+            </env-entry>
+            <env-entry>
                 <env-entry-name>submissionPaidStatusId</env-entry-name>
                 <env-entry-type>java.lang.Long</env-entry-type>
                 <env-entry-value>1</env-entry-value>
