@@ -362,7 +362,7 @@ public class InDangerPhaseHandler extends AbstractPhaseHandler {
 
         if (!canEnd) {
             //The phase is already started but can not be ended, we need send reminder email again
-            this.sendReminderEmail(phase, remain);
+//            this.sendReminderEmail(phase, remain);
         }
         return canEnd;
     }
