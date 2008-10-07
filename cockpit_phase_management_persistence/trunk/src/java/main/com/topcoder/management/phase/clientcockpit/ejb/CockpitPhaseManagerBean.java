@@ -528,9 +528,9 @@ public class CockpitPhaseManagerBean implements CockpitPhaseManagerInterface {
                 project.setAttribute("ContestEndTime", contest.getEndDate());
                 Set<Submission> submissions = contest.getSubmissions();
                 if (submissions == null) {
-                    project.setAttribute("ContestSubmissionsCount", 0);
+                    project.setAttribute("ContestSubmissionsCount", 0L);
                 } else {
-                    project.setAttribute("ContestSubmissionsCount", submissions.size());
+                    project.setAttribute("ContestSubmissionsCount", new Long(submissions.size()));
                 }
                 Long forumID = contest.getForumId();
                 if (forumID == null) {
