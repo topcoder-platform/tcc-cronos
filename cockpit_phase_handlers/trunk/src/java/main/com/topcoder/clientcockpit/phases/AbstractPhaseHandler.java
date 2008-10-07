@@ -1047,6 +1047,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler, Serializable
             }
             email.addToAddress("cockpit-admins@topcoder.com", TCSEmailMessage.BCC);
 
+
             //Now the email message is generated successfully
             messageGenerated = true;
 
@@ -1109,13 +1110,15 @@ public abstract class AbstractPhaseHandler implements PhaseHandler, Serializable
                 this.sendEmail(this.startEmailTemplateSource, "templates/contestCompleted.txt",
                                "[TopCoder Cockpit] Contest Closed", this.startEmailFromAddress, phase);
             } else {
-                this.sendEmail(this.startEmailTemplateSource, this.startEmailTemplateName, this.startEmailSubject,
-                    this.startEmailFromAddress, phase);
+// temporarily removed phase start/end emails
+//                this.sendEmail(this.startEmailTemplateSource, this.startEmailTemplateName, this.startEmailSubject,
+//                    this.startEmailFromAddress, phase);
             }
         } else if (PhaseStatus.OPEN.getName().equals(phaseStatus) && this.sendEndPhaseEmail) {
         //When PhaseStatus is OPEN, it means the phase is about to be ended, so send end email
-            this.sendEmail(this.endEmailTemplateSource, this.endEmailTemplateName, this.endEmailSubject,
-                this.endEmailFromAddress, phase);
+// temporarily removed phase start/end emails
+//            this.sendEmail(this.endEmailTemplateSource, this.endEmailTemplateName, this.endEmailSubject,
+//                this.endEmailFromAddress, phase);
         }
 
         //Otherwise, do not send email.
