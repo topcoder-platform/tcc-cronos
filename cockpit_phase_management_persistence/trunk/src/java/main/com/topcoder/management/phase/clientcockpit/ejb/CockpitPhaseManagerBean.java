@@ -1160,8 +1160,6 @@ public class CockpitPhaseManagerBean implements CockpitPhaseManagerInterface {
 
         String[] mappedTypes = statusMapping.get(contestStatus.getName());
 
-        System.out.println("ISV: status [" + contestStatus.getName() + "] -> [" + mappedTypes + "]");
-
         for (String typeName : mappedTypes) {
             contestStatus = findContestStatusByName(contestStatuses, typeName);
             phase = mapContestStatusToPhase(project, contestStatus, length);
