@@ -46,61 +46,61 @@
 
 	<!-- TCS Library -->
 	<module>
- 		<java>auditor_201.jar</java>
+ 		<java>auditor.jar</java>
  	</module>
  	 <module>
- 		<java>authentication_manager-103.jar</java>
+ 		<java>authentication_manager.jar</java>
  	</module>
 	<module>
-		<java>base_exception_20.jar</java>
+		<java>base_exception.jar</java>
 	</module>
 	<module>
-		<java>class_associations_10.jar</java>
+		<java>class_associations.jar</java>
 	</module>
  	<module>
- 		<java>configuration_api_10.jar</java>
+ 		<java>configuration_api.jar</java>
  	</module>
   	<module>
- 		<java>configuration_manager_215.jar</java>
+ 		<java>configuration_manager.jar</java>
  	</module>
  	<module>
- 		<java>configuration_persistence_10.jar</java>
+ 		<java>configuration_persistence.jar</java>
  	</module>
   	<module>
- 		<java>data_entitlement_101.jar</java>
+ 		<java>data_entitlement.jar</java>
  	</module>
   	<module>
- 		<java>data_validation_111.jar</java>
+ 		<java>data_validation.jar</java>
  	</module>
   	<module>
- 		<java>db_connection_factory_11.jar</java>
+ 		<java>db_connection_factory.jar</java>
  	</module>
  	<module>
- 		<java>entitlement_102.jar</java>
+ 		<java>entitlement.jar</java>
  	</module>
   	<module>
- 		<java>id_generator_30.jar</java>
+ 		<java>id_generator.jar</java>
  	</module>
  	<module>
- 		<java>jboss_login_module_20.jar</java>
+ 		<java>jboss_login_module.jar</java>
  	</module>
  	<module>
-		<java>logging_wrapper_20.jar</java>
+		<java>logging_wrapper.jar</java>
 	</module>
 	<module>
-		<java>object_factory_201.jar</java>
+		<java>object_factory.jar</java>
 	</module>
 	<module>
-		<java>object_factory_configuration_api_plugin_10.jar</java>
+		<java>object_factory_configuration_api_plugin.jar</java>
 	</module>
 	<module>
-		<java>object_formatter_10.jar</java>
+		<java>object_formatter.jar</java>
 	</module>
 	<module>
-		<java>search_builder_14.jar</java>
+		<java>search_builder.jar</java>
 	</module>
 	<module>
-		<java>typesafe_enum_11.jar</java>
+		<java>typesafe_enum.jar</java>
 	</module>
 
 	<!-- Component distribution -->
