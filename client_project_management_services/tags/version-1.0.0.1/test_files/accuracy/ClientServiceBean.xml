@@ -1,0 +1,17 @@
+<CMConfig>
+
+    <Config name="ClientServiceBean">
+
+        <Property name="DAOClientManager">
+            <Property name="type">
+                <Value>com.topcoder.clients.webservices.accuracytests.mock.MockClientManager</Value>
+            </Property>
+        </Property>
+
+        <Property name="client_manager_token">
+            <Value>DAOClientManager</Value>
+        </Property>
+
+    </Config>
+    
+</CMConfig>

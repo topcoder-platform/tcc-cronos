@@ -1,0 +1,29 @@
+<CMConfig>
+	<Config name="com.topcoder.clients.manager.dao.DAOCompanyManager">
+		<!--Child configuration for object factory-->
+		<Property name="object_factory_configuration">
+			<!--Configuration for ClientDAO-->
+			<Property name="Default_Company_DAO">
+				<Property name="type">
+				<Value>com.topcoder.clients.webservices.mock.MockCompanyDAO</Value>
+				</Property>
+				<Property name="params">
+					<!--Parameter configuration-->
+				</Property>
+			</Property>
+		</Property>
+
+		<!--Name of IDGenerator, used to create IDGenerator with IDGeneratorFactory-->
+		<Property name="id_generator_name">
+			<Value>com.topcoder.clients.manager.dao.DAOCompanyManager</Value>
+		</Property>
+
+		<!--Name of the logger, used to create Log with LogManager-->
+		<Property name="logger_name">
+			<Value>System.out</Value>
+	    </Property>
+		<Property name="company_dao">
+			<Value>Default_Company_DAO</Value>
+		</Property>
+	</Config>
+</CMConfig>

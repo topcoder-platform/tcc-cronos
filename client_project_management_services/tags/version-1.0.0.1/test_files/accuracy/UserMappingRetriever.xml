@@ -1,0 +1,17 @@
+<CMConfig>
+
+    <Config name="UserMappingRetriever">
+
+        <Property name="JPAUserMappingRetriever">
+            <Property name="type">
+                <Value>com.topcoder.clients.webservices.accuracytests.mock.MockUserMappingRetriever</Value>
+            </Property>
+        </Property>
+        
+        <Property name="user_mapping_retriever_token">
+            <Value>JPAUserMappingRetriever</Value>
+        </Property>
+
+    </Config>
+    
+</CMConfig>

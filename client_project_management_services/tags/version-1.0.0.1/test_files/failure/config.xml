@@ -1,0 +1,174 @@
+<CMConfig>
+	<Config name="ClientServiceBean">
+		<Property name="DAOClientManager">
+			<Property name="type">
+				<Value>com.topcoder.clients.webservices.failuretests.mock.MockClientManager</Value>
+			</Property>
+		</Property>
+		<Property name="client_manager_token">
+			<Value>DAOClientManager</Value>
+		</Property>
+	</Config>
+	<Config name="UserMappingRetriever">
+		<Property name="JPAUserMappingRetriever">
+			<Property name="type">
+				<Value>com.topcoder.clients.webservices.failuretests.mock.MockUserMappingRetriever</Value>
+			</Property>
+		</Property>
+		<Property name="user_mapping_retriever_token">
+			<Value>JPAUserMappingRetriever</Value>
+		</Property>
+	</Config>
+	<Config name="CompanyServiceBean">
+		<Property name="DAOCompanyManager">
+			<Property name="type">
+				<Value>com.topcoder.clients.webservices.failuretests.mock.MockCompanyManager</Value>
+			</Property>
+		</Property>
+		<Property name="company_manager_token">
+			<Value>DAOCompanyManager</Value>
+		</Property>
+	</Config>
+	<Config name="ProjectServiceBean">
+		<Property name="DAOProjectManager">
+			<Property name="type">
+				<Value>com.topcoder.clients.webservices.failuretests.mock.MockProjectManager</Value>
+			</Property>
+		</Property>
+		<Property name="project_manager_token">
+			<Value>DAOProjectManager</Value>
+		</Property>
+	</Config>
+	<!-- InvalidClientServiceBean -->
+	<Config name="InvalidClientServiceBean1">
+	</Config>
+	<Config name="InvalidClientServiceBean2">
+		<Property name="DAOClientManager">
+			<Property name="type">
+				<Value>com.topcoder.clients.webservices.failuretests.mock.MockClientManager</Value>
+			</Property>
+		</Property>
+		<Property name="client_manager_token">
+			<Value>invalid</Value>
+		</Property>
+	</Config>
+	<Config name="InvalidClientServiceBean3">
+		<Property name="DAOClientManager">
+			<Property name="type">
+				<Value>invalid</Value>
+			</Property>
+		</Property>
+		<Property name="client_manager_token">
+			<Value>DAOClientManager</Value>
+		</Property>
+	</Config>
+	<Config name="InvalidClientServiceBean4">
+		<Property name="DAOClientManager">
+			<Property name="type">
+				<Value>com.topcoder.clients.webservices.failuretests.mock.MockUserMappingRetriever</Value>
+			</Property>
+		</Property>
+		<Property name="client_manager_token">
+			<Value>DAOClientManager</Value>
+		</Property>
+	</Config>
+	<!-- InvalidUserMappingRetriever -->
+	<Config name="InvalidUserMappingRetriever1">
+	</Config>
+	<Config name="InvalidUserMappingRetriever2">
+		<Property name="JPAUserMappingRetriever">
+			<Property name="type">
+				<Value>com.topcoder.clients.webservices.failuretests.mock.MockUserMappingRetriever</Value>
+			</Property>
+		</Property>
+		<Property name="user_mapping_retriever_token">
+			<Value>invalid</Value>
+		</Property>
+	</Config>
+	<Config name="InvalidUserMappingRetriever3">
+		<Property name="JPAUserMappingRetriever">
+			<Property name="type">
+				<Value>invalid</Value>
+			</Property>
+		</Property>
+		<Property name="user_mapping_retriever_token">
+			<Value>JPAUserMappingRetriever</Value>
+		</Property>
+	</Config>
+	<Config name="InvalidUserMappingRetriever4">
+		<Property name="JPAUserMappingRetriever">
+			<Property name="type">
+				<Value>com.topcoder.clients.webservices.failuretests.mock.MockCompanyManager</Value>
+			</Property>
+		</Property>
+		<Property name="user_mapping_retriever_token">
+			<Value>JPAUserMappingRetriever</Value>
+		</Property>
+	</Config>
+	<!-- InvalidCompanyServiceBean -->
+	<Config name="InvalidCompanyServiceBean1">
+	</Config>
+	<Config name="InvalidCompanyServiceBean2">
+		<Property name="DAOCompanyManager">
+			<Property name="type">
+				<Value>com.topcoder.clients.webservices.failuretests.mock.MockCompanyManager</Value>
+			</Property>
+		</Property>
+		<Property name="company_manager_token">
+			<Value>invalid</Value>
+		</Property>
+	</Config>
+	<Config name="InvalidCompanyServiceBean3">
+		<Property name="DAOCompanyManager">
+			<Property name="type">
+				<Value>invalid</Value>
+			</Property>
+		</Property>
+		<Property name="company_manager_token">
+			<Value>DAOCompanyManager</Value>
+		</Property>
+	</Config>
+	<Config name="InvalidCompanyServiceBean4">
+		<Property name="DAOCompanyManager">
+			<Property name="type">
+				<Value>com.topcoder.clients.webservices.failuretests.mock.MockProjectManager</Value>
+			</Property>
+		</Property>
+		<Property name="company_manager_token">
+			<Value>DAOCompanyManager</Value>
+		</Property>
+	</Config>
+	<!-- InvalidProjectServiceBean -->
+	<Config name="InvalidProjectServiceBean1">
+	</Config>
+	<Config name="InvalidProjectServiceBean2">
+		<Property name="DAOProjectManager">
+			<Property name="type">
+				<Value>com.topcoder.clients.webservices.failuretests.mock.MockProjectManager</Value>
+			</Property>
+		</Property>
+		<Property name="project_manager_token">
+			<Value>invalid</Value>
+		</Property>
+	</Config>
+	<Config name="InvalidProjectServiceBean3">
+		<Property name="DAOProjectManager">
+			<Property name="type">
+				<Value>invalid</Value>
+			</Property>
+		</Property>
+		<Property name="project_manager_token">
+			<Value>DAOProjectManager</Value>
+		</Property>
+	</Config>
+	<Config name="InvalidProjectServiceBean4">
+		<Property name="DAOProjectManager">
+			<Property name="type">
+				<Value>com.topcoder.clients.webservices.failuretests.mock.MockClientManager</Value>
+			</Property>
+		</Property>
+		<Property name="project_manager_token">
+			<Value>DAOProjectManager</Value>
+		</Property>
+	</Config>
+</CMConfig>

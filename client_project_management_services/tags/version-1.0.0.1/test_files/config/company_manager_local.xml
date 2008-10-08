@@ -1,0 +1,31 @@
+<CMConfig>
+	<Config name="companyManagerNamespace">
+		<property name="company_manager_token">
+			<value>company_manager</value>
+		</property>
+
+		<property name="company_manager">
+			<property name="type">
+				<value>com.topcoder.clients.manager.dao.DAOCompanyManager</value>
+			</property>
+			<property name="params">
+				<property name="param1">
+					<property name="type">
+						<value>java.lang.String</value>
+					</property>
+					<property name="value">
+						<value>companyManagerFileLocal.properties</value>
+					</property>
+				</property>
+				<property name="param2">
+					<property name="type">
+						<value>java.lang.String</value>
+					</property>
+					<property name="value">
+						<value>com.topcoder.clients.manager.dao.DAOCompanyManager</value>
+					</property>
+				</property>
+			</property>
+		</property>
+	</Config>
+</CMConfig>

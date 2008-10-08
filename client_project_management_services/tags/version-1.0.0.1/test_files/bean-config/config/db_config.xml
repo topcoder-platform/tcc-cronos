@@ -1,0 +1,36 @@
+<CMConfig> 
+  <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+    <Property name="connections">
+        <!-- The default should not be oracle, the db should be in the scope of the DBs which are allowed in IDGenerator 2.0 -->
+        <Property name="default">
+            <Value>InformixSequence</Value>
+        </Property>
+
+        <Property name="InformixSequence">
+           <Property name="producer">
+                <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+            </Property>
+            <Property name="parameters">
+                <Property name="jdbc_driver">
+                    <Value>com.informix.jdbc.IfxDriver</Value>
+                </Property>
+                <Property name="jdbc_url">
+                    <Value>jdbc:informix-sqli://192.168.1.88:1526/project:INFORMIXSERVER=topcoder</Value>
+                </Property>
+                <Property name="user">
+                    <Value>informix</Value>
+                </Property>
+                <Property name="password">
+                    <Value>topcoder</Value>
+                </Property>
+            </Property>
+        </Property>
+    </Property>
+</Config>
+
+<Config name="CPE_DAO">
+	<Property name="search_by_filter_utility_token">
+		<Value>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl</Value>
+	</Property>
+</Config>
+</CMConfig>

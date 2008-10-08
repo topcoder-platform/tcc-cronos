@@ -1,0 +1,17 @@
+<CMConfig>
+
+    <Config name="ProjectServiceBean">
+
+        <Property name="DAOProjectManager">
+            <Property name="type">
+                <Value>com.topcoder.clients.webservices.accuracytests.mock.MockProjectManager</Value>
+            </Property>
+        </Property>
+
+        <Property name="project_manager_token">
+            <Value>DAOProjectManager</Value>
+        </Property>
+
+    </Config>
+    
+</CMConfig>

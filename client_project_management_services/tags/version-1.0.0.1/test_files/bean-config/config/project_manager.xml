@@ -1,0 +1,13 @@
+<CMConfig>
+	<Config name="projectManagerNamespace">
+		<property name="project_manager_token">
+			<value>project_manager</value>
+		</property>
+
+		<property name="project_manager">
+			<property name="type">
+				<value>com.topcoder.clients.manager.dao.DAOProjectManager</value>
+			</property>
+		</property>
+	</Config>
+</CMConfig>

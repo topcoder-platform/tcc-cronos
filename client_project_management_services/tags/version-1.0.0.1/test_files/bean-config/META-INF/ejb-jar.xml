@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ejb-jar version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd">
+
+	<enterprise-beans>
+		<session>
+			<ejb-name>ClientServiceBean</ejb-name>
+			<remote>com.topcoder.clients.webservices.ClientServiceRemote</remote>
+			<local>com.topcoder.clients.webservices.ClientServiceLocal</local>
+			<ejb-class>com.topcoder.clients.webservices.beans.ClientServiceBean</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
+
+			<env-entry>
+				<env-entry-name>clientManagerFile</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>bean.properties</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<env-entry-name>clientManagerNamespace</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>clientManagerNamespace</env-entry-value>
+			</env-entry>
+
+			<env-entry>
+				<env-entry-name>userMappingRetrieverFile</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>bean.properties</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<env-entry-name>userMappingRetrieverNamespace</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>userMappingRetrieverNamespace</env-entry-value>
+			</env-entry>
+
+			<env-entry>
+				<env-entry-name>logName</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>System.out</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<env-entry-name>administratorRole</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>Admin</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<env-entry-name>clientAndProjectUserRole</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>developer</env-entry-value>
+			</env-entry>
+
+			<persistence-context-ref>
+				<persistence-context-ref-name>persistenceUnit</persistence-context-ref-name>
+				<persistence-unit-name>persistenceUnit</persistence-unit-name>
+				<persistence-context-type>Transaction</persistence-context-type>
+			</persistence-context-ref>
+		</session>
+
+		<session>
+			<ejb-name>CompanyServiceBean</ejb-name>
+			<remote>com.topcoder.clients.webservices.CompanyServiceRemote</remote>
+			<local>com.topcoder.clients.webservices.CompanyServiceLocal</local>
+			<ejb-class>com.topcoder.clients.webservices.beans.CompanyServiceBean</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
+
+			<env-entry>
+				<env-entry-name>companyManagerFile</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>bean.properties</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<env-entry-name>companyManagerNamespace</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>companyManagerNamespace</env-entry-value>
+			</env-entry>
+
+			<env-entry>
+				<env-entry-name>logName</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>System.out</env-entry-value>
+			</env-entry>
+		</session>
+
+		<session>
+			<ejb-name>ProjectServiceBean</ejb-name>
+			<remote>com.topcoder.clients.webservices.ProjectServiceRemote</remote>
+			<local>com.topcoder.clients.webservices.ProjectServiceLocal</local>
+			<ejb-class>com.topcoder.clients.webservices.beans.ProjectServiceBean</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
+
+			<env-entry>
+				<env-entry-name>projectManagerFile</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>bean.properties</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<env-entry-name>projectManagerNamespace</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>projectManagerNamespace</env-entry-value>
+			</env-entry>
+
+			<env-entry>
+				<env-entry-name>userMappingRetrieverFile</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>bean.properties</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<env-entry-name>userMappingRetrieverNamespace</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>userMappingRetrieverNamespace</env-entry-value>
+			</env-entry>
+
+			<env-entry>
+				<env-entry-name>logName</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>System.out</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<env-entry-name>administratorRole</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>Admin</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<env-entry-name>clientAndProjectUserRole</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>developer</env-entry-value>
+			</env-entry>
+
+			<persistence-context-ref>
+				<persistence-context-ref-name>persistenceUnit</persistence-context-ref-name>
+				<persistence-unit-name>persistenceUnit</persistence-unit-name>
+				<persistence-context-type>Transaction</persistence-context-type>
+			</persistence-context-ref>
+		</session>
+	</enterprise-beans>
+
+    <!-- define security roles permissions -->
+    <assembly-descriptor>
+        <security-role>
+            <role-name>Admin</role-name>
+        </security-role>
+        <method-permission>
+            <role-name>Admin</role-name>
+            <method>
+                <ejb-name>ClientServiceBean</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+            	<ejb-name>ProjectServiceBean</ejb-name>
+            	<method-name>*</method-name>
+            </method>
+        </method-permission>
+    </assembly-descriptor>
+</ejb-jar>
