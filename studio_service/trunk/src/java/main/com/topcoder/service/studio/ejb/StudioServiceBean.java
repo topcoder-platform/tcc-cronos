@@ -93,6 +93,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 /**
  * This is the EJB implementation of the StudioService interface webservice
@@ -1327,7 +1328,9 @@ public class StudioServiceBean implements StudioService {
         // [TCCC-325].
         Set<StudioFileType> fileTypes = new HashSet<StudioFileType>();
         List<StudioFileType> allFileTypes = contestManager.getAllStudioFileTypes();
-        for (String format : data.getFinalFileFormat().split(",")) {
+        StringTokenizer tokenizer = new StringTokenizer(data.getFinalFileFormat(), ",");
+        while (tokenizer.hasMoreTokens()) {
+            String format = tokenizer.nextToken();
             boolean found = false;
             for (StudioFileType type : allFileTypes) {
                 if (type.getExtension().equals(format)) {
