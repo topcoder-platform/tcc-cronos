@@ -95,7 +95,7 @@ public class DefaultEmailMessageGenerator implements EmailMessageGenerator, Seri
                         }
 
                         //Must be type of Long, Date or String
-                        if (value instanceof Long || value instanceof Date || value instanceof String) {
+                        if (value instanceof Number || value instanceof Date || value instanceof String) {
                             field.setValue(value.toString());
                         } else {
                             throw new EmailMessageGenerationException("Template data [" + key
