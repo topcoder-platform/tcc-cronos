@@ -1,0 +1,31 @@
+<CMConfig>
+
+	<Config name="ProjectStatusServiceBean">
+
+		<Property name="DAOProjectManager">
+			<Property name="type">
+				<Value>com.topcoder.clients.webservices.beans.ProjectManagerMock</Value>
+			</Property>
+		</Property>
+
+		<Property name="project_manager_token">
+			<Value>DAOProjectManager</Value>
+		</Property>
+
+	</Config>
+
+	<Config name="BrokenProjectStatusServiceBean">
+
+		<Property name="DAOProjectManager">
+			<Property name="type">
+				<Value>java.lang.String</Value>
+			</Property>
+		</Property>
+
+		<Property name="project_manager_token">
+			<Value>DAOProjectManager</Value>
+		</Property>
+
+	</Config>
+	
+</CMConfig>

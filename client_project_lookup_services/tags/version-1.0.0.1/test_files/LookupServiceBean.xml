@@ -1,0 +1,61 @@
+<CMConfig>
+
+	<Config name="LookupServiceBean">
+
+		<Property name="DAOClientManager">
+			<Property name="type">
+				<Value>com.topcoder.clients.webservices.beans.ClientManagerMock</Value>
+			</Property>
+		</Property>
+
+		<Property name="DAOCompanyManager">
+			<Property name="type">
+				<Value>com.topcoder.clients.webservices.beans.CompanyManagerMock</Value>
+			</Property>
+		</Property>
+		
+		<Property name="DAOProjectManager">
+			<Property name="type">
+				<Value>com.topcoder.clients.webservices.beans.ProjectManagerMock</Value>
+			</Property>
+		</Property>
+		
+		<Property name="JPAUserMappingRetriever">
+			<Property name="type">
+				<Value>com.topcoder.clients.webservices.beans.UserMappingRetrieverMock</Value>
+			</Property>
+		</Property>
+		
+		<Property name="client_manager_token">
+			<Value>DAOClientManager</Value>
+		</Property>
+
+		<Property name="company_manager_token">
+			<Value>DAOCompanyManager</Value>
+		</Property>
+		
+		<Property name="project_manager_token">
+			<Value>DAOProjectManager</Value>
+		</Property>
+		
+		<Property name="user_mapping_retriever_token">
+			<Value>JPAUserMappingRetriever</Value>
+		</Property>
+		
+	</Config>
+
+	<Config name="BrokenLookupServiceBean">
+
+		<Property name="DAOClientManager">
+			<Property name="type">
+				<Value>java.lang.String</Value>
+			</Property>
+		</Property>
+
+		<Property name="client_manager_token">
+			<Value>DAOClientManager</Value>
+		</Property>
+
+	</Config>
+	
+</CMConfig>
