@@ -1,7 +1,7 @@
 <project name="Dependency Import" default="dist" basedir=".">
 	<!-- property file defining the component's dependencies -->
 
-	<property name="jboss_home" value="${ext_libdir}/jboss/4.2.3.GA" />
+	<property name="jboss_home" value="${ext_libdir}/jboss/as/4.2.2.GA" />
 	<property name="jboss_config_name" value="default" />
 
 	<!-- Properties used in compile_targets ANT target for JDK version x -->
@@ -17,10 +17,10 @@
 	<property name="db_connection_factory.jar" value="${tcs_libdir}/db_connection_factory/1.1.0/db_connection_factory.jar" />			
 	<property name="entitlement.jar" value="${tcs_libdir}/entitlement/1.0.2/entitlement.jar" />
 	<property name="id_generator.jar" value="${tcs_libdir}/id_generator/3.0.0/id_generator.jar" />
-	<property name="jboss_login_module.jar" value="${tcs_libdir}/jboss_login_module/2.0.0/jboss_login_module.jar" />
+	<property name="jboss_login_module.jar" value="${tcs_libdir}/jboss_login_module/2.1.0/jboss_login_module.jar" />
   <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar" />
 	<property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar" />
-	<property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.0.1/object_factory.jar" />
+	<property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.1.2/object_factory.jar" />
 	<property name="object_factory_configuration_api_plugin.jar"
 	value="${tcs_libdir}/object_factory_configuration_api_plugin/1.0.0/object_factory_configuration_api_plugin.jar" />
 	<property name="configuration_persistence.jar"
