@@ -33,9 +33,9 @@ import com.topcoder.util.file.DocumentGenerator;
 import com.topcoder.util.file.Template;
 import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
-import com.topcoder.util.log.LogManager;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.log4j.Log4jLogFactory;
+//import com.topcoder.util.log.LogManager;
+//import com.topcoder.util.log.Log;
+//import com.topcoder.util.log.log4j.Log4jLogFactory;
 
 
 /**
@@ -654,7 +654,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler, Serializable
     /**
      * <p>A <code>Log</code> to be used for logging the events occurred while advancing the projects to phases.</p>
      */
-    private final Log log;
+//    private final Log log;
 
     /**
      * <p>
@@ -674,8 +674,8 @@ public abstract class AbstractPhaseHandler implements PhaseHandler, Serializable
     private AbstractPhaseHandler(String namespace, ContestManager bean, boolean useGivenBean)
         throws PhaseHandlingException {
 
-        LogManager.setLogFactory(new Log4jLogFactory());
-        this.log = LogManager.getLog();
+//        LogManager.setLogFactory(new Log4jLogFactory());
+//        this.log = LogManager.getLog();
         
         //Check namespace
         ExceptionUtils.checkNullOrEmpty(namespace, null, null, "Namespace should not be empty(trimmed) or null.");
@@ -1037,11 +1037,11 @@ public abstract class AbstractPhaseHandler implements PhaseHandler, Serializable
                 : documentGenerator.getTemplate(templateSource, templateName);
             String messageBody = this.emailMessageGenerator.generateMessage(template, phase);
             
-            if (this.log.isEnabled(com.topcoder.util.log.Level.DEBUG)) {
-                this.log.log(com.topcoder.util.log.Level.DEBUG,
-                             "Generated following email message of subject [" + subject + "] to be sent to ["
-                             + fromAddr + "] \n" + messageBody);
-            }
+//            if (this.log.isEnabled(com.topcoder.util.log.Level.DEBUG)) {
+//                this.log.log(com.topcoder.util.log.Level.DEBUG,
+//                             "Generated following email message of subject [" + subject + "] to be sent to ["
+//                             + fromAddr + "] \n" + messageBody);
+//            }
 
             //Create a TCSEmailMessage to be sent
             TCSEmailMessage email = new TCSEmailMessage();
@@ -1071,10 +1071,10 @@ public abstract class AbstractPhaseHandler implements PhaseHandler, Serializable
 
             //Send email
             EmailEngine.send(email);
-            if (this.log.isEnabled(com.topcoder.util.log.Level.DEBUG)) {
-                this.log.log(com.topcoder.util.log.Level.DEBUG,
-                             "Sent email message of subject [" + subject + "] to [" + fromAddr + "]");
-            }
+//            if (this.log.isEnabled(com.topcoder.util.log.Level.DEBUG)) {
+//                this.log.log(com.topcoder.util.log.Level.DEBUG,
+//                             "Sent email message of subject [" + subject + "] to [" + fromAddr + "]");
+//            }
         } catch (BaseException e) {
             rethrowEmailError(e, messageGenerated, phase);
         } catch (ConfigManagerException e) {
