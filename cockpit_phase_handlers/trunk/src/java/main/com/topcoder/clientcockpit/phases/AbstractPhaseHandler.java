@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -24,6 +25,11 @@ import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.ContestManager;
 import com.topcoder.service.studio.contest.ContestStatus;
+import com.topcoder.service.studio.submission.Submission;
+import com.topcoder.service.studio.submission.SubmissionManager;
+import com.topcoder.service.studio.submission.Prize;
+import com.topcoder.service.studio.submission.SubmissionManagementException;
+import com.topcoder.service.studio.submission.SubmissionPayment;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.config.UnknownNamespaceException;
@@ -259,6 +265,13 @@ public abstract class AbstractPhaseHandler implements PhaseHandler, Serializable
 
     /**
      * <p>
+     * Represents the property: "submission_manager_bean_name".
+     * </p>
+     */
+    private static final String SUBMISSION_MANAGER_BEAN_NAME = "submission_manager_bean_name";
+
+    /**
+     * <p>
      * Represents the property: "use_cache".
      * </p>
      */
@@ -433,6 +446,15 @@ public abstract class AbstractPhaseHandler implements PhaseHandler, Serializable
      * </p>
      */
     private final ContestManager bean;
+
+    /**
+     * <p>
+     * The bean used to retrieve information regarding submissions.
+     * It will be initialized in the constructor and never changed afterwards.
+     * It cannot be null after initialization. It has a getter.
+     * </p>
+     */
+    private final SubmissionManager submissionManager;
 
     /**
      * <p>
@@ -684,14 +706,19 @@ public abstract class AbstractPhaseHandler implements PhaseHandler, Serializable
             //Use given bean, Check it is not null
             ExceptionUtils.checkNull(bean, null, null, "Given ContestManager should not be null.");
             this.bean = bean;
+            this.submissionManager = null;
         } else {
             String beanName = loadProperty(namespace, BEAN_NAME, !useGivenBean);
+            String submissionManagerBeanName = loadProperty(namespace, SUBMISSION_MANAGER_BEAN_NAME, !useGivenBean);
             //Lookup bean by JNDI
             try {
                 InitialContext ctx = new InitialContext();
                 this.bean = (ContestManager) ctx.lookup(beanName);
                 //Just in case the looked up bean is null
                 checkNull(this.bean, "The ContestManager under context name " + beanName);
+                this.submissionManager = (SubmissionManager) ctx.lookup(submissionManagerBeanName);
+                checkNull(this.submissionManager, "The SubmissionManager under context name "
+                                                  + submissionManagerBeanName);
             } catch (NamingException e) {
                 throw new PhaseHandlingException("Error while looking up ContestManager", e);
             } catch (ClassCastException e) {
@@ -1483,6 +1510,35 @@ public abstract class AbstractPhaseHandler implements PhaseHandler, Serializable
         ExceptionUtils.checkNull(contest, null, null, "Contest should not be null.");
 
         return contest.getResults() != null && !contest.getResults().isEmpty();
+    }
+
+    /**
+     * <p>Checks whether the client has paid for the winning submission.</p>
+     *
+     * @param contest a <code>Contest</code> representing the contest to check the payment for winning submission for.
+     * @return <code>true</code> if the client has paid for the winning submission; <code>false</code> otherwise.
+     * @throws IllegalArgumentException if specified <code>contest</code> is <code>null</code>.
+     * @throws SubmissionManagementException if an error occurs while 
+     */
+    protected boolean isWinningSubmissionPaid(Contest contest) throws SubmissionManagementException {
+        ExceptionUtils.checkNull(contest, null, null, "Contest should not be null.");
+        Set<Submission> submissions = contest.getSubmissions();
+        if (submissions != null) {
+            for (Submission s : submissions) {
+                Set<Prize> prizes = s.getPrizes();
+                for (Prize p : prizes) {
+                    if (p.getPlace() == 1) {
+                        SubmissionPayment payment = this.submissionManager.getSubmissionPayment(s.getSubmissionId());
+                        if (payment != null) {
+                            if (payment.getPayPalOrderId() != null) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**

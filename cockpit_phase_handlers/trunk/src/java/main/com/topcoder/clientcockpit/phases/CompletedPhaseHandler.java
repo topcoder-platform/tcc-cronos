@@ -9,6 +9,7 @@ import com.topcoder.project.phases.Phase;
 
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestManager;
+import com.topcoder.service.studio.submission.SubmissionManagementException;
 
 
 /**
@@ -263,9 +264,14 @@ public class CompletedPhaseHandler extends AbstractPhaseHandler {
         // if there are no sufficient number submissions received the contest is closed
 //        return isEndDateReached(contest) && isEnoughSubmissionsReceived(phase, contest)
 //            && (contest.getResults() != null && !contest.getResults().isEmpty());
-        return isEndDateReached(contest)
-               && ((isEnoughSubmissionsReceived(phase, contest) && (contest.getResults() != null && !contest.getResults().isEmpty()))
-                   || (!isEnoughSubmissionsReceived(phase, contest) && isContestStatusMatch(contest, CockpitPhase.ACTIVE)));
+        try {
+            return isEndDateReached(contest)
+                   && ((isEnoughSubmissionsReceived(phase, contest) && isWinnerChosen(contest) && isWinningSubmissionPaid(contest))
+                       || (!isEnoughSubmissionsReceived(phase, contest) && isContestStatusMatch(contest, CockpitPhase.ACTIVE)));
+        } catch (SubmissionManagementException e) {
+            throw new PhaseHandlingException("Could not check the payment for winning submission for contest ["
+                                             + contest.getContestId() + "]", e);
+        }
     }
 
     /**
