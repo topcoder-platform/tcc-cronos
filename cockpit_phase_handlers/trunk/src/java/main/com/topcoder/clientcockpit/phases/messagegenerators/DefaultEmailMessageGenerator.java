@@ -5,6 +5,7 @@ package com.topcoder.clientcockpit.phases.messagegenerators;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 
 import com.topcoder.clientcockpit.phases.EmailMessageGenerationException;
 import com.topcoder.clientcockpit.phases.EmailMessageGenerator;
@@ -38,6 +39,10 @@ import com.topcoder.util.file.fieldconfig.Loop;
  */
 public class DefaultEmailMessageGenerator implements EmailMessageGenerator, Serializable {
 
+	/**
+	 * Used to format date fields
+	 */
+	private SimpleDateFormat sdf = new SimpleDateFormat("EEE d-MMM-yy HH:mm");
     /**
      * <p>
      * Default empty constructor.
@@ -108,8 +113,10 @@ public class DefaultEmailMessageGenerator implements EmailMessageGenerator, Seri
             Serializable value = getValue(phase, key);
 
             //Must be type of Long, Date or String
-            if (value instanceof Number || value instanceof Date || value instanceof String) {
+            if (value instanceof Number || value instanceof String) {
                 field.setValue(value.toString());
+            } else if (value instanceof Date) {                        	
+            	field.setValue(sdf.format(value));
             } else {
                 throw new EmailMessageGenerationException("Template data [" + key
                     + "] type is neither Long, Date nor String: " + value.getClass());
