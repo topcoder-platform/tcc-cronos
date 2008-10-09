@@ -24,6 +24,7 @@ import com.topcoder.service.studio.contest.ContestManagerLocal;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.submission.Submission;
 import com.topcoder.service.studio.submission.ContestResult;
+import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.date.workdays.Workdays;
 import com.topcoder.date.workdays.DefaultWorkdaysFactory;
 import com.topcoder.util.log.Log;
@@ -37,6 +38,9 @@ import com.topcoder.cockpit.security.CockpitUserPersistenceImpl;
 
 import javax.annotation.Resource;
 import javax.annotation.PostConstruct;
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
+import javax.annotation.security.RunAs;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.ejb.TransactionAttribute;
@@ -68,6 +72,9 @@ import java.io.Serializable;
  * @author isv
  * @version 1.0
  */
+@RunAs("Cockpit Administrator")
+@RolesAllowed("Cockpit User")
+@DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @Stateless
@@ -508,7 +515,6 @@ public class CockpitPhaseManagerBean implements CockpitPhaseManagerInterface {
                 project = new Project(startDate, workdays);
                 project.setId(contestId);
                 contest.getStatus();
-                contest.getSubmissions();
                 contest.getResults();
                 project.setAttribute("contest", contest);
                 // Get author handle and email
@@ -531,6 +537,10 @@ public class CockpitPhaseManagerBean implements CockpitPhaseManagerInterface {
                     project.setAttribute("ContestSubmissionsCount", 0L);
                 } else {
                     project.setAttribute("ContestSubmissionsCount", new Long(submissions.size()));
+                    for (Submission s : submissions) {
+                        Set<Prize> prizes = s.getPrizes();
+                        prizes.toString();
+                    }
                 }
                 Long forumID = contest.getForumId();
                 if (forumID == null) {
