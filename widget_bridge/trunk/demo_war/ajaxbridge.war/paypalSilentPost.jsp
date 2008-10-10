@@ -19,6 +19,7 @@
 <%@ page import="java.util.GregorianCalendar" %>
 <%@ page import="javax.xml.datatype.DatatypeFactory" %>
 <%@ page import="javax.xml.datatype.XMLGregorianCalendar" %>
+<%@ page import="java.util.StringTokenizer" %>
 <%
     ServletContext servletContext = pageContext.getServletContext();
     servletContext.log("paypalSilentPost.jsp : Got following Silent Post request from PayPal : ["
@@ -45,8 +46,6 @@
     }
 
     boolean successful = false;
-    // Verify that the original session ID matches the current session ID
-    // Persist the submitted PayPal order ID to session only if session IDs match
     // TODO : It would be nice to verify that the request originated from PayPal
     final String paypalOrderId = paramValues.get("PNREF");
     final String originalSessionId = paramValues.get("USER1");
@@ -55,6 +54,7 @@
     final String originalContestId = paramValues.get("USER4");
     final String originalPaymentAmount = paramValues.get("USER5");
     final String originalSubmissionIds = paramValues.get("USER7");
+    final String originalSubmissionPlacements = paramValues.get("USER8");
 
     // Get the parameters for establishing a security context
     final String clientLoginDomainName = servletContext.getInitParameter("clientLoginDomainName");
@@ -108,7 +108,7 @@
                 contest.setLaunchDateAndTime(xmlCalendar);
                 studioService.updateContest(contest);
             }
-            
+
             servletContext.log("paypalSilentPost.jsp : Created contest payment of $"
                                + originalPaymentAmount + " for contest " + originalContestId
                                + " on behalf of " + originalPrincipalName
@@ -123,6 +123,21 @@
                     servletContext.log("paypalSilentPost.jsp : Purchased submission "
                                        + id + " on behalf of " + originalPrincipalName
                                        + " as confirmed by PayPal order ID " + paypalOrderId);
+                }
+                if ("Submission".equals(originalPaymentType)) {
+                    StringTokenizer tokenizer = new StringTokenizer(originalSubmissionPlacements, ",");
+                    while (tokenizer.hasMoreTokens()) {
+                        String token = tokenizer.nextToken();
+                        String[] placement = token.split("=");
+                        if (placement.length == 2) {
+                            studioService.setSubmissionPlacement(Long.parseLong(placement[0]),
+                                                                 Integer.parseInt(placement[1]));
+                            servletContext.log("paypalSilentPost.jsp : Recorded submission placement [" + token + "]");
+                        } else {
+                            servletContext.log("paypalSilentPost.jsp : skipped to record following submission placement "
+                                               + "[" + token + "]");
+                        }
+                    }
                 }
                 successful = true;
             }
@@ -145,15 +160,13 @@
         }
     }
 
-//    PayPalResponseListener paypalListener
-//            = (PayPalResponseListener) servletContext.getAttribute("paypalListener");
-//    successful = paypalListener.savePayPalOrder(originalSessionId, originalPrincipalName, originalContestId,
-//                                                originalPaymentType, originalPaymentAmount, paypalOrderId);
     if (successful) {
-        servletContext.log("paypalSilentPost.jsp : Paypal Silent Post request has been processed successfully ; Responding with status code " + HttpServletResponse.SC_OK);
+        servletContext.log("paypalSilentPost.jsp : Paypal Silent Post request has been processed successfully ; " +
+                           "Responding with status code " + HttpServletResponse.SC_OK);
         response.setStatus(HttpServletResponse.SC_OK);
     } else {
-        servletContext.log("paypalSilentPost.jsp : failed to process Paypal Silent Post request successfully : Responding with status code " + HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        servletContext.log("paypalSilentPost.jsp : failed to process Paypal Silent Post request successfully : " +
+                           "Responding with status code " + HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
 %>
