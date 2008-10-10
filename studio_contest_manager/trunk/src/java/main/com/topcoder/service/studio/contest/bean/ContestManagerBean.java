@@ -252,6 +252,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
     private Long activeContestStatusId;
 
     /**
+     * Represents whether contest change will be audited.
+     */
+    private Boolean auditChange;
+    
+    /**
      * <p>
      * Default empty constructor.
      * </p>
@@ -279,6 +284,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
         activeContestStatusId = getLongParameter("activeContestStatusId");
         defaultDocumentPathId = getLongParameter("defaultDocumentPathId");
+        auditChange = getBooleanParameter("auditChange");
 
         String loggerName = getStringParameter("loggerName", false, false);
 
@@ -392,6 +398,28 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         return (Long) obj;
     }
 
+    /**
+     * <p>
+     * Gets a Boolean parameter from the session context.
+     * </p>
+     * 
+     * @param paramName
+     *            the name of the parameter
+     * @return the parameter value
+     * 
+     * @throws ContestConfigurationException
+     *             if the parameter is present but it isn't a Boolean value.
+     */
+    private Boolean getBooleanParameter(String paramName) {
+        Object obj = sessionContext.lookup(paramName);
+
+        if (!(obj instanceof Boolean)) {
+            throw new ContestConfigurationException("The parameter '" + paramName + "' should be a Boolean.");
+        }
+
+        return (Boolean) obj;
+    }
+    
     /**
      * <p>
      * Creates a new contest, and return the created contest.
@@ -557,7 +585,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                 }
             }
 
-//            auditChanges(contest, transactionId, username, userAdmin, result);
+            auditChanges(contest, transactionId, username, userAdmin, result);
             
             // Restore documents.
             contest.setDocuments(result.getDocuments());
@@ -607,11 +635,15 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         }
     }
 
-    private void auditChanges(Contest contest, int transactionId, String username, boolean userAdmin, Contest result)
+    private void auditChanges(Contest contest, long transactionId, String username, boolean userAdmin, Contest result)
             throws ContestManagementException {
+        if(!Boolean.TRUE.equals(auditChange)){
+            return;
+        }
+        
         // Contest title:
         auditChange(result.getName(), contest.getName(), transactionId, username, userAdmin, contest, "title");
-        
+/*        
         // Contest Type:
         auditChange(result.getContestType().getDescription(), contest.getContestType().getDescription(),
                 transactionId, username, userAdmin, contest, "contest_type");
@@ -683,6 +715,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         propertyId = 23;
         auditChange(getSpecificProperty(result, propertyId), getSpecificProperty(result, propertyId), transactionId,
                 username, userAdmin, contest, "other_formats");
+*/
     }
 
     private String getSpecificProperty(Contest contest, long propertyId) {
@@ -695,7 +728,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         return value;
     }
 
-    private void auditChange(String oldData, String newData, int transactionId, String username, boolean userAdmin,
+    private void auditChange(String oldData, String newData, long transactionId, String username, boolean userAdmin,
             Contest contest, String fieldName) throws ContestManagementException {
         if (!oldData.equals(newData)) {
             ContestChangeHistory cch = new ContestChangeHistory();
