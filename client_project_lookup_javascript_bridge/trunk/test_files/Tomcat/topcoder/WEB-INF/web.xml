@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+    version="2.4">
+
+    <description>
+      Client Project Lookup Test Page
+    </description>
+    <display-name>Client Project Management Test Pages</display-name>
+
+    <servlet>
+    <servlet-name>ClientProjectLookupServiceBridgeServlet</servlet-name>
+    <servlet-class>com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServlet</servlet-class>
+    <init-param>
+        <param-name>ajaxBridgeConfigFile</param-name>
+        <param-value>config.properties</param-value>
+    </init-param>
+    <init-param>
+        <param-name>objectFactoryNamespace</param-name>
+        <param-value>objectFactoryNamespace</param-value>
+    </init-param>
+    <init-param>
+        <param-name>jsonEncoderKey</param-name>
+        <param-value>jsonEncoderOBKey</param-value>
+    </init-param>
+    <init-param>
+        <param-name>jsonDecoderKey</param-name>
+        <param-value>jsonDecoderOBKey</param-value>
+    </init-param>
+    <init-param>
+        <param-name>lookupServiceClientKey</param-name>
+        <param-value>lookupServiceClientOBKey</param-value>
+    </init-param>
+    <init-param>
+        <param-name>clientStatusServiceClientKey</param-name>
+        <param-value>clientStatusServiceClientOBKey</param-value>
+    </init-param>
+    <init-param>
+        <param-name>projectStatusServiceClientKey</param-name>
+        <param-value>projectStatusServiceClientOBKey</param-value>
+    </init-param>
+    <init-param>
+        <param-name>loggerName</param-name>
+        <param-value>log_name</param-value>
+    </init-param>
+    </servlet>
+    
+    <servlet-mapping>
+    <servlet-name>ClientProjectLookupServiceBridgeServlet</servlet-name>
+    <url-pattern>/servlet</url-pattern>
+    </servlet-mapping>
+
+</web-app>

@@ -1,0 +1,225 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+Client Project Lookup JavaScript Bridge 1.0
+
+Author superZZ
+-->
+<html>
+<head>
+<title>Client Unit Test</title>
+<script language="JavaScript" type="text/javascript" src="../jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../../main/js/topcoder/clients/bridge/lookup/client_project_lookup.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript">
+    /**
+     * Represents Client instance for test.
+     */
+    var client;
+
+    /**
+     * Represents Company instance for test.
+     */
+    var company;
+
+    /**
+     * Represents ClientStatus instance for test.
+     */
+    var clientStatus;
+
+    /**
+     * Initialize Client variable for test.
+     */
+    function setUp() {
+        var newDate = new Date();
+    	
+        client = new js.topcoder.clients.bridge.lookup.entities.Client();
+                
+        company = new js.topcoder.clients.bridge.lookup.entities.Company();
+        company.setPasscode("code");
+        company.setId(123);
+        company.setCreateUsername("superZZ");
+        company.setCreateDate(newDate);
+        company.setModifyUsername("superZZ");
+        company.setModifyDate(newDate);
+        company.setName("superZZ");
+        company.setDeleted(true);        
+        
+        clientStatus = new js.topcoder.clients.bridge.lookup.entities.ClientStatus();
+        clientStatus.setDescription("code");
+        clientStatus.setId(123);
+        clientStatus.setCreateUsername("superZZ");
+        clientStatus.setCreateDate(newDate);
+        clientStatus.setModifyUsername("superZZ");
+        clientStatus.setModifyDate(newDate);
+        clientStatus.setName("superZZ");
+        clientStatus.setDeleted(true);     
+    }
+
+    /**
+     * <p>Tests constructor of Client.
+     */
+    function testConstructorJson() {
+        var config = { "salesTax" : 234243.324 };
+        client = new js.topcoder.clients.bridge.lookup.entities.Client(config);
+        assertEquals("salesTax is incorrect", 234243.324, client.getSalesTax());
+    }
+	
+	  /**
+	   * Tests getCompany and setCompany.
+	   */
+	  function testCompany1() {
+	      client.setCompany(company);
+	      assertEquals("Company is incorrect", company, client.getCompany());
+	  }
+	
+	  /**
+	   * Tests getCompany and setCompany.
+	   */
+	  function testCompany2() {
+	      client.setCompany(null);
+	      assertNull("Company is incorrect.", client.getCompany());
+	  }
+	  /**
+	   * Tests getPaymentTermsId and setPaymentTermsId.
+	   */
+	  function testPaymentTermsId1() {
+	      client.setPaymentTermsId(123);
+	      assertEquals("PaymentTermsId is incorrect", 123, client.getPaymentTermsId());
+	  }
+	
+	  /**
+	   * Tests getPaymentTermsId and setPaymentTermsId.
+	   */
+	  function testPaymentTermsId2() {
+	      client.setPaymentTermsId(null);
+	      assertNull("PaymentTermsId is incorrect.", client.getPaymentTermsId());
+	  }
+	  /**
+	   * Tests getClientStatus and setClientStatus.
+	   */
+	  function testClientStatus1() {
+	      client.setClientStatus(clientStatus);
+	      assertEquals("ClientStatus is incorrect", clientStatus, client.getClientStatus());
+	  }
+	
+	  /**
+	   * Tests getClientStatus and setClientStatus.
+	   */
+	  function testClientStatus2() {
+	      client.setClientStatus(null);
+	      assertNull("ClientStatus is incorrect.", client.getClientStatus());
+	  }
+	  /**
+	   * Tests getSalesTax and setSalesTax.
+	   */
+	  function testSalesTax1() {
+	      client.setSalesTax(234.234);
+	      assertEquals("SalesTax is incorrect", 234.234, client.getSalesTax());
+	  }
+	
+	  /**
+	   * Tests getSalesTax and setSalesTax.
+	   */
+	  function testSalesTax2() {
+	      client.setSalesTax(null);
+	      assertNull("SalesTax is incorrect.", client.getSalesTax());
+	  }
+	  /**
+	   * Tests getStartDate and setStartDate.
+	   */
+	  function testStartDate1() {
+	  	  var newDate = new Date();
+	      client.setStartDate(newDate);
+	      assertEquals("StartDate is incorrect", newDate, client.getStartDate());
+	  }
+	
+	  /**
+	   * Tests getStartDate and setStartDate.
+	   */
+	  function testStartDate2() {
+	      client.setStartDate(null);
+	      assertNull("StartDate is incorrect.", client.getStartDate());
+	  }
+	  /**
+	   * Tests getEndDate and setEndDate.
+	   */
+	  function testEndDate1() {
+	  	  var newDate = new Date();
+	      client.setEndDate(newDate);
+	      assertEquals("EndDate is incorrect", newDate, client.getEndDate());
+	  }
+	
+	  /**
+	   * Tests getEndDate and setEndDate.
+	   */
+	  function testEndDate2() {
+	      client.setEndDate(null);
+	      assertNull("EndDate is incorrect.", client.getEndDate());
+	  }
+	  /**
+	   * Tests getCodeName and setCodeName.
+	   */
+	  function testCodeName1() {
+	      client.setCodeName("test");
+	      assertEquals("CodeName is incorrect", "test", client.getCodeName());
+	  }
+	
+	  /**
+	   * Tests getCodeName and setCodeName.
+	   */
+	  function testCodeName2() {
+	      client.setCodeName(null);
+	      assertNull("CodeName is incorrect.", client.getCodeName());
+	  }
+   
+    /**
+     * Tests toJSON method.
+     */
+    function testToJSON1() {
+        var json = JSON.parse(client.toJSON());
+        assertEquals("id is incorrect.", undefined, json["id"]);
+    }
+    
+    /**
+     * Tests toJSON method.
+     */
+    function testToJSON2() {
+        var newDate = new Date();
+        var dateStr = newDate.getTime() + "";
+        
+        client.setId(123);
+        client.setCreateUsername("superZZ");
+        client.setCreateDate(newDate);
+        client.setModifyUsername("superZZ");
+        client.setModifyDate(newDate);
+        client.setName("superZZ");
+        client.setDeleted(true);
+           
+        
+        client.setCompany(company);
+        client.setPaymentTermsId(1);
+        client.setClientStatus(clientStatus);
+        client.setSalesTax(234.34);        
+        client.setStartDate(newDate);
+        client.setEndDate(newDate);        
+        client.setCodeName("codeName");
+
+        var json = JSON.parse(client.toJSON());
+        assertEquals("id is incorrect.", 123, json["id"]);
+        assertEquals("createUsername is incorrect.", "superZZ", json["createUsername"]);
+        assertEquals("createDate is incorrect.", dateStr, json["createDate"]);
+        assertEquals("modifyUsername is incorrect.", "superZZ", json["modifyUsername"]);
+        assertEquals("modifyDate is incorrect.", dateStr, json["modifyDate"]);
+        assertEquals("name is incorrect.", "superZZ", json["name"]);
+        assertTrue("deleted is incorrect.", json["deleted"]);
+    }
+    </script>
+</head>
+<body>
+<h1><b>Client</b> Accuracy Test</h1>
+
+<p>This page contains Accuracy Test for <code>Client</code> class.</p>
+</body>
+</html>

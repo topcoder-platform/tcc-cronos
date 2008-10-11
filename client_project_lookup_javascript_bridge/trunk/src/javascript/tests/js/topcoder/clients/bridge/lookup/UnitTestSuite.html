@@ -1,0 +1,44 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Lookup 1.0
+
+Author stevenfrog
+-->
+<html>
+<head>
+<title>Unit Test Suite</title>
+<script language="JavaScript" type="text/javascript" src="jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../test_files/AjaxProcessor.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../main/js/topcoder/clients/bridge/lookup/client_project_lookup.js"></script>
+<script language="JavaScript" type="text/javascript">
+    /**
+     * Builds the JSUnit Test Suite.
+     */
+    function suite() {
+        var newsuite = new top.jsUnitTestSuite();
+
+        newsuite.addTestPage("../BaseEntityUnitTest.html");
+        newsuite.addTestPage("../HelperUnitTest.html");
+        newsuite.addTestPage("../ClientStatusUnitTest.html");
+        newsuite.addTestPage("../ClientUnitTest.html");
+        newsuite.addTestPage("../CompanyUnitTest.html");
+        newsuite.addTestPage("../ProjectUnitTest.html");
+        newsuite.addTestPage("../ProjectStatusUnitTest.html");
+
+        newsuite.addTestPage("../IllegalArgumentExceptionUnitTest.html");
+        newsuite.addTestPage("../InvalidResponseExceptionUnitTest.html");
+        newsuite.addTestPage("../ClientStatusServiceUnitTest.html");
+        newsuite.addTestPage("../ProjectStatusServiceUnitTest.html");
+        newsuite.addTestPage("../LookupServiceUnitTest.html");
+
+        return newsuite;
+    }
+    </script>
+</head>
+<body>
+<h1>Unit Test Suite</h1>
+</body>
+</html>

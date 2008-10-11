@@ -1,0 +1,309 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Lookup 1.0
+
+Author onsky
+-->
+<html>
+<head>
+<title>LookupService Unit Test</title>
+<script language="JavaScript" type="text/javascript" src="../jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../../test_files/AjaxProcessor.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../../main/js/topcoder/clients/bridge/lookup/client_project_lookup.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+    /**
+     * <p><code>LookupService</code> instance used for testing.</p>
+     */
+    var lookupService;
+
+    /**
+     * <p>Sets up environment.</p>
+     */
+    function setUp() {
+        var url = "http://localhost:8080/topcoder/servlet";
+        lookupService = new js.topcoder.clients.bridge.lookup.LookupService(url);
+    }
+
+    /**
+     * <p>Stress Test of method <code>retrieveClient()</code>, expects no error occurs</p>
+     */
+    function testRetrieveClient() {
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            lookupService.retrieveClient(5, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running LookupService.retrieveClient ", (end - start));
+    }
+
+    /**
+     * <p>Stress Test of method <code>retrieveAllClients()</code>, expects no error occurs</p>
+     */
+    function testRetrieveAllClients() {
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            lookupService.retrieveAllClients(onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running LookupService.retrieveAllClients ", (end - start));
+    }
+
+    /**
+     * <p>Stress Test of method <code>searchClientsByName()</code>, expects no error occurs</p>
+     */
+    function testSearchClientsByName() {
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            lookupService.searchClientsByName("topcoder", onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running LookupService.searchClientsByName ", (end - start));
+    }
+
+    /**
+     * <p>Stress Test of method <code>getClientStatus()</code>, expects no error occurs</p>
+     */
+    function testGetClientStatus() {
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            lookupService.getClientStatus(5, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running LookupService.getClientStatus ", (end - start));
+    }
+
+    /**
+     * <p>Stress Test of method <code>getAllClientStatuses()</code>, expects no error occurs</p>
+     */
+    function testGetAllClientStatuses() {
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            lookupService.getAllClientStatuses(onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running LookupService.getAllClientStatuses ", (end - start));
+    }
+
+    /**
+     * <p>Stress Test of method <code>getClientsForStatus()</code>, expects no error occurs</p>
+     */
+    function testGetClientsForStatus() {
+        var status = new js.topcoder.clients.bridge.lookup.entities.ClientStatus();
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            lookupService.getClientsForStatus(status, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running LookupService.getClientsForStatus ", (end - start));
+    }
+
+    /**
+     * <p>Stress Test of method <code>retrieveProject()</code>, expects no error occurs</p>
+     */
+    function testRetrieveProject() {
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            lookupService.retrieveProject(8, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running LookupService.retrieveProject ", (end - start));
+    }
+
+    /**
+     * <p>Stress Test of method <code>retrieveProjectsForClient()</code>, expects no error occurs</p>
+     */
+    function testRetrieveProjectsForClient() {
+        var client = new js.topcoder.clients.bridge.lookup.entities.Client();
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            lookupService.retrieveProjectsForClient(client, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running LookupService.retrieveProjectsForClient ", (end - start));
+    }
+
+    /**
+     * <p>Stress Test of method <code>retrieveAllProjects()</code>, expects no error occurs</p>
+     */
+    function testRetrieveAllProjects() {
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            lookupService.retrieveAllProjects(onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running LookupService.retrieveAllProjects ", (end - start));
+    }
+
+    /**
+     * <p>Stress Test of method <code>searchProjectsByName()</code>, expects no error occurs</p>
+     */
+    function testSearchProjectsByName() {
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            lookupService.searchProjectsByName("topcoder", onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running LookupService.searchProjectsByName ", (end - start));
+    }
+
+    /**
+     * <p>Stress Test of method <code>getProjectStatus()</code>, expects no error occurs</p>
+     */
+    function testGetProjectStatus() {
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            lookupService.getProjectStatus(3, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running LookupService.getProjectStatus ", (end - start));
+    }
+
+    /**
+     * <p>Stress Test of method <code>getAllProjectStatuses()</code>, expects no error occurs</p>
+     */
+    function testGetAllProjectStatuses() {
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            lookupService.getAllProjectStatuses(onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running LookupService.getAllProjectStatuses ", (end - start));
+    }
+
+    /**
+     * <p>Stress Test of method <code>getProjectsForStatus()</code>, expects no error occurs</p>
+     */
+    function testGetProjectsForStatus() {
+        var status = new js.topcoder.clients.bridge.lookup.entities.ProjectStatus();
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            lookupService.getProjectsForStatus(status, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running LookupService.getProjectsForStatus ", (end - start));
+    }
+
+    /**
+     * <p>Stress Test of method <code>retrieveCompany()</code>, expects no error occurs</p>
+     */
+    function testRetrieveCompany() {
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            lookupService.retrieveCompany(4, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running LookupService.retrieveCompany ", (end - start));
+    }
+
+    /**
+     * <p>Stress Test of method <code>retrieveAllCompanies()</code>, expects no error occurs</p>
+     */
+    function testRetrieveAllCompanies() {
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            lookupService.retrieveAllCompanies(onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running LookupService.retrieveAllCompanies ", (end - start));
+    }
+
+    /**
+     * <p>Stress Test of method <code>searchCompaniesByName()</code>, expects no error occurs</p>
+     */
+    function testSearchCompaniesByName() {
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            lookupService.searchCompaniesByName("topcoder", onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running LookupService.searchCompaniesByName ", (end - start));
+    }
+
+    /**
+     * <p>Stress Test of method <code>getClientsForCompany()</code>, expects no error occurs</p>
+     */
+    function testGetClientsForCompany() {
+        var company = new js.topcoder.clients.bridge.lookup.entities.Company();
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            lookupService.getClientsForCompany(company, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running LookupService.getClientsForCompany ", (end - start));
+    }
+
+    /**
+     * <p>Stress Test of method <code>getProjectsForCompany()</code>, expects no error occurs</p>
+     */
+    function testGetProjectsForCompany() {
+        var company = new js.topcoder.clients.bridge.lookup.entities.Company();
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            lookupService.getProjectsForCompany(company, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running LookupService.getProjectsForCompany ", (end - start));
+    }
+
+    /**
+     * The function use to test.
+     */
+    function onSuccess(/* Object */ obj) {
+        // do nothing
+    }
+
+    /**
+     * The function use to test.
+     */
+    function onError(/* String */ message) {
+        alert("onError:" + message);
+    }
+
+    </script>
+</head>
+<body>
+<h1><b>LookupService</b> Stress Test</h1>
+
+<p>This page contains Stress Test for <code>LookupService</code> class.</p>
+</body>
+</html>

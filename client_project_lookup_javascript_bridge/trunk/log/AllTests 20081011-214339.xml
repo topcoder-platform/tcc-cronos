@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testrun name="AllTests" project="client_project_lookup_javascript_bridge" tests="52" started="52" failures="0" errors="0" ignored="0">
+<testsuite name="junit.framework.TestSuite">
+<testsuite name="junit.framework.TestSuite">
+<testsuite name="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest">
+<testcase name="testCtor_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testInit_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testInit_WithNull" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testInit_WithErrorObjectFactoryNamespace" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testInit_WithNotExistObjectFactoryNamespace" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testInit_WithClassCastExceptionOccurs" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testInit_WithErrorObjectFactoryConfig" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testInit_WithErrorObjectFactoryConfig2" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testInit_WithErrorObjectFactoryConfig3" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testInit_WithKeyNotExistInObjectFactory" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_CreateProjectStatus_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_UpdateProjectStatus_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_DeleteProjectStatus_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_WithInvalidProjectStatusMethod" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_WithNullProjectStatusMethod" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_CreateClientStatus_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_UpdateClientStatus_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_DeleteClientStatus_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_WithInvalidClientStatusMethod" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_WithNullClientStatusMethod" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_RetrieveClient_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_RetrieveAllClients_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_SearchClientsByName_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_GetClientStatus_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_GetAllClientStatuses_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_GetClientsForStatus_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_RetrieveProject_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_RetrieveProjectsForClient_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_RetrieveAllProjects_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_SearchProjectsByName_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_GetProjectStatus_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_GetAllProjectStatuses_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_GetProjectsForStatus_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_RetrieveCompany_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_RetrieveAllCompanies_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_SearchCompaniesByName_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_GetClientsForCompany_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_GetProjectsForCompany_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_WithInvalidLookupMethod" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_WithNullLookupMethod" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_WithInvalidService" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoPost_WithNullService" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+<testcase name="testDoGet_Accuracy" classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest"/>
+</testsuite>
+</testsuite>
+<testsuite name="junit.framework.TestSuite">
+<testsuite name="com.topcoder.clients.bridge.lookup.failuretests.ClientProjectLookupServiceBridgeServletFailureTest">
+<testcase name="testInitWithNotExistParamAjaxBridgeConfigFile" classname="com.topcoder.clients.bridge.lookup.failuretests.ClientProjectLookupServiceBridgeServletFailureTest"/>
+<testcase name="testInitWithUnparsableConfig" classname="com.topcoder.clients.bridge.lookup.failuretests.ClientProjectLookupServiceBridgeServletFailureTest"/>
+<testcase name="testInitWithUnrecognizedFileType" classname="com.topcoder.clients.bridge.lookup.failuretests.ClientProjectLookupServiceBridgeServletFailureTest"/>
+<testcase name="testInitWithUnrecognizedNamespace" classname="com.topcoder.clients.bridge.lookup.failuretests.ClientProjectLookupServiceBridgeServletFailureTest"/>
+<testcase name="testInitWithClassCastException" classname="com.topcoder.clients.bridge.lookup.failuretests.ClientProjectLookupServiceBridgeServletFailureTest"/>
+<testcase name="testInitWithNotExistFile" classname="com.topcoder.clients.bridge.lookup.failuretests.ClientProjectLookupServiceBridgeServletFailureTest"/>
+<testcase name="testInitWithNull" classname="com.topcoder.clients.bridge.lookup.failuretests.ClientProjectLookupServiceBridgeServletFailureTest"/>
+</testsuite>
+</testsuite>
+<testsuite name="junit.framework.TestSuite">
+<testsuite name="com.topcoder.clients.bridge.lookup.stresstests.ClientProjectLookupServiceBridgeServletStressTest">
+<testcase name="testDoPost" classname="com.topcoder.clients.bridge.lookup.stresstests.ClientProjectLookupServiceBridgeServletStressTest"/>
+<testcase name="testDoGet" classname="com.topcoder.clients.bridge.lookup.stresstests.ClientProjectLookupServiceBridgeServletStressTest"/>
+</testsuite>
+</testsuite>
+</testsuite>
+</testrun>

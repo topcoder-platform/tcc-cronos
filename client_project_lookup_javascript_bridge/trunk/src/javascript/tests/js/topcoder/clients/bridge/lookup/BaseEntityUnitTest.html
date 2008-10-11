@@ -1,0 +1,354 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Lookup 1.0
+
+Author stevenfrog
+-->
+<html>
+<head>
+<title>BaseEntity Unit Test</title>
+<script language="JavaScript" type="text/javascript" src="jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../main/js/topcoder/clients/bridge/lookup/client_project_lookup.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+    /**
+     * <p>Represent <code>IllegalArgumentException</code> for easy use.</p>
+     */
+    var IllegalArgumentException = js.topcoder.clients.bridge.lookup.IllegalArgumentException;
+
+    /**
+     * <p><code>BaseEntity</code> instance used for testing.</p>
+     */
+    var baseEntity;
+
+    /**
+     * <p>Sets up environment.</p>
+     */
+    function setUp() {
+        baseEntity = new js.topcoder.clients.bridge.lookup.entities.BaseEntity();
+    }
+
+    /**
+     * <p>Clear the environment.</p>
+     */
+    function tearDown() {
+        baseEntity = null;
+    }
+
+    /**
+     * <p>Test of constructor <code>BaseEntity()</code>.</p>
+     */
+    function testCtor() {
+        assertNotNull("Fail to create BaseEntity.", baseEntity);
+    }
+
+    /**
+     * <p>Test of constructor <code>BaseEntity(JSON)</code>.</p>
+     */
+    function testCtor2() {
+        var config = {"id":123, "createUsername":"ivern", "createDate" : "1163531522089",
+            "modifyUsername":"ivern", "modifyDate" : "1163531525089", "name" : "suspended",
+            "deleted":true };
+        baseEntity = new js.topcoder.clients.bridge.lookup.entities.BaseEntity(config);
+        assertNotNull("Fail to create BaseEntity.", baseEntity);
+        assertEquals("The result should be ", 123, baseEntity.getId());
+        assertEquals("The result should be ", "ivern", baseEntity.getCreateUsername());
+        assertEquals("The result should be ", 1163531522089, baseEntity.getCreateDate().getTime());
+        assertEquals("The result should be ", "ivern", baseEntity.getModifyUsername());
+        assertEquals("The result should be ", 1163531525089, baseEntity.getModifyDate().getTime());
+        assertEquals("The result should be ", "suspended", baseEntity.getName());
+        assertTrue("The result should be true", baseEntity.isDeleted());
+    }
+
+    /**
+     * <p>
+     * Failure test for constructor <code>BaseEntity(JSON)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not json object.
+     * </p>
+     */
+    function testCtor2_WithNotJSON() {
+        var invalidArray = [null, -1, "str", false];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                new js.topcoder.clients.bridge.lookup.entities.BaseEntity(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test BaseEntity.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of id.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfId() {
+        baseEntity.setId(123);
+        assertEquals("The result should be ", 123, baseEntity.getId());
+
+        baseEntity.setId(0);
+        assertEquals("The result should be ", 0, baseEntity.getId());
+
+        baseEntity.setId(-1);
+        assertEquals("The result should be ", -1, baseEntity.getId());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setId(Number)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not number.
+     * </p>
+     */
+    function testSetId_WithNotNumber() {
+        var invalidArray = ["str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                baseEntity.setId(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setId.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of createUsername.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfCreateUsername() {
+        baseEntity.setCreateUsername("user");
+        assertEquals("The result should be ", "user", baseEntity.getCreateUsername());
+
+        baseEntity.setCreateUsername(null);
+        assertNull("The result should be null", baseEntity.getCreateUsername());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setCreateUsername(String)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not string.
+     * </p>
+     */
+    function testSetCreateUsername_WithNotString() {
+        var invalidArray = [-1, false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                baseEntity.setCreateUsername(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setCreateUsername.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of createDate.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfCreateDate() {
+        var date = new Date();
+        baseEntity.setCreateDate(date);
+        assertEquals("The result should be ", date, baseEntity.getCreateDate());
+
+        baseEntity.setCreateDate(null);
+        assertNull("The result should be null", baseEntity.getCreateDate());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setCreateDate(Date)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not date.
+     * </p>
+     */
+    function testSetCreateDate_WithNotDate() {
+        var invalidArray = [-1, "abc", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                baseEntity.setCreateDate(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setCreateDate.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of modifyUsername.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfModifyUsername() {
+        baseEntity.setModifyUsername("user");
+        assertEquals("The result should be ", "user", baseEntity.getModifyUsername());
+
+        baseEntity.setModifyUsername(null);
+        assertNull("The result should be null", baseEntity.getModifyUsername());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setModifyUsername(String)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not string.
+     * </p>
+     */
+    function testSetModifyUsername_WithNotString() {
+        var invalidArray = [-1, false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                baseEntity.setModifyUsername(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setModifyUsername.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of modifyDate.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfModifyDate() {
+        var date = new Date();
+        baseEntity.setModifyDate(date);
+        assertEquals("The result should be ", date, baseEntity.getModifyDate());
+
+        baseEntity.setModifyDate(null);
+        assertNull("The result should be null", baseEntity.getModifyDate());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setModifyDate(Date)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not date.
+     * </p>
+     */
+    function testSetModifyDate_WithNotDate() {
+        var invalidArray = [-1, "abc", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                baseEntity.setModifyDate(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setModifyDate.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of name.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfName() {
+        baseEntity.setName("name");
+        assertEquals("The result should be ", "name", baseEntity.getName());
+
+        baseEntity.setName(null);
+        assertNull("The result should be null", baseEntity.getName());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setName(String)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not string.
+     * </p>
+     */
+    function testSetName_WithNotString() {
+        var invalidArray = [-1, false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                baseEntity.setName(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setName.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of deleted.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfDeleted() {
+        baseEntity.setDeleted(true);
+        assertTrue("The result should be true", baseEntity.isDeleted());
+
+        baseEntity.setDeleted(false);
+        assertFalse("The result should be false", baseEntity.isDeleted());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setDeleted(Boolean)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not boolean.
+     * </p>
+     */
+    function testSetIsDeleted_WithNotBoolean() {
+        var invalidArray = [-1, "abc", new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                baseEntity.setDeleted(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setIsDeleted.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    </script>
+</head>
+<body>
+<h1><b>BaseEntity</b> Unit Test</h1>
+
+<p>This page contains Unit Test for <code>BaseEntity</code> class.</p>
+</body>
+</html>

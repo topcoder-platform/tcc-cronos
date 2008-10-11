@@ -1,0 +1,85 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+Client Project Lookup JavaScript Bridge 1.0
+
+Author superZZ
+-->
+<html>
+<head>
+<title>Company Unit Test</title>
+<script language="JavaScript" type="text/javascript" src="../jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../../main/js/topcoder/clients/bridge/lookup/client_project_lookup.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript">
+    /**
+     * Represents Company instance for test.
+     */
+    var company;
+
+    /**
+     * Initialize company variable for test.
+     */
+    function setUp() {
+        company = new js.topcoder.clients.bridge.lookup.entities.Company();
+    }
+
+    /**
+     * <p>Tests constructor of Company.
+     */
+    function testConstructorJson() {
+        var config = { "passcode" : "pass" };
+        company = new js.topcoder.clients.bridge.lookup.entities.Company(config);
+        assertEquals("passcode is incorrect", "pass", company.getPasscode());
+    }
+
+    /**
+     * Tests getPasscode and setPasscode.
+     */
+    function testPasscode1() {
+        company.setPasscode("code");
+        assertEquals("passcode is incorrect", "code", company.getPasscode());
+    }
+
+    /**
+     * Tests getPasscode and setPasscode.
+     */
+    function testPasscode2() {
+        company.setPasscode(null);
+        assertNull("passcode is incorrect.", company.getPasscode());
+    }
+    
+    /**
+     * Tests toJSON method.
+     */
+    function testToJSON() {
+        var newDate = new Date();
+        var dateStr = newDate.getTime() + "";
+        company.setPasscode("code");
+        company.setId(123);
+        company.setCreateUsername("superZZ");
+        company.setCreateDate(newDate);
+        company.setModifyUsername("superZZ");
+        company.setModifyDate(newDate);
+        company.setName("superZZ");
+        company.setDeleted(true);
+
+        var json = JSON.parse(company.toJSON());
+        assertEquals("passcode is incorrect.", "code", json["passcode"]);
+        assertEquals("id is incorrect.", 123, json["id"]);
+        assertEquals("createUsername is incorrect.", "superZZ", json["createUsername"]);
+        assertEquals("createDate is incorrect.", dateStr, json["createDate"]);
+        assertEquals("modifyUsername is incorrect.", "superZZ", json["modifyUsername"]);
+        assertEquals("modifyDate is incorrect.", dateStr, json["modifyDate"]);
+        assertEquals("name is incorrect.", "superZZ", json["name"]);
+        assertTrue("deleted is incorrect.", json["deleted"]);
+    }
+    </script>
+</head>
+<body>
+<h1><b>Company</b> Accuracy Test</h1>
+
+<p>This page contains Accuracy Test for <code>Company</code> class.</p>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Lookup 1.0
+
+Author stevenfrog
+-->
+<html>
+<head>
+<title>IllegalArgumentException Unit Test</title>
+<script language="JavaScript" type="text/javascript" src="jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../main/js/topcoder/clients/bridge/lookup/client_project_lookup.js"></script>
+<script language="JavaScript" type="text/javascript">
+    /**
+     * <p>Test of constructor <code>IllegalArgumentException(argumentName, message)</code>.</p>
+     */
+    function testCtor() {
+        var exception = new js.topcoder.clients.bridge.lookup.IllegalArgumentException("name", "message");
+        assertNotNull("Fail to create IllegalArgumentException.", exception);
+    }
+
+    /**
+     * <p>Test of constructor <code>IllegalArgumentException(argumentName, message)</code>
+     * with <code>null</code> <code>message</code>.
+     * No exception is expected.</p>
+     */
+    function testCtorWithNullMessage() {
+        var exception = new js.topcoder.clients.bridge.lookup.IllegalArgumentException("name", null);
+        assertNotNull("Fail to create IllegalArgumentException.", exception);
+    }
+
+    /**
+     * <p>Test of <code>getArgumentName</code>.</p>
+     */
+    function testGetArgumentName() {
+        assertEquals("Fail to getArgumentName.", "name",
+            new js.topcoder.clients.bridge.lookup.IllegalArgumentException("name", "message").getArgumentName());
+
+        assertNull("Fail to getArgumentName.",
+            (new js.topcoder.clients.bridge.lookup.IllegalArgumentException(null, "message")).getArgumentName());
+    }
+
+    /**
+     * <p>Test of <code>getMessage</code>.</p>
+     */
+    function testGetMessage() {
+        assertEquals("Fail to getmessage.", "message",
+            new js.topcoder.clients.bridge.lookup.IllegalArgumentException("name", "message").getMessage());
+
+        assertNull("Fail to getmessage.",
+            (new js.topcoder.clients.bridge.lookup.IllegalArgumentException("name", null)).getMessage());
+    }
+
+    </script>
+</head>
+<body>
+<h1><b>IllegalArgumentException</b> Unit Test</h1>
+
+<p>This page contains Unit Test for <code>IllegalArgumentException</code> class.</p>
+</body>
+</html>

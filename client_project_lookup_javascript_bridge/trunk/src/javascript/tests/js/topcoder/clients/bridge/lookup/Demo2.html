@@ -1,0 +1,42 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Lookup 1.0
+
+Author zsudraco, stevenfrog
+-->
+<html>
+<head>
+<title>Demo2 Test</title>
+<script language="JavaScript" type="text/javascript" src="jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../test_files/AjaxProcessor.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../main/js/topcoder/clients/bridge/lookup/client_project_lookup.js"></script>
+<script language="JavaScript">
+    var url = "http://localhost:8080/topcoder/servlet";
+    var lookupService = new js.topcoder.clients.bridge.lookup.LookupService(url);
+
+    // Get Client By Id
+
+    // get the client with id = 2
+    lookupService.retrieveClient(2, onSuccess2, onError2);
+
+    // success callback function
+    function onSuccess2(client) {
+       // show the client just got
+        alert("client2 id: " + client.getId());
+    }
+
+    // error callback function
+    function onError2(message) {
+        // show the error message
+        alert("client2 error messgae:" + message);
+    }
+
+    </script>
+</head>
+<body>
+<h1><b>Demo2</b> Test</h1>
+</body>
+</html>

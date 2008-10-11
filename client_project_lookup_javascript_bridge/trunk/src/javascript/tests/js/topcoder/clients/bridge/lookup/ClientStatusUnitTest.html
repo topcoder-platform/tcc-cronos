@@ -1,0 +1,152 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Lookup 1.0
+
+Author stevenfrog
+-->
+<html>
+<head>
+<title>ClientStatus Unit Test</title>
+<script language="JavaScript" type="text/javascript" src="jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../main/js/topcoder/clients/bridge/lookup/client_project_lookup.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+    /**
+     * <p>Represent <code>IllegalArgumentException</code> for easy use.</p>
+     */
+    var IllegalArgumentException = js.topcoder.clients.bridge.lookup.IllegalArgumentException;
+
+    /**
+     * <p><code>ClientStatus</code> instance used for testing.</p>
+     */
+    var clientStatus;
+
+    /**
+     * <p>Sets up environment.</p>
+     */
+    function setUp() {
+        clientStatus = new js.topcoder.clients.bridge.lookup.entities.ClientStatus();
+    }
+
+    /**
+     * <p>Clear the environment.</p>
+     */
+    function tearDown() {
+        clientStatus = null;
+    }
+
+    /**
+     * <p>Test of constructor <code>ClientStatus()</code>.</p>
+     */
+    function testCtor() {
+        assertNotNull("Fail to create ClientStatus.", clientStatus);
+    }
+
+    /**
+     * <p>Test of constructor <code>ClientStatus(JSON)</code>.</p>
+     */
+    function testCtor2() {
+        var config = {"description":"test"};
+        clientStatus = new js.topcoder.clients.bridge.lookup.entities.ClientStatus(config);
+        assertNotNull("Fail to create clientStatus.", clientStatus);
+        assertEquals("The result should be ", "test", clientStatus.getDescription());
+    }
+
+    /**
+     * <p>
+     * Failure test for constructor <code>ClientStatus(JSON)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not json object.
+     * </p>
+     */
+    function testCtor2_WithNotJSON() {
+        var invalidArray = [null, -1, "str", false];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                new js.topcoder.clients.bridge.lookup.entities.ClientStatus(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test ClientStatus.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of description.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfDescription() {
+        clientStatus.setDescription("123");
+        assertEquals("The result should be ", "123", clientStatus.getDescription());
+
+        clientStatus.setDescription(null);
+        assertNull("The result should be null.", clientStatus.getDescription());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setDescription(String)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not string.
+     * </p>
+     */
+    function testSetPasscode_WithNotString() {
+        var invalidArray = [-1, false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                clientStatus.setDescription(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setPasscode.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test method toJSON.
+     * No exception is expected.</p>
+     */
+    function testToJSON() {
+        var date = new Date();
+        clientStatus.setDescription("666");
+        clientStatus.setId(123);
+        clientStatus.setCreateUsername("createUser");
+        clientStatus.setCreateDate(date);
+        clientStatus.setModifyUsername("modifyUser");
+        clientStatus.setModifyDate(date);
+        clientStatus.setName("jack");
+        clientStatus.setDeleted(true);
+
+        var json = JSON.parse(clientStatus.toJSON());
+        assertEquals("The result should be ", "666", json["description"]);
+        assertEquals("The result should be ", 123, json["id"]);
+        assertEquals("The result should be ", "createUser", json["createUsername"]);
+        assertEquals("The result should be ", date.getTime()+"", json["createDate"]);
+        assertEquals("The result should be ", "modifyUser", json["modifyUsername"]);
+        assertEquals("The result should be ", date.getTime()+"", json["modifyDate"]);
+        assertEquals("The result should be ", "jack", json["name"]);
+        assertTrue("The result should be true", json["deleted"]);
+    }
+
+
+    </script>
+</head>
+<body>
+<h1><b>ClientStatus</b> Unit Test</h1>
+
+<p>This page contains Unit Test for <code>ClientStatus</code> class.</p>
+</body>
+</html>

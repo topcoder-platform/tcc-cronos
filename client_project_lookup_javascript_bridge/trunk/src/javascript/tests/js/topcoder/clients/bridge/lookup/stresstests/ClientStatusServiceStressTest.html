@@ -1,0 +1,98 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Lookup 1.0
+
+Author TCSDEVELOPER
+-->
+<html>
+<head>
+<title>ClientStatusService Stress Test</title>
+<script language="JavaScript" type="text/javascript" src="../jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../../test_files/AjaxProcessor.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../../main/js/topcoder/clients/bridge/lookup/client_project_lookup.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+    /**
+     * <p><code>ClientStatusService</code> instance used for testing.</p>
+     */
+    var clientStatusService;
+
+    /**
+     * <p>Sets up environment.</p>
+     */
+    function setUp() {
+        var url = "http://localhost:8080/topcoder/servlet";
+        clientStatusService = new js.topcoder.clients.bridge.lookup.ClientStatusService(url);
+    }
+
+    /**
+     * <p>Stress Test of method <code>createClientStatus()</code>, expects no error occurs</p>
+     */
+    function testCreateClientStatus() {
+        var status = new js.topcoder.clients.bridge.lookup.entities.ClientStatus();
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            clientStatusService.createClientStatus(status, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running ClientStatusService.createClientStatus ", (end - start));
+    }
+
+    /**
+     * <p>Stress Test of method <code>updateClientStatus()</code>, expects no error occurs</p>
+     */
+    function testUpdateClientStatus() {
+        var status = new js.topcoder.clients.bridge.lookup.entities.ClientStatus();
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            clientStatusService.updateClientStatus(status, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running ClientStatusService.updateClientStatus ", (end - start));
+    }
+
+    /**
+     * <p>Stress Test of method <code>deleteClientStatus()</code>, expects no error occurs</p>
+     */
+    function testDeleteClientStatus() {
+        var status = new js.topcoder.clients.bridge.lookup.entities.ClientStatus();
+        var start = (new Date()).getTime();
+
+        for (i = 0; i < 100; i++) {
+            clientStatusService.deleteClientStatus(status, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running ClientStatusService.deleteClientStatus ", (end - start));
+    }
+
+    /**
+     * The function use to test.
+     */
+    function onSuccess(/* Object */ obj) {
+        // do nothing
+    }
+
+    /**
+     * The function use to test.
+     */
+    function onError(/* String */ message) {
+        alert("onError:" + message);
+    }
+
+
+    </script>
+</head>
+<body>
+<h1><b>ClientStatusService</b> Stress Test</h1>
+
+<p>This page contains Stress Test for <code>ClientStatusService</code> class.</p>
+</body>
+</html>

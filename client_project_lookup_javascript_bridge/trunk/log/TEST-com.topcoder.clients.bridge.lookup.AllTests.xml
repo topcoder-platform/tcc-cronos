@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="Frog-X31" name="com.topcoder.clients.bridge.lookup.AllTests" tests="43" time="3.375" timestamp="2008-10-09T22:55:40">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc." />
+    <property name="package" value="com.topcoder.clients.bridge.lookup" />
+    <property name="docpackage.jar" value="client_project_lookup_javascript_bridge_docs.jar" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="eclipse.pdebuild.templates" value="/E:/Eclipse_3.3/plugins/org.eclipse.pde.build_3.3.1.v20070828/templates/" />
+    <property name="sun.management.compiler" value="HotSpot Client Compiler" />
+    <property name="manifest_file_path" value="build/dist/client_project_lookup_javascript_bridge-1.0.0/META-INF/" />
+    <property name="verbose" value="no" />
+    <property name="os.name" value="Windows XP" />
+    <property name="sun.boot.class.path" value="C:\Java\jdk1.5.0_15\jre\lib\rt.jar;C:\Java\jdk1.5.0_15\jre\lib\i18n.jar;C:\Java\jdk1.5.0_15\jre\lib\sunrsasign.jar;C:\Java\jdk1.5.0_15\jre\lib\jsse.jar;C:\Java\jdk1.5.0_15\jre\lib\jce.jar;C:\Java\jdk1.5.0_15\jre\lib\charsets.jar;C:\Java\jdk1.5.0_15\jre\classes" />
+    <property name="docsdir" value="docs" />
+    <property name="javadoc.jar" value="javadocs.jar" />
+    <property name="design_submission.jar" value="client_project_lookup_javascript_bridge_1.0.0_design_submission.jar" />
+    <property name="sun.desktop" value="windows" />
+    <property name="component.tests.jar" value="build/dist/lib/tcs/client_project_lookup_javascript_bridge_tests.jar" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="net.sourceforge.cobertura.datafile" value="E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\log\cobertura.ser" />
+    <property name="ant.home" value="E:\Eclipse_3.3\plugins\org.apache.ant_1.7.0.v200706080842" />
+    <property name="java.runtime.version" value="1.5.0_15-b04" />
+    <property name="component_path" value="client_project_lookup_javascript_bridge/1.0.0" />
+    <property name="cobertura.dir" value="E:\Java_Depentences\cobertura-1.8" />
+    <property name="component.version.micro" value="0" />
+    <property name="user.name" value="Frog_Sald" />
+    <property name="manifest_file" value="build/dist/client_project_lookup_javascript_bridge-1.0.0/META-INF//MANIFEST.MF" />
+    <property name="debug" value="off" />
+    <property name="reports" value="log/reports" />
+    <property name="testfiles" value="test_files" />
+    <property name="component.version.major" value="1" />
+    <property name="component_version" value="1.0.0" />
+    <property name="dist_coverage" value="build/dist/client_project_lookup_javascript_bridge-1.0.0/docs/coverage" />
+    <property name="component.packagedir" value="com/topcoder/clients/bridge/lookup" />
+    <property name="user.language" value="zh" />
+    <property name="cobertura.datafile" value="log/cobertura.ser" />
+    <property name="javadoc.locale" value="en_US" />
+    <property name="sun.boot.library.path" value="C:\Java\jdk1.5.0_15\jre\bin" />
+    <property name="tcs_libdir" value="../tcs/lib/tcs" />
+    <property name="srcdir" value="src" />
+    <property name="ant.project.name" value="TopCoder Java Generic Build" />
+    <property name="component.bootclasspath" value="${java_1_x_bootclasspath}" />
+    <property name="component.version.minor" value="0" />
+    <property name="java.version" value="1.5.0_15" />
+    <property name="user.timezone" value="" />
+    <property name="dev_dist.jar" value="client_project_lookup_javascript_bridge_1.0.0_dev_dist.jar" />
+    <property name="sun.arch.data.model" value="32" />
+    <property name="java.endorsed.dirs" value="C:\Java\jdk1.5.0_15\jre\lib\endorsed" />
+    <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86" />
+    <property name="packagedir" value="com/topcoder/clients/bridge/lookup" />
+    <property name="sun.jnu.encoding" value="GBK" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="file.separator" value="\" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="build_docsdir" value="build/docs" />
+    <property name="dev_submission.jar" value="client_project_lookup_javascript_bridge_1.0.0_dev_submission.jar" />
+    <property name="java.class.version" value="49.0" />
+    <property name="build_testclassdir" value="build/testClasses" />
+    <property name="user.country" value="CN" />
+    <property name="java.home" value="C:\Java\jdk1.5.0_15\jre" />
+    <property name="component.distfilename" value="client_project_lookup_javascript_bridge" />
+    <property name="component.version.build" value="1" />
+    <property name="java.vm.info" value="mixed mode, sharing" />
+    <property name="ant.file" value="E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\build.xml" />
+    <property name="os.version" value="5.1" />
+    <property name="build_distdir" value="build/dist" />
+    <property name="dist_docpackage" value="build/doc_package" />
+    <property name="build_tcsdistdir" value="build/dist/client_project_lookup_javascript_bridge-1.0.0" />
+    <property name="path.separator" value=";" />
+    <property name="java.vm.version" value="1.5.0_15-b04" />
+    <property name="testlogdir" value="log" />
+    <property name="user.variant" value="" />
+    <property name="ant.library.dir" value="E:\Eclipse_3.3\plugins\org.apache.ant_1.7.0.v200706080842\lib" />
+    <property name="component.name" value="Client Project Lookup Javascript Bridge" />
+    <property name="javamain" value="src/java/main" />
+    <property name="dist_javadocs" value="build/dist/client_project_lookup_javascript_bridge-1.0.0/docs/javadocs" />
+    <property name="dist_lib" value="build/dist/lib/tcs" />
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="component" value="Client Project Lookup Javascript Bridge" />
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+    <property name="eclipse.pdebuild.scripts" value="/E:/Eclipse_3.3/plugins/org.eclipse.pde.build_3.3.1.v20070828/scripts/" />
+    <property name="user.home" value="C:\Documents and Settings\Frog_Sald" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="java.library.path" value="C:\Java\jdk1.5.0_15\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;C:\Java\jre1.5.0_15\bin\client;C:\Java\jre1.5.0_15\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\ATI Technologies\ATI Control Panel;E:\Informix\Connect\bin;C:\Program Files\ibm\gsk7\bin;C:\Program Files\ibm\gsk7\lib;E:\Informix\Client-SDK\bin;C:\PROGRA~1\ibm\gsk7\bin;C:\PROGRA~1\ibm\gsk7\lib" />
+    <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="build_javadocsdir" value="build/docs/javadocs" />
+    <property name="configdir" value="conf" />
+    <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="ant.file.TopCoder Java Generic Build" value="E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\build.xml" />
+    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition" />
+    <property name="java.class.path" value="E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\build\instrumented;E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\build\testClasses;E:\Eclipse_3.3\plugins\org.junit_3.8.2.v200706111738\junit.jar;E:\Java_Depentences\easymock2.3\easymock.jar;E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\test_files\Tomcat\topcoder\WEB-INF\lib\base_exception.jar;E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\test_files\Tomcat\topcoder\WEB-INF\lib\clinet_project_entities_dao.jar;E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\test_files\Tomcat\topcoder\WEB-INF\lib\configuration_api.jar;E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\test_files\Tomcat\topcoder\WEB-INF\lib\configuration_persistence.jar;E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\test_files\Tomcat\topcoder\WEB-INF\lib\json_object.jar;E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\test_files\Tomcat\topcoder\WEB-INF\lib\logging_wrapper.jar;E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\test_files\Tomcat\topcoder\WEB-INF\lib\mock_client_project_lookup_service.jar;E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\test_files\Tomcat\topcoder\WEB-INF\lib\object_factory.jar;E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\test_files\Tomcat\topcoder\WEB-INF\lib\object_factory_configuration_api_plugin.jar;E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\test_files\Tomcat\topcoder\WEB-INF\lib\object_formatter.jar;E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\test_files\Tomcat\topcoder\WEB-INF\lib\search_builder.jar;E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\test_files\Tomcat\topcoder\WEB-INF\lib\typesafe_enum.jar;E:\Java_Depentences\JAVA_EE_5_Lib\activation.jar;E:\Java_Depentences\JAVA_EE_5_Lib\j2ee-svc.jar;E:\Java_Depentences\JAVA_EE_5_Lib\javaee.jar;E:\Java_Depentences\JAVA_EE_5_Lib\jhall.jar;E:\Java_Depentences\JAVA_EE_5_Lib\jmac-api.jar;E:\Java_Depentences\JAVA_EE_5_Lib\jmxremote_optional.jar;E:\Java_Depentences\JAVA_EE_5_Lib\jsf-impl.jar;E:\Java_Depentences\JAVA_EE_5_Lib\mail.jar;E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\build\classes;E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\conf;E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\test_files;E:\Java_Depentences\cobertura-1.8\cobertura.jar;E:\Java_Depentences\cobertura-1.8\lib\asm-2.2.1.jar;E:\Java_Depentences\cobertura-1.8\lib\jakarta-oro-2.0.8.jar;E:\Java_Depentences\cobertura-1.8\lib\log4j-1.2.9.jar;E:\Eclipse_3.3\plugins\org.apache.ant_1.7.0.v200706080842\lib\ant-launcher.jar;E:\Eclipse_3.3\plugins\org.apache.ant_1.7.0.v200706080842\lib\ant.jar;E:\Eclipse_3.3\plugins\org.apache.ant_1.7.0.v200706080842\lib\ant-junit.jar" />
+    <property name="ant.version" value="Apache Ant version 1.7.0 compiled on December 13 2006" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="builddir" value="build" />
+    <property name="ext_libdir" value="../tcs/lib/third_party" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="junit.jar" value="E:\Eclipse_3.3\plugins\org.junit_3.8.2.v200706111738\junit.jar" />
+    <property name="component.dist.jar" value="build/dist/client_project_lookup_javascript_bridge-1.0.0.jar" />
+    <property name="sun.os.patch.level" value="Service Pack 2" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="java.io.tmpdir" value="C:\DOCUME~1\FROG_S~1\LOCALS~1\Temp\" />
+    <property name="eclipse.pdebuild.home" value="/E:/Eclipse_3.3/plugins/org.eclipse.pde.build_3.3.1.v20070828/./" />
+    <property name="component.target" value="1.x" />
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="javac.encoding" value="UTF-8" />
+    <property name="build_targetclassdir" value="build/targetclasses" />
+    <property name="javatests" value="src/java/tests" />
+    <property name="build_classdir" value="build/classes" />
+    <property name="javadocsdir" value="docs/javadocs" />
+    <property name="instrumented.dir" value="build/instrumented" />
+    <property name="os.arch" value="x86" />
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+    <property name="test_reflib" value="test_reflib" />
+    <property name="java.ext.dirs" value="C:\Java\jdk1.5.0_15\jre\lib\ext" />
+    <property name="user.dir" value="E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0" />
+    <property name="design_dist.jar" value="client_project_lookup_javascript_bridge_1.0.0_design_dist.jar" />
+    <property name="easymock.jar" value="E:\Java_Depentences\easymock2.3\easymock.jar" />
+    <property name="libdir" value="../tcs/lib" />
+    <property name="javasrc" value="src/java" />
+    <property name="line.separator" value="
+" />
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM" />
+    <property name="distfilename" value="client_project_lookup_javascript_bridge" />
+    <property name="basedir" value="E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0" />
+    <property name="ant.java.version" value="1.5" />
+    <property name="ant.core.lib" value="E:\Eclipse_3.3\plugins\org.apache.ant_1.7.0.v200706080842\lib\ant.jar" />
+    <property name="file.encoding" value="GBK" />
+    <property name="dist_docs" value="build/dist/client_project_lookup_javascript_bridge-1.0.0/docs" />
+    <property name="component.jar" value="build/dist/lib/tcs/client_project_lookup_javascript_bridge/1.0.0/client_project_lookup_javascript_bridge.jar" />
+    <property name="java.specification.version" value="1.5" />
+    <property name="target_libdir" value="../tcs/lib/tcs" />
+    <property name="component.package" value="com.topcoder.clients.bridge.lookup" />
+    <property name="ant.file.Dependency Import" value="E:\TopCoder_Dev\client_project_lookup_javascript_bridge_1.0\build-dependencies.xml" />
+  </properties>
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testCtor_Accuracy" time="0.371" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testInit_Accuracy" time="0.16" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testInit_WithNull" time="0.06" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testInit_WithErrorObjectFactoryNamespace" time="0.13" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testInit_WithNotExistObjectFactoryNamespace" time="0.11" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testInit_WithClassCastExceptionOccurs" time="0.11" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testInit_WithErrorObjectFactoryConfig" time="0.161" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testInit_WithErrorObjectFactoryConfig2" time="0.09" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testInit_WithErrorObjectFactoryConfig3" time="0.1" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testInit_WithKeyNotExistInObjectFactory" time="0.09" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_CreateProjectStatus_Accuracy" time="0.11" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_UpdateProjectStatus_Accuracy" time="0.1" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_DeleteProjectStatus_Accuracy" time="0.05" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_WithInvalidProjectStatusMethod" time="0.05" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_WithNullProjectStatusMethod" time="0.051" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_CreateClientStatus_Accuracy" time="0.05" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_UpdateClientStatus_Accuracy" time="0.06" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_DeleteClientStatus_Accuracy" time="0.09" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_WithInvalidClientStatusMethod" time="0.04" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_WithNullClientStatusMethod" time="0.04" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_RetrieveClient_Accuracy" time="0.05" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_RetrieveAllClients_Accuracy" time="0.04" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_SearchClientsByName_Accuracy" time="0.05" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_GetClientStatus_Accuracy" time="0.04" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_GetAllClientStatuses_Accuracy" time="0.04" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_GetClientsForStatus_Accuracy" time="0.05" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_RetrieveProject_Accuracy" time="0.04" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_RetrieveProjectsForClient_Accuracy" time="0.04" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_RetrieveAllProjects_Accuracy" time="0.101" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_SearchProjectsByName_Accuracy" time="0.05" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_GetProjectStatus_Accuracy" time="0.04" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_GetAllProjectStatuses_Accuracy" time="0.05" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_GetProjectsForStatus_Accuracy" time="0.04" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_RetrieveCompany_Accuracy" time="0.04" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_RetrieveAllCompanies_Accuracy" time="0.05" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_SearchCompaniesByName_Accuracy" time="0.04" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_GetClientsForCompany_Accuracy" time="0.04" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_GetProjectsForCompany_Accuracy" time="0.05" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_WithInvalidLookupMethod" time="0.04" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_WithNullLookupMethod" time="0.09" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_WithInvalidService" time="0.04" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoPost_WithNullService" time="0.051" />
+  <testcase classname="com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServletTest" name="testDoGet_Accuracy" time="0.08" />
+  <system-out><![CDATA[Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [projectStatus]. The method name is [createProjectStatus].
+The projectStatus json is [{"description":"test", "id":123, "createUsername":"ivern","createDate":"1222483449970", "modifyUsername":"ketty","modifyDate":"1222483449970","name":"world", "deleted":true}].
+The result string is [{"success":true, "json":{"deleted":true,"createUsername":"ivern","description":"test","modifyDate":"1222483449970","createDate":"1222483449970","name":"world","id":123,"modifyUsername":"ketty"}}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [projectStatus]. The method name is [updateProjectStatus].
+The projectStatus json is [{"description":"test", "id":123, "createUsername":"ivern","createDate":"1222483449970", "modifyUsername":"ketty","modifyDate":"1222483449970","name":"world", "deleted":true}].
+The result string is [{"success":true, "json":{"deleted":true,"createUsername":"ivern","description":"test","modifyDate":"1222483449970","createDate":"1222483449970","name":"world","id":123,"modifyUsername":"ketty"}}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [projectStatus]. The method name is [deleteProjectStatus].
+The projectStatus json is [{"description":"test", "id":123, "createUsername":"ivern","createDate":"1222483449970", "modifyUsername":"ketty","modifyDate":"1222483449970","name":"world", "deleted":true}].
+The result string is [{"success":true, "json":{"deleted":true,"createUsername":"ivern","description":"test","modifyDate":"1222483449970","createDate":"1222483449970","name":"world","id":123,"modifyUsername":"ketty"}}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [projectStatus]. The method name is [invalid].
+The projectStatus json is [{ "id":123}].
+The result string is [{"success":false, "error":The method [invalid] is invalid in ProjectStatusService.}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [projectStatus]. The method name is [null].
+The projectStatus json is [{ "id":123}].
+The result string is [{"success":false, "error":The method [null] is invalid in ProjectStatusService.}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [clientStatus]. The method name is [createClientStatus].
+The client json is [{"description":"test", "id":123, "createUsername":"ivern","createDate":"1222483449970", "modifyUsername":"ketty","modifyDate":"1222483449970","name":"world", "deleted":true}].
+The result string is [{"success":true, "json":{"deleted":true,"createUsername":"ivern","description":"test","modifyDate":"1222483449970","createDate":"1222483449970","name":"world","id":123,"modifyUsername":"ketty"}}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [clientStatus]. The method name is [updateClientStatus].
+The client json is [{"description":"test", "id":123, "createUsername":"ivern","createDate":"1222483449970", "modifyUsername":"ketty","modifyDate":"1222483449970","name":"world", "deleted":true}].
+The result string is [{"success":true, "json":{"deleted":true,"createUsername":"ivern","description":"test","modifyDate":"1222483449970","createDate":"1222483449970","name":"world","id":123,"modifyUsername":"ketty"}}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [clientStatus]. The method name is [deleteClientStatus].
+The client json is [{"description":"test", "id":123, "createUsername":"ivern","createDate":"1222483449970", "modifyUsername":"ketty","modifyDate":"1222483449970","name":"world", "deleted":true}].
+The result string is [{"success":true, "json":{"deleted":true,"createUsername":"ivern","description":"test","modifyDate":"1222483449970","createDate":"1222483449970","name":"world","id":123,"modifyUsername":"ketty"}}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [clientStatus]. The method name is [invalid].
+The client json is [{ "id":123}].
+The result string is [{"success":false, "error":The method [invalid] is invalid in ClientStatusService.}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [clientStatus]. The method name is [null].
+The client json is [{ "id":123}].
+The result string is [{"success":false, "error":The method [null] is invalid in ClientStatusService.}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [lookup]. The method name is [retrieveClient].
+The lookup' parameter is [id=3].
+The result string is [{"success":true, "json":{"deleted":false,"salesTax":0,"paymentTermsId":0,"id":3}}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [lookup]. The method name is [retrieveAllClients].
+The result string is [{"success":true, "json":[{"deleted":false,"salesTax":0,"paymentTermsId":0,"id":1}, {"deleted":false,"salesTax":0,"paymentTermsId":0,"id":2}]}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [lookup]. The method name is [searchClientsByName].
+The lookup' parameter is [name=topcoder].
+The result string is [{"success":true, "json":[{"deleted":false,"salesTax":0,"paymentTermsId":0,"name":"topcoder","id":1}, {"deleted":false,"salesTax":0,"paymentTermsId":0,"name":"topcoder","id":2}]}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [lookup]. The method name is [getClientStatus].
+The lookup' parameter is [id=4].
+The result string is [{"success":true, "json":{"deleted":false,"id":4}}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [lookup]. The method name is [getAllClientStatuses].
+The result string is [{"success":true, "json":[{"deleted":false,"id":1}, {"deleted":false,"id":2}]}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [lookup]. The method name is [getClientsForStatus].
+The lookup' parameter is [clientStatus={"description":"test", "id":123, "createUsername":"ivern","createDate":"1222483449970", "modifyUsername":"ketty","modifyDate":"1222483449970","name":"world", "deleted":true}].
+The result string is [{"success":true, "json":[{"deleted":false,"salesTax":0,"clientStatus":{"deleted":true,"createUsername":"ivern","description":"test","modifyDate":"1222483449970","createDate":"1222483449970","name":"world","id":123,"modifyUsername":"ketty"},"paymentTermsId":0,"id":1}, {"deleted":false,"salesTax":0,"clientStatus":{"deleted":true,"createUsername":"ivern","description":"test","modifyDate":"1222483449970","createDate":"1222483449970","name":"world","id":123,"modifyUsername":"ketty"},"paymentTermsId":0,"id":2}]}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [lookup]. The method name is [retrieveProject].
+The lookup' parameter is [id=123].
+The result string is [{"success":true, "json":{"deleted":false,"active":false,"salesTax":0,"parentProjectId":0,"paymentTermsId":0,"id":123}}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [lookup]. The method name is [retrieveProjectsForClient].
+The lookup' parameter is [client={"company":{"passcode":"666"}, "paymentTermsId":20, "clientStatus":{"description":"test"}, "salesTax":0.17, "startDate":"1163531522089", "endDate":"1163531522089", "codeName":"uuu", "id":345 }].
+The result string is [{"success":true, "json":[{"deleted":false,"active":false,"salesTax":0,"parentProjectId":0,"client":{"deleted":false,"startDate":"1163531522089","salesTax":0.1700000000000000122124532708767219446599483489990234375,"codeName":"uuu","endDate":"1163531522089","clientStatus":{"deleted":false,"description":"test","id":0},"paymentTermsId":20,"id":345,"company":{"deleted":false,"passcode":"666","id":0}},"paymentTermsId":0,"id":1}, {"deleted":false,"active":false,"salesTax":0,"parentProjectId":0,"client":{"deleted":false,"startDate":"1163531522089","salesTax":0.1700000000000000122124532708767219446599483489990234375,"codeName":"uuu","endDate":"1163531522089","clientStatus":{"deleted":false,"description":"test","id":0},"paymentTermsId":20,"id":345,"company":{"deleted":false,"passcode":"666","id":0}},"paymentTermsId":0,"id":2}]}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [lookup]. The method name is [retrieveAllProjects].
+The result string is [{"success":true, "json":[{"deleted":false,"active":false,"salesTax":0,"parentProjectId":0,"paymentTermsId":0,"id":1}, {"deleted":false,"active":false,"salesTax":0,"parentProjectId":0,"paymentTermsId":0,"id":2}]}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [lookup]. The method name is [searchProjectsByName].
+The lookup' parameter is [name=topcoder].
+The result string is [{"success":true, "json":[{"deleted":false,"active":false,"salesTax":0,"parentProjectId":0,"paymentTermsId":0,"name":"topcoder","id":1}, {"deleted":false,"active":false,"salesTax":0,"parentProjectId":0,"paymentTermsId":0,"name":"topcoder","id":2}]}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [lookup]. The method name is [getProjectStatus].
+The lookup' parameter is [id=5].
+The result string is [{"success":true, "json":{"deleted":false,"id":5}}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [lookup]. The method name is [getAllProjectStatuses].
+The result string is [{"success":true, "json":[{"deleted":false,"id":1}, {"deleted":false,"id":2}]}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [lookup]. The method name is [getProjectsForStatus].
+The lookup' parameter is [projectStatus={"description":"test", "id":123, "createUsername":"ivern","createDate":"1222483449970", "modifyUsername":"ketty","modifyDate":"1222483449970","name":"world", "deleted":true}].
+The result string is [{"success":true, "json":[{"deleted":false,"active":false,"salesTax":0,"parentProjectId":0,"projectStatus":{"deleted":true,"createUsername":"ivern","description":"test","modifyDate":"1222483449970","createDate":"1222483449970","name":"world","id":123,"modifyUsername":"ketty"},"paymentTermsId":0,"id":1}, {"deleted":false,"active":false,"salesTax":0,"parentProjectId":0,"projectStatus":{"deleted":true,"createUsername":"ivern","description":"test","modifyDate":"1222483449970","createDate":"1222483449970","name":"world","id":123,"modifyUsername":"ketty"},"paymentTermsId":0,"id":2}]}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [lookup]. The method name is [retrieveCompany].
+The lookup' parameter is [id=5].
+The result string is [{"success":true, "json":{"deleted":false,"id":5}}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [lookup]. The method name is [retrieveAllCompanies].
+The result string is [{"success":true, "json":[{"deleted":false,"id":1}, {"deleted":false,"id":2}]}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [lookup]. The method name is [searchCompaniesByName].
+The lookup' parameter is [name=topcoder].
+The result string is [{"success":true, "json":[{"deleted":false,"name":"topcoder","id":1}, {"deleted":false,"name":"topcoder","id":2}]}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [lookup]. The method name is [getClientsForCompany].
+The lookup' parameter is [company={"passcode":"666", "id":123, "createUsername":"ivern","createDate":"1222483449970", "modifyUsername":"ketty","modifyDate":"1222483449970","name":"world", "deleted":true}].
+The result string is [{"success":true, "json":[{"deleted":false,"salesTax":0,"paymentTermsId":0,"id":1,"company":{"deleted":true,"passcode":"666","createUsername":"ivern","modifyDate":"1222483449970","createDate":"1222483449970","name":"world","id":123,"modifyUsername":"ketty"}}, {"deleted":false,"salesTax":0,"paymentTermsId":0,"id":2,"company":{"deleted":true,"passcode":"666","createUsername":"ivern","modifyDate":"1222483449970","createDate":"1222483449970","name":"world","id":123,"modifyUsername":"ketty"}}]}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [lookup]. The method name is [getProjectsForCompany].
+The lookup' parameter is [company={"passcode":"666", "id":123, "createUsername":"ivern","createDate":"1222483449970", "modifyUsername":"ketty","modifyDate":"1222483449970","name":"world", "deleted":true}].
+The result string is [{"success":true, "json":[{"deleted":false,"active":false,"salesTax":0,"parentProjectId":0,"paymentTermsId":0,"id":1,"company":{"deleted":true,"passcode":"666","createUsername":"ivern","modifyDate":"1222483449970","createDate":"1222483449970","name":"world","id":123,"modifyUsername":"ketty"}}, {"deleted":false,"active":false,"salesTax":0,"parentProjectId":0,"paymentTermsId":0,"id":2,"company":{"deleted":true,"passcode":"666","createUsername":"ivern","modifyDate":"1222483449970","createDate":"1222483449970","name":"world","id":123,"modifyUsername":"ketty"}}]}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [lookup]. The method name is [invalid].
+The result string is [{"success":false, "error":The method [invalid] is invalid in LookupService.}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [lookup]. The method name is [null].
+The result string is [{"success":false, "error":The method [null] is invalid in LookupService.}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [invalid]. The method name is [getProjectsForCompany].
+The result string is [{"success":false, "error":The service [invalid] is invalid.}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [null]. The method name is [getProjectsForCompany].
+The result string is [{"success":false, "error":The service [null] is invalid.}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Enter into ClientProjectLookupServiceBridgeServlet#doGet
+Enter into ClientProjectLookupServiceBridgeServlet#doPost
+The service name is [projectStatus]. The method name is [createProjectStatus].
+The projectStatus json is [{"description":"test", "id":123, "createUsername":"ivern","createDate":"1222483449970", "modifyUsername":"ketty","modifyDate":"1222483449970","name":"world", "deleted":true}].
+The result string is [{"success":true, "json":{"deleted":true,"createUsername":"ivern","description":"test","modifyDate":"1222483449970","createDate":"1222483449970","name":"world","id":123,"modifyUsername":"ketty"}}].
+Exit ClientProjectLookupServiceBridgeServlet#doPost
+Exit ClientProjectLookupServiceBridgeServlet#doGet
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

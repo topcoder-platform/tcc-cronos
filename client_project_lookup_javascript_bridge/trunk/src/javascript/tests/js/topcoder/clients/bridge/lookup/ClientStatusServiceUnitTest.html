@@ -1,0 +1,251 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Lookup 1.0
+
+Author stevenfrog
+-->
+<html>
+<head>
+<title>ClientStatusService Unit Test</title>
+<script language="JavaScript" type="text/javascript" src="jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../test_files/AjaxProcessor.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../main/js/topcoder/clients/bridge/lookup/client_project_lookup.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+    /**
+     * <p>Represent <code>IllegalArgumentException</code> for easy use.</p>
+     */
+    var IllegalArgumentException = js.topcoder.clients.bridge.lookup.IllegalArgumentException;
+
+    /**
+     * <p>Represent <code>InvalidResponseException</code> for easy use.</p>
+     */
+    var InvalidResponseException = js.topcoder.clients.bridge.lookup.InvalidResponseException;
+
+    /**
+     * <p><code>ClientStatusService</code> instance used for testing.</p>
+     */
+    var clientStatusService;
+
+    /**
+     * <p>Sets up environment.</p>
+     */
+    function setUp() {
+        var url = "http://localhost:8080/topcoder/servlet";
+        clientStatusService = new js.topcoder.clients.bridge.lookup.ClientStatusService(url);
+    }
+
+    /**
+     * <p>Clear the environment.</p>
+     */
+    function tearDown() {
+        clientStatusService = null;
+    }
+
+    /**
+     * <p>Test of constructor <code>ClientStatusService()</code>.</p>
+     */
+    function testCtor() {
+        assertNotNull("Fail to create ClientStatusService.", clientStatusService);
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>ClientStatusService()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not string.
+     * </p>
+     */
+    function testCtor_WithInvalidParameter() {
+        var invalidArray = [undefined, null, -1, false, new Object(), "", "   "];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                new js.topcoder.clients.bridge.lookup.ClientStatusService(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to create ClientStatusService.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>createClientStatus()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testCreateClientStatus_WithInvalidParameter() {
+        var invalidArray = [undefined, null, -1, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                clientStatusService.createClientStatus(invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test createClientStatus.", e instanceof IllegalArgumentException);
+            }
+        }
+
+        var status = new js.topcoder.clients.bridge.lookup.entities.ClientStatus();
+        invalidArray = [undefined, null, -1, "str", false, new Object(), forTest];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                clientStatusService.createClientStatus(status, invalidArray[i], onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test createClientStatus.", e instanceof IllegalArgumentException);
+            }
+        }
+
+        invalidArray = [undefined, null, -1, "str", false, new Object(), forTest];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                clientStatusService.createClientStatus(status, onSuccess, invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test createClientStatus.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>updateClientStatus()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testUpdateClientStatus_WithInvalidParameter() {
+        var invalidArray = [undefined, null, -1, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                clientStatusService.updateClientStatus(invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test updateClientStatus.", e instanceof IllegalArgumentException);
+            }
+        }
+
+        var status = new js.topcoder.clients.bridge.lookup.entities.ClientStatus();
+        invalidArray = [undefined, null, -1, "str", false, new Object(), forTest];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                clientStatusService.updateClientStatus(status, invalidArray[i], onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test updateClientStatus.", e instanceof IllegalArgumentException);
+            }
+        }
+
+        invalidArray = [undefined, null, -1, "str", false, new Object(), forTest];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                clientStatusService.updateClientStatus(status, onSuccess, invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test updateClientStatus.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+
+    /**
+     * <p>
+     * Failure test for method <code>deleteClientStatus()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testDeleteClientStatus_WithInvalidParameter() {
+        var invalidArray = [undefined, null, -1, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                clientStatusService.deleteClientStatus(invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test deleteClientStatus.", e instanceof IllegalArgumentException);
+            }
+        }
+
+        var status = new js.topcoder.clients.bridge.lookup.entities.ClientStatus();
+        invalidArray = [undefined, null, -1, "str", false, new Object(), forTest];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                clientStatusService.deleteClientStatus(status, invalidArray[i], onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test deleteClientStatus.", e instanceof IllegalArgumentException);
+            }
+        }
+
+        invalidArray = [undefined, null, -1, "str", false, new Object(), forTest];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                clientStatusService.deleteClientStatus(status, onSuccess, invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test deleteClientStatus.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+
+    /**
+     * The function use to test.
+     */
+    function onSuccess(/* Object */ obj) {
+        alert("onSuccess:" + JSON.stringify(obj.toJSON()));
+    }
+
+    /**
+     * The function use to test.
+     */
+    function onError(/* String */ message) {
+        alert("onError:" + message);
+    }
+
+    /**
+     * The function use to test.
+     */
+    function forTest() {
+        // Empty
+    }
+
+
+    </script>
+</head>
+<body>
+<h1><b>ClientStatusService</b> Unit Test</h1>
+
+<p>This page contains Unit Test for <code>ClientStatusService</code> class.</p>
+</body>
+</html>

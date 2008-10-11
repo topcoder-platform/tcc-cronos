@@ -1,0 +1,36 @@
+Final Fix 1:
+1: about IOException
+confirmed by designer "for this IOException, no wrapping is ok"
+
+2 About "async: true"
+  I still discuss this question with designer.
+  Not Fixed.
+
+3. Other things have fixed.
+
+
+Final Fix 2:
+5.1.7 fixed
+5.1.4 fixed
+5.1.3 fixed
+4.1.6 have fixed in final fix 1
+4.1.2 fixed
+
+About "async: false"
+Designer does agree with me, I changed my code into "async: true".
+But all request tests have to cut.
+I changed Demo, and create Demo1,2,3 to show how to do request.
+
+Ok, all error fixed.
+
+Final Fix3
+4.1.2
+1) I add @private to all three services.
+2) still exist, 'createUsername'.
+   ??? I think I have fixed this problem.
+   If you think it still exist, please point its line.
+
+
+Final Fix4
+I change 'TCSDESIGNER, TCSDEVELOPER' into 'zsudraco, stevenfrog'
+Ok, All things fixed.

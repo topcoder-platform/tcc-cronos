@@ -1,0 +1,590 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Lookup 1.0
+
+Author stevenfrog
+-->
+<html>
+<head>
+<title>Project Unit Test</title>
+<script language="JavaScript" type="text/javascript" src="jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../main/js/topcoder/clients/bridge/lookup/client_project_lookup.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+    /**
+     * <p>Represent <code>IllegalArgumentException</code> for easy use.</p>
+     */
+    var IllegalArgumentException = js.topcoder.clients.bridge.lookup.IllegalArgumentException;
+
+    /**
+     * <p><code>Project</code> instance used for testing.</p>
+     */
+    var project;
+
+    /**
+     * <p>Sets up environment.</p>
+     */
+    function setUp() {
+        project = new js.topcoder.clients.bridge.lookup.entities.Project();
+    }
+
+    /**
+     * <p>Clear the environment.</p>
+     */
+    function tearDown() {
+        project = null;
+    }
+
+    /**
+     * <p>Test of constructor <code>Project()</code>.</p>
+     */
+    function testCtor() {
+        assertNotNull("Fail to create Project.", project);
+    }
+
+    /**
+     * <p>Test of constructor <code>Project(JSON)</code>.</p>
+     */
+    function testCtor2() {
+        var config = {"company":{"passcode":"666"}, "active":true,  "salesTax":0.17, "pOBoxNumber":"123",
+            "paymentTermsId":20, "description":"test", "projectStatus":{"description":"test2"},
+            "client":{"codeName":"uuu"}, "childProjects":[{"pOBoxNumber":"777"}, {"pOBoxNumber":"888"}],
+            "parentProjectId":789, "id":345 };
+
+        project = new js.topcoder.clients.bridge.lookup.entities.Project(config);
+        assertNotNull("Fail to create Project.", project);
+        assertEquals("The result should be ", "666", project.getCompany().getPasscode());
+        assertTrue("The result should be ", project.isActive());
+        assertEquals("The result should be ", 0.17, project.getSalesTax());
+        assertEquals("The result should be ", "123", project.getPOBoxNumber());
+        assertEquals("The result should be ", 20, project.getPaymentTermsId());
+        assertEquals("The result should be ", "test", project.getDescription());
+        assertEquals("The result should be ", "test2", project.getProjectStatus().getDescription());
+        assertEquals("The result should be ", "uuu", project.getClient().getCodeName());
+        assertEquals("The result should be ", 2, project.getChildProjects().length);
+        assertEquals("The result should be ", "777", project.getChildProjects()[0].getPOBoxNumber());
+        assertEquals("The result should be ", "888", project.getChildProjects()[1].getPOBoxNumber());
+        assertEquals("The result should be ", 789, project.getParentProjectId());
+        assertEquals("The result should be ", 345, project.getId());
+    }
+
+    /**
+     * <p>
+     * Failure test for constructor <code>Project(JSON)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not json object.
+     * </p>
+     */
+    function testCtor2_WithNotJSON() {
+        var invalidArray = [null, -1, "str", false];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                new js.topcoder.clients.bridge.lookup.entities.Project(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test Project.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of company.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfCompany() {
+        var company = new js.topcoder.clients.bridge.lookup.entities.Company();
+        project.setCompany(company);
+        assertEquals("The result should be ", company, project.getCompany());
+
+        project.setCompany(null);
+        assertNull("The result should be null.", project.getCompany());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setCompany(Company)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not Company.
+     * </p>
+     */
+    function testSetCompany_WithNotCompany() {
+        var invalidArray = [-1, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                project.setCompany(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setCompany.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of active.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfActive() {
+        project.setActive(false);
+        assertFalse("The result should be false.", project.isActive());
+
+        project.setActive(true);
+        assertTrue("The result should be true.", project.isActive());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setActive(Boolean)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not boolean.
+     * </p>
+     */
+    function testSetActive_WithNotBoolean() {
+        var invalidArray = [-1, "abc", new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                project.setActive(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setActive.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of sales tax.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfSalesTax() {
+        project.setSalesTax(2.7);
+        assertEquals("The result should be ", 2.7, project.getSalesTax());
+
+        project.setSalesTax(0);
+        assertEquals("The result should be ", 0, project.getSalesTax());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setSalesTax(Number)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid Number.
+     * </p>
+     */
+    function testSetSalesTax_WithInvalidNumber() {
+        var invalidArray = ["str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                project.setSalesTax(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setSalesTax.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of pOBoxNumber.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfPOBoxNumber() {
+        project.setPOBoxNumber("test");
+        assertEquals("The result should be ", "test", project.getPOBoxNumber());
+
+        project.setPOBoxNumber(null);
+        assertNull("The result should be null", project.getPOBoxNumber());
+
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setPOBoxNumber(String)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid String.
+     * </p>
+     */
+    function testSetPOBoxNumber_WithNotString() {
+        var invalidArray = [1, false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                project.setPOBoxNumber(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setPOBoxNumber.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of paymentTermsId.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfPaymentTermsId() {
+        project.setPaymentTermsId(123);
+        assertEquals("The result should be ", 123, project.getPaymentTermsId());
+
+        project.setPaymentTermsId(0);
+        assertEquals("The result should be ", 0, project.getPaymentTermsId());
+
+        project.setPaymentTermsId(-1);
+        assertEquals("The result should be ", -1, project.getPaymentTermsId());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setPaymentTermsId(Number)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid number.
+     * </p>
+     */
+    function testSetPaymentTermsId_WithInvalidNumber() {
+        var invalidArray = ["str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                project.setPaymentTermsId(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setPaymentTermsId.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of description.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfDescription() {
+        project.setDescription("test");
+        assertEquals("The result should be ", "test", project.getDescription());
+
+        project.setDescription(null);
+        assertNull("The result should be null", project.getDescription());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setDescription(String)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid String.
+     * </p>
+     */
+    function testSetDescription_WithNotString() {
+        var invalidArray = [1, false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                project.setDescription(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setDescription.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of projectStatus.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfProjectStatus() {
+        var status = new js.topcoder.clients.bridge.lookup.entities.ProjectStatus();
+        project.setProjectStatus(status);
+        assertEquals("The result should be ", status, project.getProjectStatus());
+
+        project.setProjectStatus(null);
+        assertNull("The result should be null.", project.getProjectStatus());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setProjectStatus(ProjectStatus)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not ProjectStatus.
+     * </p>
+     */
+    function testSetProjectStatus_WithNotProjectStatus() {
+        var invalidArray = [1, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                project.setProjectStatus(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setProjectStatus.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of client.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfClient() {
+        var client = new js.topcoder.clients.bridge.lookup.entities.Client();
+        project.setClient(client);
+        assertEquals("The result should be ", client, project.getClient());
+
+        project.setClient(null);
+        assertNull("The result should be null.", project.getClient());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setClient(Client)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not Client.
+     * </p>
+     */
+    function testSetClient_WithNotClient() {
+        var invalidArray = [1, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                project.setClient(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setStatus.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of childProjects.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfChildProjects() {
+        var projectArray = new Array();
+        var project1 = new js.topcoder.clients.bridge.lookup.entities.Project();
+        project1.setPOBoxNumber("111");
+        projectArray.push(project1);
+        var project2 = new js.topcoder.clients.bridge.lookup.entities.Project();
+        project2.setPOBoxNumber("222");
+        projectArray.push(project2);
+        project.setChildProjects(projectArray);
+        assertEquals("The result should be ", projectArray, project.getChildProjects());
+        assertEquals("The result should be ", project1, project.getChildProjects()[0]);
+        assertEquals("The result should be ", project2, project.getChildProjects()[1]);
+
+        var projectArray2 = new Array();
+        project.setChildProjects(projectArray2);
+        assertEquals("The result should be ", projectArray2, project.getChildProjects());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setChildProjects(Project[])</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testSetChildProjects_WithInvalid() {
+        var invalidArray = [1, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                project.setChildProjects(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setStatus.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setChildProjects(Project[])</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testSetChildProjects_WithInvalid2() {
+        var project = new js.topcoder.clients.bridge.lookup.entities.Project();
+        var projectArray1 = new Array();
+        projectArray1.push(project);
+        projectArray1.push(null);
+        var projectArray2 = new Array();
+        projectArray2.push(new Object());
+        projectArray2.push(project);
+        var invalidArray = [projectArray1, projectArray2];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                project.setChildProjects(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setStatus.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of parentProjectId.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfParentProjectId() {
+        project.setParentProjectId(123);
+        assertEquals("The result should be ", 123, project.getParentProjectId());
+
+        project.setParentProjectId(0);
+        assertEquals("The result should be ", 0, project.getParentProjectId());
+
+        project.setParentProjectId(-1);
+        assertEquals("The result should be ", -1, project.getParentProjectId());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setParentProjectId(String)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not number.
+     * </p>
+     */
+    function testSetParentProjectId_WithNotNumber() {
+        var invalidArray = ["str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                project.setParentProjectId(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setParentProjectId.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+
+    /**
+     * <p>Test method toJSON.
+     * No exception is expected.</p>
+     */
+    function testToJSON() {
+        var date = new Date();
+        var company = new js.topcoder.clients.bridge.lookup.entities.Company();
+        company.setPasscode("666");
+        company.setId(777);
+        company.setName("tom");
+        company.setDeleted(true);
+        project.setCompany(company);
+        project.setActive(true);
+        project.setSalesTax(0.17);
+        project.setPOBoxNumber("9999");
+        project.setPaymentTermsId(20);
+        project.setDescription("description");
+        var status = new js.topcoder.clients.bridge.lookup.entities.ProjectStatus();
+        status.setDescription("description");
+        project.setProjectStatus(status);
+        var client = new js.topcoder.clients.bridge.lookup.entities.Client();
+        client.setSalesTax(8.09);
+        client.setCodeName("uuu");
+        project.setClient(client);
+
+        var projectArray = new Array();
+        var project1 = new js.topcoder.clients.bridge.lookup.entities.Project();
+        project1.setPOBoxNumber("111");
+        projectArray.push(project1);
+        var project2 = new js.topcoder.clients.bridge.lookup.entities.Project();
+        project2.setPOBoxNumber("222");
+        projectArray.push(project2);
+        project.setChildProjects(projectArray);
+
+        project.setParentProjectId(321);
+
+        project.setId(123);
+        project.setCreateUsername("createUser");
+        project.setCreateDate(date);
+        project.setModifyUsername("modifyUser");
+        project.setModifyDate(date);
+        project.setName("jack");
+        project.setDeleted(true);
+
+        var json = JSON.parse(project.toJSON());
+        assertEquals("The result should be ", "666", json["company"]["passcode"]);
+        assertEquals("The result should be ", 777, json["company"]["id"]);
+        assertEquals("The result should be ", "tom", json["company"]["name"]);
+        assertTrue("The result should be true", json["company"]["deleted"]);
+        assertTrue("The result should be true", json["active"]);
+        assertEquals("The result should be ", 0.17, json["salesTax"]);
+        assertEquals("The result should be ", "9999", json["pOBoxNumber"]);
+        assertEquals("The result should be ", 20, json["paymentTermsId"]);
+        assertEquals("The result should be ", "description", json["description"]);
+        assertEquals("The result should be ", "description", json["projectStatus"]["description"]);
+        assertEquals("The result should be ", 8.09, json["client"]["salesTax"]);
+        assertEquals("The result should be ", "uuu", json["client"]["codeName"]);
+        assertEquals("The result should be ", 2, json["childProjects"].length);
+        assertEquals("The result should be ", "111", json["childProjects"][0]["pOBoxNumber"]);
+        assertEquals("The result should be ", "222", json["childProjects"][1]["pOBoxNumber"]);
+
+        assertEquals("The result should be ", 321, json["parentProjectId"]);
+
+        assertEquals("The result should be ", 123, json["id"]);
+        assertEquals("The result should be ", "createUser", json["createUsername"]);
+        assertEquals("The result should be ", date.getTime()+"", json["createDate"]);
+        assertEquals("The result should be ", "modifyUser", json["modifyUsername"]);
+        assertEquals("The result should be ", date.getTime()+"", json["modifyDate"]);
+        assertEquals("The result should be ", "jack", json["name"]);
+        assertTrue("The result should be true", json["deleted"]);
+    }
+
+
+    </script>
+</head>
+<body>
+<h1><b>Project</b> Unit Test</h1>
+
+<p>This page contains Unit Test for <code>Project</code> class.</p>
+</body>
+</html>

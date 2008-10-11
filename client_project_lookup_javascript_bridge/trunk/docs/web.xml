@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE web-app 
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" 
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+    <servlet>
+        <servlet-name>ajaxBridge</servlet-name>
+        <servlet-class>com.topcoder.clients.bridge.lookup.ClientProjectLookupServiceBridgeServlet</servlet-class>
+		<init-param>
+			<param-name>loggerName</param-name>
+			<param-value>ajaxBridge</param-value>
+		</init-param>
+		<init-param>
+			<param-name>objectFactoryNamespace</param-name>
+			<param-value>com.topcoder.objectfactory</param-value>
+		</init-param>
+		<init-param>
+			<param-name>lookupServiceClientKey</param-name>
+			<param-value>lookupService</param-value>
+		</init-param>
+		<init-param>
+			<param-name>clientStatusServiceClientKey</param-name>
+			<param-value>clientStatusService</param-value>
+		</init-param>
+		<init-param>
+			<param-name>projectStatusServiceClientKey</param-name>
+			<param-value>projectStatusService</param-value>
+		</init-param>
+		<init-param>
+			<param-name>jsonEncoderKey</param-name>			
+			<param-value>jsonEncoder</param-value>
+		</init-param>
+		<init-param>
+			<param-name>jsonDecoderKey</param-name>			
+			<param-value>jsonDecoder</param-value>
+		</init-param>
+		<init-param>
+			<param-name>ajaxBridgeConfigFile</param-name>			
+			<param-value>c:/sample.xml</param-value>
+		</init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ajaxBridge</servlet-name>
+        <url-pattern>/ajaxBridge</url-pattern>
+    </servlet-mapping>
+</web-app>

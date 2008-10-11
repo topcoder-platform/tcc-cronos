@@ -1,0 +1,501 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Lookup 1.0
+
+Author stevenfrog
+-->
+<html>
+<head>
+<title>LookupService Unit Test</title>
+<script language="JavaScript" type="text/javascript" src="jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../test_files/AjaxProcessor.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../main/js/topcoder/clients/bridge/lookup/client_project_lookup.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+    /**
+     * <p>Represent <code>IllegalArgumentException</code> for easy use.</p>
+     */
+    var IllegalArgumentException = js.topcoder.clients.bridge.lookup.IllegalArgumentException;
+
+    /**
+     * <p>Represent <code>InvalidResponseException</code> for easy use.</p>
+     */
+    var InvalidResponseException = js.topcoder.clients.bridge.lookup.InvalidResponseException;
+
+    /**
+     * <p><code>LookupService</code> instance used for testing.</p>
+     */
+    var lookupService;
+
+    /**
+     * <p>Sets up environment.</p>
+     */
+    function setUp() {
+        var url = "http://localhost:8080/topcoder/servlet";
+        lookupService = new js.topcoder.clients.bridge.lookup.LookupService(url);
+    }
+
+    /**
+     * <p>Clear the environment.</p>
+     */
+    function tearDown() {
+        lookupService = null;
+    }
+
+    /**
+     * <p>Test of constructor <code>LookupService()</code>.</p>
+     */
+    function testCtor() {
+        assertNotNull("Fail to create LookupService.", lookupService);
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>LookupService()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not string.
+     * </p>
+     */
+    function testCtor_WithInvalidParameter() {
+        var invalidArray = [undefined, null, -1, false, new Object(), "", "   "];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                new js.topcoder.clients.bridge.lookup.LookupService(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to create LookupService.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>retrieveClient()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testRetrieveClient_WithInvalidParameter() {
+        var invalidArray = [undefined, null, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                lookupService.retrieveClient(invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test retrieveClient.", e instanceof IllegalArgumentException);
+            }
+        }
+        invalidArray = [undefined, null, -1, "str", false, new Object(), forTest];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                lookupService.retrieveClient(2, invalidArray[i], onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test retrieveClient.", e instanceof IllegalArgumentException);
+            }
+        }
+
+        invalidArray = [undefined, null, -1, "str", false, new Object(), forTest];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                lookupService.retrieveClient(3, onSuccess, invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test retrieveClient", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>retrieveAllClients()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testRetrieveAllClients_WithInvalidParameter() {
+        var invalidArray = [undefined, null, -1, "str", false, new Object(), forTest];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                lookupService.retrieveAllClients(invalidArray[i], onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test retrieveAllClients.", e instanceof IllegalArgumentException);
+            }
+        }
+
+        invalidArray = [undefined, null, -1, "str", false, new Object(), forTest];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                lookupService.retrieveAllClients(onSuccess, invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test retrieveAllClients", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+
+    /**
+     * <p>
+     * Failure test for method <code>searchClientsByName()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testSearchClientsByName_WithInvalidParameter() {
+        var invalidArray = [undefined, null, 4, false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                lookupService.searchClientsByName(invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test searchClientsByName.", e instanceof IllegalArgumentException);
+            }
+        }
+        invalidArray = [undefined, null, -1, "str", false, new Object(), forTest];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                lookupService.searchClientsByName("name", invalidArray[i], onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test searchClientsByName.", e instanceof IllegalArgumentException);
+            }
+        }
+
+        invalidArray = [undefined, null, -1, "str", false, new Object(), forTest];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                lookupService.searchClientsByName("name", onSuccess, invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test searchClientsByName", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>getClientStatus()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testGetClientStatus_WithInvalidParameter() {
+        var invalidArray = [undefined, null, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                lookupService.getClientStatus(invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test getClientStatus.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>getClientsForStatus()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testGetClientsForStatus_WithInvalidParameter() {
+        var invalidArray = [undefined, null, 5, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                lookupService.getClientsForStatus(invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test getClientsForStatus.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>retrieveProject()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testRetrieveProject_WithInvalidParameter() {
+        var invalidArray = [undefined, null, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                lookupService.retrieveProject(invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test retrieveProject.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+
+    /**
+     * <p>
+     * Failure test for method <code>retrieveProjectsForClient()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testRetrieveProjectsForClient_WithInvalidParameter() {
+        var invalidArray = [undefined, null, 3, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                lookupService.retrieveProjectsForClient(invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test retrieveProjectsForClient.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+
+    /**
+     * <p>
+     * Failure test for method <code>searchProjectsByName()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testSearchProjectsByName_WithInvalidParameter() {
+        var invalidArray = [undefined, null, 3, false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                lookupService.searchProjectsByName(invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test searchProjectsByName.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>getProjectStatus()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testGetProjectStatus_WithInvalidParameter() {
+        var invalidArray = [undefined, null, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                lookupService.getProjectStatus(invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test getProjectStatus.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>getProjectsForStatus()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testGetProjectsForStatus_WithInvalidParameter() {
+        var invalidArray = [undefined, null, 5, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                lookupService.getProjectsForStatus(invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test getProjectsForStatus.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>retrieveCompany()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testRetrieveCompany_WithInvalidParameter() {
+        var invalidArray = [undefined, null, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                lookupService.retrieveCompany(invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test retrieveCompany.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>searchCompaniesByName()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testSearchCompaniesByName_WithInvalidParameter() {
+        var invalidArray = [undefined, null, 4, false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                lookupService.searchCompaniesByName(invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test searchCompaniesByName.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>getClientsForCompany()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testGetClientsForCompany_WithInvalidParameter() {
+        var invalidArray = [undefined, null, 4, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                lookupService.getClientsForCompany(invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test getClientsForCompany.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>getProjectsForCompany()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testGetProjectsForCompany_WithInvalidParameter() {
+        var invalidArray = [undefined, null, 4, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                lookupService.getProjectsForCompany(invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test getProjectsForCompany.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+
+
+    /**
+     * The function use to test.
+     */
+    function onSuccess(/* Object */ obj) {
+        alert("onSuccess:" + JSON.stringify(obj));
+    }
+
+    /**
+     * The function use to test.
+     */
+    function onError(/* String */ message) {
+        alert("onError:" + message);
+    }
+
+    /**
+     * The function use to test.
+     */
+    function forTest() {
+        // Empty
+    }
+
+
+    </script>
+</head>
+<body>
+<h1><b>LookupService</b> Unit Test</h1>
+
+<p>This page contains Unit Test for <code>LookupService</code> class.</p>
+</body>
+</html>

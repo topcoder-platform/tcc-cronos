@@ -1,0 +1,85 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+Client Project Lookup JavaScript Bridge 1.0
+
+Author superZZ
+-->
+<html>
+<head>
+<title>ProjectStatus Unit Test</title>
+<script language="JavaScript" type="text/javascript" src="../jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../../main/js/topcoder/clients/bridge/lookup/client_project_lookup.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript">
+    /**
+     * Represents ProjectStatus instance for test.
+     */
+    var ProjectStatus;
+
+    /**
+     * Initialize ProjectStatus variable for test.
+     */
+    function setUp() {
+        ProjectStatus = new js.topcoder.clients.bridge.lookup.entities.ProjectStatus();
+    }
+
+    /**
+     * <p>Tests constructor of ProjectStatus.
+     */
+    function testConstructorJson() {
+        var config = { "description" : "pass" };
+        ProjectStatus = new js.topcoder.clients.bridge.lookup.entities.ProjectStatus(config);
+        assertEquals("description is incorrect", "pass", ProjectStatus.getDescription());
+    }
+
+    /**
+     * Tests getDescription and setDescription.
+     */
+    function testDescription1() {
+        ProjectStatus.setDescription("code");
+        assertEquals("description is incorrect", "code", ProjectStatus.getDescription());
+    }
+
+    /**
+     * Tests getDescription and setDescription.
+     */
+    function testDescription2() {
+        ProjectStatus.setDescription(null);
+        assertNull("description is incorrect.", ProjectStatus.getDescription());
+    }
+    
+    /**
+     * Tests toJSON method.
+     */
+    function testToJSON() {
+        var newDate = new Date();
+        var dateStr = newDate.getTime() + "";
+        ProjectStatus.setDescription("code");
+        ProjectStatus.setId(123);
+        ProjectStatus.setCreateUsername("superZZ");
+        ProjectStatus.setCreateDate(newDate);
+        ProjectStatus.setModifyUsername("superZZ");
+        ProjectStatus.setModifyDate(newDate);
+        ProjectStatus.setName("superZZ");
+        ProjectStatus.setDeleted(true);
+
+        var json = JSON.parse(ProjectStatus.toJSON());
+        assertEquals("description is incorrect.", "code", json["description"]);
+        assertEquals("id is incorrect.", 123, json["id"]);
+        assertEquals("createUsername is incorrect.", "superZZ", json["createUsername"]);
+        assertEquals("createDate is incorrect.", dateStr, json["createDate"]);
+        assertEquals("modifyUsername is incorrect.", "superZZ", json["modifyUsername"]);
+        assertEquals("modifyDate is incorrect.", dateStr, json["modifyDate"]);
+        assertEquals("name is incorrect.", "superZZ", json["name"]);
+        assertTrue("deleted is incorrect.", json["deleted"]);
+    }
+    </script>
+</head>
+<body>
+<h1><b>ProjectStatus</b> Accuracy Test</h1>
+
+<p>This page contains Accuracy Test for <code>ProjectStatus</code> class.</p>
+</body>
+</html>

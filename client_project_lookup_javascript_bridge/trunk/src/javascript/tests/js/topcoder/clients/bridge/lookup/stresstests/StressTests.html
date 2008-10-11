@@ -1,0 +1,35 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Management 1.0
+
+@author onsky
+@version 1.0
+-->
+<html>
+<head>
+<title>Stress Test Suite</title>
+<script language="JavaScript" type="text/javascript" src="../jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../../test_files/AjaxProcessor.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../../main/js/topcoder/clients/bridge/management/client_project_lookup.js"></script>
+<script language="JavaScript" type="text/javascript">
+    /**
+     * Builds the JSUnit Stress Test Suite.
+     */
+    function suite() {
+        var stressSuite = new top.jsUnitTestSuite();
+
+        stressSuite.addTestPage("../stresstests/LookupServiceStressTest.html");
+        stressSuite.addTestPage("../stresstests/ClientStatusServiceStressTest.html");
+        stressSuite.addTestPage("../stresstests/ProjectStatusServiceStressTest.html");
+
+        return stressSuite;
+    }
+    </script>
+</head>
+<body>
+<h1>Stress Test Suite</h1>
+</body>
+</html>
