@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.topcoder.service.studio.contest">
+	<class name="ContestStatus" table="contest_status_lu" lazy="true">
+		<comment>Table which describes contest status</comment>
+
+		<id name="contestStatusId" column="contest_status_id"
+			type="long">
+			<generator class="sequence">
+				<param name="sequence">sq_contest_status_lu</param>
+			</generator>
+		</id>
+
+		<property name="description" length="100" not-null="true"
+			column="contest_status_desc" />
+
+		<property name="name" length="100" column="name" />
+
+		<bag name="statuses">
+			<key column="contest_status_id" />
+			<one-to-many
+				class="com.topcoder.service.studio.contest.ContestStatus" />
+		</bag>
+
+	</class>
+</hibernate-mapping>
