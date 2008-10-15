@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE web-app 
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" 
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+    <servlet>
+        <servlet-name>ajaxBridge</servlet-name>
+        <servlet-class>com.topcoder.widgets.bridge.AjaxBridgeServlet</servlet-class>
+		<init-param>
+			<param-name>loggerName</param-name>
+			<param-value>ajaxBridge</param-value>
+		</init-param>
+		<init-param>
+			<param-name>ajaxBridgeConfigFile</param-name>
+			<param-value>ajax_bridge.xml</param-value>
+		</init-param>
+		<init-param>
+			<param-name>objectFactoryNamespace</param-name>
+			<param-value>com.topcoder.objectfactory</param-value>
+		</init-param>
+		<init-param>
+			<param-name>projectServiceKey</param-name>
+			<param-value>projectService</param-value>
+		</init-param>
+		<init-param>
+			<param-name>paymentServiceKey</param-name>
+			<param-value>paymentService</param-value>
+		</init-param>
+		<init-param>
+			<param-name>studioServiceKey</param-name>
+			<param-value>studioService</param-value>
+		</init-param>
+		<init-param>
+			<param-name>fileUploadNamespace</param-name>			
+			<param-value>com.topcoder.fileupload</param-value>
+		</init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ajaxBridge</servlet-name>
+        <url-pattern>/ajaxBridge</url-pattern>
+    </servlet-mapping>
+</web-app>
