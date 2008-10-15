@@ -276,6 +276,9 @@
 
     <target name="clean">
         <delete dir="${builddir}"/>
+        <delete file="${component.war}"/>
+        <delete file="${component.zip}"/>
+        <delete file="${component.jar}"/>
     </target>
 
     <!-- ************************************************************************** -->
