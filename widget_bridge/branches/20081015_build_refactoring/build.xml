@@ -62,6 +62,7 @@
 
     <!-- NAME FOR .JAR FILES -->
     <property name="component.jar" value="${dist_lib}/${component_path}/${distfilename}.jar"/>
+    <property name="component.war" value="${dist_lib}/${component_path}/ajaxbridge.war"/>
     <property name="javadoc.jar" value="javadocs.jar"/>
     <property name="component.tests.jar" value="${dist_lib}/${distfilename}_tests.jar"/>
     <property name="component.dist.jar" value="${build_distdir}/${distfilename}-${component_version}.jar"/>
@@ -261,7 +262,7 @@
         </manifest>
     </target>
 
-    <target name="dist" depends="compile, manifest">
+    <target name="dist" depends="war, manifest">
         <mkdir dir="${dist_lib}/${component_path}"/>
         <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}"/>
     </target>
@@ -292,15 +293,18 @@
 
     <target name="clean">
         <delete dir="${builddir}"/>
+        <delete file="${component.war}"/>
+        <delete file="${component.zip}"/>
+        <delete file="${component.jar}"/>
+
     </target>
     
-    <target name="war" depends="compile">
-        <mkdir dir="${build_distdir}"/>
-      <property name="war.path" value="${build_distdir}"/>  
-      <property name="war.name" value="ajaxbridge.war"/>
-        <war destfile="${war.path}/${war.name}" webxml="conf/WEB-INF/web.xml">
+    <target name="war" depends="compile,compress_javascript">
+        <mkdir dir="${dist_lib}/${component_path}"/>
+        <war destfile="${component.war}" webxml="conf/WEB-INF/web.xml">
             <webinf file="conf/WEB-INF/jboss-web.xml"/>
             <classes dir="${build_classdir}"/>
+<!--
             <classes dir="conf">
                 <include name="com/**" />
             </classes>
@@ -315,13 +319,17 @@
             <lib file="${object_factory_configuration_api_plugin.jar}"/>
             <lib file="${object_formatter.jar}"/>
             <lib file="${prerequisite_service.jar}"/>
+-->
             <fileset dir="demo_war/ajaxbridge.war">
                 <include name="*.jsp" />
+            </fileset>
+            <fileset dir="${builddir}">
+                <include name="js/**/*.js" />
             </fileset>
        </war>
     </target>
     
-    <taskdef classpath="lib/tcs/javascript_compressor.jar" resource="tasks.properties"/>
+    <taskdef classpath="${cronos_libdir}/javascript_compressor/1.0/javascript_compressor.jar" resource="tasks.properties"/>
     <target name="compress_javascript">
         <mkdir dir="${builddir}/js"/>
         <delete file="${builddir}/js/widgetbridge-all.js"/>
