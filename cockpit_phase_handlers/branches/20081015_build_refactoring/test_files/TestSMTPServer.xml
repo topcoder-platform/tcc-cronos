@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <Config name="com.topcoder.smtp.server.test.TestSMTPServer">
+     <Property name="port">
+       <Value>25</Value>
+     </Property>
+     <Property name="commandHandler">
+       <Value>com.topcoder.smtp.server.test.GroupDecorator</Value>
+     </Property>
+  </Config>
+
+  <Config name="com.topcoder.smtp.server.test.GroupDecorator">
+     <Property name="commands">
+       <Value>com.topcoder.smtp.server.test.HeloCommand</Value>
+       <Value>com.topcoder.smtp.server.test.QuitCommand</Value>
+       <Value>com.topcoder.smtp.server.test.MailCommand</Value>
+       <Value>com.topcoder.smtp.server.test.RcptCommand</Value>
+       <Value>com.topcoder.smtp.server.test.DataCommand</Value>
+     </Property>
+  </Config>
+
+
+  <Config name="com.topcoder.smtp.server.test.HeloCommand">
+     <Property name="response250">
+       <Value>250 yeah!</Value>
+     </Property>
+  </Config>
+
+  <Config name="com.topcoder.smtp.server.test.QuitCommand">
+     <Property name="response221">
+       <Value>221 See ya!</Value>
+     </Property>
+  </Config>
+
+
+  <Config name="com.topcoder.smtp.server.test.MailCommand">
+     <Property name="response250">
+       <Value>250 success</Value>
+     </Property>
+     <Property name="response503">
+       <Value>503 Bad state</Value>
+     </Property>
+     <Property name="response553">
+       <Value>553 Address not valid</Value>
+     </Property>
+  </Config>
+
+
+  <Config name="com.topcoder.smtp.server.test.RcptCommand">
+     <Property name="response250">
+       <Value>250 success</Value>
+     </Property>
+     <Property name="response503">
+       <Value>503 Bad state</Value>
+     </Property>
+     <Property name="response553">
+       <Value>553 Address not valid</Value>
+     </Property>
+  </Config>
+
+
+  <Config name="com.topcoder.smtp.server.test.DataCommand">
+     <Property name="response250">
+       <Value>250 success</Value>
+     </Property>
+     <Property name="response354">
+       <Value>354 Good - bring it on!</Value>
+     </Property>
+     <Property name="response553">
+       <Value>503 Bad State</Value>
+     </Property>
+  </Config>
+
+</CMConfig>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+  <Config name="com.topcoder.util.pool.ObjectPool"> 
+  <Property name="decrement_count">
+    <Value>5</Value>
+  </Property>
+  <Property name="description">
+    <Value>My ultra-cool object pool!</Value>
+  </Property>
+  <Property name="min_volume">
+    <Value>5</Value>
+  </Property>
+  <Property name="increment_count">
+    <Value>5</Value>
+  </Property>
+  <Property name="max_volume">
+    <Value>30</Value>
+  </Property>
+  <Property name="name">
+    <Value>MyObjectPool</Value>
+  </Property>
+  <Property name="objectClass">
+    <Value>com.mypackage.objects.MyObject</Value>
+  </Property>
+  <Property name="stagnant_period">
+    <Value>1000</Value>
+  </Property>
+  <Property name="startup_volume">
+    <Value>2</Value>
+  </Property>
+  <Property name="num_constructor_params">
+    <Value>2</Value>
+  </Property>
+  <Property name="param1">
+    <Value>username</Value>
+  </Property>
+  <Property name="param2">
+    <Value>password</Value>
+  </Property>
+  </Config>
+</CMConfig>

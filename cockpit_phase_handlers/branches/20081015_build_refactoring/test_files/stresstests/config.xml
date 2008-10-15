@@ -1,0 +1,247 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<!-- TestSMTPServer configure file-->
+	<Config name="com.topcoder.smtp.server.test.TestSMTPServer">
+		<Property name="port">
+			<Value>25</Value>
+		</Property>
+		<Property name="commandHandler">
+			<Value>com.topcoder.smtp.server.test.GroupDecorator</Value>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.smtp.server.test.GroupDecorator">
+		<Property name="commands">
+			<Value>com.topcoder.smtp.server.test.HeloCommand</Value>
+			<Value>com.topcoder.smtp.server.test.QuitCommand</Value>
+			<Value>com.topcoder.smtp.server.test.MailCommand</Value>
+			<Value>com.topcoder.smtp.server.test.RcptCommand</Value>
+			<Value>com.topcoder.smtp.server.test.DataCommand</Value>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.smtp.server.test.HeloCommand">
+		<Property name="response250">
+			<Value>250 yeah!</Value>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.smtp.server.test.QuitCommand">
+		<Property name="response221">
+			<Value>221 See ya!</Value>
+		</Property>
+	</Config>
+
+
+	<Config name="com.topcoder.smtp.server.test.MailCommand">
+		<Property name="response250">
+			<Value>250 success</Value>
+		</Property>
+		<Property name="response503">
+			<Value>503 Bad state</Value>
+		</Property>
+		<Property name="response553">
+			<Value>553 Address not valid</Value>
+		</Property>
+	</Config>
+
+
+	<Config name="com.topcoder.smtp.server.test.RcptCommand">
+		<Property name="response250">
+			<Value>250 success</Value>
+		</Property>
+		<Property name="response503">
+			<Value>503 Bad state</Value>
+		</Property>
+		<Property name="response553">
+			<Value>553 Address not valid</Value>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.smtp.server.test.DataCommand">
+		<Property name="response250">
+			<Value>250 success</Value>
+		</Property>
+		<Property name="response354">
+			<Value>354 Good - bring it on!</Value>
+		</Property>
+		<Property name="response553">
+			<Value>503 Bad State</Value>
+		</Property>
+	</Config>
+
+	<!-- Phases configure file for this component-->
+	<Config name="com.topcoder.clientcockpit.phases">
+
+        <Property name="bean_name">
+            <Value>beanName</Value>
+        </Property>
+
+		<Property name="use_cache">
+            <Value>true</Value>
+        </Property>
+
+        <Property name="send_start_phase_email">
+            <Value>true</Value>
+        </Property>
+
+        <Property name="start_email_template_name">
+            <Value>start_email_template_name</Value>
+        </Property>
+        <Property name="start_email_subject">
+            <Value>startEmailSubject</Value>
+        </Property>
+        <Property name="start_email_from_address">
+            <Value>address@yahoo.com</Value>
+        </Property>
+
+        <Property name="send_end_phase_email">
+            <Value>true</Value>
+        </Property>
+
+        <Property name="end_email_template_name">
+            <Value>end_email_template_name</Value>
+        </Property>
+        <Property name="end_email_subject">
+            <Value>endEmailSubject</Value>
+        </Property>
+        <Property name="end_email_from_address">
+            <Value>address@yahoo.com</Value>
+        </Property>
+
+        <Property name="send_eight_hours_phase_email">
+            <Value>true</Value>
+        </Property>
+
+        <Property name="eight_hours_email_template_name">
+            <Value>eight_hours_email_template_name</Value>
+        </Property>
+        <Property name="eight_hours_email_subject">
+            <Value>eightHoursReminderEmailSubject</Value>
+        </Property>
+        <Property name="eight_hours_email_from_address">
+            <Value>address@yahoo.com</Value>
+        </Property>
+
+        <Property name="send_one_hour_phase_email">
+            <Value>true</Value>
+        </Property>
+
+        <Property name="one_hour_email_template_name">
+            <Value>one_hour_email_template_name</Value>
+        </Property>
+        <Property name="one_hour_email_subject">
+            <Value>oneHourReminderEmailSubject</Value>
+        </Property>
+        <Property name="one_hour_email_from_address">
+            <Value>address@yahoo.com</Value>
+        </Property>
+
+        <Property name="specification_factory_namespace">
+            <Value>com.topcoder.clientcockpit.phases</Value>
+        </Property>
+    </Config>
+
+	<!-- ObjectPool configure file for this component-->
+	<Config name="com.topcoder.util.pool.ObjectPool">
+		<Property name="decrement_count">
+			<Value>5</Value>
+		</Property>
+		<Property name="description">
+			<Value>My ultra-cool object pool!</Value>
+		</Property>
+		<Property name="min_volume">
+			<Value>5</Value>
+		</Property>
+		<Property name="increment_count">
+			<Value>5</Value>
+		</Property>
+		<Property name="max_volume">
+			<Value>30</Value>
+		</Property>
+		<Property name="name">
+			<Value>MyObjectPool</Value>
+		</Property>
+		<Property name="objectClass">
+			<Value>com.mypackage.objects.MyObject</Value>
+		</Property>
+		<Property name="stagnant_period">
+			<Value>1000</Value>
+		</Property>
+		<Property name="startup_volume">
+			<Value>2</Value>
+		</Property>
+		<Property name="num_constructor_params">
+			<Value>2</Value>
+		</Property>
+		<Property name="param1">
+			<Value>username</Value>
+		</Property>
+		<Property name="param2">
+			<Value>password</Value>
+		</Property>
+	</Config>
+
+	<!--  object factory configure file for this component-->
+	<Config name="com.topcoder.clientcockpit.objectfactory">
+		<Property name="messageGeneratorKey">
+			<Property name="type">
+				<Value>com.topcoder.clientcockpit.phases.messagegenerators.DefaultEmailMessageGenerator</Value>
+			</Property>
+        </Property>
+	</Config>
+
+	<Config name="objectfactory_wrong_type">
+		<Property name="messageGeneratorKey">
+			<Property name="type">
+			    <!-- Wrong type -->
+				<Value>java.lang.String</Value>
+			</Property>
+        </Property>
+	</Config>
+
+	<!--  EmailEngine configure file for this component-->
+	<Config name="com.topcoder.message.email.EmailEngine">
+		<Property name="smtp_host_addr">
+			<Value>127.0.0.1</Value>
+		</Property>
+		<Property name="smtp_host_port">
+			<Value>25</Value>
+		</Property>
+		<Property name="username">
+			<Value></Value>
+		</Property>
+		<Property name="password">
+			<Value></Value>
+		</Property>
+    </Config>
+
+	<!--  EmailEngine configure file for this component-->
+	<Config name="com.topcoder.util.file">
+		<Property name="sources">
+			<Value>startTemplateSource</Value>
+			<Value>endTemplateSource</Value>
+			<Value>eightHoursTemplateSource</Value>
+			<Value>oneHourTemplateSource</Value>
+		</Property>
+
+		<!-- the identifier of the template source to be used as default -->
+		<Property name="default_source">
+			<Value>startTemplateSource</Value>
+		</Property>
+
+		<!--  MockTemplateSourceForStress configure file for this component-->
+		<Property name="startTemplateSource_class">
+			<Value>com.topcoder.clientcockpit.phases.stresstests.MockTemplateSourceForStress</Value>
+		</Property>
+		<Property name="endTemplateSource_class">
+			<Value>com.topcoder.clientcockpit.phases.stresstests.MockTemplateSourceForStress</Value>
+		</Property>
+		<Property name="eightHoursTemplateSource_class">
+			<Value>com.topcoder.clientcockpit.phases.stresstests.MockTemplateSourceForStress</Value>
+		</Property>
+		<Property name="oneHourTemplateSource_class">
+			<Value>com.topcoder.clientcockpit.phases.stresstests.MockTemplateSourceForStress</Value>
+		</Property>
+	</Config>
+</CMConfig>
