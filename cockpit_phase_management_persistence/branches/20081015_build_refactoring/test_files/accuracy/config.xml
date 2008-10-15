@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <Config name="CockpitPhaseManager.AccuracyReview.NoJNDI">
+			<Property name="objectFactoryNamespace">
+					<Value>CockpitPhaseManager.AccuracyReview.objectFactory</Value>
+			</Property>
+
+			<Property name="logName">
+					<Value>AccuracyReviewLog</Value>
+			</Property>
+			
+			<Property name="contestManagerKey">
+					<Value>myContestManager</Value>
+			</Property>
+
+			<Property name="cachedContestStatusesKey">
+					<Value>myCache</Value>
+			</Property>
+
+			<!-- Defien the phase handlers -->
+			<Property name="handlers">
+					<Property name="1,draft,start">
+							<Value>draftPhaseHandler</Value>
+					</Property>
+					<!-- It's the same handler also for end -->
+					<Property name="1,draft,end">
+							<Value>draftPhaseHandler</Value>
+					</Property>
+					<Property name="2,scheduled,start">
+							<Value>scheduledPhaseHandler</Value>
+					</Property>
+					<Property name="1,scheduled,start">
+							<Value>scheduledPhaseHandler</Value>
+					</Property>
+					<Property name="1,scheduled,end">
+							<Value>scheduledPhaseHandler</Value>
+					</Property>
+			<!-- ...and so on, define all the cockpit phase handlers 		-->
+			</Property>
+			
+			<Property name="draftPhaseTypeName">
+					<Value>Newdraft</Value>
+			</Property>
+			<Property name="abandonedPhaseTypeName">
+					<Value>NewAbandoned</Value>
+			</Property>
+			<Property name="extendedPhaseTypeName">
+					<Value>NewExtended</Value>
+			</Property>
+ </Config>
+ 
+<!-- Object Specification Configuration-->
+	<Config name="CockpitPhaseManager.AccuracyReview.objectFactory">
+			<Property name="myCache">
+      		<Property name="type">
+        		<Value>com.topcoder.util.cache.SimpleCache</Value>
+      		</Property>
+    	</Property>
+    	
+    	<Property name="myContestManager">
+      		<Property name="type">
+        		<Value>com.topcoder.management.phase.clientcockpit.accuracytests.MockContestManager</Value>
+      		</Property>
+    	</Property>
+    	
+			<Property name="draftPhaseHandler">
+      		<Property name="type">
+        		<Value>com.topcoder.management.phase.clientcockpit.accuracytests.MockPhaseHandler</Value>
+      		</Property>
+    	</Property>
+    	
+			<Property name="scheduledPhaseHandler">
+      		<Property name="type">
+        		<Value>com.topcoder.management.phase.clientcockpit.accuracytests.MockPhaseHandler</Value>
+      		</Property>
+    	</Property>
+  </Config>
+
+
+<Config name="com.topcoder.util.memoryusage.MemoryUsage">
+        <Property name="analyzers_namespace">
+            <Value>com.topcoder.util.memoryusage.MemoryUsage.ObjectFactory</Value>
+        </Property>
+        <Property name="analyzers">
+            <Value>Sun12Analyzer</Value>
+            <Value>Sun13Analyzer</Value>
+            <Value>Sun14Analyzer</Value>
+            <Value>Sun15Analyzer</Value>
+            <Value>IBM14Analyzer</Value>
+            <Value>IBM15Analyzer</Value>
+        </Property>
+        <Property name="fallback_analyzer">
+            <Value>Sun15Analyzer</Value>
+        </Property>
+        <Property name="default_fallback_analyzer_flag">
+            <Value>false</Value>
+        </Property>
+    </Config>
+    
+    <Config name="com.topcoder.util.memoryusage.MemoryUsage.ObjectFactory">
+        <Property name="Sun12Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.Sun12Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="Sun13Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.Sun13Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="Sun14Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.Sun14Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="Sun15Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.Sun15Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="IBM14Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.IBM14Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="IBM15Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.IBM15Analyzer</Value>
+            </Property>
+        </Property>
+    </Config>
+</CMConfig>

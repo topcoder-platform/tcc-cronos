@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Cockpit Phase Management Persistence
+component.distfilename=cockpit_phase_management_persistence
+component.package=com.topcoder.management.phase.clientcockpit
+component.packagedir=com/topcoder/management/phase/clientcockpit
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

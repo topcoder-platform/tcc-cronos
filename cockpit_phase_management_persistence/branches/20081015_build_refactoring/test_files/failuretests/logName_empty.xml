@@ -1,0 +1,38 @@
+<CMConfig>
+	<Config name="com.topcoder.management.phase.clientcockpit.CockpitPhaseManager">
+
+		<!-- Required -->
+
+		<Property name="objectFactoryNamespace">
+			<Value>objectfactory</Value>
+		</Property>
+
+		<Property name="jndiUtilNamespace">
+			<Value>com.topcoder.naming.jndiutility</Value>
+		</Property>
+
+		<Property name="contestManagerKey">
+			<Value>Contest_Manager_Key</Value>
+		</Property>
+		
+		<!-- This property contains several properties which define the handlers mapping -->
+		<Property name="handlers">
+		    <Property name="1,draft,start">
+			    <Value>draftPhaseHandlerKey</Value>
+			</Property>
+		</Property>
+		
+		<Property name="logName">
+			<Value>   </Value>
+		</Property>
+
+		<Property name="cachedContestStatusesKey">
+			<Value>config_cachedContestStatusesKey</Value>
+		</Property>
+
+		<Property name="actionRequiredPhaseTypeName">
+			<Value>config_actionRequiredPhaseTypeName</Value>
+		</Property>
+
+	</Config>
+</CMConfig>
