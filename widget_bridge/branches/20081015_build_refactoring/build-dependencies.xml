@@ -30,8 +30,8 @@
     <!--3rd party dependencies-->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
     
-    <property name="spring.jar" value="${ext_libdir}/spring/2.5.1/spring.jar"/>
-    <property name="spring-test.jar" value="${ext_libdir}/spring/2.5.1/spring-test.jar"/>
+    <property name="spring.jar" value="${ext_libdir}/spring/2.5.4/spring.jar"/>
+    <property name="spring-test.jar" value="${ext_libdir}/spring/2.5.4/spring-test.jar"/>
 
     <path id="jboss.classpath">
       <fileset dir="${jboss_lib}">
