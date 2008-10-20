@@ -1,23 +1,18 @@
 <project name="Dependency Import" default="dist" basedir=".">
-    <!-- property file defining the component's dependencies -->
-
     <!-- Properties used in compile_targets ANT target for JDK version x -->
-    <property name="component.target" value="1.x"/>
-    <property name="component.bootclasspath" value="${java_1_x_bootclasspath}"/>
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
 
     <!-- TCS dependencies -->
-    <property name="base_exception.jar" value="lib/base_exception.jar"/>
-    <property name="configuration_api.jar" value="lib/configuration_api.jar"/>
-    <property name="object_factory_configuration_api_plugin.jar" value="lib/object_factory_configuration_api_plugin.jar"/>
-    <property name="predictor_framework.jar" value="lib/predictor_framework.jar"/>
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    <property name="predictor_framework.jar" value="${tcs_libdir}/predictor_framework/1.0.0/predictor_framework.jar"/>
 
     <!-- 3rd party dependencies -->
-    <property name="junit.jar" value="lib/junit.jar"/>
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
 
+    <!-- Path elements required in the master buiild file (they MUST be defined even if empty). -->
     <path id="component.tcs-dependencies">
         <pathelement location="${base_exception.jar}"/>
-        <pathelement location="${configuration_api.jar}"/>
-        <pathelement location="${object_factory_configuration_api_plugin.jar}"/>
         <pathelement location="${predictor_framework.jar}"/>
     </path>
 
