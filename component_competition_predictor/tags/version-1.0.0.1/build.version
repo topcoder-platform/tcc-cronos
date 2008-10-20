@@ -1,0 +1,8 @@
+component.name=Component Competition Predictor
+component.distfilename=component_competition_predictor
+component.package=com.topcoder.predictor.impl.componentcompetition
+component.packagedir=com/topcoder/predictor/impl/componentcompetition
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1
