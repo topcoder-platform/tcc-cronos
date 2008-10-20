@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 
 /**
  * <p> This class represents the "persistence_fault" element in WSDL. It's contained in the related exception-message
@@ -21,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {"persistenceMessage"})
 @XmlRootElement(name = "persistence_fault")
-public class PersistenceFault {
+public class PersistenceFault implements Serializable {
     /**
      * <p> Represents the persistence message</p>
      */

@@ -503,6 +503,16 @@ public interface StudioService {
      * @since TCCC-353
      */
     public void setSubmissionPlacement(long submissionId,int placement)throws PersistenceException;
+
+    /**
+     * Set submission placement.
+     * 
+     * @param submissionId Submission Id.
+     * @param placement placement
+     * @throws PersistenceException if any error occurs when setting placement.
+     * @since TCCC-353
+     */
+    public void setSubmissionPlacement(long submissionId, long prizeId) throws PersistenceException;
     
     /**
      * Marks submission for purchase.

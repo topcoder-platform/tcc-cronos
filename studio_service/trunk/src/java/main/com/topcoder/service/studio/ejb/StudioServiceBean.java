@@ -17,6 +17,9 @@ import com.topcoder.forum.service.EntityType;
 import com.topcoder.forum.service.JiveForumManagementException;
 import com.topcoder.forum.service.ejb.JiveForumServiceRemote;
 */
+
+import com.topcoder.web.ejb.pacts.BasePayment;
+
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
 import com.topcoder.service.studio.ChangeHistoryData;
@@ -73,6 +76,7 @@ import com.topcoder.web.ejb.forums.ForumsHome;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.ejb.CreateException;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -81,6 +85,11 @@ import javax.naming.InitialContext;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.naming.NamingException;
+
+import java.rmi.RemoteException;
+
+import java.sql.SQLException;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -223,7 +232,7 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * <p>
-     * Represents the active status 
+     * Represents the active status
      * </p>
      */
     @Resource(name = "activeStatusId")
@@ -507,6 +516,22 @@ public class StudioServiceBean implements StudioService {
     private long contestPropertyContestAdministrationFeeId;
 
     /**
+     * Represents the id for the Contest property "Contest Administration Fee ".
+     *
+	 * @since BUGR-456
+     */
+    @Resource(name = "autoPaymentsEnabled")
+    private boolean autoPaymentsEnabled = false;
+
+    /**
+     * Represents the location of the PACTS services for submission auto-paymetns
+     *
+	 * @since BUGR-456
+     */
+    @Resource(name = "pactsServiceLocation")
+    private String pactsServiceLocation = "jnp://localhost:1099";
+
+    /**
      * Represents the jive forum version text.
      *
      * @since TCCC-287
@@ -655,8 +680,8 @@ public class StudioServiceBean implements StudioService {
             long forumId = createForum(contest.getName(), userId);
             contest.setForumId(forumId);
             */
-            
-/*            
+
+/*
             // FIX [TCCC-146]
             for (PrizeData prizeData : contestData.getPrizes()) {
                 Prize prize = new Prize();
@@ -697,19 +722,19 @@ public class StudioServiceBean implements StudioService {
 			p.put(Context.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
 			p.put(Context.URL_PKG_PREFIXES,"org.jboss.naming:org.jnp.interfaces");
 			p.put(Context.PROVIDER_URL, forumBeanProviderUrl);
-			
+
 			Context c = new InitialContext(p);
 			ForumsHome forumsHome = (ForumsHome) c.lookup(ForumsHome.EJB_REF_NAME);
-			
+
 			Forums forums = forumsHome.create();
 
 			long forumId = forums.createStudioForum(name);
 			if (forumId < 0) throw new Exception("createStudioForum returned -1");
-			
+
 			log.log(Level.DEBUG, "Created forum " + forumId + " for " + name);
-			
+
 			forums.createForumWatch(userId, forumId);
-			
+
 			return forumId;
 		} catch (Exception e) {
 			log.log(Level.ERROR, "*** Could not create a forum for " + name);
@@ -717,8 +742,8 @@ public class StudioServiceBean implements StudioService {
 			return -1;
 		}
 	}
-    	
-    
+
+
     /**
      * <p>
      * Get contest by id
@@ -915,7 +940,7 @@ public class StudioServiceBean implements StudioService {
         if (sessionContext.isCallerInRole(USER_ROLE)) {
             // [TCCC-385]
             if (c.getStatus() == null
-                    || (c.getStatus().getContestStatusId() != draftStatusId 
+                    || (c.getStatus().getContestStatusId() != draftStatusId
                     		&& c.getStatus().getContestStatusId() != unactiveStatusId
                     		&& c.getStatus().getContestStatusId() != activeStatusId
                     		&& c.getStatus().getContestStatusId() != scheduledStatusId)) {
@@ -1389,9 +1414,9 @@ public class StudioServiceBean implements StudioService {
             media.add(medium);
         }
         result.setMedia(media);
-        
+
         Set<Prize> prizes = new HashSet<Prize>();
-        PrizeType type = contestManager.getPrizeType(contestPrizeTypeId);        
+        PrizeType type = contestManager.getPrizeType(contestPrizeTypeId);
         for (PrizeData prizeData : data.getPrizes()) {
             Prize prize = new Prize();
             prize.setAmount(prizeData.getAmount());
@@ -1407,7 +1432,7 @@ public class StudioServiceBean implements StudioService {
         }
         result.setPrizes(prizes);
 
-        
+
         return result;
     }
 
@@ -1434,7 +1459,7 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * This method converts Contest object into ContestData object.
-     * 
+     *
      * @param contest
      *            Contest instance to convert
      * @return converted ContestDate object
@@ -1447,7 +1472,7 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * This method converts Contest object into ContestData object.
-     * 
+     *
      * @param contest
      *            Contest instance to convert
      * @param Load forum info or not.
@@ -1622,7 +1647,7 @@ public class StudioServiceBean implements StudioService {
 
         contestData.setMedia(mediums);
 
-        // TCCC-457        
+        // TCCC-457
         Long forumId = contest.getForumId();
         if (forumId != null) {
             contestData.setForumId(forumId);
@@ -1638,7 +1663,7 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * This method converts Contest object into ContestData object.
-     * 
+     *
      * @param contest
      *            Contest instance to convert
      * @param Load forum info or not.
@@ -1741,7 +1766,7 @@ public class StudioServiceBean implements StudioService {
         }
         List<MediumData> mediums = new ArrayList<MediumData>();
         contestData.setMedia(mediums);
-        // TCCC-457       
+        // TCCC-457
         Long forumId = contest.getForumId();
         if (forumId != null) {
             contestData.setForumId(forumId);
@@ -1758,7 +1783,7 @@ public class StudioServiceBean implements StudioService {
      * Converts Document object into UploadedDocument instance. Simply sets
      * basic attributes and retrieves document data from contestManager. As
      * required by designer, errors are suppressed.
-     * 
+     *
      * @param from
      *            Document to convert
      * @param setDocumentContent
@@ -1809,7 +1834,7 @@ public class StudioServiceBean implements StudioService {
     /**
      * Converts list of Contest objects into list of ContestData objects,
      * calling convertContest repeatly.
-     * 
+     *
      * @param contests
      *            list of contests to convert
      * @return converted list of contests
@@ -1828,7 +1853,7 @@ public class StudioServiceBean implements StudioService {
     /**
      * Converts standard java Date object into XMLGregorianCalendar instance.
      * Returns null if parameter is null.
-     * 
+     *
      * @param date
      *            Date object to convert
      * @return converted calendar instance
@@ -2399,7 +2424,7 @@ public class StudioServiceBean implements StudioService {
                 	contest.setForumPostCount(0);
                 }
             }
-            
+
             logExit("getAllContests", result);
             return result;
         } catch (ContestManagementException e) {
@@ -3092,18 +3117,116 @@ public class StudioServiceBean implements StudioService {
      */
     public void setSubmissionPlacement(long submissionId, int placement) throws PersistenceException {
         logEnter("setSubmissionPlacement", submissionId, placement);
+        checkParameter("submissionId", submissionId);
+
+        Prize prizeToAdd = new Prize();
+        prizeToAdd.setAmount(0d);
+        prizeToAdd.setPlace(placement);
+
+        setSubmissionPlacement(submissionId, prizeToAdd);
+    }
+
+
+
+    /**
+     * Set submission placement.
+     *
+     * @param submissionId
+     *            Submission Id.
+     * @param prizeId
+     *            prize id.
+     * @throws PersistenceException
+     *             if any error occurs when setting placement.
+     * @since BUGR-455
+     */
+    public void setSubmissionPlacement(long submissionId, long prizeId) throws PersistenceException {
+        logEnter("setSubmissionPlacement", submissionId, prizeId);
+        checkParameter("submissionId", submissionId);
+        checkParameter("prizeId", prizeId);
+
         try {
+            Prize prize = submissionManager.getPrize(prizeId);
+            Submission submission = submissionManager.getSubmission(submissionId);
+            if (prize == null) {
+				String message="Prize not found. prize id: " + prizeId;
+                logDebug(message);
+                logExit("setSubmissionPlacement");
+                throw new PersistenceException(message,message);
+            }
+            if (submission == null) {
+				String message = "submission not found. submission id: " + submissionId;
+                logDebug(message);
+                logExit("setSubmissionPlacement");
+                throw new PersistenceException(message,message);
+            }
+            if (!prize.getContests().isEmpty()) {
+                Long contestIdAssociatedToPrize = prize.getContests().toArray(new Contest[] {})[0]
+                        .getContestId();
+                Long contestIdAssociatedToSubmission = submission.getContest().getContestId();
+                if (!contestIdAssociatedToSubmission.equals(contestIdAssociatedToPrize)) {
+                    logDebug("prize is not associated to the same contest as the submission");
+                    logExit("setSubmissionPlacement");
+                    return;
+                }
+            }
+
+            // If the prize is already associated to another submission, a
+            // PersistenceException must be thrown.
+            for (Submission s : prize.getSubmissions()) {
+                if (submissionId != s.getSubmissionId()) {
+                    logDebug(MessageFormat
+                            .format(
+                                    "Prize has been associated to another submission. prize id: {0}, another submission id: {1}",
+                                    prizeId, s.getSubmissionId()));
+                    logExit("setSubmissionPlacement");
+                    return;
+                }
+            }
+
+            setSubmissionPlacement(submissionId, prize);
+        } catch (SubmissionManagementException e) {
+            handlePersistenceError("SubmissionManagement reports error.", e);
+        }
+    }
+
+
+    /**
+     * Set submission placement.
+     *
+     * @param submissionId submission id.
+     * @param prize prize.
+     * @throws PersistenceException if any error occurs when setting placement.
+     */
+    protected void setSubmissionPlacement(long submissionId, Prize prize) throws PersistenceException {
+        // Need to create new prize when prizeId is null.
+        Long prizeId = prize.getPrizeId();
+        try {
+            if (prizeId == null) {
+                PrizeType prizeType = contestManager.getPrizeType(this.contestPrizeTypeId);
+                prize.setType(prizeType);
+            }
 
             Submission submission = submissionManager.getSubmission(submissionId);
-            // if the submission has a prize associated
+            if (submission == null) {
+				String message= "submission not found. submission id: " + submissionId;
+                logDebug(message);
+                logExit("setSubmissionPlacement");
+                throw new PersistenceException(message,message);
+            }
+
+            // If the submission is already associated to a prize, a
+            // PersistenceException must be thrown.
             Set<Prize> prizes = submission.getPrizes();
             if (prizes.size() > 0) {
-                Prize prize = prizes.toArray(new Prize[] {})[0];
+                Prize prizeToCheck = prizes.toArray(new Prize[] {})[0];
                 // if the placement is the same, return (no need to do anything,
                 // since the placement is already set)
-                if (prize.getPlace() != null && prize.getPlace().equals(placement)) {
-                    logDebug("Same placement found in submission. placement: " + placement);
-
+                if (prizeToCheck.getPlace() != null && prizeToCheck.getPlace().equals(prize.getPlace())) {
+                    logDebug("Same placement found in submission. placement: " + prize.getPlace());
+                    logExit("setSubmissionPlacement");
+                    return;
+                } else if (prizeId != null && prizeToCheck.getPrizeId().equals(prizeId)) {
+                    logDebug("Same prize found in submission. prize id: " + prizeId);
                     logExit("setSubmissionPlacement");
                     return;
                 } else {
@@ -3121,20 +3244,21 @@ public class StudioServiceBean implements StudioService {
             // TCCC-425
             ContestResult cr = new ContestResult();
             cr.setContest(contest);
-            cr.setPlaced(placement);
+            cr.setPlaced(prize.getPlace());
             cr.setSubmission(submission);
 
             // TCCC-484
             contestManager.createContestResult(cr);
 
-            for (Prize prize : contestPrizes) {
-                if (prize.getPlace() != null && prize.getPlace().equals(placement)) {
-                    logDebug("Same placement found in contest. placement: " + placement + ", contest id:"
+            for (Prize prizeToAdd : contestPrizes) {
+                if (prizeToAdd.getPlace() != null && prizeToAdd.getPlace().equals(prize.getPlace())) {
+                    logDebug("Same placement found in contest. placement: " + prize.getPlace() + ", contest id:"
                             + contest.getContestId());
 
                     // Associate with submission.
-                    submissionManager.addPrizeToSubmission(submissionId, prize.getPrizeId());
+                    submissionManager.addPrizeToSubmission(submissionId, prizeToAdd.getPrizeId());
 
+					addPayment(submission,prize);
                     logExit("setSubmissionPlacement");
                     return;
                 }
@@ -3142,18 +3266,16 @@ public class StudioServiceBean implements StudioService {
 
             // if the contest doesn't have a prize for the placement:
             // create the prize with amount=0 and associate it with the contest.
-            Prize prize = new Prize();
-            prize.setAmount(0d);
-            prize.setPlace(placement);
-            PrizeType prizeType = contestManager.getPrizeType(this.contestPrizeTypeId);
-            prize.setType(prizeType);
-            prize = contestManager.createPrize(prize);
+            if (prizeId == null) {
+                prize = contestManager.createPrize(prize);
+            }
 
-            Long prizeId = prize.getPrizeId();
-            contestManager.addPrizeToContest(contestId, prizeId);
+            contestManager.addPrizeToContest(contestId, prize.getPrizeId());
 
             // associate the submission with the prize.
-            submissionManager.addPrizeToSubmission(submissionId, prizeId);
+            submissionManager.addPrizeToSubmission(submissionId, prize.getPrizeId());
+
+			addPayment(submission,prize);
 
             logExit("setSubmissionPlacement");
             return;
@@ -3163,6 +3285,8 @@ public class StudioServiceBean implements StudioService {
             handlePersistenceError("ContestManagement reports error.", e);
         }
     }
+
+
 
     /**
      * Marks submission for purchase.
@@ -3204,10 +3328,10 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * Add a change history entity.
-     * 
+     *
      * @param history
      *            Change history entity to be added.
-     * 
+     *
      * @throws PersistenceException
      *             if any other error occurs.
      */
@@ -3228,7 +3352,7 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * Returns change history entity list.
-     * 
+     *
      * @param contestId
      *            contest id to search for.
      * @return Change history entities match the contest id.
@@ -3255,10 +3379,10 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * Returns latest change history entity list.
-     * 
+     *
      * @param contestId
      *            contest id to search for.
-     * 
+     *
      * @return Latest change history entities match the contest id and
      *         transaction id.
      * @throws PersistenceException
@@ -3337,7 +3461,7 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * Delete contest.
-     * 
+     *
      * @param contestId
      *            contest id to delete.
      * @throws PersistenceException
@@ -3400,7 +3524,7 @@ public class StudioServiceBean implements StudioService {
                 	contest.setForumPostCount(0);
                 }
             }
-            
+
             logExit("getAllContestHeaders", result);
             return result;
         } catch (ContestManagementException e) {
@@ -3408,5 +3532,55 @@ public class StudioServiceBean implements StudioService {
         }
 
         return null;
-    }    
+    }
+
+	/**
+	 * Add payment.
+	 *
+	 * @param submission
+	 *            Submission.
+	 * @param prize
+	 *            prize.
+	 * @throws PersistenceException
+	 *             if any error occurs when adding payment.
+	 * @since BUGR-456
+	 */
+	protected void addPayment(Submission submission, Prize prize) throws PersistenceException {
+		logEnter("addPayment");
+		checkParameter("submission", submission);
+		checkParameter("prize", prize);
+
+		if (autoPaymentsEnabled) {
+			PactsServicesLocator.setProviderUrl(pactsServiceLocation);
+
+			try{
+				BasePayment payment = BasePayment.createPayment(
+					com.topcoder.web.ejb.pacts.Constants.TC_STUDIO_PAYMENT,
+					submission.getSubmitterId(),
+					prize.getAmount(),
+					prize.getContests().toArray(new Contest[]{})[0].getContestId(),
+					prize.getPlace());
+
+				PactsServicesLocator.getService().addPayment(payment);
+
+				submission.setPaid(true);
+				submissionManager.updateSubmission(submission);
+
+				logExit("addPayment");
+			} catch (SubmissionManagementException e) {
+				handlePersistenceError("SubmissionManager reports error while updateSubmission.", e);
+			} catch (RemoteException e) {
+				handlePersistenceError("pactsClientServices reports error while addPayment.", e);
+			} catch (NamingException e) {
+				handlePersistenceError("pactsClientServices reports error while addPayment.", e);
+			} catch (CreateException e) {
+				handlePersistenceError("pactsClientServices reports error while addPayment.", e);
+			} catch (SQLException e) {
+				handlePersistenceError("pactsClientServices reports error while addPayment.", e);
+			}
+		}
+
+
+	}
+
 }

@@ -244,6 +244,17 @@ Please &lt;a href="http://tcstudioblogs.com/?page_id=31"&gt;read this page&lt;/a
                 <env-entry-type>java.lang.String</env-entry-type>
                 <env-entry-value>jnp://63.118.154.182:1099</env-entry-value>
             </env-entry> 
+            <env-entry>
+                <env-entry-name>autoPaymentsEnabled</env-entry-name>
+                <env-entry-type>java.lang.Boolean</env-entry-type>
+                <env-entry-value>false</env-entry-value>
+            </env-entry> 
+            <env-entry>
+                <env-entry-name>pactsServiceLocation</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>63.118.154.181:1099</env-entry-value>
+            </env-entry> 
+
             <persistence-context-ref>
                 <persistence-context-ref-name>persistence/contest_submission</persistence-context-ref-name>
                 <persistence-unit-name>contest_submission</persistence-unit-name>                     
