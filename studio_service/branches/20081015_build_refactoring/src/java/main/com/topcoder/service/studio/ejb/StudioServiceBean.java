@@ -223,7 +223,7 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * <p>
-     * Represents the active status 
+     * Represents the active status
      * </p>
      */
     @Resource(name = "activeStatusId")
@@ -655,8 +655,8 @@ public class StudioServiceBean implements StudioService {
             long forumId = createForum(contest.getName(), userId);
             contest.setForumId(forumId);
             */
-            
-/*            
+
+/*
             // FIX [TCCC-146]
             for (PrizeData prizeData : contestData.getPrizes()) {
                 Prize prize = new Prize();
@@ -692,33 +692,33 @@ public class StudioServiceBean implements StudioService {
     }
 
     private long createForum(String name, long userId) {
-		try {
-			Properties p = new Properties();
-			p.put(Context.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
-			p.put(Context.URL_PKG_PREFIXES,"org.jboss.naming:org.jnp.interfaces");
-			p.put(Context.PROVIDER_URL, forumBeanProviderUrl);
-			
-			Context c = new InitialContext(p);
-			ForumsHome forumsHome = (ForumsHome) c.lookup(ForumsHome.EJB_REF_NAME);
-			
-			Forums forums = forumsHome.create();
+        try {
+            Properties p = new Properties();
+            p.put(Context.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
+            p.put(Context.URL_PKG_PREFIXES,"org.jboss.naming:org.jnp.interfaces");
+            p.put(Context.PROVIDER_URL, forumBeanProviderUrl);
 
-			long forumId = forums.createStudioForum(name);
-			if (forumId < 0) throw new Exception("createStudioForum returned -1");
-			
-			log.log(Level.DEBUG, "Created forum " + forumId + " for " + name);
-			
-			forums.createForumWatch(userId, forumId);
-			
-			return forumId;
-		} catch (Exception e) {
-			log.log(Level.ERROR, "*** Could not create a forum for " + name);
-			logError(e);
-			return -1;
-		}
-	}
-    	
-    
+            Context c = new InitialContext(p);
+            ForumsHome forumsHome = (ForumsHome) c.lookup(ForumsHome.EJB_REF_NAME);
+
+            Forums forums = forumsHome.create();
+
+            long forumId = forums.createStudioForum(name);
+            if (forumId < 0) throw new Exception("createStudioForum returned -1");
+
+            log.log(Level.DEBUG, "Created forum " + forumId + " for " + name);
+
+            forums.createForumWatch(userId, forumId);
+
+            return forumId;
+        } catch (Exception e) {
+            log.log(Level.ERROR, "*** Could not create a forum for " + name);
+            logError(e);
+            return -1;
+        }
+    }
+
+
     /**
      * <p>
      * Get contest by id
@@ -915,10 +915,10 @@ public class StudioServiceBean implements StudioService {
         if (sessionContext.isCallerInRole(USER_ROLE)) {
             // [TCCC-385]
             if (c.getStatus() == null
-                    || (c.getStatus().getContestStatusId() != draftStatusId 
-                    		&& c.getStatus().getContestStatusId() != unactiveStatusId
-                    		&& c.getStatus().getContestStatusId() != activeStatusId
-                    		&& c.getStatus().getContestStatusId() != scheduledStatusId)) {
+                    || (c.getStatus().getContestStatusId() != draftStatusId
+                            && c.getStatus().getContestStatusId() != unactiveStatusId
+                            && c.getStatus().getContestStatusId() != activeStatusId
+                            && c.getStatus().getContestStatusId() != scheduledStatusId)) {
                 handleAuthorizationError("contest must be in draft status or unactive status.");
             }
         }
@@ -1389,9 +1389,9 @@ public class StudioServiceBean implements StudioService {
             media.add(medium);
         }
         result.setMedia(media);
-        
+
         Set<Prize> prizes = new HashSet<Prize>();
-        PrizeType type = contestManager.getPrizeType(contestPrizeTypeId);        
+        PrizeType type = contestManager.getPrizeType(contestPrizeTypeId);
         for (PrizeData prizeData : data.getPrizes()) {
             Prize prize = new Prize();
             prize.setAmount(prizeData.getAmount());
@@ -1407,7 +1407,7 @@ public class StudioServiceBean implements StudioService {
         }
         result.setPrizes(prizes);
 
-        
+
         return result;
     }
 
@@ -1434,7 +1434,7 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * This method converts Contest object into ContestData object.
-     * 
+     *
      * @param contest
      *            Contest instance to convert
      * @return converted ContestDate object
@@ -1447,7 +1447,7 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * This method converts Contest object into ContestData object.
-     * 
+     *
      * @param contest
      *            Contest instance to convert
      * @param Load forum info or not.
@@ -1622,7 +1622,7 @@ public class StudioServiceBean implements StudioService {
 
         contestData.setMedia(mediums);
 
-        // TCCC-457        
+        // TCCC-457
         Long forumId = contest.getForumId();
         if (forumId != null) {
             contestData.setForumId(forumId);
@@ -1638,7 +1638,7 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * This method converts Contest object into ContestData object.
-     * 
+     *
      * @param contest
      *            Contest instance to convert
      * @param Load forum info or not.
@@ -1741,7 +1741,7 @@ public class StudioServiceBean implements StudioService {
         }
         List<MediumData> mediums = new ArrayList<MediumData>();
         contestData.setMedia(mediums);
-        // TCCC-457       
+        // TCCC-457
         Long forumId = contest.getForumId();
         if (forumId != null) {
             contestData.setForumId(forumId);
@@ -1758,7 +1758,7 @@ public class StudioServiceBean implements StudioService {
      * Converts Document object into UploadedDocument instance. Simply sets
      * basic attributes and retrieves document data from contestManager. As
      * required by designer, errors are suppressed.
-     * 
+     *
      * @param from
      *            Document to convert
      * @param setDocumentContent
@@ -1809,7 +1809,7 @@ public class StudioServiceBean implements StudioService {
     /**
      * Converts list of Contest objects into list of ContestData objects,
      * calling convertContest repeatly.
-     * 
+     *
      * @param contests
      *            list of contests to convert
      * @return converted list of contests
@@ -1828,7 +1828,7 @@ public class StudioServiceBean implements StudioService {
     /**
      * Converts standard java Date object into XMLGregorianCalendar instance.
      * Returns null if parameter is null.
-     * 
+     *
      * @param date
      *            Date object to convert
      * @return converted calendar instance
@@ -2396,10 +2396,10 @@ public class StudioServiceBean implements StudioService {
                 if (count != null) {
                     contest.setForumPostCount(count.intValue());
                 } else {
-                	contest.setForumPostCount(0);
+                    contest.setForumPostCount(0);
                 }
             }
-            
+
             logExit("getAllContests", result);
             return result;
         } catch (ContestManagementException e) {
@@ -3204,10 +3204,10 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * Add a change history entity.
-     * 
+     *
      * @param history
      *            Change history entity to be added.
-     * 
+     *
      * @throws PersistenceException
      *             if any other error occurs.
      */
@@ -3228,7 +3228,7 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * Returns change history entity list.
-     * 
+     *
      * @param contestId
      *            contest id to search for.
      * @return Change history entities match the contest id.
@@ -3255,10 +3255,10 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * Returns latest change history entity list.
-     * 
+     *
      * @param contestId
      *            contest id to search for.
-     * 
+     *
      * @return Latest change history entities match the contest id and
      *         transaction id.
      * @throws PersistenceException
@@ -3337,7 +3337,7 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * Delete contest.
-     * 
+     *
      * @param contestId
      *            contest id to delete.
      * @throws PersistenceException
@@ -3397,10 +3397,10 @@ public class StudioServiceBean implements StudioService {
                 if (count != null) {
                     contest.setForumPostCount(count.intValue());
                 } else {
-                	contest.setForumPostCount(0);
+                    contest.setForumPostCount(0);
                 }
             }
-            
+
             logExit("getAllContestHeaders", result);
             return result;
         } catch (ContestManagementException e) {
@@ -3408,5 +3408,5 @@ public class StudioServiceBean implements StudioService {
         }
 
         return null;
-    }    
+    }
 }
