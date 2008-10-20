@@ -46,7 +46,9 @@
 		<property name="rank" />
 
 		<property name="submissionDate" column="submission_date"
-			not-null="true" />
+			not-null="false" />
+
+		<property name="paid" not-null="false" />
 
 		<property name="height" />
 

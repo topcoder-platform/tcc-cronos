@@ -128,6 +128,11 @@ public class Submission implements Serializable {
     private Date submissionDate;
 
     /**
+     * Represents the submission payment status.
+     */
+    private Boolean paid;
+
+    /**
      * Default constructor.
      */
     public Submission() {
@@ -493,6 +498,25 @@ public class Submission implements Serializable {
      */
     public void setModifyDate(Date modifyDate) {
         this.modifyDate = modifyDate;
+    }
+
+    /**
+     * Returns the modifyDate.
+     *
+     * @return the modifyDate.
+     */
+    public Boolean getPaid() {
+        return paid;
+    }
+
+    /**
+     * Updates the modifyDate with the specified value.
+     *
+     * @param modifyDate
+     *            the modifyDate to set.
+     */
+    public void setPaid(Boolean paid) {
+        this.paid = paid;
     }
 
     /**
