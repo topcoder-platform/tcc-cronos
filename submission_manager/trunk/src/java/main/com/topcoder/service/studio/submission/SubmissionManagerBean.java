@@ -403,6 +403,7 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
         entity.setSystemFileName(submission.getSystemFileName());
         entity.setType(submission.getType());
         entity.setWidth(submission.getWidth());
+        entity.setPaid(submission.getPaid());
 
         updateEntity(entityManager, entity, methodName);
         logExit(methodName);
@@ -1521,12 +1522,12 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
                         + " AND s.status.description != :description", parameters, methodName);
         return submissions;
     }
-    
+
 
     /**
      * Clones submission.
      * Fix [TCCC-137]
-     * 
+     *
      * @param submission
      *            Submission to be cloned.
      * @return cloned submission.
@@ -1552,10 +1553,11 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
         ret.setSystemFileName(submission.getSystemFileName());
         ret.setType(submission.getType());
         ret.setWidth(submission.getWidth());
+		ret.setPaid(submission.getPaid());
 
         return ret;
     }
-    
+
 
     /**
      * <p>
@@ -1576,6 +1578,6 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
         PaymentStatus ret = getEntity(getEntityManager(methodName), PaymentStatus.class, paymentStatusId, methodName);
 
         logExit(methodName);
-        return ret;        
+        return ret;
     }
 }
