@@ -128,9 +128,10 @@ public class Submission implements Serializable {
     private Date submissionDate;
 
     /**
-     * Represents the submission payment status.
+     * Represents the submission's payment id. Or null if it doesn't 
+     * have a payment or it's unknown.
      */
-    private Boolean paid;
+    private Long paymentId;
 
     /**
      * Default constructor.
@@ -501,22 +502,22 @@ public class Submission implements Serializable {
     }
 
     /**
-     * Returns the modifyDate.
+     * Returns the paymentId.
      *
-     * @return the modifyDate.
+     * @return the paymentId.
      */
-    public Boolean getPaid() {
-        return paid;
+    public Long getPaymentId() {
+        return paymentId;
     }
 
     /**
-     * Updates the modifyDate with the specified value.
+     * Updates the payment ID with the specified value.
      *
-     * @param modifyDate
-     *            the modifyDate to set.
+     * @param paymentId
+     *            the paymentId to set.
      */
-    public void setPaid(Boolean paid) {
-        this.paid = paid;
+    public void setPaymentId(Long paymentId) {
+        this.paymentId = paymentId;
     }
 
     /**

@@ -48,7 +48,7 @@
 		<property name="submissionDate" column="submission_date"
 			not-null="false" />
 
-		<property name="paid" not-null="false" />
+		<property name="paymentId" not-null="false" column="payment_id"/>
 
 		<property name="height" />
 
