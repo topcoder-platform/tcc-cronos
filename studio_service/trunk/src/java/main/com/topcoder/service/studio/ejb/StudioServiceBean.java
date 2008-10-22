@@ -43,6 +43,7 @@ import com.topcoder.service.studio.UploadedDocument;
 import com.topcoder.service.studio.UserNotAuthorizedException;
 import com.topcoder.service.studio.contest.ContestChangeHistory;
 import com.topcoder.service.studio.contest.Contest;
+import com.topcoder.service.studio.contest.ContestChannel;
 import com.topcoder.service.studio.contest.ContestConfig;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.ContestManagerLocal;
@@ -3241,14 +3242,17 @@ public class StudioServiceBean implements StudioService {
             Long contestId = contest.getContestId();
             List<Prize> contestPrizes = contestManager.getContestPrizes(contestId);
 
-            // TCCC-425
-            ContestResult cr = new ContestResult();
-            cr.setContest(contest);
-            cr.setPlaced(prize.getPlace());
-            cr.setSubmission(submission);
-
-            // TCCC-484
-            contestManager.createContestResult(cr);
+            if (contestManager.findContestResult(submissionId,contestId)==null)
+            {
+		        // TCCC-425
+		        ContestResult cr = new ContestResult();
+		        cr.setContest(contest);
+		        cr.setPlaced(prize.getPlace());
+		        cr.setSubmission(submission);
+		
+		        // TCCC-484
+		        contestManager.createContestResult(cr);
+            }
 
             for (Prize prizeToAdd : contestPrizes) {
                 if (prizeToAdd.getPlace() != null && prizeToAdd.getPlace().equals(prize.getPlace())) {
@@ -3258,7 +3262,12 @@ public class StudioServiceBean implements StudioService {
                     // Associate with submission.
                     submissionManager.addPrizeToSubmission(submissionId, prizeToAdd.getPrizeId());
 
-					addPayment(submission,prize);
+                    // For topCoder direct, payment is done automatically
+                    // STUDIO-217
+                    if ( contest.getContestChannel().getContestChannelId()==2 )
+                    {
+                    	addPayment(submission,prize);
+                    }
                     logExit("setSubmissionPlacement");
                     return;
                 }
@@ -3275,8 +3284,13 @@ public class StudioServiceBean implements StudioService {
             // associate the submission with the prize.
             submissionManager.addPrizeToSubmission(submissionId, prize.getPrizeId());
 
-			addPayment(submission,prize);
-
+            // For topCoder direct, payment is done automatically
+            // STUDIO-217
+            if ( contest.getContestChannel().getContestChannelId()==2 )
+            {
+            	addPayment(submission,prize);
+            }
+            
             logExit("setSubmissionPlacement");
             return;
         } catch (SubmissionManagementException e) {
@@ -3549,6 +3563,7 @@ public class StudioServiceBean implements StudioService {
 		logEnter("addPayment");
 		checkParameter("submission", submission);
 		checkParameter("prize", prize);
+		
 
 		if (autoPaymentsEnabled) {
 			PactsServicesLocator.setProviderUrl(pactsServiceLocation);
@@ -3561,9 +3576,9 @@ public class StudioServiceBean implements StudioService {
 					prize.getContests().toArray(new Contest[]{})[0].getContestId(),
 					prize.getPlace());
 
-				PactsServicesLocator.getService().addPayment(payment);
+				payment = PactsServicesLocator.getService().addPayment(payment);
 
-				submission.setPaid(true);
+				submission.setPaymentId(payment.getId());
 				submissionManager.updateSubmission(submission);
 
 				logExit("addPayment");
@@ -3579,8 +3594,36 @@ public class StudioServiceBean implements StudioService {
 				handlePersistenceError("pactsClientServices reports error while addPayment.", e);
 			}
 		}
-
-
 	}
+
+    /**
+     * Send payments to PACTS for all unpaid submussions with a prize already assigned
+     * This service is not atomic. If it fails, you'll have to check what payments where
+     * actually done trough the submussion.paid flag.
+     * @param contestId
+     *            Contest Id.
+     * @throws PersistenceException
+     *             if any error occurs when processing a payment.
+     * @since STUDIO-217
+     */
+    public void processMissingPayments(long contestId) throws PersistenceException {
+        logEnter("processMissingPayments", contestId);
+        checkParameter("contestId", contestId);
+
+        try {
+        	
+        	List<Submission> submissionsForContest = submissionManager.getSubmissionsForContest(contestId, true);
+        	
+        	for (Submission submission : submissionsForContest) {
+				if (submission.getPaymentId()==null && !submission.getPrizes().isEmpty()) {
+					Prize[] prizes = new Prize[10];
+					Prize unpaidPrize = submission.getPrizes().toArray(prizes)[0];
+					addPayment(submission, unpaidPrize);
+				}
+			}        	
+        } catch (SubmissionManagementException e) {
+            handlePersistenceError("SubmissionManagement reports error.", e);
+        }
+    }
 
 }

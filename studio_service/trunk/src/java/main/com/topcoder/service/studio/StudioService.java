@@ -8,9 +8,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.service.studio.contest.ContestChangeHistory;
 import com.topcoder.service.studio.contest.ContestManagementException;
-import com.topcoder.service.studio.contest.ContestPayment;
 import com.topcoder.service.studio.contest.EntityAlreadyExistsException;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
 
@@ -579,4 +577,17 @@ public interface StudioService {
      *             if any error occurs when getting contest.
      */
     public List<ContestData> getAllContestHeaders() throws PersistenceException;
+    
+    /**
+     * Send payments to PACTS for all unpaid submussions with a prize already assigned
+     * This service is not atomic. If it fails, you'll have to check what payments where
+     * actually done trough the submussion.paid flag.
+     * @param contestId
+     *            Contest Id.
+     * @throws PersistenceException
+     *             if any error occurs when processing a payment.
+     * @since STUDIO-217
+     */
+    public void processMissingPayments(long contestId) throws PersistenceException;
+
 }
