@@ -10,7 +10,7 @@
     <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
     <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
     <property name="class_associations.jar" value="${tcs_libdir}/class_associations/1.0/class_associations.jar"/>
-    <property name="project_service.jar" value="test_files/lib/project_service.jar"/>
+    <property name="project_service.jar" value="${cockpit_tcs_libdir}/project_service/x.x.x/project_service.jar"/>
 
     <property name="search_builder.jar" value="${tcs_libdir}/search_builder/1.3.2/search_builder.jar"/>
 
@@ -19,13 +19,13 @@
     <!--
     <property name="search_builder.jar" value="${testfiles}/lib/search_builder.jar"/>
     -->
-    <property name="contest_and_submission_entities.jar" value="${cronos_libdir}/contest_and_submission_entities/1.0.1/contest_and_submission_entities.jar"/>
+    <property name="contest_and_submission_entities.jar" value="${cronos_libdir}/contest_and_submission_entities/1.1.0/contest_and_submission_entities.jar"/>
     <!--3rd party dependencies-->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
     <property name="jdbc.jar" value="${ext_libdir}/jdbc/informix/1.4.1/ifxjdbc.jar"/>    
     
-    <property name="jboss.dir" value="c:/dev/jboss-4.2.2.GA"/>
-    <property name="jboss.config.name" value="default"/>    
+    <property name="jboss_home" value="${ext_libdir}/jboss/as/4.2.2.ga"/>
+    <property name="jboss.config.name" value="all"/>    
     <property name="jbossall-client.jar" value="${jboss_home}/client/jbossall-client.jar"/>
     <property name="jboss.libdir" value="${jboss_home}/server/${jboss.config.name}/lib"/>
     <property name="commons-collections.jar" value="${jboss.libdir}/commons-collections.jar"/>
