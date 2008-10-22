@@ -403,7 +403,7 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
         entity.setSystemFileName(submission.getSystemFileName());
         entity.setType(submission.getType());
         entity.setWidth(submission.getWidth());
-        entity.setPaid(submission.getPaid());
+        entity.setPaymentId(submission.getPaymentId());
 
         updateEntity(entityManager, entity, methodName);
         logExit(methodName);
@@ -1553,7 +1553,7 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
         ret.setSystemFileName(submission.getSystemFileName());
         ret.setType(submission.getType());
         ret.setWidth(submission.getWidth());
-		ret.setPaid(submission.getPaid());
+		ret.setPaymentId(submission.getPaymentId());
 
         return ret;
     }
