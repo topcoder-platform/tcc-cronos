@@ -1,0 +1,369 @@
+/*
+ * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ */
+package com.topcoder.service.studio.submission;
+
+import java.util.List;
+
+/**
+ * <p>
+ * The business interface that defines methods for managing a submission, prize, submission payment, and submission
+ * review. In general, but not always, it has methods to create, update, delete, get, and list these entities, as well
+ * as some methods to perform more important operations. These include getting submissions for a contest or member,
+ * updating a submission status or result, adding or removing a prize from a submission, and getting and deleting
+ * submission reviews for a submission and/or a reviewer.
+ * <p>
+ * <p>
+ * <b>Thread Safety</b>: Implementations should perform actions in a thread-safe manner.
+ * </p>
+ *
+ * @author TCSDESIGNER, TCSDEVELOPER
+ * @version 1.0
+ */
+public interface SubmissionManager {
+    /**
+     * <p>
+     * Gets the submission with the given id.
+     * </p>
+     *
+     * @param submissionId
+     *            The id of the submission to get
+     * @return the submission with the given id, or null if not found
+     * @throws SubmissionManagementException
+     *             If any error occurs during the retrieval
+     */
+    Submission getSubmission(long submissionId) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Gets the submissions for the contest with the given id. Also, the selectFullSubmission flag will determine if the
+     * full submission is returned to the caller.
+     * </p>
+     *
+     * @param contestId
+     *            The id of the contest of the submissions to get
+     * @param selectFullSubmission
+     *            a flag whether the full submission should be returned
+     * @return List of Submission for the contest with the given id, possibly empty if none found.
+     * @throws SubmissionManagementException
+     *             If any error occurs during the retrieval
+     */
+    List<Submission> getSubmissionsForContest(long contestId, boolean selectFullSubmission)
+        throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Gets the submissions for the submitter with the given id.
+     * </p>
+     *
+     * @param userId
+     *            The id of the submitter of the submissions to get
+     * @return list of submissions for the submitter with the given id, never null, possibly empty if none found.
+     * @throws SubmissionManagementException
+     *             If any error occurs during the retrieval
+     */
+    List<Submission> getAllSubmissionsByMember(long userId) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Updates the submission in persistence. Will not allow changes to rank or prizes. It will interpret an empty prize
+     * set as an indication that the prizes should not be changed.
+     * </p>
+     *
+     * @param submission
+     *            The Submission to update
+     * @throws IllegalArgumentException
+     *             If the submission argument is null
+     * @throws EntityNotFoundException
+     *             If the submission does not exist in persistence or is already deleted
+     * @throws SubmissionManagementException
+     *             If any error occurs during the update, or if there is a change in the rank or prize set.
+     */
+    void updateSubmission(Submission submission) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Removes the submission with the given id from persistence.
+     * </p>
+     *
+     * @param submissionId
+     *            The id of the submission to delete
+     * @return true if found and deleted, false if not found or already deleted
+     * @throws SubmissionManagementException
+     *             If any error occurs during the delete
+     */
+    boolean removeSubmission(long submissionId) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Updates the status of the submission with the given id to the status with the given id.
+     * </p>
+     *
+     * @param submissionId
+     *            the id of the status to update the submission to
+     * @param submissionStatusId
+     *            The id of the submission to update
+     * @throws EntityNotFoundException
+     *             If the submission or status does not exist in persistence, or submission already deleted
+     * @throws SubmissionManagementException
+     *             If any error occurs during the update
+     */
+    void updateSubmissionStatus(long submissionId, long submissionStatusId) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Updates the submission result in persistence.
+     * </p>
+     * <p>
+     * Notes, only rank the prizes set will be changed for all submissions of the contest.
+     * </p>
+     *
+     * @param submission
+     *            The Submission whose result is to be updated
+     * @throws IllegalArgumentException
+     *             If the submission argument is null, or its rank is not set.
+     * @throws EntityNotFoundException
+     *             If the submission does not exist in persistence, or submission already deleted
+     * @throws SubmissionManagementException
+     *             If any error occurs during the update
+     */
+    void updateSubmissionResult(Submission submission) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Adds the prize to persistence. It will assign a new id.
+     * </p>
+     *
+     * @param prize
+     *            The Prize to add
+     * @return the added Prize
+     * @throws IllegalArgumentException
+     *             If the prize argument is null
+     * @throws EntityExistsException
+     *             If the prize already exists in persistence
+     * @throws SubmissionManagementException
+     *             If any error occurs during the add
+     */
+    Prize addPrize(Prize prize) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Updates the prize in persistence.
+     * </p>
+     *
+     * @param prize
+     *            The Prize to update
+     * @throws IllegalArgumentException
+     *             If the prize argument is null
+     * @throws EntityNotFoundException
+     *             If the prize does not exist in persistence
+     * @throws SubmissionManagementException
+     *             If any error occurs during the update
+     */
+    void updatePrize(Prize prize) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Removes the prize with the given id from persistence.
+     * </p>
+     *
+     * @param prizeId
+     *            The id of the prize to delete
+     * @return true if found and deleted, false if not found and thus not deleted
+     * @throws SubmissionManagementException
+     *             If any error occurs during the delete
+     */
+    boolean removePrize(long prizeId) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Gets the prize with the given id. Returns null if not found.
+     * </p>
+     *
+     * @param prizeId
+     *            The id of the prize to get
+     * @return Prize with the given id, or null if not found
+     * @throws SubmissionManagementException
+     *             If any error occurs during the retrieval
+     */
+    Prize getPrize(long prizeId) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Adds the prize with the given id to the submission with the given id. Both must currently exist in persistence.
+     * </p>
+     *
+     * @param submissionId
+     *            the id of the submission to add the prize to
+     * @param prizeId
+     *            the id of the prize to add to the submission
+     * @throws IllegalArgumentException
+     *             If the rank of submission is not set, or the rank is not same as the prize's place.
+     * @throws EntityNotFoundException
+     *             If the prize or submission with the given ids does not exist in persistence, or submission already
+     *             deleted
+     * @throws SubmissionManagementException
+     *             If any error occurs during the add
+     */
+    void addPrizeToSubmission(long submissionId, long prizeId) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Removes the prize with the given id from the submission with the given id. Both must currently exist in
+     * persistence. No action is taken if the prize is already not in the submission.
+     * </p>
+     *
+     * @param submissionId
+     *            the id of the submission to remove the prize from
+     * @param prizeId
+     *            the id of the prize to remove from the submission
+     * @return true if prize in submission found and deleted, false if not found
+     * @throws EntityNotFoundException
+     *             If the prize or submission with the given ids does not exist in persistence, or submission already
+     *             deleted
+     * @throws SubmissionManagementException
+     *             If any error occurs during the removal
+     */
+    boolean removePrizeFromSubmission(long submissionId, long prizeId) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Adds the submission payment to persistence. The submission must already exist.
+     * </p>
+     *
+     * @param submissionPayment
+     *            The SubmissionPayment to add
+     * @return the added SubmissionPayment
+     * @throws IllegalArgumentException
+     *             If the submissionPayment argument is null
+     * @throws EntityNotFoundException
+     *             If the submission that this payment is for does not exist in persistence, or has been already deleted
+     * @throws EntityExistsException
+     *             If the submission payment already exists in persistence
+     * @throws SubmissionManagementException
+     *             If any error occurs during the add
+     */
+    SubmissionPayment addSubmissionPayment(SubmissionPayment submissionPayment) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Updates the submission payment in persistence. The submission and its payment must already exist.
+     * </p>
+     *
+     * @param submissionPayment
+     *            The submission payment to update
+     * @throws IllegalArgumentException
+     *             If the submissionPayment argument is null
+     * @throws EntityNotFoundException
+     *             If the submission that this payment is for does not exist in persistence, or has been already deleted
+     * @throws EntityNotFoundException
+     *             If the submission payment does not exist in persistence
+     * @throws SubmissionManagementException
+     *             If any error occurs during the update
+     */
+    void updateSubmissionPayment(SubmissionPayment submissionPayment) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Gets the submission payment with the given id. Returns null if not found.
+     * </p>
+     *
+     * @param submissionId
+     *            The id of the submission payment to get
+     * @return SubmissionPayment with the given id, or null if not found
+     * @throws SubmissionManagementException
+     *             If any error occurs during the retrieval
+     */
+    SubmissionPayment getSubmissionPayment(long submissionId) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Adds the submission review to persistence. It will assign a new id. The submission must already exist.
+     * </p>
+     *
+     * @param submissionReview
+     *            The SubmissionReview to add
+     * @return the added SubmissionReview
+     * @throws IllegalArgumentException
+     *             If the submissionReview argument is null
+     * @throws EntityNotFoundException
+     *             If the submission that this review is for does not exist in persistence, or has been already deleted
+     * @throws EntityExistsException
+     *             If the submission review already exists in persistence
+     * @throws SubmissionManagementException
+     *             If any error occurs during the add
+     */
+    SubmissionReview addSubmissionReview(SubmissionReview submissionReview) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Updates the submission review in persistence. The submission and its review must already exist.
+     * </p>
+     *
+     * @param submissionReview
+     *            The submission review to update
+     * @throws IllegalArgumentException
+     *             If the submissionReview argument is null
+     * @throws EntityNotFoundException
+     *             If the submission that this review is for does not exist in persistence, or has been already deleted
+     * @throws EntityNotFoundException
+     *             If the submission review does not exist in persistence
+     * @throws SubmissionManagementException
+     *             If any error occurs during the update
+     */
+    void updateSubmissionReview(SubmissionReview submissionReview) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Gets the submission review for the submission with the given id. Returns null if not found.
+     * </p>
+     *
+     * @param submissionId
+     *            The id of the submission of the submission review to get
+     * @return The SubmissionReview for the submission and reviewer with the given ids
+     * @throws SubmissionManagementException
+     *             If any error occurs during the retrieval
+     */
+    SubmissionReview getSubmissionReview(long submissionId) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Removes the submission review for the submission with the given id. Returns true if anything was deleted.
+     * </p>
+     *
+     * @param submissionId
+     *            The id of the submission of the submission review to delete
+     * @return true if deletion occurred, false otherwise
+     * @throws SubmissionManagementException
+     *             If any error occurs during the deletion
+     */
+    boolean removeSubmissionReview(long submissionId) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Gets the prizes of the submission with the given id. The submission must currently exist in persistence.
+     * </P>
+     *
+     * @param submissionId
+     *            the id of the submission whose prizes are to be retrieved
+     * @return the retrieved prizes for the given
+     * @throws EntityNotFoundException
+     *             If the submission with the given id does not exist in persistence, or submission already deleted
+     * @throws SubmissionManagementException
+     *             If any error occurs during the retrieval
+     */
+    List<Prize> getSubmissionPrizes(long submissionId) throws SubmissionManagementException;
+
+    /**
+     * <p>
+     * Gets the payment status with the given id. Returns null if not found.
+     * </p>
+     *
+     * @param paymentStatusId
+     *            The id of the payment status to get
+     * @return The PaymentStatus with the given id.
+     * @throws SubmissionManagementException
+     *             If any error occurs during the retrieval
+     */
+    PaymentStatus getPaymentStatus(long paymentStatusId) throws SubmissionManagementException;
+}
