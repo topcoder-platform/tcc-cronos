@@ -8,20 +8,20 @@
     <!-- define TCS dependencies -->
     
     <!-- define 3rd party dependencies -->
-    <property name="jboss.dir" value="${ext_libdir}/jboss-4.2.0.GA/server/default/lib"/>
-    <property name="hibernate3.jar" value="${jboss.dir}/hibernate3.jar"/>
-    <property name="antlr.jar" value="${jboss.dir}/antlr.jar"/>
-    <property name="dom4j.jar" value="${jboss.dir}/dom4j.jar"/>
-    <property name="commons-logging.jar" value="${jboss.dir}/commons-logging.jar"/>
-    <property name="javassist.jar" value="${jboss.dir}/javassist.jar"/>
-    <property name="cglib.jar" value="${jboss.dir}/cglib.jar"/>
-    <property name="commons-collections.jar" value="${jboss.dir}/commons-collections.jar"/>
-    <property name="jboss-common.jar" value="${jboss.dir}/jboss-common.jar"/>
-    <property name="hibernate-annotations.jar" value="${jboss.dir}/hibernate-annotations.jar"/>
-    <property name="ejb3-persistence.jar" value="${jboss.dir}/ejb3-persistence.jar"/>
-    <property name="jboss-j2ee.jar" value="${jboss.dir}/jboss-j2ee.jar"/>
-    <property name="jboss-transaction.jar" value="${jboss.dir}/jboss-transaction.jar"/>    
-    <property name="hibernate-entitymanager.jar" value="${jboss.dir}/hibernate-entitymanager.jar"/> 
+    <property name="jboss_lib" value="${ext_libdir}/jboss-4.2.2.ga/server/all/lib"/>
+    <property name="hibernate3.jar" value="${jboss_lib}/hibernate3.jar"/>
+    <property name="antlr.jar" value="${jboss_lib}/antlr.jar"/>
+    <property name="dom4j.jar" value="${jboss_lib}/dom4j.jar"/>
+    <property name="commons-logging.jar" value="${jboss_lib}/commons-logging.jar"/>
+    <property name="javassist.jar" value="${jboss_lib}/javassist.jar"/>
+    <property name="cglib.jar" value="${jboss_lib}/cglib.jar"/>
+    <property name="commons-collections.jar" value="${jboss_lib}/commons-collections.jar"/>
+    <property name="jboss-common.jar" value="${jboss_lib}/jboss-common.jar"/>
+    <property name="hibernate-annotations.jar" value="${jboss_lib}/hibernate-annotations.jar"/>
+    <property name="ejb3-persistence.jar" value="${jboss_lib}/ejb3-persistence.jar"/>
+    <property name="jboss-j2ee.jar" value="${jboss_lib}/jboss-j2ee.jar"/>
+    <property name="jboss-transaction.jar" value="${jboss_lib}/jboss-transaction.jar"/>    
+    <property name="hibernate-entitymanager.jar" value="${jboss_lib}/hibernate-entitymanager.jar"/> 
     
     <property name="ifxjdbc.jar" value="${ext_libdir}/informix/1.4.1/ifxjdbc.jar"/>
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
