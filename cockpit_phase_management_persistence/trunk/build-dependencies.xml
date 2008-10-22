@@ -8,7 +8,10 @@
     <!-- define TCS dependencies -->
     <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
     <property name="configuration_manager.jar" value="${tcs_libdir}/configuration_manager/2.1.5/configuration_manager.jar"/>
-    <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.0.1/object_factory.jar"/>
+    <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.1.0/object_factory.jar"/>
+    <property name="object_factory_config_manager_plugin.jar"
+     value="${tcs_libdir}/object_factory_config_manager_plugin/1.0.0/object_factory_config_manager_plugin.jar"/>
+
     <property name="project_phases.jar" value="${tcs_libdir}/project_phases/2.0/project_phases.jar"/>   
     <property name="phase_management.jar" value="${tcs_libdir}/phase_management/1.0.4/phase_management.jar"/>
     <property name="jndi_context_utility.jar" value="${tcs_libdir}/jndi_context_utility/2.0/jndi_context_utility.jar"/>
@@ -17,16 +20,43 @@
     <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
     <property name="simple_cache.jar" value="${tcs_libdir}/simple_cache/2.0.2/simple_cache.jar"/>
     <property name="workdays.jar" value="${tcs_libdir}/workdays/1.0.1/workdays.jar"/>
-    <!-- define 3rd party dependencies -->
-    <property name="studio_contest_manager.jar" value="${cronos_libdir}/studio_contest_manager/1.0.0/studio_contest_manager.jar"/>
-    <property name="contest_and_submission_entities.jar" value="${cronos_libdir}/contest_and_submission_entities/1.0.1/contest_and_submission_entities.jar"/>
     
+    <!-- define 3rd party dependencies -->
+    <property name="studio_contest_manager.jar" value="${cronos_libdir}/studio_contest_manager/1.2.0/studio_contest_manager.jar"/>
+    <property name="contest_and_submission_entities.jar" value="${cronos_libdir}/contest_and_submission_entities/1.1.0/contest_and_submission_entities.jar"/>
+    <property name="user_group_manager.jar" value="${cockpit_tcs_libdir}/user_group_manager/1.0.x/user_group_manager.jar"/>
+    <property name="cockpit_authentication_authorization_update.jar" value="${cronos_libdir}/cockpit_authentication_authorization_update/1.0.0/cockpitejb.jar"/>
+    <property name="jboss_home" value="${ext_libdir}/jboss/as/4.2.2.ga"/>
+    <property name="jboss.config.name" value="all"/>
+    <property name="jbossall-client.jar" value="${jboss_home}/client/jbossall-client.jar"/>
+    <property name="jboss.libdir" value="${jboss_home}/server/${jboss.config.name}/lib"/>
+    <property name="commons-collections.jar" value="${jboss.libdir}/commons-collections.jar"/>
+    <property name="commons-logging.jar" value="${jboss.libdir}/commons-logging.jar"/>
+    <property name="hibernate-entitymanager.jar" value="${jboss.libdir}/hibernate-entitymanager.jar"/>
+    <property name="hibernate-annotations.jar" value="${jboss.libdir}/hibernate-annotations.jar"/>
+    <property name="hibernate3.jar" value="${jboss.libdir}/hibernate3.jar"/>
+    <property name="jboss-j2ee.jar" value="${jboss.libdir}/jboss-j2ee.jar"/>
+    <property name="jboss-ejb3x.jar" value="${jboss.libdir}/jboss-ejb3x.jar"/>
+    <property name="jboss-jaxrpc.jar" value="${jboss.libdir}/jboss-jaxrpc.jar"/>
+    <property name="jboss-hibernate.jar" value="${jboss.libdir}/jboss-hibernate.jar"/>
+    <property name="jboss-transaction.jar" value="${jboss.libdir}/jboss-transaction.jar"/>
+    <property name="jbosssx.jar" value="${jboss.libdir}/jboss-jbosssx.jar"/>
+    <property name="antlr.jar" value="${jboss.libdir}/antlr.jar"/>
+    <property name="cglib.jar" value="${jboss.libdir}/cglib.jar"/>
+    <property name="dom4j.jar" value="${jboss.libdir}/dom4j.jar"/>
+    <property name="javassist.jar" value="${jboss.libdir}/javassist.jar"/>
+    <property name="ejb3-persistence.jar" value="${jboss.libdir}/ejb3-persistence.jar"/>
+    <property name="hibernate-commons-annotations.jar" value="${ext_libdir}/hibernate-entitymanager/3.3.2.ga/lib/hibernate-commons-annotations.jar"/>
+
+
+ 
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
         
     <path id="component.tcs-dependencies">
         <pathelement location="${base_exception.jar}"/>
         <pathelement location="${configuration_manager.jar}"/>
         <pathelement location="${object_factory.jar}"/>
+        <pathelement location="${object_factory_config_manager_plugin.jar}"/>
         <pathelement location="${project_phases.jar}"/>        
         <pathelement location="${phase_management.jar}"/>   
         <pathelement location="${jndi_context_utility.jar}"/>   
@@ -35,10 +65,19 @@
         <pathelement location="${typesafe_enum.jar}"/>
         <pathelement location="${simple_cache.jar}"/>
         <pathelement location="${workdays.jar}"/>
-    </path>
-    <path id="component.3rdParty-dependencies">
         <pathelement location="${studio_contest_manager.jar}"/>
         <pathelement location="${contest_and_submission_entities.jar}"/>
+        <pathelement location="${user_group_manager.jar}"/>
+        <pathelement location="${cockpit_authentication_authorization_update.jar}"/>
+    </path>
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${jboss-ejb3x.jar}"/>
+        <pathelement location="${jboss-j2ee.jar}"/>
+        <pathelement location="${ejb3-persistence.jar}"/>
+        <!--pathelement location="${jboss-jaxrpc.jar}"/>
+        <pathelement location="${jboss-hibernate.jar}"/>
+        <pathelement location="${jboss-transaction.jar}"/>
+        <pathelement location="${jbosssx.jar}"/-->
     </path>
     <path id="component.test.3rdParty-dependencies">
         <pathelement location="${junit.jar}"/>
