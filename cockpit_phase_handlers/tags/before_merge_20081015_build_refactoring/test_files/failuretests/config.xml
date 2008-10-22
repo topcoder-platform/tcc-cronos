@@ -1,0 +1,308 @@
+<?xml version="1.0"?>
+<CMConfig>
+        <!-- The default namespace -->
+    <Config name="com.topcoder.clientcockpit.phases">
+        <Property name="use_cache">
+            <Value>true</Value>
+        </Property>
+        <Property name="send_start_phase_email">
+            <Value>true</Value>
+        </Property>
+        <Property name="start_email_template_source">
+            <Value>startTemplateSource</Value>
+        </Property>
+        <Property name="send_end_phase_email">
+            <Value>true</Value>
+        </Property>
+        <Property name="end_email_template_source">
+            <Value>endTemplateSource</Value>
+        </Property>
+        <Property name="send_eight_hours_phase_email">
+            <Value>true</Value>
+        </Property>
+        <Property name="eight_hours_email_template_source">
+            <Value>eightHoursTemplateSource</Value>
+        </Property>
+        <Property name="send_one_hour_phase_email">
+            <Value>true</Value>
+        </Property>
+        <Property name="one_hour_email_template_source">
+            <Value>oneHourTemplateSource</Value>
+        </Property>
+        <Property name="message_generator_key">
+            <Value>messageGeneratorKey</Value>
+        </Property>
+        <!-- See /test_files/ObjectFactory.xml -->
+        <Property name="specification_factory_namespace">
+            <Value>com.topcoder.clientcockpit.objectfactory</Value>
+        </Property>
+        <Property name="bean_name">
+            <Value>beanName</Value>
+        </Property>
+        <Property name="start_email_template_name">
+            <Value>startTemplateName</Value>
+        </Property>
+        <Property name="start_email_subject">
+            <Value>startEmailSubject</Value>
+        </Property>
+        <Property name="start_email_from_address">
+            <Value>address@yahoo.com</Value>
+        </Property>
+        <Property name="end_email_template_name">
+            <Value>endTemplateName</Value>
+        </Property>
+        <Property name="end_email_subject">
+            <Value>endEmailSubject</Value>
+        </Property>
+        <Property name="end_email_from_address">
+            <Value>address@yahoo.com</Value>
+        </Property>
+        <Property name="one_hour_email_template_name">
+            <Value>oneHourTemplateName</Value>
+        </Property>
+        <Property name="one_hour_email_subject">
+            <Value>oneHourEmailSubject</Value>
+        </Property>
+        <Property name="one_hour_email_from_address">
+            <Value>address@yahoo.com</Value>
+        </Property>
+        <Property name="eight_hours_email_template_name">
+            <Value>eightHoursTemplateName</Value>
+        </Property>
+        <Property name="eight_hours_email_subject">
+            <Value>eightHoursEmailSubject</Value>
+        </Property>
+        <Property name="eight_hours_email_from_address">
+            <Value>address@yahoo.com</Value>
+        </Property>
+    </Config>
+        <!-- This is another namespace for phase handler -->
+    <Config name="AnotherNamespaceForPhaseHandler">
+        <!-- The message generator is not configured, the DefaultEmailMessageGenerator will be used -->
+        <!-- 
+        <Property name="message_generator_key">
+            <Value>messageGeneratorKey</Value>
+        </Property>
+
+        <Property name="specification_factory_namespace">
+            <Value>com.topcoder.clientcockpit.objectfactory</Value>
+        </Property>
+         -->
+        <!-- The use_cache property is optional(All boolean properties are optional, and true is used as default) -->
+        <!-- 
+        <Property name="use_cache">
+            <Value>true</Value>
+        </Property>
+        -->
+        <Property name="bean_name">
+            <Value>beanName</Value>
+        </Property>
+        <Property name="send_start_phase_email">
+            <Value>false</Value>
+        </Property>
+        <!-- The template source property is optional -->
+        <!--
+        <Property name="start_email_template_source">
+            <Value>startTemplateSource</Value>
+        </Property>
+        -->
+        <Property name="start_email_template_name">
+            <Value>startTemplateName</Value>
+        </Property>
+        <Property name="start_email_subject">
+            <Value>startEmailSubject</Value>
+        </Property>
+        <Property name="start_email_from_address">
+            <Value>address@yahoo.com</Value>
+        </Property>
+        <Property name="send_end_phase_email">
+            <Value>true</Value>
+        </Property>
+        <Property name="end_email_template_source">
+            <Value>endTemplateSource</Value>
+        </Property>
+        <Property name="end_email_template_name">
+            <Value>endTemplateName</Value>
+        </Property>
+        <Property name="end_email_subject">
+            <Value>endEmailSubject</Value>
+        </Property>
+        <Property name="end_email_from_address">
+            <Value>address@yahoo.com</Value>
+        </Property>
+        <Property name="send_eight_hours_phase_email">
+            <Value>true</Value>
+        </Property>
+        <Property name="eight_hours_email_template_source">
+            <Value>eightHoursTemplateSource</Value>
+        </Property>
+        <Property name="eight_hours_email_template_name">
+            <Value>eightHoursTemplateName</Value>
+        </Property>
+        <Property name="eight_hours_email_subject">
+            <Value>eightHoursEmailSubject</Value>
+        </Property>
+        <Property name="eight_hours_email_from_address">
+            <Value>address@yahoo.com</Value>
+        </Property>
+        <Property name="send_one_hour_phase_email">
+            <Value>true</Value>
+        </Property>
+        <Property name="one_hour_email_template_source">
+            <Value>oneHourTemplateSource</Value>
+        </Property>
+        <Property name="one_hour_email_template_name">
+            <Value>oneHourTemplateName</Value>
+        </Property>
+        <Property name="one_hour_email_subject">
+            <Value>oneHourEmailSubject</Value>
+        </Property>
+        <Property name="one_hour_email_from_address">
+            <Value>address@yahoo.com</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.util.file">
+        <Property name="sources">
+            <Value>startTemplateSource</Value>
+            <Value>endTemplateSource</Value>
+            <Value>eightHoursTemplateSource</Value>
+            <Value>oneHourTemplateSource</Value>
+        </Property>
+        <!-- the identifier of the template source to be used as default -->
+        <Property name="default_source">
+            <Value>startTemplateSource</Value>
+        </Property>
+        <!-- mock template source properties -->
+        <Property name="startTemplateSource_class">
+            <Value>com.topcoder.clientcockpit.phases.failuretests.MockTemplateSource</Value>
+        </Property>
+        <Property name="endTemplateSource_class">
+            <Value>com.topcoder.clientcockpit.phases.failuretests.MockTemplateSource</Value>
+        </Property>
+        <Property name="eightHoursTemplateSource_class">
+            <Value>com.topcoder.clientcockpit.phases.failuretests.MockTemplateSource</Value>
+        </Property>
+        <Property name="oneHourTemplateSource_class">
+            <Value>com.topcoder.clientcockpit.phases.failuretests.MockTemplateSource</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.message.email.EmailEngine">
+        <Property name="smtp_host_addr">
+            <Value>localhost</Value>
+        </Property>
+        <Property name="smtp_host_port">
+            <Value>25</Value>
+        </Property>
+        <Property name="username">
+            <Value></Value>
+        </Property>
+        <Property name="password">
+            <Value></Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.clientcockpit.objectfactory">
+        <Property name="messageGeneratorKey">
+            <Property name="type">
+                <Value>com.topcoder.clientcockpit.phases.messagegenerators.DefaultEmailMessageGenerator</Value>
+            </Property>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.smtp.server.test.TestSMTPServer">
+        <Property name="port">
+            <Value>25</Value>
+        </Property>
+        <Property name="commandHandler">
+            <Value>com.topcoder.smtp.server.test.GroupDecorator</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.smtp.server.test.GroupDecorator">
+        <Property name="commands">
+            <Value>com.topcoder.smtp.server.test.HeloCommand</Value>
+            <Value>com.topcoder.smtp.server.test.QuitCommand</Value>
+            <Value>com.topcoder.smtp.server.test.MailCommand</Value>
+            <Value>com.topcoder.smtp.server.test.RcptCommand</Value>
+            <Value>com.topcoder.smtp.server.test.DataCommand</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.smtp.server.test.HeloCommand">
+        <Property name="response250">
+            <Value>250 yeah!</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.smtp.server.test.QuitCommand">
+        <Property name="response221">
+            <Value>221 See ya!</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.smtp.server.test.MailCommand">
+        <Property name="response250">
+            <Value>250 success</Value>
+        </Property>
+        <Property name="response503">
+            <Value>503 Bad state</Value>
+        </Property>
+        <Property name="response553">
+            <Value>553 Address not valid</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.smtp.server.test.RcptCommand">
+        <Property name="response250">
+            <Value>250 success</Value>
+        </Property>
+        <Property name="response503">
+            <Value>503 Bad state</Value>
+        </Property>
+        <Property name="response553">
+            <Value>553 Address not valid</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.smtp.server.test.DataCommand">
+        <Property name="response250">
+            <Value>250 success</Value>
+        </Property>
+        <Property name="response354">
+            <Value>354 Good - bring it on!</Value>
+        </Property>
+        <Property name="response553">
+            <Value>503 Bad State</Value>
+        </Property>
+    </Config>
+    <Config name="com.topcoder.util.pool.ObjectPool">
+        <Property name="decrement_count">
+            <Value>5</Value>
+        </Property>
+        <Property name="description">
+            <Value>My ultra-cool object pool!</Value>
+        </Property>
+        <Property name="min_volume">
+            <Value>5</Value>
+        </Property>
+        <Property name="increment_count">
+            <Value>5</Value>
+        </Property>
+        <Property name="max_volume">
+            <Value>30</Value>
+        </Property>
+        <Property name="name">
+            <Value>MyObjectPool</Value>
+        </Property>
+        <Property name="objectClass">
+            <Value>com.mypackage.objects.MyObject</Value>
+        </Property>
+        <Property name="stagnant_period">
+            <Value>1000</Value>
+        </Property>
+        <Property name="startup_volume">
+            <Value>2</Value>
+        </Property>
+        <Property name="num_constructor_params">
+            <Value>2</Value>
+        </Property>
+        <Property name="param1">
+            <Value>username</Value>
+        </Property>
+        <Property name="param2">
+            <Value>password</Value>
+        </Property>
+    </Config>
+</CMConfig>
