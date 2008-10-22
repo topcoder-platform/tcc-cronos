@@ -99,7 +99,7 @@
             <env-entry>
                 <env-entry-name>documentBasePath</env-entry-name>
                 <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>/studiofiles/documents/</env-entry-value>
+                <env-entry-value>@build-rep.studio_service.documentBasePath@</env-entry-value>
             </env-entry>
 
             <env-entry>
@@ -242,7 +242,7 @@ Please &lt;a href="http://tcstudioblogs.com/?page_id=31"&gt;read this page&lt;/a
             <env-entry>
                 <env-entry-name>forumBeanProviderUrl</env-entry-name>
                 <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>jnp://63.118.154.182:1099</env-entry-value>
+                <env-entry-value>@build-rep.studio_service.forumBeanProviderUrl@</env-entry-value>
             </env-entry> 
             <env-entry>
                 <env-entry-name>autoPaymentsEnabled</env-entry-name>

@@ -45,6 +45,7 @@
     <property name="javatests" value="${javasrc}/tests"/>
 
     <property name="builddir" value="build"/>
+    <property name="build_conf" value="${builddir}/conf"/>
     <property name="build_classdir" value="${builddir}/classes"/>
     <property name="build_testclassdir" value="${builddir}/testClasses"/>
     <property name="build_targetclassdir" value="${builddir}/targetclasses"/>
@@ -244,9 +245,19 @@
     </target>
 
     <target name="dist" depends="compile, manifest">
+        <property name="build.properties" location="${basedir}/build.properties" />
+        <property name="global_build.properties" location="${build.properties}"/>
+
         <mkdir dir="${dist_lib}/${component_path}"/>
+        <copy todir="${build_conf}">
+            <fileset dir="${basedir}/conf"/>
+            <filterset>
+              <filtersfile file="${build.properties}"/>
+              <filtersfile file="${global_build.properties}"/>
+            </filterset>
+        </copy>
         <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}">
-           <metainf dir="conf/META-INF" includes="**"/>
+           <metainf dir="${build_conf}/META-INF" includes="**"/>
         </jar>
     </target>
 
@@ -275,6 +286,9 @@
 
     <target name="clean">
         <delete dir="${builddir}"/>
+        <delete file="${component.war}"/>
+        <delete file="${component.zip}"/>
+        <delete file="${component.jar}"/>
     </target>
 
     <!-- ************************************************************************** -->
