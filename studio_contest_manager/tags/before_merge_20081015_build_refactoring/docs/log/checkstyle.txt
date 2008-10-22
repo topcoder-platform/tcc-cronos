@@ -1,0 +1,93 @@
+Starting audit...
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\ContestManager.java:74:16: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\ContestManager.java:74:17: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\ContestManager.java:74:24: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\ContestManager.java:410:16: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\ContestManager.java:410:17: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\ContestManager.java:410:30: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\ContestManager.java:421:16: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\ContestManager.java:421:17: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\ContestManager.java:421:31: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\ContestManager.java:432:16: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\ContestManager.java:432:17: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\ContestManager.java:432:31: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\ContestManager.java:513:16: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\ContestManager.java:513:17: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\ContestManager.java:513:22: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1: File length is 2,230 lines (max allowed is 2,000).
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:235:12: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:235:13: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:235:27: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:235:48: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:235:49: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:235:63: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:235:64: '>' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:430:16: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:430:17: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:430:24: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:444:17: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:444:18: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:444:25: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:444:49: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:444:50: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:444:57: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:444:58: '>' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:473:5: Executable statement count is 34 (max allowed is 30).
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:590:30: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:590:31: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:590:31: '?' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:590:32: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:590:32: '?' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:590:42: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:590:43: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:590:43: '?' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:590:44: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:590:44: '?' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1410:89: ')' is preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1457:17: '(' is followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1457:90: ')' is preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1696:16: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1696:17: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1696:30: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1707:17: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1707:18: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1707:31: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1707:55: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1707:56: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1707:69: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1707:70: '>' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1735:16: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1735:17: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1735:31: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1746:17: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1746:18: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1746:32: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1746:56: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1746:57: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1746:71: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1746:72: '>' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1774:16: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1774:17: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1774:31: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1785:17: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1785:18: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1785:32: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1785:56: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1785:57: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1785:71: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:1785:72: '>' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:2047:16: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:2047:17: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:2047:22: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:2066:17: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:2066:18: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:2066:23: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:2066:47: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:2066:48: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:2066:53: '>' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\ContestManagerBean.java:2066:54: '>' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\bean\Helper.java:17: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\documentcontentmanagers\SocketDocumentContentManager.java:93:44: '<' is not preceded with whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\documentcontentmanagers\SocketDocumentContentManager.java:93:45: '<' is not followed by whitespace.
+D:\Topcoder\review\Studio_Contest_Manager_1.0_dev_dist\src\java\main\com\topcoder\service\studio\contest\documentcontentmanagers\SocketDocumentContentManager.java:93:59: '>' is not preceded with whitespace.
+Audit done.
