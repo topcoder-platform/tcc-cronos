@@ -27,6 +27,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.persistence.TransactionRequiredException;
@@ -62,6 +63,7 @@ import com.topcoder.service.studio.submission.ContestResult;
 import com.topcoder.service.studio.submission.PaymentStatus;
 import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.service.studio.submission.PrizeType;
+import com.topcoder.service.studio.submission.Submission;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogManager;
@@ -3339,6 +3341,44 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "There are errors while persisting the entity.");
         } finally {
             logExit("createContestResult()");
+        }
+    }
+
+    
+    
+    
+    /**
+     * <p>
+     * Returns the contest result associated with submissionId, contestId if any.
+     * </p>
+     * 
+     * @param submissionId
+     *            the submission Id
+     * @param contestId
+     * 			  the contest Id
+     * @return the contest result or null.
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs.
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public ContestResult findContestResult(long submissionId, long contestId) throws ContestManagementException
+    {
+        try {
+            logEnter("findContestResult()");
+            
+            EntityManager em = getEntityManager();
+            Query query = em.createQuery("SELECT c from ContestResult c where c.submission.submissionId=" + submissionId + " and c.contest.contestId=" + contestId);
+            return (ContestResult) query.getSingleResult();
+        } catch (NoResultException e) {
+        	return null;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("findContestResult()");
         }
     }
 

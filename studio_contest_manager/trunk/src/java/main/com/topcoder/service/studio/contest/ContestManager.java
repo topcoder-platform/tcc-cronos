@@ -968,6 +968,23 @@ public interface ContestManager {
      */
     public ContestResult createContestResult(ContestResult contestResult) throws ContestManagementException;
     
+    
+    /**
+     * <p>
+     * Returns the contest result associated with submissionId, contestId if any.
+     * </p>
+     * 
+     * @param submissionId
+     *            the submission Id
+     * @param contestId
+     * 			  the contest Id
+     * @return the contest result or null.
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs.
+     */
+    public ContestResult findContestResult(long submissionId, long contestId) throws ContestManagementException;
+    
     /**
      * Add a change history entity.
      * 
