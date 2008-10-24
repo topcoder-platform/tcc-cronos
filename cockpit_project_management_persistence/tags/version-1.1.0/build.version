@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Cockpit Project Management Persistence
+component.distfilename=cockpit_project_management_persistence
+component.package=com.topcoder.management.project.studio
+component.packagedir=com/topcoder/management/project/studio
+component.version.major=1
+component.version.minor=1
+component.version.micro=0
+component.version.build=0
