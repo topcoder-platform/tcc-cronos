@@ -3,22 +3,40 @@
  */
 package com.topcoder.service.studio.ejb;
 
+import java.rmi.RemoteException;
+import java.sql.SQLException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Random;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 import javax.annotation.security.RunAs;
+import javax.ejb.CreateException;
+import javax.ejb.EJB;
+import javax.ejb.SessionContext;
+import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
-/*
-import com.topcoder.forum.service.CategoryConfiguration;
-import com.topcoder.forum.service.CategoryType;
-import com.topcoder.forum.service.EntityType;
-import com.topcoder.forum.service.JiveForumManagementException;
-import com.topcoder.forum.service.ejb.JiveForumServiceRemote;
-*/
-
-import com.topcoder.web.ejb.pacts.BasePayment;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
@@ -41,9 +59,8 @@ import com.topcoder.service.studio.StudioServiceException;
 import com.topcoder.service.studio.SubmissionData;
 import com.topcoder.service.studio.UploadedDocument;
 import com.topcoder.service.studio.UserNotAuthorizedException;
-import com.topcoder.service.studio.contest.ContestChangeHistory;
 import com.topcoder.service.studio.contest.Contest;
-import com.topcoder.service.studio.contest.ContestChannel;
+import com.topcoder.service.studio.contest.ContestChangeHistory;
 import com.topcoder.service.studio.contest.ContestConfig;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.ContestManagerLocal;
@@ -74,36 +91,7 @@ import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogManager;
 import com.topcoder.web.ejb.forums.Forums;
 import com.topcoder.web.ejb.forums.ForumsHome;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.ejb.CreateException;
-import javax.ejb.EJB;
-import javax.ejb.SessionContext;
-import javax.ejb.Stateless;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.naming.NamingException;
-
-import java.rmi.RemoteException;
-
-import java.sql.SQLException;
-
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Random;
-import java.util.Set;
-import java.util.StringTokenizer;
+import com.topcoder.web.ejb.pacts.BasePayment;
 
 /**
  * This is the EJB implementation of the StudioService interface webservice
@@ -3564,6 +3552,10 @@ public class StudioServiceBean implements StudioService {
 		checkParameter("submission", submission);
 		checkParameter("prize", prize);
 		
+		if ( prize.getAmount()==0 ) {
+			log.log(Level.INFO, "Payments with amount of 0 are not sent to PACTS" );
+			logExit("addPayment");
+		}
 
 		if (autoPaymentsEnabled) {
 			PactsServicesLocator.setProviderUrl(pactsServiceLocation);
