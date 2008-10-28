@@ -3565,7 +3565,7 @@ public class StudioServiceBean implements StudioService {
 					com.topcoder.web.ejb.pacts.Constants.TC_STUDIO_PAYMENT,
 					submission.getSubmitterId(),
 					prize.getAmount(),
-					prize.getContests().toArray(new Contest[]{})[0].getContestId(),
+					submission.getContest().getContestId(),
 					prize.getPlace());
 
 				payment = PactsServicesLocator.getService().addPayment(payment);
