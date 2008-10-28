@@ -3555,6 +3555,7 @@ public class StudioServiceBean implements StudioService {
 		if ( prize.getAmount()==0 ) {
 			log.log(Level.INFO, "Payments with amount of 0 are not sent to PACTS" );
 			logExit("addPayment");
+			return;
 		}
 
 		if (autoPaymentsEnabled) {
