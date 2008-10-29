@@ -320,7 +320,7 @@
             <lib file="${object_formatter.jar}"/>
             <lib file="${prerequisite_service.jar}"/>
 -->
-            <fileset dir="demo_war/ajaxbridge.war">
+            <fileset dir="${srcdir}/web">
                 <include name="*.jsp" />
             </fileset>
             <fileset dir="${builddir}">
