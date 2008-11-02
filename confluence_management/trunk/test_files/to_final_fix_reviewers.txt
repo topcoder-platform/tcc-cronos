@@ -1,0 +1,5 @@
+I fix most of problems except below tow
+1 test cases for enum are already writtern in accuracy tests so i don't want to duplicate them
+2 for Page constructor,please note in the constructor may throw IAE propagate from setters, also note the designers allow setter in constructor.
+
+thx.

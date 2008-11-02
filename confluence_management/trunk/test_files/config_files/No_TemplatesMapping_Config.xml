@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.topcoder.confluence.impl.DefaultConfluenceManager">
+		<property name="confluenceUrl">
+			<value>
+				http://confluence.atlassian.com/rpc/soap-axis/confluenceservice-v1
+			</value>
+		</property>
+		<property name="logName">
+			<value>logName</value>
+		</property>
+		<property name="maxRetriesNumber">
+			<value>2</value>
+		</property>
+		<property name="spaceLocationsMapping">
+			<property name="componentDesign">
+				<value>http://www.topcoder.com/wiki/display/docs/Design
+				</value>
+			</property>
+			<property name="componentDevelopment">
+				<value>http://www.topcoder.com/wiki/display/docs/Development
+				</value>
+			</property>
+			<property name="applicationSpecification">
+				<value>http://www.topcoder.com/wiki/display/projects/$CODENAME$
+				</value>
+			</property>
+			<property name="applicationArchitecture">
+				<value>http://www.topcoder.com/wiki/display/docs/Architecture
+				</value>
+			</property>
+			<property name="applicationAssembly">
+				<value>http://www.topcoder.com/wiki/display/docs/Assembly
+				</value>
+			</property>
+			<property name="applicationTesting">
+				<value>http://www.topcoder.com/wiki/display/docs/Testing
+				</value>
+			</property>
+		</property>
+	</Config>
+</CMConfig>
