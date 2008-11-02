@@ -31,7 +31,5 @@ unzip the download file
   3.2 Demo-> CONFLUENCE_URL      the url for the wsdl on your confluence , if not success replace the localhost with your ip
       Demo-> USER_NAME           user name of your account  created above
       Demo-> PASSWORD            password of your account  created above
-
-4 put all the jars in ${your confluence directory}\confluence\WEB-INF\lib into test_reflib
-5 of course note the tc dependency        
+     
 thank you for reviewing

@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Confluence Management
+component.distfilename=confluence_management
+component.package=com.topcoder.confluence
+component.packagedir=com/topcoder/confluence
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

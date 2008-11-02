@@ -3,10 +3,10 @@
 
   <Config name="stress">
 		<property name="username">
-			<value>admin</value>
+			<value>tcsdeveloper</value>
 		</property>
 		<property name="password">
-			<value>123456</value>
+			<value>TCSDEVELOPER</value>
 		</property>
 		<property name="confluence_url">
 		   <value>http://localhost:8080/rpc/soap/confluenceservice-v1</value>
