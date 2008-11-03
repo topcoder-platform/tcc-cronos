@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Config name="CockpitPhaseManagerOF">
+	<Property name="objectFactoryNamespace">
+		<Value>ObjectFactory</Value>
+	</Property>
+	<Property name="contestManagerKey">
+		<Value>ContestManager</Value>
+	</Property>
+	<!-- Define the phase handlers -->
+	<Property name="handlers">
+		<Property name="1,draft,start">
+			<Value>mockPhaseHandler</Value>
+		</Property>
+		<!-- It's the same handler also for end -->
+		<Property name="1,draft,end">
+			<Value>mockPhaseHandler</Value>
+		</Property>
+		<Property name="2,scheduled,start">
+			<Value>mockPhaseHandler</Value>
+		</Property>
+		<!-- ...and so on, define all the cockpit phase handlers
+		-->
+	</Property>
+</Config>
