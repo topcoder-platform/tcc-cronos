@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<CMConfig>
+
+ <!-- <Config name="com.topcoder.widgets.objectfactory"> -->
+  	<Property name="jsonEncoder">
+		<Property name="type">
+			<value>com.topcoder.json.object.io.StandardJSONEncoder</value>
+		</Property>
+	</Property>
+  	<Property name="jsonDecoder">
+		<Property name="type">
+			<value>com.topcoder.json.object.io.StandardJSONDecoder</value>
+		</Property>
+	</Property>
+  	<Property name="projectService">
+		<Property name="type">
+			<value>com.topcoder.widget.bridge.accuracytests.MockProjectService</value>
+		</Property>
+	</Property>
+  	<Property name="paymentService">
+		<Property name="type">
+			<value>com.topcoder.widget.bridge.accuracytests.MockPaymentService</value>
+		</Property>
+	</Property>
+  	<Property name="studioService">
+		<Property name="type">
+			<value>com.topcoder.widget.bridge.accuracytests.MockStudioService</value>
+		</Property>
+	</Property>
+ <!--  </Config> -->
+
+</CMConfig>

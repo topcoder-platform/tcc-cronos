@@ -1,0 +1,9 @@
+#property file defining the component's information
+component.name=Widget Bridge
+component.distfilename=widget_bridge
+component.package=com.topcoder.widgets.bridge
+component.packagedir=com/topcoder/widgets/bridge
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1
