@@ -26,11 +26,11 @@
     </context-param>
     <context-param>
         <param-name>ejbContextUsername</param-name>
-        <param-value>heffan</param-value>
+        <param-value>@build-rep.ejbContextUsername@</param-value>
     </context-param>
     <context-param>
         <param-name>ejbContextPassword</param-name>
-        <param-value>password</param-value>
+        <param-value>@build-rep.ejbContextPassword@</param-value>
     </context-param>
     
     <servlet> 

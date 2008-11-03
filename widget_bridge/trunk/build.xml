@@ -105,7 +105,9 @@
     <property name="cobertura.datafile" value="${testlogdir}/cobertura.ser"/>
     <property name="instrumented.dir" value="${builddir}/instrumented"/>
 
-    <target name="compile">
+    <target name="init" />
+
+    <target name="compile" depends="init">
         <mkdir dir="${build_classdir}"/>
         <javac srcdir="${javamain}" destdir="${build_classdir}" includes="${packagedir}/**" debug="true"
                verbose="${verbose}" includeAntRuntime="no">
@@ -301,7 +303,16 @@
     
     <target name="war" depends="compile,compress_javascript">
         <mkdir dir="${dist_lib}/${component_path}"/>
-        <war destfile="${component.war}" webxml="conf/WEB-INF/web.xml">
+        <property name="build.properties" location="${basedir}/build.properties" />
+        <property name="global_build.properties" location="${build.properties}"/>
+
+        <copy file="conf/WEB-INF/web.xml" tofile="${builddir}/web.xml">
+            <filterset>
+              <filtersfile file="${build.properties}"/>
+              <filtersfile file="${global_build.properties}"/>
+            </filterset>
+        </copy>
+        <war destfile="${component.war}" webxml="${builddir}/web.xml">
             <webinf file="conf/WEB-INF/jboss-web.xml"/>
             <classes dir="${build_classdir}"/>
 <!--
