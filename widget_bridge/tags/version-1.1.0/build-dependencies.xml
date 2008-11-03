@@ -24,7 +24,7 @@
     <property name="project_service.jar" value="${cockpit_tcs_libdir}/project_service/x.x.x/project_service.jar"/>
 
     <!-- Service dependencies -->
-    <property name="studio_service.jar" value="${cronos_libdir}/studio_service/1.0.2/studio_service.jar"/>
+    <property name="studio_service.jar" value="${cronos_libdir}/studio_service/1.2.0/studio_service.jar"/>
     <property name="prerequisite_service.jar" value="${cronos_libdir}/prerequisite_service/1.0.0/prerequisite_service.jar"/>
     
     <!--3rd party dependencies-->
