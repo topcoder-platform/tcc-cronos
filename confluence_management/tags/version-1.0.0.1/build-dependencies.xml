@@ -1,0 +1,53 @@
+<project name="Dependency Import" default="dist" basedir=".">
+	<!-- property file defining the component's dependencies -->
+
+	<!-- Properties used in compile_targets ANT target for JDK version x -->
+	<property name="component.target" value="1.5" />
+	<property name="component.bootclasspath" value="${java_1_5_bootclasspath}" />
+
+	<!-- TCS dependencies -->
+	<property name="base_exception" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar" />
+	<property name="object_factory" value="${tcs_libdir}/object_factory/2.1.2/object_factory.jar" />
+	<property name="configuration_api" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar" />
+	<property name="object_formatter" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar" />
+	<property name="typesafe_enum" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar" />
+	<property name="configuration_persistence" value="${tcs_libdir}/configuration_persistence/1.0.1/configuration_persistence.jar" />
+	<property name="logging_wrapper" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar" />
+	
+	<!-- 3rd party dependencies -->
+	<property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar" />
+	<property name="jaxb-api" value="${ext_libdir}/jboss/4.2.2.ga/client/jaxb-api.jar" />
+	<property name="confluence_home" value="${ext_libdir}/confluence/2.9.2/confluence" />
+	<property name="axis" value="${confluence_home}/WEB-INF/lib/axis-1.2.1.jar" />
+	<property name="axis-jaxrpc" value="${confluence_home}/WEB-INF/lib/axis-jaxrpc-1.2.1.jar" />
+	
+	<property name="confluence_generated.jar" value="${testfiles}/lib/confluence_generated.jar" />
+
+	<path id="component.tcs-dependencies">
+		<pathelement location="${base_exception}" />
+		<pathelement location="${object_factory}" />
+		<pathelement location="${configuration_api}" />
+		<pathelement location="${object_formatter}" />
+		<pathelement location="${typesafe_enum}" />
+		<pathelement location="${configuration_persistence}" />
+		<pathelement location="${logging_wrapper}" />
+
+		<pathelement location="${testfiles}/config_files" />
+		<pathelement location="${testfiles}/stress" />
+	</path>
+
+	<path id="component.3rdParty-dependencies">
+	  <pathelement location="${axis}" />
+		<pathelement location="${axis-jaxrpc}" />
+		<pathelement location="${confluence_generated.jar}" />
+		<pathelement location="${jaxb-api}" />
+	</path>
+
+	<path id="component.test.3rdParty-dependencies">
+		<pathelement location="${junit.jar}" />
+		<fileset dir="${confluence_home}/WEB-INF/lib">
+      <include name="*.jar"/>
+    </fileset>
+	</path>
+
+</project>

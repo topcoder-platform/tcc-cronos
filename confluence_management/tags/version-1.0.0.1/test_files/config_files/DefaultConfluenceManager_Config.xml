@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.topcoder.confluence.impl.DefaultConfluenceManager">
+		<property name="confluenceUrl">
+			<value>http://192.168.0.183:8080/rpc/soap/confluenceservice-v1</value>
+		</property>
+		<property name="logName">
+			<value>logName</value>
+		</property>
+		<property name="maxRetriesNumber">
+			<value>2</value>
+		</property>
+		<property name="spaceLocationsMapping">
+			<property name="componentDesign">
+				<value>http://www.topcoder.com/wiki/display/docs/Design
+				</value>
+			</property>
+			<property name="componentDevelopment">
+				<value>http://www.topcoder.com/wiki/display/docs/Development
+				</value>
+			</property>
+			<property name="applicationSpecification">
+				<value>http://www.topcoder.com/wiki/display/projects/$CODENAME$
+				</value>
+			</property>
+			<property name="applicationArchitecture">
+				<value>http://www.topcoder.com/wiki/display/docs/Architecture
+				</value>
+			</property>
+			<property name="applicationAssembly">
+				<value>http://www.topcoder.com/wiki/display/docs/Assembly
+				</value>
+			</property>
+			<property name="applicationTesting">
+				<value>http://www.topcoder.com/wiki/display/docs/Testing
+				</value>
+			</property>
+		</property>
+		<property name="templatesMapping">
+			<property name="componentBasePage">
+				<value>http://www.topcoder.com/wiki/display/docs/template1
+				</value>
+			</property>
+			<property name="componentVersionPage">
+				<value>http://www.topcoder.com/wiki/display/docs/template2
+				</value>
+			</property>
+			<property name="applicationBasePage">
+				<value>http://www.topcoder.com/wiki/display/docs/template3
+				</value>
+			</property>
+			<property name="applicationVersionPage">
+				<value>http://www.topcoder.com/wiki/display/docs/template4
+				</value>
+			</property>
+		</property>
+	</Config>
+</CMConfig>

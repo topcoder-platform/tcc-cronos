@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.topcoder.confluence.impl.DefaultConfluenceManager">
+		<property name="confluenceUrl">
+			<value>
+				http://confluence.atlassian.com/rpc/soap-axis/confluenceservice-v1
+			</value>
+		</property>
+		<property name="logName">
+			<value>logName</value>
+		</property>
+		<property name="maxRetriesNumber">
+			<value>2</value>
+		</property>
+		<property name="templatesMapping">
+			<property name="componentBasePage">
+				<value>http://www.topcoder.com/wiki/display/docs/template1
+				</value>
+			</property>
+			<property name="componentVersionPage">
+				<value>http://www.topcoder.com/wiki/display/docs/template2
+				</value>
+			</property>
+			<property name="applicationBasePage">
+				<value>http://www.topcoder.com/wiki/display/docs/template3
+				</value>
+			</property>
+			<property name="applicationVersionPage">
+				<value>http://www.topcoder.com/wiki/display/docs/template4
+				</value>
+			</property>
+		</property>
+	</Config>
+</CMConfig>

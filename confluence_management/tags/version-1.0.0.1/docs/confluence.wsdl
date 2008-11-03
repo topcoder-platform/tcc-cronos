@@ -1,0 +1,4655 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name='ConfluenceService'
+	targetNamespace='http://www.atlassian.com/software/confluence/$Proxy84/'
+	xmlns:tns='http://www.atlassian.com/software/confluence/$Proxy84/'
+	xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/'
+	xmlns:soap12='http://schemas.xmlsoap.org/wsdl/soap12/'
+	xmlns:http='http://schemas.xmlsoap.org/wsdl/http/'
+	xmlns:mime='http://schemas.xmlsoap.org/wsdl/mime/'
+	xmlns:xsd='http://www.w3.org/2001/XMLSchema'
+	xmlns:soapenc='http://schemas.xmlsoap.org/soap/encoding/'
+	xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'
+	xmlns:tme='http://www.atlassian.com'
+	xmlns:n11='http://www.atlassian.com/package/com.atlassian.confluence.rpc.soap.beans/'
+	xmlns:n12='http://www.atlassian.com/package/java.util/'
+	xmlns:n13='http://www.atlassian.com/package/com.atlassian.confluence.rpc/'
+	xmlns:n14='http://www.themindelectric.com/2001/schemaArray/'>
+	<wsdl:types>
+		<xsd:schema
+			targetNamespace='http://www.themindelectric.com/2001/schemaArray/'>
+			<xsd:import
+				namespace='http://schemas.xmlsoap.org/soap/encoding/' />
+			<xsd:complexType name='ArrayOfstring'>
+				<xsd:complexContent>
+					<xsd:restriction base='soapenc:Array'>
+						<xsd:attribute ref='soapenc:arrayType'
+							wsdl:arrayType='xsd:string[]' />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+		</xsd:schema>
+		<xsd:schema
+			targetNamespace='http://www.atlassian.com/package/com.atlassian.confluence.rpc.soap.beans/'>
+			<xsd:import
+				namespace='http://www.atlassian.com/package/java.util/' />
+			<xsd:import
+				namespace='http://schemas.xmlsoap.org/soap/encoding/' />
+			<xsd:complexType name='RemoteSearchResult'>
+				<xsd:all>
+					<xsd:element name='type' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='id' type='xsd:long' />
+					<xsd:element name='title' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='url' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='excerpt' nillable='true'
+						type='xsd:string' />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name='ArrayOfRemoteSearchResult'>
+				<xsd:complexContent>
+					<xsd:restriction base='soapenc:Array'>
+						<xsd:attribute ref='soapenc:arrayType'
+							wsdl:arrayType='n11:RemoteSearchResult[]' />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='RemoteSpaceSummary'>
+				<xsd:all>
+					<xsd:element name='key' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='name' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='url' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='type' nillable='true'
+						type='xsd:string' />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name='RemoteSpace'>
+				<xsd:complexContent>
+					<xsd:extension base='n11:RemoteSpaceSummary'>
+						<xsd:all>
+							<xsd:element name='description'
+								nillable='true' type='xsd:string' />
+							<xsd:element name='spaceGroup'
+								nillable='true' type='xsd:string' />
+							<xsd:element name='homePage'
+								type='xsd:long' />
+						</xsd:all>
+					</xsd:extension>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='RemoteComment'>
+				<xsd:all>
+					<xsd:element name='id' type='xsd:long' />
+					<xsd:element name='pageId' type='xsd:long' />
+					<xsd:element name='parentId' type='xsd:long' />
+					<xsd:element name='created' type='xsd:dateTime' />
+					<xsd:element name='modified' type='xsd:dateTime' />
+					<xsd:element name='title' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='url' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='creator' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='content' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='modifier' nillable='true'
+						type='xsd:string' />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name='RemoteServerInfo'>
+				<xsd:all>
+					<xsd:element name='majorVersion' type='xsd:int' />
+					<xsd:element name='minorVersion' type='xsd:int' />
+					<xsd:element name='patchLevel' type='xsd:int' />
+					<xsd:element name='developmentBuild'
+						type='xsd:boolean' />
+					<xsd:element name='buildId' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='baseUrl' nillable='true'
+						type='xsd:string' />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name='AbstractRemotePageSummary'
+				abstract='true'>
+				<xsd:all>
+					<xsd:element name='id' type='xsd:long' />
+					<xsd:element name='space' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='title' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='url' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='permissions' type='xsd:int' />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name='RemotePageSummary'>
+				<xsd:complexContent>
+					<xsd:extension
+						base='n11:AbstractRemotePageSummary'>
+						<xsd:all>
+							<xsd:element name='parentId'
+								type='xsd:long' />
+						</xsd:all>
+					</xsd:extension>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='ArrayOfRemotePageSummary'>
+				<xsd:complexContent>
+					<xsd:restriction base='soapenc:Array'>
+						<xsd:attribute ref='soapenc:arrayType'
+							wsdl:arrayType='n11:RemotePageSummary[]' />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='RemoteUser'>
+				<xsd:all>
+					<xsd:element name='name' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='fullname' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='email' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='url' nillable='true'
+						type='xsd:string' />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name='RemotePage'>
+				<xsd:complexContent>
+					<xsd:extension base='n11:RemotePageSummary'>
+						<xsd:all>
+							<xsd:element name='created'
+								type='xsd:dateTime' />
+							<xsd:element name='modified'
+								type='xsd:dateTime' />
+							<xsd:element name='creator' nillable='true'
+								type='xsd:string' />
+							<xsd:element name='modifier' nillable='true'
+								type='xsd:string' />
+							<xsd:element name='content' nillable='true'
+								type='xsd:string' />
+							<xsd:element name='contentStatus'
+								nillable='true' type='xsd:string' />
+							<xsd:element name='version' type='xsd:int' />
+							<xsd:element name='homePage'
+								type='xsd:boolean' />
+						</xsd:all>
+					</xsd:extension>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='RemoteClusterInformation'>
+				<xsd:all>
+					<xsd:element name='isRunning' type='xsd:boolean' />
+					<xsd:element name='name' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='multicastPort' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='description' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='memberCount' type='xsd:int' />
+					<xsd:element name='multicastAddress' nillable='true'
+						type='xsd:string' />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name='RemoteSpaceGroup'>
+				<xsd:all>
+					<xsd:element name='name' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='key' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='licenseKey' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='creatorName' nillable='true'
+						type='xsd:string' />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name='RemoteAttachment'>
+				<xsd:all>
+					<xsd:element name='id' type='xsd:long' />
+					<xsd:element name='pageId' type='xsd:long' />
+					<xsd:element name='fileSize' type='xsd:long' />
+					<xsd:element name='title' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='fileName' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='contentType' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='creator' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='url' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='comment' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='created' type='xsd:dateTime' />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name='ArrayOfRemoteSpaceSummary'>
+				<xsd:complexContent>
+					<xsd:restriction base='soapenc:Array'>
+						<xsd:attribute ref='soapenc:arrayType'
+							wsdl:arrayType='n11:RemoteSpaceSummary[]' />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='ArrayOfRemoteAttachment'>
+				<xsd:complexContent>
+					<xsd:restriction base='soapenc:Array'>
+						<xsd:attribute ref='soapenc:arrayType'
+							wsdl:arrayType='n11:RemoteAttachment[]' />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='ArrayOfRemoteSpaceGroup'>
+				<xsd:complexContent>
+					<xsd:restriction base='soapenc:Array'>
+						<xsd:attribute ref='soapenc:arrayType'
+							wsdl:arrayType='n11:RemoteSpaceGroup[]' />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='RemoteLabel'>
+				<xsd:all>
+					<xsd:element name='name' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='owner' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='namespace' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='id' type='xsd:long' />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name='ArrayOfRemoteLabel'>
+				<xsd:complexContent>
+					<xsd:restriction base='soapenc:Array'>
+						<xsd:attribute ref='soapenc:arrayType'
+							wsdl:arrayType='n11:RemoteLabel[]' />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='ArrayOfRemoteSpace'>
+				<xsd:complexContent>
+					<xsd:restriction base='soapenc:Array'>
+						<xsd:attribute ref='soapenc:arrayType'
+							wsdl:arrayType='n11:RemoteSpace[]' />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='ArrayOfRemoteComment'>
+				<xsd:complexContent>
+					<xsd:restriction base='soapenc:Array'>
+						<xsd:attribute ref='soapenc:arrayType'
+							wsdl:arrayType='n11:RemoteComment[]' />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='RemoteContentPermission'>
+				<xsd:all>
+					<xsd:element name='type' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='userName' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='groupName' nillable='true'
+						type='xsd:string' />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name='ArrayOfRemoteContentPermission'>
+				<xsd:complexContent>
+					<xsd:restriction base='soapenc:Array'>
+						<xsd:attribute ref='soapenc:arrayType'
+							wsdl:arrayType='n11:RemoteContentPermission[]' />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='RemoteContentPermissionSet'>
+				<xsd:all>
+					<xsd:element name='type' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='contentPermissions'
+						nillable='true' type='n11:ArrayOfRemoteContentPermission' />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name='ArrayOfRemoteContentPermissionSet'>
+				<xsd:complexContent>
+					<xsd:restriction base='soapenc:Array'>
+						<xsd:attribute ref='soapenc:arrayType'
+							wsdl:arrayType='n11:RemoteContentPermissionSet[]' />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='RemotePageHistory'>
+				<xsd:all>
+					<xsd:element name='id' type='xsd:long' />
+					<xsd:element name='version' type='xsd:int' />
+					<xsd:element name='modifier' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='modified' type='xsd:dateTime' />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name='ArrayOfRemotePageHistory'>
+				<xsd:complexContent>
+					<xsd:restriction base='soapenc:Array'>
+						<xsd:attribute ref='soapenc:arrayType'
+							wsdl:arrayType='n11:RemotePageHistory[]' />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='RemoteUserInformation'>
+				<xsd:all>
+					<xsd:element name='username' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='content' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='creatorName' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='lastModifierName' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='version' type='xsd:int' />
+					<xsd:element name='id' type='xsd:long' />
+					<xsd:element name='creationDate'
+						type='xsd:dateTime' />
+					<xsd:element name='lastModificationDate'
+						type='xsd:dateTime' />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name='RemoteBlogEntrySummary'>
+				<xsd:complexContent>
+					<xsd:extension
+						base='n11:AbstractRemotePageSummary'>
+						<xsd:all>
+							<xsd:element name='publishDate'
+								type='xsd:dateTime' />
+							<xsd:element name='author' nillable='true'
+								type='xsd:string' />
+						</xsd:all>
+					</xsd:extension>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='RemoteBlogEntry'>
+				<xsd:complexContent>
+					<xsd:extension base='n11:RemoteBlogEntrySummary'>
+						<xsd:all>
+							<xsd:element name='content' nillable='true'
+								type='xsd:string' />
+							<xsd:element name='version' type='xsd:int' />
+						</xsd:all>
+					</xsd:extension>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='ArrayOfRemoteBlogEntrySummary'>
+				<xsd:complexContent>
+					<xsd:restriction base='soapenc:Array'>
+						<xsd:attribute ref='soapenc:arrayType'
+							wsdl:arrayType='n11:RemoteBlogEntrySummary[]' />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='RemoteNodeStatus'>
+				<xsd:all>
+					<xsd:element name='nodeId' type='xsd:int' />
+					<xsd:element name='jvmStats' nillable='true'
+						type='n12:Map' />
+					<xsd:element name='props' nillable='true'
+						type='n12:Map' />
+					<xsd:element name='buildStats' nillable='true'
+						type='n12:Map' />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name='ArrayOfRemoteNodeStatus'>
+				<xsd:complexContent>
+					<xsd:restriction base='soapenc:Array'>
+						<xsd:attribute ref='soapenc:arrayType'
+							wsdl:arrayType='n11:RemoteNodeStatus[]' />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='RemotePermission'>
+				<xsd:all>
+					<xsd:element name='lockType' nillable='true'
+						type='xsd:string' />
+					<xsd:element name='lockedBy' nillable='true'
+						type='xsd:string' />
+				</xsd:all>
+			</xsd:complexType>
+			<xsd:complexType name='ArrayOfRemotePermission'>
+				<xsd:complexContent>
+					<xsd:restriction base='soapenc:Array'>
+						<xsd:attribute ref='soapenc:arrayType'
+							wsdl:arrayType='n11:RemotePermission[]' />
+					</xsd:restriction>
+				</xsd:complexContent>
+			</xsd:complexType>
+		</xsd:schema>
+		<xsd:schema
+			targetNamespace='http://www.atlassian.com/package/java.util/'>
+			<xsd:complexType name='Map' abstract='true' />
+		</xsd:schema>
+		<xsd:schema
+			targetNamespace='http://www.atlassian.com/package/com.atlassian.confluence.rpc/'>
+			<xsd:complexType name='RemoteException' />
+			<xsd:complexType name='InvalidSessionException'>
+				<xsd:complexContent>
+					<xsd:extension base='n13:RemoteException' />
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='NotPermittedException'>
+				<xsd:complexContent>
+					<xsd:extension base='n13:RemoteException' />
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='AuthenticationFailedException'>
+				<xsd:complexContent>
+					<xsd:extension base='n13:RemoteException' />
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='AlreadyExistsException'>
+				<xsd:complexContent>
+					<xsd:extension base='n13:RemoteException' />
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name='VersionMismatchException'>
+				<xsd:complexContent>
+					<xsd:extension base='n13:RemoteException' />
+				</xsd:complexContent>
+			</xsd:complexType>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name='getPermissions0In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='InvalidSessionException'>
+		<wsdl:part name='InvalidSessionException'
+			type='n13:InvalidSessionException' />
+	</wsdl:message>
+	<wsdl:message name='RemoteException'>
+		<wsdl:part name='RemoteException' type='n13:RemoteException' />
+	</wsdl:message>
+	<wsdl:message name='getPermissions0Out'>
+		<wsdl:part name='Result' type='n14:ArrayOfstring' />
+	</wsdl:message>
+	<wsdl:message name='search1In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:int' />
+	</wsdl:message>
+	<wsdl:message name='search1Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteSearchResult' />
+	</wsdl:message>
+	<wsdl:message name='search2In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='n12:Map' />
+		<wsdl:part name='arg3' type='xsd:int' />
+	</wsdl:message>
+	<wsdl:message name='search2Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteSearchResult' />
+	</wsdl:message>
+	<wsdl:message name='getSpace3In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getSpace3Out'>
+		<wsdl:part name='Result' type='n11:RemoteSpace' />
+	</wsdl:message>
+	<wsdl:message name='getComment4In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='getComment4Out'>
+		<wsdl:part name='Result' type='n11:RemoteComment' />
+	</wsdl:message>
+	<wsdl:message name='getServerInfo5In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getServerInfo5Out'>
+		<wsdl:part name='Result' type='n11:RemoteServerInfo' />
+	</wsdl:message>
+	<wsdl:message name='getGroups6In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='NotPermittedException'>
+		<wsdl:part name='NotPermittedException'
+			type='n13:NotPermittedException' />
+	</wsdl:message>
+	<wsdl:message name='getGroups6Out'>
+		<wsdl:part name='Result' type='n14:ArrayOfstring' />
+	</wsdl:message>
+	<wsdl:message name='getChildren7In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='getChildren7Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemotePageSummary' />
+	</wsdl:message>
+	<wsdl:message name='removeGroup8In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='removeGroup8Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='removeUser9In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='removeUser9Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='addGroup10In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='addGroup10Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='getUser11In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getUser11Out'>
+		<wsdl:part name='Result' type='n11:RemoteUser' />
+	</wsdl:message>
+	<wsdl:message name='getPage12In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='getPage12Out'>
+		<wsdl:part name='Result' type='n11:RemotePage' />
+	</wsdl:message>
+	<wsdl:message name='getPage13In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getPage13Out'>
+		<wsdl:part name='Result' type='n11:RemotePage' />
+	</wsdl:message>
+	<wsdl:message name='login14In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='AuthenticationFailedException'>
+		<wsdl:part name='AuthenticationFailedException'
+			type='n13:AuthenticationFailedException' />
+	</wsdl:message>
+	<wsdl:message name='login14Out'>
+		<wsdl:part name='Result' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getClusterInformation15In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getClusterInformation15Out'>
+		<wsdl:part name='Result' type='n11:RemoteClusterInformation' />
+	</wsdl:message>
+	<wsdl:message name='addComment16In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='n11:RemoteComment' />
+	</wsdl:message>
+	<wsdl:message name='addComment16Out'>
+		<wsdl:part name='Result' type='n11:RemoteComment' />
+	</wsdl:message>
+	<wsdl:message name='getSpaceGroup17In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='AlreadyExistsException'>
+		<wsdl:part name='AlreadyExistsException'
+			type='n13:AlreadyExistsException' />
+	</wsdl:message>
+	<wsdl:message name='getSpaceGroup17Out'>
+		<wsdl:part name='Result' type='n11:RemoteSpaceGroup' />
+	</wsdl:message>
+	<wsdl:message name='getPages18In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getPages18Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemotePageSummary' />
+	</wsdl:message>
+	<wsdl:message name='getDescendents19In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='getDescendents19Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemotePageSummary' />
+	</wsdl:message>
+	<wsdl:message name='getTopLevelPages20In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getTopLevelPages20Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemotePageSummary' />
+	</wsdl:message>
+	<wsdl:message name='addUser21In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='n11:RemoteUser' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='addUser21Out' />
+	<wsdl:message name='deactivateUser22In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='deactivateUser22Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='reactivateUser23In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='reactivateUser23Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='removeAllPermissionsForGroup24In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='removeAllPermissionsForGroup24Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='getAttachment25In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+		<wsdl:part name='arg2' type='xsd:string' />
+		<wsdl:part name='arg3' type='xsd:int' />
+	</wsdl:message>
+	<wsdl:message name='getAttachment25Out'>
+		<wsdl:part name='Result' type='n11:RemoteAttachment' />
+	</wsdl:message>
+	<wsdl:message name='removeSpace26In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='removeSpace26Out'>
+		<wsdl:part name='Result' type='soapenc:boolean' />
+	</wsdl:message>
+	<wsdl:message name='getSpaces27In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getSpaces27Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteSpaceSummary' />
+	</wsdl:message>
+	<wsdl:message name='convertToPersonalSpace28In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:string' />
+		<wsdl:part name='arg3' type='xsd:string' />
+		<wsdl:part name='arg4' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='convertToPersonalSpace28Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='getAncestors29In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='getAncestors29Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemotePageSummary' />
+	</wsdl:message>
+	<wsdl:message name='getAttachments30In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='getAttachments30Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteAttachment' />
+	</wsdl:message>
+	<wsdl:message name='removeSpaceGroup31In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='removeSpaceGroup31Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='getSpaceGroups32In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getSpaceGroups32Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteSpaceGroup' />
+	</wsdl:message>
+	<wsdl:message name='getRelatedLabels33In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:int' />
+	</wsdl:message>
+	<wsdl:message name='getRelatedLabels33Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteLabel' />
+	</wsdl:message>
+	<wsdl:message name='getRelatedLabelsInSpace34In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:string' />
+		<wsdl:part name='arg3' type='xsd:int' />
+	</wsdl:message>
+	<wsdl:message name='getRelatedLabelsInSpace34Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteLabel' />
+	</wsdl:message>
+	<wsdl:message name='getSpacesContainingContentWithLabel35In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getSpacesContainingContentWithLabel35Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteSpace' />
+	</wsdl:message>
+	<wsdl:message name='getRecentlyUsedLabelsInSpace36In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:int' />
+	</wsdl:message>
+	<wsdl:message name='getRecentlyUsedLabelsInSpace36Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteLabel' />
+	</wsdl:message>
+	<wsdl:message name='getRecentlyUsedLabels37In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:int' />
+	</wsdl:message>
+	<wsdl:message name='getRecentlyUsedLabels37Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteLabel' />
+	</wsdl:message>
+	<wsdl:message name='getSpacesWithLabel38In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getSpacesWithLabel38Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteSpace' />
+	</wsdl:message>
+	<wsdl:message name='getLabelsByDetail39In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:string' />
+		<wsdl:part name='arg3' type='xsd:string' />
+		<wsdl:part name='arg4' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getLabelsByDetail39Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteLabel' />
+	</wsdl:message>
+	<wsdl:message name='getMostPopularLabels40In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:int' />
+	</wsdl:message>
+	<wsdl:message name='getMostPopularLabels40Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteLabel' />
+	</wsdl:message>
+	<wsdl:message name='getMostPopularLabelsInSpace41In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:int' />
+	</wsdl:message>
+	<wsdl:message name='getMostPopularLabelsInSpace41Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteLabel' />
+	</wsdl:message>
+	<wsdl:message name='addAttachment42In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='n11:RemoteAttachment' />
+		<wsdl:part name='arg2' type='xsd:base64Binary' />
+	</wsdl:message>
+	<wsdl:message name='addAttachment42Out'>
+		<wsdl:part name='Result' type='n11:RemoteAttachment' />
+	</wsdl:message>
+	<wsdl:message name='addAttachment43In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+		<wsdl:part name='arg2' type='n11:RemoteAttachment' />
+		<wsdl:part name='arg3' type='xsd:base64Binary' />
+	</wsdl:message>
+	<wsdl:message name='addAttachment43Out'>
+		<wsdl:part name='Result' type='n11:RemoteAttachment' />
+	</wsdl:message>
+	<wsdl:message name='movePageToTopLevel44In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='movePageToTopLevel44Out'>
+		<wsdl:part name='Result' type='soapenc:boolean' />
+	</wsdl:message>
+	<wsdl:message name='movePage45In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+		<wsdl:part name='arg2' type='xsd:long' />
+		<wsdl:part name='arg3' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='movePage45Out'>
+		<wsdl:part name='Result' type='soapenc:boolean' />
+	</wsdl:message>
+	<wsdl:message name='getComments46In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='getComments46Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteComment' />
+	</wsdl:message>
+	<wsdl:message name='removeComment47In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='removeComment47Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='getContentPermissionSets48In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='getContentPermissionSets48Out'>
+		<wsdl:part name='Result'
+			type='n11:ArrayOfRemoteContentPermissionSet' />
+	</wsdl:message>
+	<wsdl:message name='setContentPermissions49In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+		<wsdl:part name='arg2' type='xsd:string' />
+		<wsdl:part name='arg3'
+			type='n11:ArrayOfRemoteContentPermission' />
+	</wsdl:message>
+	<wsdl:message name='setContentPermissions49Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='getContentPermissionSet50In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getContentPermissionSet50Out'>
+		<wsdl:part name='Result' type='n11:RemoteContentPermissionSet' />
+	</wsdl:message>
+	<wsdl:message name='logout51In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='logout51Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='getAttachmentData52In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+		<wsdl:part name='arg2' type='xsd:string' />
+		<wsdl:part name='arg3' type='xsd:int' />
+	</wsdl:message>
+	<wsdl:message name='getAttachmentData52Out'>
+		<wsdl:part name='Result' type='xsd:base64Binary' />
+	</wsdl:message>
+	<wsdl:message name='exportSpace53In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='exportSpace53Out'>
+		<wsdl:part name='Result' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='moveAttachment54In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+		<wsdl:part name='arg2' type='xsd:string' />
+		<wsdl:part name='arg3' type='xsd:long' />
+		<wsdl:part name='arg4' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='moveAttachment54Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='removeAttachment55In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='removeAttachment55Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='setEnableWysiwyg56In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='setEnableWysiwyg56Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='addSpace57In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='n11:RemoteSpace' />
+	</wsdl:message>
+	<wsdl:message name='addSpace57Out'>
+		<wsdl:part name='Result' type='n11:RemoteSpace' />
+	</wsdl:message>
+	<wsdl:message name='editComment58In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='n11:RemoteComment' />
+	</wsdl:message>
+	<wsdl:message name='editComment58Out'>
+		<wsdl:part name='Result' type='n11:RemoteComment' />
+	</wsdl:message>
+	<wsdl:message name='getPageHistory59In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='getPageHistory59Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemotePageHistory' />
+	</wsdl:message>
+	<wsdl:message name='removePage60In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='removePage60Out'>
+		<wsdl:part name='Result' type='soapenc:boolean' />
+	</wsdl:message>
+	<wsdl:message name='renderContent61In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:long' />
+		<wsdl:part name='arg3' type='xsd:string' />
+		<wsdl:part name='arg4' type='n12:Map' />
+	</wsdl:message>
+	<wsdl:message name='renderContent61Out'>
+		<wsdl:part name='Result' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='renderContent62In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:long' />
+		<wsdl:part name='arg3' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='renderContent62Out'>
+		<wsdl:part name='Result' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='storePage63In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='n11:RemotePage' />
+	</wsdl:message>
+	<wsdl:message name='VersionMismatchException'>
+		<wsdl:part name='VersionMismatchException'
+			type='n13:VersionMismatchException' />
+	</wsdl:message>
+	<wsdl:message name='storePage63Out'>
+		<wsdl:part name='Result' type='n11:RemotePage' />
+	</wsdl:message>
+	<wsdl:message name='getSpacesInGroup64In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getSpacesInGroup64Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteSpaceSummary' />
+	</wsdl:message>
+	<wsdl:message name='storeSpace65In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='n11:RemoteSpace' />
+	</wsdl:message>
+	<wsdl:message name='storeSpace65Out'>
+		<wsdl:part name='Result' type='n11:RemoteSpace' />
+	</wsdl:message>
+	<wsdl:message name='addSpaceGroup66In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='n11:RemoteSpaceGroup' />
+	</wsdl:message>
+	<wsdl:message name='addSpaceGroup66Out'>
+		<wsdl:part name='Result' type='n11:RemoteSpaceGroup' />
+	</wsdl:message>
+	<wsdl:message name='addPersonalSpace67In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='n11:RemoteSpace' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='addPersonalSpace67Out'>
+		<wsdl:part name='Result' type='n11:RemoteSpace' />
+	</wsdl:message>
+	<wsdl:message name='getSpaceLevelPermissions68In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getSpaceLevelPermissions68Out'>
+		<wsdl:part name='Result' type='n14:ArrayOfstring' />
+	</wsdl:message>
+	<wsdl:message name='addPermissionToSpace69In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:string' />
+		<wsdl:part name='arg3' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='addPermissionToSpace69Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='addGlobalPermissions70In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='n14:ArrayOfstring' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='addGlobalPermissions70Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='addGlobalPermission71In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='addGlobalPermission71Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='addAnonymousUsePermission72In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='addAnonymousUsePermission72Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='removeGlobalPermission73In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='removeGlobalPermission73Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='addPermissionsToSpace74In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='n14:ArrayOfstring' />
+		<wsdl:part name='arg2' type='xsd:string' />
+		<wsdl:part name='arg3' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='addPermissionsToSpace74Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='removePermissionFromSpace75In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:string' />
+		<wsdl:part name='arg3' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='removePermissionFromSpace75Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='editUser76In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='n11:RemoteUser' />
+	</wsdl:message>
+	<wsdl:message name='editUser76Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='getUserGroups77In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getUserGroups77Out'>
+		<wsdl:part name='Result' type='n14:ArrayOfstring' />
+	</wsdl:message>
+	<wsdl:message name='addUserToGroup78In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='addUserToGroup78Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='removeUserFromGroup79In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='removeUserFromGroup79Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='getActiveUsers80In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='getActiveUsers80Out'>
+		<wsdl:part name='Result' type='n14:ArrayOfstring' />
+	</wsdl:message>
+	<wsdl:message name='changeMyPassword81In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='changeMyPassword81Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='changeUserPassword82In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='changeUserPassword82Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='setUserInformation83In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='n11:RemoteUserInformation' />
+	</wsdl:message>
+	<wsdl:message name='setUserInformation83Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='getUserInformation84In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getUserInformation84Out'>
+		<wsdl:part name='Result' type='n11:RemoteUserInformation' />
+	</wsdl:message>
+	<wsdl:message name='hasUser85In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='hasUser85Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='hasGroup86In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='hasGroup86Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='addProfilePicture87In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:string' />
+		<wsdl:part name='arg3' type='xsd:string' />
+		<wsdl:part name='arg4' type='xsd:base64Binary' />
+	</wsdl:message>
+	<wsdl:message name='addProfilePicture87Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='getBlogEntryByDayAndTitle88In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:int' />
+		<wsdl:part name='arg3' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getBlogEntryByDayAndTitle88Out'>
+		<wsdl:part name='Result' type='n11:RemoteBlogEntry' />
+	</wsdl:message>
+	<wsdl:message name='getBlogEntry89In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='getBlogEntry89Out'>
+		<wsdl:part name='Result' type='n11:RemoteBlogEntry' />
+	</wsdl:message>
+	<wsdl:message name='getBlogEntries90In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getBlogEntries90Out'>
+		<wsdl:part name='Result'
+			type='n11:ArrayOfRemoteBlogEntrySummary' />
+	</wsdl:message>
+	<wsdl:message name='storeBlogEntry91In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='n11:RemoteBlogEntry' />
+	</wsdl:message>
+	<wsdl:message name='storeBlogEntry91Out'>
+		<wsdl:part name='Result' type='n11:RemoteBlogEntry' />
+	</wsdl:message>
+	<wsdl:message name='exportSite92In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='exportSite92Out'>
+		<wsdl:part name='Result' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='flushIndexQueue93In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='flushIndexQueue93Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='clearIndexQueue94In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='clearIndexQueue94Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='getClusterNodeStatuses95In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getClusterNodeStatuses95Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteNodeStatus' />
+	</wsdl:message>
+	<wsdl:message name='importSpace96In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:base64Binary' />
+	</wsdl:message>
+	<wsdl:message name='importSpace96Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='isRpcPluginEnabled97In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='isRpcPluginEnabled97Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='setEnableAnonymousAccess98In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='setEnableAnonymousAccess98Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='getLabelsById99In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='getLabelsById99Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteLabel' />
+	</wsdl:message>
+	<wsdl:message name='getLabelContentById100In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='getLabelContentById100Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteSearchResult' />
+	</wsdl:message>
+	<wsdl:message name='getLabelContentByName101In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getLabelContentByName101Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteSearchResult' />
+	</wsdl:message>
+	<wsdl:message name='getLabelContentByObject102In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='n11:RemoteLabel' />
+	</wsdl:message>
+	<wsdl:message name='getLabelContentByObject102Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemoteSearchResult' />
+	</wsdl:message>
+	<wsdl:message name='addLabelByName103In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='addLabelByName103Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='addLabelById104In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+		<wsdl:part name='arg2' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='addLabelById104Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='addLabelByObject105In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='n11:RemoteLabel' />
+		<wsdl:part name='arg2' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='addLabelByObject105Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='addLabelByNameToSpace106In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='addLabelByNameToSpace106Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='removeLabelByName107In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='removeLabelByName107Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='removeLabelById108In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+		<wsdl:part name='arg2' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='removeLabelById108Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='removeLabelByObject109In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='n11:RemoteLabel' />
+		<wsdl:part name='arg2' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='removeLabelByObject109Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='removeLabelByNameFromSpace110In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='removeLabelByNameFromSpace110Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='getPermissionsForUser111In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='getPermissionsForUser111Out'>
+		<wsdl:part name='Result' type='n14:ArrayOfstring' />
+	</wsdl:message>
+	<wsdl:message name='removeAnonymousUsePermission112In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='removeAnonymousUsePermission112Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='addAnonymousPermissionToSpace113In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='addAnonymousPermissionToSpace113Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='addAnonymousPermissionsToSpace114In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='n14:ArrayOfstring' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='addAnonymousPermissionsToSpace114Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='removeAnonymousPermissionFromSpace115In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:string' />
+		<wsdl:part name='arg2' type='xsd:string' />
+	</wsdl:message>
+	<wsdl:message name='removeAnonymousPermissionFromSpace115Out'>
+		<wsdl:part name='Result' type='xsd:boolean' />
+	</wsdl:message>
+	<wsdl:message name='getPagePermissions116In'>
+		<wsdl:part name='arg0' type='xsd:string' />
+		<wsdl:part name='arg1' type='xsd:long' />
+	</wsdl:message>
+	<wsdl:message name='getPagePermissions116Out'>
+		<wsdl:part name='Result' type='n11:ArrayOfRemotePermission' />
+	</wsdl:message>
+	<wsdl:portType name='ConfluenceSoapService'>
+		<wsdl:operation name='getPermissions'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getPermissions0In'
+				message='tns:getPermissions0In' />
+			<wsdl:output name='getPermissions0Out'
+				message='tns:getPermissions0Out' />
+		</wsdl:operation>
+		<wsdl:operation name='search' parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='search1In' message='tns:search1In' />
+			<wsdl:output name='search1Out' message='tns:search1Out' />
+		</wsdl:operation>
+		<wsdl:operation name='search'
+			parameterOrder='arg0 arg1 arg2 arg3'>
+			<wsdl:input name='search2In' message='tns:search2In' />
+			<wsdl:output name='search2Out' message='tns:search2Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getSpace' parameterOrder='arg0 arg1'>
+			<wsdl:input name='getSpace3In' message='tns:getSpace3In' />
+			<wsdl:output name='getSpace3Out' message='tns:getSpace3Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getComment' parameterOrder='arg0 arg1'>
+			<wsdl:input name='getComment4In'
+				message='tns:getComment4In' />
+			<wsdl:output name='getComment4Out'
+				message='tns:getComment4Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getServerInfo' parameterOrder='arg0'>
+			<wsdl:input name='getServerInfo5In'
+				message='tns:getServerInfo5In' />
+			<wsdl:output name='getServerInfo5Out'
+				message='tns:getServerInfo5Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getGroups' parameterOrder='arg0'>
+			<wsdl:input name='getGroups6In' message='tns:getGroups6In' />
+			<wsdl:output name='getGroups6Out'
+				message='tns:getGroups6Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getChildren' parameterOrder='arg0 arg1'>
+			<wsdl:input name='getChildren7In'
+				message='tns:getChildren7In' />
+			<wsdl:output name='getChildren7Out'
+				message='tns:getChildren7Out' />
+		</wsdl:operation>
+		<wsdl:operation name='removeGroup'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='removeGroup8In'
+				message='tns:removeGroup8In' />
+			<wsdl:output name='removeGroup8Out'
+				message='tns:removeGroup8Out' />
+		</wsdl:operation>
+		<wsdl:operation name='removeUser' parameterOrder='arg0 arg1'>
+			<wsdl:input name='removeUser9In'
+				message='tns:removeUser9In' />
+			<wsdl:output name='removeUser9Out'
+				message='tns:removeUser9Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addGroup' parameterOrder='arg0 arg1'>
+			<wsdl:input name='addGroup10In' message='tns:addGroup10In' />
+			<wsdl:output name='addGroup10Out'
+				message='tns:addGroup10Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getUser' parameterOrder='arg0 arg1'>
+			<wsdl:input name='getUser11In' message='tns:getUser11In' />
+			<wsdl:output name='getUser11Out' message='tns:getUser11Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getPage' parameterOrder='arg0 arg1'>
+			<wsdl:input name='getPage12In' message='tns:getPage12In' />
+			<wsdl:output name='getPage12Out' message='tns:getPage12Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getPage'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='getPage13In' message='tns:getPage13In' />
+			<wsdl:output name='getPage13Out' message='tns:getPage13Out' />
+		</wsdl:operation>
+		<wsdl:operation name='login' parameterOrder='arg0 arg1'>
+			<wsdl:input name='login14In' message='tns:login14In' />
+			<wsdl:output name='login14Out' message='tns:login14Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getClusterInformation'
+			parameterOrder='arg0'>
+			<wsdl:input name='getClusterInformation15In'
+				message='tns:getClusterInformation15In' />
+			<wsdl:output name='getClusterInformation15Out'
+				message='tns:getClusterInformation15Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addComment' parameterOrder='arg0 arg1'>
+			<wsdl:input name='addComment16In'
+				message='tns:addComment16In' />
+			<wsdl:output name='addComment16Out'
+				message='tns:addComment16Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getSpaceGroup'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getSpaceGroup17In'
+				message='tns:getSpaceGroup17In' />
+			<wsdl:output name='getSpaceGroup17Out'
+				message='tns:getSpaceGroup17Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getPages' parameterOrder='arg0 arg1'>
+			<wsdl:input name='getPages18In' message='tns:getPages18In' />
+			<wsdl:output name='getPages18Out'
+				message='tns:getPages18Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getDescendents'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getDescendents19In'
+				message='tns:getDescendents19In' />
+			<wsdl:output name='getDescendents19Out'
+				message='tns:getDescendents19Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getTopLevelPages'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getTopLevelPages20In'
+				message='tns:getTopLevelPages20In' />
+			<wsdl:output name='getTopLevelPages20Out'
+				message='tns:getTopLevelPages20Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addUser'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='addUser21In' message='tns:addUser21In' />
+			<wsdl:output name='addUser21Out' message='tns:addUser21Out' />
+		</wsdl:operation>
+		<wsdl:operation name='deactivateUser'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='deactivateUser22In'
+				message='tns:deactivateUser22In' />
+			<wsdl:output name='deactivateUser22Out'
+				message='tns:deactivateUser22Out' />
+		</wsdl:operation>
+		<wsdl:operation name='reactivateUser'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='reactivateUser23In'
+				message='tns:reactivateUser23In' />
+			<wsdl:output name='reactivateUser23Out'
+				message='tns:reactivateUser23Out' />
+		</wsdl:operation>
+		<wsdl:operation name='removeAllPermissionsForGroup'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='removeAllPermissionsForGroup24In'
+				message='tns:removeAllPermissionsForGroup24In' />
+			<wsdl:output name='removeAllPermissionsForGroup24Out'
+				message='tns:removeAllPermissionsForGroup24Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getAttachment'
+			parameterOrder='arg0 arg1 arg2 arg3'>
+			<wsdl:input name='getAttachment25In'
+				message='tns:getAttachment25In' />
+			<wsdl:output name='getAttachment25Out'
+				message='tns:getAttachment25Out' />
+		</wsdl:operation>
+		<wsdl:operation name='removeSpace' parameterOrder='arg0 arg1'>
+			<wsdl:input name='removeSpace26In'
+				message='tns:removeSpace26In' />
+			<wsdl:output name='removeSpace26Out'
+				message='tns:removeSpace26Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getSpaces' parameterOrder='arg0'>
+			<wsdl:input name='getSpaces27In'
+				message='tns:getSpaces27In' />
+			<wsdl:output name='getSpaces27Out'
+				message='tns:getSpaces27Out' />
+		</wsdl:operation>
+		<wsdl:operation name='convertToPersonalSpace'
+			parameterOrder='arg0 arg1 arg2 arg3 arg4'>
+			<wsdl:input name='convertToPersonalSpace28In'
+				message='tns:convertToPersonalSpace28In' />
+			<wsdl:output name='convertToPersonalSpace28Out'
+				message='tns:convertToPersonalSpace28Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getAncestors'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getAncestors29In'
+				message='tns:getAncestors29In' />
+			<wsdl:output name='getAncestors29Out'
+				message='tns:getAncestors29Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getAttachments'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getAttachments30In'
+				message='tns:getAttachments30In' />
+			<wsdl:output name='getAttachments30Out'
+				message='tns:getAttachments30Out' />
+		</wsdl:operation>
+		<wsdl:operation name='removeSpaceGroup'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='removeSpaceGroup31In'
+				message='tns:removeSpaceGroup31In' />
+			<wsdl:output name='removeSpaceGroup31Out'
+				message='tns:removeSpaceGroup31Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getSpaceGroups' parameterOrder='arg0'>
+			<wsdl:input name='getSpaceGroups32In'
+				message='tns:getSpaceGroups32In' />
+			<wsdl:output name='getSpaceGroups32Out'
+				message='tns:getSpaceGroups32Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getRelatedLabels'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='getRelatedLabels33In'
+				message='tns:getRelatedLabels33In' />
+			<wsdl:output name='getRelatedLabels33Out'
+				message='tns:getRelatedLabels33Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getRelatedLabelsInSpace'
+			parameterOrder='arg0 arg1 arg2 arg3'>
+			<wsdl:input name='getRelatedLabelsInSpace34In'
+				message='tns:getRelatedLabelsInSpace34In' />
+			<wsdl:output name='getRelatedLabelsInSpace34Out'
+				message='tns:getRelatedLabelsInSpace34Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getSpacesContainingContentWithLabel'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getSpacesContainingContentWithLabel35In'
+				message='tns:getSpacesContainingContentWithLabel35In' />
+			<wsdl:output name='getSpacesContainingContentWithLabel35Out'
+				message='tns:getSpacesContainingContentWithLabel35Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getRecentlyUsedLabelsInSpace'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='getRecentlyUsedLabelsInSpace36In'
+				message='tns:getRecentlyUsedLabelsInSpace36In' />
+			<wsdl:output name='getRecentlyUsedLabelsInSpace36Out'
+				message='tns:getRecentlyUsedLabelsInSpace36Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getRecentlyUsedLabels'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getRecentlyUsedLabels37In'
+				message='tns:getRecentlyUsedLabels37In' />
+			<wsdl:output name='getRecentlyUsedLabels37Out'
+				message='tns:getRecentlyUsedLabels37Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getSpacesWithLabel'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getSpacesWithLabel38In'
+				message='tns:getSpacesWithLabel38In' />
+			<wsdl:output name='getSpacesWithLabel38Out'
+				message='tns:getSpacesWithLabel38Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getLabelsByDetail'
+			parameterOrder='arg0 arg1 arg2 arg3 arg4'>
+			<wsdl:input name='getLabelsByDetail39In'
+				message='tns:getLabelsByDetail39In' />
+			<wsdl:output name='getLabelsByDetail39Out'
+				message='tns:getLabelsByDetail39Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getMostPopularLabels'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getMostPopularLabels40In'
+				message='tns:getMostPopularLabels40In' />
+			<wsdl:output name='getMostPopularLabels40Out'
+				message='tns:getMostPopularLabels40Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getMostPopularLabelsInSpace'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='getMostPopularLabelsInSpace41In'
+				message='tns:getMostPopularLabelsInSpace41In' />
+			<wsdl:output name='getMostPopularLabelsInSpace41Out'
+				message='tns:getMostPopularLabelsInSpace41Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addAttachment'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='addAttachment42In'
+				message='tns:addAttachment42In' />
+			<wsdl:output name='addAttachment42Out'
+				message='tns:addAttachment42Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addAttachment'
+			parameterOrder='arg0 arg1 arg2 arg3'>
+			<wsdl:input name='addAttachment43In'
+				message='tns:addAttachment43In' />
+			<wsdl:output name='addAttachment43Out'
+				message='tns:addAttachment43Out' />
+		</wsdl:operation>
+		<wsdl:operation name='movePageToTopLevel'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='movePageToTopLevel44In'
+				message='tns:movePageToTopLevel44In' />
+			<wsdl:output name='movePageToTopLevel44Out'
+				message='tns:movePageToTopLevel44Out' />
+		</wsdl:operation>
+		<wsdl:operation name='movePage'
+			parameterOrder='arg0 arg1 arg2 arg3'>
+			<wsdl:input name='movePage45In' message='tns:movePage45In' />
+			<wsdl:output name='movePage45Out'
+				message='tns:movePage45Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getComments' parameterOrder='arg0 arg1'>
+			<wsdl:input name='getComments46In'
+				message='tns:getComments46In' />
+			<wsdl:output name='getComments46Out'
+				message='tns:getComments46Out' />
+		</wsdl:operation>
+		<wsdl:operation name='removeComment'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='removeComment47In'
+				message='tns:removeComment47In' />
+			<wsdl:output name='removeComment47Out'
+				message='tns:removeComment47Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getContentPermissionSets'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getContentPermissionSets48In'
+				message='tns:getContentPermissionSets48In' />
+			<wsdl:output name='getContentPermissionSets48Out'
+				message='tns:getContentPermissionSets48Out' />
+		</wsdl:operation>
+		<wsdl:operation name='setContentPermissions'
+			parameterOrder='arg0 arg1 arg2 arg3'>
+			<wsdl:input name='setContentPermissions49In'
+				message='tns:setContentPermissions49In' />
+			<wsdl:output name='setContentPermissions49Out'
+				message='tns:setContentPermissions49Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getContentPermissionSet'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='getContentPermissionSet50In'
+				message='tns:getContentPermissionSet50In' />
+			<wsdl:output name='getContentPermissionSet50Out'
+				message='tns:getContentPermissionSet50Out' />
+		</wsdl:operation>
+		<wsdl:operation name='logout' parameterOrder='arg0'>
+			<wsdl:input name='logout51In' message='tns:logout51In' />
+			<wsdl:output name='logout51Out' message='tns:logout51Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getAttachmentData'
+			parameterOrder='arg0 arg1 arg2 arg3'>
+			<wsdl:input name='getAttachmentData52In'
+				message='tns:getAttachmentData52In' />
+			<wsdl:output name='getAttachmentData52Out'
+				message='tns:getAttachmentData52Out' />
+		</wsdl:operation>
+		<wsdl:operation name='exportSpace'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='exportSpace53In'
+				message='tns:exportSpace53In' />
+			<wsdl:output name='exportSpace53Out'
+				message='tns:exportSpace53Out' />
+		</wsdl:operation>
+		<wsdl:operation name='moveAttachment'
+			parameterOrder='arg0 arg1 arg2 arg3 arg4'>
+			<wsdl:input name='moveAttachment54In'
+				message='tns:moveAttachment54In' />
+			<wsdl:output name='moveAttachment54Out'
+				message='tns:moveAttachment54Out' />
+		</wsdl:operation>
+		<wsdl:operation name='removeAttachment'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='removeAttachment55In'
+				message='tns:removeAttachment55In' />
+			<wsdl:output name='removeAttachment55Out'
+				message='tns:removeAttachment55Out' />
+		</wsdl:operation>
+		<wsdl:operation name='setEnableWysiwyg'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='setEnableWysiwyg56In'
+				message='tns:setEnableWysiwyg56In' />
+			<wsdl:output name='setEnableWysiwyg56Out'
+				message='tns:setEnableWysiwyg56Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addSpace' parameterOrder='arg0 arg1'>
+			<wsdl:input name='addSpace57In' message='tns:addSpace57In' />
+			<wsdl:output name='addSpace57Out'
+				message='tns:addSpace57Out' />
+		</wsdl:operation>
+		<wsdl:operation name='editComment' parameterOrder='arg0 arg1'>
+			<wsdl:input name='editComment58In'
+				message='tns:editComment58In' />
+			<wsdl:output name='editComment58Out'
+				message='tns:editComment58Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getPageHistory'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getPageHistory59In'
+				message='tns:getPageHistory59In' />
+			<wsdl:output name='getPageHistory59Out'
+				message='tns:getPageHistory59Out' />
+		</wsdl:operation>
+		<wsdl:operation name='removePage' parameterOrder='arg0 arg1'>
+			<wsdl:input name='removePage60In'
+				message='tns:removePage60In' />
+			<wsdl:output name='removePage60Out'
+				message='tns:removePage60Out' />
+		</wsdl:operation>
+		<wsdl:operation name='renderContent'
+			parameterOrder='arg0 arg1 arg2 arg3 arg4'>
+			<wsdl:input name='renderContent61In'
+				message='tns:renderContent61In' />
+			<wsdl:output name='renderContent61Out'
+				message='tns:renderContent61Out' />
+		</wsdl:operation>
+		<wsdl:operation name='renderContent'
+			parameterOrder='arg0 arg1 arg2 arg3'>
+			<wsdl:input name='renderContent62In'
+				message='tns:renderContent62In' />
+			<wsdl:output name='renderContent62Out'
+				message='tns:renderContent62Out' />
+		</wsdl:operation>
+		<wsdl:operation name='storePage' parameterOrder='arg0 arg1'>
+			<wsdl:input name='storePage63In'
+				message='tns:storePage63In' />
+			<wsdl:output name='storePage63Out'
+				message='tns:storePage63Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getSpacesInGroup'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getSpacesInGroup64In'
+				message='tns:getSpacesInGroup64In' />
+			<wsdl:output name='getSpacesInGroup64Out'
+				message='tns:getSpacesInGroup64Out' />
+		</wsdl:operation>
+		<wsdl:operation name='storeSpace' parameterOrder='arg0 arg1'>
+			<wsdl:input name='storeSpace65In'
+				message='tns:storeSpace65In' />
+			<wsdl:output name='storeSpace65Out'
+				message='tns:storeSpace65Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addSpaceGroup'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='addSpaceGroup66In'
+				message='tns:addSpaceGroup66In' />
+			<wsdl:output name='addSpaceGroup66Out'
+				message='tns:addSpaceGroup66Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addPersonalSpace'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='addPersonalSpace67In'
+				message='tns:addPersonalSpace67In' />
+			<wsdl:output name='addPersonalSpace67Out'
+				message='tns:addPersonalSpace67Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getSpaceLevelPermissions'
+			parameterOrder='arg0'>
+			<wsdl:input name='getSpaceLevelPermissions68In'
+				message='tns:getSpaceLevelPermissions68In' />
+			<wsdl:output name='getSpaceLevelPermissions68Out'
+				message='tns:getSpaceLevelPermissions68Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addPermissionToSpace'
+			parameterOrder='arg0 arg1 arg2 arg3'>
+			<wsdl:input name='addPermissionToSpace69In'
+				message='tns:addPermissionToSpace69In' />
+			<wsdl:output name='addPermissionToSpace69Out'
+				message='tns:addPermissionToSpace69Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addGlobalPermissions'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='addGlobalPermissions70In'
+				message='tns:addGlobalPermissions70In' />
+			<wsdl:output name='addGlobalPermissions70Out'
+				message='tns:addGlobalPermissions70Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addGlobalPermission'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='addGlobalPermission71In'
+				message='tns:addGlobalPermission71In' />
+			<wsdl:output name='addGlobalPermission71Out'
+				message='tns:addGlobalPermission71Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addAnonymousUsePermission'
+			parameterOrder='arg0'>
+			<wsdl:input name='addAnonymousUsePermission72In'
+				message='tns:addAnonymousUsePermission72In' />
+			<wsdl:output name='addAnonymousUsePermission72Out'
+				message='tns:addAnonymousUsePermission72Out' />
+		</wsdl:operation>
+		<wsdl:operation name='removeGlobalPermission'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='removeGlobalPermission73In'
+				message='tns:removeGlobalPermission73In' />
+			<wsdl:output name='removeGlobalPermission73Out'
+				message='tns:removeGlobalPermission73Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addPermissionsToSpace'
+			parameterOrder='arg0 arg1 arg2 arg3'>
+			<wsdl:input name='addPermissionsToSpace74In'
+				message='tns:addPermissionsToSpace74In' />
+			<wsdl:output name='addPermissionsToSpace74Out'
+				message='tns:addPermissionsToSpace74Out' />
+		</wsdl:operation>
+		<wsdl:operation name='removePermissionFromSpace'
+			parameterOrder='arg0 arg1 arg2 arg3'>
+			<wsdl:input name='removePermissionFromSpace75In'
+				message='tns:removePermissionFromSpace75In' />
+			<wsdl:output name='removePermissionFromSpace75Out'
+				message='tns:removePermissionFromSpace75Out' />
+		</wsdl:operation>
+		<wsdl:operation name='editUser' parameterOrder='arg0 arg1'>
+			<wsdl:input name='editUser76In' message='tns:editUser76In' />
+			<wsdl:output name='editUser76Out'
+				message='tns:editUser76Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getUserGroups'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getUserGroups77In'
+				message='tns:getUserGroups77In' />
+			<wsdl:output name='getUserGroups77Out'
+				message='tns:getUserGroups77Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addUserToGroup'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='addUserToGroup78In'
+				message='tns:addUserToGroup78In' />
+			<wsdl:output name='addUserToGroup78Out'
+				message='tns:addUserToGroup78Out' />
+		</wsdl:operation>
+		<wsdl:operation name='removeUserFromGroup'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='removeUserFromGroup79In'
+				message='tns:removeUserFromGroup79In' />
+			<wsdl:output name='removeUserFromGroup79Out'
+				message='tns:removeUserFromGroup79Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getActiveUsers'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getActiveUsers80In'
+				message='tns:getActiveUsers80In' />
+			<wsdl:output name='getActiveUsers80Out'
+				message='tns:getActiveUsers80Out' />
+		</wsdl:operation>
+		<wsdl:operation name='changeMyPassword'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='changeMyPassword81In'
+				message='tns:changeMyPassword81In' />
+			<wsdl:output name='changeMyPassword81Out'
+				message='tns:changeMyPassword81Out' />
+		</wsdl:operation>
+		<wsdl:operation name='changeUserPassword'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='changeUserPassword82In'
+				message='tns:changeUserPassword82In' />
+			<wsdl:output name='changeUserPassword82Out'
+				message='tns:changeUserPassword82Out' />
+		</wsdl:operation>
+		<wsdl:operation name='setUserInformation'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='setUserInformation83In'
+				message='tns:setUserInformation83In' />
+			<wsdl:output name='setUserInformation83Out'
+				message='tns:setUserInformation83Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getUserInformation'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getUserInformation84In'
+				message='tns:getUserInformation84In' />
+			<wsdl:output name='getUserInformation84Out'
+				message='tns:getUserInformation84Out' />
+		</wsdl:operation>
+		<wsdl:operation name='hasUser' parameterOrder='arg0 arg1'>
+			<wsdl:input name='hasUser85In' message='tns:hasUser85In' />
+			<wsdl:output name='hasUser85Out' message='tns:hasUser85Out' />
+		</wsdl:operation>
+		<wsdl:operation name='hasGroup' parameterOrder='arg0 arg1'>
+			<wsdl:input name='hasGroup86In' message='tns:hasGroup86In' />
+			<wsdl:output name='hasGroup86Out'
+				message='tns:hasGroup86Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addProfilePicture'
+			parameterOrder='arg0 arg1 arg2 arg3 arg4'>
+			<wsdl:input name='addProfilePicture87In'
+				message='tns:addProfilePicture87In' />
+			<wsdl:output name='addProfilePicture87Out'
+				message='tns:addProfilePicture87Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getBlogEntryByDayAndTitle'
+			parameterOrder='arg0 arg1 arg2 arg3'>
+			<wsdl:input name='getBlogEntryByDayAndTitle88In'
+				message='tns:getBlogEntryByDayAndTitle88In' />
+			<wsdl:output name='getBlogEntryByDayAndTitle88Out'
+				message='tns:getBlogEntryByDayAndTitle88Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getBlogEntry'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getBlogEntry89In'
+				message='tns:getBlogEntry89In' />
+			<wsdl:output name='getBlogEntry89Out'
+				message='tns:getBlogEntry89Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getBlogEntries'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getBlogEntries90In'
+				message='tns:getBlogEntries90In' />
+			<wsdl:output name='getBlogEntries90Out'
+				message='tns:getBlogEntries90Out' />
+		</wsdl:operation>
+		<wsdl:operation name='storeBlogEntry'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='storeBlogEntry91In'
+				message='tns:storeBlogEntry91In' />
+			<wsdl:output name='storeBlogEntry91Out'
+				message='tns:storeBlogEntry91Out' />
+		</wsdl:operation>
+		<wsdl:operation name='exportSite' parameterOrder='arg0 arg1'>
+			<wsdl:input name='exportSite92In'
+				message='tns:exportSite92In' />
+			<wsdl:output name='exportSite92Out'
+				message='tns:exportSite92Out' />
+		</wsdl:operation>
+		<wsdl:operation name='flushIndexQueue' parameterOrder='arg0'>
+			<wsdl:input name='flushIndexQueue93In'
+				message='tns:flushIndexQueue93In' />
+			<wsdl:output name='flushIndexQueue93Out'
+				message='tns:flushIndexQueue93Out' />
+		</wsdl:operation>
+		<wsdl:operation name='clearIndexQueue' parameterOrder='arg0'>
+			<wsdl:input name='clearIndexQueue94In'
+				message='tns:clearIndexQueue94In' />
+			<wsdl:output name='clearIndexQueue94Out'
+				message='tns:clearIndexQueue94Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getClusterNodeStatuses'
+			parameterOrder='arg0'>
+			<wsdl:input name='getClusterNodeStatuses95In'
+				message='tns:getClusterNodeStatuses95In' />
+			<wsdl:output name='getClusterNodeStatuses95Out'
+				message='tns:getClusterNodeStatuses95Out' />
+		</wsdl:operation>
+		<wsdl:operation name='importSpace' parameterOrder='arg0 arg1'>
+			<wsdl:input name='importSpace96In'
+				message='tns:importSpace96In' />
+			<wsdl:output name='importSpace96Out'
+				message='tns:importSpace96Out' />
+		</wsdl:operation>
+		<wsdl:operation name='isRpcPluginEnabled'
+			parameterOrder='arg0'>
+			<wsdl:input name='isRpcPluginEnabled97In'
+				message='tns:isRpcPluginEnabled97In' />
+			<wsdl:output name='isRpcPluginEnabled97Out'
+				message='tns:isRpcPluginEnabled97Out' />
+		</wsdl:operation>
+		<wsdl:operation name='setEnableAnonymousAccess'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='setEnableAnonymousAccess98In'
+				message='tns:setEnableAnonymousAccess98In' />
+			<wsdl:output name='setEnableAnonymousAccess98Out'
+				message='tns:setEnableAnonymousAccess98Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getLabelsById'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getLabelsById99In'
+				message='tns:getLabelsById99In' />
+			<wsdl:output name='getLabelsById99Out'
+				message='tns:getLabelsById99Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getLabelContentById'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getLabelContentById100In'
+				message='tns:getLabelContentById100In' />
+			<wsdl:output name='getLabelContentById100Out'
+				message='tns:getLabelContentById100Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getLabelContentByName'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getLabelContentByName101In'
+				message='tns:getLabelContentByName101In' />
+			<wsdl:output name='getLabelContentByName101Out'
+				message='tns:getLabelContentByName101Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getLabelContentByObject'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getLabelContentByObject102In'
+				message='tns:getLabelContentByObject102In' />
+			<wsdl:output name='getLabelContentByObject102Out'
+				message='tns:getLabelContentByObject102Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addLabelByName'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='addLabelByName103In'
+				message='tns:addLabelByName103In' />
+			<wsdl:output name='addLabelByName103Out'
+				message='tns:addLabelByName103Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addLabelById'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='addLabelById104In'
+				message='tns:addLabelById104In' />
+			<wsdl:output name='addLabelById104Out'
+				message='tns:addLabelById104Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addLabelByObject'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='addLabelByObject105In'
+				message='tns:addLabelByObject105In' />
+			<wsdl:output name='addLabelByObject105Out'
+				message='tns:addLabelByObject105Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addLabelByNameToSpace'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='addLabelByNameToSpace106In'
+				message='tns:addLabelByNameToSpace106In' />
+			<wsdl:output name='addLabelByNameToSpace106Out'
+				message='tns:addLabelByNameToSpace106Out' />
+		</wsdl:operation>
+		<wsdl:operation name='removeLabelByName'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='removeLabelByName107In'
+				message='tns:removeLabelByName107In' />
+			<wsdl:output name='removeLabelByName107Out'
+				message='tns:removeLabelByName107Out' />
+		</wsdl:operation>
+		<wsdl:operation name='removeLabelById'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='removeLabelById108In'
+				message='tns:removeLabelById108In' />
+			<wsdl:output name='removeLabelById108Out'
+				message='tns:removeLabelById108Out' />
+		</wsdl:operation>
+		<wsdl:operation name='removeLabelByObject'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='removeLabelByObject109In'
+				message='tns:removeLabelByObject109In' />
+			<wsdl:output name='removeLabelByObject109Out'
+				message='tns:removeLabelByObject109Out' />
+		</wsdl:operation>
+		<wsdl:operation name='removeLabelByNameFromSpace'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='removeLabelByNameFromSpace110In'
+				message='tns:removeLabelByNameFromSpace110In' />
+			<wsdl:output name='removeLabelByNameFromSpace110Out'
+				message='tns:removeLabelByNameFromSpace110Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getPermissionsForUser'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='getPermissionsForUser111In'
+				message='tns:getPermissionsForUser111In' />
+			<wsdl:output name='getPermissionsForUser111Out'
+				message='tns:getPermissionsForUser111Out' />
+		</wsdl:operation>
+		<wsdl:operation name='removeAnonymousUsePermission'
+			parameterOrder='arg0'>
+			<wsdl:input name='removeAnonymousUsePermission112In'
+				message='tns:removeAnonymousUsePermission112In' />
+			<wsdl:output name='removeAnonymousUsePermission112Out'
+				message='tns:removeAnonymousUsePermission112Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addAnonymousPermissionToSpace'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='addAnonymousPermissionToSpace113In'
+				message='tns:addAnonymousPermissionToSpace113In' />
+			<wsdl:output name='addAnonymousPermissionToSpace113Out'
+				message='tns:addAnonymousPermissionToSpace113Out' />
+		</wsdl:operation>
+		<wsdl:operation name='addAnonymousPermissionsToSpace'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='addAnonymousPermissionsToSpace114In'
+				message='tns:addAnonymousPermissionsToSpace114In' />
+			<wsdl:output name='addAnonymousPermissionsToSpace114Out'
+				message='tns:addAnonymousPermissionsToSpace114Out' />
+		</wsdl:operation>
+		<wsdl:operation name='removeAnonymousPermissionFromSpace'
+			parameterOrder='arg0 arg1 arg2'>
+			<wsdl:input name='removeAnonymousPermissionFromSpace115In'
+				message='tns:removeAnonymousPermissionFromSpace115In' />
+			<wsdl:output name='removeAnonymousPermissionFromSpace115Out'
+				message='tns:removeAnonymousPermissionFromSpace115Out' />
+		</wsdl:operation>
+		<wsdl:operation name='getPagePermissions'
+			parameterOrder='arg0 arg1'>
+			<wsdl:input name='getPagePermissions116In'
+				message='tns:getPagePermissions116In' />
+			<wsdl:output name='getPagePermissions116Out'
+				message='tns:getPagePermissions116Out' />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name='ConfluenceSoapService'
+		type='tns:ConfluenceSoapService'>
+		<soap:binding style='rpc'
+			transport='http://schemas.xmlsoap.org/soap/http' />
+		<wsdl:operation name='getPermissions'>
+			<soap:operation soapAction='getPermissions' style='rpc' />
+			<wsdl:input name='getPermissions0In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getPermissions0Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='search'>
+			<soap:operation soapAction='search' style='rpc' />
+			<wsdl:input name='search1In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='search1Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='search'>
+			<soap:operation soapAction='search' style='rpc' />
+			<wsdl:input name='search2In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='search2Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getSpace'>
+			<soap:operation soapAction='getSpace' style='rpc' />
+			<wsdl:input name='getSpace3In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getSpace3Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getComment'>
+			<soap:operation soapAction='getComment' style='rpc' />
+			<wsdl:input name='getComment4In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getComment4Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getServerInfo'>
+			<soap:operation soapAction='getServerInfo' style='rpc' />
+			<wsdl:input name='getServerInfo5In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getServerInfo5Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getGroups'>
+			<soap:operation soapAction='getGroups' style='rpc' />
+			<wsdl:input name='getGroups6In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getGroups6Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getChildren'>
+			<soap:operation soapAction='getChildren' style='rpc' />
+			<wsdl:input name='getChildren7In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getChildren7Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='removeGroup'>
+			<soap:operation soapAction='removeGroup' style='rpc' />
+			<wsdl:input name='removeGroup8In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='removeGroup8Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='removeUser'>
+			<soap:operation soapAction='removeUser' style='rpc' />
+			<wsdl:input name='removeUser9In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='removeUser9Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addGroup'>
+			<soap:operation soapAction='addGroup' style='rpc' />
+			<wsdl:input name='addGroup10In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addGroup10Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getUser'>
+			<soap:operation soapAction='getUser' style='rpc' />
+			<wsdl:input name='getUser11In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getUser11Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getPage'>
+			<soap:operation soapAction='getPage' style='rpc' />
+			<wsdl:input name='getPage12In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getPage12Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getPage'>
+			<soap:operation soapAction='getPage' style='rpc' />
+			<wsdl:input name='getPage13In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getPage13Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='login'>
+			<soap:operation soapAction='login' style='rpc' />
+			<wsdl:input name='login14In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='login14Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='AuthenticationFailedException'>
+				<soap:fault name='AuthenticationFailedException'
+					use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getClusterInformation'>
+			<soap:operation soapAction='getClusterInformation'
+				style='rpc' />
+			<wsdl:input name='getClusterInformation15In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getClusterInformation15Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addComment'>
+			<soap:operation soapAction='addComment' style='rpc' />
+			<wsdl:input name='addComment16In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addComment16Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getSpaceGroup'>
+			<soap:operation soapAction='getSpaceGroup' style='rpc' />
+			<wsdl:input name='getSpaceGroup17In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getSpaceGroup17Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='AlreadyExistsException'>
+				<soap:fault name='AlreadyExistsException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getPages'>
+			<soap:operation soapAction='getPages' style='rpc' />
+			<wsdl:input name='getPages18In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getPages18Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getDescendents'>
+			<soap:operation soapAction='getDescendents' style='rpc' />
+			<wsdl:input name='getDescendents19In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getDescendents19Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getTopLevelPages'>
+			<soap:operation soapAction='getTopLevelPages' style='rpc' />
+			<wsdl:input name='getTopLevelPages20In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getTopLevelPages20Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addUser'>
+			<soap:operation soapAction='addUser' style='rpc' />
+			<wsdl:input name='addUser21In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addUser21Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='deactivateUser'>
+			<soap:operation soapAction='deactivateUser' style='rpc' />
+			<wsdl:input name='deactivateUser22In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='deactivateUser22Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='reactivateUser'>
+			<soap:operation soapAction='reactivateUser' style='rpc' />
+			<wsdl:input name='reactivateUser23In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='reactivateUser23Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='removeAllPermissionsForGroup'>
+			<soap:operation soapAction='removeAllPermissionsForGroup'
+				style='rpc' />
+			<wsdl:input name='removeAllPermissionsForGroup24In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='removeAllPermissionsForGroup24Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getAttachment'>
+			<soap:operation soapAction='getAttachment' style='rpc' />
+			<wsdl:input name='getAttachment25In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getAttachment25Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='removeSpace'>
+			<soap:operation soapAction='removeSpace' style='rpc' />
+			<wsdl:input name='removeSpace26In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='removeSpace26Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getSpaces'>
+			<soap:operation soapAction='getSpaces' style='rpc' />
+			<wsdl:input name='getSpaces27In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getSpaces27Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='convertToPersonalSpace'>
+			<soap:operation soapAction='convertToPersonalSpace'
+				style='rpc' />
+			<wsdl:input name='convertToPersonalSpace28In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='convertToPersonalSpace28Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getAncestors'>
+			<soap:operation soapAction='getAncestors' style='rpc' />
+			<wsdl:input name='getAncestors29In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getAncestors29Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getAttachments'>
+			<soap:operation soapAction='getAttachments' style='rpc' />
+			<wsdl:input name='getAttachments30In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getAttachments30Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='removeSpaceGroup'>
+			<soap:operation soapAction='removeSpaceGroup' style='rpc' />
+			<wsdl:input name='removeSpaceGroup31In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='removeSpaceGroup31Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getSpaceGroups'>
+			<soap:operation soapAction='getSpaceGroups' style='rpc' />
+			<wsdl:input name='getSpaceGroups32In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getSpaceGroups32Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getRelatedLabels'>
+			<soap:operation soapAction='getRelatedLabels' style='rpc' />
+			<wsdl:input name='getRelatedLabels33In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getRelatedLabels33Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getRelatedLabelsInSpace'>
+			<soap:operation soapAction='getRelatedLabelsInSpace'
+				style='rpc' />
+			<wsdl:input name='getRelatedLabelsInSpace34In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getRelatedLabelsInSpace34Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getSpacesContainingContentWithLabel'>
+			<soap:operation
+				soapAction='getSpacesContainingContentWithLabel' style='rpc' />
+			<wsdl:input
+				name='getSpacesContainingContentWithLabel35In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output
+				name='getSpacesContainingContentWithLabel35Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getRecentlyUsedLabelsInSpace'>
+			<soap:operation soapAction='getRecentlyUsedLabelsInSpace'
+				style='rpc' />
+			<wsdl:input name='getRecentlyUsedLabelsInSpace36In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getRecentlyUsedLabelsInSpace36Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getRecentlyUsedLabels'>
+			<soap:operation soapAction='getRecentlyUsedLabels'
+				style='rpc' />
+			<wsdl:input name='getRecentlyUsedLabels37In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getRecentlyUsedLabels37Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getSpacesWithLabel'>
+			<soap:operation soapAction='getSpacesWithLabel' style='rpc' />
+			<wsdl:input name='getSpacesWithLabel38In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getSpacesWithLabel38Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getLabelsByDetail'>
+			<soap:operation soapAction='getLabelsByDetail' style='rpc' />
+			<wsdl:input name='getLabelsByDetail39In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getLabelsByDetail39Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getMostPopularLabels'>
+			<soap:operation soapAction='getMostPopularLabels'
+				style='rpc' />
+			<wsdl:input name='getMostPopularLabels40In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getMostPopularLabels40Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getMostPopularLabelsInSpace'>
+			<soap:operation soapAction='getMostPopularLabelsInSpace'
+				style='rpc' />
+			<wsdl:input name='getMostPopularLabelsInSpace41In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getMostPopularLabelsInSpace41Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addAttachment'>
+			<soap:operation soapAction='addAttachment' style='rpc' />
+			<wsdl:input name='addAttachment42In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addAttachment42Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addAttachment'>
+			<soap:operation soapAction='addAttachment' style='rpc' />
+			<wsdl:input name='addAttachment43In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addAttachment43Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='movePageToTopLevel'>
+			<soap:operation soapAction='movePageToTopLevel' style='rpc' />
+			<wsdl:input name='movePageToTopLevel44In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='movePageToTopLevel44Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='movePage'>
+			<soap:operation soapAction='movePage' style='rpc' />
+			<wsdl:input name='movePage45In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='movePage45Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getComments'>
+			<soap:operation soapAction='getComments' style='rpc' />
+			<wsdl:input name='getComments46In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getComments46Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='removeComment'>
+			<soap:operation soapAction='removeComment' style='rpc' />
+			<wsdl:input name='removeComment47In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='removeComment47Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getContentPermissionSets'>
+			<soap:operation soapAction='getContentPermissionSets'
+				style='rpc' />
+			<wsdl:input name='getContentPermissionSets48In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getContentPermissionSets48Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='setContentPermissions'>
+			<soap:operation soapAction='setContentPermissions'
+				style='rpc' />
+			<wsdl:input name='setContentPermissions49In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='setContentPermissions49Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getContentPermissionSet'>
+			<soap:operation soapAction='getContentPermissionSet'
+				style='rpc' />
+			<wsdl:input name='getContentPermissionSet50In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getContentPermissionSet50Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='logout'>
+			<soap:operation soapAction='logout' style='rpc' />
+			<wsdl:input name='logout51In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='logout51Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getAttachmentData'>
+			<soap:operation soapAction='getAttachmentData' style='rpc' />
+			<wsdl:input name='getAttachmentData52In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getAttachmentData52Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='exportSpace'>
+			<soap:operation soapAction='exportSpace' style='rpc' />
+			<wsdl:input name='exportSpace53In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='exportSpace53Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='moveAttachment'>
+			<soap:operation soapAction='moveAttachment' style='rpc' />
+			<wsdl:input name='moveAttachment54In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='moveAttachment54Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='removeAttachment'>
+			<soap:operation soapAction='removeAttachment' style='rpc' />
+			<wsdl:input name='removeAttachment55In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='removeAttachment55Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='setEnableWysiwyg'>
+			<soap:operation soapAction='setEnableWysiwyg' style='rpc' />
+			<wsdl:input name='setEnableWysiwyg56In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='setEnableWysiwyg56Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addSpace'>
+			<soap:operation soapAction='addSpace' style='rpc' />
+			<wsdl:input name='addSpace57In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addSpace57Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='AlreadyExistsException'>
+				<soap:fault name='AlreadyExistsException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='editComment'>
+			<soap:operation soapAction='editComment' style='rpc' />
+			<wsdl:input name='editComment58In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='editComment58Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getPageHistory'>
+			<soap:operation soapAction='getPageHistory' style='rpc' />
+			<wsdl:input name='getPageHistory59In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getPageHistory59Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='removePage'>
+			<soap:operation soapAction='removePage' style='rpc' />
+			<wsdl:input name='removePage60In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='removePage60Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='renderContent'>
+			<soap:operation soapAction='renderContent' style='rpc' />
+			<wsdl:input name='renderContent61In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='renderContent61Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='renderContent'>
+			<soap:operation soapAction='renderContent' style='rpc' />
+			<wsdl:input name='renderContent62In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='renderContent62Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='storePage'>
+			<soap:operation soapAction='storePage' style='rpc' />
+			<wsdl:input name='storePage63In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='storePage63Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='VersionMismatchException'>
+				<soap:fault name='VersionMismatchException'
+					use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getSpacesInGroup'>
+			<soap:operation soapAction='getSpacesInGroup' style='rpc' />
+			<wsdl:input name='getSpacesInGroup64In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getSpacesInGroup64Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='storeSpace'>
+			<soap:operation soapAction='storeSpace' style='rpc' />
+			<wsdl:input name='storeSpace65In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='storeSpace65Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addSpaceGroup'>
+			<soap:operation soapAction='addSpaceGroup' style='rpc' />
+			<wsdl:input name='addSpaceGroup66In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addSpaceGroup66Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='AlreadyExistsException'>
+				<soap:fault name='AlreadyExistsException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addPersonalSpace'>
+			<soap:operation soapAction='addPersonalSpace' style='rpc' />
+			<wsdl:input name='addPersonalSpace67In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addPersonalSpace67Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='AlreadyExistsException'>
+				<soap:fault name='AlreadyExistsException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getSpaceLevelPermissions'>
+			<soap:operation soapAction='getSpaceLevelPermissions'
+				style='rpc' />
+			<wsdl:input name='getSpaceLevelPermissions68In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getSpaceLevelPermissions68Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addPermissionToSpace'>
+			<soap:operation soapAction='addPermissionToSpace'
+				style='rpc' />
+			<wsdl:input name='addPermissionToSpace69In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addPermissionToSpace69Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addGlobalPermissions'>
+			<soap:operation soapAction='addGlobalPermissions'
+				style='rpc' />
+			<wsdl:input name='addGlobalPermissions70In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addGlobalPermissions70Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addGlobalPermission'>
+			<soap:operation soapAction='addGlobalPermission'
+				style='rpc' />
+			<wsdl:input name='addGlobalPermission71In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addGlobalPermission71Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addAnonymousUsePermission'>
+			<soap:operation soapAction='addAnonymousUsePermission'
+				style='rpc' />
+			<wsdl:input name='addAnonymousUsePermission72In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addAnonymousUsePermission72Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='removeGlobalPermission'>
+			<soap:operation soapAction='removeGlobalPermission'
+				style='rpc' />
+			<wsdl:input name='removeGlobalPermission73In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='removeGlobalPermission73Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addPermissionsToSpace'>
+			<soap:operation soapAction='addPermissionsToSpace'
+				style='rpc' />
+			<wsdl:input name='addPermissionsToSpace74In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addPermissionsToSpace74Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='removePermissionFromSpace'>
+			<soap:operation soapAction='removePermissionFromSpace'
+				style='rpc' />
+			<wsdl:input name='removePermissionFromSpace75In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='removePermissionFromSpace75Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='editUser'>
+			<soap:operation soapAction='editUser' style='rpc' />
+			<wsdl:input name='editUser76In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='editUser76Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getUserGroups'>
+			<soap:operation soapAction='getUserGroups' style='rpc' />
+			<wsdl:input name='getUserGroups77In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getUserGroups77Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addUserToGroup'>
+			<soap:operation soapAction='addUserToGroup' style='rpc' />
+			<wsdl:input name='addUserToGroup78In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addUserToGroup78Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='removeUserFromGroup'>
+			<soap:operation soapAction='removeUserFromGroup'
+				style='rpc' />
+			<wsdl:input name='removeUserFromGroup79In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='removeUserFromGroup79Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getActiveUsers'>
+			<soap:operation soapAction='getActiveUsers' style='rpc' />
+			<wsdl:input name='getActiveUsers80In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getActiveUsers80Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='changeMyPassword'>
+			<soap:operation soapAction='changeMyPassword' style='rpc' />
+			<wsdl:input name='changeMyPassword81In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='changeMyPassword81Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='changeUserPassword'>
+			<soap:operation soapAction='changeUserPassword' style='rpc' />
+			<wsdl:input name='changeUserPassword82In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='changeUserPassword82Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='setUserInformation'>
+			<soap:operation soapAction='setUserInformation' style='rpc' />
+			<wsdl:input name='setUserInformation83In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='setUserInformation83Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getUserInformation'>
+			<soap:operation soapAction='getUserInformation' style='rpc' />
+			<wsdl:input name='getUserInformation84In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getUserInformation84Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='hasUser'>
+			<soap:operation soapAction='hasUser' style='rpc' />
+			<wsdl:input name='hasUser85In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='hasUser85Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='hasGroup'>
+			<soap:operation soapAction='hasGroup' style='rpc' />
+			<wsdl:input name='hasGroup86In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='hasGroup86Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addProfilePicture'>
+			<soap:operation soapAction='addProfilePicture' style='rpc' />
+			<wsdl:input name='addProfilePicture87In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addProfilePicture87Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getBlogEntryByDayAndTitle'>
+			<soap:operation soapAction='getBlogEntryByDayAndTitle'
+				style='rpc' />
+			<wsdl:input name='getBlogEntryByDayAndTitle88In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getBlogEntryByDayAndTitle88Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getBlogEntry'>
+			<soap:operation soapAction='getBlogEntry' style='rpc' />
+			<wsdl:input name='getBlogEntry89In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getBlogEntry89Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getBlogEntries'>
+			<soap:operation soapAction='getBlogEntries' style='rpc' />
+			<wsdl:input name='getBlogEntries90In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getBlogEntries90Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='storeBlogEntry'>
+			<soap:operation soapAction='storeBlogEntry' style='rpc' />
+			<wsdl:input name='storeBlogEntry91In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='storeBlogEntry91Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='VersionMismatchException'>
+				<soap:fault name='VersionMismatchException'
+					use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='exportSite'>
+			<soap:operation soapAction='exportSite' style='rpc' />
+			<wsdl:input name='exportSite92In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='exportSite92Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='flushIndexQueue'>
+			<soap:operation soapAction='flushIndexQueue' style='rpc' />
+			<wsdl:input name='flushIndexQueue93In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='flushIndexQueue93Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='clearIndexQueue'>
+			<soap:operation soapAction='clearIndexQueue' style='rpc' />
+			<wsdl:input name='clearIndexQueue94In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='clearIndexQueue94Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getClusterNodeStatuses'>
+			<soap:operation soapAction='getClusterNodeStatuses'
+				style='rpc' />
+			<wsdl:input name='getClusterNodeStatuses95In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getClusterNodeStatuses95Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='importSpace'>
+			<soap:operation soapAction='importSpace' style='rpc' />
+			<wsdl:input name='importSpace96In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='importSpace96Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='isRpcPluginEnabled'>
+			<soap:operation soapAction='isRpcPluginEnabled' style='rpc' />
+			<wsdl:input name='isRpcPluginEnabled97In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='isRpcPluginEnabled97Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name='setEnableAnonymousAccess'>
+			<soap:operation soapAction='setEnableAnonymousAccess'
+				style='rpc' />
+			<wsdl:input name='setEnableAnonymousAccess98In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='setEnableAnonymousAccess98Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getLabelsById'>
+			<soap:operation soapAction='getLabelsById' style='rpc' />
+			<wsdl:input name='getLabelsById99In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getLabelsById99Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getLabelContentById'>
+			<soap:operation soapAction='getLabelContentById'
+				style='rpc' />
+			<wsdl:input name='getLabelContentById100In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getLabelContentById100Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getLabelContentByName'>
+			<soap:operation soapAction='getLabelContentByName'
+				style='rpc' />
+			<wsdl:input name='getLabelContentByName101In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getLabelContentByName101Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getLabelContentByObject'>
+			<soap:operation soapAction='getLabelContentByObject'
+				style='rpc' />
+			<wsdl:input name='getLabelContentByObject102In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getLabelContentByObject102Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addLabelByName'>
+			<soap:operation soapAction='addLabelByName' style='rpc' />
+			<wsdl:input name='addLabelByName103In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addLabelByName103Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addLabelById'>
+			<soap:operation soapAction='addLabelById' style='rpc' />
+			<wsdl:input name='addLabelById104In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addLabelById104Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addLabelByObject'>
+			<soap:operation soapAction='addLabelByObject' style='rpc' />
+			<wsdl:input name='addLabelByObject105In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addLabelByObject105Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addLabelByNameToSpace'>
+			<soap:operation soapAction='addLabelByNameToSpace'
+				style='rpc' />
+			<wsdl:input name='addLabelByNameToSpace106In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addLabelByNameToSpace106Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='removeLabelByName'>
+			<soap:operation soapAction='removeLabelByName' style='rpc' />
+			<wsdl:input name='removeLabelByName107In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='removeLabelByName107Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='removeLabelById'>
+			<soap:operation soapAction='removeLabelById' style='rpc' />
+			<wsdl:input name='removeLabelById108In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='removeLabelById108Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='removeLabelByObject'>
+			<soap:operation soapAction='removeLabelByObject'
+				style='rpc' />
+			<wsdl:input name='removeLabelByObject109In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='removeLabelByObject109Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='removeLabelByNameFromSpace'>
+			<soap:operation soapAction='removeLabelByNameFromSpace'
+				style='rpc' />
+			<wsdl:input name='removeLabelByNameFromSpace110In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='removeLabelByNameFromSpace110Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getPermissionsForUser'>
+			<soap:operation soapAction='getPermissionsForUser'
+				style='rpc' />
+			<wsdl:input name='getPermissionsForUser111In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getPermissionsForUser111Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='removeAnonymousUsePermission'>
+			<soap:operation soapAction='removeAnonymousUsePermission'
+				style='rpc' />
+			<wsdl:input name='removeAnonymousUsePermission112In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='removeAnonymousUsePermission112Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addAnonymousPermissionToSpace'>
+			<soap:operation soapAction='addAnonymousPermissionToSpace'
+				style='rpc' />
+			<wsdl:input name='addAnonymousPermissionToSpace113In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addAnonymousPermissionToSpace113Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='addAnonymousPermissionsToSpace'>
+			<soap:operation soapAction='addAnonymousPermissionsToSpace'
+				style='rpc' />
+			<wsdl:input name='addAnonymousPermissionsToSpace114In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='addAnonymousPermissionsToSpace114Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='removeAnonymousPermissionFromSpace'>
+			<soap:operation
+				soapAction='removeAnonymousPermissionFromSpace' style='rpc' />
+			<wsdl:input
+				name='removeAnonymousPermissionFromSpace115In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output
+				name='removeAnonymousPermissionFromSpace115Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='NotPermittedException'>
+				<soap:fault name='NotPermittedException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name='getPagePermissions'>
+			<soap:operation soapAction='getPagePermissions' style='rpc' />
+			<wsdl:input name='getPagePermissions116In'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:input>
+			<wsdl:output name='getPagePermissions116Out'>
+				<soap:body use='encoded' namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:output>
+			<wsdl:fault name='InvalidSessionException'>
+				<soap:fault name='InvalidSessionException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+			<wsdl:fault name='RemoteException'>
+				<soap:fault name='RemoteException' use='encoded'
+					namespace='x'
+					encodingStyle='http://schemas.xmlsoap.org/soap/encoding/' />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name='ConfluenceService'>
+		<wsdl:documentation>
+			instance of class $Proxy84
+		</wsdl:documentation>
+		<wsdl:port name='ConfluenceSoapService'
+			binding='tns:ConfluenceSoapService'>
+			<soap:address
+				location='http://confluence.atlassian.com/rpc/soap/confluenceservice-v1' />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
