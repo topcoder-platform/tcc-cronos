@@ -1,0 +1,838 @@
+{\rtf1\ansi\ansicpg936\uc2 \deff0\deflang1033\deflangfe2052{\fonttbl{\f0\froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman{\*\falt Palatino};}{\f1\fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial{\*\falt Arial};}
+{\f2\fmodern\fcharset0\fprq1{\*\panose 02070309020205020404}Courier New{\*\falt Courier New};}{\f3\froman\fcharset2\fprq2{\*\panose 05050102010706020507}Symbol{\*\falt Symbol};}
+{\f14\fnil\fcharset2\fprq2{\*\panose 05000000000000000000}Wingdings{\*\falt Wingdings};}{\f17\fnil\fcharset134\fprq2{\*\panose 02010600030101010101}\'cb\'ce\'cc\'e5{\*\falt SimSun};}
+{\f27\fnil\fcharset134\fprq2{\*\panose 02010600030101010101}@\'cb\'ce\'cc\'e5;}{\f35\froman\fcharset238\fprq2 Times New Roman CE{\*\falt Palatino};}{\f36\froman\fcharset204\fprq2 Times New Roman Cyr{\*\falt Palatino};}
+{\f38\froman\fcharset161\fprq2 Times New Roman Greek{\*\falt Palatino};}{\f39\froman\fcharset162\fprq2 Times New Roman Tur{\*\falt Palatino};}{\f40\froman\fcharset177\fprq2 Times New Roman (Hebrew){\*\falt Palatino};}
+{\f41\froman\fcharset178\fprq2 Times New Roman (Arabic){\*\falt Palatino};}{\f42\froman\fcharset186\fprq2 Times New Roman Baltic{\*\falt Palatino};}{\f43\fswiss\fcharset238\fprq2 Arial CE{\*\falt Arial};}
+{\f44\fswiss\fcharset204\fprq2 Arial Cyr{\*\falt Arial};}{\f46\fswiss\fcharset161\fprq2 Arial Greek{\*\falt Arial};}{\f47\fswiss\fcharset162\fprq2 Arial Tur{\*\falt Arial};}{\f48\fswiss\fcharset177\fprq2 Arial (Hebrew){\*\falt Arial};}
+{\f49\fswiss\fcharset178\fprq2 Arial (Arabic){\*\falt Arial};}{\f50\fswiss\fcharset186\fprq2 Arial Baltic{\*\falt Arial};}{\f51\fmodern\fcharset238\fprq1 Courier New CE{\*\falt Courier New};}
+{\f52\fmodern\fcharset204\fprq1 Courier New Cyr{\*\falt Courier New};}{\f54\fmodern\fcharset161\fprq1 Courier New Greek{\*\falt Courier New};}{\f55\fmodern\fcharset162\fprq1 Courier New Tur{\*\falt Courier New};}
+{\f56\fmodern\fcharset177\fprq1 Courier New (Hebrew){\*\falt Courier New};}{\f57\fmodern\fcharset178\fprq1 Courier New (Arabic){\*\falt Courier New};}{\f58\fmodern\fcharset186\fprq1 Courier New Baltic{\*\falt Courier New};}
+{\f173\fnil\fcharset0\fprq2 SimSun Western{\*\falt SimSun};}{\f253\fnil\fcharset0\fprq2 @\'cb\'ce\'cc\'e5 Western;}}{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;
+\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;\red128\green128\blue128;\red192\green192\blue192;\red51\green102\blue255;
+\red51\green51\blue153;}{\stylesheet{\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\loch\f0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 \snext0 Normal;}{\s1\ql \li0\ri0\sb120\sa60\sl240\slmult0
+\keepn\nowidctlpar\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1033\loch\f1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 heading 1;}{
+\s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\f1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 \sbasedon1 \snext0 
+heading 2;}{\s3\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl2\outlinelevel2\adjustright\rin0\lin0\itap0 \i\fs20\lang1033\langfe1033\loch\f1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 
+\sbasedon1 \snext0 heading 3;}{\s4\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl3\outlinelevel3\adjustright\rin0\lin0\itap0 
+\fs20\lang1033\langfe1033\loch\f1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 \sbasedon1 \snext0 heading 4;}{\s5\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl4\outlinelevel4\adjustright\rin0\lin0\itap0 \fs22\lang1033\langfe1033\loch\f1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 heading 5;}{\s6\ql \li0\ri0\sb240\sa60\sl240\slmult0
+\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl5\outlinelevel5\adjustright\rin0\lin0\itap0 \i\fs22\lang1033\langfe1033\loch\f1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 heading 6;}{
+\s7\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl6\outlinelevel6\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1033\loch\f1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 heading 7;}
+{\s8\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl7\outlinelevel7\adjustright\rin0\lin0\itap0 \i\fs20\lang1033\langfe1033\loch\f1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext0 
+heading 8;}{\s9\ql \li0\ri0\sb240\sa60\sl240\slmult0\nowidctlpar\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl8\outlinelevel8\adjustright\rin0\lin0\itap0 \b\i\fs18\lang1033\langfe1033\loch\f1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 
+\sbasedon0 \snext0 heading 9;}{\*\cs10 \additive Default Paragraph Font;}{\*\cs15 \additive \ul\cf2 \sbasedon10 Hyperlink;}{\s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1033\langfe1033\loch\f1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext16 Body Text;}{\s17\ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 
+\fs24\cf1\lang1033\langfe2052\loch\f0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp2052 \sbasedon0 \snext16 \sautoupd InfoBlue;}{\s18\ql \li0\ri0\widctlpar\tqc\tx4320\tqr\tx8640\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 
+\fs24\lang1033\langfe1033\loch\f0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext18 footer;}{\*\cs19 \additive \sbasedon10 page number;}{\s20\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \cbpat9 
+\fs24\lang1033\langfe1033\loch\f0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 \sbasedon0 \snext20 Document Map;}{\*\cs21 \additive \ul\cf12 \sbasedon10 FollowedHyperlink;}}{\*\listtable{\list\listtemplateid-985754512{\listlevel\levelnfc0\levelnfcn0
+\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'02\'00.;}{\levelnumbers\'01;}\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1 \s1\jclisttab\tx360 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0
+\levelstartat1\levelspace0\levelindent0{\leveltext\'03\'00.\'01;}{\levelnumbers\'01\'03;}\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1 \s2\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0
+\levelindent0{\leveltext\'05\'00.\'01.\'02;}{\levelnumbers\'01\'03\'05;}\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1 \s3\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0
+{\leveltext\'07\'00.\'01.\'02.\'03;}{\levelnumbers\'01\'03\'05\'07;}\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1 \s4\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'09\'00.\'01.\'02.\'03.\'04;}{\levelnumbers\'01\'03\'05\'07\'09;}\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1 \s5\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'0b\'00.\'01.\'02.\'03.\'04.\'05;}{\levelnumbers\'01\'03\'05\'07\'09\'0b;}\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1 \s6\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0
+{\leveltext\'0d\'00.\'01.\'02.\'03.\'04.\'05.\'06;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d;}\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1 \s7\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace0\levelindent0{\leveltext\'0f\'00.\'01.\'02.\'03.\'04.\'05.\'06.\'07;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d\'0f;}\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1 \s8\jclisttab\tx0 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0
+\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'11\'00.\'01.\'02.\'03.\'04.\'05.\'06.\'07.\'08;}{\levelnumbers\'01\'03\'05\'07\'09\'0b\'0d\'0f\'11;}\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1 \s9\jclisttab\tx0 }{\listname 
+;}\listid-5}{\list\listtemplateid-160384884\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\chbrdr\brdrnone\brdrcf1 
+\chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li1080\jclisttab\tx1080 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698713\'02\'01.;}{\levelnumbers\'01;}\chbrdr
+\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1 \fi-360\li1800\jclisttab\tx1800 }{\listlevel\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698715\'02\'02.;}{\levelnumbers\'01;}\chbrdr
+\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1 \fi-180\li2520\jclisttab\tx2520 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698703\'02\'03.;}{\levelnumbers\'01;}\chbrdr
+\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1 \fi-360\li3240\jclisttab\tx3240 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698713\'02\'04.;}{\levelnumbers\'01;}\chbrdr
+\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1 \fi-360\li3960\jclisttab\tx3960 }{\listlevel\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698715\'02\'05.;}{\levelnumbers\'01;}\chbrdr
+\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1 \fi-180\li4680\jclisttab\tx4680 }{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698703\'02\'06.;}{\levelnumbers\'01;}\chbrdr
+\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1 \fi-360\li5400\jclisttab\tx5400 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698713\'02\'07.;}{\levelnumbers\'01;}\chbrdr
+\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1 \fi-360\li6120\jclisttab\tx6120 }{\listlevel\levelnfc2\levelnfcn2\leveljc2\leveljcn2\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698715\'02\'08.;}{\levelnumbers\'01;}\chbrdr
+\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1 \fi-180\li6840\jclisttab\tx6840 }{\listname ;}\listid806357716}{\list\listtemplateid932329388\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0
+{\leveltext\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li1080\jclisttab\tx1080 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0
+{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li1800\jclisttab\tx1800 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0
+\levelindent0{\leveltext\leveltemplateid67698693\'01{\uc1\u-3929 ?};}{\levelnumbers;}\f14\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li2520\jclisttab\tx2520 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0
+\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698689\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li3240\jclisttab\tx3240 }{\listlevel\levelnfc23\levelnfcn23\leveljc0
+\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li3960\jclisttab\tx3960 }{\listlevel\levelnfc23\levelnfcn23
+\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698693\'01{\uc1\u-3929 ?};}{\levelnumbers;}\f14\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li4680\jclisttab\tx4680 }{\listlevel
+\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698689\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li5400
+\jclisttab\tx5400 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 
+\fi-360\li6120\jclisttab\tx6120 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698693\'01{\uc1\u-3929 ?};}{\levelnumbers;}\f14\chbrdr\brdrnone\brdrcf1 
+\chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li6840\jclisttab\tx6840 }{\listname ;}\listid876431865}{\list\listtemplateid-350567710\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0
+{\leveltext\leveltemplateid67698689\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li720\jclisttab\tx720 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace0\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li1440\jclisttab\tx1440 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0
+\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698693\'01{\uc1\u-3929 ?};}{\levelnumbers;}\f14\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li2160\jclisttab\tx2160 }{\listlevel\levelnfc23\levelnfcn23\leveljc0
+\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698689\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li2880\jclisttab\tx2880 }{\listlevel\levelnfc23
+\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li3600\jclisttab\tx3600 }{\listlevel
+\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698693\'01{\uc1\u-3929 ?};}{\levelnumbers;}\f14\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li4320
+\jclisttab\tx4320 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698689\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\chbrdr\brdrnone\brdrcf1 
+\chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li5040\jclisttab\tx5040 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\chbrdr
+\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li5760\jclisttab\tx5760 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\leveltemplateid67698693
+\'01{\uc1\u-3929 ?};}{\levelnumbers;}\f14\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li6480\jclisttab\tx6480 }{\listname ;}\listid1583029215}{\list\listtemplateid-1544512574\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0
+\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698689\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li1440\jclisttab\tx1440 }{\listlevel\levelnfc23
+\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li2160\jclisttab\tx2160 }{\listlevel
+\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698693\'01{\uc1\u-3929 ?};}{\levelnumbers;}\f14\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li2880
+\jclisttab\tx2880 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698689\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\chbrdr\brdrnone\brdrcf1 
+\chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li3600\jclisttab\tx3600 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\chbrdr
+\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li4320\jclisttab\tx4320 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext\leveltemplateid67698693
+\'01{\uc1\u-3929 ?};}{\levelnumbers;}\f14\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li5040\jclisttab\tx5040 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\leveltext
+\leveltemplateid67698689\'01{\uc1\u-3913 ?};}{\levelnumbers;}\f3\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li5760\jclisttab\tx5760 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360
+\levelindent0{\leveltext\leveltemplateid67698691\'01o;}{\levelnumbers;}\f2\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li6480\jclisttab\tx6480 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1
+\levelspace360\levelindent0{\leveltext\leveltemplateid67698693\'01{\uc1\u-3929 ?};}{\levelnumbers;}\f14\chbrdr\brdrnone\brdrcf1 \chshdng0\chcfpat1\chcbpat1\fbias0 \fi-360\li7200\jclisttab\tx7200 }{\listname ;}\listid2124376002}}{\*\listoverridetable
+{\listoverride\listid-5\listoverridecount9{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat
+\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}\ls1}{\listoverride\listid806357716
+\listoverridecount9{\lfolevel}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}
+{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}{\lfolevel\listoverridestartat\levelstartat1}\ls2}{\listoverride\listid876431865\listoverridecount9{\lfolevel}{\lfolevel}{\lfolevel}{\lfolevel}{\lfolevel}{\lfolevel}
+{\lfolevel}{\lfolevel}{\lfolevel}\ls3}{\listoverride\listid876431865\listoverridecount0\ls4}{\listoverride\listid806357716\listoverridecount0\ls5}{\listoverride\listid1583029215\listoverridecount0\ls6}{\listoverride\listid2124376002\listoverridecount0\ls7
+}}{\info{\title <<Component>> <<Version>> Component Specification}{\author gpaul}{\operator user}{\creatim\yr2004\mo6\dy16\hr17\min44}{\revtim\yr2008\mo4\dy23\hr5\min3}{\version237}{\edmins1124}{\nofpages14}{\nofwords4095}{\nofchars23345}
+{\*\company TopCoder}{\nofcharsws0}{\vern8243}}\paperw12240\paperh15840\margl1800\margr1800\margt1440\margb1440\gutter0 \ftnbj\aenddoc\noxlattoyen\expshrtn\noultrlspc\dntblnsbdb\nospaceforul\hyphcaps0\formshade\horzdoc\dgmargin\dghspace180\dgvspace180
+\dghorigin1800\dgvorigin1440\dghshow1\dgvshow1\jexpand\viewkind1\viewscale100\pgbrdrhead\pgbrdrfoot\splytwnine\ftnlytwnine\htmautsp\nolnhtadjtbl\useltbaln\alntblind\lytcalctblwd\lyttblrtgr\lnbrkrule \fet0{\*\ftnsep \pard\plain 
+\s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\chftnsep 
+\par }}{\*\ftnsepc \pard\plain \s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\chftnsepc 
+\par }}{\*\aftnsep \pard\plain \s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\chftnsep 
+\par }}{\*\aftnsepc \pard\plain \s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\chftnsepc 
+\par }}\sectd \linex0\endnhere\sectlinegrid360\sectdefaultcl {\footer \pard\plain \s18\ql \li0\ri0\widctlpar\tqc\tx4320\tqr\tx8640\pvpara\phmrg\posxc\posy0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 
+\fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\field{\*\fldinst {\cs19 \hich\af0\dbch\af17\loch\f0 PAGE  }}{\fldrslt {\cs19\lang1024\langfe1024\noproof \hich\af0\dbch\af17\loch\f0 8}}}{\cs19 
+\par }\pard \s18\ql \li0\ri0\widctlpar\tqc\tx4320\tqr\tx8640\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {
+\par }}{\*\pnseclvl1\pnucrm\pnstart1\pnindent720\pnhang{\pntxta \dbch .}}{\*\pnseclvl2\pnucltr\pnstart1\pnindent720\pnhang{\pntxta \dbch .}}{\*\pnseclvl3\pndec\pnstart1\pnindent720\pnhang{\pntxta \dbch .}}{\*\pnseclvl4\pnlcltr\pnstart1\pnindent720\pnhang
+{\pntxta \dbch )}}{\*\pnseclvl5\pndec\pnstart1\pnindent720\pnhang{\pntxtb \dbch (}{\pntxta \dbch )}}{\*\pnseclvl6\pnlcltr\pnstart1\pnindent720\pnhang{\pntxtb \dbch (}{\pntxta \dbch )}}{\*\pnseclvl7\pnlcrm\pnstart1\pnindent720\pnhang{\pntxtb \dbch (}
+{\pntxta \dbch )}}{\*\pnseclvl8\pnlcltr\pnstart1\pnindent720\pnhang{\pntxtb \dbch (}{\pntxta \dbch )}}{\*\pnseclvl9\pnlcrm\pnstart1\pnindent720\pnhang{\pntxtb \dbch (}{\pntxta \dbch )}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\tx720\aspalpha\aspnum\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\fs28\ul \hich\af1\dbch\af17\loch\f1 Cockpit Phase Handlers 1.0 Component Specification
+\par }\pard\plain \s16\ql \li720\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {
+\par {\listtext\pard\plain\s1 \b\f1\lang1033\langfe1033\langfenp1033 \hich\af1\dbch\af17\loch\f1 1.\tab}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 Design
+\par }\pard\plain \ql \li720\ri0\widctlpar\faauto\rin0\lin720\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af0\dbch\af17\loch\f0 
+The TopCoder Client Cockpit application defines a set of phase types. This component provides the plugins to the Phase Management component, whose logic is to check if these phases can be executed. Extra logic to execute the phases is also provided.  The 
+\hich\af0\dbch\af17\loch\f0 c\hich\af0\dbch\af17\loch\f0 omponent also provides an EmailMessageGenerator interface and a default implementation that will be used to generate the email message to be sent.
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033 \hich\af1\dbch\af17\loch\f1 1.1\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 Design Patterns 
+\par }\pard\plain \s17\ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs24\cf1\lang1033\langfe2052\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp2052 {\hich\af0\dbch\af17\loch\f0 Strategy \hich\f0 \endash \loch\f0 
+ Different EmailMessageGenerator implementations can be plugged into the handl\hich\af0\dbch\af17\loch\f0 ers.
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033 \hich\af1\dbch\af17\loch\f1 1.2\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 Industry Standards 
+\par }\pard\plain \s17\ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs24\cf1\lang1033\langfe2052\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp2052 {\hich\af0\dbch\af17\loch\f0 JNDI
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033 \hich\af1\dbch\af17\loch\f1 1.3\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 Required Algorithms 
+\par }\pard\plain \s3\ql \fi720\li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\aspalpha\aspnum\faauto\outlinelevel2\adjustright\rin0\lin0\itap0 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\b\i0\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 1.3.1 How to determine the end cases for the Schedule phase
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {
+\par \hich\af0\dbch\af17\loch\f0                     -if }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 Contest.startDate}{\hich\af0\dbch\af17\loch\f0  has been reached and }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 Contest.endDate}{\hich\af0\dbch\af17\loch\f0 
+ has not been 
+\par \hich\af0\dbch\af17\loch\f0                       reached the Schedule \hich\af0\dbch\af17\loch\f0 phase will end (use }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 System.currentTimeMillis()}{\hich\af0\dbch\af17\loch\f0  to  
+\par \hich\af0\dbch\af17\loch\f0                       get current date) and the phase will be changed to Active
+\par 
+\par }\pard\plain \s3\ql \fi720\li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\aspalpha\aspnum\faauto\outlinelevel2\adjustright\rin0\lin0\itap0 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\b\i0\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 1.3.2 How to determine the end cases for the Active phase
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {
+\par \hich\af0\dbch\af17\loch\f0                     -if }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 Contest.endDate}{\hich\af0\dbch\af17\loch\f0  has been reached (use }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 Sy\hich\af2\dbch\af17\loch\f2 stem.currentTimeMillis()}{
+\hich\af0\dbch\af17\loch\f0  to  
+\par \hich\af0\dbch\af17\loch\f0                       get current date) and the minimum number of submissions (retrieved from  
+\par \hich\af0\dbch\af17\loch\f0                       project.attributes using the "MinimumSubmissions" key) has been reached  
+\par \hich\af0\dbch\af17\loch\f0                       \hich\af0\dbch\af17\loch\f0 the Active phase will end and the phase will be changed to 
+\par \hich\af0\dbch\af17\loch\f0                       Action Required
+\par \hich\af0\dbch\af17\loch\f0                  
+\par \hich\af0\dbch\af17\loch\f0                      -if }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 Contest.endDate}{\hich\af0\dbch\af17\loch\f0  has been reached (use }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 System.currentTimeMillis()}{\hich\af0\dbch\af17\loch\f0 
+ to  
+\par \hich\af0\dbch\af17\loch\f0                       get current date) and t\hich\af0\dbch\af17\loch\f0 he minimum number of submissions has not been 
+\par \hich\af0\dbch\af17\loch\f0                       reached the Active phase will end and the phase will be 
+\par \hich\af0\dbch\af17\loch\f0                       changed to Insufficient Submissions \hich\f0 \endash \loch\f0  ReRun Possible
+\par 
+\par \tab \hich\af0\dbch\af17\loch\f0          -to determine if the minimum number of submi\hich\af0\dbch\af17\loch\f0 ssions has been reached get 
+\par \hich\af0\dbch\af17\loch\f0                        the minimum number of submissions from }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 project.attributes}{\hich\af0\dbch\af17\loch\f0  using the 
+\par \hich\af0\dbch\af17\loch\f0                        "MinimumSubmissions" key and compare it with the number of 
+\par \hich\af0\dbch\af17\loch\f0                        submissions of the contest(}{\f2\fs18 \hich\af2\dbch\af17\loch\f2 Co\hich\af2\dbch\af17\loch\f2 ntest.submissions}{\hich\af0\dbch\af17\loch\f0 )
+\par 
+\par 
+\par 
+\par }\pard\plain \s3\ql \fi720\li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\aspalpha\aspnum\faauto\outlinelevel2\adjustright\rin0\lin0\itap0 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\b\i0\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 1.3.3 How to determine the end cases for the Action Required phase
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {
+\par }\pard \ql \li1260\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1260\itap0 {\hich\af0\dbch\af17\loch\f0 -if the client has chosen a winner (}{\f2\fs18 \hich\af2\dbch\af17\loch\f2 Contest.results}{\hich\af0\dbch\af17\loch\f0 
+ is not empty) the Action Required phase will end and the phase will be changed to Completed.
+\par \hich\af0\dbch\af17\loch\f0 -if if there are less\hich\af0\dbch\af17\loch\f0  than 24 hours before }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 Contest.winnerAnnouncementDeadline}{\hich\af0\dbch\af17\loch\f0 
+ date the In Danger phase will be started; to check if there less than 24 hours before the deadline get the current date (}{\f2\fs18 \hich\af2\dbch\af17\loch\f2 System.currentTimeMillis()}{\hich\af0\dbch\af17\loch\f0 
+) and deduct this from Contest. winnerAnnouncementDe\hich\af0\dbch\af17\loch\f0 adline.getTime(). If the difference is less then 24*60*60*1000 and the difference is positive then there are less than 24 hours before the deadline
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {
+\par }\pard\plain \s3\ql \fi720\li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\aspalpha\aspnum\faauto\outlinelevel2\adjustright\rin0\lin0\itap0 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\b\i0\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 1.3.4 How to determine the end cases for the In Danger phase
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {
+\par }\pard \ql \li1260\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1260\itap0 {\hich\af0\dbch\af17\loch\f0 -if the client has chosen a winner (}{\f2\fs18 \hich\af2\dbch\af17\loch\f2 Contest.r\hich\af2\dbch\af17\loch\f2 esults}{
+\hich\af0\dbch\af17\loch\f0  is not empty) the In Danger phase will end and the phase will be changed to Completed.
+\par \hich\af0\dbch\af17\loch\f0 -if }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 Contest.winnerAnnouncementDeadline}{\hich\af0\dbch\af17\loch\f0  has been reached the Abandoned phase will be started (see 1.3.3 algorithm, second part)}{\b 
+\par 
+\par }\pard\plain \s3\ql \fi720\li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\aspalpha\aspnum\faauto\outlinelevel2\adjustright\rin0\lin0\itap0 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\b\i0\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 1\hich\af0\dbch\af17\loch\f0 .3.5 How to determine the end cases for the Extended phase
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {
+\par }\pard \ql \li1260\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1260\itap0 {\hich\af0\dbch\af17\loch\f0 -if the }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 Contest.endDate}{\hich\af0\dbch\af17\loch\f0 
+ has been reached and the minimum number of submissions has been reached (see 1.3.2 for details) the Action Required phase is started
+\par \hich\af0\dbch\af17\loch\f0 - if the }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 Contest.endDate}{\hich\af0\dbch\af17\loch\f0  has been reach\hich\af0\dbch\af17\loch\f0 
+ed and the minimum number of submissions has not been reached (see 1.3.2 for details) the Insufficient Submissions phase is started
+\par 
+\par }\pard\plain \s3\ql \fi720\li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\aspalpha\aspnum\faauto\outlinelevel2\adjustright\rin0\lin0\itap0 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\b\i0\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 1.3.6 How to determine the end cases for the Repost phase
+\par }\pard\plain \ql \li1260\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1260\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af0\dbch\af17\loch\f0 -if the }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 
+Contest.endDate}{\hich\af0\dbch\af17\loch\f0  has been reached and the minimum number o\hich\af0\dbch\af17\loch\f0 f submissions has been reached (see 1.3.2 for details) the Action Required phase is started
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {
+\par }\pard \ql \li1260\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1260\itap0 {\hich\af0\dbch\af17\loch\f0 - if the }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 Contest.endDate}{\hich\af0\dbch\af17\loch\f0 
+ has been reached and the minimum number of submissions has not been reached (see 1.3.2 for details) the Insufficient Submissions \hich\f0 \endash \loch\f0  ReRun P\hich\af0\dbch\af17\loch\f0 ossible phase is started
+\par 
+\par }\pard\plain \s3\ql \fi720\li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar\aspalpha\aspnum\faauto\outlinelevel2\adjustright\rin0\lin0\itap0 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\b\i0\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 1.3.7 How to determine the end cases for the Insufficient Submissions phase
+\par }\pard\plain \ql \li1260\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1260\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af0\dbch\af17\loch\f0 -if the }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 
+Contest.winnerAnnouncementDeadline}{\hich\af0\dbch\af17\loch\f0  is reached the Abandoned phase is started (see 1.3.3 algorithm, second part)}{\b 
+\par }{
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {\b \hich\af0\dbch\af17\loch\f0 1.3.8 How to set the data of the template
+\par }\pard \ql \fi540\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\hich\af0\dbch\af17\loch\f0 -get the template fields
+\par }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 TemplateFields root = template.getFields();
+\par }{\hich\af0\dbch\af17\loch\f0 -get the nodes
+\par }\pard\plain \s16\ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f2\fs18 \hich\af2\dbch\af17\loch\f2      Node[] nodes = root.getNodes();
+
+\par \hich\af2\dbch\af17\loch\f2      }{\f0\fs24 \hich\af0\dbch\af17\loch\f0 -populate the nodes
+\par }{\f2\fs18 \hich\af2\dbch\af17\loch\f2      for (int i = 0; i <  nodex.length; i++) \{
+\par \hich\af2\dbch\af17\loch\f2          if (nodes[i]\hich\af2\dbch\af17\loch\f2  instanceof Field) \{
+\par \hich\af2\dbch\af17\loch\f2             }{\f0\fs24 \hich\af0\dbch\af17\loch\f0 -get the value of the node from phase.attributes using 
+\par \hich\af0\dbch\af17\loch\f0                        nodes[i].name as key
+\par \hich\af0\dbch\af17\loch\f0                      -if null was returned get the value of the node from 
+\par \hich\af0\dbch\af17\loch\f0                       \hich\af0\dbch\af17\loch\f0 phase.project.attributes using nodes[i].name as key
+\par \hich\af0\dbch\af17\loch\f0                      -if the value is instance of Long,Date or String set the value to the  
+\par \hich\af0\dbch\af17\loch\f0                        node using the setter (set it to }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 value.toString()}{\f0\fs24 \hich\af0\dbch\af17\loch\f0 )
+\par }{\f2\fs18 \hich\af2\dbch\af17\loch\f2          \}
+\par \hich\af2\dbch\af17\loch\f2      \}
+\par \hich\af2\dbch\af17\loch\f2      -}{\f0\fs24 \hich\af0\dbch\af17\loch\f0 set the data \hich\af0\dbch\af17\loch\f0 to the template
+\par \hich\af0\dbch\af17\loch\f0          String message = }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 template.applyTemplate(root); \tab           
+\par }\pard\plain \ql \fi540\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {\b 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\b \hich\af0\dbch\af17\loch\f0 Note: }{\hich\af0\dbch\af17\loch\f0 
+the phase changing (specified in the above algorithms) is not performed by the handlers (it is specified to provide a better overall understanding); the phase start\hich\af0\dbch\af17\loch\f0 
+ing and ending (opening and closing) will be performed by the PhaseManager implementations in start(phase,operator) and end(phase,operator) methods; the handlers perform additional logic like sending emails and changing the Contest status (or phase)
+
+\par 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033 \hich\af1\dbch\af17\loch\f1 1.4\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 C\hich\af1\dbch\af17\loch\f1 
+omponent Class Overview
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {
+\par }{\b \hich\af0\dbch\af17\loch\f0 AbstractPhaseHandler
+\par }{\hich\af0\dbch\af17\loch\f0 This class is an abstract handler that will be extended by all the other concrete handlers. It uses Configuration API component for configuration purposes. It has a method that will send an email to resources a
+\hich\af0\dbch\af17\loch\f0 
+ssociated with timeline notification for the project, in case the phase ended or started. It has two other methods that will be used to send an email to the client in case there are less than eight (or one) hours before the deadline for the winner announc
+\hich\af0\dbch\af17\loch\f0 e\hich\af0\dbch\af17\loch\f0 ment. It uses Document Generator component to create the body of the message and Email Engine to send the email.
+\par \hich\af0\dbch\af17\loch\f0 The fields are initialized in the constructor and never changed so there are no thread safety issues.\tab 
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 DraftPhaseHandler
+\par }{\hich\af0\dbch\af17\loch\f0 This phase handler wi\hich\af0\dbch\af17\loch\f0 ll be used by the PhaseManager implementations to:
+\par \hich\af0\dbch\af17\loch\f0 -check if the Draft phase can be started or ended 
+\par \hich\af0\dbch\af17\loch\f0 -send an email to resources associated with timeline notification for the project if the phase has started or ended and change the status of the contest t\hich\af0\dbch\af17\loch\f0 o "Draft" if the phase has started.
+\par \hich\af0\dbch\af17\loch\f0 This class is not completely thread safe because, when the cache is empty, two calls of perform method, at the same time, may cause unexpected results. Also, two calls of perform method, at the same time, for the same ph
+\hich\af0\dbch\af17\loch\f0 ase object may also cause unexpected results.
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 ScheduledPhaseHandler
+\par }{\hich\af0\dbch\af17\loch\f0 This phase handler will be used by the PhaseManager implementations to:
+\par \hich\af0\dbch\af17\loch\f0 -check if the "Scheduled" phase can be started or ended 
+\par \hich\af0\dbch\af17\loch\f0 -send an email to resources associated with timeline notification for the project if the phase has started or ended
+\par \hich\af0\dbch\af17\loch\f0 This class is not completely thread safe because, when the cache is empty, two calls of perform method, at the same time, may cause unexpect\hich\af0\dbch\af17\loch\f0 
+ed results. Also, two calls of perform method, at the same time, for the same phase object may also cause unexpected results.
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 ActivePhaseHandler
+\par }{\hich\af0\dbch\af17\loch\f0 This phase handler will be used by the PhaseManager implementations to:
+\par \hich\af0\dbch\af17\loch\f0 -check if the Active phase can be star\hich\af0\dbch\af17\loch\f0 ted or ended 
+\par \hich\af0\dbch\af17\loch\f0 -send an email to resources associated with timeline notification for the project if the phase has started or ended and change the status of the contest to "Active" if the phase has started
+\par \hich\af0\dbch\af17\loch\f0 This class is not completely thread safe because, wh\hich\af0\dbch\af17\loch\f0 
+en the cache is empty, two calls of perform method, at the same time, may cause unexpected results. Also, two calls of perform method, at the same time, for the same phase object may also cause unexpected results.
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 ActionRequiredPhaseHandler
+\par }{\hich\af0\dbch\af17\loch\f0 This phase han\hich\af0\dbch\af17\loch\f0 dler will be used by the PhaseManager implementations to:
+\par \hich\af0\dbch\af17\loch\f0 -check if the "Action Required" phase can be started or ended 
+\par \hich\af0\dbch\af17\loch\f0 -send an email to resources associated with timeline notification for the project if the phase has started or ended and change the stat\hich\af0\dbch\af17\loch\f0 us of the contest to "ActionRequired" if the phase has started.
+
+\par \hich\af0\dbch\af17\loch\f0 This class is not completely thread safe because, when the cache is empty, two calls of perform method, at the same time, may cause unexpected results. Also, two calls of perform method, at th\hich\af0\dbch\af17\loch\f0 
+e same time, for the same phase object may also cause unexpected results.
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 InDangerPhaseHandler
+\par }{\hich\af0\dbch\af17\loch\f0 This phase handler will be used by the PhaseManager implementations to:
+\par \hich\af0\dbch\af17\loch\f0 -check if the In Danger phase can be started or ended 
+\par \hich\af0\dbch\af17\loch\f0 -send an email to resources assoc\hich\af0\dbch\af17\loch\f0 iated with timeline notification for the project if the phase has started or ended and change the status of the contest to "InDanger" if the phase has started
+\par \hich\af0\dbch\af17\loch\f0 -send an eight hour reminder email to the client if less than eight hours remain until the deadli\hich\af0\dbch\af17\loch\f0 ne for the winner announcement 
+\par \hich\af0\dbch\af17\loch\f0 -send an one hour reminder email to the client if less than one hour remain until the deadline for the winner announcement 
+\par \hich\af0\dbch\af17\loch\f0 This class is not completely thread safe because, when the cache is empty, two calls of perform meth\hich\af0\dbch\af17\loch\f0 
+od, at the same time, may cause unexpected results. Also, two calls of perform method, at the same time, for the same phase object may also cause unexpected results.
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 InsufficientSubmissionsRerunPossible
+\par }{\hich\af0\dbch\af17\loch\f0 This phase handler will be used by the PhaseManager \hich\af0\dbch\af17\loch\f0 implementations to:
+\par \hich\af0\dbch\af17\loch\f0 -check if the "Insufficient Submissions -ReRun Possible" phase can be started or ended 
+\par \hich\af0\dbch\af17\loch\f0 -send an email to resources associated with timeline notification for the project if the phase has started or ended and change the status of the con\hich\af0\dbch\af17\loch\f0 
+test to "InsufficientSubmissionsReRunPossible" if the phase has started.
+\par \hich\af0\dbch\af17\loch\f0 This class is not completely thread safe because, when the cache is empty, two calls of perform method, at the same time, may cause unexpected results. Also, two calls of perform meth\hich\af0\dbch\af17\loch\f0 
+od, at the same time, for the same phase object may also cause unexpected results.
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 ExtendedPhaseHandler
+\par }{\hich\af0\dbch\af17\loch\f0 This phase handler will be used by the PhaseManager implementations to:
+\par \hich\af0\dbch\af17\loch\f0 -check if the "Extended" phase can be started or ended 
+\par \hich\af0\dbch\af17\loch\f0 -send an email to resources associated with timeline notification for the project if the phase has started or ended and change the status of the contest to "Extended" if the phase has started.
+\par \hich\af0\dbch\af17\loch\f0 This class is not completely thread safe because, when the cach\hich\af0\dbch\af17\loch\f0 
+e is empty, two calls of perform method, at the same time, may cause unexpected results. Also, two calls of perform method, at the same time, for the same phase object may also cause unexpected results.
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 RepostPhaseHandler
+\par }{\hich\af0\dbch\af17\loch\f0 This phase handler will be used b\hich\af0\dbch\af17\loch\f0 y the PhaseManager implementations to:
+\par \hich\af0\dbch\af17\loch\f0 -check if the "Repost" phase can be started or ended 
+\par \hich\af0\dbch\af17\loch\f0 -send an email to resources associated with timeline notification for the project if the phase has started or ended and change the status of the contest to "Repost\hich\af0\dbch\af17\loch\f0 " if the phase has started.
+\par \hich\af0\dbch\af17\loch\f0 
+This class is not completely thread safe because, when the cache is empty, two calls of perform method, at the same time, may cause unexpected results. Also, two calls of perform method, at the same time, for the same phase obje
+\hich\af0\dbch\af17\loch\f0 ct may also cause unexpected results.
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 InsufficientSubmissionsPhaseHandler
+\par }{\hich\af0\dbch\af17\loch\f0 This phase handler will be used by the PhaseManager implementations to:
+\par \hich\af0\dbch\af17\loch\f0 -check if the "Insufficient Submissions" phase can be started or ended 
+\par \hich\af0\dbch\af17\loch\f0 -send an email to resources associate\hich\af0\dbch\af17\loch\f0 
+d with timeline notification for the project if the phase has started or ended and change the status of the contest to "InsufficientSubmissions" if the phase has started.
+\par \hich\af0\dbch\af17\loch\f0 This class is not completely thread safe because, when the cache is empty, two calls \hich\af0\dbch\af17\loch\f0 
+of perform method, at the same time, may cause unexpected results. Also, two calls of perform method, at the same time, for the same phase object may also cause unexpected results.
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 NoWinnerChosenPhaseHandler
+\par }{\hich\af0\dbch\af17\loch\f0 This phase handler will be used by the PhaseMan\hich\af0\dbch\af17\loch\f0 ager implementations to:
+\par \hich\af0\dbch\af17\loch\f0 -check if the "No Winner Chosen" phase can be started or ended 
+\par \hich\af0\dbch\af17\loch\f0 -send an email to resources associated with timeline notification for the project if the phase has started or ended and change the status of the contest to "No Winner \hich\af0\dbch\af17\loch\f0 
+Chosen" if the phase has started.
+\par \hich\af0\dbch\af17\loch\f0 This class is not completely thread safe because, when the cache is empty, two calls of perform method, at the same time, may cause unexpected results. Also, two calls of perform method, at the same time, for the same phas
+\hich\af0\dbch\af17\loch\f0 e object may also cause unexpected results.
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 CompletedPhaseHandler
+\par }{\hich\af0\dbch\af17\loch\f0 This phase handler will be used by the PhaseManager implementations to:
+\par \hich\af0\dbch\af17\loch\f0 -check if the "Completed" phase can be started or ended 
+\par \hich\af0\dbch\af17\loch\f0 -send an email to resources associated with timeline notific\hich\af0\dbch\af17\loch\f0 ation for the project if the phase has started or ended and change the status of the contest to "Completed" if the phase has started.
+
+\par \hich\af0\dbch\af17\loch\f0 This class is not completely thread safe because, when the cache is empty, two calls of perform method, at the same t\hich\af0\dbch\af17\loch\f0 
+ime, may cause unexpected results. Also, two calls of perform method, at the same time, for the same phase object may also cause unexpected results.
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 CancelledPhaseHandler
+\par }{\hich\af0\dbch\af17\loch\f0 This phase handler will be used by the PhaseManager implementations to:
+\par \hich\af0\dbch\af17\loch\f0 -check if th\hich\af0\dbch\af17\loch\f0 e "Cancelled" phase can be started or ended 
+\par \hich\af0\dbch\af17\loch\f0 -send an email to resources associated with timeline notification for the project if the phase has started or ended and change the status of the contest to "Cancelled" if the phase has started.
+\par \hich\af0\dbch\af17\loch\f0 This class is not\hich\af0\dbch\af17\loch\f0 
+ completely thread safe because, when the cache is empty, two calls of perform method, at the same time, may cause unexpected results. Also, two calls of perform method, at the same time, for the same phase object may also cause unexpected results.
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 Termin\hich\af0\dbch\af17\loch\f0 atedPhaseHandler
+\par }{\hich\af0\dbch\af17\loch\f0 This phase handler will be used by the PhaseManager implementations to:
+\par \hich\af0\dbch\af17\loch\f0 -check if the "Terminated" phase can be started or ended 
+\par \hich\af0\dbch\af17\loch\f0 -send an email to resources associated with timeline notification for the project if the phase has started or\hich\af0\dbch\af17\loch\f0  ended and change the status of the contest to "Terminated" if the phase has started.
+
+\par \hich\af0\dbch\af17\loch\f0 This class is not completely thread safe because, when the cache is empty, two calls of perform method, at the same time, may cause unexpected results. Also, two calls of\hich\af0\dbch\af17\loch\f0 
+ perform method, at the same time, for the same phase object may also cause unexpected results.
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 AbandonedPhaseHandler
+\par }{\hich\af0\dbch\af17\loch\f0 This phase handler will be used by the PhaseManager implementations to:
+\par \hich\af0\dbch\af17\loch\f0 -check if the "Abandoned" phase can be started or ended 
+\par \hich\af0\dbch\af17\loch\f0 -send an\hich\af0\dbch\af17\loch\f0  email to resources associated with timeline notification for the project if the phase has started or ended and change the status of the contest to "Abandoned" if the phase has started.
+
+\par \hich\af0\dbch\af17\loch\f0 This class is not completely thread safe because, when the cache is em\hich\af0\dbch\af17\loch\f0 
+pty, two calls of perform method, at the same time, may cause unexpected results. Also, two calls of perform method, at the same time, for the same phase object may also cause unexpected results.
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 EmailMessageGenerator
+\par }{\hich\af0\dbch\af17\loch\f0 This interface defines the contract f\hich\af0\dbch\af17\loch\f0 or the implementing classes that will generate a message using a Template object and a Phase object.
+\par \hich\af0\dbch\af17\loch\f0 Implementations should be thread safe.
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 DefaultEmailMessageGenerator
+\par }{\hich\af0\dbch\af17\loch\f0 This class implements the EmailMessageGenerator interface and it is used to generate m\hich\af0\dbch\af17\loch\f0 essages using a template and a phase. It can handle Long, Date and String objects as template data.
+\par \hich\af0\dbch\af17\loch\f0 This class is thread safe because it has no state.
+\par 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033 \hich\af1\dbch\af17\loch\f1 1.5\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 Component Exception Definitions
+\par }\pard\plain \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\b 
+\par \hich\af0\dbch\af17\loch\f0 EmailSendingException
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\hich\af0\dbch\af17\loch\f0 
+This exception will be thrown from the three protected methods that send emails if errors occur when preparing the message to be sent or when the message is sent.
+\par 
+\par }\pard \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {\b \hich\af0\dbch\af17\loch\f0 PhaseHandlerConfigurationException
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\hich\af0\dbch\af17\loch\f0 This exception will be thrown from the constructors of th\hich\af0\dbch\af17\loch\f0 
+e handlers if while retrieving the configured properties or if a required property is missing.
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 EmailMessageGenerationException
+\par }{\hich\af0\dbch\af17\loch\f0 This exception will be thrown by the EmailMessageGenerator implementations and the abstract handler if errors occur while genera\hich\af0\dbch\af17\loch\f0 ting the email message.
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033 \hich\af1\dbch\af17\loch\f1 1.6\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 Thread Safety
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af0\dbch\af17\loch\f0 
+The component is not completely thread safe. The handlers are not completely thread safe because, when the cache is empty, two calls of perform method, at the same time, may cause unexpected results. Also, two call\hich\af0\dbch\af17\loch\f0 
+s of perform method, at the same time, for the same phase object may also cause unexpected results.
+\par \hich\af0\dbch\af17\loch\f0 DefaultEmailMessageGenerator is thread safe because it has no state. 
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 Note:}{\hich\af0\dbch\af17\loch\f0  To make the concrete handlers thread safe, its methods will need to be synchron\hich\af0\dbch\af17\loch\f0 
+ized but considering the fact that thread safety is not a requirement and the fact that the handlers will most likely be used in a thread safe manner, the methods will not be synchronized.
+\par 
+\par {\listtext\pard\plain\s1 \b\f1\lang1033\langfe1033\langfenp1033 \hich\af1\dbch\af17\loch\f1 2.\tab}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 Environment Requirements\tab \tab 
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033 \hich\af1\dbch\af17\loch\f1 2.1\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 Environment
+\par {\listtext\pard\plain\f3\lang1033\langfe1033\langfenp1033 \loch\af3\dbch\af17\hich\f3 \'b7\tab}}\pard\plain \ql \fi-720\li1440\ri0\widctlpar\jclisttab\tx1080\faauto\ls7\rin0\lin1440\itap0 
+\fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af0\dbch\af17\loch\f0 Development langua\hich\af0\dbch\af17\loch\f0 ge: Java1.5
+\par {\listtext\pard\plain\f3\lang1033\langfe1033\langfenp1033 \loch\af3\dbch\af17\hich\f3 \'b7\tab}\hich\af0\dbch\af17\loch\f0 Compile target: Java1.5, Java1.6
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033 \hich\af1\dbch\af17\loch\f1 2.2\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 TopCoder Software Components
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {
+\par {\listtext\pard\plain\f3\lang1033\langfe1033\langfenp1033 \loch\af3\dbch\af17\hich\f3 \'b7\tab}}\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\ls6\adjustright\rin0\lin720\itap0 {\b \hich\af0\dbch\af17\loch\f0 Studio Contest Manager 1.0  - }{
+\hich\af0\dbch\af17\loch\f0 ContestManager interface is used
+\par {\listtext\pard\plain\f3\lang1033\langfe1033\langfenp1033 \loch\af3\dbch\af17\hich\f3 \'b7\tab}}\pard \ql \li720\ri0\widctlpar\jclisttab\tx720\aspalpha\aspnum\faauto\ls6\adjustright\rin0\lin720\itap0 {\b \hich\af0\dbch\af17\loch\f0 
+Contest and Submission Entities 1.0 \hich\f0 \endash \loch\f0  }{\hich\af0\dbch\af17\loch\f0 Contest and ContestStatus classes are used
+\par {\listtext\pard\plain\f3\lang1033\langfe1033\langfenp1033 \loch\af3\dbch\af17\hich\f3 \'b7\tab}}{\b \hich\af0\dbch\af17\loch\f0 Phase Management 1.0.4\hich\f0 \endash }{\hich\af0\dbch\af17\loch\f0  PhaseHandler interface is defined in this component.
+
+\par {\listtext\pard\plain\f3\lang1033\langfe1033\langfenp1033 \loch\af3\dbch\af17\hich\f3 \'b7\tab}}{\b \hich\af0\dbch\af17\loch\f0 Project Phases 2.0 \hich\f0 \endash \loch\f0  }{\hich\af0\dbch\af17\loch\f0 Some classes from this component are used.
+\par {\listtext\pard\plain\f3\lang1033\langfe1033\langfenp1033 \loch\af3\dbch\af17\hich\f3 \'b7\tab}}{\b \hich\af0\dbch\af17\loch\f0 Email Engine 3.0 \hich\f0 \endash \loch\f0  }{\hich\af0\dbch\af17\loch\f0 Used to send emails.
+\par {\listtext\pard\plain\f3\lang1033\langfe1033\langfenp1033 \loch\af3\dbch\af17\hich\f3 \'b7\tab}}{\b \hich\af0\dbch\af17\loch\f0 Document Generator 2.1 \hich\f0 \endash \loch\f0  }{\hich\af0\dbch\af17\loch\f0 Used to generate the message.
+\par {\listtext\pard\plain\f3\lang1033\langfe1033\langfenp1033 \loch\af3\dbch\af17\hich\f3 \'b7\tab}}{\b \hich\af0\dbch\af17\loch\f0 Object Factory }{\b\cf17 \hich\af0\dbch\af17\loch\f0 2.}{\b\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0 1
+}{\b \hich\af0\dbch\af17\loch\f0  \hich\f0 \endash \loch\f0  }{\hich\af0\dbch\af17\loch\f0 Used to create\hich\af0\dbch\af17\loch\f0  an EmailMessageGenerator instance
+\par {\listtext\pard\plain\f3\lang1033\langfe1033\langfenp1033 \loch\af3\dbch\af17\hich\f3 \'b7\tab}}{\b \hich\af0\dbch\af17\loch\f0 Configuration Manager 2.1.5 \hich\f0 \endash \loch\f0  }{\hich\af0\dbch\af17\loch\f0 used to read the configured properties
+
+\par {\listtext\pard\plain\f3\cf17 \loch\af3\dbch\af17\hich\f3 \'b7\tab}}{\b\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0 Base Exception 2.0}{\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0  \hich\f0 \endash \loch\f0 
+ used by PhaseHandlingException class.}{\cf17 
+\par {\listtext\pard\plain\f3\cf17 \loch\af3\dbch\af17\hich\f3 \'b7\tab}}{\b\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0 Object Factory Config Manager Plugin 1.0 }{\b \loch\af0\dbch\af17\hich\f0 \endash \loch\f0  }{
+\hich\af0\dbch\af17\loch\f0 Used to create an EmailMessageGenerator inst\hich\af0\dbch\af17\loch\f0 ance}{\b\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0  }{\cf17 
+\par }\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033 \hich\af1\dbch\af17\loch\f1 2.3\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 Third Party Components
+\par }\pard\plain \s3\ql \li720\ri0\sb120\sa60\sl240\slmult0\nowidctlpar\tx720\aspalpha\aspnum\faauto\outlinelevel2\adjustright\rin0\lin720\itap0 \i\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {
+\i0\f0\fs24\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0 JavaMail }{\i0\f0\fs24\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0 is }{\i0\f0\fs24\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0 
+used by Email Engine}{\i0\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 .
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {
+\par {\listtext\pard\plain\s1 \b\f1\lang1033\langfe1033\langfenp1033 \hich\af1\dbch\af17\loch\f1 3.\tab}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 Installation and Configuration
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033 \hich\af1\dbch\af17\loch\f1 3.1\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 Package Name
+\par }\pard\plain \s17\ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs24\cf1\lang1033\langfe2052\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp2052 {\hich\af0\dbch\af17\loch\f0 com.topcoder.clientcockpit.}{\cf17 
+\hich\af0\dbch\af17\loch\f0 phases}{
+\par }\pard\plain \s16\ql \fi720\li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 \hich\af0\dbch\af17\loch\f0 com.topcoder.clientcockpit.}{
+\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 phase}{\f0\fs24\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0 s}{\f0\fs24 \hich\af0\dbch\af17\loch\f0 .messagegenerators
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033 \hich\af1\dbch\af17\loch\f1 3.2\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 Configuration Parameters
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\lang1033\langfe2052\langfenp2052 
+\par }\trowd \trgaph108\trrh273\trleft-108\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 
+\tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\pard 
+\ql \li0\ri0\widctlpar\intbl\pvpara\posnegx-1009\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1 {\b \hich\af0\dbch\af17\loch\f0 Parameter\cell \hich\af0\dbch\af17\loch\f0 Description\cell 
+\hich\af0\dbch\af17\loch\f0 Values\cell }\pard \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 {\trowd \trgaph108\trrh273\trleft-108\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 
+\tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\row }\trowd \trgaph108\trrh1227\trleft-108\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr
+\brdrs\brdrw10 \tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 
+\clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt
+\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\pard\plain 
+\s16\ql \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-1009\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 bean_name\cell \hich\af0\dbch\af17\loch\f0 The name used with JNDI to retrieve the bean. It is }{\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 required }{\f0\fs24 \hich\af0\dbch\af17\loch\f0 if the constructor }{
+\hich\af1\dbch\af17\loch\f1 without ContestManager }{\f0\fs24 \hich\af0\dbch\af17\loch\f0 parameter is used.  }{\b\f0\fs24 \cell }{\f0\fs24 \hich\af0\dbch\af17\loch\f0 non empty string\cell }\pard\plain 
+\ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd \trgaph108\trrh1227\trleft-108\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb
+\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 
+\cellx8280\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\row }\trowd \trgaph108\trrh954\trleft-108\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb
+\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 
+\cellx8280\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\pard 
+\ql \li0\ri0\widctlpar\intbl\pvpara\posnegx-1009\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1 {\hich\af0\dbch\af17\loch\f0 use_cache\cell \hich\af0\dbch\af17\loch\f0 
+Indicates weather contest statuses will be cached. }{\b \hich\af0\dbch\af17\loch\f0 Optional}{\b\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0 .
+\par }{\b\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0 If not present default to true.\cell }{\f1\fs20\cf17\lang1033\langfe2052\langfenp2052 \loch\af1\dbch\af17\hich\f1 \'93\loch\f1 \hich\f1 true\'94\loch\f1 \hich\f1  or \'93\loch\f1 
+\hich\f1 false\'93\loch\f1 (case insensitive)}{\f1\fs20\cf17 \hich\af1\dbch\af17\loch\f1 .}{\cf17 \cell }\pard \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 {\trowd \trgaph108\trrh954\trleft-108\trbrdrt\brdrs\brdrw10 \trbrdrl
+\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt
+\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\row }\pard\plain 
+\s16\ql \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-1009\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 send_start_phase_email\cell \hich\af0\dbch\af17\loch\f0 Indicates if an email should be sent when a phase starts. }{\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 Optional.}{\b\cf17\lang1033\langfe2052\langfenp2052 
+\hich\af1\dbch\af17\loch\f1  If not present default to true.}{\b\f0\fs24 \cell }{\cf17\lang1033\langfe2052\langfenp2052 \loch\af1\dbch\af17\hich\f1 \'93\loch\f1 \hich\f1 true\'94\loch\f1 \hich\f1  or \'93\loch\f1 \hich\f1 false\'93\loch\f1 
+(case insensitive)}{\cf17 \hich\af1\dbch\af17\loch\f1 .}{\f0\fs24 \cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd 
+\trgaph108\trrh954\trleft-108\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 
+\tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\row }\pard\plain 
+\s16\ql \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-1009\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 start_email_template_source\cell \hich\af0\dbch\af17\loch\f0 Identifies the source from where the template will be retrieved. }{\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 Optional.\cell }{\f0\fs24 \hich\af0\dbch\af17\loch\f0 
+non empty string\cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd \trgaph108\trrh954\trleft-108\trbrdrt\brdrs\brdrw10 
+\trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 
+\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\row }\trowd \trgaph108\trrh682\trleft-108\trbrdrt
+\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 
+\tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\pard\plain 
+\s16\ql \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-1009\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 start_email_template_name\cell \hich\af0\dbch\af17\loch\f0 The name of the template. }{\b\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 Required}{\b\f0\fs24\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0  If }{
+\f0\fs24\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0 send_start_phase_email}{\b\f0\fs24\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0  results true}{\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 .\cell }{\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 non empty string\cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd 
+\trgaph108\trrh682\trleft-108\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 
+\tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\row }\trowd \trgaph108\trrh667\trleft-108\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr
+\brdrs\brdrw10 \tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 
+\clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt
+\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\pard\plain 
+\s16\ql \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-1009\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 start_email_subject\cell \hich\af0\dbch\af17\loch\f0 The subject of the email. }{\b\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 Required}{\b\f0\fs24\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0  If }{
+\f0\fs24\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0 send_start_phase_email}{\b\f0\fs24\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0  results true}{\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 .\cell }{\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 non empty string\cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd 
+\trgaph108\trrh667\trleft-108\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 
+\tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\row }\trowd \trgaph108\trrh682\trleft-108\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr
+\brdrs\brdrw10 \tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthB3\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl
+\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280
+\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\pard\plain 
+\s16\ql \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-1009\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 start_email_from_address\cell \hich\af0\dbch\af17\loch\f0 The address from which the email is sent. }{\b\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 Required}{\b\f0\fs24\cf17\lang1033\langfe2052\langfenp2052 
+\hich\af0\dbch\af17\loch\f0  If }{\f0\fs24\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0 send_start_phase_email}{\b\f0\fs24\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0  results true}{\b\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 .\cell }{\f0\fs24 \hich\af0\dbch\af17\loch\f0 non empty string\cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd \trgaph108\trrh682\trleft-108\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 
+\tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthB3\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\row }\trowd \trgaph108\trrh939\trleft-108\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr
+\brdrs\brdrw10 \tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 
+\clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt
+\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\pard\plain 
+\s16\ql \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-1009\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 send_end_phase_email\cell \hich\af0\dbch\af17\loch\f0 Indicates if an email should be sent when a phase ends. }{\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 Optional.}{\b\cf17\lang1033\langfe2052\langfenp2052 
+\hich\af1\dbch\af17\loch\f1  If not present default to true.}{\b\f0\fs24 \cell }{\cf17\lang1033\langfe2052\langfenp2052 \loch\af1\dbch\af17\hich\f1 \'93\loch\f1 \hich\f1 true\'94\loch\f1 \hich\f1  or \'93\loch\f1 \hich\f1 false\'93\loch\f1 
+(case insensitive)}{\cf17 \hich\af1\dbch\af17\loch\f1 .}{\f0\fs24 \cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd 
+\trgaph108\trrh939\trleft-108\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 
+\tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\row }\trowd \trgaph108\trrh954\trleft-108\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr
+\brdrs\brdrw10 \tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 
+\clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt
+\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\pard\plain 
+\s16\ql \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-1009\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 end_email_template_source\cell \hich\af0\dbch\af17\loch\f0 Identifies the source from where the template will be retrieved. }{\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 Optional.\cell }{\f0\fs24 \hich\af0\dbch\af17\loch\f0 
+non empty string\cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd \trgaph108\trrh954\trleft-108\trbrdrt\brdrs\brdrw10 
+\trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 
+\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\row }\trowd \trgaph108\trrh682\trleft-108\trbrdrt
+\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 
+\tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\pard\plain 
+\s16\ql \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-1009\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 end_email_template_name\cell \hich\af0\dbch\af17\loch\f0 The name of the template. }{\b\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 Required}{\b\f0\fs24\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0  If }{
+\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 send_end_phase_email}{\b\f0\fs24\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0  results true}{\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 .\cell }{\f0\fs24 \hich\af0\dbch\af17\loch\f0 
+non empty string\cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd \trgaph108\trrh682\trleft-108\trbrdrt\brdrs\brdrw10 
+\trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 
+\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\row }\trowd \trgaph108\trrh667\trleft-108\trbrdrt
+\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 
+\tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\pard\plain 
+\s16\ql \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-1009\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 end_email_subject\cell \hich\af0\dbch\af17\loch\f0 The subject of the email. }{\b\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 Required}{\b\f0\fs24\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0  If }{
+\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 send_end_phase_email}{\b\f0\fs24\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0  results true}{\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 .\cell }{\f0\fs24 \hich\af0\dbch\af17\loch\f0 
+non empty string\cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd \trgaph108\trrh667\trleft-108\trbrdrt\brdrs\brdrw10 
+\trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 
+\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\row }\trowd \trgaph108\trrh682\trleft-108\trbrdrt
+\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 
+\tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\pard\plain 
+\s16\ql \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-1009\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 end_email_from_address\cell \hich\af0\dbch\af17\loch\f0 The address from which the email is sent. }{\b\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 Required}{\b\f0\fs24\cf17\lang1033\langfe2052\langfenp2052 
+\hich\af0\dbch\af17\loch\f0  If }{\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 send_end_phase_email}{\b\f0\fs24\cf17\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0  results true}{\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 .\cell }{\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 non empty string\cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd 
+\trgaph108\trrh682\trleft-108\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 
+\tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\row }\trowd \trgaph108\trrh1208\trleft-108\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr
+\brdrs\brdrw10 \tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 
+\clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt
+\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\pard\plain 
+\s16\ql \li0\ri0\sa120\widctlpar\intbl\pvpara\posnegx-1009\posy0\dxfrtext180\dfrmtxtx180\dfrmtxty0\aspalpha\aspnum\faauto\adjustright\rin0\lin0\absnoovrlp1 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 send_eight_hours_phase_email\cell \hich\af0\dbch\af17\loch\f0 Indicates if an email should be sent when there less than eight hours before the winner announcement deadline. }{\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 Optional.}{
+\b\cf17\lang1033\langfe2052\langfenp2052 \hich\af1\dbch\af17\loch\f1  If not present default to true.}{\b\f0\fs24 \cell }{\cf17\lang1033\langfe2052\langfenp2052 \loch\af1\dbch\af17\hich\f1 \'93\loch\f1 \hich\f1 true\'94\loch\f1 \hich\f1  or \'93\loch\f1 
+\hich\f1 false\'93\loch\f1 (case insensitive)}{\cf17 \hich\af1\dbch\af17\loch\f1 .}{\f0\fs24 \cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd \trgaph108\trrh1208\trleft-108\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 
+\tpvpara\tposnegx-1009\tposy0\tdfrmtxtLeft180\tdfrmtxtRight180\trftsWidth3\trwWidth10800\trftsWidthA3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\tabsnoovrlp1 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb
+\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3888 \cellx3780\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4500 \cellx8280\clvertalt\clbrdrt
+\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2412 \cellx10692\row }\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\lang1033\langfe2052\langfenp2052 
+\par }\trowd \trgaph108\trrh352\trleft-1080\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 
+\trftsWidth3\trwWidth11406\trftsWidthB3\trftsWidthA3\trautofit1\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3780 \cellx2700\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4730 \cellx7430\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 
+\clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2896 \cellx10326\pard \s16\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 {\f0\fs24 \hich\af0\dbch\af17\loch\f0 eight_hours_email_template_source
+\cell \hich\af0\dbch\af17\loch\f0 Identifies the source from where the template will be retrieved. }{\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 Optional.\cell }{\f0\fs24 \hich\af0\dbch\af17\loch\f0 non empty string\cell }\pard\plain 
+\ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd \trgaph108\trrh352\trleft-1080\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb
+\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth3\trwWidth11406\trftsWidthB3\trftsWidthA3\trautofit1\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl
+\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3780 \cellx2700\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4730 \cellx7430
+\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2896 \cellx10326\row }\trowd \trgaph108\trrh352\trleft-1080\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb
+\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth3\trwWidth11406\trftsWidthB3\trftsWidthA3\trautofit1\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl
+\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3780 \cellx2700\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4730 \cellx7430
+\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2896 \cellx10326\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 \hich\af0\dbch\af17\loch\f0 eight_hours_email_template_name\cell \hich\af0\dbch\af17\loch\f0 The name of the template. }{\b\f0\fs24\cf17 
+\hich\af0\dbch\af17\loch\f0 Required If }{\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 send_eight_hours_phase_email}{\b\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0  results true}{\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 .\cell }{\f0\fs24 
+\hich\af0\dbch\af17\loch\f0 non empty string\cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd 
+\trgaph108\trrh352\trleft-1080\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 
+\trftsWidth3\trwWidth11406\trftsWidthB3\trftsWidthA3\trautofit1\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3780 \cellx2700\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4730 \cellx7430\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 
+\clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2896 \cellx10326\row }\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 \hich\af0\dbch\af17\loch\f0 eight_hours_email_subject\cell \hich\af0\dbch\af17\loch\f0 The subject of the email. }{\b\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 
+Required If }{\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 send_eight_hours_phase_email}{\b\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0  results true}{\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 .\cell }{\f0\fs24 \hich\af0\dbch\af17\loch\f0 non empty string\cell 
+}\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd \trgaph108\trrh352\trleft-1080\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 
+\trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth3\trwWidth11406\trftsWidthB3\trftsWidthA3\trautofit1\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 
+\clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3780 \cellx2700\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4730 
+\cellx7430\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2896 \cellx10326\row }\pard\plain 
+\s16\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 \hich\af0\dbch\af17\loch\f0 eight_hours_email_from_address\cell 
+\hich\af0\dbch\af17\loch\f0 The address from which the email is sent. }{\b\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 Required If }{\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 send_eight_hours_phase_email}{\b\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 
+ results true}{\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 .\cell }{\f0\fs24 \hich\af0\dbch\af17\loch\f0 non empty string\cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd \trgaph108\trrh352\trleft-1080\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv
+\brdrs\brdrw10 \trftsWidth3\trwWidth11406\trftsWidthB3\trftsWidthA3\trautofit1\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3780 \cellx2700\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4730 \cellx7430\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 
+\clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2896 \cellx10326\row }\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 \hich\af0\dbch\af17\loch\f0 send_one_ho\hich\af0\dbch\af17\loch\f0 ur_phase_email\cell \hich\af0\dbch\af17\loch\f0 
+Indicates if an email should be sent when there less than one hour before the winner announcement deadline. }{\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 Optional.}{\b\cf17\lang1033\langfe2052\langfenp2052 \hich\af1\dbch\af17\loch\f1 
+ If not present default to true.}{\b\f0\fs24 \cell }{\cf17\lang1033\langfe2052\langfenp2052 \loch\af1\dbch\af17\hich\f1 \'93\loch\f1 \hich\f1 true\'94\loch\f1 \hich\f1  or \'93\loch\f1 \hich\f1 false\'93\loch\f1 (case insensitive)}{\cf17 
+\hich\af1\dbch\af17\loch\f1 .}{\f0\fs24 \cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd \trgaph108\trrh352\trleft-1080
+\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 
+\trftsWidth3\trwWidth11406\trftsWidthB3\trftsWidthA3\trautofit1\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3780 \cellx2700\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4730 \cellx7430\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 
+\clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2896 \cellx10326\row }\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 \hich\af0\dbch\af17\loch\f0 one_hour_email_template_source\cell \hich\af0\dbch\af17\loch\f0 Identifies the source from where the template will be retrieved. }{
+\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 Optional.\cell }{\f0\fs24 \hich\af0\dbch\af17\loch\f0 non empty string\cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd \trgaph108\trrh352\trleft-1080\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv
+\brdrs\brdrw10 \trftsWidth3\trwWidth11406\trftsWidthB3\trftsWidthA3\trautofit1\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3780 \cellx2700\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4730 \cellx7430\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 
+\clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2896 \cellx10326\row }\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 \hich\af0\dbch\af17\loch\f0 one_hour_email_template_name\cell \hich\af0\dbch\af17\loch\f0 The name of the template. }{\b\f0\fs24\cf17 
+\hich\af0\dbch\af17\loch\f0 Required If }{\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 send_one_hour_phase_email}{\b\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0  results true}{\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 .\cell }{\f0\fs24 \hich\af0\dbch\af17\loch\f0 
+non empty string\cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd \trgaph108\trrh352\trleft-1080\trbrdrt\brdrs\brdrw10 
+\trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth3\trwWidth11406\trftsWidthB3\trftsWidthA3\trautofit1\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3 \clvertalt
+\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3780 \cellx2700\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth4730 \cellx7430\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2896 \cellx10326\row }\pard\plain 
+\s16\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 \hich\af0\dbch\af17\loch\f0 one_hour_email_subject\cell 
+\hich\af0\dbch\af17\loch\f0 The subject of \hich\af0\dbch\af17\loch\f0 the email. }{\b\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 Required If }{\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 send_one_hour_phase_email}{\b\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 
+ results true}{\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 .\cell }{\f0\fs24 \hich\af0\dbch\af17\loch\f0 non empty string\cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd \trgaph108\trrh352\trleft-1080\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv
+\brdrs\brdrw10 \trftsWidth3\trwWidth11406\trftsWidthB3\trftsWidthA3\trautofit1\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3780 \cellx2700\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4730 \cellx7430\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 
+\clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2896 \cellx10326\row }\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 \hich\af0\dbch\af17\loch\f0 one_hour_email_from_address\cell \hich\af0\dbch\af17\loch\f0 The address from which the email is sent. }{\b\f0\fs24\cf17 
+\hich\af0\dbch\af17\loch\f0 Required If }{\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0 send_one_hour_phase_email}{\b\f0\fs24\cf17 \hich\af0\dbch\af17\loch\f0  results true}{\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 .\cell }{\f0\fs24 \hich\af0\dbch\af17\loch\f0 
+non empty string\cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd \trgaph108\trrh352\trleft-1080\trbrdrt\brdrs\brdrw10 
+\trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth3\trwWidth11406\trftsWidthB3\trftsWidthA3\trautofit1\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3 \clvertalt
+\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3780 \cellx2700\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth4730 \cellx7430\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2896 \cellx10326\row }\trowd \trgaph108\trrh367\trleft-1080\trbrdrt
+\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 
+\trftsWidth3\trwWidth11406\trftsWidthB3\trftsWidthA3\trautofit1\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3780 \cellx2700\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4730 \cellx7430\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 
+\clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2896 \cellx10326\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 \hich\af0\dbch\af17\loch\f0 message_generator_key\cell \hich\af0\dbch\af17\loch\f0 The key used with Object Factory to create an EmailMessageGenerator object. }{
+\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 Optional.\cell }{\f0\fs24 \hich\af0\dbch\af17\loch\f0 non empty string.\cell }\pard\plain \ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd \trgaph108\trrh367\trleft-1080\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv
+\brdrs\brdrw10 \trftsWidth3\trwWidth11406\trftsWidthB3\trftsWidthA3\trautofit1\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3780 \cellx2700\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4730 \cellx7430\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 
+\clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2896 \cellx10326\row }\trowd \trgaph108\trrh367\trleft-1080\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 
+\trbrdrv\brdrs\brdrw10 \trftsWidth3\trwWidth11406\trftsWidthB3\trftsWidthA3\trautofit1\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 
+\cltxlrtb\clftsWidth3\clwWidth3780 \cellx2700\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4730 \cellx7430\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 
+\clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2896 \cellx10326\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\f0\fs24 \hich\af0\dbch\af17\loch\f0 specification_factory_namespace\cell \hich\af0\dbch\af17\loch\f0 
+The namespace used to create a ConfigManagerSpecificationFactory instance. }{\b\f0\fs24 \hich\af0\dbch\af17\loch\f0 Optional.\cell }{\f0\fs24 \hich\af0\dbch\af17\loch\f0 non empty string\cell }\pard\plain 
+\ql \li0\ri0\widctlpar\intbl\aspalpha\aspnum\faauto\adjustright\rin0\lin0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\trowd \trgaph108\trrh367\trleft-1080\trbrdrt\brdrs\brdrw10 \trbrdrl\brdrs\brdrw10 \trbrdrb
+\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrh\brdrs\brdrw10 \trbrdrv\brdrs\brdrw10 \trftsWidth3\trwWidth11406\trftsWidthB3\trftsWidthA3\trautofit1\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3 \clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl
+\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth3780 \cellx2700\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth4730 \cellx7430
+\clvertalt\clbrdrt\brdrs\brdrw10 \clbrdrl\brdrs\brdrw10 \clbrdrb\brdrs\brdrw10 \clbrdrr\brdrs\brdrw10 \cltxlrtb\clftsWidth3\clwWidth2896 \cellx10326\row }\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {
+\par }{\f0\fs24 \hich\af0\dbch\af17\loch\f0 A sample is provided in config.xml in /docs directory.
+\par }{
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033 \hich\af1\dbch\af17\loch\f1 3.3\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 Dependencies Configuration
+\par }\pard\plain \ql \fi720\li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af0\dbch\af17\loch\f0 None.
+\par {\listtext\pard\plain\s1 \b\f1\lang1033\langfe1033\langfenp1033 \hich\af1\dbch\af17\loch\f1 4.\tab}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 Usage Notes
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033 \hich\af1\dbch\af17\loch\f1 4.1\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 Required steps to test the component
+\par {\listtext\pard\plain\s16 \f3\fs20\lang1033\langfe1033\langfenp1033 \loch\af3\dbch\af17\hich\f3 \'b7\tab}}\pard\plain \s16\ql \fi-360\li1080\ri0\sa120\widctlpar\jclisttab\tx1080\aspalpha\aspnum\faauto\ls3\adjustright\rin0\lin1080\itap0 
+\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 Extract the component distribution.
+\par {\listtext\pard\plain\s16 \f3\fs20\lang1033\langfe1033\langfenp1033 \loch\af3\dbch\af17\hich\f3 \'b7\tab}\hich\af1\dbch\af17\loch\f1 Follow }{\field\fldedit{\*\fldinst {\hich\af1\dbch\af17\loch\f1  HYPERLINK "C:\\filez\\work\\tc\\tcs_corp\\templates\\
+component\\" \\\hich\af1\dbch\af17\loch\f1 l "_Dependencies_Configuration" }{{\*\datafield 
+00d0c9ea79f9bace118c8200aa004ba90b02000000010000000303000000000000c00000000000004600002900000066696c657a776f726b74637463735f636f727074656d706c61746573636f6d706f6e656e7422206c00ffffadde000000000000000000000000000000000000000000000000000020004e006500770000
+0000000000000000000000}}}{\fldrslt {\cs15\ul\cf2 \hich\af1\dbch\af17\loch\f1 Dependencies Configuration}}}{\hich\af1\dbch\af17\loch\f1 .}{\lang1033\langfe2052\langfenp2052 \hich\af1\dbch\af17\loch\f1  }{\cf17\lang1033\langfe2052\langfenp2052 
+\hich\af1\dbch\af17\loch\f1 Follow build script to ensure all dependency libraries are present in class path.}{
+\par {\listtext\pard\plain\s16 \f3\fs20\lang1033\langfe1033\langfenp1033 \loch\af3\dbch\af17\hich\f3 \'b7\tab}\hich\af1\dbch\af17\loch\f1 Execute \hich\f1 \lquote \loch\f1 ant test\hich\f1 \rquote \loch\f1 
+ within the directory that the distribution was extracted to.
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033 \hich\af1\dbch\af17\loch\f1 4.2\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 Required steps to use th
+\hich\af1\dbch\af17\loch\f1 e component
+\par }\pard\plain \s17\ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs24\cf1\lang1033\langfe2052\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp2052 {\hich\af0\dbch\af17\loch\f0 See demo.
+\par {\listtext\pard\plain\s2 \b\f1\fs20\lang1033\langfe1033\langfenp1033 \hich\af1\dbch\af17\loch\f1 4.3\tab}}\pard\plain \s2\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx0\aspalpha\aspnum\faauto\ls1\ilvl1\outlinelevel1\adjustright\rin0\lin0\itap0 \b\fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 Demo
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\b \hich\af0\dbch\af17\loch\f0 4.3.1}{\hich\af0\dbch\af17\loch\f0  }{\b 
+\hich\af0\dbch\af17\loch\f0 How the handlers defined in this component work with a PhaseManager implementation from Phase Management component
+\par }{
+\par \hich\af0\dbch\af17\loch\f0 Not all the handlers defined in this component will be added to the PhaseManager. The scenario that wil\hich\af0\dbch\af17\loch\f0 \hich\f0 
+l be presented is enough to understand how the handlers work with a PhaseManager implementation and how the contest status will change from \'93\loch\f0 \hich\f0 Draft\'94\loch\f0 \hich\f0  phase to \'93\loch\f0 \hich\f0 Completed\'94\loch\f0  phase.
+
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 4.3.1.1 Create the handlers and add them to a PhaseManager implementation}{
+\par }\pard \ql \fi-540\li1260\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1260\itap0 {\b 
+\par }{\hich\af0\dbch\af17\loch\f0 //cr\hich\af0\dbch\af17\loch\f0 eate a DefaultPhaseManager instance
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 PhaseManager manager = new DefaultPhaseManager(someNamespace);
+\par }{\f2\fs18 
+\par }{\hich\af0\dbch\af17\loch\f0 //create and add handlers to the manager
+\par 
+\par \hich\af0\dbch\af17\loch\f0 \hich\f0 //create a handler for the \'93\loch\f0 \hich\f0 Draft\'94\loch\f0  phase
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 PhaseHandler draftHandler = new DraftPhaseHandler(namespace);
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\hich\af0\dbch\af17\loch\f0 //add this \hich\af0\dbch\af17\loch\f0 \hich\f0 handler to the manager and make this handler handle the starting and //ending of the \'93
+\loch\f0 \hich\f0 Draft\'94\loch\f0  phase
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 \hich\f2 PhaseType draftPhaseType = new PhaseType(id,\'94\loch\f2 \hich\f2 Draft\'94\loch\f2 );
+\par \hich\af2\dbch\af17\loch\f2 manager.registerHandler(draftHandler, draftPhaseType, PhaseOperationEnum.START);
+\par \hich\af2\dbch\af17\loch\f2 manager.registerHandle\hich\af2\dbch\af17\loch\f2 r(draftHandler, draftPhaseType, PhaseOperationEnum.END);
+\par 
+\par }\pard \ql \fi-540\li1260\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1260\itap0 {\hich\af0\dbch\af17\loch\f0 \hich\f0 //create a handler for the \'93\loch\f0 \hich\f0 Scheduled\'94\loch\f0  phase
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 PhaseHandler scheduledHandler = new ScheduledPhaseHandler(namespace);
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\hich\af0\dbch\af17\loch\f0 //add thi\hich\af0\dbch\af17\loch\f0 \hich\f0 s handler to the manager and make this handler handle the starting and //ending of the \'93
+\loch\f0 \hich\f0 Scheduled\'94\loch\f0  phase
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 \hich\f2 PhaseType scheduledPhaseType = new PhaseType(id,\'94\loch\f2 \hich\f2 Scheduled\'94\loch\f2 );
+\par \hich\af2\dbch\af17\loch\f2 manager.registerHandler(scheduledHandler, scheduledPhaseType, PhaseOperationEnum.START);
+\par \hich\af2\dbch\af17\loch\f2 manager.registerHandler(scheduledHandler, scheduledPhaseType, PhaseOperationEnum.END);
+\par 
+\par }\pard \ql \fi-540\li1260\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1260\itap0 {\hich\af0\dbch\af17\loch\f0 \hich\f0 //create a handler for the \'93\loch\f0 \hich\f0 Active\'94\loch\f0  phase
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 PhaseHandler activeHandler = new ActivePhaseHandler(namespace);
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\hich\af0\dbch\af17\loch\f0 //add this handler to the manager and make this handler handle\hich\af0\dbch\af17\loch\f0 \hich\f0  the starting and //ending of the \'93
+\loch\f0 \hich\f0 Active\'94\loch\f0  phase
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 \hich\f2 PhaseType activePhaseType = new PhaseType(id,\'94\loch\f2 \hich\f2 Active\'94\loch\f2 );
+\par \hich\af2\dbch\af17\loch\f2 manager.registerHandler(activeHandler, activePhaseType, PhaseOperationEnum.START);
+\par \hich\af2\dbch\af17\loch\f2 manager.registerHandler(activeHandler, activePhaseType, PhaseOperati\hich\af2\dbch\af17\loch\f2 onEnum.END);
+\par 
+\par }\pard \ql \fi-540\li1260\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1260\itap0 {\hich\af0\dbch\af17\loch\f0 \hich\f0 //create a handler for the \'93\loch\f0 \hich\f0 Action Required\'94\loch\f0  phase
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 PhaseHandler actionRequiredHandler = new ActionRequiredPhaseHandler(namespace);
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\hich\af0\dbch\af17\loch\f0 \hich\f0 //add this handler to the manager and make this handler handle the starting and //ending of the \'93\loch\f0 Action Require
+\hich\af0\dbch\af17\loch\f0 \hich\f0 d\'94\loch\f0  phase
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 \hich\f2 PhaseType actionRequiredPhaseType = new PhaseType(id,\'94\loch\f2 \hich\f2 Action Required\'94\loch\f2 );
+\par \hich\af2\dbch\af17\loch\f2 manager.registerHandler(actionRequiredHandler, actionRequiredPhaseType, PhaseOperationEnum.START);
+\par \hich\af2\dbch\af17\loch\f2 manager.registerHandler(actionRequiredHandler, actionRequiredPhaseType, Pha\hich\af2\dbch\af17\loch\f2 seOperationEnum.END);
+\par 
+\par }\pard \ql \fi-540\li1260\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin1260\itap0 {\hich\af0\dbch\af17\loch\f0 \hich\f0 //create a handler for the \'93\loch\f0 \hich\f0 Completed\'94\loch\f0  phase
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 PhaseHandler completedHandler = new CompletedPhaseHandler(namespace);
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\hich\af0\dbch\af17\loch\f0 \hich\f0 //add this handler to the manager and make this handler handle the starting of the //\'93\loch\f0 \hich\f0 Completed\'94\loch\f0 
+ phase (this phase is \hich\af0\dbch\af17\loch\f0 an end phase)
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 \hich\f2 PhaseType completedPhaseType = new PhaseType(id,\'94\loch\f2 \hich\f2 Completed\'94\loch\f2 );
+\par \hich\af2\dbch\af17\loch\f2 manager.registerHandler(completedHandler, completedPhaseType, PhaseOperationEnum.START);
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 4.3.1.2 Create a Project instance and add a Contest instance and phases to the project
+\par }{\f2\fs18\cf18\lang1033\langfe2052\langfenp2052 
+\par }{\f2\fs18\cf6\lang1033\langfe2052\langfenp2052 \hich\af2\dbch\af17\loch\f2 All the phase statuses are initial to be PhaseStatus.SCHEDULED
+\par }{\f2\fs18\cf18\lang1033\langfe2052\langfenp2052 
+\par }{\hich\af0\dbch\af17\loch\f0 \hich\f0 //create a Contest instance and set its fields\'85
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 Contest contest = new Contest();
+\par }{\hich\af0\dbch\af17\loch\f0 //create a Project instance
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 Project project = new Project (startDate, workdays);
+\par }{\hich\af0\dbch\af17\loch\f0 //add the contest instance to \hich\af0\dbch\af17\loch\f0 the project
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 \hich\f2 project.setAttribute(\'93\loch\f2 \hich\f2 contest\'94\loch\f2 ,contest);}{\f2\fs18\cf18\lang1033\langfe2052\langfenp2052 
+\par }{\f2\fs18\cf6\lang1033\langfe2052\langfenp2052 \hich\af2\dbch\af17\loch\f2 project.setAttribute("MinimumSubmissions", 1);
+\par \hich\af2\dbch\af17\loch\f2 project.setAttribute("ResourceEmails", (ArrayList) toAddresses);}{\f2\fs18\cf18\lang1033\langfe2052\langfenp2052 
+\par }{\f2\fs18\cf18 
+\par }{\hich\af0\dbch\af17\loch\f0 \hich\f0 //create a \'93\loch\f0 \hich\f0 Draft\'94\loch\f0  phase
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 Phase draftPhase = new Phase(project,1);
+\par \hich\af2\dbch\af17\loch\f2 draftPhase.setPhaseType(\hich\af2\dbch\af17\loch\f2 draftPhaseType);}{\f2\fs18\cf18\lang1033\langfe2052\langfenp2052 
+\par }{\f2\fs20\cf6\lang1033\langfe2052\langfenp2052 \hich\af2\dbch\af17\loch\f2 draftPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
+\par }{\hich\af0\dbch\af17\loch\f0 \hich\f0 //set other fields of the phase\'85
+\par \hich\af0\dbch\af17\loch\f0 //add the phase to the project
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 project.addPhase(draftPhase);
+\par }{
+\par \hich\af0\dbch\af17\loch\f0 \hich\f0 //create a \'93\loch\f0 \hich\f0 Scheduled\'94\loch\f0  phase
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 Phase scheduledPhase = new Phase(project,1);
+\par \hich\af2\dbch\af17\loch\f2 scheduledPhase.setPh\hich\af2\dbch\af17\loch\f2 aseType(scheduledPhaseType);}{\f2\fs20\lang1033\langfe2052\langfenp2052 
+\par }{\f2\fs18\cf6\lang1033\langfe2052\langfenp2052 \hich\af2\dbch\af17\loch\f2 scheduledPhase.setPhaseType(CockpitPhaseType.SCHEDULED);
+\par }{\hich\af0\dbch\af17\loch\f0 \hich\f0 //set other fields of the phase\'85
+\par \hich\af0\dbch\af17\loch\f0 //add the phase to the project
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 project.addPhase(scheduledPhase);
+\par }{
+\par \hich\af0\dbch\af17\loch\f0 \hich\f0 //create a \'93\loch\f0 \hich\f0 Active\'94\loch\f0  phase
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 Phase activePhase = new Phase(project,1);
+\par \hich\af2\dbch\af17\loch\f2 activePhase.setPhaseType(activePhaseType);}{\f2\fs18\cf18\lang1033\langfe2052\langfenp2052 
+\par }{\f2\fs18\cf6\lang1033\langfe2052\langfenp2052 \hich\af2\dbch\af17\loch\f2 activePhase.setPhaseStatus(PhaseStatus.SCHEDULED);
+\par }{\hich\af0\dbch\af17\loch\f0 \hich\f0 //set other fields of the phase\'85
+\par \hich\af0\dbch\af17\loch\f0 //add the phase to the project
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 project.addPhase(activePhase);
+\par }{
+\par \hich\af0\dbch\af17\loch\f0 \hich\f0 //create a \'93\loch\f0 \hich\f0 Action Required\'94\loch\f0  phase
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 Phase actionRequiredPhase = new\hich\af2\dbch\af17\loch\f2  Phase(project,1);
+\par \hich\af2\dbch\af17\loch\f2 actionRequiredPhase.setPhaseType(actionRequiredPhaseType);}{\f2\fs18\cf18\lang1033\langfe2052\langfenp2052 
+\par }{\f2\fs18\cf6\lang1033\langfe2052\langfenp2052 \hich\af2\dbch\af17\loch\f2 actionRequiredPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
+\par }{\hich\af0\dbch\af17\loch\f0 \hich\f0 //set other fields of the phase\'85
+\par \hich\af0\dbch\af17\loch\f0 //add the phase to the project
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 project.addPhase(actionRequiredPhase);
+\par }{
+\par \hich\af0\dbch\af17\loch\f0 \hich\f0 //create a \'93\loch\f0 Com\hich\af0\dbch\af17\loch\f0 \hich\f0 pleted\'94\loch\f0  phase
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 Phase completedPhase = new Phase(project,1);
+\par \hich\af2\dbch\af17\loch\f2 completedPhase.setPhaseType(completedPhaseType);}{\f2\fs18\cf18\lang1033\langfe2052\langfenp2052 
+\par }{\f2\fs18\cf6\lang1033\langfe2052\langfenp2052 \hich\af2\dbch\af17\loch\f2 completedPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
+\par }{\hich\af0\dbch\af17\loch\f0 \hich\f0 //set other fields of the phase\'85
+\par \hich\af0\dbch\af17\loch\f0 //add the phase to the project
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 project.addPhase(completedPhas\hich\af2\dbch\af17\loch\f2 e);
+\par }{
+\par }{\b \hich\af0\dbch\af17\loch\f0 4.3.1.3 Use PhaseManager to start project phases and end project phases
+\par }{
+\par }{\b \hich\af0\dbch\af17\loch\f0 Observation: 
+\par \hich\af0\dbch\af17\loch\f0 -}{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 manager.canStart(phase)}{\hich\af0\dbch\af17\loch\f0  call will call the corresponding }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 handler.canPerform(phase)}{
+\hich\af0\dbch\af17\loch\f0 \hich\f0  method (if phase is \'93\loch\f0 \hich\f0 Draft\'94\loch\f0  then }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 draftHandler.canPerform(phase)}{\hich\af0\dbch\af17\loch\f0  method will be c\hich\af0\dbch\af17\loch\f0 
+alled)}{\lang1033\langfe2052\langfenp2052 
+\par 
+\par }{\b \hich\af0\dbch\af17\loch\f0 -}{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 manager.canEnd(phase)}{\hich\af0\dbch\af17\loch\f0  call will call the corresponding }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 handler.canPerform}{\hich\af0\dbch\af17\loch\f0 
+ method
+\par }{\b\lang1033\langfe2052\langfenp2052 
+\par }{\b \hich\af0\dbch\af17\loch\f0 -}{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 manager.start(phase,operator)}{\hich\af0\dbch\af17\loch\f0  will call the corresponding }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 handler.perform(phase,operator)}{
+\f2\fs18\cf18\lang1033\langfe2052\langfenp2052 
+\par }\pard\plain \s17\ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs24\cf1\lang1033\langfe2052\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp2052 {\hich\af0\dbch\af17\loch\f0 
+After phase started, its phaseStatus is changed to be PhaseStatus.OPEN}{\f2\fs18 
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\b \hich\af0\dbch\af17\loch\f0 -}{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 
+manager.end(phase,operator)}{\hich\af0\dbch\af17\loch\f0  will call the corresponding }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 handler.perform(phase,operator)}{\f2\fs18\cf18\lang1033\langfe2052\langfenp2052 
+\par }{\cf6\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0 After phase ended, its phaseStatus is changed to be PhaseStatus.CLOSED}{\f2\fs18\cf6\lang1033\langfe2052\langfenp2052 
+\par }{
+\par 
+\par \hich\af0\dbch\af17\loch\f0 \hich\f0 //start \'93\loch\f0 \hich\f0 Draft\'94\loch\f0  phase; when the }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 manager.start}{\hich\af0\dbch\af17\loch\f0  call is made the status of the contest //will be 
+\hich\af0\dbch\af17\loch\f0 \hich\f0 moved to \'93\loch\f0 \hich\f0 Draft\'94\loch\f0  and a notification email will be sent
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 if (manager.canStart(draftPhase))
+\par \hich\af2\dbch\af17\loch\f2 \hich\f2     manager.start(draftPhase,\'94\'94\loch\f2 );
+\par 
+\par }{\hich\af0\dbch\af17\loch\f0 \hich\f0 //end \'93\loch\f0 \hich\f0 Draft\'94\loch\f0  phase; when the }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 manager.end}{\hich\af0\dbch\af17\loch\f0  call is made a notification email will //be sent
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 if (manager.canEnd(draftPhase))
+\par \hich\af2\dbch\af17\loch\f2     manag\hich\af2\dbch\af17\loch\f2 \hich\f2 er.end(draftPhase,\'94\'94\loch\f2 );
+\par 
+\par }{\hich\af0\dbch\af17\loch\f0 \hich\f0 //start \'93\loch\f0 \hich\f0 Scheduled\'94\loch\f0  phase; when the }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 manager.start}{\hich\af0\dbch\af17\loch\f0 \hich\f0 
+ call is made the status of the //contest will be moved to \'93\loch\f0 \hich\f0 Scheduled\'94\loch\f0  and a notification email will be sent
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 if (manager.canStart(scheduledPhase))
+\par \hich\af2\dbch\af17\loch\f2 \hich\f2     manager.start(scheduledPhase,\'94\'94\loch\f2 )\hich\af2\dbch\af17\loch\f2 ;
+\par }{\lang1033\langfe2052\langfenp2052 
+\par }{\cf6\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0 //The ScheduledPhaseHandler will not update contest status, it's updated //externally
+\par }{\f2\fs18\cf6 \hich\af2\dbch\af17\loch\f2 contest.setStatus(CockpitContestStatus.SCHEDULED);}{\lang1033\langfe2052\langfenp2052 
+\par 
+\par }{\hich\af0\dbch\af17\loch\f0 \hich\f0 //end \'93\loch\f0 \hich\f0 Scheduled\'94\loch\f0  phase; when the }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 manager.end}{\hich\af0\dbch\af17\loch\f0  call is made a notification email //will be sent
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 if (manager.canEnd(s\hich\af2\dbch\af17\loch\f2 cheduledPhase))
+\par \hich\af2\dbch\af17\loch\f2 \hich\f2     manager.end(scheduledPhase,\'94\'94\loch\f2 );}{\lang1033\langfe2052\langfenp2052 
+\par 
+\par }{\hich\af0\dbch\af17\loch\f0 \hich\f0 //start \'93\loch\f0 \hich\f0 Active\'94\loch\f0  phase; when the }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 manager.start}{\hich\af0\dbch\af17\loch\f0 \hich\f0  call is made the status of the //contest will be moved to 
+\'93\loch\f0 \hich\f0 Active\'94\loch\f0  and a notification email will be sent
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 if (manager.canStart(activePhase))
+\par }\pard \ql \fi420\li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 manager.start(ac\hich\af2\dbch\af17\loch\f2 \hich\f2 tivePhase,\'94\'94\loch\f2 );}{
+\f2\fs18\cf18\lang1033\langfe2052\langfenp2052 
+\par }\pard\plain \s17\ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs24\cf1\lang1033\langfe2052\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp2052 {
+\par }\pard\plain \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {\cf6\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0 \hich\f0 
+//Within \'93\loch\f0 \hich\f0 Active\'94\loch\f0  phase, the developer submits to contest
+\par }{\lang1033\langfe2052\langfenp2052 
+\par }{\hich\af0\dbch\af17\loch\f0 \hich\f0 //end \'93\loch\f0 \hich\f0 Active\'94\loch\f0  phase; when the }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 manager.end}{\hich\af0\dbch\af17\loch\f0  call is made a notification email will //be sent
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 if (manager.canEnd(activePhase))
+\par \hich\af2\dbch\af17\loch\f2 \hich\f2     manager.end(activePhase,\'94\'94\loch\f2 );
+\par 
+\par 
+\par }{\hich\af0\dbch\af17\loch\f0 \hich\f0 //start \'93\hich\af0\dbch\af17\loch\f0 \hich\f0 Action Required\'94\loch\f0  phase; when the }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 manager.start}{\hich\af0\dbch\af17\loch\f0 \hich\f0 
+ call is made the status of //the contest will be moved to \'93\loch\f0 \hich\f0 ActionRequired\'94\loch\f0  and a notification email will be //sent
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 if (manager.canStart(actionRequiredPhase))
+\par \hich\af2\dbch\af17\loch\f2 \hich\f2     manager.start(actionRequiredPhase,\'94\'94\loch\f2 );
+\par }{\lang1033\langfe2052\langfenp2052 
+\par }{\cf6\lang1033\langfe2052\langfenp2052 \hich\af0\dbch\af17\loch\f0 //Withi\hich\af0\dbch\af17\loch\f0 \hich\f0 n \'93\loch\f0 \hich\f0 Action Required\'94\loch\f0  phase, the client takes action to choose a winner
+\par }{\lang1033\langfe2052\langfenp2052 
+\par }{\hich\af0\dbch\af17\loch\f0 \hich\f0 //end \'93\loch\f0 \hich\f0 Action Required\'94\loch\f0  phase; when the }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 manager.end}{\hich\af0\dbch\af17\loch\f0  call is made a notification //email will be sent
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 if (manager.canEnd(actionRequiredPhase))
+\par \hich\af2\dbch\af17\loch\f2 \hich\f2     manager.end(actionRequiredPhase,\'94\'94\loch\f2 );
+\par 
+\par }{\hich\af0\dbch\af17\loch\f0 /\hich\af0\dbch\af17\loch\f0 \hich\f0 /start \'93\loch\f0 \hich\f0 Completed\'94\loch\f0  phase; when the }{\f2\fs18 \hich\af2\dbch\af17\loch\f2 manager.start}{\hich\af0\dbch\af17\loch\f0 \hich\f0 
+ call is made the status of the //contest will be moved to \'93\loch\f0 \hich\f0 Completed\'94\loch\f0  and a notification email will be sent
+\par }{\f2\fs18\cf18 \hich\af2\dbch\af17\loch\f2 if (manager.canStart(completedPhase))
+\par \hich\af2\dbch\af17\loch\f2 \hich\f2     manager.start(completedPhase,\'94\'94\loch\f2 );
+\par }\pard \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 {\f2\fs18\cf18 
+\par }\pard \ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 {\f2\fs18\cf18 
+\par {\listtext\pard\plain\s1 \b\f1\lang1033\langfe1033\langfenp1033 \hich\af1\dbch\af17\loch\f1 5.\tab}}\pard\plain \s1\ql \li0\ri0\sb120\sa60\sl240\slmult0\keepn\nowidctlpar
+\jclisttab\tx360\aspalpha\aspnum\faauto\ls1\outlinelevel0\adjustright\rin0\lin0\itap0 \b\fs24\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {\hich\af1\dbch\af17\loch\f1 Future Enhancements
+\par }\pard\plain \s17\ql \li720\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin720\itap0 \fs24\cf1\lang1033\langfe2052\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp2052 {\hich\af0\dbch\af17\loch\f0 
+New implementations of EmailMessageGenerator could be provided.
+\par }\pard\plain \s16\ql \li0\ri0\sa120\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe1033\loch\af1\hich\af1\dbch\af17\cgrid\langnp1033\langfenp1033 {
+\par }\pard\plain \ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe1033\loch\af0\hich\af0\dbch\af17\cgrid\langnp1033\langfenp1033 {
+\par }}
