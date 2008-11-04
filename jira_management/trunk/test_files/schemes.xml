@@ -1,0 +1,18 @@
+<CMConfig>
+    <!-- schemes are shifted by one against default values-->
+    <Config name="notificationSchemesNamespace">
+        <Property name="generic_token"><Value>Component Management Notification Scheme</Value></Property>
+        <Property name="custom_token"><Value>Client Project Notification Scheme</Value></Property>
+        <Property name="application_token"><Value>Component Management Notification Scheme</Value></Property>
+    </Config>    
+    <Config name="permissionSchemesNamespace">
+        <Property name="generic_token"><Value>Custom Component Permissions Scheme</Value></Property>
+        <Property name="custom_token"><Value>Client Projects</Value></Property>
+        <Property name="application_token"><Value>Generic Component Permission Scheme</Value></Property>
+    </Config>    
+    <Config name="issueSecuritySchemesNamespace">
+        <Property name="generic_token"><Value>Custom Component Issues Scheme</Value></Property>
+        <Property name="custom_token"><Value>Client Project Issues Scheme</Value></Property>
+        <Property name="application_token"><Value>Generic Component Issues Scheme</Value></Property>
+    </Config>    
+</CMConfig>

@@ -1,0 +1,7 @@
+<CMConfig>
+    <Config name="com.topcoder.jira">
+        <Property name="log_name_token">
+            <Value>log_name</Value>
+        </Property>
+    </Config>
+</CMConfig>
