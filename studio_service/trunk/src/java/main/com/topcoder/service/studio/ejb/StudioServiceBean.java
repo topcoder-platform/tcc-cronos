@@ -3254,7 +3254,7 @@ public class StudioServiceBean implements StudioService {
                     // STUDIO-217
                     if ( contest.getContestChannel().getContestChannelId()==2 )
                     {
-                    	addPayment(submission,prize);
+                    	addPayment(submission,prizeToAdd);
                     }
                     logExit("setSubmissionPlacement");
                     return;
