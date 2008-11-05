@@ -116,14 +116,6 @@
             successful = true;
         } else if ("Submission".equals(originalPaymentType) || ("PurchasedSubmissions".equals(originalPaymentType))) {
             if (originalSubmissionIds != null) {
-                String[] ids = originalSubmissionIds.split(",");
-                for (int i = 0; i < ids.length; i++) {
-                    String id = ids[i].trim();
-                    studioService.purchaseSubmission(Long.parseLong(id), paypalOrderId, originalPrincipalName);
-                    servletContext.log("paypalSilentPost.jsp : Purchased submission "
-                                       + id + " on behalf of " + originalPrincipalName
-                                       + " as confirmed by PayPal order ID " + paypalOrderId);
-                }
                 if ("Submission".equals(originalPaymentType)) {
                     StringTokenizer tokenizer = new StringTokenizer(originalSubmissionPlacements, ",");
                     while (tokenizer.hasMoreTokens()) {
@@ -138,6 +130,14 @@
                                                + "[" + token + "]");
                         }
                     }
+                }
+                String[] ids = originalSubmissionIds.split(",");
+                for (int i = 0; i < ids.length; i++) {
+                    String id = ids[i].trim();
+                    studioService.purchaseSubmission(Long.parseLong(id), paypalOrderId, originalPrincipalName);
+                    servletContext.log("paypalSilentPost.jsp : Purchased submission "
+                                       + id + " on behalf of " + originalPrincipalName
+                                       + " as confirmed by PayPal order ID " + paypalOrderId);
                 }
                 successful = true;
             }
