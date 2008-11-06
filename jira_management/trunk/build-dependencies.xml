@@ -15,12 +15,19 @@
 
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/4.5/junit-4.5.jar"/>
-    <property name="jaxb-api.jar" value="C:\tcs\soft\jboss-4.2.2.GA\client\jaxb-api.jar"/>
+    <property name="jaxb-api.jar" value="${ext_libdir}/jboss/as/4.2.2.ga/client/jaxb-api.jar"/>
+    <property name="axis.jar" value="${ext_libdir}/axis/1.4.0/axis.jar"/>
+    <property name="commons-discovery-0.2.jar" value="${ext_libdir}/axis/1.4.0/commons-discovery-0.2.jar"/>
+    <property name="commons-logging-1.0.4.jar" value="${ext_libdir}/axis/1.4.0/commons-logging-1.0.4.jar"/>
+    <property name="jaxrpc.jar" value="${ext_libdir}/axis/1.4.0/jaxrpc.jar"/>
+    <property name="saaj.jar" value="${ext_libdir}/axis/1.4.0/saaj.jar"/>
+    <property name="wsdl4j-1.5.1.jar" value="${ext_libdir}/axis/1.4.0/wsdl4j-1.5.1.jar"/>
+    <property name="generated.jar" value="${testfiles}/generated.jar"/>
 
     <path id="component.tcs-dependencies">
         <pathelement location="${base_exception.jar}"/>
         <pathelement location="${logging_wrapper.jar}"/>
-        <pathelement location="${typesafe_enum.jar}"/>        
+        <pathelement location="${typesafe_enum.jar}"/>
         <pathelement location="${object_formatter.jar}"/>
         <pathelement location="${configuration_api.jar}"/>
         <pathelement location="${configuration_persistence.jar}"/>
@@ -28,14 +35,17 @@
 
     <path id="component.3rdParty-dependencies">
         <pathelement location="${jaxb-api.jar}"/>
-        <pathelement location="${testfiles}/generated.jar"/>
-        <fileset dir="${ext_libdir}/axis/1.4.0">
-            <include name="**/*.jar" />
-        </fileset>
+        <pathelement location="${jaxrpc.jar}"/>
+        <pathelement location="${axis.jar}"/>		
+        <pathelement location="${generated.jar}"/>
     </path>
 
     <path id="component.test.3rdParty-dependencies">
         <pathelement location="${junit.jar}"/>
-    </path>
+        <pathelement location="${commons-logging-1.0.4.jar}"/>
+        <pathelement location="${commons-discovery-0.2.jar}"/>
+        <pathelement location="${saaj.jar}"/>
+        <pathelement location="${wsdl4j-1.5.1.jar}"/>
+	</path>
 
 </project>
