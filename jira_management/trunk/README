@@ -20,11 +20,17 @@ This readme file explains how to setup and build this component.
 
 5. The following properties need to be set for this component:
 	[List the any specialized configuration needed]
-	${oracle.database.url} - points to the oracle instance used to run perf testing, e.g. ...
+
 
 6. The following third party libraries need to have their location specified - by default the build-dependencies.xml file looks for these under ${ext_libdir}, if you follow the setup listed in that file, you will not need to add these to global:
 	[List the third party libraries here as their property name, include comment of version to use]
-	${log4j.jar} - version 2.3.4 or later, testing only
+    jaxb-api.jar
+    axis.jar
+    commons-discovery-0.2.jar
+    commons-logging-1.0.4.jar
+    jaxrpc.jar
+    saaj.jar
+    wsdl4j-1.5.1.jar
 
 7. Ant Commands:
 	ant clean - removes temporary build files
@@ -43,4 +49,4 @@ NB:
 
 	Included:
 		[List the contents of ${basedir}/test_reflib here - if needed explain how to build/access those contents]
-		logging_wrapper/2.0.0/logging_wrapper.jar - this is a rt of the logging wrapper component for boot strapping the tests (circular dependency)
+
