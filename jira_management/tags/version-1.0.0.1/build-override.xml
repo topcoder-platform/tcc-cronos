@@ -1,0 +1,66 @@
+<project name="Override Macrodef Standard Behaviour Import" basedir=".">
+    <!-- macrodef override definition in order to change the standard behaviour from
+         build.xml/build_dist.xml
+     -->
+    <property name="tcj-url" value="http://localhost:8090/rpc/soap/jirasoapservice-v2" />
+    <property name="tcj-user" value="root" />
+    <property name="tcj-pwd" value="123" />
+    <property name="tcj-guest" value="guest" />
+    <property name="tcj-guest-pwd" value="guest" />
+    <property name="tcj-prefix" value="TCJ" />
+
+    <macrodef name="test.execute">
+        <!-- standard test task -->
+        <sequential>
+            <mkdir dir="${testlogdir}"/>
+            <junit fork="true" haltonerror="false">
+                <jvmarg value="-Dtcj-url=${tcj-url}"/>
+                <jvmarg value="-Dtcj-user=${tcj-user}"/>
+                <jvmarg value="-Dtcj-pwd=${tcj-pwd}"/>
+                <jvmarg value="-Dtcj-guest=${tcj-guest}"/>
+                <jvmarg value="-Dtcj-guest-pwd=${tcj-guest-pwd}"/>
+                <jvmarg value="-Dtcj-prefix=${tcj-prefix}"/>
+
+                <classpath location="${build_testclassdir}"/>
+                <classpath refid="test.build.classpath"/>
+                <test name="${package}.AllTests" todir="${testlogdir}">
+                    <formatter type="plain" usefile="true"/>
+                    <formatter type="xml" usefile="true"/>
+                </test>
+            </junit>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="coveragetest.execute">
+        <!-- standard test task -->
+        <sequential>
+            <mkdir dir="${testlogdir}"/>
+            <mkdir dir="${instrumented.dir}"/>
+            <delete file="${cobertura.datafile}"/>
+            <cobertura-instrument todir="${instrumented.dir}" datafile="${cobertura.datafile}">
+                <!-- all included -->
+                <fileset dir="${build_classdir}">
+                    <include name="**/*.class"/>
+                </fileset>
+            </cobertura-instrument>
+            <junit fork="true" haltonerror="false">
+                <jvmarg value="-Dtcj-url=${tcj-url}"/>
+                <jvmarg value="-Dtcj-user=${tcj-user}"/>
+                <jvmarg value="-Dtcj-pwd=${tcj-pwd}"/>
+                <jvmarg value="-Dtcj-guest=${tcj-guest}"/>
+                <jvmarg value="-Dtcj-guest-pwd=${tcj-guest-pwd}"/>
+                <jvmarg value="-Dtcj-prefix=${tcj-prefix}"/>
+
+                <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}"/>
+                <classpath location="${instrumented.dir}"/>
+                <classpath location="${build_testclassdir}"/>
+                <classpath refid="test.build.classpath"/>
+                <classpath refid="cobertura.classpath"/>
+                <test name="${package}.AllTests" todir="${testlogdir}">
+                    <formatter type="plain" usefile="true"/>
+                    <formatter type="xml" usefile="true"/>
+                </test>
+            </junit>
+        </sequential>
+    </macrodef>	
+</project>

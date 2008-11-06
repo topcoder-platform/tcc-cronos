@@ -1,0 +1,47 @@
+<project default="jar" name="jira-soapclient" basedir=".">
+    <property name="AXIS_HOME" value="c:\soft\axis-1_4" />
+    <property name="URL" value="http://localhost:8090/rpc/soap/jirasoapservice-v2" />
+    
+    <property name="srcdir" value="src" />
+    <property name="libdir" value="${AXIS_HOME}\lib" />
+    <property name="classesdir" value="classes" />
+    <property name="distdir" value="dist" />
+    <property name="jarname" value="generated.jar" />
+
+    <path id="build.classpath">
+        <fileset dir="${libdir}">
+            <include name="**/*.jar" />
+        </fileset>
+    </path>
+    
+    <target name="clean" description="clean">
+        <delete dir="${srcdir}" />
+        <delete dir="${classesdir}" />
+        <delete dir="${distdir}" />
+    </target>
+    
+    <target name="generate" description="generate sources">
+        <java fork="true" classname="org.apache.axis.wsdl.WSDL2Java" classpathref="build.classpath">
+            <arg value='-o' />
+            <arg value='${srcdir}' />
+            <arg value='-N"${URL}"' />
+            <arg value='com.topcoder.jira.generated' />
+            <arg value='jirasoapservice-v2.wsdl' />
+        </java>
+    </target>
+    
+    <target name="compile" description="compile">
+        <mkdir dir="${classesdir}" />
+        <javac destdir="${classesdir}" deprecation="true" debug="true" optimize="false">
+            <src>
+                <pathelement location="src" />
+            </src>
+            <classpath refid="build.classpath" />
+        </javac>
+    </target>
+
+    <target name="jar" description="create jar file" depends="clean, generate, compile">
+        <mkdir dir="${distdir}" />
+        <jar jarfile="${distdir}/${jarname}" basedir="${classesdir}" />
+    </target>
+</project>

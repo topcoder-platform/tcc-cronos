@@ -1,0 +1,51 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
+
+    <!-- TCS dependencies -->
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
+    <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
+    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+    <property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar"/>
+    <property name="configuration_persistence.jar" value="${tcs_libdir}/configuration_persistence/1.0.1/configuration_persistence.jar"/>
+
+    <!-- 3rd party dependencies -->
+    <property name="junit.jar" value="${ext_libdir}/junit/4.5/junit-4.5.jar"/>
+    <property name="jaxb-api.jar" value="${ext_libdir}/jboss/as/4.2.2.ga/client/jaxb-api.jar"/>
+    <property name="axis.jar" value="${ext_libdir}/axis/1.4.0/axis.jar"/>
+    <property name="commons-discovery-0.2.jar" value="${ext_libdir}/axis/1.4.0/commons-discovery-0.2.jar"/>
+    <property name="commons-logging-1.0.4.jar" value="${ext_libdir}/axis/1.4.0/commons-logging-1.0.4.jar"/>
+    <property name="jaxrpc.jar" value="${ext_libdir}/axis/1.4.0/jaxrpc.jar"/>
+    <property name="saaj.jar" value="${ext_libdir}/axis/1.4.0/saaj.jar"/>
+    <property name="wsdl4j-1.5.1.jar" value="${ext_libdir}/axis/1.4.0/wsdl4j-1.5.1.jar"/>
+    <property name="generated.jar" value="${testfiles}/generated.jar"/>
+
+    <path id="component.tcs-dependencies">
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${logging_wrapper.jar}"/>
+        <pathelement location="${typesafe_enum.jar}"/>
+        <pathelement location="${object_formatter.jar}"/>
+        <pathelement location="${configuration_api.jar}"/>
+        <pathelement location="${configuration_persistence.jar}"/>
+    </path>
+
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${jaxb-api.jar}"/>
+        <pathelement location="${jaxrpc.jar}"/>
+        <pathelement location="${axis.jar}"/>		
+        <pathelement location="${generated.jar}"/>
+    </path>
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${commons-logging-1.0.4.jar}"/>
+        <pathelement location="${commons-discovery-0.2.jar}"/>
+        <pathelement location="${saaj.jar}"/>
+        <pathelement location="${wsdl4j-1.5.1.jar}"/>
+	</path>
+
+</project>
