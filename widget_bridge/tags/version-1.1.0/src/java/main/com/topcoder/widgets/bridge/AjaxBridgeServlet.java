@@ -1279,6 +1279,7 @@ public class AjaxBridgeServlet extends HttpServlet {
             }
             contest.setMedia(listOfMedium);
         }
+        contest.setForumId(jsonContest.getLong("forumId"));
         return contest;
     }
 
