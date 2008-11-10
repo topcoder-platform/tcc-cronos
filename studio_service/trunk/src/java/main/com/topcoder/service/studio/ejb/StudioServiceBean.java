@@ -1420,6 +1420,7 @@ public class StudioServiceBean implements StudioService {
             prize.setContests(contests);
         }
         result.setPrizes(prizes);
+        result.setForumId(data.getForumId());
 
 
         return result;
