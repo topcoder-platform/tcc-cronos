@@ -1383,9 +1383,9 @@ public class StudioServiceBean implements StudioService {
         result.setProjectId(data.getProjectId());
         result.setWinnerAnnoucementDeadline(getDate(data.getWinnerAnnoucementDeadline()));
 
-        logError("ContestData.status: " + data.getStatusId());
+        logInfo("ContestData.status: " + data.getStatusId());
         ContestStatus contestStatus = contestManager.getContestStatus(data.getStatusId());
-        logError(MessageFormat.format("Retrieved contest status: desc:[{0}] name:[{1}] id:[{2}]", contestStatus
+        logInfo(MessageFormat.format("Retrieved contest status: desc:[{0}] name:[{1}] id:[{2}]", contestStatus
                 .getDescription(), contestStatus.getName(), contestStatus.getContestStatusId()));
 
         result.setStatus(contestStatus);
@@ -2386,11 +2386,11 @@ public class StudioServiceBean implements StudioService {
             List<ContestData> result = new ArrayList<ContestData>();
             List<Contest> contests;
             if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
-                logError("User is admin.");
+                logInfo("User is admin.");
                 contests = contestManager.getAllContests();
             } else {
                 UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                logError("User " + p.getUserId() + " is non-admin.");
+                logInfo("User " + p.getUserId() + " is non-admin.");
                 contests = contestManager.getContestsForUser(p.getUserId());
             }
 
@@ -3499,11 +3499,11 @@ public class StudioServiceBean implements StudioService {
             List<ContestData> result = new ArrayList<ContestData>();
             List<Contest> contests;
             if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
-                logError("User is admin.");
+                logInfo("User is admin.");
                 contests = contestManager.getAllContests();
             } else {
                 UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-                logError("User " + p.getUserId() + " is non-admin.");
+                logInfo("User " + p.getUserId() + " is non-admin.");
                 contests = contestManager.getContestsForUser(p.getUserId());
             }
 
