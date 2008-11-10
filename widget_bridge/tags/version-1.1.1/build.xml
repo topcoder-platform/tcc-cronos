@@ -340,7 +340,7 @@
        </war>
     </target>
     
-    <taskdef classpath="${cronos_libdir}/javascript_compressor/1.1.0/javascript_compressor.jar" resource="tasks.properties"/>
+    <taskdef classpath="${javascript_compressor.jar}" resource="tasks.properties"/>
     <target name="compress_javascript">
         <mkdir dir="${builddir}/js"/>
         <delete file="${builddir}/js/widgetbridge-all.js"/>
