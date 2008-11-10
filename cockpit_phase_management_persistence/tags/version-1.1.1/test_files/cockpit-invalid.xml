@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+	<Config name="jndi_ns_failure">
+		<Property name="objectFactoryNamespace">
+			<Value>ObjectFactory</Value>
+		</Property>
+		<Property name="jndiUtilNamespace">
+			<Value>JNDIContextUtility</Value>
+		</Property>
+		<Property name="contestManagerName">
+			<Value>contestManagerRemote</Value>
+		</Property>
+		<!-- Define the phase handlers -->
+		<Property name="handlers">
+			<Property name="1,draft,start">
+				<Value>mockPhaseHandler</Value>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="jndi_naming_failure">
+		<Property name="objectFactoryNamespace">
+			<Value>ObjectFactory</Value>
+		</Property>
+		<Property name="jndiUtilNamespace">
+			<Value>no_naming</Value>
+		</Property>
+		<Property name="contestManagerName">
+			<Value>contestManagerRemote</Value>
+		</Property>
+		<!-- Define the phase handlers -->
+		<Property name="handlers">
+			<Property name="1,draft,start">
+				<Value>mockPhaseHandler</Value>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="jndi_invalid_object_failure">
+		<Property name="objectFactoryNamespace">
+			<Value>ObjectFactory</Value>
+		</Property>
+		<Property name="jndiUtilNamespace">
+			<Value>invalid_object</Value>
+		</Property>
+		<Property name="contestManagerName">
+			<Value>contestManagerRemote</Value>
+		</Property>
+		<!-- Define the phase handlers -->
+		<Property name="handlers">
+			<Property name="1,draft,start">
+				<Value>mockPhaseHandler</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="missing_contest_manager_key">
+		<Property name="objectFactoryNamespace">
+			<Value>ObjectFactory</Value>
+		</Property>
+		<!-- Define the phase handlers -->
+		<Property name="handlers">
+			<Property name="1,draft,start">
+				<Value>mockPhaseHandler</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="empty_contest_manager_key">
+		<Property name="objectFactoryNamespace">
+			<Value>ObjectFactory</Value>
+		</Property>
+		<Property name="contestManagerKey">
+			<Value> </Value>
+		</Property>
+		<!-- Define the phase handlers -->
+		<Property name="handlers">
+			<Property name="1,draft,start">
+				<Value>mockPhaseHandler</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="invalid_object_factory">
+		<Property name="objectFactoryNamespace">
+			<Value>illegal_ref</Value>
+		</Property>
+		<Property name="contestManagerName">
+			<Value>contestManagerRemote</Value>
+		</Property>
+		<!-- Define the phase handlers -->
+		<Property name="handlers">
+			<Property name="1,draft,start">
+				<Value>mockPhaseHandler</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="invalid_object_type1">
+		<Property name="objectFactoryNamespace">
+			<Value>invalid_manager</Value>
+		</Property>
+		<Property name="contestManagerKey">
+			<Value>ContestManager</Value>
+		</Property>
+		<!-- Define the phase handlers -->
+		<Property name="handlers">
+			<Property name="1,draft,start">
+				<Value>mockPhaseHandler</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="invalid_object_type2">
+		<Property name="objectFactoryNamespace">
+			<Value>invalid_handler</Value>
+		</Property>
+		<Property name="contestManagerKey">
+			<Value>ContestManager</Value>
+		</Property>
+		<!-- Define the phase handlers -->
+		<Property name="handlers">
+			<Property name="1,draft,start">
+				<Value>mockPhaseHandler</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="invalid_class_of">
+		<Property name="objectFactoryNamespace">
+			<Value>invalid_class</Value>
+		</Property>
+		<Property name="contestManagerKey">
+			<Value>ContestManager</Value>
+		</Property>
+		<!-- Define the phase handlers -->
+		<Property name="handlers">
+			<Property name="1,draft,start">
+				<Value>mockPhaseHandler</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="missing_handlers">
+		<Property name="objectFactoryNamespace">
+			<Value>ObjectFactory</Value>
+		</Property>
+		<Property name="contestManagerName">
+			<Value>contestManagerRemote</Value>
+		</Property>
+		<!-- Define the phase handlers -->
+		<Property name="handlers">
+		</Property>
+	</Config>
+	
+	<Config name="invalid_handlers1">
+		<Property name="objectFactoryNamespace">
+			<Value>ObjectFactory</Value>
+		</Property>
+		<Property name="contestManagerKey">
+			<Value>ContestManager</Value>
+		</Property>
+		<!-- Define the phase handlers -->
+		<Property name="handlers">
+			<Property name="1,draft,start,apa,boleh,buat">
+				<Value>mockPhaseHandler</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="invalid_handlers2">
+		<Property name="objectFactoryNamespace">
+			<Value>ObjectFactory</Value>
+		</Property>
+		<Property name="contestManagerKey">
+			<Value>ContestManager</Value>
+		</Property>
+		<!-- Define the phase handlers -->
+		<Property name="handlers">
+			<Property name="x,draft,start">
+				<Value>mockPhaseHandler</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="invalid_handlers3">
+		<Property name="objectFactoryNamespace">
+			<Value>ObjectFactory</Value>
+		</Property>
+		<Property name="contestManagerKey">
+			<Value>ContestManager</Value>
+		</Property>
+		<!-- Define the phase handlers -->
+		<Property name="handlers">
+			<Property name="1,draft,Stark">
+				<Value>mockPhaseHandler</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="invalid_handlers4">
+		<Property name="objectFactoryNamespace">
+			<Value>ObjectFactory</Value>
+		</Property>
+		<Property name="contestManagerKey">
+			<Value>ContestManager</Value>
+		</Property>
+		<!-- Define the phase handlers -->
+		<Property name="handlers">
+			<Property name="-1,draft,Start">
+				<Value>mockPhaseHandler</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="invalid_handlers5">
+		<Property name="objectFactoryNamespace">
+			<Value>ObjectFactory</Value>
+		</Property>
+		<Property name="contestManagerKey">
+			<Value>ContestManager</Value>
+		</Property>
+		<!-- Define the phase handlers -->
+		<Property name="handlers">
+			<Property name="1, ,Start">
+				<Value>mockPhaseHandler</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="invalid_handlers6">
+		<Property name="objectFactoryNamespace">
+			<Value>ObjectFactory</Value>
+		</Property>
+		<Property name="contestManagerKey">
+			<Value>ContestManager</Value>
+		</Property>
+		<!-- Define the phase handlers -->
+		<Property name="handlers">
+			<Property name="1,draft,">
+				<Value>mockPhaseHandler</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="invalid_handlers7">
+		<Property name="objectFactoryNamespace">
+			<Value>ObjectFactory</Value>
+		</Property>
+		<Property name="contestManagerKey">
+			<Value>ContestManager</Value>
+		</Property>
+		<!-- Define the phase handlers -->
+		<Property name="handlers">
+			<Property name="1,draft,Start">
+				<Value>mockPhaseHandler</Value>
+			</Property>
+			<Property name="1,action,enD">
+				<Value></Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="missing_of_namespace">
+		<Property name="contestManagerKey">
+			<Value>ContestManager</Value>
+		</Property>
+		<!-- Define the phase handlers -->
+		<Property name="handlers">
+			<Property name="1,draft,Start">
+				<Value>mockPhaseHandler</Value>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="empty_of_namespace">
+		<Property name="objectFactoryNamespace">
+			<Value> </Value>
+		</Property>
+		<Property name="contestManagerKey">
+			<Value>ContestManager</Value>
+		</Property>
+		<!-- Define the phase handlers -->
+		<Property name="handlers">
+			<Property name="1,draft,Start">
+				<Value>mockPhaseHandler</Value>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

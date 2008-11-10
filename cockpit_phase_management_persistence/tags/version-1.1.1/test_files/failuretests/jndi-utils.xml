@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+	<Config name="com.topcoder.naming.jndiutility">
+		<Property name="context">
+			<Property name="default">
+				<Property name="factory">
+					<Value>com.topcoder.management.phase.clientcockpit.failuretests.MockContextFactory</Value>
+				</Property>
+				<Property name="url">
+					<Value>jnp://localhost:1099</Value>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>
