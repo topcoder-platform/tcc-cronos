@@ -2261,6 +2261,21 @@ public class StudioServiceBean implements StudioService {
             log.log(Level.ERROR, message);
         }
     }
+    
+    
+    /**
+     * <p>
+     * This method used to log arbitrary info. 
+     * </p>
+     *
+     * @param message
+     *            additional message information
+     */
+    private void logInfo(String message) {
+        if (log != null) {
+            log.log(Level.INFO, message);
+        }
+    }
 
     /**
      * Simple helper to unbox Long value to long. If parameter is null, return
