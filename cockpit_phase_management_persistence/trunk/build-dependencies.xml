@@ -25,7 +25,7 @@
     <property name="studio_contest_manager.jar" value="${cronos_libdir}/studio_contest_manager/1.2.0/studio_contest_manager.jar"/>
     <property name="contest_and_submission_entities.jar" value="${cronos_libdir}/contest_and_submission_entities/1.1.0/contest_and_submission_entities.jar"/>
     <property name="user_group_manager.jar" value="${cockpit_tcs_libdir}/user_group_manager/1.0.x/user_group_manager.jar"/>
-    <property name="cockpit_authentication_authorization_update.jar" value="${cronos_libdir}/cockpit_authentication_authorization_update/1.1.0/cockpitejb.jar"/>
+    <property name="cockpit_authentication_authorization_update.jar" value="${cronos_libdir}/cockpit_authentication_authorization_update/1.1.1/cockpitejb.jar"/>
     <property name="jboss_home" value="${ext_libdir}/jboss/as/4.2.2.ga"/>
     <property name="jboss.config.name" value="all"/>
     <property name="jbossall-client.jar" value="${jboss_home}/client/jbossall-client.jar"/>
