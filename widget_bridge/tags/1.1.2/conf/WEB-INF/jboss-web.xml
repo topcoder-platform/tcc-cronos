@@ -1,0 +1,4 @@
+<jboss-web>
+   <security-domain>java:/jaas/cockpitDomain</security-domain>
+</jboss-web>
+

@@ -1,0 +1,469 @@
+<!--
+/*
+* Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+*/
+/**
+* Unit test cases for PrerequisiteDocument class.
+*
+* @author TCSDEVELOPER
+* @version 1.0
+*/
+-->
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>PrerequisiteDocument - Unit Tests</title>
+        <link rel="stylesheet" type="text/css" href="../../../../../../../test_files/jsunit/css/jsUnitStyle.css" />
+        <script language="JavaScript" type="text/javascript" src="../../../../../../../test_files/jsunit/app/jsUnitCore.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/WidgetBridgeNamespace.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/IllegalArgumentException.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/Helper.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/PrerequisiteDocument.js">
+        </script>
+        <script language="JavaScript" type="text/javascript">
+            /**
+             * <p><code>PrerequisiteDocument</code> instance used for testing.</p>
+             */
+            var prerequisiteDocument = null;
+
+            /**
+             * abbreviation
+             */
+            var IllegalArgumentException = js.topcoder.widgets.bridge.IllegalArgumentException;
+
+            /**
+             * <p>Sets up environment.</p>
+             */
+            function setUp(){
+                prerequisiteDocument = new js.topcoder.widgets.bridge.PrerequisiteDocument();
+            }
+
+            /**
+             * <p>Test of constructor.</p>
+             */
+            function testCtor1(){
+                assertNotNull("instance has been created successfully!", prerequisiteDocument);
+            }
+
+            /**
+             * <p>Test of constructor using JSON object.</p>
+             */
+            function testCtor2(){
+            	try{
+                var jsonString = "{\"documentID\":1,\"version\":1,\"versionDate\":\"2008-09-01 08:30\",";
+                jsonString += "\"name\":\"name\",\"content\":\"content\"}";
+                var json = eval("(" + jsonString + ")");
+                prerequisiteDocument = new js.topcoder.widgets.bridge.PrerequisiteDocument(json);
+                assertNotNull("instance has been created successfully!", prerequisiteDocument);
+               }catch(e){
+               	  alert(e+e.constructor);
+               }
+            }
+
+            /**
+             * <p>Test of <code>toJSON</code> function.</p>
+             */
+            function testToJSON(){
+                assertNotNull("It should get non-null string", prerequisiteDocument.toJSON());
+                //ok
+            }
+
+            /**
+             * <p>Test of <code>setDocumentID</code>.Set with undefined value
+             * and should throw exception.</p>
+             */
+            function testSetDocumentIDWithUndefined(){
+                try {
+                    prerequisiteDocument.setDocumentID(undefined);
+                    fail("It should fail when set with undefined.");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setDocumentID</code>. Set with null
+             * and should throw exception.</p>
+             */
+            function testSetDocumentIDWithNull(){
+                try {
+                    prerequisiteDocument.setDocumentID(null);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setDocumentID</code>. Set with negative value and
+             * should throw exception.</p>
+             */
+            function testSetDocumentIDWithNegative(){
+                try {
+                    prerequisiteDocument.setDocumentID(-39);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setDocumentID</code>. Set with 0.</p>
+             */
+            function testSetDocumentIDWithZero(){
+                prerequisiteDocument.setDocumentID(0);
+                assertEquals("Fail to set documentID.", 0, prerequisiteDocument.getDocumentID());
+            }
+
+            /**
+             * <p>Test of <code>setDocumentID</code>. Set with positive value.</p>
+             */
+            function testSetDocumentIDWithPositive(){
+                prerequisiteDocument.setDocumentID(88);
+                assertEquals("Fail to set documentID.", 88, prerequisiteDocument.getDocumentID());
+            }
+
+            /**
+             * <p>Test of <code>getDocumentID</code>. Set with positive value and get
+             * same value back.</p>
+             */
+            function testGetDocumentIDWithPositive(){
+                prerequisiteDocument.setDocumentID(100);
+                assertEquals("Fail to get documentID.", 100, prerequisiteDocument.getDocumentID());
+            }
+
+            /**
+             * <p>Test of <code>setDocumentID</code>.Set with non-number value and
+             * it should throw exception.</p>
+             */
+            function testSetDocumentIDWithNonNumberValue(){
+                try {
+                    prerequisiteDocument.setDocumentID("non-number");
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setVersion</code>.Set with undefined value
+             * and should throw exception.</p>
+             */
+            function testSetVersionWithUndefined(){
+                try {
+                    prerequisiteDocument.setVersion(undefined);
+                    fail("It should fail when set with undefined.");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setVersion</code>. Set with null
+             * and should throw exception.</p>
+             */
+            function testSetVersionWithNull(){
+                try {
+                    prerequisiteDocument.setVersion(null);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setVersion</code>. Set with negative value and
+             * should throw exception.</p>
+             */
+            function testSetVersionWithNegative(){
+                try {
+                    prerequisiteDocument.setVersion(-39);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setVersion</code>. Set with 0.</p>
+             */
+            function testSetVersionWithZero(){
+                prerequisiteDocument.setVersion(0);
+                assertEquals("Fail to set version.", 0, prerequisiteDocument.getVersion());
+            }
+
+            /**
+             * <p>Test of <code>setVersion</code>. Set with positive value.</p>
+             */
+            function testSetVersionWithPositive(){
+                prerequisiteDocument.setVersion(88);
+                assertEquals("Fail to set version.", 88, prerequisiteDocument.getVersion());
+            }
+
+            /**
+             * <p>Test of <code>getVersion</code>. Set with positive value and get
+             * same value back.</p>
+             */
+            function testGetVersionWithPositive(){
+                prerequisiteDocument.setVersion(100);
+                assertEquals("Fail to get version.", 100, prerequisiteDocument.getVersion());
+            }
+
+            /**
+             * <p>Test of <code>setVersion</code>.Set with non-number value and
+             * it should throw exception.</p>
+             */
+            function testSetVersionWithNonNumberValue(){
+                try {
+                    prerequisiteDocument.setVersion("non-number");
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setVersionDate</code>.Set with undefined value
+             * and should throw exception.</p>
+             */
+            function testSetVersionDateWithUndefined(){
+                try {
+                    prerequisiteDocument.setVersionDate(undefined);
+                    fail("It should fail when set with undefined.");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setVersionDate</code>. Set with null
+             * and should throw exception.</p>
+             */
+            function testSetVersionDateWithNull(){
+                try {
+                    prerequisiteDocument.setVersionDate(null);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setVersionDate</code>. Set with empty value.</p>
+             */
+            function testSetVersionDateWithEmpty1(){
+                prerequisiteDocument.setVersionDate("");
+                assertEquals("Fail to set versionDate.", "", prerequisiteDocument.getVersionDate());
+            }
+
+            /**
+             * <p>Test of <code>setVersionDate</code>. Set with empty value.</p>
+             */
+            function testSetVersionDateWithEmpty2(){
+                prerequisiteDocument.setVersionDate(" ");
+                assertEquals("Fail to set versionDate.", " ", prerequisiteDocument.getVersionDate());
+            }
+
+            /**
+             * <p>Test of <code>setVersionDate</code>. Set with non-empty value.</p>
+             */
+            function testSetVersionDateWithNonEmpty(){
+                prerequisiteDocument.setVersionDate("some string");
+                assertEquals("Fail to set versionDate.", "some string", prerequisiteDocument.getVersionDate());
+            }
+
+            /**
+             * <p>Test of <code>getVersionDate</code>. Set with non-empty value and get
+             * same value back.</p>
+             */
+            function testGetVersionDateWithNonEmpty(){
+                prerequisiteDocument.setVersionDate("test get");
+                assertEquals("Fail to get versionDate.", "test get", prerequisiteDocument.getVersionDate());
+            }
+
+            /**
+             * <p>Test of <code>setVersionDate</code>.Set with non-string value and
+             * it should throw exception.</p>
+             */
+            function testSetVersionDateWithNonStringValue(){
+                try {
+                    prerequisiteDocument.setVersionDate(45);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setName</code>.Set with undefined value
+             * and should throw exception.</p>
+             */
+            function testSetNameWithUndefined(){
+                try {
+                    prerequisiteDocument.setName(undefined);
+                    fail("It should fail when set with undefined.");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setName</code>. Set with null
+             * and should throw exception.</p>
+             */
+            function testSetNameWithNull(){
+                try {
+                    prerequisiteDocument.setName(null);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setName</code>. Set with empty value.</p>
+             */
+            function testSetNameWithEmpty1(){
+                prerequisiteDocument.setName("");
+                assertEquals("Fail to set name.", "", prerequisiteDocument.getName());
+            }
+
+            /**
+             * <p>Test of <code>setName</code>. Set with empty value.</p>
+             */
+            function testSetNameWithEmpty2(){
+                prerequisiteDocument.setName(" ");
+                assertEquals("Fail to set name.", " ", prerequisiteDocument.getName());
+            }
+
+            /**
+             * <p>Test of <code>setName</code>. Set with non-empty value.</p>
+             */
+            function testSetNameWithNonEmpty(){
+                prerequisiteDocument.setName("some string");
+                assertEquals("Fail to set name.", "some string", prerequisiteDocument.getName());
+            }
+
+            /**
+             * <p>Test of <code>getName</code>. Set with non-empty value and get
+             * same value back.</p>
+             */
+            function testGetNameWithNonEmpty(){
+                prerequisiteDocument.setName("test get");
+                assertEquals("Fail to get name.", "test get", prerequisiteDocument.getName());
+            }
+
+            /**
+             * <p>Test of <code>setName</code>.Set with non-string value and
+             * it should throw exception.</p>
+             */
+            function testSetNameWithNonStringValue(){
+                try {
+                    prerequisiteDocument.setName(45);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setContent</code>.Set with undefined value
+             * and should throw exception.</p>
+             */
+            function testSetContentWithUndefined(){
+                try {
+                    prerequisiteDocument.setContent(undefined);
+                    fail("It should fail when set with undefined.");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setContent</code>. Set with null
+             * and should throw exception.</p>
+             */
+            function testSetContentWithNull(){
+                try {
+                    prerequisiteDocument.setContent(null);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setContent</code>. Set with empty value.</p>
+             */
+            function testSetContentWithEmpty1(){
+                prerequisiteDocument.setContent("");
+                assertEquals("Fail to set content.", "", prerequisiteDocument.getContent());
+            }
+
+            /**
+             * <p>Test of <code>setContent</code>. Set with empty value.</p>
+             */
+            function testSetContentWithEmpty2(){
+                prerequisiteDocument.setContent(" ");
+                assertEquals("Fail to set content.", " ", prerequisiteDocument.getContent());
+            }
+
+            /**
+             * <p>Test of <code>setContent</code>. Set with non-empty value.</p>
+             */
+            function testSetContentWithNonEmpty(){
+                prerequisiteDocument.setContent("some string");
+                assertEquals("Fail to set content.", "some string", prerequisiteDocument.getContent());
+            }
+
+            /**
+             * <p>Test of <code>getContent</code>. Set with non-empty value and get
+             * same value back.</p>
+             */
+            function testGetContentWithNonEmpty(){
+                prerequisiteDocument.setContent("test get");
+                assertEquals("Fail to get content.", "test get", prerequisiteDocument.getContent());
+            }
+
+            /**
+             * <p>Test of <code>setContent</code>.Set with non-string value and
+             * it should throw exception.</p>
+             */
+            function testSetContentWithNonStringValue(){
+                try {
+                    prerequisiteDocument.setContent(45);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <h1>PrerequisiteDocument - Unit Tests</h1>
+        <p>
+            This page contains unit tests for the js Class PrerequsiteDocument. To see them, take a look at the source.
+        </p>
+    </body>
+</html>
