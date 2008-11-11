@@ -5,5 +5,5 @@ component.package=com.topcoder.widgets.bridge
 component.packagedir=com/topcoder/widgets/bridge
 component.version.major=1
 component.version.minor=1
-component.version.micro=1
+component.version.micro=2
 component.version.build=0
