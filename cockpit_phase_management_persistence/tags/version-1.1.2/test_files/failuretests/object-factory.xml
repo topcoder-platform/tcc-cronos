@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+	<Config name="objectfactory">
+		<Property name="config_cachedContestStatusesKey">
+			<Property name="type">
+				<Value>com.topcoder.util.cache.SimpleCache</Value>
+			</Property>
+		</Property>
+		<Property name="draftPhaseHandlerKey">
+			<Property name="type">
+				<Value>com.topcoder.management.phase.clientcockpit.failuretests.MockPhaseHandler</Value>
+			</Property>
+		</Property>
+		<Property name="Contest_Manager_Key">
+			<Property name="type">
+				<Value>com.topcoder.management.phase.clientcockpit.failuretests.MockContestManager</Value>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>
+

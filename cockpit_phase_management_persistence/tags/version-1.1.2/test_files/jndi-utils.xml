@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+	<Config name="com.topcoder.naming.jndiutility">
+		<Property name="context">
+			<Property name="default">
+				<Property name="factory">
+					<Value>com.topcoder.management.phase.clientcockpit.MockContextFactory</Value>
+				</Property>
+				<Property name="url">
+					<Value>iiop://localhost:1050/</Value>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="no_naming">
+		<Property name="context">
+			<Property name="default">
+				<Property name="factory">
+					<Value>com.topcoder.management.phase.clientcockpit.NamingFailureContextFactory</Value>
+				</Property>
+				<Property name="url">
+					<Value>iiop://localhost:1050/</Value>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	
+	<Config name="invalid_object">
+		<Property name="context">
+			<Property name="default">
+				<Property name="factory">
+					<Value>com.topcoder.management.phase.clientcockpit.InvalidObjectContextFactory</Value>
+				</Property>
+				<Property name="url">
+					<Value>iiop://localhost:1050/</Value>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

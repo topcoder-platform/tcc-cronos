@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+	<Config name="ObjectFactory">
+		<Property name="myCache">
+			<Property name="type">
+				<Value>com.topcoder.util.cache.SimpleCache</Value>
+			</Property>
+		</Property>
+		<Property name="mockPhaseHandler">
+			<Property name="type">
+				<Value>com.topcoder.management.phase.clientcockpit.MockPhaseHandler</Value>
+			</Property>
+		</Property>
+		<Property name="ContestManager">
+			<Property name="type">
+				<Value>com.topcoder.management.phase.clientcockpit.MockContestManager</Value>
+			</Property>
+		</Property>
+	</Config>
+
+	<Config name="illegal_ref">
+		<Property name="invalid_object">
+			<Property name="type">
+				<Value>com.topcoder.management.phase.clientcockpit.InvalidObject</Value>
+			</Property>
+		</Property>
+	</Config>
+
+	<Config name="invalid_manager">
+		<Property name="ContestManager">
+			<Property name="type">
+				<Value>java.util.Date</Value>
+			</Property>
+		</Property>
+	</Config>
+
+	<Config name="invalid_handler">
+		<Property name="mockPhaseHandler">
+			<Property name="type">
+				<Value>java.util.Date</Value>
+			</Property>
+		</Property>
+		<Property name="ContestManager">
+			<Property name="type">
+				<Value>com.topcoder.management.phase.clientcockpit.MockContestManager</Value>
+			</Property>
+		</Property>
+	</Config>
+
+	<Config name="invalid_class">
+		<Property name="ContestManager">
+			<Property name="type">
+				<Value>com.topcoder.management.phase.clientcockpit.MockContestManager</Value>
+			</Property>
+		</Property>
+		<Property name="mockPhaseHandler">
+			<Property name="type">
+				<Value>com.topcoder.management.phase.clientcockpit.MockPhaseHandler</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>param</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>
+
