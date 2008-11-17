@@ -1,0 +1,70 @@
+<!--
+/*
+ * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ */
+
+/**
+ * Unit test suites.
+ *
+ * @author pinoydream
+ * @author TCSDEVELOPER
+ * @version 1.0
+ **/
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Javascript Widget Webservices Bridge Component - Test Suite</title>
+    <script language="JavaScript" type="text/javascript" src="../../../../../../../test_files/jsunit/app/jsUnitCore.js"></script>
+    <script language="JavaScript" type="text/javascript">
+
+        /**
+         * The Unit test suite.
+         */
+        function unitTestsSuite() {        	
+            var result = new top.jsUnitTestSuite();
+
+            //NOTE: payment service has been removed.
+			result.addTestPage("../../src/js/tests/js/topcoder/widgets/bridge/ContestCategoryUnitTests.html");
+			result.addTestPage("../../src/js/tests/js/topcoder/widgets/bridge/ContestPayloadUnitTests.html");
+			result.addTestPage("../../src/js/tests/js/topcoder/widgets/bridge/ContestStatusUnitTests.html");
+			result.addTestPage("../../src/js/tests/js/topcoder/widgets/bridge/ContestUnitTests.html");
+            result.addTestPage("../../src/js/tests/js/topcoder/widgets/bridge/IllegalArgumentExceptionUnitTests.html");
+            result.addTestPage("../../src/js/tests/js/topcoder/widgets/bridge/InvalidResponseExceptionUnitTests.html");
+            result.addTestPage("../../src/js/tests/js/topcoder/widgets/bridge/PrizeUnitTests.html");
+            result.addTestPage("../../src/js/tests/js/topcoder/widgets/bridge/ProjectUnitTests.html");
+            result.addTestPage("../../src/js/tests/js/topcoder/widgets/bridge/SubmissionUnitTests.html");
+            result.addTestPage("../../src/js/tests/js/topcoder/widgets/bridge/UploadedDocumentUnitTests.html");
+            result.addTestPage("../../src/js/tests/js/topcoder/widgets/bridge/ContestTypeUnitTests.html");
+            
+            // services
+            result.addTestPage("../../src/js/tests/js/topcoder/widgets/bridge/ProjectServiceUnitTests.html");
+            result.addTestPage("../../src/js/tests/js/topcoder/widgets/bridge/StudioServiceUnitTests.html");
+            
+            // new tests
+            result.addTestPage("../../src/js/tests/js/topcoder/widgets/bridge/PrerequisiteDocumentUnitTests.html");
+            result.addTestPage("../../src/js/tests/js/topcoder/widgets/bridge/HelperUnitTests.html");
+            result.addTestPage("../../src/js/tests/js/topcoder/widgets/bridge/PrerequisiteServiceUnitTests.html");
+
+            return result;
+        }
+
+        /**
+         * The whole test suite.
+         */
+        function suite() {
+            var newsuite = new top.jsUnitTestSuite();
+
+            newsuite.addTestSuite(unitTestsSuite());
+
+            return newsuite;
+        }
+    </script>
+</head>
+
+<body>
+<h1>JsUnit Test Suite</h1>
+
+<p>This page contains a suite of tests for testing this component.</p>
+</body>
+</html>

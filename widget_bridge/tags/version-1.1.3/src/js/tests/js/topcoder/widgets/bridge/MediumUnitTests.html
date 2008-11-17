@@ -1,0 +1,210 @@
+<!--
+/*
+* Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+*/
+/**
+* Unit test cases for Medium class.
+*
+* @author TCSDEVELOPER
+* @version 1.0
+*/
+-->
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>ContestType - Unit Tests</title>
+        <link rel="stylesheet" type="text/css" href="../../../../../../../test_files/jsunit/css/jsUnitStyle.css" />
+        <script language="JavaScript" type="text/javascript" src="../../../../../../../test_files/jsunit/app/jsUnitCore.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/WidgetBridgeNamespace.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/IllegalArgumentException.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/Helper.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/ContestPayload.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/Medium.js">
+        </script>
+        <script language="JavaScript" type="text/javascript">
+            /**
+             * <p><code>Medium</code> instance used for testing.</p>
+             */
+            var medium = null;
+
+            /**
+             * abbreviation
+             */
+            var IllegalArgumentException = js.topcoder.widgets.bridge.IllegalArgumentException;
+
+            /**
+             * <p>Sets up environment.</p>
+             */
+            function setUp(){
+            	 medium = new js.topcoder.widgets.bridge.Medium();
+            }
+
+            /**
+             * <p>Test of <code>setMediumId</code>.Set with undefined value
+             * and should throw exception.</p>
+             */
+            function testSetMediumIdWithUndefined(){
+                try {
+                	medium.setMediumId(undefined);
+                    fail("It should fail when set with undefined.");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setMediumId</code>. Set with null
+             * and should throw exception.</p>
+             */
+            function testsetMediumIdWithNull(){
+                try {
+                    contestType.setMediumId(null);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setMediumId</code>. Set with negative value and
+             * should throw exception.</p>
+             */
+            function testsetMediumIdWithNegative(){
+                try {
+                    contestType.setMediumId(-39);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setMediumId</code>. Set with 0.</p>
+             */
+            function testsetMediumIdWithZero(){
+                contestType.setMediumId(0);
+                assertEquals("Fail to set contestTypeID.", 0, contestType.getContestTypeID());
+            }
+
+            /**
+             * <p>Test of <code>setMediumId</code>. Set with positive value.</p>
+             */
+            function testsetMediumIdWithPositive(){
+                contestType.setMediumId(88);
+                assertEquals("Fail to set contestTypeID.", 88, contestType.getContestTypeID());
+            }
+
+            /**
+             * <p>Test of <code>getContestTypeID</code>. Set with positive value and get
+             * same value back.</p>
+             */
+            function testGetContestTypeIDWithPositive(){
+                contestType.setMediumId(100);
+                assertEquals("Fail to get contestTypeID.", 100, contestType.getContestTypeID());
+            }
+
+            /**
+             * <p>Test of <code>setMediumId</code>.Set with non-number value and
+             * it should throw exception.</p>
+             */
+            function testsetMediumIdWithNonNumberValue(){
+                try {
+                    contestType.setMediumId("non-number");
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setDescription</code>.Set with undefined value
+             * and should throw exception.</p>
+             */
+            function testSetDescriptionWithUndefined(){
+                try {
+                    contestType.setDescription(undefined);
+                    fail("It should fail when set with undefined.");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setDescription</code>. Set with null
+             * and should throw exception.</p>
+             */
+            function testSetDescriptionWithNull(){
+                try {
+                    contestType.setDescription(null);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>setDescription</code>. Set with empty value.</p>
+             */
+            function testSetDescriptionWithEmpty1(){
+                contestType.setDescription("");
+                assertEquals("Fail to set description.", "", contestType.getDescription());
+            }
+
+            /**
+             * <p>Test of <code>setDescription</code>. Set with empty value.</p>
+             */
+            function testSetDescriptionWithEmpty2(){
+                contestType.setDescription(" ");
+                assertEquals("Fail to set description.", " ", contestType.getDescription());
+            }
+
+            /**
+             * <p>Test of <code>setDescription</code>. Set with non-empty value.</p>
+             */
+            function testSetDescriptionWithNonEmpty(){
+                contestType.setDescription("some string");
+                assertEquals("Fail to set description.", "some string", contestType.getDescription());
+            }
+
+            /**
+             * <p>Test of <code>getDescription</code>. Set with non-empty value and get
+             * same value back.</p>
+             */
+            function testGetDescriptionWithNonEmpty(){
+                contestType.setDescription("test get");
+                assertEquals("Fail to get description.", "test get", contestType.getDescription());
+            }
+
+            /**
+             * <p>Test of <code>setDescription</code>.Set with non-string value and
+             * it should throw exception.</p>
+             */
+            function testSetDescriptionWithNonStringValue(){
+                try {
+                    contestType.setDescription(45);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <h1>ContestType - Unit Tests</h1>
+        <p>
+            This page contains unit tests for the js Class PrerequsiteDocument. To see them, take a look at the source.
+        </p>
+    </body>
+</html>

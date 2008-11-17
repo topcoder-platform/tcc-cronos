@@ -1,0 +1,294 @@
+<!--
+/*
+ * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ */
+
+/**
+ * Unit test cases for ProjectService class.
+ *
+ * @author pinoydream
+ * @version 1.0
+ */
+-->
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>ProjectService - Unit Tests</title>
+        <link rel="stylesheet" type="text/css" href="../../../../../../../test_files/jsunit/css/jsUnitStyle.css" />
+        <script language="JavaScript" type="text/javascript" src="../../../../../../../test_files/jsunit/app/jsUnitCore.js"></script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/WidgetBridgeNamespace.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/ProjectService.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/IllegalArgumentException.js">
+        </script>
+        <script language="JavaScript" type="text/javascript">
+            /** 
+             * The ProjectService instance.
+             */
+            var instance = null;
+            
+            /**
+             * Servlet url string.
+             */
+            var urlString;
+            
+            /**
+             * Success callback.
+             */
+            var success = function() {
+            	// do nothing
+            }
+            
+            /**
+             * Error callback.
+             */
+            var error = function() {
+            
+            }
+            
+            /**
+             * setUp. Creates the ProjectService instance.
+             */
+            function setUp() {
+            	urlString = "ajaxBridge";
+                instance = new js.topcoder.widgets.bridge.ProjectService(urlString);
+            }
+
+            /**
+             * Test the constructor whether it is instantiating properly.
+             */
+            function test_Constructor_Instantiation() {
+                assertNotNull("Unable to instantiate ProjectService.", instance);
+            }
+
+            /**
+             * Test the constructor whether it is instantiating properly.
+             */
+            function test_Constructor_NoArgument() {
+            	try {
+            		var service = new js.topcoder.widgets.bridge.ProjectService();
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the createProject for accuracy.
+             */
+            function test_createProject_invalid1() {
+            	try {
+            		instance.createProject(null,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the createProject for accuracy.
+             */
+            function test_createProject_invalid2() {
+            	try {
+            		instance.createProject("",null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the createProject for accuracy.
+             */
+            function test_createProject_invalid3() {
+            	try {
+            		instance.createProject("",success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the updateProject for accuracy.
+             */
+            function test_updateProject_invalid1() {
+            	try {
+            		instance.updateProject(null,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the updateProject for accuracy.
+             */
+            function test_updateProject_invalid2() {
+            	try {
+            		instance.updateProject("",null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the updateProject for accuracy.
+             */
+            function test_updateProject_invalid3() {
+            	try {
+            		instance.updateProject("",success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the deleteProject for accuracy.
+             */
+            function test_deleteProject_invalid1() {
+            	try {
+            		instance.deleteProject(-1,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the deleteProject for accuracy.
+             */
+            function test_deleteProject_invalid2() {
+            	try {
+            		instance.deleteProject(1,null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the deleteProject for accuracy.
+             */
+            function test_deleteProject_invalid3() {
+            	try {
+            		instance.deleteProject(1,success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getProject for accuracy.
+             */
+            function test_getProject_invalid1() {
+            	try {
+            		instance.getProject(-1,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getProject for accuracy.
+             */
+            function test_getProject_invalid2() {
+            	try {
+            		instance.getProject(1,null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getProject for accuracy.
+             */
+            function test_getProject_invalid3() {
+            	try {
+            		instance.getProject(1,success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getProjectsForUser for accuracy.
+             */
+            function test_getProjectsForUser_invalid1() {
+            	try {
+            		instance.getProjectsForUser(-1,success,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getProjectsForUser for accuracy.
+             */
+            function test_getProjectsForUser_invalid2() {
+            	try {
+            		instance.getProjectsForUser(1,null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getProjectsForUser for accuracy.
+             */
+            function test_getProjectsForUser_invalid3() {
+            	try {
+            		instance.getProjectsForUser(1,success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getAllProjects for accuracy.
+             */
+            function test_getAllProjects_invalid1() {
+            	try {
+            		instance.getAllProjects(null,error);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Test the getAllProjects for accuracy.
+             */
+            function test_getAllProjects_invalid2() {
+            	try {
+            		instance.getAllProjects(success,null);
+            		fail("There should be an exception generated");
+            	} catch(x) {
+            		// expected
+            	}
+            }
+
+            /**
+             * Tears down. Sets the instance value to null.
+             */
+            function tearDown() {
+                instance = null;
+                urlString = null;
+            }
+        </script>
+    </head>
+    <body>
+        <h1>ProjectService - Unit Tests</h1>
+        <p>This page contains unit tests for the js Class ProjectService. To see them, take a look at the source.</p>
+    </body>
+</html>
