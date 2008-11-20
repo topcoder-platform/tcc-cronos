@@ -25,6 +25,7 @@ import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.submission.Submission;
 import com.topcoder.service.studio.submission.ContestResult;
 import com.topcoder.service.studio.submission.Prize;
+import com.topcoder.service.studio.submission.SubmissionReview; //BUGR-642
 import com.topcoder.date.workdays.Workdays;
 import com.topcoder.date.workdays.DefaultWorkdaysFactory;
 import com.topcoder.util.log.Log;
@@ -72,6 +73,8 @@ import java.io.Serializable;
  * @author isv
  * @version 1.0
  */
+
+
 @RunAs("Cockpit Administrator")
 @RolesAllowed("Cockpit User")
 @DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
@@ -418,6 +421,18 @@ public class CockpitPhaseManagerBean implements CockpitPhaseManagerInterface {
 
     private final String terminatedPhaseTypeName;
 
+    //BUGR-642
+     @Resource(name = "contestPropertyMaximumSubmissionsId")
+    private long contestPropertyMaximumSubmissionsId;
+
+    @Resource(name = "submissionRemovedStatusId")
+    private long submissionRemovedStatusId;
+
+    @Resource(name = "reviewFailedStatusId")
+    private long reviewFailedStatusId;
+
+    //BUGR-642
+
     @Resource
     private SessionContext sessionContext;
 
@@ -536,7 +551,43 @@ public class CockpitPhaseManagerBean implements CockpitPhaseManagerInterface {
                 if (submissions == null) {
                     project.setAttribute("ContestSubmissionsCount", 0L);
                 } else {
-                    project.setAttribute("ContestSubmissionsCount", new Long(submissions.size()));
+
+                //Mistr305 BUGR-642 begin
+                int maxSubmissionsPerUser = 0;
+            for (ContestConfig config : contest.getConfig()) {
+                if (config.getId().getProperty().getPropertyId() == contestPropertyMaximumSubmissionsId) {
+                    try {
+                        maxSubmissionsPerUser = Integer.parseInt(config.getValue());
+                    } catch (NumberFormatException e) {
+                        maxSubmissionsPerUser = 0;
+                    }
+                    break;
+                }
+            }
+
+                int submissionsToBeRemoved = 0;
+
+                     for (Submission submission : submissions) {
+                if (maxSubmissionsPerUser > 0 && submission.getRank() != null
+                        && submission.getRank() > maxSubmissionsPerUser) {
+                    submissionsToBeRemoved++;
+                } else if (submission.getStatus() != null
+                        && submission.getStatus().getSubmissionStatusId() == submissionRemovedStatusId) {
+                    // TCCC-414
+                    submissionsToBeRemoved++;
+                } else if (submission.getReview() != null) {
+                    // TCCC-445
+                    for (SubmissionReview review : submission.getReview()) {
+                        if (review.getStatus().getReviewStatusId() == reviewFailedStatusId) {
+                            submissionsToBeRemoved++;
+                            break;
+                        }
+                    }
+                }
+            }
+
+                    project.setAttribute("ContestSubmissionsCount", new Long(submissions.size() - submissionsToBeRemoved)); //Mistr305 BUGR-642 END
+
                     for (Submission s : submissions) {
                         Set<Prize> prizes = s.getPrizes();
                         prizes.toString();
@@ -867,7 +918,7 @@ public class CockpitPhaseManagerBean implements CockpitPhaseManagerInterface {
     public PhaseValidator getPhaseValidator() {
         return null;
     }
-    
+
 
 
     /**
@@ -881,7 +932,7 @@ public class CockpitPhaseManagerBean implements CockpitPhaseManagerInterface {
         // status to contest on it's own when the payment is received. For now this is not a responsibility of
         // Auto-Pilot to switch contest to Scheduled status
         statusMapping.put(draftPhaseTypeName, new String[] {});
-        
+
         statusMapping.put(scheduledPhaseTypeName, new String[] {activePhaseTypeName});
 
         // ISV : Temporary Fix : For now Insufficient Submissions - Re-Run Possible phase is not supported. Therefore
