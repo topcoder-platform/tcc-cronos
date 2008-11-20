@@ -254,6 +254,11 @@ Please &lt;a href="http://tcstudioblogs.com/?page_id=31"&gt;read this page&lt;/a
                 <env-entry-type>java.lang.String</env-entry-type>
                 <env-entry-value>@build-rep.studio_service.pactsServiceLocation@</env-entry-value>
             </env-entry> 
+            <env-entry>
+                <env-entry-name>defaultMimeType</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>application/octet</env-entry-value>
+            </env-entry>
 
             <persistence-context-ref>
                 <persistence-context-ref-name>persistence/contest_submission</persistence-context-ref-name>

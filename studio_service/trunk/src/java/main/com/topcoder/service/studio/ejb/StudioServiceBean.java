@@ -151,6 +151,16 @@ public class StudioServiceBean implements StudioService {
 
     /**
      * <p>
+     * Represents default mimetype that should be used when no match is found 
+     * (in getMimeTypeId()).
+     * </p>
+     */
+    @Resource(name = "defaultMimeType")
+    private String defaultMimeType;
+
+
+    /**
+     * <p>
      * Represents the loggerName used to retrieve the logger.
      * </p>
      */
@@ -2725,7 +2735,8 @@ public class StudioServiceBean implements StudioService {
      *
      * @param ContentType
      *            .
-     * @return the matched MimeType id. -1 if not found.
+     * @return the matched MimeType id. Id for defaultMimeType if not found. 
+     *             -1 if there is no such type as defaultMimeType
      *
      * @throws PersistenceException
      *             if any error occurs when getting MimeType.
@@ -2743,8 +2754,11 @@ public class StudioServiceBean implements StudioService {
                 if (mime.getDescription().equals(contentType)) {
                     ret = mime.getMimeTypeId();
                     break;
+                } // BUGR-662 
+                else if (defaultMimeType != null && mime.getDescription().equals(defaultMimeType)) {
+                    ret = mime.getMimeTypeId();
                 }
-            }
+            } 
 
             logExit("getMimeTypeId");
             return ret;
