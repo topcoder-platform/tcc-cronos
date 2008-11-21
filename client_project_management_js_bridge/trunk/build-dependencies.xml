@@ -23,7 +23,7 @@
 
 	<property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar" />
 	<property name="easymock.jar" value="${ext_libdir}/easymock/2.3/easymock.jar" />
-	<property name="javaee.jar" value="${ext_libdir}/j2ee/1.5/javaee.jar" />
+	<property name="javaee.jar" value="${ext_libdir}/sun-javaee-sdk/1.5.0_9/lib/javaee.jar" />
 		
 	<path id="component.tcs-dependencies">
 		<pathelement location="${base_exception.jar}" />
