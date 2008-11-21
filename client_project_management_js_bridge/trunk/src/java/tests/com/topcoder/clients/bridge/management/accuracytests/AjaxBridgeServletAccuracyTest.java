@@ -126,7 +126,8 @@ public class AjaxBridgeServletAccuracyTest extends TestCase {
                 + "\"createDate\":\"1222483449970\", \"modifyUsername\":\"ketty\",\"modifyDate\":\"1222483449970\","
                 + "\"name\":\"world\", \"deleted\":true}";
         expect(request.getMethod()).andReturn("POST");
-        expect(request.getParameter("company")).andReturn(json);
+        expect(request.getParameter("service")).andReturn(null);
+        expect(request.getParameter("method")).andReturn(null);
 
         expect(response.getWriter()).andReturn(pw);
 
@@ -192,7 +193,9 @@ public class AjaxBridgeServletAccuracyTest extends TestCase {
                 + "\"createDate\":\"1222483449970\", \"modifyUsername\":\"ketty\",\"modifyDate\":\"1222483449970\","
                 + "\"name\":\"world\", \"deleted\":true}";
         expect(request.getMethod()).andReturn("POST");
-        expect(request.getParameter("company")).andReturn(json);
+        // expect(request.getParameter("company")).andReturn(json);
+        expect(request.getParameter("service")).andReturn(null);
+        expect(request.getParameter("method")).andReturn(null);
 
         expect(response.getWriter()).andReturn(pw);
 
@@ -258,7 +261,9 @@ public class AjaxBridgeServletAccuracyTest extends TestCase {
                 + "\"createDate\":\"1222483449970\", \"modifyUsername\":\"ketty\",\"modifyDate\":\"1222483449970\","
                 + "\"name\":\"world\", \"deleted\":true}";
         expect(request.getMethod()).andReturn("POST");
-        expect(request.getParameter("company")).andReturn(json);
+        // expect(request.getParameter("company")).andReturn(json);
+        expect(request.getParameter("service")).andReturn(null);
+        expect(request.getParameter("method")).andReturn(null);
 
         expect(response.getWriter()).andReturn(pw);
 
@@ -330,7 +335,9 @@ public class AjaxBridgeServletAccuracyTest extends TestCase {
                 + " {\"poBoxNumber\":\"888\", \"parentProjectId\":\"666\"}],"
                 + " \"parentProjectId\":\"789\", \"id\":\"345\" }";
         expect(request.getMethod()).andReturn("POST");
-        expect(request.getParameter("project")).andReturn(json);
+        // expect(request.getParameter("project")).andReturn(json);
+        expect(request.getParameter("service")).andReturn(null);
+        expect(request.getParameter("method")).andReturn(null);
 
         expect(response.getWriter()).andReturn(pw);
 
@@ -402,7 +409,9 @@ public class AjaxBridgeServletAccuracyTest extends TestCase {
                 + " {\"poBoxNumber\":\"888\", \"parentProjectId\":\"666\"}],"
                 + " \"parentProjectId\":\"789\", \"id\":\"345\" }";
         expect(request.getMethod()).andReturn("POST");
-        expect(request.getParameter("project")).andReturn(json);
+        // expect(request.getParameter("project")).andReturn(json);
+        expect(request.getParameter("service")).andReturn(null);
+        expect(request.getParameter("method")).andReturn(null);
 
         expect(response.getWriter()).andReturn(pw);
 
@@ -474,7 +483,9 @@ public class AjaxBridgeServletAccuracyTest extends TestCase {
                 + " {\"poBoxNumber\":\"888\", \"parentProjectId\":\"666\"}],"
                 + " \"parentProjectId\":\"789\", \"id\":\"345\" }";
         expect(request.getMethod()).andReturn("POST");
-        expect(request.getParameter("project")).andReturn(json);
+        // expect(request.getParameter("project")).andReturn(json);
+        expect(request.getParameter("service")).andReturn(null);
+        expect(request.getParameter("method")).andReturn(null);
 
         expect(response.getWriter()).andReturn(pw);
 
@@ -549,8 +560,10 @@ public class AjaxBridgeServletAccuracyTest extends TestCase {
                 + " \"parentProjectId\":\"789\", \"id\":\"345\" }";
         String status = "{\"description\":\"test\"}";
         expect(request.getMethod()).andReturn("POST");
-        expect(request.getParameter("project")).andReturn(json);
-        expect(request.getParameter("status")).andReturn(status);
+        // expect(request.getParameter("project")).andReturn(json);
+        // expect(request.getParameter("status")).andReturn(status);
+        expect(request.getParameter("service")).andReturn(null);
+        expect(request.getParameter("method")).andReturn(null);
 
         expect(response.getWriter()).andReturn(pw);
 
@@ -616,7 +629,9 @@ public class AjaxBridgeServletAccuracyTest extends TestCase {
                 + " \"status\":{\"description\":\"test\"}, \"salesTax\":0.17, \"startDate\":\"1163531522089\","
                 + " \"endDate\":\"1163531522089\", \"codeName\":\"uuu\", \"id\":\"345\" }";
         expect(request.getMethod()).andReturn("POST");
-        expect(request.getParameter("client")).andReturn(json);
+        // expect(request.getParameter("client")).andReturn(json);
+        expect(request.getParameter("service")).andReturn(null);
+        expect(request.getParameter("method")).andReturn(null);
 
         expect(response.getWriter()).andReturn(pw);
 
@@ -682,7 +697,9 @@ public class AjaxBridgeServletAccuracyTest extends TestCase {
                 + " \"status\":{\"description\":\"test\"}, \"salesTax\":0.17, \"startDate\":\"1163531522089\","
                 + " \"endDate\":\"1163531522089\", \"codeName\":\"uuu\", \"id\":\"345\" }";
         expect(request.getMethod()).andReturn("POST");
-        expect(request.getParameter("client")).andReturn(json);
+        // expect(request.getParameter("client")).andReturn(json);
+        expect(request.getParameter("service")).andReturn(null);
+        expect(request.getParameter("method")).andReturn(null);
 
         expect(response.getWriter()).andReturn(pw);
 
@@ -748,7 +765,9 @@ public class AjaxBridgeServletAccuracyTest extends TestCase {
                 + " \"status\":{\"description\":\"test\"}, \"salesTax\":0.17, \"startDate\":\"1163531522089\","
                 + " \"endDate\":\"1163531522089\", \"codeName\":\"uuu\", \"id\":\"345\" }";
         expect(request.getMethod()).andReturn("POST");
-        expect(request.getParameter("client")).andReturn(json);
+        // expect(request.getParameter("client")).andReturn(json);
+        expect(request.getParameter("service")).andReturn(null);
+        expect(request.getParameter("method")).andReturn(null);
 
         expect(response.getWriter()).andReturn(pw);
 
@@ -817,8 +836,10 @@ public class AjaxBridgeServletAccuracyTest extends TestCase {
                 + " \"endDate\":\"1163531522089\", \"codeName\":\"uuu\", \"id\":\"345\" }";
         String status = "{\"description\":\"test\"}";
         expect(request.getMethod()).andReturn("POST");
-        expect(request.getParameter("client")).andReturn(json);
-        expect(request.getParameter("status")).andReturn(status);
+        // expect(request.getParameter("client")).andReturn(json);
+        // expect(request.getParameter("status")).andReturn(status);
+        expect(request.getParameter("service")).andReturn(null);
+        expect(request.getParameter("method")).andReturn(null);
 
         expect(response.getWriter()).andReturn(pw);
 
@@ -885,8 +906,10 @@ public class AjaxBridgeServletAccuracyTest extends TestCase {
                 + " \"status\":{\"description\":\"test\"}, \"salesTax\":0.17, \"startDate\":\"1163531522089\","
                 + " \"endDate\":\"1163531522089\", \"codeName\":\"uuu\", \"id\":\"345\" }";
         expect(request.getMethod()).andReturn("POST");
-        expect(request.getParameter("client")).andReturn(json);
-        expect(request.getParameter("name")).andReturn("codeName");
+        // expect(request.getParameter("client")).andReturn(json);
+        // expect(request.getParameter("name")).andReturn("codeName");
+        expect(request.getParameter("service")).andReturn(null);
+        expect(request.getParameter("method")).andReturn(null);
 
         expect(response.getWriter()).andReturn(pw);
 
