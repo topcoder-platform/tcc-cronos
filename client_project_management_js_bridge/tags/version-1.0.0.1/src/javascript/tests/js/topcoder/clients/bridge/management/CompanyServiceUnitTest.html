@@ -1,0 +1,336 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Management 1.0
+
+Author TCSDEVELOPER
+-->
+<html>
+<head>
+<title>CompanyService Unit Test</title>
+<script language="JavaScript" type="text/javascript" src="jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../test_files/AjaxProcessor.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../main/js/topcoder/clients/bridge/management/client_project_management.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+    /**
+     * <p>Represent <code>IllegalArgumentException</code> for easy use.</p>
+     */
+    var IllegalArgumentException = js.topcoder.clients.bridge.management.IllegalArgumentException;
+
+    /**
+     * <p>Represent <code>InvalidResponseException</code> for easy use.</p>
+     */
+    var InvalidResponseException = js.topcoder.clients.bridge.management.InvalidResponseException;
+
+    /**
+     * <p><code>CompanyService</code> instance used for testing.</p>
+     */
+    var companyService;
+
+    /**
+     * <p>Sets up environment.</p>
+     */
+    function setUp() {
+        var url = "http://localhost:8080/topcoder/servlet";
+        companyService = new js.topcoder.clients.bridge.management.CompanyService(url);
+    }
+
+    /**
+     * <p>Test of constructor <code>CompanyService()</code>.</p>
+     */
+    function testCtor() {
+        assertNotNull("Fail to create CompanyService.", companyService);
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>CompanyService()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not string.
+     * </p>
+     */
+    function testCtor_WithInvalidParameter() {
+        var invalidArray = [undefined, null, -1, false, new Object(), "", "   "];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                new js.topcoder.clients.bridge.management.CompanyService(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test createCompany.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test of method <code>createCompany()</code>, expects no error occurs</p>
+     */
+    function testCreateCompany() {
+        var company = new js.topcoder.clients.bridge.management.model.Company();
+        companyService.createCompany(company, onSuccess, onError);
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>createCompany()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testCreateCompany_WithInvalidParameter() {
+        var invalidArray = [undefined, null, -1, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                companyService.createCompany(invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test createCompany.", e instanceof IllegalArgumentException);
+            }
+        }
+
+        var company = new js.topcoder.clients.bridge.management.model.Company();
+        invalidArray = [undefined, null, -1, "str", false, new Object(), forTest];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                companyService.createCompany(company, invalidArray[i], onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test createCompany.", e instanceof IllegalArgumentException);
+            }
+        }
+
+        invalidArray = [undefined, null, -1, "str", false, new Object(), forTest];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                companyService.createCompany(company, onSuccess, invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test createCompany.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>createCompany()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>InvalidResponseException</code> will be thrown if the url is wrong.
+     * </p>
+     */
+    function testCreateCompany_WithWrongUrl() {
+        var url = "http://localhost:8080/topcoder/error";
+        companyService = new js.topcoder.clients.bridge.management.CompanyService(url);
+        var company = new js.topcoder.clients.bridge.management.model.Company();
+
+        try{
+            companyService.createCompany(company, onSuccess, onError);
+            fail("InvalidResponseException is excepted!");
+        }catch(e){
+            // good
+            assertTrue("fail to test createCompany.", e instanceof InvalidResponseException);
+        }
+    }
+
+    /**
+     * <p>Test of method <code>updateCompany()</code>, expects no error occurs</p>
+     */
+    function testUpdateCompany() {
+        var company = new js.topcoder.clients.bridge.management.model.Company();
+        companyService.updateCompany(company, onSuccess, onError);
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>updateCompany()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testUpdateCompany_WithInvalidParameter() {
+        var invalidArray = [undefined, null, -1, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                companyService.updateCompany(invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test updateCompany.", e instanceof IllegalArgumentException);
+            }
+        }
+
+        var company = new js.topcoder.clients.bridge.management.model.Company();
+        invalidArray = [undefined, null, -1, "str", false, new Object(), forTest];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                companyService.updateCompany(company, invalidArray[i], onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test updateCompany.", e instanceof IllegalArgumentException);
+            }
+        }
+
+        invalidArray = [undefined, null, -1, "str", false, new Object(), forTest];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                companyService.updateCompany(company, onSuccess, invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test updateCompany.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>updateCompany()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>InvalidResponseException</code> will be thrown if the url is wrong.
+     * </p>
+     */
+    function testUpdateCompany_WithWrongUrl() {
+        var url = "http://localhost:8080/topcoder/error";
+        companyService = new js.topcoder.clients.bridge.management.CompanyService(url);
+        var company = new js.topcoder.clients.bridge.management.model.Company();
+
+        try{
+            companyService.updateCompany(company, onSuccess, onError);
+            fail("InvalidResponseException is excepted!");
+        }catch(e){
+            // good
+            assertTrue("fail to test updateCompany.", e instanceof InvalidResponseException);
+        }
+    }
+
+    /**
+     * <p>Test of method <code>deleteCompany()</code>, expects no error occurs</p>
+     */
+    function testDeleteCompany() {
+        var company = new js.topcoder.clients.bridge.management.model.Company();
+        companyService.deleteCompany(company, onSuccess, onError);
+    }
+
+     /**
+     * <p>
+     * Failure test for method <code>deleteCompany()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testDeleteCompany_WithInvalidParameter() {
+        var invalidArray = [undefined, null, -1, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                companyService.deleteCompany(invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test deleteCompany.", e instanceof IllegalArgumentException);
+            }
+        }
+
+        var company = new js.topcoder.clients.bridge.management.model.Company();
+        invalidArray = [undefined, null, -1, "str", false, new Object(), forTest];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                companyService.deleteCompany(company, invalidArray[i], onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test deleteCompany.", e instanceof IllegalArgumentException);
+            }
+        }
+
+        invalidArray = [undefined, null, -1, "str", false, new Object(), forTest];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                companyService.deleteCompany(company, onSuccess, invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test deleteCompany.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>deleteCompany()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>InvalidResponseException</code> will be thrown if the url is wrong.
+     * </p>
+     */
+    function testDeleteCompany_WithWrongUrl() {
+        var url = "http://localhost:8080/topcoder/error";
+        companyService = new js.topcoder.clients.bridge.management.CompanyService(url);
+        var company = new js.topcoder.clients.bridge.management.model.Company();
+
+        try{
+            companyService.deleteCompany(company, onSuccess, onError);
+            fail("InvalidResponseException is excepted!");
+        }catch(e){
+            // good
+            assertTrue("fail to test deleteCompany.", e instanceof InvalidResponseException);
+        }
+    }
+
+
+    /**
+     * The function use to test.
+     */
+    function onSuccess(/* Object */ obj) {
+        alert("onSuccess:" + JSON.stringify(obj.toJSON()));
+    }
+
+    /**
+     * The function use to test.
+     */
+    function onError(/* String */ message) {
+        alert("onError:" + message);
+    }
+
+    /**
+     * The function use to test.
+     */
+    function forTest() {
+        // Empty
+    }
+
+
+    </script>
+</head>
+<body>
+<h1><b>CompanyService</b> Unit Test</h1>
+
+<p>This page contains Unit Test for <code>CompanyService</code> class.</p>
+</body>
+</html>

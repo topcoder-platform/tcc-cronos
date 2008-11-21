@@ -1,0 +1,121 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Management 1.0
+
+Author TCSDEVELOPER
+-->
+<html>
+<head>
+<title>Company Unit Test</title>
+<script language="JavaScript" type="text/javascript" src="jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../main/js/topcoder/clients/bridge/management/client_project_management.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+    /**
+     * <p>Represent <code>IllegalArgumentException</code> for easy use.</p>
+     */
+    var IllegalArgumentException = js.topcoder.clients.bridge.management.IllegalArgumentException;
+
+    /**
+     * <p><code>Company</code> instance used for testing.</p>
+     */
+    var company;
+
+    /**
+     * <p>Sets up environment.</p>
+     */
+    function setUp() {
+        company = new js.topcoder.clients.bridge.management.model.Company();
+    }
+
+    /**
+     * <p>Test of constructor <code>Company()</code>.</p>
+     */
+    function testCtor() {
+        assertNotNull("Fail to create Company.", company);
+    }
+
+    /**
+     * <p>Test of constructor <code>Company()</code>.</p>
+     */
+    function testCtor2() {
+        var config = {"passcode":"test"};
+        company = new js.topcoder.clients.bridge.management.model.Company(config);
+        assertNotNull("Fail to create Company.", company);
+        assertEquals("The result should be ", "test", company.getPasscode());
+    }
+
+    /**
+     * <p>Test setter and getter of passcode.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfPasscode() {
+        company.setPasscode("123");
+        assertEquals("The result should be ", "123", company.getPasscode());
+
+        company.setPasscode(null);
+        assertNull("The result should be null.", company.getPasscode());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setPasscode(String)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not string.
+     * </p>
+     */
+    function testSetPasscode_WithNotString() {
+        var invalidArray = [-1, false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                company.setPasscode(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setPasscode.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test method toJSON.
+     * No exception is expected.</p>
+     */
+    function testToJSON() {
+        var date = new Date();
+        company.setPasscode("666");
+        company.setID("123");
+        company.setCreateUsername("createUser");
+        company.setCreateDate(date);
+        company.setModifyUsername("modifyUser");
+        company.setModifyDate(date);
+        company.setName("jack");
+        company.setIsDeleted(true);
+
+        var json = JSON.parse(company.toJSON());
+        assertEquals("The result should be ", "666", json["passcode"]);
+        assertEquals("The result should be ", "123", json["id"]);
+        assertEquals("The result should be ", "createUser", json["createUsername"]);
+        assertEquals("The result should be ", date.getTime()+"", json["createDate"]);
+        assertEquals("The result should be ", "modifyUser", json["modifyUsername"]);
+        assertEquals("The result should be ", date.getTime()+"", json["modifyDate"]);
+        assertEquals("The result should be ", "jack", json["name"]);
+        assertTrue("The result should be true", json["deleted"]);
+    }
+
+
+    </script>
+</head>
+<body>
+<h1><b>Company</b> Unit Test</h1>
+
+<p>This page contains Unit Test for <code>Company</code> class.</p>
+</body>
+</html>

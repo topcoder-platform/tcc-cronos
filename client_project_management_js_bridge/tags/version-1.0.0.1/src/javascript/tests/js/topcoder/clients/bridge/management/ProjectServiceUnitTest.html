@@ -1,0 +1,229 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Management 1.0
+
+Author TCSDEVELOPER
+-->
+<html>
+<head>
+<title>ProjectService Unit Test</title>
+<script language="JavaScript" type="text/javascript" src="jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../test_files/AjaxProcessor.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../main/js/topcoder/clients/bridge/management/client_project_management.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+    /**
+     * <p>Represent <code>IllegalArgumentException</code> for easy use.</p>
+     */
+    var IllegalArgumentException = js.topcoder.clients.bridge.management.IllegalArgumentException;
+
+    /**
+     * <p>Represent <code>InvalidResponseException</code> for easy use.</p>
+     */
+    var InvalidResponseException = js.topcoder.clients.bridge.management.InvalidResponseException;
+
+    /**
+     * <p><code>ProjectService</code> instance used for testing.</p>
+     */
+    var projectService;
+
+    /**
+     * <p>Sets up environment.</p>
+     */
+    function setUp() {
+        var url = "http://localhost:8080/topcoder/servlet";
+        projectService = new js.topcoder.clients.bridge.management.ProjectService(url);
+    }
+
+    /**
+     * <p>Test of constructor <code>ProjectService()</code>.</p>
+     */
+    function testCtor() {
+        assertNotNull("Fail to create ProjectService.", projectService);
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>ProjectService()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not string.
+     * </p>
+     */
+    function testCtor_WithInvalidParameter() {
+        var invalidArray = [undefined, null, -1, false, new Object(), "", "   "];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                new js.topcoder.clients.bridge.management.ProjectService(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test createCompany.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test of method <code>createProject()</code>, expects no error occurs</p>
+     */
+    function testCreateProject() {
+        var project = new js.topcoder.clients.bridge.management.model.Project();
+        projectService.createProject(project, onSuccess, onError);
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>createProject()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid.
+     * </p>
+     */
+    function testCreateProject_WithInvalidParameter() {
+        var invalidArray = [undefined, null, -1, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                projectService.createProject(invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test createProject.", e instanceof IllegalArgumentException);
+            }
+        }
+
+        var project = new js.topcoder.clients.bridge.management.model.Project();
+        invalidArray = [undefined, null, -1, "str", false, new Object(), forTest];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                projectService.createProject(project, invalidArray[i], onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test createProject.", e instanceof IllegalArgumentException);
+            }
+        }
+
+        invalidArray = [undefined, null, -1, "str", false, new Object(), forTest];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                projectService.createProject(project, onSuccess, invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test createProject.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>createProject()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>InvalidResponseException</code> will be thrown if the url is wrong.
+     * </p>
+     */
+    function testCreateProject_WithWrongUrl() {
+        var url = "http://localhost:8080/topcoder/error";
+        projectService = new js.topcoder.clients.bridge.management.ProjectService(url);
+        var project = new js.topcoder.clients.bridge.management.model.Project();
+
+        try{
+            projectService.createProject(project, onSuccess, onError);
+            fail("InvalidResponseException is excepted!");
+        }catch(e){
+            // good
+            assertTrue("fail to test createProject.", e instanceof InvalidResponseException);
+        }
+    }
+
+    /**
+     * <p>Test of method <code>updateProject()</code>, expects no error occurs</p>
+     */
+    function testUpdateProject() {
+        var project = new js.topcoder.clients.bridge.management.model.Project();
+        projectService.updateProject(project, onSuccess, onError);
+    }
+
+    /**
+     * <p>Test of method <code>deleteProject()</code>, expects no error occurs</p>
+     */
+    function testDeleteProject() {
+        var project = new js.topcoder.clients.bridge.management.model.Project();
+        projectService.deleteProject(project, onSuccess, onError);
+    }
+
+    /**
+     * <p>Test of method <code>setProjectStatus()</code>, expects no error occurs</p>
+     */
+    function testSetProjectStatus() {
+        var project = new js.topcoder.clients.bridge.management.model.Project();
+        var status = new js.topcoder.clients.bridge.management.model.ProjectStatus();
+        projectService.setProjectStatus(project, status, onSuccess, onError);
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setProjectStatus()</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the status
+     * passed in is not ProjectStatus.
+     * </p>
+     */
+    function testSetProjectStatus_WithInvalidStatus() {
+        var project = new js.topcoder.clients.bridge.management.model.Project();
+        var invalidArray = [undefined, null, -1, "str", false, new Object()];
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                projectService.setProjectStatus(project, invalidArray[i], onSuccess, onError);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setProjectStatus.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+
+    /**
+     * The function use to test.
+     */
+    function onSuccess(/* Object */ obj) {
+        alert("onSuccess:" + JSON.stringify(obj.toJSON()));
+    }
+
+    /**
+     * The function use to test.
+     */
+    function onError(/* String */ message) {
+        alert("onError:" + message);
+    }
+
+    /**
+     * The function use to test.
+     */
+    function forTest() {
+        // Empty
+    }
+
+
+    </script>
+</head>
+<body>
+<h1><b>ProjectService</b> Unit Test</h1>
+
+<p>This page contains Unit Test for <code>ProjectService</code> class.</p>
+</body>
+</html>

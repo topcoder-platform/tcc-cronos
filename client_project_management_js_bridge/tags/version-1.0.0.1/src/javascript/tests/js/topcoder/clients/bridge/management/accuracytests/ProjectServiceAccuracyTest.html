@@ -1,0 +1,99 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Management 1.0
+
+Author onsky
+-->
+<html>
+<head>
+<title>ProjectService Accuracy Test</title>
+<script language="JavaScript" type="text/javascript" src="../jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../../test_files/AjaxProcessor.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../../main/js/topcoder/clients/bridge/management/client_project_management.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+    /**
+     * <p><code>ProjectService</code> instance used for testing.</p>
+     */
+    var projectService;
+
+    /**
+     * <p><code>Project</code> instance used for testing.</p>
+     */
+    var project;
+
+    /**
+     * <p>Sets up test environment.</p>
+     */
+    function setUp() {
+        var url = "http://localhost:8080/topcoder/servlet";
+        projectService = new js.topcoder.clients.bridge.management.ProjectService(url);
+        var config = {"company":{"passcode":"111"}, "active":false,  "salesTax":0.22, "poBoxNumber":"11",
+            "paymentTermsId":10, "description":"desc", "status":{"description":"desc1"},
+            "client":{"codeName":"code"}, "childProjects":[{"poBoxNumber":"2"}, {"poBoxNumber":"33"}],
+            "parentProjectId":"123", "id":"222" };
+        project = new js.topcoder.clients.bridge.management.model.Project(config);
+    }
+
+    /**
+     * <p>Accuracy test of constructor <code>ProjectService()</code>.</p>
+     */
+    function testCtor() {
+        assertNotNull(projectService);
+    }
+
+    /**
+     * <p>Accuracy test of method <code>createProject()</code>.</p>
+     */
+    function testCreateProject() {
+        projectService.createProject(project, onSuccess, onError);
+    }
+
+    /**
+     * <p>Accuracy test of method <code>updateProject()</code>.</p>
+     */
+    function testUpdateProject() {
+        projectService.updateProject(project, onSuccess, onError);
+    }
+
+    /**
+     * <p>Accuracy test of method <code>deleteProject()</code>.</p>
+     */
+    function testDeleteProject() {
+        projectService.deleteProject(project, onSuccess, onError);
+    }
+
+    /**
+     * <p>Accuracy test of method <code>setProjectStatus()</code>.</p>
+     */
+    function testSetProjectStatus() {
+        var status = new js.topcoder.clients.bridge.management.model.ProjectStatus();
+        projectService.setProjectStatus(project, status, onSuccess, onError);
+    }
+
+    /**
+     * Success Handling.
+     */
+    function onSuccess(/* Object */ obj) {
+		assertNotNull(JSON.stringify(obj.toJSON()));
+    }
+
+    /**
+     * Error handling.
+     */
+    function onError(/* String */ message) {
+        alert("error " + message);
+    }
+
+
+    </script>
+</head>
+<body>
+<h1><b>ProjectService</b> Accuracy Test</h1>
+
+<p>This page contains Accuracy Test for <code>ProjectService</code> class.</p>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Management 1.0
+
+Author TCSDEVELOPER
+-->
+<html>
+<head>
+<title>ProjectStatus Unit Test</title>
+<script language="JavaScript" type="text/javascript" src="jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../main/js/topcoder/clients/bridge/management/client_project_management.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+    /**
+     * <p>Represent <code>IllegalArgumentException</code> for easy use.</p>
+     */
+    var IllegalArgumentException = js.topcoder.clients.bridge.management.IllegalArgumentException;
+
+    /**
+     * <p><code>ProjectStatus</code> instance used for testing.</p>
+     */
+    var projectStatus;
+
+    /**
+     * <p>Sets up environment.</p>
+     */
+    function setUp() {
+        projectStatus = new js.topcoder.clients.bridge.management.model.ProjectStatus();
+    }
+
+    /**
+     * <p>Test of constructor <code>ProjectStatus()</code>.</p>
+     */
+    function testCtor() {
+        assertNotNull("Fail to create ProjectStatus.", projectStatus);
+    }
+
+    /**
+     * <p>Test of constructor <code>ProjectStatus()</code>.</p>
+     */
+    function testCtor2() {
+        var config = {"description":"test"};
+        projectStatus = new js.topcoder.clients.bridge.management.model.ProjectStatus(config);
+        assertNotNull("Fail to create projectStatus.", projectStatus);
+        assertEquals("The result should be ", "test", projectStatus.getDescription());
+    }
+
+    /**
+     * <p>Test setter and getter of description.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfPasscode() {
+        projectStatus.setDescription("123");
+        assertEquals("The result should be ", "123", projectStatus.getDescription());
+
+        projectStatus.setDescription(null);
+        assertNull("The result should be null.", projectStatus.getDescription());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setDescription(String)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not string.
+     * </p>
+     */
+    function testSetPasscode_WithNotString() {
+        var invalidArray = [-1, false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                projectStatus.setDescription(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setPasscode.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test method toJSON.
+     * No exception is expected.</p>
+     */
+    function testToJSON() {
+        var date = new Date();
+        projectStatus.setDescription("666");
+        projectStatus.setID("123");
+        projectStatus.setCreateUsername("createUser");
+        projectStatus.setCreateDate(date);
+        projectStatus.setModifyUsername("modifyUser");
+        projectStatus.setModifyDate(date);
+        projectStatus.setName("jack");
+        projectStatus.setIsDeleted(true);
+
+        var json = JSON.parse(projectStatus.toJSON());
+        assertEquals("The result should be ", "666", json["description"]);
+        assertEquals("The result should be ", "123", json["id"]);
+        assertEquals("The result should be ", "createUser", json["createUsername"]);
+        assertEquals("The result should be ", date.getTime()+"", json["createDate"]);
+        assertEquals("The result should be ", "modifyUser", json["modifyUsername"]);
+        assertEquals("The result should be ", date.getTime()+"", json["modifyDate"]);
+        assertEquals("The result should be ", "jack", json["name"]);
+        assertTrue("The result should be true", json["deleted"]);
+    }
+
+
+    </script>
+</head>
+<body>
+<h1><b>ProjectStatus</b> Unit Test</h1>
+
+<p>This page contains Unit Test for <code>ProjectStatus</code> class.</p>
+</body>
+</html>

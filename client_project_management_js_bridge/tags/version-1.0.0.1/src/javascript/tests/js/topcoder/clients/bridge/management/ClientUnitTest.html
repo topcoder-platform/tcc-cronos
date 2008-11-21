@@ -1,0 +1,376 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Management 1.0
+
+Author TCSDEVELOPER
+-->
+<html>
+<head>
+<title>Client Unit Test</title>
+<script language="JavaScript" type="text/javascript" src="jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../main/js/topcoder/clients/bridge/management/client_project_management.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+    /**
+     * <p>Represent <code>IllegalArgumentException</code> for easy use.</p>
+     */
+    var IllegalArgumentException = js.topcoder.clients.bridge.management.IllegalArgumentException;
+
+    /**
+     * <p><code>Client</code> instance used for testing.</p>
+     */
+    var client;
+
+    /**
+     * <p>Sets up environment.</p>
+     */
+    function setUp() {
+        client = new js.topcoder.clients.bridge.management.model.Client();
+    }
+
+    /**
+     * <p>Test of constructor <code>Client()</code>.</p>
+     */
+    function testCtor() {
+        assertNotNull("Fail to create Client.", client);
+    }
+
+    /**
+     * <p>Test of constructor <code>Client()</code>.</p>
+     */
+    function testCtor2() {
+        var config = {"company":{"passcode":"666"}, "paymentTermsId":20, "status":{"description":"test"},
+            "salesTax":0.17, "startDate":"1163531522089", "endDate":"1163531522089", "codeName":"uuu",
+            "id":"345" };
+        client = new js.topcoder.clients.bridge.management.model.Client(config);
+        assertNotNull("Fail to create Client.", client);
+        assertEquals("The result should be ", "666", client.getCompany().getPasscode());
+        assertEquals("The result should be ", 20, client.getPaymentTermsId());
+        assertEquals("The result should be ", "test", client.getStatus().getDescription());
+        assertEquals("The result should be ", 0.17, client.getSalesTax());
+        assertEquals("The result should be ", 1163531522089, client.getStartDate().getTime());
+        assertEquals("The result should be ", 1163531522089, client.getEndDate().getTime());
+        assertEquals("The result should be ", "uuu", client.getCodeName());
+        assertEquals("The result should be ", "345", client.getID());
+    }
+
+    /**
+     * <p>Test setter and getter of company.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfCompany() {
+        var company = new js.topcoder.clients.bridge.management.model.Company();
+        client.setCompany(company);
+        assertEquals("The result should be ", company, client.getCompany());
+
+        client.setCompany(null);
+        assertNull("The result should be null.", client.getCompany());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setCompany(Company)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not Company.
+     * </p>
+     */
+    function testSetCompany_WithNotCompany() {
+        var invalidArray = [-1, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                client.setCompany(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setPasscode.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of paymentTermsId.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfPaymentTermsId() {
+        client.setPaymentTermsId(123);
+        assertEquals("The result should be ", 123, client.getPaymentTermsId());
+
+        client.setPaymentTermsId(0);
+        assertEquals("The result should be ", 0, client.getPaymentTermsId());
+
+        client.setPaymentTermsId(-1);
+        assertEquals("The result should be ", -1, client.getPaymentTermsId());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setPaymentTermsId(Number)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid number.
+     * </p>
+     */
+    function testSetPaymentTermsId_WithInvalidNumber() {
+        var invalidArray = [ undefined, null, "str", false, new Object(), "-2"];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                client.setPaymentTermsId(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setCompany.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+     /**
+     * <p>Test setter and getter of status.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfStatus() {
+        var status = new js.topcoder.clients.bridge.management.model.ClientStatus();
+        client.setStatus(status);
+        assertEquals("The result should be ", status, client.getStatus());
+
+        client.setStatus(null);
+        assertNull("The result should be null.", client.getStatus());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setStatus(ClientStatus)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not ClientStatus.
+     * </p>
+     */
+    function testSetStatus_WithNotClientStatus() {
+        var invalidArray = [1, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                client.setStatus(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setStatus.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of sales tax.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfSalesTax() {
+        client.setSalesTax(2.7);
+        assertEquals("The result should be ", 2.7, client.getSalesTax());
+
+        client.setSalesTax(0);
+        assertEquals("The result should be ", 0, client.getSalesTax());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setSalesTax(Number)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is invalid Number.
+     * </p>
+     */
+    function testSetSalesTax_WithInvalidNumber() {
+        var invalidArray = [ undefined, null, "str", false, new Object(), -1.0, -0.1];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                client.setSalesTax(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setSalesTax.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of start date.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfStartDate() {
+        var date = new Date();
+        client.setStartDate(date);
+        assertEquals("The result should be ", date, client.getStartDate());
+
+        client.setStartDate(null);
+        assertNull("The result should be null.", client.getStartDate());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setStartDate(Date)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not Date.
+     * </p>
+     */
+    function testSetStartDate_WithNotDate() {
+        var invalidArray = [1, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                client.setStartDate(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setStartDate.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of end date.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfEndDate() {
+        var date = new Date();
+        client.setEndDate(date);
+        assertEquals("The result should be ", date, client.getEndDate());
+
+        client.setEndDate(null);
+        assertNull("The result should be null.", client.getEndDate());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setEndDate(Date)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not Date.
+     * </p>
+     */
+    function testSetEndDate_WithNotDate() {
+        var invalidArray = [1, "str", false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                client.setEndDate(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setEndDate.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+    /**
+     * <p>Test setter and getter of code name.
+     * No exception is expected.</p>
+     */
+    function testSetterAndGetterOfCodeName() {
+        client.setCodeName("code");
+        assertEquals("The result should be ", "code", client.getCodeName());
+
+        client.setCodeName(null);
+        assertNull("The result should be null.", client.getCodeName());
+    }
+
+    /**
+     * <p>
+     * Failure test for method <code>setCodeName(String)</code>.
+     * </p>
+     *
+     * <p>
+     * Verifies that <code>IllegalArgumentException</code> will be thrown if the parameter
+     * passed in is not String.
+     * </p>
+     */
+    function testSetCodeName_WithNotString() {
+        var invalidArray = [1, false, new Object()];
+
+        for (var i = 0; i < invalidArray.length; ++i) {
+            try{
+                client.setCodeName(invalidArray[i]);
+                fail("IllegalArgumentException is excepted!");
+            }catch(e){
+                // good
+                assertTrue("fail to test setCodeName.", e instanceof IllegalArgumentException);
+            }
+        }
+    }
+
+
+    /**
+     * <p>Test method toJSON.
+     * No exception is expected.</p>
+     */
+    function testToJSON() {
+        var date = new Date();
+        var company = new js.topcoder.clients.bridge.management.model.Company();
+        company.setPasscode("666");
+        company.setID("777");
+        company.setName("tom");
+        company.setIsDeleted(true);
+        client.setCompany(company);
+        client.setPaymentTermsId(20);
+        var status = new js.topcoder.clients.bridge.management.model.ClientStatus();
+        status.setDescription("description");
+        client.setStatus(status);
+        client.setSalesTax(0.17);
+        client.setStartDate(date);
+        client.setEndDate(date);
+        client.setCodeName("uuu");
+        client.setID("123");
+        client.setCreateUsername("createUser");
+        client.setCreateDate(date);
+        client.setModifyUsername("modifyUser");
+        client.setModifyDate(date);
+        client.setName("jack");
+        client.setIsDeleted(true);
+
+        var json = JSON.parse(client.toJSON());
+        assertEquals("The result should be ", "666", json["company"]["passcode"]);
+        assertEquals("The result should be ", "777", json["company"]["id"]);
+        assertEquals("The result should be ", "tom", json["company"]["name"]);
+        assertTrue("The result should be true", json["company"]["deleted"]);
+        assertEquals("The result should be ", 20, json["paymentTermsId"]);
+        assertEquals("The result should be ", "description", json["status"]["description"]);
+        assertEquals("The result should be ", 0.17, json["salesTax"]);
+        assertEquals("The result should be ", date.getTime()+"", json["startDate"]);
+        assertEquals("The result should be ", date.getTime()+"", json["endDate"]);
+        assertEquals("The result should be ", "uuu", json["codeName"]);
+        assertEquals("The result should be ", "123", json["id"]);
+        assertEquals("The result should be ", "createUser", json["createUsername"]);
+        assertEquals("The result should be ", date.getTime()+"", json["createDate"]);
+        assertEquals("The result should be ", "modifyUser", json["modifyUsername"]);
+        assertEquals("The result should be ", date.getTime()+"", json["modifyDate"]);
+        assertEquals("The result should be ", "jack", json["name"]);
+        assertTrue("The result should be true", json["deleted"]);
+    }
+
+
+    </script>
+</head>
+<body>
+<h1><b>Client</b> Unit Test</h1>
+
+<p>This page contains Unit Test for <code>Client</code> class.</p>
+</body>
+</html>

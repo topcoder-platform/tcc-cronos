@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+    version="2.4">
+
+    <description>
+      Client Project Management Test Page
+    </description>
+    <display-name>Client Project Management Test Pages</display-name>
+
+    <servlet>
+    <servlet-name>MockServlet</servlet-name>
+   <!-- <servlet-class>com.topcoder.clients.bridge.management.ClientProjectManagementAjaxBridgeServlet</servlet-class>-->
+    <servlet-class>com.topcoder.clients.bridge.management.MockServlet</servlet-class>
+
+      <init-param>
+         <param-name>objectFactoryNamespace</param-name>
+         <param-value>factoryNamespace</param-value>
+      </init-param>
+      <init-param>
+         <param-name>jsonEncoderKey</param-name>
+         <param-value>jsonEncoderOBKey</param-value>
+      </init-param>
+      <init-param>
+         <param-name>jsonDecoderKey</param-name>
+         <param-value>jsonDecoderOBKey</param-value>
+      </init-param>
+      <init-param>
+         <param-name>projectServiceClientKey</param-name>
+         <param-value>projectServiceClientOBKey</param-value>
+      </init-param>
+      <init-param>
+         <param-name>clientServiceClientKey</param-name>
+         <param-value>clientServiceClientOBKey</param-value>
+      </init-param>
+      <init-param>
+         <param-name>companyServiceClientKey</param-name>
+         <param-value>companyServiceClientOBKey</param-value>
+      </init-param>
+      <init-param>
+         <param-name>ajaxBridgeConfigFile</param-name>
+         <param-value>config.properties</param-value>
+      </init-param>
+</servlet>
+    
+    <servlet-mapping>
+    <servlet-name>MockServlet</servlet-name>
+    <url-pattern>/servlet</url-pattern>
+    </servlet-mapping>
+
+</web-app>
+

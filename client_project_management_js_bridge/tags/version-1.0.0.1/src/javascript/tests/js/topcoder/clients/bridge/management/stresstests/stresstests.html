@@ -1,0 +1,282 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>ClientProjectManagementAjaxBridgeServlet Stress Tests</title>
+    <script language="JavaScript" type="text/javascript" src="../jsunit/app/jsUnitCore.js"></script>
+    <script language="JavaScript" type="text/javascript" src="../../../../../../../../../test_files/AjaxProcessor.js"></script>
+    <script language="JavaScript" type="text/javascript" src="../../../../../../../../../test_files/json2.js"></script>
+    <script language="JavaScript" type="text/javascript"
+    src="../../../../../../../main/js/topcoder/clients/bridge/management/client_project_management.js"></script>
+
+    <script language="JavaScript" type="text/javascript">
+    /*
+    * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+    */
+
+    /**
+    * @fileoverview
+    * This is the stress test cases for the ClientProjectManagementAjaxBridgeServlet component.
+    * There is no thread-safe requirement for Javascript. So we only focus on the efficiency of
+    * some complicated methods.
+    *
+    * @author AK_47
+    * @version 1.0
+    */
+
+    /**
+     * <p><code>ProjectService</code> instance used for testing.</p>
+     */
+    var projectService;
+
+	/**
+     * <p><code>CompanyService</code> instance used for testing.</p>
+     */
+    var companyService;
+
+   /**
+     * <p><code>ClientService</code> instance used for testing.</p>
+     */
+    var clientService;
+
+    /**
+     * <p>Sets up environment.</p>
+     */
+    function setUp() {
+        var url = "http://localhost:8080/topcoder/servlet";
+        projectService = new js.topcoder.clients.bridge.management.ProjectService(url);
+		companyService = new js.topcoder.clients.bridge.management.CompanyService(url);
+		clientService = new js.topcoder.clients.bridge.management.ClientService(url);
+    }
+
+    /**
+     * <p>
+     * Stress test for method <code>createProject()</code>, expects no error occurs.
+     * </p>
+     */
+    function testCreateProject() {
+		var start = (new Date()).getTime();
+        var project = new js.topcoder.clients.bridge.management.model.Project();
+
+        for (i = 0; i < 50; i++) {
+            projectService.createProject(project, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running ProjectService.createProject:", (end - start));
+    }
+
+    /**
+     * <p>
+     * Stress test for method <code>updateProject()</code>, expects no error occurs.
+     * </p>
+     */
+    function testUpdateProject() {
+		var start = (new Date()).getTime();
+        var project = new js.topcoder.clients.bridge.management.model.Project();
+
+        for (i = 0; i < 50; i++) {
+            projectService.updateProject(project, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running ProjectService.updateProject:", (end - start));
+    }
+
+    /**
+     * <p>
+     * Stress test for method <code>deleteProject()</code>, expects no error occurs.
+     * </p>
+     */
+    function testDeleteProject() {
+		var start = (new Date()).getTime();
+        var project = new js.topcoder.clients.bridge.management.model.Project();
+
+        for (i = 0; i < 50; i++) {
+            projectService.deleteProject(project, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running ProjectService.deleteProject:", (end - start));
+    }
+
+    /**
+     * <p>
+     * Stress test for method <code>setProjectStatus()</code>, expects no error occurs.
+     * </p>
+     */
+    function testSetProjectStatus() {
+		var start = (new Date()).getTime();
+        var project = new js.topcoder.clients.bridge.management.model.Project();
+        var status = new js.topcoder.clients.bridge.management.model.ProjectStatus();
+
+        for (i = 0; i < 50; i++) {
+            projectService.setProjectStatus(project, status, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running ProjectService.setProjectStatus:", (end - start));
+    }
+
+    /**
+     * <p>
+     * Stress test for method <code>createCompany()</code>, expects no error occurs.
+     * </p>
+     */
+    function testCreateCompany() {
+		var start = (new Date()).getTime();
+        var company = new js.topcoder.clients.bridge.management.model.Company();
+
+        for (i = 0; i < 50; i++) {
+            companyService.createCompany(company, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running CompanyService.createCompany:", (end - start));
+    }
+
+    /**
+     * <p>
+     * Stress test for method <code>updateCompany()</code>, expects no error occurs.
+     * </p>
+     */
+    function testUpdateCompany() {
+		var start = (new Date()).getTime();
+        var company = new js.topcoder.clients.bridge.management.model.Company();
+
+        for (i = 0; i < 50; i++) {
+        companyService.updateCompany(company, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running CompanyService.updateCompany:", (end - start));
+    }
+
+    /**
+     * <p>
+     * Stress test for method <code>deleteCompany()</code>, expects no error occurs.
+     * </p>
+     */
+    function testDeleteCompany() {
+		var start = (new Date()).getTime();
+        var company = new js.topcoder.clients.bridge.management.model.Company();
+
+        for (i = 0; i < 50; i++) {
+            companyService.deleteCompany(company, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running CompanyService.deleteCompany:", (end - start));
+    }
+
+    /**
+     * <p>
+     * Stress test for method <code>createClient()</code>, expects no error occurs.
+     * </p>
+     */
+    function testCreateClient() {
+		var start = (new Date()).getTime();
+        var client = new js.topcoder.clients.bridge.management.model.Client();
+
+        for (i = 0; i < 50; i++) {
+            clientService.createClient(client, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running ClientService.createClient:", (end - start));
+    }
+
+    /**
+     * <p>
+     * Stress test for method <code>updateClient()</code>, expects no error occurs.
+     * </p>
+     */
+    function testUpdateClient() {
+		var start = (new Date()).getTime();
+        var client = new js.topcoder.clients.bridge.management.model.Client();
+
+        for (i = 0; i < 50; i++) {
+            clientService.updateClient(client, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running ClientService.updateClient:", (end - start));
+    }
+
+    /**
+     * <p>
+     * Stress test for method <code>deleteClient()</code>, expects no error occurs.
+     * </p>
+     */
+    function testDeleteClient() {
+		var start = (new Date()).getTime();
+        var client = new js.topcoder.clients.bridge.management.model.Client();
+
+        for (i = 0; i < 50; i++) {
+            clientService.deleteClient(client, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running ClientService.deleteClient:", (end - start));
+    }
+
+    /**
+     * <p>
+     * Stress test for method <code>setClientCodeName()</code>, expects no error occurs.
+     * </p>
+     */
+    function testSetClientCodeNameClient() {
+		var start = (new Date()).getTime();
+        var client = new js.topcoder.clients.bridge.management.model.Client();
+
+        for (i = 0; i < 50; i++) {
+            clientService.setClientCodeName(client, "topcoder", onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running ClientService.setClientCodeName:", (end - start));
+    }
+
+    /**
+     * <p>
+     * Stress test for method <code>setClientStatus()</code>, expects no error occurs.
+     * </p>
+     */
+    function testSetClientStatus() {
+		var start = (new Date()).getTime();
+        var client = new js.topcoder.clients.bridge.management.model.Client();
+        var status = new js.topcoder.clients.bridge.management.model.ClientStatus();
+
+        for (i = 0; i < 50; i++) {
+            clientService.setClientStatus(client, status, onSuccess, onError);
+        }
+
+        var end = (new Date()).getTime();
+        info("The time of running ClientService.setClientStatus:", (end - start));
+    }
+
+   /**
+     * The function use to test.
+     */
+    function onSuccess(/* Object */ obj) {
+		// empty
+    }
+
+    /**
+     * The function use to test.
+     */
+    function onError(/* String */ message) {
+		// empty
+    }
+
+    </script>
+
+</head>
+
+<body>
+
+<h1>ClientProjectManagementAjaxBridgeServlet Stress Tests</h1>
+
+<p>This page contains stress tests for the ClientProjectManagementAjaxBridgeServlet class.</p>
+</body>
+</html>

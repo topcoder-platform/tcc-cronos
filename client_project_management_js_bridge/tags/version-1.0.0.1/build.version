@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Client Project Management JS Bridge
+component.distfilename=client_project_management_js_bridge
+component.package=com.topcoder.clients.bridge.management
+component.packagedir=com/topcoder/clients/bridge/management
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1

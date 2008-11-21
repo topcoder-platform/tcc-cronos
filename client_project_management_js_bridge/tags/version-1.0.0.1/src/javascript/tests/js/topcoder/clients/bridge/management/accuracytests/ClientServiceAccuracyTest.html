@@ -1,0 +1,105 @@
+<!--
+Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+
+JavaScript Client Project Management 1.0
+
+Author onsky
+-->
+<html>
+<head>
+<title>ClientService Accuracy Test</title>
+<script language="JavaScript" type="text/javascript" src="../jsunit/app/jsUnitCore.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../../test_files/AjaxProcessor.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../../../../../../../../test_files/json2.js"></script>
+<script language="JavaScript" type="text/javascript"
+    src="../../../../../../../main/js/topcoder/clients/bridge/management/client_project_management.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+    /**
+     * <p><code>ClientService</code> instance used for testing.</p>
+     */
+    var clientService;
+
+    /**
+     * <p><code>Client</code> instance used for testing.</p>
+     */
+    var client;
+
+    /**
+     * <p>Sets up environment.</p>
+     */
+    function setUp() {
+        var url = "http://localhost:8080/topcoder/servlet";
+        clientService = new js.topcoder.clients.bridge.management.ClientService(url);
+        var config = {"company":{"passcode":"ppppp"}, "paymentTermsId":10, "status":{"description":"test"},
+            "salesTax":0.11, "startDate":"2266531362097", "endDate":"2266531362097", "codeName":"code",
+            "id":"1" };
+        client = new js.topcoder.clients.bridge.management.model.Client(config);
+    }
+
+    /**
+     * <p>Accuracy test of constructor <code>ClientService()</code>.</p>
+     */
+    function testCtor() {
+        assertNotNull(clientService);
+    }
+
+    /**
+     * <p>Accuracy test of method <code>createClient()</code>.</p>
+     */
+    function testCreateClient() {
+        clientService.createClient(client, onSuccess, onError);
+    }
+
+    /**
+     * <p>Accuracy test of method <code>updateClient()</code>.</p>
+     */
+    function testUpdateClient() {
+        clientService.updateClient(client, onSuccess, onError);
+    }
+
+    /**
+     * <p>Accuracy test of method <code>deleteClient()</code>.</p>
+     */
+    function testDeleteClient() {
+        clientService.deleteClient(client, onSuccess, onError);
+    }
+
+    /**
+     * <p>Accuracy test of method <code>setClientCodeName()</code>.</p>
+     */
+    function testSetClientCodeName() {
+        clientService.setClientCodeName(client, "test_name", onSuccess, onError);
+    }
+
+    /**
+     * <p>Accuracy test of method <code>setClientStatus()</code>.</p>
+     */
+    function testSetClientStatus() {
+        var status = new js.topcoder.clients.bridge.management.model.ClientStatus();
+        clientService.setClientStatus(client, status, onSuccess, onError);
+    }
+
+    /**
+     * Success Handling.
+     */
+    function onSuccess(/* Object */ obj) {
+		assertNotNull(JSON.stringify(obj.toJSON()));
+    }
+
+    /**
+     * Error handling.
+     */
+    function onError(/* String */ message) {
+        alert("error " + message);
+    }
+
+
+    </script>
+</head>
+<body>
+<h1><b>ClientService</b> Accuracy Test</h1>
+
+<p>This page contains Accuracy Test for <code>ClientService</code> class.</p>
+</body>
+</html>
