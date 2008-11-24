@@ -1,0 +1,6 @@
+Starting audit...
+C:\work\tc\dev\java\jira_services\src\java\tests\com\topcoder\jira\webservices\Demo.java:25: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+C:\work\tc\dev\java\jira_services\src\java\tests\com\topcoder\jira\webservices\MockJiraManager.java:10:8: Unused import - com.topcoder.jira.JiraNotAuthorizedException.
+C:\work\tc\dev\java\jira_services\src\java\tests\com\topcoder\jira\webservices\MockJiraManager.java:13:8: Unused import - com.topcoder.jira.JiraProjectValidationException.
+C:\work\tc\dev\java\jira_services\src\java\tests\com\topcoder\jira\webservices\MockJiraManager.java:14:8: Unused import - com.topcoder.jira.JiraSecurityTokenExpiredException.
+Audit done.

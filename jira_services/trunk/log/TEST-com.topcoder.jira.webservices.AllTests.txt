@@ -1,0 +1,2241 @@
+Testsuite: com.topcoder.jira.webservices.AllTests
+Tests run: 235, Failures: 0, Errors: 0, Time elapsed: 53,789 sec
+------------- Standard Output ---------------
+Enter method login with parameters [ivern, password].
+Leave method login with return value ivern:password.
+Enter method createProject with parameters [ivern:password, com.topcoder.jira.managers.entities.JiraProject@64160e, com.topcoder.jira.managers.entities.JiraVersion@e3fda4, CUSTOM_COMPONENT].
+Leave method createProject with return value com.topcoder.jira.JiraProjectCreationResult@1a3aa2c.
+Enter method addVersionToProject with parameters [ivern:password, com.topcoder.jira.managers.entities.JiraProject@64160e, com.topcoder.jira.managers.entities.JiraVersion@14ed577].
+Leave method addVersionToProject with return value com.topcoder.jira.JiraProjectCreationResult@1efc208.
+Enter method getProject with parameters [ivern:password, projectKey1].
+Leave method getProject with return value com.topcoder.jira.JiraProjectRetrievalResult@103c29b.
+Enter method getProject with parameters [ivern:password, projectKey2, 1.01].
+Leave method getProject with return value com.topcoder.jira.JiraProjectRetrievalResult@11d3226.
+Enter method getProjectVersions with parameters [ivern:password, projectKey2].
+Leave method getProjectVersions with return value [com.topcoder.jira.managers.entities.JiraVersion@12c4768, com.topcoder.jira.managers.entities.JiraVersion@4298e, com.topcoder.jira.managers.entities.JiraVersion@1443800].
+Enter method projectExists with parameters [ivern:password, projectKey2].
+Leave method projectExists with return value true.
+Enter method getProject with parameters [ivern:password, 111222].
+Leave method getProject with return value com.topcoder.jira.JiraProjectRetrievalResult@191e4c.
+Enter method updateProject with parameters [ivern:password, com.topcoder.jira.managers.entities.JiraProject@1a220e6].
+Leave method updateProject with return value com.topcoder.jira.managers.entities.JiraProject@d6c07.
+Enter method releaseVersion with parameters [ivern:password, projectKey2, com.topcoder.jira.managers.entities.JiraVersion@17ebe66].
+Leave method releaseVersion.
+Enter method archiveVersion with parameters [ivern:password, projectKey2, 1.0, true].
+Leave method archiveVersion.
+Enter method deleteProject with parameters [ivern:password, projectKey2].
+Leave method deleteProject.
+Enter method login with parameters [kit, abc].
+Leave method login with return value null.
+Enter method login with parameters [kit, abc].
+Leave method login with return value ok.
+Enter method login with parameters [null, abc].
+Error recognized: username parameter not supposed to be null..
+java.lang.IllegalArgumentException: username parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.login(JiraManagerWebServiceDelegate.java:175)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testLoginForNullUsername(JiraManagerWebServiceDelegateTest.java:197)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method login with parameters [kit, null].
+Error recognized: password parameter not supposed to be null..
+java.lang.IllegalArgumentException: password parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.login(JiraManagerWebServiceDelegate.java:176)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testLoginForNullPassword(JiraManagerWebServiceDelegateTest.java:211)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method login with parameters [ 
+  	, abc].
+Error recognized: username parameter not supposed to be empty..
+java.lang.IllegalArgumentException: username parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.login(JiraManagerWebServiceDelegate.java:175)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testLoginForEmptyUsername(JiraManagerWebServiceDelegateTest.java:225)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method login with parameters [kit,  
+  	].
+Error recognized: password parameter not supposed to be empty..
+java.lang.IllegalArgumentException: password parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.login(JiraManagerWebServiceDelegate.java:176)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testLoginForEmptyPassword(JiraManagerWebServiceDelegateTest.java:239)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method login with parameters [kit, abc].
+Leave method login with return value null.
+Enter method login with parameters [kit, abc].
+Error recognized: error description.
+com.topcoder.jira.webservices.JiraServiceException: error description
+	at org.easymock.internal.MockInvocationHandler.invoke(MockInvocationHandler.java:31)
+	at org.easymock.internal.ObjectMethodsFilter.invoke(ObjectMethodsFilter.java:56)
+	at $Proxy15.login(Unknown Source)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.login(JiraManagerWebServiceDelegate.java:179)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testLoginForError(JiraManagerWebServiceDelegateTest.java:256)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method logout with parameters [my token].
+Leave method logout.
+Enter method logout with parameters [my token].
+Leave method logout.
+Enter method logout with parameters [null].
+Error recognized: token parameter not supposed to be null..
+java.lang.IllegalArgumentException: token parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.logout(JiraManagerWebServiceDelegate.java:205)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testLogoutForNull(JiraManagerWebServiceDelegateTest.java:284)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method logout with parameters [ 
+  	].
+Error recognized: token parameter not supposed to be empty..
+java.lang.IllegalArgumentException: token parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.logout(JiraManagerWebServiceDelegate.java:205)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testLogoutForEmpty(JiraManagerWebServiceDelegateTest.java:298)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method logout with parameters [x].
+Leave method logout.
+Enter method logout with parameters [x].
+Error recognized: error description.
+com.topcoder.jira.webservices.JiraServiceConnectionException: error description
+	at org.easymock.internal.MockInvocationHandler.invoke(MockInvocationHandler.java:31)
+	at org.easymock.internal.ObjectMethodsFilter.invoke(ObjectMethodsFilter.java:56)
+	at $Proxy15.logout(Unknown Source)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.logout(JiraManagerWebServiceDelegate.java:208)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testLogoutForError(JiraManagerWebServiceDelegateTest.java:316)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method createProject with parameters [token, com.topcoder.jira.managers.entities.JiraProject@150f0a7, com.topcoder.jira.managers.entities.JiraVersion@e771f3, APPLICATION].
+Leave method createProject with return value null.
+Enter method createProject with parameters [token, com.topcoder.jira.managers.entities.JiraProject@150f0a7, com.topcoder.jira.managers.entities.JiraVersion@e771f3, APPLICATION].
+Leave method createProject with return value com.topcoder.jira.JiraProjectCreationResult@15118a7.
+Enter method createProject with parameters [x, com.topcoder.jira.managers.entities.JiraProject@5388b5, com.topcoder.jira.managers.entities.JiraVersion@3461d1, APPLICATION].
+Leave method createProject with return value null.
+Enter method createProject with parameters [x, com.topcoder.jira.managers.entities.JiraProject@5388b5, com.topcoder.jira.managers.entities.JiraVersion@3461d1, APPLICATION].
+Error recognized: error description.
+com.topcoder.jira.webservices.JiraServiceNotAuthorizedException: error description
+	at org.easymock.internal.MockInvocationHandler.invoke(MockInvocationHandler.java:31)
+	at org.easymock.internal.ObjectMethodsFilter.invoke(ObjectMethodsFilter.java:56)
+	at $Proxy15.createProject(Unknown Source)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.createProject(JiraManagerWebServiceDelegate.java:244)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testCreateProjectForError(JiraManagerWebServiceDelegateTest.java:347)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method createProject with parameters [null, com.topcoder.jira.managers.entities.JiraProject@c7833c, com.topcoder.jira.managers.entities.JiraVersion@790192, APPLICATION].
+Error recognized: token parameter not supposed to be null..
+java.lang.IllegalArgumentException: token parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.createProject(JiraManagerWebServiceDelegate.java:238)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testCreateProjectForNullToken(JiraManagerWebServiceDelegateTest.java:362)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method createProject with parameters [t, null, com.topcoder.jira.managers.entities.JiraVersion@24eafa, APPLICATION].
+Error recognized: project parameter not supposed to be null..
+java.lang.IllegalArgumentException: project parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:69)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.createProject(JiraManagerWebServiceDelegate.java:239)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testCreateProjectForNullProject(JiraManagerWebServiceDelegateTest.java:376)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method createProject with parameters [t, com.topcoder.jira.managers.entities.JiraProject@18c6cbc, null, APPLICATION].
+Error recognized: version parameter not supposed to be null..
+java.lang.IllegalArgumentException: version parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:69)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.createProject(JiraManagerWebServiceDelegate.java:240)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testCreateProjectForNullVersion(JiraManagerWebServiceDelegateTest.java:390)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method createProject with parameters [t, com.topcoder.jira.managers.entities.JiraProject@16e334a, com.topcoder.jira.managers.entities.JiraVersion@1e94001, null].
+Error recognized: type parameter not supposed to be null..
+java.lang.IllegalArgumentException: type parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:69)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.createProject(JiraManagerWebServiceDelegate.java:241)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testCreateProjectForNullType(JiraManagerWebServiceDelegateTest.java:404)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method createProject with parameters [ 
+  	, com.topcoder.jira.managers.entities.JiraProject@e20ef8, com.topcoder.jira.managers.entities.JiraVersion@144e858, APPLICATION].
+Error recognized: token parameter not supposed to be empty..
+java.lang.IllegalArgumentException: token parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.createProject(JiraManagerWebServiceDelegate.java:238)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testCreateProjectForEmptyToken(JiraManagerWebServiceDelegateTest.java:418)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method addVersionToProject with parameters [token, com.topcoder.jira.managers.entities.JiraProject@486cdd, com.topcoder.jira.managers.entities.JiraVersion@e33af5].
+Leave method addVersionToProject with return value null.
+Enter method addVersionToProject with parameters [token, com.topcoder.jira.managers.entities.JiraProject@486cdd, com.topcoder.jira.managers.entities.JiraVersion@e33af5].
+Leave method addVersionToProject with return value com.topcoder.jira.JiraProjectCreationResult@823c6d.
+Enter method addVersionToProject with parameters [x, com.topcoder.jira.managers.entities.JiraProject@e7ce4c, com.topcoder.jira.managers.entities.JiraVersion@99176f].
+Leave method addVersionToProject with return value null.
+Enter method addVersionToProject with parameters [x, com.topcoder.jira.managers.entities.JiraProject@e7ce4c, com.topcoder.jira.managers.entities.JiraVersion@99176f].
+Error recognized: error description.
+com.topcoder.jira.webservices.JiraServiceProjectValidationException: error description
+	at org.easymock.internal.MockInvocationHandler.invoke(MockInvocationHandler.java:31)
+	at org.easymock.internal.ObjectMethodsFilter.invoke(ObjectMethodsFilter.java:56)
+	at $Proxy15.addVersionToProject(Unknown Source)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.addVersionToProject(JiraManagerWebServiceDelegate.java:281)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testAddVersionToProjectForError(JiraManagerWebServiceDelegateTest.java:448)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method addVersionToProject with parameters [null, com.topcoder.jira.managers.entities.JiraProject@128594c, com.topcoder.jira.managers.entities.JiraVersion@1feaf06].
+Error recognized: token parameter not supposed to be null..
+java.lang.IllegalArgumentException: token parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.addVersionToProject(JiraManagerWebServiceDelegate.java:276)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testAddVersionToProjectForNullToken(JiraManagerWebServiceDelegateTest.java:463)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method addVersionToProject with parameters [t, null, com.topcoder.jira.managers.entities.JiraVersion@1e26602].
+Error recognized: project parameter not supposed to be null..
+java.lang.IllegalArgumentException: project parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:69)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.addVersionToProject(JiraManagerWebServiceDelegate.java:277)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testAddVersionToProjectForNullProject(JiraManagerWebServiceDelegateTest.java:477)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method addVersionToProject with parameters [t, com.topcoder.jira.managers.entities.JiraProject@1ce64f6, null].
+Error recognized: version parameter not supposed to be null..
+java.lang.IllegalArgumentException: version parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:69)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.addVersionToProject(JiraManagerWebServiceDelegate.java:278)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testAddVersionToProjectForNullVersion(JiraManagerWebServiceDelegateTest.java:491)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method addVersionToProject with parameters [ 
+  	, com.topcoder.jira.managers.entities.JiraProject@343bb6, com.topcoder.jira.managers.entities.JiraVersion@13c3b45].
+Error recognized: token parameter not supposed to be empty..
+java.lang.IllegalArgumentException: token parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.addVersionToProject(JiraManagerWebServiceDelegate.java:276)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testAddVersionToProjectForEmptyToken(JiraManagerWebServiceDelegateTest.java:505)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProject with parameters [token, key].
+Leave method getProject with return value null.
+Enter method getProject with parameters [token, key].
+Leave method getProject with return value com.topcoder.jira.JiraProjectRetrievalResult@541b02.
+Enter method getProject with parameters [x, y].
+Leave method getProject with return value null.
+Enter method getProject with parameters [x, y].
+Error recognized: error description.
+com.topcoder.jira.webservices.JiraServiceSecurityTokenExpiredException: error description
+	at org.easymock.internal.MockInvocationHandler.invoke(MockInvocationHandler.java:31)
+	at org.easymock.internal.ObjectMethodsFilter.invoke(ObjectMethodsFilter.java:56)
+	at $Proxy15.getProject(Unknown Source)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProject(JiraManagerWebServiceDelegate.java:314)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectForError(JiraManagerWebServiceDelegateTest.java:535)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProject with parameters [token, key, version].
+Leave method getProject with return value null.
+Enter method getProject with parameters [token, key, version].
+Leave method getProject with return value com.topcoder.jira.JiraProjectRetrievalResult@18fb397.
+Enter method getProject with parameters [x, y, z].
+Leave method getProject with return value null.
+Enter method getProject with parameters [x, y, z].
+Error recognized: error description.
+com.topcoder.jira.webservices.JiraServiceSecurityTokenExpiredException: error description
+	at org.easymock.internal.MockInvocationHandler.invoke(MockInvocationHandler.java:31)
+	at org.easymock.internal.ObjectMethodsFilter.invoke(ObjectMethodsFilter.java:56)
+	at $Proxy15.getProject(Unknown Source)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProject(JiraManagerWebServiceDelegate.java:349)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectByVersionForError(JiraManagerWebServiceDelegateTest.java:566)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProjectVersions with parameters [token, key].
+Leave method getProjectVersions with return value null.
+Enter method getProjectVersions with parameters [token, key].
+Leave method getProjectVersions with return value [com.topcoder.jira.managers.entities.JiraVersion@2726b2, com.topcoder.jira.managers.entities.JiraVersion@5da37c, com.topcoder.jira.managers.entities.JiraVersion@19845fb].
+Enter method getProjectVersions with parameters [x, y].
+Leave method getProjectVersions with return value null.
+Enter method getProjectVersions with parameters [x, y].
+Error recognized: error description.
+com.topcoder.jira.webservices.JiraServiceSecurityTokenExpiredException: error description
+	at org.easymock.internal.MockInvocationHandler.invoke(MockInvocationHandler.java:31)
+	at org.easymock.internal.ObjectMethodsFilter.invoke(ObjectMethodsFilter.java:56)
+	at $Proxy15.getProjectVersions(Unknown Source)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProjectVersions(JiraManagerWebServiceDelegate.java:383)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectVersionsForError(JiraManagerWebServiceDelegateTest.java:597)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProjectVersions with parameters [null, k].
+Error recognized: token parameter not supposed to be null..
+java.lang.IllegalArgumentException: token parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProjectVersions(JiraManagerWebServiceDelegate.java:379)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectVersionsForNullToken(JiraManagerWebServiceDelegateTest.java:612)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProjectVersions with parameters [t, null].
+Error recognized: projectKey parameter not supposed to be null..
+java.lang.IllegalArgumentException: projectKey parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProjectVersions(JiraManagerWebServiceDelegate.java:380)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectVersionsForNullKey(JiraManagerWebServiceDelegateTest.java:626)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProjectVersions with parameters [ 
+  	, a].
+Error recognized: token parameter not supposed to be empty..
+java.lang.IllegalArgumentException: token parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProjectVersions(JiraManagerWebServiceDelegate.java:379)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectVersionsForEmptyToken(JiraManagerWebServiceDelegateTest.java:640)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProjectVersions with parameters [a,  
+  	].
+Error recognized: projectKey parameter not supposed to be empty..
+java.lang.IllegalArgumentException: projectKey parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProjectVersions(JiraManagerWebServiceDelegate.java:380)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectVersionsForEmptyKey(JiraManagerWebServiceDelegateTest.java:654)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method projectExists with parameters [my token, name].
+Leave method projectExists with return value false.
+Enter method projectExists with parameters [my token, name].
+Leave method projectExists with return value true.
+Enter method projectExists with parameters [x, y].
+Leave method projectExists with return value false.
+Enter method projectExists with parameters [x, y].
+Error recognized: error description.
+com.topcoder.jira.webservices.JiraServiceSecurityTokenExpiredException: error description
+	at org.easymock.internal.MockInvocationHandler.invoke(MockInvocationHandler.java:31)
+	at org.easymock.internal.ObjectMethodsFilter.invoke(ObjectMethodsFilter.java:56)
+	at $Proxy15.projectExists(Unknown Source)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.projectExists(JiraManagerWebServiceDelegate.java:416)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testProjectExistsForError(JiraManagerWebServiceDelegateTest.java:685)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method projectExists with parameters [null, n].
+Error recognized: token parameter not supposed to be null..
+java.lang.IllegalArgumentException: token parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.projectExists(JiraManagerWebServiceDelegate.java:412)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testProjectExistsForNullToken(JiraManagerWebServiceDelegateTest.java:700)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method projectExists with parameters [a, null].
+Error recognized: projectName parameter not supposed to be null..
+java.lang.IllegalArgumentException: projectName parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.projectExists(JiraManagerWebServiceDelegate.java:413)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testProjectExistsForNullName(JiraManagerWebServiceDelegateTest.java:714)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method projectExists with parameters [ 
+  	, a].
+Error recognized: token parameter not supposed to be empty..
+java.lang.IllegalArgumentException: token parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.projectExists(JiraManagerWebServiceDelegate.java:412)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testProjectExistsForEmptyToken(JiraManagerWebServiceDelegateTest.java:728)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method projectExists with parameters [a,  
+  	].
+Error recognized: projectName parameter not supposed to be empty..
+java.lang.IllegalArgumentException: projectName parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.projectExists(JiraManagerWebServiceDelegate.java:413)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testProjectExistsForEmptyName(JiraManagerWebServiceDelegateTest.java:742)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProject with parameters [token, 3].
+Leave method getProject with return value null.
+Enter method getProject with parameters [token, 3].
+Leave method getProject with return value com.topcoder.jira.JiraProjectRetrievalResult@92997e.
+Enter method getProject with parameters [x, 3].
+Leave method getProject with return value null.
+Enter method getProject with parameters [x, 3].
+Error recognized: error description.
+com.topcoder.jira.webservices.JiraServiceSecurityTokenExpiredException: error description
+	at org.easymock.internal.MockInvocationHandler.invoke(MockInvocationHandler.java:31)
+	at org.easymock.internal.ObjectMethodsFilter.invoke(ObjectMethodsFilter.java:56)
+	at $Proxy15.getProject(Unknown Source)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProject(JiraManagerWebServiceDelegate.java:448)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectByIdForError(JiraManagerWebServiceDelegateTest.java:772)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProject with parameters [null, k].
+Error recognized: token parameter not supposed to be null..
+java.lang.IllegalArgumentException: token parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProject(JiraManagerWebServiceDelegate.java:310)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectForNullToken(JiraManagerWebServiceDelegateTest.java:787)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProject with parameters [t, null].
+Error recognized: projectKey parameter not supposed to be null..
+java.lang.IllegalArgumentException: projectKey parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProject(JiraManagerWebServiceDelegate.java:311)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectForNullKey(JiraManagerWebServiceDelegateTest.java:801)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProject with parameters [ 
+  	, a].
+Error recognized: token parameter not supposed to be empty..
+java.lang.IllegalArgumentException: token parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProject(JiraManagerWebServiceDelegate.java:310)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectForEmptyToken(JiraManagerWebServiceDelegateTest.java:815)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProject with parameters [a,  
+  	].
+Error recognized: projectKey parameter not supposed to be empty..
+java.lang.IllegalArgumentException: projectKey parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProject(JiraManagerWebServiceDelegate.java:311)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectForEmptyKey(JiraManagerWebServiceDelegateTest.java:829)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProject with parameters [null, k, x].
+Error recognized: token parameter not supposed to be null..
+java.lang.IllegalArgumentException: token parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProject(JiraManagerWebServiceDelegate.java:344)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectByVersionForNullToken(JiraManagerWebServiceDelegateTest.java:843)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProject with parameters [t, null, x].
+Error recognized: projectKey parameter not supposed to be null..
+java.lang.IllegalArgumentException: projectKey parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProject(JiraManagerWebServiceDelegate.java:345)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectByVersionForNullKey(JiraManagerWebServiceDelegateTest.java:857)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProject with parameters [x, k, null].
+Error recognized: version parameter not supposed to be null..
+java.lang.IllegalArgumentException: version parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProject(JiraManagerWebServiceDelegate.java:346)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectByVersionForNullVersion(JiraManagerWebServiceDelegateTest.java:871)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProject with parameters [ 
+  	, a, x].
+Error recognized: token parameter not supposed to be empty..
+java.lang.IllegalArgumentException: token parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProject(JiraManagerWebServiceDelegate.java:344)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectByVersionForEmptyToken(JiraManagerWebServiceDelegateTest.java:885)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProject with parameters [a,  
+  	, x].
+Error recognized: projectKey parameter not supposed to be empty..
+java.lang.IllegalArgumentException: projectKey parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProject(JiraManagerWebServiceDelegate.java:345)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectByVersionForEmptyKey(JiraManagerWebServiceDelegateTest.java:899)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProject with parameters [a, x,  
+  	].
+Error recognized: version parameter not supposed to be empty..
+java.lang.IllegalArgumentException: version parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProject(JiraManagerWebServiceDelegate.java:346)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectByVersionForEmptyVersion(JiraManagerWebServiceDelegateTest.java:913)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProject with parameters [null, 1].
+Error recognized: token parameter not supposed to be null..
+java.lang.IllegalArgumentException: token parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProject(JiraManagerWebServiceDelegate.java:444)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectByIdForNullToken(JiraManagerWebServiceDelegateTest.java:927)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProject with parameters [t, null].
+Error recognized: projectId parameter not supposed to be null..
+java.lang.IllegalArgumentException: projectId parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:69)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProject(JiraManagerWebServiceDelegate.java:445)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectByIdForNullId(JiraManagerWebServiceDelegateTest.java:941)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method getProject with parameters [ 
+  	, 3].
+Error recognized: token parameter not supposed to be empty..
+java.lang.IllegalArgumentException: token parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.getProject(JiraManagerWebServiceDelegate.java:444)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testGetProjectByIdForEmptyToken(JiraManagerWebServiceDelegateTest.java:955)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method deleteProject with parameters [my token, key].
+Leave method deleteProject.
+Enter method deleteProject with parameters [my token, key].
+Leave method deleteProject.
+Enter method deleteProject with parameters [x, y].
+Leave method deleteProject.
+Enter method deleteProject with parameters [x, y].
+Error recognized: error description.
+com.topcoder.jira.webservices.JiraServiceSecurityTokenExpiredException: error description
+	at org.easymock.internal.MockInvocationHandler.invoke(MockInvocationHandler.java:31)
+	at org.easymock.internal.ObjectMethodsFilter.invoke(ObjectMethodsFilter.java:56)
+	at $Proxy15.deleteProject(Unknown Source)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.deleteProject(JiraManagerWebServiceDelegate.java:480)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testDeleteProjectForError(JiraManagerWebServiceDelegateTest.java:986)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method deleteProject with parameters [null, k].
+Error recognized: token parameter not supposed to be null..
+java.lang.IllegalArgumentException: token parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.deleteProject(JiraManagerWebServiceDelegate.java:476)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testDeleteProjectForNullToken(JiraManagerWebServiceDelegateTest.java:1001)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method deleteProject with parameters [t, null].
+Error recognized: projectKey parameter not supposed to be null..
+java.lang.IllegalArgumentException: projectKey parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.deleteProject(JiraManagerWebServiceDelegate.java:477)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testDeleteProjectForNullKey(JiraManagerWebServiceDelegateTest.java:1015)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method deleteProject with parameters [ 
+  	, a].
+Error recognized: token parameter not supposed to be empty..
+java.lang.IllegalArgumentException: token parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.deleteProject(JiraManagerWebServiceDelegate.java:476)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testDeleteProjectForEmptyToken(JiraManagerWebServiceDelegateTest.java:1029)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method deleteProject with parameters [a,  
+  	].
+Error recognized: projectKey parameter not supposed to be empty..
+java.lang.IllegalArgumentException: projectKey parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.deleteProject(JiraManagerWebServiceDelegate.java:477)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testDeleteProjectForEmptyKey(JiraManagerWebServiceDelegateTest.java:1043)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method updateProject with parameters [token, com.topcoder.jira.managers.entities.JiraProject@83fde6].
+Leave method updateProject with return value null.
+Enter method updateProject with parameters [token, com.topcoder.jira.managers.entities.JiraProject@83fde6].
+Leave method updateProject with return value com.topcoder.jira.managers.entities.JiraProject@83fde6.
+Enter method updateProject with parameters [x, com.topcoder.jira.managers.entities.JiraProject@a0c73f].
+Leave method updateProject with return value null.
+Enter method updateProject with parameters [x, com.topcoder.jira.managers.entities.JiraProject@a0c73f].
+Error recognized: error description.
+com.topcoder.jira.webservices.JiraServiceSecurityTokenExpiredException: error description
+	at org.easymock.internal.MockInvocationHandler.invoke(MockInvocationHandler.java:31)
+	at org.easymock.internal.ObjectMethodsFilter.invoke(ObjectMethodsFilter.java:56)
+	at $Proxy15.updateProject(Unknown Source)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.updateProject(JiraManagerWebServiceDelegate.java:512)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testUpdateProjectForError(JiraManagerWebServiceDelegateTest.java:1073)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method updateProject with parameters [null, com.topcoder.jira.managers.entities.JiraProject@c42804].
+Error recognized: token parameter not supposed to be null..
+java.lang.IllegalArgumentException: token parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.updateProject(JiraManagerWebServiceDelegate.java:508)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testUpdateProjectForNullToken(JiraManagerWebServiceDelegateTest.java:1088)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method updateProject with parameters [a, null].
+Error recognized: project parameter not supposed to be null..
+java.lang.IllegalArgumentException: project parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:69)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.updateProject(JiraManagerWebServiceDelegate.java:509)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testUpdateProjectForNullProject(JiraManagerWebServiceDelegateTest.java:1102)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method updateProject with parameters [ 
+  	, com.topcoder.jira.managers.entities.JiraProject@19a6087].
+Error recognized: token parameter not supposed to be empty..
+java.lang.IllegalArgumentException: token parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.updateProject(JiraManagerWebServiceDelegate.java:508)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testUpdateProjectForEmptyToken(JiraManagerWebServiceDelegateTest.java:1116)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method releaseVersion with parameters [my token, key, com.topcoder.jira.managers.entities.JiraVersion@c759f5].
+Leave method releaseVersion.
+Enter method releaseVersion with parameters [my token, key, com.topcoder.jira.managers.entities.JiraVersion@c759f5].
+Leave method releaseVersion.
+Enter method releaseVersion with parameters [x, y, com.topcoder.jira.managers.entities.JiraVersion@1a3551c].
+Leave method releaseVersion.
+Enter method releaseVersion with parameters [x, y, com.topcoder.jira.managers.entities.JiraVersion@1a3551c].
+Error recognized: error description.
+com.topcoder.jira.webservices.JiraServiceSecurityTokenExpiredException: error description
+	at org.easymock.internal.MockInvocationHandler.invoke(MockInvocationHandler.java:31)
+	at org.easymock.internal.ObjectMethodsFilter.invoke(ObjectMethodsFilter.java:56)
+	at $Proxy15.releaseVersion(Unknown Source)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.releaseVersion(JiraManagerWebServiceDelegate.java:547)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testReleaseVersionForError(JiraManagerWebServiceDelegateTest.java:1147)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method releaseVersion with parameters [null, k, com.topcoder.jira.managers.entities.JiraVersion@135d18b].
+Error recognized: token parameter not supposed to be null..
+java.lang.IllegalArgumentException: token parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.releaseVersion(JiraManagerWebServiceDelegate.java:542)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testReleaseVersionForNullToken(JiraManagerWebServiceDelegateTest.java:1162)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method releaseVersion with parameters [t, null, com.topcoder.jira.managers.entities.JiraVersion@1335207].
+Error recognized: projectKey parameter not supposed to be null..
+java.lang.IllegalArgumentException: projectKey parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.releaseVersion(JiraManagerWebServiceDelegate.java:543)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testReleaseVersionForNullKey(JiraManagerWebServiceDelegateTest.java:1176)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method releaseVersion with parameters [t, x, null].
+Error recognized: version parameter not supposed to be null..
+java.lang.IllegalArgumentException: version parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:69)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.releaseVersion(JiraManagerWebServiceDelegate.java:544)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testReleaseVersionForNullVersion(JiraManagerWebServiceDelegateTest.java:1190)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method releaseVersion with parameters [ 
+  	, a, com.topcoder.jira.managers.entities.JiraVersion@170b6d].
+Error recognized: token parameter not supposed to be empty..
+java.lang.IllegalArgumentException: token parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.releaseVersion(JiraManagerWebServiceDelegate.java:542)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testReleaseVersionForEmptyToken(JiraManagerWebServiceDelegateTest.java:1204)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method releaseVersion with parameters [a,  
+  	, com.topcoder.jira.managers.entities.JiraVersion@1dd1752].
+Error recognized: projectKey parameter not supposed to be empty..
+java.lang.IllegalArgumentException: projectKey parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.releaseVersion(JiraManagerWebServiceDelegate.java:543)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testReleaseVersionForEmptyKey(JiraManagerWebServiceDelegateTest.java:1218)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method archiveVersion with parameters [my token, key, version, false].
+Leave method archiveVersion.
+Enter method archiveVersion with parameters [my token, key, version, false].
+Leave method archiveVersion.
+Enter method archiveVersion with parameters [x, y, z, true].
+Leave method archiveVersion.
+Enter method archiveVersion with parameters [x, y, z, true].
+Error recognized: error description.
+com.topcoder.jira.webservices.JiraServiceSecurityTokenExpiredException: error description
+	at org.easymock.internal.MockInvocationHandler.invoke(MockInvocationHandler.java:31)
+	at org.easymock.internal.ObjectMethodsFilter.invoke(ObjectMethodsFilter.java:56)
+	at $Proxy15.archiveVersion(Unknown Source)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.archiveVersion(JiraManagerWebServiceDelegate.java:585)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testArchiveVersionForError(JiraManagerWebServiceDelegateTest.java:1249)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method archiveVersion with parameters [null, k, v, true].
+Error recognized: token parameter not supposed to be null..
+java.lang.IllegalArgumentException: token parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.archiveVersion(JiraManagerWebServiceDelegate.java:580)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testArchiveVersionForNullToken(JiraManagerWebServiceDelegateTest.java:1264)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method archiveVersion with parameters [t, null, a, false].
+Error recognized: projectKey parameter not supposed to be null..
+java.lang.IllegalArgumentException: projectKey parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.archiveVersion(JiraManagerWebServiceDelegate.java:581)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testArchiveVersionForNullKey(JiraManagerWebServiceDelegateTest.java:1278)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method archiveVersion with parameters [t, x, null, false].
+Error recognized: versionName parameter not supposed to be null..
+java.lang.IllegalArgumentException: versionName parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.archiveVersion(JiraManagerWebServiceDelegate.java:582)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testArchiveVersionForNullName(JiraManagerWebServiceDelegateTest.java:1292)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method archiveVersion with parameters [ 
+  	, a, x, true].
+Error recognized: token parameter not supposed to be empty..
+java.lang.IllegalArgumentException: token parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.archiveVersion(JiraManagerWebServiceDelegate.java:580)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testArchiveVersionForEmptyToken(JiraManagerWebServiceDelegateTest.java:1306)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method archiveVersion with parameters [a,  
+  	, x, true].
+Error recognized: projectKey parameter not supposed to be empty..
+java.lang.IllegalArgumentException: projectKey parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.archiveVersion(JiraManagerWebServiceDelegate.java:581)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testArchiveVersionForEmptyKey(JiraManagerWebServiceDelegateTest.java:1320)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method archiveVersion with parameters [a, x,  
+  	, false].
+Error recognized: versionName parameter not supposed to be empty..
+java.lang.IllegalArgumentException: versionName parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate.archiveVersion(JiraManagerWebServiceDelegate.java:582)
+	at com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegateTest.testArchiveVersionForEmptyName(JiraManagerWebServiceDelegateTest.java:1334)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Error recognized: name parameter not supposed to be null..
+java.lang.IllegalArgumentException: name parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:69)
+	at com.topcoder.jira.webservices.UtilTest.testCheckNullWithLog2(UtilTest.java:122)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Error recognized: name parameter not supposed to be null..
+java.lang.IllegalArgumentException: name parameter not supposed to be null.
+	at com.topcoder.jira.webservices.Util.checkNull(Util.java:51)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:84)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.UtilTest.testCheckStringWithLog2(UtilTest.java:141)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Error recognized: name parameter not supposed to be empty..
+java.lang.IllegalArgumentException: name parameter not supposed to be empty.
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:86)
+	at com.topcoder.jira.webservices.Util.checkString(Util.java:100)
+	at com.topcoder.jira.webservices.UtilTest.testCheckStringWithLog3(UtilTest.java:153)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+Enter method method with parameters [param1, 34].
+Leave method method with return value result.
+Leave method method.
+Error recognized: cause.
+java.io.IOException: cause
+	at com.topcoder.jira.webservices.UtilTest.testLogError(UtilTest.java:220)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+------------- ---------------- ---------------
+
+Testcase: testDelegate took 8,504 sec
+Testcase: testClient took 1,433 sec
+Testcase: testFirstConstructor took 1,505 sec
+Testcase: testSecondConstructor took 1,21 sec
+Testcase: testThirdConstructor took 1,037 sec
+Testcase: testForthConstructor took 1,043 sec
+Testcase: testForthConstructorForNullClient took 0,553 sec
+Testcase: testLogin took 0,475 sec
+Testcase: testLoginForNullUsername took 0,567 sec
+Testcase: testLoginForNullPassword took 0,423 sec
+Testcase: testLoginForEmptyUsername took 0,435 sec
+Testcase: testLoginForEmptyPassword took 0,565 sec
+Testcase: testLoginForError took 0,428 sec
+Testcase: testLogout took 0,411 sec
+Testcase: testLogoutForNull took 0,422 sec
+Testcase: testLogoutForEmpty took 0,605 sec
+Testcase: testLogoutForError took 0,407 sec
+Testcase: testCreateProject took 0,387 sec
+Testcase: testCreateProjectForError took 0,424 sec
+Testcase: testCreateProjectForNullToken took 0,394 sec
+Testcase: testCreateProjectForNullProject took 0,389 sec
+Testcase: testCreateProjectForNullVersion took 0,439 sec
+Testcase: testCreateProjectForNullType took 0,64 sec
+Testcase: testCreateProjectForEmptyToken took 0,405 sec
+Testcase: testAddVersionToProject took 0,398 sec
+Testcase: testAddVersionToProjectForError took 0,4 sec
+Testcase: testAddVersionToProjectForNullToken took 0,385 sec
+Testcase: testAddVersionToProjectForNullProject took 0,403 sec
+Testcase: testAddVersionToProjectForNullVersion took 0,436 sec
+Testcase: testAddVersionToProjectForEmptyToken took 0,411 sec
+Testcase: testGetProject took 0,385 sec
+Testcase: testGetProjectForError took 0,392 sec
+Testcase: testGetProjectByVersion took 0,398 sec
+Testcase: testGetProjectByVersionForError took 0,448 sec
+Testcase: testGetProjectVersions took 0,713 sec
+Testcase: testGetProjectVersionsForError took 0,383 sec
+Testcase: testGetProjectVersionsForNullToken took 0,407 sec
+Testcase: testGetProjectVersionsForNullKey took 0,383 sec
+Testcase: testGetProjectVersionsForEmptyToken took 0,379 sec
+Testcase: testGetProjectVersionsForEmptyKey took 0,406 sec
+Testcase: testProjectExists took 0,385 sec
+Testcase: testProjectExistsForError took 0,388 sec
+Testcase: testProjectExistsForNullToken took 0,423 sec
+Testcase: testProjectExistsForNullName took 0,394 sec
+Testcase: testProjectExistsForEmptyToken took 0,375 sec
+Testcase: testProjectExistsForEmptyName took 0,382 sec
+Testcase: testGetProjectById took 0,385 sec
+Testcase: testGetProjectByIdForError took 0,393 sec
+Testcase: testGetProjectForNullToken took 0,375 sec
+Testcase: testGetProjectForNullKey took 0,397 sec
+Testcase: testGetProjectForEmptyToken took 0,375 sec
+Testcase: testGetProjectForEmptyKey took 0,381 sec
+Testcase: testGetProjectByVersionForNullToken took 0,387 sec
+Testcase: testGetProjectByVersionForNullKey took 0,398 sec
+Testcase: testGetProjectByVersionForNullVersion took 0,811 sec
+Testcase: testGetProjectByVersionForEmptyToken took 0,406 sec
+Testcase: testGetProjectByVersionForEmptyKey took 0,395 sec
+Testcase: testGetProjectByVersionForEmptyVersion took 0,389 sec
+Testcase: testGetProjectByIdForNullToken took 0,434 sec
+Testcase: testGetProjectByIdForNullId took 0,392 sec
+Testcase: testGetProjectByIdForEmptyToken took 0,394 sec
+Testcase: testDeleteProject took 0,394 sec
+Testcase: testDeleteProjectForError took 0,39 sec
+Testcase: testDeleteProjectForNullToken took 0,444 sec
+Testcase: testDeleteProjectForNullKey took 0,392 sec
+Testcase: testDeleteProjectForEmptyToken took 0,418 sec
+Testcase: testDeleteProjectForEmptyKey took 0,377 sec
+Testcase: testUpdateProject took 0,378 sec
+Testcase: testUpdateProjectForError took 0,419 sec
+Testcase: testUpdateProjectForNullToken took 0,459 sec
+Testcase: testUpdateProjectForNullProject took 0,435 sec
+Testcase: testUpdateProjectForEmptyToken took 0,467 sec
+Testcase: testReleaseVersion took 0,46 sec
+Testcase: testReleaseVersionForError took 0,409 sec
+Testcase: testReleaseVersionForNullToken took 0,391 sec
+Testcase: testReleaseVersionForNullKey took 0,375 sec
+Testcase: testReleaseVersionForNullVersion took 0,384 sec
+Testcase: testReleaseVersionForEmptyToken took 0,439 sec
+Testcase: testReleaseVersionForEmptyKey took 0,392 sec
+Testcase: testArchiveVersion took 0,416 sec
+Testcase: testArchiveVersionForError took 0,437 sec
+Testcase: testArchiveVersionForNullToken took 0,415 sec
+Testcase: testArchiveVersionForNullKey took 0,38 sec
+Testcase: testArchiveVersionForNullName took 0,384 sec
+Testcase: testArchiveVersionForEmptyToken took 0,385 sec
+Testcase: testArchiveVersionForEmptyKey took 0,406 sec
+Testcase: testArchiveVersionForEmptyName took 0,442 sec
+Testcase: testLogin took 0,02 sec
+Testcase: testLoginForNullUsername took 0 sec
+Testcase: testLoginForNullPassword took 0 sec
+Testcase: testLoginForEmptyUsername took 0,001 sec
+Testcase: testLoginForEmptyPassword took 0 sec
+Testcase: testLoginForError took 0 sec
+Testcase: testLogout took 0 sec
+Testcase: testLogoutForNull took 0,001 sec
+Testcase: testLogoutForEmpty took 0 sec
+Testcase: testLogoutForError took 0 sec
+Testcase: testCreateProject took 0 sec
+Testcase: testCreateProjectForError took 0 sec
+Testcase: testCreateProjectForNullToken took 0 sec
+Testcase: testCreateProjectForNullProject took 0 sec
+Testcase: testCreateProjectForNullVersion took 0 sec
+Testcase: testCreateProjectForNullType took 0,001 sec
+Testcase: testCreateProjectForEmptyToken took 0 sec
+Testcase: testAddVersionToProject took 0,001 sec
+Testcase: testAddVersionToProjectForError took 0,001 sec
+Testcase: testAddVersionToProjectForNullToken took 0 sec
+Testcase: testAddVersionToProjectForNullProject took 0 sec
+Testcase: testAddVersionToProjectForNullVersion took 0 sec
+Testcase: testAddVersionToProjectForEmptyToken took 0,001 sec
+Testcase: testGetProject took 0,001 sec
+Testcase: testGetProjectForError took 0 sec
+Testcase: testGetProjectByVersion took 0,001 sec
+Testcase: testGetProjectByVersionForError took 0 sec
+Testcase: testGetProjectVersions took 0 sec
+Testcase: testGetProjectVersionsForError took 0 sec
+Testcase: testGetProjectVersionsForNullToken took 0 sec
+Testcase: testGetProjectVersionsForNullKey took 0 sec
+Testcase: testGetProjectVersionsForEmptyToken took 0,001 sec
+Testcase: testGetProjectVersionsForEmptyKey took 0 sec
+Testcase: testProjectExists took 0 sec
+Testcase: testProjectExistsForError took 0,001 sec
+Testcase: testProjectExistsForNullToken took 0,001 sec
+Testcase: testProjectExistsForNullName took 0 sec
+Testcase: testProjectExistsForEmptyToken took 0 sec
+Testcase: testProjectExistsForEmptyName took 0 sec
+Testcase: testGetProjectById took 0,001 sec
+Testcase: testGetProjectByIdForError took 0 sec
+Testcase: testGetProjectForNullToken took 0,001 sec
+Testcase: testGetProjectForNullKey took 0 sec
+Testcase: testGetProjectForEmptyToken took 0 sec
+Testcase: testGetProjectForEmptyKey took 0 sec
+Testcase: testGetProjectByVersionForNullToken took 0 sec
+Testcase: testGetProjectByVersionForNullKey took 0,001 sec
+Testcase: testGetProjectByVersionForNullVersion took 0 sec
+Testcase: testGetProjectByVersionForEmptyToken took 0 sec
+Testcase: testGetProjectByVersionForEmptyKey took 0 sec
+Testcase: testGetProjectByVersionForEmptyVersion took 0,001 sec
+Testcase: testGetProjectByIdForNullToken took 0 sec
+Testcase: testGetProjectByIdForNullId took 0 sec
+Testcase: testGetProjectByIdForEmptyToken took 0 sec
+Testcase: testDeleteProject took 0,001 sec
+Testcase: testDeleteProjectForError took 0 sec
+Testcase: testDeleteProjectForNullToken took 0 sec
+Testcase: testDeleteProjectForNullKey took 0 sec
+Testcase: testDeleteProjectForEmptyToken took 0 sec
+Testcase: testDeleteProjectForEmptyKey took 0 sec
+Testcase: testUpdateProject took 0,001 sec
+Testcase: testUpdateProjectForError took 0 sec
+Testcase: testUpdateProjectForNullToken took 0,001 sec
+Testcase: testUpdateProjectForNullProject took 0 sec
+Testcase: testUpdateProjectForEmptyToken took 0 sec
+Testcase: testReleaseVersion took 0 sec
+Testcase: testReleaseVersionForError took 0 sec
+Testcase: testReleaseVersionForNullToken took 0 sec
+Testcase: testReleaseVersionForNullKey took 0 sec
+Testcase: testReleaseVersionForNullVersion took 0,001 sec
+Testcase: testReleaseVersionForEmptyToken took 0 sec
+Testcase: testReleaseVersionForEmptyKey took 0 sec
+Testcase: testArchiveVersion took 0,001 sec
+Testcase: testArchiveVersionForError took 0 sec
+Testcase: testArchiveVersionForNullToken took 0 sec
+Testcase: testArchiveVersionForNullKey took 0,001 sec
+Testcase: testArchiveVersionForNullName took 0 sec
+Testcase: testArchiveVersionForEmptyToken took 0 sec
+Testcase: testArchiveVersionForEmptyKey took 0 sec
+Testcase: testArchiveVersionForEmptyName took 0 sec
+Testcase: testConstructor took 0 sec
+Testcase: testInitialize took 0,024 sec
+Testcase: testInitializeForError took 0,002 sec
+Testcase: testCheckNull1 took 0 sec
+Testcase: testCheckNull2 took 0 sec
+Testcase: testCheckString1 took 0 sec
+Testcase: testCheckString2 took 0 sec
+Testcase: testCheckString3 took 0,001 sec
+Testcase: testCheckNullWithLog1 took 0 sec
+Testcase: testCheckNullWithLog2 took 0,001 sec
+Testcase: testCheckStringWithLog1 took 0 sec
+Testcase: testCheckStringWithLog2 took 0,001 sec
+Testcase: testCheckStringWithLog3 took 0 sec
+Testcase: testLogEnter took 0,001 sec
+Testcase: testLogEnterForNoLog took 0 sec
+Testcase: testLogExit1 took 0 sec
+Testcase: testLogExit1ForNoLog took 0 sec
+Testcase: testLogExit2 took 0 sec
+Testcase: testLogExit2ForNoLog took 0 sec
+Testcase: testLogError took 0,001 sec
+Testcase: testLogErrorNoLog took 0 sec
+Testcase: testReadConfiguration took 0,042 sec
+Testcase: testReadConfigurationNoNamespace took 0,034 sec
+Testcase: testReadConfigurationForNoFile took 0 sec
+Testcase: testGetChild took 0,039 sec
+Testcase: testGetProperty took 0,033 sec
+Testcase: testGetPropertyForNullRequired took 0,024 sec
+Testcase: testGetPropertyForEmptyOptional took 0,028 sec
+Testcase: testGetPropertyForNotString took 0 sec
+Testcase: testCreateFactory took 0,034 sec
+Testcase: testCreateFactoryForNoConfig took 0,001 sec
+Testcase: testCreateFactoryForBadConfig took 0 sec
+Testcase: testCreateObject took 0,42 sec
+Testcase: testCreateObjectForBadKey took 0,041 sec
+Testcase: testCreateObjectForBadType took 0,384 sec
+Testcase: testFirstConstructor took 0 sec
+Testcase: testSecondConstructor took 0 sec
+Testcase: testThirdConstructor took 0,001 sec
+Testcase: testForthConstructor took 0 sec
+Testcase: testFirstConstructor took 0 sec
+Testcase: testSecondConstructor took 0 sec
+Testcase: testThirdConstructor took 0 sec
+Testcase: testForthConstructor took 0 sec
+Testcase: testFirstConstructor took 0 sec
+Testcase: testSecondConstructor took 0 sec
+Testcase: testThirdConstructor took 0 sec
+Testcase: testForthConstructor took 0 sec
+Testcase: testFirstConstructor took 0 sec
+Testcase: testSecondConstructor took 0 sec
+Testcase: testThirdConstructor took 0,001 sec
+Testcase: testForthConstructor took 0 sec
+Testcase: testFirstConstructor took 0 sec
+Testcase: testSecondConstructor took 0 sec
+Testcase: testThirdConstructor took 0 sec
+Testcase: testForthConstructor took 0 sec
+Testcase: testFirstConstructor took 0 sec
+Testcase: testSecondConstructor took 0 sec
+Testcase: testThirdConstructor took 0 sec
+Testcase: testForthConstructor took 0 sec
+Testcase: testFirstConstructor took 1,543 sec
+Testcase: testSecondConstructor took 0,98 sec
+Testcase: testThirdConstructor took 0,916 sec
+Testcase: testFirstConstructorForNull took 0 sec
+Testcase: testFirstConstructorForEmpty took 0 sec
+Testcase: testFirstConstructorForBadUrl took 0 sec
+Testcase: testSecondConstructorForNull took 0 sec
+Testcase: testThirdConstructorForNullUrl took 0 sec
+Testcase: testThirdConstructorForNullServiceName took 0 sec

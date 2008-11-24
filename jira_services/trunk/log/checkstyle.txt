@@ -1,0 +1,5 @@
+Starting audit...
+C:\work\tc\dev\java\jira_services\src\java\main\com\topcoder\jira\webservices\Util.java:33: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9_.-]+, TCSDEVELOPER$'.
+C:\work\tc\dev\java\jira_services\src\java\main\com\topcoder\jira\webservices\client\JiraManagementServiceClient.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'WebServiceException'.
+C:\work\tc\dev\java\jira_services\src\java\main\com\topcoder\jira\webservices\delegate\JiraManagerWebServiceDelegate.java:16:8: Unused import - com.topcoder.jira.managers.JiraManagerConfigurationException.
+Audit done.
