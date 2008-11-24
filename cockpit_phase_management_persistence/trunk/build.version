@@ -5,5 +5,5 @@ component.package=com.topcoder.management.phase.clientcockpit
 component.packagedir=com/topcoder/management/phase/clientcockpit
 component.version.major=1
 component.version.minor=1
-component.version.micro=2
+component.version.micro=3
 component.version.build=0
