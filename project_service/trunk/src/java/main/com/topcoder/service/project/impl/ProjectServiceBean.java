@@ -400,6 +400,8 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
         // Note JBoss will treat the empty env-entry value as null
         if (logName != null) {
             log = LogManager.getLog(logName);
+        } else {
+        	log = LogManager.getLog(ProjectServiceBean.class.getName());
         }
 
         administratorRole = getConfigString("administrator_role", true);
