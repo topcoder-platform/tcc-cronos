@@ -1,0 +1,315 @@
+<!--
+/*
+* Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+*/
+/**
+* Unit test cases for PrerequisiteService class.
+*
+* @author TCSDEVELOPER
+* @version 1.0
+*/
+-->
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>PrerequisiteService - Unit Tests</title>
+        <link rel="stylesheet" type="text/css" href="../../../../../../../test_files/jsunit/css/jsUnitStyle.css" />
+        <script language="JavaScript" type="text/javascript" src="../../../../../../../test_files/jsunit/app/jsUnitCore.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/WidgetBridgeNamespace.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/IllegalArgumentException.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/InvalidResponseException.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/Helper.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/PrerequisiteDocument.js">
+        </script>
+        <script language="JavaScript" type="text/javascript" src="../../../../../main/js/topcoder/widgets/bridge/PrerequisiteService.js">
+        </script>
+        <script language="JavaScript" type="text/javascript">
+            /**
+             * <p><code>PrerequisiteService</code> instance used for testing.
+             * NOTE: Success scenarios, please look at PrerequisiteServiceDemo.jsp.</p>
+             */
+            var service = null;
+
+            /**
+             * abbreviation
+             */
+            var IllegalArgumentException = js.topcoder.widgets.bridge.IllegalArgumentException;
+
+            /**
+             * Abbreviation for InvalidResponseException class.
+             */
+            var InvalidResponseException = js.topcoder.widgets.bridge.InvalidResponseException;
+
+            /**
+             * Success callback.
+             */
+            var success = function(){
+                // do nothing
+            }
+
+            /**
+             * Error callback.
+             */
+            var error = function(){
+                // do nothing
+            }
+
+            /**
+             * <code>PrerequisiteDocument</code> to be used in tests.
+             */
+            var prerequsitedocument;
+
+            /**
+             * <p>Sets up environment.</p>
+             */
+            function setUp(){
+                service = new js.topcoder.widgets.bridge.PrerequisiteService("ajaxServlet");
+                prerequsitedocument = new js.topcoder.widgets.bridge.PrerequisiteDocument();
+                prerequsitedocument.setDocumentID(1);
+                prerequsitedocument.setVersion(1);
+                prerequsitedocument.setVersionDate("2008-06-01 07:30");
+                prerequsitedocument.setName("name");
+                prerequsitedocument.setContent("content");
+            }
+
+            /**
+             * <p>Test of constructor.</p>
+             */
+            function testCtor(){
+                assertNotNull("Can not be instantiated properly", service);
+            }
+
+            /**
+             * <p>Test of constructor.No url passed in, it should fail.</p>
+             */
+            function testCtor_Failure(){
+                try {
+                    js.topcoder.widgets.bridge.PrerequisiteService();
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>getPrerequisiteDocuments</code>. competition id is negative, it should fail and
+             * throw <code>IllegalArgumentException</code>.</p>
+             */
+            function testGetPrerequisiteDocuments_Fail1(){
+                try {
+                    service.getPrerequisiteDocuments(-1, 1, success, error);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>getPrerequisiteDocuments</code>. role id is negative, it should fail and
+             * throw <code>IllegalArgumentException</code>.</p>
+             */
+            function testGetPrerequisiteDocuments_Fail2(){
+                try {
+                    service.getPrerequisiteDocuments(1, -1, success, error);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>getPrerequisiteDocuments</code>. call back is not given, it should fail and
+             * throw <code>IllegalArgumentException</code>.</p>
+             */
+            function testGetPrerequisiteDocuments_Fail3(){
+                try {
+                    service.getPrerequisiteDocuments(1, 2);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>getPrerequisiteDocument</code>.document id is negative, it should fail and
+             * throw <code>IllegalArgumentException</code>.</p>
+             */
+            function testGetPrerequisiteDocument_Fail1(){
+                try {
+                    service.getPrerequisiteDocument(-1, 1, success, error);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+
+            }
+
+            /**
+             * <p>Test of <code>getPrerequisiteDocument</code>. version is not valid, it should fail and
+             * throw <code>IllegalArgumentException</code>.</p>
+             */
+            function testGetPrerequisiteDocument_Fail2(){
+                try {
+                    service.getPrerequisiteDocument(1, "str", success, error);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+
+            }
+
+            /**
+             * <p>Test of <code>getPrerequisiteDocument</code>. error is missing, it should fail and
+             * throw <code>IllegalArgumentException</code>.</p>
+             */
+            function testGetPrerequisiteDocument_Fail3(){
+                try {
+                    service.getPrerequisiteDocument(1, 1, success);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+
+            }
+
+            /**
+             * <p>Test of <code>getPrerequisiteDocument</code>.all parameters are missing , it should fail and
+             * throw <code>IllegalArgumentException</code>.</p>
+             */
+            function testGetPrerequisiteDocument_Fail4(){
+                try {
+                    service.getPrerequisiteDocument();
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+
+            }
+
+
+            /**
+             * <p>Test of <code>recordMemberAnswer</code>, competition id is negative, it should fail and
+             * throw <code>IllegalArgumentException</code>.</p>
+             */
+            function testRecordMemberAnswer_Fail1(){
+                try {
+
+                    service.recordMemberAnswer(-1, "2005-08-09 05:00", true, prerequsitedocument, 1, success, error);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>recordMemberAnswer</code>, timestamp is null,it should fail and
+             * throw <code>IllegalArgumentException</code>.</p>
+             */
+            function testRecordMemberAnswer_Fail2(){
+                try {
+
+                    service.recordMemberAnswer(1, null, true, prerequsitedocument, 1, success, error);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>recordMemberAnswer</code>, agrees is not boolean type,it should fail and
+             * throw <code>IllegalArgumentException</code>.</p>
+             */
+            function testRecordMemberAnswer_Fail3(){
+                try {
+
+                    service.recordMemberAnswer(1, "2005-08-09 05:00", 3, prerequsitedocument, 1, success, error);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>recordMemberAnswer</code>, prerequsitedocument is null,it should fail and
+             * throw <code>IllegalArgumentException</code>.</p>
+             */
+            function testRecordMemberAnswer_Fail4(){
+                try {
+
+                    service.recordMemberAnswer(1, "2005-08-09 05:00", true, null, 1, success, error);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>recordMemberAnswer</code>, role id is negative it should fail and
+             * throw <code>IllegalArgumentException</code>.</p>
+             */
+            function testRecordMemberAnswer_Fail5(){
+                try {
+
+                    service.recordMemberAnswer(1, "2005-08-09 05:00", true, prerequsitedocument, -10, success, error);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>recordMemberAnswer</code>, no callback assigned,it should fail and
+             * throw <code>IllegalArgumentException</code>.</p>
+             */
+            function testRecordMemberAnswer_Fail6(){
+                try {
+
+                    service.recordMemberAnswer(1, "2005-08-09 05:00", true, prerequsitedocument, 1);
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+
+            /**
+             * <p>Test of <code>recordMemberAnswer</code>, all parameters are missing,it should fail and
+             * throw <code>IllegalArgumentException</code>.</p>
+             */
+            function testRecordMemberAnswer_Fail7(){
+                try {
+
+                    service.recordMemberAnswer();
+                    fail("it should fail");
+                }
+                catch (e) {
+                    assertTrue("it should fail", e instanceof IllegalArgumentException);
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <h1>PrerequisiteService - Unit Tests</h1>
+        <p>
+            This page contains unit tests for the js Class PrerequisiteService. To see them, take a look at the source.
+        </p>
+    </body>
+</html>
