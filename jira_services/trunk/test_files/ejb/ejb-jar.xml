@@ -20,7 +20,7 @@
             <env-entry>
                 <env-entry-name>jiraManagerFile</env-entry-name>
                 <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>C:/work/tc/dev/java/jira_services/test_files/com/topcoder/jira/webservices/bean/JiraManagementServiceBean.properties</env-entry-value>
+                <env-entry-value>C:/tcs/j/ws/jira_services/test_files/com/topcoder/jira/webservices/bean/JiraManagementServiceBean.properties</env-entry-value>
             </env-entry>
         </session>
     </enterprise-beans>

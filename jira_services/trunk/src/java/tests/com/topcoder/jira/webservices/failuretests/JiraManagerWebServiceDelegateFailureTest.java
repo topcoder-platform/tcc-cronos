@@ -4,17 +4,9 @@
 package com.topcoder.jira.webservices.failuretests;
 
 import com.topcoder.jira.ComponentType;
-import com.topcoder.jira.JiraConnectionException;
-import com.topcoder.jira.JiraManagerException;
-import com.topcoder.jira.JiraNotAuthorizedException;
-import com.topcoder.jira.JiraSecurityTokenExpiredException;
 import com.topcoder.jira.managers.entities.JiraProject;
 import com.topcoder.jira.managers.entities.JiraVersion;
 import com.topcoder.jira.webservices.JiraManagementService;
-import com.topcoder.jira.webservices.JiraServiceConnectionException;
-import com.topcoder.jira.webservices.JiraServiceException;
-import com.topcoder.jira.webservices.JiraServiceNotAuthorizedException;
-import com.topcoder.jira.webservices.JiraServiceSecurityTokenExpiredException;
 import com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate;
 
 import junit.framework.TestCase;
@@ -171,25 +163,6 @@ public class JiraManagerWebServiceDelegateFailureTest extends TestCase {
     }
 
     /**
-     * Failure test login method for error from underlying service. JiraManagerException expected.
-     *
-     * @throws Exception
-     *             when it occurs deeper
-     */
-    public void testLoginFailure() throws Exception {
-        EasyMock.expect(delegate.login("kit", "abc")).andThrow(new JiraServiceException("error description"));
-        EasyMock.replay(service);
-
-        try {
-            delegate.login("kit", "abc");
-            fail("JiraManagerException expected.");
-        } catch (JiraManagerException e) {
-            // expected
-        }
-        EasyMock.verify(service);
-    }
-
-    /**
      * Failure test logout method for null parameter. IllegalArgumentException expected.
      *
      * @throws Exception
@@ -217,46 +190,6 @@ public class JiraManagerWebServiceDelegateFailureTest extends TestCase {
         } catch (IllegalArgumentException ex) {
             // expected
         }
-    }
-
-    /**
-     * Failure test logout method for error from underlying service. JiraConnectionException expected.
-     *
-     * @throws Exception
-     *             when it occurs deeper
-     */
-    public void testLogoutFailure() throws Exception {
-        delegate.logout("x");
-        EasyMock.expectLastCall().andThrow(new JiraServiceConnectionException("error description"));
-        EasyMock.replay(service);
-
-        try {
-            delegate.logout("x");
-            fail("JiraConnectionException expected.");
-        } catch (JiraConnectionException e) {
-            // expected
-        }
-        EasyMock.verify(service);
-    }
-
-    /**
-     * Failure test logout method for error from underlying service. JiraNotAuthorizedException expected.
-     *
-     * @throws Exception
-     *             when it occurs deeper
-     */
-    public void testCreateProjectFailure() throws Exception {
-        delegate.createProject("x", project, version, type);
-        EasyMock.expectLastCall().andThrow(new JiraServiceNotAuthorizedException("error description"));
-        EasyMock.replay(service);
-
-        try {
-            delegate.createProject("x", project, version, type);
-            fail("JiraNotAuthorizedException expected.");
-        } catch (JiraNotAuthorizedException e) {
-            // expected
-        }
-        EasyMock.verify(service);
     }
 
     /**
@@ -395,67 +328,6 @@ public class JiraManagerWebServiceDelegateFailureTest extends TestCase {
     }
 
     /**
-     * Failure test getProject method for error from underlying service. JiraSecurityTokenExpiredException expected.
-     *
-     * @throws Exception
-     *             when it occurs deeper
-     */
-    public void testGetProjectFailure() throws Exception {
-        delegate.getProject("x", "y");
-        EasyMock.expectLastCall().andThrow(new JiraServiceSecurityTokenExpiredException("error description"));
-        EasyMock.replay(service);
-
-        try {
-            delegate.getProject("x", "y");
-            fail("JiraSecurityTokenExpiredException expected.");
-        } catch (JiraSecurityTokenExpiredException e) {
-            // expected
-        }
-        EasyMock.verify(service);
-    }
-
-    /**
-     * Failure test getProject method for error from underlying service. JiraSecurityTokenExpiredException expected.
-     *
-     * @throws Exception
-     *             when it occurs deeper
-     */
-    public void testGetProjectByVersionFailure() throws Exception {
-        delegate.getProject("x", "y", "z");
-        EasyMock.expectLastCall().andThrow(new JiraServiceSecurityTokenExpiredException("error description"));
-        EasyMock.replay(service);
-
-        try {
-            delegate.getProject("x", "y", "z");
-            fail("JiraSecurityTokenExpiredException expected.");
-        } catch (JiraSecurityTokenExpiredException e) {
-            // expected
-        }
-        EasyMock.verify(service);
-    }
-
-    /**
-     * Failure test getProjectVersions method for error from underlying service. JiraSecurityTokenExpiredException
-     * expected.
-     *
-     * @throws Exception
-     *             when it occurs deeper
-     */
-    public void testGetProjectVersionsFailure() throws Exception {
-        delegate.getProjectVersions("x", "y");
-        EasyMock.expectLastCall().andThrow(new JiraServiceSecurityTokenExpiredException("error description"));
-        EasyMock.replay(service);
-
-        try {
-            delegate.getProjectVersions("x", "y");
-            fail("JiraSecurityTokenExpiredException expected.");
-        } catch (JiraSecurityTokenExpiredException e) {
-            // expected
-        }
-        EasyMock.verify(service);
-    }
-
-    /**
      * Failure test getProjectVersions method for null token parameter. IllegalArgumentException expected.
      *
      * @throws Exception
@@ -516,27 +388,6 @@ public class JiraManagerWebServiceDelegateFailureTest extends TestCase {
     }
 
     /**
-     * Failure test projectExists method for error from underlying service. JiraSecurityTokenExpiredException
-     * expected.
-     *
-     * @throws Exception
-     *             when it occurs deeper
-     */
-    public void testProjectExistsFailure() throws Exception {
-        delegate.projectExists("x", "y");
-        EasyMock.expectLastCall().andThrow(new JiraServiceSecurityTokenExpiredException("error description"));
-        EasyMock.replay(service);
-
-        try {
-            delegate.projectExists("x", "y");
-            fail("JiraSecurityTokenExpiredException expected.");
-        } catch (JiraSecurityTokenExpiredException e) {
-            // expected
-        }
-        EasyMock.verify(service);
-    }
-
-    /**
      * Failure test projectExists method for null token parameter. IllegalArgumentException expected.
      *
      * @throws Exception
@@ -594,26 +445,6 @@ public class JiraManagerWebServiceDelegateFailureTest extends TestCase {
         } catch (IllegalArgumentException ex) {
             // expected
         }
-    }
-
-    /**
-     * Failure test getProject method for error from underlying service. JiraSecurityTokenExpiredException expected.
-     *
-     * @throws Exception
-     *             when it occurs deeper
-     */
-    public void testGetProjectByIdFailure() throws Exception {
-        delegate.getProject("x", 3l);
-        EasyMock.expectLastCall().andThrow(new JiraServiceSecurityTokenExpiredException("error description"));
-        EasyMock.replay(service);
-
-        try {
-            delegate.getProject("x", 3l);
-            fail("JiraSecurityTokenExpiredException expected.");
-        } catch (JiraSecurityTokenExpiredException e) {
-            // expected
-        }
-        EasyMock.verify(service);
     }
 
     /**
@@ -812,27 +643,6 @@ public class JiraManagerWebServiceDelegateFailureTest extends TestCase {
     }
 
     /**
-     * Failure test deleteProject method for error from underlying service. JiraSecurityTokenExpiredException
-     * expected.
-     *
-     * @throws Exception
-     *             when it occurs deeper
-     */
-    public void testDeleteProjectFailure() throws Exception {
-        delegate.deleteProject("x", "y");
-        EasyMock.expectLastCall().andThrow(new JiraServiceSecurityTokenExpiredException("error description"));
-        EasyMock.replay(service);
-
-        try {
-            delegate.deleteProject("x", "y");
-            fail("JiraSecurityTokenExpiredException expected.");
-        } catch (JiraSecurityTokenExpiredException e) {
-            // expected
-        }
-        EasyMock.verify(service);
-    }
-
-    /**
      * Failure test deleteProject method for null token parameter. IllegalArgumentException expected.
      *
      * @throws Exception
@@ -893,27 +703,6 @@ public class JiraManagerWebServiceDelegateFailureTest extends TestCase {
     }
 
     /**
-     * Failure test updateProject method for error from underlying service. JiraSecurityTokenExpiredException
-     * expected.
-     *
-     * @throws Exception
-     *             when it occurs deeper
-     */
-    public void testUpdateProjectFailure() throws Exception {
-        delegate.updateProject("x", project);
-        EasyMock.expectLastCall().andThrow(new JiraServiceSecurityTokenExpiredException("error description"));
-        EasyMock.replay(service);
-
-        try {
-            delegate.updateProject("x", project);
-            fail("JiraSecurityTokenExpiredException expected.");
-        } catch (JiraSecurityTokenExpiredException e) {
-            // expected
-        }
-        EasyMock.verify(service);
-    }
-
-    /**
      * Failure test updateProject method for null token parameter. IllegalArgumentException expected.
      *
      * @throws Exception
@@ -956,27 +745,6 @@ public class JiraManagerWebServiceDelegateFailureTest extends TestCase {
         } catch (IllegalArgumentException ex) {
             // expected
         }
-    }
-
-    /**
-     * Failure test releaseVersion method for error from underlying service. JiraSecurityTokenExpiredException
-     * expected.
-     *
-     * @throws Exception
-     *             when it occurs deeper
-     */
-    public void testReleaseVersionFailure() throws Exception {
-        delegate.releaseVersion("x", "y", version);
-        EasyMock.expectLastCall().andThrow(new JiraServiceSecurityTokenExpiredException("error description"));
-        EasyMock.replay(service);
-
-        try {
-            delegate.releaseVersion("x", "y", version);
-            fail("JiraSecurityTokenExpiredException expected.");
-        } catch (JiraSecurityTokenExpiredException e) {
-            // expected
-        }
-        EasyMock.verify(service);
     }
 
     /**
@@ -1052,27 +820,6 @@ public class JiraManagerWebServiceDelegateFailureTest extends TestCase {
         } catch (IllegalArgumentException ex) {
             // expected
         }
-    }
-
-    /**
-     * Failure test archiveVersion method for error from underlying service. JiraSecurityTokenExpiredException
-     * expected.
-     *
-     * @throws Exception
-     *             when it occurs deeper
-     */
-    public void testArchiveVersionFailure() throws Exception {
-        delegate.archiveVersion("x", "y", "z", true);
-        EasyMock.expectLastCall().andThrow(new JiraServiceSecurityTokenExpiredException("error description"));
-        EasyMock.replay(service);
-
-        try {
-            delegate.archiveVersion("x", "y", "z", true);
-            fail("JiraSecurityTokenExpiredException expected.");
-        } catch (JiraSecurityTokenExpiredException e) {
-            // expected
-        }
-        EasyMock.verify(service);
     }
 
     /**

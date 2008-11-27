@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=JIRA Services
+component.distfilename=jira_services
+component.package=com.topcoder.jira.webservices
+component.packagedir=com/topcoder/jira/webservices
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1
