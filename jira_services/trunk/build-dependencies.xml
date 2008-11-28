@@ -15,8 +15,9 @@
 
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/4.4/junit-4.4.jar"/>
-
-    <property name="jboss.dir" value="C:/tcs/soft/jboss-4.2.2.GA"/>
+    <property name="easymock.jar" value="${ext_libdir}/easymock/2.4/easymock.jar"/>
+    
+    <property name="jboss.dir" value="${ext_libdir}/jboss/4.2.2.GA"/>
     <fileset dir="${jboss.dir}" id="jboss">
         <include name="client/jboss-j2ee.jar"/>
         <include name="client/jboss-ejb3x.jar"/>
@@ -40,7 +41,7 @@
 	    <pathelement location="${object_factory_configuration_api_plugin.jar}"/>
 	    <pathelement location="${configuration_persistence.jar}"/>
 	    <pathelement location="${object_formatter.jar}"/>
-        <pathelement location="${jira_management.jar}"/>
+      <pathelement location="${jira_management.jar}"/>
     </path>
 
     <path id="component.3rdParty-dependencies">
@@ -49,7 +50,7 @@
 
     <path id="component.test.3rdParty-dependencies">
         <pathelement location="${junit.jar}"/>
-        <pathelement location="test_files/easymock.jar"/>
+        <pathelement location="${easymock.jar}"/>
     </path>
 
 </project>
