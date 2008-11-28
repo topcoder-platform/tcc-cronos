@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="spec_factory_config">
+        <property name="service_client">
+            <property name="type">
+                <value>com.topcoder.jira.webservices.client.JiraManagementServiceClient</value>
+            </property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>http://127.0.0.1:8080/jira_services_accuracy-ejb/JiraManagementServiceBean?wsdl</Value>
+					</Property>
+				</Property>
+			</Property>
+        </property>
+    </Config>
+    <property name="log_name">
+        <value>my_log</value>
+    </property>
+    <property name="service_client_key">
+        <value>service_client</value>
+    </property>
+</CMConfig>

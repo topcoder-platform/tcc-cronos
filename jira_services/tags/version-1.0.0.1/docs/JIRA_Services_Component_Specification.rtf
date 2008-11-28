@@ -1,0 +1,283 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033\deflangfe1033{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}{\f1\froman\fprq2\fcharset2 Symbol;}{\f2\froman\fprq2\fcharset0 Times New Roman;}{\f3\fmodern\fprq1\fcharset0 Courier New;}{\f4\fnil\fprq2\fcharset2 Wingdings;}}
+{\colortbl ;\red192\green192\blue192;\red0\green0\blue255;\red153\green0\blue0;\red0\green128\blue0;\red0\green100\blue0;\red0\green0\blue128;\red255\green255\blue0;\red0\green0\blue0;}
+{\stylesheet{ Normal;}{\s1 heading 1;}{\s2 heading 2;}{\s3 heading 3;}}
+{\*\generator Msftedit 5.41.21.2508;}\viewkind4\uc1\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx720\ul\b\f0\fs28 JIRA Services 1.0 Component Specification\par
+\pard\li720\sa120\ulnone\b0\fs20\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\b 1.\tab\fs24 Design\par
+\pard\li720\b0 This component provides a wrapper to the JIRA Management component, exposing the main management functionality as web services. This component also provides client classes that will allow for easy remote access to the service methods. In both cases, JAX-WS is used.\par
+\par
+The web service is an EJB that simply wraps a JiraManager instance. To efficiently propagate exceptions, and to deal with the issue of Base Exceptions not being compatible with JBoss, a parallel set of Exceptions is provided to be used by the bean.\par
+\par
+The client classes are provided to allow a user to call the above web service, and they come in two flavors. The first flavor is a javax.xml.ws.Service extension that allows the user to obtain the web service proxy. The second flavor, which is provided in addition to the required functionality, provides a JiraManager delegate that allows a user to use the web service client transparently.\par
+\par
+The component makes use of the Configuration API and Persistence components to obtain configuration information. It uses the Object Factory and its Configuration API-backed specification factory to instantiate objects, and the Log Manager to perform logging of activity and errors.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\fs20 1.1\tab Design Patterns \par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\b0\i 1.1.1\tab Strategy\par
+\pard\li720\i0\fs24 This component provides a strategy realization of the JiraManager interface in the shape of JiraManagerWebServiceDelegate. The JiraManager is also used as a strategy by the JiraManagementServiceBean\par
+\par
+It also uses strategy with the JiraManagementService so it can be used transparently by web service clients.\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\i\fs20 1.1.2\tab Business Interface\par
+\pard\li720\i0\fs24 JiraManagementService is an interface that defines the business methods in the local and remote interfaces and the session bean JiraManagementServiceBean.\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\i\fs20 1.1.3\tab Proxy\par
+\pard\li720\i0\fs24 In this design, the JiraManagementService also acts as a proxy to the web service EJB.\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\i\fs20 1.1.4\tab Business Delegate\par
+\pard\li720\i0\fs24 JiraManagerWebServiceDelegate is a business delegate that hides the user from the fact he/she is connecting to a web service. JiraManagerWebServiceDelegate uses the JiraManagementServiceClient as the lookup service for the JiraManagementService proxy.\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\i\fs20 1.1.5\tab Factory\par
+\pard\li720\i0\fs24 JiraManagementServiceClient is a factory of JiraManagementService proxy instances.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\fs20 1.2\tab Industry Standards \par
+\pard\fi-360\li1080\tx1080\b0\f1\fs24\'b7\tab\f0 Web Services (JAX-WS 2.0)\par
+\pard\fi-360\li1080\f1\'b7\tab\f0 Inversion of Control (IoC)\par
+\f1\'b7\tab\f0 EJB 3.0\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\fs20 1.3\tab Required Algorithms\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\b0\i 1.3.1\tab Logging standard for all delegate and bean methods\par
+\pard\li720\i0\fs24 This section will state the complete scenarios for logging in all delegate and bean public methods, if logging is turned on. \par
+\par
+\pard\fi-360\li1080\tx1080\f2 -\tab\f0 Method entrance and exit will be logged with DEBUG level.\par
+\pard\fi-360\li1800\tx1800\f3 o\tab\f0 Entrance format: \highlight1 [Entering method \{\i className\i0 .\i methodName\}\i0 ]\highlight0\par
+\pard\fi-360\li1800\f3 o\tab\f0 Exit format: \highlight1 [Exiting method \{\i className\i0 .\i methodName\}]\highlight0\i0 . Only do this if there are no exceptions.\par
+\pard\fi-360\li1080\tx1080\f2 -\tab\f0 Method request and response parameters will be logged with DEBUG level\par
+\pard\fi-360\li1800\tx1800\f3 o\tab\f0 Format for request parameters: \highlight1 [Input parameters[\{request_parameter_name_1\}:\{ request_parameter_value_1\}, \{request_parameter_name_2\}:\{ request_parameter_value_2\}, etc.)]] \highlight0\par
+\pard\fi-360\li1800\f3 o\tab\f0 Format for the response: \highlight1 [Output parameter \{response_value\}] \highlight0 . Only do this if there are no exceptions and the return value is not void.\par
+\f3 o\tab\f0 If a request or response parameter is complex, use its toString() method. If that is not implemented, then print its value using the same kind of name:value notation as above. If a child parameter is also complex, repeat this process recursively.\par
+\pard\fi-360\li1080\tx1080\f2 -\tab\f0 All exceptions will be logged at WARNING level. Use method log.(Level, Throwable, String). This should automatically log inner exceptions as well. \par
+\pard\fi-360\li1800\tx1800\f3 o\tab\f0 Format: Simply log the text of exception: \highlight1 [Error in method \{\i className\i0 .\i methodName\}\i0 : Details \{\i error details\i0\}]\highlight0\par
+\pard\li720\par
+In general, the order of the logging in a method should be as follows:\par
+\pard\par
+\pard\fi-360\li1800\tx1800\f2 1.\tab\f0 Method entry\par
+\pard\fi-360\li1800\f2 2.\tab\f0 Log method entry\par
+\f2 3.\tab\f0 Log method input parameters\par
+\f2 4.\tab\f0 If error occurs, log it and skip to step7\par
+\f2 5.\tab\f0 Log method exit\par
+\f2 6.\tab\f0 If not void, log method output value\par
+\f2 7.\tab\f0 Method exit\par
+\pard\li720\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\i\fs20 1.3.2\tab Mapping between manager and service exceptions\par
+\pard\li720\i0\fs24 The mapping is direct between namesake exceptions, regardless of the inheritance hierarchy:\par
+\par
+\f3\fs18 JiraConnectionException \f4\'f3\f3  JiraServiceConnectionException\par
+JiraNotAuthorizedException \f4\'f3\f3  JiraServiceNotAuthorizedException\par
+JiraSecurityTokenExpiredException \f4\'f3\f3  JiraServiceSecurityTokenExpiredException\par
+JiraProjectValidationException \f4\'f3\f3  JiraServiceProjectValidationException\par
+JiraManagerException \f4\'f3\f3  JiraServiceException\f0\fs24\par
+\par
+Unfortunately, there is no process for mapping the data in the ExceptionData or the cause of the error, as it to may be a Base Exception, but the goal here is to be able to pass along the basic message and type of the exception, as we expect that logging of these error details in the EJB will suffice.\par
+\par
+As such, the basic approach to map from a manager exception to a service exception, and vice versa, is to create an exception from the message content of the other exception.\par
+\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\fs20 1.4\tab Component Class Overview\par
+\pard\li720\fs24 JiraManagementService\par
+\b0 The business interface that defines all methods for accessing the JIRA Management component. It basically has the same API as the JiraManager interface, and is meant to be used as a pass-through.\par
+\b\par
+JiraManagementServiceLocal\par
+\b0 The local EJB interface that simply extends the Reports interface, with no additional facilities. This interface should be marked with @Local annotation representing it's a local interface.\par
+\par
+\b JiraManagementServiceRemote\par
+\b0 The remote EJB interface that simply extends the Reports interface, with no additional facilities. This interface should be marked with @Remote annotation representing it's a remote interface.\par
+\par
+\b JiraManagementServiceBean\par
+\b0 The stateless session bean that implements all operations in the JiraManagementService to expose the JiraManager methods as web services. All its methods are exposed, and all methods are just delegated to. \par
+\par
+Any exceptions in the manager are mapped to the service exceptions as per CS 1.3.2.\par
+\par
+It uses the Configuration API and Persistence components to obtain configuration information. It uses the Object Factory and its Configuration API-backed specification factory to instantiate the JiraManager, and the Log Manager to perform logging of activity and errors.\par
+\par
+\b JiraManagementServiceClient\par
+\b0 The service client class that is used to obtain the JiraManagementService proxy. In effect it is a factory of JiraManagementService instances.\par
+\par
+\b JiraManagerWebServiceDelegate\par
+\b0 A simple business delegate implementation of the JiraManager that uses the JiraManagementServiceClient as the lookup service for the JiraManagementService proxies to be used to communicate with the Web Services. All methods are implemented and all methods just delegate to the proxy.\par
+\par
+Any exceptions in the proxy are mapped to the Jira Management exceptions as per CS 1.3.2.\par
+\par
+It uses the Configuration API and Persistence components to obtain configuration information. It uses the Object Factory and its Configuration API-backed specification factory to instantiate the service client, and the Log Manager to perform logging of activity and errors.\par
+\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\fs20 1.5\tab Component Exception Definitions\par
+\pard\li720\b0\fs24 This component defines six new exceptions.\par
+\par
+\b JiraServiceException\par
+\b0 This exception is the base exception for all exceptions raised in JiraManagementService. It is a direct wrapper for the JIRA Management's JiraManagerException. It extends Exception\par
+\par
+\b JiraServiceConnectionException\par
+\b0 This exception signals an issue when an attempt to reestablish the connection to JIRA fails. It is a direct wrapper for the JIRA Management's JiraConnectionException. It extends JiraServiceException\par
+\par
+\b JiraServiceNotAuthorizedException\par
+\b0 This exception signals an issue if a user attempts an unauthorized call (the token used to authenticate is invalid or the user does not have access to the specific areas being manipulated). Also this exception might be thrown if the user or password is invalid. It is a direct wrapper for the JIRA Management's JiraNotAuthorizedException. It extends JiraServiceException\par
+\par
+\b JiraServiceProjectValidationException\par
+\b0 This exception signals an issue if the needed JIRA project is invalid (it does not exists in JIRA). It is a direct wrapper for the JIRA Management's JiraProjectValidationException. It extends JiraServiceException\par
+\par
+\b JiraServiceSecurityTokenExpiredException\par
+\b0 This exception signals an issue if the token obtained for authorization expires or becomes stale. It is a direct wrapper for the JIRA Management's JiraSecurityTokenExpiredException. It extends JiraServiceException\par
+\par
+\b JiraServiceConfigurationException\par
+\b0 This exception signals an issue if the configured value is invalid. It is used in the initialize method of the EJB. It extends RuntimeException.\par
+\par
+This exception is not mapped with the JIRA Management\rquote s corresponding configuration exception.\par
+\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\fs20 1.6\tab Thread Safety\par
+\pard\li720\b0\fs24 The underlying JIRA management component is effectively thread-safe. As discussed there, the component is expected to be used in a manner that is thread-safe, and this component does do so. The bean will have its state set during initialization, and not modified afterwards, which makes it effectively thread-safe. Otherwise, both the bean and delegate simply reuse the JIRA management component, and as such, they are also effectively thread-safe.\par
+\par
+Overall, the lack of thread-safety comes from the non-thread-safe entities. To handle scenarios where they would not be used in a thread-safe manner would require the components that own them to make them thread-safe.\par
+\par
+The EJB will have CMT with each method using the Required level.\par
+\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\b 2.\tab Environment Requirements\tab\tab\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\fs20 2.1\tab Environment\par
+\pard\fi-360\li1080\tx1080\b0\f1\fs24\'b7\tab\f0 Development language: Java 1.5+, J2EE 1.5\par
+\pard\fi-360\li1080\f1\'b7\tab\f0 Compile target: Java 1.5, Java 1.6, J2EE 1.5\par
+\f1\'b7\tab\f0 Application server: JBoss 4.2.2+\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\fs20 2.2\tab TopCoder Software Components\par
+\pard\li720\b0\fs24\par
+\pard\fi-360\li1080\sa120\tx1080\f1\'b7\tab\f2 JIRA Management 1.0\par
+\pard\fi-360\li1800\sa120\tx1800\f3 o\tab\f2 Provides the interface extended and used by this component, as well as the data objects.\par
+\pard\fi-360\li1080\sa120\tx1080\f1\'b7\tab\f2 Logging Wrapper 2.0\par
+\pard\fi-360\li1800\sa120\tx1800\f3 o\tab\f2 Used for logging operations. Used in the JiraManagementServiceBean and JiraManagerWebServiceDelegate.\par
+\pard\fi-360\li1080\sa120\tx1080\f1\'b7\tab\f2 Configuration API 1.0\par
+\pard\fi-360\li1800\sa120\tx1800\f3 o\tab\f2 The substitution to the ConfigManager. It provides the configuration parameters for all classes. Used in the JiraManagementServiceBean and JiraManagerWebServiceDelegate.\par
+\pard\fi-360\li1080\sa120\tx1080\f1\'b7\tab\f2 Configuration Persistence 1.0\par
+\pard\fi-360\li1800\sa120\tx1800\f3 o\tab\f2 Provides file-based configuration that provides configuration as a ConfigurationObject. Used in the JiraManagementServiceBean and JiraManagerWebServiceDelegate.\par
+\pard\fi-360\li1080\sa120\tx1080\f1\'b7\tab\f2 Object Factory 2.1 and Object Factory Configuration API Plugin 1.0\par
+\pard\fi-360\li1800\sa120\tx1800\f3 o\tab\f2 The component that will perform object creation in the factories. The plugin will simply provide a Configuration API-based SpecificationFactory for the ObjectFactory. Used in the JiraManagementServiceBean and JiraManagerWebServiceDelegate.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\f0\fs20 2.3\tab Third Party Components\tab\par
+\pard\li720\sa120\b0\f2\fs24 None\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\b\f0 3.\tab Installation and Configuration\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\fs20 3.1\tab Package Names\par
+\pard\li720\b0\fs24 com.topcoder.jira.webservices\par
+com.topcoder.jira.webservices.bean\par
+com.topcoder.jira.webservices.client\par
+com.topcoder.jira.webservices.delegate\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\fs20 3.2\tab Configuration Parameters\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\b0\i 3.2.1\tab JiraManagementServiceBean configuration in initialize method\par
+\pard\li720\b\i0\f3 Child ConfigurationObjects in root\b0\f0\fs24\par
+\trowd\trgaph108\trleft720\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clcbpat7\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx3792\clcbpat7\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7560\clcbpat7\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx8748\pard\intbl Child name\cell value\cell Required\cell\row\trowd\trgaph108\trleft720\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clcfpat8\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx3792\clcfpat8\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7560\clcfpat8\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx8748\pard\intbl\fs20 spec_factory_config\cell The configuration to be put into the configuration object specification factory.\cell\pard\intbl\qc No\cell\row\pard\li720\fs24\par
+\b\f3\fs20 Properties in root\b0\f0\fs24\par
+\trowd\trgaph108\trleft720\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clcbpat7\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx3125\clcbpat7\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7380\clcbpat7\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx8748\pard\intbl property name\cell value\cell\pard\intbl\qc required\cell\row\trowd\trgaph108\trleft720\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clcfpat8\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx3125\clcfpat8\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7380\clcfpat8\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx8748\pard\intbl\fs20 log_name\cell The name of the log\cell\pard\intbl\qc No\cell\row\trowd\trgaph108\trleft720\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clcfpat8\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx3125\clcfpat8\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7380\clcfpat8\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx8748\pard\intbl jira_manager_key\cell The name of the key to use with the object factory to instantiate a JiraManager\cell\pard\intbl\qc Yes\cell\row\pard\fs24\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\i\fs20 3.2.2\tab JiraManagerDelegate configuration constructor\par
+\pard\li720\b\i0\f3 Child ConfigurationObjects in root\b0\f0\fs24\par
+\trowd\trgaph108\trleft720\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clcbpat7\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx3792\clcbpat7\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7560\clcbpat7\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx8748\pard\intbl Child name\cell value\cell Required\cell\row\trowd\trgaph108\trleft720\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clcfpat8\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx3792\clcfpat8\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7560\clcfpat8\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx8748\pard\intbl\fs20 spec_factory_config\cell The configuration to be put into the configuration object specification factory.\cell\pard\intbl\qc No\cell\row\pard\li720\fs24\par
+\b\f3\fs20 Properties in root\b0\f0\fs24\par
+\trowd\trgaph108\trleft720\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clcbpat7\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx3125\clcbpat7\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7380\clcbpat7\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx8748\pard\intbl property name\cell value\cell\pard\intbl\qc required\cell\row\trowd\trgaph108\trleft720\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clcfpat8\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx3125\clcfpat8\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7380\clcfpat8\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx8748\pard\intbl\fs20 log_name\cell The name of the log\cell\pard\intbl\qc No\cell\row\trowd\trgaph108\trleft720\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clcfpat8\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx3125\clcfpat8\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7380\clcfpat8\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx8748\pard\intbl service_client_key\cell The name of the key to use with the object factory to instantiate a JiraManagementServiceClient\cell\pard\intbl\qc Yes\cell\row\pard\li720\fs24\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\fs20 3.3\tab Dependencies Configuration\par
+\pard\li720\b0\fs24 None.\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\b 4.\tab Usage Notes\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\fs20 4.1\tab Required steps to test the component\par
+\pard\fi-360\li1080\sa120\tx1080\b0\f1\'b7\tab\f0 Extract the component distribution.\par
+\pard\f1\'b7\tab\f0 Follow {\field{\*\fldinst{HYPERLINK "C:\\\\filez\\\\work\\\\tc\\\\tcs_corp\\\\templates\\\\component\\\\" \\\\l "_Dependencies_Configuration" }}{\fldrslt{\cf2\ul Dependencies Configuration}}}\cf0\ulnone\f0\fs20 .\par
+\f1\'b7\tab\f0 Execute \lquote ant test\rquote  within the directory that the distribution was extracted to.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 4.2\tab Required steps to use the component\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\b0\i 4.2.1\tab Deploying the web service\par
+\pard\fi-360\li1080\tx1080\i0\f1\'b7\tab\f0 Extract the component distribution\par
+\pard\f1\'b7\tab\f0 Follow {\field{\*\fldinst{HYPERLINK "\\l "_Dependencies_Configuration" "}}{\fldrslt{\cf2\ul Dependencies Configuration}}}\cf0\ulnone\f0\fs20 .\par
+\f1\'b7\tab\f0 Build the EAR file containing the web service\par
+\f1\'b7\tab\f0 Copy the EAR file to the JBOSS_INSTALL_PATH/server/default/deploy directory\par
+\f1\'b7\tab\f0 Start JBoss\b\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\b0\i 4.2.2\tab Generating the WSDL and web services artifacts\par
+\pard\li720\i0 The WSDL description and all other artifacts for the web service will automatically be generated by JBoss at deploy time. The URL to the WSDL file may be found on the following page provided by JBoss, which lists all the deployed web services:\par
+\par
+\f3\fs18 http://[SERVER_HOST]:[SERVER_PORT]/jbossws/services\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b\f0\fs20 4.3\tab Demo\par
+\pard\li720\b0\fs24 None\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\i\fs20 4.3.1\tab Setup\par
+\pard\li720\i0\fs24 The setup for the EJB follows the usual steps. Follow the steps in 4.2 to set up the service. Pick an end point address and apply it to the service client configuration (the \f3\fs18 @WebServiceClient\f0\fs24  annotation).\par
+\par
+The injection parameters should be specified in the EJB deployment descriptor (ejb-jar.xml) for the JiraManagementServiceBean session bean. Below is an example of how this may be done.\par
+\pard\tx0\par
+\pard\li720\cf2\f3\fs18 <enterprise-beans>\par
+  <session>\par
+    <ejb-name>JiraManagementServiceBean</ejb-name>\par
+    <ejb-class>\par
+com.topcoder.jira.webservices.bean.JiraManagementServiceBean\par
+    </ejb-class>\par
+    <env-entry>\par
+      <env-entry-name>\cf0\f0  \cf2\f3 jiraManagerFile</env-entry-name>\par
+      <env-entry-type>java.lang.String</env-entry-type>\par
+      <env-entry-value>\cf0\f0  \cf2\f3 com/topcoder/jira/webservices/bean/JiraManagementServiceBean</env-entry-value>\par
+    </env-entry>\par
+    <env-entry>\par
+      <env-entry-name>\cf0\f0  \cf2\f3 jiraManagerNamespace</env-entry-name>\par
+      <env-entry-type>java.lang.String</env-entry-type>\par
+      <env-entry-value>\cf0\f0  \cf2\f3 com.topcoder.jira.webservices.bean.JiraManagementServiceBean \par
+      </env-entry-value>\par
+    </env-entry>\par
+  </session>\par
+\pard\li720\tx720\fs20 </enterprise-beans>\i\par
+\pard\li720\cf0\i0\f0\fs24\par
+The configuration persistence will require two simple parameters \endash  the name of the log, and the relevant object factory key \endash  and the object factory configuration itself. It is a straightforward task of taking the information in section 3.2 and creating the configuration files for this component.\par
+\par
+For the demo we will currently assume the following location of the WSDL file. The developer is free to alter this once the JBoss deployment takes place:\par
+\par
+\f3\fs18 public static final String WSDL_LOCATION =\par
+    "http://127.0.0.1:8080/jira_services-jira_services/JiraManagementServiceBean?wsdl";\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\i\f0\fs20 4.3.2\tab Delegate demo\par
+\pard\li720\i0\fs24 This demo is the same as the one available in the JIRA Management component. This shows that the delegate usage is the same, which is the point of the delegate.\par
+\par
+\pard\li720\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx9160\tx10076\tx10992\tx11908\tx12824\tx13740\tx14656\cf3\f3\fs18 // create a JiraManagerWebServiceDelegate\par
+JiraManagerWebServiceDelegate jiraManager = new JiraManagerWebServiceDelegate(JiraManagerWebServiceDelegate.DEFAULT_CONFIG_PATH, "com.topcoder.jira.webservices.delegate.JiraManagerWebServiceDelegate2");\par
+\par
+// log in to JIRA and retrieve the needed token to perform the operations\par
+String token = jiraManager.login("ivern", "password");\par
+\par
+// initialize some variables to use\par
+// cause back-end is mocked, we does not care about contents\par
+JiraProjectRetrievalResult jiraProjectRetrievalResult;\par
+JiraProject jiraProject = new JiraProject();\par
+JiraProject otherJiraProject = new JiraProject();\par
+JiraVersion jiraVersion = new JiraVersion();\par
+JiraVersion otherJiraVersion = new JiraVersion();\par
+JiraVersion otherJiraVersion1 = new JiraVersion();\par
+\par
+// create a new Project in JIRA:\par
+jiraManager.createProject(token, jiraProject, jiraVersion, ComponentType.CUSTOM_COMPONENT);\par
+\par
+// add version to project in JIRA:\par
+jiraManager.addVersionToProject(token, jiraProject, otherJiraVersion);\par
+\par
+// get project with the given key from JIRA:\par
+jiraProjectRetrievalResult = jiraManager.getProject(token, "projectKey1");\par
+\par
+// get project with the given key and version name from JIRA:\par
+jiraProjectRetrievalResult = jiraManager.getProject(token, "projectKey2", "1.01");\par
+\par
+// get JIRA versions for JIRA project\par
+List<JiraVersion> versions = jiraManager.getProjectVersions(token, "projectKey2");\par
+\par
+// Check if a JIRA project exists:\par
+boolean exists = jiraManager.projectExists(token, "projectKey2");\par
+\par
+// get project with the given id from JIRA:\par
+jiraProjectRetrievalResult = jiraManager.getProject(token, new Long(111222));\par
+\par
+// update a JIRA project:\par
+jiraManager.updateProject(token, otherJiraProject);\par
+\par
+// release a JIRA version:\par
+jiraManager.releaseVersion(token, "projectKey2", otherJiraVersion1);\par
+\par
+// archive a JIRA version:\par
+jiraManager.archiveVersion(token, "projectKey2", "1.0", true);\par
+\par
+// delete a JIRA project:\par
+jiraManager.deleteProject(token, "projectKey2");\cf4\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\cf0\i\f0\fs20 4.3.3\tab Service client demo\par
+\pard\li720\i0\f3\fs24 This demo will briefly show how to use the JiraManagementServiceClient directly. We will assume that\par
+\par
+\pard\li720\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx9160\tx10076\tx10992\tx11908\tx12824\tx13740\tx14656\cf5\fs18 // create a JiraManagementServiceClient using the default qualified name and a specific address of the service, and obtain a proxy:\cf3\par
+URL url = \cf6\b new\cf3\b0  URL(WSDL_LOCATION);\par
+JiraManagementServiceClient client = \cf6\b new\cf3\b0  JiraManagementServiceClient(url);\par
+JiraManagementService service = client.getJiraManagementServicePort();\par
+\cf5 // we can now access the service as we did in 4.3.2\cf3\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\cf0\b\f0 5.\tab\fs24 Future Enhancements\par
+\pard\li720\b0\f3 If the JIRA Management component is updated, this component will be updated to reflect the changes.\par
+}
+ 

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="spec_factory_config">
+        <property name="manager">
+            <property name="type">
+                <value>com.topcoder.jira.webservices.accuracytests.MockJiraManager</value>
+            </property>
+        </property>
+    </Config>
+    <property name="log_name">
+        <value>my_log</value>
+    </property>
+    <property name="jira_manager_key">
+        <value>manager</value>
+    </property>
+</CMConfig>

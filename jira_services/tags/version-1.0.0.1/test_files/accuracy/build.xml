@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<project name="TopCoder Java Generic Build" default="ear" basedir=".">
+
+    <target name="ejb">
+        <delete file="ejb.jar"/>
+        <jar basedir="ejb" destfile="ejb.jar"/>
+    </target>
+
+
+    <target name="ear" depends="ejb">
+        <copy file="ejb.jar" todir="ear" overwrite="true"/>
+        <delete file="jira_services_accuracy.ear"/>
+        <ear earfile="jira_services_accuracy.ear" basedir="ear" appxml="application.xml"/>
+        <delete file="ejb.jar"/>
+    </target>
+
+</project>

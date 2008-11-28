@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="spec_factory_config">
+        <property name="service_client">
+            <property name="type">
+                <value>com.topcoder.jira.webservices.MockJiraManagementServiceClient</value>
+            </property>
+        </property>
+    </Config>
+</CMConfig>
