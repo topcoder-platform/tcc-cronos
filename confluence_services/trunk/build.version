@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Confluence Services
+component.distfilename=confluence_services
+component.package=com.topcoder.confluence.webservice
+component.packagedir=com/topcoder/confluence/webservice
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1
