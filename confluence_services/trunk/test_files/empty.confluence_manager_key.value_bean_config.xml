@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+	<Config
+		name="empty.confluence_manager_key.value">
+		<property name="log_name">
+			<value>log_name</value>
+		</property>
+		<property name="confluence_manager_key">
+			<value></value>
+		</property>
+	</Config>
+</CMConfig>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+	<Config name="SpecificationFactoryException.namespace">
+
+		<property name="spec_factory_config">
+			<Property name="service_client">
+				<Property name="type">
+					<Value>SpecificationFactoryException</Value>
+				</Property>
+			</Property>
+		</property>
+
+		<property name="service_client_key">
+			<value>service_client</value>
+		</property>
+
+		<property name="log_name">
+			<value>log_name</value>
+		</property>
+	</Config>
+</CMConfig>

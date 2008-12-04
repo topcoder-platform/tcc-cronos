@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+	<Config name="wrong.type.ConfluenceManagementServiceClient">
+
+		<property name="spec_factory_config">
+			<Property name="service_client">
+				<Property name="type">
+					<Value>java.lang.StringBuffer</Value>
+				</Property>
+				<Property name="params">
+					<Property name="param1">
+						<Property name="type">
+							<Value>java.lang.String</Value>
+						</Property>
+						<Property name="value">
+							<Value>2</Value>
+						</Property>
+					</Property>
+				</Property>
+			</Property>
+		</property>
+
+		<property name="service_client_key">
+			<value>service_client</value>
+		</property>
+
+		<property name="log_name">
+			<value>log_name</value>
+		</property>
+	</Config>
+</CMConfig>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+	<Config
+		name="ConfluenceManagementServiceBean">
+		<property name="log_name">
+			<value>log_name</value>
+		</property>
+		<property name="confluence_manager_key">
+			<value>com.topcoder.confluence.webservice.ConfluenceManagerImplMock</value>
+		</property>
+	</Config>
+</CMConfig>

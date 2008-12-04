@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMConfig>
+	<Config
+		name="com.topcoder.confluence.webservice.delegate.ConfluenceManagerWebServiceDelegate">
+		<property name="spec_factory_config">
+			<Property
+				name="ConfluenceManagementServiceClientMock_key">
+				<Property name="type">
+					<Value>com.topcoder.confluence.webservice.ConfluenceManagementServiceClientMock</Value>
+				</Property>
+				<Property name="params">
+					<Property name="param1">
+						<Property name="type">
+							<Value>java.lang.String</Value>
+						</Property>
+						<Property name="value">
+							<Value>http://127.0.0.1:8080/confluence_services-confluence_services-ejb/ConfluenceManagementServiceBean?wsdl</Value>
+						</Property>
+					</Property>
+				</Property>
+			</Property>
+		</property>
+		<property name="log_name">
+			<value>log_name</value>
+		</property>
+		<property name="service_client_key">
+			<value>ConfluenceManagementServiceClientMock_key</value>
+		</property>
+	</Config>
+</CMConfig>
