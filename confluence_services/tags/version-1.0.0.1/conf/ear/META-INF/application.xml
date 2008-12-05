@@ -1,0 +1,53 @@
+<!DOCTYPE application PUBLIC "-//Sun Microsystems, Inc.//DTD J2EE Application 1.3//EN"
+ "http://java.sun.com/dtd/application_1_3.dtd">
+<application>
+	<display-name>deploy</display-name>
+
+	<module>
+		<java>configuration_persistence.jar</java>
+	</module>
+
+	<module>
+		<java>object_factory.jar</java>
+	</module>
+
+
+	<module>
+		<java>object_factory_configuration_api_plugin.jar</java>
+	</module>
+
+
+	<module>
+		<java>typesafe_enum.jar</java>
+	</module>
+
+
+	<module>
+		<java>base_exception.jar</java>
+	</module>
+
+
+	<module>
+		<java>configuration_api.jar</java>
+	</module>
+
+	<module>
+		<java>object_formatter.jar</java>
+	</module>
+
+	<module>
+		<java>logging_wrapper.jar</java>
+	</module>
+
+	<module>
+		<java>ConfluenceManagerMockForTest.jar</java>
+	</module>
+
+	<module>
+		<java>Confluence_Management.jar</java>
+	</module>
+
+	<module>
+		<ejb>confluence_services-ejb.jar</ejb>
+	</module>
+</application>

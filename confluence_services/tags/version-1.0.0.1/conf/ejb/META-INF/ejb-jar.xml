@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar>
+	<enterprise-beans>
+		<session>
+			<ejb-name>ConfluenceManagementServiceBean</ejb-name>
+			<ejb-class>
+				com.topcoder.confluence.webservice.bean.ConfluenceManagementServiceBean
+			</ejb-class>
+			<env-entry>
+				<env-entry-name>confluenceManagerFile</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>
+					bean_config.properties
+				</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<env-entry-name>
+					confluenceManagerNamespace
+				</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>
+					ConfluenceManagementServiceBean
+				</env-entry-value>
+			</env-entry>
+		</session>
+	</enterprise-beans>
+</ejb-jar>

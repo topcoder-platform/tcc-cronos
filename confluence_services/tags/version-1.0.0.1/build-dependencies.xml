@@ -1,0 +1,70 @@
+<project name="Dependency Import" default="dist" basedir=".">
+  <!-- property file defining the component's dependencies -->  
+  <!-- Properties used in compile_targets ANT target for JDK version x -->
+  <property name="component.target" value="1.5"/>
+  <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
+  
+  <property name="base_exception" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+  <property name="object_factory" value="${tcs_libdir}/object_factory/2.1.2/object_factory.jar"/>
+  <property name="configuration_api" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar"/>
+  <property name="configuration_persistence" value="${tcs_libdir}/configuration_persistence/1.0.1/configuration_persistence.jar"/>
+  <property name="object_factory_configuration_api_plugin" value="${tcs_libdir}/object_factory_configuration_api_plugin/1.0.0/object_factory_configuration_api_plugin.jar"/>
+  <property name="typesafe_enum" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
+  <property name="object_formatter" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+  <property name="logging_wrapper" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
+  
+  <property name="Confluence_Management" value="${testfiles}/lib/Confluence_Management.jar"/>
+  <property name="ConfluenceManagerMockForTest" value="${testfiles}/lib/ConfluenceManagerMockForTest.jar"/>
+  
+  <property name="jboss.home" value="${ext_libdir}/jboss/as/4.2.2.GA"/>
+  <property name="server.name" value="default"/>
+  <property name="jboss_client_libdir" value="${jboss.home}/client"/>
+  <property name="jboss_server_libdir" value="${jboss.home}/server/${server.name}/lib"/>
+  <property name="jboss_system_libdir" value="${jboss.home}/lib"/>
+  <property name="deploy-dir" value="${jboss.home}/server/${server.name}/deploy"/>
+  
+  <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+  
+  <path id="component.tcs-dependencies">
+    <pathelement location="${base_exception}"/>
+    <pathelement location="${object_factory}"/>
+    <pathelement location="${configuration_api}"/>
+    <pathelement location="${typesafe_enum}"/>
+    <pathelement location="${object_formatter}"/>
+    <pathelement location="${logging_wrapper}"/>
+    <pathelement location="${object_factory_configuration_api_plugin}"/>
+    <pathelement location="${configuration_persistence}"/>
+    
+    <pathelement location="${Confluence_Management}"/>
+    <pathelement location="${testfiles}"/>    
+    <pathelement location="${testfiles}/mock-confluence-management.jar"/>
+  </path>
+  <path id="component.3rdParty-dependencies">
+    <pathelement location="${jboss_client_libdir}/jboss-j2ee.jar"/>
+    <pathelement location="${jboss_client_libdir}/jboss-ejb3x.jar"/>
+    <pathelement location="${jboss_client_libdir}/jaxb-api.jar"/>
+    <pathelement location="${jboss_client_libdir}/jbossws-client.jar"/>
+    <pathelement location="${jboss_client_libdir}/jbossws-common.jar"/>
+    <pathelement location="${jboss_client_libdir}/jboss-ejb3x.jar"/>
+    <pathelement location="${jboss_client_libdir}/jbossall-client.jar"/>
+    <pathelement location="${jboss_client_libdir}/activation.jar"/>
+    <pathelement location="${jboss_client_libdir}/commons-logging.jar"/>
+    <pathelement location="${jboss_client_libdir}/javassist.jar"/>
+    <pathelement location="${jboss_client_libdir}/jaxb-impl.jar"/>
+    <pathelement location="${jboss_client_libdir}/jboss-jaxrpc.jar"/>
+    <pathelement location="${jboss_client_libdir}/jboss-jaxws.jar"/>
+    <pathelement location="${jboss_client_libdir}/jboss-saaj.jar"/>
+    <pathelement location="${jboss_client_libdir}/jbossws-client.jar"/>
+    <pathelement location="${jboss_client_libdir}/jbossws-common.jar"/>
+    <pathelement location="${jboss_client_libdir}/jbossws-spi.jar"/>
+    <pathelement location="${jboss_client_libdir}/jboss-xml-binding.jar"/>
+    <pathelement location="${jboss_client_libdir}/mail.jar"/>
+    <pathelement location="${jboss_client_libdir}/policy.jar"/>
+    <pathelement location="${jboss_client_libdir}/stax-api.jar"/>
+    <pathelement location="${jboss_client_libdir}/wsdl4j.jar"/>
+    <pathelement location="${jboss_system_libdir}/endorsed/xercesImpl.jar"/>
+  </path>
+  <path id="component.test.3rdParty-dependencies">
+    <pathelement location="${junit.jar}"/>
+  </path>
+</project>

@@ -1,0 +1,103 @@
+<project name="Override Macrodef Standard Behaviour Import"
+	basedir=".">
+	<!-- macrodef override definition in order to change and add the standard behaviour from
+		build.xml/build_dist.xml
+	-->
+	<!-- ******************************ear deployment******************************************** -->
+	<property name="component.application.dir"
+		value="${build_distdir}/application" />
+
+	<property name="component.ejb.dir" value="${build_distdir}/ejb" />
+	<property name="component.ejb.jar"
+		value="${component.ejb.dir}/${distfilename}-ejb.jar" />
+
+
+	<property name="component.ear.name" value="${distfilename}.ear" />
+	<property name="component.ear"
+		value="${builddir}/${component.ear.name}" />
+
+	<property name="component.ear.dir"
+		value="${component.application.dir}/${component.ear.name}" />
+
+
+	<target name="package.ejb" depends="compile">
+		<mkdir dir="${component.ejb.dir}" />
+		<jar basedir="${build_classdir}" destfile="${component.ejb.jar}"
+			includes="${packagedir}/*.class,${packagedir}/bean/*.class">
+			<metainf dir="${configdir}/ejb/META-INF">
+				<include name="ejb-jar.xml" />
+			</metainf>
+		</jar>
+	</target>
+
+	<target name="create_ear" depends="clean,package.ejb">
+		<delete file="${component.ear}" failonerror="false" />
+		<mkdir dir="${component.ear.dir}" />
+
+		<copy file="${component.ejb.jar}" todir="${component.ear.dir}"
+			overwrite="true" />
+
+		<copy file="${base_exception}" todir="${component.ear.dir}"
+			overwrite="true" />
+
+		<copy file="${configuration_api}" todir="${component.ear.dir}"
+			overwrite="true" />
+
+		<copy file="${configuration_persistence}"
+			todir="${component.ear.dir}" overwrite="true" />
+
+		<copy file="${object_factory_configuration_api_plugin}"
+			todir="${component.ear.dir}" overwrite="true" />
+
+		<copy file="${object_factory}" todir="${component.ear.dir}"
+			overwrite="true" />
+
+		<copy file="${typesafe_enum}" todir="${component.ear.dir}"
+			overwrite="true" />
+
+		<copy file="${object_formatter}" todir="${component.ear.dir}"
+			overwrite="true" />
+
+		<copy file="${logging_wrapper}" todir="${component.ear.dir}"
+			overwrite="true" />
+
+		<copy file="${Confluence_Management}"
+			todir="${component.ear.dir}" overwrite="true" />
+
+		<copy file="${ConfluenceManagerMockForTest}"
+			todir="${component.ear.dir}" overwrite="true" />
+
+
+		<copy todir="${component.ear.dir}">
+			<fileset dir="${configdir}/ear" />
+		</copy>
+
+		<!-- copy configuration persistent configuration files -->
+		<copy todir="${component.ear.dir}">
+			<fileset dir="${testfiles}/demo_config" />
+		</copy>
+
+		<!-- 	<ear earfile="${component.ear}" basedir="${component.ear.dir}"
+			appxml="${configdir}/ear/META-INF/application.xml" /> -->
+
+	</target>
+
+	<target name="deploy_ear" depends="undeploy_ear,create_ear">
+		<!-- Copy ear to server -->
+
+		<copy todir="${deploy-dir}">
+			<fileset dir="${component.application.dir}" />
+		</copy>
+	</target>
+
+	<target name="undeploy_ear">
+		<delete dir="${deploy-dir}/${component.ear.name}" />
+	</target>
+
+	<macrodef name="deployCommand">
+		<!-- standard deploy command overwrite -->
+		<sequential>
+			<antcall target="deploy_ear" />
+		</sequential>
+	</macrodef>
+</project>
