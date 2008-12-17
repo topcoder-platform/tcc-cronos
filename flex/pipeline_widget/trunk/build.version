@@ -6,4 +6,4 @@ component.packagedir=com/topcoder/flex/widgets/widgetcontent/pipeline
 component.version.major=1
 component.version.minor=0
 component.version.micro=0
-component.version.build=0
+component.version.build=1
