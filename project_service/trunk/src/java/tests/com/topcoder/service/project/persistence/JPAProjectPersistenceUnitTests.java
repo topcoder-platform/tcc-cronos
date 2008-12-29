@@ -22,6 +22,7 @@ import junit.framework.TestSuite;
 import com.topcoder.service.project.BaseTestCase;
 import com.topcoder.service.project.Competition;
 import com.topcoder.service.project.ConfigurationException;
+import com.topcoder.service.project.StudioCompetition;
 import com.topcoder.service.project.Project;
 import com.topcoder.service.project.ProjectNotFoundException;
 import com.topcoder.service.project.ProjectPersistence;
@@ -390,7 +391,7 @@ public class JPAProjectPersistenceUnitTests extends BaseTestCase {
     public void testCreateProject_project_IncorrectCompetition() throws Exception {
         Project project = createProject();
         Set<Competition> competitions = new HashSet<Competition>();
-        competitions.add(new Competition());
+        competitions.add(new StudioCompetition());
         project.setCompetitions(competitions);
         try {
             projectPersistence.createProject(project);
@@ -690,7 +691,7 @@ public class JPAProjectPersistenceUnitTests extends BaseTestCase {
         Project project = createProject();
         project.setProjectId(1l);
         Set<Competition> competitions = new HashSet<Competition>();
-        competitions.add(new Competition());
+        competitions.add(new StudioCompetition());
         project.setCompetitions(competitions);
         try {
             projectPersistence.updateProject(project);

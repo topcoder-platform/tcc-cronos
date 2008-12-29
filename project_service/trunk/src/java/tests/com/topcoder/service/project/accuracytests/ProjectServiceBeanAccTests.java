@@ -19,6 +19,7 @@ import com.topcoder.service.project.Competition;
 import com.topcoder.service.project.Project;
 import com.topcoder.service.project.ProjectData;
 import com.topcoder.service.project.ProjectService;
+import com.topcoder.service.project.StudioCompetition;
 
 
 /**
@@ -273,7 +274,7 @@ public class ProjectServiceBeanAccTests extends TestCase {
         ((Project) project).setUserId(0);
         ((Project) project).setCreateDate(new java.util.Date(1000000));
 
-        Competition cp = new Competition();
+        Competition cp = new StudioCompetition();
         Set<Competition> cps = new HashSet<Competition>();
         cps.add(cp);
         ((Project) project).setCompetitions(cps);

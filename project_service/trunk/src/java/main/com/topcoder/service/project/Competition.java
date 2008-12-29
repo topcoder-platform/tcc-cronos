@@ -4,6 +4,9 @@
 package com.topcoder.service.project;
 
 import java.io.Serializable;
+import java.util.List;
+
+import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * <p>
@@ -21,7 +24,7 @@ import java.io.Serializable;
  * @author humblefool, FireIce
  * @version 1.0
  */
-public class Competition implements Serializable {
+public abstract class Competition implements Serializable {
     /**
      * <p>
      * Represents the serial version unique id.
@@ -139,4 +142,162 @@ public class Competition implements Serializable {
 
         return competitionId.equals(competition.getCompetitionId());
     }
+
+    /**
+     * <p>
+     * Returns the id.
+     * </p>
+     * @return the id.
+     */
+    public abstract long getId();
+
+    /**
+     * Sets the id.
+     * @param id the id.
+     */
+    public abstract void setId(long id);
+
+    /**
+     * <p>
+     * Returns the start time of the competition.
+     * </p>
+     * @return the start time of the competition.
+     */
+    public abstract XMLGregorianCalendar getStartTime();
+
+    /**
+     * <p>
+     * Sets the start time of the competition.
+     * </p>
+     * @param startTime the start time of the competition.
+     */
+    public abstract void setStartTime(XMLGregorianCalendar startTime);
+
+    /**
+     * <p>
+     * Returns the end time of the competition.
+     * </p>
+     * @return the end time of the competition.
+     */
+    public abstract XMLGregorianCalendar getEndTime();
+
+    /**
+     * <p>
+     * Sets the end time of the competition.
+     * </p>
+     * @param endTime the end time of the competition.
+     */
+    public abstract void setEndTime(XMLGregorianCalendar endTime);
+
+    /**
+     * <p>
+     * Returns the prizes for the competition.
+     * </p>
+     * @return the prizes for the competition.
+     */
+    public abstract List<CompetitionPrize> getPrizes();
+
+    /**
+     * <p>
+     * Sets the prizes for the competition.
+     * </p>
+     * @param prizes the prizes for the competition.
+     */
+    public abstract void setPrizes(List<CompetitionPrize> prizes);
+
+    /**
+     * <p>
+     * Returns the digital run points for the competition.
+     * </p>
+     * @return the digital run points for the competition.
+     */
+    public abstract double getDrPoints();
+
+    /**
+     * <p>
+     * Sets the digital run points for the competition.
+     * </p>
+     * @param drPoints the digital run points for the competition.
+     */
+    public abstract void setDrPoints(double drPoints);
+
+    /**
+     * <p>
+     * Returns the admin fee for the competition.
+     * </p>
+     * @return the admin fee for the competition.
+     */
+    public abstract double getAdminFee();
+
+    /**
+     * <p>
+     * Sets the admin fee for the competition.
+     * </p>
+     * @param adminFee the admin fee for the competition.
+     */
+    public abstract void setAdminFee(double adminFee);
+
+    /**
+     * <p>
+     * Returns the short summary of the competition.
+     * </p>
+     * @return the short summary of the competition.
+     */
+    public abstract String getShortSummary();
+
+    /**
+     * <p>
+     * Sets the short summary of the competition.
+     * </p>
+     * @param shortSummary the short summary of the competition.
+     */
+    public abstract void setShortSummary(String shortSummary);
+
+    /**
+     * <p>
+     * Returns the eligibility of the competition.
+     * </p>
+     * @return the eligibility of the competition.
+     */
+    public abstract String getEligibility();
+
+    /**
+     * <p>
+     * Sets the eligibility of the competition.
+     * </p>
+     * @param eligibility the eligibility of the competition.
+     */
+    public abstract void setEligibility(String eligibility);
+
+    /**
+     * <p>
+     * Returns the creator user id of the competition.
+     * </p>
+     * @return the creator user id of the competition.
+     */
+    public abstract long getCreatorUserId();
+
+    /**
+     * <p>
+     * Sets the creator user id of the competition.
+     * </p>
+     * @param creatorUserId the creator user id of the competition.
+     */
+    public abstract void setCreatorUserId(long creatorUserId);
+
+    /**
+     * <p>
+     * Returns the competition type.
+     * </p>
+     * @return the competition type.
+     */
+    public abstract CompetionType getType();
+
+    /**
+     * <p>
+     * Sets the competition type.
+     * </p>
+     * @param type the competition type.
+     */
+    public abstract void setType(CompetionType type);
 }

@@ -11,7 +11,7 @@ package com.topcoder.service.project;
  * @author TCSDEVELOPER
  * @version 1.0
  */
-public class DesignCompetition extends Competition {
+public class DesignCompetition extends StudioCompetition {
 
     /**
      * Represents the serial version unique id.

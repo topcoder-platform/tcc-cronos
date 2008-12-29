@@ -8,6 +8,7 @@ import javax.ejb.EJBAccessException;
 import com.topcoder.service.project.AuthorizationFailedFault;
 import com.topcoder.service.project.BaseUnitTestCase;
 import com.topcoder.service.project.Competition;
+import com.topcoder.service.project.StudioCompetition;
 import com.topcoder.service.project.IllegalArgumentFault;
 import com.topcoder.service.project.MockUserGroupManager;
 import com.topcoder.service.project.Project;
@@ -441,7 +442,7 @@ public class ProjectServiceLocalTestExp extends BaseUnitTestCase {
         projectData = this.lookupProjectServiceLocalWithAdminRole().createProject(projectData);
 
         // Persist a competition within project
-        Competition competition = new Competition();
+        Competition competition = new StudioCompetition();
         competition.setProject(getEntityManager().find(Project.class, projectData.getProjectId()));
         persist(competition);
 
