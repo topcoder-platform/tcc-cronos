@@ -3,7 +3,7 @@
 	xmlns:tc="com.topcoder.flex.widgets.widgetcontent.studioactivecontests.*"
 	initialize="init()" backgroundColor="green"
 	horizontalAlign="left" headerHeight="5" width="100%"
-	creationComplete="handleJsonResult(null)">
+	creationComplete="jsonRequest.send()">
 <!--	creationComplete="handleJsonStringResult()"> -->
 
 
@@ -81,10 +81,11 @@
 	        // Handles the result from the HTTPService
 	        protected function handleJsonResult(event:ResultEvent):void {
 	        	
-				//Use this when testing locally. Comment out when testing on web server.
-	            var json:String = jsonString;
-				//Use this when running on web server. Comment out when testing locally.
-	            //var json:String = event.result as String;
+		    //Use this when testing locally. Comment out when testing on web server.
+	            //var json:String = jsonString;
+		    
+		    //Use this when running on web server. Comment out when testing locally.
+	            var json:String = event.result as String;
 	
 	            var jsonData:Object = JSON.decode(json);
 	
