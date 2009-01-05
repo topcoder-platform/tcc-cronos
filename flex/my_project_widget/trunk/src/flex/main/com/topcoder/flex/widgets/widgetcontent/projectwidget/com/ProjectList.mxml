@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:ns1="com.topcoder.flex.widgets.widgetcontent.projectwidget.com.*" width="100%" height="100%" verticalScrollPolicy="off" horizontalScrollPolicy="off" styleName="ProjectList" verticalGap="0">
+<mx:Script>
+	<![CDATA[
+		import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Project;
+		import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Contest;
+		import mx.collections.ArrayCollection;
+		import com.topcoder.flex.widgets.widgetcontent.projectwidget.com.ContestRow;
+		//status icon class declaration
+		[Embed(source="../../assets/icon/icon_status_black.gif")]
+        private var prjTerminated:Class;
+		[Embed(source="../../assets/icon/icon_status_blue.gif")]
+        private var prjCompleted:Class;
+		[Embed(source="../../assets/icon/icon_status_gray.gif")]
+        private var prjDraft:Class;
+		[Embed(source="../../assets/icon/icon_status_green.gif")]
+        private var prjActive:Class;
+		[Embed(source="../../assets/icon/icon_status_purple.gif")]
+        private var prjScheduled:Class;
+		[Embed(source="../../assets/icon/icon_status_red.gif")]
+        private var prjInDanger:Class;
+		//[+ and - icon class
+        [Embed(source="../../assets/image/winMax.png")]
+        private var winMax:Class;
+        [Embed(source="../../assets/image/winMin.png")]
+        private var winMin:Class;
+		
+		[Embed(source="../../assets/icon/rightArrow.png")]
+		private var rightArrowHidden:Class;
+		[Embed(source="../../assets/icon/rightArrowDown.png")]
+		private var rightArrowShow:Class;
+					
+		private var projectRow:Array=new Array();
+		private var winH:int;
+
+		[Bindable]
+		private var winStatus:String="maximized";
+
+		private var _dataProvider:Project;
+		private var _status:String;
+		// setter and getter of status propriety
+		// the status change the icon and the color of the label
+		public function set status(value:String):void
+		{
+			_status = value;
+			projectStatus.text=value;
+			switch(_status.toLowerCase())
+			{
+	    	case "terminated":
+	    		statusIcon.source=prjTerminated;
+	    		projectStatus.setStyle ("color","#000000")
+				break;
+			case "active":
+				statusIcon.source=prjActive;
+	    		projectStatus.setStyle ("color","#95E840")
+				break;
+			case "draft":
+				statusIcon.source=prjDraft;
+	    		projectStatus.setStyle ("color","#ADADAD")
+				break;
+			case "completed":
+				statusIcon.source=prjCompleted;
+	    		projectStatus.setStyle ("color","#607FB2")
+				break;
+			case "scheduled":
+				statusIcon.source=prjScheduled;
+	    		projectStatus.setStyle ("color","#9579C2")
+				break;
+			case "in danger":
+				statusIcon.source=prjInDanger;
+	    		projectStatus.setStyle ("color","#ff5F50")
+				break;
+			default:
+	    	    trace("Out of range");
+	        break;
+			}
+		}
+		public function get status():String{
+			return _status;
+		}
+		// setter and getter of dataprovider
+
+		public function set dataProvider(temp:Project):void{
+			_dataProvider = temp;
+			projectName.text=_dataProvider.description;
+			status=_dataProvider.status;
+			for (var i:int;i<_dataProvider.contests.length;i++){
+				var cnt:Contest=_dataProvider.contests[i];
+				var prjRow:ContestRow=new ContestRow();
+				this.addChild(prjRow);
+				prjRow.dataProvider=cnt ;
+				prjRow.rowNum=i;
+			}
+		}
+		public function get dataProvider():Project{
+			return _dataProvider;
+		}
+		public function collapse():void {
+			winCtrlBut.source=winMax;
+			winStatus="minimized";
+			winH=this.height;
+			this.height=50;
+		}
+		public function expand():void {
+			winCtrlBut.source=winMin;
+			winStatus="maximized";
+			this.height=winH;
+		}
+		//function called from - or + icon
+		private function winResize():void {
+			if (winStatus=="maximized"){
+				collapse();
+			}
+			else {
+				expand();
+			}
+		}
+		
+		//function called view project description is clicked
+		
+		private var showdesc:int = 0;
+		private var donealigning:int =0;
+		
+		private function toggleDescription():void {
+			if (showdesc == 0) showdesc = 1;
+			else showdesc = 0;
+			
+			
+			if (showdesc == 1)
+			{
+			projectDesc.text = "Test direct project for Andrew Abbott";
+			//projectDesc.x = 0;
+			rightArrowImg.source = rightArrowShow;
+			Table.height=85;
+			if (!donealigning)
+			{			
+			projectDesc.x -=25;
+			donealigning = 1;
+			}
+			
+			}
+			else
+			{
+			projectDesc.text = "";
+			rightArrowImg.source = rightArrowHidden;
+			Table.height=48;
+			}
+			
+		}
+		
+	]]>
+</mx:Script>
+	<mx:Canvas width="100%" height="44" backgroundColor="#545454" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+		<mx:Image x="10" y="13" width="16" height="16" id="winCtrlBut" click="winResize()" source="{winMin}"/>
+		<mx:Label x="38" y="11" text="Label" fontSize="12" fontWeight="bold" id="projectName" color="#FFFFFF" width="280"/>
+		<mx:Label y="11" fontSize="12" fontWeight="bold" id="projectStatus" color="#FFFFFF" width="121" textAlign="right" right="70"/>
+		<mx:Image y="14" width="12" height="12" right="45" id="statusIcon" source="../assets/icon/icon_status_gray.gif"/>
+	</mx:Canvas>
+	<mx:Canvas width="100%" height="48" id="Table" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+		<mx:LinkButton styleName="LinkButtonStyle" y="16" label="View Project Description" width="174" left="41" textDecoration="underline" textAlign="left" click="toggleDescription()"/>
+		<mx:Button y="16" label="ADD NEW CONTEST" width="138" cornerRadius="4" fillAlphas="[1.0, 1.0]" fillColors="[#F70C0C, #C00000, #B70404, #B70404]" color="#FFFFFF" borderColor="#070707" right="28"/>
+		<mx:Image x="27" y="16" width="16" height="16" id="rightArrowImg" source="{rightArrowHidden}"/>
+		<mx:Label x="-20" y="55" width="100%" id="projectDesc" fontSize="12" color="#6f6f6f" textAlign="right"/>
+	</mx:Canvas>
+	<mx:HBox width="100%" height="48" horizontalGap="0" backgroundColor="#B0ABAB" id="Hbox1" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+		<mx:Canvas width="16%" height="48" borderColor="#FFFFFF" borderStyle="solid" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+			<mx:Label x="0" y="15" width="100%" height="25" textAlign="center" id="lblStartDate" text="Start Date (EST)" fontWeight="bold" fontSize="10"/>
+		</mx:Canvas>
+		<mx:Canvas width="16%" height="48" borderStyle="solid" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+			<mx:Label x="0" y="15" width="100%" height="25" textAlign="center" id="lblEndDate" text="End Date (EST)" fontWeight="bold" fontSize="10"/>
+		</mx:Canvas>
+		<mx:Canvas width="16%" height="48" borderStyle="solid" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+			<mx:Label x="0" y="15" width="100%" height="25" textAlign="center" id="lblRegistrants" text="Registrants" fontWeight="bold" fontSize="10"/>
+		</mx:Canvas>
+		<mx:Canvas width="16%" height="48" borderStyle="solid" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+			<mx:Label x="0" y="15" width="100%" height="25" textAlign="center" id="lblSubmissions" text="Submissions" fontWeight="bold" fontSize="10"/>
+		</mx:Canvas>
+		<mx:Canvas width="16%" height="48" borderStyle="solid" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+			<mx:Label x="0" y="15" width="100%" height="25" textAlign="center" id="lblForumPosts" text="Forum Posts" fontWeight="bold" fontSize="10"/>
+		</mx:Canvas>
+		<mx:Canvas width="20%" height="48" borderStyle="solid" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+			<mx:Label x="0" y="15" width="80%" height="25" textAlign="center" id="lStatus" text="Status" fontWeight="bold" fontSize="10"/>
+		</mx:Canvas>
+	</mx:HBox>
+</mx:VBox>

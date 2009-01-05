@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tc:ProjectWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:tc="com.topcoder.flex.widgets.widgetcontent.projectwidget.*"
+    xmlns:ns1="com.topcoder.flex.widgets.widgetcontent.projectwidget.com.*" headerHeight="5" 
+    width="100%" height="100%"
+    creationComplete="initWidget()" layout="absolute" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+    <mx:Style source="Style.css" />
+<mx:Script>
+    <![CDATA[
+        import mx.collections.ArrayCollection;
+        import mx.core.IUIComponent;
+        import mx.core.UIComponent;
+        import mx.controls.Button;
+        import mx.controls.Alert;
+        import mx.core.DragSource;
+        import flash.events.MouseEvent;
+        import mx.containers.Canvas;
+        import mx.events.DragEvent;
+        import mx.events.CloseEvent;
+
+        /**
+         * Handle cursor's image class.
+         */
+        [Embed(source="../assets/image/cursor.gif")]
+            private var cursor:Class;
+        [Embed(source="../assets/image/arrow_left.gif")]
+            private var leftArrow:Class;
+        [Embed(source="../assets/image/arrow_right.gif")]
+            private var rightArrow:Class;
+
+        private var closeBtn : Button = new Button();
+        private var maxrestoreBtn : Button = new Button();
+        private var refreshBtn : Button = new Button();
+        private var collapseBtn : Button = new Button();
+        private var helpBtn : Button = new Button();
+        private var isMax : Boolean = false;
+        private var originalHeight:Number;
+
+        private var windowState:Number=WINDOW_STATE_DEFAULT;
+
+        public static const WINDOW_STATE_DEFAULT:Number = -1;
+        public static const WINDOW_STATE_COLLAPSED:Number = 0;
+        public static const WINDOW_STATE_MAXIMIZED:Number = 1;
+        public static const COLLAPSED_HEIGHT:Number = 50;
+        public static const LEFTSPACE:Number=25;
+
+        private var iconSize:int=18;
+        private var iconGap:int=10;
+
+        private var loader:URLLoader = new URLLoader();
+
+        public function get maximized():Boolean
+        {
+            return isMax;
+        }
+
+        /**
+         * Current selected column index.
+         */
+        [Bindable]
+        public var columnIndx: int;
+
+        /**
+         * Current selected row index.
+         */
+        [Bindable]
+        public var rowIndx: int;
+
+
+        private function initWidget():void{
+            loader.addEventListener(Event.COMPLETE, loadXML);
+            loader.load(new URLRequest("data/moch.xml"));
+            /*
+            //1st button from the right
+            closeBtn.styleName = "CloseButton";
+            closeBtn.width=iconSize;
+            closeBtn.height=iconSize;
+            closeBtn.addEventListener(MouseEvent.CLICK,closePanel);
+            closeBtn.x = titleBar.width - 15 - LEFTSPACE;
+            closeBtn.y = titleBar.height/2 ;
+            closeBtn.toolTip = "close";
+            titleBar.addChild(closeBtn);
+            ///2nd button from the right - associated with the collapse all function
+            maxrestoreBtn.styleName="MaxButton";
+            maxrestoreBtn.width = iconSize;
+            maxrestoreBtn.height = iconSize;
+            maxrestoreBtn.addEventListener(MouseEvent.CLICK,maxrestorePanel);
+            maxrestoreBtn.x = titleBar.width - 75 - LEFTSPACE;
+            maxrestoreBtn.y = titleBar.height/2 ;
+            maxrestoreBtn.toolTip = "Maximize";
+            titleBar.addChild(maxrestoreBtn);
+            ///3rd button from the right - associated with the expand all function
+            refreshBtn.styleName="RefreshButton";
+            refreshBtn.width = iconSize;
+            refreshBtn.height = iconSize;
+            refreshBtn.addEventListener(MouseEvent.CLICK,refreshPanel);
+            refreshBtn.x = titleBar.width - 45 - LEFTSPACE;
+            refreshBtn.y = titleBar.height/2 ;
+            refreshBtn.toolTip = "Collapse All";
+            titleBar.addChild(refreshBtn);
+            ///4rd button from the right - associated with the help function
+            helpBtn.styleName="HelpButton";
+            helpBtn.width = iconSize;
+            helpBtn.height = iconSize;
+            helpBtn.addEventListener(MouseEvent.CLICK,helpPanel);
+            helpBtn.x = titleBar.width - 105 - LEFTSPACE;
+            helpBtn.y = titleBar.height/2 ;
+            helpBtn.toolTip = "Help";
+            titleBar.addChild(helpBtn);
+            //left side button
+            collapseBtn.styleName="ClosedButton";
+            collapseBtn.width = iconSize;
+            collapseBtn.height = iconSize;
+            collapseBtn.addEventListener(MouseEvent.CLICK,collapsePanel);
+            collapseBtn.x = 10;
+            collapseBtn.y = titleBar.height/2 ;
+            collapseBtn.toolTip = "";
+            titleBar.addChild(collapseBtn);
+
+            titleBar.addEventListener(MouseEvent.MOUSE_OVER, showHandCorsor);
+            titleBar.addEventListener(MouseEvent.MOUSE_OUT, hideHandCorsor);
+            titleBar.addEventListener(MouseEvent.MOUSE_MOVE, dragIt);
+            */
+        }
+        // this function load an XML as data provider of the main container
+        // of the projectList
+        private function loadXML(e:Event):void
+        {
+            result = new XML(e.target.data);
+            prjList.dataProvider=result;
+        }
+        
+        private function testvvvvvvvvv():void
+        {
+        	this.widgetFramework.addWidgetEx("pipeline","pipeline", new Dictionary());
+        	//this.widgetFramework.removeTab("MyTab");
+            //this.widgetFramework.removeWidget("MyTab","ProjectWidget45"); //addTabByName("aaa");
+        }
+/*
+        override protected function layoutChrome(unscaledWidth:Number, unscaledHeight:Number):void
+        {
+            super.layoutChrome(unscaledWidth, unscaledHeight);
+            titleTextField.x=50;
+            titleTextField.y=(titleBar.height/2);
+            closeBtn.y=(titleBar.height/2);
+            closeBtn.x = titleBar.width - 15 - LEFTSPACE;
+            maxrestoreBtn.x = titleBar.width - 75 - LEFTSPACE;
+            refreshBtn.x = titleBar.width - 45 - LEFTSPACE;
+            helpBtn.x = titleBar.width - 105 - LEFTSPACE;
+        }
+
+        private function closePanel(event:MouseEvent):void
+        {
+            Alert.show("Are you sure to close this widget?", "Confirmation",Alert.YES|Alert.NO,this,deleteWidgetHandler, null, Alert.YES);
+        }
+
+        private function deleteWidgetHandler (evt:Event):void
+        {
+            //implement your close widget function
+        }
+
+        private function refreshPanel(event:MouseEvent):void
+        {
+            refreshBtn.toolTip = "Collapse All";
+            prjList.collapseAll();
+        }
+        private function helpPanel(event:MouseEvent):void
+        {
+            //implement your close widget function
+            Alert.show ("Help Function","help");
+        }
+        private function collapsePanel(event:MouseEvent):void
+        {
+            if (windowState==WINDOW_STATE_COLLAPSED) {
+                this.styleName="ClosedButton";
+                collapseBtn.toolTip = "Collapse";
+                windowState=WINDOW_STATE_DEFAULT
+                this.height=originalHeight;
+                return;
+            }
+            if (windowState==WINDOW_STATE_DEFAULT) {
+                originalHeight=this.height;
+                collapseBtn.toolTip = "Restore";
+                this.styleName="OpenedButton";
+                windowState=WINDOW_STATE_COLLAPSED;
+                this.height=COLLAPSED_HEIGHT;
+                return;
+            }
+        }
+
+        private function maxrestorePanel(event:MouseEvent):void
+        {
+            refreshBtn.toolTip = "Collapse All";
+            prjList.expandAll();
+
+        }
+
+        private function showHandCorsor(event:MouseEvent):void {
+            cursorManager.setCursor(cursor, 2, -5, 0);
+        }
+
+        private function hideHandCorsor(event:MouseEvent):void
+        {
+            cursorManager.removeAllCursors();
+        }
+
+        private function dragIt(event:MouseEvent):void {
+
+            var dragInitiator:ProjectWidget=event.currentTarget.parent as ProjectWidget;
+            if (!dragInitiator || !event.buttonDown)
+            {
+                return;
+            }
+            cursorManager.setCursor(cursor);
+            var ds:DragSource = new DragSource();
+            ds.addData(dragInitiator, 'widget');
+            var widgetProxy:ProjectWidget = new ProjectWidget();
+            widgetProxy.width=dragInitiator.width;
+            widgetProxy.height=dragInitiator.height;
+        }
+        */
+    ]]>
+</mx:Script>
+<mx:Button y="0" id="button" label="Pipeline" 
+        	width="138" cornerRadius="4" 
+        	 right="28" click="testttttttt()"/>
+    <mx:Canvas top="50" right="15" left="10" horizontalScrollPolicy="off" verticalScrollPolicy="auto" bottom="5">
+        
+        
+        <ns1:ProjectsContainer id="prjList"  horizontalScrollPolicy="off" verticalScrollPolicy="off" maxHeight="500"  width="100%" height="100%">
+        </ns1:ProjectsContainer>
+        
+    </mx:Canvas>
+</tc:ProjectWidgetCodeBehind>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="55" styleName="ContestRowStyle" backgroundColor="#FFFFFF">
+<mx:Script>
+	<![CDATA[
+	import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Contest;
+	import mx.collections.ArrayCollection;
+
+	private var _rowNum:int;
+	private var _ContextId:String;
+	[Bindable]
+	private var _dataProvider:Contest;
+	//setter and getter of dataProvider
+	public function set dataProvider(temp:Contest):void{
+		_dataProvider = temp;
+		startDate=_dataProvider.startDate;
+		endDate=_dataProvider.endDate;
+		submissions=_dataProvider.submissions;
+		forumPosts=_dataProvider.forumPosts
+		status=_dataProvider.status;
+		registrants=_dataProvider.registrants;
+		contextName=_dataProvider.name;
+		if (status.toLowerCase()=="draft") {
+			statusIcon.visible=true;
+		}
+		else{
+			statusIcon.visible=false;
+		}
+	}
+	public function get dataProvider():Contest{
+		return _dataProvider;
+	}
+	// setter and getter of all propriety of Context
+	public function set ContextId(value:String):void{
+		_ContextId = value;
+	}
+	public function get ContextId():String{
+		return _ContextId;
+	}
+	public function set rowNum(temp:Number):void{
+		_rowNum = temp;
+		if ((_rowNum % 2 )==0) {
+			var o:Object=getStyle("oddRowColor");
+			this.setStyle("backgroundColor",getStyle("oddRowColor"))
+		}
+		else {
+			this.setStyle("backgroundColor",getStyle("evenRowColor"))
+		}
+	}
+	public function get rowNum():Number{
+		return _rowNum;
+	}
+	public function set status(temp:String):void{
+		lblStatus.text = temp;
+	}
+	public function get contextName():String{
+		return lblContextName.label;
+	}
+	public function set contextName(temp:String):void{
+		lblContextName.label = temp;
+	}
+	public function get status():String{
+		return lblStatus.text;
+	}
+	public function set startDate(temp:String):void{
+		lblStartDate.text = temp;
+	}
+	public function get startDate():String{
+		return lblStartDate.text;
+	}
+	public function set endDate(temp:String):void{
+		lblEndDate.text = temp;
+	}
+	public function get endDate():String{
+		return lblEndDate.text;
+	}
+	public function set registrants(temp:String):void{
+		lblRegistrants.text = temp;
+	}
+	public function get registrants():String{
+		return lblRegistrants.text;
+	}
+
+	public function set submissions(temp:String):void{
+		lblSubmissions.text = temp;
+		if (temp=='0') {
+			lnkSubmissions.includeInLayout=false
+			lnkSubmissions.visible=false
+			canvasSubmissions.percentWidth=100;
+			lblSubmissions.setStyle("textAlign","center")
+
+		}
+		else{
+			lnkSubmissions.includeInLayout=true
+			lnkSubmissions.visible=true
+			canvasSubmissions.percentWidth=35
+			lblSubmissions.setStyle("textAlign","right")
+
+		}
+	}
+	public function get submissions():String{
+		return lblSubmissions.text;
+	}
+	public function set forumPosts(temp:String):void{
+		lblForumPosts.text = temp;
+		if (temp=='0') {
+			lnkFormPosts.includeInLayout=false
+			lnkFormPosts.visible=false
+			canvasForumPosts.percentWidth=100
+			lblForumPosts.setStyle("textAlign","center")
+		}
+		else{
+			lnkFormPosts.includeInLayout=true
+			lnkFormPosts.visible=true
+			canvasForumPosts.percentWidth=35
+			lblForumPosts.setStyle("textAlign","right")
+		}
+	}
+	public function get forumPosts():String{
+		return lblForumPosts.text;
+	}
+
+	]]>
+</mx:Script>
+	<mx:Canvas width="60%" height="27">
+		<mx:LinkButton styleName="LinkButtonStyle" width="100%" id="lblContextName" textDecoration="underline" left="10" textAlign="left" themeColor="#FEFEFE" y="5"/>
+	</mx:Canvas>
+	<mx:HBox width="100%" height="24" horizontalGap="0" >
+		<mx:Canvas width="16%" height="28">
+			<mx:Label x="0" y="5" width="100%" height="22" textAlign="center" id="lblStartDate" />
+		</mx:Canvas>
+		<mx:Canvas width="16%" height="28">
+			<mx:Label x="0" y="5" width="100%" height="22" textAlign="center" id="lblEndDate"/>
+		</mx:Canvas>
+		<mx:Canvas width="16%" height="28">
+			<mx:Label x="0" y="5" width="100%" height="22" textAlign="center" id="lblRegistrants" />
+		</mx:Canvas>
+		<mx:Canvas width="16%" height="28">
+			<mx:HBox width="100%" height="28" horizontalGap="1">
+				<mx:Canvas id="canvasSubmissions" width="35%" height="28">
+					<mx:Label height="17" textAlign="center" id="lblSubmissions" width="100%"   y="5"/>
+				</mx:Canvas>
+				<mx:LinkButton styleName="LinkButtonStyle" y="0" label="(view)" height="27" textAlign="left" textDecoration="underline" id="lnkSubmissions" themeColor="#FFFFFF" width="60%" />
+			</mx:HBox>
+		</mx:Canvas>
+		<mx:Canvas width="16%" height="28">
+			<mx:HBox width="100%" height="28" horizontalGap="1">
+				<mx:Canvas id="canvasForumPosts" width="35%" height="28">
+					<mx:Label y="5" height="17" textAlign="center" id="lblForumPosts"  width="100%" />
+				</mx:Canvas>
+				<mx:LinkButton styleName="LinkButtonStyle" y="0" label="(view)" height="28" textAlign="left" textDecoration="underline" id="lnkFormPosts"  themeColor="#FFFFFF" left="52" right="0"/>
+			</mx:HBox>
+		</mx:Canvas>
+		<mx:Canvas width="16%" height="24">
+			<mx:Label x="0" y="2" width="100%" height="22" textAlign="center" id="lblStatus" />
+		</mx:Canvas>
+		<mx:Image id="statusIcon" source="@Embed(source='../../assets/image/draft.png')"  alpha="1.0"/>
+	</mx:HBox>
+</mx:VBox>

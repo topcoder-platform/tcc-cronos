@@ -1,0 +1,97 @@
+/* CSS file */
+/*
+.panelTitle
+{
+	fontSize: 12;
+	color: #FFFFFF;
+	fontWeight: bold;
+	paddingLeft: 100;
+}*/
+/*Buttons of the widget*/
+/*
+.ClosedButton
+{
+	up-skin:        Embed("../assets/icon/Butclose.png");
+	over-skin:      Embed("../assets/icon/Butclose.png");
+	down-skin:      Embed("../assets/icon/Butclose.png");
+	disabled-skin:  Embed("../assets/icon/Butclose.png");
+	border-style: none;
+}
+
+.CloseButton
+{
+	up-skin:        Embed("../assets/icon/CloseButton.png");
+	over-skin:      Embed("../assets/icon/CloseButton.png");
+	down-skin:      Embed("../assets/icon/CloseButton.png");
+	disabled-skin:  Embed("../assets/icon/CloseButton.png");
+	border-style: none;
+}*/
+/*[?] button*/
+/*
+.HelpButton
+{
+	up-skin:        Embed("../assets/icon/helpButton.png");
+	over-skin:      Embed("../assets/icon/helpButton.png");
+	down-skin:      Embed("../assets/icon/helpButton.png");
+	disabled-skin:  Embed("../assets/icon/helpButton.png");
+	border-style: none;
+}*/
+/*Axpand All Button*/
+/*
+.MaxButton
+{
+	up-skin:        Embed("../assets/icon/minButton.png");
+	over-skin:      Embed("../assets/icon/minButton.png");
+	down-skin:      Embed("../assets/icon/minButton.png");
+	disabled-skin:  Embed("../assets/icon/minButton.png");
+	border-style: none;
+}*/
+/*Collapse All Button*/
+/*
+.RefreshButton
+{
+	up-skin:        Embed("../assets/icon/someButton1.png");
+	over-skin:      Embed("../assets/icon/someButton1.png");
+	down-skin:      Embed("../assets/icon/someButton1.png");
+	disabled-skin:  Embed("../assets/icon/someButton1.png");
+	border-style: none;
+
+}*/
+/*
+.Widget
+{
+	horizontalAlign: center;
+	roundedBottomCorners: false;
+	borderSkin: Embed(source="../assets/image/Widget-skin.png",scaleGridTop="51",scaleGridLeft="5",scaleGridRight="525",scaleGridBottom="485");
+	titleStyleName: panelTitle;
+	borderColor: #B9B9B9;
+	headerHeight: 30;
+	controlBarStyleName: panelControlBar;
+}*/
+.LinkButtonStyle
+{
+	color: #E2280F;
+	textRollOverColor: #434343;
+	rollOverColor: #FFFFFF;
+	selectionColor: #92C8EB;
+	themeColor: #FFFFFF;
+}
+/*
+.panelControlBar
+{
+	paddingTop: 15;
+	paddingBottom: 0;
+}
+*/
+/* contextRow
+	evenRowColor=background color of the even row of the list
+	oddRowColor=background color of the odd row of the list */
+
+.ContestRowStyle
+{
+	evenRowColor: #FFFFFF;
+	oddRowColor: #DDDDDD;
+	borderColor: #EBEBEB;
+	borderStyle: solid;
+	verticalGap: 0;
+}

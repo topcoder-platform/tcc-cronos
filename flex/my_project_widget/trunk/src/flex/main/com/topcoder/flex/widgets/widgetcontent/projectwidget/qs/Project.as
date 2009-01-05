@@ -1,0 +1,20 @@
+package com.topcoder.flex.widgets.widgetcontent.projectwidget.qs
+{
+	import mx.collections.ArrayCollection;
+
+	public class Project
+	{
+		public var name:String;
+		public var description:String;
+		public var status:String;
+		public var contests:ArrayCollection;
+		public function Project(_name:String,_descr:String,_status:String,_contest:ArrayCollection=null)
+		{
+			this.name=_name;
+			this.description=_descr;
+			this.status=_status;
+			this.contests=_contest;
+		}
+
+	}
+}
