@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tc:ContestMonitorWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:tc="com.topcoder.flex.widgets.widgetcontent.contestmonitor.*"
+    horizontalAlign="left"
+    width="100%" height="100%"
+    creationComplete="fetchData()">
+
+<mx:Script>
+    <![CDATA[
+        import flash.net.URLLoader;
+        import flash.net.URLRequest;
+        import flash.events.Event;
+        import mx.controls.Alert;
+        import flash.utils.Timer;
+        import flash.events.TimerEvent;
+        import mx.events.SliderEvent;
+
+        private var startTime:Date;
+        private var endTime:Date;
+        private static const daySeconds:Number = 24*60*60;
+        private static const halfDaySeconds:Number = 12*60*60;
+        private static const hourSeconds:Number = 60*60;
+        
+        // *** THIS NEEDS TO BE REPLACED WITH CALLS TO A SERVICE ***
+        //fetch data from local xml file
+        private function fetchData():void {
+            var url:URLRequest = new URLRequest("data/timeline.xml");
+            var loader:URLLoader = new URLLoader();
+            loader.addEventListener(Event.COMPLETE, getData);
+            loader.load(url);
+        }
+        
+        //after loading the xml file, fetch data
+        private function getData(event:Event):void {
+            var loader:URLLoader = event.target as URLLoader;
+            result = new XML(loader.data);
+            regs.text = result.contest[0].registrants;
+            subms.text = result.contest[0].submissions;
+            start.text = result.contest[0].start;
+            end.text = result.contest[0].end;
+
+            var datePattern:RegExp = /-/g;
+            var endTimeTmp:String = result.contest[0].end;
+            var timeZoneIndex:Number = endTimeTmp.indexOf("GMT");
+            var endTimeTmp1:String = endTimeTmp.substring(0, timeZoneIndex).replace(datePattern, "/");
+            var endTimeTmp2:String = endTimeTmp.substring(timeZoneIndex, endTimeTmp.length);
+            endTime= new Date(endTimeTmp1 + endTimeTmp2);
+            
+            var startTimeTmp:String = result.contest[0].start;
+            timeZoneIndex = startTimeTmp.indexOf("GMT");
+            var startTimeTmp1:String = startTimeTmp.substring(0, timeZoneIndex).replace(datePattern, "/");
+            var startTimeTmp2:String = startTimeTmp.substring(timeZoneIndex, startTimeTmp.length);
+            startTime= new Date(startTimeTmp1 + startTimeTmp2);
+
+            var currentTime:Date = new Date();
+            var timeSpan:Number = (endTime.getTime() - startTime.getTime())/1000;
+            timeLine.maximum = timeSpan;
+            var currentPos:Number = (currentTime.getTime() - startTime.getTime())/1000;
+            timeLine.value = currentPos;
+            
+            var tickValuesArry:Array = new Array();
+            var labelsArry:Array = new Array();
+            var totalHalfDays:int = int(timeSpan/halfDaySeconds);
+            var totalDays:int = int(timeSpan/daySeconds);
+            if (totalDays == 0){
+                tickValuesArry.push(0);
+                tickValuesArry.push(timeSpan);
+                timeLine.tickValues = tickValuesArry;
+                timeLine.labels = ["START", "END"]; 
+            }else{
+                var i:int = 0;
+                if (timeSpan == totalHalfDays*halfDaySeconds){
+                   for (i = 0; i <= totalDays; i++){
+                        tickValuesArry.push(i*daySeconds);
+                        if(i == 0)
+                            labelsArry.push("START");
+                        else if(i == totalDays)
+                            labelsArry.push("END");
+                        else{      
+                            labelsArry.push("DAY "+i.toString());
+                        }
+                   }
+                }else{
+                    for (i = 0; i <= totalDays; i++){
+                        tickValuesArry.push(i*daySeconds);
+                        if(i == 0)
+                            labelsArry.push("START");
+                        else{
+                            labelsArry.push("DAY "+i.toString());
+                            labelsArry.push("");
+                        }
+                    }
+                    tickValuesArry.push(timeSpan);
+                    labelsArry.push("END");                            
+                }
+                timeLine.tickValues = tickValuesArry;
+                timeLine.labels = labelsArry;
+            }
+            
+            displayRemainTime();
+            
+           // var slider:HSlider = event.target as HSlider;
+            timeLine.getThumbAt(0).enabled = false;
+            
+            //update time line every minute
+            var timeLineTimer:Timer = new Timer(60*1000, 0);
+            timeLineTimer.addEventListener("timer", timerHandler);
+            timeLineTimer.start();
+        }
+        
+        //display remaining time
+        private function displayRemainTime():void{
+            var currentTime:Date = new Date();
+            var remainTime:Number = endTime.getTime() - currentTime.getTime();
+            if (remainTime < 0){
+                timeRem.text = "0 days, 0 hours";
+                //stop text effect
+                if (textEffect.isPlaying)
+                   textEffect.end();
+                return;
+            }
+            var remainDay:String = int(remainTime/(daySeconds*1000)).toString();
+            var remainHour:String = int((remainTime - Number(remainDay)*daySeconds*1000)/(hourSeconds*1000)).toString();
+            var timeRemain:String = remainDay + " days, " + remainHour + " hours";
+            timeRem.text = timeRemain;
+            //add effect
+            if (Number(remainDay) == 0 && Number(remainHour) <= 12)
+            {
+                if (!textEffect.isPlaying)
+                    textEffect.play();
+            }
+        }
+        
+        //timer handler executed every second
+        private function timerHandler(event:TimerEvent):void {
+            var currentTime:Date = new Date();
+            var currentPos:Number = (currentTime.getTime() - startTime.getTime())/1000;
+            timeLine.setThumbValueAt(0, currentPos);
+            displayRemainTime();
+            if(endTime.getTime() - currentTime.getTime() <= 0)
+                event.target.stop();
+        }
+    ]]>
+</mx:Script>
+    <mx:HBox>
+       <mx:Label text="Registrants:" fontWeight="bold"/>
+       <mx:Text id="regs" />
+    </mx:HBox>
+    <mx:HBox>
+       <mx:Label text="Submissions:" fontWeight="bold"/>
+       <mx:Text id="subms" />
+    </mx:HBox>
+    <mx:HBox>
+       <mx:Label text="Start Date/Time:" fontWeight="bold"/>
+       <mx:Text id="start" />
+    </mx:HBox>
+    <mx:HBox>
+       <mx:Label text="End Date/Time:" fontWeight="bold"/>
+       <mx:Text id="end" />
+    </mx:HBox>
+    <mx:HBox>
+       <mx:Label text="Time Remaining:" fontWeight="bold"/>
+       <mx:Text id="timeRem" />
+    </mx:HBox>
+    
+    <mx:HSlider id="timeLine" minimum="0" width="100%" tickColor="black"
+         snapInterval="1" showDataTip="false" 
+        allowTrackClick="false" />
+    
+    <!-- Remaining time text effect -->
+    <mx:Parallel id="textEffect" target="{timeRem}" repeatCount="0">
+        <mx:Glow id="glowText" duration="2000" 
+            alphaFrom="1.0" alphaTo="0.3" 
+            blurXFrom="0.0" blurXTo="30.0" 
+            blurYFrom="0.0" blurYTo="30.0" 
+            color="0xFF0000"/>
+    </mx:Parallel>
+</tc:ContestMonitorWidgetCodeBehind>
