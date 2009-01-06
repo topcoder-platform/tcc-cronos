@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd"
+         version="3.0">
+    <description>Project Services Facade EJB</description>
+    <display-name>Project Services Facade EJB</display-name>
+    <enterprise-beans>
+        <session>
+            <ejb-name>ProjectServiceFacadeBean</ejb-name>
+            <remote>com.topcoder.service.facade.contest.ejb.ProjectServiceFacadeRemote</remote>
+            <local>com.topcoder.service.facade.contest.ejb.ProjectServiceFacadeLocal</local>
+            <service-endpoint>com.topcoder.service.facade.contest.ProjectServiceFacade</service-endpoint>
+            <ejb-class>com.topcoder.service.facade.contest.ejb.ProjectServiceFacadeBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <ejb-ref>
+                <ejb-ref-name>ejb/ProjectService</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <remote>com.topcoder.service.project.ProjectServiceRemote</remote>
+            </ejb-ref>
+        </session>
+    </enterprise-beans>
+</ejb-jar>
