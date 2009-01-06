@@ -3,6 +3,10 @@
  */
 package com.topcoder.service.project;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +26,9 @@ import com.topcoder.service.studio.PrizeData;
  * @author FireIce
  * @version 1.0
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "sutdioCompetition",
+        propOrder = {"id", "contestData", "type", "adminFee", "drPoints", "eligibility", "startTime", "endTime", "shortSummary", "prize"})
 public class StudioCompetition extends Competition {
 
     /**
