@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+          horizontalScrollPolicy="off" verticalScrollPolicy="off">
+    <mx:Script>
+        <![CDATA[
+            import flash.events.MouseEvent;
+            import mx.containers.Panel;
+            
+            public var mainWidget:Panel;
+            public var widgetHeight:Number;
+            public var ColorsHint:String;
+            public var FontsHint:String;
+            public var SizeHint:String;
+            public var AdditionalHint:String;
+            
+            private static const ADDEDHEIGHT:Number = 80;
+            
+            private function showColorHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]"){
+                    event.target.label = "[- show hint]";
+                    colorHint.height = ADDEDHEIGHT;
+                    colorHint.text = ColorsHint;
+                    colorHint.visible = true;
+                    mainWidget.height += ADDEDHEIGHT;
+                    widgetHeight += ADDEDHEIGHT;
+                }else{
+                    event.target.label = "[+ show hint]";
+                    colorHint.height = 0;
+                    colorHint.text = "";
+                    colorHint.visible = false;
+                    mainWidget.height -= ADDEDHEIGHT;
+                    widgetHeight -= ADDEDHEIGHT;
+                }
+            }
+
+            private function showFontsHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]"){
+                    event.target.label = "[- show hint]";
+                    fontsHint.height = ADDEDHEIGHT;
+                    fontsHint.text = FontsHint;
+                    fontsHint.visible = true;
+                    mainWidget.height += ADDEDHEIGHT;
+                    widgetHeight += ADDEDHEIGHT;
+                }else{
+                    event.target.label = "[+ show hint]";
+                    fontsHint.height = 0;
+                    fontsHint.text = "";
+                    fontsHint.visible = false;
+                    mainWidget.height -= ADDEDHEIGHT;
+                    widgetHeight -= ADDEDHEIGHT;
+                }
+            }
+
+            private function showSizeHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]"){
+                    event.target.label = "[- show hint]";
+                    sizeHint.height = ADDEDHEIGHT;
+                    sizeHint.text = SizeHint;
+                    sizeHint.visible = true;
+                    mainWidget.height += ADDEDHEIGHT;
+                    widgetHeight += ADDEDHEIGHT;
+                }else{
+                    event.target.label = "[+ show hint]";
+                    sizeHint.height = 0;
+                    sizeHint.text = "";
+                    sizeHint.visible = false;
+                    mainWidget.height -= ADDEDHEIGHT;
+                    widgetHeight -= ADDEDHEIGHT;
+                }
+            }
+
+            private function showAddReqHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]"){
+                    event.target.label = "[- show hint]";
+                    addReqHint.height = 30;
+                    addReqHint.text = AdditionalHint;
+                    addReqHint.visible = true;
+                    mainWidget.height += ADDEDHEIGHT;
+                    widgetHeight += ADDEDHEIGHT;
+                }else{
+                    event.target.label = "[+ show hint]";
+                    addReqHint.height = 0;
+                    addReqHint.text = "";
+                    addReqHint.visible = false;
+                    mainWidget.height -= ADDEDHEIGHT;
+                    widgetHeight -= ADDEDHEIGHT;
+                }
+            }
+         ]]>
+    </mx:Script>
+    <mx:VBox paddingLeft="2" width="100%">
+        <mx:Label text="Contest Specifications" fontWeight="bold" fontSize="12"/>
+        <mx:Text width="100%" id="contestSpecf">
+            <mx:text>
+                Do you have any requirements, preferences or restrictions regarding the following design elements?
+            </mx:text>
+        </mx:Text>
+        <mx:Spacer height="5"/>
+        <mx:VBox width="100%" verticalGap="0">
+            <mx:HBox width="500">
+                <mx:Label text="Colors:" fontWeight="bold"/>
+                <mx:Spacer width="344"/>
+                <mx:LinkButton label="[+ show hint]" click="showColorHint(event)" />
+            </mx:HBox>
+            <mx:Text id="colorHint" color="0x888888" width="500" height="0" visible="false">
+                <mx:text>
+                </mx:text>
+            </mx:Text>
+            <mx:TextArea id="colorInput" width="500" height="50" text="test"/>
+        </mx:VBox>
+        <mx:Spacer height="5"/>
+        <mx:VBox width="100%" verticalGap="0">
+            <mx:HBox width="500">
+                <mx:Label text="Fonts:" fontWeight="bold"/>
+                <mx:Spacer width="347"/>
+                <mx:LinkButton label="[+ show hint]" click="showFontsHint(event)" />
+            </mx:HBox>
+            <mx:Text id="fontsHint" color="0x888888" width="500" height="0" visible="false">
+                <mx:text>
+                </mx:text>
+            </mx:Text>
+            <mx:TextArea id="fontInput" width="500" height="50" text="test"/>
+        </mx:VBox>
+        <mx:Spacer height="5"/>
+        <mx:VBox width="100%" verticalGap="0">
+            <mx:HBox width="500">
+                <mx:Label text="Size:" fontWeight="bold"/>
+                <mx:Spacer width="356"/>
+                <mx:LinkButton label="[+ show hint]" click="showSizeHint(event)" />
+            </mx:HBox>
+            <mx:Text id="sizeHint" color="0x888888" width="500" height="0" visible="false">
+                <mx:text>
+                </mx:text>
+            </mx:Text>
+            <mx:TextArea id="sizeInput" width="500" height="50" text="test"/>
+        </mx:VBox>
+        <mx:Spacer height="5"/>
+        <mx:VBox width="100%" verticalGap="0">
+            <mx:HBox width="500">
+                <mx:Label text="Additional Requirements or Restrictions:" fontWeight="bold"/>
+                <mx:Spacer width="151"/>
+                <mx:LinkButton label="[+ show hint]" click="showAddReqHint(event)" />
+            </mx:HBox>
+            <mx:Text id="addReqHint" color="0x888888" width="500" height="0" visible="false">
+                <mx:text>
+                </mx:text>
+            </mx:Text>
+            <mx:TextArea id="addReInput" width="500" height="50" text="test"/>
+        </mx:VBox>
+        <mx:Spacer height="10"/>
+        <mx:Label text="Final File Formats" fontWeight="bold" fontSize="12"/>
+        <mx:Text width="100%" id="finalFormats" >
+            <mx:htmlText>
+                <![CDATA[For your chosen contest type-<b>Application Front End Design</b>-the most common final file formats are:]]>
+           </mx:htmlText>
+        </mx:Text>
+        <mx:VBox width="100%" paddingLeft="10">
+	        <mx:CheckBox id="psdChb" label=".PSD(Adobe Photoshop layered graphic file)" selected="true"/>
+	        <mx:CheckBox id="aiChb" label=".AI(Adobe Illustrator vetor graphic file)" selected="true"/>
+	        <mx:CheckBox id="epsChb" label=".EPS(Vector graphic file format)" selected="true"/>
+	        <mx:Spacer height="5"/>
+	        <mx:Label text="Other File Formats:" fontWeight="bold"/>
+	        <mx:Text id="otherFileFormats" color="0x888888" width="100%">
+                <mx:text>
+                    Please list any other file formats you may need that is not listed above.
+                </mx:text>
+            </mx:Text>
+            <mx:TextArea id="fileFormatInput" width="480" height="50" text="test"/>
+        </mx:VBox>
+        
+    </mx:VBox>
+</mx:Canvas>

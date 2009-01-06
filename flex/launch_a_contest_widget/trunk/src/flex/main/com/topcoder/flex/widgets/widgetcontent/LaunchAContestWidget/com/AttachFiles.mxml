@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+          horizontalScrollPolicy="off" verticalScrollPolicy="off">
+    <mx:Script>
+	    <![CDATA[
+	        import flash.events.MouseEvent;
+	        import flash.net.FileReference;
+	        import flash.events.Event;
+	        import mx.containers.HBox;
+	        import mx.controls.Label;
+	        import mx.controls.Text;
+	        import mx.controls.Spacer;
+	        
+	        public var FileDescHint:String;
+	        private var file:FileReference;
+	        private static const ADDEDHEIGHT:Number = 80;
+	        
+	        private function showfileDecsHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]"){
+                    event.target.label = "[- show hint]";
+                    fileDescHint.height = ADDEDHEIGHT;
+                    fileDescHint.text = FileDescHint;
+                    fileDescHint.visible = true;
+                }else{
+                    event.target.label = "[+ show hint]";
+                    fileDescHint.height = 0;
+                    fileDescHint.text = "";
+                    fileDescHint.visible = false;
+                }
+	        }
+	        
+	        private function browseFile():void {
+	        	file= new FileReference();
+	        	file.addEventListener(Event.SELECT, selectHandler);
+	        	file.browse();
+	        }
+	        
+	        private function selectHandler(event:Event):void {
+                fileToUpload.text = file.name;
+            }
+            
+            private function uploadFile():void {
+            	
+            }
+	    ]]>
+    </mx:Script>
+    <mx:VBox paddingLeft="2" width="100%">
+        <mx:Label text="Attach Files" fontWeight="bold" fontSize="12"/>
+        <mx:Text width="100%" id="attachFiles">
+            <mx:htmlText>
+            <![CDATA[If you have images, PSD files or any other documents you think will help the competitiors, upload them here. <b>**NOTE:</b> If you are trying to provide examples of the other designs that you do not own, provide a link to them in your contest description. <b>Do not upload files you do not own.</b>]]>
+           </mx:htmlText>
+        </mx:Text>
+        <mx:Spacer height="5"/>
+        <mx:VBox paddingLeft="10" >
+		    <mx:HBox>
+		        <mx:Label text="File Description:" fontWeight="bold"/>
+		        <mx:Text text="Application Wireframes" />
+		    </mx:HBox>
+		    <mx:HBox >
+		        <mx:Label text="File Name:" fontWeight="bold"/>
+		        <mx:Text text="app_wireframes.pdf" />
+		    </mx:HBox>
+		    <mx:Spacer height="5"/>
+		    <mx:HRule width="100%"/>
+		    <mx:Spacer height="5"/>
+		    <mx:HBox id="fileDsc">
+		        <mx:Label text="File Description:" fontWeight="bold"/>
+		        <mx:Text text="Project Branding Guidelines" />
+		    </mx:HBox>
+		    <mx:HBox id="fileName" >
+		        <mx:Label text="File Name:" fontWeight="bold"/>
+		        <mx:Text text="branding_guidelines.doc" />	
+		    </mx:HBox>
+		    <mx:Spacer height="5"/>
+		    <mx:HRule width="100%"/>
+            <mx:Spacer height="5"/>
+            <mx:VBox width="100%" verticalGap="0">
+	            <mx:HBox >
+	                <mx:Label text="File Description:" fontWeight="bold"/>
+	                <mx:Spacer width="290"/>
+	                <mx:LinkButton label="[+ show hint]" click="showfileDecsHint(event)"/>
+	            </mx:HBox>
+	            <mx:Text id="fileDescHint" color="0x888888" width="500" height="0" visible="false">
+	                <mx:text>
+	                </mx:text>
+	            </mx:Text>
+	            <mx:TextArea id="fileDescInput" width="500" height="50" text="File description writes here."/>
+            </mx:VBox>
+            <mx:Spacer height="5"/>
+            <mx:HBox >
+                <mx:Label text="File to Upload:" fontWeight="bold"/>
+                <mx:TextInput id="fileToUpload" editable="false" />
+                <mx:Button id="browse" label="Browse" cornerRadius="13" click="browseFile()"/>
+            </mx:HBox>
+            <mx:VBox paddingLeft="90">
+            	<mx:Button id="upload" label="Upload File" cornerRadius="13" click="uploadFile()"/>
+            	<mx:Text text="You may add more files after uploading." color="0x888888"/>
+            </mx:VBox>
+        </mx:VBox>
+        
+    </mx:VBox>
+</mx:Canvas>

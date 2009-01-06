@@ -1,0 +1,100 @@
+/* CSS file */
+.WidgetPanel {
+   borderColor: #B7BABC;
+   borderThicknessLeft: 10;
+   borderThicknessTop: 1;
+   borderThicknessBottom: 1;
+   borderThicknessRight: 10;
+   borderAlpha: 1;
+   dropShadowEnabled: false;
+   headerColors: #cccccc, #cccccc;
+   titleStyleName: "panelTitle";
+}
+.panelTitle {
+   textAlign: left;
+   color: #000000;
+   fontWeight: bold;
+}
+.EditButton
+{
+    upSkin: Embed(source="../assets/EditButton_Up.png");
+    overSkin: Embed(source="../assets/EditButton_Over.png");
+    downSkin: Embed(source="../assets/EditButton_Over.png");
+    disabledSkin: Embed(source="../assets/EditButton_Up.png");
+    paddingLeft: 0;
+    paddingTop: 0;
+    paddingRight: 0;
+    paddingBottom: 0;
+}
+
+
+
+.header {
+	font-family: Arial;
+	font-size: 16;
+	font-weight: bold;
+	color: #000000;
+}
+.content {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: normal;
+	color: #000000;
+}
+
+.contentBlack {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #000000;
+}
+
+.contentGrey {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #797979;
+}
+
+.combobox {
+	skin: Embed(source="../assets/combobox.png", 
+			scaleGridTop="1",scaleGridLeft="1",scaleGridRight="134",scaleGridBottom="18");
+	font-family: Arial;
+	font-size: 12;
+	font-weight: normal;
+	color: #000000;
+	padding-left: 8;
+	padding-right: 8;
+	vertical-align: middle;
+}
+
+.TextInput {
+	/* border-skin: Embed(source="../assets/textinput.png", 
+			scaleGridTop="1",scaleGridLeft="1",scaleGridRight="159",scaleGridBottom="18"); */
+	font-family: Arial;
+	font-size: 12;
+	font-weight: normal;
+	color: #000000;
+	vertical-align: middle;
+	border-color: #808080;
+	border-style: solid;
+}
+
+.NumericStepper {
+	border-skin: Embed(source="../assets/numericstepperBG.png", 
+			scaleGridTop="8",scaleGridLeft="2",scaleGridRight="34",scaleGridBottom="16");
+	up-arrow-skin: Embed(source="../assets/up.png");
+	down-arrow-skin: Embed(source="../assets/down.png");
+	font-family: Arial;
+	font-size: 12;
+	font-weight: normal;
+	color: #000000;
+	vertical-align: middle;	
+	padding-left: 7;
+	padding-right: 7;
+}
+
+
+.GridItem {
+	vertical-align: middle;
+}

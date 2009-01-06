@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tc:LaunchWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:pages="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*" styleName="WidgetPanel"
+    xmlns:tc="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.*" title="Launch a contest"
+    width="1000" creationComplete="initComponent()">
+    <mx:Style source="Style.css" />
+
+    <mx:Script>
+        <![CDATA[
+            import mx.effects.Resize;
+            import mx.events.ResizeEvent;
+            import mx.events.StateChangeEvent;
+            import mx.events.EffectEvent;
+            import mx.effects.Fade;
+            import mx.containers.HBox;
+            import flash.net.URLLoader;
+            import flash.net.URLRequest;
+            import flash.events.Event;
+            import mx.controls.Alert;
+            import flash.utils.Timer;
+            import flash.events.TimerEvent;
+            import mx.events.SliderEvent;
+            
+            
+            private function initComponent():void {
+                this.currentState = "ContestSelectionState";
+                this.height = 750;
+                details.widgetHeight = 770;
+                specf.widgetHeight = 800;
+                back.visible = false;
+                //read hints.xml data
+                getData(null);
+                //var url:URLRequest = new URLRequest("http://./hints.xml");
+//                var loader:URLLoader = new URLLoader();
+//                loader.addEventListener(Event.COMPLETE, getData);
+//                loader.load(url);
+            }
+            
+            //after loading the xml file, fetch data
+            private function getData(event:Event):void {
+//                var loader:URLLoader = event.target as URLLoader;
+                result = <launch_contest>
+  <steps>
+    <details>
+      <fields>
+        <field name="Title">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="Introduction">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="Primary Goal">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="Target Audience">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="Brand Guidelines">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="Like and Dislikes">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="Criteria">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="Colors">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="Fonts">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="Size">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="Additional Requirements or Restrictions">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+        <field name="File Description">
+            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+        </field>
+      </fields>
+      <hints>
+        <hint field="Introduction"></hint>
+        <hint field="Primary Goals"></hint>
+        <hint field="Introduction"></hint>
+        <hint field="Introduction"></hint>
+        <hint field="Introduction"></hint>
+        <hint field="Introduction"></hint>
+      </hints>
+    </details>
+  </steps>
+</launch_contest>;
+                details.titleHint = result.steps.details.fields.field.(@name == "Title").hint;
+                details.introductionHint = result.steps.details.fields.field.(@name == "Introduction").hint;
+                details.primaryGoalHint = result.steps.details.fields.field.(@name == "Primary Goal").hint;
+                details.targetAudienceHint = result.steps.details.fields.field.(@name == "Target Audience").hint;
+                details.brandGuidelinesHint = result.steps.details.fields.field.(@name == "Brand Guidelines").hint;
+                details.likeAndDislikesHint = result.steps.details.fields.field.(@name == "Like and Dislikes").hint;
+                details.criteriaHint = result.steps.details.fields.field.(@name == "Criteria").hint;
+                specf.ColorsHint = result.steps.details.fields.field.(@name == "Colors").hint;
+                specf.FontsHint = result.steps.details.fields.field.(@name == "Fonts").hint;
+                specf.SizeHint = result.steps.details.fields.field.(@name == "Size").hint;
+                specf.AdditionalHint = result.steps.details.fields.field.(@name == "Additional Requirements or Restrictions").hint;
+                attch.FileDescHint = result.steps.details.fields.field.(@name == "File Description").hint;
+                
+                details.mainWidget = this;
+                specf.mainWidget = this;
+            }
+            
+            private function next(event:EffectEvent = null):void {
+                if (this.currentState == "ContestSelectionState"){
+                    if (contestSelect.contestType.selectedValue == null) {
+                        Alert.show("Please select a contest type!");
+                        return;
+                    }
+                   //Currently only implement Studio constest type
+                   if (contestSelect.contestType.selectedValue != "Studio"){
+                       return;
+                   }
+                   this.currentState = "OverViewState";
+                   this.height = 660;
+                   back.visible = true;
+                   
+                   review.cstTypeStep1 = contestSelect.contestType.selectedValue.toString();
+                   hideArrow(step1arrow);
+                   showArrow(step2arrow);
+                }
+                else if(this.currentState == "OverViewState"){
+                    //validate input
+                    if (overView.studioType.selectedValue == null ||
+                          overView.firstPlace.text == "" || overView.secondPlace.text == "" ||
+                          overView.thirdPlace.text == "" || overView.fourthPlace.text == "" ||
+                          overView.fifthPlace.text == "") {
+                        Alert.show("You must input values into all required fields!");
+                        return;
+                    }
+                   this.currentState = "DetailsState";
+                   
+                   review.cstTypeStep2 = overView.studioType.selectedValue.toString();
+                   review.firstPrize = overView.firstPlace.text;
+                   review.secondPrize = overView.secondPlace.text;
+                   review.thirdPrize = overView.thirdPlace.text;
+                   review.fourthPrize = overView.fourthPlace.text;
+                   review.fifthPrize = overView.fifthPlace.text;
+                   review.adminFee = overView.adminf.text;
+                   review.contestTotal = overView.cntstTtl.text;
+                   
+                   this.height = details.widgetHeight;
+                   hideArrow(step2arrow);
+                   showArrow(step3arrow);
+                }
+                else if(this.currentState == "DetailsState"){
+                   //validate input
+                   if(details.ctInput.text == "" || details.introInput.text == "" || 
+                      details.glsInput.text == "" || details.audInput.text == "" ||
+                      details.gdInput.text == "" || details.lkInput.text == "" || details.crtInput.text == ""){
+                        Alert.show("You must input values into all required fields!");
+                        return;
+                   }
+                   this.currentState = "SpecificationsState";
+                   this.height = specf.widgetHeight;
+                   
+                   review.contentTitleStr = details.ctInput.text;
+                   review.IntroductionStr = details.introInput.text;
+                   review.glsInputStr = details.glsInput.text;
+                   review.audInputStr = details.audInput.text;
+                   review.gdInputStr = details.gdInput.text;
+                   review.lkInputStr = details.lkInput.text;
+                   review.crtInputStr = details.crtInput.text;
+                   hideArrow(step3arrow);
+                   showArrow(step4arrow);
+                }
+                else if(this.currentState == "SpecificationsState"){
+                   //validate input
+                   if(specf.colorInput.text == "" || specf.fontInput.text == "" || 
+                      specf.sizeInput.text == "" || specf.addReInput.text == "" ||
+                      specf.fileFormatInput.text == "" ){
+                        Alert.show("You must input values into all required fields!");
+                        return;
+                   }
+                   this.currentState = "AttachFilesState";
+                   
+                   review.colorInputStr = specf.colorInput.text;
+                   review.fontInputStr = specf.fontInput.text;
+                   review.sizeInputStr = specf.sizeInput.text;
+                   review.addReInputStr = specf.addReInput.text;
+                   var fm:String = "";
+                   if (specf.psdChb.selected){
+                      fm = specf.psdChb.label;
+                   }
+                   if (specf.aiChb.selected){
+                       if (fm == "")
+                           fm = specf.aiChb.label;
+                       else
+                           fm += ", "+specf.aiChb.label;
+                   }
+                   if (specf.epsChb.selected){
+                       if (fm == "")
+                           fm = specf.epsChb.label;
+                       else
+                           fm  += ", "+specf.epsChb.label;
+                   }
+                   
+                   if (specf.fileFormatInput.text != "")
+                       review.fileFormatInputStr = fm+", "+specf.fileFormatInput.text;
+                   this.height = 600;
+                   hideArrow(step4arrow);
+                   showArrow(step5arrow);
+                }
+                else if(this.currentState == "AttachFilesState"){
+                   //validate input
+                   if(attch.fileDescInput.text == ""){
+                        Alert.show("You must input values into all required fields!");
+                        return;
+                   }
+                   this.currentState = "ScheduleState";
+                   
+                   this.height = 750;
+                   hideArrow(step5arrow);
+                   showArrow(step6arrow);
+                }
+                else if(this.currentState == "ScheduleState"){
+                   if(!sched.termCheckBox.selected){
+                       Alert.show("Please agree to TopCoder Direct Terms!");
+                       return;
+                   }
+                   if(sched.dfStart.selectedDate == null || sched.dfEnd.selectedDate == null){
+                       Alert.show("Please choose start date or end date!");
+                       return;
+                   }
+                   if(sched.dfStart.selectedDate.getTime() >= sched.dfEnd.selectedDate.getTime()){
+                       Alert.show("start date can not be later than end date!");
+                       return;
+                   }
+                   this.currentState = "ReviewState";
+
+                   review.fromDate = sched.dfStart.selectedDate;
+                   review.fromTime = sched.CmbHourStart.selectedItem.label+":"+sched.CmbMinuteStart.selectedItem.label+" "+ sched.AMPMStart.selectedValue.toString()+" "+sched.timezoneStart.text;
+                   review.toDate = sched.dfEnd.selectedDate;
+                   review.toTime = sched.CmbHourEnd.selectedItem.label+":"+sched.CmbMinuteEnd.selectedItem.label+" "+ sched.AMPMEnd.selectedValue.toString()+" "+sched.timezoneEnd.text;
+
+                   review.setAllValues();
+
+                   this.height = 1530;
+                   hideArrow(step6arrow);
+                   showArrow(step7arrow);
+                } else if (this.currentState == "ReviewState") {
+                    this.currentState = "ActivateState";
+                    save.visible = false;
+                    this.height = 850;
+                    hideArrow(step7arrow);
+                    showArrow(step8arrow);
+                    setButton(1);
+                } else if (this.currentState == "ActivateState") {
+                    save.visible = false;
+                    var index:int = activate.goToNext();
+                    setButton(index);
+                }
+                
+            }
+            
+            private function setButton(index:int):void {
+                switch (index) {
+                    case 1:
+                        goNext.label = "Confirm Order";
+                        goNext.visible = true;
+                        back.visible = true;
+                        break;
+                    case 2:
+                        goNext.label = "Submit for Processing";
+                        goNext.visible = true;
+                        back.visible = true;
+                        break;
+                    case 3:
+                        goNext.label = "Submit Purchase";
+                        goNext.visible = true;
+                        back.visible = true;
+                        break;
+                    case 4:
+                        goNext.visible = false;
+                        back.visible = false;
+                        break;
+                    case 5:
+                        goNext.visible = false;
+                        back.visible = false;
+                        break;
+                    default:
+                        goNext.label = "Continue -->";
+                        goNext.visible = true;
+                        back.visible = true;
+                }       
+            }
+            
+            private function previous():void {
+                if (this.currentState == "ActivateState") {
+                    var index:int = activate.gotoPrev();
+                    setButton(index);
+                    if (index <= 0) {
+                        this.currentState = "ReviewState";
+                        save.visible = true;
+                        this.height = 1530;
+                       step8arrow.visible = false;
+                       step8done.visible = false;
+                       showArrow(step7arrow);
+                       step8Text.setStyle("color", "#a8a8a8");
+                    }
+                } else if (this.currentState == "ReviewState"){
+                   this.currentState = "ScheduleState";
+                   this.height = 750;
+                   step7arrow.visible = false;
+                   step7done.visible = false;
+                   showArrow(step6arrow);
+                   step7Text.setStyle("color", "#a8a8a8");
+                }
+                else if(this.currentState == "ScheduleState"){
+                   this.currentState = "AttachFilesState";
+                   this.height = 600;
+                   step6arrow.visible = false;
+                   step6done.visible = false;
+                   showArrow(step5arrow);
+                   step6Text.setStyle("color", "#a8a8a8");
+                }
+                else if(this.currentState == "AttachFilesState"){
+                   this.currentState = "SpecificationsState";
+                   this.height = specf.widgetHeight;
+                   step5arrow.visible = false;
+                   step5done.visible = false;
+                   showArrow(step4arrow);
+                   step5Text.setStyle("color", "#a8a8a8");
+                }
+                else if(this.currentState == "SpecificationsState"){
+                   this.currentState = "DetailsState";
+                   this.height = details.widgetHeight;
+                   step4arrow.visible = false;
+                   step4done.visible = false;
+                   showArrow(step3arrow);
+                   step4Text.setStyle("color", "#a8a8a8");
+                }
+                else if(this.currentState == "DetailsState"){
+                   this.currentState = "OverViewState";
+                   this.height = 660;
+                   step3arrow.visible = false;
+                   step3done.visible = false;
+                   showArrow(step2arrow);
+                   step3Text.setStyle("color", "#a8a8a8");
+                }
+                else if(this.currentState == "OverViewState"){
+                   this.currentState = "ContestSelectionState";
+                   this.height = 750;
+                   back.visible = false;
+                   
+                   step2arrow.visible = false;
+                   step2done.visible = false;
+                   showArrow(step1arrow);
+                   step2Text.setStyle("color", "#a8a8a8");
+                }
+            }
+            public function goToStep1():void {
+                previous();
+                previous();
+                previous();
+                previous();
+                previous();
+                previous();
+            }
+            
+            public function goToStep2():void {
+                previous();
+                previous();
+                previous();
+                previous();
+                previous();
+            }
+            
+            public function goToStep3():void {
+                previous();
+                previous();
+                previous();
+                previous();
+            }
+            
+            public function goToStep4():void {
+                previous();
+                previous();
+                previous();
+            }
+            
+            public function goToStep5():void {
+                previous();
+                previous();
+            }
+            
+            public function goToStep6():void {
+                previous();
+            }
+            
+            private function showArrow(arrow:Image):void {
+                arrow.visible = true;
+                arrow.includeInLayout = true;
+                var box:HBox = arrow.parent as HBox;
+                if (box.numChildren == 5) {
+                    var done:Image = box.getChildAt(4) as Image;
+                    if (done) {
+                        done.visible = false;
+                        done.includeInLayout = false;   
+                    }
+                    var label:Label = box.getChildAt(1) as Label;
+                    label.setStyle("color", "#000000");
+                }
+                
+            }
+            
+            private function hideArrow(arrow:Image):void {
+                arrow.visible = false;
+                arrow.includeInLayout = false;
+                var box:HBox = arrow.parent as HBox;
+                if (box.numChildren == 5) {
+                    var done:Image = box.getChildAt(4) as Image;
+                    if (done) {
+                        done.visible = true;
+                        done.includeInLayout = true;    
+                    }
+                    var label:Label = box.getChildAt(1) as Label;
+                    label.setStyle("color", "#a8a8a8");
+                }
+                
+            }
+        ]]>
+    </mx:Script>
+     
+     <mx:Spacer height="5" />
+     <mx:HBox width="100%" height="100%" horizontalGap="0" >
+         <mx:VBox width="200" height="100%" paddingTop="15" verticalGap="20" 
+                horizontalScrollPolicy="off">
+             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5"
+                    verticalAlign="middle">
+                 <mx:Box backgroundImage="../assets/step.png"
+                        width="24" height="24" paddingTop="2"
+                        fontFamily="Arial" fontSize="14" color="#1d1d1d">
+                    <mx:Label width="100%" height="100%" textAlign="center" text="1" />
+                 </mx:Box>
+                 <mx:Label id="step1Text" text="Contest Selection" fontWeight="bold"
+                        fontFamily="Arial" color="#000000" fontSize="14" />
+                 <mx:Spacer width="100%" />
+                 <mx:Image id="step1arrow" source="@Embed('../assets/arrow.png')" visible="true" includeInLayout="true"/>
+                 <mx:Image id="step1done" source="@Embed('../assets/done.png')" visible="false" includeInLayout="false"/>
+             </mx:HBox>
+             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5"
+                    verticalAlign="middle">
+                 <mx:Box backgroundImage="../assets/step.png"
+                        width="24" height="24" paddingTop="2"
+                        fontFamily="Arial" fontSize="14" color="#1d1d1d">
+                    <mx:Label width="100%" height="100%" textAlign="center" text="2" />
+                 </mx:Box>
+                 <mx:Label id="step2Text" text="Overview" fontWeight="bold" color="#a8a8a8"
+                        fontFamily="Arial" fontSize="14" />
+                 <mx:Spacer width="100%" />
+                 <mx:Image id="step2arrow" source="@Embed('../assets/arrow.png')" visible="false"/>
+                 <mx:Image id="step2done" source="@Embed('../assets/done.png')" visible="false"/>
+             </mx:HBox>
+             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5"
+                    verticalAlign="middle">
+                 <mx:Box backgroundImage="../assets/step.png"
+                        width="24" height="24" paddingTop="2"
+                        fontFamily="Arial" fontSize="14" color="#1d1d1d">
+                    <mx:Label width="100%" height="100%" textAlign="center" text="3" />
+                 </mx:Box>
+                 <mx:Label id="step3Text" text="Details" fontWeight="bold" color="#a8a8a8"
+                        fontFamily="Arial" fontSize="14" />
+                 <mx:Spacer width="100%" />
+                 <mx:Image id="step3arrow" source="@Embed('../assets/arrow.png')" visible="false"/>
+                 <mx:Image id="step3done" source="@Embed('../assets/done.png')" visible="false"/>
+             </mx:HBox>
+             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5"
+                    verticalAlign="middle">
+                 <mx:Box backgroundImage="../assets/step.png"
+                        width="24" height="24" paddingTop="2"
+                        fontFamily="Arial" fontSize="14" color="#1d1d1d">
+                    <mx:Label width="100%" height="100%" textAlign="center" text="4" />
+                 </mx:Box>
+                 <mx:Label id="step4Text" text="Specifications" fontWeight="bold" color="#a8a8a8"
+                        fontFamily="Arial" fontSize="14" />
+                 <mx:Spacer width="100%" />
+                 <mx:Image id="step4arrow" source="@Embed('../assets/arrow.png')" visible="false"/>
+                 <mx:Image id="step4done" source="@Embed('../assets/done.png')" visible="false"/>
+             </mx:HBox>
+             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5"
+                    verticalAlign="middle">
+                 <mx:Box backgroundImage="../assets/step.png"
+                        width="24" height="24" paddingTop="2"
+                        fontFamily="Arial" fontSize="14" color="#1d1d1d">
+                    <mx:Label width="100%" height="100%" textAlign="center" text="5" />
+                 </mx:Box>
+                 <mx:Label id="step5Text" text="Attach Files" fontWeight="bold" color="#a8a8a8"
+                        fontFamily="Arial" fontSize="14" />
+                 <mx:Spacer width="100%" />
+                 <mx:Image id="step5arrow" source="@Embed('../assets/arrow.png')" visible="false"/>
+                 <mx:Image id="step5done" source="@Embed('../assets/done.png')" visible="false"/>
+             </mx:HBox>
+             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5"
+                    verticalAlign="middle">
+                 <mx:Box backgroundImage="../assets/step.png"
+                        width="24" height="24" paddingTop="2"
+                        fontFamily="Arial" fontSize="14" color="#1d1d1d">
+                    <mx:Label width="100%" height="100%" textAlign="center" text="6" />
+                 </mx:Box>
+                 <mx:Label id="step6Text" text="Schedule" fontWeight="bold" color="#a8a8a8"
+                        fontFamily="Arial" fontSize="14" />
+                 <mx:Spacer width="100%" />
+                 <mx:Image id="step6arrow" source="@Embed('../assets/arrow.png')" visible="false"/>
+                 <mx:Image id="step6done" source="@Embed('../assets/done.png')" visible="false"/>
+             </mx:HBox>
+             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5"
+                    verticalAlign="middle">
+                 <mx:Box backgroundImage="../assets/step.png"
+                        width="24" height="24" paddingTop="2"
+                        fontFamily="Arial" fontSize="14" color="#1d1d1d">
+                    <mx:Label width="100%" height="100%" textAlign="center" text="7" />
+                 </mx:Box>
+                 <mx:Label id="step7Text" text="Review" fontWeight="bold" color="#a8a8a8"
+                        fontFamily="Arial" fontSize="14" />
+                 <mx:Spacer width="100%" />
+                 <mx:Image id="step7arrow" source="@Embed('../assets/arrow.png')" visible="false"/>
+                 <mx:Image id="step7done" source="@Embed('../assets/done.png')" visible="false"/>
+             </mx:HBox>
+             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5"
+                    verticalAlign="middle">
+                 <mx:Box backgroundImage="../assets/step.png"
+                        width="24" height="24" paddingTop="2"
+                        fontFamily="Arial" fontSize="14" color="#1d1d1d">
+                    <mx:Label width="100%" height="100%" textAlign="center" text="8" />
+                 </mx:Box>
+                 <mx:Label id="step8Text" text="Activate" fontWeight="bold" color="#a8a8a8"
+                        fontFamily="Arial" fontSize="14" />
+                 <mx:Spacer width="100%" />
+                 <mx:Image id="step8arrow" source="@Embed('../assets/arrow.png')" visible="false"/>
+                 <mx:Image id="step8done" source="@Embed('../assets/done.png')" visible="false"/>
+             </mx:HBox>
+         </mx:VBox>
+         <mx:VRule height="100%" />
+         <mx:VBox width="100%" height="100%" verticalGap="0" paddingRight="8" id="mainPanel">
+             <mx:Spacer height="5" />
+             <pages:ContestSelection id="contestSelect" />
+             <pages:OverView id="overView" />
+             <pages:Details id="details" />
+             <pages:Specifications id="specf" />
+             <pages:AttachFiles id="attch" />
+             <pages:Schedule id="sched" />
+             <pages:Review id="review" />
+             <pages:PaymentContest id="activate" width="100%" />
+
+             <mx:HBox paddingBottom="20" paddingLeft="20" paddingRight="10" width="100%" >
+                 <mx:Button id="back" label="&lt;-- Back" cornerRadius="13" click="previous()"/>
+                 <mx:Spacer width="100%"/>
+                 <mx:Button id="save" label="Save as Draft" cornerRadius="13"/>
+                 <mx:Button id="goNext" label="Continue -->" cornerRadius="13" click="next()"/>
+             </mx:HBox>
+         </mx:VBox>
+     </mx:HBox>
+     
+    <tc:states>
+        <mx:State name="ContestSelectionState">
+            <mx:RemoveChild target="{overView}"/>
+            <mx:RemoveChild target="{details}"/>
+            <mx:RemoveChild target="{specf}"/>
+            <mx:RemoveChild target="{attch}"/>
+            <mx:RemoveChild target="{sched}"/>
+            <mx:RemoveChild target="{review}"/>
+            <mx:RemoveChild target="{activate}"/>
+        </mx:State>
+        
+        <mx:State name="OverViewState">
+            <mx:RemoveChild target="{contestSelect}"/>
+            <mx:RemoveChild target="{details}"/>
+            <mx:RemoveChild target="{specf}"/>
+            <mx:RemoveChild target="{attch}"/>
+            <mx:RemoveChild target="{sched}"/>
+            <mx:RemoveChild target="{review}"/>
+            <mx:RemoveChild target="{activate}"/>
+        </mx:State>
+        
+        <mx:State name="DetailsState">
+            <mx:RemoveChild target="{contestSelect}"/>
+            <mx:RemoveChild target="{overView}"/>
+            <mx:RemoveChild target="{specf}"/>
+            <mx:RemoveChild target="{attch}"/>
+            <mx:RemoveChild target="{sched}"/>
+            <mx:RemoveChild target="{review}"/>
+            <mx:RemoveChild target="{activate}"/>
+        </mx:State>
+        
+        <mx:State name="SpecificationsState">
+            <mx:RemoveChild target="{contestSelect}"/>
+            <mx:RemoveChild target="{overView}"/>
+            <mx:RemoveChild target="{details}"/>
+            <mx:RemoveChild target="{attch}"/>
+            <mx:RemoveChild target="{sched}"/>
+            <mx:RemoveChild target="{review}"/>
+            <mx:RemoveChild target="{activate}"/>
+        </mx:State>
+        
+        <mx:State name="AttachFilesState">
+            <mx:RemoveChild target="{contestSelect}"/>
+            <mx:RemoveChild target="{overView}"/>
+            <mx:RemoveChild target="{details}"/>
+            <mx:RemoveChild target="{specf}"/>
+            <mx:RemoveChild target="{sched}"/>
+            <mx:RemoveChild target="{review}"/>
+            <mx:RemoveChild target="{activate}"/>
+        </mx:State>
+        
+        <mx:State name="ScheduleState">
+            <mx:RemoveChild target="{contestSelect}"/>
+            <mx:RemoveChild target="{overView}"/>
+            <mx:RemoveChild target="{details}"/>
+            <mx:RemoveChild target="{specf}"/>
+            <mx:RemoveChild target="{attch}"/>
+            <mx:RemoveChild target="{review}"/>
+            <mx:RemoveChild target="{activate}"/>
+        </mx:State>
+        
+        <mx:State name="ReviewState">
+            <mx:RemoveChild target="{contestSelect}"/>
+            <mx:RemoveChild target="{overView}"/>
+            <mx:RemoveChild target="{details}"/>
+            <mx:RemoveChild target="{specf}"/>
+            <mx:RemoveChild target="{attch}"/>
+            <mx:RemoveChild target="{sched}"/>
+            <mx:RemoveChild target="{activate}"/>
+        </mx:State>
+                
+        <mx:State name="ActivateState">
+            <mx:RemoveChild target="{contestSelect}"/>
+            <mx:RemoveChild target="{overView}"/>
+            <mx:RemoveChild target="{details}"/>
+            <mx:RemoveChild target="{specf}"/>
+            <mx:RemoveChild target="{attch}"/>
+            <mx:RemoveChild target="{sched}"/>
+            <mx:RemoveChild target="{review}"/>
+        </mx:State>
+    </tc:states>
+    
+</tc:LaunchWidgetCodeBehind>

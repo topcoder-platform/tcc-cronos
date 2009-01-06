@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Grid xmlns:mx="http://www.adobe.com/2006/mxml" width="100%">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Button;
+			import mx.core.UIComponent;
+			import mx.validators.Validator;
+			import mx.validators.ValidationResult;
+			import mx.controls.Alert;
+			import mx.events.ValidationResultEvent;
+			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
+			
+			public function saveData():int {
+				var inputs:Array = [cardname, address, city, state, code, country, phone, email];
+				var model:Model = Model.instance;
+				if (byPass.selected) {
+					 for each (var target:TextInput in inputs) {
+						removeValidate(target);
+					} 
+					if (doValidate(order)) {
+						model.purchaseOrder = order.text;
+						return 3;
+					} else {
+						showErrorMsg();
+						return -1;
+					}
+				}  else {
+					removeValidate(order);
+					var errors:Array = Validator.validateAll([ccv]);
+					var result:Boolean = true;
+					if (errors && errors.length > 0) {
+						result = false;
+					} else {
+						// Valid format for visa 4013 0714 3157 6550
+						result = true;
+						model.cardType = cardTypeCombo.selectedItem.data;
+						model.cardNum = cardNum.text;
+						model.cardExpDateStr = month.value + "/" + year.value;
+					}
+					for each (var item:TextInput in inputs) {
+						result = result && doValidate(item);
+						model[item.id] = item.text;
+					}
+					if (result) {
+						return 2;
+					} else {
+						showErrorMsg();
+						return -1;
+					}
+				} 
+				return true;
+			}
+			
+			private function showErrorMsg():void {
+				Alert.show("Some fields are missing. Please check!");
+			}
+			
+			private function removeValidate(target:TextInput):void {
+				if (target.text.length <= 0) {
+					target.text = "12";
+					doValidate(target);
+					commonValidator.source = null;
+					target.text = "";
+				}
+			}
+			
+			private function doValidate(target:TextInput):Boolean {
+				commonValidator.source = target;
+				var errors:Array = Validator.validateAll([commonValidator]);
+
+				if (errors && errors.length > 0) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+			
+			private function checkMonth():void {
+				if (month.value > 12) {
+					month.value = 1;
+					year.value++;
+				} else if (month.value < 1) {
+					month.value = 12;
+					year.value--;
+				}
+			}
+			
+			
+		]]>
+	</mx:Script>
+	<mx:Model id="creditcard">
+		<card>    
+            <cardType>{cardTypeCombo.selectedItem.data}</cardType>
+            <cardNumber>{cardNum.text}</cardNumber>
+        </card>
+	</mx:Model>
+	<mx:CreditCardValidator id="ccv" cardTypeSource="{creditcard}" cardTypeProperty="cardType"
+        	cardNumberSource="{creditcard}" cardNumberProperty="cardNumber"
+        	cardTypeListener="{cardTypeCombo}"
+        	cardNumberListener="{cardNum}" />
+	<mx:StringValidator id="commonValidator" property="text"  required="true"/>
+	<mx:GridRow width="100%">
+		<mx:GridItem width="100%">
+			<mx:Label text="Credit Card Information" styleName="header" />
+		</mx:GridItem>
+		<mx:GridItem width="100%">
+			<mx:Label text="Other Payment Options" styleName="header" />
+		</mx:GridItem>
+	</mx:GridRow>
+	<mx:GridRow  width="100%">
+		<mx:GridItem width="100%">
+			<mx:VBox width="100">
+				<mx:Label text="Card Number:" styleName="contentBlack" />
+				<mx:Label text="Card Type:" styleName="contentBlack" />
+				<mx:Label text="Expiration Date:" styleName="contentBlack" />
+			</mx:VBox>
+			<mx:VBox width="100%">
+				<mx:TextInput id="cardNum" width="100%" height="20" />
+				<mx:ComboBox width="100%" height="20" styleName="combobox" id="cardTypeCombo">
+					<mx:dataProvider>
+                        <mx:Object label="Visa" data="Visa"/>
+						<mx:Object label="MasterCard" data="MasterCard"/>
+					</mx:dataProvider>
+				</mx:ComboBox>
+				<mx:HBox width="100%">
+					<mx:NumericStepper minimum="0" maximum="13" value="12" id="month"
+							height="20" width="50" styleName="NumericStepper" valueCommit="checkMonth()" />
+					<mx:Text text="/" />
+					<mx:NumericStepper minimum="1800" maximum="2800" value="2008" id="year"
+							height="20" width="70" styleName="NumericStepper" />
+				</mx:HBox>
+			</mx:VBox>
+			<mx:VBox width="10" height="100%" />
+		</mx:GridItem>
+		<mx:GridItem width="100%">
+			<mx:VBox width="100%">
+				<mx:VBox width="100%" height="100%" borderStyle="solid" 
+						paddingLeft="10" paddingTop="10" paddingBottom="10" paddingRight="19">
+					<mx:CheckBox id="byPass" selected="false" label="Bypass Credit Card Payment"
+							styleName="content" />
+					<mx:HBox width="100%">
+						<mx:Label text="Purchase Order #" styleName="content" />
+						<mx:TextInput id="order" width="100%" height="20" />
+					</mx:HBox>
+					<mx:HBox>
+						<mx:Text text="For invoiced clients only. To learn more. " fontSize="11"
+								fontWeight="normal" styleName="contentGrey" />
+						<mx:LinkButton label="click here." />
+					</mx:HBox>
+				</mx:VBox>
+			</mx:VBox>
+		</mx:GridItem>
+	</mx:GridRow>
+	<mx:GridRow width="100%" >
+		<mx:GridItem width="100%">
+			<mx:Label text="Billing Information" styleName="header" />
+		</mx:GridItem>
+		<mx:GridItem width="100%">
+			<mx:Label text="Not Ready to Activate?" styleName="header" />
+		</mx:GridItem>
+	</mx:GridRow>
+	<mx:GridRow width="100%">
+		<mx:GridItem width="100%">
+			<mx:VBox width="100" height="100%" styleName="contentBlack" verticalGap="13" >
+				<mx:Label text="Name on Card:" height="20" />
+				<mx:Label text="Address:" height="20" />
+				<mx:Label text="City:" height="20" />
+				<mx:Label text="State:" height="20" />
+				<mx:Label text="Zip Code:" height="20" />
+				<mx:Label text="Country:" height="20" />
+				<mx:Label text="Phone:" height="20" />
+				<mx:Label text="Email:" height="20" />
+			</mx:VBox>
+			<mx:VBox width="100%" height="100%" verticalGap="13" >
+				<mx:TextInput id="cardname" width="100%" height="20" />
+				<mx:TextInput id="address" width="100%" height="20" />
+				<mx:TextInput id="city" width="100%" height="20" />
+				<mx:TextInput id="state" width="100%" height="20" />
+				<mx:TextInput id="code" width="100%" height="20" />
+				<mx:TextInput id="country" width="100%" height="20" />
+				<mx:TextInput id="phone" width="100%" height="20" />
+				<mx:TextInput id="email" width="100%" height="20" />
+			</mx:VBox>
+			<mx:VBox width="10" height="100%" styleName="contentBlack" fontSize="18" verticalGap="13" >
+				<mx:Label text="*" height="20" />
+				<mx:Label text="*" height="20" />
+				<mx:Label text="*" height="20" />
+				<mx:Label text="*" height="20" />
+				<mx:Label text="*" height="20" />
+				<mx:Label text="*" height="20" />
+				<mx:Label text="*" height="20" />
+				<mx:Label text="*" height="20" />
+			</mx:VBox>
+		</mx:GridItem>
+		<mx:GridItem width="100%">
+			<mx:VBox width="100%" height="100%">
+				<mx:VBox width="100%" height="124" borderStyle="solid" 
+						paddingLeft="10" paddingTop="10" paddingBottom="10" paddingRight="19">
+					<mx:Text width="100%" text="Save your contest as a draft and activate it later." styleName="content" />
+					<mx:Text width="100%" text="Want to add another contest? Save this contest as a draft and pay for all of your contest at once." styleName="content" />
+					<mx:Spacer width="100%" height="100%" />
+					<mx:HBox width="100%" horizontalAlign="center">
+						<mx:Button label="Save as Draft" cornerRadius="13" />
+						<mx:Button label="Add A Contest" cornerRadius="13" />
+					</mx:HBox>
+				</mx:VBox>
+				<mx:HBox verticalAlign="middle" width="100%" paddingRight="8">
+					<mx:Text text="* Required Field" fontSize="14" styleName="contentBlack" />
+					<mx:Spacer width="100%" />
+					<mx:Image source="../assets/verisign.png" />
+				</mx:HBox>
+			</mx:VBox>
+		</mx:GridItem>
+	</mx:GridRow>
+</mx:Grid>

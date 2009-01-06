@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+          horizontalScrollPolicy="off" verticalScrollPolicy="off">
+    <mx:Script>
+	    <![CDATA[
+	        import flash.events.MouseEvent;
+	        import mx.containers.Panel;
+	        
+	        public var mainWidget:Panel;
+	        public var widgetHeight:Number;
+	        public var titleHint:String;
+	        public var introductionHint:String;
+	        public var primaryGoalHint:String;
+	        public var targetAudienceHint:String;
+	        public var brandGuidelinesHint:String;
+	        public var likeAndDislikesHint:String;
+	        public var criteriaHint:String;
+	        
+	        private static const ADDEDHEIGHT:Number = 80;
+	        
+	        private function showContentTitleHint(event:MouseEvent):void {
+	        	if (event.target.label == "[+ show hint]"){
+	        		event.target.label = "[- show hint]";
+	        		contentTitleHint.height = ADDEDHEIGHT;
+	        		contentTitleHint.text = titleHint;
+	        		contentTitleHint.visible = true;
+	        		mainWidget.height += ADDEDHEIGHT;
+	        		widgetHeight += ADDEDHEIGHT;
+	        	}else{
+	        		event.target.label = "[+ show hint]";
+                    contentTitleHint.height = 0;
+                    contentTitleHint.text = "";
+                    contentTitleHint.visible = false;
+                    mainWidget.height -= ADDEDHEIGHT;
+                    widgetHeight -= ADDEDHEIGHT;
+	        	}
+	        }
+	        
+	        private function showIntroductionHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]"){
+                    event.target.label = "[- show hint]";
+                    introHint.height = ADDEDHEIGHT;
+                    introHint.text = introductionHint;
+                    introHint.visible = true;
+                    mainWidget.height += ADDEDHEIGHT;
+                    widgetHeight += ADDEDHEIGHT;
+                }else{
+                    event.target.label = "[+ show hint]";
+                    introHint.height = 0;
+                    introHint.text = "";
+                    introHint.visible = false;
+                    mainWidget.height -= ADDEDHEIGHT;
+                    widgetHeight -= ADDEDHEIGHT;
+                }
+	        }
+	        
+	        private function showGoalsHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]"){
+                    event.target.label = "[- show hint]";
+                    goalsHint.height = ADDEDHEIGHT;
+                    goalsHint.text = primaryGoalHint;
+                    goalsHint.visible = true;
+                    mainWidget.height += ADDEDHEIGHT;
+                    widgetHeight += ADDEDHEIGHT;
+                }else{
+                    event.target.label = "[+ show hint]";
+                    goalsHint.height = 0;
+                    goalsHint.text = "";
+                    goalsHint.visible = false;
+                    mainWidget.height -= ADDEDHEIGHT;
+                    widgetHeight -= ADDEDHEIGHT;
+                }
+	        }
+	        
+            private function showAudienceHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]"){
+                    event.target.label = "[- show hint]";
+                    audienceHint.height = ADDEDHEIGHT;
+                    audienceHint.text = targetAudienceHint;
+                    audienceHint.visible = true;
+                    mainWidget.height += ADDEDHEIGHT;
+                    widgetHeight += ADDEDHEIGHT;
+                }else{
+                    event.target.label = "[+ show hint]";
+                    audienceHint.height = 0;
+                    audienceHint.text = "";
+                    audienceHint.visible = false;
+                    mainWidget.height -= ADDEDHEIGHT;
+                    widgetHeight -= ADDEDHEIGHT;
+                }
+            }
+            
+            private function showGuidelinesHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]"){
+                    event.target.label = "[- show hint]";
+                    guidelinesHint.height = ADDEDHEIGHT;
+                    guidelinesHint.text = brandGuidelinesHint;
+                    guidelinesHint.visible = true;
+                    mainWidget.height += ADDEDHEIGHT;
+                    widgetHeight += ADDEDHEIGHT;
+                }else{
+                    event.target.label = "[+ show hint]";
+                    guidelinesHint.height = 0;
+                    guidelinesHint.text = "";
+                    guidelinesHint.visible = false;
+                    mainWidget.height -= ADDEDHEIGHT;
+                    widgetHeight -= ADDEDHEIGHT;
+                }
+            }
+            
+            private function showLikeHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]"){
+                    event.target.label = "[- show hint]";
+                    likeHint.height = ADDEDHEIGHT;
+                    likeHint.text = likeAndDislikesHint;
+                    likeHint.visible = true;
+                    mainWidget.height += ADDEDHEIGHT;
+                    widgetHeight -= ADDEDHEIGHT;
+                }else{
+                    event.target.label = "[+ show hint]";
+                    likeHint.height = 0;
+                    likeHint.text = "";
+                    likeHint.visible = false;
+                    mainWidget.height -= ADDEDHEIGHT;
+                    widgetHeight -= ADDEDHEIGHT;
+                }
+            }
+            
+            private function showCriteriaHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]"){
+                    event.target.label = "[- show hint]";
+                    crtHint.height = ADDEDHEIGHT;
+                    crtHint.text = criteriaHint;
+                    crtHint.visible = true;
+                    mainWidget.height += ADDEDHEIGHT;
+                    widgetHeight += ADDEDHEIGHT;
+                }else{
+                    event.target.label = "[+ show hint]";
+                    crtHint.height = 0;
+                    crtHint.text = "";
+                    crtHint.visible = false;
+                    mainWidget.height -= ADDEDHEIGHT;
+                    widgetHeight -= ADDEDHEIGHT;
+                }
+            }
+	     ]]>
+    </mx:Script>
+    <mx:VBox paddingLeft="2" width="100%">
+        <mx:Label text="Contest Details" fontWeight="bold" fontSize="12"/>
+        <mx:Text width="100%" id="contestDetails">
+            <mx:text>
+				A successful competition begins with comprehensive, thoughtful prep work. Designers need specific information to get their creative
+				juices flowing to produce their best work to meet your needs. A great contest specification allows a designer to feel energized,
+				excited and connected to your project rather than staring at the drawing board feeling confused and unsure of which direction to take.
+            </mx:text>
+        </mx:Text>
+        
+        <mx:Spacer height="5"/>
+        
+        <mx:VBox width="100%" verticalGap="0">
+	        <mx:HBox >
+	            <mx:Label text="Content Title:" fontWeight="bold"/>
+	            <mx:TextInput id="ctInput" width="308" text="test"/>
+	            <mx:LinkButton label="[+ show hint]" click="showContentTitleHint(event)" />
+	        </mx:HBox>
+	        <mx:Text id="contentTitleHint" color="0x888888" width="500" height="0" visible="false">
+	        </mx:Text>
+	    </mx:VBox>
+        
+        <mx:Spacer height="5"/>
+        
+        <mx:VBox width="100%" verticalGap="0">
+	        <mx:HBox >
+	            <mx:Label text="Introduction:" fontWeight="bold"/>
+	            <mx:Spacer width="305"/>
+	            <mx:LinkButton label="[+ show hint]" click="showIntroductionHint(event)"/>
+	        </mx:HBox>
+	        <mx:Text id="introHint" height="0" color="0x888888" width="500" visible="false">
+            </mx:Text>
+	        <mx:TextArea id="introInput" width="500" height="50" text="test"/>
+        </mx:VBox>
+        
+        <mx:Spacer height="5"/>
+        
+        <mx:VBox width="100%" verticalGap="0">
+            <mx:HBox  width="500">
+                <mx:Label text="What are the primary goals for this design?" fontWeight="bold"/>
+                <mx:Spacer width="136"/>
+                <mx:LinkButton label="[+ show hint]" click="showGoalsHint(event)" />
+            </mx:HBox>
+            <mx:Text id="goalsHint" height="0" color="0x888888" width="500" visible="false">
+            </mx:Text>
+            <mx:TextArea id="glsInput" width="500" height="50" text="test"/>
+        </mx:VBox>
+        
+        <mx:Spacer height="5"/>
+        
+        <mx:VBox width="100%" verticalGap="0">
+            <mx:HBox  width="500">
+                <mx:Label text="Who is your target audience?" fontWeight="bold"/>
+                <mx:Spacer width="216"/>
+                <mx:LinkButton label="[+ show hint]" click="showAudienceHint(event)" />
+            </mx:HBox>
+            <mx:Text id="audienceHint" height="0" color="0x888888" width="500" visible="false">
+            </mx:Text>
+            <mx:TextArea id="audInput" width="500" height="50" text="test"/>
+        </mx:VBox>
+        
+        <mx:Spacer height="5"/>
+        
+        <mx:VBox width="100%" verticalGap="0">
+            <mx:HBox  width="500">
+                <mx:Label text="Does this project have any brand guidelines?" fontWeight="bold"/>
+                <mx:Spacer width="129"/>
+                <mx:LinkButton label="[+ show hint]" click="showGuidelinesHint(event)" />
+            </mx:HBox>
+            <mx:Text id="guidelinesHint" height="0" color="0x888888" width="500" visible="false">
+            </mx:Text>
+            <mx:TextArea id="gdInput" width="500" height="50" text="test"/>
+        </mx:VBox>
+        
+        <mx:Spacer height="5"/>
+        
+        <mx:VBox width="100%" verticalGap="0">
+            <mx:HBox width="530">
+                <mx:Label fontWeight="bold">
+                    <mx:text>
+                        <![CDATA[Are there designs, websites, etc. that you like and/or dislike? Why?]]>
+                    </mx:text>
+                </mx:Label>
+                <mx:Spacer width="1"/>
+                <mx:LinkButton label="[+ show hint]" click="showLikeHint(event)" />
+            </mx:HBox>
+            <mx:Text id="likeHint" height="0" color="0x888888" width="500" visible="false">
+            </mx:Text>
+            <mx:TextArea text="test" id="lkInput" width="500" height="50"/>
+        </mx:VBox>
+        
+        <mx:Spacer height="5"/>
+ 
+        <mx:VBox width="100%" verticalGap="0">
+            <mx:HBox width="500">
+                <mx:Label text="What criteria must the designers meet to win this contest?" fontWeight="bold"/>
+                <mx:Spacer width="50"/>
+                <mx:LinkButton label="[+ show hint]" click="showCriteriaHint(event)" />
+            </mx:HBox>
+            <mx:Text id="crtHint" height="0" color="0x888888" width="500" visible="false">
+            </mx:Text>
+            <mx:TextArea id="crtInput" width="500" height="50" text="test"/>
+        </mx:VBox>
+        
+    </mx:VBox>
+</mx:Canvas>
