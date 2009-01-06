@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tc:SubmissionViewerWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
+    title="Submission Viewer"
+    creationComplete="init()" width="98%" height="100%" >
+    <mx:Style source="Style.css" />
+    <mx:Script>
+        <![CDATA[
+            import mx.rpc.xml.SimpleXMLDecoder;
+            import mx.events.FlexEvent;
+            import mx.collections.SortField;
+            import mx.collections.Sort;
+            import mx.controls.Alert;
+            import mx.collections.ArrayCollection;
+            import mx.rpc.events.ResultEvent;
+            import mx.rpc.events.FaultEvent;
+            import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer;
+            import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer;
+            
+            private var rankList:ArrayCollection = new ArrayCollection();
+            [Bindable]
+            private var contestInfoList:ArrayCollection = new ArrayCollection();;
+            
+            [Bindable]
+            private var contestList:ArrayCollection = new ArrayCollection();
+            
+            [Bindable]
+            private var submissionList:ArrayCollection = new ArrayCollection();
+            private function init():void {
+                retrieveContestService.send();
+                retrieveSubService.send();
+            }
+            
+            [Bindable] 
+            private var activeSubmission:ArrayCollection = new ArrayCollection();
+            private var _submission:String = "<submissions><submission><id>12075</id><thumbnail>../assets/demoimage/5small.png</thumbnail><fullsizepreview>../assets/demoimage/5large.png</fullsizepreview><rank>3</rank></submission><submission><id>12078</id><thumbnail>../assets/demoimage/3small.png</thumbnail><fullsizepreview>../assets/demoimage/3large.png</fullsizepreview><rank></rank></submission><submission><id>12080</id><thumbnail>../assets/demoimage/5small.png</thumbnail><fullsizepreview>../assets/demoimage/5large.png</fullsizepreview><rank>5</rank></submission><submission><id>12084</id><thumbnail>../assets/demoimage/4small.png</thumbnail><fullsizepreview>../assets/demoimage/4large.png</fullsizepreview><rank>1</rank></submission><submission><id>12087</id><thumbnail>../assets/demoimage/2small.png</thumbnail><fullsizepreview>../assets/demoimage/2large.png</fullsizepreview><rank></rank></submission><submission><id>12088</id><thumbnail>../assets/demoimage/3small.png</thumbnail><fullsizepreview>../assets/demoimage/3large.png</fullsizepreview><rank></rank></submission><submission><id>12090</id><thumbnail>../assets/demoimage/5small.png</thumbnail><fullsizepreview>../assets/demoimage/5large.png</fullsizepreview><rank>2</rank></submission><submission><id>12093</id><thumbnail>../assets/demoimage/3small.png</thumbnail><fullsizepreview>../assets/demoimage/3large.png</fullsizepreview><rank></rank></submission><submission><id>12094</id><thumbnail>../assets/demoimage/4small.png</thumbnail><fullsizepreview>../assets/demoimage/4large.png</fullsizepreview><rank>4</rank></submission><submission><id>12096</id><thumbnail>../assets/demoimage/2small.png</thumbnail><fullsizepreview>../assets/demoimage/2large.png</fullsizepreview><rank></rank></submission><submission><id>12098</id><thumbnail>../assets/demoimage/3small.png</thumbnail><fullsizepreview>../assets/demoimage/3large.png</fullsizepreview><rank></rank></submission><submission><id>12099</id><thumbnail>../assets/demoimage/4small.png</thumbnail><fullsizepreview>../assets/demoimage/4large.png</fullsizepreview><rank></rank></submission><submission><id>12102</id><thumbnail>../assets/demoimage/2small.png</thumbnail><fullsizepreview>../assets/demoimage/2large.png</fullsizepreview><rank></rank></submission><submission><id>12107</id><thumbnail>../assets/demoimage/2small.png</thumbnail><fullsizepreview>../assets/demoimage/2large.png</fullsizepreview><rank></rank></submission><submission><id>12115</id><thumbnail>../assets/demoimage/5small.png</thumbnail><fullsizepreview>../assets/demoimage/5large.png</fullsizepreview><rank></rank></submission><submission><id>12121</id><thumbnail>../assets/demoimage/1small.png</thumbnail><fullsizepreview>../assets/demoimage/1large.png</fullsizepreview><rank>3</rank></submission><submission><id>12128</id><thumbnail>../assets/demoimage/3small.png</thumbnail><fullsizepreview>../assets/demoimage/3large.png</fullsizepreview><rank></rank></submission><submission><id>12136</id><thumbnail>../assets/demoimage/1small.png</thumbnail><fullsizepreview>../assets/demoimage/1large.png</fullsizepreview><rank>3</rank></submission><submission><id>12175</id><thumbnail>../assets/demoimage/5small.png</thumbnail><fullsizepreview>../assets/demoimage/5large.png</fullsizepreview><rank></rank></submission><submission><id>12217</id><thumbnail>../assets/demoimage/2small.png</thumbnail><fullsizepreview>../assets/demoimage/2large.png</fullsizepreview><rank>2</rank></submission><submission><id>12224</id><thumbnail>../assets/demoimage/4small.png</thumbnail><fullsizepreview>../assets/demoimage/4large.png</fullsizepreview><rank>1</rank></submission><submission><id>12225</id><thumbnail>../assets/demoimage/5small.png</thumbnail><fullsizepreview>../assets/demoimage/5large.png</fullsizepreview><rank></rank></submission><submission><id>12229</id><thumbnail>../assets/demoimage/4small.png</thumbnail><fullsizepreview>../assets/demoimage/4large.png</fullsizepreview><rank></rank></submission><submission><id>12231</id><thumbnail>../assets/demoimage/1small.png</thumbnail><fullsizepreview>../assets/demoimage/1large.png</fullsizepreview><rank>3</rank></submission><submission><id>12232</id><thumbnail>../assets/demoimage/2small.png</thumbnail><fullsizepreview>../assets/demoimage/2large.png</fullsizepreview><rank></rank></submission><submission><id>12233</id><thumbnail>../assets/demoimage/3small.png</thumbnail><fullsizepreview>../assets/demoimage/3large.png</fullsizepreview><rank>3</rank></submission></submissions>";
+            private var _contest:String = "<contests><contest status=\"active\"><name>Active Contest 1</name><id>12345</id></contest><contest status=\"active\"><name>Active Contest 2</name><id>12346</id></contest><contest status=\"active\"><name>Active Contest 3</name><id>12347</id></contest><contest status=\"active\"><name>Active Contest 4</name><id>12348</id></contest><contest status=\"past\"><name>Past Contest 1</name><id>54321</id></contest><contest status=\"past\"><name>Past Contest 2</name><id>54322</id></contest><contest status=\"past\"><name>Past Contest 3</name><id>54323</id></contest></contests>";
+            private function handleResult(event:ResultEvent=null):void {
+                var contestInfo:*;
+                if (event) {
+                    contestInfo = event.result.contests;    
+                } else {
+                    contestData = _contest;
+                    var xmlDoc:XMLDocument = new XMLDocument(contestData);
+                    var decoder:SimpleXMLDecoder = new SimpleXMLDecoder(true);
+                    var resultObj:Object = decoder.decodeXML(xmlDoc);
+                    contestInfo = resultObj.contests;
+                    
+                }
+                contestInfoList = new ArrayCollection();
+                if (contestInfo.hasOwnProperty("contest")) {
+                    if (contestInfo.contest.hasOwnProperty("name")) {
+                        // There is only 1 contest.
+                        contestInfoList.addItem(contestInfo.contest.valueOf());
+                    } else {
+                        for each (var item:* in contestInfo.contest) {
+                            contestInfoList.addItem(item.valueOf());
+                        }
+                    }
+                    doFilter();
+                }
+            }
+            
+            private function handleSubResult(event:ResultEvent=null):void {
+                for (var i:int = 0; i < 5; i++) {
+                    rankList.addItem(new Object());
+                }
+                var subList:*;
+                if (event) {
+                    subList = event.result.submissions;
+                } else {
+                    submissionData = _submission;
+                    var xmlDoc:XMLDocument = new XMLDocument(submissionData);
+                    var decoder:SimpleXMLDecoder = new SimpleXMLDecoder(true);
+                    var resultObj:Object = decoder.decodeXML(xmlDoc);
+                    subList = resultObj.submissions;
+                    
+                }
+                submissionList = new ArrayCollection();
+                var sort:Sort = new Sort();
+                sort.compareFunction = compareNumber;
+                submissionList.sort = sort;
+                if (subList.hasOwnProperty("submission")) {
+                    if (subList.submission.hasOwnProperty("id")) {
+                        // There is only 1 contest.
+                        var obj:Object = subList.submission.valueOf();
+                        submissionList.addItem(obj);
+                        setRankList(obj);
+                    
+                    } else {
+                        for each (var item:* in subList.submission) {
+                            submissionList.addItem(item.valueOf());
+                            setRankList(item.valueOf());
+                        }
+                    }
+                    setSubmission();
+                    list.selectedIndex = 0;
+                    handleSelect();
+                }
+            }
+            
+            private function handleFail(event:FaultEvent):void {
+                handleResult();
+            }
+            private function handleSubFail(event:FaultEvent):void {
+                handleSubResult();
+            }
+            
+            private function setRankList(item:Object):void {
+                if (item.rank && (item.rank is Number || item.rank.length > 0 )) {
+                    var index:int = parseInt(item.rank) - 1;
+                    var obj:Object = rankList.getItemAt(index);
+                    if (obj && obj.hasOwnProperty("id") && obj.hasOwnProperty("rank")) {
+                        obj.rank = "";
+                    }
+                    rankList.setItemAt(item, index);
+                }
+            }
+            private function doFilter():void {
+                contestList.removeAll();
+                for each (var item:* in contestInfoList) {
+                    if (showActive.selected && item.status == "active") {
+                        contestList.addItem(item);
+                    } else if (showPast.selected && item.status == "past") {
+                        contestList.addItem(item);
+                    }
+                }
+            }
+            
+            private function getItemIndex(array:ArrayCollection, item:Object):int {
+                if (item.hasOwnProperty("id")) {
+                    for (var i:int = 0; i < array.length; i++) {
+                        var obj:Object = array.getItemAt(i);
+                        if (obj.hasOwnProperty("id") && obj.id == item.id) {
+                            return i;
+                        }
+                    }
+                }
+                return -1;
+            }
+            private function goPrev():void {
+                var selectedItem:* = list.selectedItem;
+                if (submissionList.contains(selectedItem)) {
+                    var index:int = getItemIndex(submissionList, selectedItem);
+                    if (index > 0) {
+                        var prevItem:* = submissionList.getItemAt(index - 1);
+                        if (!activeSubmission.contains(prevItem)) {
+                            goUp();
+                        }
+                        list.selectedItem = prevItem;
+                        handleSelect();
+                    }
+                }
+            }
+            
+            
+            private function goNext():void {
+                var selectedItem:* = list.selectedItem;
+                if (submissionList.contains(selectedItem)) {
+                    var index:int = getItemIndex(submissionList, selectedItem);
+                    if (index < submissionList.length - 1) {
+                        var nextItem:* = submissionList.getItemAt(index + 1);
+                        if (!activeSubmission.contains(nextItem)) {
+                            goDown();
+                        }
+                        if (nextItem.id == "12121") {
+                            var i:int = 0;
+                        }
+                        list.selectedItem = nextItem;
+                        handleSelect();
+                    }
+                }
+            }
+            private var currentIndex:int = 0;
+            
+            private function goUp():void {
+                if (currentIndex <= 0 || submissionList.length == 0) {
+                    currentIndex = 0;
+                } else {
+                    if (activeSubmission.getItemAt(0) == 
+                            submissionList.getItemAt(0)) {
+                        // Do nothing here.
+                    } else {
+                        if (list.selectedIndex > activeSubmission.length - 3) {
+                            list.selectedItem = activeSubmission.getItemAt(list.selectedIndex - 2);
+                            handleSelect();
+                        }
+                        if (activeSubmission.length > 12) {
+                            activeSubmission.removeItemAt(12);
+                            if (activeSubmission.length > 12) {
+                                activeSubmission.removeItemAt(12);
+                            }
+                        }
+                        activeSubmission.addItemAt(submissionList.getItemAt((currentIndex - 1) * 2), 0);
+                        activeSubmission.addItemAt(submissionList.getItemAt((currentIndex - 1) * 2 + 1) , 1);
+                    }
+                    currentIndex--;
+                    hideShowUpDownArrow();
+                }
+            }
+            
+            private function goDown():void {
+                if (currentIndex < submissionList.length / 2 - 7 && submissionList.length > 0) {
+                    if (list.selectedIndex < 2) {
+                        list.selectedItem = activeSubmission.getItemAt(list.selectedIndex + 2);
+                        handleSelect();
+                    }
+                    
+                    activeSubmission.removeItemAt(0);
+                    activeSubmission.removeItemAt(0);
+                    if ((currentIndex + 7) * 2 < submissionList.length) {
+                        activeSubmission.addItem(submissionList.getItemAt((currentIndex + 7) * 2));
+                        if ((currentIndex + 7) * 2 + 1 < submissionList.length) {
+                            activeSubmission.addItem(submissionList.getItemAt((currentIndex + 7) * 2 + 1));
+                        }
+                    }
+                    currentIndex++;
+                    hideShowUpDownArrow();
+                }
+                
+            }
+            private function setSubmission():void {
+                activeSubmission = new ArrayCollection();
+                //trace("Clean the active submission.");
+                for (var i:int = currentIndex; i < 7 + currentIndex; i++) {
+                    if (i * 2 < submissionList.length) {
+                        var item:* = submissionList.getItemAt(i * 2);
+                        //trace("Get item at " + (i * 2).toString() + " with rank " + item.rank);
+                        activeSubmission.addItem(submissionList.getItemAt(i * 2));
+                    } else {
+                        break;
+                    }
+                    if (i * 2 + 1 < submissionList.length) {
+                        //var item:* = submissionList.getItemAt(i * 2 + 1);
+                        //trace("Get item at " + (i * 2 + 1).toString() + " with rank " + item.rank);
+                        activeSubmission.addItem(submissionList.getItemAt(i * 2 + 1));
+                    } else {
+                        break;
+                    }
+                }
+                hideShowUpDownArrow();
+            }
+            
+            private function hideShowUpDownArrow():void {
+                up.visible = (currentIndex > 0);
+                down.visible = (list.dataProvider[list.dataProvider.length - 1].id != submissionList.getItemAt(submissionList.length - 1).id);              
+            }
+            
+            private function compareNumber(a:Object, b:Object, fields:Array = null):int {
+                var rank1:String = a.rank;
+                var rank2:String = b.rank;
+                if (!rank1 && !rank2) {
+                    return 0;
+                } else if (!rank1) {
+                    return 1;
+                } else if (!rank2) {
+                    return -1;
+                } else {
+                    var r1:int = parseInt(rank1);
+                    var r2:int = parseInt(rank2);
+                    if (r1 > r2) {
+                        return 1;
+                    } else if (r2 > r1) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                }
+            }
+            
+            private function reorder():void {
+                currentIndex = 0;
+                var item:* = list.selectedItem;
+                submissionList.refresh();
+                setSubmission();
+                if (activeSubmission.contains(item)) {
+                    list.selectedItem = item;
+                } else {
+                    list.selectedIndex = 0;
+                }
+                handleSelect();
+            }
+            private var handClick:Boolean = false;
+            private function handleSelect():void {
+                var currentItem:* = list.selectedItem;
+                if (currentItem) {
+                    currentLabel.text = contestCombo.text + " -# " + currentItem.id;
+                    currnetImage.source = currentItem.fullsizepreview;
+                    handClick = false;
+                    if (currentItem.rank) {
+                        rankBar.selectedIndex = parseInt(currentItem.rank) - 1;
+                    } else {
+                        rankBar.selectedIndex = -1;
+                    }
+                    prev.visible = (list.selectedItem.id != submissionList.getItemAt(0).id);
+                    next.visible = (list.selectedItem.id != submissionList.getItemAt(submissionList.length - 1).id);
+                }
+            }
+            
+            private function handleContest():void {
+                handleSelect();
+                if (contestCombo && contestCombo.selectedItem && contestCombo.selectedItem.hasOwnProperty("feed")) {
+                    feed.text = contestCombo.selectedItem.feed;
+                } else if (feed) {
+                    feed.text = "";
+                }
+            }
+            
+            private function saveFeedBack():void {
+                if (contestCombo.selectedItem) {
+                    contestCombo.selectedItem.feed = feed.text;
+                }
+            }
+            private function setRank():void {
+                
+                if (list && list.selectedItem && rankBar.selectedIndex >= 0 && !handClick) {
+                    //trace("Selected rank is:" + rankBar.dataProvider[rankBar.selectedIndex]);
+                    var rank:String = rankBar.dataProvider[rankBar.selectedIndex] as String;
+                    var selectItem:* = list.selectedItem;
+                    if (rank == selectItem.rank) {
+                        rank = "";
+                        rankBar.selectedIndex = -1;
+                        trace("--------------------remove rank for the id:" + selectItem.id);
+                    } else {
+                        trace("--------------------set the rank for the id:" + selectItem.id + " as " + rank);
+                    }
+                    
+                    var index:int = getItemIndex(submissionList, selectItem);
+                    var item:Object = new Object();
+                    item.id = selectItem.id;
+                    item.thumbnail = selectItem.thumbnail;
+                    item.fullsizepreview = selectItem.fullsizepreview;
+                    item.rank = rank;
+                    list.dataProvider[list.selectedIndex] = item;
+                    if (index < 0) {
+                        trace("--------------------exception");
+                    }
+                    submissionList.setItemAt(item, index);
+                    if (rankList.contains(selectItem)) {
+                        index = getItemIndex(rankList, selectItem);
+                        rankList.setItemAt(new Object(), index);
+                    }
+                    setRankList(item);
+                    
+                } else if (handClick){
+                    handClick = false;
+                }
+                
+            }
+        ]]>
+    </mx:Script>
+    <mx:DefaultTileListEffect id="myDTLE"
+        fadeInDuration="10"
+        fadeOutDuration="10"
+        moveDuration="200"
+        color="0xffffff"/>
+    <mx:Fade alphaFrom="0" alphaTo="1" duration="1000" id="fade" />
+    <mx:HTTPService id="retrieveContestService" url="../assets/data/mock.xml"
+        fault="handleFail(event)" result="handleResult(event)" />
+    <mx:HTTPService id="retrieveSubService" url="../assets/data/submission.xml"
+        fault="handleSubFail(event)" result="handleSubResult(event)" />
+            
+    <mx:HBox width="100%" height="100%" paddingTop="10" paddingBottom="25">
+        <mx:VBox horizontalAlign="left" height="100%" width="200">
+            <mx:Button click="reorder()" styleName="priorBtn" />
+            <mx:VBox horizontalAlign="center" height="100%" width="100%"
+                    paddingLeft="0" paddingRight="0" >
+                <mx:Button id="up" styleName="up" click="goUp()" />
+                <mx:TileList id="list" rowCount="7" width="100%" columnCount="2"
+                        selectionDuration="0"
+                        dataProvider="{activeSubmission}" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer" itemsChangeEffect="{myDTLE}"
+                        verticalScrollPolicy="off" horizontalScrollPolicy="off" borderStyle="none"
+                        click="handleSelect()" allowMultipleSelection="false" allowDragSelection="false"/>
+                <mx:Button id="down" styleName="down" click="goDown()" />
+            </mx:VBox>
+        </mx:VBox>
+        <mx:Canvas width="1" height="100%" backgroundColor="#d6d6d6" />
+        <mx:VBox width="100%" height="100%" paddingLeft="25" paddingRight="17" paddingBottom="0" verticalGap="0">
+            <mx:Canvas width="100%" minWidth="755" height="79">
+                <mx:Label text="Select a Contest to View:" left="0" top="9" 
+                        styleName="normalText" paddingTop="0" paddingBottom="0" />
+                <mx:ComboBox id="contestCombo" left="195" width="272" top="9" styleName="ComboBoxStyle"
+                        valueCommit="handleContest()" fontFamily="Arial" fontSize="12"
+                        labelField="name" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{contestList}" />
+                <mx:Label text="Filter By:" right="140" top="9" styleName="normalText" />
+                <mx:CheckBox id="showActive" label="Active Contests" right="13" top="9" styleName="CheckBoxStyle"
+                        selected="true" change="doFilter()" />
+                <mx:CheckBox id="showPast" label="Past Contests" right="19" top="38" styleName="CheckBoxStyle"
+                        selected="true" change="doFilter()" />
+            </mx:Canvas>
+            <mx:Canvas height="1" width="100%" backgroundColor="#797979" />
+            <mx:VBox horizontalAlign="center" width="100%" paddingTop="37">
+                <mx:HBox height="580" horizontalAlign="center" width="636">
+                    <mx:VBox height="100%" verticalAlign="middle">
+                        <mx:Button id="prev" styleName="prev" click="goPrev()"/>
+                    </mx:VBox>
+                    <mx:VBox height="100%" width="100%" horizontalAlign="center" verticalGap="20" >
+                        <mx:Label id="currentLabel" fontFamily="Arial" 
+                                fontWeight="bold" fontSize="14" width="527" />
+                        <mx:VBox verticalAlign="middle" horizontalAlign="center" 
+                                borderStyle="solid" width="527" height="441">
+                            <mx:Image id="currnetImage" maxWidth="525" maxHeight="439" completeEffect="{fade}" />
+                        </mx:VBox>
+                        <mx:ToggleButtonBar horizontalAlign="center" horizontalGap="20" itemClick="setRank()" 
+                                id="rankBar" selectedIndex="-1"
+                                buttonWidth="25" buttonHeight="26" buttonStyleName="buttonStyleName">
+                            <mx:String>1</mx:String>
+                            <mx:String>2</mx:String>
+                            <mx:String>3</mx:String>
+                            <mx:String>4</mx:String>
+                            <mx:String>5</mx:String>
+                        </mx:ToggleButtonBar>
+                    </mx:VBox>
+                    <mx:VBox height="100%" verticalAlign="middle">
+                        <mx:Button id="next" styleName="next" click="goNext()"/>
+                    </mx:VBox>
+                </mx:HBox>
+                <mx:VBox width="636" horizontalAlign="center">
+                    <mx:Canvas width="100%" height="17" >
+                        <mx:Label text="Notes and Feedback:" styleName="normalText" left="0" />
+                        <mx:LinkButton id="showHintBtn" label="[+ show hint]" right="0" 
+                            rollOverColor="#ffffff" selectionColor="#ffffff" />
+                    </mx:Canvas>
+                    <mx:TextArea id="feed" height="112" width="612" fontFamily="Arial" fontSize="12" />
+            </mx:VBox>
+                <mx:Canvas width="100%">
+                    <mx:Button label="Save as Draft" styleName="SaveContinueButtonStyle" right="118" top="20" click="saveFeedBack()" />
+                    <mx:Button label="Continue --->" styleName="SaveContinueButtonStyle" right="0" top="20" />
+                </mx:Canvas>
+            </mx:VBox>
+        </mx:VBox>
+    </mx:HBox>
+</tc:SubmissionViewerWidgetCodeBehind>
