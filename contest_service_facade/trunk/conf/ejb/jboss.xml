@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<jboss>
+    <enterprise-beans>
+        <session>
+            <ejb-name>ContestServiceFacadeBean</ejb-name>
+            <jndi-name>remote/ContestServiceFacadeBean</jndi-name>
+            <ejb-ref>
+                <ejb-ref-name>ejb/StudioService</ejb-ref-name>
+                <jndi-name>StudioServiceBean/remote</jndi-name>
+            </ejb-ref>
+        </session>
+    </enterprise-beans>
+    <security-domain>java:/jaas/JBossLoginModule</security-domain>
+</jboss>
