@@ -13,13 +13,35 @@
         import mx.controls.Alert;
         import flash.utils.Timer;
         import flash.events.TimerEvent;
-        import mx.events.SliderEvent;
+        import mx.events.SliderEvent;        
+        import mx.collections.ArrayCollection;        
+    	import mx.rpc.events.ResultEvent;
+    	
+        import mx.rpc.soap.SOAPHeader;
 
         private var startTime:Date;
         private var endTime:Date;
         private static const daySeconds:Number = 24*60*60;
         private static const halfDaySeconds:Number = 12*60*60;
         private static const hourSeconds:Number = 60*60;
+        
+        private static const contestid=90;
+        
+        private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
+		
+		
+		public static function getHeader(username:String, password:String):SOAPHeader
+		{
+			var userToken:String = "UsernameToken-"+Math.round(Math.random()*999999).toString();
+			var headerXML : XML =  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         			<wsse:UsernameToken wsu:Id={userToken} xmlns:wsu='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'>
+	            		<wsse:Username>{username}</wsse:Username>
+	            		<wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">{password}</wsse:Password>
+         			</wsse:UsernameToken>
+      			</wsse:Security>;
+      		var header : SOAPHeader = new SOAPHeader( WSSE_SECURITY, headerXML );
+      		return header;
+		}
         
         // *** THIS NEEDS TO BE REPLACED WITH CALLS TO A SERVICE ***
         //fetch data from local xml file
@@ -32,26 +54,80 @@
         
         //after loading the xml file, fetch data
         private function getData(event:Event):void {
-            var loader:URLLoader = event.target as URLLoader;
-            result = new XML(loader.data);
-            regs.text = result.contest[0].registrants;
-            subms.text = result.contest[0].submissions;
-            start.text = result.contest[0].start;
-            end.text = result.contest[0].end;
+        	var header:SOAPHeader=getHeader("user","password");
+			ContestServiceFacadeBean.clearHeaders();
+            ContestServiceFacadeBean.addHeader(header);
 
+            ContestServiceFacadeBean.getContest.send();
+        	
+        }
+        
+        
+        //display remaining time
+        private function displayRemainTime():void{
+            var currentTime:Date = new Date();
+            var remainTime:Number = endTime.getTime() - currentTime.getTime();
+            if (remainTime < 0){
+                timeRem.text = "0 days, 0 hours";
+                //stop text effect
+                if (textEffect.isPlaying)
+                   textEffect.end();
+                return;
+            }
+            var remainDay:String = int(remainTime/(daySeconds*1000)).toString();
+            var remainHour:String = int((remainTime - Number(remainDay)*daySeconds*1000)/(hourSeconds*1000)).toString();
+            var timeRemain:String = remainDay + " days, " + remainHour + " hours";
+            timeRem.text = timeRemain;
+            //add effect
+            if (Number(remainDay) == 0 && Number(remainHour) <= 12)
+            {
+                if (!textEffect.isPlaying)
+                    textEffect.play();
+            }
+        }
+        
+        //timer handler executed every second
+        private function timerHandler(event:TimerEvent):void {
+            var currentTime:Date = new Date();
+            var currentPos:Number = (currentTime.getTime() - startTime.getTime())/1000;
+            timeLine.setThumbValueAt(0, currentPos);
+            displayRemainTime();
+            if(endTime.getTime() - currentTime.getTime() <= 0)
+                event.target.stop();
+        }
+        
+        private function setContest(e:ResultEvent): void
+        {
+        	if(e==null || e.result==null)return;
+        	
+        	regs.text = e.result.contestData.numberOfRegistrants;
+            subms.text = e.result.contestData.submissionCount;
+        	start.text = e.result.startTime[0];
+            end.text = e.result.endTime[0];
+            /*
             var datePattern:RegExp = /-/g;
-            var endTimeTmp:String = result.contest[0].end;
+            var endTimeTmp:String = e.result.endTime[0];
             var timeZoneIndex:Number = endTimeTmp.indexOf("GMT");
             var endTimeTmp1:String = endTimeTmp.substring(0, timeZoneIndex).replace(datePattern, "/");
             var endTimeTmp2:String = endTimeTmp.substring(timeZoneIndex, endTimeTmp.length);
-            endTime= new Date(endTimeTmp1 + endTimeTmp2);
+            */
+            var datePattern:RegExp = /-/g;
+            var datePattern2:RegExp = /T/g;
+            var endTimeTmp:String = e.result.endTime[0];
+            var timeZoneIndex:Number = endTimeTmp.indexOf("-");
+            endTimeTmp = endTimeTmp.substring(0, timeZoneIndex);
+            timeZoneIndex = endTimeTmp.indexOf("T");
+            var endTimeTmp1:String = endTimeTmp.substring(0, timeZoneIndex).replace(datePattern, "/");
+            var endTimeTmp2:String = endTimeTmp.substring(timeZoneIndex, endTimeTmp.length);            
+            endTime=new Date(endTimeTmp1 +" "+ endTimeTmp2); //new Date(endTimeTmp1 + endTimeTmp2);
             
-            var startTimeTmp:String = result.contest[0].start;
-            timeZoneIndex = startTimeTmp.indexOf("GMT");
+            var startTimeTmp:String = e.result.startTime[0];
+            timeZoneIndex = startTimeTmp.indexOf("-");
+            startTimeTmp=startTimeTmp.substring(0, timeZoneIndex);
+            timeZoneIndex = startTimeTmp.indexOf("T");
             var startTimeTmp1:String = startTimeTmp.substring(0, timeZoneIndex).replace(datePattern, "/");
             var startTimeTmp2:String = startTimeTmp.substring(timeZoneIndex, startTimeTmp.length);
-            startTime= new Date(startTimeTmp1 + startTimeTmp2);
-
+            startTime=new Date(startTimeTmp1 + startTimeTmp2);
             var currentTime:Date = new Date();
             var timeSpan:Number = (endTime.getTime() - startTime.getTime())/1000;
             timeLine.maximum = timeSpan;
@@ -95,6 +171,7 @@
                 }
                 timeLine.tickValues = tickValuesArry;
                 timeLine.labels = labelsArry;
+                
             }
             
             displayRemainTime();
@@ -107,41 +184,14 @@
             timeLineTimer.addEventListener("timer", timerHandler);
             timeLineTimer.start();
         }
-        
-        //display remaining time
-        private function displayRemainTime():void{
-            var currentTime:Date = new Date();
-            var remainTime:Number = endTime.getTime() - currentTime.getTime();
-            if (remainTime < 0){
-                timeRem.text = "0 days, 0 hours";
-                //stop text effect
-                if (textEffect.isPlaying)
-                   textEffect.end();
-                return;
-            }
-            var remainDay:String = int(remainTime/(daySeconds*1000)).toString();
-            var remainHour:String = int((remainTime - Number(remainDay)*daySeconds*1000)/(hourSeconds*1000)).toString();
-            var timeRemain:String = remainDay + " days, " + remainHour + " hours";
-            timeRem.text = timeRemain;
-            //add effect
-            if (Number(remainDay) == 0 && Number(remainHour) <= 12)
-            {
-                if (!textEffect.isPlaying)
-                    textEffect.play();
-            }
-        }
-        
-        //timer handler executed every second
-        private function timerHandler(event:TimerEvent):void {
-            var currentTime:Date = new Date();
-            var currentPos:Number = (currentTime.getTime() - startTime.getTime())/1000;
-            timeLine.setThumbValueAt(0, currentPos);
-            displayRemainTime();
-            if(endTime.getTime() - currentTime.getTime() <= 0)
-                event.target.stop();
-        }
     ]]>
 </mx:Script>
+<mx:WebService id="ContestServiceFacadeBean" 
+wsdl="http://174.129.135.92:8003/topcoder_contest_service_facade-topcoder_contest_service_facade/ContestServiceFacadeBean?wsdl"> 
+<mx:operation name="getContest" resultFormat="object" result="setContest(event)"> 
+<mx:request><arg0>{contestid}</arg0></mx:request>
+</mx:operation>
+</mx:WebService>
     <mx:HBox>
        <mx:Label text="Registrants:" fontWeight="bold"/>
        <mx:Text id="regs" />
