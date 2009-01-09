@@ -5,8 +5,11 @@
     width="100%" height="100%"
     creationComplete="initWidget()" layout="absolute" horizontalScrollPolicy="off" verticalScrollPolicy="off">
     <mx:Style source="Style.css" />
+    
 <mx:Script>
     <![CDATA[
+    	import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Contest;
+    	import mx.rpc.events.ResultEvent;
         import mx.collections.ArrayCollection;
         import mx.core.IUIComponent;
         import mx.core.UIComponent;
@@ -17,7 +20,10 @@
         import mx.containers.Canvas;
         import mx.events.DragEvent;
         import mx.events.CloseEvent;
-
+        import mx.rpc.soap.SOAPHeader;
+        
+        import com.topcoder.flex.widgets.widgetcontent.projectwidget.com.ProjectList;
+		import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Project;
         /**
          * Handle cursor's image class.
          */
@@ -35,6 +41,7 @@
         private var helpBtn : Button = new Button();
         private var isMax : Boolean = false;
         private var originalHeight:Number;
+        private var myprjData:ArrayCollection;
 
         private var windowState:Number=WINDOW_STATE_DEFAULT;
 
@@ -65,62 +72,42 @@
          */
         [Bindable]
         public var rowIndx: int;
+        [Bindable]
+        private var projectId:int;
+        
+        private var pname:String;
+        private var pdesc:String;
+        
+        private var contests:ArrayCollection;
+        
+        private var prjArray:ArrayCollection;
+        
+        private var prjIdx:int=0;
+        
+        private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
+		
+		
+		public static function getHeader(username:String, password:String):SOAPHeader
+		{
+			var userToken:String = "UsernameToken-"+Math.round(Math.random()*999999).toString();
+			var headerXML : XML =  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         			<wsse:UsernameToken wsu:Id={userToken} xmlns:wsu='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'>
+	            		<wsse:Username>{username}</wsse:Username>
+	            		<wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">{password}</wsse:Password>
+         			</wsse:UsernameToken>
+      			</wsse:Security>;
+      		var header : SOAPHeader = new SOAPHeader( WSSE_SECURITY, headerXML );
+      		return header;
+		}
+
 
 
         private function initWidget():void{
-            loader.addEventListener(Event.COMPLETE, loadXML);
+        	//flash.system.Security.loadPolicyFile("http://localhost:8003/widget_app/crossdomain.xml");
+            loader.addEventListener(Event.COMPLETE, loadData);
             loader.load(new URLRequest("data/moch.xml"));
-            /*
-            //1st button from the right
-            closeBtn.styleName = "CloseButton";
-            closeBtn.width=iconSize;
-            closeBtn.height=iconSize;
-            closeBtn.addEventListener(MouseEvent.CLICK,closePanel);
-            closeBtn.x = titleBar.width - 15 - LEFTSPACE;
-            closeBtn.y = titleBar.height/2 ;
-            closeBtn.toolTip = "close";
-            titleBar.addChild(closeBtn);
-            ///2nd button from the right - associated with the collapse all function
-            maxrestoreBtn.styleName="MaxButton";
-            maxrestoreBtn.width = iconSize;
-            maxrestoreBtn.height = iconSize;
-            maxrestoreBtn.addEventListener(MouseEvent.CLICK,maxrestorePanel);
-            maxrestoreBtn.x = titleBar.width - 75 - LEFTSPACE;
-            maxrestoreBtn.y = titleBar.height/2 ;
-            maxrestoreBtn.toolTip = "Maximize";
-            titleBar.addChild(maxrestoreBtn);
-            ///3rd button from the right - associated with the expand all function
-            refreshBtn.styleName="RefreshButton";
-            refreshBtn.width = iconSize;
-            refreshBtn.height = iconSize;
-            refreshBtn.addEventListener(MouseEvent.CLICK,refreshPanel);
-            refreshBtn.x = titleBar.width - 45 - LEFTSPACE;
-            refreshBtn.y = titleBar.height/2 ;
-            refreshBtn.toolTip = "Collapse All";
-            titleBar.addChild(refreshBtn);
-            ///4rd button from the right - associated with the help function
-            helpBtn.styleName="HelpButton";
-            helpBtn.width = iconSize;
-            helpBtn.height = iconSize;
-            helpBtn.addEventListener(MouseEvent.CLICK,helpPanel);
-            helpBtn.x = titleBar.width - 105 - LEFTSPACE;
-            helpBtn.y = titleBar.height/2 ;
-            helpBtn.toolTip = "Help";
-            titleBar.addChild(helpBtn);
-            //left side button
-            collapseBtn.styleName="ClosedButton";
-            collapseBtn.width = iconSize;
-            collapseBtn.height = iconSize;
-            collapseBtn.addEventListener(MouseEvent.CLICK,collapsePanel);
-            collapseBtn.x = 10;
-            collapseBtn.y = titleBar.height/2 ;
-            collapseBtn.toolTip = "";
-            titleBar.addChild(collapseBtn);
-
-            titleBar.addEventListener(MouseEvent.MOUSE_OVER, showHandCorsor);
-            titleBar.addEventListener(MouseEvent.MOUSE_OUT, hideHandCorsor);
-            titleBar.addEventListener(MouseEvent.MOUSE_MOVE, dragIt);
-            */
+			
+            
         }
         // this function load an XML as data provider of the main container
         // of the projectList
@@ -129,106 +116,81 @@
             result = new XML(e.target.data);
             prjList.dataProvider=result;
         }
-        
-        private function test():void
+        private function loadData(e:Event):void
         {
-        	this.widgetFramework.addWidgetEx("pipeline","pipeline", new Dictionary());
-        	//this.widgetFramework.removeTab("MyTab");
-            //this.widgetFramework.removeWidget("MyTab","ProjectWidget45"); //addTabByName("aaa");
+            var header:SOAPHeader=getHeader("user","password");
+			ProjectServiceFacadeBean.clearHeaders();
+            ProjectServiceFacadeBean.addHeader(header);
+
+            ProjectServiceFacadeBean.getAllProjects();
+            
         }
-/*
-        override protected function layoutChrome(unscaledWidth:Number, unscaledHeight:Number):void
+        private function setProject(e:ResultEvent): void
         {
-            super.layoutChrome(unscaledWidth, unscaledHeight);
-            titleTextField.x=50;
-            titleTextField.y=(titleBar.height/2);
-            closeBtn.y=(titleBar.height/2);
-            closeBtn.x = titleBar.width - 15 - LEFTSPACE;
-            maxrestoreBtn.x = titleBar.width - 75 - LEFTSPACE;
-            refreshBtn.x = titleBar.width - 45 - LEFTSPACE;
-            helpBtn.x = titleBar.width - 105 - LEFTSPACE;
+        	if(e!=null && e.result!=null){
+        		prjArray=e.result as ArrayCollection;
+        		prjIdx=0;
+        		if(prjIdx<prjArray.length)
+        		{
+        			pname=prjArray[prjIdx].name;
+        			pdesc=prjArray[prjIdx].description;
+        			projectId=prjArray[prjIdx].projectId;
+        			prjIdx++;
+        			ContestServiceFacadeBean.clearHeaders();
+        			ContestServiceFacadeBean.addHeader(getHeader("user","password"));
+        			ContestServiceFacadeBean.getContestsForProject.send();
+        		}
+        	}
         }
-
-        private function closePanel(event:MouseEvent):void
+        private function setContests(e:ResultEvent): void
         {
-            Alert.show("Are you sure to close this widget?", "Confirmation",Alert.YES|Alert.NO,this,deleteWidgetHandler, null, Alert.YES);
+        	contests=new ArrayCollection();
+        	if(e!=null && e.result!=null)
+        	{
+        		var arr:ArrayCollection=e.result as ArrayCollection;
+        		for(var i:int=0;i<arr.length;i++)
+        		{
+        			var c:Contest=new Contest(arr[i].contestData.contestId,arr[i].contestData.name,arr[i].startTime,
+        			arr[i].endTime,arr[i].contestData.numberOfRegistrants,           arr[i].contestData.submissionCount,
+        			arr[i].contestData.forumPostCount,arr[i].contestData.forumId,arr[i].contestData.statusId);
+        			contests.addItem(c);
+        		}
+        	}
+        	
+        	var list:ProjectList=new ProjectList();
+			prjList.addChild(list);
+			list.setStyle("verticalScrollPolicy","off");
+			list.dataProvider=new Project(pname,pdesc,"",contests);
+			
+				if(prjIdx<prjArray.length)
+        		{
+        			pname=prjArray[prjIdx].name;
+        			pdesc=prjArray[prjIdx].description;
+        			projectId=prjArray[prjIdx].projectId;
+        			prjIdx++;
+        			ContestServiceFacadeBean.clearHeaders();
+        			ContestServiceFacadeBean.addHeader(getHeader("user","password"));
+        			ContestServiceFacadeBean.getContestsForProject.send();
+        		}
+        	
+        	
         }
-
-        private function deleteWidgetHandler (evt:Event):void
-        {
-            //implement your close widget function
-        }
-
-        private function refreshPanel(event:MouseEvent):void
-        {
-            refreshBtn.toolTip = "Collapse All";
-            prjList.collapseAll();
-        }
-        private function helpPanel(event:MouseEvent):void
-        {
-            //implement your close widget function
-            Alert.show ("Help Function","help");
-        }
-        private function collapsePanel(event:MouseEvent):void
-        {
-            if (windowState==WINDOW_STATE_COLLAPSED) {
-                this.styleName="ClosedButton";
-                collapseBtn.toolTip = "Collapse";
-                windowState=WINDOW_STATE_DEFAULT
-                this.height=originalHeight;
-                return;
-            }
-            if (windowState==WINDOW_STATE_DEFAULT) {
-                originalHeight=this.height;
-                collapseBtn.toolTip = "Restore";
-                this.styleName="OpenedButton";
-                windowState=WINDOW_STATE_COLLAPSED;
-                this.height=COLLAPSED_HEIGHT;
-                return;
-            }
-        }
-
-        private function maxrestorePanel(event:MouseEvent):void
-        {
-            refreshBtn.toolTip = "Collapse All";
-            prjList.expandAll();
-
-        }
-
-        private function showHandCorsor(event:MouseEvent):void {
-            cursorManager.setCursor(cursor, 2, -5, 0);
-        }
-
-        private function hideHandCorsor(event:MouseEvent):void
-        {
-            cursorManager.removeAllCursors();
-        }
-
-        private function dragIt(event:MouseEvent):void {
-
-            var dragInitiator:ProjectWidget=event.currentTarget.parent as ProjectWidget;
-            if (!dragInitiator || !event.buttonDown)
-            {
-                return;
-            }
-            cursorManager.setCursor(cursor);
-            var ds:DragSource = new DragSource();
-            ds.addData(dragInitiator, 'widget');
-            var widgetProxy:ProjectWidget = new ProjectWidget();
-            widgetProxy.width=dragInitiator.width;
-            widgetProxy.height=dragInitiator.height;
-        }
-        */
     ]]>
 </mx:Script>
-<mx:Button y="0" id="button" label="Pipeline" 
-        	width="138" cornerRadius="4" 
-        	 right="28" click="test()"/>
-    <mx:Canvas top="50" right="15" left="10" horizontalScrollPolicy="off" verticalScrollPolicy="auto" bottom="5">
-        
-        
+<mx:WebService id="ProjectServiceFacadeBean" 
+wsdl="http://67.202.36.242:8003/services-project_service_facade/ProjectServiceFacadeBean?wsdl"> 
+<mx:operation name="getAllProjects" resultFormat="object" result="setProject(event)"  /> 
+</mx:WebService>
+<mx:WebService id="ContestServiceFacadeBean" 
+wsdl="http://174.129.135.92:8003/topcoder_contest_service_facade-topcoder_contest_service_facade/ContestServiceFacadeBean?wsdl"> 
+<mx:operation name="getContestsForProject" resultFormat="object" result="setContests(event)"> 
+<mx:request>
+<arg0>{projectId}</arg0>
+</mx:request>
+</mx:operation>
+</mx:WebService>
+    <mx:Canvas top="5" right="15" left="10" horizontalScrollPolicy="off" verticalScrollPolicy="auto" bottom="5">
         <ns1:ProjectsContainer id="prjList"  horizontalScrollPolicy="off" verticalScrollPolicy="off" maxHeight="500"  width="100%" height="100%">
         </ns1:ProjectsContainer>
-        
     </mx:Canvas>
 </tc:ProjectWidgetCodeBehind>

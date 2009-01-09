@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" borderStyle="none" borderThickness="2" borderColor="#942321">
+
+
 <mx:Script>
 	<![CDATA[
 		import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Contest;
@@ -7,6 +9,20 @@
 		import mx.collections.ArrayCollection;
 
 		private var _dataProvider:XML;
+		
+		public function setProjects(arrCol:ArrayCollection):void{
+            if(arrCol==null){
+            	return 
+            }  
+			for (var i:int=0; i<arrCol.length;i++) {
+				//var prj:Project=new Project(arrCol[i].name as String,arrCol[i].description as String,"",new ArrayCollection());
+				var prjList:ProjectList=new ProjectList();
+				this.addChild(prjList);
+				prjList.setStyle("verticalScrollPolicy","off");
+				prjList.dataProvider=arrCol[i];
+			}
+
+		}
 		// set of data provider
 		// this class accept an xml type dataprovider
 		public function set dataProvider(xml:XML):void{
