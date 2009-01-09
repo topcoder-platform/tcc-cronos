@@ -2,11 +2,14 @@
  * Copyright (c) 2008, TopCoder, Inc. All rights reserved.
  */
 package com.topcoder.flex.widgets.widgetcontent.pipeline {
+	import com.topcoder.flex.model.IWidgetFramework;
 	import com.topcoder.flex.widgets.model.IWidget;
+	import flash.utils.Dictionary;
 	
 	import mx.collections.ArrayCollection;
 	import mx.containers.Panel;
 	import mx.controls.DataGrid;
+
 
 	/**
 	 * <p>
@@ -24,6 +27,11 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline {
 		 * The name of the widget.
 		 */
 		private var _name:String = "Pipeline";
+		
+		/**
+		 * The framework of the widget.
+		 */
+		private var _framework:IWidgetFramework = null;
 		
 		/**
 		 * The data grid.
@@ -198,6 +206,34 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline {
          */
         override public function get name():String {
         	return _name;
+        }
+        /**
+         * Simple setter for the framework of this widget.
+         *
+         * @param framework the framework of this widget.
+         */
+        public function set widgetFramework(framework:IWidgetFramework):void {
+        	this._framework = framework;
+        }
+
+        /**
+         * Simple getter for the framework of this widget.
+         *
+         * @return the current set framework fo this widget. Could be null if not set.
+         */
+        public function get widgetFramework():IWidgetFramework {
+        	return _framework;
+        }
+        
+        /**
+         * Set the attributes for this widget based on the given Map.
+         *
+         * @param map the attributes for this widget. Cannot be null.
+         *
+         * @throws ArgumentError if the input is null.
+         */
+        public function setAttributes(map:Dictionary):void
+        {
         }
 	}
 }
