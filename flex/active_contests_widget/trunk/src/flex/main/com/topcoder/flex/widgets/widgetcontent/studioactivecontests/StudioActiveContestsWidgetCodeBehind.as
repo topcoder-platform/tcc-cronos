@@ -3,6 +3,7 @@
  */
 package com.topcoder.flex.widgets.widgetcontent.studioactivecontests {
 	import com.topcoder.flex.widgets.layout.Util;
+	import com.topcoder.flex.model.IWidgetFramework;
 	import com.topcoder.flex.widgets.model.IWidget;
 	
 	import flash.utils.Dictionary;
@@ -42,11 +43,19 @@ package com.topcoder.flex.widgets.widgetcontent.studioactivecontests {
 		 * The url to load the data from.
 		 */
 		private var _url:String = null;
+
+
+		/**
+		 * The framework of the widget.
+		 */
+		private var _framework:IWidgetFramework = null;
 		
 		/**
 		 * The data grid.
 		 */		 
 		public var dataGrid:DataGrid;
+
+		
 		
 		/**
 		 * The data provider for the data grid.
@@ -239,6 +248,37 @@ package com.topcoder.flex.widgets.widgetcontent.studioactivecontests {
         public function set url(url:String):void {
         	this._url = url;
         }
+
+	/**
+         * Simple setter for the framework of this widget.
+         *
+         * @param framework the framework of this widget.
+         */
+        public function set widgetFramework(framework:IWidgetFramework):void {
+        	this._framework = framework;
+        }
+
+        /**
+         * Simple getter for the framework of this widget.
+         *
+         * @return the current set framework fo this widget. Could be null if not set.
+         */
+        public function get widgetFramework():IWidgetFramework {
+        	return _framework;
+        }
+        
+        /**
+         * Set the attributes for this widget based on the given Map.
+         *
+         * @param map the attributes for this widget. Cannot be null.
+         *
+         * @throws ArgumentError if the input is null.
+         */
+        public function setAttributes(map:Dictionary):void
+        {
+        }
 		
 	}
+
+	
 }
