@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+          horizontalScrollPolicy="off" verticalScrollPolicy="off" creationComplete="init()">
+    <mx:Script>
+        <![CDATA[
+            import mx.controls.Alert;
+            import mx.collections.ArrayCollection;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+            
+            [Bindable]
+            private var contestsData:ArrayCollection = new ArrayCollection(
+                [ {label:"Contest 1", data:1}, 
+                  {label:"Contest 2", data:2}, 
+                  {label:"Contest 3", data:3} ]);
+            
+            private function init():void{
+                selectContests.dataProvider = contestsData;
+            }
+            
+            private function goToContestSelection():void{
+                if (selectContests.selectedItem == null && prjInput.text == ""){
+                    Alert.show("Add New Project or Choose Existing Project must have value.");
+                    return;
+                }else{
+                    var targetParent:LaunchWidget = this.parent as LaunchWidget;
+                    targetParent.startLaunchProcess();
+                }
+            }
+          ]]>
+    </mx:Script>
+    <mx:VBox id="initWdt" width="100%" height="100%">
+        <mx:Label text="Projects" fontWeight="bold" fontSize="12"/>
+        <mx:Text width="100%" >
+            <mx:text>
+A project is a way to organize one or many similar contests under one overall header and description. Naming the overall project here and giving a brief description will help you manage your contests later. For example, a logo, site design and HTML coding contest can all be placed under a project called "New Website".
+            </mx:text>
+        </mx:Text>
+        <mx:HBox width="100%" horizontalGap="0">
+            <mx:Label text="Select or Create a Project" fontWeight="bold" fontSize="12"/>
+            <mx:LinkButton label="More Info" color="#FF0000" textDecoration="underline"/>
+            <mx:Image source="@Embed('../../assets/more_info.png')"/>
+        </mx:HBox>
+        
+        <mx:HBox width="100%">
+            <mx:Spacer width="42"/>
+            <mx:Label text="Add a New Project:"  width="109"/>
+            <mx:TextInput id="prjInput" width="308"/>
+        </mx:HBox>
+        
+        <mx:HBox width="100%" >
+            <mx:Spacer width="162"/>
+            <mx:Label text="----------- or ------------"/>
+        </mx:HBox>
+        
+        <mx:HBox width="100%">
+            <mx:Label text="Choose an Existing Project:" />
+            <mx:ComboBox id="selectContests"  width="309"/>
+        </mx:HBox>
+        
+        <mx:HBox width="100%">
+            <mx:Label text="Project Description" fontWeight="bold" fontSize="12"/>
+        </mx:HBox>
+        
+        <mx:HBox width="100%">
+            <mx:Spacer width="32"/>
+            <mx:Text text="Brief description of the overall project:" height="37" width="117"/>
+            <mx:TextArea id="introInput" width="312" height="80"/>
+        </mx:HBox>
+        
+        <mx:HBox width="100%" >
+            <mx:Spacer width="162"/>
+            <mx:Button label="SAVE AND CONTINUE" cornerRadius="4" fillAlphas="[1.0, 1.0]" fillColors="[#F70C0C, #C00000, #B70404, #B70404]" color="#FFFFFF" borderColor="#070707" click="goToContestSelection()"/>
+        </mx:HBox>
+    </mx:VBox>
+</mx:Canvas>

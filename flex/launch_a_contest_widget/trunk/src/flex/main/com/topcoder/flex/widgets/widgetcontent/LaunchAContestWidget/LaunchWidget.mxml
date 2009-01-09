@@ -23,6 +23,8 @@
             
             
             private function initComponent():void {
+                launchWdt.percentWidth = 0;
+                launchWdt.percentHeight = 0;
                 this.currentState = "ContestSelectionState";
                 this.height = 750;
                 details.widgetHeight = 770;
@@ -424,13 +426,22 @@
                     var label:Label = box.getChildAt(1) as Label;
                     label.setStyle("color", "#a8a8a8");
                 }
-                
+            }
+            
+            public function startLaunchProcess():void{
+                initialWdt.width = 0;
+                initialWdt.height = 0;
+                initialWdt.visible = false;
+                launchWdt.percentWidth = 100;
+                launchWdt.percentHeight = 100;
+                launchWdt.visible = true;
             }
         ]]>
     </mx:Script>
      
      <mx:Spacer height="5" />
-     <mx:HBox width="100%" height="100%" horizontalGap="0" >
+     <pages:InitialWidget id="initialWdt" />
+     <mx:HBox id="launchWdt" horizontalGap="0" visible="false" >
          <mx:VBox width="200" height="100%" paddingTop="15" verticalGap="20" 
                 horizontalScrollPolicy="off">
              <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5"

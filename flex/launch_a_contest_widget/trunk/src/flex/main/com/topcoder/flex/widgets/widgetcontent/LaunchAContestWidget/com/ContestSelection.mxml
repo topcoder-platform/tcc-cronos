@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
-          horizontalScrollPolicy="off" verticalScrollPolicy="off">
+          horizontalScrollPolicy="off" verticalScrollPolicy="off" >
 	<mx:Script>
 	    <![CDATA[
 	        import mx.events.ItemClickEvent;
-	        
+  
 	        private function handleSelect(event:ItemClickEvent):void {
                 
 	        }
+
 	      ]]>
     </mx:Script>
-    <mx:VBox>
+    <mx:VBox >
 	    <mx:Label text="Contest Selection" fontWeight="bold" fontSize="12"/>
 	    <mx:Label text="What Type of Contest do you want to run?" fontWeight="bold"/>
 	    <mx:RadioButtonGroup id="contestType" itemClick="handleSelect(event);" />
