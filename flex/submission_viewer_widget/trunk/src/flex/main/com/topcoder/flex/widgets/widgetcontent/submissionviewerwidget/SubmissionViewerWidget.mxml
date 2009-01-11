@@ -16,10 +16,15 @@
             import mx.rpc.events.FaultEvent;
             import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer;
             import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer;
+    	
+        import mx.rpc.soap.SOAPHeader;
             
             private var rankList:ArrayCollection = new ArrayCollection();
             [Bindable]
-            private var contestInfoList:ArrayCollection = new ArrayCollection();;
+            private var contestInfoList:ArrayCollection = new ArrayCollection();
+            
+            [Bindable]
+            private var contestId:int;
             
             [Bindable]
             private var contestList:ArrayCollection = new ArrayCollection();
@@ -27,16 +32,40 @@
             [Bindable]
             private var submissionList:ArrayCollection = new ArrayCollection();
             private function init():void {
-                retrieveContestService.send();
-                retrieveSubService.send();
+                var header:SOAPHeader=getHeader("user","password");
+				ContestServiceFacadeBean.clearHeaders();
+            	ContestServiceFacadeBean.addHeader(header);
+
+            	ContestServiceFacadeBean.getAllContests();
             }
             
             [Bindable] 
             private var activeSubmission:ArrayCollection = new ArrayCollection();
             private var _submission:String = "<submissions><submission><id>12075</id><thumbnail>../assets/demoimage/5small.png</thumbnail><fullsizepreview>../assets/demoimage/5large.png</fullsizepreview><rank>3</rank></submission><submission><id>12078</id><thumbnail>../assets/demoimage/3small.png</thumbnail><fullsizepreview>../assets/demoimage/3large.png</fullsizepreview><rank></rank></submission><submission><id>12080</id><thumbnail>../assets/demoimage/5small.png</thumbnail><fullsizepreview>../assets/demoimage/5large.png</fullsizepreview><rank>5</rank></submission><submission><id>12084</id><thumbnail>../assets/demoimage/4small.png</thumbnail><fullsizepreview>../assets/demoimage/4large.png</fullsizepreview><rank>1</rank></submission><submission><id>12087</id><thumbnail>../assets/demoimage/2small.png</thumbnail><fullsizepreview>../assets/demoimage/2large.png</fullsizepreview><rank></rank></submission><submission><id>12088</id><thumbnail>../assets/demoimage/3small.png</thumbnail><fullsizepreview>../assets/demoimage/3large.png</fullsizepreview><rank></rank></submission><submission><id>12090</id><thumbnail>../assets/demoimage/5small.png</thumbnail><fullsizepreview>../assets/demoimage/5large.png</fullsizepreview><rank>2</rank></submission><submission><id>12093</id><thumbnail>../assets/demoimage/3small.png</thumbnail><fullsizepreview>../assets/demoimage/3large.png</fullsizepreview><rank></rank></submission><submission><id>12094</id><thumbnail>../assets/demoimage/4small.png</thumbnail><fullsizepreview>../assets/demoimage/4large.png</fullsizepreview><rank>4</rank></submission><submission><id>12096</id><thumbnail>../assets/demoimage/2small.png</thumbnail><fullsizepreview>../assets/demoimage/2large.png</fullsizepreview><rank></rank></submission><submission><id>12098</id><thumbnail>../assets/demoimage/3small.png</thumbnail><fullsizepreview>../assets/demoimage/3large.png</fullsizepreview><rank></rank></submission><submission><id>12099</id><thumbnail>../assets/demoimage/4small.png</thumbnail><fullsizepreview>../assets/demoimage/4large.png</fullsizepreview><rank></rank></submission><submission><id>12102</id><thumbnail>../assets/demoimage/2small.png</thumbnail><fullsizepreview>../assets/demoimage/2large.png</fullsizepreview><rank></rank></submission><submission><id>12107</id><thumbnail>../assets/demoimage/2small.png</thumbnail><fullsizepreview>../assets/demoimage/2large.png</fullsizepreview><rank></rank></submission><submission><id>12115</id><thumbnail>../assets/demoimage/5small.png</thumbnail><fullsizepreview>../assets/demoimage/5large.png</fullsizepreview><rank></rank></submission><submission><id>12121</id><thumbnail>../assets/demoimage/1small.png</thumbnail><fullsizepreview>../assets/demoimage/1large.png</fullsizepreview><rank>3</rank></submission><submission><id>12128</id><thumbnail>../assets/demoimage/3small.png</thumbnail><fullsizepreview>../assets/demoimage/3large.png</fullsizepreview><rank></rank></submission><submission><id>12136</id><thumbnail>../assets/demoimage/1small.png</thumbnail><fullsizepreview>../assets/demoimage/1large.png</fullsizepreview><rank>3</rank></submission><submission><id>12175</id><thumbnail>../assets/demoimage/5small.png</thumbnail><fullsizepreview>../assets/demoimage/5large.png</fullsizepreview><rank></rank></submission><submission><id>12217</id><thumbnail>../assets/demoimage/2small.png</thumbnail><fullsizepreview>../assets/demoimage/2large.png</fullsizepreview><rank>2</rank></submission><submission><id>12224</id><thumbnail>../assets/demoimage/4small.png</thumbnail><fullsizepreview>../assets/demoimage/4large.png</fullsizepreview><rank>1</rank></submission><submission><id>12225</id><thumbnail>../assets/demoimage/5small.png</thumbnail><fullsizepreview>../assets/demoimage/5large.png</fullsizepreview><rank></rank></submission><submission><id>12229</id><thumbnail>../assets/demoimage/4small.png</thumbnail><fullsizepreview>../assets/demoimage/4large.png</fullsizepreview><rank></rank></submission><submission><id>12231</id><thumbnail>../assets/demoimage/1small.png</thumbnail><fullsizepreview>../assets/demoimage/1large.png</fullsizepreview><rank>3</rank></submission><submission><id>12232</id><thumbnail>../assets/demoimage/2small.png</thumbnail><fullsizepreview>../assets/demoimage/2large.png</fullsizepreview><rank></rank></submission><submission><id>12233</id><thumbnail>../assets/demoimage/3small.png</thumbnail><fullsizepreview>../assets/demoimage/3large.png</fullsizepreview><rank>3</rank></submission></submissions>";
             private var _contest:String = "<contests><contest status=\"active\"><name>Active Contest 1</name><id>12345</id></contest><contest status=\"active\"><name>Active Contest 2</name><id>12346</id></contest><contest status=\"active\"><name>Active Contest 3</name><id>12347</id></contest><contest status=\"active\"><name>Active Contest 4</name><id>12348</id></contest><contest status=\"past\"><name>Past Contest 1</name><id>54321</id></contest><contest status=\"past\"><name>Past Contest 2</name><id>54322</id></contest><contest status=\"past\"><name>Past Contest 3</name><id>54323</id></contest></contests>";
+            
+            private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
+		
+		    private static const IMAGE_ADDRESS:String ="http://www.topcoder.com/direct/cockpit/impersonation/cockpitStudio.do?&sbmid=";
+		
+		
+		public static function getHeader(username:String, password:String):SOAPHeader
+		{
+			var userToken:String = "UsernameToken-"+Math.round(Math.random()*999999).toString();
+			var headerXML : XML =  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         			<wsse:UsernameToken wsu:Id={userToken} xmlns:wsu='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'>
+	            		<wsse:Username>{username}</wsse:Username>
+	            		<wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">{password}</wsse:Password>
+         			</wsse:UsernameToken>
+      			</wsse:Security>;
+      		var header : SOAPHeader = new SOAPHeader( WSSE_SECURITY, headerXML );
+      		return header;
+		}
+            
             private function handleResult(event:ResultEvent=null):void {
+            	/*
                 var contestInfo:*;
+                
                 if (event) {
                     contestInfo = event.result.contests;    
                 } else {
@@ -46,8 +75,24 @@
                     var resultObj:Object = decoder.decodeXML(xmlDoc);
                     contestInfo = resultObj.contests;
                     
-                }
+                }*/
                 contestInfoList = new ArrayCollection();
+                if(event!=null && event.result!=null)
+                {
+                	var contests:ArrayCollection= event.result as ArrayCollection;
+                	for(var i:int=0 ;i< contests.length;i++)
+                	{
+                		var contestInfo:Dictionary=new Dictionary();
+                		var item:*=contests[i];
+                		contestInfo.name=item.contestData.name;
+                		contestInfo.id=item.competitionId;
+                		contestInfo.status=item.contestData.statusId;
+                		contestInfoList.addItem(contestInfo);
+                		
+                	}
+                	doFilter();
+                }
+                /*
                 if (contestInfo.hasOwnProperty("contest")) {
                     if (contestInfo.contest.hasOwnProperty("name")) {
                         // There is only 1 contest.
@@ -58,13 +103,15 @@
                         }
                     }
                     doFilter();
-                }
+                }*/
             }
             
             private function handleSubResult(event:ResultEvent=null):void {
+            	
                 for (var i:int = 0; i < 5; i++) {
                     rankList.addItem(new Object());
                 }
+                /*
                 var subList:*;
                 if (event) {
                     subList = event.result.submissions;
@@ -75,11 +122,37 @@
                     var resultObj:Object = decoder.decodeXML(xmlDoc);
                     subList = resultObj.submissions;
                     
-                }
+                }*/
                 submissionList = new ArrayCollection();
                 var sort:Sort = new Sort();
                 sort.compareFunction = compareNumber;
                 submissionList.sort = sort;
+                if(event && event.result!=null){
+                	var submissions:ArrayCollection=new ArrayCollection();
+                	if(event.result is ArrayCollection)
+                	{ 
+                		submissions=event.result as ArrayCollection;
+                	}
+                	else
+                	{
+                		submissions.addItem(event.result);
+                	}
+                	for(var i:int =0;i<submissions.length;i++)
+                	{
+                		var sub:Dictionary=new Dictionary();
+                		sub.id=submissions[i].submissionId;
+                		sub.rank=submissions[i].rank;
+                		sub.thumbnail=IMAGE_ADDRESS+sub.id+"&sbt=thumb";
+                		sub.fullsizepreview=IMAGE_ADDRESS+sub.id+"&sbt=full";
+                		submissionList.addItem(sub);
+                		setRankList(sub);
+                	}
+                	
+                }
+                setSubmission();
+                list.selectedIndex = 0;
+                handleSelect();
+                /*
                 if (subList.hasOwnProperty("submission")) {
                     if (subList.submission.hasOwnProperty("id")) {
                         // There is only 1 contest.
@@ -96,7 +169,7 @@
                     setSubmission();
                     list.selectedIndex = 0;
                     handleSelect();
-                }
+                }*/
             }
             
             private function handleFail(event:FaultEvent):void {
@@ -119,9 +192,9 @@
             private function doFilter():void {
                 contestList.removeAll();
                 for each (var item:* in contestInfoList) {
-                    if (showActive.selected && item.status == "active") {
+                    if (showActive.selected && item.status == 5/*"active"*/) {
                         contestList.addItem(item);
-                    } else if (showPast.selected && item.status == "past") {
+                    } else if (showPast.selected /*&& item.status == "past"*/) {
                         contestList.addItem(item);
                     }
                 }
@@ -242,7 +315,14 @@
             }
             
             private function hideShowUpDownArrow():void {
+            	if(list.dataProvider.length==0)
+                {
+                	down.visible=false;
+                	up.visible=false;
+                	return ;
+                }
                 up.visible = (currentIndex > 0);
+                
                 down.visible = (list.dataProvider[list.dataProvider.length - 1].id != submissionList.getItemAt(submissionList.length - 1).id);              
             }
             
@@ -298,12 +378,23 @@
             }
             
             private function handleContest():void {
+            	/*
                 handleSelect();
                 if (contestCombo && contestCombo.selectedItem && contestCombo.selectedItem.hasOwnProperty("feed")) {
                     feed.text = contestCombo.selectedItem.feed;
                 } else if (feed) {
                     feed.text = "";
                 }
+                */
+                if (contestCombo && contestCombo.selectedItem) {
+                	contestId=contestCombo.selectedItem.id;
+                	var header:SOAPHeader=getHeader("user","password");
+					ContestServiceFacadeBean.clearHeaders();
+            		ContestServiceFacadeBean.addHeader(header);
+
+            		ContestServiceFacadeBean.retrieveSubmissionsForContest.send();
+                }
+                
             }
             
             private function saveFeedBack():void {
@@ -355,10 +446,17 @@
         moveDuration="200"
         color="0xffffff"/>
     <mx:Fade alphaFrom="0" alphaTo="1" duration="1000" id="fade" />
-    <mx:HTTPService id="retrieveContestService" url="../assets/data/mock.xml"
-        fault="handleFail(event)" result="handleResult(event)" />
-    <mx:HTTPService id="retrieveSubService" url="../assets/data/submission.xml"
-        fault="handleSubFail(event)" result="handleSubResult(event)" />
+    <mx:WebService id="ContestServiceFacadeBean" 
+wsdl="http://174.129.135.92:8003/topcoder_contest_service_facade-topcoder_contest_service_facade/ContestServiceFacadeBean?wsdl"> 
+<mx:operation name="getAllContests" resultFormat="object" result="handleResult(event)"> 
+</mx:operation>
+
+<mx:operation name="retrieveSubmissionsForContest" resultFormat="object" result="handleSubResult(event)"> 
+<mx:request>
+<arg0>{contestId}</arg0>
+</mx:request>
+</mx:operation>
+</mx:WebService>
             
     <mx:HBox width="100%" height="100%" paddingTop="10" paddingBottom="25">
         <mx:VBox horizontalAlign="left" height="100%" width="200">
