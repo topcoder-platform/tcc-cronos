@@ -25,7 +25,6 @@
         private static const halfDaySeconds:Number = 12*60*60;
         private static const hourSeconds:Number = 60*60;
         
-        private static const contestid=90;
         
         private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
 		
@@ -114,20 +113,20 @@
             var datePattern:RegExp = /-/g;
             var datePattern2:RegExp = /T/g;
             var endTimeTmp:String = e.result.endTime[0];
-            var timeZoneIndex:Number = endTimeTmp.indexOf("-");
+           var timeZoneIndex:Number = endTimeTmp.lastIndexOf("-");
             endTimeTmp = endTimeTmp.substring(0, timeZoneIndex);
             timeZoneIndex = endTimeTmp.indexOf("T");
             var endTimeTmp1:String = endTimeTmp.substring(0, timeZoneIndex).replace(datePattern, "/");
-            var endTimeTmp2:String = endTimeTmp.substring(timeZoneIndex, endTimeTmp.length);            
+            var endTimeTmp2:String = endTimeTmp.substring(timeZoneIndex+1, endTimeTmp.length).substring(0,8);  
             endTime=new Date(endTimeTmp1 +" "+ endTimeTmp2); //new Date(endTimeTmp1 + endTimeTmp2);
             
             var startTimeTmp:String = e.result.startTime[0];
-            timeZoneIndex = startTimeTmp.indexOf("-");
+            timeZoneIndex = startTimeTmp.lastIndexOf("-");
             startTimeTmp=startTimeTmp.substring(0, timeZoneIndex);
             timeZoneIndex = startTimeTmp.indexOf("T");
             var startTimeTmp1:String = startTimeTmp.substring(0, timeZoneIndex).replace(datePattern, "/");
-            var startTimeTmp2:String = startTimeTmp.substring(timeZoneIndex, startTimeTmp.length);
-            startTime=new Date(startTimeTmp1 + startTimeTmp2);
+            var startTimeTmp2:String = startTimeTmp.substring(timeZoneIndex+1, startTimeTmp.length).substring(0,8);;
+        	startTime=new Date(startTimeTmp1 + " "+startTimeTmp2);
             var currentTime:Date = new Date();
             var timeSpan:Number = (endTime.getTime() - startTime.getTime())/1000;
             timeLine.maximum = timeSpan;

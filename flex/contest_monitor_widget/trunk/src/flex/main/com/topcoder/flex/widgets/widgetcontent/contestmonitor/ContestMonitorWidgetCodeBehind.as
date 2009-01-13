@@ -25,6 +25,10 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
          * The name of the widget.
          */
         private var _name:String = "ContestMonitor";
+        
+        
+        [Bindable]
+        public var contestid:String="90";
 
 	/**
 	 * The framework of the widget.
@@ -226,6 +230,10 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
          */
         public function setAttributes(map:Dictionary):void
         {
+        	if(map["contestid"])
+        	{
+        		this.contestid=map["contestid"];
+        	}
         }
     }
 }
