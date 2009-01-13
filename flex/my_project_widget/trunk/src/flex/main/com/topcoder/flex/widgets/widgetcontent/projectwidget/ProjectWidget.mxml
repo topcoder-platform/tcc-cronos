@@ -24,6 +24,7 @@
         
         import com.topcoder.flex.widgets.widgetcontent.projectwidget.com.ProjectList;
 		import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Project;
+		import mx.core.Application;
         /**
          * Handle cursor's image class.
          */
@@ -84,6 +85,12 @@
         
         private var prjIdx:int=0;
         
+        private var statusDict:Dictionary=new Dictionary();
+        
+        private var username:String="user";//Application.application.parameters.username;
+        
+        private var password:String="password";//Application.application.parameters.password;
+        
         private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
 		
 		
@@ -104,6 +111,7 @@
 
         private function initWidget():void{
         	//flash.system.Security.loadPolicyFile("http://localhost:8003/widget_app/crossdomain.xml");
+        	prjList.widgetFramework=this.widgetFramework;
             loader.addEventListener(Event.COMPLETE, loadData);
             loader.load(new URLRequest("data/moch.xml"));
 			
@@ -118,16 +126,15 @@
         }
         private function loadData(e:Event):void
         {
-            var header:SOAPHeader=getHeader("user","password");
-			ProjectServiceFacadeBean.clearHeaders();
-            ProjectServiceFacadeBean.addHeader(header);
-
-            ProjectServiceFacadeBean.getAllProjects();
+            ContestServiceFacadeBean.clearHeaders();
+        	ContestServiceFacadeBean.addHeader(getHeader(username,password));
+        	ContestServiceFacadeBean.getStatusList();
+			
             
         }
         private function setProject(e:ResultEvent): void
         {
-        	if(e!=null && e.result!=null){
+        	if(e!=null && e.result!=null && e.result is ArrayCollection){
         		prjArray=e.result as ArrayCollection;
         		prjIdx=0;
         		if(prjIdx<prjArray.length)
@@ -137,7 +144,7 @@
         			projectId=prjArray[prjIdx].projectId;
         			prjIdx++;
         			ContestServiceFacadeBean.clearHeaders();
-        			ContestServiceFacadeBean.addHeader(getHeader("user","password"));
+        			ContestServiceFacadeBean.addHeader(getHeader(username,password));
         			ContestServiceFacadeBean.getContestsForProject.send();
         		}
         	}
@@ -150,9 +157,24 @@
         		var arr:ArrayCollection=e.result as ArrayCollection;
         		for(var i:int=0;i<arr.length;i++)
         		{
-        			var c:Contest=new Contest(arr[i].contestData.contestId,arr[i].contestData.name,arr[i].startTime,
-        			arr[i].endTime,arr[i].contestData.numberOfRegistrants,           arr[i].contestData.submissionCount,
-        			arr[i].contestData.forumPostCount,arr[i].contestData.forumId,arr[i].contestData.statusId);
+        			var datePattern:RegExp = /-/g;
+            		var datePattern2:RegExp = /T/g;
+            		var endTimeTmp:String = arr[i].endTime[0];
+            		var timeZoneIndex:Number = endTimeTmp.lastIndexOf("-");
+            		endTimeTmp = endTimeTmp.substring(0, timeZoneIndex);
+            		timeZoneIndex = endTimeTmp.indexOf("T");
+            		var endTimeTmp1:String = endTimeTmp.substring(0, timeZoneIndex).replace(datePattern, "/");
+            		var endTimeTmp2:String = endTimeTmp.substring(timeZoneIndex+1, endTimeTmp.length);  
+            		var startTimeTmp:String = arr[i].startTime[0];
+            		timeZoneIndex = startTimeTmp.lastIndexOf("-");
+            		startTimeTmp=startTimeTmp.substring(0, timeZoneIndex);
+            		timeZoneIndex = startTimeTmp.indexOf("T");
+            		var startTimeTmp1:String = startTimeTmp.substring(0, timeZoneIndex).replace(datePattern, "/");
+            		var startTimeTmp2:String = startTimeTmp.substring(timeZoneIndex+1, startTimeTmp.length);
+        			var c:Contest=new Contest(arr[i].contestData.contestId,arr[i].contestData.name,startTimeTmp1+" "+startTimeTmp2,
+        			endTimeTmp1+" "+endTimeTmp2,arr[i].contestData.numberOfRegistrants,           arr[i].contestData.submissionCount,
+        			arr[i].contestData.forumPostCount,arr[i].contestData.forumId,
+        			statusDict[arr[i].contestData.statusId]);
         			contests.addItem(c);
         		}
         	}
@@ -169,20 +191,36 @@
         			projectId=prjArray[prjIdx].projectId;
         			prjIdx++;
         			ContestServiceFacadeBean.clearHeaders();
-        			ContestServiceFacadeBean.addHeader(getHeader("user","password"));
+        			ContestServiceFacadeBean.addHeader(getHeader(username,password));
         			ContestServiceFacadeBean.getContestsForProject.send();
         		}
         	
         	
         }
+        private function preprocessStatuses(e:ResultEvent): void
+        {
+        	if(e!=null && e.result!=null){
+        		var statuses:ArrayCollection=e.result as ArrayCollection;
+        		for(var i:int=0;i<statuses.length;i++)
+        		{
+        			statusDict[statuses[i].statusId]=statuses[i].name;
+        		}
+        		
+        	}
+        	ProjectServiceFacadeBean.clearHeaders();
+            ProjectServiceFacadeBean.addHeader(getHeader(username,password));
+
+            ProjectServiceFacadeBean.getAllProjects();
+        }
     ]]>
 </mx:Script>
 <mx:WebService id="ProjectServiceFacadeBean" 
-wsdl="http://67.202.36.242:8003/services-project_service_facade/ProjectServiceFacadeBean?wsdl"> 
+wsdl="http://75.101.181.246:8003/services-project_service_facade/ProjectServiceFacadeBean?wsdl"> 
 <mx:operation name="getAllProjects" resultFormat="object" result="setProject(event)"  /> 
 </mx:WebService>
 <mx:WebService id="ContestServiceFacadeBean" 
 wsdl="http://174.129.135.92:8003/topcoder_contest_service_facade-topcoder_contest_service_facade/ContestServiceFacadeBean?wsdl"> 
+<mx:operation name="getStatusList" resultFormat="object" result="preprocessStatuses(event)"  /> 
 <mx:operation name="getContestsForProject" resultFormat="object" result="setContests(event)"> 
 <mx:request>
 <arg0>{projectId}</arg0>

@@ -87,6 +87,7 @@
 			for (var i:int;i<_dataProvider.contests.length;i++){
 				var cnt:Contest=_dataProvider.contests[i];
 				var prjRow:ContestRow=new ContestRow();
+				prjRow.ContextId=cnt.id;
 				this.addChild(prjRow);
 				prjRow.dataProvider=cnt ;
 				prjRow.rowNum=i;

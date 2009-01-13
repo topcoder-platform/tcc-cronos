@@ -25,6 +25,7 @@
 		else{
 			statusIcon.visible=false;
 		}
+		lblStatsName.label="Stats";
 	}
 	public function get dataProvider():Contest{
 		return _dataProvider;
@@ -118,11 +119,22 @@
 	public function get forumPosts():String{
 		return lblForumPosts.text;
 	}
+	
+	private function showStats():void
+        {
+        	var prjCt:ProjectsContainer=this.parent.parent as ProjectsContainer;
+        	var dict:Dictionary=new Dictionary();
+        	dict["contestid"]=_ContextId;
+        	prjCt.widgetFramework.addWidgetEx("ContestMonitor","ContestMonitor",dict );
+        }
+
 
 	]]>
 </mx:Script>
 	<mx:Canvas width="60%" height="27">
-		<mx:LinkButton styleName="LinkButtonStyle" width="100%" id="lblContextName" textDecoration="underline" left="10" textAlign="left" themeColor="#FEFEFE" y="5"/>
+		<mx:LinkButton styleName="LinkButtonStyle" width="50%" id="lblContextName" textDecoration="underline" left="10" textAlign="left" themeColor="#FEFEFE" y="5"/>
+		<mx:LinkButton styleName="LinkButtonStyle" width="50%" id="lblStatsName" textDecoration="underline" left="300" textAlign="left" themeColor="#FEFEFE" y="5" click="showStats()"/>
+	
 	</mx:Canvas>
 	<mx:HBox width="100%" height="24" horizontalGap="0" >
 		<mx:Canvas width="16%" height="28">
