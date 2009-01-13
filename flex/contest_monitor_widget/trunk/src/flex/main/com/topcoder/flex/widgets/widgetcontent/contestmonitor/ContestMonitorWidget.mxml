@@ -24,6 +24,9 @@
         private static const daySeconds:Number = 24*60*60;
         private static const halfDaySeconds:Number = 12*60*60;
         private static const hourSeconds:Number = 60*60;
+
+	public static var SLIDER_TICK_LENGTH:Number = 0;
+	public static var TRACK_WIDTH:Number = 393;
         
         
         private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
@@ -191,30 +194,45 @@ wsdl="http://174.129.135.92:8003/topcoder_contest_service_facade-topcoder_contes
 <mx:request><arg0>{contestid}</arg0></mx:request>
 </mx:operation>
 </mx:WebService>
-    <mx:HBox>
-       <mx:Label text="Registrants:" fontWeight="bold"/>
-       <mx:Text id="regs" />
-    </mx:HBox>
-    <mx:HBox>
-       <mx:Label text="Submissions:" fontWeight="bold"/>
-       <mx:Text id="subms" />
-    </mx:HBox>
-    <mx:HBox>
-       <mx:Label text="Start Date/Time:" fontWeight="bold"/>
-       <mx:Text id="start" />
-    </mx:HBox>
-    <mx:HBox>
-       <mx:Label text="End Date/Time:" fontWeight="bold"/>
-       <mx:Text id="end" />
-    </mx:HBox>
-    <mx:HBox>
-       <mx:Label text="Time Remaining:" fontWeight="bold"/>
-       <mx:Text id="timeRem" />
-    </mx:HBox>
-    
-    <mx:HSlider id="timeLine" minimum="0" width="100%" tickColor="black"
-         snapInterval="1" showDataTip="false" 
-        allowTrackClick="false" />
+ 
+			<mx:Spacer height="10"/>
+			<mx:Box styleName="infoBox" height="70" width="100%" verticalGap="0">
+				<mx:Spacer height="13"/>
+				<mx:HBox width="224">
+			       <mx:Label text="Registrants :" styleName="infoBoxTxt" width="140"/>
+			       <mx:Text id="regs" styleName="infoBoxTxt" />
+			    </mx:HBox>
+			    <mx:HBox width="224">
+			       <mx:Label text="Submissions :" styleName="infoBoxTxt" width="140"/>
+			       <mx:Text id="subms" styleName="infoBoxTxt" />
+			    </mx:HBox>
+			</mx:Box>
+			<mx:Spacer height="5"/>
+		    <mx:HBox>
+		       <mx:Label text="Start Date/Time :" styleName="infoBoxTxt" width="160"/>
+		       <mx:Text id="start" styleName="infoBoxTxtNormal"/>
+		    </mx:HBox>
+		    <mx:HBox>
+		       <mx:Label text="End Date/Time :" styleName="infoBoxTxt" width="160"/>
+		       <mx:Text id="end" styleName="infoBoxTxtNormal"/>
+		    </mx:HBox>
+		    <mx:HBox>
+		       <mx:Label text="Time Remaining :" styleName="infoBoxTxt" width="160"/>
+		       <mx:Text id="timeRem" styleName="infoBoxTxtNormal"/>
+		    </mx:HBox>
+		    <mx:Spacer height="12"/>
+		    <mx:Box styleName="sliderBox" horizontalAlign="center" verticalScrollPolicy="off" paddingTop="15" width="100%" height="48">
+		    	<!--<mx:HSlider id="timeLine" 
+				 width="80%" tickColor="black"
+		         snapInterval="1" showDataTip="false"
+		         allowTrackClick="true" />-->
+		         <mx:HSlider id="timeLine" styleName="customHSlider" 
+		         	thumbOffset="0" showTrackHighlight="true"  allowTrackClick="true" liveDragging="true"
+		         	labelOffset="2" tickLength="0"  labelStyleName="labelStyle"
+					width="393" showDataTip="false"/>
+		    </mx:Box>
+
+	
     
     <!-- Remaining time text effect -->
     <mx:Parallel id="textEffect" target="{timeRem}" repeatCount="0">
