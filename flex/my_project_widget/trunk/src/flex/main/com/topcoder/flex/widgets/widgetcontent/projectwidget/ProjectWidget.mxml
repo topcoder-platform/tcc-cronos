@@ -23,8 +23,9 @@
         import mx.rpc.soap.SOAPHeader;
         
         import com.topcoder.flex.widgets.widgetcontent.projectwidget.com.ProjectList;
-		import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Project;
-		import mx.core.Application;
+	import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Project;
+	import mx.core.Application;
+
         /**
          * Handle cursor's image class.
          */
@@ -87,9 +88,9 @@
         
         private var statusDict:Dictionary=new Dictionary();
         
-        private var username:String="user";//Application.application.parameters.username;
+        private var username:String=Application.application.parameters.username;  //"user"
         
-        private var password:String="password";//Application.application.parameters.password;
+        private var password:String=Application.application.parameters.password;  //"password"
         
         private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
 		
