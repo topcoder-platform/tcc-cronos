@@ -7,7 +7,7 @@
     <context-param>
         <description>An URL for the Contest Service Facade WSDL document</description>
         <param-name>facade_wsdl</param-name>
-        <param-value>http://127.0.0.1:8080/topcoder_contest_service_facade-topcoder_contest_service_facade/ContestServiceFacadeBean?wsdl</param-value>
+        <param-value>http://127.0.0.1:8080/cockpit2.1-topcoder_contest_service_facade/ContestServiceFacadeBean?wsdl</param-value>
 <!--
         <param-value>http://127.0.0.1:8380/topcoder_contest_service_facade-topcoder_contest_service_facade/ContestServiceFacadeBean?wsdl</param-value>
 -->

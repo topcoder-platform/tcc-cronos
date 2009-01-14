@@ -9,6 +9,7 @@
 
 	<!-- need ant-contrib for <if> -->
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+
 	<if>
 		<not>
 			<available file="../topcoder_global.properties"/>

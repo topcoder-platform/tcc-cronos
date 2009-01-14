@@ -32,7 +32,7 @@ import java.util.List;
  * @author TCSDEVELOPER
  * @version 1.0
  */
-@WebService(name = "ContestServiceFacadeWS")
+@WebService(name = "ContestServiceFacade")
 public interface ContestServiceFacade {
 
     /**
