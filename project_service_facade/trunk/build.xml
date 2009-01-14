@@ -4,6 +4,8 @@
     <property file="${basedir}/build.properties"/>
 	<property file="../topcoder_global.properties"/>
 
+    <property name="javac.encoding" value="UTF-8"/>
+
     <!-- need ant-contrib for <if> -->
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
 	<if>
