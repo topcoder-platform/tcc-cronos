@@ -215,11 +215,11 @@
     ]]>
 </mx:Script>
 <mx:WebService id="ProjectServiceFacadeBean" 
-wsdl="http://75.101.181.246:8003/services-project_service_facade/ProjectServiceFacadeBean?wsdl"> 
+wsdl="http://127.0.0.1:8080/cockpit2.1-project_service_facade/ProjectServiceFacadeBean?wsdl"> 
 <mx:operation name="getAllProjects" resultFormat="object" result="setProject(event)"  /> 
 </mx:WebService>
 <mx:WebService id="ContestServiceFacadeBean" 
-wsdl="http://174.129.135.92:8003/topcoder_contest_service_facade-topcoder_contest_service_facade/ContestServiceFacadeBean?wsdl"> 
+wsdl="http://127.0.0.1:8080/cockpit2.1-topcoder_contest_service_facade/ContestServiceFacadeBean?wsdl"> 
 <mx:operation name="getStatusList" resultFormat="object" result="preprocessStatuses(event)"  /> 
 <mx:operation name="getContestsForProject" resultFormat="object" result="setContests(event)"> 
 <mx:request>
