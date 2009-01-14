@@ -6,6 +6,10 @@
     <mx:Style source="Style.css" />
     <mx:Script>
         <![CDATA[
+            import mx.controls.Image;
+            import mx.events.ListEvent;
+            import mx.containers.VBox;
+            import mx.containers.HBox;
             import mx.rpc.xml.SimpleXMLDecoder;
             import mx.events.FlexEvent;
             import mx.collections.SortField;
@@ -16,8 +20,13 @@
             import mx.rpc.events.FaultEvent;
             import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer;
             import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer;
+	    import mx.core.Application;
     	
-        import mx.rpc.soap.SOAPHeader;
+	    import mx.rpc.soap.SOAPHeader;
+            import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.SubmissionsTableRow;
+
+	    private var username:String=Application.application.parameters.username;  //"user"
+	    private var password:String=Application.application.parameters.password;  //"password"
             
             private var rankList:ArrayCollection = new ArrayCollection();
             [Bindable]
@@ -32,12 +41,21 @@
             [Bindable]
             private var submissionList:ArrayCollection = new ArrayCollection();
             private function init():void {
-                var header:SOAPHeader=getHeader("user","password");
+                var header:SOAPHeader=getHeader(username,password);
 				ContestServiceFacadeBean.clearHeaders();
             	ContestServiceFacadeBean.addHeader(header);
 
             	ContestServiceFacadeBean.getAllContests();
             }
+
+	    //the ImgData is the test data
+            [Embed(source="../assets/demoimage/1large.png")]
+            private var ImgData:Class;
+
+	    [Bindable]
+            private var submissionsData:ArrayCollection = new ArrayCollection(
+                [ {label:"Contest 1", data:1},
+                  {label:"Contest 2", data:2} ]);
             
             [Bindable] 
             private var activeSubmission:ArrayCollection = new ArrayCollection();
@@ -436,7 +454,58 @@
                 } else if (handClick){
                     handClick = false;
                 }
-                
+            }
+            
+            private function SubmissionsChange(event:ListEvent):void{
+                if (ComboBox(event.target).selectedItem.label == "Contest 1"){
+                    SubNum.text = '5';
+                    addImages(5);
+                }
+                else if (ComboBox(event.target).selectedItem.label == "Contest 2"){
+                    SubNum.text = '17';
+                    addImages(17);
+                }
+            }
+            
+            private function addImages(n:int):void {
+               tb.removeAllChildren();
+               var newR1:SubmissionsTableRow = new SubmissionsTableRow();
+               var newR2:SubmissionsTableRow = new SubmissionsTableRow();
+               tb.addChild(newR1);
+               tb.addChild(newR2);
+               for (var i:int = 0; i < n; i++){
+                    var img:Image = new Image();
+                    img.source = ImgData;
+                    img.width = 80;
+                    img.height = 80;
+                    if (i < 3){
+                        ((tb.getChildAt(0) as HBox).getChildAt(i) as VBox).addChild(img);
+                    }
+                    else if (i >= 3 && i < 6){
+                        ((tb.getChildAt(1) as HBox).getChildAt(i-3) as VBox).addChild(img);
+                    }
+                    else {
+                        for (var j:int = i; j < n; j++){
+                            var img1:Image = new Image();
+                            img1.source = ImgData;
+                            img1.width = 80;
+                            img1.height = 80;
+                            if (j%3 == 0){
+                                var newRow:SubmissionsTableRow = new SubmissionsTableRow();
+                                tb.addChild(newRow);
+                                newRow.c0.addChild(img1);
+                            }
+                            else {
+                                var rowNum:int = j/3;
+                                if (j%3 == 1)
+                                    (tb.getChildAt(rowNum) as SubmissionsTableRow).c1.addChild(img1);
+                                else if (j%3 == 2)
+                                    (tb.getChildAt(rowNum) as SubmissionsTableRow).c2.addChild(img1);
+                            }
+                        }
+                        break;
+                    }
+                }
             }
         ]]>
     </mx:Script>
@@ -528,4 +597,30 @@ wsdl="http://127.0.0.1:8080/cockpit2.1-topcoder_contest_service_facade/ContestSe
             </mx:VBox>
         </mx:VBox>
     </mx:HBox>
+    
+    <mx:VBox id="minPage" width="{isMax ? 0 : 320}" height="{isMax ? 0 : 570}" paddingLeft="10" paddingTop="10" paddingRight="5">
+        <mx:HBox width="100%" horizontalGap="0">
+            <mx:Image source="@Embed('../assets/select_a_project.png')"/>
+            <mx:Text text="Select a project:" fontWeight="bold"/>
+        </mx:HBox>
+        <mx:ComboBox width="240" dataProvider="{submissionsData}" selectedIndex="-1" change="SubmissionsChange(event)"/>
+        <mx:HRule width="100%" strokeColor="#000000"/>
+        <mx:HBox width="100%" >
+            <mx:Text text="Total Submissions:" fontWeight="bold"/>
+            <mx:Text text="0" id="SubNum" />
+        </mx:HBox>
+        <mx:VBox id="tb" width="100%" >
+            <mx:HBox width="100%">
+                <mx:VBox width="80" height="80" borderStyle="solid" borderColor="#000000"/>
+                <mx:VBox width="80" height="80" borderStyle="solid" borderColor="#000000"/>
+                <mx:VBox width="80" height="80" borderStyle="solid" borderColor="#000000"/>
+            </mx:HBox>
+            <mx:HBox width="100%">
+                <mx:VBox width="80" height="80" borderStyle="solid" borderColor="#000000"/>
+                <mx:VBox width="80" height="80" borderStyle="solid" borderColor="#000000"/>
+                <mx:VBox width="80" height="80" borderStyle="solid" borderColor="#000000"/>
+            </mx:HBox>
+        </mx:VBox>
+    </mx:VBox>
+    
 </tc:SubmissionViewerWidgetCodeBehind>
