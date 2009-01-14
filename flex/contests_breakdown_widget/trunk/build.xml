@@ -8,14 +8,22 @@
 	<!-- Import common task definition -->
 	<import file="${basedir}/build-common-tasks.xml" />
 
-
-	<!-- Override these in ../topcoder_global.properties 
-	<property name="libdir" value="C:/tcs/flex"/>
-	<property name="tcs_flex_libdir" value="${libdir}/catalog"/>
-	<property name="ext_flex_libdir" value="${libdir}/third_party"/>
-	<property name="FLEX_HOME" value="C:/Program Files/Adobe/Flex Builder 3/sdks/3.1.0"/>-->
-	<property name="flexunitdir" value="./lib" />
-	<property name="flexunitantdir" value="./lib" />
+	<!-- need ant-contrib for <if> -->
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+	<if>
+		<not>
+			<available file="../topcoder_global.properties"/>
+		</not>
+		<then>
+			<!-- Override these in ../topcoder_global.properties  -->
+			<property name="libdir" value="C:/tcs/flex"/>
+			<property name="tcs_flex_libdir" value="${libdir}/catalog"/>
+			<property name="ext_flex_libdir" value="${libdir}/third_party"/>
+			<property name="FLEX_HOME" value="C:/Program Files/Adobe/Flex Builder 3/sdks/3.1.0"/>
+			<property name="flexunitdir" value="./lib" />
+			<property name="flexunitantdir" value="./lib" />
+		</then>
+	</if>
 
 	<!-- DIRECTORY SETUP -->
 	
