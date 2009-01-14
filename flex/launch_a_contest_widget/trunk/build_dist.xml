@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project name="TopCoder Flex Generic Build" basedir=".">
+<project name="TopCoder Flex Cronos Build" basedir=".">
 
 	<property file="../topcoder_global.properties"/>
 	<!-- Include external properties files -->
@@ -224,68 +224,6 @@
 			</fileset>
 		</copy>
 		<jar jarfile="${builddir}/${docpackage.jar}" basedir="${dist_docpackage}"/>
-	</target>
-
-	<!-- Dev submission -->
-	<target name="dev_submission" depends="test">
-		<zip destfile="${dev_submission.zip}"
-			basedir="."
-			includes="README,
-			build.version,
-			build.xml,
-			${configdir}/**,
-			${srcdir}/**,
-			${testlogdir}/**,
-			${testfiles}/**,
-			${docsdir}/**,
-			${test_reflib}/**"
-
-			excludes="${flextests}/${packagedir}/stresstests/*,
-			${flextests}/${packagedir}/failuretests/*,
-			${flextests}/${packagedir}/accuracytests/*"
-		/>
-	</target>
-
-	<!-- Design submission -->
-	<target name="design_submission">
-		<zip destfile="${design_submission.zip}"
-			basedir="."
-			includes="${configdir}/**,
-			${javamain}/**,
-			${docsdir}/**,
-			${testfiles}/**"
-		/>
-	</target>
-
-	<!-- Development submission -->
-	<target name="dev_dist">
-		<zip destfile="${dev_dist.zip}"
-			basedir="."
-			includes="build.xml,
-			README,
-			build.version,
-			${configdir}/**,
-			${srcdir}/**,
-			${docsdir}/**,
-			${testfiles}/**,
-			${test_reflib}/**"
-		/>
-	</target>
-
-	<!-- Design sbumission -->
-	<target name="design_dist">
-		<zip destfile="${design_dist.zip}"
-			basedir="."
-			includes="build.xml,
-			README,
-			build-common-tasks.xml,
-			build-dependencies.xml,
-			build.version,
-			${configdir}/**,
-			${srcdir}/**,
-			${docsdir}/**,
-			${testfiles}/**"
-		/>
 	</target>
 
 	<!-- Put the built swc file into dist -->
