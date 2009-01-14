@@ -34,9 +34,16 @@ public abstract class BaseComponentCompetitionSituationGenerator implements
                 SituationGenerator<ComponentCompetitionSituation> {
     /**
      * Represents the list of generated component competition situations. It is set in the constructor. It is accessed
-     * as an iterator via the iterator method. It will have 1 to many non-null values. Once set, it will never change.
+     * as an iterator via the iterator method. It will have 0 to many non-null values. Once set, it will never change.
      */
     private final List<ComponentCompetitionSituation> generatedSituations;
+
+    /**
+     * Constructor with no args.
+     */
+    public BaseComponentCompetitionSituationGenerator() {
+        this.generatedSituations = Collections.unmodifiableList(new ArrayList<ComponentCompetitionSituation>());
+    }
 
     /**
      * Constructor accepting the generated situations.

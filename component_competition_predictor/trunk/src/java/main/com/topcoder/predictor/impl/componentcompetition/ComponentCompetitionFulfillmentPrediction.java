@@ -34,16 +34,25 @@ public class ComponentCompetitionFulfillmentPrediction implements Prediction {
     /**
      * Represents the situation from which this prediction is made.
      *
-     * It is set in the constructor. It is accessed in the getter. It is used in the clone method. It will not be null.
+     * It is set in the constructor. It is accessed in the getter. It is used in the clone method. It can be null.
      * Once set, it will not change.
      */
     private final ComponentCompetitionSituation situation;
 
     /**
      * Represents the predictor used to generate this prediction. It is set in the constructor. It is accessed in the
-     * getter. It is used in the clone method. It will not be null. Once set, it will not change.
+     * getter. It is used in the clone method. It can be null. Once set, it will not change.
      */
     private final Predictor<? extends Situation, ? extends Prediction> predictor;
+
+    /**
+     * Constructor with no args.
+     */
+    public ComponentCompetitionFulfillmentPrediction() {
+        this.expectedPassedReviewSubmissionCount = 0;
+        this.situation = null;
+        this.predictor = null;
+    }
 
     /**
      * Constructor accepting the variables.
@@ -101,6 +110,10 @@ public class ComponentCompetitionFulfillmentPrediction implements Prediction {
      * @return a deep copy of this prediction.
      */
     public Object clone() {
+        if (situation == null || predictor == null) {
+            return new ComponentCompetitionFulfillmentPrediction();
+        }
+
         return new ComponentCompetitionFulfillmentPrediction(expectedPassedReviewSubmissionCount,
             (ComponentCompetitionSituation) situation.clone(),
             (Predictor<? extends Situation, ? extends Prediction>) predictor.clone());
