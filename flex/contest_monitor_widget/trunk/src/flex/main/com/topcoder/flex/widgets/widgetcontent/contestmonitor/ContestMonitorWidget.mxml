@@ -189,7 +189,7 @@
     ]]>
 </mx:Script>
 <mx:WebService id="ContestServiceFacadeBean" 
-wsdl="http://174.129.135.92:8003/topcoder_contest_service_facade-topcoder_contest_service_facade/ContestServiceFacadeBean?wsdl"> 
+wsdl="http://127.0.0.1:8080/cockpit2.1-topcoder_contest_service_facade/ContestServiceFacadeBean?wsdl"> 
 <mx:operation name="getContest" resultFormat="object" result="setContest(event)"> 
 <mx:request><arg0>{contestid}</arg0></mx:request>
 </mx:operation>

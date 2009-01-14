@@ -9,15 +9,24 @@
 	<import file="${basedir}/build-common-tasks.xml" />
 
 
-	<!-- Override these in ../topcoder_global.properties -->
-	<property name="libdir" value="../tcs/flex"/>
-	<property name="tcs_flex_libdir" value="${libdir}/catalog"/>
-	<property name="ext_flex_libdir" value="${libdir}/third_party"/>
-	<property name="FLEX_HOME" value="C:/Program Files/Adobe/Flex Builder 3/sdks/3.0.0"/>
-	<property name="flexunitdir" value="${ext_flex_libdir}/flexunit/0.0.1-alpha" />
-	<property name="flexunitantdir" value="${ext_flex_libdir}/FlexAntTasks/0.0.1-alpha" />
-	
-	<property name="cronos_flex_libdir" value="${libdir}/cronos"/>
+	<!-- need ant-contrib for <if> -->
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+	<if>
+		<not>
+			<available file="../topcoder_global.properties"/>
+		</not>
+		<then>
+			<!-- Override these in ../topcoder_global.properties-->
+			<property name="libdir" value="../tcs/flex"/>
+			<property name="tcs_flex_libdir" value="${libdir}/catalog"/>
+			<property name="ext_flex_libdir" value="${libdir}/third_party"/>
+			<property name="FLEX_HOME" value="C:/Program Files/Adobe/Flex Builder 3/sdks/3.0.0"/>
+			<property name="flexunitdir" value="${ext_flex_libdir}/flexunit/0.0.1-alpha" />
+			<property name="flexunitantdir" value="${ext_flex_libdir}/FlexAntTasks/0.0.1-alpha" />
+
+			<property name="cronos_flex_libdir" value="${libdir}/cronos"/>
+		</then>
+	</if>
 
 	<!-- DIRECTORY SETUP -->
 	
@@ -84,7 +93,7 @@
 
 	<!-- Flex Unit -->
 	<property name="flexunit" value="${flexunitdir}/FlexUnit.swc" />
-	<property name="flexunitoptional" value="${flexunitdir}/FlexUnitOptional.swc" />
+	<property name="flexunitoptional" value="${flexunitdir}/bin/FlexUnitOptional.swc" />
 
 	<!-- Flex Unit Ant task -->
 	<property name="flexunitantjar" value="${flexunitantdir}/FlexAntTasks.jar" />
@@ -252,7 +261,7 @@
 		<!-- Change to use build_dist.xml -->
 		<copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml"/>
 		
-	
+		<antcall target="package_docs"/>
 
 		<zip destfile="${component.dist.zip}" basedir="${build_distdir}"/>
 

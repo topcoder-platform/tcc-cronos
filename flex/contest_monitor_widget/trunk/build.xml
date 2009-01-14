@@ -9,18 +9,29 @@
 	<import file="${basedir}/build-common-tasks.xml" />
 
 
-	<!-- Override these in ../topcoder_global.properties
-	<property name="libdir" value="../tcs/flex"/>
-	<property name="tcs_libdir" value="${libdir}/catalog"/>
-	<property name="ext_libdir" value="${libdir}/third_party"/>
-	<property name="FLEX_HOME" value="C:/Program Files/Adobe/Flex Builder 3/sdks/3.1.0"/>
-	<property name="flexunitdir" value="C:/dev/flex/flexunit/flexunit" />
-	<property name="flexunitantdir" value="C:/dev/flex/flexunit/flexunit" /> -->
+	<!-- need ant-contrib for <if> -->
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+	<if>
+		<not>
+			<available file="../topcoder_global.properties"/>
+		</not>
+		<then>
+			<!-- Override these in ../topcoder_global.properties-->
+			<property name="libdir" value="../tcs/flex"/>
+			<property name="tcs_flex_libdir" value="${libdir}/catalog"/>
+			<property name="ext_flex_libdir" value="${libdir}/third_party"/>
+			<property name="FLEX_HOME" value="C:/Program Files/Adobe/Flex Builder 3/sdks/3.0.0"/>
+			<property name="flexunitdir" value="${ext_flex_libdir}/flexunit/0.0.1-alpha" />
+			<property name="flexunitantdir" value="${ext_flex_libdir}/FlexAntTasks/0.0.1-alpha" />
+
+			<property name="cronos_flex_libdir" value="${libdir}/cronos"/>
+		</then>
+	</if>
 
 	<!-- DIRECTORY SETUP -->
 	
 	<!-- This property can be changed for client build scripts -->
-	<property name="target_libdir" value="${tcs_libdir}"/>
+	<property name="target_libdir" value="${cronos_flex_libdir}"/>
 
 	<property name="srcdir" value="src" />
 	<property name="testdir" value="${srcdir}/flex/tests" />
@@ -191,7 +202,7 @@
 
 			<arg value="-templates-path=${asdoc.template.dir}/" />
 
-			<arg line="-library-path=${_asdoc.libpath},${FLEX_HOME}/frameworks/libs" />
+			<arg line="-library-path=${_asdoc.libpath},'${FLEX_HOME}'/frameworks/libs" />
 
 		</exec>
 
