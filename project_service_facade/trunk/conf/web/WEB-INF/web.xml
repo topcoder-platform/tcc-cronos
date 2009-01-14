@@ -7,7 +7,7 @@
     <context-param>
         <description>An URL for the Project Service Facade WSDL document</description>
         <param-name>facade_wsdl</param-name>
-        <param-value>http://127.0.0.1:8080/services-project_service_facade/ProjectServiceFacadeBean?wsdl</param-value>
+        <param-value>http://127.0.0.1:8080/cockpit2.1-project_service_facade/ProjectServiceFacadeBean?wsdl</param-value>
 <!--
         <param-value>http://127.0.0.1:8380/services-project_service_facade/ProjectServiceFacadeBean?wsdl</param-value>
 -->

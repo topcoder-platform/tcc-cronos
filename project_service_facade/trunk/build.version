@@ -1,6 +1,6 @@
 #property file defining the components information
 component.name=Project Service Facade
-component.distfilename=services
+component.distfilename=project_service_facade
 component.package=com.topcoder.service.facade.project
 component.packagedir=com/topcoder/service/facade/project
 component.version.major=1

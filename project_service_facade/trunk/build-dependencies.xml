@@ -1,7 +1,7 @@
 <project name="Project Service Facade Dependency Import" default="dist" basedir=".">
-    <!-- property file defining the component's dependencies -->
+    <!-- property file defining the component's dependencies 
     <property name="jboss_home" value="${ext_libdir}/jboss/4.2.3.GA"/>
-    <property name="jboss_config_name" value="default"/>
+    <property name="jboss_config_name" value="default"/>-->
 
     <!-- Properties used in compile_targets ANT target for JDK version 5 -->
     <property name="component.target" value="1.5"/>
@@ -113,26 +113,26 @@
     <property name="mockejb.jar" value="${ext_libdir}/mockejb/0.6/mockejb.jar"/>
     <property name="jdbc.informix.jar" value="${ext_libdir}/informix/ifxjdbc.jar"/>
 
-    <property name="cglib.jar" value="${jboss_home}/server/${jboss_config_name}/lib/cglib.jar"/>
-    <property name="dom4j.jar" value="${jboss_home}/server/${jboss_config_name}/lib/dom4j.jar"/>
+    <property name="cglib.jar" value="${jboss.home}/server/${server.name}/lib/cglib.jar"/>
+    <property name="dom4j.jar" value="${jboss.home}/server/${server.name}/lib/dom4j.jar"/>
     <property name="commons-collections.jar"
-              value="${jboss_home}/server/${jboss_config_name}/lib/commons-collections.jar"/>
-    <property name="hibernate3.jar" value="${jboss_home}/server/${jboss_config_name}/lib/hibernate3.jar"/>
+              value="${jboss.home}/server/${server.name}/lib/commons-collections.jar"/>
+    <property name="hibernate3.jar" value="${jboss.home}/server/${server.name}/lib/hibernate3.jar"/>
     <property name="hibernate-annotations.jar"
-              value="${jboss_home}/server/${jboss_config_name}/lib/hibernate-annotations.jar"/>
+              value="${jboss.home}/server/${server.name}/lib/hibernate-annotations.jar"/>
     <property name="hibernate-entitymanager.jar"
-              value="${jboss_home}/server/${jboss_config_name}/lib/hibernate-entitymanager.jar"/>
+              value="${jboss.home}/server/${server.name}/lib/hibernate-entitymanager.jar"/>
 
-    <property name="jboss-jaxws.jar" value="${jboss_home}/server/${jboss_config_name}/lib/jboss-jaxws.jar"/>
-    <property name="log4j.jar" value="${jboss_home}/server/${jboss_config_name}/lib/log4j.jar"/>
+    <property name="jboss-jaxws.jar" value="${jboss.home}/server/${server.name}/lib/jboss-jaxws.jar"/>
+    <property name="log4j.jar" value="${jboss.home}/server/${server.name}/lib/log4j.jar"/>
 
-    <property name="jboss-ejb3x.jar" value="${jboss_home}/client/jboss-ejb3x.jar"/>
-    <property name="ejb3-persistence.jar" value="${jboss_home}/client/ejb3-persistence.jar"/>
-    <property name="jbossall-client.jar" value="${jboss_home}/client/jbossall-client.jar"/>
-    <property name="antlr.jar" value="${jboss_home}/client/antlr.jar"/>
-    <property name="jbossws-client.jar" value="${jboss_home}/client/jbossws-client.jar"/>
+    <property name="jboss-ejb3x.jar" value="${jboss.home}/client/jboss-ejb3x.jar"/>
+    <property name="ejb3-persistence.jar" value="${jboss.home}/client/ejb3-persistence.jar"/>
+    <property name="jbossall-client.jar" value="${jboss.home}/client/jbossall-client.jar"/>
+    <property name="antlr.jar" value="${jboss.home}/client/antlr.jar"/>
+    <property name="jbossws-client.jar" value="${jboss.home}/client/jbossws-client.jar"/>
 
-    <property name="xercesImpl.jar" value="${jboss_home}/lib/endorsed/xercesImpl.jar"/>
+    <property name="xercesImpl.jar" value="${jboss.home}/lib/endorsed/xercesImpl.jar"/>
 
     <path id="component.tcs-dependencies">
         <pathelement location="${jboss_login_module.jar}"/>
