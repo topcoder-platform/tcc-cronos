@@ -7,6 +7,10 @@
 
 	private var _rowNum:int;
 	private var _ContextId:String;
+		/**
+    	 * The base url for the link of contents;
+    	 */
+        private var urlBase:String = "http://studio.topcoder.com/?module=ViewContestDetails&ct=";
 	[Bindable]
 	private var _dataProvider:Contest;
 	//setter and getter of dataProvider
@@ -19,6 +23,7 @@
 		status=_dataProvider.status;
 		registrants=_dataProvider.registrants;
 		contextName=_dataProvider.name;
+		ContextId=_dataProvider.id;
 		if (status.toLowerCase()=="draft") {
 			statusIcon.visible=true;
 		}
@@ -126,13 +131,20 @@
         	var dict:Dictionary=new Dictionary();
         	dict["contestid"]=_ContextId;
         	prjCt.widgetFramework.addWidgetEx("ContestMonitor","ContestMonitor",dict );
+	}
+
+	/**
+	 * Click on the label links to url.
+	 */
+        private function handleClick():void {
+            navigateToURL(new URLRequest(urlBase+ ContextId));
         }
 
 
 	]]>
 </mx:Script>
 	<mx:Canvas width="60%" height="27">
-		<mx:LinkButton styleName="LinkButtonStyle" width="50%" id="lblContextName" textDecoration="underline" left="10" textAlign="left" themeColor="#FEFEFE" y="5"/>
+		<mx:LinkButton styleName="LinkButtonStyle" width="50%" id="lblContextName" textDecoration="underline" left="10" textAlign="left" themeColor="#FEFEFE" y="5" click="handleClick()"/>
 		<mx:LinkButton styleName="LinkButtonStyle" width="50%" id="lblStatsName" textDecoration="underline" left="300" textAlign="left" themeColor="#FEFEFE" y="5" click="showStats()"/>
 	
 	</mx:Canvas>
