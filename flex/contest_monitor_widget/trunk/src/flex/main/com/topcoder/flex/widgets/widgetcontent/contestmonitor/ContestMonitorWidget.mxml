@@ -16,7 +16,7 @@
         import mx.events.SliderEvent;        
         import mx.collections.ArrayCollection;        
     	import mx.rpc.events.ResultEvent;
-    	
+    	import mx.core.Application;
         import mx.rpc.soap.SOAPHeader;
 
         private var startTime:Date;
@@ -27,6 +27,10 @@
 
 	public static var SLIDER_TICK_LENGTH:Number = 0;
 	public static var TRACK_WIDTH:Number = 393;
+
+	private var username:String=Application.application.parameters.username;  //"user"
+        
+        private var password:String=Application.application.parameters.password;  //"password"
         
         
         private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
@@ -56,7 +60,7 @@
         
         //after loading the xml file, fetch data
         private function getData(event:Event):void {
-        	var header:SOAPHeader=getHeader("user","password");
+        	var header:SOAPHeader=getHeader(username,password);
 			ContestServiceFacadeBean.clearHeaders();
             ContestServiceFacadeBean.addHeader(header);
 
