@@ -409,7 +409,7 @@
                 */
                 if (contestCombo && contestCombo.selectedItem) {
                 	contestId=contestCombo.selectedItem.id;
-                	var header:SOAPHeader=getHeader("user","password");
+                	var header:SOAPHeader=getHeader(username, password);
 					ContestServiceFacadeBean.clearHeaders();
             		ContestServiceFacadeBean.addHeader(header);
 
