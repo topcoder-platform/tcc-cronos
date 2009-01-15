@@ -8,6 +8,7 @@
 	<property name="flexunit" value="${flexunitdir}/bin/FlexUnit.swc" />
 	<property name="flexunitoptional" value="${flexunitdir}/bin/FlexUnitOptional.swc" />
 	<property name="as3corelib.swc" value="${ext_flex_libdir}/as3corelib/0.9/as3corelib.swc" />
+	<property name="datavisualization.swc" value="${ext_flex_libdir}/datavisualization/3.2.0/datavisualization.swc" />
 
 	<!-- Path elements required in the master build file (they MUST be defined even if empty). -->
 	<path id="component.tcs-dependencies">
@@ -16,6 +17,7 @@
 
 	<path id="component.3rdParty-dependencies">
 	    <pathelement location="${as3corelib.swc}" />
+		<pathelement location="${datavisualization.swc}" />
 	</path>
 
 	<path id="component.test.3rdParty-dependencies">
