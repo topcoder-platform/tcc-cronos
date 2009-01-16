@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tc:ProjectWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
     xmlns:tc="com.topcoder.flex.widgets.widgetcontent.projectwidget.*"
-    xmlns:ns1="com.topcoder.flex.widgets.widgetcontent.projectwidget.com.*" headerHeight="5" 
-    width="100%" height="100%"
-    creationComplete="initWidget()" layout="absolute" horizontalScrollPolicy="off" verticalScrollPolicy="off">
-    <mx:Style source="Style.css" />
-    
+    xmlns:ns1="com.topcoder.flex.widgets.widgetcontent.projectwidget.com.*"
+    horizontalAlign="center" width="100%" height="100%"
+    creationComplete="initWidget()">
+<mx:Style source="./Style.css" />
 <mx:Script>
     <![CDATA[
     	import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Contest;
     	import mx.rpc.events.ResultEvent;
+    	import mx.controls.scrollClasses.ScrollBar;
+    	import mx.events.ResizeEvent;
         import mx.collections.ArrayCollection;
         import mx.core.IUIComponent;
         import mx.core.UIComponent;
@@ -230,8 +231,12 @@ wsdl="{contestServiceFacadeWsdl}">
 </mx:request>
 </mx:operation>
 </mx:WebService>
-    <mx:Canvas top="5" right="15" left="10" horizontalScrollPolicy="off" verticalScrollPolicy="auto" bottom="5">
-        <ns1:ProjectsContainer id="prjList"  horizontalScrollPolicy="off" verticalScrollPolicy="off" maxHeight="500"  width="100%" height="100%">
-        </ns1:ProjectsContainer>
-    </mx:Canvas>
+
+
+		<mx:Box id="container" paddingTop="5" paddingRight="5" width="100%" height="98%"
+				horizontalAlign="center" horizontalScrollPolicy="off" verticalScrollPolicy="auto">
+		    <ns1:ProjectsContainer id="prjList"  horizontalScrollPolicy="off" verticalScrollPolicy="auto" maxHeight="500"  width="100%" height="100%">
+		    </ns1:ProjectsContainer>
+		</mx:Box>		
+
 </tc:ProjectWidgetCodeBehind>

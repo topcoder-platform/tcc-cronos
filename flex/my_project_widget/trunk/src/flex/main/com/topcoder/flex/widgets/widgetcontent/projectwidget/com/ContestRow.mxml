@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="55" styleName="ContestRowStyle" backgroundColor="#FFFFFF">
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%"
+		styleName="ContestRowStyle" backgroundSize="100%">
 <mx:Script>
 	<![CDATA[
 	import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Contest;
@@ -24,13 +25,21 @@
 		registrants=_dataProvider.registrants;
 		contextName=_dataProvider.name;
 		ContextId=_dataProvider.id;
-		if (status.toLowerCase()=="draft") {
-			statusIcon.visible=true;
-		}
-		else{
-			statusIcon.visible=false;
-		}
-		lblStatsName.label="Stats";
+
+		var tmp:String = status.toLowerCase();
+		if (tmp.indexOf("active") >= 0) {
+			statusBtn.styleName = "active";
+		} else if (tmp.indexOf("terminated") >= 0) {
+			statusBtn.styleName = "terminated";
+		} else if (tmp.indexOf("completed") >= 0) {
+			statusBtn.styleName = "completed";
+		} else if (tmp.indexOf("draft") >= 0) {
+			statusBtn.styleName = "draft";
+		} else if (tmp.indexOf("scheduled") >= 0) {
+			statusBtn.styleName = "scheduled";
+		} else if (tmp.indexOf("danger") >= 0) {
+			statusBtn.styleName = "danger";
+		}		
 	}
 	public function get dataProvider():Contest{
 		return _dataProvider;
@@ -56,7 +65,7 @@
 		return _rowNum;
 	}
 	public function set status(temp:String):void{
-		lblStatus.text = temp;
+		statusBtn.label = temp;
 	}
 	public function get contextName():String{
 		return lblContextName.label;
@@ -65,7 +74,7 @@
 		lblContextName.label = temp;
 	}
 	public function get status():String{
-		return lblStatus.text;
+		return statusBtn.label;
 	}
 	public function set startDate(temp:String):void{
 		lblStartDate.text = temp;
@@ -91,14 +100,14 @@
 		if (temp=='0') {
 			lnkSubmissions.includeInLayout=false
 			lnkSubmissions.visible=false
-			canvasSubmissions.percentWidth=100;
+			//canvasSubmissions.percentWidth=100;
 			lblSubmissions.setStyle("textAlign","center")
 
 		}
 		else{
 			lnkSubmissions.includeInLayout=true
 			lnkSubmissions.visible=true
-			canvasSubmissions.percentWidth=35
+			//canvasSubmissions.percentWidth=35
 			lblSubmissions.setStyle("textAlign","right")
 
 		}
@@ -111,13 +120,13 @@
 		if (temp=='0') {
 			lnkFormPosts.includeInLayout=false
 			lnkFormPosts.visible=false
-			canvasForumPosts.percentWidth=100
+			//canvasForumPosts.percentWidth=100
 			lblForumPosts.setStyle("textAlign","center")
 		}
 		else{
 			lnkFormPosts.includeInLayout=true
 			lnkFormPosts.visible=true
-			canvasForumPosts.percentWidth=35
+			//canvasForumPosts.percentWidth=35
 			lblForumPosts.setStyle("textAlign","right")
 		}
 	}
@@ -127,7 +136,7 @@
 	
 	private function showStats():void
         {
-        	var prjCt:ProjectsContainer=this.parent.parent as ProjectsContainer;
+        	var prjCt:ProjectsContainer=this.parent as ProjectsContainer;
         	var dict:Dictionary=new Dictionary();
         	dict["contestid"]=_ContextId;
         	prjCt.widgetFramework.addWidgetEx("ContestMonitor","ContestMonitor",dict );
@@ -143,40 +152,22 @@
 
 	]]>
 </mx:Script>
-	<mx:Canvas width="60%" height="27">
-		<mx:LinkButton styleName="LinkButtonStyle" width="50%" id="lblContextName" textDecoration="underline" left="10" textAlign="left" themeColor="#FEFEFE" y="5" click="handleClick()"/>
-		<mx:LinkButton styleName="LinkButtonStyle" width="50%" id="lblStatsName" textDecoration="underline" left="300" textAlign="left" themeColor="#FEFEFE" y="5" click="showStats()"/>
-	
-	</mx:Canvas>
-	<mx:HBox width="100%" height="24" horizontalGap="0" >
-		<mx:Canvas width="16%" height="28">
-			<mx:Label x="0" y="5" width="100%" height="22" textAlign="center" id="lblStartDate" />
-		</mx:Canvas>
-		<mx:Canvas width="16%" height="28">
-			<mx:Label x="0" y="5" width="100%" height="22" textAlign="center" id="lblEndDate"/>
-		</mx:Canvas>
-		<mx:Canvas width="16%" height="28">
-			<mx:Label x="0" y="5" width="100%" height="22" textAlign="center" id="lblRegistrants" />
-		</mx:Canvas>
-		<mx:Canvas width="16%" height="28">
-			<mx:HBox width="100%" height="28" horizontalGap="1">
-				<mx:Canvas id="canvasSubmissions" width="35%" height="28">
-					<mx:Label height="17" textAlign="center" id="lblSubmissions" width="100%"   y="5"/>
-				</mx:Canvas>
-				<mx:LinkButton styleName="LinkButtonStyle" y="0" label="(view)" height="27" textAlign="left" textDecoration="underline" id="lnkSubmissions" themeColor="#FFFFFF" width="60%" />
-			</mx:HBox>
-		</mx:Canvas>
-		<mx:Canvas width="16%" height="28">
-			<mx:HBox width="100%" height="28" horizontalGap="1">
-				<mx:Canvas id="canvasForumPosts" width="35%" height="28">
-					<mx:Label y="5" height="17" textAlign="center" id="lblForumPosts"  width="100%" />
-				</mx:Canvas>
-				<mx:LinkButton styleName="LinkButtonStyle" y="0" label="(view)" height="28" textAlign="left" textDecoration="underline" id="lnkFormPosts"  themeColor="#FFFFFF" left="52" right="0"/>
-			</mx:HBox>
-		</mx:Canvas>
-		<mx:Canvas width="16%" height="24">
-			<mx:Label x="0" y="2" width="100%" height="22" textAlign="center" id="lblStatus" />
-		</mx:Canvas>
-		<mx:Image id="statusIcon" source="@Embed(source='../../assets/image/draft.png')"  alpha="1.0"/>
+	<mx:LinkButton buttonMode="true" useHandCursor="true" id="lblContextName" styleName="linkBtn" click="handleClick()"/>
+
+	<mx:HBox width="100%" styleName="rowContent" >
+		<mx:Text width="100%" styleName="rowContentLabel" id="lblStartDate" />
+		<mx:Text width="100%" styleName="rowContentLabel" id="lblEndDate" />
+		<mx:Text width="100%" styleName="rowContentLabel" id="lblRegistrants" />
+		<mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle">
+			<mx:Text width="100%" styleName="rowContentLabel" id="lblSubmissions" />
+			<mx:LinkButton styleName="viewBtn" label="View" labelPlacement="bottom" id="lnkSubmissions"/> 
+		</mx:VBox>
+		<mx:VBox width="100%" styleName="bottomAlign">
+			<mx:Text width="100%" styleName="rowContentLabel" id="lblForumPosts" />
+			<mx:LinkButton styleName="viewBtn" label="View" labelPlacement="bottom" id="lnkFormPosts"/> 
+		</mx:VBox>
+		<mx:VBox width="100%" styleName="bottomAlign">
+			<mx:LinkButton id="statusBtn" styleName="statusBtn" labelPlacement="bottom" click="showStats()"/> 
+		</mx:VBox>
 	</mx:HBox>
 </mx:VBox>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" borderStyle="none" borderThickness="2" borderColor="#942321">
-
-
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+		verticalGap="0" borderStyle="none" borderThickness="2" borderColor="#942321">
 <mx:Script>
 	<![CDATA[
 		import com.topcoder.flex.model.IWidgetFramework;
