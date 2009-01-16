@@ -8,6 +8,8 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
     import mx.containers.Box;
     import mx.controls.DataGrid;
     import flash.utils.Dictionary;
+    
+    import mx.containers.Box;
 
     /**
      * <p>
@@ -25,10 +27,6 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
          * The name of the widget.
          */
         private var _name:String = "ContestMonitor";
-        
-        
-        [Bindable]
-        public var contestid:String="90";
 
 	/**
 	 * The framework of the widget.
@@ -39,6 +37,17 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
          * The data for the widget.
          */
         [Bindable] private var _result:XML = null;
+        
+        
+        /**
+         * The default contest id.
+         */
+        private var _defaultcontestid:int = 0;
+        
+        public function get defaultcontestid():int
+        {
+        	return _defaultcontestid;
+        }
         
         /**
          * ContestMonitorWidgetCodeBehind constructor.
@@ -232,7 +241,7 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
         {
         	if(map["contestid"])
         	{
-        		this.contestid=map["contestid"];
+        		_defaultcontestid=map["contestid"];
         	}
         }
     }

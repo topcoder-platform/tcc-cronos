@@ -34,9 +34,13 @@
 	private var projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl; 
         private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;
         
-        
         private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
 		
+		[Bindable]
+		private var contestList:ArrayCollection;
+		
+		[Bindable]
+		private var contestNames:ArrayCollection;
 		
 		public static function getHeader(username:String, password:String):SOAPHeader
 		{
@@ -66,8 +70,8 @@
 			ContestServiceFacadeBean.clearHeaders();
             ContestServiceFacadeBean.addHeader(header);
 
-            ContestServiceFacadeBean.getContest.send();
-        	
+           // ContestServiceFacadeBean.getContest.send();
+        	 ContestServiceFacadeBean.getAllContests();
         }
         
         
@@ -104,14 +108,34 @@
                 event.target.stop();
         }
         
-        private function setContest(e:ResultEvent): void
+        private function setContests(e:ResultEvent): void
         {
         	if(e==null || e.result==null)return;
-        	
-        	regs.text = e.result.contestData.numberOfRegistrants;
-            subms.text = e.result.contestData.submissionCount;
-        	start.text = e.result.startTime[0];
-            end.text = e.result.endTime[0];
+        	this.contestList=e.result as ArrayCollection;
+        	contestNames=new ArrayCollection();
+        	var selectIdx=0;
+        	for(var i:int=0;i<contestList.length;i++)
+        	{
+        		var data:*=contestList.getItemAt(i).contestData;
+        		
+        	    if(data!=null){
+        	     contestNames.addItem(data.name); 
+        	     if(data.contestId==this.defaultcontestid)selectIdx=i;
+        	    }
+        	}
+        	contestCombo.selectedIndex=selectIdx;
+        }
+        
+        private function handleContest():void
+        
+        {
+        	if (contestList==null || contestCombo.selectedIndex<0) return ;
+        	var result:*=contestList.getItemAt(contestCombo.selectedIndex);
+        	if(result==null || result.contestData==null)return ;
+        	regs.text = result.contestData.numberOfRegistrants;
+            subms.text = result.contestData.submissionCount;
+        	start.text = result.startTime[0];
+            end.text = result.endTime[0];
             /*
             var datePattern:RegExp = /-/g;
             var endTimeTmp:String = e.result.endTime[0];
@@ -121,7 +145,7 @@
             */
             var datePattern:RegExp = /-/g;
             var datePattern2:RegExp = /T/g;
-            var endTimeTmp:String = e.result.endTime[0];
+            var endTimeTmp:String = result.endTime[0];
            var timeZoneIndex:Number = endTimeTmp.lastIndexOf("-");
             endTimeTmp = endTimeTmp.substring(0, timeZoneIndex);
             timeZoneIndex = endTimeTmp.indexOf("T");
@@ -129,7 +153,7 @@
             var endTimeTmp2:String = endTimeTmp.substring(timeZoneIndex+1, endTimeTmp.length).substring(0,8);  
             endTime=new Date(endTimeTmp1 +" "+ endTimeTmp2); //new Date(endTimeTmp1 + endTimeTmp2);
             
-            var startTimeTmp:String = e.result.startTime[0];
+            var startTimeTmp:String = result.startTime[0];
             timeZoneIndex = startTimeTmp.lastIndexOf("-");
             startTimeTmp=startTimeTmp.substring(0, timeZoneIndex);
             timeZoneIndex = startTimeTmp.indexOf("T");
@@ -196,49 +220,40 @@
 </mx:Script>
 <mx:WebService id="ContestServiceFacadeBean" 
 wsdl="{contestServiceFacadeWsdl}"> 
-<mx:operation name="getContest" resultFormat="object" result="setContest(event)"> 
-<mx:request><arg0>{contestid}</arg0></mx:request>
+<mx:operation name="getAllContests" resultFormat="object" result="setContests(event)"> 
 </mx:operation>
 </mx:WebService>
- 
-			<mx:Spacer height="10"/>
-			<mx:Box styleName="infoBox" height="70" width="100%" verticalGap="0">
-				<mx:Spacer height="13"/>
-				<mx:HBox width="224">
-			       <mx:Label text="Registrants :" styleName="infoBoxTxt" width="140"/>
-			       <mx:Text id="regs" styleName="infoBoxTxt" />
-			    </mx:HBox>
-			    <mx:HBox width="224">
-			       <mx:Label text="Submissions :" styleName="infoBoxTxt" width="140"/>
-			       <mx:Text id="subms" styleName="infoBoxTxt" />
-			    </mx:HBox>
-			</mx:Box>
-			<mx:Spacer height="5"/>
-		    <mx:HBox>
-		       <mx:Label text="Start Date/Time :" styleName="infoBoxTxt" width="160"/>
-		       <mx:Text id="start" styleName="infoBoxTxtNormal"/>
-		    </mx:HBox>
-		    <mx:HBox>
-		       <mx:Label text="End Date/Time :" styleName="infoBoxTxt" width="160"/>
-		       <mx:Text id="end" styleName="infoBoxTxtNormal"/>
-		    </mx:HBox>
-		    <mx:HBox>
-		       <mx:Label text="Time Remaining :" styleName="infoBoxTxt" width="160"/>
-		       <mx:Text id="timeRem" styleName="infoBoxTxtNormal"/>
-		    </mx:HBox>
-		    <mx:Spacer height="12"/>
-		    <mx:Box styleName="sliderBox" horizontalAlign="center" verticalScrollPolicy="off" paddingTop="15" width="100%" height="48">
-		    	<!--<mx:HSlider id="timeLine" 
-				 width="80%" tickColor="black"
-		         snapInterval="1" showDataTip="false"
-		         allowTrackClick="true" />-->
-		         <mx:HSlider id="timeLine" styleName="customHSlider" 
-		         	thumbOffset="0" showTrackHighlight="true"  allowTrackClick="true" liveDragging="true"
-		         	labelOffset="2" tickLength="0"  labelStyleName="labelStyle"
-					width="393" showDataTip="false"/>
-		    </mx:Box>
-
-	
+<mx:Canvas width="100%" minWidth="755" height="50">
+	<mx:Label text="Select Contests :" left="40" top="11" 
+                        styleName="normalText" paddingTop="0" paddingBottom="0" />
+    <mx:ComboBox id="contestCombo" left="195" width="272" top="9" styleName="ComboBoxStyle"
+                        valueCommit="handleContest()" fontFamily="Arial" fontSize="10"
+                         dataProvider="{contestNames}" />
+    </mx:Canvas>
+    <mx:HBox>
+       <mx:Label text="Registrants:" fontWeight="bold"/>
+       <mx:Text id="regs" />
+    </mx:HBox>
+    <mx:HBox>
+       <mx:Label text="Submissions:" fontWeight="bold"/>
+       <mx:Text id="subms" />
+    </mx:HBox>
+    <mx:HBox>
+       <mx:Label text="Start Date/Time:" fontWeight="bold"/>
+       <mx:Text id="start" />
+    </mx:HBox>
+    <mx:HBox>
+       <mx:Label text="End Date/Time:" fontWeight="bold"/>
+       <mx:Text id="end" />
+    </mx:HBox>
+    <mx:HBox>
+       <mx:Label text="Time Remaining:" fontWeight="bold"/>
+       <mx:Text id="timeRem" />
+    </mx:HBox>
+    
+    <mx:HSlider id="timeLine" minimum="0" width="100%" tickColor="black"
+         snapInterval="1" showDataTip="false" 
+        allowTrackClick="false" />
     
     <!-- Remaining time text effect -->
     <mx:Parallel id="textEffect" target="{timeRem}" repeatCount="0">
