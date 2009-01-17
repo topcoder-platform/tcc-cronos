@@ -24,10 +24,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          */
         private var _name:String = "SubmissionViewerWidget";
 
-	/**
-	 * The framework of the widget.
-	 */
-	private var _framework:IWidgetFramework = null;
+		private var _framework:IWidgetFramework = null;
         
         /**
          * The data for the widget.
@@ -38,11 +35,6 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * The data for the widget.
          */
         [Bindable] private var _contestData:String = null;
-        
-        /**
-        * The max or restore state of the widget.
-        */
-        private var _isMax:Boolean = false;
         
         /**
          * SubmissionViewerWidgetCodeBehind constructor.
@@ -63,21 +55,6 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         public function goBack():void {
             
         }
-        
-        /**
-         * Get the max or restore state of the widget.
-         */ 
-        public function get isMax():Boolean {
-            return this._isMax;
-        }
-        
-        /**
-         * Set the max or restore state of the widget.
-         */ 
-        public function set isMax(value:Boolean):void {
-            this._isMax = value;
-        }
-        
         /**
          * The submissions contents.
          */
@@ -139,7 +116,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * This action will minimize this widget.
          */
         public function minimize():void {
-            this._isMax = false;
+            
         }
 
         /**
@@ -153,7 +130,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * This action will maximize this widget.
          */
         public function maximize():void {
-            this._isMax = true;
+            
         }
 
         /**

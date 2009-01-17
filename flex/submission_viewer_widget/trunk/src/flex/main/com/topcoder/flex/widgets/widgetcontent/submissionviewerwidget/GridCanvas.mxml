@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			private var _list:ArrayCollection = new ArrayCollection();
+			[Bindable]
+			public function get listData():ArrayCollection {
+				return _list;
+			}
+			public function set listData(value:ArrayCollection):void {
+				_list = new ArrayCollection();
+				if (value) {
+					var item:Object = new Object();
+					item.add = "Taxes";
+					item.purchase = 0;
+					var total:Object = new Object();
+					total.add = "TOTAL COST";
+					total.purchase = 0;
+					for each (var i:Object in value) {
+						_list.addItem(i);
+						if (i.hasOwnProperty("purchase")) {
+							total.purchase += i.purchase;
+						}
+					}
+					_list.addItem(item);
+					_list.addItem(total);
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:DataGrid width="100%" height="100%" dataProvider="{listData}" headerHeight="28" rowHeight="38" verticalAlign="middle"
+			horizontalGridLines="false" verticalGridLines="false" styleName="middle" >
+		<mx:columns>
+			<mx:DataGridColumn headerText="SUBMISSION #" sortable="false" headerStyleName="first" dataField="id" />
+			<mx:DataGridColumn headerText="SUBMISSION TYPE" sortable="false" headerStyleName="middle" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.TypeRenderer" />
+			<mx:DataGridColumn headerText="PRICE($)" sortable="false" headerStyleName="last" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.PriceRenderer" />
+		</mx:columns>
+	</mx:DataGrid>
+</mx:VBox>

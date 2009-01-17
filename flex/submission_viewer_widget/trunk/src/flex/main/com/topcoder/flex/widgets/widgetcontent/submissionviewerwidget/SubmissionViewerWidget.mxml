@@ -6,10 +6,6 @@
     <mx:Style source="Style.css" />
     <mx:Script>
         <![CDATA[
-            import mx.controls.Image;
-            import mx.events.ListEvent;
-            import mx.containers.VBox;
-            import mx.containers.HBox;
             import mx.rpc.xml.SimpleXMLDecoder;
             import mx.events.FlexEvent;
             import mx.collections.SortField;
@@ -20,55 +16,39 @@
             import mx.rpc.events.FaultEvent;
             import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer;
             import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer;
-	    import mx.core.Application;
-    	
-	    import mx.rpc.soap.SOAPHeader;
-            import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.SubmissionsTableRow;
-
-	    private var username:String=Application.application.parameters.username;  //"user"
-	    private var password:String=Application.application.parameters.password;  //"password"
-
-	    private var projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl; 
-	    private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;
+            import mx.rpc.soap.SOAPHeader;
             
             private var rankList:ArrayCollection = new ArrayCollection();
             [Bindable]
-            private var contestInfoList:ArrayCollection = new ArrayCollection();
-            
-            [Bindable]
-            private var contestId:int;
+            private var contestInfoList:ArrayCollection = new ArrayCollection();;
             
             [Bindable]
             private var contestList:ArrayCollection = new ArrayCollection();
             
             [Bindable]
             private var submissionList:ArrayCollection = new ArrayCollection();
-            private function init():void {
-                var header:SOAPHeader=getHeader(username,password);
-				ContestServiceFacadeBean.clearHeaders();
-            	ContestServiceFacadeBean.addHeader(header);
-
-            	ContestServiceFacadeBean.getAllContests();
-            }
-
-	    //the ImgData is the test data
-            [Embed(source="../assets/demoimage/1large.png")]
-            private var ImgData:Class;
-
-	    [Bindable]
-            private var submissionsData:ArrayCollection = new ArrayCollection(
-                [ {label:"Contest 1", data:1},
-                  {label:"Contest 2", data:2} ]);
             
-            [Bindable] 
-            private var activeSubmission:ArrayCollection = new ArrayCollection();
-            private var _submission:String = "<submissions><submission><id>12075</id><thumbnail>../assets/demoimage/5small.png</thumbnail><fullsizepreview>../assets/demoimage/5large.png</fullsizepreview><rank>3</rank></submission><submission><id>12078</id><thumbnail>../assets/demoimage/3small.png</thumbnail><fullsizepreview>../assets/demoimage/3large.png</fullsizepreview><rank></rank></submission><submission><id>12080</id><thumbnail>../assets/demoimage/5small.png</thumbnail><fullsizepreview>../assets/demoimage/5large.png</fullsizepreview><rank>5</rank></submission><submission><id>12084</id><thumbnail>../assets/demoimage/4small.png</thumbnail><fullsizepreview>../assets/demoimage/4large.png</fullsizepreview><rank>1</rank></submission><submission><id>12087</id><thumbnail>../assets/demoimage/2small.png</thumbnail><fullsizepreview>../assets/demoimage/2large.png</fullsizepreview><rank></rank></submission><submission><id>12088</id><thumbnail>../assets/demoimage/3small.png</thumbnail><fullsizepreview>../assets/demoimage/3large.png</fullsizepreview><rank></rank></submission><submission><id>12090</id><thumbnail>../assets/demoimage/5small.png</thumbnail><fullsizepreview>../assets/demoimage/5large.png</fullsizepreview><rank>2</rank></submission><submission><id>12093</id><thumbnail>../assets/demoimage/3small.png</thumbnail><fullsizepreview>../assets/demoimage/3large.png</fullsizepreview><rank></rank></submission><submission><id>12094</id><thumbnail>../assets/demoimage/4small.png</thumbnail><fullsizepreview>../assets/demoimage/4large.png</fullsizepreview><rank>4</rank></submission><submission><id>12096</id><thumbnail>../assets/demoimage/2small.png</thumbnail><fullsizepreview>../assets/demoimage/2large.png</fullsizepreview><rank></rank></submission><submission><id>12098</id><thumbnail>../assets/demoimage/3small.png</thumbnail><fullsizepreview>../assets/demoimage/3large.png</fullsizepreview><rank></rank></submission><submission><id>12099</id><thumbnail>../assets/demoimage/4small.png</thumbnail><fullsizepreview>../assets/demoimage/4large.png</fullsizepreview><rank></rank></submission><submission><id>12102</id><thumbnail>../assets/demoimage/2small.png</thumbnail><fullsizepreview>../assets/demoimage/2large.png</fullsizepreview><rank></rank></submission><submission><id>12107</id><thumbnail>../assets/demoimage/2small.png</thumbnail><fullsizepreview>../assets/demoimage/2large.png</fullsizepreview><rank></rank></submission><submission><id>12115</id><thumbnail>../assets/demoimage/5small.png</thumbnail><fullsizepreview>../assets/demoimage/5large.png</fullsizepreview><rank></rank></submission><submission><id>12121</id><thumbnail>../assets/demoimage/1small.png</thumbnail><fullsizepreview>../assets/demoimage/1large.png</fullsizepreview><rank>3</rank></submission><submission><id>12128</id><thumbnail>../assets/demoimage/3small.png</thumbnail><fullsizepreview>../assets/demoimage/3large.png</fullsizepreview><rank></rank></submission><submission><id>12136</id><thumbnail>../assets/demoimage/1small.png</thumbnail><fullsizepreview>../assets/demoimage/1large.png</fullsizepreview><rank>3</rank></submission><submission><id>12175</id><thumbnail>../assets/demoimage/5small.png</thumbnail><fullsizepreview>../assets/demoimage/5large.png</fullsizepreview><rank></rank></submission><submission><id>12217</id><thumbnail>../assets/demoimage/2small.png</thumbnail><fullsizepreview>../assets/demoimage/2large.png</fullsizepreview><rank>2</rank></submission><submission><id>12224</id><thumbnail>../assets/demoimage/4small.png</thumbnail><fullsizepreview>../assets/demoimage/4large.png</fullsizepreview><rank>1</rank></submission><submission><id>12225</id><thumbnail>../assets/demoimage/5small.png</thumbnail><fullsizepreview>../assets/demoimage/5large.png</fullsizepreview><rank></rank></submission><submission><id>12229</id><thumbnail>../assets/demoimage/4small.png</thumbnail><fullsizepreview>../assets/demoimage/4large.png</fullsizepreview><rank></rank></submission><submission><id>12231</id><thumbnail>../assets/demoimage/1small.png</thumbnail><fullsizepreview>../assets/demoimage/1large.png</fullsizepreview><rank>3</rank></submission><submission><id>12232</id><thumbnail>../assets/demoimage/2small.png</thumbnail><fullsizepreview>../assets/demoimage/2large.png</fullsizepreview><rank></rank></submission><submission><id>12233</id><thumbnail>../assets/demoimage/3small.png</thumbnail><fullsizepreview>../assets/demoimage/3large.png</fullsizepreview><rank>3</rank></submission></submissions>";
-            private var _contest:String = "<contests><contest status=\"active\"><name>Active Contest 1</name><id>12345</id></contest><contest status=\"active\"><name>Active Contest 2</name><id>12346</id></contest><contest status=\"active\"><name>Active Contest 3</name><id>12347</id></contest><contest status=\"active\"><name>Active Contest 4</name><id>12348</id></contest><contest status=\"past\"><name>Past Contest 1</name><id>54321</id></contest><contest status=\"past\"><name>Past Contest 2</name><id>54322</id></contest><contest status=\"past\"><name>Past Contest 3</name><id>54323</id></contest></contests>";
+            [Bindable]
+            private var purchaseTotal:int = 0;
             
-            private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
-		
-		    private static const IMAGE_ADDRESS:String ="http://www.topcoder.com/direct/cockpit/impersonation/cockpitStudio.do?&sbmid=";
-		
+             [Bindable]
+            private var contestId:int;
+            
+            [Bindable]
+            private var purchaseMoney:String = "0.00";
+            
+            [Bindable]
+            private var _currentState:String = "";
+            
+            [Bindable]
+            private var _currentLabel:String = "";
+            
+            [Bindable]
+            private var _purchaseList:ArrayCollection = new ArrayCollection();
+            
+            private static const IMAGE_ADDRESS:String ="http://www.topcoder.com/direct/cockpit/impersonation/cockpitStudio.do?&sbmid=";
+		    private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
+
 		
 		public static function getHeader(username:String, password:String):SOAPHeader
 		{
@@ -82,21 +62,23 @@
       		var header : SOAPHeader = new SOAPHeader( WSSE_SECURITY, headerXML );
       		return header;
 		}
+
             
+            [Bindable]
+            private var _downloadList:ArrayCollection = new ArrayCollection();
+            private function init():void {
+                 var header:SOAPHeader=getHeader("user","password");
+				ContestServiceFacadeBean.clearHeaders();
+            	ContestServiceFacadeBean.addHeader(header);
+
+            	ContestServiceFacadeBean.getAllContests();
+            }
+            
+            [Bindable] 
+            private var activeSubmission:ArrayCollection = new ArrayCollection();
+            private var _submission:String = "<submissions><submission><id>12075</id><thumbnail>./assets/demoimage/5small.png</thumbnail><fullsizepreview>./assets/demoimage/5large.png</fullsizepreview><rank>3</rank><purchase>500</purchase><size>531 KB</size></submission><submission><id>12078</id><thumbnail>./assets/demoimage/3small.png</thumbnail><fullsizepreview>./assets/demoimage/3large.png</fullsizepreview><rank></rank><purchase>300</purchase><size>231 KB</size></submission><submission><id>12080</id><thumbnail>./assets/demoimage/5small.png</thumbnail><fullsizepreview>./assets/demoimage/5large.png</fullsizepreview><rank>5</rank><purchase>500</purchase><size>531 KB</size></submission><submission><id>12084</id><thumbnail>./assets/demoimage/4small.png</thumbnail><fullsizepreview>./assets/demoimage/4large.png</fullsizepreview><rank>1</rank><purchased>true</purchased><purchase>400</purchase><size>2.3 MB </size></submission><submission><id>12087</id><thumbnail>./assets/demoimage/2small.png</thumbnail><fullsizepreview>./assets/demoimage/2large.png</fullsizepreview><rank></rank><purchased>true</purchased><purchase>200</purchase><size>531 KB</size></submission><submission><id>12088</id><thumbnail>./assets/demoimage/3small.png</thumbnail><fullsizepreview>./assets/demoimage/3large.png</fullsizepreview><rank></rank><purchase>300</purchase><size>900 KB</size></submission><submission><id>12090</id><thumbnail>./assets/demoimage/5small.png</thumbnail><fullsizepreview>./assets/demoimage/5large.png</fullsizepreview><rank>2</rank><purchased>true</purchased><purchase>500</purchase><size>131 KB</size></submission><submission><id>12093</id><thumbnail>./assets/demoimage/3small.png</thumbnail><fullsizepreview>./assets/demoimage/3large.png</fullsizepreview><rank></rank><purchase>300</purchase><size>71  KB</size></submission><submission><id>12094</id><thumbnail>./assets/demoimage/4small.png</thumbnail><fullsizepreview>./assets/demoimage/4large.png</fullsizepreview><rank>4</rank><purchase>400</purchase><size>1.1 MB </size></submission><submission><id>12096</id><thumbnail>./assets/demoimage/2small.png</thumbnail><fullsizepreview>./assets/demoimage/2large.png</fullsizepreview><rank></rank><purchase>200</purchase><size>521 KB</size></submission><submission><id>12098</id><thumbnail>./assets/demoimage/3small.png</thumbnail><fullsizepreview>./assets/demoimage/3large.png</fullsizepreview><rank></rank><purchase>300</purchase><size>188 KB</size></submission><submission><id>12099</id><thumbnail>./assets/demoimage/4small.png</thumbnail><fullsizepreview>./assets/demoimage/4large.png</fullsizepreview><rank></rank><purchase>400</purchase><size>1.1 MB</size></submission><submission><id>12102</id><thumbnail>./assets/demoimage/2small.png</thumbnail><fullsizepreview>./assets/demoimage/2large.png</fullsizepreview><rank></rank><purchase>200</purchase><size>399 KB</size></submission><submission><id>12107</id><thumbnail>./assets/demoimage/2small.png</thumbnail><fullsizepreview>./assets/demoimage/2large.png</fullsizepreview><rank></rank><purchase>200</purchase><size>411 KB</size></submission><submission><id>12115</id><thumbnail>./assets/demoimage/5small.png</thumbnail><fullsizepreview>./assets/demoimage/5large.png</fullsizepreview><rank></rank><purchase>500</purchase><size>100 KB</size></submission><submission><id>12121</id><thumbnail>./assets/demoimage/1small.png</thumbnail><fullsizepreview>./assets/demoimage/1large.png</fullsizepreview><rank>3</rank><purchase>100</purchase><size>200 KB</size></submission><submission><id>12128</id><thumbnail>./assets/demoimage/3small.png</thumbnail><fullsizepreview>./assets/demoimage/3large.png</fullsizepreview><rank></rank><purchase>300</purchase><size>931 KB</size></submission><submission><id>12136</id><thumbnail>./assets/demoimage/1small.png</thumbnail><fullsizepreview>./assets/demoimage/1large.png</fullsizepreview><rank>3</rank><purchase>100</purchase><size>561 KB</size></submission><submission><id>12175</id><thumbnail>./assets/demoimage/5small.png</thumbnail><fullsizepreview>./assets/demoimage/5large.png</fullsizepreview><rank></rank><purchase>500</purchase><size>533 KB</size></submission><submission><id>12217</id><thumbnail>./assets/demoimage/2small.png</thumbnail><fullsizepreview>./assets/demoimage/2large.png</fullsizepreview><rank>2</rank><purchase>200</purchase><size>535 KB</size></submission><submission><id>12224</id><thumbnail>./assets/demoimage/4small.png</thumbnail><fullsizepreview>./assets/demoimage/4large.png</fullsizepreview><rank>1</rank><purchase>400</purchase><size>331 KB</size></submission><submission><id>12225</id><thumbnail>./assets/demoimage/5small.png</thumbnail><fullsizepreview>./assets/demoimage/5large.png</fullsizepreview><rank></rank><purchase>500</purchase><size>131 KB</size></submission><submission><id>12229</id><thumbnail>./assets/demoimage/4small.png</thumbnail><fullsizepreview>./assets/demoimage/4large.png</fullsizepreview><rank></rank><purchase>400</purchase><size>541 KB</size></submission><submission><id>12231</id><thumbnail>./assets/demoimage/1small.png</thumbnail><fullsizepreview>./assets/demoimage/1large.png</fullsizepreview><rank>3</rank><purchase>400</purchase><size>515 KB</size></submission><submission><id>12232</id><thumbnail>./assets/demoimage/2small.png</thumbnail><fullsizepreview>./assets/demoimage/2large.png</fullsizepreview><rank></rank><purchase>200</purchase><size>511 KB</size></submission><submission><id>12233</id><thumbnail>./assets/demoimage/3small.png</thumbnail><fullsizepreview>./assets/demoimage/3large.png</fullsizepreview><rank>3</rank><purchase>300</purchase><size>531 KB</size></submission></submissions>";
+            private var _contest:String = "<contests><contest status=\"active\"><name>Active Contest 1</name><id>12345</id></contest><contest status=\"active\"><name>Active Contest 2</name><id>12346</id></contest><contest status=\"active\"><name>Active Contest 3</name><id>12347</id></contest><contest status=\"active\"><name>Active Contest 4</name><id>12348</id></contest><contest status=\"past\"><name>Past Contest 1</name><id>54321</id></contest><contest status=\"past\"><name>Past Contest 2</name><id>54322</id></contest><contest status=\"past\"><name>Past Contest 3</name><id>54323</id></contest></contests>";
             private function handleResult(event:ResultEvent=null):void {
-            	/*
-                var contestInfo:*;
-                
-                if (event) {
-                    contestInfo = event.result.contests;    
-                } else {
-                    contestData = _contest;
-                    var xmlDoc:XMLDocument = new XMLDocument(contestData);
-                    var decoder:SimpleXMLDecoder = new SimpleXMLDecoder(true);
-                    var resultObj:Object = decoder.decodeXML(xmlDoc);
-                    contestInfo = resultObj.contests;
-                    
-                }*/
                 contestInfoList = new ArrayCollection();
                 if(event!=null && event.result!=null)
                 {
@@ -113,37 +95,12 @@
                 	}
                 	doFilter();
                 }
-                /*
-                if (contestInfo.hasOwnProperty("contest")) {
-                    if (contestInfo.contest.hasOwnProperty("name")) {
-                        // There is only 1 contest.
-                        contestInfoList.addItem(contestInfo.contest.valueOf());
-                    } else {
-                        for each (var item:* in contestInfo.contest) {
-                            contestInfoList.addItem(item.valueOf());
-                        }
-                    }
-                    doFilter();
-                }*/
             }
             
             private function handleSubResult(event:ResultEvent=null):void {
-            	
                 for (var i:int = 0; i < 5; i++) {
                     rankList.addItem(new Object());
                 }
-                /*
-                var subList:*;
-                if (event) {
-                    subList = event.result.submissions;
-                } else {
-                    submissionData = _submission;
-                    var xmlDoc:XMLDocument = new XMLDocument(submissionData);
-                    var decoder:SimpleXMLDecoder = new SimpleXMLDecoder(true);
-                    var resultObj:Object = decoder.decodeXML(xmlDoc);
-                    subList = resultObj.submissions;
-                    
-                }*/
                 submissionList = new ArrayCollection();
                 var sort:Sort = new Sort();
                 sort.compareFunction = compareNumber;
@@ -172,25 +129,9 @@
                 }
                 setSubmission();
                 list.selectedIndex = 0;
+                updatePurchase();
                 handleSelect();
-                /*
-                if (subList.hasOwnProperty("submission")) {
-                    if (subList.submission.hasOwnProperty("id")) {
-                        // There is only 1 contest.
-                        var obj:Object = subList.submission.valueOf();
-                        submissionList.addItem(obj);
-                        setRankList(obj);
-                    
-                    } else {
-                        for each (var item:* in subList.submission) {
-                            submissionList.addItem(item.valueOf());
-                            setRankList(item.valueOf());
-                        }
-                    }
-                    setSubmission();
-                    list.selectedIndex = 0;
-                    handleSelect();
-                }*/
+
             }
             
             private function handleFail(event:FaultEvent):void {
@@ -336,14 +277,7 @@
             }
             
             private function hideShowUpDownArrow():void {
-            	if(list.dataProvider.length==0)
-                {
-                	down.visible=false;
-                	up.visible=false;
-                	return ;
-                }
                 up.visible = (currentIndex > 0);
-                
                 down.visible = (list.dataProvider[list.dataProvider.length - 1].id != submissionList.getItemAt(submissionList.length - 1).id);              
             }
             
@@ -372,6 +306,11 @@
             private function reorder():void {
                 currentIndex = 0;
                 var item:* = list.selectedItem;
+                if (!submissionList.sort) {
+	                var sort:Sort = new Sort();
+	                sort.compareFunction = compareNumber;
+	                submissionList.sort = sort;
+                }
                 submissionList.refresh();
                 setSubmission();
                 if (activeSubmission.contains(item)) {
@@ -385,7 +324,7 @@
             private function handleSelect():void {
                 var currentItem:* = list.selectedItem;
                 if (currentItem) {
-                    currentLabel.text = contestCombo.text + " -# " + currentItem.id;
+                    _currentLabel = contestCombo.text + " -# " + currentItem.id;
                     currnetImage.source = currentItem.fullsizepreview;
                     handClick = false;
                     if (currentItem.rank) {
@@ -395,27 +334,25 @@
                     }
                     prev.visible = (list.selectedItem.id != submissionList.getItemAt(0).id);
                     next.visible = (list.selectedItem.id != submissionList.getItemAt(submissionList.length - 1).id);
+                    if (currentItem.purchased == true) {
+                    	purchase.selected = true;
+                    } else {
+                    	purchase.selected = false;
+                    }
                 }
             }
             
             private function handleContest():void {
-            	/*
-                handleSelect();
-                if (contestCombo && contestCombo.selectedItem && contestCombo.selectedItem.hasOwnProperty("feed")) {
-                    feed.text = contestCombo.selectedItem.feed;
-                } else if (feed) {
-                    feed.text = "";
-                }
-                */
-                if (contestCombo && contestCombo.selectedItem) {
+                 if (contestCombo && contestCombo.selectedItem) {
                 	contestId=contestCombo.selectedItem.id;
-                	var header:SOAPHeader=getHeader(username, password);
+                	if(submissionList)submissionList.removeAll();
+                	var header:SOAPHeader=getHeader("user","password");
 					ContestServiceFacadeBean.clearHeaders();
             		ContestServiceFacadeBean.addHeader(header);
 
             		ContestServiceFacadeBean.retrieveSubmissionsForContest.send();
                 }
-                
+
             }
             
             private function saveFeedBack():void {
@@ -423,26 +360,111 @@
                     contestCombo.selectedItem.feed = feed.text;
                 }
             }
-            private function setRank():void {
+            
+            private function continues(index:int):void {
+            	if (noWinner.selected) {
+            		if (index == 4) {
+            			left.selectedIndex = 1;
+            		} else if (left.selectedIndex == 1) {
+            			left.selectedIndex = 0;
+            		}
+            		centerPanel.selectedIndex = index;
+            	} else {
+            		main.selectedIndex = index;
+            	}
+            }
+            
+            private function gotoPurchase():void {
+				if (pay.selectedIndex == 0) {
+					var index:int = wf1.saveData();
+					if (index > 0 && index <= pay.numChildren) {
+						pay.selectedIndex = index - 1;
+						header.text = "Confirm Your Payment";
+						text1.htmlText = "You're almost done! Please confirm that the information below is correct.";
+						if (sub1) {
+							sub1.label = "Submit Purchase";
+						}
+						if (sub2) {
+							sub2.label = "Submit Purchase";
+						}
+					}
+				} else if (pay.selectedIndex == 1) {
+					if (sub1.label == "Submit Purchase") {
+						header.text = "Your Transaction was Approved!";
+						text1.htmlText = "Thank you for your order. An email confirmation will be sent as a receipt for this transaction. <b>Your reference # is EBFH53569DWS9.</b>";
+						sub1.label = "Download Submissions";
+					} else {
+						pay.selectedIndex = 0;
+						continues(3);
+					}
+				} else if (pay.selectedIndex == 2) {
+					if (sub2.label == "Submit Purchase") {
+						header.text = "Your Transaction was Approved!";
+						text1.htmlText = "Thank you for your order. An email confirmation will be sent as a receipt for this transaction. <b>Your reference # is EBFH53569DWS9.</b>";
+						sub2.label = "Download Submissions";
+					} else {
+						pay.selectedIndex = 0;
+						continues(3);
+					}
+				}
+            	
+            }
+            
+            private function updatePurchase():void {
+            	purchaseTotal = 0;
+            	var totalMoney:Number = 0;
+            	_purchaseList = new ArrayCollection();
+            	_downloadList = new ArrayCollection();
+            	for each (var item:Object in submissionList) {
+            		if (item.purchased == true) {
+            			purchaseTotal++;
+            			if (item.hasOwnProperty("purchase")) {
+            				totalMoney += item.purchase;
+            			}
+            		}
+            		if (item.purchased == true || item.rank) {
+            			_purchaseList.addItem(item);
+            			if (item.purchased == true) {
+            				_downloadList.addItem(item);
+            			}
+            		}
+            	}
+            	purchaseMoney = moneyFormatter.format(totalMoney);
+            	var sort:Sort = new Sort();
+	            sort.compareFunction = compareNumber;
+	            _downloadList.sort = sort;
+	            _downloadList.refresh();
+            }
+            
+            private function updateSubmission(isRank:Boolean):void {
                 
-                if (list && list.selectedItem && rankBar.selectedIndex >= 0 && !handClick) {
-                    //trace("Selected rank is:" + rankBar.dataProvider[rankBar.selectedIndex]);
-                    var rank:String = rankBar.dataProvider[rankBar.selectedIndex] as String;
-                    var selectItem:* = list.selectedItem;
-                    if (rank == selectItem.rank) {
-                        rank = "";
-                        rankBar.selectedIndex = -1;
-                        trace("--------------------remove rank for the id:" + selectItem.id);
-                    } else {
-                        trace("--------------------set the rank for the id:" + selectItem.id + " as " + rank);
-                    }
-                    
+				if (list && list.selectedItem) {
+					var item:Object = new Object();
+					var selectItem:* = list.selectedItem;
+					item.id = selectItem.id;
+				    item.thumbnail = selectItem.thumbnail;
+				    item.fullsizepreview = selectItem.fullsizepreview;
+				    item.purchase = selectItem.purchase;
+				    item.size = selectItem.size;
+					if (isRank && rankBar.selectedIndex >= 0 && !handClick) {
+				        //trace("Selected rank is:" + rankBar.dataProvider[rankBar.selectedIndex]);
+				        var rank:String = rankBar.dataProvider[rankBar.selectedIndex] as String;
+				        
+				        if (rank == selectItem.rank) {
+				            rank = "";
+				            rankBar.selectedIndex = -1;
+				            trace("--------------------remove rank for the id:" + selectItem.id);
+				        } else {
+				            trace("--------------------set the rank for the id:" + selectItem.id + " as " + rank);
+				    	}
+				    	item.rank = rank;
+				    	item.purchased = selectItem.purchased;
+				    } else if (!isRank) {
+						item.rank = selectItem.rank;
+						item.purchased = purchase.selected;
+					}
                     var index:int = getItemIndex(submissionList, selectItem);
-                    var item:Object = new Object();
-                    item.id = selectItem.id;
-                    item.thumbnail = selectItem.thumbnail;
-                    item.fullsizepreview = selectItem.fullsizepreview;
-                    item.rank = rank;
+                    
                     list.dataProvider[list.selectedIndex] = item;
                     if (index < 0) {
                         trace("--------------------exception");
@@ -452,178 +474,304 @@
                         index = getItemIndex(rankList, selectItem);
                         rankList.setItemAt(new Object(), index);
                     }
-                    setRankList(item);
+                    if (isRank) {
+                    	setRankList(item);
+                    } else {
+                    	updatePurchase();
+                    }
                     
                 } else if (handClick){
                     handClick = false;
                 }
-            }
-            
-            private function SubmissionsChange(event:ListEvent):void{
-                if (ComboBox(event.target).selectedItem.label == "Contest 1"){
-                    SubNum.text = '5';
-                    addImages(5);
-                }
-                else if (ComboBox(event.target).selectedItem.label == "Contest 2"){
-                    SubNum.text = '17';
-                    addImages(17);
-                }
-            }
-            
-            private function addImages(n:int):void {
-               tb.removeAllChildren();
-               var newR1:SubmissionsTableRow = new SubmissionsTableRow();
-               var newR2:SubmissionsTableRow = new SubmissionsTableRow();
-               tb.addChild(newR1);
-               tb.addChild(newR2);
-               for (var i:int = 0; i < n; i++){
-                    var img:Image = new Image();
-                    img.source = ImgData;
-                    img.width = 80;
-                    img.height = 80;
-                    if (i < 3){
-                        ((tb.getChildAt(0) as HBox).getChildAt(i) as VBox).addChild(img);
-                    }
-                    else if (i >= 3 && i < 6){
-                        ((tb.getChildAt(1) as HBox).getChildAt(i-3) as VBox).addChild(img);
-                    }
-                    else {
-                        for (var j:int = i; j < n; j++){
-                            var img1:Image = new Image();
-                            img1.source = ImgData;
-                            img1.width = 80;
-                            img1.height = 80;
-                            if (j%3 == 0){
-                                var newRow:SubmissionsTableRow = new SubmissionsTableRow();
-                                tb.addChild(newRow);
-                                newRow.c0.addChild(img1);
-                            }
-                            else {
-                                var rowNum:int = j/3;
-                                if (j%3 == 1)
-                                    (tb.getChildAt(rowNum) as SubmissionsTableRow).c1.addChild(img1);
-                                else if (j%3 == 2)
-                                    (tb.getChildAt(rowNum) as SubmissionsTableRow).c2.addChild(img1);
-                            }
-                        }
-                        break;
-                    }
-                }
+                
             }
         ]]>
     </mx:Script>
+    <mx:WebService id="ContestServiceFacadeBean" 
+wsdl="http://174.129.135.92:8003/topcoder_contest_service_facade-topcoder_contest_service_facade/ContestServiceFacadeBean?wsdl"> 
+<mx:operation name="getAllContests" resultFormat="object" result="handleResult(event)"> 
+</mx:operation>
+
+<mx:operation name="retrieveSubmissionsForContest" resultFormat="object" result="handleSubResult(event)"> 
+<mx:request>
+<arg0>{contestId}</arg0>
+</mx:request>
+</mx:operation>
+</mx:WebService>
+
     <mx:DefaultTileListEffect id="myDTLE"
         fadeInDuration="10"
         fadeOutDuration="10"
         moveDuration="200"
         color="0xffffff"/>
     <mx:Fade alphaFrom="0" alphaTo="1" duration="1000" id="fade" />
-    <mx:WebService id="ContestServiceFacadeBean" 
-		   wsdl="{contestServiceFacadeWsdl}"> 
-	<mx:operation name="getAllContests" resultFormat="object" result="handleResult(event)"> 
-	</mx:operation>
+    <mx:HTTPService id="retrieveContestService" url="../assets/data/mock.xml"
+        fault="handleFail(event)" result="handleResult(event)" />
+    <mx:HTTPService id="retrieveSubService" url="../assets/data/submission.xml"
+        fault="handleSubFail(event)" result="handleSubResult(event)" />
+    <mx:NumberFormatter id="moneyFormatter" precision="2" useThousandsSeparator="true" useNegativeSign="true" />
+    <mx:ViewStack id="main" width="100%" height="100%">
+	    <mx:HBox width="100%" height="100%" paddingTop="10" paddingBottom="25">
+	        <mx:VBox horizontalAlign="left" height="100%" width="200">
+	            <mx:Button click="reorder()" styleName="priorBtn" />
+	            <mx:ViewStack id="left" width="100%" height="100%">
+	            	<mx:VBox horizontalAlign="center" height="100%" width="100%"
+		                    paddingLeft="0" paddingRight="0" >
+		                <mx:Button id="up" styleName="up" click="goUp()" />
+		                <mx:TileList id="list" rowCount="7" width="100%" columnCount="2"
+		                        selectionDuration="0"
+		                        dataProvider="{activeSubmission}" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer" itemsChangeEffect="{myDTLE}"
+		                        verticalScrollPolicy="off" horizontalScrollPolicy="off" borderStyle="none"
+		                        click="handleSelect()" allowMultipleSelection="false" allowDragSelection="false"/>
+		                <mx:Button id="down" styleName="down" click="goDown()" />
+		            </mx:VBox>
+		            <mx:VBox width="100%" height="100%" paddingLeft="15" paddingRight="15" paddingTop="50">
+		            	<mx:Text width="100%" text="Contest submissions are no longer viewable."
+		            			fontFamily="Arial" fontSize="15" fontWeight="bold" />
+		            </mx:VBox>
+	            </mx:ViewStack>
+	        </mx:VBox>
+	        <mx:Canvas width="1" height="100%" backgroundColor="#d6d6d6" />
+	        <mx:VBox width="100%" height="100%" paddingLeft="25" paddingRight="17" paddingBottom="0" verticalGap="0">
+	            <mx:Canvas width="100%" minWidth="755" height="79">
+	                <mx:Label text="Select a Contest to View:" left="0" top="9" 
+	                        styleName="normalText" paddingTop="0" paddingBottom="0" />
+	                <mx:ComboBox id="contestCombo" left="195" width="272" top="9" styleName="ComboBoxStyle"
+	                        valueCommit="handleContest()" fontFamily="Arial" fontSize="12"
+	                        labelField="name" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{contestList}" />
+	                <mx:Label text="Filter By:" right="140" top="9" styleName="normalText" />
+	                <mx:CheckBox id="showActive" label="Active Contests" right="13" top="9" styleName="CheckBoxStyle"
+	                        selected="true" change="doFilter()" />
+	                <mx:CheckBox id="showPast" label="Past Contests" right="19" top="38" styleName="CheckBoxStyle"
+	                        selected="true" change="doFilter()" />
+	            </mx:Canvas>
+	            <mx:Canvas height="1" width="100%" backgroundColor="#797979" />
+	            <mx:ViewStack width="100%" height="100%" id="centerPanel">
+		            <mx:VBox horizontalAlign="center" width="100%" paddingTop="37">
+		            	<mx:HBox height="580" horizontalAlign="center" width="636">
+		                    <mx:VBox height="100%" verticalAlign="middle">
+		                        <mx:Button id="prev" styleName="prev" click="goPrev()"/>
+		                    </mx:VBox>
+		                    <mx:VBox height="100%" width="100%" horizontalAlign="center" verticalGap="20" >
+		                    	<mx:VBox height="100%" width="527" horizontalAlign="left" verticalGap="9" 
+		                    			paddingTop="0" paddingBottom="0" paddingLeft="0" paddingRight="0">
+		                    		<mx:Label text="{_currentLabel}" fontFamily="Arial" 
+			                                fontWeight="bold" fontSize="14" width="100%" />
+			                        <mx:Label id="contestState" fontFamily="Arial" fontWeight="normal" fontSize="12"
+			                        		htmlText="{'&lt;b&gt;Contest Status: &lt;/b&gt;' + _currentState}" width="100%" />
+		                    	</mx:VBox>
+		                        <mx:VBox verticalAlign="middle" horizontalAlign="center" 
+		                                borderStyle="solid" width="527" height="441">
+		                            <mx:Image id="currnetImage" maxWidth="525" maxHeight="439" completeEffect="{fade}" />
+		                        </mx:VBox>
+		                        <mx:HBox width="100%">
+			                        <mx:ToggleButtonBar horizontalAlign="center" horizontalGap="20" itemClick="updateSubmission(true)" 
+			                                id="rankBar" selectedIndex="-1"
+			                                buttonWidth="25" buttonHeight="26" buttonStyleName="buttonStyleName">
+			                            <mx:String>1</mx:String>
+			                            <mx:String>2</mx:String>
+			                            <mx:String>3</mx:String>
+			                            <mx:String>4</mx:String>
+			                            <mx:String>5</mx:String>
+			                        </mx:ToggleButtonBar>
+			                        <mx:Spacer width="100%" />
+		                        	<mx:CheckBox id="noWinner" label="I can not choose a winner." styleName="CheckBoxStyle" />
+		                        </mx:HBox>
+		                    </mx:VBox>
+		                    <mx:VBox height="100%" verticalAlign="middle">
+		                        <mx:Button id="next" styleName="next" click="goNext()"/>
+		                    </mx:VBox>
+		                </mx:HBox>
+		                <mx:HBox width="100%" paddingLeft="45" paddingRight="45" horizontalGap="20"
+		                		verticalScrollPolicy="off" horizontalScrollPolicy="off">
+			                <mx:VBox width="55%" horizontalAlign="center" paddingLeft="0" paddingRight="0">
+			                    <mx:Canvas width="100%" height="17" >
+			                        <mx:Label text="Notes and Feedback:" styleName="normalText" left="0" />
+			                        <mx:LinkButton id="showHintBtn" label="[+ show hint]" right="0" 
+			                            rollOverColor="#ffffff" selectionColor="#ffffff" />
+			                    </mx:Canvas>
+			                    <mx:TextArea id="feed" height="112" width="100%" borderColor="#797979"
+			                    		fontFamily="Arial" fontSize="12" />
+			            	</mx:VBox>
+			            	<mx:VBox width="45%" height="100%" horizontalAlign="center" paddingLeft="0" paddingRight="0">
+			            		<mx:Canvas width="100%" height="17">
+			            			<mx:Label text="Purchase Option:" styleName="normalText" left="0" />
+			            			<mx:LinkButton label="[+ show hint]" right="0" 
+			                            rollOverColor="#ffffff" selectionColor="#ffffff" />
+			            		</mx:Canvas>
+			            		<mx:ViewStack id="purchasePanel" width="100%" height="100%" minWidth="340" >
+			            			<mx:VBox borderStyle="solid" width="100%" height="112" 
+				            				verticalScrollPolicy="off" horizontalScrollPolicy="off"
+				            				paddingTop="18" paddingBottom="18" paddingLeft="18" paddingRight="18">
+				            			<mx:CheckBox id="purchase" label="I would like to purchase this submission." 
+				            					change="updateSubmission(false)" styleName="CheckBoxStyle" />
+				            			<mx:Canvas height="1" width="100%" backgroundColor="#797979" />
+				            			<mx:Label text="{'Submission Selected to Purchase:' + purchaseTotal}" styleName="text" />
+				            			<mx:Label text="{'Estimated Total Cost: $' + purchaseMoney}" styleName="text" />
+				            		</mx:VBox>
+				            		<mx:VBox borderStyle="solid" width="100%" height="112"
+				            				verticalScrollPolicy="off" horizontalScrollPolicy="off"
+				            				paddingTop="18" paddingBottom="18" paddingLeft="18" paddingRight="18">
+			            				<mx:Text width="100%" fontFamily="Arial" fontSize="12" 
+			            						text="Your contest is still active. Once it has completed, you will have an opportunity to purchase your wining selections and any additional submissions." />
+			            				<mx:HBox horizontalAlign="left">
+			            					<mx:Label text="To learn more." fontFamily="Arial" fontSize="12" color="#a4a4a4" />
+			            					<mx:LinkButton label="click here" fontFamily="Arial" fontSize="12" color="#a4a4a4" 
+			            							rollOverColor="#ffffff" selectionColor="#ffffff" />
+			            				</mx:HBox>
+			            			</mx:VBox>
+			            		</mx:ViewStack>
+			            		
+			            	</mx:VBox>
+		                </mx:HBox>
+		                <mx:HBox width="100%" horizontalAlign="right">
+		                    <mx:Button id="save" label="Save as Draft" styleName="SaveContinueButtonStyle" click="saveFeedBack()" />
+		                    <mx:Button id="go" label="Continue --->" styleName="SaveContinueButtonStyle" click="continues(1)" />
+		                </mx:HBox>
+		            </mx:VBox>
+	        		<mx:VBox paddingTop="22" verticalGap="7" width="100%">
+	        			<mx:Label fontFamily="Arial"  text="{_currentLabel}"
+	                            fontWeight="bold" fontSize="16" width="100%" />
+	                    <mx:Label fontFamily="Arial" fontWeight="normal" fontSize="14"
+	                    		htmlText="{'&lt;b&gt;Contest Status: &lt;/b&gt;' + _currentState}" width="100%" />
+	            		<mx:VBox width="100%" paddingTop="35" paddingLeft="12" verticalGap="0">
+		            		<mx:Label width="100%" paddingTop="0" fontFamily="Arial" fontWeight="bold" fontSize="14" color="#621910" 
+		                    		text="We know that picking a winner is difficult..." />
+		                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
+		                    		text="However, it is important to fulfill your commitment to this contest. If you decide to choose no winners, you will have no further responsiblity to puurchase any of the submitted designs." />
+		                    <mx:Label width="100%" paddingTop="9" fontFamily="Arial" fontWeight="bold" fontSize="12"
+		                    		text="Before you choose this option, you should know:" />
+		                    <mx:Text width="100%" paddingTop="0" fontFamily="Arial" fontWeight="normal" fontSize="12"
+		                    		text="1. This is irreversible; you will not be able to purchase any of the submissions in the future." />
+		                    <mx:Text width="100%" paddingTop="0" fontFamily="Arial" fontWeight="normal" fontSize="12"
+		                    		text="2. Your profile history will indicate that you ended a competition and chose no winner. This may discourage memebers from competing in your future contests." />
+		                    <mx:Text width="100%" paddingTop="0" fontFamily="Arial" fontWeight="normal" fontSize="12"
+		                    		text="3. The contest administration fee you paid to launch this competition is non-refundable." />
+		                    <mx:Label width="100%" paddingTop="9" fontFamily="Arial" fontWeight="bold" fontSize="12"
+		                    		text="Make a choice, but do something." />
+		                    <mx:Text width="100%" paddingTop="0" fontFamily="Arial" fontWeight="normal" fontSize="12"
+		                    		text="Taking no action at all would be an 'abandonment' of the competition, which also would be indicated in your public profile. Multiple contest abandonments will result in a cancellation of your account." />
+	        			</mx:VBox>
+	        			<mx:HBox horizontalAlign="center" width="100%" paddingTop="35">
+	        				<mx:Button styleName="SaveContinueButtonStyle" label="Select a Winner" click="continues(0)" />
+	        				<mx:Button styleName="SaveContinueButtonStyle" label="Do Not Choose a Winner" click="continues(2)" />
+	        			</mx:HBox>
+	                </mx:VBox>
+	                <mx:VBox paddingTop="22" verticalGap="7" width="100%">
+	        			<mx:Label fontFamily="Arial"  text="{_currentLabel}"
+	                            fontWeight="bold" fontSize="16" width="100%" />
+	                    <mx:Label fontFamily="Arial" fontWeight="normal" fontSize="14"
+	                    		htmlText="{'&lt;b&gt;Contest Status: &lt;/b&gt;' + 'Completed - No Winner Chosen'}" width="100%" />
+	            		<mx:VBox width="100%" paddingTop="35" paddingLeft="12" verticalGap="0">
+		            		<mx:Label width="100%" paddingTop="0" fontFamily="Arial" fontWeight="bold" fontSize="14" color="#621910" 
+		                    		text="You have chosen no winner for this contest." />
+		                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
+		                    		text="To help the competitors understand your decision, please include some feedback in the area below. This may be overall impression of the contest results or critique of individual submissions." />
+		                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
+		                    		text="The competitors may want to know why now winner was selected. If you choose not to provide any feedback, this may discourage members from competing in your future contests." />
+		     				<mx:TextArea paddingTop="9" width="90%" height="158" />
+	        			</mx:VBox>
+	        			<mx:HBox horizontalAlign="center" width="100%" paddingTop="35">
+	        				<mx:Button styleName="SaveContinueButtonStyle" label="Select a Winner" click="continues(0)"  />
+	        				<mx:Button styleName="SaveContinueButtonStyle" label="Save and Continue-->" click="continues(3)" />
+	        			</mx:HBox>
+	                </mx:VBox>
+	                <mx:VBox paddingTop="22" verticalGap="7" width="100%">
+	        			<mx:Label fontFamily="Arial"  text="{_currentLabel}"
+	                            fontWeight="bold" fontSize="16" width="100%" />
+	                    <mx:Label fontFamily="Arial" fontWeight="normal" fontSize="14"
+	                    		htmlText="{'&lt;b&gt;Contest Status: &lt;/b&gt;' + 'Completed - No Winner Chosen'}" width="100%" />
+	            		<mx:VBox width="100%" paddingTop="35" paddingLeft="12" verticalGap="0">
+		            		<mx:Label width="100%" paddingTop="0" fontFamily="Arial" fontWeight="bold" fontSize="14" color="#621910" 
+		                    		text="Care to try again?" />
+		                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
+		                    		text="As a valued customer, you have the opportunity to post this contest one more time at no additional cost to you. This is great chance to analyze what worked (and didn't work) in your last contest." />
+		                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
+		                    		text="By simply making some minor modications to your descriptions, prize amounts, etc., you may increase your chances of getting more successful submissions." />
+		     				<mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
+		                    		htmlText="You can learn more about reposting contests by &lt;a href=&quot;#&quot; &gt;&lt;font color=&quot;#753535&quot;&gt;visiting our help section.&lt;/font&gt;&lt;/a&gt;" />
+		                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
+		                    		text="So what would you like to do?" />
+	        			</mx:VBox>
+	        			<mx:HBox horizontalAlign="center" width="100%" paddingTop="35">
+	        				<mx:Button styleName="SaveContinueButtonStyle" label="Run this Contest Again" click="continues(0)" />
+	        				<mx:Button styleName="SaveContinueButtonStyle" label="No, Thank You" click="continues(4)" />
+	        			</mx:HBox>
+	                </mx:VBox>
+	                <mx:VBox paddingTop="22" verticalGap="7" width="100%">
+	        			<mx:Label fontFamily="Arial"  text="{_currentLabel}"
+	                            fontWeight="bold" fontSize="16" width="100%" />
+	                    <mx:Label fontFamily="Arial" fontWeight="normal" fontSize="14"
+	                    		htmlText="{'&lt;b&gt;Contest Status: &lt;/b&gt;' + 'Completed - Abandoned'}" width="100%" />
+	            		<mx:VBox width="100%" paddingTop="35" paddingLeft="12" verticalGap="0">
+		            		<mx:Label width="100%" paddingTop="0" fontFamily="Arial" fontWeight="bold" fontSize="14" color="#621910" 
+		                    		text="Since this contest was abandoned..." />
+		                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
+		                    		text="Lorem ipsum dolor sit amet, aliquip praesent vereor odio modo conventio pertineo vel, nullus, dolus virtus nulla illum hendrerit. Ratis eros melior in eu lucidus wisi veniam iaceo molior. Natu, Pala adipiscing os vereor jus tristique metuo, ratis defui consequat multo, modo quis paulatim. Causa cogo esse loquor wisi abluo." />
+		                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
+		                    		text="Quibus refoveo lobortis ut iusto minim fere eros accumsan persto venio lenis enim laoreet enim. Vel gravis velit olim similis melior in neque elit usitas, epulae. In magna praesent ideo autem rusticus nisl erat mos pneum typicus verto iriure et te." />
+		     				<mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
+		                    		text="Lenis, hos venio transverbero sed ulcisor aliquip torqueo fere feugiat gemino, venio autem virtus os. Dolore delenit pala, consequat iaceo praesent volutpat et. Tum, velit nimis odio capio iustum premo. Illum blandit iustum te feugiat, ea, quia, commoveo vel enim nunc ulcisor. Gemino camur vel pneum, veniam, obruo elig pertineo macto consequat damnum rusticus et et paratus." />
+	        			</mx:VBox>
+	                </mx:VBox>
+	            </mx:ViewStack>
+	        </mx:VBox>
+	    </mx:HBox>    	
+    	<mx:VBox width="100%" height="100%" paddingTop="10" paddingBottom="25" paddingLeft="15" paddingRight="15">
+    		<mx:Label text="Confirm your Selections" fontSize="16" styleName="normalText" />
+    		<mx:Text width="100%" styleName="text" 
+    				text="Please confirm your selection of the winning submissions as well as any additional submissions you wish to purchase." />
+    		<mx:Canvas height="1" width="100%" backgroundColor="#797979" />
+	        <mx:TileList id="purchaseList" width="100%" columnCount="2"
+                    selectionDuration="0"
+                    dataProvider="{_purchaseList}" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.PurchaseListRenderer"
+                    borderStyle="none"
+                    allowMultipleSelection="false" allowDragSelection="false"/>
+            <mx:Spacer height="100%" />
+            <mx:HBox width="100%">
+            	<mx:Button styleName="SaveContinueButtonStyle" label="Modify Selections" click="continues(0)" />
+            	<mx:Spacer width="100%" />
+            	<mx:Button styleName="SaveContinueButtonStyle" label="Checkout" click="continues(2)" />
+            </mx:HBox>
+    	</mx:VBox>
+    	<mx:VBox width="100%" height="100%" paddingTop="10" paddingBottom="25" paddingLeft="15" paddingRight="15">
+    		<mx:Label id="header" text="Purchase your Submissions" fontSize="16" styleName="normalText" />
+    		<mx:Text id="text1" width="100%" styleName="text" 
+    				htmlText="Lorem ipsum dolor sit amet, consequat iusto iustum letatio singularis cogo nibh nonummy populus camur jugis amet. Saepius caecus quadrum appellatio foras epulae consequat. Torqueo, nibh, ut neque nulla torqueo macto nisl minim. Antehabeo antehabeo, hos quadrum indoles pneum ad occuro elit ut." />
+    		<tc:GridCanvas width="100%" height="100%" listData="{_downloadList}" />
+    		<mx:ViewStack height="100%" width="100%" id="pay">
+    			<mx:VBox width="100%" height="100%">
+    				<tc:PaymentWF id="wf1" width="100%" height="100%" />
+    				<mx:HBox width="100%">
+    					<mx:Button styleName="SaveContinueButtonStyle" label="Add/Modify Selections" click="continues(0)" />
+    					<mx:Spacer width="100%" />
+    					<mx:Button styleName="SaveContinueButtonStyle" label="Confirm Order" click="gotoPurchase()" />
+    				</mx:HBox>
+    			</mx:VBox>
+    			<mx:VBox width="100%" height="100%">
+    				<tc:PaymentWFCf id="wf2" paddingTop="20" paddingRight="6" />
+    				<mx:HBox width="100%" horizontalAlign="right">
+    					<mx:Button id="sub1" styleName="SaveContinueButtonStyle" label="Submit Purchase" click="gotoPurchase()" />
+    				</mx:HBox>
+    			</mx:VBox>
+    			<mx:VBox width="100%" height="100%">
+    				<tc:PaymentWFCfPO id="wf3" paddingTop="20" paddingRight="6" />
+    				<mx:HBox width="100%" horizontalAlign="right">
+    					<mx:Button id="sub2" styleName="SaveContinueButtonStyle" label="Submit Purchase" click="gotoPurchase()" />
+    				</mx:HBox>
+    			</mx:VBox>
+			</mx:ViewStack>
+    	</mx:VBox>
+    	<mx:VBox width="100%" height="100%" paddingTop="10" paddingBottom="25" paddingLeft="15" paddingRight="15">
+    		<mx:Label text="Download Submissions" fontSize="16" styleName="normalText" />
+    		<mx:Text width="100%" styleName="text" 
+    				text="Lorem ipsum dolor sit amet, consequat iusto instum letatio singularis cogo nibh nonummy populus camur jugis amet. Saepius caecus nisi miim. " />
+    		<mx:Canvas height="1" width="100%" backgroundColor="#797979" />
+	        <mx:TileList id="downloadList" width="100%" columnCount="2"
+                    selectionDuration="0"
+                    dataProvider="{_downloadList}" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.DownloadListRenderer"
+                    borderStyle="none" allowMultipleSelection="false" allowDragSelection="false"/>
+    	</mx:VBox>    	
+    </mx:ViewStack>
 
-	<mx:operation name="retrieveSubmissionsForContest" resultFormat="object" result="handleSubResult(event)"> 
-		<mx:request>
-			<arg0>{contestId}</arg0>
-		</mx:request>
-	</mx:operation>
-    </mx:WebService>
-            
-    <mx:HBox width="100%" height="100%" paddingTop="10" paddingBottom="25">
-        <mx:VBox horizontalAlign="left" height="100%" width="200">
-            <mx:Button click="reorder()" styleName="priorBtn" />
-            <mx:VBox horizontalAlign="center" height="100%" width="100%"
-                    paddingLeft="0" paddingRight="0" >
-                <mx:Button id="up" styleName="up" click="goUp()" />
-                <mx:TileList id="list" rowCount="7" width="100%" columnCount="2"
-                        selectionDuration="0"
-                        dataProvider="{activeSubmission}" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer" itemsChangeEffect="{myDTLE}"
-                        verticalScrollPolicy="off" horizontalScrollPolicy="off" borderStyle="none"
-                        click="handleSelect()" allowMultipleSelection="false" allowDragSelection="false"/>
-                <mx:Button id="down" styleName="down" click="goDown()" />
-            </mx:VBox>
-        </mx:VBox>
-        <mx:Canvas width="1" height="100%" backgroundColor="#d6d6d6" />
-        <mx:VBox width="100%" height="100%" paddingLeft="25" paddingRight="17" paddingBottom="0" verticalGap="0">
-            <mx:Canvas width="100%" minWidth="755" height="79">
-                <mx:Label text="Select a Contest to View:" left="0" top="9" 
-                        styleName="normalText" paddingTop="0" paddingBottom="0" />
-                <mx:ComboBox id="contestCombo" left="195" width="272" top="9" styleName="ComboBoxStyle"
-                        valueCommit="handleContest()" fontFamily="Arial" fontSize="12"
-                        labelField="name" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{contestList}" />
-                <mx:Label text="Filter By:" right="140" top="9" styleName="normalText" />
-                <mx:CheckBox id="showActive" label="Active Contests" right="13" top="9" styleName="CheckBoxStyle"
-                        selected="true" change="doFilter()" />
-                <mx:CheckBox id="showPast" label="Past Contests" right="19" top="38" styleName="CheckBoxStyle"
-                        selected="true" change="doFilter()" />
-            </mx:Canvas>
-            <mx:Canvas height="1" width="100%" backgroundColor="#797979" />
-            <mx:VBox horizontalAlign="center" width="100%" paddingTop="37">
-                <mx:HBox height="580" horizontalAlign="center" width="636">
-                    <mx:VBox height="100%" verticalAlign="middle">
-                        <mx:Button id="prev" styleName="prev" click="goPrev()"/>
-                    </mx:VBox>
-                    <mx:VBox height="100%" width="100%" horizontalAlign="center" verticalGap="20" >
-                        <mx:Label id="currentLabel" fontFamily="Arial" 
-                                fontWeight="bold" fontSize="14" width="527" />
-                        <mx:VBox verticalAlign="middle" horizontalAlign="center" 
-                                borderStyle="solid" width="527" height="441">
-                            <mx:Image id="currnetImage" maxWidth="525" maxHeight="439" completeEffect="{fade}" />
-                        </mx:VBox>
-                        <mx:ToggleButtonBar horizontalAlign="center" horizontalGap="20" itemClick="setRank()" 
-                                id="rankBar" selectedIndex="-1"
-                                buttonWidth="25" buttonHeight="26" buttonStyleName="buttonStyleName">
-                            <mx:String>1</mx:String>
-                            <mx:String>2</mx:String>
-                            <mx:String>3</mx:String>
-                            <mx:String>4</mx:String>
-                            <mx:String>5</mx:String>
-                        </mx:ToggleButtonBar>
-                    </mx:VBox>
-                    <mx:VBox height="100%" verticalAlign="middle">
-                        <mx:Button id="next" styleName="next" click="goNext()"/>
-                    </mx:VBox>
-                </mx:HBox>
-                <mx:VBox width="636" horizontalAlign="center">
-                    <mx:Canvas width="100%" height="17" >
-                        <mx:Label text="Notes and Feedback:" styleName="normalText" left="0" />
-                        <mx:LinkButton id="showHintBtn" label="[+ show hint]" right="0" 
-                            rollOverColor="#ffffff" selectionColor="#ffffff" />
-                    </mx:Canvas>
-                    <mx:TextArea id="feed" height="112" width="612" fontFamily="Arial" fontSize="12" />
-            </mx:VBox>
-                <mx:Canvas width="100%">
-                    <mx:Button label="Save as Draft" styleName="SaveContinueButtonStyle" right="118" top="20" click="saveFeedBack()" />
-                    <mx:Button label="Continue --->" styleName="SaveContinueButtonStyle" right="0" top="20" />
-                </mx:Canvas>
-            </mx:VBox>
-        </mx:VBox>
-    </mx:HBox>
-    
-    <mx:VBox id="minPage" width="{isMax ? 0 : 320}" height="{isMax ? 0 : 570}" paddingLeft="10" paddingTop="10" paddingRight="5">
-        <mx:HBox width="100%" horizontalGap="0">
-            <mx:Image source="@Embed('../assets/select_a_project.png')"/>
-            <mx:Text text="Select a project:" fontWeight="bold"/>
-        </mx:HBox>
-        <mx:ComboBox width="240" dataProvider="{submissionsData}" selectedIndex="-1" change="SubmissionsChange(event)"/>
-        <mx:HRule width="100%" strokeColor="#000000"/>
-        <mx:HBox width="100%" >
-            <mx:Text text="Total Submissions:" fontWeight="bold"/>
-            <mx:Text text="0" id="SubNum" />
-        </mx:HBox>
-        <mx:VBox id="tb" width="100%" >
-            <mx:HBox width="100%">
-                <mx:VBox width="80" height="80" borderStyle="solid" borderColor="#000000"/>
-                <mx:VBox width="80" height="80" borderStyle="solid" borderColor="#000000"/>
-                <mx:VBox width="80" height="80" borderStyle="solid" borderColor="#000000"/>
-            </mx:HBox>
-            <mx:HBox width="100%">
-                <mx:VBox width="80" height="80" borderStyle="solid" borderColor="#000000"/>
-                <mx:VBox width="80" height="80" borderStyle="solid" borderColor="#000000"/>
-                <mx:VBox width="80" height="80" borderStyle="solid" borderColor="#000000"/>
-            </mx:HBox>
-        </mx:VBox>
-    </mx:VBox>
-    
 </tc:SubmissionViewerWidgetCodeBehind>

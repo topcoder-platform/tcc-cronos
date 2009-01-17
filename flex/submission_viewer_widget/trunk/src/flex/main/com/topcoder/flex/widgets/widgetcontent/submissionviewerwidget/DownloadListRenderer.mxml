@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" >
+	<mx:Script>
+		<![CDATA[
+			private function getPurchase(dta:Object):String {
+				if (!dta) {
+					return "";
+				}
+				var temp:String = "";
+				if (dta.hasOwnProperty("size")) {
+					down.label = "Download " + dta.size;
+				}
+				if (dta.hasOwnProperty("purchased") && dta.purchased == true) {
+					temp += "Prize: $";
+				} else {
+					temp += "Cost: $";
+				}
+				if (dta.hasOwnProperty("purchase")) {
+					return temp + dta.purchase;
+				} else {
+					return "";
+				}
+			}
+			
+			private function getPurchased(dta:Object):String {
+				if (!dta) {
+					return "";
+				}
+				if (dta.hasOwnProperty("purchased") && dta.purchased == true) {
+					return "Purchase: Yes";
+				} else {
+					return "Purchase: No";
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:VBox id="left" horizontalAlign="center" verticalGap="0"
+			paddingTop="0" paddingLeft="0" paddingBottom="0" paddingRight="0">
+		<mx:Canvas width="116" height="94">
+			<mx:Canvas id="thumbnail" top="9" left="8" bottom="0" right="8"
+				backgroundImage="{data.thumbnail}" backgroundSize="100%"/>
+			<mx:Button styleName="rankLogo" id="rank" label="{(data.rank)?data.rank:'+'}"
+				width="25" height="26" textAlign="center" />
+		</mx:Canvas>
+		<mx:Label id="content" textAlign="center" text="{'#' + data.id}" bottom="0" 
+				fontWeight="bold" fontFamily="Arial" fontSize="12" />
+		<mx:Label text="{getPurchase(data)}" textAlign="center" styleName="text" />
+		<mx:Label text="{getPurchased(data)}" textAlign="center" styleName="text" />
+	</mx:VBox>
+	<mx:VBox id="right" width="100%">
+		<mx:Label styleName="normalText" />
+		<mx:Text width="100%" textAlign="left" styleName="text" 
+				htmlText="Lorem ipsum dolor sit amet, et refoveo velit, populus cogo. Jugis ventosus suscipit ut nulla quibus, luptatum transverbero. &lt;br&gt;- Haero ea, loquor vereor. &lt;br&gt;- Ea ibidem valetudo validus foras vero ullamcorper." />
+		<mx:Button id="down" styleName="SaveContinueButtonStyle" />
+	</mx:VBox>
+</mx:HBox>
