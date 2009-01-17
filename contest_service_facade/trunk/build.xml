@@ -67,11 +67,13 @@
     <property name="dist_docs" value="${build_tcsdistdir}/${docsdir}"/>
     <property name="dist_javadocs" value="${build_tcsdistdir}/${javadocsdir}"/>
     <property name="dist_coverage" value="${dist_docs}/coverage"/>
+	<property name="target_libdir" value="${tcs_libdir}"/>
 
     <!-- NAME FOR .JAR FILES -->
     <property name="component.jar" value="${builddir}/${distfilename}.jar"/>
     <property name="component.war" value="${builddir}/${distfilename}_demo.war"/>
     <property name="component.ear" value="${builddir}/${distfilename}.ear"/>
+	<property name="component.dist.zip" value="${build_distdir}/${distfilename}-${component_version}.zip"/>
 
     <!-- classes needed to compile the production code -->
     <path id="buildlibs">
@@ -206,7 +208,7 @@
 
 		<mkdir dir="${dist_javadocs}" />
 
-		<jar jarfile="${component.dist.jar}" basedir="${build_distdir}" manifest="${manifest_file}" excludes="*.jar" />
+		<zip destfile="${component.dist.zip}" basedir="${build_distdir}"/>
 
 		<antcall target="move_to_tcs" />
 	</target>
@@ -216,6 +218,7 @@
 		<mkdir dir="${tcs_libdir}/${component_path}"/>
 		<copy file="${component.jar}" todir="${tcs_libdir}/${component_path}"/>
 		<copy file="${component.war}" todir="${tcs_libdir}/${component_path}"/>
+		<copy file="${component.dist.zip}" todir="${target_libdir}/${component_path}/dist"/>
 
 	</target>
 
