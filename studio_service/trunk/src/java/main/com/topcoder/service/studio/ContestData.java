@@ -521,7 +521,7 @@ public class ContestData implements Serializable {
      * Set the media
      * </p>
      * 
-     * @param media
+     * @param mediums
      *            the media to set
      * @throws IllegalArgumentException
      *             if the argument is null
@@ -912,7 +912,7 @@ public class ContestData implements Serializable {
     /**
      * Sets forum PostCount.
      * 
-     * @param PostCount
+     * @param forumPostCount
      *            the PostCount to set
      */
     public void setForumPostCount(int forumPostCount) {

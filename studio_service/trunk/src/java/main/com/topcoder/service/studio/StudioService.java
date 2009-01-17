@@ -11,6 +11,8 @@ import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.EntityAlreadyExistsException;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
+import com.topcoder.service.studio.contest.DocumentType;
+import com.topcoder.service.studio.contest.StudioFileType;
 
 /**
  * <p>
@@ -173,7 +175,7 @@ public interface StudioService {
 	 * @throws UserNotAuthorizedException
 	 *             if the user is not authorized to perform this method
 	 */
-	public UploadedDocument uploadDocument(UploadedDocument data)
+	public UploadedDocument uploadDocument(UploadedDocument uploadedDocument)
 			throws PersistenceException;
 
 	/**
@@ -396,7 +398,7 @@ public interface StudioService {
 	 * Get matched the MimeType id.
 	 * </p>
 	 * 
-	 * @param ContentType.
+	 * @param contentType
 	 * @return the matched MimeType id.
 	 * 
 	 * @throws PersistenceException
@@ -506,7 +508,7 @@ public interface StudioService {
      * Set submission placement.
      * 
      * @param submissionId Submission Id.
-     * @param placement placement
+     * @param prizeId prizeId
      * @throws PersistenceException if any error occurs when setting placement.
      * @since TCCC-353
      */
@@ -589,5 +591,34 @@ public interface StudioService {
      * @since STUDIO-217
      */
     public void processMissingPayments(long contestId) throws PersistenceException;
+
+	/**
+     * <p>
+     * Get all the DocumentType objects.
+     * </p>
+     * 
+     * @return the list of all available DocumentType
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * 
+	 * @throws PersistenceException
+     *             if any error occurss
+     * @since 1.1.2
+     */
+    public List<DocumentType> getAllDocumentTypes() throws PersistenceException;
+
+
+	 /**
+     * <p>
+     * Gets all studio file types to return. If no studio file type exists,
+     * return an empty list
+     * </p>
+     * 
+     * @return a list of studio file types
+     * @throws PersistenceException
+     *             if any error occurs when getting studio file types.
+     */
+    public List<StudioFileType> getAllStudioFileTypes() throws PersistenceException;
 
 }

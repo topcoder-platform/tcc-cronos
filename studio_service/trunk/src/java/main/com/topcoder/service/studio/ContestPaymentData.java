@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "contestPaymentData", propOrder = { "contestId",
-        "paymentStatusId", "price", "paypalOrderId" })
+        "paymentStatusId", "price", "paypalOrderId", "createDate"})
 public class ContestPaymentData implements Serializable {
     /**
      * Represents contestId id.

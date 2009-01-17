@@ -72,6 +72,7 @@ import com.topcoder.service.studio.contest.ContestType;
 import com.topcoder.service.studio.contest.ContestTypeConfig;
 import com.topcoder.service.studio.contest.Document;
 import com.topcoder.service.studio.contest.DocumentType;
+import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.contest.FilePath;
 import com.topcoder.service.studio.contest.Medium;
@@ -1149,6 +1150,10 @@ public class StudioServiceBean implements StudioService {
         } catch (ContestNotFoundException e) {
             handlePersistenceError("Contest not found when trying to remove document from contest", e);
         }
+		  catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while getting contest in updating submission.", e);
+
+        }
 
         logExit("updateSubmission");
     }
@@ -2071,13 +2076,14 @@ public class StudioServiceBean implements StudioService {
      *            entity to convert
      * @return converted entity
      */
-    private Submission convertSubmissionData(SubmissionData submissionData) {
+    private Submission convertSubmissionData(SubmissionData submissionData) throws ContestManagementException {
         Submission submission = new Submission();
 
         submission.setSubmissionId(submissionData.getSubmissionId());
         submission.setSubmitterId(submissionData.getSubmitterId());
         submission.setSubmissionDate(getDate(submissionData.getSubmittedDate()));
         submission.setRank(submissionData.getRank());
+		submission.setContest(contestManager.getContest(submissionData.getContestId()));
 
         return submission;
     }
@@ -2649,15 +2655,15 @@ public class StudioServiceBean implements StudioService {
      * @throws PersistenceException
      *             if some persistence errors occur
      */
-    public UploadedDocument uploadDocument(UploadedDocument data) throws PersistenceException {
+    public UploadedDocument uploadDocument(UploadedDocument uploadedDocument) throws PersistenceException {
         logEnter("uploadDocument(UploadedDocument data)");
 
-        checkParameter("data", data);
+        checkParameter("uploadedDocument", uploadedDocument);
 
         Document doc = new Document();
 
-        doc.setDocumentId(data.getDocumentId());
-        doc.setOriginalFileName(data.getFileName());
+        doc.setDocumentId(uploadedDocument.getDocumentId());
+        doc.setOriginalFileName(uploadedDocument.getFileName());
 
         // set file path
         FilePath fp = new FilePath();
@@ -2670,13 +2676,13 @@ public class StudioServiceBean implements StudioService {
         try {
 
             // set mime type [BUG 27074484-15]
-            MimeType mt = contestManager.getMimeType(data.getMimeTypeId());
+            MimeType mt = contestManager.getMimeType(uploadedDocument.getMimeTypeId());
             doc.setMimeType(mt);
 
             // set document type [BUG 27074484-15]
-            DocumentType dt = contestManager.getDocumentType(data.getDocumentTypeId());
+            DocumentType dt = contestManager.getDocumentType(uploadedDocument.getDocumentTypeId());
             doc.setType(dt);
-            doc.setDescription(data.getDescription());
+            doc.setDescription(uploadedDocument.getDescription());
 
             // save document
             doc = contestManager.addDocument(doc);
@@ -2686,7 +2692,7 @@ public class StudioServiceBean implements StudioService {
         // persist document content where necessary
         try {
             if (!contestManager.existDocumentContent(unbox(doc.getDocumentId()))) {
-                contestManager.saveDocumentContent(doc.getDocumentId(), data.getFile());
+                contestManager.saveDocumentContent(doc.getDocumentId(), uploadedDocument.getFile());
             }
         } catch (IllegalArgumentException e) {
             // do not reproduce any errors here
@@ -2733,7 +2739,7 @@ public class StudioServiceBean implements StudioService {
      * Get matched the MimeType id.
      * </p>
      *
-     * @param ContentType
+     * @param contentType
      *            .
      * @return the matched MimeType id. Id for defaultMimeType if not found. 
      *             -1 if there is no such type as defaultMimeType
@@ -3651,4 +3657,55 @@ public class StudioServiceBean implements StudioService {
         }
     }
 
+
+	/**
+     * <p>
+     * Gets all studio file types to return. If no studio file type exists,
+     * return an empty list
+     * </p>
+     * 
+     * @return a list of studio file types
+     * @throws PersistenceException
+     *             if any error occurs when getting studio file types.
+     */
+    public List<StudioFileType> getAllStudioFileTypes() throws PersistenceException {
+
+		logEnter("getAllStudioFileTypes");
+
+        try {
+        	return contestManager.getAllStudioFileTypes();
+        	
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManagementException reports error.", e);
+        }
+
+		return null;
+	}
+
+
+	/**
+     * <p>
+     * Get all the DocumentType objects.
+     * </p>
+     * 
+     * @return the list of all available DocumentType
+     * 
+     * @throws PersistenceException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1.2
+     */
+    public List<DocumentType> getAllDocumentTypes() throws PersistenceException {
+
+		logEnter("getAllDocumentTypes");
+
+        try {
+        	return contestManager.getAllDocumentTypes();
+        	
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManagementException reports error.", e);
+        }
+
+		return null;
+	}
 }

@@ -20,7 +20,8 @@ import java.io.Serializable;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "submissionData",
-        propOrder = {"submissionId", "submitterId", "contestId", "submittedDate", "submissionContent", "passedScreening", "placement", "paidFor", "price", "markedForPurchase"})
+        propOrder = {"submissionId", "submitterId", "contestId", "submittedDate", "submissionContent",
+                     "passedScreening", "placement", "paidFor", "price", "markedForPurchase", "rank", "removed"})
 public class SubmissionData implements Serializable {
     /**
      * Represents submission rank.

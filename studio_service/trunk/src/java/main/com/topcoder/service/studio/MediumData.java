@@ -23,8 +23,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "mediumData", propOrder = { "mediumId",
-        "mediumDesc" })
+@XmlType(name = "mediumData", propOrder = { "mediumId", "description"})
 public class MediumData implements Serializable {
     /**
      * Represents medium id.
