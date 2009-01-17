@@ -8,28 +8,28 @@
     <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
 
     <!-- TCS dependencies -->
-    <property name="auditor.version" value="2.0"/>
+    <property name="auditor.version" value="2.0.0"/>
     <property name="auditor.jar.name" value="auditor.jar"/>
     <property name="auditor.path" value="auditor/${auditor.version}"/>
     <property name="auditor.jar" value="${tcs_libdir}/${auditor.path}/${auditor.jar.name}"/>
 
-    <property name="base_exception.version" value="2.0"/>
+    <property name="base_exception.version" value="2.0.0"/>
     <property name="base_exception.jar.name" value="base_exception.jar"/>
     <property name="base_exception.path" value="base_exception/${base_exception.version}"/>
     <property name="base_exception.jar" value="${tcs_libdir}/${base_exception.path}/${base_exception.jar.name}"/>
 
-    <property name="jboss_login_module.version" value="2.0"/>
+    <property name="jboss_login_module.version" value="2.1.0"/>
     <property name="jboss_login_module.jar.name" value="jboss_login_module.jar"/>
     <property name="jboss_login_module.path" value="jboss_login_module/${jboss_login_module.version}"/>
     <property name="jboss_login_module.jar"
               value="${tcs_libdir}/${jboss_login_module.path}/${jboss_login_module.jar.name}"/>
 
-    <property name="logging_wrapper.version" value="2.0"/>
+    <property name="logging_wrapper.version" value="2.0.0"/>
     <property name="logging_wrapper.jar.name" value="logging_wrapper.jar"/>
     <property name="logging_wrapper.path" value="logging_wrapper/${logging_wrapper.version}"/>
     <property name="logging_wrapper.jar" value="${tcs_libdir}/${logging_wrapper.path}/${logging_wrapper.jar.name}"/>
 
-    <property name="security_facade.version" value="2.0"/>
+    <property name="security_facade.version" value="2.0.0"/>
     <property name="security_facade.jar.name" value="security_facade.jar"/>
     <property name="security_facade.path" value="security_facade/${security_facade.version}"/>
     <property name="security_facade.jar" value="${tcs_libdir}/${security_facade.path}/${security_facade.jar.name}"/>
@@ -60,7 +60,7 @@
     <property name="object_factory_configuration_api_plugin.jar"
               value="${tcs_libdir}/${object_factory_configuration_api_plugin.path}/${object_factory_configuration_api_plugin.jar.name}"/>
 
-    <property name="user_group_manager.version" value="1.0"/>
+    <property name="user_group_manager.version" value="1.0.0"/>
     <property name="user_group_manager.jar.name" value="user_group_manager.jar"/>
     <property name="user_group_manager.path" value="user_group_manager/${user_group_manager.version}"/>
     <property name="user_group_manager.jar"
