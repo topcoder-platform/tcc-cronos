@@ -108,7 +108,7 @@
 			lnkSubmissions.includeInLayout=true
 			lnkSubmissions.visible=true
 			//canvasSubmissions.percentWidth=35
-			lblSubmissions.setStyle("textAlign","right")
+			lblSubmissions.setStyle("textAlign","center")
 
 		}
 	}
@@ -127,7 +127,7 @@
 			lnkFormPosts.includeInLayout=true
 			lnkFormPosts.visible=true
 			//canvasForumPosts.percentWidth=35
-			lblForumPosts.setStyle("textAlign","right")
+			lblForumPosts.setStyle("textAlign","center")
 		}
 	}
 	public function get forumPosts():String{
@@ -136,7 +136,14 @@
 	
 	private function showStats():void
         {
-        	var prjCt:ProjectsContainer=this.parent as ProjectsContainer;
+        	var prjCt:ProjectsContainer;
+        	var p:DisplayObjectContainer=parent;
+        	while(p!=null){
+        		if(p is ProjectsContainer)break;
+        		p=p.parent;
+        	}
+        	if(p==null)return ;
+        	prjCt=p as ProjectsContainer;
         	var dict:Dictionary=new Dictionary();
         	dict["contestid"]=_ContextId;
         	prjCt.widgetFramework.addWidgetEx("ContestMonitor","ContestMonitor",dict );
@@ -163,7 +170,7 @@
 			<mx:LinkButton styleName="viewBtn" label="View" labelPlacement="bottom" id="lnkSubmissions"/> 
 		</mx:VBox>
 		<mx:VBox width="100%" styleName="bottomAlign">
-			<mx:Text width="100%" styleName="rowContentLabel" id="lblForumPosts" />
+			<mx:Text width="100%"   styleName="rowContentLabel" id="lblForumPosts" />
 			<mx:LinkButton styleName="viewBtn" label="View" labelPlacement="bottom" id="lnkFormPosts"/> 
 		</mx:VBox>
 		<mx:VBox width="100%" styleName="bottomAlign">

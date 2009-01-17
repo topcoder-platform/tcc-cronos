@@ -89,10 +89,10 @@
         
         private var statusDict:Dictionary=new Dictionary();
         
-        private var username:String=Application.application.parameters.username;  //"user"
-        private var password:String=Application.application.parameters.password;  //"password"
-
-	private var projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl; 
+        private var username:String=Application.application.parameters.username;
+        private var password:String= Application.application.parameters.password;
+   
+	    private var projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl;
         private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl; 
         
         private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
@@ -156,7 +156,7 @@
         private function setContests(e:ResultEvent): void
         {
         	contests=new ArrayCollection();
-        	if(e!=null && e.result!=null)
+        	if(e!=null && e.result!=null && e.result is  ArrayCollection)
         	{
         		var arr:ArrayCollection=e.result as ArrayCollection;
         		for(var i:int=0;i<arr.length;i++)
@@ -232,11 +232,14 @@ wsdl="{contestServiceFacadeWsdl}">
 </mx:operation>
 </mx:WebService>
 
-
+<!--
 		<mx:Box id="container" paddingTop="5" paddingRight="5" width="100%" height="98%"
 				horizontalAlign="center" horizontalScrollPolicy="off" verticalScrollPolicy="auto">
+				-->
 		    <ns1:ProjectsContainer id="prjList"  horizontalScrollPolicy="off" verticalScrollPolicy="auto" maxHeight="500"  width="100%" height="100%">
 		    </ns1:ProjectsContainer>
+		    <!--
 		</mx:Box>		
+		-->
 
 </tc:ProjectWidgetCodeBehind>
