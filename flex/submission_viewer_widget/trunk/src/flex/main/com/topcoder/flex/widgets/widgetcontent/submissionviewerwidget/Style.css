@@ -1,0 +1,156 @@
+/* CSS file */
+.normalText {
+	font-weight: bold;
+	font-size: 12;
+	font-family: Arial;
+	color: #000000;
+}
+
+.text {
+	font-weight: normal;
+	font-size: 12;
+	font-family: Arial;
+	color: #000000;
+}	
+
+.prev {
+	skin: Embed("../assets/prev.png");
+	over-skin: Embed("../assets/prev_over.png");
+	down-skin: Embed("../assets/prev_down.png");
+}
+
+.next {
+	skin: Embed("../assets/next.png");
+	over-skin: Embed("../assets/next_over.png");
+	down-skin: Embed("../assets/next_down.png");
+}
+
+.up {
+	skin: Embed("../assets/up.png");
+	over-skin: Embed("../assets/up_over.png");
+	down-skin: Embed("../assets/up_down.png");	
+}
+
+.down {
+	skin: Embed("../assets/down.png");
+	over-skin: Embed("../assets/down_over.png");
+	down-skin: Embed("../assets/down_down.png");	
+}
+
+.buttonStyleName {
+	color: #000000;
+	skin: Embed("../assets/rank.png");
+	over-skin: Embed("../assets/rank_over.png");
+	down-skin: Embed("../assets/rank_over.png");
+	selected-over-skin: Embed("../assets/rank_over.png");
+	selected-up-skin: Embed("../assets/rank_over.png");
+	selected-down-skin: Embed("../assets/rank_over.png");
+	padding-left:0;
+	padding-right:0;
+}
+
+.rankLogo {
+	color: #000000;
+	skin: Embed("../assets/rank.png");
+	over-skin: Embed("../assets/rank.png");
+	down-skin: Embed("../assets/rank.png");
+	padding-left:0;
+	padding-right:0;
+}
+
+.purchaseLogo {
+	/* background-image: Embed("../assets/purchase.png"); */
+}
+
+.priorBtn {
+	skin: Embed("../assets/PriorButton.png");
+	over-skin: Embed("../assets/PriorButton_over.png");
+	down-skin: Embed("../assets/PriorButton.png");
+}
+
+.ComboBoxStyle {
+	up-skin: Embed(source="../assets/combobox.png",
+			scaleGridTop="2",scaleGridLeft="2",
+			scaleGridRight="275",scaleGridBottom="21");
+	over-skin: Embed(source="../assets/combobox.png",
+			scaleGridTop="2",scaleGridLeft="2",
+			scaleGridRight="275",scaleGridBottom="21");
+	down-skin: Embed(source="../assets/combobox.png",
+			scaleGridTop="2",scaleGridLeft="2",
+			scaleGridRight="275",scaleGridBottom="21");
+}
+
+.CheckBoxStyle {
+	font-weight: normal;
+	font-size: 12;
+	font-family: Arial;
+	color: #000000;
+	selected-down-icon: Embed("../assets/checkbox_checked.png");
+	selected-up-icon: Embed("../assets/checkbox_checked.png");
+	selected-over-icon: Embed("../assets/checkbox_checked.png");
+	icon: Embed("../assets/checkbox.png");
+}
+
+.SaveContinueButtonStyle {
+	font-family: Arial;
+	font-weight: normal;
+	font-size: 12;
+	color: #767676;
+	skin: Embed(source="../assets/button.png",scaleGridTop="2",scaleGridLeft="17",scaleGridRight="93",scaleGridBottom="26");
+	over-skin: Embed(source="../assets/button_over.png",scaleGridTop="2",scaleGridLeft="17",scaleGridRight="93",scaleGridBottom="26");
+	down-skin: Embed(source="../assets/button_over.png",scaleGridTop="2",scaleGridLeft="17",scaleGridRight="93",scaleGridBottom="26");
+}
+
+.first {
+	border-style: solid;
+	border-color: #a9a9a9;
+	border-sides: left top;
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #797979;
+	background-color: #ffffff;
+}
+.last {
+	border-style: solid;
+	border-color: #a9a9a9;
+	border-sides: top right;
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #797979;
+	background-color: #ffffff;
+}
+.middle {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #797979;
+	background-color: #ffffff;
+}
+.contentBlack {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #000000;
+}
+.header {
+	font-family: Arial;
+	font-size: 16;
+	font-weight: bold;
+	color: #000000;
+}
+
+.NumericStepper {
+/*  	border-skin: Embed(source="../assets/numericstepperBG.png", 
+			scaleGridTop="8",scaleGridLeft="2",scaleGridRight="34",scaleGridBottom="16");
+	up-arrow-skin: Embed(source="../assets/up2.png");
+	down-arrow-skin: Embed(source="../assets/down2.png");  */
+	font-family: Arial;
+	font-size: 12;
+	font-weight: normal;
+	color: #000000;
+	vertical-align: middle;	
+	padding-left: 7;
+	padding-right: 7;
+}
