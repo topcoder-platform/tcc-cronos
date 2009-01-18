@@ -2,7 +2,7 @@
 <tc:SubmissionViewerWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
     xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
     title="Submission Viewer"
-    creationComplete="init()" width="98%" height="100%" >
+    creationComplete="init()" width="98%" height="100%" headerHeight="0" >
     <mx:Style source="Style.css" />
     <mx:Script>
         <![CDATA[
