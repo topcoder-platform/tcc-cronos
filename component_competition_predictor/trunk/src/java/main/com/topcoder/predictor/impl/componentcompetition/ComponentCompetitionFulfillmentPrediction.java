@@ -13,7 +13,8 @@ import com.topcoder.predictor.Situation;
  * </p>
  *
  * <p>
- * Thread-Safety: This class is immutable and thread-safe.
+ * Thread-Safety: This class has mutable fields expectedPassedReviewSubmissionCount and situation.
+ * The user must synchronize access to their setters and other methods to use this class in thread safe manner.
  * </p>
  *
  * @author argolite, TCSDEVELOPER
@@ -27,17 +28,17 @@ public class ComponentCompetitionFulfillmentPrediction implements Prediction {
 
     /**
      * Represents the expected number of submissions that pass review. It is set in the constructor. It is accessed in
-     * the getter. It is used in the clone method. It will not be negative. Once set, it will not change.
+     * the getter. It is used in the clone method. It will not be negative. It can be changed in the setter.
      */
-    private final double expectedPassedReviewSubmissionCount;
+    private double expectedPassedReviewSubmissionCount;
 
     /**
      * Represents the situation from which this prediction is made.
      *
      * It is set in the constructor. It is accessed in the getter. It is used in the clone method. It can be null.
-     * Once set, it will not change.
+     * It can be changed in the setter.
      */
-    private final ComponentCompetitionSituation situation;
+    private ComponentCompetitionSituation situation;
 
     /**
      * Represents the predictor used to generate this prediction. It is set in the constructor. It is accessed in the
@@ -87,12 +88,30 @@ public class ComponentCompetitionFulfillmentPrediction implements Prediction {
     }
 
     /**
+     * Sets the expectedPassedReviewSubmissionCount field value.
+     *
+     * @param expectedPassedReviewSubmissionCount the expectedSubmissionCount field value
+     */
+    public void setExpectedPassedReviewSubmissionCount(double expectedPassedReviewSubmissionCount) {
+        this.expectedPassedReviewSubmissionCount = expectedPassedReviewSubmissionCount;
+    }
+
+    /**
      * Gets the situation field value.
      *
      * @return the situation field value
      */
     public ComponentCompetitionSituation getSituation() {
         return situation;
+    }
+
+    /**
+     * Sets the situation field value.
+     *
+     * @param situation the situation field value
+     */
+    public void setSituation(ComponentCompetitionSituation situation) {
+        this.situation = situation;
     }
 
     /**
