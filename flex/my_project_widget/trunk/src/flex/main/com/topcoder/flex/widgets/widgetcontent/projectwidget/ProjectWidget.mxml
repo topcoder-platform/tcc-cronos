@@ -90,7 +90,8 @@
         private var statusDict:Dictionary=new Dictionary();
         
         private var username:String=Application.application.parameters.username;
-        private var password:String= Application.application.parameters.password;
+	private var password:String = "";
+        private var blazedsendpoint:String= Application.application.parameters.blazedsendpoint;
    
 	    private var projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl;
         private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl; 
@@ -116,10 +117,11 @@
         private function initWidget():void{
         	//flash.system.Security.loadPolicyFile("http://localhost:8003/widget_app/crossdomain.xml");
         	prjList.widgetFramework=this.widgetFramework;
-            loader.addEventListener(Event.COMPLETE, loadData);
-            loader.load(new URLRequest("data/moch.xml"));
-			
-            
+
+	    getDataService();
+            //loader.addEventListener(Event.COMPLETE, loadData);
+            //loader.load(new URLRequest("data/moch.xml"));
+
         }
         // this function load an XML as data provider of the main container
         // of the projectList
@@ -128,12 +130,13 @@
             result = new XML(e.target.data);
             prjList.dataProvider=result;
         }
-        private function loadData(e:Event):void
+	
+
+        private function loadData():void
         {
-            ContestServiceFacadeBean.clearHeaders();
+		ContestServiceFacadeBean.clearHeaders();
         	ContestServiceFacadeBean.addHeader(getHeader(username,password));
-        	ContestServiceFacadeBean.getStatusList();
-			
+        	ContestServiceFacadeBean.getStatusList();	
             
         }
         private function setProject(e:ResultEvent): void
@@ -216,6 +219,25 @@
 
             ProjectServiceFacadeBean.getAllProjects();
         }
+
+	private function getDataService():void
+        {
+			
+            dataservice.getPassword();
+        }
+
+	private function processPassword(e:ResultEvent): void
+        {
+		//Alert.show("--------"+e.result.toString());
+        	if(e!=null && e.result!=null){
+        		password = e.result.toString();
+        		
+        	}
+
+		//Alert.show("========" + password);
+		loadData();
+
+        }
     ]]>
 </mx:Script>
 <mx:WebService id="ProjectServiceFacadeBean" 
@@ -231,6 +253,16 @@ wsdl="{contestServiceFacadeWsdl}">
 </mx:request>
 </mx:operation>
 </mx:WebService>
+
+<mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"
+              
+		 fault="Alert.show(event.fault.faultString);">
+    <mx:method name="getPassword"  result="processPassword(event)" 
+		                   fault="Alert.show(event.fault.faultString);"/>
+
+</mx:RemoteObject>
+
+
 
 <!--
 		<mx:Box id="container" paddingTop="5" paddingRight="5" width="100%" height="98%"
