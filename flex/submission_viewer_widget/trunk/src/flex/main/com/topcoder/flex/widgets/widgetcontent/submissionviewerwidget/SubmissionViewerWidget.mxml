@@ -17,6 +17,7 @@
             import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer;
             import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer;
             import mx.rpc.soap.SOAPHeader;
+	    import mx.core.Application;
             
             private var rankList:ArrayCollection = new ArrayCollection();
             [Bindable]
@@ -45,6 +46,12 @@
             
             [Bindable]
             private var _purchaseList:ArrayCollection = new ArrayCollection();
+
+	       
+        private var username:String=Application.application.parameters.username;
+	private var password:String = "";
+        private var blazedsendpoint:String= Application.application.parameters.blazedsendpoint;
+        private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;
             
             private static const IMAGE_ADDRESS:String ="http://www.topcoder.com/direct/cockpit/impersonation/cockpitStudio.do?&sbmid=";
 		    private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
@@ -67,11 +74,12 @@
             [Bindable]
             private var _downloadList:ArrayCollection = new ArrayCollection();
             private function init():void {
-                 var header:SOAPHeader=getHeader("user","password");
+                /* var header:SOAPHeader=getHeader("user","password");
 				ContestServiceFacadeBean.clearHeaders();
             	ContestServiceFacadeBean.addHeader(header);
 
-            	ContestServiceFacadeBean.getAllContests();
+            	ContestServiceFacadeBean.getAllContests();*/
+		getDataService();
             }
             
             [Bindable] 
@@ -346,7 +354,7 @@
                  if (contestCombo && contestCombo.selectedItem) {
                 	contestId=contestCombo.selectedItem.id;
                 	if(submissionList)submissionList.removeAll();
-                	var header:SOAPHeader=getHeader("user","password");
+                	var header:SOAPHeader=getHeader(username,password);
 					ContestServiceFacadeBean.clearHeaders();
             		ContestServiceFacadeBean.addHeader(header);
 
@@ -485,10 +493,33 @@
                 }
                 
             }
+
+	    private function getDataService():void
+		{
+				
+		    dataservice.getPassword();
+		}
+
+		private function processPassword(e:ResultEvent): void
+		{
+			//Alert.show("--------"+e.result.toString());
+			if(e!=null && e.result!=null){
+				password = e.result.toString();
+				
+			}
+
+			//Alert.show("========" + password);
+			var header:SOAPHeader=getHeader(username,password);
+				ContestServiceFacadeBean.clearHeaders();
+				ContestServiceFacadeBean.addHeader(header);
+
+				ContestServiceFacadeBean.getAllContests();
+
+		}
         ]]>
     </mx:Script>
     <mx:WebService id="ContestServiceFacadeBean" 
-wsdl="http://174.129.135.92:8003/topcoder_contest_service_facade-topcoder_contest_service_facade/ContestServiceFacadeBean?wsdl"> 
+wsdl="{contestServiceFacadeWsdl}"> 
 <mx:operation name="getAllContests" resultFormat="object" result="handleResult(event)"> 
 </mx:operation>
 
@@ -498,6 +529,14 @@ wsdl="http://174.129.135.92:8003/topcoder_contest_service_facade-topcoder_contes
 </mx:request>
 </mx:operation>
 </mx:WebService>
+
+<mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"
+              
+		 fault="Alert.show(event.fault.faultString);">
+    <mx:method name="getPassword"  result="processPassword(event)" 
+		                   fault="Alert.show(event.fault.faultString);"/>
+
+</mx:RemoteObject>
 
     <mx:DefaultTileListEffect id="myDTLE"
         fadeInDuration="10"
