@@ -88,13 +88,13 @@
 
 		private function processPassword(e:ResultEvent): void
 		{
-			Alert.show("--------"+e.result.toString());
+			//Alert.show("--------"+e.result.toString());
 			if(e!=null && e.result!=null){
 				password = e.result.toString();
 				
 			}
 
-			Alert.show("========" + password);
+			//Alert.show("========" + password);
 			fetchData();
 		}
         
