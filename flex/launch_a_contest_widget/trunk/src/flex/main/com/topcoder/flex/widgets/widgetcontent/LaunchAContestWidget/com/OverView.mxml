@@ -3,10 +3,122 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off">
     <mx:Script>
     <![CDATA[
+    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.PrizeData;
+    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+    	import mx.containers.Panel;
+    	import mx.events.FlexEvent;
+    	import mx.controls.Alert;
         import mx.events.ItemClickEvent;
+        
+        private static var inputs:Array = ["firstPlace","secondPlace","thirdPlace","fourthPlace","fifthPlace"]; 
+        private static var inputsMap:Object = {1:"firstPlace", 2:"secondPlace", 3:"thirdPlace", 4:"fourthPlace", 5:"fifthPlace"};
+        
+        [Bindable]
+       	public var mainWidget:LaunchWidget;
+       	
+        public function initData():void{
+        	
+        	var inputsMap:Object = {1:firstPlace, 2:secondPlace, 3:thirdPlace, 4:fourthPlace, 5:fifthPlace};
+        	
+        	for each (var prize:PrizeData in mainWidget.competition.contestData.prizes){
+        		var p:int = prize.place as int;
+        		var input:TextInput = inputsMap[p] as TextInput;
+        		input.text = prize.amount.toString();
+        	}
+        	
+        	updateAmount();
+        	
+        	var contestType:String = mainWidget.competition.contestData.contestTypeId.toString();
+        	
+        	for (var i:int=0; i<studioType.numRadioButtons; i++){
+        		if (studioType.getRadioButtonAt(i).value == contestType){
+        			studioType.getRadioButtonAt(i).selected = true;
+        			break;
+        		}
+        	}
+        }
+        
+        private function updateResult():Boolean{
+        	
+        	mainWidget.competition.contestData.contestTypeId = Number(studioType.selectedValue);
+        	
+        	var prizes:Array = new Array();
+        	mainWidget.competition.contestData.prizes = prizes;
+        	for (var i:int=0; i<inputs.length; i++){
+        		var prizeData:PrizeData = new PrizeData();
+        		
+        		var input:TextInput = this[inputs[i]] as TextInput;
+        		var amount:Number = Number(input.text);
+        		if (amount<=0){
+        			break;
+        		}
+        		
+        		prizeData.place = i+1;
+        		prizeData.amount = amount;
+        		prizes.push(prizeData);
+        	}
+        	
+        	return true;
+        }
+        
         
         private function handleSelect(event:ItemClickEvent):void {
         	typeName.text = event.currentTarget.selectedValue;
+        }
+        
+        
+        
+        private function updateAmount():void{
+        	var sum:int = 0;
+        	for each (var name:String in inputs){
+        		
+        		var input:TextInput = this[name] as TextInput;
+        		var val:int = Number(input.text);
+        		
+        		if (isNaN(val)){
+        			input.text = "";
+        		}
+        		
+        		sum = sum + val;
+        	}
+        	
+        	if (sum>0){
+        		adminf.text = String(sum * 0.2);
+        		cntstTtl.text = String(sum * 1.2);
+        	} else {
+        		adminf.text = "";
+        		cntstTtl.text = "";
+        	}
+        }
+        
+        public function validateFields():Boolean{
+        	if (studioType.selection == null){
+        		Alert.show("Contest type not selected");
+        		return false;
+        	}
+        	
+        	for (var i:int=0; i<inputs.length -1; i++){
+        		
+        		var input:TextInput = this[inputs[i]] as TextInput;
+        		var val:int = Number(input.text);
+        		
+        		var nextInput:TextInput = this[inputs[i+1]] as TextInput;
+        		
+        		if (isNaN(Number(input.text)) || (Number(input.text) == 0 && Number(nextInput.text)>0)){
+        			Alert.show("Prize amount not set");
+        			input.setFocus();
+        			return false;
+        		}
+        		
+        		if (Number(cntstTtl.text) == 0){
+        			Alert.show("No prize set");
+        			return false;
+        		}
+        	}
+        	
+        	updateResult();
+        	
+        	return true;
         }
     ]]>
     </mx:Script>
@@ -16,26 +128,26 @@
         <mx:RadioButtonGroup id="studioType" itemClick="handleSelect(event);"/>
         <mx:HBox horizontalGap="0">
             <mx:VBox >
-            	<mx:RadioButton groupName="studioType" id="webPage" label="Web Page Design" value="Web Page Design"/>
-            	<mx:RadioButton groupName="studioType" id="html" label="HTML Prototype" value="HTML Prototype"/>
-            	<mx:RadioButton groupName="studioType" id="printDesign" label="Print Design" value="Print Design"/>
+            	<mx:RadioButton groupName="studioType" id="webPage" label="Web Page Design" value="1"/>
+            	<mx:RadioButton groupName="studioType" id="html" label="HTML Prototype" value="2"/>
+            	<mx:RadioButton groupName="studioType" id="printDesign" label="Print Design" value="12"/>
             </mx:VBox>
             
             <mx:VBox >
-                <mx:RadioButton groupName="studioType" id="appFrontEnd" label="Application Front End Design" value="Application Front End Design" selected="true"/>
-                <mx:RadioButton groupName="studioType" id="flashDev" label="Flash Animation" value="Flash Animation"/>
-                <mx:RadioButton groupName="studioType" id="ppt" label="PowerPoint Presentations" value="PowerPoint Presentations"/>
+                <mx:RadioButton groupName="studioType" id="appFrontEnd" label="Application Front End Design" value="5" selected="true"/>
+                <mx:RadioButton groupName="studioType" id="flashDev" label="Flash Animation" value="8"/>
+                <mx:RadioButton groupName="studioType" id="ppt" label="PowerPoint Presentations" value="21"/>
             </mx:VBox>
 
             <mx:VBox >
-                <mx:RadioButton groupName="studioType" id="webElements" label="Web Elements" value="Web Elements"/>
-                <mx:RadioButton groupName="studioType" id="widget" label="Widget" value="Widget"/>
-                <mx:RadioButton groupName="studioType" id="other" label="Other" value="Other"/>
+                <mx:RadioButton groupName="studioType" id="webElements" label="Web Elements" value="4"/>
+                <mx:RadioButton groupName="studioType" id="widget" label="Widget" value="9"/>
+                <mx:RadioButton groupName="studioType" id="other" label="Other" value="18"/>
             </mx:VBox>
             
             <mx:VBox >
-                <mx:RadioButton groupName="studioType" id="logo" label="Logo Design"/>
-                <mx:RadioButton groupName="studioType" id="flexDev" label="Flex Development"/>
+                <mx:RadioButton groupName="studioType" id="logo" label="Logo Design" value="3"/>
+                <mx:RadioButton groupName="studioType" id="flexDev" label="Flex Development" value="22"/>
             </mx:VBox> 
         </mx:HBox>
         <mx:HRule width="100%" strokeColor="0x000000"/>
@@ -94,39 +206,39 @@
         <mx:HBox verticalAlign="top" >
             <mx:VBox>
             	<mx:HBox>
-            	   <mx:Label text="1st Place: " fontWeight="bold"/>
-            	   <mx:TextInput id="firstPlace" width="120" text="$1000"/>
+            	   <mx:Label text="1st Place: $" fontWeight="bold"/>
+            	   <mx:TextInput id="firstPlace" width="120" text="" change="updateAmount()"/>
             	</mx:HBox>
                 <mx:HBox>
-                   <mx:Label text="2nd Place:" fontWeight="bold"/>
-                   <mx:TextInput id="secondPlace" width="120" text="$500"/>
+                   <mx:Label text="2nd Place: $" fontWeight="bold"/>
+                   <mx:TextInput id="secondPlace" width="120" text="" change="updateAmount()"/>
                 </mx:HBox>
                 <mx:HBox>
-                   <mx:Label text="3rd Place: " fontWeight="bold"/>
-                   <mx:TextInput id="thirdPlace" width="120" text="$250"/>
-                </mx:HBox>
-            </mx:VBox>
-            
-            <mx:VBox >
-                <mx:HBox>
-                   <mx:Label text="4th Place:" fontWeight="bold"/>
-                   <mx:TextInput id="fourthPlace" width="120" text="$100"/>
-                </mx:HBox>
-                <mx:HBox>
-                   <mx:Label text="5th Place:" fontWeight="bold"/>
-                   <mx:TextInput id="fifthPlace" width="120" text="$100"/>
+                   <mx:Label text="3rd Place: $" fontWeight="bold"/>
+                   <mx:TextInput id="thirdPlace" width="120" text="" change="updateAmount()"/>
                 </mx:HBox>
             </mx:VBox>
             
             <mx:VBox >
                 <mx:HBox>
-                   <mx:Label text="20% Admin Fee:" fontWeight="bold"/>
-                   <mx:TextInput id="adminf" text="$***" width="55" />
+                   <mx:Label text="4th Place: $" fontWeight="bold"/>
+                   <mx:TextInput id="fourthPlace" width="120" text="" change="updateAmount()"/>
                 </mx:HBox>
                 <mx:HBox>
-                   <mx:Label text="Contest Total:" fontWeight="bold"/>
+                   <mx:Label text="5th Place: $" fontWeight="bold"/>
+                   <mx:TextInput id="fifthPlace" width="120" text="" change="updateAmount()"/>
+                </mx:HBox>
+            </mx:VBox>
+            
+            <mx:VBox >
+                <mx:HBox>
+                   <mx:Label text="20% Admin Fee: $" fontWeight="bold"/>
+                   <mx:TextInput id="adminf" text="" width="55"  editable="false"/>
+                </mx:HBox>
+                <mx:HBox>
+                   <mx:Label text="Contest Total: $" fontWeight="bold"/>
                    <mx:Spacer width="7"/>
-                   <mx:TextInput id="cntstTtl" text="$***" width="55"/>
+                   <mx:TextInput id="cntstTtl" text="" width="55" editable="false"/>
                 </mx:HBox>
             </mx:VBox>
         </mx:HBox>

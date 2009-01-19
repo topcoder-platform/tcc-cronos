@@ -3,10 +3,14 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off">
     <mx:Script>
 	    <![CDATA[
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+	    	import mx.events.FlexEvent;
+	    	import mx.controls.Alert;
 	        import flash.events.MouseEvent;
 	        import mx.containers.Panel;
 	        
-	        public var mainWidget:Panel;
+	        [Bindable]
+	       	public var mainWidget:LaunchWidget;
 	        public var widgetHeight:Number;
 	        public var titleHint:String;
 	        public var introductionHint:String;
@@ -17,6 +21,34 @@
 	        public var criteriaHint:String;
 	        
 	        private static const ADDEDHEIGHT:Number = 80;
+	        
+	        
+	        public function initData():void{
+	        	
+	        }
+        
+	        public function validateFields():Boolean{
+	        	if (ctInput.text == ""){
+	        		Alert.show("Please enter content title");
+	        		return false;
+	        	}
+	        	
+	        	if (introInput.text == ""){
+	        		Alert.show("Please enter introduction");
+	        		return false;
+	        	}
+	        	
+	        	if (glsInput.text == ""){
+	        		Alert.show("Please enter primary goals");
+	        		return false;
+	        	}
+	        	
+	        	this.mainWidget.competition.contestData.name = ctInput.text;
+	        	this.mainWidget.competition.contestData.shortSummary = introInput.htmlText;
+	        	this.mainWidget.competition.contestData.contestDescriptionAndRequirements = glsInput.htmlText;
+	        	
+	        	return true;
+	        }
 	        
 	        private function showContentTitleHint(event:MouseEvent):void {
 	        	if (event.target.label == "[+ show hint]"){
@@ -160,7 +192,7 @@
         <mx:VBox width="100%" verticalGap="0">
 	        <mx:HBox >
 	            <mx:Label text="Content Title:" fontWeight="bold"/>
-	            <mx:TextInput id="ctInput" width="308" text="test"/>
+	            <mx:TextInput id="ctInput" width="308" text="{this.mainWidget.competition.contestData.name}"/>
 	            <mx:LinkButton label="[+ show hint]" click="showContentTitleHint(event)" />
 	        </mx:HBox>
 	        <mx:Text id="contentTitleHint" color="0x888888" width="500" height="0" visible="false">
@@ -177,7 +209,7 @@
 	        </mx:HBox>
 	        <mx:Text id="introHint" height="0" color="0x888888" width="500" visible="false">
             </mx:Text>
-	        <mx:TextArea id="introInput" width="500" height="50" text="test"/>
+	        <mx:RichTextEditor id="introInput" width="500" height="150" htmlText="{this.mainWidget.competition.contestData.shortSummary}"/>
         </mx:VBox>
         
         <mx:Spacer height="5"/>
@@ -190,7 +222,7 @@
             </mx:HBox>
             <mx:Text id="goalsHint" height="0" color="0x888888" width="500" visible="false">
             </mx:Text>
-            <mx:TextArea id="glsInput" width="500" height="50" text="test"/>
+            <mx:RichTextEditor id="glsInput" width="500" height="150" htmlText="{this.mainWidget.competition.contestData.contestDescriptionAndRequirements}"/>
         </mx:VBox>
         
         <mx:Spacer height="5"/>
@@ -203,7 +235,7 @@
             </mx:HBox>
             <mx:Text id="audienceHint" height="0" color="0x888888" width="500" visible="false">
             </mx:Text>
-            <mx:TextArea id="audInput" width="500" height="50" text="test"/>
+            <mx:RichTextEditor id="audInput" width="500" height="150" />
         </mx:VBox>
         
         <mx:Spacer height="5"/>
@@ -216,7 +248,7 @@
             </mx:HBox>
             <mx:Text id="guidelinesHint" height="0" color="0x888888" width="500" visible="false">
             </mx:Text>
-            <mx:TextArea id="gdInput" width="500" height="50" text="test"/>
+            <mx:RichTextEditor id="gdInput" width="500" height="150" />
         </mx:VBox>
         
         <mx:Spacer height="5"/>
@@ -233,7 +265,7 @@
             </mx:HBox>
             <mx:Text id="likeHint" height="0" color="0x888888" width="500" visible="false">
             </mx:Text>
-            <mx:TextArea text="test" id="lkInput" width="500" height="50"/>
+            <mx:RichTextEditor  id="lkInput" width="500" height="150"/>
         </mx:VBox>
         
         <mx:Spacer height="5"/>
@@ -246,7 +278,7 @@
             </mx:HBox>
             <mx:Text id="crtHint" height="0" color="0x888888" width="500" visible="false">
             </mx:Text>
-            <mx:TextArea id="crtInput" width="500" height="50" text="test"/>
+            <mx:RichTextEditor id="crtInput" width="500" height="150" />
         </mx:VBox>
         
     </mx:VBox>

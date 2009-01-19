@@ -1,14 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
-          horizontalScrollPolicy="off" verticalScrollPolicy="off" >
+          horizontalScrollPolicy="off" verticalScrollPolicy="off">
 	<mx:Script>
 	    <![CDATA[
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CompetionType;
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
 	        import mx.events.ItemClickEvent;
-  
-	        private function handleSelect(event:ItemClickEvent):void {
-                
+	        
+	        [Bindable]
+            public var mainWidget:LaunchWidget;
+            
+            private function handleSelect(event:ItemClickEvent):void{
+            	var type:CompetionType = new CompetionType();
+            	type.competionType = (event.item as RadioButtonGroup).selectedValue.toString();
+            	
+            	mainWidget.competition.type = type;
+            }
+            
+            //select the button
+	        public function initData():void{
+	        	if (mainWidget.competition.type != null){
+	        		for (var i:int = 0; i<contestType.numRadioButtons; i++){
+	        			var bt:RadioButton = contestType.getRadioButtonAt(i);
+	        			if (bt.enabled && bt.value == mainWidget.competition.type.toString()){
+	        				bt.selected = true;
+	        				break;
+	        			}
+	        		}
+	        	}
 	        }
-
 	      ]]>
     </mx:Script>
     <mx:VBox >
@@ -16,18 +36,18 @@
 	    <mx:Label text="What Type of Contest do you want to run?" fontWeight="bold"/>
 	    <mx:RadioButtonGroup id="contestType" itemClick="handleSelect(event);" />
 	    <mx:HBox paddingLeft="10">
-	        <mx:RadioButton groupName="contestType" id="spec" label="Specification" value="Specification" width="132"/>
-	        <mx:RadioButton groupName="contestType" id="studio" label="Studio" value="Studio" width="170" selected="true"/>
-	        <mx:RadioButton groupName="contestType" id="arch" label="Architecture" value="Architecture"/>
+	        <mx:RadioButton groupName="contestType" id="spec" label="Specification" value="Specification" width="132" enabled="false"/>
+	        <mx:RadioButton groupName="contestType" id="studio" label="Studio" value="STUDIO" width="170" selected="true"/>
+	        <mx:RadioButton groupName="contestType" id="arch" label="Architecture" value="Architecture" enabled="false"/>
 	    </mx:HBox>
 	    <mx:HBox paddingLeft="10">
-	        <mx:RadioButton groupName="contestType" id="cmpDesign" label="Component Design" value="Component Design"/>
-	        <mx:RadioButton groupName="contestType" id="cnpDev" label="Component Development" value="Component Development" width="170"/>
-	        <mx:RadioButton groupName="contestType" id="assembly" label="Assembly" value="Assembly"/>
+	        <mx:RadioButton groupName="contestType" id="cmpDesign" label="Component Design" value="Component Design"  enabled="false"/>
+	        <mx:RadioButton groupName="contestType" id="cnpDev" label="Component Development" value="Component Development" width="170" enabled="false"/>
+	        <mx:RadioButton groupName="contestType" id="assembly" label="Assembly" value="Assembly" enabled="false"/>
 	    </mx:HBox>
 	    <mx:HBox paddingLeft="10">
-	        <mx:RadioButton groupName="contestType" id="testing" label="Testing" width="132" value="Testing"/>
-	        <mx:RadioButton groupName="contestType" id="bug" label="Bug Races" value="Bug Races"/>
+	        <mx:RadioButton groupName="contestType" id="testing" label="Testing" width="132" value="Testing" enabled="false"/>
+	        <mx:RadioButton groupName="contestType" id="bug" label="Bug Races" value="Bug Races" enabled="false"/>
 	    </mx:HBox>
 	    <mx:HRule width="100%" strokeColor="0x000000"/>
 	     

@@ -2,14 +2,19 @@
  * Copyright (c) 2008, TopCoder, Inc. All rights reserved.
  */
 package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
-    import com.topcoder.flex.widgets.model.IWidget;
-    
-    import mx.collections.ArrayCollection;
-    import mx.containers.Panel;
-    import mx.controls.DataGrid;
-
     import com.topcoder.flex.model.IWidgetFramework;
+    import com.topcoder.flex.widgets.model.IWidget;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.WebServiceUtil;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestServiceFacadeBeanService;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContest;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContestResultEvent;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.StudioCompetition;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContest;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContestResultEvent;
+    
     import flash.utils.Dictionary;
+    
+    import mx.containers.Panel;
 
     /**
      * <p>
@@ -27,6 +32,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          * The name of the widget.
          */
         private var _name:String = "LaunchWidget";
+        
+        public var _ws:ContestServiceFacadeBeanService;
 
 	/**
 	 * The framework of the widget.
@@ -36,14 +43,20 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         /**
          * The data for the widget.
          */
-        [Bindable] private var _result:XML = null;
+        [Bindable] private var _result:XML = <competition><contestData></contestData></competition>;
+        
+        [Bindable] private var _competition:StudioCompetition;
+        
+        private var _configurableText:XML;
         
         /**
          * ProjectWidgetCodeBehind constructor.
          */
         public function LaunchWidgetCodeBehind() {
-            super();            
+            super();
+           
         }
+        
         /**
          * goBack is intended to act as a "Back Button" only for the context of
          * the single widget.
@@ -57,6 +70,15 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public function goBack():void {
             
         }
+        
+        [Bindable]public function get configurableText():XML {
+            return this._configurableText;
+        }
+        
+        public function set configurableText(value:XML):void {
+            this._configurableText = value;
+        }
+        
         /**
          * The active contents.
          */
@@ -69,6 +91,20 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public function set result(value:XML):void {
             this._result = value;
         }
+        
+        /**
+         * The active contents.
+         */
+        [Bindable]public function get competition():StudioCompetition {
+            return this._competition;
+        }
+        /**
+         * Sets the data for the widget.
+         */
+        public function set competition(comp:StudioCompetition):void {
+            this._competition = comp;
+        }
+                
         /**
          * This action will reload this widget.
          */
@@ -76,6 +112,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             //trigger to load the data
             this._result = this._result.copy();
         }
+        
+
 
         /**
          * This action will show the user the configuration xml for this widget.
@@ -227,6 +265,37 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          * @throws ArgumentError if the input is null.
          */
         public function setAttributes(map:Dictionary):void {
+        }
+        
+        public function saveAsDraft():void{
+        	if (isNaN(competition.id) || competition.id < 0){
+        		createContest();
+        	} else {
+        		updateContest();
+        	}
+        }
+        
+        private function createContest():void{
+        	_ws.addcreateContestEventListener(createContestHandler);
+        	var arg:CreateContest  = new CreateContest();
+        	arg.arg0  = competition;
+        	arg.arg1 = 1;
+        	_ws.createContest(arg);
+        }
+        
+        private function createContestHandler(event:CreateContestResultEvent):void{
+        	this.competition = event.result._return;
+        }
+        
+        private function updateContest():void{
+        	_ws.addupdateContestEventListener(updateContestHandler);
+        	var arg:UpdateContest  = new UpdateContest();
+        	arg.arg0  = competition;
+        	_ws.updateContest(arg);
+        }
+        
+        private function updateContestHandler(event:UpdateContestResultEvent):void{
+        	//update success
         }
     }
 }

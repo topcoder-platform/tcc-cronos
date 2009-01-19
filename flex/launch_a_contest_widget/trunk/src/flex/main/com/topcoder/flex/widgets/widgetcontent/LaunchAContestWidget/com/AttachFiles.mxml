@@ -3,6 +3,21 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off">
     <mx:Script>
 	    <![CDATA[
+	    	import mx.controls.TextArea;
+	    	import mx.controls.HRule;
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadDocumentResultEvent;
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadDocumentForContestResultEvent;
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadDocument;
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetMimeTypeIdResultEvent;
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetMimeTypeId;
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestServiceFacadeBeanService;
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadedDocument;
+	    	import mx.controls.Alert;
+	    	import mx.rpc.soap.WebService;
+	    	import mx.rpc.events.ResultEvent;
+	    	import mx.containers.VBox;
+	    	import flash.text.engine.FontWeight;
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
 	        import flash.events.MouseEvent;
 	        import flash.net.FileReference;
 	        import flash.events.Event;
@@ -11,9 +26,75 @@
 	        import mx.controls.Text;
 	        import mx.controls.Spacer;
 	        
+	        [Bindable]
+	        public var mainWidget:LaunchWidget;
 	        public var FileDescHint:String;
 	        private var file:FileReference;
 	        private static const ADDEDHEIGHT:Number = 80;
+	        
+	        [Bindable]
+	        [ArrayElementType("UploadedDocument")]
+	        private var docUploads:Array;
+	        
+	        private var currentDoc:UploadedDocument;
+	        
+	        public function initData():void{
+	        	docUploads = this.mainWidget.competition.contestData.documentationUploads;
+	        	if (docUploads == null){
+	        		docUploads = new Array();	
+	        	}
+	        	
+	        	this.addEventListener("UPLOADDOC_ALL_COMPLETED", allCompleteHandler );
+	        	
+	        	currentDoc = new UploadedDocument();
+	        }
+	        
+	        private function addDoc(doc:UploadedDocument):void{
+	        	var docVBox:VBox = new VBox();
+	        	docVBox.id = doc.documentId.toString();
+	        	
+	        	var hbox1:HBox = new HBox();
+	        	docVBox.addChild(hbox1);
+	        	
+	        	var descLabel:Label = new Label();
+	        	hbox1.addChild(descLabel);
+	        	descLabel.text = "File Description:";
+	        	descLabel.setStyle("fontWeight","bold");
+	        	
+	        	var descText:Text = new Text();
+	        	hbox1.addChild(descText);
+	        	descText.text = doc.description;
+	        	
+	        	var hbox2:HBox = new HBox();
+	        	docVBox.addChild(hbox2);
+	        	
+	        	var nameLabel:Label = new Label();
+	        	hbox2.addChild(nameLabel);
+	        	nameLabel.text = "File Name:";
+	        	nameLabel.setStyle("fontWeight","bold");
+	        	
+	        	var nameText:Text = new Text();
+	        	hbox2.addChild(nameText);
+	        	nameText.text = doc.fileName;
+	        	
+	        	var hrule:HRule = new HRule();
+	        	hrule.setStyle("width", "100%");
+	        	docVBox.addChild(hrule);
+	        	
+	        	var spacer:Spacer = new Spacer();
+	        	spacer.height = 5;
+	        	docVBox.addChild(spacer);
+	        	
+	        	uploadFilesVBox.addChildAt(docVBox, docUploads.length);
+	        	
+	        	docUploads.push(doc);
+	        }
+	        
+	        private function removeDoc(id:String):void{
+	        	
+	        }
+	        
+	        
 	        
 	        private function showfileDecsHint(event:MouseEvent):void {
                 if (event.target.label == "[+ show hint]"){
@@ -32,6 +113,7 @@
 	        private function browseFile():void {
 	        	file= new FileReference();
 	        	file.addEventListener(Event.SELECT, selectHandler);
+	        	file.addEventListener(Event.COMPLETE, loadCompleteHandler);
 	        	file.browse();
 	        }
 	        
@@ -40,8 +122,79 @@
             }
             
             private function uploadFile():void {
+            	if (file== null || file.name == ""){
+            		Alert.show("Please select a file to upload");
+            		return;
+            	}
             	
+            	if (fileDescInput.text == ""){
+            		Alert.show("Please enter description for the file");
+            		return;
+            	}
+            	
+            	file.load();
+            	
+            	//load mimetype id via WebService
+            	var ws:ContestServiceFacadeBeanService = mainWidget._ws;
+            	ws.addgetMimeTypeIdEventListener(loadMimeTypeIdHandler);
+            	var arg:GetMimeTypeId = new GetMimeTypeId();
+            	arg.arg0 = "text/html"; //FIXME
+            	ws.getMimeTypeId(arg);
             }
+            
+            private function loadCompleteHandler(event:Event):void{
+            	currentDoc.file = file.data;
+            	currentDoc.description = fileDescInput.text;
+            	currentDoc.fileName = file.name;
+            	currentDoc.path = file.name;
+            	currentDoc.documentTypeId = 1;//FIXME hardcoded here, there should be some UI control to change this value
+            	currentDoc.contestId = -1;
+            	currentDoc.documentId = -1;
+            	
+            	//mimetype id has been loaded
+            	if (!isNaN(currentDoc.mimeTypeId)){
+            		this.dispatchEvent(new Event("UPLOADDOC_ALL_COMPLETED"));
+            	}
+            }
+            
+            private function loadMimeTypeIdHandler(event:GetMimeTypeIdResultEvent):void{
+            	
+            	currentDoc.mimeTypeId = event.result._return;
+				
+				//file content has been loaded            	
+            	if (currentDoc.file != null){
+            		this.dispatchEvent(new Event("UPLOADDOC_ALL_COMPLETED"));
+            	}
+            }
+            
+            private function allCompleteHandler(event:Event):void{
+            	if (currentDoc == null){
+            		return; // the document has been sent
+            	}
+            	
+            	
+            	var ws:ContestServiceFacadeBeanService = mainWidget._ws;
+            	ws.adduploadDocumentEventListener(webserviceSentHandler);
+            	var arg:UploadDocument = new UploadDocument();
+            	arg.arg0 = currentDoc;
+            	ws.uploadDocument(arg);
+            }
+            
+            private function webserviceSentHandler(event:UploadDocumentResultEvent):void{
+            	var docUploaded:UploadedDocument = event.result._return;
+            	docUploaded.contestId = mainWidget.competition.contestData.contestId;
+            	addDoc(docUploaded);
+            	
+            	//clear up
+            	currentDoc = new UploadedDocument();
+            	fileDescInput.text = "";
+            	fileToUpload.text = "";
+            	
+            	file= null;
+            	mainWidget.competition.contestData.documentationUploads = docUploads;
+            }
+            
+            
 	    ]]>
     </mx:Script>
     <mx:VBox paddingLeft="2" width="100%">
@@ -52,29 +205,8 @@
            </mx:htmlText>
         </mx:Text>
         <mx:Spacer height="5"/>
-        <mx:VBox paddingLeft="10" >
-		    <mx:HBox>
-		        <mx:Label text="File Description:" fontWeight="bold"/>
-		        <mx:Text text="Application Wireframes" />
-		    </mx:HBox>
-		    <mx:HBox >
-		        <mx:Label text="File Name:" fontWeight="bold"/>
-		        <mx:Text text="app_wireframes.pdf" />
-		    </mx:HBox>
-		    <mx:Spacer height="5"/>
-		    <mx:HRule width="100%"/>
-		    <mx:Spacer height="5"/>
-		    <mx:HBox id="fileDsc">
-		        <mx:Label text="File Description:" fontWeight="bold"/>
-		        <mx:Text text="Project Branding Guidelines" />
-		    </mx:HBox>
-		    <mx:HBox id="fileName" >
-		        <mx:Label text="File Name:" fontWeight="bold"/>
-		        <mx:Text text="branding_guidelines.doc" />	
-		    </mx:HBox>
-		    <mx:Spacer height="5"/>
-		    <mx:HRule width="100%"/>
-            <mx:Spacer height="5"/>
+        <mx:VBox paddingLeft="10" id="uploadFilesVBox">
+		    
             <mx:VBox width="100%" verticalGap="0">
 	            <mx:HBox >
 	                <mx:Label text="File Description:" fontWeight="bold"/>
@@ -85,7 +217,7 @@
 	                <mx:text>
 	                </mx:text>
 	            </mx:Text>
-	            <mx:TextArea id="fileDescInput" width="500" height="50" text="File description writes here."/>
+	            <mx:RichTextEditor id="fileDescInput" width="500" height="150" text="File description writes here."/>
             </mx:VBox>
             <mx:Spacer height="5"/>
             <mx:HBox >

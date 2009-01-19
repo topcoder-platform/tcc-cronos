@@ -3,6 +3,124 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off" creationComplete="init()">
     <mx:Script>
         <![CDATA[
+        	import mx.controls.Alert;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+            public var mainWidget:LaunchWidget;
+            
+            public function initData():void{
+            	var startDate:Date = null;
+            	var endDate:Date = null;
+            	
+            	var startTime:Object = mainWidget.competition.startTime;
+            	var endTime:Object = mainWidget.competition.endTime;
+            	
+            	if (startTime != null){
+	            	var startDateStr:String = mainWidget.competition.startTime[0] as String;
+	            	
+	            	if (startDateStr!=null){
+	            		startDate = DateUtil.parseFromString(startDateStr);
+	            	}
+            	}
+            	
+            	if (endTime != null){
+	            	var endDateStr:String = mainWidget.competition.endTime[0] as String;
+	            	
+	            	if (endDateStr!=null){
+	            		endDate = DateUtil.parseFromString(endDateStr);
+	            	}
+            	}
+            	
+            	dfStart.selectedDate = startDate;
+            	dfEnd.selectedDate = endDate;
+            	
+            	setTimeControl(CmbHourStart, CmbMinuteStart, AMPMStart, startDate);
+            	setTimeControl(CmbHourEnd, CmbMinuteEnd, AMPMEnd, endDate);
+            	
+            	launchCheckBox.selected = mainWidget.competition.contestData.launchImmediately;
+            }
+            
+            public function validateFields():Boolean{
+            	if (dfStart.selectedDate == null){
+            		Alert.show("Start date not selected");
+            		return false;
+            	}
+            	
+            	if (dfEnd.selectedDate == null){
+            		Alert.show("End date not selected");
+            		return false;
+            	}
+            	
+            	var current:Date = new Date();
+            	var startDate:Date = getAssembleDate(dfStart, CmbHourStart, CmbMinuteStart, AMPMStart);
+            	if (startDate.time<=current.time){
+            		Alert.show("Start date must be in future");
+            		return false;
+            	}
+            	
+            	var endDate:Date = getAssembleDate(dfEnd, CmbHourEnd, CmbMinuteEnd, AMPMEnd);
+            	if (endDate.time <= startDate.time){
+            		Alert.show("End date must be after start date");
+            		return false;
+            	}
+            	
+            	if (termCheckBox.selected == false){
+            		Alert.show("Please agree to TopCoder Direct Terms");
+            		return false;
+            	}
+            	
+            	updateData();
+            	return true;
+            }
+            
+            private function getAssembleDate(dateField:DateField, hourComb:ComboBox, minuteComb:ComboBox, ampm:RadioButtonGroup):Date{
+            	var result:Date = dateField.selectedDate;
+            	var hour:int = Number(hourComb.value);
+            	if (ampm.selectedValue == "PM"){
+            		hour = hour + 12;
+            	}
+            	
+            	result.setHours(hour, Number(minuteComb.value), 0, 0);
+            	
+            	return result;
+            }
+            
+            private function updateData():void{
+            	var startDate:String = DateUtil.toString(getAssembleDate(dfStart, CmbHourStart, CmbMinuteStart, AMPMStart));
+            	var endDate:String = DateUtil.toString(getAssembleDate(dfEnd, CmbHourEnd, CmbMinuteEnd, AMPMEnd));
+            	
+            	mainWidget.competition.startTime = startDate;
+            	mainWidget.competition.endTime = endDate;
+            	mainWidget.competition._startTime = startDate;
+            	mainWidget.competition._endTime = endDate;
+            	
+            	mainWidget.competition.contestData.launchDateAndTime = startDate;
+            	mainWidget.competition.contestData.winnerAnnoucementDeadline = endDate;
+            	
+            	mainWidget.competition.contestData.launchImmediately = launchCheckBox.selected;
+            }
+            
+            private function setTimeControl(hourComb:ComboBox, minuteComb:ComboBox, ampm:RadioButtonGroup, date:Date):void{
+            	if (date == null){
+            		return;
+            	}
+            	
+            	var hour:int = date.getHours();
+            	var am:Boolean = true;
+            	if (hour>12){
+            		hour = hour - 12;
+            		am = false;
+            	}
+            	
+            	hourComb.selectedIndex = hour;
+            	minuteComb.selectedIndex = date.getMinutes();
+            	if (am){
+            		ampm.selectedValue = "AM";
+            	} else{
+            		ampm.selectedValue = "PM";
+            	}
+            }
+            
+            
             
             private function init():void {
                 var hourData:Array = new Array();

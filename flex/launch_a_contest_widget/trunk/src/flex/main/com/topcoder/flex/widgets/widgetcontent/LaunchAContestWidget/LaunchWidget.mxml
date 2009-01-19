@@ -2,7 +2,7 @@
 <tc:LaunchWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
     xmlns:pages="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*" styleName="WidgetPanel"
     xmlns:tc="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.*" title="Launch a contest"
-    width="1000" creationComplete="initComponent()">
+    width="1000" initialize="initWidget()">
     <mx:Style source="Style.css" />
 
     <mx:Script>
@@ -20,6 +20,46 @@
             import flash.utils.Timer;
             import flash.events.TimerEvent;
             import mx.events.SliderEvent;
+	    import mx.core.Application;
+	    import mx.rpc.events.ResultEvent;
+
+	    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.WebServiceUtil;
+	    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestServiceFacadeBeanService;
+	    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContest;
+	    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContestResultEvent;
+	    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.StudioCompetition;
+	    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContest;
+	    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContestResultEvent;
+
+	    private var username:String=Application.application.parameters.username;
+	    private var password:String = "";
+	    private var blazedsendpoint:String= Application.application.parameters.blazedsendpoint;
+   
+	    private var projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl;
+            private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;
+
+
+	    private function initWidget():void{
+		getDataService();
+           }
+
+	    private function getDataService():void
+	    {	
+		    dataservice.getPassword();
+            }
+
+	    private function processPassword(e:ResultEvent): void
+	    {
+		//Alert.show("--------"+e.result.toString());
+		if(e!=null && e.result!=null){
+			password = e.result.toString();
+			
+		}
+
+		//Alert.show("========" + password);
+		initComponent();
+
+	    }
             
             
             private function initComponent():void {
@@ -27,8 +67,10 @@
                 launchWdt.percentHeight = 0;
                 this.currentState = "ContestSelectionState";
                 this.height = 750;
-                details.widgetHeight = 770;
-                specf.widgetHeight = 800;
+                details.widgetHeight = 1400;
+                specf.widgetHeight = 1200;
+                attch.height = 600;
+                
                 back.visible = false;
                 //read hints.xml data
                 getData(null);
@@ -36,12 +78,24 @@
 //                var loader:URLLoader = new URLLoader();
 //                loader.addEventListener(Event.COMPLETE, getData);
 //                loader.load(url);
+				
+				initialWdt.mainWidget = this;
+				contestSelect.mainWidget = this;
+				overView.mainWidget = this;
+ 				details.mainWidget = this;
+                specf.mainWidget = this;
+                attch.mainWidget = this;
+                sched.mainWidget = this;
+
+		 _ws = new ContestServiceFacadeBeanService(null, contestServiceFacadeWsdl);
+            
+		_ws.getWebService().addHeader(WebServiceUtil.getWSSEHeader(username ,password));
             }
             
             //after loading the xml file, fetch data
             private function getData(event:Event):void {
 //                var loader:URLLoader = event.target as URLLoader;
-                result = <launch_contest>
+                configurableText = <launch_contest>
   <steps>
     <details>
       <fields>
@@ -93,22 +147,20 @@
     </details>
   </steps>
 </launch_contest>;
-                details.titleHint = result.steps.details.fields.field.(@name == "Title").hint;
-                details.introductionHint = result.steps.details.fields.field.(@name == "Introduction").hint;
-                details.primaryGoalHint = result.steps.details.fields.field.(@name == "Primary Goal").hint;
-                details.targetAudienceHint = result.steps.details.fields.field.(@name == "Target Audience").hint;
-                details.brandGuidelinesHint = result.steps.details.fields.field.(@name == "Brand Guidelines").hint;
-                details.likeAndDislikesHint = result.steps.details.fields.field.(@name == "Like and Dislikes").hint;
-                details.criteriaHint = result.steps.details.fields.field.(@name == "Criteria").hint;
-                specf.ColorsHint = result.steps.details.fields.field.(@name == "Colors").hint;
-                specf.FontsHint = result.steps.details.fields.field.(@name == "Fonts").hint;
-                specf.SizeHint = result.steps.details.fields.field.(@name == "Size").hint;
-                specf.AdditionalHint = result.steps.details.fields.field.(@name == "Additional Requirements or Restrictions").hint;
-                attch.FileDescHint = result.steps.details.fields.field.(@name == "File Description").hint;
-                
-                details.mainWidget = this;
-                specf.mainWidget = this;
+                details.titleHint = configurableText.steps.details.fields.field.(@name == "Title").hint;
+                details.introductionHint = configurableText.steps.details.fields.field.(@name == "Introduction").hint;
+                details.primaryGoalHint = configurableText.steps.details.fields.field.(@name == "Primary Goal").hint;
+                details.targetAudienceHint = configurableText.steps.details.fields.field.(@name == "Target Audience").hint;
+                details.brandGuidelinesHint = configurableText.steps.details.fields.field.(@name == "Brand Guidelines").hint;
+                details.likeAndDislikesHint = configurableText.steps.details.fields.field.(@name == "Like and Dislikes").hint;
+                details.criteriaHint = configurableText.steps.details.fields.field.(@name == "Criteria").hint;
+                specf.ColorsHint = configurableText.steps.details.fields.field.(@name == "Colors").hint;
+                specf.FontsHint = configurableText.steps.details.fields.field.(@name == "Fonts").hint;
+                specf.SizeHint = configurableText.steps.details.fields.field.(@name == "Size").hint;
+                specf.AdditionalHint = configurableText.steps.details.fields.field.(@name == "Additional Requirements or Restrictions").hint;
+                attch.FileDescHint = configurableText.steps.details.fields.field.(@name == "File Description").hint;
             }
+            
             
             private function next(event:EffectEvent = null):void {
                 if (this.currentState == "ContestSelectionState"){
@@ -117,7 +169,7 @@
                         return;
                     }
                    //Currently only implement Studio constest type
-                   if (contestSelect.contestType.selectedValue != "Studio"){
+                   if (contestSelect.contestType.selectedValue != "STUDIO"){
                        return;
                    }
                    this.currentState = "OverViewState";
@@ -127,16 +179,15 @@
                    review.cstTypeStep1 = contestSelect.contestType.selectedValue.toString();
                    hideArrow(step1arrow);
                    showArrow(step2arrow);
+                   
+                   result.type = contestSelect.contestType.selectedValue;
                 }
                 else if(this.currentState == "OverViewState"){
                     //validate input
-                    if (overView.studioType.selectedValue == null ||
-                          overView.firstPlace.text == "" || overView.secondPlace.text == "" ||
-                          overView.thirdPlace.text == "" || overView.fourthPlace.text == "" ||
-                          overView.fifthPlace.text == "") {
-                        Alert.show("You must input values into all required fields!");
-                        return;
-                    }
+					if (overView.validateFields() == false){
+						return;
+					}
+
                    this.currentState = "DetailsState";
                    
                    review.cstTypeStep2 = overView.studioType.selectedValue.toString();
@@ -154,12 +205,10 @@
                 }
                 else if(this.currentState == "DetailsState"){
                    //validate input
-                   if(details.ctInput.text == "" || details.introInput.text == "" || 
-                      details.glsInput.text == "" || details.audInput.text == "" ||
-                      details.gdInput.text == "" || details.lkInput.text == "" || details.crtInput.text == ""){
-                        Alert.show("You must input values into all required fields!");
-                        return;
+                   if (details.validateFields() == false){
+                   		return;
                    }
+                   
                    this.currentState = "SpecificationsState";
                    this.height = specf.widgetHeight;
                    
@@ -175,12 +224,10 @@
                 }
                 else if(this.currentState == "SpecificationsState"){
                    //validate input
-                   if(specf.colorInput.text == "" || specf.fontInput.text == "" || 
-                      specf.sizeInput.text == "" || specf.addReInput.text == "" ||
-                      specf.fileFormatInput.text == "" ){
-                        Alert.show("You must input values into all required fields!");
-                        return;
+                   if (specf.validateFields() == false){
+                   		return;
                    }
+                   
                    this.currentState = "AttachFilesState";
                    
                    review.colorInputStr = specf.colorInput.text;
@@ -212,10 +259,6 @@
                 }
                 else if(this.currentState == "AttachFilesState"){
                    //validate input
-                   if(attch.fileDescInput.text == ""){
-                        Alert.show("You must input values into all required fields!");
-                        return;
-                   }
                    this.currentState = "ScheduleState";
                    
                    this.height = 750;
@@ -223,18 +266,10 @@
                    showArrow(step6arrow);
                 }
                 else if(this.currentState == "ScheduleState"){
-                   if(!sched.termCheckBox.selected){
-                       Alert.show("Please agree to TopCoder Direct Terms!");
-                       return;
-                   }
-                   if(sched.dfStart.selectedDate == null || sched.dfEnd.selectedDate == null){
-                       Alert.show("Please choose start date or end date!");
-                       return;
-                   }
-                   if(sched.dfStart.selectedDate.getTime() >= sched.dfEnd.selectedDate.getTime()){
-                       Alert.show("start date can not be later than end date!");
-                       return;
-                   }
+					if (sched.validateFields() == false){
+						return;
+					}	
+					
                    this.currentState = "ReviewState";
 
                    review.fromDate = sched.dfStart.selectedDate;
@@ -435,9 +470,25 @@
                 launchWdt.percentWidth = 100;
                 launchWdt.percentHeight = 100;
                 launchWdt.visible = true;
+                
+                contestSelect.initData();
+                overView.initData();
+                details.initData();
+                specf.initData();
+                attch.initData();
+                
+                sched.initData();
             }
         ]]>
     </mx:Script>
+
+
+    <mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"
+              
+		 fault="Alert.show(event.fault.faultString);">
+	<mx:method name="getPassword"  result="processPassword(event)" 
+		                   fault="Alert.show(event.fault.faultString);"/>
+     </mx:RemoteObject>
      
      <mx:Spacer height="5" />
      <pages:InitialWidget id="initialWdt" />
@@ -552,9 +603,9 @@
          <mx:VRule height="100%" />
          <mx:VBox width="100%" height="100%" verticalGap="0" paddingRight="8" id="mainPanel">
              <mx:Spacer height="5" />
-             <pages:ContestSelection id="contestSelect" />
-             <pages:OverView id="overView" />
-             <pages:Details id="details" />
+             <pages:ContestSelection id="contestSelect"  />
+             <pages:OverView id="overView"/>
+             <pages:Details id="details"/>
              <pages:Specifications id="specf" />
              <pages:AttachFiles id="attch" />
              <pages:Schedule id="sched" />
@@ -564,7 +615,7 @@
              <mx:HBox paddingBottom="20" paddingLeft="20" paddingRight="10" width="100%" >
                  <mx:Button id="back" label="&lt;-- Back" cornerRadius="13" click="previous()"/>
                  <mx:Spacer width="100%"/>
-                 <mx:Button id="save" label="Save as Draft" cornerRadius="13"/>
+                 <mx:Button id="save" label="Save as Draft" cornerRadius="13" click="saveAsDraft()"/>
                  <mx:Button id="goNext" label="Continue -->" cornerRadius="13" click="next()"/>
              </mx:HBox>
          </mx:VBox>

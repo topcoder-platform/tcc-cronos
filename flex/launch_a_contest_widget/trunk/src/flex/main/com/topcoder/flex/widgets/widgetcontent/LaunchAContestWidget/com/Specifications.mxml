@@ -3,10 +3,13 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off">
     <mx:Script>
         <![CDATA[
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
             import flash.events.MouseEvent;
             import mx.containers.Panel;
             
-            public var mainWidget:Panel;
+            [Bindable]
+            public var mainWidget:LaunchWidget;
+            
             public var widgetHeight:Number;
             public var ColorsHint:String;
             public var FontsHint:String;
@@ -14,6 +17,54 @@
             public var AdditionalHint:String;
             
             private static const ADDEDHEIGHT:Number = 80;
+            
+            
+            public function initData():void{
+            	var formatStr:String = this.mainWidget.competition.contestData.finalFileFormat;
+            	if (formatStr!=null){
+            		if (formatStr.indexOf("psd")>=0){
+            			this.psdChb.selected = true;
+            		}
+            		
+            		if (formatStr.indexOf("ai")>=0){
+            			this.aiChb.selected = true;
+            		}
+            		
+            		if (formatStr.indexOf("eps")>=0){
+            			this.epsChb.selected = true;
+            		}
+            	}
+            }
+            
+            private function updateData():void{
+            	mainWidget.competition.contestData.requiredOrRestrictedColors = this.colorInput.htmlText;
+            	mainWidget.competition.contestData.requiredOrRestrictedFonts = this.fontInput.htmlText;
+            	mainWidget.competition.contestData.sizeRequirements = this.sizeInput.htmlText;
+            	mainWidget.competition.contestData.otherRequirementsOrRestrictions = this.addReInput.htmlText;
+            	mainWidget.competition.contestData.otherFileFormats = this.fileFormatInput.htmlText;
+            	
+            	var formats:String = "";
+            	if (this.psdChb.selected){
+            		formats = formats + "psd";
+            	}
+            	
+            	if (this.aiChb.selected){
+            		formats = formats + ",ai";
+            	}
+            	
+            	if (this.epsChb.selected){
+            		formats = formats + ",eps";
+            	}
+            	
+            	mainWidget.competition.contestData.finalFileFormat = formats;
+            }
+            
+            public function validateFields():Boolean{
+            	//no validation required for this step
+            	updateData();
+            	return true;
+            }
+            
             
             private function showColorHint(event:MouseEvent):void {
                 if (event.target.label == "[+ show hint]"){
@@ -106,7 +157,7 @@
                 <mx:text>
                 </mx:text>
             </mx:Text>
-            <mx:TextArea id="colorInput" width="500" height="50" text="test"/>
+            <mx:RichTextEditor id="colorInput" width="500" height="150" htmlText="{this.mainWidget.competition.contestData.requiredOrRestrictedColors}"/>
         </mx:VBox>
         <mx:Spacer height="5"/>
         <mx:VBox width="100%" verticalGap="0">
@@ -119,7 +170,7 @@
                 <mx:text>
                 </mx:text>
             </mx:Text>
-            <mx:TextArea id="fontInput" width="500" height="50" text="test"/>
+            <mx:RichTextEditor id="fontInput" width="500" height="150" htmlText="{this.mainWidget.competition.contestData.requiredOrRestrictedFonts}"/>
         </mx:VBox>
         <mx:Spacer height="5"/>
         <mx:VBox width="100%" verticalGap="0">
@@ -132,7 +183,7 @@
                 <mx:text>
                 </mx:text>
             </mx:Text>
-            <mx:TextArea id="sizeInput" width="500" height="50" text="test"/>
+            <mx:RichTextEditor id="sizeInput" width="500" height="150" htmlText="{this.mainWidget.competition.contestData.sizeRequirements}"/>
         </mx:VBox>
         <mx:Spacer height="5"/>
         <mx:VBox width="100%" verticalGap="0">
@@ -145,7 +196,7 @@
                 <mx:text>
                 </mx:text>
             </mx:Text>
-            <mx:TextArea id="addReInput" width="500" height="50" text="test"/>
+            <mx:RichTextEditor id="addReInput" width="500" height="150" htmlText="{this.mainWidget.competition.contestData.otherRequirementsOrRestrictions}"/>
         </mx:VBox>
         <mx:Spacer height="10"/>
         <mx:Label text="Final File Formats" fontWeight="bold" fontSize="12"/>
@@ -155,9 +206,9 @@
            </mx:htmlText>
         </mx:Text>
         <mx:VBox width="100%" paddingLeft="10">
-	        <mx:CheckBox id="psdChb" label=".PSD(Adobe Photoshop layered graphic file)" selected="true"/>
-	        <mx:CheckBox id="aiChb" label=".AI(Adobe Illustrator vetor graphic file)" selected="true"/>
-	        <mx:CheckBox id="epsChb" label=".EPS(Vector graphic file format)" selected="true"/>
+	        <mx:CheckBox id="psdChb" label=".PSD(Adobe Photoshop layered graphic file)"/>
+	        <mx:CheckBox id="aiChb" label=".AI(Adobe Illustrator vetor graphic file)" />
+	        <mx:CheckBox id="epsChb" label=".EPS(Vector graphic file format)" />
 	        <mx:Spacer height="5"/>
 	        <mx:Label text="Other File Formats:" fontWeight="bold"/>
 	        <mx:Text id="otherFileFormats" color="0x888888" width="100%">
@@ -165,7 +216,7 @@
                     Please list any other file formats you may need that is not listed above.
                 </mx:text>
             </mx:Text>
-            <mx:TextArea id="fileFormatInput" width="480" height="50" text="test"/>
+            <mx:RichTextEditor id="fileFormatInput" width="480" height="150" htmlText="{this.mainWidget.competition.contestData.otherFileFormats}"/>
         </mx:VBox>
         
     </mx:VBox>
