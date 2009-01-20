@@ -28,6 +28,12 @@ package com.topcoder.flex.widgets.widgetcontent.quicklinks {
 	 * The framework of the widget.
 	 */
 	private var _framework:IWidgetFramework = null;
+
+	/**
+	 * The allowclose flag.
+	 */
+	private var _allowclose:Boolean=true;
+
         
         /**
          * QuickLinksWidgetCodeBehind constructor.
@@ -208,6 +214,26 @@ package com.topcoder.flex.widgets.widgetcontent.quicklinks {
          */
         public function setAttributes(map:Dictionary):void
         {
+        }
+
+	/**
+         * Simple setter for the allowclose of this widget.
+         *
+         * @param allow the flag allowclose of this widget.
+         */
+        public function set allowclose(allow:Boolean):void
+        {
+        	_allowclose=allow;
+        }
+
+        /**
+         * Simple getter for the name of this widget.
+         *
+         * @return the allowclose flag fo this widget. Could be null if not set.
+         */
+        public function get allowclose():Boolean
+        {
+        	return _allowclose;
         }
     }
 }
