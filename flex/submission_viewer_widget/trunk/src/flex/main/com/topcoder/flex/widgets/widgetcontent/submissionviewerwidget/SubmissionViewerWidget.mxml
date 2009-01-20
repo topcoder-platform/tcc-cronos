@@ -543,7 +543,7 @@ wsdl="{contestServiceFacadeWsdl}">
         fadeOutDuration="10"
         moveDuration="200"
         color="0xffffff"/>
-    <mx:Fade alphaFrom="0" alphaTo="1" duration="1000" id="fade" />
+    <mx:Fade alphaFrom="0" alphaTo="1" duration="500" id="fade" />
     <mx:HTTPService id="retrieveContestService" url="../assets/data/mock.xml"
         fault="handleFail(event)" result="handleResult(event)" />
     <mx:HTTPService id="retrieveSubService" url="../assets/data/submission.xml"
