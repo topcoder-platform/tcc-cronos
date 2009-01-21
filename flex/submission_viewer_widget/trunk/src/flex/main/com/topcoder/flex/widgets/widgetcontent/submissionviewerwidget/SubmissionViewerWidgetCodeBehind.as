@@ -6,6 +6,10 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
     import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.model.IWidgetFramework;
     import flash.utils.Dictionary;
+    
+    import mx.containers.Panel;
+    import mx.containers.ViewStack;
+    import mx.containers.VBox;
 
     /**
      * <p>
@@ -25,6 +29,31 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         private var _name:String = "SubmissionViewerWidget";
 
 	private var _framework:IWidgetFramework = null;
+	
+	
+	private var _minPage:VBox;
+        
+        private var _main:ViewStack;
+        
+        public function set minPage(page:VBox):void
+        {
+        	_minPage=page;
+        }
+        
+        public function set main(page:ViewStack):void
+        {
+        	_main=page;
+        }
+        
+        public function get minPage():VBox
+        {
+        	return _minPage;
+        }
+        
+        public function get main():ViewStack
+        {
+        	return _main;
+        }
 
 	/**
 	 * The allowclose flag.
@@ -128,14 +157,22 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * This action will restpre this widget (for example from a menu bar).
          */
         public function restore():void {
-            
+            main.visible=false;
+            minPage.visible=true;
+            main.height=0;
+            minPage.width=320;
+            minPage.height=570;
         }
 
         /**
          * This action will maximize this widget.
          */
         public function maximize():void {
-            
+            main.visible=true;
+            minPage.visible=false;
+            main.height=1000;
+            minPage.width=0;
+            minPage.height=0;
         }
 
         /**

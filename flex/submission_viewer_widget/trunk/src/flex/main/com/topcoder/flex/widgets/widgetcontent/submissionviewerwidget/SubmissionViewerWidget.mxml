@@ -80,6 +80,7 @@
 
             	ContestServiceFacadeBean.getAllContests();*/
 		getDataService();
+		main.height=0;
             }
             
             [Bindable] 
@@ -285,7 +286,9 @@
             }
             
             private function hideShowUpDownArrow():void {
+            	if(!main.visible || list.dataProvider==null)return;
                 up.visible = (currentIndex > 0);
+                trace(""+down+" list"+list+" provider"+list.dataProvider);
                 down.visible = (list.dataProvider[list.dataProvider.length - 1].id != submissionList.getItemAt(submissionList.length - 1).id);              
             }
             
@@ -812,5 +815,27 @@ wsdl="{contestServiceFacadeWsdl}">
                     borderStyle="none" allowMultipleSelection="false" allowDragSelection="false"/>
     	</mx:VBox>    	
     </mx:ViewStack>
+    
+    <mx:VBox id="minPage" width="320" height="570" paddingLeft="10" paddingTop="10" paddingRight="5">
+        <mx:HBox width="100%" horizontalGap="0">
+            <mx:Image source="@Embed('../assets/select_a_project.png')"/>
+            <mx:Text text="Select a contest:" fontWeight="bold"/>
+        </mx:HBox>
+        <mx:ComboBox width="240" labelField="name" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{contestList}"
+        	 change="handleContest()"/>
+        <mx:HRule width="100%" strokeColor="#000000"/>
+        <mx:HBox width="100%" >
+            <mx:Text text="Total Submissions:" fontWeight="bold"/>
+            <mx:Text text="{activeSubmission.length}" id="SubNum" />
+        </mx:HBox>
+        <mx:VBox id="tb" width="100%" >
+            <mx:TileList rowCount="7" width="100%" columnCount="2"
+		                        selectionDuration="0"
+		                        dataProvider="{activeSubmission}" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer" itemsChangeEffect="{myDTLE}"
+		                        verticalScrollPolicy="off" horizontalScrollPolicy="off" borderStyle="none"
+		                        click="maximize()" allowMultipleSelection="false" allowDragSelection="false"/>
+		                
+        </mx:VBox>
+    </mx:VBox>
 
 </tc:SubmissionViewerWidgetCodeBehind>
