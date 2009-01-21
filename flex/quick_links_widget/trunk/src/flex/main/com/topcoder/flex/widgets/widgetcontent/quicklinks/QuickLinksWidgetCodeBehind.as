@@ -22,7 +22,7 @@ package com.topcoder.flex.widgets.widgetcontent.quicklinks {
         /**
          * The name of the widget.
          */
-        private var _name:String = "QuickLinksWidget";
+        private var _name:String = "QuickLinks";
 
 	/**
 	 * The framework of the widget.
