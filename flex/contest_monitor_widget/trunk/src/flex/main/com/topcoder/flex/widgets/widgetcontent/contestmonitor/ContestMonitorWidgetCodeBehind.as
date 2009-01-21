@@ -27,7 +27,7 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
         /**
          * The name of the widget.
          */
-        private var _name:String = "ContestMonitor";
+        private var _name:String = "Contest Monitor";
 
 	/**
 	 * The framework of the widget.
