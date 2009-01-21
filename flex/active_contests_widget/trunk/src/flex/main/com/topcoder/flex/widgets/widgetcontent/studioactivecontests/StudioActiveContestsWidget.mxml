@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tc:StudioActiveContestsWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:tc="com.topcoder.flex.widgets.widgetcontent.studioactivecontests.*"
-	initialize="init()" styleName="WidgetPanel" backgroundColor="#a8a8a8"
-	horizontalAlign="left" headerHeight="5" width="100%"
+	initialize="init()" 
+	styleName="WidgetPanel" 
+	backgroundColor="#a8a8a8"
+	horizontalAlign="left" 
+	headerHeight="5" 
+	width="100%"
+	verticalScrollPolicy="off"
 	creationComplete="jsonRequest.send()">
 <!--	creationComplete="handleJsonStringResult()"> -->
 
