@@ -8,6 +8,7 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
     import mx.containers.Box;
     import mx.controls.DataGrid;
     import flash.utils.Dictionary;
+    import mx.containers.Panel;
     
     import mx.containers.Box;
 
@@ -22,7 +23,7 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
      * @author TCSDEVELOPER
      * @version 1.0
      */
-     public class ContestMonitorWidgetCodeBehind extends Box implements IWidget {
+     public class ContestMonitorWidgetCodeBehind extends Panel implements IWidget {
         /**
          * The name of the widget.
          */
