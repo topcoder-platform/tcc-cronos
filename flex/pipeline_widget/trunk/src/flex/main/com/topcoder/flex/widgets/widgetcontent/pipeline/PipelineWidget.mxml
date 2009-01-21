@@ -4,6 +4,7 @@
 	initialize="init()"
 	horizontalAlign="left"
 	headerHeight="5" width="100%"
+	verticalScrollPolicy="on"
 	creationComplete="jsonRequest.send()">
 
 	<mx:HTTPService id="jsonRequest" url="http://www.topcoder.com/tc?" resultFormat="text" result="handleJsonResult(event)" >
