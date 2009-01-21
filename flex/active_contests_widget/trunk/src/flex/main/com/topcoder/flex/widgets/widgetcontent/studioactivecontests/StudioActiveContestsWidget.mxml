@@ -7,7 +7,7 @@
 	horizontalAlign="left" 
 	headerHeight="5" 
 	width="100%"
-	verticalScrollPolicy="off"
+	verticalScrollPolicy="on"
 	creationComplete="jsonRequest.send()">
 <!--	creationComplete="handleJsonStringResult()"> -->
 
