@@ -17,8 +17,8 @@
         ]]>
     </mx:Script>
     
-    <mx:Label>
-    This is where the content will be...
+    <mx:Label text="This is where the content will be...">
+    
     </mx:Label>
 
     
