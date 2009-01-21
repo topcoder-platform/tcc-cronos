@@ -3,8 +3,10 @@
 <tc:QuickLinksWidgetCodeBehind width="100%" 
 	      verticalScrollPolicy="off" 
 	      xmlns:mx="http://www.adobe.com/2006/mxml"
-	      xmlns:tc="com.topcoder.flex.widgets.widgetcontent.quicklinks.*" >
+	      xmlns:tc="com.topcoder.flex.widgets.widgetcontent.quicklinks.*"
+	      styleName="WidgetPanel" backgroundColor="#a8a8a8" >
 
+    <mx:Style source="Style.css" />
 
     <mx:Script>
         <![CDATA[
