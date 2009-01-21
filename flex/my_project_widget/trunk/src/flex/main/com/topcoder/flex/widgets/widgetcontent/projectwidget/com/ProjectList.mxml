@@ -82,7 +82,7 @@
 
 		public function set dataProvider(temp:Project):void{
 			_dataProvider = temp;
-			projectName.text=_dataProvider.description;
+			projectName.text=_dataProvider.name;
 			status=_dataProvider.status;
 			for (var i:int;i<_dataProvider.contests.length;i++){
 				var cnt:Contest=_dataProvider.contests[i];
