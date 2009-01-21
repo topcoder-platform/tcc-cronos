@@ -28,7 +28,7 @@
 		startDate=_dataProvider.startDate;
 		endDate=_dataProvider.endDate;
 		submissions=_dataProvider.submissions;
-		forumPosts=_dataProvider.forumPosts
+		forumPosts=_dataProvider.forumId=="-1"?"no forum":_dataProvider.forumPosts
 		status=_dataProvider.status;
 		registrants=_dataProvider.registrants;
 		contextName=_dataProvider.name;
@@ -171,7 +171,7 @@
         {
         	if(_dataProvider.forumId=="-1")
         	{
-        		Alert.show("The forum has been created!");
+        		//Alert.show("The forum has been created!");
         		return ;
         	}
         	navigateToURL(new URLRequest(forumUrlBase+ _dataProvider.forumId ));
