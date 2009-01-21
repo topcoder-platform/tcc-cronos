@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tc:StudioActiveContestsWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:tc="com.topcoder.flex.widgets.widgetcontent.studioactivecontests.*"
-	initialize="init()" backgroundColor="green"
+	initialize="init()" styleName="WidgetPanel"
 	horizontalAlign="left" headerHeight="5" width="100%"
 	creationComplete="jsonRequest.send()">
 <!--	creationComplete="handleJsonStringResult()"> -->
 
+        <mx:Style source="Style.css" />
 
 	<mx:HTTPService id="jsonRequest" url="http://www.topcoder.com/data/?" resultFormat="text" result="handleJsonResult(event)" >
-    	<mx:request>
-			<module>BasicData</module>
-			<c>dd_active_contests</c>
-			<dsid>33</dsid>
-			<drt>json</drt>
-		</mx:request> 
-    </mx:HTTPService>
+	<mx:request>
+		<module>BasicData</module>
+		<c>dd_active_contests</c>
+		<dsid>33</dsid>
+		<drt>json</drt>
+	</mx:request> 
+        </mx:HTTPService>
     
 	<mx:Script>
 	    <![CDATA[
