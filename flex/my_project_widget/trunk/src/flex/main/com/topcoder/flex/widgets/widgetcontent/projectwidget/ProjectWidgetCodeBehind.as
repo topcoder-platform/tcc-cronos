@@ -26,7 +26,7 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         /**
          * The name of the widget.
          */
-        private var _name:String = "ProjectWidget";
+        private var _name:String = "My Projects";
         
         
 		/**
