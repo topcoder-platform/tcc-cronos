@@ -158,13 +158,13 @@
 </mx:Script>
 	<mx:HBox styleName="titleBar" width="100%" height="27" backgroundSize="100%" 
 			verticalScrollPolicy="off" horizontalScrollPolicy="auto">
-		<mx:Image width="16" height="16" id="winCtrlBut" click="winResize()" source="{winMin}"/>
+		<mx:Image width="16" height="16" id="winCtrlBut" init="winResize()" click="winResize()" source="{winMin}"/>
 		<mx:Label text="Label" id="projectName" styleName="nameLabel" />
 		<mx:Spacer width="100%" />
 		<mx:Label id="projectStatus" styleName="statusLabel" />
 		<mx:Image id="statusIcon" />
 	</mx:HBox>
-	<mx:VBox id="contents" paddingLeft="4" paddingRight="4" width="100%" verticalGap="0" initialize="collapse()">
+	<mx:VBox id="contents" paddingLeft="4" paddingRight="4" width="100%" verticalGap="0" >
 		<mx:Canvas width="100%" styleName="descPanel" backgroundSize="100%" height="36" id="Table" 
 				verticalScrollPolicy="off" horizontalScrollPolicy="off">
 			<mx:Button id="open" styleName="blackBtn" y="6" label="view description"
