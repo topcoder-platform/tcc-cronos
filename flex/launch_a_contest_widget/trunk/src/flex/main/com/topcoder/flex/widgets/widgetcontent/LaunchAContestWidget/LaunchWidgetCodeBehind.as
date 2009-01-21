@@ -31,7 +31,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         /**
          * The name of the widget.
          */
-        private var _name:String = "LaunchWidget";
+        private var _name:String = "Launch Contest";
         
         public var _ws:ContestServiceFacadeBeanService;
 
