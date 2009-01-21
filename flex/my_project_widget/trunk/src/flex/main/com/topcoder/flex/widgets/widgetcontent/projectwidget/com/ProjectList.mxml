@@ -164,7 +164,7 @@
 		<mx:Label id="projectStatus" styleName="statusLabel" />
 		<mx:Image id="statusIcon" />
 	</mx:HBox>
-	<mx:VBox id="contents" paddingLeft="4" paddingRight="4" width="100%" verticalGap="0">
+	<mx:VBox id="contents" paddingLeft="4" paddingRight="4" width="100%" verticalGap="0" initialize="collapse()">
 		<mx:Canvas width="100%" styleName="descPanel" backgroundSize="100%" height="36" id="Table" 
 				verticalScrollPolicy="off" horizontalScrollPolicy="off">
 			<mx:Button id="open" styleName="blackBtn" y="6" label="view description"
