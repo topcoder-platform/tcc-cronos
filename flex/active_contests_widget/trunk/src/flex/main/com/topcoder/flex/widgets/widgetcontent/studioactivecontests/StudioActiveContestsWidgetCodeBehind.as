@@ -33,7 +33,7 @@ package com.topcoder.flex.widgets.widgetcontent.studioactivecontests {
 		/**
 		 * The name of the widget.
 		 */
-		private var _name:String = "Studio Active Contents";
+		private var _name:String = "Active Contests";
 		
 		/**
 		 * The attributes for the widget.
