@@ -26,7 +26,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         /**
          * The name of the widget.
          */
-        private var _name:String = "SubmissionViewerWidget";
+        private var _name:String = "Submission Viewer";
 
 	private var _framework:IWidgetFramework = null;
 	
