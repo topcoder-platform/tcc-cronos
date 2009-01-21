@@ -5,13 +5,21 @@
 	<![CDATA[
 	import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Contest;
 	import mx.collections.ArrayCollection;
+	import mx.controls.Alert;
 
 	private var _rowNum:int;
 	private var _ContextId:String;
-		/**
-    	 * The base url for the link of contents;
-    	 */
-        private var urlBase:String = "http://studio.topcoder.com/?module=ViewContestDetails&ct=";
+	/**
+     * The base url for the link of contents;
+     */
+    private var urlBase:String = "http://studio.topcoder.com/?module=ViewContestDetails&ct=";
+    
+    /**
+     * The base url for the link of contents;
+     */
+    private var forumUrlBase:String = "http://studio.topcoder.com/forums?module=ThreadList&forumID=";
+    
+    
 	[Bindable]
 	private var _dataProvider:Contest;
 	//setter and getter of dataProvider
@@ -155,6 +163,19 @@
         private function handleClick():void {
             navigateToURL(new URLRequest(urlBase+ ContextId));
         }
+        
+        /**
+	 * Click on the view button to open forum link.
+	 */
+        private function openForum():void
+        {
+        	if(_dataProvider.forumId=="-1")
+        	{
+        		Alert.show("The forum has been created!");
+        		return ;
+        	}
+        	navigateToURL(new URLRequest(forumUrlBase+ _dataProvider.forumId ));
+        }
 
 
 	]]>
@@ -171,7 +192,7 @@
 		</mx:VBox>
 		<mx:VBox width="100%" styleName="bottomAlign">
 			<mx:Text width="100%"   styleName="rowContentLabel" id="lblForumPosts" />
-			<mx:LinkButton styleName="viewBtn" label="View" labelPlacement="bottom" id="lnkFormPosts"/> 
+			<mx:LinkButton styleName="viewBtn" label="View" labelPlacement="bottom" id="lnkFormPosts" click="openForum()"/> 
 		</mx:VBox>
 		<mx:VBox width="100%" styleName="bottomAlign">
 			<mx:LinkButton id="statusBtn" styleName="statusBtn" labelPlacement="bottom" click="showStats()"/> 
