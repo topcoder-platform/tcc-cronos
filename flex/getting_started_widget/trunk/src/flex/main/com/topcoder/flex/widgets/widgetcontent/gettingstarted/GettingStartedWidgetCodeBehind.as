@@ -22,7 +22,7 @@ package com.topcoder.flex.widgets.widgetcontent.gettingstarted {
         /**
          * The name of the widget.
          */
-        private var _name:String = "GettingStartedWidget";
+        private var _name:String = "Getting Started";
 
 	/**
 	 * The framework of the widget.
