@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<tc:GettingStartedWidgetCodeBehind width="100%" 
+	      verticalScrollPolicy="off" 
+	      xmlns:mx="http://www.adobe.com/2006/mxml"
+	      xmlns:tc="com.topcoder.flex.widgets.widgetcontent.gettingstarted.*" >
+
+
+    <mx:Script>
+        <![CDATA[
+            import flash.events.TextEvent; 
+
+            public function linkHandler(url:String):void {
+                // Open the link in a new window.
+                navigateToURL(new URLRequest(url), '_blank')
+            }
+        ]]>
+    </mx:Script>
+    
+    <mx:Label>
+    This is where the content will be...
+    </mx:Label>
+
+    
+</tc:GettingStartedWidgetCodeBehind>
+	
+
+
