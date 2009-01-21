@@ -24,7 +24,7 @@ package com.topcoder.flex.widgets.widgetcontent.contestsbreakdown {
         /**
          * The name of the widget.
          */
-        private var _name:String = "ContestsBreakdownWidget";
+        private var _name:String = "Contests Breakdown";
 
 	/**
 	 * The framework of the widget.
