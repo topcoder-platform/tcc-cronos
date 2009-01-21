@@ -3,7 +3,7 @@
 <tc:GettingStartedWidgetCodeBehind width="100%" 
 	      verticalScrollPolicy="off" 
 	      xmlns:mx="http://www.adobe.com/2006/mxml"
-	      xmlns:tc="com.topcoder.flex.widgets.widgetcontent.gettingstarted.*" >
+	      xmlns:tc="com.topcoder.flex.widgets.widgetcontent.gettingstarted.*" backgroundColor="#a8a8a8" >
 
 
     <mx:Script>
