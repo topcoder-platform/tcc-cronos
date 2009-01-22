@@ -35,6 +35,8 @@
 
 		[Bindable]
 		private var winStatus:String="maximized";
+		[Bindable]
+		private var prjDesc:String="";
 
 		private var _dataProvider:Project;
 		private var _status:String;
@@ -84,6 +86,7 @@
 			_dataProvider = temp;
 			projectName.text=_dataProvider.name;
 			status=_dataProvider.status;
+			prjDesc=_dataProvider.description;
 			for (var i:int;i<_dataProvider.contests.length;i++){
 				var cnt:Contest=_dataProvider.contests[i];
 				var prjRow:ContestRow=new ContestRow();
@@ -132,7 +135,7 @@
 			
 			if (showdesc == 1)
 			{
-			projectDesc.text = "Test direct project for Andrew Abbott";
+			projectDesc.text = prjDesc;
 			//projectDesc.x = 0;
 //			rightArrowImg.source = rightArrowShow;
 			open.styleName = "blackBtnOpen";
