@@ -98,6 +98,7 @@
                     	mainWidget.competition.contestData.contestChannelId = 1;
                     	mainWidget.competition.contestData.durationInHours = 10;
                     	mainWidget.competition.contestData.eligibility = "some text";
+			mainWidget.competition.contestData.media = new Array();
                     	
                     	mainWidget.competition.contestData.numberOfRegistrants = 0;
                     	var type:CompetionType = new CompetionType();
