@@ -9,6 +9,9 @@
 
         <session>
             <ejb-name>StudioServiceBean</ejb-name>
+            <remote>com.topcoder.service.studio.StudioService</remote>
+            <ejb-class>com.topcoder.service.studio.ejb.StudioServiceBean</ejb-class>
+            <session-type>Stateless</session-type>
             <transaction-type>Container</transaction-type>
             <env-entry>
                 <env-entry-name>logName</env-entry-name>

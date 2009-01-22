@@ -638,6 +638,7 @@ public class StudioServiceBean implements StudioService {
      *             if the user is not authorized to perform this method
      */
     public ContestData createContest(ContestData contestData, long tcDirectProjectId) throws PersistenceException {
+		System.out.println("---------------------------------------------------"+tcDirectProjectId);
         logEnter("createContest", contestData, tcDirectProjectId);
         checkParameter("contestData", contestData);
         checkParameter("tcDirectProjectId", tcDirectProjectId);
@@ -702,7 +703,12 @@ public class StudioServiceBean implements StudioService {
 */
             List<UploadedDocument> documents = new ArrayList<UploadedDocument>();
             for (UploadedDocument doc : contestData.getDocumentationUploads()) {
-                documents.add(uploadDocument(doc, contest));
+				System.out.println("doc --------------------------is " + doc);
+				if (doc != null)
+				{
+					documents.add(uploadDocument(doc, contest));
+				}
+                
             }
             contestData = convertContest(contest);
             contestData.setDocumentationUploads(documents);
@@ -1150,10 +1156,8 @@ public class StudioServiceBean implements StudioService {
         } catch (ContestNotFoundException e) {
             handlePersistenceError("Contest not found when trying to remove document from contest", e);
         }
-		  catch (ContestManagementException e) {
-            handlePersistenceError("ContestManager reports error while getting contest in updating submission.", e);
-
-        }
+		  
+        
 
         logExit("updateSubmission");
     }
@@ -1937,7 +1941,7 @@ public class StudioServiceBean implements StudioService {
      */
     private UploadedDocument uploadDocument(UploadedDocument data, Contest contest) throws PersistenceException {
         Document doc = new Document();
-
+	System.out.println("----upload--------------"+ data);
         doc.setDocumentId(data.getDocumentId());
         doc.setOriginalFileName(data.getFileName());
 
@@ -2076,14 +2080,14 @@ public class StudioServiceBean implements StudioService {
      *            entity to convert
      * @return converted entity
      */
-    private Submission convertSubmissionData(SubmissionData submissionData) throws ContestManagementException {
+    private Submission convertSubmissionData(SubmissionData submissionData)  {
         Submission submission = new Submission();
 
         submission.setSubmissionId(submissionData.getSubmissionId());
         submission.setSubmitterId(submissionData.getSubmitterId());
         submission.setSubmissionDate(getDate(submissionData.getSubmittedDate()));
         submission.setRank(submissionData.getRank());
-		submission.setContest(contestManager.getContest(submissionData.getContestId()));
+		//submission.setContest(contestManager.getContest(submissionData.getContestId()));
 
         return submission;
     }
@@ -2929,9 +2933,7 @@ public class StudioServiceBean implements StudioService {
             handlePersistenceError("ContestManager reports error while creating new ContestPayment.", e);
         } catch (SubmissionManagementException e) {
             handlePersistenceError("SubmissionManager reports error while creating new ContestPayment.", e);
-//        } catch (ContestNotFoundException e) {
-  //          handlePersistenceError("Contest not found when trying to remove document from contest", e);
-        }
+        } 
 
         logExit("createContestPayment", contestPaymentData);
         return contestPaymentData;
@@ -3658,54 +3660,4 @@ public class StudioServiceBean implements StudioService {
     }
 
 
-	/**
-     * <p>
-     * Gets all studio file types to return. If no studio file type exists,
-     * return an empty list
-     * </p>
-     * 
-     * @return a list of studio file types
-     * @throws PersistenceException
-     *             if any error occurs when getting studio file types.
-     */
-    public List<StudioFileType> getAllStudioFileTypes() throws PersistenceException {
-
-		logEnter("getAllStudioFileTypes");
-
-        try {
-        	return contestManager.getAllStudioFileTypes();
-        	
-        } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManagementException reports error.", e);
-        }
-
-		return null;
-	}
-
-
-	/**
-     * <p>
-     * Get all the DocumentType objects.
-     * </p>
-     * 
-     * @return the list of all available DocumentType
-     * 
-     * @throws PersistenceException
-     *             if any error occurs when getting contest
-     * 
-     * @since 1.1.2
-     */
-    public List<DocumentType> getAllDocumentTypes() throws PersistenceException {
-
-		logEnter("getAllDocumentTypes");
-
-        try {
-        	return contestManager.getAllDocumentTypes();
-        	
-        } catch (ContestManagementException e) {
-            handlePersistenceError("ContestManagementException reports error.", e);
-        }
-
-		return null;
-	}
 }

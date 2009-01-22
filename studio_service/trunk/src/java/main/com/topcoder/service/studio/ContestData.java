@@ -32,7 +32,8 @@ import java.util.List;
         "shortSummary", "contestDescriptionAndRequirements", "requiredOrRestrictedColors", "requiredOrRestrictedFonts",
         "sizeRequirements", "otherRequirementsOrRestrictions", "creatorUserId", "finalFileFormat", "otherFileFormats",
         "statusId", "submissionCount", "contestTypeId", "contestChannelId", "eligibility", "notesOnWinnerSelection",
-        "prizeDescription", "forumPostCount", "forumId" })
+        "prizeDescription", "forumPostCount", "forumId", "media", "drPoints", "contestAdministrationFee", "launchImmediately",
+		"requiresPreviewImage", "requiresPreviewFile", "maximumSubmissions", "numberOfRegistrants"})
 public class ContestData implements Serializable {
     /**
      * <p>
