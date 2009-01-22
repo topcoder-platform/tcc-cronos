@@ -638,7 +638,11 @@ public class StudioServiceBean implements StudioService {
      *             if the user is not authorized to perform this method
      */
     public ContestData createContest(ContestData contestData, long tcDirectProjectId) throws PersistenceException {
-		System.out.println("---------------------------------------------------"+tcDirectProjectId);
+	
+		for (PrizeData p: contestData.getPrizes())
+		{
+			System.out.println("prize=="+p.getAmount()+"...place=="+p.getPlace());
+		}
         logEnter("createContest", contestData, tcDirectProjectId);
         checkParameter("contestData", contestData);
         checkParameter("tcDirectProjectId", tcDirectProjectId);
@@ -1156,8 +1160,9 @@ public class StudioServiceBean implements StudioService {
         } catch (ContestNotFoundException e) {
             handlePersistenceError("Contest not found when trying to remove document from contest", e);
         }
-		  
-        
+		  catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while getting contest in updating submission.", e);
+		  }
 
         logExit("updateSubmission");
     }
@@ -2080,14 +2085,14 @@ public class StudioServiceBean implements StudioService {
      *            entity to convert
      * @return converted entity
      */
-    private Submission convertSubmissionData(SubmissionData submissionData)  {
+    private Submission convertSubmissionData(SubmissionData submissionData) throws ContestManagementException {
         Submission submission = new Submission();
 
         submission.setSubmissionId(submissionData.getSubmissionId());
         submission.setSubmitterId(submissionData.getSubmitterId());
         submission.setSubmissionDate(getDate(submissionData.getSubmittedDate()));
         submission.setRank(submissionData.getRank());
-		//submission.setContest(contestManager.getContest(submissionData.getContestId()));
+		submission.setContest(contestManager.getContest(submissionData.getContestId()));
 
         return submission;
     }
@@ -3660,4 +3665,54 @@ public class StudioServiceBean implements StudioService {
     }
 
 
+	/**
+     * <p>
+     * Gets all studio file types to return. If no studio file type exists,
+     * return an empty list
+     * </p>
+     * 
+     * @return a list of studio file types
+     * @throws PersistenceException
+     *             if any error occurs when getting studio file types.
+     */
+    public List<StudioFileType> getAllStudioFileTypes() throws PersistenceException {
+
+		logEnter("getAllStudioFileTypes");
+
+        try {
+        	return contestManager.getAllStudioFileTypes();
+        	
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManagementException reports error.", e);
+        }
+
+		return null;
+	}
+
+
+	/**
+     * <p>
+     * Get all the DocumentType objects.
+     * </p>
+     * 
+     * @return the list of all available DocumentType
+     * 
+     * @throws PersistenceException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1.2
+     */
+    public List<DocumentType> getAllDocumentTypes() throws PersistenceException {
+
+		logEnter("getAllDocumentTypes");
+
+        try {
+        	return contestManager.getAllDocumentTypes();
+        	
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManagementException reports error.", e);
+        }
+
+		return null;
+	}
 }
