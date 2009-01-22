@@ -7,6 +7,7 @@
 
     <mx:Script>
         <![CDATA[
+        	import mx.rpc.soap.SOAPHeader;
             import mx.effects.Resize;
             import mx.events.ResizeEvent;
             import mx.events.StateChangeEvent;
@@ -66,7 +67,7 @@
                 launchWdt.percentWidth = 0;
                 launchWdt.percentHeight = 0;
                 this.currentState = "ContestSelectionState";
-                this.height = 750;
+                this.height = 850;
                 details.widgetHeight = 1400;
                 specf.widgetHeight = 1200;
                 attch.height = 600;
@@ -90,6 +91,11 @@
 		 _ws = new ContestServiceFacadeBeanService(null, contestServiceFacadeWsdl);
             
 		_ws.getWebService().addHeader(WebServiceUtil.getWSSEHeader(username ,password));
+            }
+            
+            public function getSOAPHeader():SOAPHeader
+            {
+            	return WebServiceUtil.getWSSEHeader(username ,password);
             }
             
             //after loading the xml file, fetch data
@@ -467,6 +473,8 @@
                 initialWdt.width = 0;
                 initialWdt.height = 0;
                 initialWdt.visible = false;
+                this.width=parent.width-10;
+                this.height=parent.height-10;
                 launchWdt.percentWidth = 100;
                 launchWdt.percentHeight = 100;
                 launchWdt.visible = true;
@@ -489,7 +497,10 @@
 	<mx:method name="getPassword"  result="processPassword(event)" 
 		                   fault="Alert.show(event.fault.faultString);"/>
      </mx:RemoteObject>
-     
+     <mx:WebService id="ProjectServiceFacadeBean" 
+	wsdl="{projectServiceFacadeWsdl}"> 
+	<mx:operation name="getAllProjects" resultFormat="object"  /> 
+	</mx:WebService>
      <mx:Spacer height="5" />
      <pages:InitialWidget id="initialWdt" />
      <mx:HBox id="launchWdt" horizontalGap="0" visible="false" >

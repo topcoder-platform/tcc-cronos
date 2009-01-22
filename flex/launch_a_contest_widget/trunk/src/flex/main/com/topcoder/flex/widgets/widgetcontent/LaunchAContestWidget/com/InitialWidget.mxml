@@ -25,21 +25,41 @@
             
             [Bindable]
             public var mainWidget:LaunchWidget;
-            
+            /*
+            [Bindable]
+            private var _projectServiceFacadeWsdl:String="";
+        
+            public function set projectServiceFacadeWsdl(url:String):void
+            {
+            	_projectServiceFacadeWsdl=url;
+            }
+            */
             private function init():void{
             	mainWidget._ws.addgetAllContestHeadersEventListener(loadContestsHandler);
             	
-            	mainWidget._ws.getAllContestHeaders(new GetAllContestHeaders());
+            	//mainWidget._ws.getAllContestHeaders(new GetAllContestHeaders());
             	
-                selectContests.dataProvider = contestsData;
+                //
+                mainWidget.ProjectServiceFacadeBean.addEventListener(ResultEvent.RESULT,loadContestsHandler);
+                mainWidget.ProjectServiceFacadeBean.clearHeaders();
+                 mainWidget.ProjectServiceFacadeBean.addHeader( mainWidget.getSOAPHeader());
+                  mainWidget.ProjectServiceFacadeBean.getAllProjects();
+                  
+                  selectContests.dataProvider = contestsData;
             }
             
-            private function loadContestsHandler(event:GetAllContestHeadersResultEvent):void{
-            	
-            	
+            private function loadContestsHandler(e:ResultEvent):void{
+            	if(e!=null && e.result!=null && e.result is ArrayCollection){
+        			var prjArray:ArrayCollection=e.result as ArrayCollection;
+        			for each (var prj:* in prjArray){
+        				contestsData.addItem({label:prj.name, data:prj.projectId, desc:prj.description});
+        			}
+        		}
+            	/*
 				for each (var comp:StudioCompetition in event.result.asIList()){
 					contestsData.addItem({label:comp.contestData.name, data:comp.contestData.contestId, desc:comp.contestData.shortSummary})
 				}
+				*/
             }
             
             private function goToContestSelection():void{
@@ -48,9 +68,11 @@
                     return;
                 }else{
                     //load the contest if it's existing
+                    /*
                     if (selectContests.selectedItem.data !=-1){
                     	loadContest(selectContests.selectedItem.data);
                     } else {
+                    */
                     	mainWidget.competition = new StudioCompetition();
                     	mainWidget.competition.competitionId = -1;
                     	mainWidget.competition.id = -1;
@@ -76,7 +98,6 @@
                     	mainWidget.competition.contestData.contestChannelId = 1;
                     	mainWidget.competition.contestData.durationInHours = 10;
                     	mainWidget.competition.contestData.eligibility = "some text";
-			mainWidget.competition.contestData.media = new Array();
                     	
                     	mainWidget.competition.contestData.numberOfRegistrants = 0;
                     	var type:CompetionType = new CompetionType();
@@ -87,7 +108,7 @@
                     	mainWidget.competition.contestData.name = prjInput.text;
                     	
                     	mainWidget.startLaunchProcess();
-                    }
+                    //}
                 }
             }
             
@@ -112,6 +133,8 @@
         
           ]]>
     </mx:Script>
+    
+
     <mx:VBox id="initWdt" width="100%" height="100%">
         <mx:Label text="Projects" fontWeight="bold" fontSize="12"/>
         <mx:Text width="100%" >
