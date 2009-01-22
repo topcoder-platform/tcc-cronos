@@ -23,6 +23,8 @@ import com.topcoder.service.studio.ContestPaymentData;
 import com.topcoder.service.studio.MediumData;
 import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.ContestData;
+import com.topcoder.service.studio.contest.DocumentType;
+import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.facade.contest.ContestServiceFilter;
 
 import javax.ejb.Stateless;
@@ -552,6 +554,39 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     public void processMissingPayments(long contestId) throws PersistenceException {
         this.studioService.processMissingPayments(contestId);
     }
+
+	/**
+     * <p>
+     * Gets all studio file types to return. If no studio file type exists,
+     * return an empty list
+     * </p>
+     * 
+     * @return a list of studio file types
+     * @throws PersistenceException
+     *             if any error occurs when getting studio file types.
+     */
+    public List<StudioFileType> getAllStudioFileTypes() throws PersistenceException {
+
+		return this.studioService.getAllStudioFileTypes();
+	}
+
+
+	/**
+     * <p>
+     * Get all the DocumentType objects.
+     * </p>
+     * 
+     * @return the list of all available DocumentType
+     * 
+     * @throws PersistenceException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1.2
+     */
+    public List<DocumentType> getAllDocumentTypes() throws PersistenceException {
+
+		return this.studioService.getAllDocumentTypes();
+	}
 
     /**
      * <p>Converts the specified <code>ContestData</code> instance to <code>ContestData</code> instance which could be

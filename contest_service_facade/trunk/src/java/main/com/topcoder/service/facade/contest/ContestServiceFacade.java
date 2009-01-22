@@ -18,6 +18,8 @@ import com.topcoder.service.studio.ContestTypeData;
 import com.topcoder.service.studio.ContestPaymentData;
 import com.topcoder.service.studio.MediumData;
 import com.topcoder.service.studio.ChangeHistoryData;
+import com.topcoder.service.studio.contest.DocumentType;
+import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.project.StudioCompetition;
 
 import javax.jws.WebService;
@@ -462,4 +464,34 @@ public interface ContestServiceFacade {
      * @throws PersistenceException if any error occurs when processing a payment.
      */
     public void processMissingPayments(long contestId) throws PersistenceException;
+
+	/**
+     * <p>
+     * Get all the DocumentType objects.
+     * </p>
+     * 
+     * @return the list of all available DocumentType
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * 
+	 * @throws PersistenceException
+     *             if any error occurss
+     * @since 1.1.2
+     */
+    public List<DocumentType> getAllDocumentTypes() throws PersistenceException;
+
+
+	 /**
+     * <p>
+     * Gets all studio file types to return. If no studio file type exists,
+     * return an empty list
+     * </p>
+     * 
+     * @return a list of studio file types
+     * @throws PersistenceException
+     *             if any error occurs when getting studio file types.
+     */
+    public List<StudioFileType> getAllStudioFileTypes() throws PersistenceException;
+
 }

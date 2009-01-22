@@ -36,8 +36,10 @@
 <%@ page import="com.topcoder.service.project.CompetitionPrize" %>
 <%@ page import="java.util.GregorianCalendar" %>
 <%@ page import="com.topcoder.service.studio.ContestData" %>
+<%@ page import="com.topcoder.service.studio.contest.DocumentType" %>
 <%@ page import="javax.print.attribute.standard.Media" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <%
     String calledOperation = null;
     Object callResult = null;
@@ -394,7 +396,16 @@
                         append(", end = ").append(c.getEndTime()).append("<br/>");
             }
             callResult = "Found contests by name:<br/>" + b.toString();
+        } else if ("getAllDocumentTypes".equals(operation)) {
+            StringBuilder b = new StringBuilder();
+            List<DocumentType> types = port.getAllDocumentTypes();
+            for (DocumentType t : types) {
+                b.append("    DocumentType: ID = ").append(t.getDocumentTypeId()).append(", desc = ").append(t.getDescription()).
+                        append("<br/>");
+            }
+            callResult = "Retrieved contest types:<br/>" + b.toString();
         }
+
     } catch (Throwable e) {
         error = e;
     }

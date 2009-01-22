@@ -176,6 +176,8 @@
         Eligibility: <input type="text" name="ce17" value=""> &nbsp; &nbsp;<br/>
         Summary: <input type="text" name="cs17" value=""> &nbsp; &nbsp;<br/>
         <input type="button" value="Execute" onclick="callService('updateContest');"/></li><br/>
+	<li>ContestService.getAllDocumentTypes() &nbsp; &nbsp;
+        <input type="button" value="Execute" onclick="callService('getAllDocumentTypes');"/></li><br/>
 </ul>
 </form>
 <br/>
