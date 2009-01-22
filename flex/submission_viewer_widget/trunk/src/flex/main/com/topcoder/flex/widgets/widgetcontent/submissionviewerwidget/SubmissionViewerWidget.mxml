@@ -80,7 +80,11 @@
 
             	ContestServiceFacadeBean.getAllContests();*/
 		getDataService();
-		main.height=0;
+		
+		         
+            	main.height=0;
+            	main.width=0;
+            	this.parent.width=370;
             }
             
             [Bindable] 

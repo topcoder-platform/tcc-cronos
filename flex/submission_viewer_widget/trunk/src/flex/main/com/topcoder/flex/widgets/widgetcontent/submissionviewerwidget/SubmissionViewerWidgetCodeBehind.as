@@ -160,8 +160,10 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             main.visible=false;
             minPage.visible=true;
             main.height=0;
+            main.width=0;
             minPage.width=320;
             minPage.height=570;
+            parent.width=370;
         }
 
         /**
@@ -171,8 +173,10 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             main.visible=true;
             minPage.visible=false;
             main.height=1000;
+            main.width=1000;
             minPage.width=0;
             minPage.height=0;
+            parent.width=main.width;
         }
 
         /**
