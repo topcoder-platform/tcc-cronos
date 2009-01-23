@@ -154,7 +154,7 @@
         	prjCt=p as ProjectsContainer;
         	var dict:Dictionary=new Dictionary();
         	dict["contestid"]=_ContextId;
-        	prjCt.widgetFramework.addWidgetEx("ContestMonitor","ContestMonitor",dict );
+        	prjCt.widgetFramework.addWidgetEx("Contest Monitor","Contest Monitor",dict );
 	}
 
 	/**
