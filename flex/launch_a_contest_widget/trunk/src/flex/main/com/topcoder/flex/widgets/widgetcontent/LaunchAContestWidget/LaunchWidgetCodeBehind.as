@@ -8,6 +8,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestServiceFacadeBeanService;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContest;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContestResultEvent;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProjectServiceFacadeBeanService;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.StudioCompetition;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContest;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContestResultEvent;
@@ -34,6 +35,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         private var _name:String = "Launch Contest";
         
         public var _ws:ContestServiceFacadeBeanService;
+        
+        public var _pws:ProjectServiceFacadeBeanService;
 
 	/**
 	 * The framework of the widget.

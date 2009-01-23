@@ -3,6 +3,14 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off" creationComplete="init()">
     <mx:Script>
         <![CDATA[
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateProject;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateProject_request;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateProjectResultEvent;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllProjects_request;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProjectData;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllProjectsResultEvent;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllProjects;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestHeaders_request;
         	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CompetionType;
         	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestHeaders;
         	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestResultEvent;
@@ -35,23 +43,32 @@
             }
             */
             private function init():void{
-            	mainWidget._ws.addgetAllContestHeadersEventListener(loadContestsHandler);
+            	//mainWidget._ws.addgetAllContestHeadersEventListener(loadContestsHandler);
             	
             	//mainWidget._ws.getAllContestHeaders(new GetAllContestHeaders());
             	
                 //
-                mainWidget.ProjectServiceFacadeBean.addEventListener(ResultEvent.RESULT,loadContestsHandler);
-                mainWidget.ProjectServiceFacadeBean.clearHeaders();
-                 mainWidget.ProjectServiceFacadeBean.addHeader( mainWidget.getSOAPHeader());
-                  mainWidget.ProjectServiceFacadeBean.getAllProjects();
+                mainWidget._pws.addgetAllProjectsEventListener(loadContestsHandler);
+                mainWidget._pws.addcreateProjectEventListener(createProjectHandler);
+                mainWidget._pws.getAllProjects_request_var=new  GetAllProjects_request();
+                mainWidget._pws.getAllProjects_request_var.getAllProjects=new GetAllProjects();
+                mainWidget._pws.getAllProjects_send();
                   
                   selectContests.dataProvider = contestsData;
             }
             
-            private function loadContestsHandler(e:ResultEvent):void{
-            	if(e!=null && e.result!=null && e.result is ArrayCollection){
-        			var prjArray:ArrayCollection=e.result as ArrayCollection;
-        			for each (var prj:* in prjArray){
+            private function createProjectHandler(e:CreateProjectResultEvent):void
+            {
+            	if(e && e.result)
+            	{
+            		mainWidget.tcDirectProjectId=e.result._return.projectId.toString();
+            		createContestAndContinue();
+            	}
+            }
+            
+            private function loadContestsHandler(e:GetAllProjectsResultEvent):void{
+            	if(e!=null && e.result!=null){
+        			for each (var prj:ProjectData in e.result.asIList()){
         				contestsData.addItem({label:prj.name, data:prj.projectId, desc:prj.description});
         			}
         		}
@@ -62,18 +79,9 @@
 				*/
             }
             
-            private function goToContestSelection():void{
-                if ((selectContests.selectedItem == null || selectContests.selectedItem.data ==-1) && prjInput.text == ""){
-                    Alert.show("Add New Project or Choose Existing Project must have value.");
-                    return;
-                }else{
-                    //load the contest if it's existing
-                    /*
-                    if (selectContests.selectedItem.data !=-1){
-                    	loadContest(selectContests.selectedItem.data);
-                    } else {
-                    */
-                    	mainWidget.competition = new StudioCompetition();
+            private function createContestAndContinue():void
+            {
+            			mainWidget.competition = new StudioCompetition();
                     	mainWidget.competition.competitionId = -1;
                     	mainWidget.competition.id = -1;
                     	mainWidget.competition.adminFee = 20;
@@ -109,6 +117,34 @@
                     	mainWidget.competition.contestData.name = prjInput.text;
                     	
                     	mainWidget.startLaunchProcess();
+            }
+            
+            private function goToContestSelection():void{
+                if ((selectContests.selectedItem == null || selectContests.selectedItem.data ==-1) && prjInput.text == ""){
+                    Alert.show("Add New Project or Choose Existing Project must have value.");
+                    return;
+                }else{
+                    //load the contest if it's existing
+                    /*
+                    if (selectContests.selectedItem.data !=-1){
+                    	loadContest(selectContests.selectedItem.data);
+                    } else {
+                    */
+                    if(selectContests.selectedItem != null && selectContests.selectedItem.data !=-1)
+                    {
+                    	mainWidget.tcDirectProjectId=selectContests.selectedItem.data;
+                    	createContestAndContinue();
+                    }
+                    else
+                    {
+                    	mainWidget._pws.createProject_request_var=new CreateProject_request();
+                    	mainWidget._pws.createProject_request_var.createProject=new CreateProject();
+                    	mainWidget._pws.createProject_request_var.createProject.arg0=new ProjectData();
+                    	mainWidget._pws.createProject_request_var.createProject.arg0.name=prjInput.text;
+                    	mainWidget._pws.createProject_request_var.createProject.arg0.description="";
+                    	mainWidget._pws.createProject_send();
+                    }
+                    	
                     //}
                 }
             }

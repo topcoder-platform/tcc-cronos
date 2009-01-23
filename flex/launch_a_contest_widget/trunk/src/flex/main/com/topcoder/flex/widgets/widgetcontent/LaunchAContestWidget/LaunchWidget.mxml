@@ -2,11 +2,12 @@
 <tc:LaunchWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
     xmlns:pages="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*" styleName="WidgetPanel"
     xmlns:tc="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.*" title="Launch a contest"
-    width="1000" initialize="initWidget()">
+    width="600" initialize="initWidget()">
     <mx:Style source="Style.css" />
 
     <mx:Script>
         <![CDATA[
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProjectServiceFacadeBeanService;
         	import mx.rpc.soap.SOAPHeader;
             import mx.effects.Resize;
             import mx.events.ResizeEvent;
@@ -39,7 +40,17 @@
 	    private var projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl;
             private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;
 
-
+ private var _tcDirectProjectId:String;
+        
+        public function set tcDirectProjectId(projectID:String):void
+        {
+        	_tcDirectProjectId=projectID;
+        }
+        
+        public function get tcDirectProjectId():String
+        {
+        	return _tcDirectProjectId;
+        }
 	    private function initWidget():void{
 		getDataService();
            }
@@ -91,12 +102,12 @@
 		 _ws = new ContestServiceFacadeBeanService(null, contestServiceFacadeWsdl);
             
 		_ws.getWebService().addHeader(WebServiceUtil.getWSSEHeader(username ,password));
+
+		_pws=new ProjectServiceFacadeBeanService(null, projectServiceFacadeWsdl);
+		
+		_pws.getWebService().addHeader(WebServiceUtil.getWSSEHeader(username ,password));
             }
             
-            public function getSOAPHeader():SOAPHeader
-            {
-            	return WebServiceUtil.getWSSEHeader(username ,password);
-            }
             
             //after loading the xml file, fetch data
             private function getData(event:Event):void {
@@ -473,8 +484,9 @@
                 initialWdt.width = 0;
                 initialWdt.height = 0;
                 initialWdt.visible = false;
-                this.width=parent.width-10;
-                this.height=parent.height-10;
+                widgetFramework.maximize(parent);
+                width=parent.width-10;
+                height=parent.height-10;
                 launchWdt.percentWidth = 100;
                 launchWdt.percentHeight = 100;
                 launchWdt.visible = true;
@@ -497,10 +509,6 @@
 	<mx:method name="getPassword"  result="processPassword(event)" 
 		                   fault="Alert.show(event.fault.faultString);"/>
      </mx:RemoteObject>
-     <mx:WebService id="ProjectServiceFacadeBean" 
-	wsdl="{projectServiceFacadeWsdl}"> 
-	<mx:operation name="getAllProjects" resultFormat="object"  /> 
-	</mx:WebService>
      <mx:Spacer height="5" />
      <pages:InitialWidget id="initialWdt" />
      <mx:HBox id="launchWdt" horizontalGap="0" visible="false" >
