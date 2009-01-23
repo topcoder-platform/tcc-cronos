@@ -125,7 +125,7 @@
 	}
 	public function set forumPosts(temp:String):void{
 		lblForumPosts.text = temp;
-		if (temp=='0') {
+		if (temp=='no forum') {
 			lnkFormPosts.includeInLayout=false
 			lnkFormPosts.visible=false
 			//canvasForumPosts.percentWidth=100
