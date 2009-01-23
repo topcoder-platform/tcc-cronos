@@ -6,7 +6,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice
 	public class WebServiceUtil
 	{
 		public static function getWSSEHeader(username:String, password:String):SOAPHeader{
-			var token:UserNameToken = new UserNameToken(username, password);
 			
 			var wsse:Namespace = new Namespace("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd");
 			var wsseSecurity:QName = new QName(wsse.uri, "Security");

@@ -3,6 +3,9 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off">
     <mx:Script>
 	    <![CDATA[
+	    	import mx.collections.ArrayCollection;
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveDocumentResultEvent;
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveDocument;
 	    	import mx.controls.TextArea;
 	    	import mx.controls.HRule;
 	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadDocumentResultEvent;
@@ -32,6 +35,43 @@
 	        private var file:FileReference;
 	        private static const ADDEDHEIGHT:Number = 80;
 	        
+			private static const mimeTypes:Array=["application/msword",
+	                                             "application/rtf",
+	                                             "text/plain",
+	                                             "application/pdf",
+	                                             "application/postscript",
+	                                             
+	                                             "text/html",
+	                                             "text/rtf",
+	                                             "image/jpeg",  
+	                                             "image/gif",
+	                                             "image/png",
+	                                             
+	                                             "image/bmp",
+	                                             "application/vnd.ms-excel",
+	                                             "image/pjpeg",
+	                                             "image/x-png",
+	                                             "application/zip",
+	                                             
+	                                             "application/x-zip-compressed",
+	                                             "audio/mpeg",
+	                                             "audio/mp3",
+	                                             "application/x-zip",
+	                                             "application/java-archive",
+	                                             
+	                                             "application/x-java-archive",
+	                                             "application/vnd.ms-powerpoint",
+	                                             "application/octet"];	
+	        private var extMimeMap:Dictionary;
+	        
+	        private static const fileTypes:ArrayCollection = new ArrayCollection(
+                [ {label:"Specification", data:1,desc:""},
+                {label:"Template", data:2,desc:""},
+                {label:"Rules", data:3,desc:""},
+                {label:"Example", data:4,desc:""},
+                {label:"Scorecard", data:4,desc:""},
+                {label:"Reference", data:6,desc:""}]);     	        
+	        
 	        [Bindable]
 	        [ArrayElementType("UploadedDocument")]
 	        private var docUploads:Array;
@@ -47,11 +87,37 @@
 	        	this.addEventListener("UPLOADDOC_ALL_COMPLETED", allCompleteHandler );
 	        	
 	        	currentDoc = new UploadedDocument();
+	        	
+				extMimeMap=new Dictionary();
+                extMimeMap["doc"]="application/msword";
+	            extMimeMap["rtf"]= "application/rtf";
+	            extMimeMap["txt"]=  "text/plain";
+	            extMimeMap["pdf"]=  "application/pdf";
+	            extMimeMap["ps"]= "application/postscript";
+	                                             
+	            extMimeMap["htm"]=     "text/html";
+	            extMimeMap["html"]=     "text/html";
+	            extMimeMap["jpg"]=    "image/jpeg";  
+	            extMimeMap["jpeg"]=    "image/jpeg";  
+	            extMimeMap["gif"]=  "image/gif";
+	            extMimeMap["png"]= "image/png";
+	                                             
+	            extMimeMap["bmp"]=    "image/bmp";
+	            extMimeMap["xsl"]=  "application/vnd.ms-excel";
+	            extMimeMap["zip"]="application/zip";
+	                                             
+	            extMimeMap["rar"]="application/x-zip-compressed";
+	            extMimeMap["mpg"]="audio/mpeg";
+	            extMimeMap["mp3"]="audio/mp3";
+	            extMimeMap["jar"]="application/java-archive";
+	            extMimeMap["ppt"]="application/vnd.ms-powerpoint";
+	            extMimeMap["pps"]="application/vnd.ms-powerpoint";	        	
 	        }
 	        
 	        private function addDoc(doc:UploadedDocument):void{
 	        	var docVBox:VBox = new VBox();
 	        	docVBox.id = doc.documentId.toString();
+	        	docVBox.data = doc;
 	        	
 	        	var hbox1:HBox = new HBox();
 	        	docVBox.addChild(hbox1);
@@ -77,6 +143,14 @@
 	        	hbox2.addChild(nameText);
 	        	nameText.text = doc.fileName;
 	        	
+	        	var hbox3:HBox = new HBox();
+	        	docVBox.addChild(hbox3);
+	        	var removeBtn:LinkButton=new LinkButton();
+	        	removeBtn.label="remove";
+	        	removeBtn.data=docVBox;
+	        	removeBtn.addEventListener(MouseEvent.CLICK,removeDoc);
+	        	hbox3.addChild(removeBtn);	      
+	        	
 	        	var hrule:HRule = new HRule();
 	        	hrule.setStyle("width", "100%");
 	        	docVBox.addChild(hrule);
@@ -90,8 +164,35 @@
 	        	docUploads.push(doc);
 	        }
 	        
-	        private function removeDoc(id:String):void{
+	        private function removeDoc(e:MouseEvent):void{
+	        	if (e && e.target){
+	        		var button:LinkButton=e.target as LinkButton;
+	        		var box:VBox = button.data as VBox;	
+	        	    var doc:UploadedDocument=box.data as UploadedDocument;
+	        	    
+	        	    var index:int = docUploads.indexOf(doc);
+	        	    if (index != -1){
+	        	    	docUploads.splice(index,1);
+	        	    	
+	        	    	sendRemoveDocRequest(doc);
+	        	    }
+	        	    
+	        	    box.parent.removeChild(box);
+	        	}
+	        }
+	        
+	        private function sendRemoveDocRequest(doc:UploadedDocument):void{
+	        	var ws:ContestServiceFacadeBeanService = mainWidget._ws;
+	        	ws.addremoveDocumentEventListener(processRemoveDocument);
 	        	
+	        	var arg:RemoveDocument = new RemoveDocument();
+	        	arg.arg0 = doc.documentId;
+	        	
+	        	ws.removeDocument(arg);
+	        }
+	        
+	        private function processRemoveDocument(event:RemoveDocumentResultEvent):void{
+	        	//does nothing
 	        }
 	        
 	        
@@ -138,8 +239,18 @@
             	var ws:ContestServiceFacadeBeanService = mainWidget._ws;
             	ws.addgetMimeTypeIdEventListener(loadMimeTypeIdHandler);
             	var arg:GetMimeTypeId = new GetMimeTypeId();
-            	arg.arg0 = "text/html"; //FIXME
+            	arg.arg0 = getMimetypeByFileName(file.type);
             	ws.getMimeTypeId(arg);
+            }
+            
+            private function getMimetypeByFileName(ext:String):String{
+            	var typename:String=extMimeMap[ext];
+	        	if(typename==null)
+	        	{
+	        		typename="text/plain";
+	        	}
+	        	
+	        	return typename;
             }
             
             private function loadCompleteHandler(event:Event):void{
@@ -147,7 +258,7 @@
             	currentDoc.description = fileDescInput.text;
             	currentDoc.fileName = file.name;
             	currentDoc.path = file.name;
-            	currentDoc.documentTypeId = 1;//FIXME hardcoded here, there should be some UI control to change this value
+            	currentDoc.documentTypeId = this.filetypeCombo.selectedItem.data;
             	currentDoc.contestId = -1;
             	currentDoc.documentId = -1;
             	
@@ -172,6 +283,7 @@
             		return; // the document has been sent
             	}
             	
+            	currentDoc.contestId = mainWidget.competition.contestData.contestId;
             	
             	var ws:ContestServiceFacadeBeanService = mainWidget._ws;
             	ws.adduploadDocumentEventListener(webserviceSentHandler);
@@ -224,6 +336,10 @@
                 <mx:Label text="File to Upload:" fontWeight="bold"/>
                 <mx:TextInput id="fileToUpload" editable="false" />
                 <mx:Button id="browse" label="Browse" cornerRadius="13" click="browseFile()"/>
+            </mx:HBox>
+            <mx:HBox >
+                <mx:Label text="Select File Type:" fontWeight="bold"/>
+                <mx:ComboBox id="filetypeCombo" dataProvider="{fileTypes}" selectedIndex="0"/>
             </mx:HBox>
             <mx:VBox paddingLeft="90">
             	<mx:Button id="upload" label="Upload File" cornerRadius="13" click="uploadFile()"/>

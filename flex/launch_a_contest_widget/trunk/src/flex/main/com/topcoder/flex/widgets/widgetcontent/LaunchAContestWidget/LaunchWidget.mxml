@@ -24,6 +24,8 @@
             import mx.events.SliderEvent;
 	    import mx.core.Application;
 	    import mx.rpc.events.ResultEvent;
+	    import mx.controls.Alert;
+	    import mx.rpc.events.FaultEvent;
 
 	    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.WebServiceUtil;
 	    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestServiceFacadeBeanService;
@@ -86,7 +88,7 @@
                 back.visible = false;
                 //read hints.xml data
                 getData(null);
-                //var url:URLRequest = new URLRequest("http://./hints.xml");
+                //var url:URLRequest = new URLRequest("data/launch_a_contest/hint.xml");
 //                var loader:URLLoader = new URLLoader();
 //                loader.addEventListener(Event.COMPLETE, getData);
 //                loader.load(url);
@@ -102,10 +104,12 @@
 		 _ws = new ContestServiceFacadeBeanService(null, contestServiceFacadeWsdl);
             
 		_ws.getWebService().addHeader(WebServiceUtil.getWSSEHeader(username ,password));
+		//_ws.getWebService().addEventListener(FaultEvent.FAULT, handleFault);
 
 		_pws=new ProjectServiceFacadeBeanService(null, projectServiceFacadeWsdl);
 		
 		_pws.getWebService().addHeader(WebServiceUtil.getWSSEHeader(username ,password));
+		 review.mainWidget = this;
             }
             
             
@@ -207,7 +211,7 @@
 
                    this.currentState = "DetailsState";
                    
-                   review.cstTypeStep2 = overView.studioType.selectedValue.toString();
+                   review.cstTypeStep2 = overView.studioType.selection.label;
                    review.firstPrize = overView.firstPlace.text;
                    review.secondPrize = overView.secondPlace.text;
                    review.thirdPrize = overView.thirdPlace.text;
@@ -296,7 +300,7 @@
 
                    review.setAllValues();
 
-                   this.height = 1530;
+                   this.height = 1800;
                    hideArrow(step6arrow);
                    showArrow(step7arrow);
                 } else if (this.currentState == "ReviewState") {
@@ -313,6 +317,12 @@
                 }
                 
             }
+
+	     private function handleFault(event:FaultEvent):void
+		{
+			Alert.show(event.fault.faultDetail, "");
+		}
+        
             
             private function setButton(index:int):void {
                 switch (index) {

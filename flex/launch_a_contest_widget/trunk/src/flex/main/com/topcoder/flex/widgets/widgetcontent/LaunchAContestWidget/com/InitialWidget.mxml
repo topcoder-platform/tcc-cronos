@@ -62,7 +62,7 @@
             	if(e && e.result)
             	{
             		mainWidget.tcDirectProjectId=e.result._return.projectId.toString();
-            		createContestAndContinue();
+            		createContestAndContinue(e.result._return.projectId);
             	}
             }
             
@@ -79,7 +79,7 @@
 				*/
             }
             
-            private function createContestAndContinue():void
+            private function createContestAndContinue(id:Number):void
             {
             			mainWidget.competition = new StudioCompetition();
                     	mainWidget.competition.competitionId = -1;
@@ -92,8 +92,8 @@
                     	mainWidget.competition.creatorUserId = 3;
                     	mainWidget.competition.drPoints = 100;
                     	mainWidget.competition.contestData.drPoints = 100;
-                    	mainWidget.competition.contestData.projectId = 1;
-                    	mainWidget.competition.contestData.tcDirectProjectId = 1;
+                    	mainWidget.competition.contestData.projectId = id;
+                    	mainWidget.competition.contestData.tcDirectProjectId = id;
                     	mainWidget.competition.contestData.contestId = -1;
                     	mainWidget.competition.contestData.creatorUserId = 3;
                     	mainWidget.competition.contestData.statusId = 5;
@@ -114,7 +114,7 @@
         				type.competionType = "STUDIO";
         				mainWidget.competition.type = type
         	
-                    	mainWidget.competition.contestData.name = prjInput.text;
+                    	//mainWidget.competition.contestData.name = prjInput.text;
                     	
                     	mainWidget.startLaunchProcess();
             }
@@ -133,7 +133,7 @@
                     if(selectContests.selectedItem != null && selectContests.selectedItem.data !=-1)
                     {
                     	mainWidget.tcDirectProjectId=selectContests.selectedItem.data;
-                    	createContestAndContinue();
+                    	createContestAndContinue(parseInt(mainWidget.tcDirectProjectId));
                     }
                     else
                     {
@@ -141,7 +141,7 @@
                     	mainWidget._pws.createProject_request_var.createProject=new CreateProject();
                     	mainWidget._pws.createProject_request_var.createProject.arg0=new ProjectData();
                     	mainWidget._pws.createProject_request_var.createProject.arg0.name=prjInput.text;
-                    	mainWidget._pws.createProject_request_var.createProject.arg0.description="";
+                    	mainWidget._pws.createProject_request_var.createProject.arg0.description=introInput.text;
                     	mainWidget._pws.createProject_send();
                     }
                     	

@@ -3,6 +3,10 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off">
     <mx:Script>
 	    <![CDATA[
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadedDocument;
+	    	import mx.controls.HRule;
+	    	import mx.controls.Spacer;
+	    	import mx.controls.Label;
 	       import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
 	       
 	        //step1 data
@@ -37,6 +41,8 @@
 	        public var fromTime:String;
 	        public var toTime:String;
 	        
+	        public var mainWidget:LaunchWidget;
+	        
 	        // Set all section values from previous steps
 	        public function setAllValues():void {
 	        	contestType_step1.text = cstTypeStep1;
@@ -68,6 +74,44 @@
                 endDate.text = (toDate.getMonth()+1).toString() + '-' + toDate.getDate() + '-' + toDate.getFullYear().toString();
                 startTime.text = fromTime;
                 endTime.text = toTime;
+                
+                setAttachedFiles(mainWidget.competition.contestData.documentationUploads);
+	        }
+	        
+	        private function setAttachedFiles(documentationUploads:Array):void{
+	        	attachedFilesVBox.removeAllChildren();
+				
+				for each ( var doc:UploadedDocument in documentationUploads){
+					var hbox1:HBox = new HBox();
+					attachedFilesVBox.addChild(hbox1);
+					var labelDesc:Label = new Label();
+					hbox1.addChild(labelDesc);
+					labelDesc.text = "File Description:";
+					labelDesc.setStyle("fontWeight","bold");
+					
+					var textDesc:Text = new Text();
+					hbox1.addChild(textDesc);
+					textDesc.text = doc.description;
+					
+					var hbox2:HBox = new HBox();
+					attachedFilesVBox.addChild(hbox2);
+					var labelName:Label = new Label();
+					hbox2.addChild(labelName);
+					labelName.text = "File Name:";
+					labelName.setStyle("fontWeight","bold");
+					
+					var textName:Text = new Text();
+					hbox2.addChild(textName);
+					textName.text = doc.fileName;
+					
+					var spacer:Spacer = new Spacer();
+					attachedFilesVBox.addChild(spacer);
+					spacer.height = 5;
+					
+					var ruler:HRule = new HRule();
+					attachedFilesVBox.addChild(ruler);
+					ruler.setStyle("width","100%");					
+				}
 	        }
 	        
 	        private function goToStep1():void {
@@ -238,27 +282,11 @@
         <mx:VBox width="100%" verticalGap="0">
             <mx:Label text="Attach Files" fontWeight="bold" fontSize="12"/>
             <mx:Spacer height="15"/>
-            <mx:HRule width="100%"/>
-            <mx:HBox>
-                <mx:Label text="File Description:" fontWeight="bold"/>
-                <mx:Text text="Application Wireframes" />
-            </mx:HBox>
-            <mx:HBox >
-                <mx:Label text="File Name:" fontWeight="bold"/>
-                <mx:Text text="app_wireframes.pdf" />
-            </mx:HBox>
-            <mx:Spacer height="5"/>
-            <mx:HRule width="100%"/>
-            <mx:HBox id="fileDsc">
-                <mx:Label text="File Description:" fontWeight="bold"/>
-                <mx:Text text="Project Branding Guidelines" />
-            </mx:HBox>
-            <mx:HBox id="fileName" >
-                <mx:Label text="File Name:" fontWeight="bold"/>
-                <mx:Text text="branding_guidelines.doc" />  
-            </mx:HBox>
-            <mx:Spacer height="5"/>
-            <mx:HRule width="100%"/>
+            <mx:HRule width="100%"/>            
+            <mx:VBox width="100%" id="attachedFilesVBox">
+            	
+            	
+            </mx:VBox>
             
             <mx:HBox width="100%">
                 <mx:Spacer width="515"/>

@@ -5,6 +5,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.model.IWidgetFramework;
     import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.WebServiceUtil;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CompetionType;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestServiceFacadeBeanService;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContest;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContestResultEvent;
@@ -16,6 +17,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import flash.utils.Dictionary;
     
     import mx.containers.Panel;
+    import mx.controls.Alert;
+    import mx.rpc.events.FaultEvent;
 
     /**
      * <p>
@@ -275,6 +278,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public function setAttributes(map:Dictionary):void {
         }
         
+        
         public function saveAsDraft():void{
         	if (isNaN(competition.id) || competition.id < 0){
         		createContest();
@@ -287,12 +291,16 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         	_ws.addcreateContestEventListener(createContestHandler);
         	var arg:CreateContest  = new CreateContest();
         	arg.arg0  = competition;
-        	arg.arg1 = 1;
+        	arg.arg1 = competition.contestData.tcDirectProjectId;
         	_ws.createContest(arg);
         }
         
         private function createContestHandler(event:CreateContestResultEvent):void{
         	this.competition = event.result._return;
+        	
+        	var type:CompetionType = new CompetionType();
+        	type.competionType = "STUDIO";
+        	this.competition.type = type;
         }
         
         private function updateContest():void{
