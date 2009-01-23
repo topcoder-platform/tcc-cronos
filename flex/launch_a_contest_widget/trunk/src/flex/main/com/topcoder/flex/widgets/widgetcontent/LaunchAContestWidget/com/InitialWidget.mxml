@@ -92,7 +92,8 @@
                     	mainWidget.competition.creatorUserId = 3;
                     	mainWidget.competition.drPoints = 100;
                     	mainWidget.competition.contestData.drPoints = 100;
-                    	mainWidget.competition.contestData.projectId = id;
+			// dont set project id
+                    	//mainWidget.competition.contestData.projectId = id;
                     	mainWidget.competition.contestData.tcDirectProjectId = id;
                     	mainWidget.competition.contestData.contestId = -1;
                     	mainWidget.competition.contestData.creatorUserId = 3;
