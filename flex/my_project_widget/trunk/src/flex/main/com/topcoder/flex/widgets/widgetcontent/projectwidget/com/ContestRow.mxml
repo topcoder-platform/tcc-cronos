@@ -151,10 +151,29 @@
         		p=p.parent;
         	}
         	if(p==null)return ;
-        	prjCt=p as ProjectsContainer;
-        	var dict:Dictionary=new Dictionary();
-        	dict["contestid"]=_ContextId;
-        	prjCt.widgetFramework.addWidgetEx("Contest Monitor","Contest Monitor",dict );
+        	
+		prjCt=p as ProjectsContainer;
+		var dict:Dictionary=new Dictionary();
+		dict["contestid"]=_ContextId;
+		prjCt.widgetFramework.addWidgetEx("Contest Monitor","Contest Monitor",dict );
+        	
+	}
+	
+	private function showSubmission():void
+        {
+        	var prjCt:ProjectsContainer;
+        	var p:DisplayObjectContainer=parent;
+        	while(p!=null){
+        		if(p is ProjectsContainer)break;
+        		p=p.parent;
+        	}
+        	if(p==null)return ;
+		if(parseInt(submissions)>0){
+			prjCt=p as ProjectsContainer;
+			var dict:Dictionary=new Dictionary();
+			dict["contestid"]=_ContextId;
+			prjCt.widgetFramework.addWidgetEx("Submission Viewer","Submission Viewer",dict );
+		}
 	}
 
 	/**
@@ -188,7 +207,7 @@
 		<mx:Text width="100%" styleName="rowContentLabel" id="lblRegistrants" />
 		<mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle">
 			<mx:Text width="100%" styleName="rowContentLabel" id="lblSubmissions" />
-			<mx:LinkButton styleName="viewBtn" label="View" labelPlacement="bottom" id="lnkSubmissions"/> 
+			<mx:LinkButton styleName="viewBtn" label="View" labelPlacement="bottom" id="lnkSubmissions" click="showSubmission()"/> 
 		</mx:VBox>
 		<mx:VBox width="100%" styleName="bottomAlign">
 			<mx:Text width="100%"   styleName="rowContentLabel" id="lblForumPosts" />
