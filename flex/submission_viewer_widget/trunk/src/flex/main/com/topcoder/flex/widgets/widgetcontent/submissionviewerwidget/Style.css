@@ -59,7 +59,7 @@
 }
 
 .purchaseLogo {
-	/* background-image: Embed("../assets/purchase.png"); */
+	background-image: Embed("../assets/purchase.png"); 
 }
 
 .priorBtn {

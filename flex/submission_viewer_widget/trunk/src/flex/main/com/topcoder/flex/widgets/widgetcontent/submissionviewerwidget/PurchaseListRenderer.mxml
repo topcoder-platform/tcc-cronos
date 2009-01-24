@@ -9,8 +9,8 @@
 				} else {
 					temp += "Cost: $";
 				}
-				if (dta.hasOwnProperty("purchase")) {
-					return temp + dta.purchase;
+				if (dta.hasOwnProperty("price")) {
+					return temp + dta.price;
 				} else {
 					return "";
 				}

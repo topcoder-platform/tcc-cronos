@@ -7,16 +7,16 @@
 					return "";
 				}
 				var temp:String = "";
-				if (dta.hasOwnProperty("size")) {
-					down.label = "Download " + dta.size;
-				}
+				//if (dta.hasOwnProperty("size")) {
+					down.label = "Download: SIZE NOT IN SCOPE"
+				//}
 				if (dta.hasOwnProperty("purchased") && dta.purchased == true) {
 					temp += "Prize: $";
 				} else {
 					temp += "Cost: $";
 				}
-				if (dta.hasOwnProperty("purchase")) {
-					return temp + dta.purchase;
+				if (dta.hasOwnProperty("price")) {
+					return temp + dta.price;
 				} else {
 					return "";
 				}
@@ -31,6 +31,18 @@
 				} else {
 					return "Purchase: No";
 				}
+			}
+			
+			private function download(url:String, id:String):void {
+				trace("Submission id @ download: " + id);
+				
+				if (!url) {
+					url = "http://174.129.135.92:8003/direct/cockpit/impersonation/cockpitStudio.do?&sbmid=" + id + "&sbt=original";
+				}
+				var request:URLRequest = new URLRequest(url);
+				var fileRef:FileReference = new FileReference();
+				fileRef.download(request);
+
 			}
 		]]>
 	</mx:Script>
@@ -51,6 +63,6 @@
 		<mx:Label styleName="normalText" />
 		<mx:Text width="100%" textAlign="left" styleName="text" 
 				htmlText="Lorem ipsum dolor sit amet, et refoveo velit, populus cogo. Jugis ventosus suscipit ut nulla quibus, luptatum transverbero. &lt;br&gt;- Haero ea, loquor vereor. &lt;br&gt;- Ea ibidem valetudo validus foras vero ullamcorper." />
-		<mx:Button id="down" styleName="SaveContinueButtonStyle" />
+		<mx:Button id="down" styleName="SaveContinueButtonStyle" click="{download(data.submissionContent, data.id)}" />
 	</mx:VBox>
 </mx:HBox>

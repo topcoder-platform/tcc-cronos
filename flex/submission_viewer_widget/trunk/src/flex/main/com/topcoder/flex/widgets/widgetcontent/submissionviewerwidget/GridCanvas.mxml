@@ -13,14 +13,14 @@
 				if (value) {
 					var item:Object = new Object();
 					item.add = "Taxes";
-					item.purchase = 0;
+					item.price = 0;
 					var total:Object = new Object();
 					total.add = "TOTAL COST";
-					total.purchase = 0;
+					total.price = 0;
 					for each (var i:Object in value) {
 						_list.addItem(i);
-						if (i.hasOwnProperty("purchase")) {
-							total.purchase += i.purchase;
+						if (i.hasOwnProperty("price") && i.price > 0) {
+							total.price += i.price;
 						}
 					}
 					_list.addItem(item);

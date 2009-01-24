@@ -6,6 +6,6 @@
 			width="25" height="26" textAlign="center" />
 	<mx:Label id="content" width="100%" textAlign="center" text="{data.id}" bottom="0" 
 			fontWeight="bold" fontFamily="Arial" fontSize="12" />
-	<mx:Canvas width="18" height="19" backgroundSize="100%" backgroundImage="./assets/purchase.png" bottom="0" right="0" 
+	<mx:Canvas width="18" height="19" backgroundSize="100%" bottom="0" right="0" 
 			styleName="purchaseLogo" visible="{data.purchased == true}" />
 </mx:Canvas>

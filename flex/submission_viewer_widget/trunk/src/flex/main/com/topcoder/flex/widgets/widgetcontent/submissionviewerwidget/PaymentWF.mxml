@@ -14,9 +14,10 @@
 				var inputs:Array = [cardNum, cardname, address, city, state, code, country, phone, email];
 				var model:Model = Model.instance;
 				if (byPass.selected) {
-					 for each (var target:TextInput in inputs) {
+					for each (var target:TextInput in inputs) {
 						removeValidate(target);
 					} 
+					
 					if (doValidate(order)) {
 						model.purchaseOrder = order.text;
 						return 3;

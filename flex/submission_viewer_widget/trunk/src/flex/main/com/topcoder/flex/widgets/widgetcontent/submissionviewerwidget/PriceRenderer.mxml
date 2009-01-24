@@ -3,8 +3,8 @@
 	<mx:Script>
 		<![CDATA[
 			private function getRemove(dat:Object):Boolean {
-				if (dat.hasOwnProperty("purchase")) {
-					purchase.text = "$" + moneyFormatter.format(dat.purchase);
+				if (dat.hasOwnProperty("price")) {
+					purchase.text = "$" + moneyFormatter.format(dat.price);
 				}
 				if (dat.hasOwnProperty("rank") && dat.rank != null || dat.hasOwnProperty("add")) {
 					removeMe.includeInLayout = false;
