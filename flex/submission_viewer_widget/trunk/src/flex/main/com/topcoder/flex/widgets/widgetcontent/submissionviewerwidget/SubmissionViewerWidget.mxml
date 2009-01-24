@@ -160,12 +160,17 @@
                 if(event!=null && event.result!=null)
                 {
                 	var contests:ArrayCollection= event.result as ArrayCollection;
+                	var selectIdx:int=-1;
                 	for(var i:int=0 ;i< contests.length;i++)
                 	{
                 		var contestInfo:Dictionary=new Dictionary();
                 		var item:*=contests[i];
                 		contestInfo.name=item.contestData.name;
                 		contestInfo.id=item.competitionId;
+                		if(contestInfo.id==this.defaultcontestid)
+                		{
+                			selectIdx=i;
+                		}
                 		contestInfo.statusId=item.contestData.statusId;
                 		
                 		trace("Contest id: " + contestInfo.id);
@@ -181,6 +186,8 @@
                 	}
 
                 	doFilter();
+                	contestCombo.selectedIndex=selectIdx;
+                	contestlist2.selectedIndex=selectIdx;
                 }
             }
             
@@ -1191,7 +1198,7 @@ wsdl="{contestServiceFacadeWsdl}">
             <mx:Image source="@Embed('../assets/select_a_project.png')"/>
             <mx:Text text="Select a contest:" fontWeight="bold"/>
         </mx:HBox>
-        <mx:ComboBox width="240" labelField="name" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{_contestList}"
+        <mx:ComboBox id="contestlist2" width="240" labelField="name" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{_contestList}"
         	 change="handleContest()"/>
         <mx:HRule width="100%" strokeColor="#000000"/>
         <mx:HBox width="100%" >

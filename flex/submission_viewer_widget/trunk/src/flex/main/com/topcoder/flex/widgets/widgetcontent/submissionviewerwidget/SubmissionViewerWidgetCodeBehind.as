@@ -285,6 +285,21 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * @throws ArgumentError if the input is null.
          */
         public function setAttributes(map:Dictionary):void {
+        	
+        	if(map["contestid"])
+        	{
+        		_defaultcontestid=map["contestid"];
+        	}
+        }
+        
+        /**
+         * The default contest id.
+         */
+        private var _defaultcontestid:int = 0;
+        
+        public function get defaultcontestid():int
+        {
+        	return _defaultcontestid;
         }
 
 	/**
