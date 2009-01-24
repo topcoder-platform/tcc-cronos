@@ -95,6 +95,7 @@
 		         
             	main.height=0;
             	main.width=0;
+            	main.visible=false;
             	this.parent.width=370;
             }
 
@@ -155,6 +156,9 @@
             
             [Bindable] 
             private var activeSubmission:ArrayCollection = new ArrayCollection();
+            
+            [Bindable] 
+            private var activeSubmissionForMin:ArrayCollection = new ArrayCollection();
             private function handleResult(event:ResultEvent=null):void {
                 _contestInfoList = new ArrayCollection();
                 if(event!=null && event.result!=null)
@@ -166,7 +170,7 @@
                 		var contestInfo:Dictionary=new Dictionary();
                 		var item:*=contests[i];
                 		contestInfo.name=item.contestData.name;
-                		contestInfo.id=item.competitionId;
+                		contestInfo.id=item.contestData.contestId;
                 		if(contestInfo.id==this.defaultcontestid)
                 		{
                 			selectIdx=i;
@@ -252,6 +256,13 @@
                 		trace("Submission rank: " + sub.rank);
                 		trace("Submission markedForPurchase: " + sub.markedForPurchase);
                 	}
+                }
+                
+                
+                setSubmissionForMin();
+                if(!main.visible)
+                {
+                	return ;
                 }
                 
                 // if there are no submissions then show no-submision screen.
@@ -428,8 +439,16 @@
                 hideShowUpDownArrow();
             }
             
+            private function setSubmissionForMin():void {
+                activeSubmissionForMin = new ArrayCollection();
+                for (var i:int = 0; i < _submissionList.length && i<14; i++) {
+                	 activeSubmissionForMin.addItem(_submissionList.getItemAt(i));
+                }
+                
+            }
+            
             private function hideShowUpDownArrow():void {
-            	if (list.dataProvider.length > 0) {
+            	if (list.dataProvider && list.dataProvider.length > 0) {
                 	up.visible = (currentIndex > 0);
                 	down.visible = (list.dataProvider[list.dataProvider.length - 1].id != _submissionList.getItemAt(_submissionList.length - 1).id);
              	}              
@@ -554,9 +573,9 @@
             
             private function handleContest():void {
             	contestRankingErrorLbl.visible=false;
-            	
-                 if (contestCombo && contestCombo.selectedItem) {
+                 if (main.height>1 && contestCombo && contestCombo.selectedItem) {
                 	_selectedContestId=contestCombo.selectedItem.id;
+                	
                 	var statusId:int = _contestInfoDictionary[_selectedContestId].statusId;
                 	_selectedContestStatusId = statusId;
                     _selectedContestStatus = _statusTypeDictionary[statusId].name;
@@ -597,13 +616,23 @@
 	                	}
                 	}
                 	
-                	if(_submissionList)_submissionList.removeAll();
+                	
+                	
+                 }
+                 else if(main.height<1  && contestlist2 && contestlist2.selectedItem){
+                 	_selectedContestId=contestlist2.selectedItem.id;
+                 }
+                 
+                 if(_submissionList)_submissionList.removeAll();
                 	var header:SOAPHeader=getHeader(username,password);
 					ContestServiceFacadeBean.clearHeaders();
             		ContestServiceFacadeBean.addHeader(header);
 
             		ContestServiceFacadeBean.retrieveSubmissionsForContest.send();
-                }
+                 
+                 
+                	
+               
 
             }
             
@@ -1203,12 +1232,12 @@ wsdl="{contestServiceFacadeWsdl}">
         <mx:HRule width="100%" strokeColor="#000000"/>
         <mx:HBox width="100%" >
             <mx:Text text="Total Submissions:" fontWeight="bold"/>
-            <mx:Text text="{activeSubmission.length}" id="SubNum" />
+            <mx:Text text="{activeSubmissionForMin.length}" id="SubNum" />
         </mx:HBox>
         <mx:VBox id="tb" width="100%" >
             <mx:TileList rowCount="7" width="100%" columnCount="2"
 		                        selectionDuration="0"
-		                        dataProvider="{activeSubmission}" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer" itemsChangeEffect="{myDTLE}"
+		                        dataProvider="{activeSubmissionForMin}" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer" itemsChangeEffect="{myDTLE}"
 		                        verticalScrollPolicy="off" horizontalScrollPolicy="off" borderStyle="none"
 		                        click="maximize()" allowMultipleSelection="false" allowDragSelection="false"/>
 		                
