@@ -17,9 +17,11 @@
         ]]>
     </mx:Script>
     
-    <mx:Label text="This is where the content will be...">
-    
-    </mx:Label>
+    <mx:Canvas backgroundColor="#a8a8a8" width="100%" height="100%" >
+
+	    <mx:Image source="../assets/getting_started.jpg"  width="100%" height="100%" />
+    	
+    </mx:Canvas>
 
     
 </tc:GettingStartedWidgetCodeBehind>
