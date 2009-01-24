@@ -3,6 +3,11 @@
 	<mx:Script>
 		<![CDATA[
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
+			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+		
+			 [Bindable]
+       		public var mainWidget:LaunchWidget;
+       		
 			[Bindable]
 			private var model:Model = Model.instance;
 			public function showApproval():void {
@@ -72,7 +77,7 @@
 		
 	</mx:HBox>
 	<mx:HBox horizontalAlign="center" width="100%" id="btPanel" visible="false" paddingTop="40">
-		<mx:Button label="Create Another Contest" cornerRadius="13" />
-		<mx:Button label="Close" cornerRadius="13" />
+		<mx:Button label="Create Another Contest" cornerRadius="13" click="this.mainWidget.resetWidget()"/>
+		<mx:Button label="Close" cornerRadius="13" click="this.mainWidget.closeWidget()"/>
 	</mx:HBox>
 </mx:VBox>

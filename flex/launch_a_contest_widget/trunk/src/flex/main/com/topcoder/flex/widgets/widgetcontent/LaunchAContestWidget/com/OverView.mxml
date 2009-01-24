@@ -26,6 +26,10 @@
         	
         	var inputsMap:Object = {1:firstPlace, 2:secondPlace, 3:thirdPlace, 4:fourthPlace, 5:fifthPlace};
         	
+        	for each(var inptName:String in inputs){
+        		this[inptName].text = "";
+        	}
+        	
         	for each (var prize:PrizeData in mainWidget.competition.contestData.prizes){
         		var p:int = prize.place as int;
         		var input:TextInput = inputsMap[p] as TextInput;
@@ -128,6 +132,9 @@
         
         private function preprocessTypes(e:ResultEvent): void
         {
+        	studioTypeBox.removeAllChildren();
+        	studioType.selection = null;
+        	
         	var contestType:String = mainWidget.competition.contestData.contestTypeId.toString();
         	
         	if(e!=null && e.result!=null && e.result is XMLNode)

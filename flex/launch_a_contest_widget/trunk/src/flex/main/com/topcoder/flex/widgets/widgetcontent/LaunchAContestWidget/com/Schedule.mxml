@@ -8,6 +8,8 @@
             public var mainWidget:LaunchWidget;
             
             public function initData():void{
+            	termCheckBox.selected = false;
+            	
             	var startDate:Date = null;
             	var endDate:Date = null;
             	
@@ -85,8 +87,11 @@
             }
             
             private function updateData():void{
-            	var startDate:String = DateUtil.toString(getAssembleDate(dfStart, CmbHourStart, CmbMinuteStart, AMPMStart));
-            	var endDate:String = DateUtil.toString(getAssembleDate(dfEnd, CmbHourEnd, CmbMinuteEnd, AMPMEnd));
+            	var start:Date = getAssembleDate(dfStart, CmbHourStart, CmbMinuteStart, AMPMStart);
+            	var end:Date = getAssembleDate(dfEnd, CmbHourEnd, CmbMinuteEnd, AMPMEnd);
+            	
+            	var startDate:String = DateUtil.toString(start);
+            	var endDate:String = DateUtil.toString(end);
             	
             	mainWidget.competition.startTime = startDate;
             	mainWidget.competition.endTime = endDate;
@@ -97,10 +102,14 @@
             	mainWidget.competition.contestData.winnerAnnoucementDeadline = endDate;
             	
             	mainWidget.competition.contestData.launchImmediately = launchCheckBox.selected;
+            	mainWidget.competition.contestData.durationInHours  = Number(((end.time - start.time) / 3600000).toFixed(0));
             }
             
             private function setTimeControl(hourComb:ComboBox, minuteComb:ComboBox, ampm:RadioButtonGroup, date:Date):void{
             	if (date == null){
+            		hourComb.selectedIndex = 0;
+            		minuteComb.selectedIndex = 0;
+            		ampm.selectedValue = "AM";
             		return;
             	}
             	

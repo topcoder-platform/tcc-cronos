@@ -5,48 +5,48 @@
 */
 package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated
 {
-    import mx.utils.ObjectProxy;
-    import flash.events.Event;
-    import flash.utils.ByteArray;
-    import mx.rpc.soap.types.*;
-    /**
-     * Typed event handler for the result of the operation
-     */
+	import mx.utils.ObjectProxy;
+	import flash.events.Event;
+	import flash.utils.ByteArray;
+	import mx.rpc.soap.types.*;
+	/**
+	 * Typed event handler for the result of the operation
+	 */
     
-    public class CreateContestPaymentResultEvent extends Event
-    {
-        /**
-         * The event type value
-         */
-        public static var CreateContestPayment_RESULT:String="CreateContestPayment_result";
-        /**
-         * Constructor for the new event type
-         */
-        public function CreateContestPaymentResultEvent()
-        {
-            super(CreateContestPayment_RESULT,false,false);
-        }
+	public class CreateContestPaymentResultEvent extends Event
+	{
+		/**
+		 * The event type value
+		 */
+		public static var CreateContestPayment_RESULT:String="CreateContestPayment_result";
+		/**
+		 * Constructor for the new event type
+		 */
+		public function CreateContestPaymentResultEvent()
+		{
+			super(CreateContestPayment_RESULT,false,false);
+		}
         
-        private var _headers:Object;
-        private var _result:CreateContestPaymentResponse;
-         public function get result():CreateContestPaymentResponse
-        {
-            return _result;
-        }
-        
-        public function set result(value:CreateContestPaymentResponse):void
-        {
-            _result = value;
-        }
+		private var _headers:Object;
+		private var _result:CreateContestPaymentResponse;
+		public function get result():CreateContestPaymentResponse
+		{
+			return _result;
+		}
 
-        public function get headers():Object
-	    {
-            return _headers;
-	    }
-			
-	    public function set headers(value:Object):void
-	    {
-            _headers = value;
-	    }
-    }
+		public function set result(value:CreateContestPaymentResponse):void
+		{
+			_result = value;
+		}
+
+		public function get headers():Object
+		{
+			return _headers;
+		}
+
+		public function set headers(value:Object):void
+		{
+			_headers = value;
+		}
+	}
 }

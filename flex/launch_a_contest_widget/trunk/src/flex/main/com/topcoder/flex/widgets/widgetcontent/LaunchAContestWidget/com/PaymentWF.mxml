@@ -9,7 +9,11 @@
 			import mx.controls.Alert;
 			import mx.events.ValidationResultEvent;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
-			
+			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+		
+			 [Bindable]
+       		public var mainWidget:LaunchWidget;
+       		
 			public function saveData():int {
 				var inputs:Array = [cardname, address, city, state, code, country, phone, email];
 				var model:Model = Model.instance;
@@ -200,8 +204,8 @@
 					<mx:Text width="100%" text="Want to add another contest? Save this contest as a draft and pay for all of your contest at once." styleName="content" />
 					<mx:Spacer width="100%" height="100%" />
 					<mx:HBox width="100%" horizontalAlign="center">
-						<mx:Button label="Save as Draft" cornerRadius="13" />
-						<mx:Button label="Add A Contest" cornerRadius="13" />
+						<mx:Button label="Save as Draft" cornerRadius="13" click="this.mainWidget.saveAsDraft()"/>
+						<mx:Button label="Add A Contest" cornerRadius="13" click="this.mainWidget.resetWidget()"/>
 					</mx:HBox>
 				</mx:VBox>
 				<mx:HBox verticalAlign="middle" width="100%" paddingRight="8">

@@ -79,6 +79,10 @@
 	        private var currentDoc:UploadedDocument;
 	        
 	        public function initData():void{
+	        	uploadFilesVBox.removeAllChildren();
+	        	
+	        	fileToUpload.htmlText = "";
+	        	
 	        	docUploads = this.mainWidget.competition.contestData.documentationUploads;
 	        	if (docUploads == null){
 	        		docUploads = new Array();	
@@ -317,7 +321,11 @@
            </mx:htmlText>
         </mx:Text>
         <mx:Spacer height="5"/>
-        <mx:VBox paddingLeft="10" id="uploadFilesVBox">
+        <mx:VBox paddingLeft="10">
+        	<mx:VBox width="100%" id="uploadFilesVBox">
+        		
+        		
+        	</mx:VBox>
 		    
             <mx:VBox width="100%" verticalGap="0">
 	            <mx:HBox >

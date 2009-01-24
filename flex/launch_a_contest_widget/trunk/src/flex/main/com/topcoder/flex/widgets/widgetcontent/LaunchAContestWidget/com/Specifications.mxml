@@ -20,20 +20,26 @@
             
             
             public function initData():void{
+            	colorInput.text="";
+				fontInput.text="";
+				sizeInput.text="";
+				addReInput.text="";	
+				fileFormatInput.text="";
+				
             	var formatStr:String = this.mainWidget.competition.contestData.finalFileFormat;
-            	if (formatStr!=null){
-            		if (formatStr.indexOf("psd")>=0){
-            			this.psdChb.selected = true;
-            		}
-            		
-            		if (formatStr.indexOf("ai")>=0){
-            			this.aiChb.selected = true;
-            		}
-            		
-            		if (formatStr.indexOf("eps")>=0){
-            			this.epsChb.selected = true;
-            		}
+            	if (formatStr == null){
+            		formatStr = "";
             	}
+            		
+            		this.psdChb.selected = (formatStr.indexOf("psd")>=0);
+            		this.aiChb.selected = (formatStr.indexOf("ai")>=0);
+            		this.epsChb.selected = (formatStr.indexOf("eps")>=0);
+            	
+            	colorInput.text=this.mainWidget.competition.contestData.requiredOrRestrictedColors;
+				fontInput.text=this.mainWidget.competition.contestData.requiredOrRestrictedFonts;
+				sizeInput.text=this.mainWidget.competition.contestData.sizeRequirements;
+				addReInput.text=this.mainWidget.competition.contestData.otherRequirementsOrRestrictions;	
+				fileFormatInput.text=this.mainWidget.competition.contestData.otherFileFormats;
             }
             
             private function updateData():void{
@@ -157,7 +163,7 @@
                 <mx:text>
                 </mx:text>
             </mx:Text>
-            <mx:RichTextEditor id="colorInput" width="500" height="150" text="{this.mainWidget.competition.contestData.requiredOrRestrictedColors}"/>
+            <mx:TextArea id="colorInput" width="500" height="50"/>
         </mx:VBox>
         <mx:Spacer height="5"/>
         <mx:VBox width="100%" verticalGap="0">
@@ -170,7 +176,7 @@
                 <mx:text>
                 </mx:text>
             </mx:Text>
-            <mx:RichTextEditor id="fontInput" width="500" height="150" text="{this.mainWidget.competition.contestData.requiredOrRestrictedFonts}"/>
+            <mx:TextArea id="fontInput" width="500" height="50"/>
         </mx:VBox>
         <mx:Spacer height="5"/>
         <mx:VBox width="100%" verticalGap="0">
@@ -183,7 +189,7 @@
                 <mx:text>
                 </mx:text>
             </mx:Text>
-            <mx:RichTextEditor id="sizeInput" width="500" height="150" text="{this.mainWidget.competition.contestData.sizeRequirements}"/>
+            <mx:TextArea id="sizeInput" width="500" height="50"/>
         </mx:VBox>
         <mx:Spacer height="5"/>
         <mx:VBox width="100%" verticalGap="0">
@@ -196,7 +202,7 @@
                 <mx:text>
                 </mx:text>
             </mx:Text>
-            <mx:RichTextEditor id="addReInput" width="500" height="150" text="{this.mainWidget.competition.contestData.otherRequirementsOrRestrictions}"/>
+            <mx:TextArea id="addReInput" width="500" height="50"/>
         </mx:VBox>
         <mx:Spacer height="10"/>
         <mx:Label text="Final File Formats" fontWeight="bold" fontSize="12"/>
@@ -216,7 +222,7 @@
                     Please list any other file formats you may need that is not listed above.
                 </mx:text>
             </mx:Text>
-            <mx:RichTextEditor id="fileFormatInput" width="480" height="150" text="{this.mainWidget.competition.contestData.otherFileFormats}"/>
+            <mx:TextArea id="fileFormatInput" width="480" height="50"/>
         </mx:VBox>
         
     </mx:VBox>

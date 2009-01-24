@@ -24,10 +24,6 @@
 	        public var contentTitleStr:String;
 	        public var IntroductionStr:String;
 	        public var glsInputStr:String;
-	        public var audInputStr:String;
-	        public var gdInputStr:String;
-	        public var lkInputStr:String;
-	        public var crtInputStr:String;
 	        //step4 data
 	        public var colorInputStr:String;
 	        public var fontInputStr:String;
@@ -59,10 +55,6 @@
 	        	ctInput.text = contentTitleStr;
 	        	introInput.text = IntroductionStr;
 	        	glsInput.text = glsInputStr;
-	        	audInput.text = audInputStr;
-	        	gdInput.text = gdInputStr;
-                lkInput.text = lkInputStr;
-                crtInput.text = crtInputStr;
                 
                 colorInput.text = colorInputStr;
                 fontInput.text = fontInputStr;
@@ -228,22 +220,6 @@
             <mx:Spacer height="5"/>
             <mx:Label text="What are the primary goals for this design?" fontWeight="bold"/>
             <mx:Text id="glsInput" width="500" height="50" text="test" />
-            <mx:Spacer height="5"/>
-            <mx:Label text="Who is your target audience?" fontWeight="bold"/>
-            <mx:Text id="audInput" width="500" height="50" text="test" />
-            <mx:Spacer height="5"/>
-            <mx:Label text="Does this project have any brand guidelines?" fontWeight="bold"/>
-            <mx:Text id="gdInput" width="500" height="50" text="test" />
-            <mx:Spacer height="5"/>
-            <mx:Label fontWeight="bold">
-                <mx:text>
-                    <![CDATA[Are there designs, websites, etc. that you like and/or dislike? Why?]]>
-                </mx:text>
-            </mx:Label>
-            <mx:Text text="test" id="lkInput" width="500" height="50" />
-            <mx:Spacer height="5"/>
-            <mx:Label text="What criteria must the designers meet to win this contest?" fontWeight="bold"/>
-            <mx:Text id="crtInput" width="500" height="50" text="test" />
 
             <mx:HBox width="100%">
                 <mx:Spacer width="515"/>

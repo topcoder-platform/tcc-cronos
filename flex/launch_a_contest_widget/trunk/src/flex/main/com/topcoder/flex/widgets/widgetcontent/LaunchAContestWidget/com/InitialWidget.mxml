@@ -42,7 +42,7 @@
             	_projectServiceFacadeWsdl=url;
             }
             */
-            private function init():void{
+            public function init():void{
             	//mainWidget._ws.addgetAllContestHeadersEventListener(loadContestsHandler);
             	
             	//mainWidget._ws.getAllContestHeaders(new GetAllContestHeaders());
@@ -64,6 +64,15 @@
             		mainWidget.tcDirectProjectId=e.result._return.projectId.toString();
             		createContestAndContinue(e.result._return.projectId);
             	}
+            	mainWidget._ws.getAllContestHeaders(new GetAllContestHeaders());
+            	
+                selectContests.dataProvider = contestsData;
+                
+                this.prjInput.text = "";
+                this.selectContests.selectedIndex = 0;
+                this.introInput.text = "";
+                this.percentHeight = 100;
+                this.percentWidth = 100;
             }
             
             private function loadContestsHandler(e:GetAllProjectsResultEvent):void{
@@ -104,8 +113,7 @@
                     	mainWidget.competition.contestData.requiresPreviewFile = false;
                     	mainWidget.competition.contestData.maximumSubmissions = 10;
                     	mainWidget.competition.contestData.submissionCount = 0;
-                    	mainWidget.competition.contestData.contestChannelId = 1;
-                    	mainWidget.competition.contestData.durationInHours = 10;
+                    	mainWidget.competition.contestData.contestChannelId = 2;
                     	mainWidget.competition.contestData.eligibility = "some text";
 			mainWidget.competition.contestData.media = new Array();
                     	

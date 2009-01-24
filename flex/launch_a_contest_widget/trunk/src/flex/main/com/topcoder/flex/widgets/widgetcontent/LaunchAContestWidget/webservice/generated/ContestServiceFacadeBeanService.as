@@ -1,4 +1,3 @@
-
 /**
  * ContestServiceFacadeBeanServiceService.as
  * This file was auto-generated from WSDL by the Apache Axis2 generator modified by Adobe
@@ -28,7 +27,8 @@
   * Then call the operation for which you have set the request wrapper value above, like this:
   * <mx:Button id="myButton" label="Call operation" click="myService.addChangeHistory_send()" />
   */
- package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated{
+package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated
+{
 	import mx.rpc.AsyncToken;
 	import flash.events.EventDispatcher;
 	import mx.rpc.events.ResultEvent;
@@ -391,14 +391,13 @@
 		 * @private
 		 */
         private function _addChangeHistory_populate_results(event:ResultEvent):void
-        {
-        var e:AddChangeHistoryResultEvent = new AddChangeHistoryResultEvent();
+		{
+			var e:AddChangeHistoryResultEvent = new AddChangeHistoryResultEvent();
 		            e.result = event.result as AddChangeHistoryResponse;
 		                       e.headers = event.headers;
 		             addChangeHistory_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the addDocumentToContest operation
           
@@ -476,14 +475,13 @@
 		 * @private
 		 */
         private function _addDocumentToContest_populate_results(event:ResultEvent):void
-        {
-        var e:AddDocumentToContestResultEvent = new AddDocumentToContestResultEvent();
+		{
+			var e:AddDocumentToContestResultEvent = new AddDocumentToContestResultEvent();
 		            e.result = event.result as AddDocumentToContestResponse;
 		                       e.headers = event.headers;
 		             addDocumentToContest_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the createContest operation
           
@@ -561,14 +559,13 @@
 		 * @private
 		 */
         private function _createContest_populate_results(event:ResultEvent):void
-        {
-        var e:CreateContestResultEvent = new CreateContestResultEvent();
+		{
+			var e:CreateContestResultEvent = new CreateContestResultEvent();
 		            e.result = event.result as CreateContestResponse;
 		                       e.headers = event.headers;
 		             createContest_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the createContestPayment operation
           
@@ -646,14 +643,13 @@
 		 * @private
 		 */
         private function _createContestPayment_populate_results(event:ResultEvent):void
-        {
-        var e:CreateContestPaymentResultEvent = new CreateContestPaymentResultEvent();
+		{
+			var e:CreateContestPaymentResultEvent = new CreateContestPaymentResultEvent();
 		            e.result = event.result as CreateContestPaymentResponse;
 		                       e.headers = event.headers;
 		             createContestPayment_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the deleteContest operation
           
@@ -731,14 +727,13 @@
 		 * @private
 		 */
         private function _deleteContest_populate_results(event:ResultEvent):void
-        {
-        var e:DeleteContestResultEvent = new DeleteContestResultEvent();
+		{
+			var e:DeleteContestResultEvent = new DeleteContestResultEvent();
 		            e.result = event.result as DeleteContestResponse;
 		                       e.headers = event.headers;
 		             deleteContest_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the editContestPayment operation
           
@@ -816,14 +811,13 @@
 		 * @private
 		 */
         private function _editContestPayment_populate_results(event:ResultEvent):void
-        {
-        var e:EditContestPaymentResultEvent = new EditContestPaymentResultEvent();
+		{
+			var e:EditContestPaymentResultEvent = new EditContestPaymentResultEvent();
 		            e.result = event.result as EditContestPaymentResponse;
 		                       e.headers = event.headers;
 		             editContestPayment_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the getAllContestHeaders operation
           
@@ -901,14 +895,13 @@
 		 * @private
 		 */
         private function _getAllContestHeaders_populate_results(event:ResultEvent):void
-        {
-        var e:GetAllContestHeadersResultEvent = new GetAllContestHeadersResultEvent();
+		{
+			var e:GetAllContestHeadersResultEvent = new GetAllContestHeadersResultEvent();
 		            e.result = event.result as GetAllContestHeadersResponse;
 		                       e.headers = event.headers;
 		             getAllContestHeaders_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the getAllContestTypes operation
           
@@ -986,14 +979,13 @@
 		 * @private
 		 */
         private function _getAllContestTypes_populate_results(event:ResultEvent):void
-        {
-        var e:GetAllContestTypesResultEvent = new GetAllContestTypesResultEvent();
+		{
+			var e:GetAllContestTypesResultEvent = new GetAllContestTypesResultEvent();
 		            e.result = event.result as GetAllContestTypesResponse;
 		                       e.headers = event.headers;
 		             getAllContestTypes_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the getAllContests operation
           
@@ -1071,14 +1063,13 @@
 		 * @private
 		 */
         private function _getAllContests_populate_results(event:ResultEvent):void
-        {
-        var e:GetAllContestsResultEvent = new GetAllContestsResultEvent();
+		{
+			var e:GetAllContestsResultEvent = new GetAllContestsResultEvent();
 		            e.result = event.result as GetAllContestsResponse;
 		                       e.headers = event.headers;
 		             getAllContests_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the getAllMediums operation
           
@@ -1156,14 +1147,13 @@
 		 * @private
 		 */
         private function _getAllMediums_populate_results(event:ResultEvent):void
-        {
-        var e:GetAllMediumsResultEvent = new GetAllMediumsResultEvent();
+		{
+			var e:GetAllMediumsResultEvent = new GetAllMediumsResultEvent();
 		            e.result = event.result as GetAllMediumsResponse;
 		                       e.headers = event.headers;
 		             getAllMediums_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the getChangeHistory operation
           
@@ -1241,14 +1231,13 @@
 		 * @private
 		 */
         private function _getChangeHistory_populate_results(event:ResultEvent):void
-        {
-        var e:GetChangeHistoryResultEvent = new GetChangeHistoryResultEvent();
+		{
+			var e:GetChangeHistoryResultEvent = new GetChangeHistoryResultEvent();
 		            e.result = event.result as GetChangeHistoryResponse;
 		                       e.headers = event.headers;
 		             getChangeHistory_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the getContest operation
           
@@ -1326,14 +1315,13 @@
 		 * @private
 		 */
         private function _getContest_populate_results(event:ResultEvent):void
-        {
-        var e:GetContestResultEvent = new GetContestResultEvent();
+		{
+			var e:GetContestResultEvent = new GetContestResultEvent();
 		            e.result = event.result as GetContestResponse;
 		                       e.headers = event.headers;
 		             getContest_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the getContestPayment operation
           
@@ -1411,14 +1399,13 @@
 		 * @private
 		 */
         private function _getContestPayment_populate_results(event:ResultEvent):void
-        {
-        var e:GetContestPaymentResultEvent = new GetContestPaymentResultEvent();
+		{
+			var e:GetContestPaymentResultEvent = new GetContestPaymentResultEvent();
 		            e.result = event.result as GetContestPaymentResponse;
 		                       e.headers = event.headers;
 		             getContestPayment_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the getContestsForClient operation
           
@@ -1496,14 +1483,13 @@
 		 * @private
 		 */
         private function _getContestsForClient_populate_results(event:ResultEvent):void
-        {
-        var e:GetContestsForClientResultEvent = new GetContestsForClientResultEvent();
+		{
+			var e:GetContestsForClientResultEvent = new GetContestsForClientResultEvent();
 		            e.result = event.result as GetContestsForClientResponse;
 		                       e.headers = event.headers;
 		             getContestsForClient_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the getContestsForProject operation
           
@@ -1581,14 +1567,13 @@
 		 * @private
 		 */
         private function _getContestsForProject_populate_results(event:ResultEvent):void
-        {
-        var e:GetContestsForProjectResultEvent = new GetContestsForProjectResultEvent();
+		{
+			var e:GetContestsForProjectResultEvent = new GetContestsForProjectResultEvent();
 		            e.result = event.result as GetContestsForProjectResponse;
 		                       e.headers = event.headers;
 		             getContestsForProject_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the getLatestChanges operation
           
@@ -1666,14 +1651,13 @@
 		 * @private
 		 */
         private function _getLatestChanges_populate_results(event:ResultEvent):void
-        {
-        var e:GetLatestChangesResultEvent = new GetLatestChangesResultEvent();
+		{
+			var e:GetLatestChangesResultEvent = new GetLatestChangesResultEvent();
 		            e.result = event.result as GetLatestChangesResponse;
 		                       e.headers = event.headers;
 		             getLatestChanges_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the getMimeTypeId operation
           
@@ -1751,14 +1735,13 @@
 		 * @private
 		 */
         private function _getMimeTypeId_populate_results(event:ResultEvent):void
-        {
-        var e:GetMimeTypeIdResultEvent = new GetMimeTypeIdResultEvent();
+		{
+			var e:GetMimeTypeIdResultEvent = new GetMimeTypeIdResultEvent();
 		            e.result = event.result as GetMimeTypeIdResponse;
 		                       e.headers = event.headers;
 		             getMimeTypeId_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the getStatusList operation
           
@@ -1836,14 +1819,13 @@
 		 * @private
 		 */
         private function _getStatusList_populate_results(event:ResultEvent):void
-        {
-        var e:GetStatusListResultEvent = new GetStatusListResultEvent();
+		{
+			var e:GetStatusListResultEvent = new GetStatusListResultEvent();
 		            e.result = event.result as GetStatusListResponse;
 		                       e.headers = event.headers;
 		             getStatusList_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the getSubmissionFileTypes operation
           
@@ -1921,14 +1903,13 @@
 		 * @private
 		 */
         private function _getSubmissionFileTypes_populate_results(event:ResultEvent):void
-        {
-        var e:GetSubmissionFileTypesResultEvent = new GetSubmissionFileTypesResultEvent();
+		{
+			var e:GetSubmissionFileTypesResultEvent = new GetSubmissionFileTypesResultEvent();
 		            e.result = event.result as GetSubmissionFileTypesResponse;
 		                       e.headers = event.headers;
 		             getSubmissionFileTypes_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the markForPurchase operation
           
@@ -2006,14 +1987,13 @@
 		 * @private
 		 */
         private function _markForPurchase_populate_results(event:ResultEvent):void
-        {
-        var e:MarkForPurchaseResultEvent = new MarkForPurchaseResultEvent();
+		{
+			var e:MarkForPurchaseResultEvent = new MarkForPurchaseResultEvent();
 		            e.result = event.result as MarkForPurchaseResponse;
 		                       e.headers = event.headers;
 		             markForPurchase_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the processMissingPayments operation
           
@@ -2091,14 +2071,13 @@
 		 * @private
 		 */
         private function _processMissingPayments_populate_results(event:ResultEvent):void
-        {
-        var e:ProcessMissingPaymentsResultEvent = new ProcessMissingPaymentsResultEvent();
+		{
+			var e:ProcessMissingPaymentsResultEvent = new ProcessMissingPaymentsResultEvent();
 		            e.result = event.result as ProcessMissingPaymentsResponse;
 		                       e.headers = event.headers;
 		             processMissingPayments_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the purchaseSubmission operation
           
@@ -2176,14 +2155,13 @@
 		 * @private
 		 */
         private function _purchaseSubmission_populate_results(event:ResultEvent):void
-        {
-        var e:PurchaseSubmissionResultEvent = new PurchaseSubmissionResultEvent();
+		{
+			var e:PurchaseSubmissionResultEvent = new PurchaseSubmissionResultEvent();
 		            e.result = event.result as PurchaseSubmissionResponse;
 		                       e.headers = event.headers;
 		             purchaseSubmission_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the removeContestPayment operation
           
@@ -2261,14 +2239,13 @@
 		 * @private
 		 */
         private function _removeContestPayment_populate_results(event:ResultEvent):void
-        {
-        var e:RemoveContestPaymentResultEvent = new RemoveContestPaymentResultEvent();
+		{
+			var e:RemoveContestPaymentResultEvent = new RemoveContestPaymentResultEvent();
 		            e.result = event.result as RemoveContestPaymentResponse;
 		                       e.headers = event.headers;
 		             removeContestPayment_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the removeDocument operation
           
@@ -2346,14 +2323,13 @@
 		 * @private
 		 */
         private function _removeDocument_populate_results(event:ResultEvent):void
-        {
-        var e:RemoveDocumentResultEvent = new RemoveDocumentResultEvent();
+		{
+			var e:RemoveDocumentResultEvent = new RemoveDocumentResultEvent();
 		            e.result = event.result as RemoveDocumentResponse;
 		                       e.headers = event.headers;
 		             removeDocument_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the removeDocumentFromContest operation
           
@@ -2431,14 +2407,13 @@
 		 * @private
 		 */
         private function _removeDocumentFromContest_populate_results(event:ResultEvent):void
-        {
-        var e:RemoveDocumentFromContestResultEvent = new RemoveDocumentFromContestResultEvent();
+		{
+			var e:RemoveDocumentFromContestResultEvent = new RemoveDocumentFromContestResultEvent();
 		            e.result = event.result as RemoveDocumentFromContestResponse;
 		                       e.headers = event.headers;
 		             removeDocumentFromContest_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the removeSubmission operation
           
@@ -2516,14 +2491,13 @@
 		 * @private
 		 */
         private function _removeSubmission_populate_results(event:ResultEvent):void
-        {
-        var e:RemoveSubmissionResultEvent = new RemoveSubmissionResultEvent();
+		{
+			var e:RemoveSubmissionResultEvent = new RemoveSubmissionResultEvent();
 		            e.result = event.result as RemoveSubmissionResponse;
 		                       e.headers = event.headers;
 		             removeSubmission_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the retrieveAllSubmissionsByMember operation
           
@@ -2601,14 +2575,13 @@
 		 * @private
 		 */
         private function _retrieveAllSubmissionsByMember_populate_results(event:ResultEvent):void
-        {
-        var e:RetrieveAllSubmissionsByMemberResultEvent = new RetrieveAllSubmissionsByMemberResultEvent();
+		{
+			var e:RetrieveAllSubmissionsByMemberResultEvent = new RetrieveAllSubmissionsByMemberResultEvent();
 		            e.result = event.result as RetrieveAllSubmissionsByMemberResponse;
 		                       e.headers = event.headers;
 		             retrieveAllSubmissionsByMember_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the retrieveSubmission operation
           
@@ -2686,14 +2659,13 @@
 		 * @private
 		 */
         private function _retrieveSubmission_populate_results(event:ResultEvent):void
-        {
-        var e:RetrieveSubmissionResultEvent = new RetrieveSubmissionResultEvent();
+		{
+			var e:RetrieveSubmissionResultEvent = new RetrieveSubmissionResultEvent();
 		            e.result = event.result as RetrieveSubmissionResponse;
 		                       e.headers = event.headers;
 		             retrieveSubmission_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the retrieveSubmissionsForContest operation
           
@@ -2771,14 +2743,13 @@
 		 * @private
 		 */
         private function _retrieveSubmissionsForContest_populate_results(event:ResultEvent):void
-        {
-        var e:RetrieveSubmissionsForContestResultEvent = new RetrieveSubmissionsForContestResultEvent();
+		{
+			var e:RetrieveSubmissionsForContestResultEvent = new RetrieveSubmissionsForContestResultEvent();
 		            e.result = event.result as RetrieveSubmissionsForContestResponse;
 		                       e.headers = event.headers;
 		             retrieveSubmissionsForContest_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the searchContests operation
           
@@ -2856,14 +2827,13 @@
 		 * @private
 		 */
         private function _searchContests_populate_results(event:ResultEvent):void
-        {
-        var e:SearchContestsResultEvent = new SearchContestsResultEvent();
+		{
+			var e:SearchContestsResultEvent = new SearchContestsResultEvent();
 		            e.result = event.result as SearchContestsResponse;
 		                       e.headers = event.headers;
 		             searchContests_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the setSubmissionPlacement operation
           
@@ -2941,14 +2911,13 @@
 		 * @private
 		 */
         private function _setSubmissionPlacement_populate_results(event:ResultEvent):void
-        {
-        var e:SetSubmissionPlacementResultEvent = new SetSubmissionPlacementResultEvent();
+		{
+			var e:SetSubmissionPlacementResultEvent = new SetSubmissionPlacementResultEvent();
 		            e.result = event.result as SetSubmissionPlacementResponse;
 		                       e.headers = event.headers;
 		             setSubmissionPlacement_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the setSubmissionPrize operation
           
@@ -3026,14 +2995,13 @@
 		 * @private
 		 */
         private function _setSubmissionPrize_populate_results(event:ResultEvent):void
-        {
-        var e:SetSubmissionPrizeResultEvent = new SetSubmissionPrizeResultEvent();
+		{
+			var e:SetSubmissionPrizeResultEvent = new SetSubmissionPrizeResultEvent();
 		            e.result = event.result as SetSubmissionPrizeResponse;
 		                       e.headers = event.headers;
 		             setSubmissionPrize_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the updateContest operation
           
@@ -3111,14 +3079,13 @@
 		 * @private
 		 */
         private function _updateContest_populate_results(event:ResultEvent):void
-        {
-        var e:UpdateContestResultEvent = new UpdateContestResultEvent();
+		{
+			var e:UpdateContestResultEvent = new UpdateContestResultEvent();
 		            e.result = event.result as UpdateContestResponse;
 		                       e.headers = event.headers;
 		             updateContest_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the updateContestStatus operation
           
@@ -3196,14 +3163,13 @@
 		 * @private
 		 */
         private function _updateContestStatus_populate_results(event:ResultEvent):void
-        {
-        var e:UpdateContestStatusResultEvent = new UpdateContestStatusResultEvent();
+		{
+			var e:UpdateContestStatusResultEvent = new UpdateContestStatusResultEvent();
 		            e.result = event.result as UpdateContestStatusResponse;
 		                       e.headers = event.headers;
 		             updateContestStatus_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the updateSubmission operation
           
@@ -3281,14 +3247,13 @@
 		 * @private
 		 */
         private function _updateSubmission_populate_results(event:ResultEvent):void
-        {
-        var e:UpdateSubmissionResultEvent = new UpdateSubmissionResultEvent();
+		{
+			var e:UpdateSubmissionResultEvent = new UpdateSubmissionResultEvent();
 		            e.result = event.result as UpdateSubmissionResponse;
 		                       e.headers = event.headers;
 		             updateSubmission_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the uploadDocument operation
           
@@ -3366,14 +3331,13 @@
 		 * @private
 		 */
         private function _uploadDocument_populate_results(event:ResultEvent):void
-        {
-        var e:UploadDocumentResultEvent = new UploadDocumentResultEvent();
+		{
+			var e:UploadDocumentResultEvent = new UploadDocumentResultEvent();
 		            e.result = event.result as UploadDocumentResponse;
 		                       e.headers = event.headers;
 		             uploadDocument_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//stub functions for the uploadDocumentForContest operation
           
@@ -3451,14 +3415,13 @@
 		 * @private
 		 */
         private function _uploadDocumentForContest_populate_results(event:ResultEvent):void
-        {
-        var e:UploadDocumentForContestResultEvent = new UploadDocumentForContestResultEvent();
+		{
+			var e:UploadDocumentForContestResultEvent = new UploadDocumentForContestResultEvent();
 		            e.result = event.result as UploadDocumentForContestResponse;
 		                       e.headers = event.headers;
 		             uploadDocumentForContest_lastResult = e.result;
 		             dispatchEvent(e);
-	        		
-		}
+	        		}
 		
 		//service-wide functions
 		/**

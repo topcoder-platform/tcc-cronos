@@ -49,6 +49,37 @@
         {
         	_tcDirectProjectId=projectID;
         }
+
+	           public function resetWidget():void{
+//            	this.currentState = "ContestSelectionState";
+//            	back.visible = false;
+            	goToStep1();
+                launchWdt.percentWidth = 0;
+                launchWdt.percentHeight = 0;
+                launchWdt.visible = false;
+                this.height = 750;
+                initialWdt.visible = true;
+        		initialWdt.init();
+        		
+//        		setButton(0);
+//        		save.visible = true;
+//        		
+//        		hideArrow(step1arrow);
+//        		hideArrow(step2arrow);
+//        		hideArrow(step3arrow);
+//        		hideArrow(step4arrow);
+//        		hideArrow(step5arrow);
+//        		hideArrow(step6arrow);
+//        		hideArrow(step7arrow);
+//        		hideArrow(step8arrow);
+				
+        	}
+        
+        	public function closeWidget():void{
+        		resetWidget();
+        		this.minimize()
+        	}
+        
         
         public function get tcDirectProjectId():String
         {
@@ -105,13 +136,17 @@
 //                loader.addEventListener(Event.COMPLETE, getData);
 //                loader.load(url);
 				
-				initialWdt.mainWidget = this;
+		details.widgetHeight = 800;
+                specf.widgetHeight = 800;
+                attch.height = 600;				initialWdt.mainWidget = this;
 				contestSelect.mainWidget = this;
 				overView.mainWidget = this;
  				details.mainWidget = this;
                 specf.mainWidget = this;
                 attch.mainWidget = this;
                 sched.mainWidget = this;
+    		review.mainWidget = this;
+  		activate.mainWidget = this;
 
 		 _ws = new ContestServiceFacadeBeanService(null, contestServiceFacadeWsdl);
             
@@ -121,7 +156,7 @@
 		_pws=new ProjectServiceFacadeBeanService(null, projectServiceFacadeWsdl);
 		
 		_pws.getWebService().addHeader(WebServiceUtil.getWSSEHeader(username ,password));
-		 review.mainWidget = this;
+		
             }
             
             
@@ -248,10 +283,6 @@
                    review.contentTitleStr = details.ctInput.text;
                    review.IntroductionStr = details.introInput.text;
                    review.glsInputStr = details.glsInput.text;
-                   review.audInputStr = details.audInput.text;
-                   review.gdInputStr = details.gdInput.text;
-                   review.lkInputStr = details.lkInput.text;
-                   review.crtInputStr = details.crtInput.text;
                    hideArrow(step3arrow);
                    showArrow(step4arrow);
                 }
@@ -520,6 +551,8 @@
                 attch.initData();
                 
                 sched.initData();
+		activate.initData();
+
             }
             private function handleError(e:FaultEvent):void
             {
