@@ -250,6 +250,7 @@
                 		_submissionList.addItem(sub);
                 		
                 		updateRankList(sub);
+                		updateSubmission(sub.rank && sub.rank > 0);
                 		
                 		trace("Submission Id: " + sub.id);
                 		trace("Submission Price: " + sub.price);
@@ -279,7 +280,6 @@
                 	list.selectedIndex = 0;
                 	updatePurchase();
                 	handleSelect();
-                	updateSubmission(false);
                 }
             }
             
