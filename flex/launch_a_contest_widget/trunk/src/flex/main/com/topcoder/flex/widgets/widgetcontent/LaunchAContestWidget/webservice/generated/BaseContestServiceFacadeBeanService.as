@@ -273,6 +273,26 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
             getAllContests.style = "document";
             BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getAllContests);
 			//define the WSDLOperation: new WSDLOperation(methodName)
+            var getAllDocumentTypes:WSDLOperation = new WSDLOperation("getAllDocumentTypes");
+				//input message for the operation
+    	        requestMessage = new WSDLMessage("getAllDocumentTypes");
+            				requestMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllDocumentTypes"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getAllDocumentTypes")));
+                requestMessage.encoding = new WSDLEncoding();
+                requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+			requestMessage.encoding.useStyle="literal";
+                
+                responseMessage = new WSDLMessage("getAllDocumentTypesResponse");
+            				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllDocumentTypesResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getAllDocumentTypesResponse")));
+                responseMessage.encoding = new WSDLEncoding();
+                responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+                responseMessage.encoding.useStyle="literal";				
+				getAllDocumentTypes.inputMessage = requestMessage;
+	        getAllDocumentTypes.outputMessage = responseMessage;
+            getAllDocumentTypes.schemaManager = this.schemaMgr;
+            getAllDocumentTypes.soapAction = "\"\"";
+            getAllDocumentTypes.style = "document";
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getAllDocumentTypes);
+			//define the WSDLOperation: new WSDLOperation(methodName)
             var getAllMediums:WSDLOperation = new WSDLOperation("getAllMediums");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("getAllMediums");
@@ -292,6 +312,26 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
             getAllMediums.soapAction = "\"\"";
             getAllMediums.style = "document";
             BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getAllMediums);
+			//define the WSDLOperation: new WSDLOperation(methodName)
+            var getAllStudioFileTypes:WSDLOperation = new WSDLOperation("getAllStudioFileTypes");
+				//input message for the operation
+    	        requestMessage = new WSDLMessage("getAllStudioFileTypes");
+            				requestMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllStudioFileTypes"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getAllStudioFileTypes")));
+                requestMessage.encoding = new WSDLEncoding();
+                requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+			requestMessage.encoding.useStyle="literal";
+                
+                responseMessage = new WSDLMessage("getAllStudioFileTypesResponse");
+            				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllStudioFileTypesResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getAllStudioFileTypesResponse")));
+                responseMessage.encoding = new WSDLEncoding();
+                responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+                responseMessage.encoding.useStyle="literal";				
+				getAllStudioFileTypes.inputMessage = requestMessage;
+	        getAllStudioFileTypes.outputMessage = responseMessage;
+            getAllStudioFileTypes.schemaManager = this.schemaMgr;
+            getAllStudioFileTypes.soapAction = "\"\"";
+            getAllStudioFileTypes.style = "document";
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getAllStudioFileTypes);
 			//define the WSDLOperation: new WSDLOperation(methodName)
             var getChangeHistory:WSDLOperation = new WSDLOperation("getChangeHistory");
 				//input message for the operation
@@ -832,95 +872,102 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
             uploadDocumentForContest.soapAction = "\"\"";
             uploadDocumentForContest.style = "document";
             BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(uploadDocumentForContest);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveSubmission"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RetrieveSubmission);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","removeDocumentResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveDocumentResponse);
-							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestsForClientResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestsForClientResponse);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getChangeHistory"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetChangeHistory);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContest);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","removeDocument"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveDocument);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestPaymentResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestPaymentResponse);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getSubmissionFileTypesResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSubmissionFileTypesResponse);
 							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestHeadersResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestHeadersResponse);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","setSubmissionPlacement"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.SetSubmissionPlacement);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllMediums"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllMediums);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","setSubmissionPrizeResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.SetSubmissionPrizeResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","projectData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProjectData);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","contestServiceFilter"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestServiceFilter);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestResponse);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","removeDocumentFromContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveDocumentFromContest);
 							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getLatestChangesResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetLatestChangesResponse);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","removeSubmissionResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveSubmissionResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","removeDocumentFromContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveDocumentFromContest);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllStudioFileTypes"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllStudioFileTypes);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","deleteContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.DeleteContestResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","mediumData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.MediumData);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","studioCompetition"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.StudioCompetition);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveSubmissionResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RetrieveSubmissionResponse);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","submissionData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.SubmissionData);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","removeDocumentFromContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveDocumentFromContestResponse);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","createContestPaymentResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContestPaymentResponse);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","markForPurchase"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.MarkForPurchase);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","contestStatusData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestStatusData);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","deleteContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.DeleteContest);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestsForProject"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestsForProject);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","markForPurchaseResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.MarkForPurchaseResponse);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","competitionPrize"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CompetitionPrize);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","purchaseSubmission"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.PurchaseSubmission);
 							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","addChangeHistory"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.AddChangeHistory);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","createContestPayment"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContestPayment);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","documentType"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.DocumentType);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getSubmissionFileTypes"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSubmissionFileTypes);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","updateContestStatusResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContestStatusResponse);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","updateContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContestResponse);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","addChangeHistoryResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.AddChangeHistoryResponse);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","contestPayload"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestPayload);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getMimeTypeIdResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetMimeTypeIdResponse);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","updateContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContest);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","createContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContestResponse);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","processMissingPaymentsResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProcessMissingPaymentsResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","updateContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContest);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveSubmissionsForContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RetrieveSubmissionsForContest);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","editContestPaymentResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.EditContestPaymentResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","editContestPayment"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.EditContestPayment);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestHeaders"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestHeaders);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","updateContestStatus"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContestStatus);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","addDocumentToContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.AddDocumentToContestResponse);
 							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestsResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestsResponse);
 							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestsForProjectResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestsForProjectResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","prizeData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.PrizeData);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","createContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContest);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","uploadDocument"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadDocument);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","contestTypeData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestTypeData);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getLatestChanges"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetLatestChanges);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContests"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContests);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestsForClient"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestsForClient);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","createContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContest);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","updateSubmission"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateSubmission);
-							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getStatusListResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetStatusListResponse);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","contestPaymentData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestPaymentData);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestTypes"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestTypes);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestsForClient"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestsForClient);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","uploadDocumentResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadDocumentResponse);
 							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","searchContestsResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.SearchContestsResponse);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","competionType"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CompetionType);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestPayment"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestPayment);
-							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getChangeHistoryResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetChangeHistoryResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","changeHistoryData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ChangeHistoryData);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestPayment"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestPayment);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getMimeTypeId"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetMimeTypeId);
-							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllMediumsResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllMediumsResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","removeSubmission"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveSubmission);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveAllSubmissionsByMember"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RetrieveAllSubmissionsByMember);
 							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveSubmissionsForContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RetrieveSubmissionsForContestResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","contestData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestData);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","addDocumentToContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.AddDocumentToContest);
-							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveAllSubmissionsByMemberResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RetrieveAllSubmissionsByMemberResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","setSubmissionPrize"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.SetSubmissionPrize);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","removeContestPayment"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveContestPayment);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","competition"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.Competition);
+							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllDocumentTypesResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllDocumentTypesResponse);
+							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestTypesResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestTypesResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","purchaseSubmissionResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.PurchaseSubmissionResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","removeDocumentResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveDocumentResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveSubmission"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RetrieveSubmission);
+							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestsForClientResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestsForClientResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getChangeHistory"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetChangeHistory);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","removeDocument"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveDocument);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContest);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestPaymentResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestPaymentResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","studioFileType"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.StudioFileType);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","setSubmissionPlacement"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.SetSubmissionPlacement);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getSubmissionFileTypesResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSubmissionFileTypesResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllMediums"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllMediums);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","removeSubmissionResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveSubmissionResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","submissionData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.SubmissionData);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","removeDocumentFromContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveDocumentFromContestResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","createContestPaymentResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContestPaymentResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","markForPurchase"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.MarkForPurchase);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","deleteContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.DeleteContest);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","markForPurchaseResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.MarkForPurchaseResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","competitionPrize"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CompetitionPrize);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","mimeType"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.MimeType);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","updateContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContestResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","updateContestStatusResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContestStatusResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","addChangeHistoryResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.AddChangeHistoryResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","contestPayload"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestPayload);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","processMissingPaymentsResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProcessMissingPaymentsResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestHeaders"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestHeaders);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","updateContestStatus"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContestStatus);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","addDocumentToContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.AddDocumentToContestResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","contestTypeData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestTypeData);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getLatestChanges"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetLatestChanges);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContests"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContests);
+							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getStatusListResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetStatusListResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","contestPaymentData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestPaymentData);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestTypes"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestTypes);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","competionType"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CompetionType);
+							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getChangeHistoryResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetChangeHistoryResponse);
+							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllMediumsResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllMediumsResponse);
+							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveAllSubmissionsByMemberResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RetrieveAllSubmissionsByMemberResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","setSubmissionPlacementResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.SetSubmissionPlacementResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getStatusList"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetStatusList);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","project"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.Project);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","competition"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.Competition);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","processMissingPayments"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProcessMissingPayments);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllDocumentTypes"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllDocumentTypes);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","updateSubmissionResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateSubmissionResponse);
-							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestTypesResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestTypesResponse);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","purchaseSubmissionResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.PurchaseSubmissionResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","processMissingPayments"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProcessMissingPayments);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","searchContests"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.SearchContests);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","uploadDocumentForContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadDocumentForContest);
+							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllStudioFileTypesResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllStudioFileTypesResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","uploadDocumentForContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadDocumentForContestResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","uploadDocumentForContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadDocumentForContest);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","removeContestPaymentResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveContestPaymentResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","uploadedDocument"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadedDocument);
 		}
@@ -1071,6 +1118,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
 		/**
 		 * Performs the low level call to the server for the operation
 		 * It passes along the headers and the operation arguments
+		 * @param getAllDocumentTypes
+		 * @return Asynchronous token
+		 */
+		public function getAllDocumentTypes(getAllDocumentTypes:GetAllDocumentTypes):AsyncToken
+		{
+			var headerArray:Array = new Array();
+            var out:Object = new Object();
+            out["getAllDocumentTypes"] = getAllDocumentTypes;
+	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("getAllDocumentTypes");
+            var pc:PendingCall = new PendingCall(out,headerArray);
+            call(currentOperation,out,pc.token,pc.headers);
+            return pc.token;
+		}
+		/**
+		 * Performs the low level call to the server for the operation
+		 * It passes along the headers and the operation arguments
 		 * @param getAllMediums
 		 * @return Asynchronous token
 		 */
@@ -1080,6 +1143,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
             var out:Object = new Object();
             out["getAllMediums"] = getAllMediums;
 	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("getAllMediums");
+            var pc:PendingCall = new PendingCall(out,headerArray);
+            call(currentOperation,out,pc.token,pc.headers);
+            return pc.token;
+		}
+		/**
+		 * Performs the low level call to the server for the operation
+		 * It passes along the headers and the operation arguments
+		 * @param getAllStudioFileTypes
+		 * @return Asynchronous token
+		 */
+		public function getAllStudioFileTypes(getAllStudioFileTypes:GetAllStudioFileTypes):AsyncToken
+		{
+			var headerArray:Array = new Array();
+            var out:Object = new Object();
+            out["getAllStudioFileTypes"] = getAllStudioFileTypes;
+	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("getAllStudioFileTypes");
             var pc:PendingCall = new PendingCall(out,headerArray);
             call(currentOperation,out,pc.token,pc.headers);
             return pc.token;

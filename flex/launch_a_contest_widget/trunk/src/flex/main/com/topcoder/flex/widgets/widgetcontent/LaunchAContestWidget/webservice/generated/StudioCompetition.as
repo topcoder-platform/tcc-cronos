@@ -6,28 +6,25 @@
 
 package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated
 {
+	import mx.utils.ObjectProxy;
+	import flash.utils.ByteArray;
 	import mx.rpc.soap.types.*;
 	/**
 	 * Wrapper class for a operation required type
 	 */
+    
 	public class StudioCompetition extends com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.Competition
 	{
 		/**
 		 * Constructor, initializes the type class
 		 */
 		public function StudioCompetition() {}
-        
-        [Bindable]
+            
 		public var contestData:com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestData;
-		
 		public var _adminFee:Number;
-		
 		public var _startTime:Object;
-		
 		public var _endTime:Object;
-		
 		public var _id:Number;
-		
 		public var _type:com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CompetionType;
 	}
 }

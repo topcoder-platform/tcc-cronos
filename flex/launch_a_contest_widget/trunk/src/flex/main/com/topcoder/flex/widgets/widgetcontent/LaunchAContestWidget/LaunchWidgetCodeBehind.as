@@ -5,6 +5,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.model.IWidgetFramework;
     import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.WebServiceUtil;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.AddDocumentToContest;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.AddDocumentToContestResultEvent;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CompetionType;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestServiceFacadeBeanService;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContest;
@@ -13,6 +15,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.StudioCompetition;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContest;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContestResultEvent;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadedDocument;
     
     import flash.utils.Dictionary;
     
@@ -301,6 +304,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         	var type:CompetionType = new CompetionType();
         	type.competionType = "STUDIO";
         	this.competition.type = type;
+        	
+        	linkDocToContest();
         }
         
         private function updateContest():void{
@@ -310,9 +315,25 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         	_ws.updateContest(arg);
         }
         
-        private function updateContestHandler(event:UpdateContestResultEvent):void{
-        	//update success
+        //link the latest uploaded documents to their contest
+        //in case the backend does not persist the document's data in cascade when persisting the contest
+        private function linkDocToContest():void{
+        	for each (var doc:UploadedDocument in this.competition.contestData.documentationUploads){
+        		if (doc.contestId == -1){
+        			var arg:AddDocumentToContest = new AddDocumentToContest();
+        			arg.arg0 = doc.documentId;
+        			arg.arg1 = this.competition.contestData.contestId;
+        			
+        			_ws.addDocumentToContest(arg);
+        			
+        			doc.contestId = this.competition.contestData.contestId;
+        		}
+        	}
         }
+        
+        private function updateContestHandler(event:UpdateContestResultEvent):void{
+        	linkDocToContest();
+	}
 
 	/**
          * Simple setter for the allowclose of this widget.

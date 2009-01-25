@@ -12,48 +12,26 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 	/**
 	 * Wrapper class for a operation required type
 	 */
-    [Bindable]
+    
 	public class Competition
 	{
 		/**
 		 * Constructor, initializes the type class
 		 */
 		public function Competition() {}
-        
-        
+            
 		public var adminFee:Number;
-		
-		
 		public var competitionId:Number;
-		
-		
 		public var creatorUserId:Number;
-		
-		
 		public var drPoints:Number;
-		
-		
 		public var eligibility:String;
-		
-		
 		public var endTime:Object;
-		
-		
 		public var id:Number;
 		[ArrayElementType("CompetitionPrize")]
-		
 		public var prizes:Array;
-		
-		
 		public var project:com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.Project;
-		
-		
 		public var shortSummary:String;
-		
-		
 		public var startTime:Object;
-		
-		
 		public var type:com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CompetionType;
 	}
 }

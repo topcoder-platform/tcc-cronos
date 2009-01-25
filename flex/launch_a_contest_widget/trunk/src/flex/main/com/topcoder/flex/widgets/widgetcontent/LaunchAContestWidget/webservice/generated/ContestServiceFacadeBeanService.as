@@ -100,11 +100,25 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     [Event(name="GetAllContests_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestsResultEvent")]
     
     /**
+     * Dispatches when a call to the operation getAllDocumentTypes completes with success
+     * and returns some data
+     * @eventType GetAllDocumentTypesResultEvent
+     */
+    [Event(name="GetAllDocumentTypes_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllDocumentTypesResultEvent")]
+    
+    /**
      * Dispatches when a call to the operation getAllMediums completes with success
      * and returns some data
      * @eventType GetAllMediumsResultEvent
      */
     [Event(name="GetAllMediums_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllMediumsResultEvent")]
+    
+    /**
+     * Dispatches when a call to the operation getAllStudioFileTypes completes with success
+     * and returns some data
+     * @eventType GetAllStudioFileTypesResultEvent
+     */
+    [Event(name="GetAllStudioFileTypes_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllStudioFileTypesResultEvent")]
     
     /**
      * Dispatches when a call to the operation getChangeHistory completes with success
@@ -1071,6 +1085,90 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		             dispatchEvent(e);
 	        		}
 		
+		//stub functions for the getAllDocumentTypes operation
+          
+
+        /**
+         * @see IContestServiceFacadeBeanService#getAllDocumentTypes()
+         */
+        public function getAllDocumentTypes(getAllDocumentTypes:GetAllDocumentTypes):AsyncToken
+        {
+         	var _internal_token:AsyncToken = _baseService.getAllDocumentTypes(getAllDocumentTypes);
+            _internal_token.addEventListener("result",_getAllDocumentTypes_populate_results);
+            _internal_token.addEventListener("fault",throwFault); 
+            return _internal_token;
+		}
+        /**
+		 * @see IContestServiceFacadeBeanService#getAllDocumentTypes_send()
+		 */    
+        public function getAllDocumentTypes_send():AsyncToken
+        {
+        	return getAllDocumentTypes(_getAllDocumentTypes_request.getAllDocumentTypes);
+        }
+              
+		/**
+		 * Internal representation of the request wrapper for the operation
+		 * @private
+		 */
+		private var _getAllDocumentTypes_request:GetAllDocumentTypes_request;
+		/**
+		 * @see IContestServiceFacadeBeanService#getAllDocumentTypes_request_var
+		 */
+		[Bindable]
+		public function get getAllDocumentTypes_request_var():GetAllDocumentTypes_request
+		{
+			return _getAllDocumentTypes_request;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set getAllDocumentTypes_request_var(request:GetAllDocumentTypes_request):void
+		{
+			_getAllDocumentTypes_request = request;
+		}
+		
+	  		/**
+		 * Internal variable to store the operation's lastResult
+		 * @private
+		 */
+        private var _getAllDocumentTypes_lastResult:GetAllDocumentTypesResponse;
+		[Bindable]
+		/**
+		 * @see IContestServiceFacadeBeanService#getAllDocumentTypes_lastResult
+		 */	  
+		public function get getAllDocumentTypes_lastResult():GetAllDocumentTypesResponse
+		{
+			return _getAllDocumentTypes_lastResult;
+		}
+		/**
+		 * @private
+		 */
+		public function set getAllDocumentTypes_lastResult(lastResult:GetAllDocumentTypesResponse):void
+		{
+			_getAllDocumentTypes_lastResult = lastResult;
+		}
+		
+		/**
+		 * @see IContestServiceFacadeBeanService#addgetAllDocumentTypes()
+		 */
+		public function addgetAllDocumentTypesEventListener(listener:Function):void
+		{
+			addEventListener(GetAllDocumentTypesResultEvent.GetAllDocumentTypes_RESULT,listener);
+		}
+			
+		/**
+		 * @private
+		 */
+        private function _getAllDocumentTypes_populate_results(event:ResultEvent):void
+		{
+			var e:GetAllDocumentTypesResultEvent = new GetAllDocumentTypesResultEvent();
+		            e.result = event.result as GetAllDocumentTypesResponse;
+		                       e.headers = event.headers;
+		             getAllDocumentTypes_lastResult = e.result;
+		             dispatchEvent(e);
+	        		}
+		
 		//stub functions for the getAllMediums operation
           
 
@@ -1152,6 +1250,90 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		            e.result = event.result as GetAllMediumsResponse;
 		                       e.headers = event.headers;
 		             getAllMediums_lastResult = e.result;
+		             dispatchEvent(e);
+	        		}
+		
+		//stub functions for the getAllStudioFileTypes operation
+          
+
+        /**
+         * @see IContestServiceFacadeBeanService#getAllStudioFileTypes()
+         */
+        public function getAllStudioFileTypes(getAllStudioFileTypes:GetAllStudioFileTypes):AsyncToken
+        {
+         	var _internal_token:AsyncToken = _baseService.getAllStudioFileTypes(getAllStudioFileTypes);
+            _internal_token.addEventListener("result",_getAllStudioFileTypes_populate_results);
+            _internal_token.addEventListener("fault",throwFault); 
+            return _internal_token;
+		}
+        /**
+		 * @see IContestServiceFacadeBeanService#getAllStudioFileTypes_send()
+		 */    
+        public function getAllStudioFileTypes_send():AsyncToken
+        {
+        	return getAllStudioFileTypes(_getAllStudioFileTypes_request.getAllStudioFileTypes);
+        }
+              
+		/**
+		 * Internal representation of the request wrapper for the operation
+		 * @private
+		 */
+		private var _getAllStudioFileTypes_request:GetAllStudioFileTypes_request;
+		/**
+		 * @see IContestServiceFacadeBeanService#getAllStudioFileTypes_request_var
+		 */
+		[Bindable]
+		public function get getAllStudioFileTypes_request_var():GetAllStudioFileTypes_request
+		{
+			return _getAllStudioFileTypes_request;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set getAllStudioFileTypes_request_var(request:GetAllStudioFileTypes_request):void
+		{
+			_getAllStudioFileTypes_request = request;
+		}
+		
+	  		/**
+		 * Internal variable to store the operation's lastResult
+		 * @private
+		 */
+        private var _getAllStudioFileTypes_lastResult:GetAllStudioFileTypesResponse;
+		[Bindable]
+		/**
+		 * @see IContestServiceFacadeBeanService#getAllStudioFileTypes_lastResult
+		 */	  
+		public function get getAllStudioFileTypes_lastResult():GetAllStudioFileTypesResponse
+		{
+			return _getAllStudioFileTypes_lastResult;
+		}
+		/**
+		 * @private
+		 */
+		public function set getAllStudioFileTypes_lastResult(lastResult:GetAllStudioFileTypesResponse):void
+		{
+			_getAllStudioFileTypes_lastResult = lastResult;
+		}
+		
+		/**
+		 * @see IContestServiceFacadeBeanService#addgetAllStudioFileTypes()
+		 */
+		public function addgetAllStudioFileTypesEventListener(listener:Function):void
+		{
+			addEventListener(GetAllStudioFileTypesResultEvent.GetAllStudioFileTypes_RESULT,listener);
+		}
+			
+		/**
+		 * @private
+		 */
+        private function _getAllStudioFileTypes_populate_results(event:ResultEvent):void
+		{
+			var e:GetAllStudioFileTypesResultEvent = new GetAllStudioFileTypesResultEvent();
+		            e.result = event.result as GetAllStudioFileTypesResponse;
+		                       e.headers = event.headers;
+		             getAllStudioFileTypes_lastResult = e.result;
 		             dispatchEvent(e);
 	        		}
 		

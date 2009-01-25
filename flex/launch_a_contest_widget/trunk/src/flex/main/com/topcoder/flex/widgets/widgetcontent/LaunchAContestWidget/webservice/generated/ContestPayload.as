@@ -12,7 +12,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 	/**
 	 * Wrapper class for a operation required type
 	 */
-    [Bindable]
+    
 	public class ContestPayload
 	{
 		/**

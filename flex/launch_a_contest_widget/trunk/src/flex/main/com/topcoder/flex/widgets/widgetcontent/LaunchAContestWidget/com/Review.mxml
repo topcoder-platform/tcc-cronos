@@ -102,7 +102,7 @@
 					
 					var ruler:HRule = new HRule();
 					attachedFilesVBox.addChild(ruler);
-					ruler.setStyle("width","100%");					
+					ruler.percentWidth = 100;			
 				}
 	        }
 	        
@@ -257,6 +257,7 @@
 
         <mx:VBox width="100%" verticalGap="0">
             <mx:Label text="Attach Files" fontWeight="bold" fontSize="12"/>
+
             <mx:Spacer height="15"/>
             <mx:HRule width="100%"/>            
             <mx:VBox width="100%" id="attachedFilesVBox">

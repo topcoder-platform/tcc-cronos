@@ -6,12 +6,13 @@
 
 package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated
 {
+	import mx.utils.ObjectProxy;
 	import flash.utils.ByteArray;
-	
 	import mx.rpc.soap.types.*;
 	/**
 	 * Wrapper class for a operation required type
 	 */
+    
 	public class UploadedDocument
 	{
 		/**

@@ -3,6 +3,10 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off">
     <mx:Script>
 	    <![CDATA[
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.DocumentType;
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllDocumentTypesResultEvent;
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllDocumentTypes;
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveDocumentFromContest;
 	    	import mx.collections.ArrayCollection;
 	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveDocumentResultEvent;
 	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveDocument;
@@ -64,13 +68,8 @@
 	                                             "application/octet"];	
 	        private var extMimeMap:Dictionary;
 	        
-	        private static const fileTypes:ArrayCollection = new ArrayCollection(
-                [ {label:"Specification", data:1,desc:""},
-                {label:"Template", data:2,desc:""},
-                {label:"Rules", data:3,desc:""},
-                {label:"Example", data:4,desc:""},
-                {label:"Scorecard", data:4,desc:""},
-                {label:"Reference", data:6,desc:""}]);     	        
+	        [Bindable]
+	        private var fileTypes:ArrayCollection = new ArrayCollection();     	        
 	        
 	        [Bindable]
 	        [ArrayElementType("UploadedDocument")]
@@ -83,9 +82,10 @@
 	        	
 	        	fileToUpload.htmlText = "";
 	        	
-	        	docUploads = this.mainWidget.competition.contestData.documentationUploads;
-	        	if (docUploads == null){
-	        		docUploads = new Array();	
+	        	docUploads = new Array();	
+	        	
+	        	for each (var doc:UploadedDocument in this.mainWidget.competition.contestData.documentationUploads){
+	        		addDoc(doc);
 	        	}
 	        	
 	        	this.addEventListener("UPLOADDOC_ALL_COMPLETED", allCompleteHandler );
@@ -115,11 +115,30 @@
 	            extMimeMap["mp3"]="audio/mp3";
 	            extMimeMap["jar"]="application/java-archive";
 	            extMimeMap["ppt"]="application/vnd.ms-powerpoint";
-	            extMimeMap["pps"]="application/vnd.ms-powerpoint";	        	
+	            extMimeMap["pps"]="application/vnd.ms-powerpoint";	
+	            
+	            loadDocumentTypes();        	
+	        }
+	        
+	        private function loadDocumentTypes():void{
+	        	var service:ContestServiceFacadeBeanService = mainWidget._ws;
+	        	
+	        	var arg:GetAllDocumentTypes = new GetAllDocumentTypes();
+        		service.addgetAllDocumentTypesEventListener(getAllDocumentTypesHandler);
+        		service.getAllDocumentTypes(arg);
+	        }
+	        
+	        private function getAllDocumentTypesHandler(event:GetAllDocumentTypesResultEvent):void{
+	        	fileTypes = new ArrayCollection();
+	        	
+	        	for each (var dt:DocumentType in event.result.asIList()){
+        			fileTypes.addItem({label:dt.description, data:dt.documentTypeId});
+        		}
 	        }
 	        
 	        private function addDoc(doc:UploadedDocument):void{
 	        	var docVBox:VBox = new VBox();
+	        	docVBox.percentWidth = 100;
 	        	docVBox.id = doc.documentId.toString();
 	        	docVBox.data = doc;
 	        	
@@ -156,14 +175,14 @@
 	        	hbox3.addChild(removeBtn);	      
 	        	
 	        	var hrule:HRule = new HRule();
-	        	hrule.setStyle("width", "100%");
+	        	hrule.percentWidth = 100;
 	        	docVBox.addChild(hrule);
 	        	
 	        	var spacer:Spacer = new Spacer();
 	        	spacer.height = 5;
 	        	docVBox.addChild(spacer);
 	        	
-	        	uploadFilesVBox.addChildAt(docVBox, docUploads.length);
+	        	uploadFilesVBox.addChild(docVBox);
 	        	
 	        	docUploads.push(doc);
 	        }
@@ -187,18 +206,20 @@
 	        
 	        private function sendRemoveDocRequest(doc:UploadedDocument):void{
 	        	var ws:ContestServiceFacadeBeanService = mainWidget._ws;
-	        	ws.addremoveDocumentEventListener(processRemoveDocument);
-	        	
-	        	var arg:RemoveDocument = new RemoveDocument();
-	        	arg.arg0 = doc.documentId;
-	        	
-	        	ws.removeDocument(arg);
+				
+				var contestId:Number = mainWidget.competition.contestData.contestId;
+				if (contestId == -1){
+			        	var arg:RemoveDocument = new RemoveDocument();
+			        	arg.arg0 = doc.documentId;
+			        	
+			        	ws.removeDocument(arg);
+				   } else {
+					   	var arg1:RemoveDocumentFromContest = new RemoveDocumentFromContest();
+					   	arg1.arg0 = doc;
+					   	doc.contestId = contestId;
+					   	ws.removeDocumentFromContest(arg1);
+				   }
 	        }
-	        
-	        private function processRemoveDocument(event:RemoveDocumentResultEvent):void{
-	        	//does nothing
-	        }
-	        
 	        
 	        
 	        private function showfileDecsHint(event:MouseEvent):void {
@@ -261,7 +282,6 @@
             	currentDoc.file = file.data;
             	currentDoc.description = fileDescInput.text;
             	currentDoc.fileName = file.name;
-            	currentDoc.path = file.name;
             	currentDoc.documentTypeId = this.filetypeCombo.selectedItem.data;
             	currentDoc.contestId = -1;
             	currentDoc.documentId = -1;
@@ -282,12 +302,13 @@
             	}
             }
             
+            //This method is called when the metatypeId is returned and the file content is uploaded
             private function allCompleteHandler(event:Event):void{
             	if (currentDoc == null){
             		return; // the document has been sent
             	}
             	
-            	currentDoc.contestId = mainWidget.competition.contestData.contestId;
+//            	currentDoc.contestId = mainWidget.competition.contestData.contestId;
             	
             	var ws:ContestServiceFacadeBeanService = mainWidget._ws;
             	ws.adduploadDocumentEventListener(webserviceSentHandler);
@@ -298,7 +319,8 @@
             
             private function webserviceSentHandler(event:UploadDocumentResultEvent):void{
             	var docUploaded:UploadedDocument = event.result._return;
-            	docUploaded.contestId = mainWidget.competition.contestData.contestId;
+            	docUploaded.file = null; //Clear the content once the file has been uploaded to save memory
+//            	docUploaded.contestId = mainWidget.competition.contestData.contestId;
             	addDoc(docUploaded);
             	
             	//clear up
@@ -337,7 +359,7 @@
 	                <mx:text>
 	                </mx:text>
 	            </mx:Text>
-	            <mx:RichTextEditor id="fileDescInput" width="500" height="150" text="File description writes here."/>
+	            <mx:TextArea id="fileDescInput" width="500" height="50" text="File description writes here."/>
             </mx:VBox>
             <mx:Spacer height="5"/>
             <mx:HBox >
@@ -346,7 +368,7 @@
                 <mx:Button id="browse" label="Browse" cornerRadius="13" click="browseFile()"/>
             </mx:HBox>
             <mx:HBox >
-                <mx:Label text="Select File Type:" fontWeight="bold"/>
+                <mx:Label text="Select Document Type:" fontWeight="bold"/>
                 <mx:ComboBox id="filetypeCombo" dataProvider="{fileTypes}" selectedIndex="0"/>
             </mx:HBox>
             <mx:VBox paddingLeft="90">

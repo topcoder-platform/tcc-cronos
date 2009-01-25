@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" backgroundColor="#ffffff" 
-		paddingLeft="27" paddingRight="13" paddingTop="20" paddingBottom="20" xmlns:com="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*">
+		paddingLeft="27" paddingRight="13" paddingTop="20" paddingBottom="20" xmlns:com="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*" creationComplete="init()">
 	<mx:Script>
 		<![CDATA[
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;

@@ -380,6 +380,46 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
          */
         function set getAllContests_request_var(request:GetAllContests_request):void;
                    
+    	//Stub functions for the getAllDocumentTypes operation
+    	/**
+    	 * Call the operation on the server passing in the arguments defined in the WSDL file
+    	 * @param getAllDocumentTypes
+    	 * @return An AsyncToken
+    	 */
+    	function getAllDocumentTypes(getAllDocumentTypes:GetAllDocumentTypes):AsyncToken;
+        /**
+         * Method to call the operation on the server without passing the arguments inline.
+         * You must however set the _request property for the operation before calling this method
+         * Should use it in MXML context mostly
+         * @return An AsyncToken
+         */
+        function getAllDocumentTypes_send():AsyncToken;
+        
+        /**
+         * The getAllDocumentTypes operation lastResult property
+         */
+        function get getAllDocumentTypes_lastResult():GetAllDocumentTypesResponse;
+		/**
+		 * @private
+		 */
+        function set getAllDocumentTypes_lastResult(lastResult:GetAllDocumentTypesResponse):void;
+       /**
+        * Add a listener for the getAllDocumentTypes operation successful result event
+        * @param The listener function
+        */
+       function addgetAllDocumentTypesEventListener(listener:Function):void;
+       
+       
+        /**
+         * The getAllDocumentTypes operation request wrapper
+         */
+        function get getAllDocumentTypes_request_var():GetAllDocumentTypes_request;
+        
+        /**
+         * @private
+         */
+        function set getAllDocumentTypes_request_var(request:GetAllDocumentTypes_request):void;
+                   
     	//Stub functions for the getAllMediums operation
     	/**
     	 * Call the operation on the server passing in the arguments defined in the WSDL file
@@ -419,6 +459,46 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
          * @private
          */
         function set getAllMediums_request_var(request:GetAllMediums_request):void;
+                   
+    	//Stub functions for the getAllStudioFileTypes operation
+    	/**
+    	 * Call the operation on the server passing in the arguments defined in the WSDL file
+    	 * @param getAllStudioFileTypes
+    	 * @return An AsyncToken
+    	 */
+    	function getAllStudioFileTypes(getAllStudioFileTypes:GetAllStudioFileTypes):AsyncToken;
+        /**
+         * Method to call the operation on the server without passing the arguments inline.
+         * You must however set the _request property for the operation before calling this method
+         * Should use it in MXML context mostly
+         * @return An AsyncToken
+         */
+        function getAllStudioFileTypes_send():AsyncToken;
+        
+        /**
+         * The getAllStudioFileTypes operation lastResult property
+         */
+        function get getAllStudioFileTypes_lastResult():GetAllStudioFileTypesResponse;
+		/**
+		 * @private
+		 */
+        function set getAllStudioFileTypes_lastResult(lastResult:GetAllStudioFileTypesResponse):void;
+       /**
+        * Add a listener for the getAllStudioFileTypes operation successful result event
+        * @param The listener function
+        */
+       function addgetAllStudioFileTypesEventListener(listener:Function):void;
+       
+       
+        /**
+         * The getAllStudioFileTypes operation request wrapper
+         */
+        function get getAllStudioFileTypes_request_var():GetAllStudioFileTypes_request;
+        
+        /**
+         * @private
+         */
+        function set getAllStudioFileTypes_request_var(request:GetAllStudioFileTypes_request):void;
                    
     	//Stub functions for the getChangeHistory operation
     	/**

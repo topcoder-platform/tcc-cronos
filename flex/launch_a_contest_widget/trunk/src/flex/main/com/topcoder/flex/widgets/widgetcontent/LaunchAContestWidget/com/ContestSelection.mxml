@@ -31,68 +31,50 @@
 	        }
 	      ]]>
     </mx:Script>
-    <mx:VBox >
+    <mx:VBox width="100%">
 	    <mx:Label text="Contest Selection" fontWeight="bold" fontSize="12"/>
 	    <mx:Label text="What Type of Contest do you want to run?" fontWeight="bold"/>
 	    <mx:RadioButtonGroup id="contestType" itemClick="handleSelect(event);" />
-	    <mx:HBox paddingLeft="10">
-	        <mx:RadioButton groupName="contestType" id="spec" label="Specification" value="Specification" width="132" enabled="false"/>
-	        <mx:RadioButton groupName="contestType" id="studio" label="Studio" value="STUDIO" width="170" selected="true"/>
-	        <mx:RadioButton groupName="contestType" id="arch" label="Architecture" value="Architecture" enabled="false"/>
-	    </mx:HBox>
-	    <mx:HBox paddingLeft="10">
-	        <mx:RadioButton groupName="contestType" id="cmpDesign" label="Component Design" value="Component Design"  enabled="false"/>
-	        <mx:RadioButton groupName="contestType" id="cnpDev" label="Component Development" value="Component Development" width="170" enabled="false"/>
-	        <mx:RadioButton groupName="contestType" id="assembly" label="Assembly" value="Assembly" enabled="false"/>
-	    </mx:HBox>
-	    <mx:HBox paddingLeft="10">
-	        <mx:RadioButton groupName="contestType" id="testing" label="Testing" width="132" value="Testing" enabled="false"/>
-	        <mx:RadioButton groupName="contestType" id="bug" label="Bug Races" value="Bug Races" enabled="false"/>
-	    </mx:HBox>
-	    <mx:HRule width="100%" strokeColor="0x000000"/>
-	     
-        <mx:Label text="Choosing a Contest Type" fontWeight="bold" fontSize="12"/>
-        <mx:Text width="100%" id="description" >
-            <mx:text>
-                When choosing a contest type, vulpes lusto minim aliquam wisi velit, ullamcorper. Ut in nullus refoveo accumsan feugiat
-                pertineo. Mos ne odio abdo transverbero vel meus te mos letalis melior quis qui.
-            </mx:text>
-        </mx:Text>
-        <mx:Image source="@Embed('../../assets/description.png')"/>
-        <mx:Spacer height="5"/>
-        <mx:VBox width="100%" verticalGap="0">
-	        <mx:Label text="Exmaples:" fontWeight="bold"/>
-	        <mx:Text width="100%" paddingTop="0">
-	            <mx:text>
-					This is where you will see two(2) examples of contests recently run with your selected contest type, including a preview
-					image, contest title, prize amounts and various data points. This will help you create a frame of reference.
-	            </mx:text>
-	        </mx:Text>
-	        <mx:Spacer height="10"/>
-	        <mx:Label text="Suggested 1st Place Prize Amounts:" fontWeight="bold"/>
-	        <mx:Text width="100%" paddingTop="0">
-	            <mx:text>
-					For each contest type, we will provide you a range of first place prize amounts to help with your decision. By knowing the
-					minimum, average and high exposure prizes, we can help you understand where you would like to position your contest.
-	            </mx:text>
-	        </mx:Text>
-	        <mx:Spacer height="10"/>
-	        <mx:Label text="Your Prize Amounts:" fontWeight="bold"/>
-	        <mx:Text width="100%" paddingTop="0">
-	            <mx:text>
-					When entering prizes, please note that each prize amount must be the same or lower than the amount in the places above
-					it. Eumsed facilisis saluto hendrerit consequat jumentum verto premo. Luptatum nostrud illum refero, huic et paulatim praesent
-					et comis.
-	            </mx:text>
-	        </mx:Text>
-	        <mx:Spacer height="10"/>
-	        <mx:Label text="20% Admin Fee:" fontWeight="bold"/>
-	        <mx:Text width="100%" paddingTop="0">
-	            <mx:text>
-					Paratus camur in vero, minim duis, refero ut nulla ut, molior hos blandit jus. Dolore brevitas, accumsan neo, bene hendrerit hos ex
-					gilvus, saepius nulla. Appellatio interdico sudo nulla genitus vulpes neque uxor et saepius.
-	            </mx:text>
-	        </mx:Text>
-        </mx:VBox>
+	    <mx:VBox width="100%" height="100%">
+	    	<mx:VBox width="100%" >
+	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="studio" label="Visual Design(Studio)" value="STUDIO"  selected="true" paddingBottom="0"/>
+	    			<mx:Text width="100%" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci." paddingTop="-10"/>
+	    	</mx:VBox>
+	    	<mx:Spacer height="3"/>
+	    	<mx:VBox width="100%" >
+	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="componentDesign" label="Component Design" value="Design"  enabled="false"/>
+	    			<mx:Text paddingTop="-10" width="100%" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci." />
+	    	</mx:VBox>
+	    	<mx:Spacer height="3"/>
+	    	<mx:VBox width="100%" >
+	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="conceptualization" label="Software Conceptualization" value="conceptualization"  enabled="false"/>
+	    			<mx:Text paddingTop="-10" width="100%" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci." />
+	    	</mx:VBox>
+	    	<mx:Spacer height="3"/>
+	    	<mx:VBox width="100%" >
+	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="specification" label="Software Specification" value="specification"  enabled="false"/>
+	    			<mx:Text paddingTop="-10" width="100%" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci." />
+	    	</mx:VBox>
+	    	<mx:Spacer height="3"/>
+	    	<mx:VBox width="100%" >
+	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="softwareDesign" label="Software Design" value="softwareDesign"  enabled="false"/>
+	    			<mx:Text paddingTop="-10" width="100%" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci." />
+	    	</mx:VBox>
+	    	<mx:Spacer height="3"/>
+	    	<mx:VBox width="100%" >
+	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="softwareDev" label="Software Development" value="dev"  enabled="false"/>
+	    			<mx:Text paddingTop="-10" width="100%" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci." />
+	    	</mx:VBox>
+	    	<mx:Spacer height="3"/>
+	    	<mx:VBox width="100%" >
+	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="assembly" label="Software Assembly" value="assembly"  enabled="false"/>
+	    			<mx:Text paddingTop="-10" width="100%" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci." />
+	    	</mx:VBox>
+	    	<mx:Spacer height="3"/>
+	    	<mx:VBox width="100%" >
+	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="test" label="Application Testing" value="test"  enabled="false"/>
+	    			<mx:Text paddingTop="-10" width="100%" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci." />
+	    	</mx:VBox>
+	    </mx:VBox>
     </mx:VBox>
 </mx:Canvas>
