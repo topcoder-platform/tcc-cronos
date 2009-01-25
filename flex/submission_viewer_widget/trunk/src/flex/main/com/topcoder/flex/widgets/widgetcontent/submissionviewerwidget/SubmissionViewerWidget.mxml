@@ -571,7 +571,7 @@
             	noWinner.selected=false;	
             }
             
-            private function handleContest():void {
+            private function handleContest(event:Event):void {
             	contestRankingErrorLbl.visible=false;
                  if (main.height>1 && contestCombo && contestCombo.selectedItem) {
                 	_selectedContestId=contestCombo.selectedItem.id;
@@ -977,8 +977,8 @@ wsdl="{contestServiceFacadeWsdl}">
 	            <mx:Canvas width="100%" minWidth="755" height="79">
 	                <mx:Label text="Select a Contest to View:" left="0" top="9" 
 	                        styleName="normalText" paddingTop="0" paddingBottom="0" />
-	                <mx:ComboBox id="contestCombo" left="195" width="272" top="9" styleName="ComboBoxStyle"
-	                        valueCommit="handleContest()" fontFamily="Arial" fontSize="12"
+	                <mx:ComboBox id="contestCombo" left="195" width="272" top="9" styleName="ComboBoxStyle"	                 	   
+	                        change="handleContest(event)" fontFamily="Arial" fontSize="12"
 	                        labelField="name" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{_contestList}" />
 	                <mx:Label id="contestRankingErrorLbl" fontFamily="Arial" 
 			                                fontWeight="bold" color="red" fontSize="14" width="600" top="38"
@@ -1228,7 +1228,7 @@ wsdl="{contestServiceFacadeWsdl}">
             <mx:Text text="Select a contest:" fontWeight="bold"/>
         </mx:HBox>
         <mx:ComboBox id="contestlist2" width="240" labelField="name" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{_contestList}"
-        	 change="handleContest()"/>
+        	 change="handleContest(event)"/>
         <mx:HRule width="100%" strokeColor="#000000"/>
         <mx:HBox width="100%" >
             <mx:Text text="Total Submissions:" fontWeight="bold"/>
