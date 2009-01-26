@@ -31,14 +31,14 @@
         private static const daySeconds:Number = 24*60*60;
         private static const halfDaySeconds:Number = 12*60*60;
         private static const hourSeconds:Number = 60*60;
-        
-		public static var SLIDER_TICK_LENGTH:Number = 0;
-		public static var TRACK_WIDTH:Number = 0;
 
-		private var username:String="user";//Application.application.parameters.username;  //"user"
-        private var password:String="password";
-        private var blazedsendpoint:String=Application.application.parameters.blazedsendpoint;
-        private var contestServiceFacadeWsdl:String="http://174.129.135.92:8003/topcoder_contest_service_facade-topcoder_contest_service_facade/ContestServiceFacadeBean?wsdl";//Application.application.parameters.contestServiceFacadeWsdl;
+	public static var SLIDER_TICK_LENGTH:Number = 0;
+	public static var TRACK_WIDTH:Number = 0;
+
+	private var username:String=Application.application.parameters.username;  //"user"
+        private var password:String = "";
+        private var blazedsendpoint:String= Application.application.parameters.blazedsendpoint;
+        private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;
         
         private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
 		
@@ -80,13 +80,17 @@
         	ContestServiceFacadeBean.getAllContests();
         }
 
-		private function init():void {
-			//getDataService();
-			fetchData();
-    	}
 
-	    private function getDataService():void {
-		    //dataservice.getPassword();
+	private function init():void {
+
+		getDataService();
+            }
+
+
+	    private function getDataService():void
+		{
+				
+		    dataservice.getPassword();
 		}
 
 		private function processPassword(e:ResultEvent): void
@@ -257,13 +261,13 @@ wsdl="{contestServiceFacadeWsdl}">
 <mx:operation name="getAllContests" resultFormat="object" result="setContests(event)"> 
 </mx:operation>
 </mx:WebService>
-<!--<mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"
+<mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"
               
 		 fault="Alert.show(event.fault.faultString);">
     <mx:method name="getPassword"  result="processPassword(event)" 
 		                   fault="Alert.show(event.fault.faultString);"/>
 
-</mx:RemoteObject>-->
+</mx:RemoteObject>
 
 <mx:VBox paddingLeft="20" paddingRight="20" width="100%">
 	<mx:Spacer height="10"/>
