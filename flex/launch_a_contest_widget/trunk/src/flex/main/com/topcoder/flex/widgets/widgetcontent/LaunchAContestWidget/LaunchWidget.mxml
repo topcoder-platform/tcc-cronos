@@ -143,6 +143,9 @@
 		_pws=new ProjectServiceFacadeBeanService(null, projectServiceFacadeWsdl);
 		
 		_pws.getWebService().addHeader(WebServiceUtil.getWSSEHeader(username ,password));
+
+		  initialWdt.init();
+
 		
             }
             
