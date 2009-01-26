@@ -60,7 +60,7 @@
             [Bindable]
             private var _purchaseList:ArrayCollection = new ArrayCollection();
             
-            private var _isLocalTesting:Boolean=true;
+            private var _isLocalTesting:Boolean=false;
 
 	       
         	private var username:String = _isLocalTesting ? "user" : Application.application.parameters.username;
