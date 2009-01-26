@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" >
+<mx:HBox styleName="BoxStyle" xmlns:mx="http://www.adobe.com/2006/mxml">
 	<mx:Script>
 		<![CDATA[
 			private function getPurchase(dta:Object):String {
@@ -33,12 +33,11 @@
 				}
 			}
 			
-			private function download(url:String, id:String):void {
+			private function download(id:String):void {
 				trace("Submission id @ download: " + id);
-				
-				if (!url) {
-					url = "http://174.129.135.92:8003/direct/cockpit/impersonation/cockpitStudio.do?&sbmid=" + id + "&sbt=original";
-				}
+
+				// TODO: read url from app settings.				
+				var	url:String = "http://174.129.135.92:8003/direct/cockpit/impersonation/cockpitStudio.do?&sbmid=" + id + "&sbt=original";
 				var request:URLRequest = new URLRequest(url);
 				var fileRef:FileReference = new FileReference();
 				fileRef.download(request);
@@ -46,6 +45,7 @@
 			}
 		]]>
 	</mx:Script>
+<mx:HBox styleName="BoxStyle" width="100%">
 	<mx:VBox id="left" horizontalAlign="center" verticalGap="0"
 			paddingTop="0" paddingLeft="0" paddingBottom="0" paddingRight="0">
 		<mx:Canvas width="116" height="94">
@@ -63,6 +63,7 @@
 		<mx:Label styleName="normalText" />
 		<mx:Text width="100%" textAlign="left" styleName="text" 
 				htmlText="Lorem ipsum dolor sit amet, et refoveo velit, populus cogo. Jugis ventosus suscipit ut nulla quibus, luptatum transverbero. &lt;br&gt;- Haero ea, loquor vereor. &lt;br&gt;- Ea ibidem valetudo validus foras vero ullamcorper." />
-		<mx:Button id="down" styleName="SaveContinueButtonStyle" click="{download(data.submissionContent, data.id)}" />
+		<mx:Button id="down" styleName="ButtonStyle" click="{download(data.id)}" />
 	</mx:VBox>
+</mx:HBox>
 </mx:HBox>

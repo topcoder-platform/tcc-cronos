@@ -1,4 +1,579 @@
 /* CSS file */
+
+/************************ TabNavg.widgetViewManager (in "main.xml") ***************************/
+
+.widgetLayoutControl /* the main container */
+{
+	tabPageStyleName: tabPage;
+	crossIconButtonStyleName: crossIconButton;
+}
+
+	.tabPage /* VBox, include a Text (showing tab description) and a HBox consisted of 1-4 columns (VBox) */
+	{
+		borderSkin: Embed(source="../assets/bg_tabNavigator.png",scaleGridTop="15",scaleGridLeft="12",scaleGridRight="186",scaleGridBottom="89");
+		paddingLeft: 18px;
+		paddingRight: 18px;
+		paddingTop: 23px;
+		paddingBottom : 18px;
+	}	
+		
+	.crossIconButton /* Button, implemented by "Add Tab" (addTabBtn) and "Add Widget" (addWidgetBtn)*/
+	{
+		icon: Embed(source="../assets/icon_cross.png");
+	}
+
+/*********************** SuperTab Navigator ****************************/
+
+SuperTabNavigator /* SuperTabNavigator */
+{
+	paddingLeft: 0px;
+	paddingRight: 0px;
+	paddingTop: 0;
+	paddingBottom : 0px;
+	borderStyle: none;
+	tab-offset: 18px;
+	horizontal-gap: 5px;
+	focusAlpha: 0;
+	
+	/* Detailed Styles of Inner Objects */
+	tabStyleName: tab;
+	selectedTabTextStyleName: tabNavigatorSelectedTabText;	
+	tabConfigScreenStyleName: tabConfigScreen;
+}
+
+	.tab /* SuperTab */
+	{
+		upSkin: Embed(source="../assets/bg_tab_Up.png",scaleGridLeft="6",scaleGridTop="4",scaleGridRight="55",scaleGridBottom="20");
+		overSkin: Embed(source="../assets/bg_tab_Over.png",scaleGridLeft="6",scaleGridTop="4",scaleGridRight="55",scaleGridBottom="20");
+		downSkin: Embed(source="../assets/bg_tab_Down.png",scaleGridLeft="6",scaleGridTop="4",scaleGridRight="55",scaleGridBottom="20");
+		disabledSkin: Embed(source="../assets/bg_tab_Disabled.png",scaleGridLeft="6",scaleGridTop="4",scaleGridRight="55",scaleGridBottom="20");
+		selectedUpSkin: Embed(source="../assets/bg_tab_Down.png",scaleGridLeft="6",scaleGridTop="4",scaleGridRight="55",scaleGridBottom="20");
+		selectedOverSkin: Embed(source="../assets/bg_tab_Over.png",scaleGridLeft="6",scaleGridTop="4",scaleGridRight="55",scaleGridBottom="20");
+		selectedDownSkin: Embed(source="../assets/bg_tab_Down.png",scaleGridLeft="6",scaleGridTop="4",scaleGridRight="55",scaleGridBottom="20");
+		selectedDisabledSkin: Embed(source="../assets/bg_tab_Disabled.png",scaleGridLeft="6",scaleGridTop="4",scaleGridRight="55",scaleGridBottom="20");
+		color: #999999;
+		textRollOverColor: #FFFFFF;
+		disabledColor: #CCCCCC;
+		textAlign: center;
+		paddingLeft: 25px;
+		paddingRight: 25px;
+		/* Detailed Styles of Inner Objects */
+		tabCloseButtonStyleName: tabCloseButton;
+	}
+	
+	.tabCloseButton /* Button, close Button on the right of the Tab */
+	{
+		upSkin: Embed(source="../assets/icon_tabClose_Up.png");
+		overSkin: Embed(source="../assets/icon_tabClose_Over.png");
+		downSkin: Embed(source="../assets/icon_tabClose_Down.png");
+		disabledSkin: Embed(source="../assets/icon_tabClose_Disabled.png");
+	}
+	
+
+	.tabNavigatorSelectedTabText /* Text, implemented by active Tab */
+	{
+		color: #FFFFFF;
+	}
+	
+	.tabConfigScreen /* TabConfigScreen, pop up when click "Add Tab" */
+	{
+		paddingTop: 40px;
+		paddingLeft: 30px;
+		paddingRight: 30px;
+		paddingBottom: 60px;
+		color: #3E3E3E;
+		headerHeight: 39;
+		borderSkin: Embed(source="../assets/bg_tabConfigScreen.png",scaleGridTop="37",scaleGridLeft="28",scaleGridRight="358",scaleGridBottom="135");
+		
+		/* Detailed Styles of Inner Objects */
+		titleStyleName: tabConfigScreenTitle;
+		saveButtonStyleName: tabConfigScreenSaveButton;
+		cancelButtonStyleName: tabConfigScreenCancelButton;
+	}
+	
+		.tabConfigScreenTitle /* Text, implemented by the title of TabConfigScreen */
+		{
+			color: #FFFFFF;
+			fontWeight: bold;
+			textIndent: 10;
+		}
+				
+		.tabConfigScreenSaveButton /* Button, implemented by "OK" (saveBtn) */
+		{
+			upSkin: Embed(source="../assets/bg_okButton_Up.png",scaleGridRight="56",scaleGridLeft="5",scaleGridTop="4",scaleGridBottom="23");
+			overSkin: Embed(source="../assets/bg_okButton_Over.png",scaleGridRight="56",scaleGridLeft="5",scaleGridTop="4",scaleGridBottom="23");
+			downSkin: Embed(source="../assets/bg_okButton_Up.png",scaleGridRight="56",scaleGridLeft="5",scaleGridTop="4",scaleGridBottom="23");
+			disabledSkin: Embed(source="../assets/bg_okButton_Over.png",scaleGridRight="56",scaleGridLeft="5",scaleGridTop="4",scaleGridBottom="23");
+			color: #FFFFFF;
+			textRollOverColor: #999999;
+			textSelectedColor: #FFFFFF;
+			disabledColor: #CCCCCC;
+		}
+		
+		.tabConfigScreenCancelButton /* Button, implemented by "Cancel" (cancelBtn) */
+		{
+			upSkin: Embed(source="../assets/bg_cancelButton_Up.png",scaleGridRight="56",scaleGridLeft="5",scaleGridTop="4",scaleGridBottom="23");
+			overSkin: Embed(source="../assets/bg_cancelButton_Over.png",scaleGridRight="56",scaleGridLeft="5",scaleGridTop="4",scaleGridBottom="23");
+			downSkin: Embed(source="../assets/bg_cancelButton_Up.png",scaleGridRight="56",scaleGridLeft="5",scaleGridTop="4",scaleGridBottom="23");
+			disabledSkin: Embed(source="../assets/bg_cancelButton_Over.png",scaleGridRight="56",scaleGridLeft="5",scaleGridTop="4",scaleGridBottom="23");
+			color: #FFFFFF;
+			textRollOverColor: #999999;
+			textSelectedColor: #FFFFFF;
+			disabledColor: #CCCCCC;
+		}
+				
+
+/********************** Widget *****************************/
+
+WidgetContainer /* Widget */
+{
+    backgroundGradientColors: #cccccc, #ffffff;
+    themeColor: #666666;
+    backgroundColor: "green";
+	borderSkin: Embed(source="../assets/bg_panel.png",scaleGridTop="33",scaleGridLeft="20",scaleGridRight="280",scaleGridBottom="242");
+	paddingTop: 38;
+	paddingLeft: 21px;
+	paddingRight: 19px;
+	paddingBottom: 6px;
+	color: #000000;
+	headerHeight: 30;
+	
+	/* Detailed Styles of Inner Objects */
+	widgetCloseButtonStyleName: widgetCloseButton;
+	widgetMaximizeButtonStyleName: widgetMaximizeButton;
+	widgetRefreshButtonStyleName: widgetRefreshButton;
+	widgetCollapseButtonStyleName: widgetCollapseButton;
+	dragInitiatorSylteName: widget;
+}
+
+	.widgetCloseButton /* Button, close-button(icon) on the right of the title-bar */
+	{
+		upSkin: Embed(source="../assets/icon_close_Up.png");
+		overSkin: Embed(source="../assets/icon_close_Over.png");
+		downSkin: Embed(source="../assets/icon_close_Down.png");
+		disabledSkin: Embed(source="../assets/icon_close_Disabled.png");
+		selectedUpSkin: Embed(source="../assets/icon_close_Up.png");
+		selectedOverSkin: Embed(source="../assets/icon_close_Over.png");
+		selectedDownSkin: Embed(source="../assets/icon_close_Down.png");
+		selectedDisabledSkin: Embed(source="../assets/icon_close_Disabled.png");
+	}
+	
+	.widgetMaximizeButton /* Button, maximize-button(icon) on the right of the title-bar | When widget restored */
+	{
+		upSkin: Embed(source="../assets/icon_max_Up.png");
+		overSkin: Embed(source="../assets/icon_max_Over.png");
+		downSkin: Embed(source="../assets/icon_max_Down.png");
+		disabledSkin: Embed(source="../assets/icon_max_Disabled.png");
+		selectedUpSkin: Embed(source="../assets/icon_restore_Up.png");
+		selectedOverSkin: Embed(source="../assets/icon_restore_Over.png");
+		selectedDownSkin: Embed(source="../assets/icon_restore_Down.png");
+		selectedDisabledSkin: Embed(source="../assets/icon_restore_Disabled.png");
+	}
+	
+	.widgetRefreshButton /* Button, refresh-button(icon) on the right of the title-bar */
+	{
+		upSkin: Embed(source="../assets/icon_refresh_Up.png");
+		overSkin: Embed(source="../assets/icon_refresh_Over.png");
+		downSkin: Embed(source="../assets/icon_refresh_Down.png");
+		disabledSkin: Embed(source="../assets/icon_refresh_Disabled.png");
+		selectedUpSkin: Embed(source="../assets/icon_refresh_Up.png");
+		selectedOverSkin: Embed(source="../assets/icon_refresh_Over.png");
+		selectedDownSkin: Embed(source="../assets/icon_refresh_Down.png");
+		selectedDisabledSkin: Embed(source="../assets/icon_refresh_Disabled.png");
+	}
+	
+	.widgetCollapseButton /* Button, collapse-button(icon) on the right of the title-bar | when widget expanded */
+	{
+		upSkin: Embed(source="../assets/icon_collapse_Up.png");
+		overSkin: Embed(source="../assets/icon_collapse_Over.png");
+		downSkin: Embed(source="../assets/icon_collapse_Down.png");
+		disabledSkin: Embed(source="../assets/icon_collapse_Disabled.png");
+		selectedUpSkin: Embed(source="../assets/icon_expand_Up.png");
+		selectedOverSkin: Embed(source="../assets/icon_expand_Over.png");
+		selectedDownSkin: Embed(source="../assets/icon_expand_Down.png");
+		selectedDisabledSkin: Embed(source="../assets/icon_expand_Disabled.png");
+	}
+
+	
+/***************** Generic Styles *******************/
+
+Alert
+{		
+	paddingTop: 35px;
+	paddingLeft: 30px;
+	paddingRight: 30px;
+	paddingBottom: 18px;
+	color: #666666;
+	headerHeight: 39;
+	borderSkin: Embed(source="../assets/bg_tabConfigScreen.png",scaleGridTop="37",scaleGridLeft="28",scaleGridRight="358",scaleGridBottom="135");
+	
+	/* Detailed Styles of Inner Objects */
+	titleStyleName: alertTitle;
+	yesButtonStyleName: alertYesButton;
+	noButtonStyleName: alertNoButton;
+		
+/*	paddingTop: 35px;
+	paddingLeft: 30px;
+	paddingRight: 30px;
+	paddingBottom: 20px;
+	color: #3E3E3E;
+	headerHeight: 39;
+	borderSkin: Embed(source="../assets/bg_Alert.png",scaleGridTop="37",scaleGridLeft="28",scaleGridRight="358",scaleGridBottom="135");
+	
+	titleStyleName: alertTitle;*/
+}
+
+	.alertTitle /* Text, title of Alert*/
+	{
+		color: #FFFFFF;
+		fontWeight: bold;
+		textIndent: 10;
+	}
+	
+	.alertYesButton /* Button, implemented by "OK" */
+	{
+		upSkin: Embed(source="../assets/bg_okButton_Up.png",scaleGridRight="56",scaleGridLeft="5",scaleGridTop="4",scaleGridBottom="23");
+		overSkin: Embed(source="../assets/bg_okButton_Over.png",scaleGridRight="56",scaleGridLeft="5",scaleGridTop="4",scaleGridBottom="23");
+		downSkin: Embed(source="../assets/bg_okButton_Up.png",scaleGridRight="56",scaleGridLeft="5",scaleGridTop="4",scaleGridBottom="23");
+		disabledSkin: Embed(source="../assets/bg_okButton_Over.png",scaleGridRight="56",scaleGridLeft="5",scaleGridTop="4",scaleGridBottom="23");
+		color: #FFFFFF;
+		textRollOverColor: #999999;
+		textSelectedColor: #FFFFFF;
+		disabledColor: #CCCCCC;
+	}
+	
+	.alertNoButton /* Button, implemented by "Cancel" */
+	{
+		upSkin: Embed(source="../assets/bg_cancelButton_Up.png",scaleGridRight="56",scaleGridLeft="5",scaleGridTop="4",scaleGridBottom="23");
+		overSkin: Embed(source="../assets/bg_cancelButton_Over.png",scaleGridRight="56",scaleGridLeft="5",scaleGridTop="4",scaleGridBottom="23");
+		downSkin: Embed(source="../assets/bg_cancelButton_Up.png",scaleGridRight="56",scaleGridLeft="5",scaleGridTop="4",scaleGridBottom="23");
+		disabledSkin: Embed(source="../assets/bg_cancelButton_Over.png",scaleGridRight="56",scaleGridLeft="5",scaleGridTop="4",scaleGridBottom="23");
+		color: #FFFFFF;
+		textRollOverColor: #999999;
+		textSelectedColor: #FFFFFF;
+		disabledColor: #CCCCCC;
+	}
+
+
+Button
+{
+	upSkin: Embed(source="../assets/bg_Button_Up.png",scaleGridTop="8",scaleGridLeft="10",scaleGridRight="58",scaleGridBottom="15");
+	color: #3E3E3E;
+	themeColor: #AAAAAA;
+}
+
+ComboBox
+{
+	upSkin: Embed(source="../assets/bg_ComboBox_Up.png",scaleGridRight="33",scaleGridLeft="4",scaleGridTop="4",scaleGridBottom="18");
+	overSkin: Embed(source="../assets/bg_ComboBox_Over.png",scaleGridRight="33",scaleGridLeft="4",scaleGridTop="4",scaleGridBottom="18");
+	downSkin: Embed(source="../assets/bg_ComboBox_Over.png",scaleGridRight="33",scaleGridLeft="4",scaleGridTop="4",scaleGridBottom="18");
+	disabledSkin: Embed(source="../assets/bg_ComboBox_Up.png",scaleGridRight="33",scaleGridLeft="4",scaleGridTop="4",scaleGridBottom="18");
+	color: #3E3E3E;
+	fontWeight: normal;
+	paddingLeft: 6;
+	paddingBottom: 1;
+}
+
+TextInput
+{
+	borderSkin: Embed(source="../assets/bg_TextInput.png",scaleGridTop="5",scaleGridLeft="6",scaleGridRight="146",scaleGridBottom="17");
+	paddingLeft: 6;
+	paddingRight: 6;
+	paddingTop: 2;
+	paddingBottom: 2;
+	color: #3E3E3E;
+	focusAlpha: 0;
+}
+
+/*
+Patterned after pull down menus from:
+https://www.topcoder.com/
+*/
+ComboBox {
+   color: #000000;
+   selectionColor: #666666;
+   textSelectedColor: #ffffff;
+   rollOverColor: #000000;
+   textRollOverColor: #ffffff;
+   fontSize: 11;
+}
+
+/* 
+Alternate rows from: 
+http://www.topcoder.com/tc?module=MyHome
+and http://www.topcoder.com/css/tcStyles20080219.css 
+*/
+DataGrid {
+   borderStyle: inset;
+   borderColor: #000000;
+   horizontalGridLines: true;
+   horizontalGridLineColor: #ffffff;
+   alternatingItemColors: #F5F5F5, #EFEFEF;
+   headerStyleName: "dataGridHeader";
+   verticalGridLines: true;
+   verticalGridLineColor: #000000;
+}
+
+/* 
+Header red from:
+http://software.topcoder.com/TCD/training.jsp
+http://software.topcoder.com//includes/screen.css 
+*/
+.dataGridHeader {
+   color: #d00;
+   fontWeight: bold;
+   fontSize: 11;
+   textAlign: left;
+}
+
+LinkButton {
+   rollOverColor: #cccccc;
+   selectionColor: #666666;
+}
+
+TextArea {
+   borderStyle: inset;
+   borderColor: #000000;
+}
+
+
+
+/* CSS file */
+
+.panelTitle
+{
+	fontSize: 12;
+	color: #FFFFFF;
+	fontWeight: bold;
+	paddingLeft: 100;
+}
+/*Buttons of the widget*/
+
+.ClosedButton
+{
+	up-skin:        Embed("../assets/icon/Butclose.png");
+	over-skin:      Embed("../assets/icon/Butclose.png");
+	down-skin:      Embed("../assets/icon/Butclose.png");
+	disabled-skin:  Embed("../assets/icon/Butclose.png");
+	border-style: none;
+}
+
+.CloseButton
+{
+	up-skin:        Embed("../assets/icon/CloseButton.png");
+	over-skin:      Embed("../assets/icon/CloseButton.png");
+	down-skin:      Embed("../assets/icon/CloseButton.png");
+	disabled-skin:  Embed("../assets/icon/CloseButton.png");
+	border-style: none;
+}
+/*[?] button*/
+.HelpButton
+{
+	up-skin:        Embed("../assets/icon/helpButton.png");
+	over-skin:      Embed("../assets/icon/helpButton.png");
+	down-skin:      Embed("../assets/icon/helpButton.png");
+	disabled-skin:  Embed("../assets/icon/helpButton.png");
+	border-style: none;
+}
+/*Axpand All Button*/
+.MaxButton
+{
+	up-skin:        Embed("../assets/icon/minButton.png");
+	over-skin:      Embed("../assets/icon/minButton.png");
+	down-skin:      Embed("../assets/icon/minButton.png");
+	disabled-skin:  Embed("../assets/icon/minButton.png");
+	border-style: none;
+}
+/*Collapse All Button*/
+.RefreshButton
+{
+	up-skin:        Embed("../assets/icon/someButton1.png");
+	over-skin:      Embed("../assets/icon/someButton1.png");
+	down-skin:      Embed("../assets/icon/someButton1.png");
+	disabled-skin:  Embed("../assets/icon/someButton1.png");
+	border-style: none;
+
+}
+Widget
+{
+	horizontalAlign: center;
+	roundedBottomCorners: false;
+	borderSkin: Embed(source="../assets/image/Widget-skin.png",scaleGridTop="51",scaleGridLeft="5",scaleGridRight="525",scaleGridBottom="485");
+	titleStyleName: panelTitle;
+	borderColor: #B9B9B9;
+	headerHeight: 30;
+	controlBarStyleName: panelControlBar;
+}
+LinkButton
+{
+	color: #E2280F;
+	textRollOverColor: #434343;
+	rollOverColor: #FFFFFF;
+	selectionColor: #92C8EB;
+	themeColor: #FFFFFF;
+}
+.panelControlBar
+{
+	paddingTop: 15;
+	paddingBottom: 0;
+}
+/* contextRow
+	evenRowColor=background color of the even row of the list
+	oddRowColor=background color of the odd row of the list */
+
+VBox.ContestRow
+{
+	evenRowColor: #FFFFFF;
+	oddRowColor: #DDDDDD;
+	borderColor: #EBEBEB;
+	borderStyle: solid;
+	verticalGap: 0;
+}
+
+
+/* CSS file */
+.WidgetPanel {
+   borderColor: #B7BABC;
+   borderThicknessLeft: 10;
+   borderThicknessTop: 1;
+   borderThicknessBottom: 1;
+   borderThicknessRight: 10;
+   borderAlpha: 1;
+   dropShadowEnabled: false;
+   headerColors: #cccccc, #cccccc;
+   titleStyleName: "panelTitle";
+}
+.panelTitle {
+   textAlign: left;
+   color: #000000;
+   fontWeight: bold;
+}
+.EditButton
+{
+    upSkin: Embed(source="../assets/EditButton_Up.png");
+    overSkin: Embed(source="../assets/EditButton_Over.png");
+    downSkin: Embed(source="../assets/EditButton_Over.png");
+    disabledSkin: Embed(source="../assets/EditButton_Up.png");
+    paddingLeft: 0;
+    paddingTop: 0;
+    paddingRight: 0;
+    paddingBottom: 0;
+}
+
+
+
+.header {
+	font-family: Arial;
+	font-size: 16;
+	font-weight: bold;
+	color: #000000;
+}
+.content {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: normal;
+	color: #000000;
+}
+
+.contentBlack {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #000000;
+}
+
+.contentGrey {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #797979;
+}
+
+.combobox {
+	skin: Embed(source="../assets/combobox.png", 
+			scaleGridTop="1",scaleGridLeft="1",scaleGridRight="134",scaleGridBottom="18");
+	font-family: Arial;
+	font-size: 12;
+	font-weight: normal;
+	color: #000000;
+	padding-left: 8;
+	padding-right: 8;
+	vertical-align: middle;
+}
+
+.TextInput {
+	/* border-skin: Embed(source="../assets/textinput.png", 
+			scaleGridTop="1",scaleGridLeft="1",scaleGridRight="159",scaleGridBottom="18"); */
+	font-family: Arial;
+	font-size: 12;
+	font-weight: normal;
+	color: #000000;
+	vertical-align: middle;
+	border-color: #808080;
+	border-style: solid;
+}
+
+.NumericStepper {
+	border-skin: Embed(source="../assets/numericstepperBG.png", 
+			scaleGridTop="8",scaleGridLeft="2",scaleGridRight="34",scaleGridBottom="16");
+	up-arrow-skin: Embed(source="../assets/up.png");
+	down-arrow-skin: Embed(source="../assets/down.png");
+	font-family: Arial;
+	font-size: 12;
+	font-weight: normal;
+	color: #000000;
+	vertical-align: middle;	
+	padding-left: 7;
+	padding-right: 7;
+}
+
+
+.GridItem {
+	vertical-align: middle;
+}
+
+
+.infoBox{
+	background-image:"assets/images/infobg.png";
+}
+.infoBoxTxt{
+	font-family:"Myriad Pro Regular";
+	font-size:14;
+	color:#000000;
+	padding-left:20;
+	text-align:left;
+}
+.infoBoxTxtNormal{
+	font-family:"Myriad Pro Regular";
+	font-size:14;
+	color:#000000;
+}
+
+.sliderBox{
+	background-image:"../assets/images/sliderbg.png"
+}
+@font-face 
+{
+	src:url("../assets/fonts/MyriadPro-Black.otf");
+	font-family: "Myriad Pro";
+}
+@font-face 
+{
+	src:url("../assets/fonts/MyriadPro-Regular.otf");
+	font-family: "Myriad Pro Regular";
+}
+
+.labelStyle
+{
+	font-family:"Myriad Pro";
+	font-size:12;
+	color:#000000;
+	font-weight:bold;
+	top: 50;
+}
+
+
+/* CSS file */
 .normalText {
 	font-weight: bold;
 	font-size: 12;
@@ -37,35 +612,37 @@
 	down-skin: Embed("../assets/down_down.png");	
 }
 
-.buttonStyleName {
-	color: #000000;
-	skin: Embed("../assets/rank.png");
-	over-skin: Embed("../assets/rank_over.png");
-	down-skin: Embed("../assets/rank_over.png");
-	selected-over-skin: Embed("../assets/rank_over.png");
-	selected-up-skin: Embed("../assets/rank_over.png");
-	selected-down-skin: Embed("../assets/rank_over.png");
+.rankButton {
+	color: #ffffff;
+	font-weight:bold;
+	
+	skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankButtonSkin');
+	over-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankButtonSelectedSkin');
+	down-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankButtonSelectedSkin');
+	selected-over-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankButtonSelectedSkin');
+	selected-up-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankButtonSelectedSkin');
+	selected-down-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankButtonSelectedSkin');
 	padding-left:0;
 	padding-right:0;
 }
 
 .rankLogo {
-	color: #000000;
-	skin: Embed("../assets/rank.png");
-	over-skin: Embed("../assets/rank.png");
-	down-skin: Embed("../assets/rank.png");
+	color: #ffffff;
+	font-weight:bold;
+	skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankLogoSkin');
+	over-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankLogoSkin');
+	down-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankLogoSkin');
 	padding-left:0;
 	padding-right:0;
 }
 
 .purchaseLogo {
+	/*color: #ffffff;
+	font-weight:bold;
+	skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.PurchaseLogoSkin');
+	over-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.PurchaseLogoSkin');
+	down-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.PurchaseLogoSkin');*/
 	background-image: Embed("../assets/purchase.png"); 
-}
-
-.priorBtn {
-	skin: Embed("../assets/PriorButton.png");
-	over-skin: Embed("../assets/PriorButton_over.png");
-	down-skin: Embed("../assets/PriorButton.png");
 }
 
 .ComboBoxStyle {
@@ -89,16 +666,6 @@
 	selected-up-icon: Embed("../assets/checkbox_checked.png");
 	selected-over-icon: Embed("../assets/checkbox_checked.png");
 	icon: Embed("../assets/checkbox.png");
-}
-
-.SaveContinueButtonStyle {
-	font-family: Arial;
-	font-weight: normal;
-	font-size: 12;
-	color: #767676;
-	skin: Embed(source="../assets/button.png",scaleGridTop="2",scaleGridLeft="17",scaleGridRight="93",scaleGridBottom="26");
-	over-skin: Embed(source="../assets/button_over.png",scaleGridTop="2",scaleGridLeft="17",scaleGridRight="93",scaleGridBottom="26");
-	down-skin: Embed(source="../assets/button_over.png",scaleGridTop="2",scaleGridLeft="17",scaleGridRight="93",scaleGridBottom="26");
 }
 
 .first {
@@ -142,10 +709,6 @@
 }
 
 .NumericStepper {
-/*  	border-skin: Embed(source="../assets/numericstepperBG.png", 
-			scaleGridTop="8",scaleGridLeft="2",scaleGridRight="34",scaleGridBottom="16");
-	up-arrow-skin: Embed(source="../assets/up2.png");
-	down-arrow-skin: Embed(source="../assets/down2.png");  */
 	font-family: Arial;
 	font-size: 12;
 	font-weight: normal;
@@ -153,4 +716,26 @@
 	vertical-align: middle;	
 	padding-left: 7;
 	padding-right: 7;
+}
+
+.BoxStyle {
+	corner-radius: 5;
+	border-style: solid;
+	border-thickness: 2;
+	drop-shadow-enabled: true;
+	shadow-direction: center;
+}
+
+.ButtonStyle {
+	font-family: Arial;
+	font-weight: normal;
+	font-size: 12;
+	color: #ffffff;
+	gradientType: radial;
+	fillColors: #FF2222,#FF0000;
+	fillAlphas: 0.5, 1.0;
+	drop-shadow-enabled: true;
+	border-thickness: 1;
+	corner-radius: 10;
+	background-color: #000000;
 }

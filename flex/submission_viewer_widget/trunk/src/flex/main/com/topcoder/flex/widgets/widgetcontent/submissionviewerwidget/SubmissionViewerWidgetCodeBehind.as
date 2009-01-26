@@ -2,14 +2,14 @@
  * Copyright (c) 2008, TopCoder, Inc. All rights reserved.
  */
 package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
-    import mx.containers.Panel;
-    import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.model.IWidgetFramework;
+    import com.topcoder.flex.widgets.model.IWidget;
+    
     import flash.utils.Dictionary;
     
     import mx.containers.Panel;
-    import mx.containers.ViewStack;
     import mx.containers.VBox;
+    import mx.containers.ViewStack;
 
     /**
      * <p>
@@ -28,12 +28,23 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          */
         private var _name:String = "Submission Viewer";
 
-	private var _framework:IWidgetFramework = null;
+		private var _framework:IWidgetFramework = null;
 	
-	
-	private var _minPage:VBox;
+		private var _minPage:VBox;
         
         private var _main:ViewStack;
+        
+        public var _maximumHeight:Number;
+        public var _maximumWidth:Number;
+        
+        public var _mainPageMaximumHeight:Number;
+        public var _mainPageMaximumWidth:Number;
+        
+        public var _minimumHeight:Number;
+        public var _minimumWidth:Number;
+        
+        public var _minPageHeight:Number=570;
+        public var _minPageWidth:Number=320;
         
         public function set minPage(page:VBox):void
         {
@@ -55,10 +66,10 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         	return _main;
         }
 
-	/**
-	 * The allowclose flag.
-	 */
-	private var _allowclose:Boolean=true;
+		/**
+		 * The allowclose flag.
+		 */
+		private var _allowclose:Boolean=true;
         
         /**
          * The data for the widget.
@@ -161,9 +172,11 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             minPage.visible=true;
             main.height=0;
             main.width=0;
-            minPage.width=320;
-            minPage.height=570;
-            parent.width=370;
+            
+            minPage.width=_minPageWidth;
+            minPage.height=_minPageHeight;
+            
+            parent.width=_minimumWidth;
         }
 
         /**
@@ -172,11 +185,12 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         public function maximize():void {
             main.visible=true;
             minPage.visible=false;
-            main.height=1000;
-            main.width=1000;
+            main.height=_mainPageMaximumHeight;
+            main.width=_mainPageMaximumWidth;
+            
             minPage.width=0;
             minPage.height=0;
-            parent.width=main.width;
+            parent.width=_maximumWidth;
         }
 
         /**
