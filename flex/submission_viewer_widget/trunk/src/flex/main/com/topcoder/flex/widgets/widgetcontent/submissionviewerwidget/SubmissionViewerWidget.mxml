@@ -1063,8 +1063,7 @@
     					width="100%">
                 <mx:Label text="Select a Contest to View:" left="0" top="9" 
                         styleName="normalText" paddingTop="0" paddingBottom="0" />
-                <mx:ComboBox id="contestCombo" left="195" width="272" top="9" 
-                        change="handleContest(event)" fontFamily="Arial" fontSize="12"
+                <mx:ComboBox id="contestCombo" change="handleContest(event)" 
                         labelField="name" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{_contestList}" />
                 <mx:Label id="contestRankingErrorLbl" fontFamily="Arial" 
 		                                fontWeight="bold" color="red" fontSize="14" width="600" top="38"
