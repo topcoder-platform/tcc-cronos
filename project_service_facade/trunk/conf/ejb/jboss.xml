@@ -7,4 +7,12 @@
         </session>
     </enterprise-beans>
     <security-domain>java:/jaas/JBossLoginModule</security-domain>
+
+	<webservices> 
+		<context-root>/projectfacade</context-root> 
+		<webservice-description> 
+		<webservice-description-name />
+		<wsdl-publish-location />
+		</webservice-description>
+ </webservices>
 </jboss>
