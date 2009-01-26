@@ -3,7 +3,6 @@
     xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
     title="Submission Viewer"
     creationComplete="init()" width="98%" height="100%" headerHeight="0" >
-
     <mx:Style source="Style.css" />
     <mx:Script>
         <![CDATA[
@@ -639,7 +638,7 @@
             
             private function saveFeedBack():void {
                 if (contestCombo.selectedItem) {
-//                    contestCombo.selectedItem.feed = feed.text;
+                    contestCombo.selectedItem.feed = feed.text;
                 }
             }
             
@@ -950,11 +949,11 @@ wsdl="{contestServiceFacadeWsdl}">
         fault="handleSubFail(event)" result="handleSubResult(event)" />
     <mx:NumberFormatter id="moneyFormatter" precision="2" useThousandsSeparator="true" useNegativeSign="true" />
     <mx:ViewStack id="main" width="100%" height="100%">
-	    <mx:HBox id="contestViewer" width="100%" height="100%" paddingTop="10" paddingBottom="25" backgroundColor="#d6d6d6">
-	        <mx:VBox horizontalAlign="left" height="100%" width="200" backgroundColor="#d6d6d6" >
+	    <mx:HBox id="contestViewer" width="100%" height="100%" paddingTop="10" paddingBottom="25">
+	        <mx:VBox horizontalAlign="left" height="100%" width="200">
 	            <mx:ViewStack id="thumbnailPanel" width="100%" height="100%">
-	            	<mx:VBox id="thumbnailPanel_enabled" horizontalAlign="center">
-		            	<mx:Button click="reorder()" styleName="priorBtn" label="Prioritize"   />
+	            	<mx:VBox id="thumbnailPanel_enabled">
+		            	<mx:Button click="reorder()" styleName="priorBtn"/>
 		            	<mx:VBox horizontalAlign="center" height="100%" width="100%"
 			                    paddingLeft="0" paddingRight="0" >
 			                
@@ -963,7 +962,7 @@ wsdl="{contestServiceFacadeWsdl}">
 			                        selectionDuration="0"
 			                        dataProvider="{activeSubmission}" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer" itemsChangeEffect="{myDTLE}"
 			                        verticalScrollPolicy="off" horizontalScrollPolicy="off" borderStyle="none"
-			                        click="handleSelect()" allowMultipleSelection="false" allowDragSelection="false" backgroundColor="#d6d6d6"/>
+			                        click="handleSelect()" allowMultipleSelection="false" allowDragSelection="false"/>
 			                <mx:Button id="down" styleName="down" click="goDown()" />
 			            </mx:VBox>
 		            </mx:VBox>
@@ -973,31 +972,27 @@ wsdl="{contestServiceFacadeWsdl}">
 		            </mx:VBox>
 	            </mx:ViewStack>
 	        </mx:VBox>
-	        <mx:Canvas width="1" height="100%"  />
+	        <mx:Canvas width="1" height="100%" backgroundColor="#d6d6d6" />
 	        <mx:VBox width="100%" height="100%" paddingLeft="25" paddingRight="17" paddingBottom="0" verticalGap="0">
-	            <mx:HBox width="100%" minWidth="755" height="79" backgroundColor="#ffffff">
+	            <mx:Canvas width="100%" minWidth="755" height="79">
 	                <mx:Label text="Select a Contest to View:" left="0" top="9" 
 	                        styleName="normalText" paddingTop="0" paddingBottom="0" />
-	                <mx:ComboBox id="contestCombo" left="195" width="272" top="9"   
+	                <mx:ComboBox id="contestCombo" left="195" width="272" top="9" 
 	                        change="handleContest(event)" fontFamily="Arial" fontSize="12"
 	                        labelField="name" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{_contestList}" />
 	                <mx:Label id="contestRankingErrorLbl" fontFamily="Arial" 
 			                                fontWeight="bold" color="red" fontSize="14" width="600" top="38"
 			                                text="Before continuing you should give All Rankings or select no winner option." visible="false"/>
 	                <mx:Label text="Filter By:" right="140" top="9" styleName="normalText" />
-	                <mx:VBox >
-	                	
-		                <mx:CheckBox id="showActive" label="Active Contests" right="13" top="9" styleName="CheckBoxStyle"
-		                        selected="true" change="doFilter()" />
-		                <mx:CheckBox id="showPast" label="Past Contests" right="19" top="38" styleName="CheckBoxStyle"
-		                        selected="true" change="doFilter()" />
-	                </mx:VBox>
-
-	            </mx:HBox>
+	                <mx:CheckBox id="showActive" label="Active Contests" right="13" top="9" styleName="CheckBoxStyle"
+	                        selected="true" change="doFilter()" />
+	                <mx:CheckBox id="showPast" label="Past Contests" right="19" top="38" styleName="CheckBoxStyle"
+	                        selected="true" change="doFilter()" />
+	            </mx:Canvas>
 	            <mx:Canvas height="1" width="100%" backgroundColor="#797979" />
 	            <mx:ViewStack width="100%" height="100%" id="contestViewerCenterPanel">
-		            <mx:VBox id="imageViewerScreen" horizontalAlign="center" width="100%" paddingTop="37" backgroundColor="#FFFFFF" >
-		            	<mx:HBox height="580" horizontalAlign="center" width="100%">
+		            <mx:VBox id="imageViewerScreen" horizontalAlign="center" width="100%" paddingTop="37">
+		            	<mx:HBox height="580" horizontalAlign="center" width="636">
 		                    <mx:VBox height="100%" verticalAlign="middle">
 		                        <mx:Button id="prev" styleName="prev" click="goPrev()"/>
 		                    </mx:VBox>
@@ -1013,33 +1008,26 @@ wsdl="{contestServiceFacadeWsdl}">
 		                                borderStyle="solid" width="527" height="441">
 		                            <mx:Image id="currentImage" maxWidth="525" maxHeight="439" completeEffect="{fade}" />
 		                        </mx:VBox>
-		                        <mx:HBox width="100%" horizontalAlign="center">
-		                        	<mx:HBox>
-	                        		
+		                        <mx:HBox width="100%">
 			                        <mx:ToggleButtonBar horizontalAlign="center" horizontalGap="20"  
 			                                id="rankBar" selectedIndex="-1"
-			                                buttonStyleName="buttonStyleName">
+			                                buttonWidth="25" buttonHeight="26" buttonStyleName="buttonStyleName">
 			                            <mx:String>1</mx:String>
 			                            <mx:String>2</mx:String>
 			                            <mx:String>3</mx:String>
 			                            <mx:String>4</mx:String>
 			                            <mx:String>5</mx:String>
 			                        </mx:ToggleButtonBar>
-		                        	</mx:HBox>
 			                        <mx:Spacer width="100%" />
-
-									<mx:HBox>
 			                        <mx:CheckBox id="noWinner" label="I can not choose a winner." styleName="CheckBoxStyle" />
-		                        	</mx:HBox>
 		                        </mx:HBox>
 		                    </mx:VBox>
-		                    <mx:VBox height="100%" width="100%" verticalAlign="middle">
+		                    <mx:VBox height="100%" verticalAlign="middle">
 		                        <mx:Button id="next" styleName="next" click="goNext()"/>
 		                    </mx:VBox>
 		                </mx:HBox>
 		                <mx:HBox id="purchase_and_feedback_panel" width="100%" paddingLeft="45" paddingRight="45" horizontalGap="20"
 		                		verticalScrollPolicy="off" horizontalScrollPolicy="off">
-<!--
 			                <mx:VBox width="55%" horizontalAlign="center" paddingLeft="0" paddingRight="0">
 			                    <mx:Canvas width="100%" height="17" >
 			                        <mx:Label text="Notes and Feedback:" styleName="normalText" left="0" />
@@ -1048,9 +1036,7 @@ wsdl="{contestServiceFacadeWsdl}">
 			                    </mx:Canvas>
 			                    <mx:TextArea id="feed" height="112" width="100%" borderColor="#797979"
 			                    		fontFamily="Arial" fontSize="12" />
-			                    		
 			            	</mx:VBox>
--->			            	
 			            	<mx:VBox width="45%" height="100%" horizontalAlign="center" paddingLeft="0" paddingRight="0">
 			            		<mx:Canvas width="100%" height="17">
 			            			<mx:Label text="Purchase Option:" styleName="normalText" left="0" />
@@ -1084,7 +1070,7 @@ wsdl="{contestServiceFacadeWsdl}">
 		                </mx:HBox>
 		                <mx:HBox width="100%" horizontalAlign="right">
 		                    <mx:Button id="save_contestViewer_btn" label="Save as Draft" styleName="SaveContinueButtonStyle" click="saveContestAsDraft()" />
-		                    <mx:Button id="continue_contestViewer_btn" label="Continue >>" styleName="SaveContinueButtonStyle" click="continueFromContestViewer()" />
+		                    <mx:Button id="continue_contestViewer_btn" label="Continue --->" styleName="SaveContinueButtonStyle" click="continueFromContestViewer()" />
 		                </mx:HBox>
 		            </mx:VBox>
 	        		<mx:VBox id="abandonConfirmationScreen" paddingTop="22" verticalGap="7" width="100%">
@@ -1131,7 +1117,7 @@ wsdl="{contestServiceFacadeWsdl}">
 	        			</mx:VBox>
 	        			<mx:HBox horizontalAlign="center" width="100%" paddingTop="35">
 	        				<mx:Button styleName="SaveContinueButtonStyle" label="Select a Winner" click="gotoImageViewer()"  />
-	        				<mx:Button styleName="SaveContinueButtonStyle" label="Save and Continue >>" click="gotoAbandonScreen(abandonedScreen_2)" />
+	        				<mx:Button styleName="SaveContinueButtonStyle" label="Save and Continue-->" click="gotoAbandonScreen(abandonedScreen_2)" />
 	        			</mx:HBox>
 	                </mx:VBox>
 	                <mx:VBox id="abandonedScreen_2" paddingTop="22" verticalGap="7" width="100%">
@@ -1236,7 +1222,7 @@ wsdl="{contestServiceFacadeWsdl}">
     	</mx:VBox>    	
     </mx:ViewStack>
     
-    <mx:VBox id="minPage" width="320" height="570" paddingLeft="10" paddingTop="10" paddingRight="5" backgroundColor="#d6d6d6">
+    <mx:VBox id="minPage" width="320" height="570" paddingLeft="10" paddingTop="10" paddingRight="5">
         <mx:HBox width="100%" horizontalGap="0">
             <mx:Image source="@Embed('../assets/select_a_project.png')"/>
             <mx:Text text="Select a contest:" fontWeight="bold"/>
@@ -1248,12 +1234,12 @@ wsdl="{contestServiceFacadeWsdl}">
             <mx:Text text="Total Submissions:" fontWeight="bold"/>
             <mx:Text text="{activeSubmissionForMin.length}" id="SubNum" />
         </mx:HBox>
-        <mx:VBox id="tb" width="100%" backgroundColor="#d6d6d6" >
+        <mx:VBox id="tb" width="100%" >
             <mx:TileList rowCount="7" width="100%" columnCount="2"
 		                        selectionDuration="0"
 		                        dataProvider="{activeSubmissionForMin}" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer" itemsChangeEffect="{myDTLE}"
 		                        verticalScrollPolicy="off" horizontalScrollPolicy="off" borderStyle="none"
-		                        click="maximize()" allowMultipleSelection="false" allowDragSelection="false" backgroundColor="#d6d6d6"/>
+		                        click="maximize()" allowMultipleSelection="false" allowDragSelection="false"/>
 		                
         </mx:VBox>
     </mx:VBox>
