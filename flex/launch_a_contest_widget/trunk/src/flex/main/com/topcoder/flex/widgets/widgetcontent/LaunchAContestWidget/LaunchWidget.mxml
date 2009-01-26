@@ -155,13 +155,29 @@
     <details>
       <fields>
         <field name="Title">
-            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+            <hint>The title you choose is what competitors will see in the active contests list, so be as detailed as possible. Also, listing the entire prize purse in the title helps draw attention to your contest. For example, "$750 Furniture Wholesale Company Logo Design" works better than simply "New Logo".</hint>
         </field>
         <field name="Introduction">
-            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+            <hint>This short paragraph will serve as the summary at the top of your contest description page. No need to get into full details here; just give an attention-grabbing brief description of the project so members can quickly determine if they are interested.</hint>
         </field>
         <field name="Primary Goal">
-            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+            <hint>Try to separate out important information into clear sections of your description. The following areas should be covered:
+
+		What are the Primary Goals for This Contest?
+		The more information you can provide about your decision to get this design produced, the better.
+
+		Who is Your Target Audience?
+		Designers will take completely different approaches to a concept depending on the target audience. For example, a web banner ad that is meant to draw in financial advisors in their 50’s will look vastly different from an ad targeting young college-age women. You should provide a summary of your target audience here.
+
+		Does This Project Have Any Branding Guidelines?
+		You should provide as much information about the branding guidelines as possible. Give extremely clear instructions, such as specific color identification numbers or the exact amount of clear space your logo must have between design elements. 
+
+		Are There Designs, Websites, etc. that You Like or Dislike? Why?
+		You may be inspired by navigational elements, layout, color schemes, etc. on other web sites, which is great to share with the designers. Keep in mind – you should never encourage a designer to copy any design elements. 
+
+		What Criteria Must the Designers Meet to Win This Contest?
+		Specific limitations (such as restricting a color or a specific layout style) and specific requirements (such as the inclusion of your company logo) will help the competitors meet the basic needs of your competition, but you should also list high-level criteria and your overall judging methodology. 
+	</hint>
         </field>
         <field name="Target Audience">
             <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
@@ -176,19 +192,19 @@
             <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
         </field>
         <field name="Colors">
-            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+            <hint>You should list specific color requirements here in values of RGB/Hex codes for web designs and CMYK or Pantone colors for print. If you don’t have specific branding colors you need to stick to, feel free to give general directions such as, “Please use blue and orange.” Or “Please do not use yellow.”</hint>
         </field>
         <field name="Fonts">
-            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+            <hint>Designers can only submit fonts they have permission to redistribute, so keep that in mind when requiring specific fonts. Otherwise, feel free to give general instructions such as, “Do not use script fonts or anything that looks too feminine.” Or “We need a cartoonish font that is kid-friendly.”</hint>
         </field>
         <field name="Size">
-            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+            <hint>Provide exact dimensions in pixels or inches in you have them. If you are unsure, describe where your design will be used and ask for standard sizing. Examples: “The web banner must be exactly 300 pixels wide by 90 pixels tall.” Or “The logo must be wider than it is tall. Tall logos won’t fit in our website’s masthead.”</hint>
         </field>
         <field name="Additional Requirements or Restrictions">
-            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+            <hint>List any other instructions here that don’t fit in the boxes above. Example: “All text must be surrounded by at least 200 pixels of white space.”</hint>
         </field>
         <field name="File Description">
-            <hint>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.</hint>
+            <hint>Please provide a short description such as “Our company logo” or “PSD files of our current web site.”</hint>
         </field>
       </fields>
       <hints>
@@ -595,7 +611,7 @@
              </mx:HBox>
              <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5"
                     verticalAlign="middle">
-                 <mx:Box backgroundImage="../assets/step.png"
+                 <mx:Box backgroundImage="../assets/3Details.png"
                         width="24" height="24" paddingTop="2"
                         fontFamily="Arial" fontSize="14" color="#1d1d1d">
                     <mx:Label width="100%" height="100%" textAlign="center" text="3" />

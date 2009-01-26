@@ -208,7 +208,10 @@
         <mx:Label text="Final File Formats" fontWeight="bold" fontSize="12"/>
         <mx:Text width="100%" id="finalFormats" >
             <mx:htmlText>
-                <![CDATA[For your chosen contest type-<b>Application Front End Design</b>-the most common final file formats are:]]>
+                <![CDATA[If you are unsure what type of file you will need, please feel free to <a href="http://studio.topcoder.com/forums?module=ThreadList&forumID=6">post a question in the forums</a>. The members will be happy to help you. You can also email directassist@topcoder.com.
+
+For your chosen contest type - ### - the most common final file formats are:
+]]>
            </mx:htmlText>
         </mx:Text>
         <mx:VBox width="100%" paddingLeft="10">

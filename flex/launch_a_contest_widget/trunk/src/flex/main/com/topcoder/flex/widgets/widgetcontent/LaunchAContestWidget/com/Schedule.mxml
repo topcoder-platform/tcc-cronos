@@ -163,15 +163,85 @@
         <mx:Label text="Set the Contest Schedule" fontWeight="bold" fontSize="12"/>
         <mx:Text width="100%" id="attachFiles">
             <mx:htmlText>
-<![CDATA[When scheduling your contest, consider its complexity and other competitions running at the same time. Keep in mind that you want to allow enough time for competitors to find your contest and put their best effort towards your work. If you're running a short contest, consider a higher prize amount to bring attention to it and increase your likelihood for more and better submissions.
+<![CDATA[When scheduling your contest, consider the following: <br>
+<ul>
+  <li>Complexity. Are you allowing enough time for the members to complete the work with quality results, or will they be rushed?</li>
+  <li>Pipeline. How many similar contests will be launching at the same time? See the Studio pipeline here:</li>
+  <li>Selection Deadline. If you plan to be out of town or otherwise unavailable when your contest ends, you might want to alter the schedule to ensure you have time to pick your winners. </li>
+</ul>
+
+Tips:<br>
+<ul>
+  <li>If you're running a short contest, consider a higher prize amount to bring attention to it and increase your likelihood for more and better submissions.</li>
+  <li>Consider allowing part of your contest to fall over a weekend. Members tend to have more time to work on their designs during weekend hours.</li>
+  <li>Try not to end your contest during a time when you are unavailable to answer forum questions. Many members have last-minute questions before they submit.</li>
+</ul>
 <br>
-For your chosen contest type - <b>Application Front End Design</b> - the suggested timelines are:<br>
-- Minimum Allowable Time: 2-3 days<br>
-- Average Timeframes: 4-5 days<br>
-- High Complexity: 6 days and beyond<br>
-<br>
-<b>** NOTE:</b> Your contest will only launch at your selected date and time IF payment has been made. Otherwise, it will launch when payment is received. **]]>
+
+For your chosen contest type, the suggested timelines are:
+
+<TABLE>
+<TR>
+	<TD>Type</TD>
+	<TD>Min Allowable Time</TD>
+	<TD>Average Timeframe</TD>
+	<TD>High Complexity</TD>
+</TR>
+<TR>
+	<TD>Web Design</TD>
+	<TD>2 – 3 days</TD>
+	<TD>4 – 6 days</TD>
+	<TD>7 days and beyond</TD>
+</TR>
+<TR>
+	<TD>Web Elements</TD>
+	<TD>1 – 2 days</TD>
+	<TD>3 – 4 days</TD>
+	<TD>5 days and beyond</TD>
+</TR>
+<TR>
+	<TD>Logo Design</TD>
+	<TD>2 – 3 days</TD>
+	<TD>4 – 6 days</TD>
+	<TD>7 days and beyond</TD>
+</TR>
+<TR>
+	<TD>Print Design</TD>
+	<TD>2 – 3 days</TD>
+	<TD>4 – 6 days</TD>
+	<TD>7 days and beyond</TD>
+</TR>
+<TR>
+	<TD>Application Front End Design</TD>
+	<TD>2 – 3 days</TD>
+	<TD>4 – 6 days</TD>
+	<TD>7 days and beyond</TD>
+</TR>
+<TR>
+	<TD>PowerPoint Presentation</TD>
+	<TD>2 – 3 days</TD>
+	<TD>4 – 6 days</TD>
+	<TD>7 days and beyond</TD>
+</TR>
+<TR>
+	<TD>Icons</TD>
+	<TD>1 – 2 days</TD>
+	<TD>3 – 4 days</TD>
+	<TD>5 days and beyond</TD>
+</TR>
+<TR>
+	<TD>Other</TD>
+	<TD>n/a</TD>
+	<TD>n/a</TD>
+	<TD>n/a</TD>
+</TR>
+</TABLE>
+
+** NOTE: Your contest will only launch at your selected date and time IF payment has been made. Otherwise, it will launch when payment is received. **
+
+]]>
            </mx:htmlText>
+	   
         </mx:Text>
         <mx:Spacer height="5"/>
         <mx:VBox paddingLeft="10">
