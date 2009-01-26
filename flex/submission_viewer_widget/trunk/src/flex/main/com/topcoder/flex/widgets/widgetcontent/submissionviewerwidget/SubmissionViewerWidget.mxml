@@ -190,8 +190,8 @@
                 	}
 
                 	doFilter();
-                	contestCombo.selectedIndex=selectIdx;
-                	contestlist2.selectedIndex=selectIdx;
+                	//contestCombo.selectedIndex=selectIdx;
+                	//contestlist2.selectedIndex=selectIdx;
                 }
             }
             
@@ -316,6 +316,19 @@
                         _contestList.addItem(item);
                     }
                 }
+
+		// after filter, need to check select index
+		for(var i:int=0 ;i< _contestList.length;i++)
+                {
+			var item:*=_contestList[i];
+			if (item.id == this.defaultcontestid)
+			{
+				contestCombo.selectedIndex=i;
+                		contestlist2.selectedIndex=i;
+				return;
+			} 
+		}
+
             }
             
             private function removeAll(array:ArrayCollection, item:Object):int {
