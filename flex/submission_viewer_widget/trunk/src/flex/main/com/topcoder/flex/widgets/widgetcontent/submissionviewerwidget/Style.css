@@ -589,27 +589,27 @@ VBox.ContestRow
 }	
 
 .prev {
-	skin: Embed("../assets/prev.png");
-	over-skin: Embed("../assets/prev_over.png");
-	down-skin: Embed("../assets/prev_down.png");
+	skin: Embed("../assets/arrow_left.png");
+	over-skin: Embed("../assets/arrow_left.png");
+	down-skin: Embed("../assets/arrow_left.png");
 }
 
 .next {
-	skin: Embed("../assets/next.png");
-	over-skin: Embed("../assets/next_over.png");
-	down-skin: Embed("../assets/next_down.png");
+	skin: Embed("../assets/arrow_right.png");
+	over-skin: Embed("../assets/arrow_right.png");
+	down-skin: Embed("../assets/arrow_right.png");
 }
 
 .up {
-	skin: Embed("../assets/up.png");
-	over-skin: Embed("../assets/up_over.png");
-	down-skin: Embed("../assets/up_down.png");	
+	skin: Embed("../assets/arrow_up.png");
+	over-skin: Embed("../assets/arrow_up.png");
+	down-skin: Embed("../assets/arrow_up.png");	
 }
 
 .down {
-	skin: Embed("../assets/down.png");
-	over-skin: Embed("../assets/down_over.png");
-	down-skin: Embed("../assets/down_down.png");	
+	skin: Embed("../assets/arrow_down.png");
+	over-skin: Embed("../assets/arrow_down.png");
+	down-skin: Embed("../assets/arrow_down.png");	
 }
 
 .rankButton {
