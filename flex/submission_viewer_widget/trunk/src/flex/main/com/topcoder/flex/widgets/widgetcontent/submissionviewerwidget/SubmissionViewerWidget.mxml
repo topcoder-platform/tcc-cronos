@@ -95,7 +95,7 @@
             private var _downloadList:ArrayCollection = new ArrayCollection();
             private function init():void {
             	_maximumHeight=this.parent.height;
-				_maximumWidth=this.parent.width;
+				_maximumWidth=this.parent.parent.width;
 				
 				if (_maximumWidth < 1024) {
 					_maximumWidth = 1024;
