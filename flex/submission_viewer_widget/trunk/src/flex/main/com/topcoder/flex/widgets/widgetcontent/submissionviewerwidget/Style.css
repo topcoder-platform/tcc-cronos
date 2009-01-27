@@ -254,13 +254,14 @@ Alert
 		disabledColor: #CCCCCC;
 	}
 
-
+/*
 Button
 {
 	upSkin: Embed(source="../assets/bg_Button_Up.png",scaleGridTop="8",scaleGridLeft="10",scaleGridRight="58",scaleGridBottom="15");
 	color: #3E3E3E;
 	themeColor: #AAAAAA;
 }
+*/
 
 ComboBox
 {
@@ -289,6 +290,7 @@ TextInput
 Patterned after pull down menus from:
 https://www.topcoder.com/
 */
+/*
 ComboBox {
    color: #000000;
    selectionColor: #666666;
@@ -297,7 +299,7 @@ ComboBox {
    textRollOverColor: #ffffff;
    fontSize: 11;
 }
-
+*
 /* 
 Alternate rows from: 
 http://www.topcoder.com/tc?module=MyHome
