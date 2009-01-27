@@ -24,6 +24,9 @@
         import mx.events.DragEvent;
         import mx.events.CloseEvent;
         import mx.rpc.soap.SOAPHeader;
+        import mx.collections.SortField;
+        import mx.collections.Sort;
+	import mx.utils.ObjectUtil;
         
         import com.topcoder.flex.widgets.widgetcontent.projectwidget.com.ProjectList;
 	import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Project;
@@ -141,10 +144,19 @@
         	ContestServiceFacadeBean.getStatusList();	
             
         }
+        
+        
         private function setProject(e:ResultEvent): void
         {
         	if(e!=null && e.result!=null && e.result is ArrayCollection){
         		prjArray=e.result as ArrayCollection;
+        		if(!prjArray.sort)
+        		{
+        			var sort:Sort = new Sort();
+				sort.compareFunction = compareName;
+				prjArray.sort = sort;
+        		}
+        		prjArray.refresh();
         		prjIdx=0;
         		if(prjIdx<prjArray.length)
         		{
@@ -158,6 +170,12 @@
         		}
         	}
         }
+
+	private function compareName(a:Object, b:Object, fields:Array = null):int {
+             return ObjectUtil.stringCompare(a.name, b.name, true);
+            }
+
+
         private function setContests(e:ResultEvent): void
         {
         	contests=new ArrayCollection();
@@ -186,6 +204,14 @@
         			statusDict[arr[i].contestData.statusId]);
         			contests.addItem(c);
         		}
+        		
+        		if(!contests.sort)
+        		{
+        			var sort:Sort = new Sort();
+				sort.compareFunction = compareName;
+				contests.sort = sort;
+        		}
+        		contests.refresh()
         	}
         	
         	var list:ProjectList=new ProjectList();
