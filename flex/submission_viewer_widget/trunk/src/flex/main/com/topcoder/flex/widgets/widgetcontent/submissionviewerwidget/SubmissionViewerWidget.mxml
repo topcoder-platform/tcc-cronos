@@ -226,8 +226,8 @@
 
                 	doFilter();
                 	
-                	contestCombo.selectedIndex=selectIdx;
-                	contestlist2.selectedIndex=selectIdx;
+                	//contestCombo.selectedIndex=selectIdx;
+                	//contestlist2.selectedIndex=selectIdx;
                 }
             }
             
@@ -261,7 +261,7 @@
                 	var submissions:ArrayCollection=new ArrayCollection();
                 	if((_isLocalTesting && event.result.submissions.submission is ArrayCollection)
                 	|| (!_isLocalTesting && event.result is ArrayCollection)) { 
-                		submissions=event.result.submissions.submission as ArrayCollection;
+                		submissions=event.result as ArrayCollection;
                 	}
                 	else {
                 		submissions.addItem(event.result);
@@ -272,8 +272,8 @@
                 		
                 		sub.id=submissions[i].submissionId;
                 		sub.rank=submissions[i].rank;
-                		sub.thumbnail=_isLocalTesting ? submissions[i].thumbnail : IMAGE_ADDRESS+sub.id+"&sbt=thumb";
-                		sub.fullsizepreview=_isLocalTesting ? submissions[i].fullsizepreview : IMAGE_ADDRESS+sub.id+"&sbt=full";
+                		sub.thumbnail=IMAGE_ADDRESS+sub.id+"&sbt=thumb";
+                		sub.fullsizepreview=IMAGE_ADDRESS+sub.id+"&sbt=full";
                 		sub.submissionContent=submissions[i].submissionContent;
                 		sub.price=submissions[i].price;
                 		sub.markedForPurchase=Boolean(submissions[i].markedForPurchase);
@@ -348,6 +348,19 @@
                         _contestList.addItem(item);
                     }
                 }
+
+		// after filter, need to check select index
+		for(var i:int=0 ;i< _contestList.length;i++)
+                {
+			var item:*=_contestList[i];
+			if (item.id == this.defaultcontestid)
+			{
+				contestCombo.selectedIndex=i;
+                		contestlist2.selectedIndex=i;
+				return;
+			} 
+		}
+
             }
             
             private function removeAll(array:ArrayCollection, item:Object):int {
@@ -1063,7 +1076,8 @@
     					width="100%">
                 <mx:Label text="Select a Contest to View:" left="0" top="9" 
                         styleName="normalText" paddingTop="0" paddingBottom="0" />
-                <mx:ComboBox id="contestCombo" change="handleContest(event)" 
+                <mx:ComboBox id="contestCombo" left="195" width="272" top="9" 
+                        change="handleContest(event)" fontFamily="Arial" fontSize="12"
                         labelField="name" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{_contestList}" />
                 <mx:Label id="contestRankingErrorLbl" fontFamily="Arial" 
 		                                fontWeight="bold" color="red" fontSize="14" width="600" top="38"
