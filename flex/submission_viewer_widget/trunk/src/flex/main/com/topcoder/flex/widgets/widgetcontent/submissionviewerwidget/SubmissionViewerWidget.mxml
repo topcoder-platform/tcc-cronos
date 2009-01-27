@@ -1051,7 +1051,7 @@
         	backgroundAlpha="1.0" 
         	verticalGap="0">
             <mx:ViewStack id="thumbnailPanel" width="100%" height="100%">
-            	<mx:VBox id="thumbnailPanel_enabled" horizontalAlign="center">
+            	<mx:VBox id="thumbnailPanel_enabled" horizontalAlign="center" backgroundColor="#cfcfcf" >
 	            	<mx:Button click="reorder()" label="prioritize" styleName="ButtonStyle"/>
 	            	<mx:VBox horizontalAlign="center" height="100%" width="100%"
 		                    paddingLeft="0" paddingRight="0" >
@@ -1113,7 +1113,7 @@
 					width="100%" 
 	            	paddingTop="5">
 	            	
-	            	<mx:HBox horizontalAlign="center">
+	            	<mx:HBox horizontalAlign="center" width="100%">
 	                    <mx:VBox height="100%" verticalAlign="middle">
 	                        <mx:Button id="prev" styleName="prev" click="goPrev()"/>
 	                    </mx:VBox>
@@ -1366,7 +1366,7 @@
 		>
 		<mx:Label text="Download Submissions" fontSize="16" styleName="normalText" />
 		<mx:Text width="100%" styleName="text" 
-				text="Lorem ipsum dolor sit amet, consequat iusto instum letatio singularis cogo nibh nonummy populus camur jugis amet. Saepius caecus nisi miim. " />
+				text="Here are the winning submissions and any submissions you decided to purchase from your contest." />
 		<mx:Canvas height="1" width="100%" backgroundColor="#797979" />
         <mx:TileList id="downloadList" 
         	width="100%"
