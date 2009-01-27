@@ -64,7 +64,7 @@
 		<mx:Label text="{getPurchase(data)}" textAlign="center" styleName="text" />
 		<mx:Label text="{getPurchased(data)}" textAlign="center" styleName="text" />
 	</mx:VBox>
-	<mx:VBox id="right" width="100%" horizontalScollPolicy="off" verticalScrollPolicy="off" >
+	<mx:VBox id="right" width="100%" horizontalScrollPolicy="off" verticalScrollPolicy="off" >
 		<mx:Label styleName="normalText" />
 		<mx:Text width="100%" textAlign="left" styleName="text" 
 				htmlText="" />
