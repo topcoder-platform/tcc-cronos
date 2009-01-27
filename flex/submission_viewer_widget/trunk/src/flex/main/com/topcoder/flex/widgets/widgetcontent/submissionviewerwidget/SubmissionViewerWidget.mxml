@@ -29,6 +29,13 @@
             import flash.system.Security;
 
             
+        
+            import mx.collections.SortField;
+            import mx.collections.Sort;
+            
+    	import mx.utils.ObjectUtil;
+
+            
             private var _rankList:ArrayCollection = new ArrayCollection();
             
             [Bindable]
@@ -194,22 +201,32 @@
             [Bindable] 
             private var activeSubmissionForMin:ArrayCollection = new ArrayCollection();
             
+            
+            private function compareName(a:Object, b:Object, fields:Array = null):int {
+               return ObjectUtil.stringCompare(a.contestData.name,b.contestData.name,true);
+            }
             private function handleResult(event:ResultEvent=null):void {
                 _contestInfoList = new ArrayCollection();
                 if(event!=null && event.result!=null)
                 {
                 	var contests:ArrayCollection = (!_isLocalTesting ? event.result : event.result.contests.contest) as ArrayCollection;
                 	var selectIdx:int=-1;
+                	
+                	if(!contests.sort)
+        			{
+        				var sort:Sort = new Sort();   
+	                	sort.compareFunction = compareName;
+	                	contests.sort = sort;
+        			}
+        			contests.refresh();
+                	
+                	
                 	for(var i:int=0 ;i< contests.length;i++)
                 	{
                 		var contestInfo:Dictionary=new Dictionary();
                 		var item:*=contests[i];
                 		contestInfo.name=item.contestData.name;
                 		contestInfo.id=item.contestData.contestId;
-                		if(contestInfo.id==this.defaultcontestid)
-                		{
-                			selectIdx=i;
-                		}
                 		contestInfo.statusId=item.contestData.statusId;
                 		
                 		trace("Contest id: " + contestInfo.id);
