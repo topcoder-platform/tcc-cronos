@@ -17,7 +17,7 @@
         ]]>
     </mx:Script>
     
-    <mx:Canvas width="100%" height="100%" >
+    <mx:Canvas width="100%" height="100%" backgroundColor="#ffffff" >
 
 	    <mx:Image source="@Embed('../assets/getting_started.png')" horizontalAlign="center" width="925" height="375" />
     </mx:Canvas>
