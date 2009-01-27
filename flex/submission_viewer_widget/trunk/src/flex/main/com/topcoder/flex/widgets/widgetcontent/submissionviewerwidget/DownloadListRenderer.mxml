@@ -8,7 +8,7 @@
 				}
 				var temp:String = "";
 				//if (dta.hasOwnProperty("size")) {
-					down.label = "Download"
+					down.label = "Download: SIZE NOT IN SCOPE"
 				//}
 				if (dta.hasOwnProperty("purchased") && dta.purchased == true) {
 					temp += "Prize: $";

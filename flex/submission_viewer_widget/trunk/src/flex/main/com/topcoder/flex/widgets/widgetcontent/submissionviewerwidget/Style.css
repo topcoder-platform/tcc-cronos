@@ -618,12 +618,19 @@ VBox.ContestRow
 	color: #ffffff;
 	font-weight:bold;
 	
-	skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankButtonSkin');
+	skin: Embed("../assets/23x23_norank.png");
+	over-skin: Embed("../assets/23x23_norank_over.png");
+	down-skin: Embed("../assets/23x23_norank_down.png");
+	selected-over-skin: Embed("../assets/23x23_norank_over.png");
+	selected-up-skin: Embed("../assets/23x23_norank_down.png");
+	selected-down-skin: Embed("../assets/23x23_norank_down.png");
+	
+	/*skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankButtonSkin');
 	over-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankButtonSelectedSkin');
 	down-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankButtonSelectedSkin');
 	selected-over-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankButtonSelectedSkin');
 	selected-up-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankButtonSelectedSkin');
-	selected-down-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankButtonSelectedSkin');
+	selected-down-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankButtonSelectedSkin');*/
 	padding-left:0;
 	padding-right:0;
 }
@@ -631,19 +638,17 @@ VBox.ContestRow
 .rankLogo {
 	color: #ffffff;
 	font-weight:bold;
-	skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankLogoSkin');
+	/*skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankLogoSkin');
 	over-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankLogoSkin');
-	down-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankLogoSkin');
+	down-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankLogoSkin');*/
+	skin: Embed("../assets/26x26_norank.png");
+	over-skin: Embed("../assets/26x26_norank.png");
+	down-skin: Embed("../assets/26x26_norank.png");
 	padding-left:0;
 	padding-right:0;
 }
 
 .purchaseLogo {
-	/*color: #ffffff;
-	font-weight:bold;
-	skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.PurchaseLogoSkin');
-	over-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.PurchaseLogoSkin');
-	down-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.PurchaseLogoSkin');*/
 	background-image: Embed("../assets/purchase.png"); 
 }
 

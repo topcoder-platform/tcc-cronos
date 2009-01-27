@@ -7,7 +7,7 @@
 				if (dat.hasOwnProperty("add")) {
 					return dat.add;
 				}
-				if (dat.hasOwnProperty("rank") && dat.rank != null) {
+				if (dat.hasOwnProperty("rank") && dat.rank != null && dat.rank > 0) {
 					return "Prize Placement";
 				} else {
 					return "Additional Purchase";
