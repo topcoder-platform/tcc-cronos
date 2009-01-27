@@ -8,7 +8,7 @@
 				}
 				var temp:String = "";
 				//if (dta.hasOwnProperty("size")) {
-					down.label = "Download: SIZE NOT IN SCOPE"
+					down.label = "Download"
 				//}
 				if (dta.hasOwnProperty("purchased") && dta.purchased == true) {
 					temp += "Prize: $";
@@ -37,11 +37,16 @@
 				trace("Submission id @ download: " + id);
 
 				// TODO: read url from app settings.				
-				var	url:String = "http://174.129.135.92:8003/direct/cockpit/impersonation/cockpitStudio.do?&sbmid=" + id + "&sbt=original";
+				
+				var url:String = "http://www.topcoder.com/direct/cockpit/impersonation/cockpitStudio.do?&sbmid=" + id + "&sbt=original";
+        			var u:URLRequest = new URLRequest(url);
+        			navigateToURL(u,"_blank");
+				
+				/*
 				var request:URLRequest = new URLRequest(url);
 				var fileRef:FileReference = new FileReference();
 				fileRef.download(request);
-
+				*/
 			}
 		]]>
 	</mx:Script>
@@ -59,10 +64,10 @@
 		<mx:Label text="{getPurchase(data)}" textAlign="center" styleName="text" />
 		<mx:Label text="{getPurchased(data)}" textAlign="center" styleName="text" />
 	</mx:VBox>
-	<mx:VBox id="right" width="100%">
+	<mx:VBox id="right" width="100%" horizontalScollPolicy="off" verticalScrollPolicy="off" >
 		<mx:Label styleName="normalText" />
 		<mx:Text width="100%" textAlign="left" styleName="text" 
-				htmlText="Lorem ipsum dolor sit amet, et refoveo velit, populus cogo. Jugis ventosus suscipit ut nulla quibus, luptatum transverbero. &lt;br&gt;- Haero ea, loquor vereor. &lt;br&gt;- Ea ibidem valetudo validus foras vero ullamcorper." />
+				htmlText="" />
 		<mx:Button id="down" styleName="ButtonStyle" click="{download(data.id)}" />
 	</mx:VBox>
 </mx:HBox>

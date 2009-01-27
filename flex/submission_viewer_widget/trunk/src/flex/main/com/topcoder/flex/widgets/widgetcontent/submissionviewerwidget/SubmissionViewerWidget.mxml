@@ -1130,7 +1130,7 @@
 		                        width="100%" />
 	                        <mx:VBox verticalAlign="middle" horizontalAlign="center"
 	                        		paddingLeft="2" paddingRight="2" paddingBottom="2" paddingTop="2" 
-	                                borderStyle="solid" width="526" height="276">
+	                                borderStyle="none" backgroundImage="@Embed('../assets/image/contentBG.png')" width="526" height="276">
 	                            <mx:Image 
 	                            	id="currentImage" 
 	                            	maxWidth="520" 
@@ -1138,7 +1138,15 @@
 	                            	completeEffect="{fade}" 
 	                            	click="openImageInNewWindow(event)"/>
 	                        </mx:VBox>
-	                        <mx:HBox width="100%">
+	                    </mx:VBox>
+	                    <mx:VBox height="100%" verticalAlign="middle">
+	                        <mx:Button id="next" styleName="next" click="goNext()"/>
+	                    </mx:VBox>
+	                </mx:HBox>
+	                        <mx:HBox width="100%" 
+					horizontalAlign="center"
+					verticalScrollPolicy="off" 
+					horizontalScrollPolicy="off">
 		                        <mx:ToggleButtonBar horizontalAlign="center" horizontalGap="20"  
 		                                id="rankBar" selectedIndex="-1"
 		                                buttonWidth="23" 
@@ -1153,11 +1161,6 @@
 		                        <mx:Spacer width="100%" />
 		                        <mx:CheckBox id="noWinner" label="I can not choose a winner." styleName="CheckBoxStyle" />
 	                        </mx:HBox>
-	                    </mx:VBox>
-	                    <mx:VBox height="100%" verticalAlign="middle">
-	                        <mx:Button id="next" styleName="next" click="goNext()"/>
-	                    </mx:VBox>
-	                </mx:HBox>
 	                <mx:HBox id="purchase_panel" 
 	                	width="100%" 
 	                	horizontalAlign="center"
