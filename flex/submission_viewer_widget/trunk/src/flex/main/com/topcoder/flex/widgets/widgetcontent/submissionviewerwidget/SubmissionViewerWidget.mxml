@@ -1076,8 +1076,8 @@
     					width="100%">
                 <mx:Label text="Select a Contest to View:" left="0" top="9" 
                         styleName="normalText" paddingTop="0" paddingBottom="0" />
-                <mx:ComboBox id="contestCombo" left="195" width="272" top="9" 
-                        change="handleContest(event)" fontFamily="Arial" fontSize="12"
+                <mx:ComboBox id="contestCombo" left="195" width="272" top="9" fontFamily="Arial" fontSize="10"
+                        change="handleContest(event)" 
                         labelField="name" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{_contestList}" />
                 <mx:Label id="contestRankingErrorLbl" fontFamily="Arial" 
 		                                fontWeight="bold" color="red" fontSize="14" width="600" top="38"
@@ -1372,7 +1372,7 @@
         <mx:Image source="@Embed('../assets/select_a_project.png')"/>
         <mx:Text text="Select a contest:" fontWeight="bold"/>
     </mx:HBox>
-    <mx:ComboBox id="contestlist2" width="240" labelField="name" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{_contestList}"
+    <mx:ComboBox id="contestlist2" left="195" width="272" top="9" fontFamily="Arial" fontSize="10" labelField="name" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{_contestList}"
     	 change="handleContest(event)"/>
     <mx:HRule width="100%" strokeColor="#000000"/>
     <mx:HBox width="100%" >
