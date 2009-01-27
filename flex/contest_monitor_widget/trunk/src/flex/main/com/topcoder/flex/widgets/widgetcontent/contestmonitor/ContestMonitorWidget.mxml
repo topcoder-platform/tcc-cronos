@@ -22,6 +22,12 @@
         import mx.rpc.soap.SOAPHeader;
         import com.topcoder.flex.widgets.widgetcontent.contestmonitor.skins.*;
         import com.topcoder.flex.widgets.widgetcontent.contestmonitor.CustomSlider;
+        
+        
+            import mx.collections.SortField;
+            import mx.collections.Sort;
+            
+    	import mx.utils.ObjectUtil;
 
 		private var _inputDatePattern:RegExp = /([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})[.]([0-9]{3})([-+])([0-9]{2}):([0-9]{2})/;
 
@@ -138,11 +144,21 @@
             if(endTime.getTime() - currentTime.getTime() <= 0)
                 event.target.stop();
         }
-        
+         private function compareName(a:Object, b:Object, fields:Array = null):int {
+               return ObjectUtil.stringCompare(a.contestData.name,b.contestData.name,true);
+            }
         private function setContests(e:ResultEvent): void
         {
         	if(e==null || e.result==null)return;
-        	this.contestList=e.result as ArrayCollection;
+        	contestList=e.result as ArrayCollection;
+        	
+        		if(!contestList.sort)
+        		{
+        			var sort:Sort = new Sort();   
+	                sort.compareFunction = compareName;
+	                contestList.sort = sort;
+        		}
+        		contestList.refresh();
         	contestNames=new ArrayCollection();
         	var selectIdx=0;
         	for(var i:int=0;i<contestList.length;i++)
