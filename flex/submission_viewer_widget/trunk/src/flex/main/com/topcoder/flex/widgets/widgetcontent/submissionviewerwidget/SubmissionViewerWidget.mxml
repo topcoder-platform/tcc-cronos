@@ -9,7 +9,7 @@
     backgroundColor="#cfcfcf"
     
     >
-    <mx:Style source="Style.css" />
+
     <mx:Script>
         <![CDATA[
         	import mx.controls.scrollClasses.ScrollBar;
