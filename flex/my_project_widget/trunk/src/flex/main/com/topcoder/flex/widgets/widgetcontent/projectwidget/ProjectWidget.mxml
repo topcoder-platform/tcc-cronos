@@ -296,7 +296,7 @@ wsdl="{contestServiceFacadeWsdl}">
 		<mx:Box id="container" paddingTop="5" paddingRight="5" width="100%" height="98%"
 				horizontalAlign="center" horizontalScrollPolicy="off" verticalScrollPolicy="auto">
 				-->
-		    <ns1:ProjectsContainer id="prjList"  horizontalScrollPolicy="off" verticalScrollPolicy="auto"  width="100%" height="100%">
+		    <ns1:ProjectsContainer id="prjList"  horizontalScrollPolicy="off" verticalScrollPolicy="on"  width="100%" height="100%">
 		    </ns1:ProjectsContainer>
 		    <!--
 		</mx:Box>		
