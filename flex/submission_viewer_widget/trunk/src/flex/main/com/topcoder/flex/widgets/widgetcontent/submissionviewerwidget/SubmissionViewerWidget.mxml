@@ -1113,7 +1113,7 @@
 	                                borderStyle="solid" width="526" height="276">
 	                            <mx:Image id="currentImage" maxWidth="520" maxHeight="270" completeEffect="{fade}" />
 	                        </mx:VBox>
-	                        <mx:HBox width="100%">
+	                        <mx:HBox width="100%" horizontalAlign="center" >
 		                        <mx:ToggleButtonBar horizontalAlign="center" horizontalGap="20"  
 		                                id="rankBar" selectedIndex="-1"
 		                                buttonWidth="25" 
