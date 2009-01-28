@@ -124,11 +124,12 @@
             	else {
 	                getDataService();
             	}
+            	
+            	trace("Parent maximum height: " + this.parent.height);
+            	trace("Parent maximum width: " + this.parent.width);
 				
-            	trace("Before Main width: " + main.width);
-            	trace("Before Main height: " + main.height);
-            	trace("Parent maximum width: " + _maximumWidth);
-            	trace("Parent maximum width: " + _maximumHeight);
+            	trace("Parent's parent maximum height: " + this.parent.parent.height);
+            	trace("Parent's parent maximum width: " + this.parent.parent.width);
             	
             	_mainPageMaximumWidth=main.width;
             	_mainPageMaximumHeight=main.height;
@@ -229,10 +230,10 @@
                 		contestInfo.id=item.contestData.contestId;
                 		contestInfo.statusId=item.contestData.statusId;
                 		
-                		trace("Contest id: " + contestInfo.id);
-                		trace("Contest name: " + contestInfo.name);
-                		trace("Contest statusId: " + contestInfo.statusId + " = " + _statusTypeDictionary[contestInfo.statusId].name);
-                		trace("");
+                		//trace("Contest id: " + contestInfo.id);
+                		//trace("Contest name: " + contestInfo.name);
+                		//trace("Contest statusId: " + contestInfo.statusId + " = " + _statusTypeDictionary[contestInfo.statusId].name);
+                		//trace("");
                 		
                 		if (_activeContestTypeIds[contestInfo.statusId] == true 
                 				|| _pastContestTypeIds[contestInfo.statusId] == true) {
@@ -244,7 +245,7 @@
                 	doFilter();
                 	
                 	//contestCombo.selectedIndex=selectIdx;
-                	//contestlist2.selectedIndex=selectIdx;
+                	//contestlist_minpage.selectedIndex=selectIdx;
                 }
             }
             
@@ -278,7 +279,7 @@
                 	var submissions:ArrayCollection=new ArrayCollection();
                 	if((_isLocalTesting && event.result.submissions.submission is ArrayCollection)
                 	|| (!_isLocalTesting && event.result is ArrayCollection)) { 
-                		submissions=event.result as ArrayCollection;
+                		submissions=(!_isLocalTesting ? event.result : event.result.submissions.submission) as ArrayCollection;
                 	}
                 	else {
                 		submissions.addItem(event.result);
@@ -289,8 +290,8 @@
                 		
                 		sub.id=submissions[i].submissionId;
                 		sub.rank=submissions[i].rank;
-                		sub.thumbnail=IMAGE_ADDRESS+sub.id+"&sbt=thumb";
-                		sub.fullsizepreview=IMAGE_ADDRESS+sub.id+"&sbt=full";
+                		sub.thumbnail=(_isLocalTesting ? submissions[i].thumbnail : IMAGE_ADDRESS+sub.id+"&sbt=thumb");
+                		sub.fullsizepreview=(_isLocalTesting ? submissions[i].fullsizepreview : IMAGE_ADDRESS+sub.id+"&sbt=full");
                 		sub.submissionContent=submissions[i].submissionContent;
                 		sub.price=submissions[i].price;
                 		sub.markedForPurchase=Boolean(submissions[i].markedForPurchase);
@@ -304,12 +305,9 @@
                 		_submissionList.addItem(sub);
                 		
                 		updateRankList(sub);
-                		updateSubmission(sub.rank && sub.rank > 0);
+                		//updateSubmission(sub.rank && sub.rank > 0);
                 		
-                		trace("Submission Id: " + sub.id);
-                		trace("Submission Price: " + sub.price);
-                		trace("Submission rank: " + sub.rank);
-                		trace("Submission markedForPurchase: " + sub.markedForPurchase);
+                		trace("Added submission to list: {" + sub.id + "," + sub.price + "," + sub.rank + "," + sub.markedForPurchase + "," + sub.purchased + "}");
                 	}
                 }
                 
@@ -366,18 +364,16 @@
                     }
                 }
 
-		// after filter, need to check select index
-		for(var i:int=0 ;i< _contestList.length;i++)
-                {
-			var item:*=_contestList[i];
-			if (item.id == this.defaultcontestid)
-			{
-				contestCombo.selectedIndex=i;
-                		contestlist2.selectedIndex=i;
-				return;
-			} 
-		}
-
+				// after filter, need to check select index
+				for(var i:int=0 ;i<_contestList.length;i++) {
+					var item:*=_contestList[i];
+					if (item.id == this.defaultcontestid)
+					{
+						contestCombo.selectedIndex=i;
+		                contestlist_minpage.selectedIndex=i;
+						return;
+					} 
+				}
             }
             
             private function removeAll(array:ArrayCollection, item:Object):int {
@@ -393,7 +389,7 @@
             }
             
             private function getItemIndex(array:ArrayCollection, item:Object):int {
-                if (item.hasOwnProperty("id")) {
+                if (item && item.hasOwnProperty("id")) {
                     for (var i:int = 0; i < array.length; i++) {
                         var obj:Object = array.getItemAt(i);
                         if (obj.hasOwnProperty("id") && obj.id == item.id) {
@@ -443,10 +439,10 @@
                             list.selectedItem = activeSubmission.getItemAt(list.selectedIndex - 2);
                             handleSelect();
                         }
-                        if (activeSubmission.length > 12) {
-                            activeSubmission.removeItemAt(12);
-                            if (activeSubmission.length > 12) {
-                                activeSubmission.removeItemAt(12);
+                        if (activeSubmission.length > 6) {
+                            activeSubmission.removeItemAt(6);
+                            if (activeSubmission.length > 6) {
+                                activeSubmission.removeItemAt(6);
                             }
                         }
                         activeSubmission.addItemAt(_submissionList.getItemAt((currentIndex - 1) * 2), 0);
@@ -458,7 +454,7 @@
             }
             
             private function goDown():void {
-                if (currentIndex < _submissionList.length / 2 - 7 && _submissionList.length > 0) {
+                if (_submissionList.length > 0 && currentIndex < _submissionList.length / 2 - 4) {
                     if (list.selectedIndex < 2) {
                         list.selectedItem = activeSubmission.getItemAt(list.selectedIndex + 2);
                         handleSelect();
@@ -466,10 +462,10 @@
                     
                     activeSubmission.removeItemAt(0);
                     activeSubmission.removeItemAt(0);
-                    if ((currentIndex + 7) * 2 < _submissionList.length) {
-                        activeSubmission.addItem(_submissionList.getItemAt((currentIndex + 7) * 2));
-                        if ((currentIndex + 7) * 2 + 1 < _submissionList.length) {
-                            activeSubmission.addItem(_submissionList.getItemAt((currentIndex + 7) * 2 + 1));
+                    if ((currentIndex + 4) * 2 < _submissionList.length) {
+                        activeSubmission.addItem(_submissionList.getItemAt((currentIndex + 4) * 2));
+                        if ((currentIndex + 4) * 2 + 1 < _submissionList.length) {
+                            activeSubmission.addItem(_submissionList.getItemAt((currentIndex + 4) * 2 + 1));
                         }
                     }
                     currentIndex++;
@@ -478,9 +474,10 @@
             }
             
             private function setSubmission():void {
+            	trace("Setting active submissions: " + activeSubmission.length);
                 activeSubmission = new ArrayCollection();
                 //trace("Clean the active submission.");
-                for (var i:int = currentIndex; i < 7 + currentIndex; i++) {
+                for (var i:int = currentIndex; i < 4 + currentIndex && i < (_submissionList.length / 2 - 4); i++) {
                     if (i * 2 < _submissionList.length) {
                         var item:* = _submissionList.getItemAt(i * 2);
                         //trace("Get item at " + (i * 2).toString() + " with rank " + item.rank);
@@ -498,21 +495,102 @@
                     }
                 }
                 
+                if (!list.dataProvider) {
+                	list.dataProvider = activeSubmission;
+                }
+                
                 hideShowUpDownArrow();
             }
             
+            
+            private var currentIndexMinPage:int = 0;
+            
             private function setSubmissionForMin():void {
+            	trace("Setting active submissions for min page: " + activeSubmission.length);
                 activeSubmissionForMin = new ArrayCollection();
-                for (var i:int = 0; i < _submissionList.length && i<14; i++) {
-                	 activeSubmissionForMin.addItem(_submissionList.getItemAt(i));
+                //trace("Clean the active submission.");
+                for (var i:int = currentIndexMinPage; i < 4 + currentIndexMinPage && i < (_submissionList.length / 2 - 4); i++) {
+                    if (i * 2 < _submissionList.length) {
+                        var item:* = _submissionList.getItemAt(i * 2);
+                        //trace("Get item at " + (i * 2).toString() + " with rank " + item.rank);
+                        activeSubmissionForMin.addItem(_submissionList.getItemAt(i * 2));
+                    } else {
+                        break;
+                    }
+                    
+                    if (i * 2 + 1 < _submissionList.length) {
+                        //var item:* = _submissionList.getItemAt(i * 2 + 1);
+                        //trace("Get item at " + (i * 2 + 1).toString() + " with rank " + item.rank);
+                        activeSubmissionForMin.addItem(_submissionList.getItemAt(i * 2 + 1));
+                    } else {
+                        break;
+                    }
                 }
                 
+                if (!list_minpage.dataProvider) {
+                	list_minpage.dataProvider = activeSubmissionForMin;
+                }
+                
+                hideShowUpDownArrowMinPage();
+            }
+            
+            private function goUpMinPage():void {
+                if (currentIndexMinPage <= 0 || _submissionList.length == 0) {
+                    currentIndexMinPage = 0;
+                } else {
+                    if (activeSubmissionForMin.getItemAt(0) == 
+                            _submissionList.getItemAt(0)) {
+                        // Do nothing here.
+                    } else {
+                        if (list_minpage.selectedIndex > activeSubmissionForMin.length - 3) {
+                            list_minpage.selectedItem = activeSubmissionForMin.getItemAt(list_minpage.selectedIndex - 2);
+                        }
+                        if (activeSubmissionForMin.length > 6) {
+                            activeSubmissionForMin.removeItemAt(6);
+                            if (activeSubmissionForMin.length > 6) {
+                                activeSubmissionForMin.removeItemAt(6);
+                            }
+                        }
+                        
+                        activeSubmissionForMin.addItemAt(_submissionList.getItemAt((currentIndexMinPage - 1) * 2), 0);
+                        activeSubmissionForMin.addItemAt(_submissionList.getItemAt((currentIndexMinPage - 1) * 2 + 1) , 1);
+                    }
+                    
+                    currentIndexMinPage--;
+                    hideShowUpDownArrowMinPage();
+                }
+            }
+            
+            private function goDownMinPage():void {
+                if (_submissionList.length > 0 && currentIndexMinPage < _submissionList.length / 2 - 4) {
+                    if (list_minpage.selectedIndex < 2) {
+                        list_minpage.selectedItem = activeSubmissionForMin.getItemAt(list_minpage.selectedIndex + 2);
+                    }
+                    
+                    activeSubmissionForMin.removeItemAt(0);
+                    activeSubmissionForMin.removeItemAt(0);
+                    if ((currentIndexMinPage + 4) * 2 < _submissionList.length) {
+                        activeSubmissionForMin.addItem(_submissionList.getItemAt((currentIndexMinPage + 4) * 2));
+                        if ((currentIndex + 4) * 2 + 1 < _submissionList.length) {
+                            activeSubmissionForMin.addItem(_submissionList.getItemAt((currentIndexMinPage + 4) * 2 + 1));
+                        }
+                    }
+                    currentIndexMinPage++;
+                    hideShowUpDownArrowMinPage();
+                }
             }
             
             private function hideShowUpDownArrow():void {
-            	if (list.dataProvider && list.dataProvider.length > 0) {
-                	up.visible = (currentIndex > 0);
-                	down.visible = (list.dataProvider[list.dataProvider.length - 1].id != _submissionList.getItemAt(_submissionList.length - 1).id);
+            	if (activeSubmission && activeSubmission.length > 0) {
+                	up.visible = (activeSubmission[0].id != _submissionList.getItemAt(0).id);
+                	down.visible = (activeSubmission[activeSubmission.length - 1].id != _submissionList.getItemAt(_submissionList.length - 1).id);
+             	}              
+            }
+            
+            private function hideShowUpDownArrowMinPage():void {
+            	if (activeSubmissionForMin && activeSubmissionForMin.length > 0) {
+                	min_up.visible = (activeSubmissionForMin[0].id != _submissionList.getItemAt(0).id);
+                	min_down.visible = (activeSubmissionForMin[activeSubmissionForMin.length - 1].id != _submissionList.getItemAt(_submissionList.length - 1).id);
              	}              
             }
             
@@ -560,6 +638,7 @@
             private function handleSelect():void {
                 var currentItem:* = list.selectedItem;
                 if (currentItem) {
+                	trace("Handling select of submission: " + currentItem.id);
                     _currentItemLabel = contestCombo.text + " - #" + currentItem.id;
                     currentImage.source = currentItem.fullsizepreview;
                     
@@ -635,8 +714,15 @@
             
             private function handleContest(event:Event):void {
             	contestRankingErrorLbl.visible=false;
-                 if (main.height>1 && contestCombo && contestCombo.selectedItem) {
+            	
+            	var isContestChanged:Boolean = true;
+                 if (main.height > 1 && contestCombo && contestCombo.selectedItem) {
+                 	if (_selectedContestId && _selectedContestId == contestCombo.selectedItem.id) {
+                 		isContestChanged = false;
+                 	}
+                 	
                 	_selectedContestId=contestCombo.selectedItem.id;
+                	trace("Handling contest: " + _selectedContestId);
                 	
                 	var statusId:int = _contestInfoDictionary[_selectedContestId].statusId;
                 	_selectedContestStatusId = statusId;
@@ -678,25 +764,32 @@
 	                	}
                 	}
                  }
-                 else if(main.height<1  && contestlist2 && contestlist2.selectedItem){
-                 	_selectedContestId=contestlist2.selectedItem.id;
+                 else if(main.height<1  && contestlist_minpage && contestlist_minpage.selectedItem){
+                 	if (_selectedContestId && _selectedContestId == contestlist_minpage.selectedItem.id) {
+                 		isContestChanged = false;
+                 	}
+                 	
+                 	_selectedContestId=contestlist_minpage.selectedItem.id;
                  }
                  
-                 if(_submissionList)_submissionList.removeAll();
-                 
-                 if (!_isLocalTesting) {
-	            	var header:SOAPHeader=getHeader(username,password);
-					ContestServiceFacadeBean.clearHeaders();
-	        		ContestServiceFacadeBean.addHeader(header);
-	        		ContestServiceFacadeBean.retrieveSubmissionsForContest.send();
-                 }
-                 else {
-					retrieveSubService.send();
+                 if (event && event != null && isContestChanged && isContestChanged == true) {
+	                 if(_submissionList && _submissionList.length > 0)_submissionList.removeAll();
+	                 
+	                 if (!_isLocalTesting) {
+		            	var header:SOAPHeader=getHeader(username,password);
+						ContestServiceFacadeBean.clearHeaders();
+		        		ContestServiceFacadeBean.addHeader(header);
+		        		ContestServiceFacadeBean.retrieveSubmissionsForContest.send();
+	                 }
+	                 else {
+						retrieveSubService.send();
+	                 }
                  }
             }
             
             private function gotoContestViewer():void {
             	main.selectedChild=contestViewer;
+            	handleContest(null);
             }
             
             private function gotoImageViewer():void {
@@ -846,27 +939,22 @@
 	     				}	
 					}
             	}
-				
-				handleContest(null);
             }
             
             private function updateAbandonToWS():void {
             	_contestInfoDictionary[_selectedContestId].statusId=_noWinnerChosenContestTypeId;
-				handleContest(null);
             }
             
             private function updatePurchase():void {
+            	trace("Updating purchase info");
             	_purchaseTotal = 0;
             	var totalMoney:Number = 0;
             	
             	_purchaseList = new ArrayCollection();
             	_downloadList = new ArrayCollection();
             	
-            	for each (var item:Object in list.dataProvider) {
-            		trace("Item id: " + item.id);
-            		trace("Marked for purchase: " + item.markedForPurchase);
-            		trace("Purchased: " + item.purchased);
-            		trace("Prize: " + item.price);
+            	for each (var item:Object in _submissionList) {
+            		//trace("Purchase item: {" + item.id + "," + item.rank + "," + item.markedForPurchase + "," + item.price + "," + item.purchased + "}");
             		
             		if (item.purchased && item.purchased == true) {
             			_purchaseTotal++;
@@ -894,25 +982,19 @@
             }
             
             private function updateSubmission(isRank:Boolean):void {
+            	trace("~~~In update submission: " + list.selectedItem + ", " + list.selectedIndex + ", " + isRank);
             	
-            	trace("In update submission: " + list + ", " + list.selectedItem + ", " + list.dataProvider);
-            	
-				if (list && list.selectedItem && list.dataProvider) {
-					
-					var item:Object = list.dataProvider[list.selectedIndex];
+				if (list && list.selectedItem && activeSubmission) {
+					var listSelectedIndex:int = list.selectedIndex;
+					var item:Object = activeSubmission[listSelectedIndex];
 					if (!item) {
 						// this should never happen.
 						item = new Object();
-						list.dataProvider[list.selectedIndex] = item;
+						list.dataProvider[listSelectedIndex] = item;
 					}
-
-					trace("Item.id: " + item.id);
-				    trace("Item.thumbnail: " + item.thumbnail);
-				    trace("Item.fullsizepreview: " + item.fullsizepreview);
-				    trace("Item.markedForPurchase: " + item.markedForPurchase);
-				    trace("Item.rank: " + item.rank);
-				    trace("Item.price: " + item.price);
 					
+					trace("Update submission before: {" + item.id + "," + item.rank + "," + item.markedForPurchase + "," + item.price + "," + item.purchased + "}");
+
 					if (isRank && rankBar.selectedIndex >= 0) {
 						var oldItem:Object = rankBar.dataProvider[rankBar.selectedIndex];
 				        trace("Selected rank is:" + rankBar.dataProvider[rankBar.selectedIndex]);
@@ -933,10 +1015,13 @@
 					item.mustPurchase=item.rank && item.rank > 0 && item.price && item.price > 0;
 					item.purchased=item.markedForPurchase || item.mustPurchase;
 					
-					trace("Item.mustPurchase: " + item.mustPurchase);
-				    trace("Item.rank: " + item.rank);
-				    trace("Item.markedForPurchase: " + item.markedForPurchase);
-				    trace("Item.purchased: " + item.purchased);
+					trace("Update submission after: {" + item.id + "," + item.rank + "," + item.markedForPurchase + "," + item.price + "," + item.purchased + "}");
+					
+					if (item.purchased == true) {
+                    	purchase.selected = true;
+                    } else {
+                    	purchase.selected = false;
+                    }
 				    
 				    if (item.mustPurchase == true) {
                     	purchase.mouseEnabled=false;
@@ -949,15 +1034,19 @@
                     	purchase.focusEnabled=true;
                     }
 					
-					list.dataProvider[list.selectedIndex] = item;
+					if (!list.dataProvider) {
+						list.dataProvider=activeSubmission;
+					}
 					
-                    var index:int = getItemIndex(_submissionList, item);
+					list.dataProvider[listSelectedIndex]=item;
+					
+                    /*var index:int = getItemIndex(_submissionList, item);
                     if (index >= 0) {
                     	_submissionList.setItemAt(item, index);
-                    }
+                    }*/
                     
                 	if (_rankList.contains(item)) {
-                    	index = getItemIndex(_rankList, item);
+                    	var index:int = getItemIndex(_rankList, item);
                     	_rankList.setItemAt(new Object(), index);
                 	}
                     
@@ -970,8 +1059,13 @@
             }
             
             private function maximizeScreen() {
+            	trace("Contest item: " + contestlist_minpage.selectedItem); 
+            	trace("Contest index: " + contestlist_minpage.selectedIndex);
+            	trace("Selected submission: " + list_minpage.selectedItem); 
+            	trace("Selected submission index: " + list_minpage.selectedIndex);
             	maximize();
-            	handleContest(null);
+            	var index:int = _contestList.getItemIndex(contestlist_minpage.selectedItem);
+            	contestCombo.selectedIndex=index;
             }
             
             private function openImageInNewWindow(event:MouseEvent):void {
@@ -1391,26 +1485,38 @@
 	</mx:VBox>    	
 </mx:ViewStack>
     
-<mx:VBox id="minPage" paddingLeft="10" paddingTop="10" paddingRight="5">
+<mx:VBox id="minPage" paddingLeft="10" paddingTop="10" paddingRight="5" verticalScrollPolicy="off" horizontalScrollPolicy="off" >
     <mx:HBox width="100%" horizontalGap="0">
         <mx:Image source="@Embed('../assets/select_a_project.png')"/>
         <mx:Text text="Select a contest:" fontWeight="bold"/>
     </mx:HBox>
-    <mx:ComboBox id="contestlist2" left="195" width="272" top="9" fontFamily="Arial" fontSize="10" labelField="name" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{_contestList}"
+    <mx:ComboBox id="contestlist_minpage" left="195" width="272" top="9" fontFamily="Arial" fontSize="10" labelField="name" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{_contestList}"
     	 change="handleContest(event)"/>
     <mx:HRule width="100%" strokeColor="#000000"/>
     <mx:HBox width="100%" >
         <mx:Text text="Total Submissions:" fontWeight="bold"/>
-        <mx:Text text="{activeSubmissionForMin.length}" id="SubNum" />
+        <mx:Text text="{_submissionList.length}" id="SubNum" />
     </mx:HBox>
-    <mx:VBox id="tb" width="100%" >
-        <mx:TileList rowCount="7" width="100%" columnCount="2"
-	                        selectionDuration="0"
-	                        dataProvider="{activeSubmissionForMin}" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer" itemsChangeEffect="{myDTLE}"
-	                        verticalScrollPolicy="off" horizontalScrollPolicy="off" borderStyle="none"
-	                        click="maximizeScreen()" allowMultipleSelection="false" allowDragSelection="false"/>
-	                
-    </mx:VBox>
+    
+    <mx:VBox horizontalAlign="center" width="100%">
+	    <mx:Button id="min_up" styleName="up" click="goUpMinPage()" visible="false"/>
+	    <mx:VBox id="tb" width="100%" >
+	        <mx:TileList id="list_minpage" rowCount="4" 
+	        	width="100%" 
+	        	columnCount="2"
+		        selectionDuration="0"
+		        dataProvider="{activeSubmissionForMin}" 
+		        itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer" 
+		        itemsChangeEffect="{myDTLE}"
+		        verticalScrollPolicy="off" 
+		        horizontalScrollPolicy="off" 
+		        borderStyle="none"
+		        click="maximizeScreen()" 
+		        allowMultipleSelection="false" 
+		        allowDragSelection="false"/>
+		</mx:VBox>
+		<mx:Button id="min_down" styleName="down" click="goDownMinPage()" visible="false"/>
+	</mx:VBox>
 </mx:VBox>
 
 </tc:SubmissionViewerWidgetCodeBehind>
