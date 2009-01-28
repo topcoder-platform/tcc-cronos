@@ -18,6 +18,7 @@
         import mx.core.UIComponent;
         import mx.controls.Button;
         import mx.controls.Alert;
+        import mx.containers.Panel;
         import mx.core.DragSource;
         import flash.events.MouseEvent;
         import mx.containers.Canvas;
@@ -94,13 +95,13 @@
         
         private var statusDict:Dictionary=new Dictionary();
         
-        private var username:String=Application.application.parameters.username;
+     private var username:String=Application.application.parameters.username;
 	private var password:String = "";
         private var blazedsendpoint:String= Application.application.parameters.blazedsendpoint;
    
 	    private var projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl;
-        private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl; 
-        
+        private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;     
+          
         private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
 		
 		
@@ -122,8 +123,9 @@
         private function initWidget():void{
         	//flash.system.Security.loadPolicyFile("http://localhost:8003/widget_app/crossdomain.xml");
         	prjList.widgetFramework=this.widgetFramework;
-
-	    getDataService();
+        	var p:Panel=parent as Panel;
+        	p.verticalScrollPolicy="auto";
+	      getDataService();
             //loader.addEventListener(Event.COMPLETE, loadData);
             //loader.load(new URLRequest("data/moch.xml"));
 
@@ -161,7 +163,7 @@
         		for(prjIdx=0;prjIdx<prjArray.length;)
         		{
         			pname=prjArray[prjIdx].pname;
-        			pdesc="";//prjArray[prjIdx].description;
+        			pdesc=prjArray[prjIdx].description;
         			projectId=prjArray[prjIdx].projectId;
         			contests=new ArrayCollection();
         			for(var i:int=prjIdx;i<prjArray.length;i++)
@@ -302,7 +304,7 @@ wsdl="{contestServiceFacadeWsdl}">
 <!--
 		<mx:Box id="container" paddingTop="5" paddingRight="5" width="100%" height="98%"
 				horizontalAlign="center" horizontalScrollPolicy="off" verticalScrollPolicy="auto">
-				-->
+			-->
 		    <ns1:ProjectsContainer id="prjList"  horizontalScrollPolicy="off" verticalScrollPolicy="auto"  width="100%" height="100%">
 		    </ns1:ProjectsContainer>
 		    <!--
