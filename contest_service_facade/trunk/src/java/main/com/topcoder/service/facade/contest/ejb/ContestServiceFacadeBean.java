@@ -23,9 +23,9 @@ import com.topcoder.service.studio.ContestPaymentData;
 import com.topcoder.service.studio.MediumData;
 import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.ContestData;
-import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.DocumentType;
+import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.facade.contest.ContestServiceFilter;
 
@@ -305,6 +305,26 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     public List<StudioCompetition> getAllContests() throws PersistenceException {
         List<ContestData> studioContests = this.studioService.getAllContests();
         return convertToCompetitions(CompetionType.STUDIO, studioContests);
+    }
+    /**
+     * <p>Gets the list of all existing contests for contest monitor widget.</p>
+     *
+     * @return a <code>List</code> listing all existing contests. Empty list is returned if there are no contests
+     *         found.
+     * @throws PersistenceException if any error occurs when getting contest.
+     */
+    public List<SimpleContestData> getSimpleContestData() throws PersistenceException {
+        return  studioService.getSimpleContestData();
+    }
+    /**
+     * <p>Gets the list of all existing contests for my project widget.</p>
+     *
+     * @return a <code>List</code> listing all existing contests. Empty list is returned if there are no contests
+     *         found.
+     * @throws PersistenceException if any error occurs when getting contest.
+     */
+    public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException {
+        return  studioService.getSimpleProjectContestData();
     }
 
     /**
@@ -589,17 +609,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
 		return this.studioService.getAllDocumentTypes();
 	}
-
-
-	 public List<SimpleContestData> getSimpleContestData() throws PersistenceException
-    {
-    	return this.studioService.getSimpleContestData();
-    }
-    
-    public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException
-    {
-    	return this.studioService.getSimpleProjectContestData();
-    }
 
     /**
      * <p>Converts the specified <code>ContestData</code> instance to <code>ContestData</code> instance which could be

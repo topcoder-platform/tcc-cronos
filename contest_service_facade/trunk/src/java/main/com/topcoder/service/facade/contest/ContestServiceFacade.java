@@ -16,11 +16,11 @@ import com.topcoder.service.studio.SubmissionData;
 import com.topcoder.service.studio.ContestStatusData;
 import com.topcoder.service.studio.ContestTypeData;
 import com.topcoder.service.studio.ContestPaymentData;
-import com.topcoder.service.studio.contest.SimpleProjectContestData;
-import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.MediumData;
 import com.topcoder.service.studio.ChangeHistoryData;
+import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.DocumentType;
+import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.project.StudioCompetition;
 
@@ -244,6 +244,23 @@ public interface ContestServiceFacade {
      * @tested
      */
     public List<StudioCompetition> getAllContests() throws PersistenceException;
+    
+    /**
+     * <p>Gets the list of all existing contests for contest monitor widget.</p>
+     *
+     * @return a <code>List</code> listing all existing contests. Empty list is returned if there are no contests
+     *         found.
+     * @throws PersistenceException if any error occurs when getting contest.
+     */
+    public List<SimpleContestData> getSimpleContestData() throws PersistenceException;
+    /**
+     * <p>Gets the list of all existing contests for my project widget.</p>
+     *
+     * @return a <code>List</code> listing all existing contests. Empty list is returned if there are no contests
+     *         found.
+     * @throws PersistenceException if any error occurs when getting contest.
+     */
+    public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException;
 
     /**
      * <p>Gets the list of existing contests matching the specified criteria.</p>
@@ -495,9 +512,5 @@ public interface ContestServiceFacade {
      *             if any error occurs when getting studio file types.
      */
     public List<StudioFileType> getAllStudioFileTypes() throws PersistenceException;
-
-	public List<SimpleContestData> getSimpleContestData() throws PersistenceException;
-    
-    public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException;
 
 }
