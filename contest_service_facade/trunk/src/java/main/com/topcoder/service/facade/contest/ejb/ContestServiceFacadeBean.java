@@ -316,6 +316,21 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     public List<SimpleContestData> getSimpleContestData() throws PersistenceException {
         return  studioService.getSimpleContestData();
     }
+
+	 /**
+     * <p>
+     * This is going to fetch all the currently available contests for my project widget.
+     * </p>
+     *
+     * @return the list of all available contents (or empty if none found)
+     *
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     */
+    public List<SimpleContestData> getContestDataOnly() throws PersistenceException {
+		return studioService.getContestDataOnly();
+	}
+
     /**
      * <p>Gets the list of all existing contests for my project widget.</p>
      *
