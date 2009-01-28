@@ -62,6 +62,7 @@ import com.topcoder.service.studio.UserNotAuthorizedException;
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestChangeHistory;
 import com.topcoder.service.studio.contest.ContestConfig;
+import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.ContestManagerLocal;
 import com.topcoder.service.studio.contest.ContestPayment;
@@ -72,14 +73,13 @@ import com.topcoder.service.studio.contest.ContestType;
 import com.topcoder.service.studio.contest.ContestTypeConfig;
 import com.topcoder.service.studio.contest.Document;
 import com.topcoder.service.studio.contest.DocumentType;
+import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.contest.FilePath;
 import com.topcoder.service.studio.contest.Medium;
 import com.topcoder.service.studio.contest.MimeType;
 import com.topcoder.service.studio.contest.StudioFileType;
-import com.topcoder.service.studio.contest.SimpleProjectContestData;
-import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.submission.ContestResult;
 import com.topcoder.service.studio.submission.PaymentStatus;
 import com.topcoder.service.studio.submission.Prize;
@@ -641,7 +641,10 @@ public class StudioServiceBean implements StudioService {
      */
     public ContestData createContest(ContestData contestData, long tcDirectProjectId) throws PersistenceException {
 	
-		
+		for (PrizeData p: contestData.getPrizes())
+		{
+			System.out.println("prize=="+p.getAmount()+"...place=="+p.getPlace());
+		}
         logEnter("createContest", contestData, tcDirectProjectId);
         checkParameter("contestData", contestData);
         checkParameter("tcDirectProjectId", tcDirectProjectId);
@@ -2464,36 +2467,78 @@ public class StudioServiceBean implements StudioService {
 
         return null;
     }
-    
+
+    /**
+     * <p>
+     * This is going to fetch all the currently available contests for contest monitor widget.
+     * </p>
+     *
+     * @return the list of all available contents (or empty if none found)
+     *
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     */
     public List<SimpleContestData> getSimpleContestData() throws PersistenceException
     {
     	logEnter("getSimpleContestData");
 
         try {
+            List<SimpleContestData> result = new ArrayList<SimpleContestData>();
+            List<SimpleContestData> contests;
+            if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
+                logInfo("User is admin.");
+                contests = contestManager.getSimpleContestData();
+            } else {
+                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                logInfo("User " + p.getUserId() + " is non-admin.");
+                contests = contestManager.getSimpleContestDataForUser(p.getUserId());
+            }
+            if(contests==null)contests=new ArrayList<SimpleContestData>();
            
-		   List<SimpleContestData> result =  contestManager.getSimpleContestData();
-		   logExit("getSimpleContestData");
-		   return result;
+			return contest;
 
+            logExit("getSimpleContestData", result);
+            return result;
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while retrieving contest.", e);
         }
 
         return null;
     }
-    
+
+    /**
+     * <p>
+     * This is going to fetch all the currently available contests for my project widget.
+     * </p>
+     *
+     * @return the list of all available contents (or empty if none found)
+     *
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     */
     public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException
     {
     	logEnter("getSimpleProjectContestData");
 
         try {
-         
-            List<SimpleProjectContestData> result = contestManager.getSimpleProjectContestData();
+            List<SimpleProjectContestData> result = new ArrayList<SimpleProjectContestData>();
+            List<SimpleProjectContestData> contests;
+            
+            if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
+                logInfo("User is admin.");
+                contests = contestManager.getSimpleProjectContestData();
+            } else {
+                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                logInfo("User " + p.getUserId() + " is non-admin.");
+                contests = contestManager.getSimpleProjectContestDataForUser(p.getUserId());
+            }
+            
+            if(contests==null) contests= new ArrayList<SimpleProjectContestData>();
 
-            logExit("getSimpleProjectContestData");
+			return contest;
 
-			return result;
-
+            logExit("getSimpleProjectContestData", result);
+            return result;
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while retrieving contest.", e);
         }

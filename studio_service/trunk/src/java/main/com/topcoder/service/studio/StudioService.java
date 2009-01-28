@@ -8,13 +8,13 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.EntityAlreadyExistsException;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.contest.DocumentType;
-import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
-import com.topcoder.service.studio.contest.SimpleContestData;
+import com.topcoder.service.studio.contest.StudioFileType;
 
 /**
  * <p>
@@ -323,7 +323,33 @@ public interface StudioService {
 	 *             if any error occurs when getting contest.
 	 */
 	public List<ContestData> getAllContests() throws PersistenceException;
+	
 
+	 /**
+     * <p>
+     * This is going to fetch all the currently available contests for contest monitor widget.
+     * </p>
+     *
+     * @return the list of all available contents (or empty if none found)
+     *
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     */
+    public List<SimpleContestData> getSimpleContestData() throws PersistenceException;
+
+    /**
+     * <p>
+     * This is going to fetch all the currently available contests for my project widget.
+     * </p>
+     *
+     * @return the list of all available contents (or empty if none found)
+     *
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     */
+    public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException;
+
+   
 	/**
 	 * <p>
 	 * This is going to get all the matching contest entities that fulfill the
@@ -622,10 +648,5 @@ public interface StudioService {
      *             if any error occurs when getting studio file types.
      */
     public List<StudioFileType> getAllStudioFileTypes() throws PersistenceException;
-
-
-	public List<SimpleContestData> getSimpleContestData() throws PersistenceException;
-    
-    public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException;
 
 }
