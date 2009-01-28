@@ -688,6 +688,11 @@ public interface ContestManager {
      *             if any error occurs when getting contest
      */
     public List<Contest> getAllContests() throws ContestManagementException;
+    
+    
+    public List<SimpleContestData> getSimpleContestData() throws ContestManagementException;
+    
+    public List<SimpleProjectContestData> getSimpleProjectContestData() throws ContestManagementException;
 
     /**
      * <p>
