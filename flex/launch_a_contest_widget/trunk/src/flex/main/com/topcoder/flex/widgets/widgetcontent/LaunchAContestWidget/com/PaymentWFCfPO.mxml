@@ -77,7 +77,7 @@
 		
 	</mx:HBox>
 	<mx:HBox horizontalAlign="center" width="100%" id="btPanel" visible="false" paddingTop="40">
-		<mx:Button label="Create Another Contest" cornerRadius="13" click="this.mainWidget.resetWidget()"/>
-		<mx:Button label="Close" cornerRadius="13" click="this.mainWidget.closeWidget()"/>
+		<mx:Button label="create another contest" styleName="RedButton" click="this.mainWidget.resetWidget()"/>
+		<mx:Button label="close" styleName="RedButton" click="this.mainWidget.closeWidget()"/>
 	</mx:HBox>
 </mx:VBox>

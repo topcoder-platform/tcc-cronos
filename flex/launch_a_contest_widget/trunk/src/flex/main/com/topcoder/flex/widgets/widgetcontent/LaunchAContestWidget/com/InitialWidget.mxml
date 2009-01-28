@@ -234,7 +234,8 @@
         
         <mx:HBox width="100%" >
             <mx:Spacer width="162"/>
-            <mx:Button label="SAVE AND CONTINUE" cornerRadius="4" fillAlphas="[1.0, 1.0]" fillColors="[#F70C0C, #C00000, #B70404, #B70404]" color="#FFFFFF" borderColor="#070707" click="goToContestSelection()"/>
+            <!--<mx:Button label="SAVE AND CONTINUE" cornerRadius="4" fillAlphas="[1.0, 1.0]" fillColors="[#F70C0C, #C00000, #B70404, #B70404]" color="#FFFFFF" borderColor="#070707" click="goToContestSelection()"/>-->
+            <mx:Button label="save and continue" styleName="RedButton" click="goToContestSelection()"/>
         </mx:HBox>
     </mx:VBox>
 </mx:Canvas>

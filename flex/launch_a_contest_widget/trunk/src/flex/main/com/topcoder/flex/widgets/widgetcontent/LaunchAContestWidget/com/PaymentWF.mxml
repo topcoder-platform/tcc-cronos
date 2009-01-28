@@ -205,8 +205,8 @@
 					<mx:Text width="100%" text="Want to add another contest? Save this contest as a draft and pay for all of your contest at once." styleName="content" />
 					<mx:Spacer width="100%" height="100%" />
 					<mx:HBox width="100%" horizontalAlign="center">
-						<mx:Button label="Save as Draft" cornerRadius="13" click="this.mainWidget.saveAsDraft()"/>
-						<mx:Button label="Add A Contest" cornerRadius="13" click="this.mainWidget.resetWidget()"/>
+						<mx:Button label="save as draft"  click="this.mainWidget.saveAsDraft()" styleName="RedButton"/>
+						<mx:Button label="add a contest" click="this.mainWidget.resetWidget()" styleName="RedButton"/>
 					</mx:HBox>
 				</mx:VBox>
 				<mx:HBox verticalAlign="middle" width="100%" paddingRight="8">
