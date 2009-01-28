@@ -279,7 +279,7 @@
                 	var submissions:ArrayCollection=new ArrayCollection();
                 	if((_isLocalTesting && event.result.submissions.submission is ArrayCollection)
                 	|| (!_isLocalTesting && event.result is ArrayCollection)) { 
-                		submissions=(!_isLocalTesting ? event.result : event.result.submissions.submission) as ArrayCollection;
+                		submissions=event.result as ArrayCollection;
                 	}
                 	else {
                 		submissions.addItem(event.result);
@@ -290,8 +290,8 @@
                 		
                 		sub.id=submissions[i].submissionId;
                 		sub.rank=submissions[i].rank;
-                		sub.thumbnail=(_isLocalTesting ? submissions[i].thumbnail : IMAGE_ADDRESS+sub.id+"&sbt=thumb");
-                		sub.fullsizepreview=(_isLocalTesting ? submissions[i].fullsizepreview : IMAGE_ADDRESS+sub.id+"&sbt=full");
+                		sub.thumbnail=IMAGE_ADDRESS+sub.id+"&sbt=thumb";
+                		sub.fullsizepreview=IMAGE_ADDRESS+sub.id+"&sbt=full";
                 		sub.submissionContent=submissions[i].submissionContent;
                 		sub.price=submissions[i].price;
                 		sub.markedForPurchase=Boolean(submissions[i].markedForPurchase);
