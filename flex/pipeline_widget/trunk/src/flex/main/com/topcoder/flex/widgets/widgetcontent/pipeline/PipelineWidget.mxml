@@ -125,7 +125,7 @@
 
             // Get the data for the DataGrid
             var arrayData:Array = jsonData.data as Array;
-            activeContents = new ArrayCollection(arrayData);
+            this.activeContents = new ArrayCollection(arrayData);
         }
 
         // Handles the result if using the local jsonString
@@ -138,12 +138,12 @@
 
             // Get the data for the DataGrid
             var arrayData:Array = jsonData.data as Array;
-            activeContents = new ArrayCollection(arrayData);
+            this.activeContents = new ArrayCollection(arrayData);
         }
 
     ]]>
 </mx:Script>
-        <mx:DataGrid id="dataGrid" width="100%" height="100%" dataProvider="{activeContents}"
+        <mx:DataGrid id="dataGrid" width="100%" height="100%" dataProvider="{this.activeContents}"
             verticalScrollPolicy="off" horizontalScrollPolicy="off">
             <mx:columns>
                 <mx:DataGridColumn dataField="contest_name"
