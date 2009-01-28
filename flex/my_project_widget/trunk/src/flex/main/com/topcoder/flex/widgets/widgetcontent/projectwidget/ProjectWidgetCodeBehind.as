@@ -4,7 +4,8 @@
 package com.topcoder.flex.widgets.widgetcontent.projectwidget {
     import com.topcoder.flex.widgets.model.IWidget;
     
-	import com.topcoder.flex.model.IWidgetFramework;
+    import com.topcoder.flex.model.IWidgetFramework;
+    import com.topcoder.flex.widgets.model.IWidgetContainer;
     import mx.collections.ArrayCollection;
     import mx.containers.Panel;
     import mx.controls.DataGrid;
@@ -29,10 +30,15 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         private var _name:String = "My Projects";
         
         
-		/**
-		 * The framework of the widget.
-		 */
-		private var _framework:IWidgetFramework = null;
+	/**
+	 * The framework of the widget.
+	 */
+	private var _framework:IWidgetFramework = null;
+
+	/**
+	 * The container for this widget.
+	 */
+	private var _container:IWidgetContainer;
         
         /**
          * The data for the widget.
@@ -254,6 +260,30 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         public function get allowclose():Boolean
         {
         	return _allowclose;
+        }
+
+	/**
+         * Simple setter for the container of this widget.
+         *
+         * @param container of this widget.
+         */
+        public function set container(container:IWidgetContainer):void
+        {
+        	_container=container;
+        }
+
+        /**
+         * Simple getter for the container of this widget.
+         *
+         * @return the container this widget. Could be null if not set.
+         */
+        public function get container():IWidgetContainer
+        {
+        	if(_container==null)
+        	{
+        		_container=parent as IWidgetContainer;
+        	}
+        	return _container;
         }
     }
 }
