@@ -1,26 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tc:StudioActiveContestsWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:tc="com.topcoder.flex.widgets.widgetcontent.studioactivecontests.*"
-	initialize="init()" 
-	styleName="WidgetPanel" 
-	backgroundColor="#a8a8a8"
-	horizontalAlign="left" 
-	headerHeight="5" 
-	width="100%"
-	verticalScrollPolicy="on"
-	creationComplete="jsonRequest.send()">
+	initialize="init()" backgroundColor="green"
+	horizontalAlign="left" headerHeight="5" width="100%"
+	creationComplete="complete()">
 <!--	creationComplete="handleJsonStringResult()"> -->
 
-        <mx:Style source="Style.css" />
 
 	<mx:HTTPService id="jsonRequest" url="http://www.topcoder.com/data/?" resultFormat="text" result="handleJsonResult(event)" >
-	<mx:request>
-		<module>BasicData</module>
-		<c>dd_active_contests</c>
-		<dsid>33</dsid>
-		<drt>json</drt>
-	</mx:request> 
-        </mx:HTTPService>
+    	<mx:request>
+			<module>BasicData</module>
+			<c>dd_active_contests</c>
+			<dsid>33</dsid>
+			<drt>json</drt>
+		</mx:request> 
+    </mx:HTTPService>
+    
     
 	<mx:Script>
 	    <![CDATA[
@@ -31,6 +26,8 @@
 	        import mx.formatters.CurrencyFormatter;
 	        import mx.formatters.DateFormatter;
 	        import mx.rpc.events.ResultEvent;
+	        [Bindable]
+	        private var contestList=["Component Design","Component Development","Software Assembly","Software Testing","Software Architecture","Conceptualization","Specification","Studio"];
 	
 			// Use this when testing locally
 			private var jsonString:String = 
@@ -83,14 +80,28 @@
 	        private function formatEndDate(item:Object, col:DataGridColumn):String {
 	            return dateFormatter.format(item.end_time);
 	        }
+	        
+	        // Formatter for the prize column
+	        private function formatPrice2(item:Object, col:DataGridColumn):String {
+	            return currencyFormatter.format(item.price );
+	        }
+	
+	        // Formatter for the reg_end_date column
+	        private function formatRegDate(item:Object, col:DataGridColumn):String {
+	            return dateFormatter.format(item.reg_end_date);
+	        }
+	
+	        // Formatter for the initial_submission_date column
+	        private function formatSubmissionDate(item:Object, col:DataGridColumn):String {
+	            return dateFormatter.format(item.initial_submission_date);
+	        }
 	
 	        // Handles the result from the HTTPService
 	        protected function handleJsonResult(event:ResultEvent):void {
 	        	
-		    //Use this when testing locally. Comment out when testing on web server.
+				//Use this when testing locally. Comment out when testing on web server.
 	            //var json:String = jsonString;
-		    
-		    //Use this when running on web server. Comment out when testing locally.
+				//Use this when running on web server. Comment out when testing locally.
 	            var json:String = event.result as String;
 	
 	            var jsonData:Object = JSON.decode(json);
@@ -118,28 +129,124 @@
 	            var arrayData:Array = jsonData.data as Array;
 	            activeContents = new ArrayCollection(arrayData);
 	        }
+	        
+	        private function complete():void{
+	        	contestCombo.selectedIndex=0;
+	        }
+	        
+	        private function handleContest():void {
+	        	var req:Dictionary=new Dictionary();
+	        	activeContents=new ArrayCollection();
+	        	if(contestCombo.selectedItem=="Studio"){
+	        		
+	        		jsonRequest.url="http://www.topcoder.com/tc?";
+	        		req.module="BasicData";
+	        		req.c="dd_active_contests";
+	        		req.dsid=33;
+	        		req.json="true";
+	        		
+	        		jsonRequest.send(req);
+	        		dataGrid.columns=[s1,s2,s3,s4,s5,s6,s7];
+	        		
+	        	}
+	        	else
+	        	{
+	        		req.module="BasicData";
+	        		req.c="active_contests_list";
+	        		req.dsid=28;
+	        		req.sc=1;
+	        		req.sd="asc";
+	        		//req.pt=1;
+	        		req.json="true";
+	        		jsonRequest.url="http://www.topcoder.com/data/?";
+	        		if(contestCombo.selectedIndex==0)
+	        		{
+	        			req.pt=1;
+	        		}
+	        		else if(contestCombo.selectedIndex==1)
+	        		{
+	        			req.pt=14;
+	        		}
+	        		else if(contestCombo.selectedIndex==2)
+	        		{
+	        			req.pt=14;
+	        		}
+	        		else if(contestCombo.selectedIndex==3)
+	        		{
+	        			req.pt=13;
+	        		}
+	        		else if(contestCombo.selectedIndex==4)
+	        		{
+	        			req.pt=7;
+	        		}
+	        		else if(contestCombo.selectedIndex==5)
+	        		{
+	        			req.pt=23;
+	        		}
+	        		else if(contestCombo.selectedIndex==6)
+	        		{
+	        			req.pt=22;
+	        		}
+	        		jsonRequest.send(req);
+	        		dataGrid.columns=[n1,n2,n3,n4,n5,n6,n7];
+	        	}
+	        	
+	        }
 
 	    ]]>
 	</mx:Script>
-
+	<mx:Canvas width="100%" minWidth="755" height="50">
+	<mx:Label text="Contest Type :" left="40" top="11" 
+                        styleName="normalText" paddingTop="0" paddingBottom="0" />
+    <mx:ComboBox id="contestCombo" left="195" width="272" top="9" styleName="ComboBoxStyle"
+                        valueCommit="handleContest()" fontFamily="Arial" fontSize="10"
+                        labelField="name"  dataProvider="{contestList}" />
+    </mx:Canvas>
 
 	<mx:DataGrid id="dataGrid" width="100%" height="100%" dataProvider="{activeContents}"
-        verticalScrollPolicy="off" horizontalScrollPolicy="off">
-        <mx:columns>
-            <mx:DataGridColumn dataField="contest_name"
+        verticalScrollPolicy="off" horizontalScrollPolicy="off" top="60">
+        
+    </mx:DataGrid>
+            <mx:DataGridColumn id="s1" dataField="contest_name"
                 itemRenderer="com.topcoder.flex.widgets.widgetcontent.studioactivecontests.ContestLinkButton" 
                 textAlign="left" headerText="Name" />
-            <mx:DataGridColumn dataField="prize_total"
+            <mx:DataGridColumn id="s2" dataField="prize_total"
                 labelFunction="formatPrice" textAlign="right" headerText="Prize" />
-            <mx:DataGridColumn dataField="registrants"
+            <mx:DataGridColumn id="s3" dataField="registrants"
                 textAlign="right" headerText="Registrants" />
-            <mx:DataGridColumn dataField="submission_count"
+            <mx:DataGridColumn id="s4" dataField="submission_count"
                 textAlign="right" headerText="Submission Count" />
-            <mx:DataGridColumn dataField="forum_id" textAlign="right" headerText="Forum ID" />
-            <mx:DataGridColumn dataField="start_time" labelFunction="formatStartDate"
+            <mx:DataGridColumn id="s5" dataField="forum_id" textAlign="right" headerText="Forum ID" />
+            <mx:DataGridColumn id="s6" dataField="start_time" labelFunction="formatStartDate"
                 headerText="Start Time" textAlign="center" />
-            <mx:DataGridColumn dataField="end_time" labelFunction="formatEndDate"
+            <mx:DataGridColumn id="s7" dataField="end_time" labelFunction="formatEndDate"
                 headerText="End Time" textAlign="center" />
+                <!--
         </mx:columns>
+    <mx:columns id="nonstudio">
+    -->
+    
+            <mx:DataGridColumn id="n1" dataField="contest_name"
+                itemRenderer="com.topcoder.flex.widgets.widgetcontent.studioactivecontests.ContestLinkButton" 
+                textAlign="left" headerText="Name" />
+            <mx:DataGridColumn id="n2" dataField="price"
+                labelFunction="formatPrice2" textAlign="right" headerText="Prize" />
+            <mx:DataGridColumn id="n3" dataField="total_inquiries"
+                textAlign="right" headerText="Registrants" />
+            <mx:DataGridColumn id="n4" dataField="total_submissions"
+                textAlign="right" headerText="Submission Count" />
+            <mx:DataGridColumn id="n5" textAlign="right" headerText="Forum" />
+            <mx:DataGridColumn id="n6" dataField="reg_end_date" labelFunction="formatRegDate"
+                headerText="Registration End" textAlign="center" />
+            <mx:DataGridColumn id="n7" dataField="initial_submission_date" labelFunction="formatSubmissionDate"
+                headerText="Submission End" textAlign="center" />
+        
+    
+        <!--
+    
+    <mx:DataGrid id="notStudiodataGrid" width="100%" height="100%" dataProvider="{activeContents}"
+        verticalScrollPolicy="off" horizontalScrollPolicy="off" top="60">
+        
     </mx:DataGrid>
+    -->
 </tc:StudioActiveContestsWidgetCodeBehind>    

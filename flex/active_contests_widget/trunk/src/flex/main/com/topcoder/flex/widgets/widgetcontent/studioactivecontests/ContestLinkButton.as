@@ -18,9 +18,14 @@ package com.topcoder.flex.widgets.widgetcontent.studioactivecontests {
 	 */
     public class ContestLinkButton extends LinkButton {
     	/**
-    	 * The base url for the link of contents;
+    	 * The base url for the link of studio contents;
     	 */
         private var urlBase:String = "http://studio.topcoder.com/?module=ViewContestDetails&ct="
+        
+        /**
+    	 * The base url for the link of other contents;
+    	 */
+        private var otherUrlBase:String = "http://software.topcoder.com/review/actions/ViewProjectDetails.do?method=viewProjectDetails&pid="
 
 		/**
 		 * The ctor.
@@ -44,7 +49,8 @@ package com.topcoder.flex.widgets.widgetcontent.studioactivecontests {
 		 * Click on the label links to url.
 		 */
         private function handleClick(event:MouseEvent):void {
-            navigateToURL(new URLRequest(urlBase+data.contest_id));
+        	var url:String=data.contest_id==null?otherUrlBase+data.project_id:urlBase+data.contest_id;
+            navigateToURL(new URLRequest(url));
         }
     }
 }
