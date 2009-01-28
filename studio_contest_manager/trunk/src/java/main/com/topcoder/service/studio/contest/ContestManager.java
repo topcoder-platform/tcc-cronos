@@ -689,10 +689,80 @@ public interface ContestManager {
      */
     public List<Contest> getAllContests() throws ContestManagementException;
     
-    
+    /**
+     * <p>
+     * This is going to fetch all the currently available contests for contest monitor widget.
+     * </p>
+     * 
+     * @return the list of all available contents (or empty if none found)
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1
+     */
     public List<SimpleContestData> getSimpleContestData() throws ContestManagementException;
     
+    
+    /**
+     * <p>
+     * This is going to fetch user's currently available contests for contest monitor widget.
+     * </p>
+     * 
+     * @param createdUser
+     *            the created user.
+     * @return the list of all available contents (or empty if none found)
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1
+     */
+    public List<SimpleContestData> getSimpleContestDataForUser(long createdUser) throws ContestManagementException;
+    
+    
+    /**
+     * <p>
+     * This is going to fetch user's currently available contests for myproject widget.
+     * </p>
+     * @param createdUser
+     *            the created user.
+     * @return the list of all available contents (or empty if none found)
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1
+     */
+    public List<SimpleProjectContestData> getSimpleProjectContestDataForUser(long createdUser) throws ContestManagementException;
+
+    /**
+     * <p>
+     * This is going to fetch all the currently available contests for myproject widget.
+     * </p>
+     * 
+     * @return the list of all available contents (or empty if none found)
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1
+     */
     public List<SimpleProjectContestData> getSimpleProjectContestData() throws ContestManagementException;
+
+    /**
+     * <p>
+     * This is going to fetch only contestid and contest name for contest.
+     * </p>
+     * 
+     * @return the list of all available contents (only id and name) (or empty if none found)
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1
+     */
+    public List<SimpleContestData> getContestDataOnly() throws ContestManagementException;
 
     /**
      * <p>
