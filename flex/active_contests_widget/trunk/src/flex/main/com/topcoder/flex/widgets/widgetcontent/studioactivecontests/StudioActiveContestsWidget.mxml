@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tc:StudioActiveContestsWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:tc="com.topcoder.flex.widgets.widgetcontent.studioactivecontests.*"
-	initialize="init()" backgroundColor="green"
+	initialize="init()" 
 	horizontalAlign="left" headerHeight="5" width="100%"
 	creationComplete="complete()">
 <!--	creationComplete="handleJsonStringResult()"> -->
