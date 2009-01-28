@@ -4,6 +4,7 @@
 package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.model.IWidgetFramework;
     import com.topcoder.flex.widgets.model.IWidget;
+    import com.topcoder.flex.widgets.model.IWidgetContainer;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.WebServiceUtil;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.AddDocumentToContest;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.AddDocumentToContestResultEvent;
@@ -48,6 +49,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 	 * The framework of the widget.
 	 */
 	private var _framework:IWidgetFramework = null;
+
+	/**
+	 * The container for this widget.
+	 */
+	private var _container:IWidgetContainer;
 
 	/**
 	 * The allowclose flag.
@@ -353,6 +359,30 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public function get allowclose():Boolean
         {
         	return _allowclose;
+        }
+
+	/**
+         * Simple setter for the container of this widget.
+         *
+         * @param container of this widget.
+         */
+        public function set container(container:IWidgetContainer):void
+        {
+        	_container=container;
+        }
+
+        /**
+         * Simple getter for the container of this widget.
+         *
+         * @return the container this widget. Could be null if not set.
+         */
+        public function get container():IWidgetContainer
+        {
+        	if(_container==null)
+        	{
+        		_container=parent as IWidgetContainer;
+        	}
+        	return _container;
         }
     }
 }
