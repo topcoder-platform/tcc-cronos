@@ -45,16 +45,16 @@ package com.topcoder.flex.widgets.widgetcontent.studioactivecontests {
 		 */
 		private var _url:String = null;
 
-		/**
-		 * The container for this widget.
-		 */
-		private var _container:IWidgetContainer;
-
 
 		/**
 		 * The framework of the widget.
 		 */
 		private var _framework:IWidgetFramework = null;
+
+		/**
+		 * The container for this widget.
+		 */
+		private var _container:IWidgetContainer;
 		
 		/**
 		 * The data grid.
@@ -89,7 +89,7 @@ package com.topcoder.flex.widgets.widgetcontent.studioactivecontests {
 		 */
 		public function set activeContents(value:ArrayCollection):void {
 			this._activeContents = value;
-			this.dataGrid.dataProvider = this._activeContents;
+			if(dataGrid)dataGrid.dataProvider = this._activeContents;
 		}
 		/**
          * goBack is intended to act as a "Back Button" only for the context of

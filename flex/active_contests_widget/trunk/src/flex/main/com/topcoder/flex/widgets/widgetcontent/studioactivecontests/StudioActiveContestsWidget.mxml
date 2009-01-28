@@ -127,7 +127,7 @@
 	
 	            // Get the data for the DataGrid
 	            var arrayData:Array = jsonData.data as Array;
-	            this.activeContents = new ArrayCollection(arrayData);
+	            activeContents = new ArrayCollection(arrayData);
 	        }
 	        
 	        private function complete():void{
@@ -136,7 +136,7 @@
 	        
 	        private function handleContest():void {
 	        	var req:Dictionary=new Dictionary();
-	        	this.activeContents=new ArrayCollection();
+	        	activeContents=new ArrayCollection();
 	        	if(contestCombo.selectedItem=="Studio"){
 	        		
 	        		jsonRequest.url="http://www.topcoder.com/tc?";
@@ -146,7 +146,7 @@
 	        		req.json="true";
 	        		
 	        		jsonRequest.send(req);
-	        		dataGrid.columns=[s1,s2,s3,s4,s5,s6,s7];
+	        		if(dataGrid)dataGrid.columns=[s1,s2,s3,s4,s5,s6,s7];
 	        		
 	        	}
 	        	else
@@ -188,7 +188,7 @@
 	        			req.pt=22;
 	        		}
 	        		jsonRequest.send(req);
-	        		dataGrid.columns=[n1,n2,n3,n4,n5,n6,n7];
+	        		if(dataGrid)dataGrid.columns=[n1,n2,n3,n4,n5,n6,n7];
 	        	}
 	        	
 	        }
@@ -203,7 +203,7 @@
                         labelField="name"  dataProvider="{contestList}" />
     </mx:Canvas>
 
-	<mx:DataGrid id="dataGrid" width="100%" height="100%" dataProvider="{this.activeContents}"
+	<mx:DataGrid id="dataGrid" width="100%" height="100%" dataProvider="{activeContents}"
         verticalScrollPolicy="off" horizontalScrollPolicy="off" top="60">
         
     </mx:DataGrid>
@@ -244,7 +244,7 @@
     
         <!--
     
-    <mx:DataGrid id="notStudiodataGrid" width="100%" height="100%" dataProvider="{this.activeContents}"
+    <mx:DataGrid id="notStudiodataGrid" width="100%" height="100%" dataProvider="{activeContents}"
         verticalScrollPolicy="off" horizontalScrollPolicy="off" top="60">
         
     </mx:DataGrid>
