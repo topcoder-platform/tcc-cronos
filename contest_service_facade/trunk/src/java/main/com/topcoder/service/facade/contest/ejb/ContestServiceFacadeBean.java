@@ -23,6 +23,8 @@ import com.topcoder.service.studio.ContestPaymentData;
 import com.topcoder.service.studio.MediumData;
 import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.ContestData;
+import com.topcoder.service.studio.contest.SimpleProjectContestData;
+import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.facade.contest.ContestServiceFilter;
@@ -587,6 +589,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
 		return this.studioService.getAllDocumentTypes();
 	}
+
+
+	 public List<SimpleContestData> getSimpleContestData() throws PersistenceException
+    {
+    	return this.studioService.getSimpleContestData();
+    }
+    
+    public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException
+    {
+    	return this.studioService.getSimpleProjectContestData();
+    }
 
     /**
      * <p>Converts the specified <code>ContestData</code> instance to <code>ContestData</code> instance which could be

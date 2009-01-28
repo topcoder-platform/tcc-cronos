@@ -16,6 +16,8 @@ import com.topcoder.service.studio.SubmissionData;
 import com.topcoder.service.studio.ContestStatusData;
 import com.topcoder.service.studio.ContestTypeData;
 import com.topcoder.service.studio.ContestPaymentData;
+import com.topcoder.service.studio.contest.SimpleProjectContestData;
+import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.MediumData;
 import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.contest.DocumentType;
@@ -493,5 +495,9 @@ public interface ContestServiceFacade {
      *             if any error occurs when getting studio file types.
      */
     public List<StudioFileType> getAllStudioFileTypes() throws PersistenceException;
+
+	public List<SimpleContestData> getSimpleContestData() throws PersistenceException;
+    
+    public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException;
 
 }
