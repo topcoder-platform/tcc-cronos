@@ -38,42 +38,42 @@
 	    <mx:VBox width="100%" height="100%">
 	    	<mx:VBox width="100%" >
 	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="studio" label="Visual Design(Studio)" value="STUDIO"  selected="true" paddingBottom="0"/>
-	    			<mx:Text width="100%" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci." paddingTop="-10"/>
+	    			<mx:Text width="100%" text="Graphic and web design contests." paddingTop="-10"/>
 	    	</mx:VBox>
 	    	<mx:Spacer height="3"/>
 	    	<mx:VBox width="100%" >
 	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="componentDesign" label="Component Design" value="Design"  enabled="false"/>
-	    			<mx:Text paddingTop="-10" width="100%" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci." />
+	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
 	    	</mx:VBox>
 	    	<mx:Spacer height="3"/>
 	    	<mx:VBox width="100%" >
 	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="conceptualization" label="Software Conceptualization" value="conceptualization"  enabled="false"/>
-	    			<mx:Text paddingTop="-10" width="100%" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci." />
+	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
 	    	</mx:VBox>
 	    	<mx:Spacer height="3"/>
 	    	<mx:VBox width="100%" >
 	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="specification" label="Software Specification" value="specification"  enabled="false"/>
-	    			<mx:Text paddingTop="-10" width="100%" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci." />
+	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
 	    	</mx:VBox>
 	    	<mx:Spacer height="3"/>
 	    	<mx:VBox width="100%" >
 	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="softwareDesign" label="Software Design" value="softwareDesign"  enabled="false"/>
-	    			<mx:Text paddingTop="-10" width="100%" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci." />
+	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
 	    	</mx:VBox>
 	    	<mx:Spacer height="3"/>
 	    	<mx:VBox width="100%" >
 	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="softwareDev" label="Software Development" value="dev"  enabled="false"/>
-	    			<mx:Text paddingTop="-10" width="100%" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci." />
+	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
 	    	</mx:VBox>
 	    	<mx:Spacer height="3"/>
 	    	<mx:VBox width="100%" >
 	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="assembly" label="Software Assembly" value="assembly"  enabled="false"/>
-	    			<mx:Text paddingTop="-10" width="100%" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci." />
+	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
 	    	</mx:VBox>
 	    	<mx:Spacer height="3"/>
 	    	<mx:VBox width="100%" >
 	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="test" label="Application Testing" value="test"  enabled="false"/>
-	    			<mx:Text paddingTop="-10" width="100%" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci." />
+	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
 	    	</mx:VBox>
 	    </mx:VBox>
     </mx:VBox>

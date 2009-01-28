@@ -197,7 +197,7 @@
         <mx:Label text="Projects" fontWeight="bold" fontSize="12"/>
         <mx:Text width="100%" >
             <mx:text>
-A project is a way to organize one or many similar contests under one overall header and description. Naming the overall project here and giving a brief description will help you manage your contests later. For example, a logo, site design and HTML coding contest can all be placed under a project called "New Website".
+		A project is a way to organize your contests under one overall header and description. Naming the overall project here and giving a brief description will help you manage your contests later. For example, a logo and new website design can both be placed under a project called "New Website".
             </mx:text>
         </mx:Text>
         <mx:HBox width="100%" horizontalGap="0">
