@@ -4,6 +4,7 @@
 package com.topcoder.flex.widgets.widgetcontent.quicklinks {
 	import com.topcoder.flex.model.IWidgetFramework;
 	import com.topcoder.flex.widgets.model.IWidget;
+	import com.topcoder.flex.widgets.model.IWidgetContainer;
 	import flash.utils.Dictionary;
         import mx.containers.Box;
 
@@ -28,6 +29,11 @@ package com.topcoder.flex.widgets.widgetcontent.quicklinks {
 	 * The framework of the widget.
 	 */
 	private var _framework:IWidgetFramework = null;
+
+	/**
+	 * The container for this widget.
+	 */
+	private var _container:IWidgetContainer;
 
 	/**
 	 * The allowclose flag.
@@ -234,6 +240,30 @@ package com.topcoder.flex.widgets.widgetcontent.quicklinks {
         public function get allowclose():Boolean
         {
         	return _allowclose;
+        }
+
+	/**
+         * Simple setter for the container of this widget.
+         *
+         * @param container of this widget.
+         */
+        public function set container(container:IWidgetContainer):void
+        {
+        	_container=container;
+        }
+
+        /**
+         * Simple getter for the container of this widget.
+         *
+         * @return the container this widget. Could be null if not set.
+         */
+        public function get container():IWidgetContainer
+        {
+        	if(_container==null)
+        	{
+        		_container=parent as IWidgetContainer;
+        	}
+        	return _container;
         }
     }
 }
