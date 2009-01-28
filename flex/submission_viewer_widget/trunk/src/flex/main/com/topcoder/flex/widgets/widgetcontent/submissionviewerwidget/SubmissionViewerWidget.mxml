@@ -650,7 +650,7 @@
                 	//
                 	// I can do both save as draft or continue to checkout here.
                 	continue_contestViewer_btn.visible = true;
-                	save_contestViewer_btn.visible = true;
+                	//save_contestViewer_btn.visible = true;
                 	
                 	if (_selectedContestStatusId == _actionRequiredContestTypeId) {
                 		enablePurchaseSelector();
@@ -673,7 +673,7 @@
 	                	if (_pastContestTypeIds[_selectedContestStatusId] == true
 	                			|| _selectedContestStatusId == _completedContestTypeId) {
 	                		// remove save as draft button from here.
-	                		save_contestViewer_btn.visible = false;
+	                		//save_contestViewer_btn.visible = false;
 	                		disablePurchaseSelector();	
 	                	}
                 	}
@@ -974,7 +974,13 @@
             	handleContest(null);
             }
             
-            
+            private function openImageInNewWindow(event:MouseEvent):void {
+            	if (list.selectedItem) {
+            		var url:String = "http://www.topcoder.com/direct/cockpit/impersonation/cockpitStudio.do?&sbt=full&sbmid=" + list.selectedItem.id;
+        			var u:URLRequest = new URLRequest(url);
+        			navigateToURL(u,"_blank");
+            	}
+     		}
         ]]>
     </mx:Script>
 
