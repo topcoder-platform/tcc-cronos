@@ -6,7 +6,9 @@
     width="100%" 
     height="100%" 
     headerHeight="0"
-    backgroundColor="#cfcfcf">
+    backgroundColor="#cfcfcf"
+    
+    >
 
     <mx:Script>
         <![CDATA[
@@ -122,12 +124,11 @@
             	else {
 	                getDataService();
             	}
-            	
-            	trace("Parent maximum height: " + this.parent.height);
-            	trace("Parent maximum width: " + this.parent.width);
 				
-            	trace("Parent's parent maximum height: " + this.parent.parent.height);
-            	trace("Parent's parent maximum width: " + this.parent.parent.width);
+            	trace("Before Main width: " + main.width);
+            	trace("Before Main height: " + main.height);
+            	trace("Parent maximum width: " + _maximumWidth);
+            	trace("Parent maximum width: " + _maximumHeight);
             	
             	_mainPageMaximumWidth=main.width;
             	_mainPageMaximumHeight=main.height;
@@ -226,16 +227,12 @@
                 		var item:*=contests[i];
                 		contestInfo.name=item.contestData.name;
                 		contestInfo.id=item.contestData.contestId;
-                		if(contestInfo.id==this.defaultcontestid)
-                		{
-                			selectIdx=i;
-                		}
                 		contestInfo.statusId=item.contestData.statusId;
                 		
-                		//trace("Contest id: " + contestInfo.id);
-                		//trace("Contest name: " + contestInfo.name);
-                		//trace("Contest statusId: " + contestInfo.statusId + " = " + _statusTypeDictionary[contestInfo.statusId].name);
-                		//trace("");
+                		trace("Contest id: " + contestInfo.id);
+                		trace("Contest name: " + contestInfo.name);
+                		trace("Contest statusId: " + contestInfo.statusId + " = " + _statusTypeDictionary[contestInfo.statusId].name);
+                		trace("");
                 		
                 		if (_activeContestTypeIds[contestInfo.statusId] == true 
                 				|| _pastContestTypeIds[contestInfo.statusId] == true) {
@@ -292,8 +289,8 @@
                 		
                 		sub.id=submissions[i].submissionId;
                 		sub.rank=submissions[i].rank;
-                		sub.thumbnail=(_isLocalTesting ? submissions[i].thumbnail : IMAGE_ADDRESS+sub.id+"&sbt=thumb");
-                		sub.fullsizepreview=(_isLocalTesting ? submissions[i].fullsizepreview : IMAGE_ADDRESS+sub.id+"&sbt=full");
+                		sub.thumbnail=IMAGE_ADDRESS+sub.id+"&sbt=thumb";
+                		sub.fullsizepreview=IMAGE_ADDRESS+sub.id+"&sbt=full";
                 		sub.submissionContent=submissions[i].submissionContent;
                 		sub.price=submissions[i].price;
                 		sub.markedForPurchase=Boolean(submissions[i].markedForPurchase);
@@ -307,9 +304,12 @@
                 		_submissionList.addItem(sub);
                 		
                 		updateRankList(sub);
-                		//updateSubmission(sub.rank && sub.rank > 0);
+                		updateSubmission(sub.rank && sub.rank > 0);
                 		
-                		trace("Added submission to list: {" + sub.id + "," + sub.price + "," + sub.rank + "," + sub.markedForPurchase + "," + sub.purchased + "}");
+                		trace("Submission Id: " + sub.id);
+                		trace("Submission Price: " + sub.price);
+                		trace("Submission rank: " + sub.rank);
+                		trace("Submission markedForPurchase: " + sub.markedForPurchase);
                 	}
                 }
                 
@@ -366,16 +366,18 @@
                     }
                 }
 
-				// after filter, need to check select index
-				for(var i:int=0 ;i<_contestList.length;i++) {
-					var item:*=_contestList[i];
-					if (item.id == this.defaultcontestid)
-					{
-						contestCombo.selectedIndex=i;
-		                contestlist2.selectedIndex=i;
-						return;
-					} 
-				}
+		// after filter, need to check select index
+		for(var i:int=0 ;i< _contestList.length;i++)
+                {
+			var item:*=_contestList[i];
+			if (item.id == this.defaultcontestid)
+			{
+				contestCombo.selectedIndex=i;
+                		contestlist2.selectedIndex=i;
+				return;
+			} 
+		}
+
             }
             
             private function removeAll(array:ArrayCollection, item:Object):int {
@@ -391,7 +393,7 @@
             }
             
             private function getItemIndex(array:ArrayCollection, item:Object):int {
-                if (item && item.hasOwnProperty("id")) {
+                if (item.hasOwnProperty("id")) {
                     for (var i:int = 0; i < array.length; i++) {
                         var obj:Object = array.getItemAt(i);
                         if (obj.hasOwnProperty("id") && obj.id == item.id) {
@@ -401,7 +403,6 @@
                 }
                 return -1;
             }
-            
             private function goPrev():void {
                 var selectedItem:* = list.selectedItem;
                 var index:int = getItemIndex(_submissionList, selectedItem);
@@ -442,27 +443,22 @@
                             list.selectedItem = activeSubmission.getItemAt(list.selectedIndex - 2);
                             handleSelect();
                         }
-                        if (activeSubmission.length > 6) {
-                            activeSubmission.removeItemAt(6);
-                            if (activeSubmission.length > 6) {
-                                activeSubmission.removeItemAt(6);
+                        if (activeSubmission.length > 12) {
+                            activeSubmission.removeItemAt(12);
+                            if (activeSubmission.length > 12) {
+                                activeSubmission.removeItemAt(12);
                             }
                         }
-                        
                         activeSubmission.addItemAt(_submissionList.getItemAt((currentIndex - 1) * 2), 0);
                         activeSubmission.addItemAt(_submissionList.getItemAt((currentIndex - 1) * 2 + 1) , 1);
                     }
-                    
                     currentIndex--;
                     hideShowUpDownArrow();
                 }
             }
             
             private function goDown():void {
-            	trace("~~~~Current Index: " + currentIndex);
-            	trace("~~~~Sub value: " + (_submissionList.length / 2 - 4));
-            	trace("~~~~Active submission: " + activeSubmission + "," + activeSubmission.length);
-                if (_submissionList.length > 0 && currentIndex < _submissionList.length / 2 - 4) {
+                if (currentIndex < _submissionList.length / 2 - 7 && _submissionList.length > 0) {
                     if (list.selectedIndex < 2) {
                         list.selectedItem = activeSubmission.getItemAt(list.selectedIndex + 2);
                         handleSelect();
@@ -470,10 +466,10 @@
                     
                     activeSubmission.removeItemAt(0);
                     activeSubmission.removeItemAt(0);
-                    if ((currentIndex + 4) * 2 < _submissionList.length) {
-                        activeSubmission.addItem(_submissionList.getItemAt((currentIndex + 4) * 2));
-                        if ((currentIndex + 4) * 2 + 1 < _submissionList.length) {
-                            activeSubmission.addItem(_submissionList.getItemAt((currentIndex + 4) * 2 + 1));
+                    if ((currentIndex + 7) * 2 < _submissionList.length) {
+                        activeSubmission.addItem(_submissionList.getItemAt((currentIndex + 7) * 2));
+                        if ((currentIndex + 7) * 2 + 1 < _submissionList.length) {
+                            activeSubmission.addItem(_submissionList.getItemAt((currentIndex + 7) * 2 + 1));
                         }
                     }
                     currentIndex++;
@@ -482,15 +478,9 @@
             }
             
             private function setSubmission():void {
-            	//var item:* = list.selectedItem;
-            	trace("Setting active submissions: " + activeSubmission.length);
                 activeSubmission = new ArrayCollection();
-                //if (activeSubmission && activeSubmission.length > 0) {
-                //	activeSubmission.removeAll();
-                //}
-                //currentIndex = 0;
                 //trace("Clean the active submission.");
-                for (var i:int = currentIndex; i < 4 + currentIndex && i < (_submissionList.length / 2 - 4); i++) {
+                for (var i:int = currentIndex; i < 7 + currentIndex; i++) {
                     if (i * 2 < _submissionList.length) {
                         var item:* = _submissionList.getItemAt(i * 2);
                         //trace("Get item at " + (i * 2).toString() + " with rank " + item.rank);
@@ -508,16 +498,6 @@
                     }
                 }
                 
-                if (!list.dataProvider) {
-                	list.dataProvider = activeSubmission;
-                }
-                
-                /*if (item && activeSubmission.contains(item)) {
-                    list.selectedItem = item;
-                } else {
-                    list.selectedIndex = 0;
-                }*/
-                
                 hideShowUpDownArrow();
             }
             
@@ -526,12 +506,13 @@
                 for (var i:int = 0; i < _submissionList.length && i<14; i++) {
                 	 activeSubmissionForMin.addItem(_submissionList.getItemAt(i));
                 }
+                
             }
             
             private function hideShowUpDownArrow():void {
-            	if (activeSubmission && activeSubmission.length > 0) {
-                	up.visible = (activeSubmission[0].id != _submissionList.getItemAt(0).id);
-                	down.visible = (activeSubmission[activeSubmission.length - 1].id != _submissionList.getItemAt(_submissionList.length - 1).id);
+            	if (list.dataProvider && list.dataProvider.length > 0) {
+                	up.visible = (currentIndex > 0);
+                	down.visible = (list.dataProvider[list.dataProvider.length - 1].id != _submissionList.getItemAt(_submissionList.length - 1).id);
              	}              
             }
             
@@ -579,7 +560,6 @@
             private function handleSelect():void {
                 var currentItem:* = list.selectedItem;
                 if (currentItem) {
-                	trace("Handling select of submission: " + currentItem.id);
                     _currentItemLabel = contestCombo.text + " - #" + currentItem.id;
                     currentImage.source = currentItem.fullsizepreview;
                     
@@ -655,9 +635,8 @@
             
             private function handleContest(event:Event):void {
             	contestRankingErrorLbl.visible=false;
-                 if (main.height > 1 && contestCombo && contestCombo.selectedItem) {
+                 if (main.height>1 && contestCombo && contestCombo.selectedItem) {
                 	_selectedContestId=contestCombo.selectedItem.id;
-                	trace("Handling contest: " + _selectedContestId);
                 	
                 	var statusId:int = _contestInfoDictionary[_selectedContestId].statusId;
                 	_selectedContestStatusId = statusId;
@@ -671,7 +650,7 @@
                 	//
                 	// I can do both save as draft or continue to checkout here.
                 	continue_contestViewer_btn.visible = true;
-                	//save_contestViewer_btn.visible = true;
+                	save_contestViewer_btn.visible = true;
                 	
                 	if (_selectedContestStatusId == _actionRequiredContestTypeId) {
                 		enablePurchaseSelector();
@@ -694,7 +673,7 @@
 	                	if (_pastContestTypeIds[_selectedContestStatusId] == true
 	                			|| _selectedContestStatusId == _completedContestTypeId) {
 	                		// remove save as draft button from here.
-	                		//save_contestViewer_btn.visible = false;
+	                		save_contestViewer_btn.visible = false;
 	                		disablePurchaseSelector();	
 	                	}
                 	}
@@ -703,24 +682,21 @@
                  	_selectedContestId=contestlist2.selectedItem.id;
                  }
                  
-                 if (event && event != null) {
-	                 if(_submissionList && _submissionList.length > 0)_submissionList.removeAll();
-	                 
-	                 if (!_isLocalTesting) {
-		            	var header:SOAPHeader=getHeader(username,password);
-						ContestServiceFacadeBean.clearHeaders();
-		        		ContestServiceFacadeBean.addHeader(header);
-		        		ContestServiceFacadeBean.retrieveSubmissionsForContest.send();
-	                 }
-	                 else {
-						retrieveSubService.send();
-	                 }
+                 if(_submissionList)_submissionList.removeAll();
+                 
+                 if (!_isLocalTesting) {
+	            	var header:SOAPHeader=getHeader(username,password);
+					ContestServiceFacadeBean.clearHeaders();
+	        		ContestServiceFacadeBean.addHeader(header);
+	        		ContestServiceFacadeBean.retrieveSubmissionsForContest.send();
+                 }
+                 else {
+					retrieveSubService.send();
                  }
             }
             
             private function gotoContestViewer():void {
             	main.selectedChild=contestViewer;
-            	handleContest(null);
             }
             
             private function gotoImageViewer():void {
@@ -790,7 +766,7 @@
             
             private function saveContestAsDraft():void {
             	// TODO: out of scope for this contest.	
-            	//Alert.show("NOT IN SCOPE OF THIS CONTEST");
+            	Alert.show("NOT IN SCOPE OF THIS CONTEST");
             }
             
             private function gotoPurchase():void {
@@ -870,22 +846,27 @@
 	     				}	
 					}
             	}
+				
+				handleContest(null);
             }
             
             private function updateAbandonToWS():void {
             	_contestInfoDictionary[_selectedContestId].statusId=_noWinnerChosenContestTypeId;
+				handleContest(null);
             }
             
             private function updatePurchase():void {
-            	trace("Updating purchase info");
             	_purchaseTotal = 0;
             	var totalMoney:Number = 0;
             	
             	_purchaseList = new ArrayCollection();
             	_downloadList = new ArrayCollection();
             	
-            	for each (var item:Object in _submissionList) {
-            		//trace("Purchase item: {" + item.id + "," + item.rank + "," + item.markedForPurchase + "," + item.price + "," + item.purchased + "}");
+            	for each (var item:Object in list.dataProvider) {
+            		trace("Item id: " + item.id);
+            		trace("Marked for purchase: " + item.markedForPurchase);
+            		trace("Purchased: " + item.purchased);
+            		trace("Prize: " + item.price);
             		
             		if (item.purchased && item.purchased == true) {
             			_purchaseTotal++;
@@ -913,19 +894,25 @@
             }
             
             private function updateSubmission(isRank:Boolean):void {
-            	trace("~~~In update submission: " + list.selectedItem + ", " + list.selectedIndex + ", " + isRank);
             	
-				if (list && list.selectedItem && activeSubmission) {
-					var listSelectedIndex:int = list.selectedIndex;
-					var item:Object = activeSubmission[listSelectedIndex];
+            	trace("In update submission: " + list + ", " + list.selectedItem + ", " + list.dataProvider);
+            	
+				if (list && list.selectedItem && list.dataProvider) {
+					
+					var item:Object = list.dataProvider[list.selectedIndex];
 					if (!item) {
 						// this should never happen.
 						item = new Object();
-						list.dataProvider[listSelectedIndex] = item;
+						list.dataProvider[list.selectedIndex] = item;
 					}
-					
-					trace("Update submission before: {" + item.id + "," + item.rank + "," + item.markedForPurchase + "," + item.price + "," + item.purchased + "}");
 
+					trace("Item.id: " + item.id);
+				    trace("Item.thumbnail: " + item.thumbnail);
+				    trace("Item.fullsizepreview: " + item.fullsizepreview);
+				    trace("Item.markedForPurchase: " + item.markedForPurchase);
+				    trace("Item.rank: " + item.rank);
+				    trace("Item.price: " + item.price);
+					
 					if (isRank && rankBar.selectedIndex >= 0) {
 						var oldItem:Object = rankBar.dataProvider[rankBar.selectedIndex];
 				        trace("Selected rank is:" + rankBar.dataProvider[rankBar.selectedIndex]);
@@ -946,13 +933,10 @@
 					item.mustPurchase=item.rank && item.rank > 0 && item.price && item.price > 0;
 					item.purchased=item.markedForPurchase || item.mustPurchase;
 					
-					trace("Update submission after: {" + item.id + "," + item.rank + "," + item.markedForPurchase + "," + item.price + "," + item.purchased + "}");
-					
-					if (item.purchased == true) {
-                    	purchase.selected = true;
-                    } else {
-                    	purchase.selected = false;
-                    }
+					trace("Item.mustPurchase: " + item.mustPurchase);
+				    trace("Item.rank: " + item.rank);
+				    trace("Item.markedForPurchase: " + item.markedForPurchase);
+				    trace("Item.purchased: " + item.purchased);
 				    
 				    if (item.mustPurchase == true) {
                     	purchase.mouseEnabled=false;
@@ -965,19 +949,15 @@
                     	purchase.focusEnabled=true;
                     }
 					
-					if (!list.dataProvider) {
-						list.dataProvider=activeSubmission;
-					}
+					list.dataProvider[list.selectedIndex] = item;
 					
-					list.dataProvider[listSelectedIndex]=item;
-					
-                    /*var index:int = getItemIndex(_submissionList, item);
+                    var index:int = getItemIndex(_submissionList, item);
                     if (index >= 0) {
                     	_submissionList.setItemAt(item, index);
-                    }*/
+                    }
                     
                 	if (_rankList.contains(item)) {
-                    	var index:int = getItemIndex(_rankList, item);
+                    	index = getItemIndex(_rankList, item);
                     	_rankList.setItemAt(new Object(), index);
                 	}
                     
@@ -994,13 +974,7 @@
             	handleContest(null);
             }
             
-            private function openImageInNewWindow(event:MouseEvent):void {
-            	if (list.selectedItem) {
-            		var url:String = "http://www.topcoder.com/direct/cockpit/impersonation/cockpitStudio.do?&sbt=full&sbmid=" + list.selectedItem.id;
-        			var u:URLRequest = new URLRequest(url);
-        			navigateToURL(u,"_blank");
-            	}
-     		}
+            
         ]]>
     </mx:Script>
 
@@ -1058,12 +1032,12 @@
     fadeOutDuration="10"
     moveDuration="200"
     color="0xffffff"/>
-<mx:Fade alphaFrom="0" alphaTo="1" duration="300" id="fade" />
-<mx:HTTPService id="retrieveStatusList" url="com/topcoder/flex/widgets/widgetcontent/assets/data/statusTypes.xml"
+<mx:Fade alphaFrom="0" alphaTo="1" duration="10" id="fade" />
+<mx:HTTPService id="retrieveStatusList" url="assets/data/statusTypes.xml"
     fault="handleFail(event)" result="handleStatusList(event)" />
-<mx:HTTPService id="retrieveContestService" url="com/topcoder/flex/widgets/widgetcontent/assets/data/contests.xml"
+<mx:HTTPService id="retrieveContestService" url="assets/data/contests.xml"
     fault="handleFail(event)" result="handleResult(event)" />
-<mx:HTTPService id="retrieveSubService" url="com/topcoder/flex/widgets/widgetcontent/assets/data/submission.xml"
+<mx:HTTPService id="retrieveSubService" url="assets/data/submission.xml"
     fault="handleSubFail(event)" result="handleSubResult(event)" />
     
 <mx:NumberFormatter id="moneyFormatter" precision="2" useThousandsSeparator="true" useNegativeSign="true" />
@@ -1073,6 +1047,8 @@
 	backgroundColor="#cfcfcf">
     <mx:HBox id="contestViewer" width="100%" height="100%" paddingTop="2" paddingLeft="0" paddingRight="0">
         <mx:VBox horizontalAlign="left" height="100%" width="200" 
+        	backgroundColor="#cfcfcf" 
+        	backgroundAlpha="1.0" 
         	verticalGap="0">
             <mx:ViewStack id="thumbnailPanel" width="100%" height="100%">
             	<mx:VBox id="thumbnailPanel_enabled" horizontalAlign="center">
@@ -1151,27 +1127,14 @@
 		                        width="100%" />
 	                        <mx:VBox verticalAlign="middle" horizontalAlign="center"
 	                        		paddingLeft="2" paddingRight="2" paddingBottom="2" paddingTop="2" 
-	                                borderStyle="none" backgroundImage="@Embed('../assets/image/contentBG.png')" width="526" height="276">
-	                            <mx:Image 
-	                            	id="currentImage" 
-	                            	maxWidth="520" 
-	                            	maxHeight="270" 
-	                            	completeEffect="{fade}" 
-	                            	click="openImageInNewWindow(event)"/>
+	                                borderStyle="solid" width="526" height="276">
+	                            <mx:Image id="currentImage" maxWidth="520" maxHeight="270" completeEffect="{fade}" />
 	                        </mx:VBox>
-	                    </mx:VBox>
-	                    <mx:VBox height="100%" verticalAlign="middle">
-	                        <mx:Button id="next" styleName="next" click="goNext()"/>
-	                    </mx:VBox>
-	                </mx:HBox>
-	                        <mx:HBox width="100%" 
-					horizontalAlign="center"
-					verticalScrollPolicy="off" 
-					horizontalScrollPolicy="off">
+	                        <mx:HBox width="100%" horizontalAlign="center" >
 		                        <mx:ToggleButtonBar horizontalAlign="center" horizontalGap="20"  
 		                                id="rankBar" selectedIndex="-1"
-		                                buttonWidth="23" 
-		                                buttonHeight="23" 
+		                                buttonWidth="25" 
+		                                buttonHeight="26" 
 		                                buttonStyleName="rankButton">
 		                            <mx:String>1</mx:String>
 		                            <mx:String>2</mx:String>
@@ -1182,6 +1145,11 @@
 		                        <mx:Spacer width="100%" />
 		                        <mx:CheckBox id="noWinner" label="I can not choose a winner." styleName="CheckBoxStyle" />
 	                        </mx:HBox>
+	                    </mx:VBox>
+	                    <mx:VBox height="100%" verticalAlign="middle">
+	                        <mx:Button id="next" styleName="next" click="goNext()"/>
+	                    </mx:VBox>
+	                </mx:HBox>
 	                <mx:HBox id="purchase_panel" 
 	                	width="100%" 
 	                	horizontalAlign="center"
@@ -1234,7 +1202,7 @@
 		            	</mx:VBox>
 	                </mx:HBox>
 	                <mx:HBox width="100%" horizontalAlign="right" paddingBottom="4" paddingRight="4">
-	                    <!--<mx:Button id="save_contestViewer_btn" label="save as draft" styleName="ButtonStyle" click="saveContestAsDraft()" /> -->
+	                    <mx:Button id="save_contestViewer_btn" label="save as draft" styleName="ButtonStyle" click="saveContestAsDraft()" />
 	                    <mx:Button id="continue_contestViewer_btn" label="continue &gt;&gt;" styleName="ButtonStyle" click="continueFromContestViewer()" />
 	                </mx:HBox>
 	            </mx:VBox>
@@ -1316,8 +1284,12 @@
 	            		<mx:Label width="100%" paddingTop="0" fontFamily="Arial" fontWeight="bold" fontSize="14" color="#621910" 
 	                    		text="Since this contest was abandoned..." />
 	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
-	                    		text="The submissions for this contest are no longer available to you because you took no action on this contest after it had ended." />
-        		</mx:VBox>
+	                    		text="Lorem ipsum dolor sit amet, aliquip praesent vereor odio modo conventio pertineo vel, nullus, dolus virtus nulla illum hendrerit. Ratis eros melior in eu lucidus wisi veniam iaceo molior. Natu, Pala adipiscing os vereor jus tristique metuo, ratis defui consequat multo, modo quis paulatim. Causa cogo esse loquor wisi abluo." />
+	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
+	                    		text="Quibus refoveo lobortis ut iusto minim fere eros accumsan persto venio lenis enim laoreet enim. Vel gravis velit olim similis melior in neque elit usitas, epulae. In magna praesent ideo autem rusticus nisl erat mos pneum typicus verto iriure et te." />
+	     				<mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
+	                    		text="Lenis, hos venio transverbero sed ulcisor aliquip torqueo fere feugiat gemino, venio autem virtus os. Dolore delenit pala, consequat iaceo praesent volutpat et. Tum, velit nimis odio capio iustum premo. Illum blandit iustum te feugiat, ea, quia, commoveo vel enim nunc ulcisor. Gemino camur vel pneum, veniam, obruo elig pertineo macto consequat damnum rusticus et et paratus." />
+        			</mx:VBox>
                 </mx:VBox>
                 <mx:VBox id="noSubmissionScreen" paddingTop="22" verticalGap="7" width="100%" styleName="BoxStyle">
         			<mx:Label fontFamily="Arial"  text="There are currently no submissions for this contest."
@@ -1357,7 +1329,7 @@
 	<mx:VBox id="submissionCheckoutScreen" width="100%" height="100%" paddingTop="10" paddingBottom="25" paddingLeft="15" paddingRight="15">
 		<mx:Label id="header" text="Purchase your Submissions" fontSize="16" styleName="normalText" />
 		<mx:Text id="text1" width="100%" styleName="text" 
-				htmlText="" />
+				htmlText="Lorem ipsum dolor sit amet, consequat iusto iustum letatio singularis cogo nibh nonummy populus camur jugis amet. Saepius caecus quadrum appellatio foras epulae consequat. Torqueo, nibh, ut neque nulla torqueo macto nisl minim. Antehabeo antehabeo, hos quadrum indoles pneum ad occuro elit ut." />
 		<tc:GridCanvas width="100%" height="100%" listData="{_downloadList}" />
 		<mx:ViewStack height="100%" width="100%" id="pay">
 			<mx:VBox width="100%" height="100%">
@@ -1394,7 +1366,7 @@
 		>
 		<mx:Label text="Download Submissions" fontSize="16" styleName="normalText" />
 		<mx:Text width="100%" styleName="text" 
-				text="Here are the winning submissions and any submissions you decided to purchase from your contest. " />
+				text="Lorem ipsum dolor sit amet, consequat iusto instum letatio singularis cogo nibh nonummy populus camur jugis amet. Saepius caecus nisi miim. " />
 		<mx:Canvas height="1" width="100%" backgroundColor="#797979" />
         <mx:TileList id="downloadList" 
         	width="100%"
