@@ -13,6 +13,8 @@ import com.topcoder.service.studio.contest.EntityAlreadyExistsException;
 import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.studio.contest.SimpleProjectContestData;
+import com.topcoder.service.studio.contest.SimpleContestData;
 
 /**
  * <p>
@@ -620,5 +622,10 @@ public interface StudioService {
      *             if any error occurs when getting studio file types.
      */
     public List<StudioFileType> getAllStudioFileTypes() throws PersistenceException;
+
+
+	public List<SimpleContestData> getSimpleContestData() throws PersistenceException;
+    
+    public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException;
 
 }

@@ -78,6 +78,8 @@ import com.topcoder.service.studio.contest.FilePath;
 import com.topcoder.service.studio.contest.Medium;
 import com.topcoder.service.studio.contest.MimeType;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.studio.contest.SimpleProjectContestData;
+import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.submission.ContestResult;
 import com.topcoder.service.studio.submission.PaymentStatus;
 import com.topcoder.service.studio.submission.Prize;
@@ -639,10 +641,7 @@ public class StudioServiceBean implements StudioService {
      */
     public ContestData createContest(ContestData contestData, long tcDirectProjectId) throws PersistenceException {
 	
-		for (PrizeData p: contestData.getPrizes())
-		{
-			System.out.println("prize=="+p.getAmount()+"...place=="+p.getPlace());
-		}
+		
         logEnter("createContest", contestData, tcDirectProjectId);
         checkParameter("contestData", contestData);
         checkParameter("tcDirectProjectId", tcDirectProjectId);
@@ -2459,6 +2458,42 @@ public class StudioServiceBean implements StudioService {
 
             logExit("getAllContests", result);
             return result;
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while retrieving contest.", e);
+        }
+
+        return null;
+    }
+    
+    public List<SimpleContestData> getSimpleContestData() throws PersistenceException
+    {
+    	logEnter("getSimpleContestData");
+
+        try {
+           
+		   List<SimpleContestData> result =  contestManager.getSimpleContestData();
+		   logExit("getSimpleContestData");
+		   return result;
+
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while retrieving contest.", e);
+        }
+
+        return null;
+    }
+    
+    public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException
+    {
+    	logEnter("getSimpleProjectContestData");
+
+        try {
+         
+            List<SimpleProjectContestData> result = contestManager.getSimpleProjectContestData();
+
+            logExit("getSimpleProjectContestData");
+
+			return result;
+
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while retrieving contest.", e);
         }
