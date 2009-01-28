@@ -1088,8 +1088,7 @@
         		paddingLeft="2"
         		paddingRight="2"
         		>
-            <mx:Canvas styleName="infoBox" backgroundSize="100%"
-    					width="100%">
+            <mx:Canvas styleName="BoxStyle" width="100%">
                 <mx:Label text="Select a Contest to View:" left="0" top="9" 
                         styleName="normalText" paddingTop="0" paddingBottom="0" />
                 <mx:ComboBox id="contestCombo" left="195" width="272" top="9" fontFamily="Arial" fontSize="10"
@@ -1108,8 +1107,7 @@
             <mx:ViewStack width="100%" height="100%" id="contestViewerCenterPanel">
 	            <mx:VBox id="imageViewerScreen" 
 	            	horizontalAlign="center" 
-	            	styleName="infoBox" backgroundSize="100%"
-					width="100%" 
+	            	styleName="BoxStyle" width="100%" 
 	            	paddingTop="5">
 	            	
 	            	<mx:HBox horizontalAlign="center">
