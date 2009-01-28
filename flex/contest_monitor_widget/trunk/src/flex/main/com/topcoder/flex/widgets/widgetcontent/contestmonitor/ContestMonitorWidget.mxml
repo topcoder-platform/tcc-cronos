@@ -83,7 +83,7 @@
             ContestServiceFacadeBean.addHeader(header);
 
            	// ContestServiceFacadeBean.getContest.send();
-        	ContestServiceFacadeBean.getAllContests();
+        	ContestServiceFacadeBean.getSimpleContestData();
         }
 
 
@@ -145,7 +145,7 @@
                 event.target.stop();
         }
          private function compareName(a:Object, b:Object, fields:Array = null):int {
-               return ObjectUtil.stringCompare(a.contestData.name,b.contestData.name,true);
+               return ObjectUtil.stringCompare(a.name,b.name,true);
             }
         private function setContests(e:ResultEvent): void
         {
@@ -163,9 +163,8 @@
         	var selectIdx=0;
         	for(var i:int=0;i<contestList.length;i++)
         	{
-        		var data:*=contestList.getItemAt(i).contestData;
-        		
-        	    if(data!=null){
+        		var data:*=contestList.getItemAt(i);    
+		  	    if(data!=null){
         	     	contestNames.addItem(data.name); 
         	     	if(data.contestId==this.defaultcontestid)selectIdx=i;
         	    }
@@ -195,19 +194,20 @@
         {
         	if (contestList==null || contestCombo.selectedIndex<0) return ;
         	var result:*=contestList.getItemAt(contestCombo.selectedIndex);
-        	if(result==null || result.contestData==null)return ;
-        	regs.text = result.contestData.numberOfRegistrants;
-            subms.text = result.contestData.submissionCount;
+        	if(result==null )return ;
+        	regs.text = result.num_reg;//.numberOfRegistrants;
+            subms.text = result.num_sub;//.contestData.submissionCount;
             
             //Format like: 2009-01-12T11:00:00.000-05:00
-            var sflds:Array = _inputDatePattern.exec(result.startTime[0]);
-            startTime = new Date(Date.parse(getParsableDate(sflds)));
-            start.text = getDisplayableDateComp(sflds) + "\t" + getDisplayableTimeComp(sflds) + "\t\t" + getDisplayableTimeZoneComp(sflds);
+            //var sflds:Array = _inputDatePattern.exec(result.startTime[0]);
+            //startTime = new Date(Date.parse(getParsableDate(sflds)));
+            //start.text = getDisplayableDateComp(sflds) + "\t" + getDisplayableTimeComp(sflds) + "\t\t" + getDisplayableTimeZoneComp(sflds);
             
-            var eflds:Array = _inputDatePattern.exec(result.endTime[0]);
-            endTime = new Date(Date.parse(getParsableDate(eflds)));
-            end.text = getDisplayableDateComp(eflds) + "\t" + getDisplayableTimeComp(eflds) + "\t\t" + getDisplayableTimeZoneComp(eflds);
-            
+            //var eflds:Array = _inputDatePattern.exec(result.endTime[0]);
+            //endTime = new Date(Date.parse(getParsableDate(eflds)));
+            //end.text = getDisplayableDateComp(eflds) + "\t" + getDisplayableTimeComp(eflds) + "\t\t" + getDisplayableTimeZoneComp(eflds);
+            startTime=result.startDate;
+            endTime=result.endDate;
             var currentTime:Date = new Date();
             var timeSpan:Number = (endTime.getTime() - startTime.getTime())/1000;
             var currentPos:Number = (currentTime.getTime() - startTime.getTime())/1000;
@@ -274,7 +274,7 @@
 </mx:Script>
 <mx:WebService id="ContestServiceFacadeBean" 
 wsdl="{contestServiceFacadeWsdl}"> 
-<mx:operation name="getAllContests" resultFormat="object" result="setContests(event)"> 
+<mx:operation name="getSimpleContestData" resultFormat="object" result="setContests(event)"> 
 </mx:operation>
 </mx:WebService>
 <mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"
