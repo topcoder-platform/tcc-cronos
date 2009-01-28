@@ -141,7 +141,7 @@
         {
 		ContestServiceFacadeBean.clearHeaders();
         	ContestServiceFacadeBean.addHeader(getHeader(username,password));
-        	ContestServiceFacadeBean.getStatusList();	
+        	ContestServiceFacadeBean.getSimpleProjectContestData();	
             
         }
         
@@ -153,29 +153,59 @@
         		if(!prjArray.sort)
         		{
         			var sort:Sort = new Sort();
-				sort.compareFunction = compareName;
+				sort.compareFunction = comparePName;
 				prjArray.sort = sort;
         		}
         		prjArray.refresh();
         		prjIdx=0;
-        		if(prjIdx<prjArray.length)
+        		for(prjIdx=0;prjIdx<prjArray.length;)
         		{
-        			pname=prjArray[prjIdx].name;
-        			pdesc=prjArray[prjIdx].description;
+        			pname=prjArray[prjIdx].pname;
+        			pdesc="";//prjArray[prjIdx].description;
         			projectId=prjArray[prjIdx].projectId;
-        			prjIdx++;
-        			ContestServiceFacadeBean.clearHeaders();
-        			ContestServiceFacadeBean.addHeader(getHeader(username,password));
-        			ContestServiceFacadeBean.getContestsForProject.send();
+        			contests=new ArrayCollection();
+        			for(var i:int=prjIdx;i<prjArray.length;i++)
+        			{
+        				if(projectId!=prjArray[i].projectId)
+        				{
+        					break;
+        				}
+					if (prjArray[i].contestId != null && prjArray[i].contestId !=0)
+					{
+						var c:Contest=new Contest(prjArray[i].contestId,prjArray[i].cname,prjArray[i].startDate,
+						prjArray[i].endDate,prjArray[i].num_reg,           prjArray[i].num_sub,
+						prjArray[i].num_for,"-1",
+						prjArray[i].sname);
+						contests.addItem(c);
+					}
+        				
+        			}
+        			if(!contests.sort)
+        			{
+        				var sort:Sort = new Sort();
+						sort.compareFunction = compareName;
+						contests.sort = sort;
+        			}
+        			contests.refresh();
+        			var list:ProjectList=new ProjectList();
+					prjList.addChild(list);
+					list.setStyle("verticalScrollPolicy","auto");
+					list.dataProvider=new Project(pname,pdesc,"",contests);
+        			prjIdx=i;
+        			//ContestServiceFacadeBean.clearHeaders();
+        			//ContestServiceFacadeBean.addHeader(getHeader(username,password));
+        			//ContestServiceFacadeBean.getContestsForProject.send();
         		}
         	}
         }
-
-	private function compareName(a:Object, b:Object, fields:Array = null):int {
+private function compareName(a:Object, b:Object, fields:Array = null):int {
              return ObjectUtil.stringCompare(a.name, b.name, true);
             }
+	private function comparePName(a:Object, b:Object, fields:Array = null):int {
+             return ObjectUtil.stringCompare(a.pname, b.pname, true);
+            }
 
-
+/*
         private function setContests(e:ResultEvent): void
         {
         	contests=new ArrayCollection();
@@ -232,21 +262,7 @@
         	
         	
         }
-        private function preprocessStatuses(e:ResultEvent): void
-        {
-        	if(e!=null && e.result!=null){
-        		var statuses:ArrayCollection=e.result as ArrayCollection;
-        		for(var i:int=0;i<statuses.length;i++)
-        		{
-        			statusDict[statuses[i].statusId]=statuses[i].name;
-        		}
-        		
-        	}
-        	ProjectServiceFacadeBean.clearHeaders();
-            ProjectServiceFacadeBean.addHeader(getHeader(username,password));
-
-            ProjectServiceFacadeBean.getAllProjects();
-        }
+        */
 
 	private function getDataService():void
         {
@@ -268,18 +284,9 @@
         }
     ]]>
 </mx:Script>
-<mx:WebService id="ProjectServiceFacadeBean" 
-wsdl="{projectServiceFacadeWsdl}"> 
-<mx:operation name="getAllProjects" resultFormat="object" result="setProject(event)"  /> 
-</mx:WebService>
 <mx:WebService id="ContestServiceFacadeBean" 
 wsdl="{contestServiceFacadeWsdl}"> 
-<mx:operation name="getStatusList" resultFormat="object" result="preprocessStatuses(event)"  /> 
-<mx:operation name="getContestsForProject" resultFormat="object" result="setContests(event)"> 
-<mx:request>
-<arg0>{projectId}</arg0>
-</mx:request>
-</mx:operation>
+<mx:operation name="getSimpleProjectContestData" resultFormat="object" result="setProject(event)"  /> 
 </mx:WebService>
 
 <mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"
