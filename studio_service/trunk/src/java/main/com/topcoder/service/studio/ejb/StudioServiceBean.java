@@ -2494,11 +2494,13 @@ public class StudioServiceBean implements StudioService {
                 contests = contestManager.getSimpleContestDataForUser(p.getUserId());
             }
             if(contests==null)contests=new ArrayList<SimpleContestData>();
-           
-			return contest;
 
-            logExit("getSimpleContestData", result);
-            return result;
+			logExit("getSimpleContestData", result);
+           
+			return contests;
+
+
+
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while retrieving contest.", e);
         }
@@ -2535,12 +2537,50 @@ public class StudioServiceBean implements StudioService {
             
             if(contests==null) contests= new ArrayList<SimpleProjectContestData>();
 
-			return contest;
-
             logExit("getSimpleProjectContestData", result);
-            return result;
+			return contests;
+
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while retrieving contest.", e);
+        }
+
+        return null;
+    }
+
+	 /**
+     * <p>
+     * This is going to fetch all the currently available contests for my project widget.
+     * </p>
+     *
+     * @return the list of all available contents (or empty if none found)
+     *
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     */
+    public List<SimpleContestData> getContestDataOnly() throws PersistenceException
+    {
+    	logEnter("getContestDataOnly");
+
+        try {
+            List<SimpleContestData> result = new ArrayList<SimpleContestData>();
+            List<SimpleContestData> contests;
+            
+            if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
+                logInfo("User is admin.");
+                contests = contestManager.getContestDataOnly();
+            } else {
+                UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+                logInfo("User " + p.getUserId() + " is non-admin.");
+                contests = contestManager.getContestDataOnlyForUser(p.getUserId());
+            }
+            
+            if(contests==null) contests= new ArrayList<SimpleContestData>();
+
+            logExit("getContestDataOnly", result);
+            return contests;
+
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while getContestDataOnly.", e);
         }
 
         return null;

@@ -649,4 +649,21 @@ public interface StudioService {
      */
     public List<StudioFileType> getAllStudioFileTypes() throws PersistenceException;
 
+
+	/**
+     * <p>
+     * This is going to fetch only contestid and contest name for contest.
+     * </p>
+     * 
+     * @return the list of all available contents (only id and name) (or empty if none found)
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1
+     */
+    public List<SimpleContestData> getContestDataOnly() throws PersistenceException;
+
+
+
 }
