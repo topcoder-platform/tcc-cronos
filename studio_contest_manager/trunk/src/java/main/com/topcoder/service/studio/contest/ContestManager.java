@@ -764,6 +764,20 @@ public interface ContestManager {
      */
     public List<SimpleContestData> getContestDataOnly() throws ContestManagementException;
 
+	/**
+     * <p>
+     * This is going to fetch only contestid and contest name for contest.
+     * </p>
+     * 
+     * @return the list of all available contents (only id and name) (or empty if none found)
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1
+     */
+    public List<SimpleContestData> getContestDataOnlyForUser(long createdUser) throws ContestManagementException;
+
     /**
      * <p>
      * Gets all the currently available contests types.

@@ -2877,6 +2877,59 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
     }
 
 
+	/**
+     * <p>
+     * This is going to fetch only contestid and contest name for contest.
+     * </p>
+     * 
+     * @return the list of all available contents (only id and name) (or empty if none found)
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1
+     */
+    public List<SimpleContestData> getContestDataOnlyForUser(long createdUser) throws ContestManagementException
+    {
+    	try {
+			logEnter("getContestDataOnly()");
+
+			EntityManager em = getEntityManager();
+
+			String qstr = "select contest_id, name from contest c where not c.tc_direct_project_id is null "+
+                         " and c.deleted = 0 and c.createdUser = "+createdUser;
+
+			Query query = em.createNativeQuery(qstr);
+
+			List list = query.getResultList();
+
+			List<SimpleContestData> result = new ArrayList<SimpleContestData>();
+
+			for (int i = 0; i < list.size(); i++) {
+
+				SimpleContestData c = new SimpleContestData();
+				Object[] os = (Object[]) list.get(i);
+				if (os[0] != null)
+					c.setContestId(Long.parseLong(os[0].toString()));
+				if (os[1] != null)
+					c.setName(os[1].toString());
+				result.add(c);
+
+			}
+			return result;
+		} catch (IllegalStateException e) {
+			throw wrapContestManagementException(e,
+					"The EntityManager is closed.");
+		} catch (PersistenceException e) {
+			throw wrapContestManagementException(e,
+					"There are errors while persisting the entity.");
+		} finally {
+			logExit("getContestDataOnly()");
+		}
+    }
+
+
+
     /**
      * <p>
      * This is going to get all the matching contest entities that fulfill the
