@@ -1043,12 +1043,9 @@
 <mx:NumberFormatter id="moneyFormatter" precision="2" useThousandsSeparator="true" useNegativeSign="true" />
 <mx:ViewStack id="main" 
 	width="100%" 
-	height="100%"
-	backgroundColor="#cfcfcf">
+	height="100%">
     <mx:HBox id="contestViewer" width="100%" height="100%" paddingTop="2" paddingLeft="0" paddingRight="0">
         <mx:VBox horizontalAlign="left" height="100%" width="200" 
-        	backgroundColor="#cfcfcf" 
-        	backgroundAlpha="1.0" 
         	verticalGap="0">
             <mx:ViewStack id="thumbnailPanel" width="100%" height="100%">
             	<mx:VBox id="thumbnailPanel_enabled" horizontalAlign="center">
@@ -1056,6 +1053,7 @@
 	            	<mx:VBox horizontalAlign="center" height="100%" width="100%"
 		                    paddingLeft="0" paddingRight="0" >
 		                
+		            	<mx:Spacer height="5" />
 		                <mx:Button id="up" styleName="up" click="goUp()" />
 		                <mx:TileList id="list" rowCount="4" width="100%" columnCount="2"
 		                        selectionDuration="0"
@@ -1067,7 +1065,8 @@
 		                        click="handleSelect()" 
 		                        allowMultipleSelection="false" 
 		                        allowDragSelection="false"
-		                        backgroundColor="#cfcfcf"/>
+					backgroundColor="#E0E0E0"
+		                        />
 		                <mx:Button id="down" styleName="down" click="goDown()" />
 		            </mx:VBox>
 	            </mx:VBox>
@@ -1089,7 +1088,7 @@
         		paddingLeft="2"
         		paddingRight="2"
         		>
-            <mx:Canvas styleName="BoxStyle"
+            <mx:Canvas styleName="infoBox" backgroundSize="100%"
     					width="100%">
                 <mx:Label text="Select a Contest to View:" left="0" top="9" 
                         styleName="normalText" paddingTop="0" paddingBottom="0" />
@@ -1109,7 +1108,7 @@
             <mx:ViewStack width="100%" height="100%" id="contestViewerCenterPanel">
 	            <mx:VBox id="imageViewerScreen" 
 	            	horizontalAlign="center" 
-	            	styleName="BoxStyle"
+	            	styleName="infoBox" backgroundSize="100%"
 					width="100%" 
 	            	paddingTop="5">
 	            	
@@ -1128,13 +1127,26 @@
 	                        <mx:VBox verticalAlign="middle" horizontalAlign="center"
 	                        		paddingLeft="2" paddingRight="2" paddingBottom="2" paddingTop="2" 
 	                                borderStyle="solid" width="526" height="276">
-	                            <mx:Image id="currentImage" maxWidth="520" maxHeight="270" completeEffect="{fade}" />
+	                            <mx:Image 
+	                            	id="currentImage" 
+	                            	maxWidth="520" 
+	                            	maxHeight="270" 
+	                            	completeEffect="{fade}" 
+	                            	click="openImageInNewWindow(event)"/>
 	                        </mx:VBox>
-	                        <mx:HBox width="100%" horizontalAlign="center" >
+	                    </mx:VBox>
+	                    <mx:VBox height="100%" verticalAlign="middle">
+	                        <mx:Button id="next" styleName="next" click="goNext()"/>
+	                    </mx:VBox>
+	                </mx:HBox>
+	                        <mx:HBox width="100%" 
+					horizontalAlign="center"
+					verticalScrollPolicy="off" 
+					horizontalScrollPolicy="off">
 		                        <mx:ToggleButtonBar horizontalAlign="center" horizontalGap="20"  
 		                                id="rankBar" selectedIndex="-1"
-		                                buttonWidth="25" 
-		                                buttonHeight="26" 
+		                                buttonWidth="23" 
+		                                buttonHeight="23" 
 		                                buttonStyleName="rankButton">
 		                            <mx:String>1</mx:String>
 		                            <mx:String>2</mx:String>
@@ -1145,11 +1157,6 @@
 		                        <mx:Spacer width="100%" />
 		                        <mx:CheckBox id="noWinner" label="I can not choose a winner." styleName="CheckBoxStyle" />
 	                        </mx:HBox>
-	                    </mx:VBox>
-	                    <mx:VBox height="100%" verticalAlign="middle">
-	                        <mx:Button id="next" styleName="next" click="goNext()"/>
-	                    </mx:VBox>
-	                </mx:HBox>
 	                <mx:HBox id="purchase_panel" 
 	                	width="100%" 
 	                	horizontalAlign="center"
@@ -1202,7 +1209,7 @@
 		            	</mx:VBox>
 	                </mx:HBox>
 	                <mx:HBox width="100%" horizontalAlign="right" paddingBottom="4" paddingRight="4">
-	                    <mx:Button id="save_contestViewer_btn" label="save as draft" styleName="ButtonStyle" click="saveContestAsDraft()" />
+	                    <!--<mx:Button id="save_contestViewer_btn" label="save as draft" styleName="ButtonStyle" click="saveContestAsDraft()" /> -->
 	                    <mx:Button id="continue_contestViewer_btn" label="continue &gt;&gt;" styleName="ButtonStyle" click="continueFromContestViewer()" />
 	                </mx:HBox>
 	            </mx:VBox>
@@ -1284,12 +1291,8 @@
 	            		<mx:Label width="100%" paddingTop="0" fontFamily="Arial" fontWeight="bold" fontSize="14" color="#621910" 
 	                    		text="Since this contest was abandoned..." />
 	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
-	                    		text="Lorem ipsum dolor sit amet, aliquip praesent vereor odio modo conventio pertineo vel, nullus, dolus virtus nulla illum hendrerit. Ratis eros melior in eu lucidus wisi veniam iaceo molior. Natu, Pala adipiscing os vereor jus tristique metuo, ratis defui consequat multo, modo quis paulatim. Causa cogo esse loquor wisi abluo." />
-	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
-	                    		text="Quibus refoveo lobortis ut iusto minim fere eros accumsan persto venio lenis enim laoreet enim. Vel gravis velit olim similis melior in neque elit usitas, epulae. In magna praesent ideo autem rusticus nisl erat mos pneum typicus verto iriure et te." />
-	     				<mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
-	                    		text="Lenis, hos venio transverbero sed ulcisor aliquip torqueo fere feugiat gemino, venio autem virtus os. Dolore delenit pala, consequat iaceo praesent volutpat et. Tum, velit nimis odio capio iustum premo. Illum blandit iustum te feugiat, ea, quia, commoveo vel enim nunc ulcisor. Gemino camur vel pneum, veniam, obruo elig pertineo macto consequat damnum rusticus et et paratus." />
-        			</mx:VBox>
+	                    		text="The submissions for this contest are no longer available to you because you took no action on this contest after it had ended." />
+        		</mx:VBox>
                 </mx:VBox>
                 <mx:VBox id="noSubmissionScreen" paddingTop="22" verticalGap="7" width="100%" styleName="BoxStyle">
         			<mx:Label fontFamily="Arial"  text="There are currently no submissions for this contest."
@@ -1329,7 +1332,7 @@
 	<mx:VBox id="submissionCheckoutScreen" width="100%" height="100%" paddingTop="10" paddingBottom="25" paddingLeft="15" paddingRight="15">
 		<mx:Label id="header" text="Purchase your Submissions" fontSize="16" styleName="normalText" />
 		<mx:Text id="text1" width="100%" styleName="text" 
-				htmlText="Lorem ipsum dolor sit amet, consequat iusto iustum letatio singularis cogo nibh nonummy populus camur jugis amet. Saepius caecus quadrum appellatio foras epulae consequat. Torqueo, nibh, ut neque nulla torqueo macto nisl minim. Antehabeo antehabeo, hos quadrum indoles pneum ad occuro elit ut." />
+				htmlText="Feedback will be here..." />
 		<tc:GridCanvas width="100%" height="100%" listData="{_downloadList}" />
 		<mx:ViewStack height="100%" width="100%" id="pay">
 			<mx:VBox width="100%" height="100%">
@@ -1366,7 +1369,7 @@
 		>
 		<mx:Label text="Download Submissions" fontSize="16" styleName="normalText" />
 		<mx:Text width="100%" styleName="text" 
-				text="Lorem ipsum dolor sit amet, consequat iusto instum letatio singularis cogo nibh nonummy populus camur jugis amet. Saepius caecus nisi miim. " />
+				text="Here are the winning submissions and any submissions you decided to purchase from your contest. " />
 		<mx:Canvas height="1" width="100%" backgroundColor="#797979" />
         <mx:TileList id="downloadList" 
         	width="100%"
