@@ -207,7 +207,9 @@
             //endTime = new Date(Date.parse(getParsableDate(eflds)));
             //end.text = getDisplayableDateComp(eflds) + "\t" + getDisplayableTimeComp(eflds) + "\t\t" + getDisplayableTimeZoneComp(eflds);
             startTime=result.startDate;
+	    start.text=result.startDate.toString();
             endTime=result.endDate;
+	    end.text=result.endDate.toString();
             var currentTime:Date = new Date();
             var timeSpan:Number = (endTime.getTime() - startTime.getTime())/1000;
             var currentPos:Number = (currentTime.getTime() - startTime.getTime())/1000;
