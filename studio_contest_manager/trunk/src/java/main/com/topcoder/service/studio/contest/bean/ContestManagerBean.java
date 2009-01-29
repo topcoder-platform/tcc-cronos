@@ -2818,7 +2818,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
 			EntityManager em = getEntityManager();
 
-			String qstr = "select contest_id, name from contest c where not c.tc_direct_project_id is null "+
+			String qstr = "select contest_id, name, contest_detailed_status_id from contest c where not c.tc_direct_project_id is null "+
                          " and c.deleted = 0  ";
 
 			Query query = em.createNativeQuery(qstr);
@@ -2835,6 +2835,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					c.setContestId(Long.parseLong(os[0].toString()));
 				if (os[1] != null)
 					c.setName(os[1].toString());
+				if (os[2] != null)
+					c.setStatusId(Long.parseLong(os[2].toString()));
 				result.add(c);
 
 			}
@@ -2866,11 +2868,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
     public List<SimpleContestData> getContestDataOnlyForUser(long createdUser) throws ContestManagementException
     {
     	try {
-			logEnter("getContestDataOnly()");
+			logEnter("getContestDataOnlyForUser()");
 
 			EntityManager em = getEntityManager();
 
-			String qstr = "select contest_id, name from contest c where not c.tc_direct_project_id is null "+
+			String qstr = "select contest_id, name, contest_detailed_status_id  from contest c where not c.tc_direct_project_id is null "+
                          " and c.deleted = 0 and  c.create_user_id = "+createdUser;
 
 			Query query = em.createNativeQuery(qstr);
@@ -2887,6 +2889,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					c.setContestId(Long.parseLong(os[0].toString()));
 				if (os[1] != null)
 					c.setName(os[1].toString());
+				if (os[2] != null)
+					c.setStatusId(Long.parseLong(os[2].toString()));
 				result.add(c);
 
 			}
@@ -2898,7 +2902,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 			throw wrapContestManagementException(e,
 					"There are errors while persisting the entity.");
 		} finally {
-			logExit("getContestDataOnly()");
+			logExit("getContestDataOnlyForUser()");
 		}
     }
 

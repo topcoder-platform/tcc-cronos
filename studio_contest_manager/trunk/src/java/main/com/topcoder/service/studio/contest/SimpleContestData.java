@@ -50,6 +50,12 @@ public class SimpleContestData {
      * Represents the submission number.
      */
     private int num_sub;
+
+
+	/**
+     * Represents the status id.
+     */
+    private long statusId;
     
     /**
      * Default constructor.
@@ -167,6 +173,14 @@ public class SimpleContestData {
      */
 	public void setNum_sub(int num_sub) {
 		this.num_sub = num_sub;
+	}
+
+	public long getStatusId() {
+		return this.statusId;
+	}
+
+	public void setStatusId(long statusId) {
+		this.statusId = statusId;
 	}
 
 }
