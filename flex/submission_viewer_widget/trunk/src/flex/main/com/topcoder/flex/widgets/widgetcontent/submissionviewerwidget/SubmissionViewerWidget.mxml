@@ -439,10 +439,10 @@
                             list.selectedItem = activeSubmission.getItemAt(list.selectedIndex - 2);
                             handleSelect();
                         }
-                        if (activeSubmission.length > 12) {
-                            activeSubmission.removeItemAt(12);
-                            if (activeSubmission.length > 12) {
-                                activeSubmission.removeItemAt(12);
+                        if (activeSubmission.length > 6) {
+                            activeSubmission.removeItemAt(6);
+                            if (activeSubmission.length > 6) {
+                                activeSubmission.removeItemAt(6);
                             }
                         }
                         activeSubmission.addItemAt(_submissionList.getItemAt((currentIndex - 1) * 2), 0);
@@ -454,7 +454,7 @@
             }
             
             private function goDown():void {
-                if (currentIndex < _submissionList.length / 2 - 7 && _submissionList.length > 0) {
+                if (_submissionList.length > 0 && currentIndex < _submissionList.length / 2 - 4) {
                     if (list.selectedIndex < 2) {
                         list.selectedItem = activeSubmission.getItemAt(list.selectedIndex + 2);
                         handleSelect();
@@ -462,10 +462,10 @@
                     
                     activeSubmission.removeItemAt(0);
                     activeSubmission.removeItemAt(0);
-                    if ((currentIndex + 7) * 2 < _submissionList.length) {
-                        activeSubmission.addItem(_submissionList.getItemAt((currentIndex + 7) * 2));
-                        if ((currentIndex + 7) * 2 + 1 < _submissionList.length) {
-                            activeSubmission.addItem(_submissionList.getItemAt((currentIndex + 7) * 2 + 1));
+                    if ((currentIndex + 4) * 2 < _submissionList.length) {
+                        activeSubmission.addItem(_submissionList.getItemAt((currentIndex + 4) * 2));
+                        if ((currentIndex + 4) * 2 + 1 < _submissionList.length) {
+                            activeSubmission.addItem(_submissionList.getItemAt((currentIndex + 4) * 2 + 1));
                         }
                     }
                     currentIndex++;
@@ -474,10 +474,10 @@
             }
             
             private function setSubmission():void {
-            	trace("Setting active submissions: " + activeSubmission.length);
+            	trace("Setting active submissions: " + activeSubmission.length + "," + _submissionList.length);
                 activeSubmission = new ArrayCollection();
                 //trace("Clean the active submission.");
-                for (var i:int = currentIndex; i < 7 + currentIndex; i++) {
+                for (var i:int = currentIndex; i < 4 + currentIndex; i++) {
                     if (i * 2 < _submissionList.length) {
                         var item:* = _submissionList.getItemAt(i * 2);
                         //trace("Get item at " + (i * 2).toString() + " with rank " + item.rank);
@@ -487,8 +487,8 @@
                     }
                     
                     if (i * 2 + 1 < _submissionList.length) {
-                        //var item:* = _submissionList.getItemAt(i * 2 + 1);
-                        //trace("Get item at " + (i * 2 + 1).toString() + " with rank " + item.rank);
+                        var item:* = _submissionList.getItemAt(i * 2 + 1);
+                        trace("Get item at " + (i * 2 + 1).toString() + " with rank " + item.rank);
                         activeSubmission.addItem(_submissionList.getItemAt(i * 2 + 1));
                     } else {
                         break;
@@ -509,7 +509,7 @@
             	trace("Setting active submissions for min page: " + activeSubmission.length);
                 activeSubmissionForMin = new ArrayCollection();
                 //trace("Clean the active submission.");
-                for (var i:int = currentIndexMinPage; i < 4 + currentIndexMinPage && i < (_submissionList.length / 2 - 4); i++) {
+                for (var i:int = currentIndexMinPage; i < 4 + currentIndexMinPage; i++) {
                     if (i * 2 < _submissionList.length) {
                         var item:* = _submissionList.getItemAt(i * 2);
                         //trace("Get item at " + (i * 2).toString() + " with rank " + item.rank);
