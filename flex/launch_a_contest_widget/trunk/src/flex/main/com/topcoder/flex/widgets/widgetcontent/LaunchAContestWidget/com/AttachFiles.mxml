@@ -3,6 +3,7 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off">
     <mx:Script>
 	    <![CDATA[
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadDocumentForContest;
 	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.DocumentType;
 	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllDocumentTypesResultEvent;
 	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllDocumentTypes;
@@ -87,6 +88,8 @@
 	        	for each (var doc:UploadedDocument in this.mainWidget.competition.contestData.documentationUploads){
 	        		addDoc(doc);
 	        	}
+	        	
+	        	this.mainWidget.competition.contestData.documentationUploads = docUploads;
 	        	
 	        	this.addEventListener("UPLOADDOC_ALL_COMPLETED", allCompleteHandler );
 	        	
@@ -308,19 +311,30 @@
             		return; // the document has been sent
             	}
             	
-//            	currentDoc.contestId = mainWidget.competition.contestData.contestId;
+            	//invoke uploadDocumentForContest for existing contest
+            	//for a new contest, the service will automatically upload the document
+            	if (this.mainWidget.competition.contestData.contestId != -1){
+            		currentDoc.contestId = this.mainWidget.competition.contestData.contestId;
+            		
+            		var ws:ContestServiceFacadeBeanService = mainWidget._ws;
+            		ws.adduploadDocumentForContestEventListener(uploadDocumentForContestHandler);
+            		var arg:UploadDocumentForContest = new UploadDocumentForContest();
+            		
+            		arg.arg0 = currentDoc;
+            		ws.uploadDocumentForContest(arg);	
+            	} else {
+            		addDoc(currentDoc);
+            		//clear up
+            		currentDoc = new UploadedDocument();
+            		fileDescInput.text = "";
+            		fileToUpload.text = "";
+            	}
             	
-            	var ws:ContestServiceFacadeBeanService = mainWidget._ws;
-            	ws.adduploadDocumentEventListener(webserviceSentHandler);
-            	var arg:UploadDocument = new UploadDocument();
-            	arg.arg0 = currentDoc;
-            	ws.uploadDocument(arg);
             }
             
-            private function webserviceSentHandler(event:UploadDocumentResultEvent):void{
+            private function uploadDocumentForContestHandler(event:UploadDocumentForContestResultEvent):void{
             	var docUploaded:UploadedDocument = event.result._return;
             	docUploaded.file = null; //Clear the content once the file has been uploaded to save memory
-//            	docUploaded.contestId = mainWidget.competition.contestData.contestId;
             	addDoc(docUploaded);
             	
             	//clear up
@@ -329,7 +343,6 @@
             	fileToUpload.text = "";
             	
             	file= null;
-            	mainWidget.competition.contestData.documentationUploads = docUploads;
             }
             
             

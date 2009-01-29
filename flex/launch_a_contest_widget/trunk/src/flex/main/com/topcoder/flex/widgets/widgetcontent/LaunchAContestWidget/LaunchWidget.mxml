@@ -247,6 +247,7 @@
                        return;
                    }
                    this.currentState = "OverViewState";
+                   save.visible = false;
                    this.height = 660;
                    back.visible = true;
                    
@@ -263,6 +264,7 @@
 					}
 
                    this.currentState = "DetailsState";
+                   save.visible = false;
                    
                    review.cstTypeStep2 = overView.studioType.selection.label;
                    review.firstPrize = overView.firstPlace.text;
@@ -284,6 +286,7 @@
                    }
                    
                    this.currentState = "SpecificationsState";
+                   save.visible = false;
                    this.height = specf.widgetHeight;
                    
                    review.contentTitleStr = details.ctInput.text;
@@ -299,6 +302,7 @@
                    }
                    
                    this.currentState = "AttachFilesState";
+                   save.visible = false;
                    
                    review.colorInputStr = specf.colorInput.text;
                    review.fontInputStr = specf.fontInput.text;
@@ -330,6 +334,7 @@
                 else if(this.currentState == "AttachFilesState"){
                    //validate input
                    this.currentState = "ScheduleState";
+                   save.visible = false;
                    
                    this.height = 750;
                    hideArrow(step5box);
@@ -341,6 +346,7 @@
 					}	
 					
                    this.currentState = "ReviewState";
+                   save.visible = true;
 
                    review.fromDate = sched.dfStart.selectedDate;
                    review.fromTime = sched.CmbHourStart.selectedItem.label+":"+sched.CmbMinuteStart.selectedItem.label+" "+ sched.AMPMStart.selectedValue.toString()+" "+sched.timezoneStart.text;
@@ -397,6 +403,8 @@
                     case 5:
                         goNext.visible = false;
                         back.visible = false;
+
+                        submitPurchase();
                         break;
                     default:
                         goNext.label = "Continue -->";
@@ -413,31 +421,36 @@
                         this.currentState = "ReviewState";
                         save.visible = true;
                         this.height = 1530;
+
                        showArrow(step7box);
                        step8Text.setStyle("color", "#a8a8a8");
                     }
                 } else if (this.currentState == "ReviewState"){
                    this.currentState = "ScheduleState";
                    this.height = 750;
+
                    showArrow(step6box);
                    step7Text.setStyle("color", "#a8a8a8");
                 }
                 else if(this.currentState == "ScheduleState"){
                    this.currentState = "AttachFilesState";
                    this.height = 600;
+
                    showArrow(step5box);
                    step6Text.setStyle("color", "#a8a8a8");
                 }
                 else if(this.currentState == "AttachFilesState"){
                    this.currentState = "SpecificationsState";
                    this.height = specf.widgetHeight;
+
                    showArrow(step4box);
                    step5Text.setStyle("color", "#a8a8a8");
                 }
                 else if(this.currentState == "SpecificationsState"){
                    this.currentState = "DetailsState";
                    this.height = details.widgetHeight;
-                   showArrow(step3box);
+	    
+                  showArrow(step3box);
                    step4Text.setStyle("color", "#a8a8a8");
                 }
                 else if(this.currentState == "DetailsState"){
@@ -450,6 +463,7 @@
                    this.currentState = "ContestSelectionState";
                    this.height = 750;
                    back.visible = false;
+     
                    showArrow(step1box);
                    step2Text.setStyle("color", "#a8a8a8");
                 }

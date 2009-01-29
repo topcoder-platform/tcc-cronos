@@ -287,8 +287,17 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public function setAttributes(map:Dictionary):void {
         }
         
+        public function submitPurchase():void{
+        	competition.contestData.statusId = 2; //Active
+        	saveContest();
+        }
         
         public function saveAsDraft():void{
+        	competition.contestData.statusId = 1; //Unactive
+        	saveContest();
+        }
+        
+        private function saveContest():void{
         	if (isNaN(competition.id) || competition.id < 0){
         		createContest();
         	} else {
@@ -310,35 +319,18 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         	var type:CompetionType = new CompetionType();
         	type.competionType = "STUDIO";
         	this.competition.type = type;
-        	
-        	linkDocToContest();
         }
         
         private function updateContest():void{
+        	
         	_ws.addupdateContestEventListener(updateContestHandler);
         	var arg:UpdateContest  = new UpdateContest();
         	arg.arg0  = competition;
         	_ws.updateContest(arg);
         }
         
-        //link the latest uploaded documents to their contest
-        //in case the backend does not persist the document's data in cascade when persisting the contest
-        private function linkDocToContest():void{
-        	for each (var doc:UploadedDocument in this.competition.contestData.documentationUploads){
-        		if (doc.contestId == -1){
-        			var arg:AddDocumentToContest = new AddDocumentToContest();
-        			arg.arg0 = doc.documentId;
-        			arg.arg1 = this.competition.contestData.contestId;
-        			
-        			_ws.addDocumentToContest(arg);
-        			
-        			doc.contestId = this.competition.contestData.contestId;
-        		}
-        	}
-        }
-        
         private function updateContestHandler(event:UpdateContestResultEvent):void{
-        	linkDocToContest();
+
 	}
 
 	/**
