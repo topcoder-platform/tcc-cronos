@@ -111,7 +111,7 @@
 	        }
 	     ]]>
     </mx:Script>
-    <mx:VBox paddingLeft="2" width="100%">
+    <mx:VBox width="100%" styleName="boxStyle">
         <mx:Label text="Contest Details" fontWeight="bold" fontSize="12"/>
         <mx:Text width="100%" id="contestDetails">
             <mx:text>

@@ -27,7 +27,33 @@
     paddingBottom: 0;
 }
 
+/* since BUGR-999*/
+.whiteBoldText {
+	color: #FFFFFF;
+	font-weight: bold;	
+	fontFamily: "Arial";
+	font-size: 14;
+}
 
+.boxStyle {
+	padding-left: 10;
+	padding-right: 10;
+	padding-bottom: 10;
+	padding-top: 10;
+	border-skin: Embed(source="../assets/box_bg.png",scaleGridTop="12",scaleGridLeft="12",scaleGridRight="221",scaleGridBottom="28");
+}
+
+.gradient {
+	background-gradient-colors: #FFFFFF, #a8a8a8;	
+}
+
+.prevStep {
+	backgroundImage: Embed(source="../assets/step_prev.png");	
+}
+
+.curStep {
+	backgroundImage: Embed(source="../assets/step_cur.png");	
+}
 
 .header {
 	font-family: Arial;
@@ -97,4 +123,13 @@
 
 .GridItem {
 	vertical-align: middle;
+}
+
+/* since BUGR-999 */
+.RedButton {
+	skin: Embed("../assets/redbtn_fixed.png");
+	over-skin: Embed("../assets/redbtn_fixed_over.png");
+	down-skin: Embed("../assets/redbtn_fixed.png");
+	color: #FFFFFF;
+	font-weight: bold;
 }

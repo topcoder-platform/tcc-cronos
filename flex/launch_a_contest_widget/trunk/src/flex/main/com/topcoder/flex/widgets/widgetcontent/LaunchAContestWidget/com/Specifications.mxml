@@ -145,88 +145,95 @@
             }
          ]]>
     </mx:Script>
-    <mx:VBox paddingLeft="2" width="100%">
-        <mx:Label text="Contest Specifications" fontWeight="bold" fontSize="12"/>
-        <mx:Text width="100%" id="contestSpecf">
-            <mx:text>
-                Do you have any requirements, preferences or restrictions regarding the following design elements?
-            </mx:text>
-        </mx:Text>
-        <mx:Spacer height="5"/>
-        <mx:VBox width="100%" verticalGap="0">
-            <mx:HBox width="500">
-                <mx:Label text="Colors:" fontWeight="bold"/>
-                <mx:Spacer width="344"/>
-                <mx:LinkButton label="[+ show hint]" click="showColorHint(event)" />
-            </mx:HBox>
-            <mx:Text id="colorHint" color="0x888888" width="500" height="0" visible="false">
-                <mx:text>
-                </mx:text>
-            </mx:Text>
-            <mx:TextArea id="colorInput" width="500" height="50"/>
-        </mx:VBox>
-        <mx:Spacer height="5"/>
-        <mx:VBox width="100%" verticalGap="0">
-            <mx:HBox width="500">
-                <mx:Label text="Fonts:" fontWeight="bold"/>
-                <mx:Spacer width="347"/>
-                <mx:LinkButton label="[+ show hint]" click="showFontsHint(event)" />
-            </mx:HBox>
-            <mx:Text id="fontsHint" color="0x888888" width="500" height="0" visible="false">
-                <mx:text>
-                </mx:text>
-            </mx:Text>
-            <mx:TextArea id="fontInput" width="500" height="50"/>
-        </mx:VBox>
-        <mx:Spacer height="5"/>
-        <mx:VBox width="100%" verticalGap="0">
-            <mx:HBox width="500">
-                <mx:Label text="Size:" fontWeight="bold"/>
-                <mx:Spacer width="356"/>
-                <mx:LinkButton label="[+ show hint]" click="showSizeHint(event)" />
-            </mx:HBox>
-            <mx:Text id="sizeHint" color="0x888888" width="500" height="0" visible="false">
-                <mx:text>
-                </mx:text>
-            </mx:Text>
-            <mx:TextArea id="sizeInput" width="500" height="50"/>
-        </mx:VBox>
-        <mx:Spacer height="5"/>
-        <mx:VBox width="100%" verticalGap="0">
-            <mx:HBox width="500">
-                <mx:Label text="Additional Requirements or Restrictions:" fontWeight="bold"/>
-                <mx:Spacer width="151"/>
-                <mx:LinkButton label="[+ show hint]" click="showAddReqHint(event)" />
-            </mx:HBox>
-            <mx:Text id="addReqHint" color="0x888888" width="500" height="0" visible="false">
-                <mx:text>
-                </mx:text>
-            </mx:Text>
-            <mx:TextArea id="addReInput" width="500" height="50"/>
-        </mx:VBox>
-        <mx:Spacer height="10"/>
-        <mx:Label text="Final File Formats" fontWeight="bold" fontSize="12"/>
-        <mx:Text width="100%" id="finalFormats" >
-            <mx:htmlText>
-                <![CDATA[If you are unsure what type of file you will need, please feel free to <a href="http://studio.topcoder.com/forums?module=ThreadList&forumID=6">post a question in the forums</a>. The members will be happy to help you. You can also email directassist@topcoder.com.
-
-For your chosen contest type - ### - the most common final file formats are:
-]]>
-           </mx:htmlText>
-        </mx:Text>
-        <mx:VBox width="100%" paddingLeft="10">
-	        <mx:CheckBox id="psdChb" label=".PSD(Adobe Photoshop layered graphic file)"/>
-	        <mx:CheckBox id="aiChb" label=".AI(Adobe Illustrator vetor graphic file)" />
-	        <mx:CheckBox id="epsChb" label=".EPS(Vector graphic file format)" />
+    <mx:VBox paddingLeft="2" width="100%" height="100%">
+    	<mx:VBox width="100%" styleName="boxStyle" height="100%">
+    		
+	    	<mx:VBox width="100%">
+	    		<mx:Label text="Contest Specifications" fontWeight="bold" fontSize="12"/>
+		        <mx:Text width="100%" id="contestSpecf">
+		            <mx:text>
+		                Do you have any requirements, preferences or restrictions regarding the following design elements?
+		            </mx:text>
+		        </mx:Text>
+		        <mx:Spacer height="5"/>
+		        <mx:VBox width="100%" verticalGap="0">
+		            <mx:HBox width="500">
+		                <mx:Label text="Colors:" fontWeight="bold"/>
+		                <mx:Spacer width="344"/>
+		                <mx:LinkButton label="[+ show hint]" click="showColorHint(event)" />
+		            </mx:HBox>
+		            <mx:Text id="colorHint" color="0x888888" width="500" height="0" visible="false">
+		                <mx:text>
+		                </mx:text>
+		            </mx:Text>
+		            <mx:TextArea id="colorInput" width="500" height="50"/>
+		        </mx:VBox>
+		     </mx:VBox>
+	        
 	        <mx:Spacer height="5"/>
-	        <mx:Label text="Other File Formats:" fontWeight="bold"/>
-	        <mx:Text id="otherFileFormats" color="0x888888" width="100%">
-                <mx:text>
-                    Please list any other file formats you may need that is not listed above.
-                </mx:text>
-            </mx:Text>
-            <mx:TextArea id="fileFormatInput" width="480" height="50"/>
-        </mx:VBox>
-        
+	        <mx:VBox width="100%" verticalGap="0" >
+	            <mx:HBox width="500">
+	                <mx:Label text="Fonts:" fontWeight="bold"/>
+	                <mx:Spacer width="347"/>
+	                <mx:LinkButton label="[+ show hint]" click="showFontsHint(event)" />
+	            </mx:HBox>
+	            <mx:Text id="fontsHint" color="0x888888" width="500" height="0" visible="false">
+	                <mx:text>
+	                </mx:text>
+	            </mx:Text>
+	            <mx:TextArea id="fontInput" width="500" height="50"/>
+	        </mx:VBox>
+	        <mx:Spacer height="5"/>
+	        <mx:VBox width="100%" verticalGap="0">
+	            <mx:HBox width="500">
+	                <mx:Label text="Size:" fontWeight="bold"/>
+	                <mx:Spacer width="356"/>
+	                <mx:LinkButton label="[+ show hint]" click="showSizeHint(event)" />
+	            </mx:HBox>
+	            <mx:Text id="sizeHint" color="0x888888" width="500" height="0" visible="false">
+	                <mx:text>
+	                </mx:text>
+	            </mx:Text>
+	            <mx:TextArea id="sizeInput" width="500" height="50"/>
+	        </mx:VBox>
+	        <mx:Spacer height="5"/>
+	        <mx:VBox width="100%" verticalGap="0">
+	            <mx:HBox width="500">
+	                <mx:Label text="Additional Requirements or Restrictions:" fontWeight="bold"/>
+	                <mx:Spacer width="151"/>
+	                <mx:LinkButton label="[+ show hint]" click="showAddReqHint(event)" />
+	            </mx:HBox>
+	            <mx:Text id="addReqHint" color="0x888888" width="500" height="0" visible="false">
+	                <mx:text>
+	                </mx:text>
+	            </mx:Text>
+	            <mx:TextArea id="addReInput" width="500" height="50"/>
+	        </mx:VBox>
+	    </mx:VBox>
+	    <mx:VBox width="100%" styleName="boxStyle" height="100%">
+		    	
+		    <mx:Label text="Final File Formats" fontWeight="bold" fontSize="12"/>
+	        <mx:Text width="100%" id="finalFormats" >
+	            <mx:htmlText>
+	                <![CDATA[If you are unsure what type of file you will need, please feel free to <a href="http://studio.topcoder.com/forums?module=ThreadList&forumID=6">post a question in the forums</a>. The members will be happy to help you. You can also email directassist@topcoder.com.
+	
+	For your chosen contest type - ### - the most common final file formats are:
+	]]>
+	           </mx:htmlText>
+	        </mx:Text>
+	        <mx:VBox width="100%" paddingLeft="10">
+		        <mx:CheckBox id="psdChb" label=".PSD(Adobe Photoshop layered graphic file)"/>
+		        <mx:CheckBox id="aiChb" label=".AI(Adobe Illustrator vetor graphic file)" />
+		        <mx:CheckBox id="epsChb" label=".EPS(Vector graphic file format)" />
+		        <mx:Spacer height="5"/>
+		        <mx:Label text="Other File Formats:" fontWeight="bold"/>
+		        <mx:Text id="otherFileFormats" color="0x888888" width="100%">
+	                <mx:text>
+	                    Please list any other file formats you may need that is not listed above.
+	                </mx:text>
+	            </mx:Text>
+	            <mx:TextArea id="fileFormatInput" width="480" height="50"/>
+	        </mx:VBox>
+         </mx:VBox>
     </mx:VBox>
 </mx:Canvas>

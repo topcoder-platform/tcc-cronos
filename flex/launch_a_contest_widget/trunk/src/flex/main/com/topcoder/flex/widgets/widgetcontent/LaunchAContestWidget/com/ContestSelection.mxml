@@ -31,7 +31,7 @@
 	        }
 	      ]]>
     </mx:Script>
-    <mx:VBox width="100%">
+    <mx:VBox width="100%" styleName="boxStyle">
 	    <mx:Label text="Contest Selection" fontWeight="bold" fontSize="12"/>
 	    <mx:Label text="What Type of Contest do you want to run?" fontWeight="bold"/>
 	    <mx:RadioButtonGroup id="contestType" itemClick="handleSelect(event);" />
