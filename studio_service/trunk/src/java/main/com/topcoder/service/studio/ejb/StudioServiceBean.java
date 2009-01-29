@@ -2483,7 +2483,7 @@ public class StudioServiceBean implements StudioService {
     	logEnter("getSimpleContestData");
 
         try {
-            List<SimpleContestData> result = new ArrayList<SimpleContestData>();
+
             List<SimpleContestData> contests;
             if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
                 logInfo("User is admin.");
@@ -2495,7 +2495,7 @@ public class StudioServiceBean implements StudioService {
             }
             if(contests==null)contests=new ArrayList<SimpleContestData>();
 
-			logExit("getSimpleContestData", result);
+			logExit("getSimpleContestData", contests);
            
 			return contests;
 
@@ -2523,7 +2523,7 @@ public class StudioServiceBean implements StudioService {
     	logEnter("getSimpleProjectContestData");
 
         try {
-            List<SimpleProjectContestData> result = new ArrayList<SimpleProjectContestData>();
+
             List<SimpleProjectContestData> contests;
             
             if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
@@ -2537,7 +2537,7 @@ public class StudioServiceBean implements StudioService {
             
             if(contests==null) contests= new ArrayList<SimpleProjectContestData>();
 
-            logExit("getSimpleProjectContestData", result);
+            logExit("getSimpleProjectContestData", contests);
 			return contests;
 
         } catch (ContestManagementException e) {
@@ -2562,7 +2562,6 @@ public class StudioServiceBean implements StudioService {
     	logEnter("getContestDataOnly");
 
         try {
-            List<SimpleContestData> result = new ArrayList<SimpleContestData>();
             List<SimpleContestData> contests;
             
             if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
@@ -2576,7 +2575,7 @@ public class StudioServiceBean implements StudioService {
             
             if(contests==null) contests= new ArrayList<SimpleContestData>();
 
-            logExit("getContestDataOnly", result);
+            logExit("getContestDataOnly", contests);
             return contests;
 
         } catch (ContestManagementException e) {
