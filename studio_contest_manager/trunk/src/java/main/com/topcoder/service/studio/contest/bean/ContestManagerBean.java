@@ -2600,14 +2600,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             EntityManager em = getEntityManager();
             
             
-            String qstr="select c.contest_id, c.name, c.start_time, c.end_time, r.num_reg, s.num_sub from contest c left outer join "
-            	+"Table(multiset((select count(user_id) as num_reg, contest_id from contest_registration group by contest_id))) r "
-            	+"on r.contest_id = c.contest_id "
-            	+"left outer join "
-            	+"Table(multiset((select count(submitter_id) as num_sub, contest_id from submission group by contest_id))) s "
-            	+"on s.contest_id = c.contest_id "
-            	+"where not c.tc_direct_project_id is null "
-            	+"and c.deleted = 0 ";
+            String qstr="select c.contest_id, c.name as cname, c.start_time,  c.end_time,  " 
+				+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
+				+ " (select count(*) from submission where contest_id = c.contest_id ) as num_sub "
+				+ " from contest c "
+				+ " where c.tc_direct_project_id is not null and c.deleted = 0 ";
 
             Query query = em.createNativeQuery(qstr);
 
@@ -2650,14 +2647,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             EntityManager em = getEntityManager();
             
             
-            String qstr="select c.contest_id, c.name, c.start_time, c.end_time, r.num_reg, s.num_sub from contest c left outer join "
-            	+"Table(multiset((select count(user_id) as num_reg, contest_id from contest_registration group by contest_id))) r "
-            	+"on r.contest_id = c.contest_id "
-            	+"left outer join "
-            	+"Table(multiset((select count(submitter_id) as num_sub, contest_id from submission group by contest_id))) s "
-            	+"on s.contest_id = c.contest_id "
-            	+"where not c.tc_direct_project_id is null "
-            	+"and c.deleted = 0 and c.create_user_id = "+createdUser;
+            String qstr="select c.contest_id, c.name as cname, c.start_time,  c.end_time,  " 
+				+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
+				+ " (select count(*) from submission where contest_id = c.contest_id ) as num_sub "
+				+ " from contest c "
+				+ " where c.tc_direct_project_id is not null and c.deleted = 0 and c.create_user_id = "+createdUser;
 
             Query query = em.createNativeQuery(qstr);
 
@@ -2700,24 +2694,13 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             EntityManager em = getEntityManager();
             
             
-            String qstr="select  cc.contest_id, p.name as pname, cc.cname,  p.project_id,  cc.start_time, cc.end_time, cc.num_reg, cc.num_sub, cc.num_for, cc.sname "
-			            + " from tc_direct_project p "
-                        + " left outer join "
-                        + " Table(multiset(select c.contest_id, c.cname, c.tc_direct_project_id, c.start_time, c.end_time, r.num_reg, s.num_sub, f.num_for, c.sname from "
-                        + " Table (multiset((select c.contest_id, c.name as cname, c.start_time, c.end_time, c.forum_id, cs.name sname, c.tc_direct_project_id "
-                        + " from contest c, contest_detailed_status_lu cs "
-                        + " where not c.tc_direct_project_id is null "
-                        + " and c.deleted = 0 and cs.contest_detailed_status_id = c.contest_detailed_status_id))) c "
-						+ " left outer join "
-                        + " Table(multiset((select count(user_id) as num_reg, contest_id from contest_registration group by contest_id))) r "
-						+ " on r.contest_id = c.contest_id "
-						+ " left outer join "
-						+ " Table(multiset((select count(submitter_id) as num_sub, contest_id from submission group by contest_id))) s "
-						+ " on s.contest_id = c.contest_id "
-						+ " left outer join "
-						+ " table(multiset(select count(*) as num_for, forumid from jivemessage group by forumid))f "
-						+ " on c.forum_id = f.forumid )) cc "
-						+ " on p.project_id = cc.tc_direct_project_id";
+            String qstr="select p.project_id , p.name as pname, c.contest_id,  c.name as cname, "
+					+ " c.start_time, c.end_time,  ds.name as sname, "
+					+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, " 
+					+ " (select count(*) from submission where contest_id = c.contest_id ) as num_sub, "
+					+ " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for "
+					+ " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
+					+ " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id ";
 
             Query query = em.createNativeQuery(qstr);
 
@@ -2730,18 +2713,19 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             	
             	SimpleProjectContestData c=new SimpleProjectContestData();
             	Object [] os=(Object [])list.get(i);
-            	if(os[0]!=null)c.setContestId(Long.parseLong(os[0].toString()));
-            	if(os[1]!=null)c.setPname(os[1].toString());
-            	if(os[2]!=null)c.setCname(os[2].toString());
-            	if(os[3]!=null)c.setProjectId(Long.parseLong(os[3].toString()));
+				if(os[0]!=null)c.setProjectId(Long.parseLong(os[0].toString()));
+				if(os[1]!=null)c.setPname(os[1].toString());
+            	if(os[2]!=null)c.setContestId(Long.parseLong(os[2].toString()));
+            	if(os[3]!=null)c.setCname(os[3].toString());
             	
             	if(os[4]!=null)c.setStartDate(myFmt.parse(os[4].toString()));
             	if(os[5]!=null)c.setEndDate(myFmt.parse(os[5].toString()));
-            	if(os[6]!=null)c.setNum_reg(Integer.parseInt(os[6].toString()));
-            	if(os[7]!=null)c.setNum_sub(Integer.parseInt(os[7].toString()));
+				if(os[6]!=null)c.setSname(os[6].toString());
+            	if(os[7]!=null)c.setNum_reg(Integer.parseInt(os[7].toString()));
+            	if(os[8]!=null)c.setNum_sub(Integer.parseInt(os[8].toString()));
             	
-            	if(os[8]!=null)c.setNum_for(Integer.parseInt(os[8].toString()));
-            	if(os[9]!=null)c.setSname(os[9].toString());
+            	if(os[9]!=null)c.setNum_for(Integer.parseInt(os[9].toString()));
+            	
             	result.add(c);
             	
             }
@@ -2761,29 +2745,20 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<SimpleProjectContestData> getSimpleProjectContestDataForUser(long createdUser) throws ContestManagementException {
         try {
-            logEnter("getAllContestsForMyProject()");
+            logEnter("getSimpleProjectContestDataForUser()");
 
             EntityManager em = getEntityManager();
             
             
-            String qstr="select  cc.contest_id, p.name as pname, cc.cname,  p.project_id,  cc.start_time, cc.end_time, cc.num_reg, cc.num_sub, cc.num_for, cc.sname "
-			            + " from tc_direct_project p "
-                        + " left outer join "
-                        + " Table(multiset(select c.contest_id, c.cname, c.tc_direct_project_id, c.start_time, c.end_time, r.num_reg, s.num_sub, f.num_for, c.sname from "
-                        + " Table (multiset((select c.contest_id, c.name as cname, c.start_time, c.end_time, c.forum_id, cs.name sname, c.tc_direct_project_id "
-                        + " from contest c, contest_detailed_status_lu cs "
-                        + " where not c.tc_direct_project_id is null "
-                        + " and c.deleted = 0 and cs.contest_detailed_status_id = c.contest_detailed_status_id))) c "
-						+ " left outer join "
-                        + " Table(multiset((select count(user_id) as num_reg, contest_id from contest_registration group by contest_id))) r "
-						+ " on r.contest_id = c.contest_id "
-						+ " left outer join "
-						+ " Table(multiset((select count(submitter_id) as num_sub, contest_id from submission group by contest_id))) s "
-						+ " on s.contest_id = c.contest_id "
-						+ " left outer join "
-						+ " table(multiset(select count(*) as num_for, forumid from jivemessage group by forumid))f "
-						+ " on c.forum_id = f.forumid )) cc "
-						+ " on p.project_id = cc.tc_direct_project_id and p.user_id = " + createdUser;
+            String qstr="select p.project_id , p.name as pname, c.contest_id,  c.name as cname, "
+					+ " c.start_time, c.end_time,  ds.name as sname, "
+					+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, " 
+					+ " (select count(*) from submission where contest_id = c.contest_id ) as num_sub, "
+					+ " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for "
+					+ " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
+					+ " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
+					// for now we check user in both projet and contest 
+					+ " and p.user_id = " + createdUser + " and c.create_user_id = " + createdUser;
 
             Query query = em.createNativeQuery(qstr);
 
@@ -2796,18 +2771,18 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             	
             	SimpleProjectContestData c=new SimpleProjectContestData();
             	Object [] os=(Object [])list.get(i);
-            	if(os[0]!=null)c.setContestId(Long.parseLong(os[0].toString()));
-            	if(os[1]!=null)c.setPname(os[1].toString());
-            	if(os[2]!=null)c.setCname(os[2].toString());
-            	if(os[3]!=null)c.setProjectId(Long.parseLong(os[3].toString()));
+            	if(os[0]!=null)c.setProjectId(Long.parseLong(os[0].toString()));
+				if(os[1]!=null)c.setPname(os[1].toString());
+            	if(os[2]!=null)c.setContestId(Long.parseLong(os[2].toString()));
+            	if(os[3]!=null)c.setCname(os[3].toString());
             	
             	if(os[4]!=null)c.setStartDate(myFmt.parse(os[4].toString()));
             	if(os[5]!=null)c.setEndDate(myFmt.parse(os[5].toString()));
-            	if(os[6]!=null)c.setNum_reg(Integer.parseInt(os[6].toString()));
-            	if(os[7]!=null)c.setNum_sub(Integer.parseInt(os[7].toString()));
+            	if(os[6]!=null)c.setSname(os[6].toString());
+            	if(os[7]!=null)c.setNum_reg(Integer.parseInt(os[7].toString()));
+            	if(os[8]!=null)c.setNum_sub(Integer.parseInt(os[8].toString()));
             	
-            	if(os[8]!=null)c.setNum_for(Integer.parseInt(os[8].toString()));
-            	if(os[9]!=null)c.setSname(os[9].toString());
+            	if(os[9]!=null)c.setNum_for(Integer.parseInt(os[9].toString()));
             	result.add(c);
             	
             }
@@ -2819,7 +2794,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         } catch (ParseException e) {
         	throw wrapContestManagementException(e, "There are errors while persisting the entity.");
 		} finally {
-            logExit("getAllContestsForMyProject()");
+            logExit("getSimpleProjectContestDataForUser()");
         }
     }
 
