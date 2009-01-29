@@ -193,9 +193,9 @@
     </mx:Script>
     
 
-    <mx:VBox id="initWdt" width="100%" height="100%">
-        <mx:Label text="Projects" fontWeight="bold" fontSize="12"/>
-        <mx:Text width="100%" >
+    <mx:VBox id="initWdt" width="100%" height="100%" styleName="boxStyle" >
+        <mx:Label text="Projects" styleName="header" />
+        <mx:Text width="100%" styleName="content" >
             <mx:text>
 		A project is a way to organize your contests under one overall header and description. Naming the overall project here and giving a brief description will help you manage your contests later. For example, a logo and new website design can both be placed under a project called "New Website".
             </mx:text>
