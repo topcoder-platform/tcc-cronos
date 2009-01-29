@@ -2757,8 +2757,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					+ " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for "
 					+ " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
 					+ " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
-					// for now we check user in both projet and contest 
-					+ " and p.user_id = " + createdUser + " and c.create_user_id = " + createdUser;
+					+ " and p.user_id = " + createdUser;
 
             Query query = em.createNativeQuery(qstr);
 
