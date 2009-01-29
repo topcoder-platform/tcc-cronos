@@ -188,7 +188,7 @@
 	            	ContestServiceFacadeBean.addHeader(header);
 	
 					ContestServiceFacadeBean.getStatusList();
-	            	ContestServiceFacadeBean.getAllContests();
+	            	ContestServiceFacadeBean.getContestDataOnly();
             	}
             	else {
 					retrieveStatusList.send();
@@ -204,7 +204,7 @@
             
             
             private function compareName(a:Object, b:Object, fields:Array = null):int {
-               return ObjectUtil.stringCompare(a.contestData.name,b.contestData.name,true);
+               return ObjectUtil.stringCompare(a.name,b.name,true);
             }
             private function handleResult(event:ResultEvent=null):void {
                 _contestInfoList = new ArrayCollection();
@@ -226,9 +226,9 @@
                 	{
                 		var contestInfo:Dictionary=new Dictionary();
                 		var item:*=contests[i];
-                		contestInfo.name=item.contestData.name;
-                		contestInfo.id=item.contestData.contestId;
-                		contestInfo.statusId=item.contestData.statusId;
+                		contestInfo.name=item.name;
+                		contestInfo.id=item.contestId;
+                		contestInfo.statusId=item.statusId;
                 		
                 		//trace("Contest id: " + contestInfo.id);
                 		//trace("Contest name: " + contestInfo.name);
@@ -1066,6 +1066,7 @@
             	maximize();
             	var index:int = _contestList.getItemIndex(contestlist_minpage.selectedItem);
             	contestCombo.selectedIndex=index;
+		handleContest(null);
             }
             
             private function openImageInNewWindow(event:MouseEvent):void {
@@ -1080,7 +1081,7 @@
 
 <mx:WebService id="ContestServiceFacadeBean" 
 		wsdl="{contestServiceFacadeWsdl}"> 
-	<mx:operation name="getAllContests" 
+	<mx:operation name="getContestDataOnly" 
 		resultFormat="object" 
 		result="handleResult(event)"
 		fault="Alert.show(event.fault.faultString);"> 
