@@ -2657,7 +2657,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             	+"Table(multiset((select count(submitter_id) as num_sub, contest_id from submission group by contest_id))) s "
             	+"on s.contest_id = c.contest_id "
             	+"where not c.tc_direct_project_id is null "
-            	+"and c.deleted = 0 and c.createdUser = "+createdUser;
+            	+"and c.deleted = 0 and c.create_user_id = "+createdUser;
 
             Query query = em.createNativeQuery(qstr);
 
@@ -2897,7 +2897,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 			EntityManager em = getEntityManager();
 
 			String qstr = "select contest_id, name from contest c where not c.tc_direct_project_id is null "+
-                         " and c.deleted = 0 and c.createdUser = "+createdUser;
+                         " and c.deleted = 0 and  c.create_user_id = "+createdUser;
 
 			Query query = em.createNativeQuery(qstr);
 
