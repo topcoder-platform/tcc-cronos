@@ -271,7 +271,13 @@
                 		sub.id=submissions[i].submissionId;
                 		
                 		// placement in submission data is mapped to rank.
-                		sub.rank=submissions[i].placement;
+                		//sub.rank=submissions[i].placement;
+				 if ( submissions[i].placement > 0 ) { 
+					sub.rank=submissions[i].placement 
+				 } 
+				 else {	
+					sub.rank = ""
+				}
                 		sub.thumbnail=IMAGE_ADDRESS+sub.id+"&sbt=thumb";
                 		sub.fullsizepreview=IMAGE_ADDRESS+sub.id+"&sbt=full";
                 		sub.submissionContent=submissions[i].submissionContent;
@@ -329,7 +335,7 @@
             private function updateRankList(item:Object):void {
                 if (item.rank && (item.rank is Number || item.rank.length > 0 )) {
                     var index:int = parseInt(item.rank) - 1;
-                    if (index > 4) {
+                    if (index > 4 || index < 0) {
                     	// placement values can be more than 5 also.
                     	return;
                     }
