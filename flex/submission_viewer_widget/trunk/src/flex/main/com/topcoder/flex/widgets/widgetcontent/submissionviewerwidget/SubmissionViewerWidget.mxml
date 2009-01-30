@@ -1254,9 +1254,10 @@
 	                    </mx:VBox>
 	                </mx:HBox>
 	                        <mx:HBox width="100%" 
-					horizontalAlign="center"
-					verticalScrollPolicy="off" 
-					horizontalScrollPolicy="off">
+					               horizontalAlign="center"
+					               verticalScrollPolicy="off" 
+					               horizontalScrollPolicy="off">
+					            <!--<mx:Spacer width="260" />-->
 		                        <mx:ToggleButtonBar horizontalAlign="center" horizontalGap="20"  
 		                                id="rankBar" selectedIndex="-1"
 		                                buttonWidth="23" 
@@ -1268,8 +1269,12 @@
 		                            <mx:String>4</mx:String>
 		                            <mx:String>5</mx:String>
 		                        </mx:ToggleButtonBar>
-		                        <mx:Spacer width="100%" />
-		                        <mx:CheckBox id="noWinner" label="I can not choose a winner." styleName="CheckBoxStyle" />
+		                        <!--<mx:Spacer width="100%" />-->
+	                        </mx:HBox>
+	                        <mx:HBox width="100%" horizontalAlign="right"
+                                   verticalScrollPolicy="off" 
+                                   horizontalScrollPolicy="off">
+	                               <mx:CheckBox id="noWinner" label="I can not choose a winner." styleName="CheckBoxStyle" />
 	                        </mx:HBox>
 	                <mx:HBox id="purchase_panel" 
 	                	width="100%" 
