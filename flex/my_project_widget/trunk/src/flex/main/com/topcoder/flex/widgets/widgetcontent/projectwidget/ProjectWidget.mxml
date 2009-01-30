@@ -135,7 +135,7 @@
         private function loadXML(e:Event):void
         {
             result = new XML(e.target.data);
-            prjList.dataProvider=result;
+            //prjList.dataProvider=result;
         }
 	
 
@@ -151,21 +151,14 @@
         private function setProject(e:ResultEvent): void
         {
         	if(e!=null && e.result!=null && e.result is ArrayCollection){
-        		prjArray=e.result as ArrayCollection;
-        		if(!prjArray.sort)
+        		var prjArray:ArrayCollection=e.result as ArrayCollection;
+        		projects=new ArrayCollection();
+        		for(var prjIdx=0;prjIdx<prjArray.length;)
         		{
-        			var sort:Sort = new Sort();
-				sort.compareFunction = comparePName;
-				prjArray.sort = sort;
-        		}
-        		prjArray.refresh();
-        		prjIdx=0;
-        		for(prjIdx=0;prjIdx<prjArray.length;)
-        		{
-        			pname=prjArray[prjIdx].pname;
-        			pdesc=prjArray[prjIdx].description;
+        			var pname:String=prjArray[prjIdx].pname;
+        			var pdesc:String=prjArray[prjIdx].description;
         			projectId=prjArray[prjIdx].projectId;
-        			contests=new ArrayCollection();
+        			var contests:ArrayCollection=new ArrayCollection();
         			for(var i:int=prjIdx;i<prjArray.length;i++)
         			{
         				if(projectId!=prjArray[i].projectId)
@@ -178,6 +171,7 @@
 						prjArray[i].endDate,prjArray[i].num_reg,           prjArray[i].num_sub,
 						prjArray[i].num_for,"-1",
 						prjArray[i].sname);
+						c.date=prjArray[i].endDate;
 						contests.addItem(c);
 					}
         				
@@ -185,26 +179,29 @@
         			if(!contests.sort)
         			{
         				var sort:Sort = new Sort();
-						sort.compareFunction = compareName;
+						sort.compareFunction = compareDate;
 						contests.sort = sort;
         			}
         			contests.refresh();
-        			var list:ProjectList=new ProjectList();
-					prjList.addChild(list);
-					list.setStyle("verticalScrollPolicy","auto");
-					list.dataProvider=new Project(pname,pdesc,"",contests);
+        			//var list:ProjectList=new ProjectList();
+				///	prjList.addChild(list);
+					//list.setStyle("verticalScrollPolicy","auto");
+					//list.dataProvider=new Project(pname,pdesc,"",contests);
         			prjIdx=i;
-        			//ContestServiceFacadeBean.clearHeaders();
-        			//ContestServiceFacadeBean.addHeader(getHeader(username,password));
-        			//ContestServiceFacadeBean.getContestsForProject.send();
+        			projects.addItem(new Project(pname,pdesc,"",contests));
         		}
+        			if(!projects.sort)
+        			{
+        				var sort:Sort = new Sort();
+						sort.compareFunction = compareDate;
+						projects.sort = sort;
+        			}
+        			projects.refresh();
+        		prjList.dataProvider= getSubArray(projects,10);
         	}
         }
-private function compareName(a:Object, b:Object, fields:Array = null):int {
-             return ObjectUtil.stringCompare(a.name, b.name, true);
-            }
-	private function comparePName(a:Object, b:Object, fields:Array = null):int {
-             return ObjectUtil.stringCompare(a.pname, b.pname, true);
+private function compareDate(a:Object, b:Object, fields:Array = null):int {
+             return ObjectUtil.dateCompare(b.date,a.date);
             }
 
 /*

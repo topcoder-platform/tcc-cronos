@@ -8,7 +8,7 @@
 		import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Project;
 		import mx.collections.ArrayCollection;
 
-		private var _dataProvider:XML;
+		private var _dataProvider:ArrayCollection;
 		private var _framework:IWidgetFramework;
 		
 		/**
@@ -31,7 +31,9 @@
 
 		// set of data provider
 		// this class accept an xml type dataprovider
-		public function set dataProvider(xml:XML):void{
+		public function set dataProvider(arrCol:ArrayCollection):void{
+			_dataProvider=arrCol;
+			/*
 			var arrCol:ArrayCollection=new ArrayCollection();
 	        var xmlData:XMLList=new XMLList(xml);
               for each( var child:XML in xml.project ){
@@ -58,16 +60,17 @@
 				    pr.contests=skArray;
 					arrCol.addItem(pr)
 	              }
+	              */
 			for (var i:int=0; i<arrCol.length;i++) {
 				var prj:Project=arrCol.getItemAt(i) as Project;
 				var prjList:ProjectList=new ProjectList();
-				this.addChild(prjList);
+			    addChild(prjList);
 				prjList.setStyle("verticalScrollPolicy","off");
 				prjList.dataProvider=prj;
 			}
 
 		}
-		public function get dataProvider():XML{
+		public function get dataProvider():ArrayCollection{
 			return _dataProvider;
 		}
 		public function collapseAll ():void {

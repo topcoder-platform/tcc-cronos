@@ -3,14 +3,14 @@
  */
 package com.topcoder.flex.widgets.widgetcontent.projectwidget {
     import com.topcoder.flex.widgets.model.IWidget;
+    import com.topcoder.flex.widgets.model.IWidgetContainer;
+    import com.topcoder.flex.widgets.widgetcontent.projectwidget.com.ProjectsContainer;
     
     import com.topcoder.flex.model.IWidgetFramework;
-    import com.topcoder.flex.widgets.model.IWidgetContainer;
+    import flash.utils.Dictionary;
+    
     import mx.collections.ArrayCollection;
     import mx.containers.Panel;
-    import mx.controls.DataGrid;
-    
-    import flash.utils.Dictionary;
 
     /**
      * <p>
@@ -44,6 +44,12 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
          * The data for the widget.
          */
         [Bindable] private var _result:XML = null;
+        
+        
+        
+        private var _projects:ArrayCollection;
+        
+        private var _prjList:ProjectsContainer;
         
         
          /**
@@ -124,14 +130,14 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
          * This action will restpre this widget (for example from a menu bar).
          */
         public function restore():void {
-            
+            prjList.dataProvider= getSubArray(projects,10);
         }
 
         /**
          * This action will maximize this widget.
          */
         public function maximize():void {
-            
+        	prjList.dataProvider=projects;
         }
 
         /**
@@ -229,6 +235,30 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
          */
         public function get widgetFramework():IWidgetFramework {
         	return _framework;
+        }
+        public function get projects():ArrayCollection{
+        	return _projects;
+        }
+        public function get prjList():ProjectsContainer{
+        	return _prjList;
+        }
+        public function set projects(p:ArrayCollection):void
+        {
+        	_projects=p;
+        }
+        public function set prjList(p:ProjectsContainer):void
+        {
+        	_prjList=p;
+        }
+        
+        public function getSubArray(a:ArrayCollection, n:int):ArrayCollection
+        {
+        	var ret:ArrayCollection=new ArrayCollection();
+        	for(var i:int=0;i<a.length && i<n;i++)
+        	{
+        		ret.addItem(a.getItemAt(i));	
+        	}
+        	return ret;
         }
         
         /**

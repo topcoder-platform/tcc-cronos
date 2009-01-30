@@ -11,6 +11,8 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.qs
 		public var forumPosts:String;
 		public var forumId:String
 		public var status:String;
+		
+		public var date:Date;
 
 
 		public function Contest(_id:String,_name:String,_stDt:String,_eDt:String,_regs:String,
