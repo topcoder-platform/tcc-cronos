@@ -819,7 +819,7 @@ public class StudioServiceBean implements StudioService {
             List<Contest> contests = contestManager.getContestsForProject(tcDirectProjectId);
             List<ContestData> result = convertContests(contests);
 
-            logExit("getContestsForProject", result);
+            logExit("getContestsForProject", result.size());
             return result;
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while retrieving contest.", e);
@@ -1086,7 +1086,7 @@ public class StudioServiceBean implements StudioService {
                 result.remove(submissionData);
             }
 
-            logExit("retrieveSubmissionsForContest", result);
+            logExit("retrieveSubmissionsForContest", result.size());
 
             return result;
         } catch (SubmissionManagementException e) {
@@ -1124,7 +1124,7 @@ public class StudioServiceBean implements StudioService {
 
         try {
             List<SubmissionData> result = convertSubmissions(submissionManager.getAllSubmissionsByMember(userId));
-            logExit("retrieveAllSubmissionsByMember", result);
+            logExit("retrieveAllSubmissionsByMember", result.size());
             return result;
         } catch (SubmissionManagementException e) {
             handlePersistenceError("SubmissionManager reports error while fetching submissions by member.", e);
@@ -1236,7 +1236,7 @@ public class StudioServiceBean implements StudioService {
                 result.add(data);
             }
 
-            logExit("getStatusList", result);
+            logExit("getStatusList", result.size());
             return result;
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while retrieving contest statuses.", e);
@@ -2459,7 +2459,7 @@ public class StudioServiceBean implements StudioService {
                 }
             }
 
-            logExit("getAllContests", result);
+            logExit("getAllContests", result.size());
             return result;
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while retrieving contest.", e);
@@ -2495,7 +2495,7 @@ public class StudioServiceBean implements StudioService {
             }
             if(contests==null)contests=new ArrayList<SimpleContestData>();
 
-			logExit("getSimpleContestData", contests);
+			logExit("getSimpleContestData", contests.size());
            
 			return contests;
 
@@ -2537,7 +2537,7 @@ public class StudioServiceBean implements StudioService {
             
             if(contests==null) contests= new ArrayList<SimpleProjectContestData>();
 
-            logExit("getSimpleProjectContestData", contests);
+            logExit("getSimpleProjectContestData", contests.size());
 			return contests;
 
         } catch (ContestManagementException e) {
@@ -2575,7 +2575,7 @@ public class StudioServiceBean implements StudioService {
             
             if(contests==null) contests= new ArrayList<SimpleContestData>();
 
-            logExit("getContestDataOnly", contests);
+            logExit("getContestDataOnly", contests.size());
             return contests;
 
         } catch (ContestManagementException e) {
@@ -2612,7 +2612,7 @@ public class StudioServiceBean implements StudioService {
                 result.add(convertContest(contest));
             }
 
-            logExit("searchContests", result);
+            logExit("searchContests", result.size());
             return result;
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while retrieving contest.", e);
@@ -2643,7 +2643,7 @@ public class StudioServiceBean implements StudioService {
                 }
             }
 
-            logExit("getContestsForClient", result);
+            logExit("getContestsForClient", result.size());
             return result;
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while retrieving contest.", e);
@@ -2723,7 +2723,7 @@ public class StudioServiceBean implements StudioService {
                 result.add(data);
             }
 
-            logExit("getAllContestTypes", result);
+            logExit("getAllContestTypes", result.size());
             return result;
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManagement reports error while retrieving ContestTypes.", e);
@@ -3248,7 +3248,7 @@ public class StudioServiceBean implements StudioService {
                 result.add(data);
             }
 
-            logExit("getAllMediums", result);
+            logExit("getAllMediums", result.size());
             return result;
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManagement reports error while retrieving Mediums.", e);
@@ -3534,7 +3534,7 @@ public class StudioServiceBean implements StudioService {
                 result.add(data);
             }
 
-            logExit("getChangeHistory", result);
+            logExit("getChangeHistory", result.size());
             return result;
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManagement reports error while retrieving ChangeHistories.", e);
@@ -3567,7 +3567,7 @@ public class StudioServiceBean implements StudioService {
                 }
             }
 
-            logExit("getLatestChanges", result);
+            logExit("getLatestChanges", result.size());
             return result;
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManagement reports error while retrieving latest ChangeHistories.", e);
@@ -3691,7 +3691,7 @@ public class StudioServiceBean implements StudioService {
                 }
             }
 
-            logExit("getAllContestHeaders", result);
+            logExit("getAllContestHeaders", result.size());
             return result;
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while retrieving contest.", e);
