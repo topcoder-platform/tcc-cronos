@@ -2819,8 +2819,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
 			EntityManager em = getEntityManager();
 
-			String qstr = "select contest_id, name, contest_detailed_status_id from contest c where not c.tc_direct_project_id is null "+
-                         " and c.deleted = 0  ";
+			String qstr = "select contest_id, name, contest_detailed_status_id, "
+					+ "(select contest_detailed_status_desc from contest_detailed_status_lu ds " +
+							"where ds.contest_detailed_status_id =c.contest_detailed_status_id) as sname from contest c "
+					+ "where not c.tc_direct_project_id is null and c.deleted = 0   ";
 
 			Query query = em.createNativeQuery(qstr);
 
@@ -2838,6 +2840,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					c.setName(os[1].toString());
 				if (os[2] != null)
 					c.setStatusId(Long.parseLong(os[2].toString()));
+				if (os[3] != null)
+					c.setSname(os[1].toString());
 				result.add(c);
 
 			}
@@ -2873,8 +2877,11 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
 			EntityManager em = getEntityManager();
 
-			String qstr = "select contest_id, name, contest_detailed_status_id  from contest c where not c.tc_direct_project_id is null "+
-                         " and c.deleted = 0 and  c.create_user_id = "+createdUser;
+			String qstr = "select contest_id, name, contest_detailed_status_id, "
+				+ "(select contest_detailed_status_desc from contest_detailed_status_lu ds " +
+				"where ds.contest_detailed_status_id =c.contest_detailed_status_id) as sname from contest c "
+		+ "where not c.tc_direct_project_id is null and c.deleted = 0   and  c.create_user_id = "
+					+ createdUser;
 
 			Query query = em.createNativeQuery(qstr);
 
@@ -2892,6 +2899,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					c.setName(os[1].toString());
 				if (os[2] != null)
 					c.setStatusId(Long.parseLong(os[2].toString()));
+				if (os[3] != null)
+					c.setSname(os[1].toString());
 				result.add(c);
 
 			}

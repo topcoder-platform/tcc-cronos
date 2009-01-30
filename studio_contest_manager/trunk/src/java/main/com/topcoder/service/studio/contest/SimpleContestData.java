@@ -54,8 +54,15 @@ public class SimpleContestData {
 
 	/**
      * Represents the status id.
-     */
+	 */
     private long statusId;
+
+    /**
+     * Represents the status name.
+     */
+    private String sname;
+    
+    
     
     /**
      * Default constructor.
@@ -64,6 +71,24 @@ public class SimpleContestData {
         // empty
     }
     
+    /**
+     * Returns the status name.
+     *
+     * @return the status name.
+     */
+	public String getSname() {
+		return sname;
+	}
+
+	 /**
+     * Updates the sname with the specified value.
+     *
+     * @param sname
+     *            the status name to set.
+     */
+	public void setSname(String sname) {
+		this.sname = sname;
+	}
     /**
      * Returns the contestId.
      *
