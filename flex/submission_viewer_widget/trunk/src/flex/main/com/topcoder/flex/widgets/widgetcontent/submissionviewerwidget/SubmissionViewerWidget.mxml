@@ -7,8 +7,9 @@
     height="100%" 
     headerHeight="0"
     backgroundColor="#cfcfcf"
-    
-    >
+    layout="vertical"
+    horizontalAlign="left"
+    styleName="panel">
 
     <mx:Script>
         <![CDATA[
@@ -103,19 +104,6 @@
             [Bindable]
             private var _downloadList:ArrayCollection = new ArrayCollection();
             private function init():void {
-            	_maximumHeight=this.parent.height;
-				_maximumWidth=this.parent.width;
-				
-				if (_maximumWidth < 1024) {
-					_maximumWidth = 1024;
-				}
-				if (_maximumHeight < 597) {
-					_maximumHeight = 597;
-				}
-						
-				_minimumHeight=570;
-            	_minimumWidth=370;		
-            	
             	if (_isLocalTesting) {
             		Security.allowDomain("*");
 					Security.allowInsecureDomain("*");
@@ -123,16 +111,8 @@
             	}
             	else {
 	                getDataService();
+	                //initComponent();
             	}
-            	
-            	trace("Parent maximum height: " + this.parent.height);
-            	trace("Parent maximum width: " + this.parent.width);
-				
-            	trace("Parent's parent maximum height: " + this.parent.parent.height);
-            	trace("Parent's parent maximum width: " + this.parent.parent.width);
-            	
-            	_mainPageMaximumWidth=main.width;
-            	_mainPageMaximumHeight=main.height;
             	
             	restore();
             }
@@ -289,7 +269,9 @@
                 		var sub:Dictionary=new Dictionary();
                 		
                 		sub.id=submissions[i].submissionId;
-                		sub.rank=submissions[i].rank;
+                		
+                		// placement in submission data is mapped to rank.
+                		sub.rank=submissions[i].placement;
                 		sub.thumbnail=IMAGE_ADDRESS+sub.id+"&sbt=thumb";
                 		sub.fullsizepreview=IMAGE_ADDRESS+sub.id+"&sbt=full";
                 		sub.submissionContent=submissions[i].submissionContent;
@@ -311,11 +293,10 @@
                 	}
                 }
                 
-                setSubmissionForMin();
-                
                 // if there are no submissions then show no-submision screen.
                 if (_submissionList.length == 0) {
                 	contestViewerCenterPanel.selectedChild=noSubmissionScreen;
+                	min_thumbnails_stack.selectedChild=min_no_thumbnails;
                 	thumbnailPanel.visible=false;
                 }
                 else {
@@ -323,6 +304,13 @@
                 	thumbnailPanel.visible=true;
                 	thumbnailPanel.selectedChild=thumbnailPanel_enabled;
                 	
+                	min_thumbnails_stack.selectedChild=min_thumbnails;
+                	
+                	currentIndexMinPage = 0;
+                	setSubmissionForMin();
+                	list_minpage.selectedIndex = 0;
+                	
+                	currentIndex = 0;
                 	setSubmission();
                 	list.selectedIndex = 0;
                 	updatePurchase();
@@ -341,6 +329,10 @@
             private function updateRankList(item:Object):void {
                 if (item.rank && (item.rank is Number || item.rank.length > 0 )) {
                     var index:int = parseInt(item.rank) - 1;
+                    if (index > 4) {
+                    	// placement values can be more than 5 also.
+                    	return;
+                    }
                     
                     // get if there is already an object with the given rank.
                     var obj:Object = _rankList.getItemAt(index);
@@ -506,28 +498,33 @@
             private var currentIndexMinPage:int = 0;
             
             private function setSubmissionForMin():void {
-            	trace("Setting active submissions for min page: " + activeSubmission.length);
-                activeSubmissionForMin = new ArrayCollection();
+            	if (!_submissionList) {
+            		return;
+            	}
+            	
+            	trace("Setting active submissions for min page: " + activeSubmission.length + "," + _submissionList.length);
+            	activeSubmissionForMin = new ArrayCollection();
+            	
                 //trace("Clean the active submission.");
                 for (var i:int = currentIndexMinPage; i < 4 + currentIndexMinPage; i++) {
                     if (i * 2 < _submissionList.length) {
                         var item:* = _submissionList.getItemAt(i * 2);
-                        //trace("Get item at " + (i * 2).toString() + " with rank " + item.rank);
-                        activeSubmissionForMin.addItem(_submissionList.getItemAt(i * 2));
+                    	trace("Get item at " + (i * 2).toString() + " with rank " + item.rank);
+                    	activeSubmissionForMin.addItem(_submissionList.getItemAt(i * 2));
                     } else {
                         break;
                     }
                     
                     if (i * 2 + 1 < _submissionList.length) {
-                        //var item:* = _submissionList.getItemAt(i * 2 + 1);
-                        //trace("Get item at " + (i * 2 + 1).toString() + " with rank " + item.rank);
-                        activeSubmissionForMin.addItem(_submissionList.getItemAt(i * 2 + 1));
+                        var item:* = _submissionList.getItemAt(i * 2 + 1);
+                    	trace("Get item at " + (i * 2 + 1).toString() + " with rank " + item.rank);
+                    	activeSubmissionForMin.addItem(_submissionList.getItemAt(i * 2 + 1));
                     } else {
                         break;
                     }
                 }
                 
-                if (!list_minpage.dataProvider) {
+                if (list_minpage && !list_minpage.dataProvider && activeSubmissionForMin) {
                 	list_minpage.dataProvider = activeSubmissionForMin;
                 }
                 
@@ -588,7 +585,7 @@
             }
             
             private function hideShowUpDownArrowMinPage():void {
-            	if (activeSubmissionForMin && activeSubmissionForMin.length > 0) {
+            	if (activeSubmissionForMin && activeSubmissionForMin.length > 0 && _submissionList && _submissionList.length > 0) {
                 	min_up.visible = (activeSubmissionForMin[0].id != _submissionList.getItemAt(0).id);
                 	min_down.visible = (activeSubmissionForMin[activeSubmissionForMin.length - 1].id != _submissionList.getItemAt(_submissionList.length - 1).id);
              	}              
@@ -716,13 +713,13 @@
             	contestRankingErrorLbl.visible=false;
             	
             	var isContestChanged:Boolean = true;
-                 if (main.height > 1 && contestCombo && contestCombo.selectedItem) {
+                 if (main.visible && contestCombo && contestCombo.selectedItem) {
                  	if (_selectedContestId && _selectedContestId == contestCombo.selectedItem.id) {
                  		isContestChanged = false;
                  	}
                  	
                 	_selectedContestId=contestCombo.selectedItem.id;
-                	trace("Handling contest: " + _selectedContestId);
+                	trace("Handling normal page contest: " + _selectedContestId);
                 	
                 	var statusId:int = _contestInfoDictionary[_selectedContestId].statusId;
                 	_selectedContestStatusId = statusId;
@@ -764,7 +761,7 @@
 	                	}
                 	}
                  }
-                 else if(main.height<1  && contestlist_minpage && contestlist_minpage.selectedItem){
+                 else if(!main.visible  && contestlist_minpage && contestlist_minpage.selectedItem){
                  	if (_selectedContestId && _selectedContestId == contestlist_minpage.selectedItem.id) {
                  		isContestChanged = false;
                  	}
@@ -784,6 +781,9 @@
 	                 else {
 						retrieveSubService.send();
 	                 }
+                 }
+                 else {
+                 	handleSelect();
                  }
             }
             
@@ -1058,15 +1058,23 @@
                 } 
             }
             
-            private function maximizeScreen() {
+            private function maximizeScreen():void {
             	trace("Contest item: " + contestlist_minpage.selectedItem); 
             	trace("Contest index: " + contestlist_minpage.selectedIndex);
             	trace("Selected submission: " + list_minpage.selectedItem); 
             	trace("Selected submission index: " + list_minpage.selectedIndex);
-            	maximize();
+				
+				if (this.container) {
+            		this.container.startMaximize();
+    			}
+ 				else {
+ 					maximize();
+ 				}
+            	
             	var index:int = _contestList.getItemIndex(contestlist_minpage.selectedItem);
+            	trace("To be selected Index: " + index);
             	contestCombo.selectedIndex=index;
-		handleContest(null);
+            	handleContest(null);
             }
             
             private function openImageInNewWindow(event:MouseEvent):void {
@@ -1158,6 +1166,7 @@
 		                <mx:Button id="up" styleName="up" click="goUp()" />
 		                <mx:TileList id="list" rowCount="4" width="100%" columnCount="2"
 		                        selectionDuration="0"
+		                        rowHeight="80"
 		                        dataProvider="{activeSubmission}" 
 		                        itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer" itemsChangeEffect="{myDTLE}"
 		                        verticalScrollPolicy="off" 
@@ -1499,23 +1508,32 @@
         <mx:Text text="{_submissionList.length}" id="SubNum" />
     </mx:HBox>
     
-    <mx:VBox horizontalAlign="center" width="100%">
+	<mx:VBox horizontalAlign="center" width="100%">
 	    <mx:Button id="min_up" styleName="up" click="goUpMinPage()" visible="false"/>
-	    <mx:VBox id="tb" width="100%" >
-	        <mx:TileList id="list_minpage" rowCount="4" 
-	        	width="100%" 
-	        	columnCount="2"
-		        selectionDuration="0"
-		        dataProvider="{activeSubmissionForMin}" 
-		        itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer" 
-		        itemsChangeEffect="{myDTLE}"
-		        verticalScrollPolicy="off" 
-		        horizontalScrollPolicy="off" 
-		        borderStyle="none"
-		        click="maximizeScreen()" 
-		        allowMultipleSelection="false" 
-		        allowDragSelection="false"/>
-		</mx:VBox>
+	    <mx:ViewStack id="min_thumbnails_stack" width="100%" height="100%">
+	    	<mx:VBox id="min_thumbnails" width="100%" horizontalAlign="center" height="100%">
+		        <mx:TileList id="list_minpage" rowCount="4" 
+		        	width="100%" 
+		        	height="100%"
+		        	columnCount="2"
+		        	rowHeight="80"
+			        selectionDuration="0"
+			        dataProvider="{activeSubmissionForMin}" 
+			        itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer" 
+			        itemsChangeEffect="{myDTLE}"
+			        verticalScrollPolicy="off" 
+			        horizontalScrollPolicy="off" 
+			        borderStyle="none"
+			        doubleClickEnabled="true"
+			        doubleClick="maximizeScreen()" 
+			        allowMultipleSelection="false" 
+			        allowDragSelection="false"/>
+			</mx:VBox>
+			<mx:VBox id="min_no_thumbnails">
+					<mx:Label fontFamily="Arial"  text="No submissions for this contest."
+	                fontWeight="bold" fontSize="16" width="100%" />
+			</mx:VBox>
+		</mx:ViewStack>
 		<mx:Button id="min_down" styleName="down" click="goDownMinPage()" visible="false"/>
 	</mx:VBox>
 </mx:VBox>

@@ -11,6 +11,8 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
     import mx.containers.Panel;
     import mx.containers.VBox;
     import mx.containers.ViewStack;
+    import flash.utils.Dictionary;
+	import mx.controls.Alert;
 
     /**
      * <p>
@@ -42,6 +44,9 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         
         public var _maximumHeight:Number;
         public var _maximumWidth:Number;
+        
+        public var _maximumHeightParent:Number;
+        public var _maximumWidthParent:Number;
         
         public var _mainPageMaximumHeight:Number;
         public var _mainPageMaximumWidth:Number;
@@ -175,28 +180,21 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          */
         public function restore():void {
             main.visible=false;
+            main.includeInLayout=false;
+            
+            minPage.includeInLayout=true;
             minPage.visible=true;
-            main.height=0;
-            main.width=0;
-            
-            minPage.width=_minPageWidth;
-            minPage.height=_minPageHeight;
-            
-            parent.width=_minimumWidth;
         }
 
         /**
          * This action will maximize this widget.
          */
         public function maximize():void {
-            main.visible=true;
-            minPage.visible=false;
-            main.height=_mainPageMaximumHeight;
-            main.width=_mainPageMaximumWidth;
+        	main.visible=true;
+            main.includeInLayout=true;
             
-            minPage.width=0;
-            minPage.height=0;
-            parent.width=_maximumWidth;
+            minPage.includeInLayout=false;
+            minPage.visible=false;
         }
 
         /**
