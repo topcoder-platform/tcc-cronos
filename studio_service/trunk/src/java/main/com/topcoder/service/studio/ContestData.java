@@ -31,7 +31,7 @@ import java.util.List;
         "launchDateAndTime", "winnerAnnoucementDeadline", "durationInHours", "documentationUploads", "contestPayloads",
         "shortSummary", "contestDescriptionAndRequirements", "requiredOrRestrictedColors", "requiredOrRestrictedFonts",
         "sizeRequirements", "otherRequirementsOrRestrictions", "creatorUserId", "finalFileFormat", "otherFileFormats",
-        "statusId", "submissionCount", "contestTypeId", "contestChannelId", "eligibility", "notesOnWinnerSelection",
+        "statusId","detailedStatusId", "submissionCount", "contestTypeId", "contestChannelId", "eligibility", "notesOnWinnerSelection",
         "prizeDescription", "forumPostCount", "forumId", "media", "drPoints", "contestAdministrationFee", "launchImmediately",
 		"requiresPreviewImage", "requiresPreviewFile", "maximumSubmissions", "numberOfRegistrants"})
 public class ContestData implements Serializable {
@@ -373,6 +373,11 @@ public class ContestData implements Serializable {
      * Represents the status id.
      */
     private long statusId;
+    
+    /**
+     * Represents the detailed status id.
+     */
+    private long detailedStatusId;
 
     /**
      * Represents number of registrants.
@@ -880,6 +885,25 @@ public class ContestData implements Serializable {
      */
     public void setStatusId(long statusId) {
         this.statusId = statusId;
+    }
+    
+    /**
+     * Returns detailed status id.
+     * 
+     * @return the detailedstatusId
+     */
+    public long getDetailedStatusId() {
+        return detailedStatusId;
+    }
+
+    /**
+     * Sets detailed status id.
+     * 
+     * @param statusId
+     *            the detailedstatusId to set
+     */
+    public void setDetailedStatusId(long statusId) {
+        this.detailedStatusId = statusId;
     }
 
     /**

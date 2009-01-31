@@ -1408,13 +1408,22 @@ public class StudioServiceBean implements StudioService {
         result.setName(data.getName());
         result.setProjectId(data.getProjectId());
         result.setWinnerAnnoucementDeadline(getDate(data.getWinnerAnnoucementDeadline()));
-
+/*
         logInfo("ContestData.status: " + data.getStatusId());
         ContestStatus contestStatus = contestManager.getContestStatus(data.getStatusId());
         logInfo(MessageFormat.format("Retrieved contest status: desc:[{0}] name:[{1}] id:[{2}]", contestStatus
                 .getDescription(), contestStatus.getName(), contestStatus.getContestStatusId()));
 
         result.setStatus(contestStatus);
+        */
+        logInfo("ContestData.status: " + data.getDetailedStatusId());
+        ContestStatus contestStatus = contestManager.getContestStatus(data.getDetailedStatusId());
+         logInfo(MessageFormat.format("Retrieved contest status: desc:[{0}] name:[{1}] id:[{2}]", contestStatus
+                .getDescription(), contestStatus.getName(), contestStatus.getContestStatusId()));
+
+        result.setStatus(contestStatus);
+        result.setStatusId(data.getStatusId());
+        
         result.setTcDirectProjectId(data.getTcDirectProjectId());
         result.setContestType(getContestType(data.getContestTypeId()));
         result.setContestChannel(contestManager.getContestChannel(data.getContestChannelId()));
@@ -1508,7 +1517,9 @@ public class StudioServiceBean implements StudioService {
         contestData.setName(contest.getName());
         contestData.setProjectId(unbox(contest.getProjectId()));
         contestData.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(contest.getWinnerAnnoucementDeadline()));
-        contestData.setStatusId(contest.getStatus().getContestStatusId());
+       // contestData.setStatusId(contest.getStatus().getContestStatusId());
+        contestData.setDetailedStatusId(contest.getStatus().getContestStatusId());
+        contestData.setStatusId(contest.getStatusId());
         contestData.setNumberOfRegistrants(contest.getContestRegistrations().size());
         contestData.setLaunchImmediately(contest.isLaunchImmediately());
 
