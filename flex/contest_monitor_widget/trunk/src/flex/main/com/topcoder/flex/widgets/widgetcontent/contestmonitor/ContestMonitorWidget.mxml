@@ -144,8 +144,8 @@
             if(endTime.getTime() - currentTime.getTime() <= 0)
                 event.target.stop();
         }
-         private function compareName(a:Object, b:Object, fields:Array = null):int {
-               return ObjectUtil.stringCompare(a.name,b.name,true);
+         private function compareDate(a:Object, b:Object, fields:Array = null):int {
+               return ObjectUtil.dateCompare(b.endDate,a.endDate);
             }
         private function setContests(e:ResultEvent): void
         {
@@ -155,7 +155,7 @@
         		if(!contestList.sort)
         		{
         			var sort:Sort = new Sort();   
-	                sort.compareFunction = compareName;
+	                sort.compareFunction = compareDate;
 	                contestList.sort = sort;
         		}
         		contestList.refresh();
