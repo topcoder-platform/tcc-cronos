@@ -31,6 +31,10 @@
 		import mx.utils.ObjectUtil;
 		import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
             
+            import mx.collections.SortField;
+            import mx.collections.Sort;           
+    	import mx.utils.ObjectUtil;
+            
             [Bindable]
             private var contestsData:ArrayCollection = new ArrayCollection(
                 [ {label:"Please select an existing project", data:-1,desc:""}]);
@@ -68,6 +72,7 @@
             		mainWidget.tcDirectProjectId=e.result._return.projectId.toString();
             		createContestAndContinue(e.result._return.projectId);
             	}
+            	/*
             	mainWidget._ws.getAllContestHeaders(new GetAllContestHeaders());
             	
                 selectContests.dataProvider = contestsData;
@@ -76,7 +81,7 @@
                 this.selectContests.selectedIndex = 0;
                 this.introInput.text = "";
                 this.percentHeight = 100;
-                this.percentWidth = 100;
+                this.percentWidth = 100;*/
             }
             
             private function compareName(a:Object, b:Object, fields:Array = null):int {
