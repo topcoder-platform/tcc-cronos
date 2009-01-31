@@ -1582,6 +1582,54 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
 		/**
 		 * Performs the low level call to the server for the operation
 		 * It passes along the headers and the operation arguments
+		 * @param getSimpleContestData
+		 * @return Asynchronous token
+		 */
+		public function getSimpleContestData(getSimpleContestData:GetSimpleContestData):AsyncToken
+		{
+			var headerArray:Array = new Array();
+            var out:Object = new Object();
+            out["getSimpleContestData"] = getSimpleContestData;
+	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("getSimpleContestData");
+            var pc:PendingCall = new PendingCall(out,headerArray);
+            call(currentOperation,out,pc.token,pc.headers);
+            return pc.token;
+		}
+		/**
+		 * Performs the low level call to the server for the operation
+		 * It passes along the headers and the operation arguments
+		 * @param getSimpleProjectContestData
+		 * @return Asynchronous token
+		 */
+		public function getSimpleProjectContestData(getSimpleProjectContestData:GetSimpleProjectContestData):AsyncToken
+		{
+			var headerArray:Array = new Array();
+            var out:Object = new Object();
+            out["getSimpleProjectContestData"] = getSimpleProjectContestData;
+	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("getSimpleProjectContestData");
+            var pc:PendingCall = new PendingCall(out,headerArray);
+            call(currentOperation,out,pc.token,pc.headers);
+            return pc.token;
+		}
+		/**
+		 * Performs the low level call to the server for the operation
+		 * It passes along the headers and the operation arguments
+		 * @param getContestDataOnly
+		 * @return Asynchronous token
+		 */
+		public function getContestDataOnly(getContestDataOnly:GetContestDataOnly):AsyncToken
+		{
+			var headerArray:Array = new Array();
+            var out:Object = new Object();
+            out["getContestDataOnly"] = getContestDataOnly;
+	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("getContestDataOnly");
+            var pc:PendingCall = new PendingCall(out,headerArray);
+            call(currentOperation,out,pc.token,pc.headers);
+            return pc.token;
+		}
+		/**
+		 * Performs the low level call to the server for the operation
+		 * It passes along the headers and the operation arguments
 		 * @param uploadDocumentForContest
 		 * @return Asynchronous token
 		 */

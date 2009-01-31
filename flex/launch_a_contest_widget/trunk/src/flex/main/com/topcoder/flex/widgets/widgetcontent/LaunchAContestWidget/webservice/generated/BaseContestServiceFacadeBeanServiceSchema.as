@@ -49,6 +49,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     <xsd:element name="getChangeHistory" type="tns:getChangeHistory"/>
     <xsd:element name="getChangeHistoryResponse" type="tns:getChangeHistoryResponse"/>
     <xsd:element name="getContest" type="tns:getContest"/>
+    <xsd:element name="getContestDataOnly" type="tns:getContestDataOnly"/>
+    <xsd:element name="getContestDataOnlyResponse" type="tns:getContestDataOnlyResponse"/>
     <xsd:element name="getContestPayment" type="tns:getContestPayment"/>
     <xsd:element name="getContestPaymentResponse" type="tns:getContestPaymentResponse"/>
     <xsd:element name="getContestResponse" type="tns:getContestResponse"/>
@@ -60,6 +62,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     <xsd:element name="getLatestChangesResponse" type="tns:getLatestChangesResponse"/>
     <xsd:element name="getMimeTypeId" type="tns:getMimeTypeId"/>
     <xsd:element name="getMimeTypeIdResponse" type="tns:getMimeTypeIdResponse"/>
+    <xsd:element name="getSimpleContestData" type="tns:getSimpleContestData"/>
+    <xsd:element name="getSimpleContestDataResponse" type="tns:getSimpleContestDataResponse"/>
+    <xsd:element name="getSimpleProjectContestData" type="tns:getSimpleProjectContestData"/>
+    <xsd:element name="getSimpleProjectContestDataResponse" type="tns:getSimpleProjectContestDataResponse"/>
     <xsd:element name="getStatusList" type="tns:getStatusList"/>
     <xsd:element name="getStatusListResponse" type="tns:getStatusListResponse"/>
     <xsd:element name="getSubmissionFileTypes" type="tns:getSubmissionFileTypes"/>
@@ -164,7 +170,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
             <xsd:element minOccurs="0" name="eligibility" type="xs:string"/>
             <xsd:element minOccurs="0" name="endTime" type="xs:anySimpleType"/>
             <xsd:element name="id" type="xs:long"/>
-            <xsd:element maxOccurs="unbounded" minOccurs="0" name="prizes" type="tns:competitionPrize"/>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="prizes" nillable="true" type="tns:competitionPrize"/>
             <xsd:element minOccurs="0" name="project" type="tns:project"/>
             <xsd:element minOccurs="0" name="shortSummary" type="xs:string"/>
             <xsd:element minOccurs="0" name="startTime" type="xs:anySimpleType"/>
@@ -177,12 +183,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
             <xsd:element minOccurs="0" name="name" type="xs:string"/>
             <xsd:element name="projectId" type="xs:long"/>
             <xsd:element name="tcDirectProjectId" type="xs:long"/>
-            <xsd:element maxOccurs="unbounded" minOccurs="0" name="prizes" type="tns:prizeData"/>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="prizes" nillable="true" type="tns:prizeData"/>
             <xsd:element minOccurs="0" name="launchDateAndTime" type="xs:anySimpleType"/>
             <xsd:element minOccurs="0" name="winnerAnnoucementDeadline" type="xs:anySimpleType"/>
             <xsd:element name="durationInHours" type="xs:double"/>
-            <xsd:element maxOccurs="unbounded" minOccurs="0" name="documentationUploads" type="tns:uploadedDocument"/>
-            <xsd:element maxOccurs="unbounded" minOccurs="0" name="contestPayloads" type="tns:contestPayload"/>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="documentationUploads" nillable="true" type="tns:uploadedDocument"/>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="contestPayloads" nillable="true" type="tns:contestPayload"/>
             <xsd:element minOccurs="0" name="shortSummary" type="xs:string"/>
             <xsd:element minOccurs="0" name="contestDescriptionAndRequirements" type="xs:string"/>
             <xsd:element minOccurs="0" name="requiredOrRestrictedColors" type="xs:string"/>
@@ -193,6 +199,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
             <xsd:element minOccurs="0" name="finalFileFormat" type="xs:string"/>
             <xsd:element minOccurs="0" name="otherFileFormats" type="xs:string"/>
             <xsd:element name="statusId" type="xs:long"/>
+            <xsd:element name="detailedStatusId" type="xs:long"/>
             <xsd:element name="submissionCount" type="xs:long"/>
             <xsd:element name="contestTypeId" type="xs:long"/>
             <xsd:element name="contestChannelId" type="xs:long"/>
@@ -201,7 +208,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
             <xsd:element minOccurs="0" name="prizeDescription" type="xs:string"/>
             <xsd:element name="forumPostCount" type="xs:int"/>
             <xsd:element name="forumId" type="xs:long"/>
-            <xsd:element maxOccurs="unbounded" minOccurs="0" name="media" type="tns:mediumData"/>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="media" nillable="true" type="tns:mediumData"/>
             <xsd:element name="drPoints" type="xs:double"/>
             <xsd:element name="contestAdministrationFee" type="xs:double"/>
             <xsd:element name="launchImmediately" type="xs:boolean"/>
@@ -254,7 +261,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
         <xsd:complexContent>
             <xsd:extension base="tns:projectData">
                 <xsd:sequence>
-                    <xsd:element maxOccurs="unbounded" minOccurs="0" name="competitions" type="tns:competition"/>
+                    <xsd:element maxOccurs="unbounded" minOccurs="0" name="competitions" nillable="true" type="tns:competition"/>
                     <xsd:element minOccurs="0" name="createDate" type="xs:dateTime"/>
                     <xsd:element minOccurs="0" name="modifyDate" type="xs:dateTime"/>
                     <xsd:element name="userId" type="xs:long"/>
@@ -351,7 +358,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
             <xsd:element minOccurs="0" name="description" type="xs:string"/>
             <xsd:element minOccurs="0" name="extension" type="xs:string"/>
             <xsd:element minOccurs="0" name="imageFile" type="xs:boolean"/>
-            <xsd:element maxOccurs="unbounded" minOccurs="0" name="mimeTypes" type="tns:mimeType"/>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="mimeTypes" nillable="true" type="tns:mimeType"/>
             <xsd:element minOccurs="0" name="sort" type="xs:int"/>
             <xsd:element name="studioFileType" type="xs:long"/>
         </xsd:sequence>
@@ -385,6 +392,57 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
             <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:studioCompetition"/>
         </xsd:sequence>
     </xsd:complexType>
+    <xsd:complexType name="getSimpleContestData">
+        <xsd:sequence/>
+    </xsd:complexType>
+    <xsd:complexType name="getSimpleContestDataResponse">
+        <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:simpleContestData"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="simpleContestData">
+        <xsd:sequence>
+            <xsd:element minOccurs="0" name="contestId" type="xs:long"/>
+            <xsd:element minOccurs="0" name="endDate" type="xs:dateTime"/>
+            <xsd:element minOccurs="0" name="name" type="xs:string"/>
+            <xsd:element name="num_reg" type="xs:int"/>
+            <xsd:element name="num_sub" type="xs:int"/>
+            <xsd:element minOccurs="0" name="sname" type="xs:string"/>
+            <xsd:element minOccurs="0" name="startDate" type="xs:dateTime"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="getSimpleProjectContestData">
+        <xsd:sequence/>
+    </xsd:complexType>
+    <xsd:complexType name="getSimpleProjectContestDataResponse">
+        <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:simpleProjectContestData"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="simpleProjectContestData">
+        <xsd:sequence>
+            <xsd:element minOccurs="0" name="cname" type="xs:string"/>
+            <xsd:element minOccurs="0" name="contestId" type="xs:long"/>
+            <xsd:element minOccurs="0" name="description" type="xs:string"/>
+            <xsd:element minOccurs="0" name="endDate" type="xs:dateTime"/>
+            <xsd:element minOccurs="0" name="forumId" type="xs:int"/>
+            <xsd:element minOccurs="0" name="num_for" type="xs:int"/>
+            <xsd:element minOccurs="0" name="num_reg" type="xs:int"/>
+            <xsd:element minOccurs="0" name="num_sub" type="xs:int"/>
+            <xsd:element minOccurs="0" name="pname" type="xs:string"/>
+            <xsd:element minOccurs="0" name="projectId" type="xs:long"/>
+            <xsd:element minOccurs="0" name="sname" type="xs:string"/>
+            <xsd:element minOccurs="0" name="startDate" type="xs:dateTime"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="getContestDataOnly">
+        <xsd:sequence/>
+    </xsd:complexType>
+    <xsd:complexType name="getContestDataOnlyResponse">
+        <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:simpleContestData"/>
+        </xsd:sequence>
+    </xsd:complexType>
     <xsd:complexType name="searchContests">
         <xsd:sequence>
             <xsd:element minOccurs="0" name="arg0" type="tns:contestServiceFilter"/>
@@ -412,7 +470,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
             <xsd:element minOccurs="0" name="description" type="xs:string"/>
             <xsd:element name="requirePreviewFile" type="xs:boolean"/>
             <xsd:element name="requirePreviewImage" type="xs:boolean"/>
-            <xsd:element maxOccurs="unbounded" minOccurs="0" name="config" type="tns:contestPayload"/>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="config" nillable="true" type="tns:contestPayload"/>
         </xsd:sequence>
     </xsd:complexType>
     <xsd:complexType name="createContestPayment">
@@ -501,6 +559,16 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     <xsd:complexType name="deleteContestResponse">
         <xsd:sequence/>
     </xsd:complexType>
+    <xsd:complexType name="uploadDocument">
+        <xsd:sequence>
+            <xsd:element minOccurs="0" name="arg0" type="tns:uploadedDocument"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="uploadDocumentResponse">
+        <xsd:sequence>
+            <xsd:element minOccurs="0" name="return" type="tns:uploadedDocument"/>
+        </xsd:sequence>
+    </xsd:complexType>
     <xsd:complexType name="uploadDocumentForContest">
         <xsd:sequence>
             <xsd:element minOccurs="0" name="arg0" type="tns:uploadedDocument"/>
@@ -576,7 +644,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
             <xsd:element name="statusId" type="xs:long"/>
             <xsd:element minOccurs="0" name="name" type="xs:string"/>
             <xsd:element minOccurs="0" name="description" type="xs:string"/>
-            <xsd:element maxOccurs="unbounded" minOccurs="0" name="allowableNextStatus" type="xs:long"/>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="allowableNextStatus" nillable="true" type="xs:long"/>
             <xsd:element minOccurs="0" name="displayIcon" type="xs:string"/>
         </xsd:sequence>
     </xsd:complexType>
@@ -588,14 +656,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
             <xsd:element minOccurs="0" name="return" type="xs:string"/>
         </xsd:sequence>
     </xsd:complexType>
-    <xsd:complexType name="uploadDocument">
+    <xsd:complexType name="getMimeTypeId">
         <xsd:sequence>
-            <xsd:element minOccurs="0" name="arg0" type="tns:uploadedDocument"/>
+            <xsd:element minOccurs="0" name="arg0" type="xs:string"/>
         </xsd:sequence>
     </xsd:complexType>
-    <xsd:complexType name="uploadDocumentResponse">
+    <xsd:complexType name="getMimeTypeIdResponse">
         <xsd:sequence>
-            <xsd:element minOccurs="0" name="return" type="tns:uploadedDocument"/>
+            <xsd:element name="return" type="xs:long"/>
         </xsd:sequence>
     </xsd:complexType>
     <xsd:complexType name="getContestsForClient">
@@ -616,16 +684,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     <xsd:complexType name="retrieveSubmissionResponse">
         <xsd:sequence>
             <xsd:element minOccurs="0" name="return" type="tns:submissionData"/>
-        </xsd:sequence>
-    </xsd:complexType>
-    <xsd:complexType name="getMimeTypeId">
-        <xsd:sequence>
-            <xsd:element minOccurs="0" name="arg0" type="xs:string"/>
-        </xsd:sequence>
-    </xsd:complexType>
-    <xsd:complexType name="getMimeTypeIdResponse">
-        <xsd:sequence>
-            <xsd:element name="return" type="xs:long"/>
         </xsd:sequence>
     </xsd:complexType>
     <xsd:complexType name="purchaseSubmission">

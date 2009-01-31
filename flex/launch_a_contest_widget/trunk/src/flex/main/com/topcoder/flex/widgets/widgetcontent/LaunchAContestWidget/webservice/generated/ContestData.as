@@ -43,6 +43,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		public var finalFileFormat:String;
 		public var otherFileFormats:String;
 		public var statusId:Number;
+		public var detailedStatusId:Number;
 		public var submissionCount:Number;
 		public var contestTypeId:Number;
 		public var contestChannelId:Number;

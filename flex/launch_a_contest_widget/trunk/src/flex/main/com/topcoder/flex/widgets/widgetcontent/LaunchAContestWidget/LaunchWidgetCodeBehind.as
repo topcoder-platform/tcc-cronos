@@ -41,6 +41,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          */
         private var _name:String = "Launch Contest";
         
+        
+        private const CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED:Number = 1; 
+		 private const CONTEST_STATUS_ACTIVE_PUBLIC:Number = 2 ;
+		 private const CONTEST_DETAILED_STATUS_DRAFT:Number =15 ;
+		 private const CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC:Number =2 ;
+
+        
         public var _ws:ContestServiceFacadeBeanService;
         
         public var _pws:ProjectServiceFacadeBeanService;
@@ -288,12 +295,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         }
         
         public function submitPurchase():void{
-        	competition.contestData.statusId = 2; //Active
+        	competition.contestData.statusId= CONTEST_STATUS_ACTIVE_PUBLIC;
+        	competition.contestData.detailedStatusId= CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC; //Active
         	saveContest();
         }
         
         public function saveAsDraft():void{
-        	competition.contestData.statusId = 1; //Unactive
+        	competition.contestData.statusId= CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED; //inactived
+        	competition.contestData.detailedStatusId= CONTEST_DETAILED_STATUS_DRAFT;
         	saveContest();
         }
         

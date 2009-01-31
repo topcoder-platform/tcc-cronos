@@ -222,8 +222,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     	//Stub functions for the editContestPayment operation
     	/**
     	 * Call the operation on the server passing in the arguments defined in the WSDL file
-    	 * @param arg0
     	 * @param editContestPayment
+    	 * @param arg0
     	 * @return An AsyncToken
     	 */
     	function editContestPayment(editContestPayment:EditContestPayment):AsyncToken;
@@ -503,8 +503,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     	//Stub functions for the getChangeHistory operation
     	/**
     	 * Call the operation on the server passing in the arguments defined in the WSDL file
-    	 * @param arg0
     	 * @param getChangeHistory
+    	 * @param arg0
     	 * @return An AsyncToken
     	 */
     	function getChangeHistory(getChangeHistory:GetChangeHistory):AsyncToken;
@@ -581,6 +581,46 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
          * @private
          */
         function set getContest_request_var(request:GetContest_request):void;
+                   
+    	//Stub functions for the getContestDataOnly operation
+    	/**
+    	 * Call the operation on the server passing in the arguments defined in the WSDL file
+    	 * @param getContestDataOnly
+    	 * @return An AsyncToken
+    	 */
+    	function getContestDataOnly(getContestDataOnly:GetContestDataOnly):AsyncToken;
+        /**
+         * Method to call the operation on the server without passing the arguments inline.
+         * You must however set the _request property for the operation before calling this method
+         * Should use it in MXML context mostly
+         * @return An AsyncToken
+         */
+        function getContestDataOnly_send():AsyncToken;
+        
+        /**
+         * The getContestDataOnly operation lastResult property
+         */
+        function get getContestDataOnly_lastResult():GetContestDataOnlyResponse;
+		/**
+		 * @private
+		 */
+        function set getContestDataOnly_lastResult(lastResult:GetContestDataOnlyResponse):void;
+       /**
+        * Add a listener for the getContestDataOnly operation successful result event
+        * @param The listener function
+        */
+       function addgetContestDataOnlyEventListener(listener:Function):void;
+       
+       
+        /**
+         * The getContestDataOnly operation request wrapper
+         */
+        function get getContestDataOnly_request_var():GetContestDataOnly_request;
+        
+        /**
+         * @private
+         */
+        function set getContestDataOnly_request_var(request:GetContestDataOnly_request):void;
                    
     	//Stub functions for the getContestPayment operation
     	/**
@@ -787,6 +827,86 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
          */
         function set getMimeTypeId_request_var(request:GetMimeTypeId_request):void;
                    
+    	//Stub functions for the getSimpleContestData operation
+    	/**
+    	 * Call the operation on the server passing in the arguments defined in the WSDL file
+    	 * @param getSimpleContestData
+    	 * @return An AsyncToken
+    	 */
+    	function getSimpleContestData(getSimpleContestData:GetSimpleContestData):AsyncToken;
+        /**
+         * Method to call the operation on the server without passing the arguments inline.
+         * You must however set the _request property for the operation before calling this method
+         * Should use it in MXML context mostly
+         * @return An AsyncToken
+         */
+        function getSimpleContestData_send():AsyncToken;
+        
+        /**
+         * The getSimpleContestData operation lastResult property
+         */
+        function get getSimpleContestData_lastResult():GetSimpleContestDataResponse;
+		/**
+		 * @private
+		 */
+        function set getSimpleContestData_lastResult(lastResult:GetSimpleContestDataResponse):void;
+       /**
+        * Add a listener for the getSimpleContestData operation successful result event
+        * @param The listener function
+        */
+       function addgetSimpleContestDataEventListener(listener:Function):void;
+       
+       
+        /**
+         * The getSimpleContestData operation request wrapper
+         */
+        function get getSimpleContestData_request_var():GetSimpleContestData_request;
+        
+        /**
+         * @private
+         */
+        function set getSimpleContestData_request_var(request:GetSimpleContestData_request):void;
+                   
+    	//Stub functions for the getSimpleProjectContestData operation
+    	/**
+    	 * Call the operation on the server passing in the arguments defined in the WSDL file
+    	 * @param getSimpleProjectContestData
+    	 * @return An AsyncToken
+    	 */
+    	function getSimpleProjectContestData(getSimpleProjectContestData:GetSimpleProjectContestData):AsyncToken;
+        /**
+         * Method to call the operation on the server without passing the arguments inline.
+         * You must however set the _request property for the operation before calling this method
+         * Should use it in MXML context mostly
+         * @return An AsyncToken
+         */
+        function getSimpleProjectContestData_send():AsyncToken;
+        
+        /**
+         * The getSimpleProjectContestData operation lastResult property
+         */
+        function get getSimpleProjectContestData_lastResult():GetSimpleProjectContestDataResponse;
+		/**
+		 * @private
+		 */
+        function set getSimpleProjectContestData_lastResult(lastResult:GetSimpleProjectContestDataResponse):void;
+       /**
+        * Add a listener for the getSimpleProjectContestData operation successful result event
+        * @param The listener function
+        */
+       function addgetSimpleProjectContestDataEventListener(listener:Function):void;
+       
+       
+        /**
+         * The getSimpleProjectContestData operation request wrapper
+         */
+        function get getSimpleProjectContestData_request_var():GetSimpleProjectContestData_request;
+        
+        /**
+         * @private
+         */
+        function set getSimpleProjectContestData_request_var(request:GetSimpleProjectContestData_request):void;
+                   
     	//Stub functions for the getStatusList operation
     	/**
     	 * Call the operation on the server passing in the arguments defined in the WSDL file
@@ -952,10 +1072,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     	//Stub functions for the purchaseSubmission operation
     	/**
     	 * Call the operation on the server passing in the arguments defined in the WSDL file
+    	 * @param purchaseSubmission
     	 * @param arg0
     	 * @param arg1
     	 * @param arg2
-    	 * @param purchaseSubmission
     	 * @return An AsyncToken
     	 */
     	function purchaseSubmission(purchaseSubmission:PurchaseSubmission):AsyncToken;
@@ -995,8 +1115,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     	//Stub functions for the removeContestPayment operation
     	/**
     	 * Call the operation on the server passing in the arguments defined in the WSDL file
-    	 * @param arg0
     	 * @param removeContestPayment
+    	 * @param arg0
     	 * @return An AsyncToken
     	 */
     	function removeContestPayment(removeContestPayment:RemoveContestPayment):AsyncToken;
@@ -1036,8 +1156,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     	//Stub functions for the removeDocument operation
     	/**
     	 * Call the operation on the server passing in the arguments defined in the WSDL file
-    	 * @param arg0
     	 * @param removeDocument
+    	 * @param arg0
     	 * @return An AsyncToken
     	 */
     	function removeDocument(removeDocument:RemoveDocument):AsyncToken;
@@ -1282,8 +1402,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     	//Stub functions for the searchContests operation
     	/**
     	 * Call the operation on the server passing in the arguments defined in the WSDL file
-    	 * @param arg0
     	 * @param searchContests
+    	 * @param arg0
     	 * @return An AsyncToken
     	 */
     	function searchContests(searchContests:SearchContests):AsyncToken;
@@ -1365,9 +1485,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     	//Stub functions for the setSubmissionPrize operation
     	/**
     	 * Call the operation on the server passing in the arguments defined in the WSDL file
-    	 * @param setSubmissionPrize
     	 * @param arg0
     	 * @param arg1
+    	 * @param setSubmissionPrize
     	 * @return An AsyncToken
     	 */
     	function setSubmissionPrize(setSubmissionPrize:SetSubmissionPrize):AsyncToken;
@@ -1407,8 +1527,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     	//Stub functions for the updateContest operation
     	/**
     	 * Call the operation on the server passing in the arguments defined in the WSDL file
-    	 * @param arg0
     	 * @param updateContest
+    	 * @param arg0
     	 * @return An AsyncToken
     	 */
     	function updateContest(updateContest:UpdateContest):AsyncToken;
@@ -1490,8 +1610,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     	//Stub functions for the updateSubmission operation
     	/**
     	 * Call the operation on the server passing in the arguments defined in the WSDL file
-    	 * @param updateSubmission
     	 * @param arg0
+    	 * @param updateSubmission
     	 * @return An AsyncToken
     	 */
     	function updateSubmission(updateSubmission:UpdateSubmission):AsyncToken;

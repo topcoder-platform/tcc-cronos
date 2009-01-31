@@ -135,6 +135,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     [Event(name="GetContest_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestResultEvent")]
     
     /**
+     * Dispatches when a call to the operation getContestDataOnly completes with success
+     * and returns some data
+     * @eventType GetContestDataOnlyResultEvent
+     */
+    [Event(name="GetContestDataOnly_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestDataOnlyResultEvent")]
+    
+    /**
      * Dispatches when a call to the operation getContestPayment completes with success
      * and returns some data
      * @eventType GetContestPaymentResultEvent
@@ -168,6 +175,20 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
      * @eventType GetMimeTypeIdResultEvent
      */
     [Event(name="GetMimeTypeId_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetMimeTypeIdResultEvent")]
+    
+    /**
+     * Dispatches when a call to the operation getSimpleContestData completes with success
+     * and returns some data
+     * @eventType GetSimpleContestDataResultEvent
+     */
+    [Event(name="GetSimpleContestData_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSimpleContestDataResultEvent")]
+    
+    /**
+     * Dispatches when a call to the operation getSimpleProjectContestData completes with success
+     * and returns some data
+     * @eventType GetSimpleProjectContestDataResultEvent
+     */
+    [Event(name="GetSimpleProjectContestData_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSimpleProjectContestDataResultEvent")]
     
     /**
      * Dispatches when a call to the operation getStatusList completes with success
@@ -1505,6 +1526,90 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		             dispatchEvent(e);
 	        		}
 		
+		//stub functions for the getContestDataOnly operation
+          
+
+        /**
+         * @see IContestServiceFacadeBeanService#getContestDataOnly()
+         */
+        public function getContestDataOnly(getContestDataOnly:GetContestDataOnly):AsyncToken
+        {
+         	var _internal_token:AsyncToken = _baseService.getContestDataOnly(getContestDataOnly);
+            _internal_token.addEventListener("result",_getContestDataOnly_populate_results);
+            _internal_token.addEventListener("fault",throwFault); 
+            return _internal_token;
+		}
+        /**
+		 * @see IContestServiceFacadeBeanService#getContestDataOnly_send()
+		 */    
+        public function getContestDataOnly_send():AsyncToken
+        {
+        	return getContestDataOnly(_getContestDataOnly_request.getContestDataOnly);
+        }
+              
+		/**
+		 * Internal representation of the request wrapper for the operation
+		 * @private
+		 */
+		private var _getContestDataOnly_request:GetContestDataOnly_request;
+		/**
+		 * @see IContestServiceFacadeBeanService#getContestDataOnly_request_var
+		 */
+		[Bindable]
+		public function get getContestDataOnly_request_var():GetContestDataOnly_request
+		{
+			return _getContestDataOnly_request;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set getContestDataOnly_request_var(request:GetContestDataOnly_request):void
+		{
+			_getContestDataOnly_request = request;
+		}
+		
+	  		/**
+		 * Internal variable to store the operation's lastResult
+		 * @private
+		 */
+        private var _getContestDataOnly_lastResult:GetContestDataOnlyResponse;
+		[Bindable]
+		/**
+		 * @see IContestServiceFacadeBeanService#getContestDataOnly_lastResult
+		 */	  
+		public function get getContestDataOnly_lastResult():GetContestDataOnlyResponse
+		{
+			return _getContestDataOnly_lastResult;
+		}
+		/**
+		 * @private
+		 */
+		public function set getContestDataOnly_lastResult(lastResult:GetContestDataOnlyResponse):void
+		{
+			_getContestDataOnly_lastResult = lastResult;
+		}
+		
+		/**
+		 * @see IContestServiceFacadeBeanService#addgetContestDataOnly()
+		 */
+		public function addgetContestDataOnlyEventListener(listener:Function):void
+		{
+			addEventListener(GetContestDataOnlyResultEvent.GetContestDataOnly_RESULT,listener);
+		}
+			
+		/**
+		 * @private
+		 */
+        private function _getContestDataOnly_populate_results(event:ResultEvent):void
+		{
+			var e:GetContestDataOnlyResultEvent = new GetContestDataOnlyResultEvent();
+		            e.result = event.result as GetContestDataOnlyResponse;
+		                       e.headers = event.headers;
+		             getContestDataOnly_lastResult = e.result;
+		             dispatchEvent(e);
+	        		}
+		
 		//stub functions for the getContestPayment operation
           
 
@@ -1922,6 +2027,174 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		            e.result = event.result as GetMimeTypeIdResponse;
 		                       e.headers = event.headers;
 		             getMimeTypeId_lastResult = e.result;
+		             dispatchEvent(e);
+	        		}
+		
+		//stub functions for the getSimpleContestData operation
+          
+
+        /**
+         * @see IContestServiceFacadeBeanService#getSimpleContestData()
+         */
+        public function getSimpleContestData(getSimpleContestData:GetSimpleContestData):AsyncToken
+        {
+         	var _internal_token:AsyncToken = _baseService.getSimpleContestData(getSimpleContestData);
+            _internal_token.addEventListener("result",_getSimpleContestData_populate_results);
+            _internal_token.addEventListener("fault",throwFault); 
+            return _internal_token;
+		}
+        /**
+		 * @see IContestServiceFacadeBeanService#getSimpleContestData_send()
+		 */    
+        public function getSimpleContestData_send():AsyncToken
+        {
+        	return getSimpleContestData(_getSimpleContestData_request.getSimpleContestData);
+        }
+              
+		/**
+		 * Internal representation of the request wrapper for the operation
+		 * @private
+		 */
+		private var _getSimpleContestData_request:GetSimpleContestData_request;
+		/**
+		 * @see IContestServiceFacadeBeanService#getSimpleContestData_request_var
+		 */
+		[Bindable]
+		public function get getSimpleContestData_request_var():GetSimpleContestData_request
+		{
+			return _getSimpleContestData_request;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set getSimpleContestData_request_var(request:GetSimpleContestData_request):void
+		{
+			_getSimpleContestData_request = request;
+		}
+		
+	  		/**
+		 * Internal variable to store the operation's lastResult
+		 * @private
+		 */
+        private var _getSimpleContestData_lastResult:GetSimpleContestDataResponse;
+		[Bindable]
+		/**
+		 * @see IContestServiceFacadeBeanService#getSimpleContestData_lastResult
+		 */	  
+		public function get getSimpleContestData_lastResult():GetSimpleContestDataResponse
+		{
+			return _getSimpleContestData_lastResult;
+		}
+		/**
+		 * @private
+		 */
+		public function set getSimpleContestData_lastResult(lastResult:GetSimpleContestDataResponse):void
+		{
+			_getSimpleContestData_lastResult = lastResult;
+		}
+		
+		/**
+		 * @see IContestServiceFacadeBeanService#addgetSimpleContestData()
+		 */
+		public function addgetSimpleContestDataEventListener(listener:Function):void
+		{
+			addEventListener(GetSimpleContestDataResultEvent.GetSimpleContestData_RESULT,listener);
+		}
+			
+		/**
+		 * @private
+		 */
+        private function _getSimpleContestData_populate_results(event:ResultEvent):void
+		{
+			var e:GetSimpleContestDataResultEvent = new GetSimpleContestDataResultEvent();
+		            e.result = event.result as GetSimpleContestDataResponse;
+		                       e.headers = event.headers;
+		             getSimpleContestData_lastResult = e.result;
+		             dispatchEvent(e);
+	        		}
+		
+		//stub functions for the getSimpleProjectContestData operation
+          
+
+        /**
+         * @see IContestServiceFacadeBeanService#getSimpleProjectContestData()
+         */
+        public function getSimpleProjectContestData(getSimpleProjectContestData:GetSimpleProjectContestData):AsyncToken
+        {
+         	var _internal_token:AsyncToken = _baseService.getSimpleProjectContestData(getSimpleProjectContestData);
+            _internal_token.addEventListener("result",_getSimpleProjectContestData_populate_results);
+            _internal_token.addEventListener("fault",throwFault); 
+            return _internal_token;
+		}
+        /**
+		 * @see IContestServiceFacadeBeanService#getSimpleProjectContestData_send()
+		 */    
+        public function getSimpleProjectContestData_send():AsyncToken
+        {
+        	return getSimpleProjectContestData(_getSimpleProjectContestData_request.getSimpleProjectContestData);
+        }
+              
+		/**
+		 * Internal representation of the request wrapper for the operation
+		 * @private
+		 */
+		private var _getSimpleProjectContestData_request:GetSimpleProjectContestData_request;
+		/**
+		 * @see IContestServiceFacadeBeanService#getSimpleProjectContestData_request_var
+		 */
+		[Bindable]
+		public function get getSimpleProjectContestData_request_var():GetSimpleProjectContestData_request
+		{
+			return _getSimpleProjectContestData_request;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set getSimpleProjectContestData_request_var(request:GetSimpleProjectContestData_request):void
+		{
+			_getSimpleProjectContestData_request = request;
+		}
+		
+	  		/**
+		 * Internal variable to store the operation's lastResult
+		 * @private
+		 */
+        private var _getSimpleProjectContestData_lastResult:GetSimpleProjectContestDataResponse;
+		[Bindable]
+		/**
+		 * @see IContestServiceFacadeBeanService#getSimpleProjectContestData_lastResult
+		 */	  
+		public function get getSimpleProjectContestData_lastResult():GetSimpleProjectContestDataResponse
+		{
+			return _getSimpleProjectContestData_lastResult;
+		}
+		/**
+		 * @private
+		 */
+		public function set getSimpleProjectContestData_lastResult(lastResult:GetSimpleProjectContestDataResponse):void
+		{
+			_getSimpleProjectContestData_lastResult = lastResult;
+		}
+		
+		/**
+		 * @see IContestServiceFacadeBeanService#addgetSimpleProjectContestData()
+		 */
+		public function addgetSimpleProjectContestDataEventListener(listener:Function):void
+		{
+			addEventListener(GetSimpleProjectContestDataResultEvent.GetSimpleProjectContestData_RESULT,listener);
+		}
+			
+		/**
+		 * @private
+		 */
+        private function _getSimpleProjectContestData_populate_results(event:ResultEvent):void
+		{
+			var e:GetSimpleProjectContestDataResultEvent = new GetSimpleProjectContestDataResultEvent();
+		            e.result = event.result as GetSimpleProjectContestDataResponse;
+		                       e.headers = event.headers;
+		             getSimpleProjectContestData_lastResult = e.result;
 		             dispatchEvent(e);
 	        		}
 		
