@@ -1271,6 +1271,16 @@
 		                        </mx:ToggleButtonBar>
 		                        <!--<mx:Spacer width="100%" />-->
 	                        </mx:HBox>
+	                        <mx:HBox width="100%" 
+					               horizontalAlign="center"
+					               verticalScrollPolicy="off" 
+					               horizontalScrollPolicy="off" horizontalGap="20">
+		                            <mx:Label text="1st" height="23" fontWeight="bold"/>
+		                            <mx:Label text="2nd" height="23" fontWeight="bold"/>
+		                            <mx:Label text="3rd" height="23" fontWeight="bold"/>
+		                            <mx:Label text="4th" height="23" fontWeight="bold"/>
+		                            <mx:Label text="5th" height="23" fontWeight="bold"/>
+	                        </mx:HBox>
 	                        <mx:HBox width="100%" horizontalAlign="right"
                                    verticalScrollPolicy="off" 
                                    horizontalScrollPolicy="off">
