@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tc:SubmissionViewerWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
     xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
+    xmlns:tcimg="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoomviewer.*"
     title="Submission Viewer"
     creationComplete="init()" 
     width="100%" 
@@ -10,6 +11,22 @@
     layout="vertical"
     horizontalAlign="left"
     styleName="panel">
+    
+    <mx:Style>
+		.ZoomInButton {		
+			disabledSkin: Embed(source="../assets/icon/imageZoomViewerIcons.swf",symbol="MinusButton_Disabled");
+			downSkin: Embed(source="../assets/icon/imageZoomViewerIcons.swf",symbol="MinusButton_Down");
+			overSkin: Embed(source="../assets/icon/imageZoomViewerIcons.swf",symbol="MinusButton_Over");
+			upSkin: Embed(source="../assets/icon/imageZoomViewerIcons.swf",symbol="MinusButton_Up");		
+		}	
+
+		.ZoomOutButton {		
+			disabledSkin: Embed(source="../assets/icon/imageZoomViewerIcons.swf",symbol="PlusButton_Disabled");
+			downSkin: Embed(source="../assets/icon/imageZoomViewerIcons.swf",symbol="PlusButton_Down");
+			overSkin: Embed(source="../assets/icon/imageZoomViewerIcons.swf",symbol="PlusButton_Over");
+			upSkin: Embed(source="../assets/icon/imageZoomViewerIcons.swf",symbol="PlusButton_Up");
+		}
+	</mx:Style>
 
     <mx:Script>
         <![CDATA[
@@ -34,9 +51,10 @@
             import mx.collections.SortField;
             import mx.collections.Sort;
             
-    	import mx.utils.ObjectUtil;
+    		import mx.utils.ObjectUtil;
+    		
+    		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoomviewer.ImageViewer;
 
-            
             private var _rankList:ArrayCollection = new ArrayCollection();
             
             [Bindable]
@@ -693,7 +711,7 @@
                 if (currentItem) {
                 	trace("Handling select of submission: " + currentItem.id);
                     _currentItemLabel = contestCombo.text + " - #" + currentItem.id;
-                    currentImage.source = currentItem.fullsizepreview;
+                    currentImage.imageURL = currentItem.fullsizepreview;
                     
                     if (currentItem.rank) {
                         rankBar.selectedIndex = parseInt(currentItem.rank) - 1;
@@ -1128,13 +1146,6 @@
  				}
             }
             
-            private function openImageInNewWindow(event:MouseEvent):void {
-            	if (list.selectedItem) {
-            		var url:String = "http://www.topcoder.com/direct/cockpit/impersonation/cockpitStudio.do?&sbt=full&sbmid=" + list.selectedItem.id;
-        			var u:URLRequest = new URLRequest(url);
-        			navigateToURL(u,"_blank");
-            	}
-     		}
         ]]>
     </mx:Script>
 
@@ -1277,16 +1288,47 @@
 	                    		textAlign="center" 
 		                        fontSize="14" 
 		                        width="100%" />
-	                        <mx:VBox verticalAlign="middle" horizontalAlign="center"
-	                        		paddingLeft="2" paddingRight="2" paddingBottom="2" paddingTop="2" 
-	                                borderStyle="solid" width="526" height="276">
-	                            <mx:Image 
-	                            	id="currentImage" 
-	                            	maxWidth="520" 
-	                            	maxHeight="270" 
-	                            	completeEffect="{fade}" 
-	                            	click="openImageInNewWindow(event)"/>
-	                        </mx:VBox>
+							<!-- Changes for bugr-1059: Submission Viewer Preview Image -->
+	                        <mx:Canvas borderStyle="solid" width="526" height="276">
+	                            <tcimg:ImageViewer id="currentImage" 
+										bitmapScaleFactorMax="5"
+										bitmapScaleFactorMin=".05"
+										bitmapScaleFactor="1"
+										width="100%" height="100%"
+										x="0" y="0"/>
+                            	<mx:VBox left="10" top="10" width="20">
+									<mx:Spacer/>
+								
+									<mx:Button 
+										styleName="ZoomOutButton"
+										toolTip="Zoom In"
+										click="{currentImage.zoom('in');}"
+										/>
+									
+									<mx:HBox 
+										width="20"
+										>
+									
+										<mx:VSlider
+											minimum="{ currentImage.bitmapScaleFactorMin }" 
+											maximum="{ currentImage.bitmapScaleFactorMax }" 
+											value  ="{ currentImage.bitmapScaleFactor }"	
+											change ="{ currentImage.setZoom(VSlider(event.currentTarget).value) }" 				
+											snapInterval=".001"
+											liveDragging="true" 
+											/>	
+														
+									</mx:HBox>
+						
+									<mx:Button 
+										styleName="ZoomInButton"
+										toolTip="Zoom Out"
+										click="{ currentImage.zoom('out'); }"			
+										/>	
+								
+									<mx:Spacer/>
+								</mx:VBox>	
+	                        </mx:Canvas>
 	                    </mx:VBox>
 	                    <mx:VBox height="100%" verticalAlign="middle">
 	                        <mx:Button id="next" styleName="next" click="goNext()"/>
