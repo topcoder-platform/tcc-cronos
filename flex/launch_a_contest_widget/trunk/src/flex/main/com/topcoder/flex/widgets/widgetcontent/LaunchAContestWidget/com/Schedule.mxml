@@ -162,6 +162,9 @@
             
 	        private function startDateChanged():void{
 	            rangeEndDate = new Date(dfStart.selectedDate.getTime()-1);
+	            dfEnd.displayedMonth = rangeEndDate.getMonth();
+                dfEnd.displayedYear = rangeEndDate.getFullYear();
+	            dfEnd.selectedDate = null;
 	        }
         ]]>
     </mx:Script>
