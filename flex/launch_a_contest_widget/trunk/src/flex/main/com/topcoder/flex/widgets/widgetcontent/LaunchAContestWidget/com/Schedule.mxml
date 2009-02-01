@@ -6,6 +6,8 @@
         	import mx.controls.Alert;
         	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
             public var mainWidget:LaunchWidget;
+            [Bindable]
+            private var rangeEndDate:Date;
             
             public function initData():void{
             	termCheckBox.selected = false;
@@ -157,6 +159,10 @@
             private function showfileDecsHint():void {
                     
             }
+            
+	        private function startDateChanged():void{
+	            rangeEndDate = new Date(dfStart.selectedDate.getTime()-1);
+	        }
         ]]>
     </mx:Script>
     <mx:VBox width="100%" styleName="boxStyle">
@@ -176,7 +182,7 @@
         <mx:VBox paddingLeft="10">
             <mx:HBox verticalAlign="middle">
                 <mx:Label text="Start Date:" fontWeight="bold"/>
-                <mx:DateField id="dfStart" yearNavigationEnabled="true" width="116"/>
+                <mx:DateField id="dfStart" yearNavigationEnabled="true" width="116" change="startDateChanged()"/>
                 <mx:Spacer width="10"/>
                 <mx:CheckBox id="launchCheckBox" label="Launch Immediately" selected="true"/>
             </mx:HBox>
@@ -194,7 +200,7 @@
             <mx:Spacer height="5"/>
             <mx:HBox verticalAlign="middle">
                 <mx:Label text="End Date:  " fontWeight="bold"/>
-                <mx:DateField id="dfEnd" yearNavigationEnabled="true" width="116"/>
+                <mx:DateField id="dfEnd" yearNavigationEnabled="true" width="116" disabledRanges="{[ {rangeEnd: rangeEndDate} ]}" />
             </mx:HBox>
             <mx:HBox verticalAlign="middle">
                 <mx:Label text="End Time:  " fontWeight="bold"/>
