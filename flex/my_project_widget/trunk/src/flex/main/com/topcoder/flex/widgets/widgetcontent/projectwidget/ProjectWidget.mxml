@@ -84,19 +84,11 @@
         [Bindable]
         private var projectId:int;
         
-        private var pname:String;
-        private var pdesc:String;
+               
         
-        private var contests:ArrayCollection;
         
-        private var prjArray:ArrayCollection;
         
-        private var prjIdx:int=0;
-        
-        private var statusDict:Dictionary=new Dictionary();
-        
-     private var username:String=Application.application.parameters.username;
-	private var password:String = "";
+     
         private var blazedsendpoint:String= Application.application.parameters.blazedsendpoint;
    
 	    private var projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl;
@@ -139,13 +131,7 @@
         }
 	
 
-        private function loadData():void
-        {
-		ContestServiceFacadeBean.clearHeaders();
-        	ContestServiceFacadeBean.addHeader(getHeader(username,password));
-        	ContestServiceFacadeBean.getSimpleProjectContestData();	
-            
-        }
+        
         
         
         private function setProject(e:ResultEvent): void
@@ -188,7 +174,7 @@
 					//list.setStyle("verticalScrollPolicy","auto");
 					//list.dataProvider=new Project(pname,pdesc,"",contests);
         			prjIdx=i;
-        			projects.addItem(new Project(pname,pdesc,"",contests));
+        			projects.addItem(new Project(projectId.toString(),pname,pdesc,"",contests));
         		}
         			if(!projects.sort)
         			{
@@ -197,7 +183,7 @@
 						projects.sort = sort;
         			}
         			projects.refresh();
-        		prjList.dataProvider= getSubArray(projects,10);
+        		prjList.dataProvider=  isMaximized()?projects: getSubArray(projects,10);
         	}
         }
 private function compareDate(a:Object, b:Object, fields:Array = null):int {

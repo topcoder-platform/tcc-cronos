@@ -2,16 +2,18 @@
  * Copyright (c) 2008, TopCoder, Inc. All rights reserved.
  */
 package com.topcoder.flex.widgets.widgetcontent.projectwidget {
+    import com.topcoder.flex.model.IWidgetFramework;
     import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.widgets.model.IWidgetContainer;
     import com.topcoder.flex.widgets.widgetcontent.projectwidget.com.ProjectsContainer;
-    
+
     import com.topcoder.flex.model.IWidgetFramework;
     import flash.utils.Dictionary;
     
     import mx.collections.ArrayCollection;
     import mx.containers.Panel;
-
+    import mx.rpc.soap.WebService;
+    import mx.core.Application;
     /**
      * <p>
      * This is the code behind script part for the project widget. It implements the IWidget interface.
@@ -39,6 +41,9 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
 	 * The container for this widget.
 	 */
 	private var _container:IWidgetContainer;
+	
+	 protected var username:String=Application.application.parameters.username;
+	protected var password:String = "";
         
         /**
          * The data for the widget.
@@ -51,7 +56,11 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         
         private var _prjList:ProjectsContainer;
         
+        private var _ContestServiceFacadeBean:WebService;     
         
+        
+        private var isMax:Boolean=false;
+
          /**
          * The allowclose flag.
          */
@@ -92,14 +101,32 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
          * This action will reload this widget.
          */
         public function reload():void {
-            //trigger to load the data
-            this._result = this._result.copy();
+            loadData();
+            
         }
 
         /**
          * This action will show the user the configuration xml for this widget.
          */
         public function showConfiguration():void {
+            
+        }
+        
+        public function get ContestServiceFacadeBean():WebService
+        {
+        	return _ContestServiceFacadeBean;
+        }
+        
+        public function set ContestServiceFacadeBean(w:WebService):void
+        {
+        	_ContestServiceFacadeBean=w;
+        }
+        
+        public function loadData():void
+        {
+			ContestServiceFacadeBean.clearHeaders();
+        	ContestServiceFacadeBean.addHeader(ProjectWidget.getHeader(username,password));
+        	ContestServiceFacadeBean.getSimpleProjectContestData();	
             
         }
 
@@ -131,6 +158,7 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
          */
         public function restore():void {
             prjList.dataProvider= getSubArray(projects,10);
+            isMax=false;
         }
 
         /**
@@ -138,6 +166,7 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
          */
         public function maximize():void {
         	prjList.dataProvider=projects;
+        	isMax=true;
         }
 
         /**
@@ -190,7 +219,7 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
          * @return true if the widget is maximized, false otherwise.
          */
         public function isMaximized():Boolean {
-            return false;
+            return isMax;
         }
 
         /**

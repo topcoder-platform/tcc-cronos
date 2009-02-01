@@ -32,41 +32,32 @@
 		// set of data provider
 		// this class accept an xml type dataprovider
 		public function set dataProvider(arrCol:ArrayCollection):void{
+			var expandList:ArrayCollection=new ArrayCollection();
+			
+			for(var i:int=0;i<getChildren().length;i++)
+			{
+				var prjList:ProjectList=getChildAt(i) as  ProjectList;
+				if(prjList.isexpand())
+				{
+					expandList.addItem(prjList.dataProvider.id);
+				}
+			}
+			removeAllChildren();
 			_dataProvider=arrCol;
-			/*
-			var arrCol:ArrayCollection=new ArrayCollection();
-	        var xmlData:XMLList=new XMLList(xml);
-              for each( var child:XML in xml.project ){
-            	var pName:String=child.@name;
-            	var pDescr:String=child.@description;
-            	var pStatus:String=child.@status;
-            	var pr:Project=new Project(pName,pDescr,pStatus);
-            	var skArray:ArrayCollection=new ArrayCollection();
-                 for each( var child1:XML in child.contests.contest )
-                 {
-	                  var contestID:String=child1.@id;
-	                  var contestName:String=child1.@name;
-	                  var startDate:String = child1.start_date;
-	                  var endDate:String=child1.end_date;
-	                  var registrants:String=child1.registrants;
-	                  var submissions:String=child1.submissions;
-	                  var forumPosts:String=child1.forum_posts;
-	                  var forumId:String=child1.forum_id;
-	                  var status:String=child1.status;
-
-	               	  var sk:Contest=new Contest(contestID,contestName,startDate,endDate,registrants,submissions,forumPosts,forumId,status);
-					  skArray.addItem(sk)
-		          }
-				    pr.contests=skArray;
-					arrCol.addItem(pr)
-	              }
-	              */
 			for (var i:int=0; i<arrCol.length;i++) {
 				var prj:Project=arrCol.getItemAt(i) as Project;
 				var prjList:ProjectList=new ProjectList();
 			    addChild(prjList);
 				prjList.setStyle("verticalScrollPolicy","off");
 				prjList.dataProvider=prj;
+				for(var j:int=0;j<expandList.length;j++)
+				{
+					if(prj.id==expandList[j])
+					{
+						prjList.expand();
+						break;
+					}
+				}
 			}
 
 		}

@@ -4,13 +4,15 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.qs
 
 	public class Project
 	{
+		public var id:String;
 		public var name:String;
 		public var description:String;
 		public var status:String;
 		public var contests:ArrayCollection;
 		public var date:Date=null;
-		public function Project(_name:String,_descr:String,_status:String,_contest:ArrayCollection=null)
+		public function Project(_id:String,_name:String,_descr:String,_status:String,_contest:ArrayCollection=null)
 		{
+			id=_id;
 			this.name=_name;
 			this.description=_descr;
 			this.status=_status;
