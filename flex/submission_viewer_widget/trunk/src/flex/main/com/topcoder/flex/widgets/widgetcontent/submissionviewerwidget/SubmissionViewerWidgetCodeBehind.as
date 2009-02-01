@@ -41,21 +41,10 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 		private var _minPage:VBox;
         
         private var _main:ViewStack;
-        
-        public var _maximumHeight:Number;
-        public var _maximumWidth:Number;
-        
-        public var _maximumHeightParent:Number;
-        public var _maximumWidthParent:Number;
-        
-        public var _mainPageMaximumHeight:Number;
-        public var _mainPageMaximumWidth:Number;
-        
-        public var _minimumHeight:Number;
-        public var _minimumWidth:Number;
-        
-        public var _minPageHeight:Number=570;
-        public var _minPageWidth:Number=320;
+		
+		public var _maximize:Function;
+		
+		public var _restore:Function;
         
         public function set minPage(page:VBox):void
         {
@@ -179,11 +168,16 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
          * This action will restpre this widget (for example from a menu bar).
          */
         public function restore():void {
+			
             main.visible=false;
             main.includeInLayout=false;
             
             minPage.includeInLayout=true;
             minPage.visible=true;
+			
+			if (_restore) {
+				_restore();
+			}
         }
 
         /**
@@ -195,6 +189,10 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
             
             minPage.includeInLayout=false;
             minPage.visible=false;
+			
+			if (_maximize) {
+				_maximize();
+			}
         }
 
         /**

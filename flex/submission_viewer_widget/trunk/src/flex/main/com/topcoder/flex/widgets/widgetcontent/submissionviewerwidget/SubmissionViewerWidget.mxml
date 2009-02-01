@@ -104,6 +104,8 @@
             [Bindable]
             private var _downloadList:ArrayCollection = new ArrayCollection();
             private function init():void {
+            	restore();
+            	
             	if (_isLocalTesting) {
             		Security.allowDomain("*");
 					Security.allowInsecureDomain("*");
@@ -113,8 +115,6 @@
 	                getDataService();
 	                //initComponent();
             	}
-            	
-            	restore();
             }
 
 	    	private function getDataService():void {
@@ -171,9 +171,51 @@
 	            	ContestServiceFacadeBean.getContestDataOnly();
             	}
             	else {
-					retrieveStatusList.send();
-					retrieveContestService.send();
+					var statuses:ArrayCollection = new ArrayCollection();
+					var status:Object = new Object();
+					status.name = "Action Required"
+					status.statusId = 6;
+					statuses.addItem(status);
+					
+					status = new Object();
+					status.name = "No winner chosen"
+					status.statusId = 7;
+					statuses.addItem(status);
+					
+					status = new Object();
+					status.name = "Completed"
+					status.statusId = 8;
+					statuses.addItem(status);
+
+					handleStatusList(new ResultEvent("STATUS_TYPES", false, true, statuses));
+					
+					var contests:ArrayCollection = new ArrayCollection();
+					var contest:Object = new Object();
+					contest.name = "Active Contest 1";
+					contest.contestId = 12345;
+					contest.statusId = 6;
+					contests.addItem(contest);
+					
+					contest = new Object();
+					contest.name = "Active Contest 2";
+					contest.contestId = 12346;
+					contest.statusId = 6;
+					contests.addItem(contest);
+
+					handleResult(new ResultEvent("CONTESTS", false, true, contests));
             	}
+				
+				_maximize = function():void {
+					trace("Contest item: " + contestlist_minpage.selectedItem); 
+					trace("Contest index: " + contestlist_minpage.selectedIndex);
+					trace("Selected submission: " + list_minpage.selectedItem); 
+					trace("Selected submission index: " + list_minpage.selectedIndex);
+            	
+					var index:int = _contestList.getItemIndex(contestlist_minpage.selectedItem);
+					trace("To be selected Index: " + index);
+					contestCombo.selectedIndex=index;
+					handleContest(null);
+				}
             }
             
             [Bindable] 
@@ -232,11 +274,9 @@
             private function handleStatusList(event:ResultEvent=null):void {
                 if(event!=null && event.result!=null)
                 {
-                	var statuses:ArrayCollection = (!_isLocalTesting ? event.result : event.result.statuses.status) as ArrayCollection;
-                	for(var i:int=0 ; i < statuses.length;i++)
+                	for each(var item:* in event.result as ArrayCollection)
                 	{
-                		var item:*=statuses[i];
-                		_statusTypeDictionary[item.statusId]=item;
+                		_statusTypeDictionary[item.statusId as int]=item;
                 	}
                 }
             }
@@ -362,15 +402,25 @@
                     }
                 }
 
-				// after filter, need to check select index
-				for(var i:int=0 ;i<_contestList.length;i++) {
-					var item:*=_contestList[i];
-					if (item.id == this.defaultcontestid)
-					{
-						contestCombo.selectedIndex=i;
-		                contestlist_minpage.selectedIndex=i;
-						return;
-					} 
+				if (this.defaultcontestid) {
+					// after filter, need to check select index
+					for(var i:int=0 ;i<_contestList.length;i++) {
+						var item:*=_contestList[i];
+						
+						if (item.id == this.defaultcontestid)
+						{
+							contestCombo.selectedIndex=i;
+			                contestlist_minpage.selectedIndex=i;
+			                handleContest(null);
+							return;
+						} 
+					}
+				}
+				else {
+					trace("Selecting the combo box: " + 0);
+					contestCombo.selectedIndex=0;
+			        contestlist_minpage.selectedIndex=0;
+			        handleContest(null);
 				}
             }
             
@@ -775,7 +825,7 @@
                  	_selectedContestId=contestlist_minpage.selectedItem.id;
                  }
                  
-                 if (event && event != null && isContestChanged && isContestChanged == true) {
+                 if (event && event != null || (isContestChanged && isContestChanged == true)) {
 	                 if(_submissionList && _submissionList.length > 0)_submissionList.removeAll();
 	                 
 	                 if (!_isLocalTesting) {
@@ -785,7 +835,7 @@
 		        		ContestServiceFacadeBean.retrieveSubmissionsForContest.send();
 	                 }
 	                 else {
-						retrieveSubService.send();
+						//retrieveSubService.send();
 	                 }
                  }
                  else {
@@ -1076,11 +1126,6 @@
  				else {
  					maximize();
  				}
-            	
-            	var index:int = _contestList.getItemIndex(contestlist_minpage.selectedItem);
-            	trace("To be selected Index: " + index);
-            	contestCombo.selectedIndex=index;
-            	handleContest(null);
             }
             
             private function openImageInNewWindow(event:MouseEvent):void {
@@ -1148,12 +1193,6 @@
     moveDuration="200"
     color="0xffffff"/>
 <mx:Fade alphaFrom="0" alphaTo="1" duration="10" id="fade" />
-<mx:HTTPService id="retrieveStatusList" url="assets/data/statusTypes.xml"
-    fault="handleFail(event)" result="handleStatusList(event)" />
-<mx:HTTPService id="retrieveContestService" url="assets/data/contests.xml"
-    fault="handleFail(event)" result="handleResult(event)" />
-<mx:HTTPService id="retrieveSubService" url="assets/data/submission.xml"
-    fault="handleSubFail(event)" result="handleSubResult(event)" />
     
 <mx:NumberFormatter id="moneyFormatter" precision="2" useThousandsSeparator="true" useNegativeSign="true" />
 <mx:ViewStack id="main" 
