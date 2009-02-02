@@ -80,7 +80,7 @@
     <property name="component.jar" value="${dist_lib}/${component_path}/${distfilename}.jar"/>
     <property name="javadoc.jar" value="javadocs.jar"/>
     <property name="component.tests.jar" value="${dist_lib}/${distfilename}_tests.jar"/>
-    <property name="component.dist.jar" value="${build_distdir}/${distfilename}-${component_version}.jar"/>
+    <property name="component.dist.jar" value="${build_distdir}/${distfilename}-${component_version}.zip"/>
     <property name="dev_submission.jar" value="${distfilename}_${component_version}_dev_submission.jar"/>
     <property name="design_submission.jar" value="${distfilename}_${component_version}_design_submission.jar"/>
     <property name="dev_dist.jar" value="${distfilename}_${component_version}_dev_dist.jar"/>
