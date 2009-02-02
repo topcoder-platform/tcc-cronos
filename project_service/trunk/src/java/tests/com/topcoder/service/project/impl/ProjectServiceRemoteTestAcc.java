@@ -9,7 +9,6 @@ import java.util.Set;
 
 import com.topcoder.service.project.BaseUnitTestCase;
 import com.topcoder.service.project.Competition;
-import com.topcoder.service.project.StudioCompetition;
 import com.topcoder.service.project.Project;
 import com.topcoder.service.project.ProjectData;
 import com.topcoder.service.project.ProjectService;
@@ -221,7 +220,7 @@ public class ProjectServiceRemoteTestAcc extends BaseUnitTestCase {
 
         // The competitions should be ignored
         Set < Competition > competitions = new HashSet();
-        Competition competition = new StudioCompetition();
+        Competition competition = new Competition();
         competition.setProject(project);
         competitions.add(competition);
         project.setCompetitions(competitions);

@@ -5,13 +5,13 @@ package com.topcoder.service.project;
 
 /**
  * <p>
- * This entity represents an Design competition.
+ * This entity represents an Studio competition.
  * </p>
  *
  * @author TCSDEVELOPER
  * @version 1.0
  */
-public class DesignCompetition extends Competition {
+public class StudioCompetition extends Competition {
 
     /**
      * Represents the serial version unique id.
@@ -27,13 +27,13 @@ public class DesignCompetition extends Competition {
 
     /**
      * <p>
-     * Creates a <code>DesignCompetition</code>.
+     * Creates a <code>StudioCompetition</code>.
      * </p>
      *
      * @param name
      *            the competition name.
      */
-    public DesignCompetition(String name) {
+    public StudioCompetition(String name) {
         this.name = name;
     }
 

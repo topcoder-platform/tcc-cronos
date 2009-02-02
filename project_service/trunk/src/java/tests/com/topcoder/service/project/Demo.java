@@ -120,7 +120,7 @@ public class Demo extends BaseUnitTestCase {
         Set < Competition > competitions = new HashSet();
         competitions.add(new DesignCompetition("GUI design"));
         competitions.add(new DesignCompetition("Backend design"));
-        competitions.add(new StudioCompetition());
+        competitions.add(new StudioCompetition("Arena skins"));
         for (Competition c : competitions) {
             c.setProject(project);
         }

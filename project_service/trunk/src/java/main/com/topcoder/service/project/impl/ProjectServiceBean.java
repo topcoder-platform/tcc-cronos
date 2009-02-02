@@ -649,7 +649,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
                 throw logException(new UserNotFoundFault("No projects linked with the given user " + userId));
             }
 
-            logReturn(formatProjectDatas(projectDatas));
+            logReturn(projectDatas.size() + " projects found. ");// formatProjectDatas(projectDatas));
             return projectDatas;
         } finally {
             logExit("getProjectsForUser(long)");
@@ -761,7 +761,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
                 projectDatas = doGetProjects(null);
             }
 
-            logReturn(formatProjectDatas(projectDatas));
+            logReturn(projectDatas.size() + " projects found");
             return projectDatas;
         } finally {
             logExit("getAllProjects()");

@@ -9,7 +9,6 @@ import junit.framework.TestSuite;
 
 import com.topcoder.service.project.Competition;
 import com.topcoder.service.project.Project;
-import com.topcoder.service.project.StudioCompetition;
 
 /**
  * <p>
@@ -41,7 +40,7 @@ public class CompetitionAccTests extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        competition = new StudioCompetition();
+        competition = new Competition();
     }
 
     /**
@@ -254,7 +253,7 @@ public class CompetitionAccTests extends TestCase {
      * </p>
      */
     public void testEquals_DifferentObjects1() {
-        Competition anotherCompetition = new StudioCompetition();
+        Competition anotherCompetition = new Competition();
         assertFalse("Should return false.", competition.equals(anotherCompetition));
         assertFalse("Should return false.", anotherCompetition.equals(competition));
     }
@@ -268,7 +267,7 @@ public class CompetitionAccTests extends TestCase {
      * </p>
      */
     public void testEquals_DifferentObjects2() {
-        Competition anotherCompetition = new StudioCompetition();
+        Competition anotherCompetition = new Competition();
         anotherCompetition.setCompetitionId(1L);
         assertFalse("Should return false.", competition.equals(anotherCompetition));
         assertFalse("Should return false.", anotherCompetition.equals(competition));
@@ -283,7 +282,7 @@ public class CompetitionAccTests extends TestCase {
      * </p>
      */
     public void testEquals_DifferentObjects3() {
-        Competition anotherCompetition = new StudioCompetition();
+        Competition anotherCompetition = new Competition();
         anotherCompetition.setCompetitionId(1L);
         competition.setCompetitionId(2L);
         assertFalse("Should return false.", competition.equals(anotherCompetition));
@@ -299,7 +298,7 @@ public class CompetitionAccTests extends TestCase {
      * </p>
      */
     public void testEquals_DifferentObjects4() {
-        Competition anotherCompetition = new StudioCompetition();
+        Competition anotherCompetition = new Competition();
         anotherCompetition.setCompetitionId(1L);
         competition.setCompetitionId(1L);
         assertTrue("Should return true.", competition.equals(anotherCompetition));
