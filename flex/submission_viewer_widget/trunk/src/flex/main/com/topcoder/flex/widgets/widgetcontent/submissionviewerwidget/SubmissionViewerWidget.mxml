@@ -26,6 +26,13 @@
 			overSkin: Embed(source="../assets/icon/imageZoomViewerIcons.swf",symbol="PlusButton_Over");
 			upSkin: Embed(source="../assets/icon/imageZoomViewerIcons.swf",symbol="PlusButton_Up");
 		}
+		
+		.ImageInNewWindowButton {		
+			disabledSkin: Embed(source="../assets/image/clickToMax.png");
+			downSkin: Embed(source="../assets/image/clickToMax.png");
+			overSkin: Embed(source="../assets/image/clickToMax.png");
+			upSkin: Embed(source="../assets/image/clickToMax.png");
+		}
 	</mx:Style>
 
     <mx:Script>
@@ -232,6 +239,8 @@
 					var index:int = _contestList.getItemIndex(contestlist_minpage.selectedItem);
 					trace("To be selected Index: " + index);
 					contestCombo.selectedIndex=index;
+					
+					list.select(list_minpage.selectedItem);
 					handleContest(null);
 				}
             }
@@ -376,7 +385,9 @@
                 	
                 	currentIndex = 0;
                 	setSubmission();
-                	list.selectedIndex = 0;
+                	
+                	list.select(activeSubmission.getItemAt(0));
+                	//list.selectedIndex = 0;
                 	updatePurchase();
                 	handleSelect();
                 }
@@ -473,7 +484,9 @@
                     if (!activeSubmission.contains(prevItem)) {
                         goUp();
                     }
-                    list.selectedItem = prevItem;
+                    
+                    list.select(prevItem);
+                    //list.selectedItem = prevItem;
                     handleSelect();
                 }
             }
@@ -486,7 +499,8 @@
                     if (!activeSubmission.contains(nextItem)) {
                         goDown();
                     }
-                    list.selectedItem = nextItem;
+                    list.select(nextItem);
+                    //list.selectedItem = nextItem;
                     handleSelect();
                 }
             }
@@ -630,6 +644,8 @@
                     currentIndexMinPage--;
                     hideShowUpDownArrowMinPage();
                 }
+                
+                goUp();
             }
             
             private function goDownMinPage():void {
@@ -649,6 +665,8 @@
                     currentIndexMinPage++;
                     hideShowUpDownArrowMinPage();
                 }
+                
+                goDown();
             }
             
             private function hideShowUpDownArrow():void {
@@ -1146,6 +1164,13 @@
  				}
             }
             
+            private function openImageInNewWindow(event:MouseEvent):void {
+            	if (list.selectedItem) {
+            		var url:String = "http://www.topcoder.com/direct/cockpit/impersonation/cockpitStudio.do?&sbt=full&sbmid=" + list.selectedItem.id;
+        			var u:URLRequest = new URLRequest(url);
+        			navigateToURL(u,"_blank");
+            	}
+     		}
         ]]>
     </mx:Script>
 
@@ -1220,7 +1245,7 @@
 		                
 		            	<mx:Spacer height="5" />
 		                <mx:Button id="up" styleName="up" click="goUp()" />
-		                <mx:TileList id="list" rowCount="4" width="100%" columnCount="2"
+		                <tc:CustomTileList id="list" rowCount="4" width="100%" columnCount="2"
 		                        selectionDuration="0"
 		                        rowHeight="80"
 		                        dataProvider="{activeSubmission}" 
@@ -1296,6 +1321,12 @@
 										bitmapScaleFactor="1"
 										width="100%" height="100%"
 										x="0" y="0"/>
+								<mx:Button styleName="ImageInNewWindowButton"
+									   toolTip="Click here to get full screen view in a new window"
+									   click="openImageInNewWindow(event)"
+									   top="2"
+									   right="2"/>
+									   
                             	<mx:VBox left="10" top="10" width="20">
 									<mx:Spacer/>
 								
