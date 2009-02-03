@@ -1,7 +1,7 @@
 <project name="Dependency Import" default="dist" basedir=".">
-    <!-- property file defining the component's dependencies -->
+    <!-- property file defining the component's dependencies 
     <property name="jboss_home" value="${ext_libdir}/jboss/4.2.2.GA"/>
-    <property name="jboss_config_name" value="default"/>
+    <property name="jboss_config_name" value="default"/>-->
 
     <!-- Properties used in compile_targets ANT target for JDK version 5 -->
     <property name="component.target" value="1.5"/>
@@ -10,9 +10,10 @@
     <!-- TCS dependencies -->
     <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
     <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
-    <property name="jboss_login_module.jar" value="${tcs_libdir}/jboss_login_module/2.0.0/jboss_login_module.jar"/>
+    <property name="jboss_login_module.jar" value="${tcs_libdir}/jboss_login_module/2.1.0/jboss_login_module.jar"/>
     <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
     <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+	<property name="studio_service.jar" value="${tcs_libdir}/studio_service/1.2.3/studio_service.jar"/>
 
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
@@ -28,6 +29,7 @@
 
     <property name="jboss-jaxws.jar" value="${jboss_home}/server/${jboss_config_name}/lib/jboss-jaxws.jar"/>
     <property name="log4j.jar" value="${jboss_home}/server/${jboss_config_name}/lib/log4j.jar"/>
+	<property name="jaxb-api.jar" value="${ext_libdir}/jaxb/2.1.7/jaxb-api.jar"/>
 
     <property name="jboss-ejb3x.jar" value="${jboss_home}/client/jboss-ejb3x.jar"/>
     <property name="ejb3-persistence.jar" value="${jboss_home}/client/ejb3-persistence.jar"/>
@@ -42,6 +44,7 @@
         <pathelement location="${logging_wrapper.jar}"/>
         <pathelement location="${object_formatter.jar}"/>
         <pathelement location="${jboss_login_module.jar}"/>
+	<pathelement location="${studio_service.jar}"/>
     </path>
 
     <path id="component.3rdParty-dependencies">
@@ -49,6 +52,7 @@
         <pathelement location="${ejb3-persistence.jar}"/>
         <pathelement location="${jbossall-client.jar}"/>
         <pathelement location="${jboss-jaxws.jar}"/>
+	<pathelement location="${jaxb-api.jar}"/>
     </path>
 
     <path id="component.test.3rdParty-dependencies">
