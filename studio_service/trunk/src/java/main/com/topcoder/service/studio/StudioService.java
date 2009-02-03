@@ -336,6 +336,20 @@ public interface StudioService {
      *             if any error occurs when getting contest.
      */
     public List<SimpleContestData> getSimpleContestData() throws PersistenceException;
+    
+    
+    /**
+     * <p>
+     * This is going to fetch all the currently available contests related given project.
+     * </p>
+     *
+     * @param pid the given project id
+     * @return the list of all available contents (or empty if none found)
+     *
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     */
+    public List<SimpleContestData> getSimpleContestData(long pid) throws PersistenceException;
 
     /**
      * <p>
@@ -349,7 +363,19 @@ public interface StudioService {
      */
     public List<SimpleProjectContestData> getSimpleProjectContestData() throws PersistenceException;
 
-   
+    /**
+     * <p>
+     * This is going to fetch all the currently available contests related to given projectid.
+     * </p>
+     * 
+     * @param pid the given project id
+     * @return the list of all available contents (or empty if none found)
+     *
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     */
+    public List<SimpleProjectContestData> getSimpleProjectContestData(long pid) throws PersistenceException;
+
 	/**
 	 * <p>
 	 * This is going to get all the matching contest entities that fulfill the
@@ -663,6 +689,23 @@ public interface StudioService {
      * @since 1.1
      */
     public List<SimpleContestData> getContestDataOnly() throws PersistenceException;
+    
+    /**
+     * <p>
+     * This is going to fetch only contestid and contest name related to given project.
+     * </p>
+     * 
+     * @param pid the given project id
+     * @return the list of all available contents (only id and name) (or empty if none found)
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1
+     */
+    public List<SimpleContestData> getContestDataOnly(long pid) throws PersistenceException;
+ 
+
 
 
 

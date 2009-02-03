@@ -2518,6 +2518,39 @@ public class StudioServiceBean implements StudioService {
 
         return null;
     }
+    /**
+     * <p>
+     * This is going to fetch all the currently available contests related given project.
+     * </p>
+     *
+     * @param pid the given project id
+     * @return the list of all available contents (or empty if none found)
+     *
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     */
+    public List<SimpleContestData> getSimpleContestData(long pid) throws PersistenceException
+    {
+    	logEnter("getSimpleContestData(pid)");
+
+        try {
+
+            List<SimpleContestData> contests;
+            contests = contestManager.getSimpleContestData(pid);
+            if(contests==null)contests=new ArrayList<SimpleContestData>();
+
+			logExit("getSimpleContestData(pid)", contests.size());
+           
+			return contests;
+
+
+
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while retrieving contest.", e);
+        }
+
+        return null;
+    }
 
     /**
      * <p>
@@ -2557,6 +2590,40 @@ public class StudioServiceBean implements StudioService {
 
         return null;
     }
+    
+    /**
+     * <p>
+     * This is going to fetch all the currently available contests related to given projectid.
+     * </p>
+     * 
+     * @param pid the given project id
+     * @return the list of all available contents (or empty if none found)
+     *
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     */
+    public List<SimpleProjectContestData> getSimpleProjectContestData(long pid) throws PersistenceException
+    {
+    	logEnter("getSimpleProjectContestData(pid)");
+
+        try {
+
+            List<SimpleProjectContestData> contests;
+            
+            contests = contestManager.getSimpleProjectContestData(pid);
+            
+            
+            if(contests==null) contests= new ArrayList<SimpleProjectContestData>();
+
+            logExit("getSimpleProjectContestData(pid)", contests.size());
+			return contests;
+
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while retrieving contest.", e);
+        }
+
+        return null;
+    }
 
 	 /**
      * <p>
@@ -2587,6 +2654,40 @@ public class StudioServiceBean implements StudioService {
             if(contests==null) contests= new ArrayList<SimpleContestData>();
 
             logExit("getContestDataOnly", contests.size());
+            return contests;
+
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManager reports error while getContestDataOnly.", e);
+        }
+
+        return null;
+    }
+    
+    /**
+     * <p>
+     * This is going to fetch only contestid and contest name related to given project.
+     * </p>
+     * 
+     * @param pid the given project id
+     * @return the list of all available contents (only id and name) (or empty if none found)
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1
+     */
+    public List<SimpleContestData> getContestDataOnly(long pid) throws PersistenceException
+    {
+    	logEnter("getContestDataOnly(pid)");
+
+        try {
+            List<SimpleContestData> contests;
+            
+            contests = contestManager.getContestDataOnly(pid);
+            
+            if(contests==null) contests= new ArrayList<SimpleContestData>();
+
+            logExit("getContestDataOnly(pid)", contests.size());
             return contests;
 
         } catch (ContestManagementException e) {
