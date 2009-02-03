@@ -33,7 +33,7 @@
 						model[item.id] = item.text;
 					}
 					model.cardType = cardTypeCombo.selectedItem.data;
-					model.cardExpDateStr = month.value + "/" + year.value;
+					model.cardExpDateStr = month.selectedItem.data + "/" + year.selectedItem.data;
 					if (result) {
 						return 2;
 					} else {
@@ -68,15 +68,16 @@
 				}
 			}
 			
-			private function checkMonth():void {
-				if (month.value > 12) {
-					month.value = 1;
-					year.value++;
-				} else if (month.value < 1) {
-					month.value = 12;
-					year.value--;
-				}
-			}
+      //No more needed (BUGR-1082)
+			//private function checkMonth():void {
+			//	if (month.value > 12) {
+			//		month.value = 1;
+			//		year.value++;
+			//	} else if (month.value < 1) {
+			//		month.value = 12;
+			//		year.value--;
+			//	}
+			//}
 			
 			
 		]]>
@@ -93,18 +94,83 @@
 				</mx:VBox>
 				<mx:VBox width="100%">
 					<mx:TextInput id="cardNum" width="100%" height="20" />
-					<mx:ComboBox width="100%" height="20" styleName="combobox" id="cardTypeCombo">
+					<mx:ComboBox width="100%" height="20" id="cardTypeCombo">
 						<mx:dataProvider>
 	                        <mx:Object label="Visa" data="Visa"/>
 							<mx:Object label="MasterCard" data="MasterCard"/>
 						</mx:dataProvider>
-					</mx:ComboBox>
+					</mx:ComboBox>          
 					<mx:HBox width="100%">
-						<mx:NumericStepper minimum="0" maximum="13" value="12" id="month" textAlign="left"
+            <mx:ComboBox width="70" height="20" id="month">
+              <mx:dataProvider>
+                <mx:Object label="1" data="1"/>
+                <mx:Object label="2" data="2"/>
+                <mx:Object label="3" data="3"/>
+                <mx:Object label="4" data="4"/>
+                <mx:Object label="5" data="5"/>
+                <mx:Object label="6" data="6"/>
+                <mx:Object label="7" data="7"/>
+                <mx:Object label="8" data="8"/>
+                <mx:Object label="9" data="9"/>
+                <mx:Object label="10" data="10"/>
+                <mx:Object label="11" data="11"/>
+                <mx:Object label="12" data="12"/>
+              </mx:dataProvider>
+            </mx:ComboBox>
+            <mx:Text text="/" />            
+            <mx:ComboBox width="70" height="25" styleName="combobox" id="year">
+              <mx:dataProvider>
+                <mx:Object label="2008" data="2008"/>
+                <mx:Object label="2009" data="2009"/>
+                <mx:Object label="2010" data="2010"/>
+                <mx:Object label="2011" data="2011"/>
+                <mx:Object label="2012" data="2012"/>
+                <mx:Object label="2013" data="2013"/>
+                <mx:Object label="2014" data="2014"/>
+                <mx:Object label="2015" data="2015"/>
+                <mx:Object label="2016" data="2016"/>
+                <mx:Object label="2017" data="2017"/>
+                <mx:Object label="2018" data="2018"/>
+                <mx:Object label="2019" data="2019"/>
+                <mx:Object label="2020" data="2020"/>
+                <mx:Object label="2021" data="2021"/>
+                <mx:Object label="2022" data="2022"/>
+                <mx:Object label="2023" data="2023"/>
+                <mx:Object label="2024" data="2024"/>
+                <mx:Object label="2025" data="2025"/>
+                <mx:Object label="2026" data="2026"/>
+                <mx:Object label="2027" data="2027"/>
+                <mx:Object label="2028" data="2028"/>
+                <mx:Object label="2029" data="2029"/>
+                <mx:Object label="2030" data="2030"/>
+                <mx:Object label="2031" data="2031"/>
+                <mx:Object label="2032" data="2032"/>
+                <mx:Object label="2033" data="2033"/>
+                <mx:Object label="2034" data="2034"/>
+                <mx:Object label="2035" data="2035"/>
+                <mx:Object label="2036" data="2036"/>
+                <mx:Object label="2037" data="2037"/>
+                <mx:Object label="2038" data="2038"/>
+                <mx:Object label="2039" data="2039"/>
+                <mx:Object label="2040" data="2040"/>
+                <mx:Object label="2041" data="2041"/>
+                <mx:Object label="2042" data="2042"/>
+                <mx:Object label="2043" data="2043"/>
+                <mx:Object label="2044" data="2044"/>
+                <mx:Object label="2045" data="2045"/>
+                <mx:Object label="2046" data="2046"/>
+                <mx:Object label="2047" data="2047"/>
+                <mx:Object label="2048" data="2048"/>
+                <mx:Object label="2049" data="2049"/>
+                <mx:Object label="2050" data="2050"/>
+              </mx:dataProvider>
+            </mx:ComboBox>            
+						<!--Replaced by drapdown list (BUGR-1082)
+            mx:NumericStepper minimum="0" maximum="13" value="12" id="month" textAlign="left"
 								height="25" width="70" styleName="NumericStepper" valueCommit="checkMonth()" />
 						<mx:Text text="/" />
 						<mx:NumericStepper minimum="1800" maximum="2800" value="2008" id="year"
-								height="25" width="70" styleName="NumericStepper" />
+								height="25" width="70" styleName="NumericStepper" /-->            
 					</mx:HBox>
 				</mx:VBox>
 				<mx:VBox width="10" height="100%" />
