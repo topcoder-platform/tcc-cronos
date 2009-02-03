@@ -4,7 +4,6 @@
 	initialize="init()"
 	horizontalAlign="left"
 	headerHeight="5" width="100%"
-	verticalScrollPolicy="on"
 	creationComplete="jsonRequest.send()">
 
 	<mx:HTTPService id="jsonRequest" url="http://www.topcoder.com/tc?" resultFormat="text" result="handleJsonResult(event)" >
@@ -144,7 +143,7 @@
     ]]>
 </mx:Script>
         <mx:DataGrid id="dataGrid" width="100%" height="100%" dataProvider="{this.activeContents}"
-            verticalScrollPolicy="off" horizontalScrollPolicy="off">
+            verticalScrollPolicy="auto" horizontalScrollPolicy="off">
             <mx:columns>
                 <mx:DataGridColumn dataField="contest_name"
                     itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.ContestLinkButton"
