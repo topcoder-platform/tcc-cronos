@@ -120,7 +120,7 @@
 			</mx:VBox>
 			<mx:VBox width="100%">
 				<mx:TextInput id="cardNum" width="100%" height="20" />
-				<mx:ComboBox width="100%" height="20" styleName="combobox" id="cardTypeCombo">
+				<mx:ComboBox width="100%" height="20" id="cardTypeCombo">
 					<mx:dataProvider>
                         <mx:Object label="Visa" data="Visa"/>
 						<mx:Object label="MasterCard" data="MasterCard"/>
@@ -128,7 +128,7 @@
 					</mx:dataProvider>
 				</mx:ComboBox>
         <mx:HBox width="100%">
-          <mx:ComboBox width="50" height="20" styleName="combobox" id="month">
+          <mx:ComboBox width="50" height="20" id="month">
             <mx:dataProvider>
               <mx:Object label="1" data="1"/>
               <mx:Object label="2" data="2"/>
@@ -145,7 +145,7 @@
             </mx:dataProvider>
           </mx:ComboBox>
           <mx:Text text="/" />
-          <mx:ComboBox width="70" height="20" styleName="combobox" id="year">
+          <mx:ComboBox width="70" height="20" id="year">
             <mx:dataProvider>
               <mx:Object label="2008" data="2008"/>
               <mx:Object label="2009" data="2009"/>
