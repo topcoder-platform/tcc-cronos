@@ -2638,6 +2638,76 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         }
     }
 
+	
+	/**
+     * <p>
+     * This is going to fetch all the currently available contests related to given project.
+     * </p>
+     * @param the given project id;
+     * @return the list of all available contents (or empty if none found)
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1
+     */
+	@PermitAll
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<SimpleContestData> getSimpleContestData(long pid) throws ContestManagementException
+    {
+    	try {
+			logEnter("getAllContestsForMonitor()");
+
+			EntityManager em = getEntityManager();
+
+			String qstr = "select c.contest_id, c.name as cname, c.start_time,  c.end_time,  "
+					+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
+					+ " (select count(*) from submission where contest_id = c.contest_id ) as num_sub "
+					+ " from contest c "
+					+ " where c.tc_direct_project_id ="+pid+" and c.deleted = 0 ";
+
+			Query query = em.createNativeQuery(qstr);
+
+			List list = query.getResultList();
+
+			List<SimpleContestData> result = new ArrayList<SimpleContestData>();
+			SimpleDateFormat myFmt = new SimpleDateFormat(
+					"yyyy-MM-dd HH:mm:ss.SSS");
+
+			for (int i = 0; i < list.size(); i++) {
+
+				SimpleContestData c = new SimpleContestData();
+				Object[] os = (Object[]) list.get(i);
+				if (os[0] != null)
+					c.setContestId(Long.parseLong(os[0].toString()));
+				if (os[1] != null)
+					c.setName(os[1].toString());
+				if (os[2] != null)
+					c.setStartDate(myFmt.parse(os[2].toString()));
+				if (os[3] != null)
+					c.setEndDate(myFmt.parse(os[3].toString()));
+				if (os[4] != null)
+					c.setNum_reg(Integer.parseInt(os[4].toString()));
+				if (os[5] != null)
+					c.setNum_sub(Integer.parseInt(os[5].toString()));
+				result.add(c);
+
+			}
+			return result;
+		} catch (IllegalStateException e) {
+			throw wrapContestManagementException(e,
+					"The EntityManager is closed.");
+		} catch (PersistenceException e) {
+			throw wrapContestManagementException(e,
+					"There are errors while persisting the entity.");
+		} catch (ParseException e) {
+			throw wrapContestManagementException(e,
+					"There are errors while persisting the entity.");
+		} finally {
+			logExit("getAllContestsForMonitor()");
+		}
+    }
+
 	@PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<SimpleContestData> getSimpleContestDataForUser(long createdUser) throws ContestManagementException {
@@ -2739,6 +2809,92 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 		} finally {
             logExit("getSimpleProjectContestData()");
         }
+    }
+
+
+	/**
+     * <p>
+     * This is going to fetch all the currently available contests related the given projects.
+     * </p>
+     * 
+     * @param the given project id
+     * @return the list of all available contents (or empty if none found)
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1
+     */
+
+	@PermitAll
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<SimpleProjectContestData> getSimpleProjectContestData(long pid) throws ContestManagementException
+    {
+		try {
+			logEnter("getSimpleProjectContestData(pid)");
+
+			EntityManager em = getEntityManager();
+
+			String qstr = "select p.project_id , p.name as pname, c.contest_id,  c.name as cname, "
+					+ " c.start_time, c.end_time,  ds.name as sname, "
+					+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
+					+ " (select count(*) from submission where contest_id = c.contest_id ) as num_sub, "
+					+ " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for "
+					+ " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
+					+ " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
+					+ " where p.project_id = "+pid;
+
+			Query query = em.createNativeQuery(qstr);
+
+			List list = query.getResultList();
+
+			List<SimpleProjectContestData> result = new ArrayList<SimpleProjectContestData>();
+			SimpleDateFormat myFmt = new SimpleDateFormat(
+					"yyyy-MM-dd HH:mm:ss.SSS");
+
+			for (int i = 0; i < list.size(); i++) {
+
+				SimpleProjectContestData c = new SimpleProjectContestData();
+				Object[] os = (Object[]) list.get(i);
+				if (os[0] != null)
+					c.setProjectId(Long.parseLong(os[0].toString()));
+				if (os[1] != null)
+					c.setPname(os[1].toString());
+				if (os[2] != null)
+					c.setContestId(Long.parseLong(os[2].toString()));
+				if (os[3] != null)
+					c.setCname(os[3].toString());
+
+				if (os[4] != null)
+					c.setStartDate(myFmt.parse(os[4].toString()));
+				if (os[5] != null)
+					c.setEndDate(myFmt.parse(os[5].toString()));
+				if (os[6] != null)
+					c.setSname(os[6].toString());
+				if (os[7] != null)
+					c.setNum_reg(Integer.parseInt(os[7].toString()));
+				if (os[8] != null)
+					c.setNum_sub(Integer.parseInt(os[8].toString()));
+
+				if (os[9] != null)
+					c.setNum_for(Integer.parseInt(os[9].toString()));
+
+				result.add(c);
+
+			}
+			return result;
+		} catch (IllegalStateException e) {
+			throw wrapContestManagementException(e,
+					"The EntityManager is closed.");
+		} catch (PersistenceException e) {
+			throw wrapContestManagementException(e,
+					"There are errors while persisting the entity.");
+		} catch (ParseException e) {
+			throw wrapContestManagementException(e,
+					"There are errors while persisting the entity.");
+		} finally {
+			logExit("getSimpleProjectContestData(pid)");
+		}
     }
 
 	 @PermitAll
@@ -2856,6 +3012,65 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 			logExit("getContestDataOnly()");
 		}
     }
+
+	/**
+     * <p>
+     * This is going to fetch only contestid and contest name for contest related to given project.
+     * </p>
+     * 
+     * @return the list of all available contents (only id and name) (or empty if none found)
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1
+     */
+	@PermitAll
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<SimpleContestData> getContestDataOnly(long pid) throws ContestManagementException
+    {
+		try {
+			logEnter("getContestDataOnly(pid)");
+
+			EntityManager em = getEntityManager();
+			String qstr = "select contest_id, name, contest_detailed_status_id, "
+					+ "(select contest_detailed_status_desc from contest_detailed_status_lu ds " +
+							"where ds.contest_detailed_status_id =c.contest_detailed_status_id) as sname from contest c "
+					+ "where c.tc_direct_project_id ="+pid+" and c.deleted = 0   ";
+
+			Query query = em.createNativeQuery(qstr);
+
+			List list = query.getResultList();
+
+			List<SimpleContestData> result = new ArrayList<SimpleContestData>();
+
+			for (int i = 0; i < list.size(); i++) {
+
+				SimpleContestData c = new SimpleContestData();
+				Object[] os = (Object[]) list.get(i);
+				if (os[0] != null)
+					c.setContestId(Long.parseLong(os[0].toString()));
+				if (os[1] != null)
+					c.setName(os[1].toString());
+				if (os[2] != null)
+					c.setSname(os[2].toString());
+				if (os[3] != null)
+					c.setSname(os[1].toString());
+				result.add(c);
+
+			}
+			return result;
+		} catch (IllegalStateException e) {
+			throw wrapContestManagementException(e,
+					"The EntityManager is closed.");
+		} catch (PersistenceException e) {
+			throw wrapContestManagementException(e,
+					"There are errors while persisting the entity.");
+		} finally {
+			logExit("getContestDataOnly(pid)");
+		}
+    }
+
 
 
 	/**

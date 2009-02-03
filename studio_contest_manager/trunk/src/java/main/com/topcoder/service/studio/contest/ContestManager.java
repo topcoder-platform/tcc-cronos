@@ -706,6 +706,21 @@ public interface ContestManager {
     
     /**
      * <p>
+     * This is going to fetch all the currently available contests related to given project.
+     * </p>
+     * @param the given project id;
+     * @return the list of all available contents (or empty if none found)
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1
+     */
+    public List<SimpleContestData> getSimpleContestData(long pid) throws ContestManagementException;
+    
+    
+    /**
+     * <p>
      * This is going to fetch user's currently available contests for contest monitor widget.
      * </p>
      * 
@@ -752,6 +767,21 @@ public interface ContestManager {
 
     /**
      * <p>
+     * This is going to fetch all the currently available contests related the given projects.
+     * </p>
+     * 
+     * @param the given project id
+     * @return the list of all available contents (or empty if none found)
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1
+     */
+    public List<SimpleProjectContestData> getSimpleProjectContestData(long pid) throws ContestManagementException;
+
+    /**
+     * <p>
      * This is going to fetch only contestid and contest name for contest.
      * </p>
      * 
@@ -763,6 +793,20 @@ public interface ContestManager {
      * @since 1.1
      */
     public List<SimpleContestData> getContestDataOnly() throws ContestManagementException;
+
+	/**
+     * <p>
+     * This is going to fetch only contestid and contest name for contest related to given project.
+     * </p>
+     * 
+     * @return the list of all available contents (only id and name) (or empty if none found)
+     * 
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * 
+     * @since 1.1
+     */
+    public List<SimpleContestData> getContestDataOnly(long pid) throws ContestManagementException;
 
 	/**
      * <p>
