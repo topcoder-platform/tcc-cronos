@@ -28,7 +28,7 @@ import com.topcoder.service.studio.PrizeData;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "studioCompetition",
-        propOrder = {"id", "contestData", "type", "adminFee", "drPoints", "eligibility", "startTime", "endTime", "shortSummary", "prize"})
+        propOrder = {"id", "contestData", "type"})
 public class StudioCompetition extends Competition {
 
     /**
