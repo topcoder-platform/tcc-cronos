@@ -53,8 +53,6 @@
             import mx.core.Container;
             import flash.system.Security;
 
-            
-        
             import mx.collections.SortField;
             import mx.collections.Sort;
             
@@ -1266,7 +1264,7 @@
 		                        click="handleSelect()" 
 		                        allowMultipleSelection="false" 
 		                        allowDragSelection="false"
-					backgroundColor="#E0E0E0"
+								backgroundColor="#E0E0E0"
 		                        />
 		                <mx:Button id="down" styleName="down" click="goDown()" />
 		            </mx:VBox>
@@ -1311,20 +1309,23 @@
 	            	styleName="BoxStyle" width="100%" 
 	            	paddingTop="5">
 	            	
-	            	<mx:HBox horizontalAlign="center">
+	            	<mx:Label htmlText="{'&lt;b&gt;' + _currentItemLabel + '&lt;/b&gt;' + ' (Status: ' + _selectedContestStatus + ')'}" 
+	                    		fontFamily="Arial"
+	                    		textAlign="center" 
+		                        fontSize="14" 
+		                        width="100%" />
+	            	
+	            	<mx:HBox horizontalAlign="center" width="100%" height="100%" paddingLeft="10" paddingRight="10">
 	                    <mx:VBox height="100%" verticalAlign="middle">
 	                        <mx:Button id="prev" styleName="prev" click="goPrev()"/>
 	                    </mx:VBox>
 	                    <mx:VBox height="100%" 
 	                    		width="100%" 
+	                    		borderStyle="solid"
 	                    		horizontalAlign="center">
-	                    	<mx:Label htmlText="{'&lt;b&gt;' + _currentItemLabel + '&lt;/b&gt;' + ' (Status: ' + _selectedContestStatus + ')'}" 
-	                    		fontFamily="Arial"
-	                    		textAlign="center" 
-		                        fontSize="14" 
-		                        width="100%" />
+		                    
 							<!-- Changes for bugr-1059: Submission Viewer Preview Image -->
-	                        <mx:Canvas borderStyle="solid" width="526" height="276">
+	                        <mx:Canvas borderStyle="solid" minWidth="526" minHeight="276" width="100%" height="100%">
 	                            <tcimg:ImageViewer id="currentImage" 
 										bitmapScaleFactorMax="5"
 										bitmapScaleFactorMin=".05"
@@ -1375,39 +1376,39 @@
 	                        <mx:Button id="next" styleName="next" click="goNext()"/>
 	                    </mx:VBox>
 	                </mx:HBox>
-	                        <mx:HBox width="100%" 
-					               horizontalAlign="center"
-					               verticalScrollPolicy="off" 
-					               horizontalScrollPolicy="off">
-					            <!--<mx:Spacer width="260" />-->
-		                        <mx:ToggleButtonBar horizontalAlign="center" horizontalGap="20"  
-		                                id="rankBar" selectedIndex="-1"
-		                                buttonWidth="23" 
-		                                buttonHeight="23" 
-		                                buttonStyleName="rankButton">
-		                            <mx:String>1</mx:String>
-		                            <mx:String>2</mx:String>
-		                            <mx:String>3</mx:String>
-		                            <mx:String>4</mx:String>
-		                            <mx:String>5</mx:String>
-		                        </mx:ToggleButtonBar>
-		                        <!--<mx:Spacer width="100%" />-->
-	                        </mx:HBox>
-	                        <mx:HBox width="100%" 
-					               horizontalAlign="center"
-					               verticalScrollPolicy="off" 
-					               horizontalScrollPolicy="off" horizontalGap="20">
-		                            <mx:Label text="1st" height="23" fontWeight="bold"/>
-		                            <mx:Label text="2nd" height="23" fontWeight="bold"/>
-		                            <mx:Label text="3rd" height="23" fontWeight="bold"/>
-		                            <mx:Label text="4th" height="23" fontWeight="bold"/>
-		                            <mx:Label text="5th" height="23" fontWeight="bold"/>
-	                        </mx:HBox>
-	                        <mx:HBox width="100%" horizontalAlign="right"
-                                   verticalScrollPolicy="off" 
-                                   horizontalScrollPolicy="off">
-	                               <mx:CheckBox id="noWinner" label="I can not choose a winner." styleName="CheckBoxStyle" />
-	                        </mx:HBox>
+                    <mx:HBox width="100%" 
+			               horizontalAlign="center"
+			               verticalScrollPolicy="off" 
+			               horizontalScrollPolicy="off">
+			            <!--<mx:Spacer width="260" />-->
+                        <mx:ToggleButtonBar horizontalAlign="center" horizontalGap="20"  
+                                id="rankBar" selectedIndex="-1"
+                                buttonWidth="23" 
+                                buttonHeight="23" 
+                                buttonStyleName="rankButton">
+                            <mx:String>1</mx:String>
+                            <mx:String>2</mx:String>
+                            <mx:String>3</mx:String>
+                            <mx:String>4</mx:String>
+                            <mx:String>5</mx:String>
+                        </mx:ToggleButtonBar>
+                        <!--<mx:Spacer width="100%" />-->
+                    </mx:HBox>
+                    <mx:HBox width="100%" 
+			               horizontalAlign="center"
+			               verticalScrollPolicy="off" 
+			               horizontalScrollPolicy="off" horizontalGap="20">
+                            <mx:Label text="1st" height="23" fontWeight="bold"/>
+                            <mx:Label text="2nd" height="23" fontWeight="bold"/>
+                            <mx:Label text="3rd" height="23" fontWeight="bold"/>
+                            <mx:Label text="4th" height="23" fontWeight="bold"/>
+                            <mx:Label text="5th" height="23" fontWeight="bold"/>
+                    </mx:HBox>
+                    <mx:HBox width="100%" horizontalAlign="right"
+                           verticalScrollPolicy="off" 
+                           horizontalScrollPolicy="off">
+                           <mx:CheckBox id="noWinner" label="I can not choose a winner." styleName="CheckBoxStyle" />
+                    </mx:HBox>
 	                <mx:HBox id="purchase_panel" 
 	                	width="100%" 
 	                	horizontalAlign="center"
