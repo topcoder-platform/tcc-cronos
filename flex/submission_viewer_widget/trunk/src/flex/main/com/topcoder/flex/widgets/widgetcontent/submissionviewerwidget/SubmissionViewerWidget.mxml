@@ -1171,6 +1171,16 @@
         			navigateToURL(u,"_blank");
             	}
      		}
+
+	// Prevent DividerDrag and MouseDown events from bubbling up to the SuperTabNavigator     		
+	public function onDividerDrag(event:Event):void {
+		event.stopImmediatePropagation();
+	}
+
+	public function onMouseDown(event:Event):void {
+		event.stopImmediatePropagation();
+	}
+
         ]]>
     </mx:Script>
 
@@ -1234,8 +1244,8 @@
 <mx:ViewStack id="main" 
 	width="100%" 
 	height="100%">
-    <mx:HBox id="contestViewer" width="100%" height="100%" paddingTop="2" paddingLeft="0" paddingRight="0">
-        <mx:VBox horizontalAlign="left" height="100%" width="200" 
+    <mx:HDividedBox id="contestViewer" width="100%" height="100%" paddingTop="2" paddingLeft="0" paddingRight="0" dividerDrag="onDividerDrag(event)" mouseDown="onMouseDown(event)">
+        <mx:VBox id="thumbnailPanelVBox" horizontalAlign="left" height="100%" width="200" 
         	verticalGap="0">
             <mx:ViewStack id="thumbnailPanel" width="100%" height="100%">
             	<mx:VBox id="thumbnailPanel_enabled" horizontalAlign="center">
@@ -1245,7 +1255,7 @@
 		                
 		            	<mx:Spacer height="5" />
 		                <mx:Button id="up" styleName="up" click="goUp()" />
-		                <tc:CustomTileList id="list" rowCount="4" width="100%" columnCount="2"
+		                <tc:CustomTileList id="list" rowCount="4" width="100%" columnCount="{thumbnailPanelVBox.width / 100}"
 		                        selectionDuration="0"
 		                        rowHeight="80"
 		                        dataProvider="{activeSubmission}" 
@@ -1541,7 +1551,7 @@
                 </mx:VBox>
             </mx:ViewStack>
         </mx:VBox>
-    </mx:HBox>    	
+    </mx:HDividedBox>    	
 	<mx:VBox id="submissionsConfirmationScreen" 
 		width="100%" 
 		height="100%" 
