@@ -16,13 +16,23 @@
             }
         ]]>
     </mx:Script>
-    
+
     <mx:Canvas width="100%" height="100%" backgroundColor="#ffffff" >
 
 	    <mx:Image source="@Embed('../assets/getting_started.png')" horizontalAlign="center" width="925" height="375" />
+
+        <!-- added START NOW button with hover state-->
+        <mx:Button id="btnStartNow"
+            width="135" height="25" top="329" horizontalCenter="260"
+            upSkin="@Embed('../assets/start_now_idle.png')"
+            overSkin="@Embed('../assets/start_now_hover.png')"
+        />
+        <mx:Image source="@Embed('../assets/button_shadow.png')"
+            width="135" height="8" top="354" horizontalCenter="260"
+        />
+
     </mx:Canvas>
 
-    
 </tc:GettingStartedWidgetCodeBehind>
 	
 
