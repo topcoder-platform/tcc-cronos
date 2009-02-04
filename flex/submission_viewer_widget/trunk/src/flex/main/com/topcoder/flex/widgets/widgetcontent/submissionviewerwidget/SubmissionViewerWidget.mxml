@@ -840,6 +840,19 @@
 	                		enablePurchaseSelector();
 	                	}
 	                	else {
+	                		// BUGR-1102
+	                		// Continue button should be disabled for No Winner Chosen (7), Insufficient Permissions - Rerun Possible (11),
+	                		// Insufficient Permissions (13) and Abandoned (14) 
+	                		// 
+	                		// The only "past" contest that has a Continue button is Completed (8)
+	                		
+	                		if (_selectedContestStatusId == 7
+	                			|| _selectedContestStatusId == 11
+	                			|| _selectedContestStatusId == 13
+	                			|| _selectedContestStatusId == 14) {
+					continue_contestViewer_btn.visible = false;	                				
+	                		}
+	                		
 	                		disableRatingSelector();
 	                	}
 	                	
