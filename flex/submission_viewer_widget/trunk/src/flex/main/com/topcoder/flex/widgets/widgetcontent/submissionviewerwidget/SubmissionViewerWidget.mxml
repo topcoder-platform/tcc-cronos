@@ -53,6 +53,8 @@
             import mx.core.Container;
             import flash.system.Security;
 
+            
+        
             import mx.collections.SortField;
             import mx.collections.Sort;
             
@@ -190,7 +192,9 @@
 					ContestServiceFacadeBean.clearHeaders();
 	            	ContestServiceFacadeBean.addHeader(header);
 	
-					ContestServiceFacadeBean.getStatusList();
+					//ContestServiceFacadeBean.getStatusList();
+					if(pid)ContestServiceFacadeBean.getContestDataOnlyByPID.send();
+					else					  
 	            	ContestServiceFacadeBean.getContestDataOnly();
             	}
             	else {
@@ -1208,6 +1212,15 @@
 		result="handleStatusList(event)"
 		fault="Alert.show(event.fault.faultString);"> 
 	</mx:operation>
+
+	<mx:operation name="getContestDataOnlyByPID" 
+		resultFormat="object" 
+		result="handleResult(event)"
+		fault="Alert.show(event.fault.faultString);"> 
+		<mx:request>
+	<arg0>{pid}</arg0>
+	</mx:request> 
+	</mx:operation>
 		
 	<mx:operation name="retrieveSubmissionsForContest" 
 		resultFormat="object" 
@@ -1277,7 +1290,7 @@
 		                        click="handleSelect()" 
 		                        allowMultipleSelection="false" 
 		                        allowDragSelection="false"
-								backgroundColor="#E0E0E0"
+					backgroundColor="#E0E0E0"
 		                        />
 		                <mx:Button id="down" styleName="down" click="goDown()" />
 		            </mx:VBox>

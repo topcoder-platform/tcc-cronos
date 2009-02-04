@@ -45,7 +45,12 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 		public var _maximize:Function;
 		
 		public var _restore:Function;
-        
+		
+		 
+        private var _pid:String=null;
+        [Bindable]public function get pid():String {
+            return this._pid;
+        }
         public function set minPage(page:VBox):void
         {
         	_minPage=page;
@@ -305,6 +310,10 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         	if(map["contestid"])
         	{
         		_defaultcontestid=map["contestid"];
+        	}
+        	else if(map.hasOwnProperty("pid"))
+        	{
+        		_pid=map["pid"];
         	}
         }
         
