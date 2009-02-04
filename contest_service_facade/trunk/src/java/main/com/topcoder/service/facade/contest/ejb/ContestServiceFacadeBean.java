@@ -28,6 +28,9 @@ import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.facade.contest.ContestServiceFilter;
+import com.topcoder.service.studio.submission.Prize;
+import com.topcoder.service.studio.submission.PrizeType;
+import com.topcoder.service.studio.PrizeData;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
@@ -72,6 +75,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     @EJB(name = "ejb/StudioService")
     private StudioService studioService = null;
 
+	  /**
+     * Private constant specifying unactive not yet published status id.
+     */
+    private static final long CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED = 1;
+    
+    /**
+     * Private constant specifying draft status id.
+     */
+    private static final long CONTEST_DETAILED_STATUS_DRAFT = 15;
+
     /**
      * <p>Constructs new <code>ContestServiceFacadeBean</code> instance. This implementation does nothing.</p>
      */
@@ -93,6 +106,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     public StudioCompetition createContest(StudioCompetition contest, long tcDirectProjectId)
         throws PersistenceException {
         ContestData contestData = convertToContestData(contest);
+		contestData.setStatusId(CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED);
+		contestData.setDetailedStatusId(CONTEST_DETAILED_STATUS_DRAFT);
+		double total=0;
+		for(PrizeData prize:contestData.getPrizes())
+		{
+			total+=prize.getAmount();
+		}
+		contestData.setContestAdministrationFee(total*0.2);
+		contestData.setDrPoints(total*0.1);
         ContestData createdContestData = this.studioService.createContest(contestData, tcDirectProjectId);
         return (StudioCompetition) convertToCompetition(CompetionType.STUDIO, createdContestData);
     }
