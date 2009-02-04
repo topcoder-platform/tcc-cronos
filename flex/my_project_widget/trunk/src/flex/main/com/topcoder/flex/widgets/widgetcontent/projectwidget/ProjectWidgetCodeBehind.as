@@ -6,8 +6,7 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
     import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.widgets.model.IWidgetContainer;
     import com.topcoder.flex.widgets.widgetcontent.projectwidget.com.ProjectsContainer;
-
-    import com.topcoder.flex.model.IWidgetFramework;
+    
     import flash.utils.Dictionary;
     
     import mx.collections.ArrayCollection;
@@ -50,13 +49,17 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
          */
         [Bindable] private var _result:XML = null;
         
-        
-        
         private var _projects:ArrayCollection;
         
         private var _prjList:ProjectsContainer;
         
-        private var _ContestServiceFacadeBean:WebService;     
+        private var _ContestServiceFacadeBean:WebService; 
+        
+        private var _pid:String=null;
+        
+        
+        
+            
         
         
         private var isMax:Boolean=false;
@@ -91,6 +94,10 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         [Bindable]public function get result():XML {
             return this._result;
         }
+        
+        [Bindable]public function get pid():String {
+            return this._pid;
+        }
         /**
          * Sets the data for the widget.
          */
@@ -124,9 +131,18 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         
         public function loadData():void
         {
+        	if(pid)
+        	{
+        		ContestServiceFacadeBean.clearHeaders();
+        	ContestServiceFacadeBean.addHeader(ProjectWidget.getHeader(username,password));
+        	ContestServiceFacadeBean.getSimpleProjectContestDataByPID.send();	
+        	}
+        	else
+        	{
 			ContestServiceFacadeBean.clearHeaders();
         	ContestServiceFacadeBean.addHeader(ProjectWidget.getHeader(username,password));
         	ContestServiceFacadeBean.getSimpleProjectContestData();	
+        	}
             
         }
 
@@ -299,6 +315,10 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
          */
         public function setAttributes(map:Dictionary):void
         {
+        	if(map.hasOwnProperty("pid"))
+        	{
+        		_pid=map["pid"];
+        	}
         }
         
         /**
@@ -337,12 +357,12 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
          * @return the container this widget. Could be null if not set.
          */
         public function get container():IWidgetContainer
-        {
+       {
         	if(_container==null)
         	{
         		_container=parent as IWidgetContainer;
         	}
         	return _container;
-        }
+       }
     }
 }

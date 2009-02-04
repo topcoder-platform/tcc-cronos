@@ -136,8 +136,10 @@
         
         private function setProject(e:ResultEvent): void
         {
-        	if(e!=null && e.result!=null && e.result is ArrayCollection){
-        		var prjArray:ArrayCollection=e.result as ArrayCollection;
+        	if(e!=null && e.result!=null){
+        		var prjArray:ArrayCollection=new ArrayCollection;
+        		if(e.result is ArrayCollection) prjArray=e.result as ArrayCollection;
+        		else prjArray.addItem(e.result);
         		projects=new ArrayCollection();
         		for(var prjIdx=0;prjIdx<prjArray.length;)
         		{
@@ -186,7 +188,7 @@
         		prjList.dataProvider=  isMaximized()?projects: getSubArray(projects,10);
         	}
         }
-private function compareDate(a:Object, b:Object, fields:Array = null):int {
+		private function compareDate(a:Object, b:Object, fields:Array = null):int {
              return ObjectUtil.dateCompare(b.date,a.date);
             }
 
@@ -272,6 +274,11 @@ private function compareDate(a:Object, b:Object, fields:Array = null):int {
 <mx:WebService id="ContestServiceFacadeBean" 
 wsdl="{contestServiceFacadeWsdl}"> 
 <mx:operation name="getSimpleProjectContestData" resultFormat="object" result="setProject(event)"  /> 
+<mx:operation name="getSimpleProjectContestDataByPID" resultFormat="object" result="setProject(event)"  >
+<mx:request>
+	<arg0>{pid}</arg0>
+</mx:request> 
+</mx:operation>
 </mx:WebService>
 
 <mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"
