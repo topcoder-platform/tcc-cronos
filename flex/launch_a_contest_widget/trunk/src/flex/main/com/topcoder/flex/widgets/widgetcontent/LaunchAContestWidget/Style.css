@@ -10,6 +10,18 @@
    headerColors: #cccccc, #cccccc;
    titleStyleName: "panelTitle";
 }
+.NewWidgetPanel {
+	 
+   borderColor: #B7BABC;
+   borderThicknessLeft: 0;
+   borderThicknessTop: 0;
+   borderThicknessBottom: 0;
+   borderThicknessRight: 0;
+   borderAlpha: 1;
+   dropShadowEnabled: false;
+   headerColors: #cccccc, #cccccc;
+   titleStyleName: "panelTitle";
+}
 .panelTitle {
    textAlign: left;
    color: #000000;

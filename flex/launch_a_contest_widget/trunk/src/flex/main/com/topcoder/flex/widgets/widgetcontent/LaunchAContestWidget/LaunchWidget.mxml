@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tc:LaunchWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
-    xmlns:pages="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*" styleName="WidgetPanel"
-    xmlns:tc="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.*" title="Launch a contest"
-    width="600" initialize="initWidget()">
+    xmlns:pages="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*" styleName="NewWidgetPanel"
+    xmlns:tc="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.*" 
+    width="600" initialize="initWidget()" >
     <mx:Style source="Style.css" />
 
     <mx:Script>
@@ -249,13 +249,14 @@
                    this.currentState = "OverViewState";
                    save.visible = false;
                    this.height = 660;
-                   back.visible = true;
+                   //back.visible = true;
                    
                    review.cstTypeStep1 = contestSelect.contestType.selectedValue.toString();
                    hideArrow(step1box);
                    showArrow(step2box);
                    
                    result.type = contestSelect.contestType.selectedValue;
+                   bottemline.height=mainPanel.height-710;
                 }
                 else if(this.currentState == "OverViewState"){
                     //validate input
@@ -278,6 +279,7 @@
                    this.height = details.widgetHeight;
                    hideArrow(step2box);
                    showArrow(step3box);
+                    bottemline.height=mainPanel.height-530;
                 }
                 else if(this.currentState == "DetailsState"){
                    //validate input
@@ -294,6 +296,7 @@
                    review.glsInputStr = details.glsInput.text;
                    hideArrow(step3box);
                    showArrow(step4box);
+                    bottemline.height=mainPanel.height-1000;
                 }
                 else if(this.currentState == "SpecificationsState"){
                    //validate input
@@ -330,6 +333,7 @@
                    this.height = 600;
                    hideArrow(step4box);
                    showArrow(step5box);
+                    bottemline.height=mainPanel.height-400;
                 }
                 else if(this.currentState == "AttachFilesState"){
                    //validate input
@@ -339,6 +343,7 @@
                    this.height = 750;
                    hideArrow(step5box);
                    showArrow(step6box);
+                   bottemline.height=mainPanel.height-800;
                 }
                 else if(this.currentState == "ScheduleState"){
 					if (sched.validateFields() == false){
@@ -358,6 +363,7 @@
                    this.height = 1800;
                    hideArrow(step6box);
                    showArrow(step7box);
+                    bottemline.height=mainPanel.height-1700;
                 } else if (this.currentState == "ReviewState") {
                     this.currentState = "ActivateState";
                     save.visible = false;
@@ -365,6 +371,7 @@
                     hideArrow(step7box);
                     showArrow(step8box);
                     setButton(1);
+                     bottemline.height=mainPanel.height-800;
                 } else if (this.currentState == "ActivateState") {
                     save.visible = false;
                     var index:int = activate.goToNext();
@@ -577,7 +584,9 @@
                 attch.initData();
                 
                 sched.initData();
-		activate.initData();
+		       activate.initData();
+		       bottemline.height=mainPanel.height-contestSelect.height;
+		       save.visible=false;
 
             }
             private function handleError(e:FaultEvent):void
@@ -698,13 +707,14 @@
              <pages:Schedule id="sched" />
              <pages:Review id="review" />
              <pages:PaymentContest id="activate" width="100%" />
-
-             <mx:HBox paddingBottom="20" paddingLeft="20" paddingRight="10" width="100%" >
+   
+             <mx:HBox paddingLeft="20" paddingRight="10" width="100%" >
                  <mx:Button id="back" styleName="RedButton" label="&lt;&lt; back" click="previous()"/>
                  <mx:Spacer width="100%"/>
                  <mx:Button id="save" styleName="RedButton"  label="save as draft" click="saveAsDraft()"/>
                  <mx:Button id="goNext" styleName="RedButton"  label="continue >>" click="next()"/>
              </mx:HBox>
+             <mx:Spacer  id="bottemline" height="100%"/>
          </mx:VBox>
      </mx:HBox>
      

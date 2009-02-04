@@ -21,6 +21,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import flash.utils.Dictionary;
     
     import mx.containers.Panel;
+    import mx.containers.VBox;
     import mx.controls.Alert;
     import mx.rpc.events.FaultEvent;
 
@@ -35,7 +36,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
      * @author TCSDEVELOPER
      * @version 1.0
      */
-     public class LaunchWidgetCodeBehind extends Panel implements IWidget {
+     public class LaunchWidgetCodeBehind extends VBox implements IWidget {
         /**
          * The name of the widget.
          */
@@ -183,7 +184,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          * This action will maximize this widget.
          */
         public function maximize():void {
-            
+            this.percentWidth=100;
         }
 
         /**
