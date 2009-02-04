@@ -1652,7 +1652,7 @@
 	</mx:VBox>    	
 </mx:ViewStack>
     
-<mx:VBox id="minPage" paddingLeft="10" paddingTop="10" paddingRight="5" verticalScrollPolicy="off" horizontalScrollPolicy="off" >
+<mx:VBox id="minPage" width="100%" height="100%" paddingLeft="10" paddingTop="10" paddingRight="5" verticalScrollPolicy="off" horizontalScrollPolicy="off" >
     <mx:HBox width="100%" horizontalGap="0">
         <mx:Image source="@Embed('../assets/select_a_project.png')"/>
         <mx:Text text="Select a contest:" fontWeight="bold"/>
@@ -1665,7 +1665,7 @@
         <mx:Text text="{_submissionList.length}" id="SubNum" />
     </mx:HBox>
     
-	<mx:VBox horizontalAlign="center" width="100%">
+	<mx:VBox horizontalAlign="center" width="100%" height="100%">
 	    <mx:Button id="min_up" styleName="up" click="goUpMinPage()" visible="false"/>
 	    <mx:ViewStack id="min_thumbnails_stack" width="100%" height="100%">
 	    	<mx:VBox id="min_thumbnails" width="100%" horizontalAlign="center" height="100%">
