@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jboss PUBLIC "-//JBoss//DTD JBOSS 4.0//EN" "http://www.jboss.org/j2ee/dtd/jboss_4_0.dtd">
+<jboss>
+    <enterprise-beans>
+        <session>
+            <ejb-name>SubmissionManager</ejb-name>
+            <jndi-name>SubmissionManagerRemote</jndi-name>
+        </session>
+
+        <session>
+            <ejb-name>StudioService</ejb-name>
+            <jndi-name>StudioServiceRemote</jndi-name>
+            <!-- <local-jndi-name>StudioServiceLocal</local-jndi-name> -->
+            <!--
+            <ejb-ref>
+                <ejb-ref-name>smref</ejb-ref-name>
+                <jndi-name>SubmissionManagerRemote</jndi-name>
+            </ejb-ref>
+            -->
+        </session>
+        <!--
+        <session>
+            <ejb-name>StudioServiceWrong1</ejb-name>
+            <jndi-name>StudioServiceWrong1</jndi-name>
+        </session>
+        -->
+    </enterprise-beans>
+</jboss>
