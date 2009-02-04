@@ -249,7 +249,7 @@
                    this.currentState = "OverViewState";
                    save.visible = false;
                    this.height = 660;
-                   //back.visible = true;
+                   back.visible = true;
                    
                    review.cstTypeStep1 = contestSelect.contestType.selectedValue.toString();
                    hideArrow(step1box);
