@@ -56,6 +56,11 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
          */
         private var _defaultcontestid:int = 0;
         
+        private var _pid:String=null;
+        [Bindable]public function get pid():String {
+            return this._pid;
+        }
+        
         public function get defaultcontestid():int
         {
         	return _defaultcontestid;
@@ -255,6 +260,10 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
         	if(map["contestid"])
         	{
         		_defaultcontestid=map["contestid"];
+        	}
+        	else if(map.hasOwnProperty("pid"))
+        	{
+        		_pid=map["pid"];
         	}
         }
 

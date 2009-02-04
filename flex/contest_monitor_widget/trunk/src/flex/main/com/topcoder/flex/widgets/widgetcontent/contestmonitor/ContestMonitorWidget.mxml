@@ -83,12 +83,13 @@
             ContestServiceFacadeBean.addHeader(header);
 
            	// ContestServiceFacadeBean.getContest.send();
+           	if(pid) ContestServiceFacadeBean.getSimpleContestDataByPID.send();
+           	else
         	ContestServiceFacadeBean.getSimpleContestData();
         }
 
 
 	private function init():void {
-
 		getDataService();
             }
 
@@ -277,6 +278,11 @@
 <mx:WebService id="ContestServiceFacadeBean" 
 wsdl="{contestServiceFacadeWsdl}"> 
 <mx:operation name="getSimpleContestData" resultFormat="object" result="setContests(event)"> 
+</mx:operation>
+<mx:operation name="getSimpleContestDataByPID" resultFormat="object" result="setContests(event)"> 
+<mx:request>
+	<arg0>{pid}</arg0>
+	</mx:request> 
 </mx:operation>
 </mx:WebService>
 <mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"
