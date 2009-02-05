@@ -145,3 +145,14 @@
 	color: #FFFFFF;
 	font-weight: bold;
 }
+
+/* since BUGR-1039*/
+.linkBtn {
+	color: #FF0000;
+	text-decoration: underline;
+}
+
+.clickableImage {
+	cursor: pointer;
+	cursor: hand;
+}
