@@ -804,7 +804,7 @@
             }
             
             private function handleContest(event:Event):void {
-            	contestRankingErrorLbl.visible=false;
+            	//contestRankingErrorLbl.visible=false;
             	
             	var isContestChanged:Boolean = true;
                  if (main.visible && contestCombo && contestCombo.selectedItem) {
@@ -908,7 +908,7 @@
             	if (id == abandonedScreen_3) {
             		thumbnailPanel.selectedChild = thumbnailPanel_disabled; 
             	}
-            	if (id == abandonedScreen_1) {
+            	if (id == abandonedScreen_2) {
             		updateAbandonToWS();
             	}
             }
@@ -1050,6 +1050,15 @@
             
             private function updateAbandonToWS():void {
             	_contestInfoDictionary[_selectedContestId].statusId=_noWinnerChosenContestTypeId;
+            	
+            	if (!_isLocalTesting) {
+	            	var header:SOAPHeader=getHeader(username, password);
+	
+					ContestServiceFacadeBean.clearHeaders();
+	            	ContestServiceFacadeBean.addHeader(header);
+	            	trace("Updating contest status for: " + _selectedContestId + " to statusId: " + _noWinnerChosenContestTypeId);
+					ContestServiceFacadeBean.updateContestStatus(_selectedContestId, _noWinnerChosenContestTypeId);
+            	}
             }
             
             private function updatePurchase():void {
