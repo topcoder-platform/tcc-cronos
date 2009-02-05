@@ -924,8 +924,8 @@
             		}
             		else if (!areProperRanking()) { // no submissions ranked.
             			// show error text.
-            			contestRankingErrorLbl.visible=true;
-            			
+            			//contestRankingErrorLbl.visible=true;
+            			Alert.show("You must rank your top 5 selections. If you do not wish to purchase any submissions, select 'I can not choose a winner.");
             		}
             		else {
             			main.selectedChild=submissionsConfirmationScreen;
@@ -1309,9 +1309,10 @@
                 <mx:ComboBox id="contestCombo" left="195" width="272" top="9" fontFamily="Arial" fontSize="10"
                         change="handleContest(event)" 
                         labelField="name" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{_contestList}" />
-                <mx:Label id="contestRankingErrorLbl" fontFamily="Arial" 
+				<!-- fixes for bugr-1101 : implement this as alert box -->                        
+                <!--<mx:Label id="contestRankingErrorLbl" fontFamily="Arial" 
 		                                fontWeight="bold" color="red" fontSize="14" width="600" top="38"
-		                                text="Before continuing you should give All Rankings or select no winner option." visible="false"/>
+		                                text="You must rank your top 5 selections. If you do not wish to purchase any submissions, select 'I can not choose a winner." visible="false"/>-->
                 <mx:Label text="Filter By:" right="140" top="9" styleName="normalText" />
                 <mx:CheckBox id="showActive" label="Active Contests" right="13" top="9" styleName="CheckBoxStyle"
                         selected="true" change="doFilter()" />
