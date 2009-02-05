@@ -253,7 +253,7 @@
 	            <mx:VBox verticalGap="0" width="50%" visible="{isPresentXml('example1')}" includeInLayout="{isPresentXml('example1')}">
 	            	<mx:Label text="{contestOverview.contestType.(@id==curContestType).example1.name}" fontWeight="bold"/>
 					<mx:HBox width="100%">
-						<mx:Image source="@Embed({contestOverview.contestType.(@id==curContestType).example1.thumbImage})" click="{goToUrl(contestOverview.contestType.(@id==curContestType).example1.fullsizeImage)}" width="150" height="150"/>
+						<mx:Image source="{contestOverview.contestType.(@id==curContestType).example1.thumbImage}" click="{goToUrl(contestOverview.contestType.(@id==curContestType).example1.fullsizeImage)}" width="150" height="150"/>
 	            		<mx:VBox verticalGap="0" horizontalGap="0">
 	            			<mx:HBox horizontalGap="0">
 			            		<mx:Label text="Contest:" />
@@ -283,7 +283,7 @@
 	            <mx:VBox verticalGap="0" width="50%" visible="{isPresentXml('example2')}" includeInLayout="{isPresentXml('example2')}">
 	            	<mx:Label text="{contestOverview.contestType.(@id==curContestType).example2.name}" fontWeight="bold"/>
 					<mx:HBox width="100%">
-						<mx:Image source="@Embed({contestOverview.contestType.(@id==curContestType).example2.thumbImage})" click="{goToUrl(contestOverview.contestType.(@id==curContestType).example2.fullsizeImage)}" styleName="clickableImage" width="150" height="150"/>
+						<mx:Image source="{contestOverview.contestType.(@id==curContestType).example2.thumbImage}" click="{goToUrl(contestOverview.contestType.(@id==curContestType).example2.fullsizeImage)}" styleName="clickableImage" width="150" height="150"/>
 	            		<mx:VBox verticalGap="0" horizontalGap="0">
 	            			<mx:HBox horizontalGap="0">
 			            		<mx:Label text="Contest:" />
