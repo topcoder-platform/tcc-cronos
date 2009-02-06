@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
           horizontalScrollPolicy="off" verticalScrollPolicy="off" creationComplete="init()">
+          <mx:HTTPService id="requestSchedule" url="data/launch_a_contest/schedule.xml" resultFormat="e4x" result="loadSchedule(event)" fault="Alert.show(event.fault.faultString);"></mx:HTTPService>
     <mx:Script>
         <![CDATA[
         	import mx.controls.Alert;
         	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+        	import mx.rpc.events.ResultEvent;
+        	
+        	[Bindable]
             public var mainWidget:LaunchWidget;
+			
             [Bindable]
             private var rangeEndDate:Date;
+		
+			[Bindable]
+            private var scheduleTypes:XML;
             
+            [Bindable]
+            public var curContestType:Number;
+
             public function initData():void{
             	termCheckBox.selected = false;
             	
@@ -166,21 +177,41 @@
                 dfEnd.displayedYear = rangeEndDate.getFullYear();
 	            dfEnd.selectedDate = null;
 	        }
+			
+			private function loadSchedule(e:ResultEvent):void {
+				if(e!=null && e.result!=null && e.result is XML) {
+					scheduleTypes  = e.result as XML;
+				}
+			}
         ]]>
     </mx:Script>
-    <mx:VBox width="100%" styleName="boxStyle">
+    <mx:VBox width="100%" styleName="boxStyle" height="100%">
         <mx:Label text="Set the Contest Schedule" fontWeight="bold" fontSize="12"/>
         <mx:Text width="100%" id="attachFiles">
             <mx:htmlText>
 <![CDATA[When scheduling your contest, consider the following: <br>
+-	Complexity. Are you allowing enough time for the members to complete the work with quality results, or will they be rushed?
+-	Pipeline. How many similar contests will be launching at the same time? See the Studio pipeline here:
+-	Selection Deadline. If you plan to be out of town or otherwise unavailable when your contest ends, you might want to alter the schedule to ensure you have time to pick your winners. 
 
-
-** NOTE: Your contest will only launch at your selected date and time IF payment has been made. Otherwise, it will launch when payment is received. **
-
+Tips:
+-	If you're running a short contest, consider a higher prize amount to bring attention to it and increase your likelihood for more and better submissions.
+-	Consider allowing part of your contest to fall over a weekend. Members tend to have more time to work on their designs during weekend hours.
+-	Try not to end your contest during a time when you are unavailable to answer forum questions. Many members have last-minute questions before they submit.
 ]]>
            </mx:htmlText>
-	   
         </mx:Text>
+        <mx:Text text="For your chosen contest type - {mainWidget.overView.studioType.selection.label} - the suggested timelines are:" />
+        <mx:Label text="Min Allowable Time: {scheduleTypes.contestType.(@id==curContestType).minTime}"/>
+    	<mx:Label text="Average Timeframe: {scheduleTypes.contestType.(@id==curContestType).averageTime}"/>
+    	<mx:Label text="High Complexity: {scheduleTypes.contestType.(@id==curContestType).highComplexity}"/>
+    	<mx:Text>
+    		<mx:htmlText>
+    			<![CDATA[
+** NOTE: Your contest will only launch at your selected date and time IF payment has been made. Otherwise, it will launch when payment is received. **    				
+    			]]>
+    		</mx:htmlText>
+    	</mx:Text>
         <mx:Spacer height="5"/>
         <mx:VBox paddingLeft="10">
             <mx:HBox verticalAlign="middle">

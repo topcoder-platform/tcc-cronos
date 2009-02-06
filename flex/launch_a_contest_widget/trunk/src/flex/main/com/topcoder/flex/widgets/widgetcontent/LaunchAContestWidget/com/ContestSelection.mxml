@@ -37,22 +37,47 @@
 	    <mx:RadioButtonGroup id="contestType" itemClick="handleSelect(event);" />
 	    <mx:VBox width="100%" height="100%">
 	    	<mx:VBox width="100%" >
-	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="studio" label="Visual Design(Studio)" value="STUDIO"  selected="true" paddingBottom="0"/>
+	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="studio" label="Studio" value="STUDIO"  selected="true" paddingBottom="0"/>
 	    			<mx:Text width="100%" text="Graphic and web design contests." paddingTop="-10"/>
 	    	</mx:VBox>
 	    	<mx:Spacer height="3"/>
 	    	<mx:VBox width="100%" >
-	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="componentDesign" label="Component Design" value="Design"  enabled="false"/>
+	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="specification" label="Specification" value="specification"  enabled="false"/>
 	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
 	    	</mx:VBox>
 	    	<mx:Spacer height="3"/>
+	    	<mx:VBox width="100%" >
+					<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="componentDesign" label="Component Design" value="Design"  enabled="false"/>
+	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
+	    	</mx:VBox>
+	    	<mx:Spacer height="3"/>
+	    	<mx:VBox width="100%" >
+	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="componentDev" label="Component Development" value="dev"  enabled="false"/>
+	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
+	    	</mx:VBox>
+			<mx:Spacer height="3"/>
+	    	<mx:VBox width="100%" >
+	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="test" label="Testing" value="test"  enabled="false"/>
+	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
+	    	</mx:VBox>
+	    	<mx:Spacer height="3"/>
+	    	<mx:VBox width="100%" >
+	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="architecture" label="Architecture" value="conceptualization"  enabled="false"/>
+	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
+	    	</mx:VBox>
+	    	<mx:Spacer height="3"/>
+	    	<mx:VBox width="100%" >
+	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="moddash" label="Mod Dash" value="assembly"  enabled="false"/>
+	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
+	    	</mx:VBox>
+	    	<mx:Spacer height="3"/>
+	    	<mx:VBox width="100%" >
+	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="assembly" label="Assembly" value="assembly"  enabled="false"/>
+	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
+	    	</mx:VBox>
+	    <!--	<mx:Spacer height="3"/>
 	    	<mx:VBox width="100%" >
 	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="conceptualization" label="Software Conceptualization" value="conceptualization"  enabled="false"/>
-	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
-	    	</mx:VBox>
-	    	<mx:Spacer height="3"/>
-	    	<mx:VBox width="100%" >
-	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="specification" label="Software Specification" value="specification"  enabled="false"/>
 	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
 	    	</mx:VBox>
 	    	<mx:Spacer height="3"/>
@@ -60,21 +85,11 @@
 	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="softwareDesign" label="Software Design" value="softwareDesign"  enabled="false"/>
 	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
 	    	</mx:VBox>
-	    	<mx:Spacer height="3"/>
-	    	<mx:VBox width="100%" >
-	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="softwareDev" label="Software Development" value="dev"  enabled="false"/>
-	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
-	    	</mx:VBox>
-	    	<mx:Spacer height="3"/>
-	    	<mx:VBox width="100%" >
-	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="assembly" label="Software Assembly" value="assembly"  enabled="false"/>
-	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
-	    	</mx:VBox>
-	    	<mx:Spacer height="3"/>
+	    		    	<mx:Spacer height="3"/>
 	    	<mx:VBox width="100%" >
 	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="test" label="Application Testing" value="test"  enabled="false"/>
 	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
-	    	</mx:VBox>
+	    	</mx:VBox> -->
 	    </mx:VBox>
     </mx:VBox>
 </mx:Canvas>

@@ -3,10 +3,10 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off">
           
           <mx:HTTPService id="requestContestTypes" url="data/launch_a_contest/contestTypes.xml" resultFormat="xml" result="preprocessTypes(event)" ></mx:HTTPService>
-      		<mx:HTTPService id="requestContestExamples" url="data/launch_a_contest/overview.xml" resultFormat="e4x" result="loadExamples(event)" fault="Alert.show(event.fault.faultString);"></mx:HTTPService>
-
-    <mx:Script>
-    <![CDATA[
+       		<mx:HTTPService id="requestContestExamples" url="data/launch_a_contest/overview.xml" resultFormat="e4x" result="loadExamples(event)" fault="Alert.show(event.fault.faultString);"></mx:HTTPService>
+	
+	<mx:Script>
+	<![CDATA[
     	import mx.collections.ArrayCollection;
     	import mx.controls.RadioButton;
     	import mx.rpc.events.ResultEvent;
@@ -234,7 +234,7 @@
     	<mx:VBox styleName="boxStyle" width="100%" >
     		
 	    	<mx:Label text="Contest Overview" fontWeight="bold" fontSize="12"/>
-	        <mx:Label text="What Type of Contest do you want to run?" fontWeight="bold"/>
+	        <mx:Label text="What type of {mainWidget.contestSelect.contestType.selection.label} contest do you want to run?" fontWeight="bold"/>
 	                <mx:RadioButtonGroup id="studioType" itemClick="handleSelect(event);"/>
 	        <mx:HBox id="studioTypeBox" horizontalGap="0">
 	        </mx:HBox>
@@ -250,61 +250,61 @@
 	        </mx:Text>
 	        <!--<mx:Label text="Examples:" fontWeight="bold" paddingTop="0"/>--> 
 	        <mx:HBox verticalAlign="top" horizontalGap="0" visible="{isPresentXml('example1') || isPresentXml('example2')}" includeInLayout="{isPresentXml('example1') || isPresentXml('example2')}">
-	            <mx:VBox verticalGap="0" width="50%" visible="{isPresentXml('example1')}" includeInLayout="{isPresentXml('example1')}">
-	            	<mx:Label text="{contestOverview.contestType.(@id==curContestType).example1.name}" fontWeight="bold"/>
+	            <mx:VBox verticalGap="0" width="50%" visible="{isPresentXml('example1')}" includeInLayout="{isPresentXml('example1')}" >
+	            	<mx:Label text="{isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.name : ''}" fontWeight="bold"/>
 					<mx:HBox width="100%">
-						<mx:Image source="{contestOverview.contestType.(@id==curContestType).example1.thumbImage}" click="{goToUrl(contestOverview.contestType.(@id==curContestType).example1.fullsizeImage)}" width="150" height="150"/>
+						<mx:Image source="{isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.thumbImage : ''}" click="{goToUrl(isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.fullsizeImage : '')}" width="150" height="150"/>
 	            		<mx:VBox verticalGap="0" horizontalGap="0">
 	            			<mx:HBox horizontalGap="0">
 			            		<mx:Label text="Contest:" />
-			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(contestOverview.contestType.(@id==curContestType).example1.contestLink)}"/>
+			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.contestLink : '')}"/>
 					            <mx:Image source="@Embed('../../assets/more_info.png')"/>
 			            	</mx:HBox>
 			            	<mx:HBox horizontalGap="0">
 			            		<mx:Label text="Submissions:" />
-			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(contestOverview.contestType.(@id==curContestType).example1.submissionsLink)}"/>
+			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.submissionsLink : '')}"/>
 			            		<mx:Image source="@Embed('../../assets/more_info.png')"/>
 			            	</mx:HBox>
 			            	<mx:HBox horizontalGap="0">
 			            		<mx:Label text="Winners:" />
-			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(contestOverview.contestType.(@id==curContestType).example1.winnersLink)}"/>
+			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.winnersLink : '')}"/>
 			            		<mx:Image source="@Embed('../../assets/more_info.png')"/>
 			            	</mx:HBox>
 			            	<mx:Spacer height="17" />
-    		            	<mx:Label text="Prizes: {contestOverview.contestType.(@id==curContestType).example1.prizes}"/>
-			            	<mx:Label text="Duration: {contestOverview.contestType.(@id==curContestType).example1.duration}"/>
-			            	<mx:Label text="Registrants: {contestOverview.contestType.(@id==curContestType).example1.registrants}"/>
-			            	<mx:Label text="Submissions: {contestOverview.contestType.(@id==curContestType).example1.submissions}"/>
+    		            	<mx:Label text="Prizes: {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.prizes : ''}"/>
+			            	<mx:Label text="Duration: {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.duration : ''}"/>
+			            	<mx:Label text="Registrants: {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.registrants : ''}"/>
+			            	<mx:Label text="Submissions: {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.submissions : ''}"/>
 
 	            		</mx:VBox>	
 					</mx:HBox>
 	            </mx:VBox>
 	            <mx:Spacer width="40" />
 	            <mx:VBox verticalGap="0" width="50%" visible="{isPresentXml('example2')}" includeInLayout="{isPresentXml('example2')}">
-	            	<mx:Label text="{contestOverview.contestType.(@id==curContestType).example2.name}" fontWeight="bold"/>
+	            	<mx:Label text="{isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.name : ''}" fontWeight="bold"/>
 					<mx:HBox width="100%">
-						<mx:Image source="{contestOverview.contestType.(@id==curContestType).example2.thumbImage}" click="{goToUrl(contestOverview.contestType.(@id==curContestType).example2.fullsizeImage)}" styleName="clickableImage" width="150" height="150"/>
+						<mx:Image source="{isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.thumbImage : ''}" click="{goToUrl(isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.fullsizeImage : '')}" styleName="clickableImage" width="150" height="150"/>
 	            		<mx:VBox verticalGap="0" horizontalGap="0">
 	            			<mx:HBox horizontalGap="0">
 			            		<mx:Label text="Contest:" />
-			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(contestOverview.contestType.(@id==curContestType).example2.contestLink)}"/>
+			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.contestLink : '')}"/>
 					            <mx:Image source="@Embed('../../assets/more_info.png')"/>
 			            	</mx:HBox>
 			            	<mx:HBox horizontalGap="0">
 			            		<mx:Label text="Submissions:" />
-			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(contestOverview.contestType.(@id==curContestType).example2.submissionsLink)}"/>
+			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.submissionsLink : '')}"/>
 			            		<mx:Image source="@Embed('../../assets/more_info.png')"/>
 			            	</mx:HBox>
 			            	<mx:HBox horizontalGap="0">
 			            		<mx:Label text="Winners:" />
-			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(contestOverview.contestType.(@id==curContestType).example2.winnersLink)}"/>
+			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.winnersLink : '')}"/>
 			            		<mx:Image source="@Embed('../../assets/more_info.png')"/>
 			            	</mx:HBox>
 			            	<mx:Spacer height="17" />
-    		            	<mx:Label text="Prizes: {contestOverview.contestType.(@id==curContestType).example2.prizes}"/>
-			            	<mx:Label text="Duration: {contestOverview.contestType.(@id==curContestType).example2.duration}"/>
-			            	<mx:Label text="Registrants: {contestOverview.contestType.(@id==curContestType).example2.registrants}"/>
-			            	<mx:Label text="Submissions: {contestOverview.contestType.(@id==curContestType).example2.submissions}"/>
+    		            	<mx:Label text="Prizes: {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.prizes : ''}"/>
+			            	<mx:Label text="Duration: {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.duration : ''}"/>
+			            	<mx:Label text="Registrants: {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.registrants : ''}"/>
+			            	<mx:Label text="Submissions: {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.submissions : ''}"/>
 	            		</mx:VBox>	
 					</mx:HBox>
 	            </mx:VBox>
@@ -312,10 +312,11 @@
 	        <mx:Spacer height="5"/>
 	        <mx:VBox width="100%" verticalGap="0">
 		        <mx:Label text="Suggested First Place Prize Amounts:" fontWeight="bold"/>
-		        <mx:Label text="Minimum: {contestOverview.contestType.(@id==curContestType).minPrize}" visible="{isPresentXml('minPrize')}" includeInLayout="{isPresentXml('minPrize')}"/>
-		        <mx:Label text="Average: {contestOverview.contestType.(@id==curContestType).averagePrize}" visible="{isPresentXml('averagePrize')}" includeInLayout="{isPresentXml('averagePrize')}"/>
-		        <mx:Label text="High Exposure: {contestOverview.contestType.(@id==curContestType).maxExposure}" visible="{isPresentXml('maxExposure')}" includeInLayout="{isPresentXml('maxExposure')}"/>
+		        <mx:Label text="Minimum: {isPresentXml('minPrize') ? contestOverview.contestType.(@id==curContestType).minPrize : ''}" visible="{isPresentXml('minPrize')}" includeInLayout="{isPresentXml('minPrize')}"/>
+		        <mx:Label text="Average: {isPresentXml('averagePrize') ? contestOverview.contestType.(@id==curContestType).averagePrize : ''}" visible="{isPresentXml('averagePrize')}" includeInLayout="{isPresentXml('averagePrize')}"/>
+		        <mx:Label text="High Exposure: {isPresentXml('maxExposure') ? contestOverview.contestType.(@id==curContestType).maxExposure : ''}" visible="{isPresentXml('maxExposure')}" includeInLayout="{isPresentXml('maxExposure')}"/>
 	        </mx:VBox>
+
 	        
 	        <mx:Spacer height="5"/>
 	        <mx:VBox width="100%" verticalGap="0">

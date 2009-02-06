@@ -21,8 +21,8 @@
 	        public var criteriaHint:String;
 	        
 	        private static const ADDEDHEIGHT:Number = 80;
-	        
-	        
+			private static const ADDEDHEIGHT_GOALS:Number = 380;
+
 	        public function initData():void{
 	        	ctInput.htmlText = "";
 	        	introInput.htmlText = "";
@@ -35,7 +35,7 @@
         
 	        public function validateFields():Boolean{
 	        	if (ctInput.text == ""){
-	        		Alert.show("Please enter content title");
+	        		Alert.show("Please enter contest title");
 	        		return false;
 	        	}
 	        	
@@ -95,18 +95,18 @@
 	        private function showGoalsHint(event:MouseEvent):void {
                 if (event.target.label == "[+ show hint]"){
                     event.target.label = "[- show hint]";
-                    goalsHint.height = ADDEDHEIGHT;
-                    goalsHint.text = primaryGoalHint;
+                    goalsHint.height = ADDEDHEIGHT_GOALS;
+                    goalsHint.htmlText = primaryGoalHint;
                     goalsHint.visible = true;
-                    mainWidget.height += ADDEDHEIGHT;
-                    widgetHeight += ADDEDHEIGHT;
+                    mainWidget.height += ADDEDHEIGHT_GOALS;
+                    widgetHeight += ADDEDHEIGHT_GOALS;
                 }else{
                     event.target.label = "[+ show hint]";
                     goalsHint.height = 0;
-                    goalsHint.text = "";
+                    goalsHint.htmlText = "";
                     goalsHint.visible = false;
-                    mainWidget.height -= ADDEDHEIGHT;
-                    widgetHeight -= ADDEDHEIGHT;
+                    mainWidget.height -= ADDEDHEIGHT_GOALS;
+                    widgetHeight -= ADDEDHEIGHT_GOALS;
                 }
 	        }
 	     ]]>
@@ -125,7 +125,7 @@
         
         <mx:VBox width="100%" verticalGap="0">
 	        <mx:HBox >
-	            <mx:Label text="Content Title:" fontWeight="bold"/>
+	            <mx:Label text="Contest Title:" fontWeight="bold"/>
 	            <mx:TextInput id="ctInput" width="308"/>
 	            <mx:LinkButton label="[+ show hint]" click="showContentTitleHint(event)" />
 	        </mx:HBox>

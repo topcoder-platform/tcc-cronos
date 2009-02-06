@@ -352,7 +352,7 @@
         <mx:Label text="Attach Files" fontWeight="bold" fontSize="12"/>
         <mx:Text width="100%" id="attachFiles">
             <mx:htmlText>
-            <![CDATA[If you have your logo in vector format, photographs or images, PSD files or any other documents you think will help the competitors, upload them here. <b>**NOTE:</b> If you are trying to provide examples of the other designs that you do not own, provide a link to them in your contest description. <b>Do not upload files you do not own.</b>]]>
+			<![CDATA[If you have your logo in vector format, photographs or images, PSD files or any other documents you think will help the competitors, upload them here. <br/><br/><b>**NOTE:</b> If you are trying to provide examples of the other designs that you do not own, provide a link to them in your contest description. <b>Do not upload files you do not own.</b>]]>
            </mx:htmlText>
         </mx:Text>
         <mx:Spacer height="5"/>

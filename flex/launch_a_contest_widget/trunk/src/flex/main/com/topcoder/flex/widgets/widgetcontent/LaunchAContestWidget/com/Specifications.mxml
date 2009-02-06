@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
           horizontalScrollPolicy="off" verticalScrollPolicy="off">
+           <mx:HTTPService id="requestFileTypes" url="data/launch_a_contest/fileTypes.xml" resultFormat="e4x" result="loadFileTypes(event)" fault="Alert.show(event.fault.faultString);"></mx:HTTPService>
+
     <mx:Script>
         <![CDATA[
         	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
             import flash.events.MouseEvent;
             import mx.containers.Panel;
+            import mx.rpc.events.ResultEvent;
+            import mx.controls.Alert;
+			import mx.controls.CheckBox;
+
+            private static const FILE_FORMAT_PREFIX:String = "chb_";
+            
+            [Bindable]
+            private var fileTypes:XML; 
             
             [Bindable]
             public var mainWidget:LaunchWidget;
@@ -30,11 +40,16 @@
             	if (formatStr == null){
             		formatStr = "";
             	}
-            		
+        		/*    		since BUGR-1039
             		this.psdChb.selected = (formatStr.indexOf("psd")>=0);
             		this.aiChb.selected = (formatStr.indexOf("ai")>=0);
             		this.epsChb.selected = (formatStr.indexOf("eps")>=0);
-            	
+				*/
+            	for each(var item:* in fileFormatsBox.getChildren()) {
+            		var ext:String = (item as CheckBox).id.substr(FILE_FORMAT_PREFIX.length);
+            		(item as CheckBox).selected = (formatStr.indexOf(ext) >= 0);
+            	}
+
             	colorInput.text=this.mainWidget.competition.contestData.requiredOrRestrictedColors;
 				fontInput.text=this.mainWidget.competition.contestData.requiredOrRestrictedFonts;
 				sizeInput.text=this.mainWidget.competition.contestData.sizeRequirements;
@@ -50,17 +65,16 @@
             	mainWidget.competition.contestData.otherFileFormats = this.fileFormatInput.text;
             	
             	var formats:String = "";
-            	if (this.psdChb.selected){
-            		formats = formats + "psd";
+				for each(var item:* in fileFormatsBox.getChildren()) {
+            		var cb:CheckBox = item as CheckBox;
+            		if(cb.selected) {
+            			formats += "," + cb.id.substr(FILE_FORMAT_PREFIX.length);
+            		}
             	}
-            	
-            	if (this.aiChb.selected){
-            		formats = formats + ",ai";
+            	if(formats.length > 0) {
+            		formats = formats.substr(1);
             	}
-            	
-            	if (this.epsChb.selected){
-            		formats = formats + ",eps";
-            	}
+
             	
             	mainWidget.competition.contestData.finalFileFormat = formats;
             }
@@ -143,6 +157,24 @@
                     widgetHeight -= ADDEDHEIGHT;
                 }
             }
+			
+			private function loadFileTypes(e:ResultEvent):void {
+            	if(e!=null && e.result!=null && e.result is XML)
+        		{
+ 					fileTypes  = e.result as XML;
+ 					fileFormatsBox.removeAllChildren();
+ 					var id:Number = Number(mainWidget.overView.studioType.selection.value);
+ 					mainWidget.overView.studioType.selection.value
+ 					trace("id=" + id);
+ 					for each(var fmt:XML in fileTypes.contestType.(@id==id).children()) {
+ 						var chb:CheckBox = new CheckBox();
+ 						chb.label = fmt.description;
+ 						chb.id = FILE_FORMAT_PREFIX + fmt.value;
+ 						fileFormatsBox.addChild(chb);
+ 					}
+				}
+            }
+
          ]]>
     </mx:Script>
     <mx:VBox paddingLeft="2" width="100%" height="100%">
@@ -213,18 +245,18 @@
 	    <mx:VBox width="100%" styleName="boxStyle" height="100%">
 		    	
 		    <mx:Label text="Final File Formats" fontWeight="bold" fontSize="12"/>
-	        <mx:Text width="100%" id="finalFormats" >
-	            <mx:htmlText>
-	                <![CDATA[If you are unsure what type of file you will need, please feel free to <a href="http://studio.topcoder.com/forums?module=ThreadList&forumID=6">post a question in the forums</a>. The members will be happy to help you. You can also email directassist@topcoder.com.
-	
-	For your chosen contest type - ### - the most common final file formats are:
-	]]>
-	           </mx:htmlText>
-	        </mx:Text>
+	       		    <mx:HBox horizontalGap="0" verticalGap="0" width="100%">
+			    <mx:Label baseline="middle" text="If you are unsure what type of file you will need, please feel free to"/>
+		    	<mx:LinkButton baseline="middle" styleName="linkBtn" label="post a question in the forums" click="{navigateToURL(new URLRequest('http://studio.topcoder.com/forums?module=ThreadList&amp;forumID=6'), '_blank');}" />
+		    	<mx:Image source="@Embed('../../assets/more_info.png')"/>
+		    	<mx:Label text="The members will be happy to help you." /> 
+		    </mx:HBox>
+		    <mx:Text htmlText="You can also email &lt;b>directassist@topcoder.com.&lt;/b>" />
+	        <mx:Text width="100%" text="For your chosen contest type - {mainWidget.overView.studioType.selection.label} - the most common final file formats are:" />
 	        <mx:VBox width="100%" paddingLeft="10">
-		        <mx:CheckBox id="psdChb" label=".PSD(Adobe Photoshop layered graphic file)"/>
-		        <mx:CheckBox id="aiChb" label=".AI(Adobe Illustrator vetor graphic file)" />
-		        <mx:CheckBox id="epsChb" label=".EPS(Vector graphic file format)" />
+	        	<mx:VBox id="fileFormatsBox">
+		        	
+	        	</mx:VBox>
 		        <mx:Spacer height="5"/>
 		        <mx:Label text="Other File Formats:" fontWeight="bold"/>
 		        <mx:Text id="otherFileFormats" color="0x888888" width="100%">

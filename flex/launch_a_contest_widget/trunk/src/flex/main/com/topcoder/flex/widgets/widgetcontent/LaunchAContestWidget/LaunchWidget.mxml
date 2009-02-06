@@ -166,20 +166,20 @@
         <field name="Primary Goal">
             <hint>Try to separate out important information into clear sections of your description. The following areas should be covered:
 
-		What are the Primary Goals for This Contest?
-		The more information you can provide about your decision to get this design produced, the better.
+<b>What are the Primary Goals for This Contest?</b>
+The more information you can provide about your decision to get this design produced, the better.
 
-		Who is Your Target Audience?
-		Designers will take completely different approaches to a concept depending on the target audience. For example, a web banner ad that is meant to draw in financial advisors in their 50s will look vastly different from an ad targeting young college-age women. You should provide a summary of your target audience here.
+<b>Who is Your Target Audience?</b>
+Designers will take completely different approaches to a concept depending on the target audience. For example, a web banner ad that is meant to draw in financial advisors in their 50s will look vastly different from an ad targeting young college-age women. You should provide a summary of your target audience here.
 
-		Does This Project Have Any Branding Guidelines?
-		You should provide as much information about the branding guidelines as possible. Give extremely clear instructions, such as specific color identification numbers or the exact amount of clear space your logo must have between design elements. 
+<b>Does This Project Have Any Branding Guidelines?</b>
+You should provide as much information about the branding guidelines as possible. Give extremely clear instructions, such as specific color identification numbers or the exact amount of clear space your logo must have between design elements. 
 
-		Are There Designs, Websites, etc. that You Like or Dislike? Why?
-		You may be inspired by navigational elements, layout, color schemes, etc. on other web sites, which is great to share with the designers. Keep in mind, you should never encourage a designer to copy any design elements. 
+<b>Are There Designs, Websites, etc. that You Like or Dislike? Why?</b>
+You may be inspired by navigational elements, layout, color schemes, etc. on other web sites, which is great to share with the designers. Keep in mind, you should never encourage a designer to copy any design elements. 
 
-		What Criteria Must the Designers Meet to Win This Contest?
-		Specific limitations (such as restricting a color or a specific layout style) and specific requirements (such as the inclusion of your company logo) will help the competitors meet the basic needs of your competition, but you should also list high-level criteria and your overall judging methodology. 
+<b>What Criteria Must the Designers Meet to Win This Contest?</b>
+Specific limitations (such as restricting a color or a specific layout style) and specific requirements (such as the inclusion of your company logo) will help the competitors meet the basic needs of your competition, but you should also list high-level criteria and your overall judging methodology. 
 	</hint>
         </field>
         <field name="Target Audience">
@@ -286,7 +286,7 @@
                    if (details.validateFields() == false){
                    		return;
                    }
-                   
+                   specf.requestFileTypes.send();
                    this.currentState = "SpecificationsState";
                    save.visible = false;
                    this.height = specf.widgetHeight;
@@ -311,8 +311,9 @@
                    review.fontInputStr = specf.fontInput.text;
                    review.sizeInputStr = specf.sizeInput.text;
                    review.addReInputStr = specf.addReInput.text;
-                   var fm:String = "";
-                   if (specf.psdChb.selected){
+				 /* since BUGR-1039 
+					var fm:String = "";
+				   if (specf.psdChb.selected){
                       fm = specf.psdChb.label;
                    }
                    if (specf.aiChb.selected){
@@ -330,13 +331,18 @@
                    
                    if (specf.fileFormatInput.text != "")
                        review.fileFormatInputStr = fm+", "+specf.fileFormatInput.text;
-                   this.height = 600;
+				  */
+                   review.fileFormatInputStr = competition.contestData.finalFileFormat;
+					this.height = 600;
                    hideArrow(step4box);
                    showArrow(step5box);
                     bottemline.height=mainPanel.height-400;
                 }
                 else if(this.currentState == "AttachFilesState"){
                    //validate input
+				  sched.curContestType = Number(overView.studioType.selectedValue);
+                   sched.requestSchedule.send();
+
                    this.currentState = "ScheduleState";
                    save.visible = false;
                    
