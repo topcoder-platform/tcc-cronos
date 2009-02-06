@@ -118,17 +118,17 @@
                 back.visible = false;
                 //read hints.xml data
                 getData(null);
-                //var url:URLRequest = new URLRequest("data/launch_a_contest/hint.xml");
-//                var loader:URLLoader = new URLLoader();
-//                loader.addEventListener(Event.COMPLETE, getData);
-//                loader.load(url);
+
 				
 		details.widgetHeight = 800;
                 specf.widgetHeight = 800;
-                attch.height = 600;				initialWdt.mainWidget = this;
-				contestSelect.mainWidget = this;
-				overView.mainWidget = this;
- 				details.mainWidget = this;
+                attch.height = 600;
+		sched.height = 700; 
+
+		initialWdt.mainWidget = this;
+		contestSelect.mainWidget = this;
+		overView.mainWidget = this;
+ 		details.mainWidget = this;
                 specf.mainWidget = this;
                 attch.mainWidget = this;
                 sched.mainWidget = this;
