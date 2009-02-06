@@ -3,19 +3,32 @@
     <property file="${basedir}/build.version"/>
     <property file="../topcoder_global.properties"/>
 
+	<!-- Import common task definition -->
+	<import file="${basedir}/build-common-tasks.xml" />
+
     <!-- Override these in ../topcoder_global.properties -->
     <property name="javadoc.locale" value="en_US"/>
     <property name="javac.encoding" value="UTF-8"/>
-    <property name="libdir" value="../tcs/lib"/>
-    <property name="tcs_libdir" value="${libdir}/tcs"/>
-    <property name="ext_libdir" value="${libdir}/third_party"/>
+
+	<!-- need ant-contrib for <if> -->
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+	<if>
+		<not>
+			<available file="../topcoder_global.properties"/>
+		</not>
+		<then>
+			<property name="libdir" value="lib"/>
+			<property name="tcs_libdir" value="${libdir}/tcs"/>
+			<property name="ext_libdir" value="${libdir}/third_party"/>
+		</then>
+	</if>
 
     <property name="cronos_libdir" value="${libdir}/cronos"/>
     <property name="target_libdir" value="${cronos_libdir}"/>
 
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
-    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
+    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.9"/>
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src"/>
@@ -26,6 +39,8 @@
     <property name="testfiles" value="test_files"/>
     <property name="javadocsdir" value="${docsdir}/javadocs"/>
     <property name="reports" value="${testlogdir}/reports"/>
+	<property name="target_libdir" value="${tcs_libdir}"/>
+
 
     <!-- Import the dependencies of this build file -->
     <import file="${basedir}/build-dependencies.xml"/>
@@ -65,7 +80,7 @@
     <property name="component.jar" value="${dist_lib}/${component_path}/${distfilename}.jar"/>
     <property name="javadoc.jar" value="javadocs.jar"/>
     <property name="component.tests.jar" value="${dist_lib}/${distfilename}_tests.jar"/>
-    <property name="component.dist.jar" value="${build_distdir}/${distfilename}-${component_version}.jar"/>
+    <property name="component.dist.jar" value="${build_distdir}/${distfilename}-${component_version}.zip"/>
     <property name="dev_submission.jar" value="${distfilename}_${component_version}_dev_submission.jar"/>
     <property name="design_submission.jar" value="${distfilename}_${component_version}_design_submission.jar"/>
     <property name="dev_dist.jar" value="${distfilename}_${component_version}_dev_dist.jar"/>
@@ -319,10 +334,10 @@
         <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml"/>
 
         <mkdir dir="${dist_coverage}"/>
-        <copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
+        <!--<copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
         <copy todir="${dist_coverage}">
             <fileset dir="${testlogdir}/coverage"/>
-        </copy>
+        </copy>-->
 
         <mkdir dir="${dist_javadocs}"/>
         <copy todir="${dist_javadocs}">
@@ -331,7 +346,7 @@
 
         <antcall target="package_docs"/>
 
-        <jar jarfile="${component.dist.jar}" basedir="${build_distdir}" manifest="${manifest_file}" excludes="*.jar"/>
+        <zip destfile="${component.dist.jar}" basedir="${build_distdir}"/>
 
         <antcall target="move_to_tcs"/>
     </target>
