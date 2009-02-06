@@ -214,7 +214,11 @@ public class Prize implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Prize) {
-            return getPrizeId() == ((Prize) obj).getPrizeId();
+            Prize prize2 = (Prize) obj;
+            return getPlace() == prize2.getPlace() &&
+                    getType() == prize2.getType() &&
+                    getContests() == prize2.getContests() &&
+                    getSubmissions() == prize2.getSubmissions();
         }
         return false;
     }
@@ -227,6 +231,6 @@ public class Prize implements Serializable {
      */
     @Override
     public int hashCode() {
-        return Helper.calculateHash(prizeId);
+        return (prizeId + "-" + getPlace() + getContests() + "-" + getSubmissions()).hashCode();
     }
 }
