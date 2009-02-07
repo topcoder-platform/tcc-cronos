@@ -111,19 +111,18 @@
                 launchWdt.percentHeight = 0;
                 this.currentState = "ContestSelectionState";
                 this.height = 850;
-                details.widgetHeight = 1400;
-                specf.widgetHeight = 1200;
-                attch.height = 600;
+
                 
                 back.visible = false;
                 //read hints.xml data
                 getData(null);
 
 				
-		details.widgetHeight = 800;
+		details.widgetHeight = 1000;
                 specf.widgetHeight = 800;
                 attch.height = 600;
-		sched.height = 700; 
+		sched.height = 750; 
+		overView.height = 800;
 
 		initialWdt.mainWidget = this;
 		contestSelect.mainWidget = this;
@@ -289,7 +288,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    specf.requestFileTypes.send();
                    this.currentState = "SpecificationsState";
                    save.visible = false;
-                   this.height = specf.widgetHeight;
+                   this.height = specf.widgetHeight+150;
                    
                    review.contentTitleStr = details.ctInput.text;
                    review.IntroductionStr = details.introInput.text;
@@ -333,7 +332,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                        review.fileFormatInputStr = fm+", "+specf.fileFormatInput.text;
 				  */
                    review.fileFormatInputStr = competition.contestData.finalFileFormat;
-					this.height = 600;
+                   this.height = 760;
                    hideArrow(step4box);
                    showArrow(step5box);
                     bottemline.height=mainPanel.height-400;
@@ -346,7 +345,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    this.currentState = "ScheduleState";
                    save.visible = false;
                    
-                   this.height = 750;
+                   this.height = 850;
                    hideArrow(step5box);
                    showArrow(step6box);
                    bottemline.height=mainPanel.height-800;
@@ -373,7 +372,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                 } else if (this.currentState == "ReviewState") {
                     this.currentState = "ActivateState";
                     save.visible = false;
-                    this.height = 850;
+                    this.height = 950;
                     hideArrow(step7box);
                     showArrow(step8box);
                     setButton(1);
@@ -433,21 +432,21 @@ Specific limitations (such as restricting a color or a specific layout style) an
                     if (index <= 0) {
                         this.currentState = "ReviewState";
                         save.visible = true;
-                        this.height = 1530;
+                        this.height = 1800;
 
                        showArrow(step7box);
                        step8Text.setStyle("color", "#a8a8a8");
                     }
                 } else if (this.currentState == "ReviewState"){
                    this.currentState = "ScheduleState";
-                   this.height = 750;
+                   this.height = 850;
 
                    showArrow(step6box);
                    step7Text.setStyle("color", "#a8a8a8");
                 }
                 else if(this.currentState == "ScheduleState"){
                    this.currentState = "AttachFilesState";
-                   this.height = 600;
+                   this.height = 750;
 
                    showArrow(step5box);
                    step6Text.setStyle("color", "#a8a8a8");
@@ -455,6 +454,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                 else if(this.currentState == "AttachFilesState"){
                    this.currentState = "SpecificationsState";
                    this.height = specf.widgetHeight;
+		   this.height = 850;
 
                    showArrow(step4box);
                    step5Text.setStyle("color", "#a8a8a8");
@@ -462,19 +462,20 @@ Specific limitations (such as restricting a color or a specific layout style) an
                 else if(this.currentState == "SpecificationsState"){
                    this.currentState = "DetailsState";
                    this.height = details.widgetHeight;
+		    this.height = 850;
 	    
                   showArrow(step3box);
                    step4Text.setStyle("color", "#a8a8a8");
                 }
                 else if(this.currentState == "DetailsState"){
                    this.currentState = "OverViewState";
-                   this.height = 660;
+                   this.height = 750;
                    showArrow(step2box);
                    step3Text.setStyle("color", "#a8a8a8");
                 }
                 else if(this.currentState == "OverViewState"){
                    this.currentState = "ContestSelectionState";
-                   this.height = 750;
+                   this.height = 800;
                    back.visible = false;
      
                    showArrow(step1box);
