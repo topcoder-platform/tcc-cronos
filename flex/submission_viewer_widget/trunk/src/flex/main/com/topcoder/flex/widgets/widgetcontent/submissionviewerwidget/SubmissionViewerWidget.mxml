@@ -245,6 +245,21 @@
 					list.select(list_minpage.selectedItem);
 					handleContest(null);
 				}
+
+				_restore = function():void {
+				    trace("Contest item: " + contestCombo.selectedItem); 
+				    trace("Contest index: " + contestCombo.selectedIndex);
+				    trace("Selected submission: " + list.selectedItem); 
+				    trace("Selected submission index: " + list.selectedIndex);
+				
+				    var index:int = _contestList.getItemIndex(contestCombo.selectedItem);
+				    trace("To be selected Index: " + index);
+				    contestlist_minpage.selectedIndex=index;
+				    
+				    list_minpage.select(list.selectedItem);
+				    handleContest(null);
+				}
+
             }
             
             [Bindable] 
@@ -1682,7 +1697,7 @@
 	    <mx:Button id="min_up" styleName="up" click="goUpMinPage()" visible="false"/>
 	    <mx:ViewStack id="min_thumbnails_stack" width="100%" height="100%">
 	    	<mx:VBox id="min_thumbnails" width="100%" horizontalAlign="center" height="100%">
-		        <mx:TileList id="list_minpage" rowCount="4" 
+		        <tc:CustomTileList  id="list_minpage" rowCount="4" 
 		        	width="100%" 
 		        	height="100%"
 		        	columnCount="2"
