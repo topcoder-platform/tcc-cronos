@@ -115,6 +115,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 		}
 		contestData.setContestAdministrationFee(total*0.2);
 		contestData.setDrPoints(total*0.1);
+
+		// BUGR-1088
+
+        Date startDate = getDate(contestData.getLaunchDateAndTime());
+        Date endDate = new Date((long) (startDate.getTime() + 60l * 60 * 1000 * contestData.getDurationInHours()));
+        Date winnerAnnouncementDeadlineDate;
+
+		if(contestData.getDurationInHours() <= 24) {
+	        winnerAnnouncementDeadlineDate = new Date((long) (endDate.getTime() + 60l * 60 * 1000 * 24));
+
+		} else {
+	        winnerAnnouncementDeadlineDate = new Date((long) (endDate.getTime() + 60l * 60 * 1000 * contestData.getDurationInHours()));
+		}
+
+		contestData.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(winnerAnnouncementDeadlineDate));
+
         ContestData createdContestData = this.studioService.createContest(contestData, tcDirectProjectId);
         return (StudioCompetition) convertToCompetition(CompetionType.STUDIO, createdContestData);
     }
