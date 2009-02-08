@@ -2,6 +2,9 @@
 <mx:HBox styleName="BoxStyle" xmlns:mx="http://www.adobe.com/2006/mxml">
 	<mx:Script>
 		<![CDATA[
+
+			import mx.core.Application;
+
 			private function getPurchase(dta:Object):String {
 				if (!dta) {
 					return "";
@@ -38,7 +41,7 @@
 
 				// TODO: read url from app settings.				
 				
-				var url:String = "http://www.topcoder.com/direct/cockpit/impersonation/cockpitStudio.do?&sbmid=" + id + "&sbt=original";
+				var url:String = "http://"+Application.application.parameters.hostAddress+"/direct/cockpit/impersonation/cockpitStudio.do?&sbmid=" + id + "&sbt=original";
         			var u:URLRequest = new URLRequest(url);
         			navigateToURL(u,"_blank");
 				
