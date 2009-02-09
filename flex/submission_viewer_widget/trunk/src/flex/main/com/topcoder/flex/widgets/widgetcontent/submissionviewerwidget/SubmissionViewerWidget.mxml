@@ -193,13 +193,16 @@
             	
             	if (!_isLocalTesting) {
 	                var header:SOAPHeader=getHeader(username,password);
-					ContestServiceFacadeBean.clearHeaders();
-	            	ContestServiceFacadeBean.addHeader(header);
+			ContestServiceFacadeBean.clearHeaders();
+			ContestServiceFacadeBean.addHeader(header);
 	
-					ContestServiceFacadeBean.getStatusList();
-					if(pid)ContestServiceFacadeBean.getContestDataOnlyByPID.send();
-					else					  
-	            	ContestServiceFacadeBean.getContestDataOnly();
+			ContestServiceFacadeBean.getStatusList();
+			if (pid) {
+			    ContestServiceFacadeBean.getContestDataOnlyByPID.send();
+			} 
+			else {					  
+	            		ContestServiceFacadeBean.getContestDataOnly();
+			}
             	}
             	else {
 					var statuses:ArrayCollection = new ArrayCollection();
