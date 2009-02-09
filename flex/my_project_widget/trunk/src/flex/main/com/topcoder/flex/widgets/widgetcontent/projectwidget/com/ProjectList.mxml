@@ -223,6 +223,8 @@
 				verticalScrollPolicy="off" horizontalScrollPolicy="off">
 			<mx:Button id="open" styleName="blackBtn" y="6" label="view description"
 					left="10" height="19" click="toggleDescription()"/>
+		    <mx:MenuBar labelField="@label"  left="200" id="menubar" dataProvider="{menuBarCollection}"  itemClick="menuHandler(event);">
+		    </mx:MenuBar>
 			<mx:Button y="6" label="add new contest" height="19"
 					right="28" styleName="greyBtn" click="addcontest()"/>
 			<mx:Label x="-20" y="55" width="100%" id="projectDesc" 
