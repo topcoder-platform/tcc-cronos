@@ -2,7 +2,7 @@
 <tc:LaunchWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
     xmlns:pages="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*" styleName="NewWidgetPanel"
     xmlns:tc="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.*" 
-    width="600" initialize="initWidget()" >
+    width="600" initialize="initWidget()" verticalScrollPolicy="off">
     <mx:Style source="Style.css" />
 
     <mx:Script>
@@ -22,42 +22,56 @@
             import flash.utils.Timer;
             import flash.events.TimerEvent;
             import mx.events.SliderEvent;
-	    import mx.core.Application;
-	    import mx.rpc.events.ResultEvent;
-	    import mx.controls.Alert;
-	    import mx.rpc.events.FaultEvent;
+		    import mx.core.Application;
+		    import mx.rpc.events.ResultEvent;
+		    import mx.controls.Alert;
+		    import mx.rpc.events.FaultEvent;
+	
+		    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.WebServiceUtil;
+		    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestServiceFacadeBeanService;
+		    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContest;
+		    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContestResultEvent;
+		    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.StudioCompetition;
+		    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContest;
+		    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContestResultEvent;
+	
+		    private var username:String=Application.application.parameters.username;
+		    private var password:String = "";
+		    private var blazedsendpoint:String= Application.application.parameters.blazedsendpoint;
+	   
+		    private var projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl;
+	        private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;   
+	        [Bindable]
+	        private var isAdmin:Boolean;
+	        private var _tcDirectProjectId:String;
+	        
+	        
+	        /**
+	         * Represents the height of this widget on different states. BUGR-1134
+	         */
+	        private var INITIAL_WIDGET_HEIGHT:int = 460;
+	       	private var CONTEST_SELECTION_HEIGHT:int = 550;
+	       	private var OVERVIEW_HEIGHT:int = 680;
+	       	private var DETAILS_HEIGHT:int = 680;
+	       	private var SPECIFICATIONS_HEIGHT:int = 730;
+	       	private var ATTACH_FILES_HEIGHT:int = 660;
+	       	private var SCHEDULE_HEIGHT:int = 860;
+	       	private var REVIEW_HEIGHT:int = 1800;
+	       	private var ACTIVATE_HEIGHT:int = 810;
+	       	
+	        public function set tcDirectProjectId(projectID:String):void
+	        {
+	        	_tcDirectProjectId=projectID;
+	        }
 
-	    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.WebServiceUtil;
-	    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestServiceFacadeBeanService;
-	    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContest;
-	    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContestResultEvent;
-	    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.StudioCompetition;
-	    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContest;
-	    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContestResultEvent;
-
-	    private var username:String=Application.application.parameters.username;
-	    private var password:String = "";
-	    private var blazedsendpoint:String= Application.application.parameters.blazedsendpoint;
-   
-	    private var projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl;
-        private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;   
-        [Bindable]
-        private var isAdmin:Boolean;
-        private var _tcDirectProjectId:String;
-        
-        public function set tcDirectProjectId(projectID:String):void
-        {
-        	_tcDirectProjectId=projectID;
-        }
-
-	           public function resetWidget():void{
+	        public function resetWidget():void{
 //            	this.currentState = "ContestSelectionState";
 //            	back.visible = false;
             	goToStep1();
                 launchWdt.percentWidth = 0;
-                launchWdt.percentHeight = 0;
+                launchWdt.height = 0; // BUGR-1134
                 launchWdt.visible = false;
-                this.height = 750;
+                this.height = INITIAL_WIDGET_HEIGHT; // BUGR-1134
                 initialWdt.visible = true;
         		initialWdt.init();
         	}
@@ -107,11 +121,13 @@
             
             
             private function initComponent():void {
-                launchWdt.percentWidth = 0;
-                launchWdt.percentHeight = 0;
+            	// modified lines below for BUGR-1134
+                launchWdt.height = 0;
                 this.currentState = "ContestSelectionState";
-                this.height = 850;
-
+                this.height = 460;
+                mainPanel.height = 0;
+                mainPanel.visible = false;
+                mainPanel.horizontalScrollPolicy = "false";
                 
                 back.visible = false;
                 //read hints.xml data
@@ -121,13 +137,13 @@
 		details.widgetHeight = 1000;
                 specf.widgetHeight = 800;
                 attch.height = 600;
-		sched.height = 750; 
-		overView.height = 800;
-
+				sched.height = 750; 
+				overView.height = 600; // BUGR-1134
+				
 		initialWdt.mainWidget = this;
 		contestSelect.mainWidget = this;
 		overView.mainWidget = this;
- 		details.mainWidget = this;
+		details.mainWidget = this;
                 specf.mainWidget = this;
                 attch.mainWidget = this;
                 sched.mainWidget = this;
@@ -247,7 +263,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    }
                    this.currentState = "OverViewState";
                    save.visible = false;
-                   this.height = 660;
+                   this.height = OVERVIEW_HEIGHT;  // BUGR-1134
                    back.visible = true;
                    
                    review.cstTypeStep1 = contestSelect.contestType.selectedValue.toString();
@@ -255,7 +271,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    showArrow(step2box);
                    
                    result.type = contestSelect.contestType.selectedValue;
-                   bottemline.height=mainPanel.height-710;
+                   //bottemline.height=mainPanel.height-710;
                 }
                 else if(this.currentState == "OverViewState"){
                     //validate input
@@ -275,10 +291,10 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    review.adminFee = overView.adminf.text;
                    review.contestTotal = overView.cntstTtl.text;
                    
-                   this.height = details.widgetHeight;
+                   this.height = DETAILS_HEIGHT;  // BUGR-1134
                    hideArrow(step2box);
                    showArrow(step3box);
-                    bottemline.height=mainPanel.height-530;
+                    //bottemline.height=mainPanel.height-530;
                 }
                 else if(this.currentState == "DetailsState"){
                    //validate input
@@ -288,14 +304,14 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    specf.requestFileTypes.send();
                    this.currentState = "SpecificationsState";
                    save.visible = false;
-                   this.height = specf.widgetHeight+150;
+                   this.height = SPECIFICATIONS_HEIGHT;  // BUGR-1134
                    
                    review.contentTitleStr = details.ctInput.text;
                    review.IntroductionStr = details.introInput.text;
                    review.glsInputStr = details.glsInput.text;
                    hideArrow(step3box);
                    showArrow(step4box);
-                    bottemline.height=mainPanel.height-1000;
+                    //bottemline.height=mainPanel.height-1000;
                 }
                 else if(this.currentState == "SpecificationsState"){
                    //validate input
@@ -332,10 +348,10 @@ Specific limitations (such as restricting a color or a specific layout style) an
                        review.fileFormatInputStr = fm+", "+specf.fileFormatInput.text;
 				  */
                    review.fileFormatInputStr = competition.contestData.finalFileFormat;
-                   this.height = 760;
+                   this.height = ATTACH_FILES_HEIGHT;  // BUGR-1134
                    hideArrow(step4box);
                    showArrow(step5box);
-                    bottemline.height=mainPanel.height-400;
+                    //bottemline.height=mainPanel.height-400;
                 }
                 else if(this.currentState == "AttachFilesState"){
                    //validate input
@@ -345,10 +361,10 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    this.currentState = "ScheduleState";
                    save.visible = false;
                    
-                   this.height = 850;
+                   this.height = SCHEDULE_HEIGHT;  // BUGR-1134
                    hideArrow(step5box);
                    showArrow(step6box);
-                   bottemline.height=mainPanel.height-800;
+                   //bottemline.height=mainPanel.height-800;
                 }
                 else if(this.currentState == "ScheduleState"){
 					if (sched.validateFields() == false){
@@ -365,18 +381,18 @@ Specific limitations (such as restricting a color or a specific layout style) an
 
                    review.setAllValues();
 
-                   this.height = 1800;
+                   this.height = REVIEW_HEIGHT;  // BUGR-1134
                    hideArrow(step6box);
                    showArrow(step7box);
-                    bottemline.height=mainPanel.height-1700;
+                    //bottemline.height=mainPanel.height-1700;
                 } else if (this.currentState == "ReviewState") {
                     this.currentState = "ActivateState";
                     save.visible = false;
-                    this.height = 950;
+                    this.height = ACTIVATE_HEIGHT;
                     hideArrow(step7box);
                     showArrow(step8box);
                     setButton(1);
-                     bottemline.height=mainPanel.height-800;
+                     //bottemline.height=mainPanel.height-800;
                 } else if (this.currentState == "ActivateState") {
                     save.visible = false;
                     var index:int = activate.goToNext();
@@ -432,50 +448,48 @@ Specific limitations (such as restricting a color or a specific layout style) an
                     if (index <= 0) {
                         this.currentState = "ReviewState";
                         save.visible = true;
-                        this.height = 1800;
+                        this.height = REVIEW_HEIGHT; // BUGR-1134
 
                        showArrow(step7box);
                        step8Text.setStyle("color", "#a8a8a8");
                     }
                 } else if (this.currentState == "ReviewState"){
                    this.currentState = "ScheduleState";
-                   this.height = 850;
+                   this.height = SCHEDULE_HEIGHT;  // BUGR-1134
 
                    showArrow(step6box);
                    step7Text.setStyle("color", "#a8a8a8");
                 }
                 else if(this.currentState == "ScheduleState"){
                    this.currentState = "AttachFilesState";
-                   this.height = 750;
+                   this.height = ATTACH_FILES_HEIGHT;  // BUGR-1134
 
                    showArrow(step5box);
                    step6Text.setStyle("color", "#a8a8a8");
                 }
                 else if(this.currentState == "AttachFilesState"){
                    this.currentState = "SpecificationsState";
-                   this.height = specf.widgetHeight;
-		   this.height = 850;
+                   this.height = SPECIFICATIONS_HEIGHT;  // BUGR-1134
 
                    showArrow(step4box);
                    step5Text.setStyle("color", "#a8a8a8");
                 }
                 else if(this.currentState == "SpecificationsState"){
                    this.currentState = "DetailsState";
-                   this.height = details.widgetHeight;
-		    this.height = 850;
+                   this.height = DETAILS_HEIGHT;  // BUGR-1134
 	    
                   showArrow(step3box);
                    step4Text.setStyle("color", "#a8a8a8");
                 }
                 else if(this.currentState == "DetailsState"){
                    this.currentState = "OverViewState";
-                   this.height = 750;
+                   this.height = OVERVIEW_HEIGHT; // BUGR-1134
                    showArrow(step2box);
                    step3Text.setStyle("color", "#a8a8a8");
                 }
                 else if(this.currentState == "OverViewState"){
                    this.currentState = "ContestSelectionState";
-                   this.height = 800;
+                   this.height = CONTEST_SELECTION_HEIGHT; // BUGR-1134
                    back.visible = false;
      
                    showArrow(step1box);
@@ -583,6 +597,10 @@ Specific limitations (such as restricting a color or a specific layout style) an
                 launchWdt.percentWidth = 100;
                 launchWdt.percentHeight = 100;
                 launchWdt.visible = true;
+                // BUGR-1134 added
+                mainPanel.percentWidth = 100;
+                mainPanel.percentHeight = 100;
+                mainPanel.visible = true;
                 
                 contestSelect.initData();
                 overView.initData();
@@ -592,7 +610,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                 
                 sched.initData();
 		       activate.initData();
-		       bottemline.height=mainPanel.height-contestSelect.height;
+		       //bottemline.height=mainPanel.height-contestSelect.height;
 		       save.visible=false;
 
             }
@@ -721,7 +739,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                  <mx:Button id="save" styleName="RedButton"  label="save as draft" click="saveAsDraft()"/>
                  <mx:Button id="goNext" styleName="RedButton"  label="continue >>" click="next()"/>
              </mx:HBox>
-             <mx:Spacer  id="bottemline" height="100%"/>
+             <!--<mx:Spacer  id="bottemline" height="100%"/>-->
          </mx:VBox>
      </mx:HBox>
      
