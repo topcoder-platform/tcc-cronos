@@ -201,11 +201,34 @@
         			}
         			if(p==null)return ;
 					prjCt=p as ProjectsContainer;
+					var props:Dictionary=new Dictionary();
+					props["pid"]=_dataProvider.id;
+					
 					var dict:Dictionary=new Dictionary();
-					dict["pid"]=_dataProvider.id;
+					dict["name"]=_dataProvider.name;
+					dict["allowclose"]="true";
+					prjCt.widgetFramework.addTabCtlWithProperties(dict);
+					
+					dict["tabName"]=_dataProvider.name;
+					dict["name"]="My Projects";
+					dict["title"]="My Projects";
+					dict["widgetConfig"]=props;
+					prjCt.widgetFramework.addWidgetWithProperties(dict );
+					
+					dict["name"]="Contest Monitor";
+					dict["title"]="Contest Monitor";
+					prjCt.widgetFramework.addWidgetWithProperties(dict );
+					
+					dict["name"]="Submission Viewer";
+					dict["title"]="Submission Viewer";
+					prjCt.widgetFramework.addWidgetWithProperties(dict );
+					
+					
+					/*
 					prjCt.widgetFramework.addWidgetEx2(_dataProvider.name,"My Projects","My Projects",dict );
 					prjCt.widgetFramework.addWidgetEx2(_dataProvider.name,"Contest Monitor","Contest Monitor",dict );
 					prjCt.widgetFramework.addWidgetEx2(_dataProvider.name,"Submission Viewer","Submission Viewer",dict );
+					*/
                 }     
             }
 	]]>
