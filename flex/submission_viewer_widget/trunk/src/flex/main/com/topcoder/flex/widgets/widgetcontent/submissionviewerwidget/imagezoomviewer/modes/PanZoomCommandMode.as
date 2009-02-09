@@ -316,6 +316,8 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoom
 					}
 
 					_client.invalidateDisplayList();
+
+					e.stopImmediatePropagation(); 
 					
 					break;
 			}
