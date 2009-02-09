@@ -2,6 +2,8 @@
 <tc:ProjectWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
     xmlns:tc="com.topcoder.flex.widgets.widgetcontent.projectwidget.*"
     xmlns:ns1="com.topcoder.flex.widgets.widgetcontent.projectwidget.com.*"
+    xmlns:billdwhite="peekpanel.*" 
+    xmlns:flexlib="flexlib.controls.*"
     horizontalAlign="center" width="100%" height="100%" headerHeight="0" 
     creationComplete="initWidget()"
     verticalScrollPolicy="auto" >
@@ -28,6 +30,8 @@
         import mx.collections.SortField;
         import mx.collections.Sort;
 	import mx.utils.ObjectUtil;
+	import mx.formatters.DateFormatter;
+	import flash.events.*;
         
         import com.topcoder.flex.widgets.widgetcontent.projectwidget.com.ProjectList;
 	import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Project;
@@ -43,6 +47,9 @@
         [Embed(source="../assets/image/arrow_right.gif")]
             private var rightArrow:Class;
 
+		public var optionsBtn : Button = new Button();
+
+					
         private var closeBtn : Button = new Button();
         private var maxrestoreBtn : Button = new Button();
         private var refreshBtn : Button = new Button();
@@ -96,6 +103,11 @@
           
         private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
 		
+		[Bindable]
+		private var contestsStartTime:Date = null;
+		
+		[Bindable]
+		private var contestsEndTime:Date = null;
 		
 		public static function getHeader(username:String, password:String):SOAPHeader
 		{
@@ -117,6 +129,12 @@
         	prjList.widgetFramework=this.widgetFramework;
         	var p:Panel=parent as Panel;
         	p.verticalScrollPolicy="auto";
+        	prepareTimeSlider();
+        	//optionsBtn.label="opts";
+			optionsBtn.styleName = "widgetOptionsButton";
+			optionsBtn.toolTip = "Options";
+			optionsBtn.addEventListener(MouseEvent.CLICK, showOptions);
+
 	      getDataService();
             //loader.addEventListener(Event.COMPLETE, loadData);
             //loader.load(new URLRequest("data/moch.xml"));
@@ -160,7 +178,16 @@
 						prjArray[i].num_for,"-1",
 						prjArray[i].sname);
 						c.date=prjArray[i].endDate;
-						contests.addItem(c);
+						
+						// since BUGR-1058 - check if contest fits into time range
+						if(contestsStartTime != null && contestsEndTime != null) {
+							if(!(ObjectUtil.dateCompare(prjArray[i].startDate, contestsStartTime) < 0 || 
+							ObjectUtil.dateCompare(prjArray[i].endDate, contestsEndTime) > 0)) {
+								contests.addItem(c);
+							}
+						} else {
+							contests.addItem(c);
+						}
 					}
         				
         			}
@@ -274,6 +301,60 @@
 		loadData();
 
         }
+		
+    /* since BUGR-1058 */
+    private const sliderStartDate:Date = new Date(2008, 0, 1);
+	private const millisecondsPerWeek:Number = 1000 * 60 * 60 * 24 * 28;
+	        
+    private function prepareTimeSlider():void {
+    	var leftDate:Date = sliderStartDate;
+    	var rightDate:Date = new Date();
+    	//trace("left=" + leftDate.toString());
+    	//trace("right=" + rightDate.toString());
+    	var weeks:Number = (rightDate.getTime() - leftDate.getTime()) / millisecondsPerWeek;
+    	//trace("weeks=" + weeks);
+    	timeSlider.minimum = 0;
+    	timeSlider.maximum = weeks;
+    	timeSlider.values = [timeSlider.minimum, timeSlider.maximum];
+    }    
+    
+    private function convertToDate(sliderValue:Number):Date {
+    	var currentDate:Date = new Date();
+    	currentDate.setTime(sliderStartDate.getTime() + sliderValue * millisecondsPerWeek);
+    	var now:Date = new Date();
+    	if(currentDate.getTime() > now.getTime()) {
+    		currentDate = now;
+    	}
+    	return currentDate;
+    }
+    
+    private function sliderDataTipFormatter(value:Number):String {
+    	return sliderDateFormatter.format(convertToDate(value));
+    }
+        
+    private function sliderChange():void {
+    	contestsStartTime = convertToDate(timeSlider.values[0]);
+    	contestsStartTime.setHours(0, 0, 0, 0);
+    	contestsEndTime = convertToDate(timeSlider.values[1]);
+    	contestsEndTime.setHours(23, 59, 59, 999);
+    }
+    
+    private function dataRangeChosen():void {
+    	loadData();
+    	peek_panel.unfold();
+    }
+    
+    public function showOptions(event:MouseEvent = null):void {
+    	prjList.verticalScrollPolicy = "off";
+    	sliderChange();
+    	peek_panel.fold();
+    }
+    
+     private function hideOptions():void {
+    	peek_panel.unfold();
+    	prjList.verticalScrollPolicy = "auto";
+    }
+
     ]]>
 </mx:Script>
 <mx:WebService id="ContestServiceFacadeBean" 
@@ -294,16 +375,57 @@ wsdl="{contestServiceFacadeWsdl}">
 
 </mx:RemoteObject>
 
+	  <mx:DateFormatter formatString="D MMM YYYY" id="sliderDateFormatter"/>	
+	
+	  <billdwhite:PeekPanel id="peek_panel" 
+	  		width="900" 
+            height="800" 
+            backgroundAlpha="0" 
+            dropShadowEnabled="true"
+            cornerRadius="0"
+            clipContent="true"
+            foldCorner="{PeekPanel.FOLD_TOP_RIGHT}"
+            foldDestinationX="{peek_panel.width-1}"
+            foldDestinationY="350">
+            
+            <billdwhite:topPage>
+				<mx:Panel styleName="peekPanel" layout="vertical" headerHeight="0">
+					<ns1:ProjectsContainer  id="prjList"  horizontalScrollPolicy="off" verticalScrollPolicy="auto"  width="100%" />
+				</mx:Panel>	
+			</billdwhite:topPage>
+		
+		  <billdwhite:hiddenPage>
+                <mx:Panel styleName="hiddenPanel" layout="vertical" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+                	<mx:Label text="Please choose date range:" fontSize="14" />
+            		<mx:HBox>
+                		<mx:Label text="{sliderDateFormatter.format(sliderStartDate)}" />
+                		<flexlib:HSlider  
+	                		id="timeSlider"
+							trackHighlightSkin="com.topcoder.flex.widgets.widgetcontent.projectwidget.SliderSkin"
+							allowTrackClick="true" allowThumbOverlap="true" 
+							liveDragging="true" 
+							showDataTip="true"  dataTipPlacement="top"   dataTipOffset="3" 
+							dataTipFormatFunction="sliderDataTipFormatter"
+							showTrackHighlight="true"
+							thumbCount="2"  width="250" 
+							snapInterval="1"
+							change="sliderChange();"
+						/>
+						<mx:Label text="{sliderDateFormatter.format(new Date())}" />
+                	</mx:HBox>
+                	<mx:HBox>
+                		<mx:Label text="Your chosen range:" />
+                		<mx:Label text="{sliderDateFormatter.format(contestsStartTime)} - {sliderDateFormatter.format(contestsEndTime)}" fontWeight="bold" />
+                	</mx:HBox>
+                	<mx:HBox>		
+                		<mx:Button label="ok" click="dataRangeChosen();" styleName="RedButton" />
+                		<mx:Spacer width="7"/>
+                		<mx:Button label="cancel" click="hideOptions();" styleName="RedButton" />	
 
-
-<!--
-		<mx:Box id="container" paddingTop="5" paddingRight="5" width="100%" height="98%"
-				horizontalAlign="center" horizontalScrollPolicy="off" verticalScrollPolicy="auto">
-			-->
-		    <ns1:ProjectsContainer id="prjList"  horizontalScrollPolicy="off" verticalScrollPolicy="auto"  width="100%" height="100%">
-		    </ns1:ProjectsContainer>
-		    <!--
-		</mx:Box>		
-		-->
+                	</mx:HBox>
+                	
+		        </mx:Panel>
+		</billdwhite:hiddenPage>                
+	</billdwhite:PeekPanel>	
 
 </tc:ProjectWidgetCodeBehind>

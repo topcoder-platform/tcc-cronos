@@ -1,0 +1,115 @@
+@font-face 
+{
+    src:                        local("Arial");
+    fontFamily:                 arial;
+    fontStyle:                  normal;
+    fontWeight:                 normal;
+    advancedAntiAliasing:       true;
+}
+ 
+global
+{
+    font-family:                arial;
+    font-size:                  11;
+}
+
+Application 
+{
+    font-size:                  11;
+    padding-left:               5;
+    padding-top:                5;
+    padding-bottom:             5;
+    padding-right:              5;
+    horizontal-align:           center;
+    vertical-align:             middle;
+    color:                      #EFEFEF;
+    background-color:           #000000;
+    background-gradient-colors: #222222, #666666;    
+}
+
+HSlider, VSlider
+{
+    thumbDisabledSkin:          Embed(source="assets/swf/darkroom.swf", symbol="SliderThumb_disabledSkin");
+    thumbDownSkin:              Embed(source="assets/swf/darkroom.swf", symbol="SliderThumb_downSkin");
+    thumbOverSkin:              Embed(source="assets/swf/darkroom.swf", symbol="SliderThumb_overSkin");
+    thumbUpSkin:                Embed(source="assets/swf/darkroom.swf", symbol="SliderThumb_upSkin");
+    trackHighlightSkin:         Embed(source="assets/swf/darkroom.swf", symbol="SliderHighlight_Skin");
+    trackSkin:                  Embed(source="assets/swf/darkroom.swf", symbol="SliderTrack_Skin");
+    tickColor:                  #262626;
+    tickWidth:                  3;
+    tickOffset:                 -1;
+    tickInterval:               1;
+    tickThickness:              1;
+}
+
+Panel
+{
+    border-thickness:          2;
+    border-style:              solid;
+    corner-radius:             0;
+}
+
+.peekPanel
+{
+    background-color:          #8195C2;
+    color:                     #000000;
+    title-style-name:          "peekPanelTitleStyle";
+    drop-shadow-enabled:       true;
+}
+
+.controlPanel
+{
+    background-color:          #363636;
+    color:                     #000000;
+    title-style-name:          "controlPanelTitleStyle";
+    drop-shadow-enabled:       true;
+    font-size:                 10;
+}
+
+.hiddenPanel
+{
+    header-height:             10;
+}
+
+.optionsPanel
+{
+    background-color:          #EEEEEE;
+    border-color:              #555555;
+    color:                     #000000;
+    drop-shadow-enabled:       false;
+}
+
+.peekPanelTitleStyle
+{
+    font-size:                 12;
+    font-weight:               bold;
+    font-style:                normal;
+    color:                     #FFFFFF;
+}
+
+.controlPanelTitleStyle
+{
+    font-size:                 12;
+    font-weight:               bold;
+    font-style:                normal;
+    color:                     #FFFFFF;
+}
+
+Label
+{
+    font-size:                 10;
+    font-weight:               bold;
+    font-style:                normal;
+}
+
+List
+{
+    font-size:                 10;
+    font-family:               arial;
+}
+
+TextArea
+{
+    font-size:                 11;
+    font-family:               arial;
+}
