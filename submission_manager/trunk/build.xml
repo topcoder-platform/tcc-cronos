@@ -5,6 +5,10 @@
     <!-- Import the dependencies of this build file -->
     <import file="${basedir}/build-dependencies.xml"/>
 
+    <!-- Import common task definition -->
+	<import file="${basedir}/build-common-tasks.xml" />
+
+
     <!-- COMPONENT PARAMETERS -->
     <property name="component" value="${component.name}"/>
     <property name="package" value="${component.package}"/>
@@ -16,12 +20,22 @@
 
     <!-- Override these in ../topcoder_global.properties -->
     <property name="javadoc.locale" value="en_US"/>
-    <property name="tcs_libdir" value="../tcs/lib/tcs"/>
-    <property name="ext_libdir" value="../tcs/lib/third_party"/>
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
-    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
-    <property name="cronos_libdir" value="../tcs/lib/cronos"/>
+    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.9"/>
+
+     <!-- need ant-contrib for <if> -->
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+	<if>
+		<not>
+			<available file="../topcoder_global.properties"/>
+		</not>
+		<then>
+			<property name="tcs_libdir" value="../tcs/lib/tcs"/>
+    			<property name="ext_libdir" value="../tcs/lib/third_party"/>
+   			<property name="cronos_libdir" value="../tcs/lib/cronos"/>
+		</then>
+	</if>
 
     <property name="target_libdir" value="${cronos_libdir}"/>
 
@@ -318,11 +332,11 @@
 
         <mkdir dir="${dist_coverage}"/>
 
-        <copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
+    <!--    <copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
 
         <copy todir="${dist_coverage}">
             <fileset dir="${testlogdir}/coverage"/>
-        </copy>
+        </copy>-->
 
         <mkdir dir="${dist_src}"/>
         <copy todir="${dist_src}">
