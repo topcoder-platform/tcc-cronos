@@ -52,6 +52,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public var _ws:ContestServiceFacadeBeanService;
         
         public var _pws:ProjectServiceFacadeBeanService;
+        
+        public var contestid:String=null;
 
 	/**
 	 * The framework of the widget.
@@ -293,6 +295,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          * @throws ArgumentError if the input is null.
          */
         public function setAttributes(map:Dictionary):void {
+        	if(map["contestid"])
+        	{
+        		contestid=map["contestid"];
+        	}
         }
         
         public function submitPurchase():void{
@@ -324,7 +330,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         }
         
         private function createContestHandler(event:CreateContestResultEvent):void{
-        	this.competition = event.result._return;
+        	this.competition = event.result._return as StudioCompetition;
         	
         	var type:CompetionType = new CompetionType();
         	type.competionType = "STUDIO";
