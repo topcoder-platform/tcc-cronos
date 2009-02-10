@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%"
-		styleName="ContestRowStyle" backgroundSize="100%">
+		styleName="ContestRowStyle" backgroundSize="100%" mouseOver="mouseOverHandle()" mouseOut="mouseOutHandle()">
 <mx:Script>
 	<![CDATA[
 	import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Contest;
@@ -33,6 +33,7 @@
 		registrants=_dataProvider.registrants;
 		contextName=_dataProvider.name;
 		ContextId=_dataProvider.id;
+		editBtn.visible=false;
 
 		var tmp:String = status.toLowerCase();
 		if (tmp.indexOf("active") >= 0) {
@@ -195,12 +196,55 @@
         	}
         	navigateToURL(new URLRequest(forumUrlBase+ _dataProvider.forumId ));
         }
-
-
+        
+        private function mouseOverHandle():void
+        {
+        	if(_dataProvider.status.toLocaleLowerCase()=="draft"
+        	  || _dataProvider.status.toLocaleLowerCase()=="unactive - not yet published")
+		  {
+        		editBtn.visible=true;
+		  }
+        }
+        
+         private function mouseOutHandle():void
+        {
+        	editBtn.visible=false;
+        }
+        
+        private function editContest():void
+        {
+        	var prjCt:ProjectsContainer;
+        			var p:DisplayObjectContainer=parent;
+        			while(p!=null){
+        				if(p is ProjectsContainer)break;
+        				p=p.parent;
+        			}
+        			if(p==null)return ;
+					prjCt=p as ProjectsContainer;
+					var props:Dictionary=new Dictionary();
+					props["contestid"]=_dataProvider.id;
+					
+					var dict:Dictionary=new Dictionary();
+					dict["name"]="Launch Contest";
+					dict["allowclose"]="false";
+					dict.columnNum=3;
+					prjCt.widgetFramework.addTabCtlWithProperties(dict);
+					
+					dict["tabName"]="Launch Contest";
+					dict["name"]="Launch Contest";
+					dict["title"]="Launch Contest";
+					dict["widgetConfig"]=props;
+					dict.minHeight=3;
+					prjCt.widgetFramework.addWidgetWithProperties(dict );
+        }
 	]]>
 </mx:Script>
-	<mx:LinkButton buttonMode="true" useHandCursor="true" id="lblContextName" styleName="linkBtn" click="handleClick()"/>
-
+    <mx:HBox width="100%">
+    	<mx:LinkButton width="100%" buttonMode="true" useHandCursor="true" id="lblContextName" styleName="linkBtn" click="handleClick()"/>
+        <mx:Spacer width="100%" />
+        <mx:LinkButton width="10%" id="editBtn" styleName="editBtn" labelPlacement="top" click="editContest()"/> 
+    </mx:HBox>
+	
 	<mx:HBox width="100%" styleName="rowContent" >
 		<mx:Text width="100%" styleName="rowContentLabel" id="lblStartDate" />
 		<mx:Text width="100%" styleName="rowContentLabel" id="lblEndDate" />

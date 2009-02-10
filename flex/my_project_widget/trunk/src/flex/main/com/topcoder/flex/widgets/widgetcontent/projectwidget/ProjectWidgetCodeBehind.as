@@ -6,17 +6,13 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
     import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.widgets.model.IWidgetContainer;
     import com.topcoder.flex.widgets.widgetcontent.projectwidget.com.ProjectsContainer;
-	import com.topcoder.flex.widgets.layout.components.WidgetContainer;
-
+    
     import flash.utils.Dictionary;
     
     import mx.collections.ArrayCollection;
     import mx.containers.Panel;
     import mx.rpc.soap.WebService;
     import mx.core.Application;
-	import mx.controls.Alert;
-	import flash.events.*;
-	
     /**
      * <p>
      * This is the code behind script part for the project widget. It implements the IWidget interface.
@@ -353,11 +349,6 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         public function set container(container:IWidgetContainer):void
         {
         	_container=container;
-        	// since BUGR-1058
-        	if(_container is WidgetContainer) {
-        		var me:ProjectWidget = this as ProjectWidget;
-        		(_container as WidgetContainer).addTitleBarButton(me.optionsBtn);
-        	} 
         }
 
         /**

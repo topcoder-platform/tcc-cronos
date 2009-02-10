@@ -207,14 +207,12 @@
 					var dict:Dictionary=new Dictionary();
 					dict["name"]=_dataProvider.name;
 					dict["allowclose"]="true";
-					dict["columnNum"]=3;
 					prjCt.widgetFramework.addTabCtlWithProperties(dict);
 					
 					dict["tabName"]=_dataProvider.name;
 					dict["name"]="My Projects";
 					dict["title"]="My Projects";
 					dict["widgetConfig"]=props;
-					dict["minHeight"]=400;
 					prjCt.widgetFramework.addWidgetWithProperties(dict );
 					
 					dict["name"]="Contest Monitor";

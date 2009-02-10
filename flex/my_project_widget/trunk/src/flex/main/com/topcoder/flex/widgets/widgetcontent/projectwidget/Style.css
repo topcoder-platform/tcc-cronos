@@ -300,12 +300,3 @@
 	padding-top: 5;
 	padding-bottom: 5;
 }
-
-/* since BUGR-1058 */
-.widgetOptionsButton 
-{
-	upSkin: Embed(source="../assets/image/optionsBtn.png");
-	downSkin: Embed(source="../assets/image/optionsBtn.png");
-	overSkin: Embed(source="../assets/image/optionsBtn_over.png");
-}
-
