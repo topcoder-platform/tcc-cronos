@@ -34,6 +34,13 @@
 	down-skin: Embed("../assets/image/refresh.png");
 }
 
+.editBtn
+{
+	up-skin: Embed("../assets/image/EditButton_Up.png");
+	over-skin: Embed("../assets/image/EditButton_Up.png");
+	down-skin: Embed("../assets/image/EditButton_Up.png");
+}
+
 .maximizeBtn
 {
 	up-skin: Embed("../assets/image/max.png");
@@ -49,6 +56,10 @@
 }
 .bottomAlign {
 	vertical-align: bottom;
+	horizontal-align: center;
+}
+.topAlign {
+	vertical-align: top;
 	horizontal-align: center;
 }
 .LinkButtonStyle

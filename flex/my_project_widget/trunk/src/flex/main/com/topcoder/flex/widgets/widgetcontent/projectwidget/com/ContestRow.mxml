@@ -226,15 +226,15 @@
 					
 					var dict:Dictionary=new Dictionary();
 					dict["name"]="Launch Contest";
-					dict["allowclose"]="false";
-					dict.columnNum=3;
+					dict["allowclose"]="true";
+					dict.columnNum=1;
 					prjCt.widgetFramework.addTabCtlWithProperties(dict);
 					
 					dict["tabName"]="Launch Contest";
 					dict["name"]="Launch Contest";
 					dict["title"]="Launch Contest";
 					dict["widgetConfig"]=props;
-					dict.minHeight=3;
+					dict.minHeight=600;
 					prjCt.widgetFramework.addWidgetWithProperties(dict );
         }
 	]]>

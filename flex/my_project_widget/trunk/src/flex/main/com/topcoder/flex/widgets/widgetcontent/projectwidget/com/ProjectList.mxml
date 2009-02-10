@@ -263,6 +263,7 @@
 			<mx:Label width="100%" textAlign="center" id="lblSubmissions" text="SUBMSSN" />
 			<mx:Label width="100%" textAlign="center" id="lblForumPosts" text="FORUM" />
 			<mx:Label width="100%" textAlign="center" id="lStatus" text="STATUS" />
+			<mx:Label width="100%" textAlign="center" id="lbledit" text="" />
 		</mx:HBox>
 		<mx:VBox id="content" paddingLeft="0" paddingRight="0" verticalGap="0" width="100%" />
 	</mx:VBox>

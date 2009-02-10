@@ -43,6 +43,7 @@
 				}
 			}
 			removeAllChildren();
+			if(arrCol==null)arrCol=new ArrayCollection();
 			_dataProvider=arrCol;
 			for (var i:int=0; i<arrCol.length;i++) {
 				var prj:Project=arrCol.getItemAt(i) as Project;
