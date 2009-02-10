@@ -14,6 +14,10 @@
                 // Open the link in a new window.
                 navigateToURL(new URLRequest(url), '_blank')
             }
+            
+            private function openLaunchContestsTab():void {
+                mx.core.Application.application.widgetLayoutControl.selectedIndex = 1;
+            }
         ]]>
     </mx:Script>
 
@@ -30,7 +34,7 @@
             upSkin="@Embed('../assets/start_now_idle.png')"
             overSkin="@Embed('../assets/start_now_hover.png')"
             downSkin="@Embed('../assets/start_now_hover.png')"
-            buttonMode="true"
+            buttonMode="true" click="openLaunchContestsTab()"
         />
         <mx:Image source="@Embed('../assets/button_shadow.png')"
             width="135" height="8" verticalCenter="171" horizontalCenter="369"
