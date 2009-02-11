@@ -285,7 +285,8 @@
             	currentDoc.file = file.data;
             	currentDoc.description = fileDescInput.text;
             	currentDoc.fileName = file.name;
-            	currentDoc.documentTypeId = this.filetypeCombo.selectedItem.data;
+		// BUGR-1172
+            	currentDoc.documentTypeId = -1;//this.filetypeCombo.selectedItem.data;
             	currentDoc.contestId = -1;
             	currentDoc.documentId = -1;
             	
@@ -352,7 +353,7 @@
         <mx:Label text="Attach Files" fontWeight="bold" fontSize="12"/>
         <mx:Text width="100%" id="attachFiles">
             <mx:htmlText>
-			<![CDATA[If you have your logo in vector format, photographs or images, PSD files or any other documents you think will help the competitors, upload them here. <br/><br/><b>**NOTE:</b> If you are trying to provide examples of the other designs that you do not own, provide a link to them in your contest description. <b>Do not upload files you do not own.</b>]]>
+            <![CDATA[If you have your logo in vector format, photographs or images, PSD files or any other documents you think will help the competitors, upload them here. <b>**NOTE:</b> If you are trying to provide examples of the other designs that you do not own, provide a link to them in your contest description. <b>Do not upload files you do not own.</b>]]>
            </mx:htmlText>
         </mx:Text>
         <mx:Spacer height="5"/>
@@ -379,10 +380,6 @@
                 <mx:Label text="File to Upload:" fontWeight="bold"/>
                 <mx:TextInput id="fileToUpload" editable="false" />
                 <mx:Button id="browse" label="Browse" click="browseFile()" styleName="RedButton"/>
-            </mx:HBox>
-            <mx:HBox >
-                <mx:Label text="Select Document Type:" fontWeight="bold"/>
-                <mx:ComboBox id="filetypeCombo" dataProvider="{fileTypes}" selectedIndex="0"/>
             </mx:HBox>
             <mx:VBox paddingLeft="90">
             	<mx:Button id="upload" label="Upload File" click="uploadFile()" styleName="RedButton"/>
