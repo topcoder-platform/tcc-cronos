@@ -45,8 +45,6 @@
 	color: #797979;
 }
 
-
-
 .TextInput {
 	/* border-skin: Embed(source="../assets/textinput.png", 
 			scaleGridTop="1",scaleGridLeft="1",scaleGridRight="159",scaleGridBottom="18"); */
@@ -59,9 +57,42 @@
 	border-style: solid;
 }
 
-
-
-
 .GridItem {
 	vertical-align: middle;
+}
+
+.topcoderHome {
+    upSkin: Embed(source="../assets/topcoder_home_up.png");
+    overSkin: Embed(source="../assets/topcoder_home_over.png");
+    down-skin: Embed(source="../assets/topcoder_home_over.png");
+}
+
+.topcoderStudio {
+    upSkin: Embed(source="../assets/topcoder_studio_up.png");
+    overSkin: Embed(source="../assets/topcoder_studio_over.png");
+    down-skin: Embed(source="../assets/topcoder_studio_over.png");
+}
+
+.topcoderBug {
+    upSkin: Embed(source="../assets/topcoder_bug_trucker_up.png");
+    overSkin: Embed(source="../assets/topcoder_bug_trucker_over.png");
+    down-skin: Embed(source="../assets/topcoder_bug_trucker_over.png");
+}
+
+.onlineReview {
+    upSkin: Embed(source="../assets/online_review_up.png");
+    overSkin: Embed(source="../assets/online_review_over.png");
+    down-skin: Embed(source="../assets/online_review_over.png");
+}
+
+.topcoderWiki {
+    upSkin: Embed(source="../assets/topcoder_wiki_up.png");
+    overSkin: Embed(source="../assets/topcoder_wiki_over.png");
+    down-skin: Embed(source="../assets/topcoder_wiki_over.png");
+}
+
+.topcoderForums {
+    upSkin: Embed(source="../assets/topcoder_forums_up.png");
+    overSkin: Embed(source="../assets/topcoder_forums_over.png");
+    down-skin: Embed(source="../assets/topcoder_forums_over.png");
 }

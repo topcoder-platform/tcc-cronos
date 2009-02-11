@@ -20,7 +20,7 @@
     </mx:Script>
     
     <mx:Canvas width="100%" height="100%">
-
+<!--
 	    <mx:LinkButton label="TopCoder Home" click="linkHandler('http://www.topcoder.com');" width="100%" visible="true"  height="26"  textAlign="left"/>
 	    <mx:Spacer />
 	    <mx:LinkButton label="TopCoder Studio" click="linkHandler('http://studio.topcoder.com');" width="100%" visible="true"  height="26"  textAlign="left" y="21"/>
@@ -34,7 +34,15 @@
 	    <mx:LinkButton label="TopCoder Bug Tracker" click="linkHandler('http://www.topcoder.com/bugs');" width="100%" visible="true"  height="26"  textAlign="left" y="45"/>
 	    <mx:Spacer />
 	    <mx:Spacer />
-
+-->
+        <mx:VBox width="100%" height="100%" verticalGap="6">
+            <mx:LinkButton click="linkHandler('http://www.topcoder.com');" height="34" width="190" styleName="topcoderHome"/>
+            <mx:LinkButton click="linkHandler('http://studio.topcoder.com');" height="34" width="190" styleName="topcoderStudio"/>
+            <mx:LinkButton click="linkHandler('http://software.topcoder.com');" height="34" width="190" styleName="topcoderBug"/>
+            <mx:LinkButton click="linkHandler('http://forums.topcoder.com/?module=Main');" height="34" width="190" styleName="onlineReview"/>
+            <mx:LinkButton click="linkHandler('http://www.topcoder.com/wiki');" height="34" width="190" styleName="topcoderWiki"/>
+            <mx:LinkButton click="linkHandler('http://www.topcoder.com/bugs');" height="34" width="190" styleName="topcoderForums"/>
+        </mx:VBox>
     </mx:Canvas>
 
 </tc:QuickLinksWidgetCodeBehind>
