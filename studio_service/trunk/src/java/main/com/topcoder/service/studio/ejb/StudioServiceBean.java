@@ -709,7 +709,6 @@ public class StudioServiceBean implements StudioService {
 */
             List<UploadedDocument> documents = new ArrayList<UploadedDocument>();
             for (UploadedDocument doc : contestData.getDocumentationUploads()) {
-				System.out.println("doc --------------------------is " + doc);
 				if (doc != null)
 				{
 					documents.add(uploadDocument(doc, contest));
