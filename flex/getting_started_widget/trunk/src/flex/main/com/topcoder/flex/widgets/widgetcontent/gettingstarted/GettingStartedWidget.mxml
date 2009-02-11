@@ -8,7 +8,9 @@
 
     <mx:Script>
         <![CDATA[
-            import flash.events.TextEvent; 
+            import flash.events.TextEvent;
+            import mx.core.Application;
+            import mx.containers.VBox;
 
             public function linkHandler(url:String):void {
                 // Open the link in a new window.
@@ -16,7 +18,13 @@
             }
             
             private function openLaunchContestsTab():void {
-                mx.core.Application.application.widgetLayoutControl.selectedIndex = 1;
+                for(var i:int = 0; i < Application.application.widgetLayoutControl.getChildren().length; i++) {
+                    var tmpTab:VBox = Application.application.widgetLayoutControl.getChildAt(i) as VBox;
+                    if (tmpTab.label == "Launch Contests") {
+                        Application.application.widgetLayoutControl.selectedIndex = i;
+                        break;
+                    }
+                }
             }
         ]]>
     </mx:Script>
