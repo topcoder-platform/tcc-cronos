@@ -50,13 +50,13 @@
 	         * Represents the height of this widget on different states. BUGR-1134
 	         */
 	        private var INITIAL_WIDGET_HEIGHT:int = 460;
-	       	private var CONTEST_SELECTION_HEIGHT:int = 550;
-	       	private var OVERVIEW_HEIGHT:int = 680;
-	       	private var DETAILS_HEIGHT:int = 680;
-	       	private var SPECIFICATIONS_HEIGHT:int = 730;
+	       	private var CONTEST_SELECTION_HEIGHT:int = 510;
+	       	private var OVERVIEW_HEIGHT:int = 730;
+	       	private var DETAILS_HEIGHT:int = 657;
+	       	private var SPECIFICATIONS_HEIGHT:int = 820;
 	       	private var ATTACH_FILES_HEIGHT:int = 660;
 	       	private var SCHEDULE_HEIGHT:int = 860;
-	       	private var REVIEW_HEIGHT:int = 1800;
+	       	private var REVIEW_HEIGHT:int = 1150;
 	       	private var ACTIVATE_HEIGHT:int = 810;
 	       	
 	        public function set tcDirectProjectId(projectID:String):void
@@ -134,11 +134,12 @@
                 getData(null);
 
 				
-		details.widgetHeight = 1000;
+		details.widgetHeight = 940; // BUGR-1134
                 specf.widgetHeight = 800;
                 attch.height = 600;
-				sched.height = 750; 
-				overView.height = 600; // BUGR-1134
+		sched.height = 750; 
+		overView.height = 630; // BUGR-1134
+		review.height = 1100; // BUGR-1134
 				
 		initialWdt.mainWidget = this;
 		contestSelect.mainWidget = this;
@@ -601,6 +602,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                 mainPanel.percentWidth = 100;
                 mainPanel.percentHeight = 100;
                 mainPanel.visible = true;
+                this.height = CONTEST_SELECTION_HEIGHT; // BUGR-1134
                 
                 contestSelect.initData();
                 overView.initData();
