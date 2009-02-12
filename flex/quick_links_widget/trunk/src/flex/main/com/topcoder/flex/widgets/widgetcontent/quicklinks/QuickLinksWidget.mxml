@@ -36,12 +36,12 @@
 	    <mx:Spacer />
 -->
         <mx:VBox width="100%" height="100%" verticalGap="6">
-            <mx:LinkButton click="linkHandler('http://www.topcoder.com');" height="34" width="190" styleName="topcoderHome"/>
-            <mx:LinkButton click="linkHandler('http://studio.topcoder.com');" height="34" width="190" styleName="topcoderStudio"/>
-            <mx:LinkButton click="linkHandler('http://software.topcoder.com');" height="34" width="190" styleName="topcoderBug"/>
-            <mx:LinkButton click="linkHandler('http://forums.topcoder.com/?module=Main');" height="34" width="190" styleName="onlineReview"/>
-            <mx:LinkButton click="linkHandler('http://www.topcoder.com/wiki');" height="34" width="190" styleName="topcoderWiki"/>
-            <mx:LinkButton click="linkHandler('http://www.topcoder.com/bugs');" height="34" width="190" styleName="topcoderForums"/>
+            <mx:LinkButton click="linkHandler('http://www.topcoder.com');" height="34" width="100%" styleName="topcoderHome"/>
+            <mx:LinkButton click="linkHandler('http://studio.topcoder.com');" height="34" width="100%" styleName="topcoderStudio"/>
+            <mx:LinkButton click="linkHandler('http://software.topcoder.com');" height="34" width="100%" styleName="topcoderBug"/>
+            <mx:LinkButton click="linkHandler('http://forums.topcoder.com/?module=Main');" height="34" width="100%" styleName="onlineReview"/>
+            <mx:LinkButton click="linkHandler('http://www.topcoder.com/wiki');" height="34" width="100%" styleName="topcoderWiki"/>
+            <mx:LinkButton click="linkHandler('http://www.topcoder.com/bugs');" height="34" width="100%" styleName="topcoderForums"/>
         </mx:VBox>
     </mx:Canvas>
 
