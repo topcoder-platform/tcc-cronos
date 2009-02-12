@@ -379,10 +379,10 @@
             <mx:HBox >
                 <mx:Label text="File to Upload:" fontWeight="bold"/>
                 <mx:TextInput id="fileToUpload" editable="false" />
-                <mx:Button id="browse" label="Browse" click="browseFile()" styleName="RedButton"/>
+                <mx:Button id="browse" buttonMode="true" label="Browse" click="browseFile()" styleName="RedButton"/>
             </mx:HBox>
             <mx:VBox paddingLeft="90">
-            	<mx:Button id="upload" label="Upload File" click="uploadFile()" styleName="RedButton"/>
+            	<mx:Button id="upload" buttonMode="true" label="Upload File" click="uploadFile()" styleName="RedButton"/>
             	<mx:Text text="You may add more files after uploading." color="0x888888"/>
             </mx:VBox>
         </mx:VBox>

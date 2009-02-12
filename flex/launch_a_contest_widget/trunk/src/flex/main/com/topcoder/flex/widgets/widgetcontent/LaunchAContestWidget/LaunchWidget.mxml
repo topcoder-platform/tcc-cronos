@@ -736,10 +736,10 @@ Specific limitations (such as restricting a color or a specific layout style) an
              <pages:PaymentContest id="activate" width="100%" />
    
              <mx:HBox paddingLeft="20" paddingRight="10" width="100%" >
-                 <mx:Button id="back" styleName="RedButton" label="&lt;&lt; back" click="previous()"/>
+                 <mx:Button id="back" buttonMode="true" styleName="RedButton" label="&lt;&lt; back" click="previous()"/>
                  <mx:Spacer width="100%"/>
-                 <mx:Button id="save" styleName="RedButton"  label="save as draft" click="saveAsDraft()"/>
-                 <mx:Button id="goNext" styleName="RedButton"  label="continue >>" click="next()"/>
+                 <mx:Button id="save" buttonMode="true" styleName="RedButton"  label="save as draft" click="saveAsDraft()"/>
+                 <mx:Button id="goNext" buttonMode="true" styleName="RedButton"  label="continue >>" click="next()"/>
              </mx:HBox>
              <!--<mx:Spacer  id="bottemline" height="100%"/>-->
          </mx:VBox>
