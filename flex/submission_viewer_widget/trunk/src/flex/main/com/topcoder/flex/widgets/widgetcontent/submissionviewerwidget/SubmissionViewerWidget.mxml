@@ -1457,12 +1457,12 @@
         	verticalGap="0">
             <mx:ViewStack id="thumbnailPanel" width="100%" height="100%">
             	<mx:VBox id="thumbnailPanel_enabled" horizontalAlign="center">
-	            	<mx:Button click="reorder()" label="prioritize" styleName="ButtonStyle"/>
+	            	<mx:Button buttonMode="true" click="reorder()" label="prioritize" styleName="ButtonStyle"/>
 	            	<mx:VBox horizontalAlign="center" height="100%" width="100%"
 		                    paddingLeft="0" paddingRight="0" >
 		                
 		            	<mx:Spacer height="5" />
-		                <mx:Button id="up" styleName="up" click="goUp(null)" />
+		                <mx:Button buttonMode="true" id="up" styleName="up" click="goUp(null)" />
 		                <tc:CustomTileList id="list" 
 		                		rowCount="4" 
 		                		width="100%" 
@@ -1480,7 +1480,7 @@
 		                        allowDragSelection="false"
 					backgroundColor="#E0E0E0"
 		                        />
-		                <mx:Button id="down" styleName="down" click="goDown(null)" />
+		                <mx:Button buttonMode="true" id="down" styleName="down" click="goDown(null)" />
 		            </mx:VBox>
 	            </mx:VBox>
 	            <mx:VBox id="thumbnailPanel_disabled" 
@@ -1532,7 +1532,7 @@
 	            	
 	            	<mx:HBox horizontalAlign="center" width="100%" height="100%" paddingLeft="10" paddingRight="10">
 	                    <mx:VBox height="100%" verticalAlign="middle">
-	                        <mx:Button id="prev" styleName="prev" click="goPrev()"/>
+	                        <mx:Button buttonMode="true" id="prev" styleName="prev" click="goPrev()"/>
 	                    </mx:VBox>
 	                    <mx:VBox height="100%" 
 	                    		width="100%" 
@@ -1548,7 +1548,7 @@
 										width="{imagePreviewerCanvas.width - 2}" 
 										height="{imagePreviewerCanvas.height - 2}" 
 										x="0" y="0"/>
-								<mx:Button styleName="ImageInNewWindowButton"
+								<mx:Button buttonMode="true" styleName="ImageInNewWindowButton"
 									   toolTip="Click here to get full screen view in a new window"
 									   click="openImageInNewWindow(event)"
 									   top="2"
@@ -1557,7 +1557,7 @@
                             	<mx:VBox left="10" top="10" width="20">
 									<mx:Spacer/>
 								
-									<mx:Button 
+									<mx:Button buttonMode="true"
 										styleName="ZoomOutButton"
 										toolTip="Zoom In"
 										click="{currentImage.zoom('in');}"
@@ -1578,7 +1578,7 @@
 														
 									</mx:HBox>
 						
-									<mx:Button 
+									<mx:Button buttonMode="true"
 										styleName="ZoomInButton"
 										toolTip="Zoom Out"
 										click="{ currentImage.zoom('out'); }"			
@@ -1589,7 +1589,7 @@
 	                        </mx:Canvas>
 	                    </mx:VBox>
 	                    <mx:VBox height="100%" verticalAlign="middle">
-	                        <mx:Button id="next" styleName="next" click="goNext()"/>
+	                        <mx:Button buttonMode="true" id="next" styleName="next" click="goNext()"/>
 	                    </mx:VBox>
 	                </mx:HBox>
                     <mx:HBox width="100%" 
@@ -1692,7 +1692,7 @@
 	                </mx:HBox>
 	                <mx:HBox width="100%" horizontalAlign="right" paddingBottom="4" paddingRight="4">
 	                    <!--<mx:Button id="save_contestViewer_btn" label="save as draft" styleName="ButtonStyle" click="saveContestAsDraft()" /> -->
-	                    <mx:Button id="continue_contestViewer_btn" label="continue &gt;&gt;" styleName="ButtonStyle" click="continueFromContestViewer()" />
+	                    <mx:Button id="continue_contestViewer_btn" buttonMode="true" label="continue &gt;&gt;" styleName="ButtonStyle" click="continueFromContestViewer()" />
 	                </mx:HBox>
 	            </mx:VBox>
         		<mx:VBox id="abandonConfirmationScreen" paddingTop="22" verticalGap="7" width="100%" styleName="BoxStyle">
@@ -1719,8 +1719,8 @@
 	                    		text="Taking no action at all would be an 'abandonment' of the competition, which also would be indicated in your public profile. Multiple contest abandonments will result in a cancellation of your account." />
         			</mx:VBox>
         			<mx:HBox horizontalAlign="center" width="100%" paddingTop="35">
-        				<mx:Button styleName="ButtonStyle" label="Select a Winner" click="gotoImageViewer()" />
-        				<mx:Button styleName="ButtonStyle" label="Do Not Choose a Winner" click="gotoAbandonScreen(abandonedScreen_1)" />
+        				<mx:Button buttonMode="true" styleName="ButtonStyle" label="Select a Winner" click="gotoImageViewer()" />
+        				<mx:Button buttonMode="true" styleName="ButtonStyle" label="Do Not Choose a Winner" click="gotoAbandonScreen(abandonedScreen_1)" />
         			</mx:HBox>
                 </mx:VBox>
                 <mx:VBox id="abandonedScreen_1" paddingTop="22" verticalGap="7" width="100%" styleName="BoxStyle">
@@ -1738,8 +1738,8 @@
 	     				<mx:TextArea paddingTop="9" width="90%" height="158" />
         			</mx:VBox>
         			<mx:HBox horizontalAlign="center" width="100%" paddingTop="35">
-        				<mx:Button styleName="ButtonStyle" label="Select a Winner" click="gotoImageViewer()"  />
-        				<mx:Button styleName="ButtonStyle" label="Continue >>" click="gotoAbandonScreen(abandonedScreen_2)" />
+        				<mx:Button buttonMode="true" styleName="ButtonStyle" label="Select a Winner" click="gotoImageViewer()"  />
+        				<mx:Button buttonMode="true" styleName="ButtonStyle" label="Continue >>" click="gotoAbandonScreen(abandonedScreen_2)" />
         			</mx:HBox>
                 </mx:VBox>
                 <mx:VBox id="abandonedScreen_2" paddingTop="22" verticalGap="7" width="100%" styleName="BoxStyle">
@@ -1760,8 +1760,8 @@
 	                    		text="So what would you like to do?" />
         			</mx:VBox>
         			<mx:HBox horizontalAlign="center" width="100%" paddingTop="35">
-        				<mx:Button styleName="ButtonStyle" label="Run this Contest Again" click="gotoImageViewer()" />
-        				<mx:Button styleName="ButtonStyle" label="No, Thank You" click="gotoAbandonScreen(abandonedScreen_3)" />
+        				<mx:Button buttonMode="true" styleName="ButtonStyle" label="Run this Contest Again" click="gotoImageViewer()" />
+        				<mx:Button buttonMode="true" styleName="ButtonStyle" label="No, Thank You" click="gotoAbandonScreen(abandonedScreen_3)" />
         			</mx:HBox>
                 </mx:VBox>
                 <mx:VBox id="abandonedScreen_3" paddingTop="22" verticalGap="7" width="100%" styleName="BoxStyle">
@@ -1806,9 +1806,9 @@
                 height="460"/>
         <mx:Spacer height="100%" />
         <mx:HBox width="100%">
-        	<mx:Button styleName="ButtonStyle" label="Modify Selections" click="gotoContestViewer()" />
+        	<mx:Button buttonMode="true" styleName="ButtonStyle" label="Modify Selections" click="gotoContestViewer()" />
         	<mx:Spacer width="100%" />
-        	<mx:Button styleName="ButtonStyle" label="Checkout" click="continueToSubmissionCheckoutScreen()" />
+        	<mx:Button buttonMode="true" styleName="ButtonStyle" label="Checkout" click="continueToSubmissionCheckoutScreen()" />
         </mx:HBox>
 	</mx:VBox>
 	<mx:VBox id="submissionCheckoutScreen" width="100%" height="100%" paddingTop="10" paddingBottom="25" paddingLeft="15" paddingRight="15">
@@ -1820,21 +1820,21 @@
 			<mx:VBox width="100%" height="100%">
 				<tc:PaymentWF id="wf1" width="100%" height="100%" />
 				<mx:HBox width="100%">
-					<mx:Button styleName="ButtonStyle" label="Add/Modify Selections" click="gotoContestViewer()" />
+					<mx:Button buttonMode="true" styleName="ButtonStyle" label="Add/Modify Selections" click="gotoContestViewer()" />
 					<mx:Spacer width="100%" />
-					<mx:Button styleName="ButtonStyle" label="Confirm Order" click="gotoPurchase()" />
+					<mx:Button buttonMode="true" styleName="ButtonStyle" label="Confirm Order" click="gotoPurchase()" />
 				</mx:HBox>
 			</mx:VBox>
 			<mx:VBox width="100%" height="100%">
 				<tc:PaymentWFCf id="wf2" paddingRight="6" />
 				<mx:HBox width="100%" horizontalAlign="right">
-					<mx:Button id="sub1" styleName="ButtonStyle" label="Submit Purchase" click="gotoPurchase()" />
+					<mx:Button buttonMode="true" id="sub1" styleName="ButtonStyle" label="Submit Purchase" click="gotoPurchase()" />
 				</mx:HBox>
 			</mx:VBox>
 			<mx:VBox width="100%" height="100%">
 				<tc:PaymentWFCfPO id="wf3" paddingRight="6" />
 				<mx:HBox width="100%" horizontalAlign="right">
-					<mx:Button id="sub2" styleName="ButtonStyle" label="Submit Purchase" click="gotoPurchase()" />
+					<mx:Button buttonMode="true" id="sub2" styleName="ButtonStyle" label="Submit Purchase" click="gotoPurchase()" />
 				</mx:HBox>
 			</mx:VBox>
 		</mx:ViewStack>
@@ -1864,7 +1864,7 @@
             allowMultipleSelection="false" 
             allowDragSelection="false"/>
         <mx:HBox width="100%">
-        	<mx:Button styleName="ButtonStyle" label="&lt;&lt; Back" click="gotoContestViewer()" />
+        	<mx:Button buttonMode="true" styleName="ButtonStyle" label="&lt;&lt; Back" click="gotoContestViewer()" />
         </mx:HBox>
 	</mx:VBox>    	
 </mx:ViewStack>
@@ -1883,7 +1883,7 @@
     </mx:HBox>
     
 	<mx:VBox horizontalAlign="center" width="100%" height="100%">
-	    <mx:Button id="min_up" styleName="up" click="goUpMinPage()" visible="false"/>
+	    <mx:Button buttonMode="true" id="min_up" styleName="up" click="goUpMinPage()" visible="false"/>
 	    <mx:ViewStack id="min_thumbnails_stack" width="100%" height="100%">
 	    	<mx:VBox id="min_thumbnails" width="100%" horizontalAlign="center" height="100%">
 		        <tc:CustomTileList id="list_minpage" rowCount="4" 
@@ -1908,7 +1908,7 @@
 	                fontWeight="bold" fontSize="16" width="100%" />
 			</mx:VBox>
 		</mx:ViewStack>
-		<mx:Button id="min_down" styleName="down" click="goDownMinPage()" visible="false"/>
+		<mx:Button buttonMode="true" id="min_down" styleName="down" click="goDownMinPage()" visible="false"/>
 	</mx:VBox>
 </mx:VBox>
 

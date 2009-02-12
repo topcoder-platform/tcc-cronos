@@ -19,5 +19,5 @@
 	<mx:NumberFormatter id="moneyFormatter" precision="2" useThousandsSeparator="false" useNegativeSign="true" />
 	<mx:Label id="purchase" styleName="middle" />
 	<mx:Spacer width="100%" />
-	<mx:Button styleName="ButtonStyle" id="removeMe" label="Remove" visible="{getRemove(data)}" />
+	<mx:Button styleName="ButtonStyle" buttonMode="true" id="removeMe" label="Remove" visible="{getRemove(data)}" />
 </mx:HBox>

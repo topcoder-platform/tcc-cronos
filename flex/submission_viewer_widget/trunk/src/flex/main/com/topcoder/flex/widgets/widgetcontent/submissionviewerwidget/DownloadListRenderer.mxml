@@ -59,7 +59,7 @@
 		<mx:Canvas width="116" height="94">
 			<mx:Canvas id="thumbnail" top="9" left="8" bottom="0" right="8"
 				backgroundImage="{data.thumbnail}" backgroundSize="100%"/>
-			<mx:Button styleName="rankLogo" id="rank" label="{(data.rank)?data.rank:'+'}"
+			<mx:Button styleName="rankLogo" buttonMode="true" id="rank" label="{(data.rank)?data.rank:'+'}"
 				width="25" height="26" textAlign="center" />
 		</mx:Canvas>
 		<mx:Label id="content" textAlign="center" text="{'#' + data.id}" bottom="0" 
@@ -71,7 +71,7 @@
 		<mx:Label styleName="normalText" />
 		<mx:Text width="100%" textAlign="left" styleName="text" 
 				htmlText="" />
-		<mx:Button id="down" styleName="ButtonStyle" click="{download(data.id)}" />
+		<mx:Button id="down" buttonMode="true" styleName="ButtonStyle" click="{download(data.id)}" />
 	</mx:VBox>
 </mx:HBox>
 </mx:HBox>
