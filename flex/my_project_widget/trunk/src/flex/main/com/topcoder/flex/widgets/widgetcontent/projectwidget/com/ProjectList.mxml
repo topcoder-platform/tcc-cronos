@@ -237,7 +237,7 @@
 </mx:Script>
 	<mx:HBox styleName="titleBar" width="100%" height="27" backgroundSize="100%" 
 			verticalScrollPolicy="off" horizontalScrollPolicy="auto">
-		<mx:Image width="16" height="16" id="winCtrlBut" init="winResize()" click="winResize()" source="{winMin}"/>
+		<mx:Image width="16" height="16" id="winCtrlBut" init="winResize()" buttonMode="true" click="winResize()" source="{winMin}"/>
 		<mx:Label text="Label" id="projectName" styleName="nameLabel" />
 		<mx:Spacer width="100%" />
 		<mx:Label id="projectStatus" styleName="statusLabel" />
@@ -246,11 +246,11 @@
 	<mx:VBox id="contents" paddingLeft="4" paddingRight="4" width="100%" verticalGap="0" initialize="winResize()">
 		<mx:Canvas width="100%" styleName="descPanel" backgroundSize="100%" height="36" id="Table" 
 				verticalScrollPolicy="off" horizontalScrollPolicy="off">
-			<mx:Button id="open" styleName="blackBtn" y="6" label="view description"
+			<mx:Button id="open" buttonMode="true" styleName="blackBtn" y="6" label="view description"
 					left="10" height="19" click="toggleDescription()"/>
 		    <mx:MenuBar labelField="@label"  left="200" id="menubar" dataProvider="{menuBarCollection}"  itemClick="menuHandler(event);">
 		    </mx:MenuBar>
-			<mx:Button y="6" label="add new contest" height="19"
+			<mx:Button y="6" buttonMode="true" label="add new contest" height="19"
 					right="28" styleName="greyBtn" click="addcontest()"/>
 			<mx:Label x="-20" y="55" width="100%" id="projectDesc" 
 					fontSize="12" color="#6f6f6f" textAlign="right"/>

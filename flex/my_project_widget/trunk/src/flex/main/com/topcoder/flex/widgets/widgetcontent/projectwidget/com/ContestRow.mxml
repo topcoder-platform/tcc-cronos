@@ -241,14 +241,14 @@
 		<mx:Text width="100%" styleName="rowContentLabel" id="lblRegistrants" />
 		<mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle">
 			<mx:Text width="100%" styleName="rowContentLabel" id="lblSubmissions" />
-			<mx:LinkButton styleName="viewBtn" label="View" labelPlacement="bottom" id="lnkSubmissions" click="showSubmission()"/> 
+			<mx:LinkButton buttonMode="true" styleName="viewBtn" label="View" labelPlacement="bottom" id="lnkSubmissions" click="showSubmission()"/> 
 		</mx:VBox>
 		<mx:VBox width="100%" styleName="bottomAlign">
 			<mx:Text width="100%"   styleName="rowContentLabel" id="lblForumPosts" />
-			<mx:LinkButton styleName="viewBtn" label="View" labelPlacement="bottom" id="lnkFormPosts" click="openForum()"/> 
+			<mx:LinkButton buttonMode="true" styleName="viewBtn" label="View" labelPlacement="bottom" id="lnkFormPosts" click="openForum()"/> 
 		</mx:VBox>
 		<mx:VBox width="100%" styleName="bottomAlign">
-			<mx:LinkButton id="statusBtn" styleName="statusBtn" labelPlacement="bottom" click="showStats()"/> 
+			<mx:LinkButton buttonMode="true" id="statusBtn" styleName="statusBtn" labelPlacement="bottom" click="showStats()"/> 
 		</mx:VBox>
 	</mx:HBox>
 </mx:VBox>
