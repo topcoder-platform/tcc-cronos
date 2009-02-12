@@ -3,6 +3,7 @@
 		styleName="ContestRowStyle" backgroundSize="100%" mouseOver="mouseOverHandle()" mouseOut="mouseOutHandle()">
 <mx:Script>
 	<![CDATA[
+		import com.topcoder.flex.widgets.model.IWidget;
 	import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Contest;
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
@@ -221,21 +222,10 @@
         			}
         			if(p==null)return ;
 					prjCt=p as ProjectsContainer;
+					var widget:IWidget=prjCt.widgetFramework.openWidget("Launch Contests","Launch Contest");
 					var props:Dictionary=new Dictionary();
 					props["contestid"]=_dataProvider.id;
-					
-					var dict:Dictionary=new Dictionary();
-					dict["name"]="Launch Contest";
-					dict["allowclose"]="true";
-					dict.columnNum=1;
-					prjCt.widgetFramework.addTabCtlWithProperties(dict);
-					
-					dict["tabName"]="Launch Contest";
-					dict["name"]="Launch Contest";
-					dict["title"]="Launch Contest";
-					dict["widgetConfig"]=props;
-					dict.minHeight=600;
-					prjCt.widgetFramework.addWidgetWithProperties(dict );
+					widget.setAttributes(props);
         }
 	]]>
 </mx:Script>
