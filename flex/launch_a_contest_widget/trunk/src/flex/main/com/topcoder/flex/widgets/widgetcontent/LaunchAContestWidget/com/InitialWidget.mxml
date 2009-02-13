@@ -63,7 +63,6 @@
                 mainWidget._pws.getAllProjects_request_var.getAllProjects=new GetAllProjects();
                 mainWidget._pws.getAllProjects_send();
                   
-                  mainWidget._ws.addgetContestEventListener(getcontestHander);
                   selectContests.dataProvider = contestsData;
                   if(mainWidget.contestid)
                   {
@@ -72,43 +71,6 @@
                   	mainWidget._ws.getContest_request_var.getContest.arg0=parseInt(mainWidget.contestid);
                   	mainWidget._ws.getContest_send();
                   }
-            }
-            private function getcontestHander(e:GetContestResultEvent):void
-            {
-            	if(e && e.result)
-            	{
-            		//mainWidget.competition =e.result._return as StudioCompetition;
-            		mainWidget.competition = new StudioCompetition();
-                    	mainWidget.competition.competitionId = e.result._return.competitionId;
-                    	mainWidget.competition.id =e.result._return.competitionId;// -1;
-                    	mainWidget.competition.adminFee =e.result._return.adminFee;// 20;
-                    	mainWidget.competition.eligibility =e.result._return.eligibility;// "some text";
-                    	
-                    	mainWidget.competition.contestData = new ContestData();
-                    	mainWidget.competition.contestData.contestAdministrationFee = 20;
-                    	mainWidget.competition.creatorUserId = e.result._return.creatorUserId;//3;
-                    	mainWidget.competition.drPoints =  e.result._return.drPoints;//100;
-                    	mainWidget.competition.contestData.drPoints = e.result._return.drPoints;//100;
-			// dont set project id
-                    	//mainWidget.competition.contestData.projectId = id;
-                    	mainWidget.competition.contestData.tcDirectProjectId = 0;
-                    	mainWidget.competition.contestData.contestId = e.result._return.competitionId;
-                    	mainWidget.competition.contestData.creatorUserId = e.result._return.creatorUserId;
-                    	mainWidget.competition.contestData.statusId = 5;
-                    	mainWidget.competition.contestData.forumId = -1;
-                    	mainWidget.competition.contestData.forumPostCount = 0;
-                    	mainWidget.competition.contestData.requiresPreviewImage = true;
-                    	mainWidget.competition.contestData.requiresPreviewFile = false;
-                    	mainWidget.competition.contestData.maximumSubmissions = 10;
-                    	mainWidget.competition.contestData.submissionCount = 0;
-                    	mainWidget.competition.contestData.contestChannelId = 2;
-                    	mainWidget.competition.contestData.eligibility = e.result._return.eligibility;
-                    	mainWidget.competition.contestData.shortSummary=e.result._return.shortSummary;
-			mainWidget.competition.contestData.media = new Array();
-                    	
-                    	mainWidget.competition.contestData.numberOfRegistrants = 0;
-            		mainWidget.startLaunchProcess();
-            	}
             }
             private function createProjectHandler(e:CreateProjectResultEvent):void
             {
