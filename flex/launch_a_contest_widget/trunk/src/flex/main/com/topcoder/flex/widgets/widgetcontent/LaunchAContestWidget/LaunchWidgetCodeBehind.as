@@ -20,9 +20,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     
     import mx.containers.VBox;
 
-        	import com.topcoder.flex.Helper;
-		import flash.net.URLRequest;
-		import flash.net.navigateToURL;
+	import com.topcoder.flex.Helper;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
+	import mx.core.Application;
 
     /**
      * <p>

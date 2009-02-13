@@ -5,7 +5,7 @@
 	    <![CDATA[
 	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
 	    	import mx.events.FlexEvent;
-	    	import mx.controls.Alert;
+	    	import com.topcoder.flex.Helper;
 	        import flash.events.MouseEvent;
 	        import mx.containers.Panel;
 	        
@@ -35,17 +35,17 @@
         
 	        public function validateFields():Boolean{
 	        	if (ctInput.text == ""){
-	        		Alert.show("Please enter contest title");
+	        		Helper.showAlertMessage("Please enter contest title");
 	        		return false;
 	        	}
 	        	
 	        	if (introInput.text == ""){
-	        		Alert.show("Please enter introduction");
+	        		Helper.showAlertMessage("Please enter introduction");
 	        		return false;
 	        	}
 	        	
 	        	if (glsInput.text == ""){
-	        		Alert.show("Please enter primary goals");
+	        		Helper.showAlertMessage("Please enter primary goals");
 	        		return false;
 	        	}
 	        	
