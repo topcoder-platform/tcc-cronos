@@ -297,7 +297,8 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoom
 					break;
 					
 				case "mouseWheel":
-					
+				
+				    e.stopPropagation();
 					
 					var __factor:Number = 1.125;					
 					_reciever.zoomOrigin = new Point(
@@ -316,12 +317,9 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoom
 					}
 
 					_client.invalidateDisplayList();
-
-					e.stopImmediatePropagation(); 
 					
 					break;
 			}
-			
 		}
 		
 		/**

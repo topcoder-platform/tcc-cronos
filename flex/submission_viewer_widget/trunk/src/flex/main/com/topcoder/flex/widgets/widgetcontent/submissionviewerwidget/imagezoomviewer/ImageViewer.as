@@ -361,7 +361,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoom
             addEventListener(FlexEvent.CREATION_COMPLETE, handleCreationComplete);
             function handleCreationComplete(e:FlexEvent):void
             {
-                _contentRectangle.zoom = .5;    
+                _contentRectangle.zoom = 1;    
                 bitmapScaleFactor = _contentRectangle.zoom;
                 invalidateDisplayList();
             }
@@ -403,8 +403,9 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoom
             if (_bitmap == null)
             {
                 // if there's no bitmapData fill the component with black
+                graphics.clear();
                 graphics.beginFill(0x000000,1)
-                graphics.drawRect(0,0,unscaledWidth,unscaledHeight);                                
+                graphics.drawRect(0,0,viewRect.width,viewRect.height);                                
             
             } else if (viewRect != null)
             {    
@@ -508,10 +509,6 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoom
             
             loadingImage = false;
             _percentLoadedLabel.text = "Complete";
-            
-            centerView();
-            
-            trace("Image load is complete");                
         }
 
         /**

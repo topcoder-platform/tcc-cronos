@@ -264,6 +264,10 @@
 							currentIndex = subRow;
 						}
 						
+						if (currentIndex < 0) {
+						    currentIndex = 0;
+						}
+						
 						trace("_maximize subIndex: " + subIndex);
 						trace("_maximize subRow: " + subRow);
 						trace("_maximize maxRows: " + maxRows);
@@ -300,6 +304,10 @@
 						}
 						else {
 							currentIndexMinPage = subRow;
+						}
+						
+						if (currentIndex < 0) {
+						    currentIndex = 0;
 						}
 						
 						trace("_restore subIndex: " + subIndex);
@@ -408,7 +416,7 @@
                 	for(var i:int=0;i<submissions.length;i++) {
                 		var sub:Dictionary=new Dictionary();
                 		
-						if (submissions[i].submissionStatus.submissionStatusId == ACTIVE_STATUS) {
+						
 						
 							sub.id=submissions[i].submissionId;
                 		
@@ -439,7 +447,7 @@
                 		
 							trace("Added submission to list: {" + sub.id + "," + sub.price + "," + sub.rank + "," + sub.markedForPurchase + "," + sub.purchased + "}");
 						}
-					}
+					
                 }
                 
                 // if there are no submissions then show no-submision screen.
@@ -700,8 +708,9 @@
             	trace("Setting active submissions: " + activeSubmission.length + "," + _submissionList.length);
                 activeSubmission = new ArrayCollection();
                 
-                _currentColumnCount = thumbnailPanelVBox.width / list.columnWidth;
-                trace("thumbnailPanelVBox.width: " + thumbnailPanelVBox.width + ", list.columnWidth: " + list.columnWidth); 
+                _currentColumnCount = leftPanel.width / list.columnWidth;
+                
+                trace("leftPanel.width: " + leftPanel.width + ", list.columnWidth: " + list.columnWidth); 
                 //trace("Clean the active submission.");
                 for (var i:int = currentIndex; i < 4 + currentIndex; i++) {
                 	trace("i: " + i + ", 4 + currentIndex: " + (4 + currentIndex));
@@ -1354,28 +1363,11 @@
 				event.stopImmediatePropagation();
 			}
 		
-			public function onMouseDown(event:Event):void {
-				event.stopImmediatePropagation();
-			}
-			
-			public function onDividerResize(event:Event):void {
-				event.stopImmediatePropagation();
-				
-				_previousColumnCount = _currentColumnCount;
-				_currentColumnCount = thumbnailPanelVBox.width / list.columnWidth;
-				list.columnCount = _currentColumnCount;
-				
-				if (_previousColumnCount != _currentColumnCount) {				
-					// re-create submission.
-					currentIndex = 0;
-					setSubmission();
-					handleSelect();
-				}
-				
-				thumbnailPanelVBox.width = _currentColumnCount * list.columnWidth;
-			}
-			
-		    public function linkHandler(event:TextEvent):void {
+	    public function onMouseDown(event:Event):void {
+	    	event.stopImmediatePropagation();
+	    }
+	    
+		public function linkHandler(event:TextEvent):void {
 			// Open the link in a new window.
 			navigateToURL(new URLRequest("http://"+Application.application.parameters.studioAddress+"/?module=DownloadSubmission&sbmid=" + list.selectedItem.id), '_blank')
 		    }
@@ -1452,13 +1444,19 @@
 <mx:NumberFormatter id="moneyFormatter" precision="2" useThousandsSeparator="true" useNegativeSign="true" />
 <mx:ViewStack id="main" 
 	width="100%" 
-	height="100%">
-    <mx:HDividedBox id="contestViewer" width="100%" height="100%" paddingTop="2" paddingLeft="0" paddingRight="0" 
+	height="100%"
+	resizeToContent="true">
+    <mx:HDividedBox id="contestViewer" 
+        width="100%" 
+        height="100%" 
+        paddingTop="2" 
+        paddingLeft="0" 
+        paddingRight="0" 
     	dividerDrag="onDividerDrag(event)" 
     	mouseDown="onMouseDown(event)" 
-    	updateComplete="onDividerResize(event)" 
+    	 
     	resizeToContent="true">
-        <mx:VBox id="thumbnailPanelVBox" horizontalAlign="left" height="100%" width="200" 
+        <mx:VBox id="leftPanel" horizontalAlign="left" height="100%" width="200" 
         	verticalGap="0">
             <mx:ViewStack id="thumbnailPanel" width="100%" height="100%">
             	<mx:VBox id="thumbnailPanel_enabled" horizontalAlign="center">
@@ -1498,30 +1496,39 @@
 	            </mx:VBox>
             </mx:ViewStack>
         </mx:VBox>
-        <mx:VBox width="100%" 
+        <mx:VBox id="rightPanel" 
+                width="100%" 
         		height="100%" 
         		verticalGap="0"
         		horizontalGap="0" 
         		backgroundColor="#ffffff"
         		paddingLeft="2"
         		paddingRight="2"
-        		>
-            <mx:Canvas styleName="BoxStyle" width="100%">
-                <mx:Label text="Select a Contest to View:" left="0" top="9" 
-                        styleName="normalText" paddingTop="0" paddingBottom="0" />
-                <mx:ComboBox id="contestCombo" left="195" width="272" top="9" fontFamily="Arial" fontSize="10"
-                        change="handleContest(event)" 
-                        labelField="name" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{_contestList}" />
-				<!-- fixes for bugr-1101 : implement this as alert box -->                        
-                <!--<mx:Label id="contestRankingErrorLbl" fontFamily="Arial" 
-		                                fontWeight="bold" color="red" fontSize="14" width="600" top="38"
-		                                text="You must rank your top 5 selections. If you do not wish to purchase any submissions, select 'I can not choose a winner." visible="false"/>-->
-                <mx:Label text="Filter By:" right="140" top="9" styleName="normalText" />
-                <mx:CheckBox id="showActive" label="Active Contests" right="13" top="9" styleName="CheckBoxStyle"
-                        selected="true" change="doFilter()" />
-                <mx:CheckBox id="showPast" label="Past Contests" right="19" top="38" styleName="CheckBoxStyle"
-                        selected="true" change="doFilter()" />
-            </mx:Canvas>
+        		
+        		verticalScrollPolicy="off">
+        	<mx:VBox styleName="BoxStyle" 
+        	    width="100%"
+        	    height="100%">
+        	    <mx:Spacer height="9" width="100%"/>
+                <mx:HBox width="100%" 
+            		horizontalAlign="left"
+            		paddingLeft="10">
+                    <mx:Label text="Select a Contest to View:" styleName="normalText"/>
+                    <mx:ComboBox id="contestCombo" width="272" top="9" fontFamily="Arial" fontSize="10"
+                            change="handleContest(event)" 
+                            labelField="name" 
+                            itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{_contestList}" />
+                    <mx:HBox horizontalAlign="right" width="100%" paddingRight="10">
+                        <mx:Label text="Filter By:" styleName="normalText"/>                
+                        <mx:VBox>
+                            <mx:CheckBox id="showActive" label="Active Contests" styleName="CheckBoxStyle"
+                                selected="true" change="doFilter()" />
+                            <mx:CheckBox id="showPast" label="Past Contests" styleName="CheckBoxStyle"
+                                selected="true" change="doFilter()" />    
+                        </mx:VBox>       
+                    </mx:HBox>         
+                </mx:HBox>
+            </mx:VBox>
             <mx:Spacer height="4"/>
             <mx:ViewStack width="100%" height="100%" id="contestViewerCenterPanel">
 	            <mx:VBox id="imageViewerScreen" 
@@ -1545,7 +1552,15 @@
 	                    		horizontalAlign="center">
 		                    
 							<!-- Changes for bugr-1059: Submission Viewer Preview Image -->
-	                        <mx:Canvas id="imagePreviewerCanvas" borderStyle="solid" minWidth="526" minHeight="276" width="100%" height="100%">
+	                        <mx:Canvas id="imagePreviewerCanvas" 
+	                            borderStyle="solid" 
+	                            minWidth="526" 
+	                            minHeight="276" 
+	                            width="100%" 
+	                            height="100%"
+	                            horizontalScrollPolicy="off"
+	                            verticalScrollPolicy="off"
+	                            >
 	                            <tcimg:ImageViewer id="currentImage" smoothBitmap="true"
 										bitmapScaleFactorMax="5"
 										bitmapScaleFactorMin=".05"
