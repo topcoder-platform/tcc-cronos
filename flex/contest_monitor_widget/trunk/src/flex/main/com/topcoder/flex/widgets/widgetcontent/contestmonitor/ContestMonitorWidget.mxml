@@ -12,7 +12,7 @@
         import flash.net.URLLoader;
         import flash.net.URLRequest;
         import flash.events.Event;
-        import mx.controls.Alert;
+        import com.topcoder.flex.Helper;
         import flash.utils.Timer;
         import flash.events.TimerEvent;
         import mx.events.SliderEvent;        
@@ -102,13 +102,11 @@
 
 		private function processPassword(e:ResultEvent): void
 		{
-			//Alert.show("--------"+e.result.toString());
 			if(e!=null && e.result!=null){
 				password = e.result.toString();
 				
 			}
 
-			//Alert.show("========" + password);
 			fetchData();
 		}
         
@@ -287,9 +285,9 @@ wsdl="{contestServiceFacadeWsdl}">
 </mx:WebService>
 <mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"
               
-		 fault="Alert.show(event.fault.faultString);">
+		 fault="Helper.showAlertMessage(event.fault.faultString);">
     <mx:method name="getPassword"  result="processPassword(event)" 
-		                   fault="Alert.show(event.fault.faultString);"/>
+		                   fault="Helper.showAlertMessage(event.fault.faultString);"/>
 
 </mx:RemoteObject>
 
