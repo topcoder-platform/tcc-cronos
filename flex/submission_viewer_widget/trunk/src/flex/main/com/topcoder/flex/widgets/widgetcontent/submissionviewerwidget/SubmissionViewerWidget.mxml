@@ -42,7 +42,7 @@
             import mx.events.FlexEvent;
             import mx.collections.SortField;
             import mx.collections.Sort;
-            import mx.controls.Alert;
+            import com.topcoder.flex.Helper;
             import mx.collections.ArrayCollection;
             import mx.rpc.events.ResultEvent;
             import mx.rpc.events.FaultEvent;
@@ -1059,7 +1059,7 @@
             		else if (!areProperRanking()) { // no submissions ranked.
             			// show error text.
             			//contestRankingErrorLbl.visible=true;
-            			Alert.show("You must rank your top 5 selections. If you do not wish to purchase any submissions, select 'I can not choose a winner.");
+            			Helper.showAlertMessage("You must rank your top 5 selections. If you do not wish to purchase any submissions, select 'I can not choose a winner.");
             		}
             		else {
             			main.selectedChild=submissionsConfirmationScreen;
@@ -1100,7 +1100,7 @@
             
             private function saveContestAsDraft():void {
             	// TODO: out of scope for this contest.	
-            	Alert.show("NOT IN SCOPE OF THIS CONTEST");
+            	Helper.showAlertMessage("NOT IN SCOPE OF THIS CONTEST");
             }
             
             private function gotoPurchase():void {
@@ -1384,19 +1384,19 @@
 	<mx:operation name="getContestDataOnly" 
 		resultFormat="object" 
 		result="handleResult(event)"
-		fault="Alert.show('getContestDataOnly: ' + event.fault.faultString);"> 
+		fault="Helper.showAlertMessage('getContestDataOnly: ' + event.fault.faultString);"> 
 	</mx:operation>
 		
 	<mx:operation name="getStatusList" 
 		resultFormat="object" 
 		result="handleStatusList(event)"
-		fault="Alert.show('getStatusList: ' + event.fault.faultString);"> 
+		fault="Helper.showAlertMessage('getStatusList: ' + event.fault.faultString);"> 
 	</mx:operation>
 
 	<mx:operation name="getContestDataOnlyByPID" 
 		resultFormat="object" 
 		result="handleResult(event)"
-		fault="Alert.show('getContestDataOnlyByPID: ' + event.fault.faultString);"> 
+		fault="Helper.showAlertMessage('getContestDataOnlyByPID: ' + event.fault.faultString);"> 
 		<mx:request>
 	<arg0>{pid}</arg0>
 	</mx:request> 
@@ -1405,7 +1405,7 @@
 	<mx:operation name="retrieveSubmissionsForContest" 
 		resultFormat="object" 
 		result="handleSubResult(event)"
-		fault="Alert.show('retrieveSubmissionsForContest: ' + event.fault.faultString);"> 
+		fault="Helper.showAlertMessage('retrieveSubmissionsForContest: ' + event.fault.faultString);"> 
 		<mx:request>
 			<arg0>{_selectedContestId}</arg0>
 		</mx:request>
@@ -1414,26 +1414,26 @@
 	<mx:operation name="updateContestStatus" 
 		resultFormat="object" 
 		result="handleContestStatusUpdate(event)"
-		fault="Alert.show('updateContestStatus: ' + event.fault.faultString);"> 
+		fault="Helper.showAlertMessage('updateContestStatus: ' + event.fault.faultString);"> 
 	</mx:operation>
 	
 	<mx:operation name="setSubmissionPlacement" 
 		resultFormat="object" 
 		result="handleSetSubmissionPlacement(event)"
-		fault="Alert.show('setSubmissionPlacement: ' + event.fault.faultString);"> 
+		fault="Helper.showAlertMessage('setSubmissionPlacement: ' + event.fault.faultString);"> 
 	</mx:operation>
 	
 	<mx:operation name="markForPurchase" 
 		resultFormat="object" 
 		result="handleMarkForPurchase(event)"
-		fault="Alert.show('markForPurchase: ' + event.fault.faultString);"> 
+		fault="Helper.showAlertMessage('markForPurchase: ' + event.fault.faultString);"> 
 	</mx:operation>
 </mx:WebService>
 
 <mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"
-		 fault="Alert.show('dataservice: ' + event.fault.faultString);">
+		 fault="Helper.showAlertMessage('dataservice: ' + event.fault.faultString);">
     <mx:method name="getPassword"  result="processPassword(event)" 
-		                   fault="Alert.show('getPassword: ' + event.fault.faultString);"/>
+		                   fault="Helper.showAlertMessage('getPassword: ' + event.fault.faultString);"/>
 
 </mx:RemoteObject>
 
