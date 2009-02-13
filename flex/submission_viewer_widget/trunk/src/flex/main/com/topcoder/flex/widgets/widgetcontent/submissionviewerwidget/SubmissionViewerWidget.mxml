@@ -117,6 +117,8 @@
 			
 			private var _previousColumnCount:int = 0;
 			private var _currentColumnCount:int = 0;
+			
+			public static const ACTIVE_STATUS:int = 1;
 		
 			public static function getHeader(username:String, password:String):SOAPHeader {
 				var userToken:String = "UsernameToken-"+Math.round(Math.random()*999999).toString();
@@ -406,35 +408,38 @@
                 	for(var i:int=0;i<submissions.length;i++) {
                 		var sub:Dictionary=new Dictionary();
                 		
-                		sub.id=submissions[i].submissionId;
+						if (submissions[i].submissionStatus.submissionStatusId == ACTIVE_STATUS) {
+						
+							sub.id=submissions[i].submissionId;
                 		
-                		// placement in submission data is mapped to rank.
-                		//sub.rank=submissions[i].placement;
-				 if ( submissions[i].placement > 0 ) { 
-					sub.rank=submissions[i].placement 
-				 } 
-				 else {	
-					sub.rank = ""
-				}
-                		sub.thumbnail=IMAGE_ADDRESS+sub.id+"&sbt=thumb";
-                		sub.fullsizepreview=IMAGE_ADDRESS+sub.id+"&sbt=full";
-                		sub.submissionContent=submissions[i].submissionContent;
-                		sub.price=submissions[i].price;
-                		sub.markedForPurchase=Boolean(submissions[i].markedForPurchase);
-                		sub.mustPurchase=sub.rank && sub.rank > 0 && sub.price && sub.price > 0;
-                		sub.purchased=sub.markedForPurchase || sub.mustPurchase;
+							// placement in submission data is mapped to rank.
+							//sub.rank=submissions[i].placement;
+							if ( submissions[i].placement > 0 ) { 
+								sub.rank=submissions[i].placement 
+							} 
+							else {	
+								sub.rank = ""
+							}
+							sub.thumbnail=IMAGE_ADDRESS+sub.id+"&sbt=thumb";
+							sub.fullsizepreview=IMAGE_ADDRESS+sub.id+"&sbt=full";
+							sub.submissionContent=submissions[i].submissionContent;
+							sub.price=submissions[i].price;
+							sub.markedForPurchase=Boolean(submissions[i].markedForPurchase);
+							sub.mustPurchase=sub.rank && sub.rank > 0 && sub.price && sub.price > 0;
+							sub.purchased=sub.markedForPurchase || sub.mustPurchase;
                 		
-                		if (sub.price && sub.price > 0 && sub.price < _leastContestPrize) {
-                			_leastContestPrize = sub.price;
-                		}
+							if (sub.price && sub.price > 0 && sub.price < _leastContestPrize) {
+								_leastContestPrize = sub.price;
+							}
                 		
-                		_submissionList.addItem(sub);
+							_submissionList.addItem(sub);
+						
+							updateRankList(sub);
+							//updateSubmission(sub.rank && sub.rank > 0);
                 		
-                		updateRankList(sub);
-                		//updateSubmission(sub.rank && sub.rank > 0);
-                		
-                		trace("Added submission to list: {" + sub.id + "," + sub.price + "," + sub.rank + "," + sub.markedForPurchase + "," + sub.purchased + "}");
-                	}
+							trace("Added submission to list: {" + sub.id + "," + sub.price + "," + sub.rank + "," + sub.markedForPurchase + "," + sub.purchased + "}");
+						}
+					}
                 }
                 
                 // if there are no submissions then show no-submision screen.
