@@ -249,7 +249,7 @@
       <mx:Button id="open" buttonMode="true" styleName="viewDescButton" y="6" label="view description"
           left="10" height="29" click="toggleDescription()"/>
         <mx:MenuBar labelField="@label"  left="200" id="menubar" dataProvider="{menuBarCollection}"
-            itemClick="menuHandler(event);" width="200" height="21" styleName="menuBtn">
+            itemClick="menuHandler(event);" height="21" styleName="menuBtn">
         </mx:MenuBar>
       <mx:Button y="6" buttonMode="true" label="add new contest" height="29"
           right="28" styleName="addContestBtn" click="addcontest()"/>
