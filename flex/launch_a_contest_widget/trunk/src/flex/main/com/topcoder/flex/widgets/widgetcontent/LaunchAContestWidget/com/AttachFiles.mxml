@@ -20,7 +20,7 @@
 	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetMimeTypeId;
 	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestServiceFacadeBeanService;
 	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadedDocument;
-	    	import mx.controls.Alert;
+	    	import com.topcoder.flex.Helper;
 	    	import mx.rpc.soap.WebService;
 	    	import mx.rpc.events.ResultEvent;
 	    	import mx.containers.VBox;
@@ -252,12 +252,12 @@
             
             private function uploadFile():void {
             	if (file== null || file.name == ""){
-            		Alert.show("Please select a file to upload");
+            		Helper.showAlertMessage("Please select a file to upload");
             		return;
             	}
             	
             	if (fileDescInput.text == ""){
-            		Alert.show("Please enter description for the file");
+            		Helper.showAlertMessage("Please enter description for the file");
             		return;
             	}
             	

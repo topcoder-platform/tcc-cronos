@@ -6,7 +6,7 @@
 			import mx.core.UIComponent;
 			import mx.validators.Validator;
 			import mx.validators.ValidationResult;
-			import mx.controls.Alert;
+			import com.topcoder.flex.Helper;
 			import mx.events.ValidationResultEvent;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
@@ -56,7 +56,7 @@
 			}
 			
 			private function showErrorMsg():void {
-				Alert.show("Some fields are missing. Please check!");
+				Helper.showAlertMessage("Some fields are missing. Please check!");
 			}
 			
 			private function removeValidate(target:TextInput):void {

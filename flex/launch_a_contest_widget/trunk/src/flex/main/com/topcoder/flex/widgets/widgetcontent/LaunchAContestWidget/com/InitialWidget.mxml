@@ -25,7 +25,6 @@
         	import mx.rpc.events.FaultEvent;
         	import mx.rpc.events.ResultEvent;
         	import mx.rpc.soap.WebService;
-		import mx.controls.Alert;
 		import mx.collections.ArrayCollection;
 		import mx.collections.SortField;
 		import mx.collections.Sort;
@@ -35,6 +34,7 @@
             import mx.collections.SortField;
             import mx.collections.Sort;           
     	import mx.utils.ObjectUtil;
+    	import com.topcoder.flex.Helper;
             
             [Bindable]
             private var contestsData:ArrayCollection = new ArrayCollection(
@@ -154,7 +154,7 @@
             
             private function goToContestSelection():void{
                 if ((selectContests.selectedItem == null || selectContests.selectedItem.data ==-1) && prjInput.text == ""){
-                    Alert.show("Add New Project or Choose Existing Project must have value.");
+                    Helper.showAlertMessage("Add New Project or Choose Existing Project must have value.");
                     return;
                 }else{
                     //load the contest if it's existing

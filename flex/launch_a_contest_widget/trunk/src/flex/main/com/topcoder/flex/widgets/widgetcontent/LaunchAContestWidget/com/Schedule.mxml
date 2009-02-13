@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
           horizontalScrollPolicy="off" verticalScrollPolicy="off" creationComplete="init()">
-          <mx:HTTPService id="requestSchedule" url="data/launch_a_contest/schedule.xml" resultFormat="e4x" result="loadSchedule(event)" fault="Alert.show(event.fault.faultString);"></mx:HTTPService>
+          <mx:HTTPService id="requestSchedule" url="data/launch_a_contest/schedule.xml" resultFormat="e4x" result="loadSchedule(event)" fault="Helper.showAlertMessage(event.fault.faultString);"></mx:HTTPService>
     <mx:Script>
         <![CDATA[
         	import mx.controls.Alert;
         	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
         	import mx.rpc.events.ResultEvent;
+        	import com.topcoder.flex.Helper;
         	
         	[Bindable]
             public var mainWidget:LaunchWidget;
@@ -58,30 +59,30 @@
             
             public function validateFields():Boolean{
             	if (dfStart.selectedDate == null){
-            		Alert.show("Start date not selected");
+            		Helper.showAlertMessage("Start date not selected");
             		return false;
             	}
             	
             	if (dfEnd.selectedDate == null){
-            		Alert.show("End date not selected");
+            		Helper.showAlertMessage("End date not selected");
             		return false;
             	}
             	
             	var current:Date = new Date();
             	var startDate:Date = getAssembleDate(dfStart, CmbHourStart, CmbMinuteStart, AMPMStart);
             	if (startDate.time<=current.time){
-            		Alert.show("Start date must be in future");
+            		Helper.showAlertMessage("Start date must be in future");
             		return false;
             	}
             	
             	var endDate:Date = getAssembleDate(dfEnd, CmbHourEnd, CmbMinuteEnd, AMPMEnd);
             	if (endDate.time <= startDate.time){
-            		Alert.show("End date must be after start date");
+            		Helper.showAlertMessage("End date must be after start date");
             		return false;
             	}
             	
             	if (termCheckBox.selected == false){
-            		Alert.show("Please agree to TopCoder Direct Terms");
+            		Helper.showAlertMessage("Please agree to TopCoder Direct Terms");
             		return false;
             	}
             	

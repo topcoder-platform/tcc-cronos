@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
           horizontalScrollPolicy="off" verticalScrollPolicy="off">
-           <mx:HTTPService id="requestFileTypes" url="data/launch_a_contest/fileTypes.xml" resultFormat="e4x" result="loadFileTypes(event)" fault="Alert.show(event.fault.faultString);"></mx:HTTPService>
+           <mx:HTTPService id="requestFileTypes" url="data/launch_a_contest/fileTypes.xml" resultFormat="e4x" result="loadFileTypes(event)" fault="Helper.showAlertMessage(event.fault.faultString);"></mx:HTTPService>
 
     <mx:Script>
         <![CDATA[
@@ -9,7 +9,7 @@
             import flash.events.MouseEvent;
             import mx.containers.Panel;
             import mx.rpc.events.ResultEvent;
-            import mx.controls.Alert;
+            import com.topcoder.flex.Helper;
 			import mx.controls.CheckBox;
 
             private static const FILE_FORMAT_PREFIX:String = "chb_";

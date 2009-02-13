@@ -3,7 +3,7 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off">
           
           <mx:HTTPService id="requestContestTypes" url="data/launch_a_contest/contestTypes.xml" resultFormat="xml" result="preprocessTypes(event)" ></mx:HTTPService>
-       		<mx:HTTPService id="requestContestExamples" url="data/launch_a_contest/overview.xml" resultFormat="e4x" result="loadExamples(event)" fault="Alert.show(event.fault.faultString);"></mx:HTTPService>
+       		<mx:HTTPService id="requestContestExamples" url="data/launch_a_contest/overview.xml" resultFormat="e4x" result="loadExamples(event)" fault="Helper.showAlertMessage(event.fault.faultString);"></mx:HTTPService>
 	
 	<mx:Script>
 	<![CDATA[
@@ -14,7 +14,7 @@
     	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
     	import mx.containers.Panel;
     	import mx.events.FlexEvent;
-    	import mx.controls.Alert;
+    	import com.topcoder.flex.Helper;
         import mx.events.ItemClickEvent;
         
         private static var inputs:Array = ["firstPlace","secondPlace","thirdPlace","fourthPlace","fifthPlace"]; 
@@ -108,7 +108,7 @@
         
         public function validateFields():Boolean{
         	if (studioType.selection == null){
-        		Alert.show("Contest type not selected");
+        		Helper.showAlertMessage("Contest type not selected");
         		return false;
         	}
         	
@@ -120,19 +120,19 @@
         		var nextInput:TextInput = this[inputs[i+1]] as TextInput;
         		
         		if (isNaN(Number(input.text)) || (Number(input.text) == 0 && Number(nextInput.text)>0)){
-        			Alert.show("Prize amount not set");
+        			Helper.showAlertMessage("Prize amount not set");
         			input.setFocus();
         			return false;
         		}
         		
         		if (Number(input.text) > 0 && Number(nextInput.text) >= Number(input.text)){
-        			Alert.show("Prize "+ (i+1)+ " is incorrect");
+        			Helper.showAlertMessage("Prize "+ (i+1)+ " is incorrect");
         			nextInput.setFocus();
         			return false;
         		}
         		
         		if (Number(cntstTtl.text) == 0){
-        			Alert.show("No prize set");
+        			Helper.showAlertMessage("No prize set");
         			return false;
         		}
         	}

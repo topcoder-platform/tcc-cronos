@@ -19,7 +19,7 @@
             import flash.net.URLLoader;
             import flash.net.URLRequest;
             import flash.events.Event;
-            import mx.controls.Alert;
+            import com.topcoder.flex.Helper;
             import flash.utils.Timer;
             import flash.events.TimerEvent;
             import mx.events.SliderEvent;
@@ -271,7 +271,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
             private function next(event:EffectEvent = null):void {
                 if (this.currentState == "ContestSelectionState"){
                     if (contestSelect.contestType.selectedValue == null) {
-                        Alert.show("Please select a contest type!");
+                        Helper.showAlertMessage("Please select a contest type!");
                         return;
                     }
                    //Currently only implement Studio constest type
@@ -420,7 +420,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
 
 	     private function handleFault(event:FaultEvent):void
 		{
-			Alert.show(event.fault.faultDetail, "");
+			Helper.showAlertMessage(event.fault.faultDetail);
 		}
         
             
@@ -634,7 +634,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
             }
             private function handleError(e:FaultEvent):void
             {
-            	Alert.show(e.fault.faultString);
+            	Helper.showAlertMessage(e.fault.faultString);
             }
         ]]>
     </mx:Script>
@@ -642,7 +642,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
 
     <mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"
               
-		 fault="Alert.show(event.fault.faultString);">
+		 fault="Helper.showAlertMessage(event.fault.faultString);">
 	<mx:method name="getPassword"  result="processPassword(event)" 
 		                   fault="handleError(event)"/>
 		                   
