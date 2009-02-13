@@ -19,6 +19,8 @@
             
             [Bindable]
             public var curContestType:Number;
+			
+	    public static const ETtoUTC:int = 1000 * 60 * 60 * 5;
 
             public function initData():void{
             	termCheckBox.selected = false;
@@ -95,6 +97,7 @@
             	}
             	
             	result.setHours(hour, Number(minuteComb.value), 0, 0);
+		result.setTime(result.getTime() + ETtoUTC);
             	
             	return result;
             }
