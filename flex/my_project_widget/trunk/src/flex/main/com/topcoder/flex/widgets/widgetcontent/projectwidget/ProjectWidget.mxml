@@ -17,7 +17,7 @@
         import mx.core.IUIComponent;
         import mx.core.UIComponent;
         import mx.controls.Button;
-        import mx.controls.Alert;
+        import com.topcoder.flex.Helper;
         import mx.containers.Panel;
         import mx.core.DragSource;
         import flash.events.MouseEvent;
@@ -264,13 +264,11 @@
 
 	private function processPassword(e:ResultEvent): void
         {
-		//Alert.show("--------"+e.result.toString());
         	if(e!=null && e.result!=null){
         		password = e.result.toString();
         		
         	}
 
-		//Alert.show("========" + password);
 		loadData();
 
         }
@@ -288,9 +286,9 @@ wsdl="{contestServiceFacadeWsdl}">
 
 <mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"
               
-		 fault="Alert.show(event.fault.faultString);">
+		 fault="Helper.showAlertMessage(event.fault.faultString);">
     <mx:method name="getPassword"  result="processPassword(event)" 
-		                   fault="Alert.show(event.fault.faultString);"/>
+		                   fault="Helper.showAlertMessage(event.fault.faultString);"/>
 
 </mx:RemoteObject>
 
