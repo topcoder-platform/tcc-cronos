@@ -71,7 +71,7 @@
 		<mx:Label styleName="normalText" />
 		<mx:Text width="100%" textAlign="left" styleName="text" 
 				htmlText="" />
-		<mx:Button id="down" buttonMode="true" styleName="ButtonStyle" click="{download(data.id)}" />
+		<mx:Button id="down" buttonMode="true" styleName="ButtonStyle" label="Download" click="{download(data.id)}" />
 	</mx:VBox>
 </mx:HBox>
 </mx:HBox>
