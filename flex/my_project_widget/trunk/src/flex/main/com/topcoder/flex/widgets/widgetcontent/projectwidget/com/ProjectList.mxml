@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:ns1="com.topcoder.flex.widgets.widgetcontent.projectwidget.com.*" width="100%" height="100%" verticalScrollPolicy="off" horizontalScrollPolicy="off" styleName="ProjectList" verticalGap="0">
 <mx:Script>
-	<![CDATA[
-		import mx.events.MenuEvent;
-		import mx.collections.XMLListCollection;
-		import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Project;
-		import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Contest;
-		import mx.collections.ArrayCollection;
-		import com.topcoder.flex.widgets.widgetcontent.projectwidget.com.ContestRow;
-		//status icon class declaration
-		[Embed(source="../../assets/icon/terminated.png")]
+  <![CDATA[
+    import mx.events.MenuEvent;
+    import mx.collections.XMLListCollection;
+    import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Project;
+    import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Contest;
+    import mx.collections.ArrayCollection;
+    import com.topcoder.flex.widgets.widgetcontent.projectwidget.com.ContestRow;
+    //status icon class declaration
+    [Embed(source="../../assets/icon/terminated.png")]
         private var prjTerminated:Class;
-		[Embed(source="../../assets/icon/completed.png")]
+    [Embed(source="../../assets/icon/completed.png")]
         private var prjCompleted:Class;
 		[Embed(source="../../assets/icon/draft.png")]
         private var prjDraft:Class;
@@ -154,25 +154,25 @@
 			projectDesc.text = prjDesc;
 			//projectDesc.x = 0;
 //			rightArrowImg.source = rightArrowShow;
-			open.styleName = "blackBtnOpen";
-			Table.height=80;
-			if (!donealigning)
-			{			
-			projectDesc.x -=25;
-			donealigning = 1;
-			}
-			
-			}
-			else
-			{
-			projectDesc.text = "";
+      //open.styleName = "blackBtnOpen";
+      Table.height=80;
+      if (!donealigning)
+      {
+      projectDesc.x -=25;
+      donealigning = 1;
+      }
+
+      }
+      else
+      {
+      projectDesc.text = "";
 //			rightArrowImg.source = rightArrowHidden;
-			open.styleName = "blackBtn";
-			Table.height=36;
-			}
-			
-		}
-		
+      //open.styleName = "blackBtn";
+      Table.height=46;
+      }
+
+    }
+
      /**
 	 * Click on the add contest button.
 	 */
@@ -235,36 +235,37 @@
             }
 	]]>
 </mx:Script>
-	<mx:HBox styleName="titleBar" width="100%" height="27" backgroundSize="100%" 
-			verticalScrollPolicy="off" horizontalScrollPolicy="auto">
-		<mx:Image width="16" height="16" id="winCtrlBut" init="winResize()" buttonMode="true" click="winResize()" source="{winMin}"/>
-		<mx:Label text="Label" id="projectName" styleName="nameLabel" />
-		<mx:Spacer width="100%" />
-		<mx:Label id="projectStatus" styleName="statusLabel" />
-		<mx:Image id="statusIcon" />
-	</mx:HBox>
-	<mx:VBox id="contents" paddingLeft="4" paddingRight="4" width="100%" verticalGap="0" initialize="winResize()">
-		<mx:Canvas width="100%" styleName="descPanel" backgroundSize="100%" height="36" id="Table" 
-				verticalScrollPolicy="off" horizontalScrollPolicy="off">
-			<mx:Button id="open" buttonMode="true" styleName="blackBtn" y="6" label="view description"
-					left="10" height="19" click="toggleDescription()"/>
-		    <mx:MenuBar labelField="@label"  left="200" id="menubar" dataProvider="{menuBarCollection}"  itemClick="menuHandler(event);">
-		    </mx:MenuBar>
-			<mx:Button y="6" buttonMode="true" label="add new contest" height="19"
-					right="28" styleName="greyBtn" click="addcontest()"/>
-			<mx:Label x="-20" y="55" width="100%" id="projectDesc" 
-					fontSize="12" color="#6f6f6f" textAlign="right"/>
-		</mx:Canvas>
-		<mx:HBox width="100%" height="15" styleName="title" id="Hbox1" 
-				verticalScrollPolicy="off" horizontalScrollPolicy="off">
-			<mx:Label width="100%" textAlign="center" id="lblStartDate" text="START" />
-			<mx:Label width="100%" textAlign="center" id="lblEndDate" text="END" />
-			<mx:Label width="100%" textAlign="center" id="lblRegistrants" text="REGISTR" />
-			<mx:Label width="100%" textAlign="center" id="lblSubmissions" text="SUBMSSN" />
-			<mx:Label width="100%" textAlign="center" id="lblForumPosts" text="FORUM" />
-			<mx:Label width="100%" textAlign="center" id="lStatus" text="STATUS" />
-			<mx:Label width="100%" textAlign="center" id="lbledit" text="" />
-		</mx:HBox>
-		<mx:VBox id="content" paddingLeft="0" paddingRight="0" verticalGap="0" width="100%" />
-	</mx:VBox>
+  <mx:HBox styleName="titleBar" width="100%" height="27" backgroundSize="100%"
+      verticalScrollPolicy="off" horizontalScrollPolicy="auto">
+    <mx:Image width="16" height="16" id="winCtrlBut" init="winResize()" buttonMode="true" click="winResize()" source="{winMin}"/>
+    <mx:Label text="Label" id="projectName" styleName="nameLabel" />
+    <mx:Spacer width="100%" />
+    <mx:Label id="projectStatus" styleName="statusLabel" />
+    <mx:Image id="statusIcon" />
+  </mx:HBox>
+  <mx:VBox id="contents" paddingLeft="4" paddingRight="4" width="100%" verticalGap="0" initialize="winResize()">
+    <mx:Canvas width="100%" styleName="descPanel" backgroundSize="100%" height="46" id="Table"
+        verticalScrollPolicy="off" horizontalScrollPolicy="off">
+      <mx:Button id="open" buttonMode="true" styleName="viewDescButton" y="6" label="view description"
+          left="10" height="29" click="toggleDescription()"/>
+        <mx:MenuBar labelField="@label"  left="200" id="menubar" dataProvider="{menuBarCollection}"
+            itemClick="menuHandler(event);" width="200" height="21" styleName="menuBtn">
+        </mx:MenuBar>
+      <mx:Button y="6" buttonMode="true" label="add new contest" height="29"
+          right="28" styleName="addContestBtn" click="addcontest()"/>
+      <mx:Label x="-20" y="55" width="100%" id="projectDesc"
+          fontSize="12" color="#6f6f6f" textAlign="right"/>
+    </mx:Canvas>
+    <mx:HBox width="100%" height="15" styleName="title" id="Hbox1"
+        verticalScrollPolicy="off" horizontalScrollPolicy="off">
+      <mx:Label width="100%" textAlign="center" id="lblStartDate" text="START" />
+      <mx:Label width="100%" textAlign="center" id="lblEndDate" text="END" />
+      <mx:Label width="100%" textAlign="center" id="lblRegistrants" text="REGISTRANTS" />
+      <mx:Label width="100%" textAlign="center" id="lblSubmissions" text="SUBMISSIONS" />
+      <mx:Label width="100%" textAlign="center" id="lblForumPosts" text="FORUM" />
+      <mx:Label width="100%" textAlign="center" id="lStatus" text="STATUS" />
+      <mx:Label width="20" textAlign="center" id="lbledit" text="" />
+    </mx:HBox>
+    <mx:VBox id="content" paddingLeft="0" paddingRight="0" verticalGap="0" width="100%" />
+  </mx:VBox>
 </mx:VBox>

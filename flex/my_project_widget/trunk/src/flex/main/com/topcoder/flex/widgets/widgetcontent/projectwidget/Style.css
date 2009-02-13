@@ -72,13 +72,15 @@
 }
 .ContestRowStyle
 {
-	border-style: none;
-	verticalGap: 0;
-	background-image: Embed(source="../assets/image/contentBG.png",scaleGridTop="2",scaleGridLeft="2",scaleGridRight="260",scaleGridBottom="91");
-	paddingLeft: 7;
-	paddingRight: 7;
-	paddingTop: 2;
-	paddingBottom: 3;
+  border-style: solid;
+  border-color: #cccccc;
+  border-sides: bottom;
+  color: #000000;
+  verticalGap: 0;
+  paddingLeft: 7;
+  paddingRight: 7;
+  paddingTop: 2;
+  paddingBottom: 3;
 }
 .rowContent {
 	horizontal-gap: 0;
@@ -118,10 +120,10 @@
 	background-image: Embed(source="../assets/image/descBG.png",scaleGridTop="1",scaleGridLeft="1",scaleGridRight="261",scaleGridBottom="40");
 }
 .rowContentLabel {
-	font-size: 11;
-	text-align: center;
-	color: #ffffff;
-	font-family: "Myriad Pro Regular";
+  font-size: 11;
+  text-align: center;
+  color: #000000;
+  font-family: "Myriad Pro Regular";
 }
 .greyBtn {
 	skin: Embed(source="../assets/image/btnBGGrey.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
@@ -184,17 +186,18 @@
 }
 
 .linkBtn {
-	text-decoration: underline;
-	text-align: left;
-	color: #ffffff;
-	font-family: "Myriad Pro Semibold";
-	font-size: 11;
-	font-weight: bold;
-	skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
-	over-skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
-	up-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
-	down-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
-	padding-left: 0;
+  text-decoration: underline;
+  text-align: left;
+  color: #666666;
+  font-family: "Myriad Pro Semibold";
+  font-size: 11;
+  font-weight: bold;
+  skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+  over-skin: Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+  up-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+  down-skin:  Embed(source="../assets/image/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+  padding-left: 0;
+  text-roll-over-color: #ff0000;
 }
 
 .viewBtn {
@@ -310,4 +313,48 @@
 	text-align: center;
 	padding-top: 5;
 	padding-bottom: 5;
+}
+
+.viewDescButton {
+  skin: Embed(source="../assets/image/view_desc_btn.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
+  over-skin: Embed(source="../assets/image/view_desc_btn.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
+  up-skin:  Embed(source="../assets/image/view_desc_btn.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
+  down-skin:  Embed(source="../assets/image/view_desc_btn.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
+  font-family: "Arial";
+  font-size: 11;
+  font-weight: bold;
+  color: #666666;
+  text-roll-over-color: #000000;
+  text-selected-color: #000000;
+  padding-left: 5;
+  padding-right: 12;
+  horizontal-gap: 4;
+}
+
+.addContestBtn {
+  skin: Embed(source="../assets/image/add_contest_btn.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
+  over-skin: Embed(source="../assets/image/add_contest_btn.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
+  up-skin:  Embed(source="../assets/image/add_contest_btn.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
+  down-skin:  Embed(source="../assets/image/add_contest_btn.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="105",scaleGridBottom="16");
+  font-family: "Arial";
+  font-size: 11;
+  font-weight: bold;
+  color: #666666;
+  text-roll-over-color: #000000;
+  text-selected-color: #000000;
+  padding-left: 5;
+  padding-right: 12;
+  horizontal-gap: 4;
+}
+
+.menuBtn {
+  backgroundSkin: Embed(source="../assets/image/menu_btn.png",scaleGridTop="1",scaleGridLeft="1",scaleGridRight="24",scaleGridBottom="5");
+  itemDownSkin: Embed(source="../assets/image/noBG.png",scaleGridTop="1",scaleGridLeft="1",scaleGridRight="5",scaleGridBottom="5");
+  itemOverSkin: Embed(source="../assets/image/noBG.png",scaleGridTop="1",scaleGridLeft="1",scaleGridRight="5",scaleGridBottom="5");
+  itemUpSkin: Embed(source="../assets/image/noBG.png",scaleGridTop="1",scaleGridLeft="1",scaleGridRight="5",scaleGridBottom="5");
+  font-family: "Arial";
+  font-size: 11;
+  font-weight: bold;
+  color: #666666;
+  padding-left: 15
 }

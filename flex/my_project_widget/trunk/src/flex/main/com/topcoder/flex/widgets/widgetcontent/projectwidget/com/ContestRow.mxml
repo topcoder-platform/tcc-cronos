@@ -234,21 +234,25 @@
         <mx:Spacer width="100%" />
         <mx:LinkButton width="10%" id="editBtn" styleName="editBtn" labelPlacement="top" click="editContest()"/> 
     </mx:HBox>
-	
-	<mx:HBox width="100%" styleName="rowContent" >
-		<mx:Text width="100%" styleName="rowContentLabel" id="lblStartDate" />
-		<mx:Text width="100%" styleName="rowContentLabel" id="lblEndDate" />
-		<mx:Text width="100%" styleName="rowContentLabel" id="lblRegistrants" />
-		<mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle">
-			<mx:Text width="100%" styleName="rowContentLabel" id="lblSubmissions" />
-			<mx:LinkButton buttonMode="true" styleName="viewBtn" label="View" labelPlacement="bottom" id="lnkSubmissions" click="showSubmission()"/> 
-		</mx:VBox>
-		<mx:VBox width="100%" styleName="bottomAlign">
-			<mx:Text width="100%"   styleName="rowContentLabel" id="lblForumPosts" />
-			<mx:LinkButton buttonMode="true" styleName="viewBtn" label="View" labelPlacement="bottom" id="lnkFormPosts" click="openForum()"/> 
-		</mx:VBox>
-		<mx:VBox width="100%" styleName="bottomAlign">
-			<mx:LinkButton buttonMode="true" id="statusBtn" styleName="statusBtn" labelPlacement="bottom" click="showStats()"/> 
-		</mx:VBox>
-	</mx:HBox>
+
+  <mx:HBox width="100%" styleName="rowContent" >
+    <mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle">
+        <mx:Text width="100" styleName="rowContentLabel" id="lblStartDate" />
+    </mx:VBox>
+    <mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle">
+        <mx:Text width="100" styleName="rowContentLabel" id="lblEndDate" />
+    </mx:VBox>
+    <mx:Text width="100%" styleName="rowContentLabel" id="lblRegistrants" />
+    <mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle">
+      <mx:Text width="100%" styleName="rowContentLabel" id="lblSubmissions" />
+      <mx:LinkButton buttonMode="true" styleName="viewBtn" label="View" labelPlacement="bottom" id="lnkSubmissions" click="showSubmission()"/>
+    </mx:VBox>
+    <mx:VBox width="100%" styleName="bottomAlign">
+      <mx:Text width="100%"   styleName="rowContentLabel" id="lblForumPosts" />
+      <mx:LinkButton buttonMode="true" styleName="viewBtn" label="View" labelPlacement="bottom" id="lnkFormPosts" click="openForum()"/>
+    </mx:VBox>
+    <mx:VBox width="100%" styleName="bottomAlign">
+      <mx:LinkButton buttonMode="true" id="statusBtn" styleName="statusBtn" labelPlacement="bottom" click="showStats()"/>
+    </mx:VBox>
+  </mx:HBox>
 </mx:VBox>
