@@ -112,7 +112,12 @@
 	     ]]>
     </mx:Script>
     <mx:VBox width="100%" styleName="boxStyle">
-        <mx:Label text="Contest Details" fontWeight="bold" fontSize="12"/>
+	<mx:HBox horizontalAlign="right" width="100%">
+		<mx:Label text="Contest Details" fontWeight="bold" fontSize="12" width="80%"/>
+		<mx:Spacer width="100" />	
+		<mx:LinkButton baseline="middle" styleName="linkBtn" label="Preview Contest" click="this.mainWidget.previewContest()" />
+		    <mx:Image source="@Embed('../../assets/more_info.png')"/>
+	</mx:HBox>
         <mx:Text width="100%" id="contestDetails">
             <mx:text>
 				A successful competition begins with comprehensive, thoughtful prep work. Designers need specific information to get their creative

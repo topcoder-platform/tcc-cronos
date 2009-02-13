@@ -20,6 +20,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     
     import mx.containers.VBox;
 
+        	import com.topcoder.flex.Helper;
+		import flash.net.URLRequest;
+		import flash.net.navigateToURL;
+
     /**
      * <p>
      * This is the code behind script part for the launch a contest widget. It implements the IWidget interface.
@@ -390,6 +394,18 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         		_container=parent as IWidgetContainer;
         	}
         	return _container;
+        }
+        
+        public function previewContest():void {
+        	var url:String;
+        	
+        	if (isNaN(competition.contestData.contestId) || competition.contestData.contestId < 0){
+            		Helper.showAlertMessage("You must 'Save as Draft' before you can preview your contest.");
+        	} else {
+			url = "http://"+Application.application.parameters.studioAddress+"/?module=ViewContestDetails&ct=" + competition.contestData.contestId;
+
+			navigateToURL(new URLRequest(url), "_blank");
+        	}
         }
     }
 }

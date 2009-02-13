@@ -190,7 +190,12 @@
         ]]>
     </mx:Script>
     <mx:VBox width="100%" styleName="boxStyle" height="100%">
-        <mx:Label text="Set the Contest Schedule" fontWeight="bold" fontSize="12"/>
+	<mx:HBox horizontalAlign="right" width="100%">
+		<mx:Label text="Set the Contest Schedule" fontWeight="bold" fontSize="12" width="80%"/>
+		<mx:Spacer width="100" />	
+		<mx:LinkButton baseline="middle" styleName="linkBtn" label="Preview Contest" click="this.mainWidget.previewContest()" />
+		    <mx:Image source="@Embed('../../assets/more_info.png')"/>
+	</mx:HBox>
         <mx:Text width="100%" id="attachFiles">
             <mx:htmlText>
 <![CDATA[When scheduling your contest, consider the following: <br>
