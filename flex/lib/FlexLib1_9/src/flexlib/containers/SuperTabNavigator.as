@@ -50,6 +50,7 @@ package flexlib.containers
 	import mx.events.ChildExistenceChangedEvent;
 	import mx.events.IndexChangedEvent;
 	import mx.events.MenuEvent;
+	import mx.managers.CursorManager;
 	import mx.styles.CSSStyleDeclaration;
 	import mx.styles.StyleManager;
 	
@@ -376,6 +377,8 @@ package flexlib.containers
 				return _dropEnabled;
 			}
 		}
+		[Embed(source="../assets/Hand.gif")] 
+        private var handCursor:Class;
 		
 		/**
 		 * @private
@@ -636,15 +639,23 @@ package flexlib.containers
 	        	(menu as ScrollableArrowMenu).arrowScrollPolicy = ScrollPolicy.AUTO;
 	        	
 	        	menu.addEventListener(MenuEvent.ITEM_CLICK, changeTabs);
+	        	menu.addEventListener(MenuEvent.ITEM_ROLL_OVER, itemroll);
+	        	menu.addEventListener(MenuEvent.ITEM_ROLL_OUT, itemout);
+	        	menu.useHandCursor=true;
+	        	menu.buttonMode=true;
+	        	menu.setStyle("borderStyle","inset");
+	        	menu.setStyle("borderThickness","1");
+	        	menu.setStyle("rollOverColor","#ff0000");
+	        	menu.setStyle("textRollOverColor","#ffffff");
+	        	menu.setStyle("backgroundColor","#efefef");
 	        }
 	        
 	        if(!popupButton) {
 	        	popupButton = new PopUpButton();
 	        	popupButton.popUp = menu;
-	        	popupButton.width = 18;
-	        	
+	        	popupButton.width = 118;
+	        	popupButton.label="Open Tabs";
 	        	popupButton.styleName = getStyle("popupButtonStyleName");
-	        	
 	        	// So now holder has 3 children: canvas, spacer, and popupButton
 	        	holder.addChild(popupButton);
 	        }
@@ -662,6 +673,15 @@ package flexlib.containers
 	        invalidateSize();
 	        
 	        this.addEventListener(IndexChangedEvent.CHILD_INDEX_CHANGE,indexChangeListener);
+	    }
+	    
+	    private function itemroll(e:MenuEvent):void
+	    {
+	    	CursorManager.setCursor(this.handCursor);
+	    }
+	    private function itemout(e:MenuEvent):void
+	    {
+	    	CursorManager.removeCursor(CursorManager.currentCursorID);
 	    }
 	    
 	    private function indexChangeListener(event:IndexChangedEvent):void {
@@ -893,6 +913,7 @@ package flexlib.containers
 			if(popupButton.includeInLayout) {
 				canvasWidth -= popupButton.width;
 			}
+			popupButton.height=th;
 			
 			canvas.move(0,0);
 			canvas.width = canvasWidth;
@@ -960,6 +981,7 @@ package flexlib.containers
 	    	}
 	    	
 	    	this.selectedIndex = event.index;
+	    	CursorManager.removeCursor(CursorManager.currentCursorID);
 	    }
 	    
 	    /**
@@ -1050,12 +1072,14 @@ package flexlib.containers
 				obj.label = (child.label != "") ? child.label : "Untitled Tab";
 				obj.icon = child.icon;
 				
+				
 				popupMenuDP.addItem(obj);
 			}
 			
 			menu.iconField="icon";
 			
-			menu.dataProvider = popupMenuDP;	
+			menu.dataProvider = popupMenuDP;
+			
 	    }
 	}
 }
