@@ -2997,7 +2997,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 				if (os[2] != null)
 					c.setStatusId(Long.parseLong(os[2].toString()));
 				if (os[3] != null)
-					c.setSname(os[1].toString());
+					c.setSname(os[3].toString());
 				result.add(c);
 
 			}
@@ -3053,9 +3053,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 				if (os[1] != null)
 					c.setName(os[1].toString());
 				if (os[2] != null)
-					c.setSname(os[2].toString());
+					c.setStatusId(Long.parseLong(os[2].toString()));
 				if (os[3] != null)
-					c.setSname(os[1].toString());
+					c.setSname(os[3].toString());
 				result.add(c);
 
 			}
