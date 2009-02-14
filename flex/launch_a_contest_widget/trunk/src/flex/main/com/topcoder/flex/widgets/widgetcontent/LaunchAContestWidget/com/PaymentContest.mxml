@@ -25,6 +25,7 @@
 			public function initData():void{
 				textContestName.text = contentTitleStr;
 				textContestTotalCost.text = contestTotal;
+				textContestLaunchFee.text = contestTotal;
 			}
 			
 			private function init():void{
@@ -112,7 +113,7 @@
 					<mx:Text text="Contest Launch Fee" styleName="contentGrey" />
 				</mx:GridItem>
 				<mx:GridItem horizontalAlign="center" width="159">
-					<mx:Text text="$120.00" styleName="contentGrey" />
+					<mx:Text id="textContestLaunchFee" styleName="contentGrey" />
 				</mx:GridItem>
 			</mx:GridRow>
 			<mx:GridRow width="100%" height="42" borderStyle="solid" borderSides="top" borderColor="#d6d6d6">
