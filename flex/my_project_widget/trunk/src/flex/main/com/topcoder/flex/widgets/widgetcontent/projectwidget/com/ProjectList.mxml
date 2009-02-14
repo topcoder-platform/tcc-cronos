@@ -246,7 +246,7 @@
   <mx:VBox id="contents" paddingLeft="4" paddingRight="4" width="100%" verticalGap="0" initialize="winResize()">
     <mx:Canvas width="100%" styleName="descPanel" backgroundSize="100%" height="46" id="Table"
         verticalScrollPolicy="off" horizontalScrollPolicy="off">
-      <mx:Button id="open" buttonMode="true" styleName="viewDescButton" y="6" label="view description"
+      <mx:Button id="open" buttonMode="true" styleName="viewDescButton" y="6" label="View Description"
           left="10" height="29" click="toggleDescription()"/>
         <mx:MenuBar labelField="@label"  left="200" id="menubar" dataProvider="{menuBarCollection}"
             itemClick="menuHandler(event);" height="21" styleName="menuBtn">

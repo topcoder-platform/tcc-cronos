@@ -36,74 +36,74 @@
 		ContextId=_dataProvider.id;
 		editBtn.visible=false;
 
-		var tmp:String = status.toLowerCase();
-		if (tmp.indexOf("active") >= 0) {
-			statusBtn.styleName = "active";
-		} else if (tmp.indexOf("terminated") >= 0) {
-			statusBtn.styleName = "terminated";
-		} else if (tmp.indexOf("completed") >= 0) {
-			statusBtn.styleName = "completed";
-		} else if (tmp.indexOf("draft") >= 0) {
-			statusBtn.styleName = "draft";
-		} else if (tmp.indexOf("scheduled") >= 0) {
-			statusBtn.styleName = "scheduled";
-		} else if (tmp.indexOf("danger") >= 0) {
-			statusBtn.styleName = "danger";
-		}		
-	}
-	public function get dataProvider():Contest{
-		return _dataProvider;
-	}
-	// setter and getter of all propriety of Context
-	public function set ContextId(value:String):void{
-		_ContextId = value;
-	}
-	public function get ContextId():String{
-		return _ContextId;
-	}
-	public function set rowNum(temp:Number):void{
-		_rowNum = temp;
-		if ((_rowNum % 2 )==0) {
-			var o:Object=getStyle("oddRowColor");
-			this.setStyle("backgroundColor",getStyle("oddRowColor"))
-		}
-		else {
-			this.setStyle("backgroundColor",getStyle("evenRowColor"))
-		}
-	}
-	public function get rowNum():Number{
-		return _rowNum;
-	}
-	public function set status(temp:String):void{
-		statusBtn.label = temp;
-	}
-	public function get contextName():String{
-		return lblContextName.label;
-	}
-	public function set contextName(temp:String):void{
-		lblContextName.label = temp;
-	}
-	public function get status():String{
-		return statusBtn.label;
-	}
-	public function set startDate(temp:String):void{
-		lblStartDate.text = temp;
-	}
-	public function get startDate():String{
-		return lblStartDate.text;
-	}
-	public function set endDate(temp:String):void{
-		lblEndDate.text = temp;
-	}
-	public function get endDate():String{
-		return lblEndDate.text;
-	}
-	public function set registrants(temp:String):void{
-		lblRegistrants.text = temp;
-	}
-	public function get registrants():String{
-		return lblRegistrants.text;
-	}
+    var tmp:String = status.toLowerCase();
+    if (tmp.indexOf("active") >= 0) {
+      statusBtn.styleName = "active";
+    } else if (tmp.indexOf("terminated") >= 0) {
+      statusBtn.styleName = "terminated";
+    } else if (tmp.indexOf("completed") >= 0) {
+      statusBtn.styleName = "completed";
+    } else if (tmp.indexOf("draft") >= 0) {
+      statusBtn.styleName = "draft";
+    } else if (tmp.indexOf("scheduled") >= 0) {
+      statusBtn.styleName = "scheduled";
+    } else if (tmp.indexOf("danger") >= 0) {
+      statusBtn.styleName = "danger";
+    }
+  }
+  public function get dataProvider():Contest{
+    return _dataProvider;
+  }
+  // setter and getter of all propriety of Context
+  public function set ContextId(value:String):void{
+    _ContextId = value;
+  }
+  public function get ContextId():String{
+    return _ContextId;
+  }
+  public function set rowNum(temp:Number):void{
+    _rowNum = temp;
+    /*if ((_rowNum % 2 )==0) {
+      var o:Object=getStyle("oddRowColor");
+      this.setStyle("backgroundColor",getStyle("oddRowColor"))
+    }
+    else {
+      this.setStyle("backgroundColor",getStyle("evenRowColor"))
+    }*/
+  }
+  public function get rowNum():Number{
+    return _rowNum;
+  }
+  public function set status(temp:String):void{
+    statusBtn.label = temp;
+  }
+  public function get contextName():String{
+    return lblContextName.label;
+  }
+  public function set contextName(temp:String):void{
+    lblContextName.label = temp;
+  }
+  public function get status():String{
+    return statusBtn.label;
+  }
+  public function set startDate(temp:String):void{
+    lblStartDate.text = temp;
+  }
+  public function get startDate():String{
+    return lblStartDate.text;
+  }
+  public function set endDate(temp:String):void{
+    lblEndDate.text = temp;
+  }
+  public function get endDate():String{
+    return lblEndDate.text;
+  }
+  public function set registrants(temp:String):void{
+    lblRegistrants.text = temp;
+  }
+  public function get registrants():String{
+    return lblRegistrants.text;
+  }
 
 	public function set submissions(temp:String):void{
 		lblSubmissions.text = temp;

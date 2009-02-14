@@ -29,23 +29,22 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.qs
 
       // BUGR-1156
       // Parse the specified start and end dates
-      // Dates are expected to follow this sample format: Thu Oct 23 11:00:00 GMT -0500 2008
+      // Dates are expected to follow this sample format: Thu Oct 23 11:00:00 GMT-0500 2008
 
       // [0] - Day of week
       // [1] - Month
       // [2] - Day of month
       // [3] - Time
-      // [4] - Timezone
-      // [5] - Timezone offset
-      // [6] - Year
+      // [4] - Timezone offset
+      // [5] - Year
       var startDtData:Array = _stDt.split(" ");
       var endDtData:Array = _eDt.split(" ");
 
-      this.startDate =  startDtData[0]+" "+startDtData[1]+" "+startDtData[2]+" "+startDtData[6]+"\n";
-      this.startDate += startDtData[3]+" "+startDtData[4]+" "+startDtData[5];
+      this.startDate =  startDtData[0]+" "+startDtData[1]+" "+startDtData[2]+" "+startDtData[5]+"\n";
+      this.startDate += startDtData[3]+" "+startDtData[4];
 
-      this.endDate =  endDtData[0]+" "+endDtData[1]+" "+endDtData[2]+" "+endDtData[6]+"\n";
-      this.endDate += endDtData[3]+" "+endDtData[4]+" "+endDtData[5];
+      this.endDate =  endDtData[0]+" "+endDtData[1]+" "+endDtData[2]+" "+endDtData[5]+"\n";
+      this.endDate += endDtData[3]+" "+endDtData[4];
     }
 
 	}
