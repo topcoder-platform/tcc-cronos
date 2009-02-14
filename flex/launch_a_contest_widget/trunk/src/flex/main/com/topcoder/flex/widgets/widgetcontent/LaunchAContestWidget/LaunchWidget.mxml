@@ -410,6 +410,11 @@ Specific limitations (such as restricting a color or a specific layout style) an
                     showArrow(step8box);
                     setButton(1);
                      //bottemline.height=mainPanel.height-800;
+
+                    activate.contentTitleStr = review.contentTitleStr;
+                    activate.contestTotal = review.contestTotal;
+                    
+                    activate.initData();
                 } else if (this.currentState == "ActivateState") {
                     save.visible = false;
                     var index:int = activate.goToNext();
