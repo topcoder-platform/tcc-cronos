@@ -251,7 +251,7 @@
         <mx:MenuBar labelField="@label"  left="200" id="menubar" dataProvider="{menuBarCollection}"
             itemClick="menuHandler(event);" height="21" styleName="menuBtn">
         </mx:MenuBar>
-      <mx:Button y="6" buttonMode="true" label="add new contest" height="29"
+      <mx:Button y="6" buttonMode="true" label="Add New Contest" height="29"
           right="28" styleName="addContestBtn" click="addcontest()"/>
       <mx:Label x="-20" y="55" width="100%" id="projectDesc"
           fontSize="12" color="#6f6f6f" textAlign="right"/>

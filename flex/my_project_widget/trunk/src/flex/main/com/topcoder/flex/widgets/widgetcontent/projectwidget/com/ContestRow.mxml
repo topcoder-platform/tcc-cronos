@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%"
-		styleName="ContestRowStyle" backgroundSize="100%" mouseOver="mouseOverHandle()" mouseOut="mouseOutHandle()">
+    styleName="ContestRowStyle" mouseOver="mouseOverHandle()" mouseOut="mouseOutHandle()">
 <mx:Script>
 	<![CDATA[
 		import com.topcoder.flex.widgets.model.IWidget;
@@ -236,12 +236,8 @@
     </mx:HBox>
 
   <mx:HBox width="100%" styleName="rowContent" >
-    <mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle">
-        <mx:Text width="100" styleName="rowContentLabel" id="lblStartDate" />
-    </mx:VBox>
-    <mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle">
-        <mx:Text width="100" styleName="rowContentLabel" id="lblEndDate" />
-    </mx:VBox>
+    <mx:Text width="100%" styleName="rowContentLabel" id="lblStartDate" />
+    <mx:Text width="100%" styleName="rowContentLabel" id="lblEndDate" />
     <mx:Text width="100%" styleName="rowContentLabel" id="lblRegistrants" />
     <mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle">
       <mx:Text width="100%" styleName="rowContentLabel" id="lblSubmissions" />
