@@ -707,6 +707,8 @@ public interface StudioService {
  
 
 
+	public long createForum(String name, long userId);
+	
 
 
 }

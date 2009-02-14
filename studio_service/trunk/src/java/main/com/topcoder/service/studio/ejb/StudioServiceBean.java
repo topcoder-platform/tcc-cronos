@@ -727,7 +727,7 @@ public class StudioServiceBean implements StudioService {
         return contestData;
     }
 
-    private long createForum(String name, long userId) {
+    public long createForum(String name, long userId) {
 		try {
 			Properties p = new Properties();
 			p.put(Context.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
