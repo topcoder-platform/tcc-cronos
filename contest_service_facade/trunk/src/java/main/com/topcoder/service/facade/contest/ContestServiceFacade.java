@@ -3,6 +3,7 @@
  */
 package com.topcoder.service.facade.contest;
 
+import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.IllegalArgumentWSException;
 import com.topcoder.service.studio.PersistenceException;
 import com.topcoder.service.studio.UserNotAuthorizedException;
@@ -22,6 +23,9 @@ import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.payment.PaymentData;
+import com.topcoder.service.payment.PaymentException;
+import com.topcoder.service.payment.PaymentResult;
 import com.topcoder.service.project.StudioCompetition;
 
 import javax.jws.WebService;
@@ -558,5 +562,35 @@ public interface ContestServiceFacade {
      *             if any error occurs when getting contest.
      */
     public List<SimpleContestData> getContestDataOnlyByPID(long pid) throws PersistenceException;
+    
+    /**
+     * <p>
+     * Processes the contest payment. It does following steps:
+     * <ul>
+     * <li>Checks contest id to decide whether to create new contest or update existing contest</li>
+     * <li>If payment type is credit card then it processes the payment through <code>PaymentProcessor</code></li>
+     * <li>Right-now this method doesn't process PO payments.</li>
+     * <li>
+     *  On successful processing - 
+     * <ul>
+     * <li>set contests to CONTEST_STATUS_ACTIVE_PUBLIC = 2</li>
+     * <li>set detailed contests to CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC = 2</li>
+     * <li>set payment reference number and type</li>
+     * <li>Creates new forum for the contest, forum name being contest name. It uses studio service for doing the same.</li>
+     * </ul>
+     * </li>
+     * </ul>
+     * </p>
+     *
+     * @param <code>ContestData</code> data that recognizes a contest.
+     * @param <code>PaymentData</code> payment information (credit card/po details) that need to be processed.
+     * @return a <code>PaymentResult</code> result of the payment processing.
+     * @throws PersistenceException if any error occurs when getting contest.
+     * @throws ContestNotFoundException 
+     * @throws IllegalArgumentException if specified <code>filter</code> is <code>null</code> or if it is not supported
+     *         by implementor.
+     */
+    public PaymentResult processContestPayment(ContestData contestData, PaymentData paymentData) 
+    throws PersistenceException, PaymentException, ContestNotFoundException;
 
 }

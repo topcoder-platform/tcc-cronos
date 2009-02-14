@@ -3,6 +3,14 @@
  */
 package com.topcoder.service.facade.contest.ejb;
 
+import com.topcoder.security.auth.module.UserProfilePrincipal;
+import com.topcoder.service.payment.CreditCardPaymentData;
+import com.topcoder.service.payment.PaymentData;
+import com.topcoder.service.payment.PaymentException;
+import com.topcoder.service.payment.PaymentProcessor;
+import com.topcoder.service.payment.PaymentResult;
+import com.topcoder.service.payment.TCPurhcaseOrderPaymentData;
+import com.topcoder.service.payment.paypal.PayPalPaymentProcessor;
 import com.topcoder.service.project.StudioCompetition;
 import com.topcoder.service.project.CompetionType;
 import com.topcoder.service.project.Competition;
@@ -32,6 +40,7 @@ import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.service.studio.submission.PrizeType;
 import com.topcoder.service.studio.PrizeData;
 
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
@@ -39,6 +48,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.EJB;
 import javax.jws.WebService;
+import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -75,21 +85,64 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     @EJB(name = "ejb/StudioService")
     private StudioService studioService = null;
 
-	  /**
-     * Private constant specifying unactive not yet published status id.
-     */
-    private static final long CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED = 1;
-    
-    /**
-     * Private constant specifying draft status id.
-     */
-    private static final long CONTEST_DETAILED_STATUS_DRAFT = 15;
+	/**
+	 * <p>
+	 * A <code>SessionContext</code> providing access to available session
+	 * information. The bean instance is injected through external mechanism
+	 * (ejb).
+	 * </p>
+	 */
+	@Resource
+	private SessionContext sessionContext;
 
-    /**
-     * <p>Constructs new <code>ContestServiceFacadeBean</code> instance. This implementation does nothing.</p>
-     */
-    public ContestServiceFacadeBean() {
-    }
+	/**
+	 * <p>
+	 * A <code>PaymentProcessor</code> instance of payment processor
+	 * implementing class. All payment requests are processed through this
+	 * instance.
+	 * </p>
+	 */
+	private PaymentProcessor paymentProcessor = null;
+
+	/**
+	 * Private constant specifying non-active not yet published status id.
+	 */
+	private static final long CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED = 1;
+
+	/**
+	 * Private constant specifying draft status id.
+	 */
+	private static final long CONTEST_DETAILED_STATUS_DRAFT = 15;
+
+	/**
+	 * Private constant specifying active & public status id.
+	 */
+	private static final long CONTEST_STATUS_ACTIVE_PUBLIC = 2;
+
+	/**
+	 * Private constant specifying active & public status id.
+	 */
+	private static final long CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC = 2;
+
+	/**
+	 * <p>
+	 * Constructs new <code>ContestServiceFacadeBean</code> instance. This
+	 * implementation instantiates new instance of payment processor.
+	 * 
+	 * Current implementation just support processing through PayPalCreditCard.
+	 * When multiple processors are desired the implementation should use
+	 * factory design pattern to get the right instance of the payment
+	 * processor.
+	 * </p>
+	 * 
+	 * @throws PaymentException
+	 *             exception when instantiating PaymentProcessor.
+	 *             PaymentProcessor usually do merchant authentication etc at
+	 *             initialization time, if this fails it is thrown as exception.
+	 */
+	public ContestServiceFacadeBean() throws PaymentException {
+		paymentProcessor = new PayPalPaymentProcessor();
+	}
 
     /**
      * <p>Creates new contest for specified project. Upon creation an unique ID is generated and assigned to returned
@@ -791,23 +844,116 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         return calendar.toGregorianCalendar().getTime();
     }
 
-    /**
-     * <p>Converts specified <code>Date</code> instance into <code>XMLGregorianCalendar</code> instance.</p>
-     *
-     * @param date a <code>Date</code> representing the date to be converted.
-     * @return a <code>XMLGregorianCalendar</code> providing the converted value of specified date or <code>null</code>
-     *         if specified <code>date</code> is <code>null</code> or if it can't be converted to calendar.
-     */
-    private XMLGregorianCalendar getXMLGregorianCalendar(Date date) {
-        if (date == null) {
-            return null;
-        }
-        GregorianCalendar cal = new GregorianCalendar();
-        cal.setTime(date);
-        try {
-            return DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
-        } catch (DatatypeConfigurationException ex) {
-            return null;
-        }
-    }
+	/**
+	 * <p>
+	 * Converts specified <code>Date</code> instance into
+	 * <code>XMLGregorianCalendar</code> instance.
+	 * </p>
+	 * 
+	 * @param date
+	 *            a <code>Date</code> representing the date to be converted.
+	 * @return a <code>XMLGregorianCalendar</code> providing the converted value
+	 *         of specified date or <code>null</code> if specified
+	 *         <code>date</code> is <code>null</code> or if it can't be
+	 *         converted to calendar.
+	 */
+	private XMLGregorianCalendar getXMLGregorianCalendar(Date date) {
+		if (date == null) {
+			return null;
+		}
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(date);
+		try {
+			return DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
+		} catch (DatatypeConfigurationException ex) {
+			return null;
+		}
+	}
+
+	/**
+	 * <p>
+	 * Processes the contest payment. It does following steps:
+	 * <ul>
+	 * <li>Checks contest id to decide whether to create new contest or update
+	 * existing contest</li>
+	 * <li>If payment type is credit card then it processes the payment through
+	 * <code>PaymentProcessor</code></li>
+	 * <li>Right-now this method doesn't process PO payments.</li>
+	 * <li>
+	 * On successful processing -
+	 * <ul>
+	 * <li>set contests to CONTEST_STATUS_ACTIVE_PUBLIC = 2</li>
+	 * <li>set detailed contests to CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC = 2</li>
+	 * <li>set payment reference number and type</li>
+	 * <li>Creates new forum for the contest, forum name being contest name. It
+	 * uses studio service for doing the same.</li>
+	 * </ul>
+	 * </li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @param <code>ContestData</code> data that recognizes a contest.
+	 * @param <code>PaymentData</code> payment information (credit card/po
+	 *        details) that need to be processed.
+	 * @return a <code>PaymentResult</code> result of the payment processing.
+	 * @throws PersistenceException
+	 *             if any error occurs when getting contest.
+	 * @throws ContestNotFoundException
+	 * @throws IllegalArgumentException
+	 *             if specified <code>filter</code> is <code>null</code> or if
+	 *             it is not supported by implementor.
+	 */
+	public PaymentResult processContestPayment(ContestData contestData,
+			PaymentData paymentData) throws PersistenceException,
+			PaymentException, ContestNotFoundException {
+
+		long contestId = contestData.getContestId();
+
+		StudioCompetition competition = null;
+		try {
+			competition = getContest(contestId);
+		} catch (ContestNotFoundException cnfe) {
+			// if not contest is found then simply ignore it.
+		}
+
+		if (competition == null) {
+			competition = createContest(
+					(StudioCompetition) convertToCompetition(
+							CompetionType.STUDIO, contestData), contestData
+							.getTcDirectProjectId());
+		}
+
+		PaymentResult result = null;
+
+		if (paymentData instanceof TCPurhcaseOrderPaymentData) {
+			// processing purchase order is not in scope of this assembly.
+			result = new PaymentResult();
+			result.setReferenceNumber("NOT IN SCOPE FOR PO");
+		} else if (paymentData instanceof CreditCardPaymentData) {
+			result = paymentProcessor.process(paymentData, Double
+					.toString(contestData.getContestAdministrationFee()));
+			competition.getContestData().setStatusId(
+					CONTEST_STATUS_ACTIVE_PUBLIC);
+			competition.getContestData().setDetailedStatusId(
+					CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC);
+
+			ContestPaymentData contestPaymentData = new ContestPaymentData();
+			contestPaymentData.setPaypalOrderId(result.getReferenceNumber());
+
+			UserProfilePrincipal p = (UserProfilePrincipal) sessionContext
+					.getCallerPrincipal();
+			String userId = Long.toString(p.getUserId());
+
+			createContestPayment(contestPaymentData, userId);
+
+			// update contest.
+			updateContest(competition);
+
+			// create forum for the contest.
+			this.studioService.createForum(competition.getContestData()
+					.getName(), p.getUserId());
+		}
+
+		return result;
+	}
 }
