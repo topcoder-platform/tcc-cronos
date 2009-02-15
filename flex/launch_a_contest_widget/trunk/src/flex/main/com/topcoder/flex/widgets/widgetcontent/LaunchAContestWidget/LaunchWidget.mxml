@@ -10,6 +10,7 @@
         	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestResultEvent;
         	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProjectServiceFacadeBeanService;
         	import mx.rpc.soap.SOAPHeader;
+		    import mx.controls.Image;
             import mx.effects.Resize;
             import mx.events.ResizeEvent;
             import mx.events.StateChangeEvent;
@@ -35,7 +36,14 @@
 		    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.StudioCompetition;
 		    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContest;
 		    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContestResultEvent;
-	
+
+		// BUGR-1141
+		[Bindable]
+		private var stepNumber:int = 1;
+		
+		[Embed(source="../assets/done.png")] 
+		private var doneImage:Class; 
+		
 		    private var username:String=Application.application.parameters.username;
 		    private var password:String = "";
 		    private var blazedsendpoint:String= Application.application.parameters.blazedsendpoint;
@@ -178,6 +186,16 @@
 
 		  initialWdt.init();
 
+				 // BUGR-1141
+				 setCurStep(step1box);
+				 setNextStep(step2box);
+				 setNextStep(step3box);
+				 setNextStep(step4box);
+				 setNextStep(step5box);
+				 setNextStep(step6box);
+				 setNextStep(step7box);
+				 setNextStep(step8box);
+				 stepNumber = 1;
 		
             }
             
@@ -284,8 +302,8 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    back.visible = true;
                    
                    review.cstTypeStep1 = contestSelect.contestType.selectedValue.toString();
-                   hideArrow(step1box);
-                   showArrow(step2box);
+                   setPreviousStep(step1box); // BUGR-1141
+                   setCurStep(step2box);// BUGR-1141
                    
                    result.type = contestSelect.contestType.selectedValue;
                    //bottemline.height=mainPanel.height-710;
@@ -309,8 +327,8 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    review.contestTotal = overView.cntstTtl.text;
                    
                    this.height = DETAILS_HEIGHT;  // BUGR-1134
-                   hideArrow(step2box);
-                   showArrow(step3box);
+                    setPreviousStep(step2box);
+                   setCurStep(step3box);
                     //bottemline.height=mainPanel.height-530;
                 }
                 else if(this.currentState == "DetailsState"){
@@ -325,9 +343,8 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    
                    review.contentTitleStr = details.ctInput.text;
                    review.IntroductionStr = details.introInput.text;
-                   review.glsInputStr = details.glsInput.text;
-                   hideArrow(step3box);
-                   showArrow(step4box);
+                  setPreviousStep(step3box);
+                   setCurStep(step4box);
                     //bottemline.height=mainPanel.height-1000;
                 }
                 else if(this.currentState == "SpecificationsState"){
@@ -366,8 +383,8 @@ Specific limitations (such as restricting a color or a specific layout style) an
 				  */
                    review.fileFormatInputStr = competition.contestData.finalFileFormat;
                    this.height = ATTACH_FILES_HEIGHT;  // BUGR-1134
-                   hideArrow(step4box);
-                   showArrow(step5box);
+                    setPreviousStep(step4box);
+                   setCurStep(step5box);
                     //bottemline.height=mainPanel.height-400;
                 }
                 else if(this.currentState == "AttachFilesState"){
@@ -379,8 +396,8 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    save.visible = false;
                    
                    this.height = SCHEDULE_HEIGHT;  // BUGR-1134
-                   hideArrow(step5box);
-                   showArrow(step6box);
+                     setPreviousStep(step5box);
+                   setCurStep(step6box);
                    //bottemline.height=mainPanel.height-800;
                 }
                 else if(this.currentState == "ScheduleState"){
@@ -399,15 +416,15 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    review.setAllValues();
 
                    this.height = REVIEW_HEIGHT;  // BUGR-1134
-                   hideArrow(step6box);
-                   showArrow(step7box);
+                      setPreviousStep(step6box);
+                   setCurStep(step7box);
                     //bottemline.height=mainPanel.height-1700;
                 } else if (this.currentState == "ReviewState") {
                     this.currentState = "ActivateState";
                     save.visible = false;
                     this.height = ACTIVATE_HEIGHT;
-                    hideArrow(step7box);
-                    showArrow(step8box);
+                     setPreviousStep(step7box);
+                    setCurStep(step8box);
                     setButton(1);
                      //bottemline.height=mainPanel.height-800;
 
@@ -472,50 +489,56 @@ Specific limitations (such as restricting a color or a specific layout style) an
                         save.visible = true;
                         this.height = REVIEW_HEIGHT; // BUGR-1134
 
-                       showArrow(step7box);
-                       step8Text.setStyle("color", "#a8a8a8");
+                       setCurStep(step7box);
+                       setNextStep(step8box); // BUGR-1141
                     }
                 } else if (this.currentState == "ReviewState"){
                    this.currentState = "ScheduleState";
                    this.height = SCHEDULE_HEIGHT;  // BUGR-1134
 
-                   showArrow(step6box);
-                   step7Text.setStyle("color", "#a8a8a8");
+                   setCurStep(step6box);
+                   setNextStep(step7box); // BUGR-1141
+                   //step7Text.setStyle("color", "#a8a8a8");
                 }
                 else if(this.currentState == "ScheduleState"){
                    this.currentState = "AttachFilesState";
                    this.height = ATTACH_FILES_HEIGHT;  // BUGR-1134
 
-                   showArrow(step5box);
-                   step6Text.setStyle("color", "#a8a8a8");
+                   setCurStep(step5box);
+                   setNextStep(step6box); // BUGR-1141
+                   //step6Text.setStyle("color", "#a8a8a8");
                 }
                 else if(this.currentState == "AttachFilesState"){
                    this.currentState = "SpecificationsState";
                    this.height = SPECIFICATIONS_HEIGHT;  // BUGR-1134
 
-                   showArrow(step4box);
-                   step5Text.setStyle("color", "#a8a8a8");
+                   setCurStep(step4box);
+                   setNextStep(step5box); // BUGR-1141
+                   //step5Text.setStyle("color", "#a8a8a8");
                 }
                 else if(this.currentState == "SpecificationsState"){
                    this.currentState = "DetailsState";
                    this.height = DETAILS_HEIGHT;  // BUGR-1134
 	    
-                  showArrow(step3box);
-                   step4Text.setStyle("color", "#a8a8a8");
+                  setCurStep(step3box);
+                  setNextStep(step4box); // BUGR-1141
+                  // step4Text.setStyle("color", "#a8a8a8");
                 }
                 else if(this.currentState == "DetailsState"){
                    this.currentState = "OverViewState";
                    this.height = OVERVIEW_HEIGHT; // BUGR-1134
-                   showArrow(step2box);
-                   step3Text.setStyle("color", "#a8a8a8");
+                  setCurStep(step2box);
+                   setNextStep(step3box); // BUGR-1141
+                   //step3Text.setStyle("color", "#a8a8a8");
                 }
                 else if(this.currentState == "OverViewState"){
                    this.currentState = "ContestSelectionState";
                    this.height = CONTEST_SELECTION_HEIGHT; // BUGR-1134
                    back.visible = false;
      
-                   showArrow(step1box);
-                   step2Text.setStyle("color", "#a8a8a8");
+                   setCurStep(step1box);
+                   setNextStep(step2box); // BUGR-1141
+                   //step2Text.setStyle("color", "#a8a8a8");
                 }
             }
             public function goToStep1():void {
@@ -555,6 +578,49 @@ Specific limitations (such as restricting a color or a specific layout style) an
             
             public function goToStep6():void {
                 previous();
+            }
+
+	    private function setCurStep(stepBox:Box):void { // BUGR-1141
+                var box:HBox = stepBox.parent as HBox;
+                if (box.numChildren == 3) {
+                    var label:Label = box.getChildAt(1) as Label;
+                    label.setStyle("color", "#CC0000");
+                }
+                box.styleName = "curStepBgr";
+                // BUGR-1141
+                if(box.numChildren == 4) {
+                	box.removeChildAt(box.numChildren - 1);
+                }
+                stepBox.styleName = "curStep";
+                
+            }
+            
+            private function setNextStep(stepBox:Box):void {  // BUGR-1141
+            	var box:HBox = stepBox.parent as HBox;
+                if (box.numChildren == 3) {
+                	var label:Label = box.getChildAt(1) as Label;
+                    label.setStyle("color", "#666666");
+                    var step:Box = box.getChildAt(0) as Box;
+                }
+                box.styleName = "prevStepBgr";
+            	stepBox.styleName = "nextStep";
+            	stepNumber--;
+            }
+            
+            private function setPreviousStep(stepBox:Box):void {  // BUGR-1141
+            	var box:HBox = stepBox.parent as HBox;
+                if (box.numChildren == 3) {
+                	var label:Label = box.getChildAt(1) as Label;
+                    label.setStyle("color", "#666666");
+                    var step:Box = box.getChildAt(0) as Box;
+                }
+				// BUGR-1141
+                box.styleName = "prevStepBgr";
+                var completed:Image = new Image();
+                completed.source = doneImage;
+                box.addChild(completed);
+                stepBox.styleName = "prevStep";
+                stepNumber++;
             }
             
             private function showArrow(stepBox:Box):void {
@@ -660,32 +726,36 @@ Specific limitations (such as restricting a color or a specific layout style) an
      </mx:RemoteObject>
      <mx:Spacer height="5" />
      <pages:InitialWidget id="initialWdt" />
-     <mx:HBox id="launchWdt" horizontalGap="0" visible="false" >
-         <mx:VBox width="200" height="100%" paddingTop="15" verticalGap="20" 
-                horizontalScrollPolicy="off">
+     <mx:HBox id="launchWdt" horizontalGap="0" visible="false" paddingLeft="20">
+         <mx:VBox width="220" height="100%" paddingTop="0" verticalGap="0" 
+                horizontalScrollPolicy="off" styleName="stepsBgr">
              <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="30"
-                    verticalAlign="middle" backgroundImage="@Embed('../assets/step_empty.png')">
-                 <mx:Box  width="26" height="26" styleName="curStep"
+                    verticalAlign="middle" styleName="stepsLabelBgr">
+             		<mx:Label width="100%" height="100%" textAlign="center" text="STEP {stepNumber} of 8" styleName="stepsLabel" /> 
+             </mx:HBox>   
+             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
+                    verticalAlign="middle">
+                 <mx:Box width="30" height="30"
                         paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step1box">
                     <mx:Label width="100%" height="100%" textAlign="center" text="1" styleName="whiteBoldText"/>
                 </mx:Box>
             	<mx:Label id="step1Text" text="Contest Selection" fontWeight="bold" 
-                        fontFamily="Arial" color="#000000" fontSize="14" /> 
-                 <mx:Spacer width="100%" /> 
+                        fontFamily="Arial" fontSize="14" /> 
+                <mx:Spacer width="100%" />
              </mx:HBox>
-             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="30"
-                    verticalAlign="middle" backgroundImage="@Embed('../assets/step_empty.png')">
-                 <mx:Box  width="26" height="26" styleName="curStep"
+             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
+                    verticalAlign="middle">
+                 <mx:Box  width="30" height="30"
                         paddingTop="2" paddingLeft="0" paddingRight="0" left="10"  id="step2box">
                     <mx:Label width="100%" height="100%" textAlign="center" text="2" styleName="whiteBoldText"/>
                 </mx:Box>
                  <mx:Label id="step2Text" text="Overview" fontWeight="bold" color="#a8a8a8"
                         fontFamily="Arial" fontSize="14" />
-                 <mx:Spacer width="100%" />
+                 <mx:Spacer width="100%" /> 
              </mx:HBox>
-             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="30"
-                    verticalAlign="middle" backgroundImage="@Embed('../assets/step_empty.png')">
-                 <mx:Box width="26" height="26" styleName="curStep"
+             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
+                    verticalAlign="middle">
+                 <mx:Box width="30" height="30" 
                         paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step3box">
                     <mx:Label width="100%" height="100%" textAlign="center" text="3" styleName="whiteBoldText"/>
                 </mx:Box>
@@ -693,9 +763,9 @@ Specific limitations (such as restricting a color or a specific layout style) an
                         fontFamily="Arial" fontSize="14" />
                  <mx:Spacer width="100%" />
              </mx:HBox>
-             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="30"
-                    verticalAlign="middle" backgroundImage="@Embed('../assets/step_empty.png')">
-                 <mx:Box styleName="curStep" width="26" height="26"
+             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
+                    verticalAlign="middle">
+                 <mx:Box width="30" height="30"
                         paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step4box">
                     <mx:Label width="100%" height="100%" textAlign="center" text="4" styleName="whiteBoldText"/>
                 </mx:Box>
@@ -703,9 +773,9 @@ Specific limitations (such as restricting a color or a specific layout style) an
                         fontFamily="Arial" fontSize="14" />
                  <mx:Spacer width="100%" />
              </mx:HBox>
-             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="30"
-                    verticalAlign="middle" backgroundImage="@Embed('../assets/step_empty.png')">
-                 <mx:Box styleName="curStep" width="26" height="26"
+             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
+                    verticalAlign="middle" styleName="prevStepBgr">
+                 <mx:Box width="30" height="30"
                         paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step5box">
                     <mx:Label width="100%" height="100%" textAlign="center" text="5" styleName="whiteBoldText"/>
                 </mx:Box>
@@ -713,9 +783,9 @@ Specific limitations (such as restricting a color or a specific layout style) an
                         fontFamily="Arial" fontSize="14" />
                  <mx:Spacer width="100%" />
              </mx:HBox>
-             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="30"
-                    verticalAlign="middle" backgroundImage="@Embed('../assets/step_empty.png')">
-                 <mx:Box styleName="curStep" width="26" height="26"
+             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
+                    verticalAlign="middle" styleName="nextStepBgr">
+                 <mx:Box width="30" height="30"
                         paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step6box">
                     <mx:Label width="100%" height="100%" textAlign="center" text="6" styleName="whiteBoldText"/>
                 </mx:Box>
@@ -723,9 +793,9 @@ Specific limitations (such as restricting a color or a specific layout style) an
                         fontFamily="Arial" fontSize="14" />
                  <mx:Spacer width="100%" />
              </mx:HBox>
-             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="30"
-                    verticalAlign="middle" backgroundImage="@Embed('../assets/step_empty.png')">
-                 <mx:Box styleName="curStep" width="26" height="26"
+             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
+                    verticalAlign="middle"  styleName="nextStepBgr">
+                 <mx:Box width="30" height="30"
                         paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step7box">
                     <mx:Label width="100%" height="100%" textAlign="center" text="7" styleName="whiteBoldText"/>
                 </mx:Box>
@@ -733,9 +803,9 @@ Specific limitations (such as restricting a color or a specific layout style) an
                         fontFamily="Arial" fontSize="14" />
                  <mx:Spacer width="100%" />
              </mx:HBox>
-             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="30"
-                    verticalAlign="middle" backgroundImage="@Embed('../assets/step_empty.png')">
-                 <mx:Box styleName="curStep" width="26" height="26"
+             <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
+                    verticalAlign="middle" styleName="nextStepBgr">
+                 <mx:Box width="30" height="30"
                         paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step8box">
                     <mx:Label width="100%" height="100%" textAlign="center" text="8" styleName="whiteBoldText"/>
                 </mx:Box>

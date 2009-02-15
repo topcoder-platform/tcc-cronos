@@ -10,18 +10,6 @@
    headerColors: #cccccc, #cccccc;
    titleStyleName: "panelTitle";
 }
-.NewWidgetPanel {
-	 
-   borderColor: #B7BABC;
-   borderThicknessLeft: 0;
-   borderThicknessTop: 0;
-   borderThicknessBottom: 0;
-   borderThicknessRight: 0;
-   borderAlpha: 1;
-   dropShadowEnabled: false;
-   headerColors: #cccccc, #cccccc;
-   titleStyleName: "panelTitle";
-}
 .panelTitle {
    textAlign: left;
    color: #000000;
@@ -45,6 +33,7 @@
 	font-weight: bold;	
 	fontFamily: "Arial";
 	font-size: 14;
+	padding-top: 2; /* BUGR-1141 */
 }
 
 .boxStyle {
@@ -59,12 +48,44 @@
 	background-gradient-colors: #FFFFFF, #a8a8a8;	
 }
 
+/* BUGR-1141 */
 .prevStep {
 	backgroundImage: Embed(source="../assets/step_prev.png");	
 }
 
 .curStep {
 	backgroundImage: Embed(source="../assets/step_cur.png");	
+}
+
+.nextStep {
+	backgroundImage: Embed(source="../assets/step_next.png");	
+}
+
+.curStepBgr {
+	background-color: #FFFFFF;
+}
+
+.prevStepBgr {
+	background-color: #EEEEEE;
+}
+
+.stepsBgr {
+	background-color: #EEEEEE;
+	border-thickness: 1;
+	border-sides: right;
+	border-style: solid;
+	border-color: #DBDBDB;
+}
+
+.stepsLabel {
+	color: #FFFFFF;
+	font-size: 18;
+	border-thickness-left: 1;
+	border-color: #CCCCCC;
+}
+
+.stepsLabelBgr {
+	backgroundColor: #DBDBDB;
 }
 
 .header {
