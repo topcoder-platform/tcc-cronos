@@ -267,7 +267,9 @@
             	var ws:ContestServiceFacadeBeanService = mainWidget._ws;
             	ws.addgetMimeTypeIdEventListener(loadMimeTypeIdHandler);
             	var arg:GetMimeTypeId = new GetMimeTypeId();
-            	arg.arg0 = getMimetypeByFileName(file.type);
+            	var dotpos:int=file.name.lastIndexOf('.');
+            	var ftype:String=dotpos<0?file.type:file.name.substring(dotpos+1);
+            	arg.arg0 = getMimetypeByFileName(ftype);
             	ws.getMimeTypeId(arg);
             }
             
