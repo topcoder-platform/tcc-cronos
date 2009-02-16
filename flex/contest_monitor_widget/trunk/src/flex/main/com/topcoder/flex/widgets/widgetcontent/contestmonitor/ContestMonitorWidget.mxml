@@ -310,7 +310,7 @@ wsdl="{contestServiceFacadeWsdl}">
 	<mx:HBox>
 	<!--<mx:Canvas width="100%" minWidth="755" height="50">-->
 		
-		<mx:Label text="Select Contests :" 
+		<mx:Label text="Select Contest:" 
 	                        styleName="labelStyle" paddingTop="0" paddingBottom="0"/>
 	    <mx:ComboBox id="contestCombo" left="195" width="272" top="9"
 	                        valueCommit="handleContest()" fontFamily="Arial" fontSize="10"
