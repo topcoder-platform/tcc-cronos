@@ -161,13 +161,11 @@
                 <mx:DataGridColumn dataField="contest_name"
                     itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.ContestLinkButton"
                     textAlign="left" headerText="Name" />
-                <mx:DataGridColumn dataField="contest_category_id"
-                    headerText="Contest Category" textAlign="right" />
                 <mx:DataGridColumn dataField="posting_date"
                     textAlign="center" headerText="Posting Date" labelFunction="formatPostingDate" />
                 <mx:DataGridColumn dataField="contest_type_name" headerText="Contest Type" />
-                <mx:DataGridColumn dataField="contest_type_id" headerText="Contest Type ID" textAlign="right" />
                 <mx:DataGridColumn dataField="contest_category_name" headerText="Contest Category" />
+                <mx:DataGridColumn dataField="status" headerText="Status" />
             </tc:columns>
         </tc:TCDataGrid>
 </tc:PipelineWidgetCodeBehind>
