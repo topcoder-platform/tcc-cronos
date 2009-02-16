@@ -7,6 +7,7 @@
 
     <mx:Script>
         <![CDATA[
+        	import com.topcoder.flex.model.IWidgetFramework;
         	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestResultEvent;
         	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProjectServiceFacadeBeanService;
         	import mx.rpc.soap.SOAPHeader;
@@ -78,6 +79,7 @@
 	        public function resetWidget():void{
 //            	this.currentState = "ContestSelectionState";
 //            	back.visible = false;
+/*
             	goToStep1();
                 launchWdt.percentWidth = 0;
                 launchWdt.height = 0; // BUGR-1134
@@ -85,11 +87,16 @@
                 this.height = INITIAL_WIDGET_HEIGHT; // BUGR-1134
                 initialWdt.visible = true;
         		initialWdt.init();
+        		*/
+        		var f:IWidgetFramework=widgetFramework;
+        		container.contents=new  LaunchWidget();
+        		container.contents.widgetFramework=f;
+        		container.startRestore();
         	}
         
         	public function closeWidget():void{
         		resetWidget();
-        		this.minimize()
+        		container.startMinimize();
         	}
         
         
@@ -343,6 +350,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    
                    review.contentTitleStr = details.ctInput.text;
                    review.IntroductionStr = details.introInput.text;
+		   review.glsInputStr = details.glsInput.text;
                   setPreviousStep(step3box);
                    setCurStep(step4box);
                     //bottemline.height=mainPanel.height-1000;
