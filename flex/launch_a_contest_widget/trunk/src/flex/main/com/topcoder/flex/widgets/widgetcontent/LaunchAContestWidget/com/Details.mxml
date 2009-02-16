@@ -45,7 +45,7 @@
 	        	}
 	        	
 	        	if (glsInput.text == ""){
-	        		Helper.showAlertMessage("Please enter primary goals");
+	        		Helper.showAlertMessage("Please enter a detailed description");
 	        		return false;
 	        	}
 	        	
@@ -155,7 +155,7 @@
         
         <mx:VBox width="100%" verticalGap="0">
             <mx:HBox  width="500">
-                <mx:Label text="What are the primary goals for this design?" fontWeight="bold"/>
+                <mx:Label text="Detailed Description:" fontWeight="bold"/>
                 <mx:Spacer width="136"/>
                 <mx:LinkButton label="[+ show hint]" click="showGoalsHint(event)" />
             </mx:HBox>
