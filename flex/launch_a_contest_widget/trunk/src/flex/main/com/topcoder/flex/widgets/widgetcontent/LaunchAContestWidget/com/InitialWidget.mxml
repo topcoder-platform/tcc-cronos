@@ -214,13 +214,11 @@
         </mx:Text>
         <mx:HBox width="100%" horizontalGap="0">
             <mx:Label text="Select or Create a Project" fontWeight="bold" fontSize="12"/>
-            <mx:LinkButton label="More Info" color="#FF0000" textDecoration="underline"/>
-            <mx:Image source="@Embed('../../assets/more_info.png')"/>
         </mx:HBox>
         
         <mx:HBox width="100%">
             <mx:Spacer width="42"/>
-            <mx:Label text="Add a New Project:"  width="109"/>
+            <mx:Label text="New Project Name:"  width="109"/>
             <mx:TextInput id="prjInput" width="308"/>
         </mx:HBox>
         
@@ -230,7 +228,7 @@
         </mx:HBox>
         
         <mx:HBox width="100%">
-            <mx:Label text="Choose an Existing Project:" />
+            <mx:Label text="Existing Project:" />
             <mx:ComboBox id="selectContests"  width="309" />
         </mx:HBox>
         
@@ -246,7 +244,6 @@
         
         <mx:HBox width="100%" >
             <mx:Spacer width="162"/>
-            <!--<mx:Button label="SAVE AND CONTINUE" cornerRadius="4" fillAlphas="[1.0, 1.0]" fillColors="[#F70C0C, #C00000, #B70404, #B70404]" color="#FFFFFF" borderColor="#070707" click="goToContestSelection()"/>-->
             <mx:Button label="save and continue" styleName="RedButton" click="goToContestSelection()" buttonMode="true"/>
         </mx:HBox>
     </mx:VBox>
