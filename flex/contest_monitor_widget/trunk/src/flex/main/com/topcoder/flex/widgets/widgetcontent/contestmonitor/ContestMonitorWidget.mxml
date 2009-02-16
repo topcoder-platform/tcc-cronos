@@ -37,6 +37,7 @@
         private static const daySeconds:Number = 24*60*60;
         private static const halfDaySeconds:Number = 12*60*60;
         private static const hourSeconds:Number = 60*60;
+        private static const OneHour:Number = 1000 * 60 * 60;
 
 	public static var SLIDER_TICK_LENGTH:Number = 0;
 	public static var TRACK_WIDTH:Number = 0;
@@ -189,6 +190,19 @@
         	return "GMT" + flds[8] + flds[9] + flds[10];
         }
         
+        //change the time to UMT-5 time for BUGR-1196
+        private function changeTimeToUMTMinus5(date:Date):String {
+            var dateTmp:Date = new Date(date.getTime());
+            var tzOffHours:Number = dateTmp.timezoneOffset/60;
+            dateTmp.setTime(dateTmp.getTime() - (5 - tzOffHours)*OneHour);
+            var dateStr:String = dateTmp.toString();
+            var GMTIndex:int = dateStr.indexOf("GMT");
+            var result:String = dateStr.substr(0, GMTIndex);
+            result += "UMT-0500 ";
+            result += dateStr.substr(GMTIndex+9, 4);
+            return result;
+        }
+        
         private function handleContest():void
         {
         	if (contestList==null || contestCombo.selectedIndex<0) return ;
@@ -206,9 +220,9 @@
             //endTime = new Date(Date.parse(getParsableDate(eflds)));
             //end.text = getDisplayableDateComp(eflds) + "\t" + getDisplayableTimeComp(eflds) + "\t\t" + getDisplayableTimeZoneComp(eflds);
             startTime=result.startDate;
-	    start.text=result.startDate.toString();
+	        start.text = changeTimeToUMTMinus5(startTime);
             endTime=result.endDate;
-	    end.text=result.endDate.toString();
+	        end.text = changeTimeToUMTMinus5(endTime);
             var currentTime:Date = new Date();
             var timeSpan:Number = (endTime.getTime() - startTime.getTime())/1000;
             var currentPos:Number = (currentTime.getTime() - startTime.getTime())/1000;
