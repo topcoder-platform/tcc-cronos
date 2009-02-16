@@ -257,7 +257,7 @@
             	}
             	
             	if (fileDescInput.text == ""){
-            		Helper.showAlertMessage("Please enter description for the file");
+            		Helper.showAlertMessage("Please enter a description for the file");
             		return;
             	}
             	
@@ -378,7 +378,7 @@
 	                <mx:text>
 	                </mx:text>
 	            </mx:Text>
-	            <mx:TextArea id="fileDescInput" width="500" height="50" text="File description writes here."/>
+	            <mx:TextArea id="fileDescInput" width="500" height="50" text="Enter file description here..."/>
             </mx:VBox>
             <mx:Spacer height="5"/>
             <mx:HBox >
