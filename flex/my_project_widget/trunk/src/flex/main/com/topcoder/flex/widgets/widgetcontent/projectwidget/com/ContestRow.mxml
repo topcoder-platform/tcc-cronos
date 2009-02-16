@@ -10,6 +10,8 @@
 
 	private var _rowNum:int;
 	private var _ContextId:String;
+	
+	private static const OneHour:Number = 1000 * 60 * 60;
 	/**
      * The base url for the link of contents;
      */
@@ -87,13 +89,13 @@
     return statusBtn.label;
   }
   public function set startDate(temp:String):void{
-    lblStartDate.text = temp;
+    lblStartDate.text = changeTimeToUMTMinus5(temp);
   }
   public function get startDate():String{
     return lblStartDate.text;
   }
   public function set endDate(temp:String):void{
-    lblEndDate.text = temp;
+    lblEndDate.text = changeTimeToUMTMinus5(temp);
   }
   public function get endDate():String{
     return lblEndDate.text;
@@ -226,6 +228,19 @@
 					var props:Dictionary=new Dictionary();
 					props["contestid"]=_dataProvider.id;
 					widget.setAttributes(props);
+        }
+        
+        //change the time to UMT-5 time for BUGR-1196
+        private function changeTimeToUMTMinus5(date:String):String {
+            var dateTmp:Date = new Date(date);
+            var tzOffHours:Number = dateTmp.timezoneOffset/60;
+            dateTmp.setTime(dateTmp.getTime() - (5 - tzOffHours)*OneHour);
+            var dateStr:String = dateTmp.toString();
+            var GMTIndex:int = dateStr.indexOf("GMT");
+            var result:String = dateStr.substr(0, GMTIndex);
+            result += "UMT-0500 ";
+            result += dateStr.substr(GMTIndex+9, 4);
+            return result;
         }
 	]]>
 </mx:Script>
