@@ -218,7 +218,7 @@
                         labelField="name"  dataProvider="{contestList}" />
     </mx:Canvas>
 
-  <tc:TCDataGrid id="dataGrid" width="95%" height="100%" dataProvider="{activeContents}"
+  <tc:TCDataGrid id="dataGrid" width="100%" height="100%" dataProvider="{activeContents}"
         verticalScrollPolicy="off" horizontalScrollPolicy="off" top="60"
         styleName="TCDataGrid" headerStyleName="DataGridHeader"
         headerSeparatorSkin="{headerSeparatorSkin}" sortArrowSkin="{sortArrowSkin}"
