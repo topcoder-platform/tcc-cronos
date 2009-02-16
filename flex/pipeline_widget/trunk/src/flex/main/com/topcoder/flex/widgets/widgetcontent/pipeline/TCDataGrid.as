@@ -1,6 +1,5 @@
 package com.topcoder.flex.widgets.widgetcontent.pipeline
 {
-    import flash.display.DisplayObject;
     import flash.display.GradientType;
     import flash.display.Sprite;
     import flash.events.MouseEvent;
@@ -88,15 +87,24 @@ package com.topcoder.flex.widgets.widgetcontent.pipeline
 
                 if (itemRenderer.parent is DataGridHeader) {
                     var dgHeader:DataGridHeader = itemRenderer.parent as DataGridHeader;
-
                     previousHeaderRenderer = currentHeaderRenderer;
-                    //if (itemRenderer ) {
                     currentHeaderRenderer = itemRenderer;
-                    //}
 
                     var spriteWidth:int = itemRenderer.width;
-                    if (arrow != null && arrow.x > itemRenderer.x) {
-                        spriteWidth += arrow.width;
+
+                    if (arrow != null) {
+                        var nextItemRenderer:DataGridItemRenderer =
+                            dgHeader.getChildAt(dgHeader.getChildIndex(itemRenderer)+1)
+                            as DataGridItemRenderer;
+                        if (nextItemRenderer != null) {
+                            if ((spriteWidth + arrow.width) <= (nextItemRenderer.x - itemRenderer.x)) {
+                                spriteWidth += arrow.width;
+                            }
+                        } else {
+                            if (arrow.x > itemRenderer.x) {
+                                spriteWidth += arrow.width;
+                            }
+                        }
                     }
 
                     if (event.type == MouseEvent.MOUSE_DOWN) {
