@@ -154,7 +154,7 @@
             
             private function goToContestSelection():void{
                 if ((selectContests.selectedItem == null || selectContests.selectedItem.data ==-1) && prjInput.text == ""){
-                    Helper.showAlertMessage("Add New Project or Choose Existing Project must have value.");
+                    Helper.showAlertMessage("New Project or Existing Project must have a value.");
                     return;
                 }else{
                     //load the contest if it's existing
