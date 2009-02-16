@@ -47,6 +47,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 		 private const CONTEST_STATUS_ACTIVE_PUBLIC:Number = 2 ;
 		 private const CONTEST_DETAILED_STATUS_DRAFT:Number =15 ;
 		 private const CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC:Number =2 ;
+		 private const CONTEST_DETAILED_STATUS_SCHEDULED:Number =9 ;
 
         
         public var _ws:ContestServiceFacadeBeanService;
@@ -307,7 +308,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         
         public function submitPurchase():void{
         	competition.contestData.statusId= CONTEST_STATUS_ACTIVE_PUBLIC;
-        	competition.contestData.detailedStatusId= CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC; //Active
+        	competition.contestData.detailedStatusId= CONTEST_DETAILED_STATUS_SCHEDULED; //Active
         	saveContest();
         }
         
