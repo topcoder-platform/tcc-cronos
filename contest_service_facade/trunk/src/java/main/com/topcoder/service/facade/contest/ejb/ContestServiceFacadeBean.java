@@ -579,7 +579,35 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public ContestPaymentData createContestPayment(ContestPaymentData contestPayment, String securityToken)
         throws PersistenceException {
-        return this.studioService.createContestPayment(contestPayment, securityToken);
+		{
+
+			ContestPaymentData payment =  this.studioService.createContestPayment(contestPayment, securityToken);
+			
+
+			// TEMP: create forum here, until we have process payment ready
+			long contestId = contestPayment.getContestId();
+
+			StudioCompetition competition = null;
+
+			try {
+			competition = getContest(contestId);
+			} catch (ContestNotFoundException cnfe) {
+				throw new PersistenceException("error getting contest", cnfe.getMessage());
+			}
+
+			if (competition.getContestData().getForumId() == 0 || competition.getContestData().getForumId() == -1)
+			{
+				UserProfilePrincipal p = (UserProfilePrincipal) sessionContext
+					.getCallerPrincipal();
+				long forumid = this.studioService.createForum(competition.getContestData()
+					.getName(), p.getUserId());
+
+				competition.getContestData().setForumId(forumid);
+				
+			}
+			
+			return payment;
+		}
     }
 
     /**
