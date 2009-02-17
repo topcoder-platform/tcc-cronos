@@ -360,6 +360,18 @@
                 		contestInfo.id=item.contestId;
                 		contestInfo.statusId=item.statusId;
                 		
+                		// add prizes to contest info.
+                		contestInfo.prizes=new ArrayCollection();
+                		
+                		if (item.prizes && item.prizes is ArrayCollection) {
+                		    var prizes:ArrayCollection = item.prizes as ArrayCollection;
+                		    
+                		    for (var j:int=0; j < prizes.length; j++) {
+                		        trace("Adding prize: " + prizes[j] + " to: " + contestInfo.name);
+                		        contestInfo.prizes.addItem(prizes[j]);
+                		    }
+                		}
+                		
                 		//trace("Contest id: " + contestInfo.id);
                 		//trace("Contest name: " + contestInfo.name);
                 		//trace("Contest statusId: " + contestInfo.statusId + " = " + _statusTypeDictionary[contestInfo.statusId].name);
@@ -431,19 +443,59 @@
 							sub.thumbnail=IMAGE_ADDRESS+sub.id+"&sbt=thumb";
 							sub.fullsizepreview=IMAGE_ADDRESS+sub.id+"&sbt=full";
 							sub.submissionContent=submissions[i].submissionContent;
-							sub.price=submissions[i].price;
+							
+							// BUGR-1169: separate db price from app price.
+							sub.savedPrice=submissions[i].price;
+							
 							sub.markedForPurchase=Boolean(submissions[i].markedForPurchase);
-							sub.mustPurchase=sub.rank && sub.rank > 0 && sub.price && sub.price > 0;
+							
+							var contestInfo = _contestInfoDictionary[_selectedContestId];
+        						
+    						trace("ContestInfo: " + contestInfo + ", selectedContestId: " + _selectedContestId);
+    						
+    						var prizes:ArrayCollection = contestInfo.prizes as ArrayCollection;
+    						
+    						trace("Prizes: " + prizes + ", selectedContestId: " + _selectedContestId);
+							
+							// BUGR-1169: give more priority to savedPrice (db price).
+							if (sub.savedPrice && sub.savedPrice > 0 && sub.markedForPurchase) {
+							    sub.price=sub.savedPrice;
+							}
+							else {
+        						if (prizes) {
+        						    if (sub.markedForPurchase) {
+        							    // if markedForPurchase is there,
+        							    // then price must be equal to 2nd place prize.
+        							    if (prizes.length > 1 && prizes[1] > 0) {
+        							        sub.price=prizes[1];
+        							    }
+        							    else {
+        							        Helper.showAlertMessage("Illegal State: there must be 2 prizes");
+        							    }
+        							}
+        							else if (sub.rank && sub.rank > 0) {
+        							    // retrieve the price from contest info's prizeList.
+        							    if (prizes.length < sub.rank) {
+        							        // do nothing here.
+        							    }
+        							    else {
+        							        sub.price=prizes[sub.rank - 1];
+        							    }
+        							} 
+        			            }
+        			        }
+							
+							if (prizes) {
+							    sub.mustPurchase=sub.rank && sub.rank > 0 && sub.rank <= prizes.length;
+							}
 							sub.purchased=sub.markedForPurchase || sub.mustPurchase;
                 		
-							if (sub.price && sub.price > 0 && sub.price < _leastContestPrize) {
-								_leastContestPrize = sub.price;
-							}
-                		
 							_submissionList.addItem(sub);
-						
-							updateRankList(sub);
-							//updateSubmission(sub.rank && sub.rank > 0);
+
+                            if (sub.rank && sub.rank > 0) {						
+						        //updateSubmission(true);
+						        updateRankList(sub);
+                            }
                 		
 							trace("Added submission to list: {" + sub.id + "," + sub.price + "," + sub.rank + "," + sub.markedForPurchase + "," + sub.purchased + "}");
 						}
@@ -1220,17 +1272,13 @@
             	for each (var item:Object in _submissionList) {
             		//trace("Purchase item: {" + item.id + "," + item.rank + "," + item.markedForPurchase + "," + item.price + "," + item.purchased + "}");
             		
+            		if ((item.rank && item.rank > 0) || item.purchased) {
+            		    _purchaseList.addItem(item);
+            		} 
+            		
             		if (item.purchased && item.purchased == true) {
-            			_purchaseTotal++;
-            			
-            			if (!item.price || item.price <= 0) {
-            				totalMoney += _leastContestPrize;
-            			}
-            			else {
-            				totalMoney += item.price;
-            			}
-            			
-            			_purchaseList.addItem(item);
+            		    _purchaseTotal++;
+            			totalMoney += item.price;
             			_downloadList.addItem(item);
             		}
             	}
@@ -1275,8 +1323,45 @@
 						item.markedForPurchase = purchase.selected;
 					}
 					
+					// BUGR-1169
+					var contestInfo = _contestInfoDictionary[_selectedContestId];
+    				var prizes:ArrayCollection = contestInfo.prizes as ArrayCollection;
+    					
+					// if item is getting purchased separately, use the value from db.
+					if (item.savedPrice && item.savedPrice > 0 && item.markedForPurchase) {
+					    item.price = item.savedPrice;
+					}
+					else {
+    					if (prizes) {
+    					    // give more priority to marked for purchase.
+    					    // as there can be cases where item is ranked
+    					    // but doesn't have the corresponding prize.
+    					    if (item.markedForPurchase) {
+    						    // if markedForPurchase is there,
+    						    // then price must be equal to 2nd place prize.
+    						    if (prizes.length > 1 && prizes[1] > 0) {
+    						        item.price=prizes[1];
+    						    }
+    						    else {
+    						        Helper.showAlertMessage("Illegal State: there must be 2 prizes");
+    						    }
+    						}
+    						else if (item.rank && item.rank > 0) {
+    						    // retrieve the price from contest info's prizeList.
+    						    if (prizes.length < item.rank) {
+    						        // do nothing.
+    						    }
+    						    else {
+    						        item.price=prizes[item.rank - 1];
+    						    }
+    						}  
+    		            }
+    	            }
+					
 					// set the purchased attribute correctly.
-					item.mustPurchase=item.rank && item.rank > 0 && item.price && item.price > 0;
+					if (prizes) {
+					    item.mustPurchase=item.rank && item.rank > 0 && item.rank <= prizes.length;
+					}
 					item.purchased=item.markedForPurchase || item.mustPurchase;
 					
 					trace("Update submission after: {" + item.id + "," + item.rank + "," + item.markedForPurchase + "," + item.price + "," + item.purchased + "}");
@@ -1314,9 +1399,12 @@
                     	_rankList.setItemAt(new Object(), index);
                 	}
                     
-                    if (isRank) {
-                    	updateRankList(item);
-                    } 
+                    // bugr-1101 - earlier code block is inserting new Object()
+                    // so rank list is getting disturbed for case of purchase.
+                    // it need to be re-initialized even for purchase case.
+                    //if (isRank) {
+                    updateRankList(item);
+                    //} 
                     
                     updatePurchase();
                 } 
@@ -1328,13 +1416,13 @@
             	trace("Selected submission: " + list_minpage.selectedItem); 
             	trace("Selected submission index: " + list_minpage.selectedIndex);
 				
-				if (this.container) {
-            		this.container.startMaximize();
-    			}
- 				else {
- 					maximize();
- 				}
-            }
+		    if (this.container) {
+                this.container.startMaximize();
+    		}
+ 		   else {
+ 		       maximize();
+ 		   }
+        }
             
             private function restoreScreen():void {
             	trace("RESTORE Contest item: " + contestlist_minpage.selectedItem); 

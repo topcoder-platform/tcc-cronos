@@ -517,7 +517,10 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoom
                 
         private function handleLoadIOError(e:Event):void
         {
-            removeChild(_progressSWF);
+            if (_progressSWF && _progressSWF.parent && _progressSWF.parent == this) { 
+                removeChild(_progressSWF);
+            }
+            
             loadingImage = false;
             _percentLoadedLabel.text = "Error: Failed to load image";
         }
