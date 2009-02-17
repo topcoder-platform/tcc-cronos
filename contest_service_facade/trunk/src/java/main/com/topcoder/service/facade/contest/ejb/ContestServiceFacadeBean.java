@@ -159,8 +159,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     public StudioCompetition createContest(StudioCompetition contest, long tcDirectProjectId)
         throws PersistenceException {
         ContestData contestData = convertToContestData(contest);
-		contestData.setStatusId(CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED);
-		contestData.setDetailedStatusId(CONTEST_DETAILED_STATUS_DRAFT);
+		//contestData.setStatusId(CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED);
+		//contestData.setDetailedStatusId(CONTEST_DETAILED_STATUS_DRAFT);
 		double total=0;
 		for(PrizeData prize:contestData.getPrizes())
 		{
