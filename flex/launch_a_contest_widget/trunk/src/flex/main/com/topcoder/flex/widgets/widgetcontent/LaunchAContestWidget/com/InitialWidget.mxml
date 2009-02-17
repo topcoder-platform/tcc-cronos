@@ -135,7 +135,7 @@
                     	mainWidget.competition.contestData.forumPostCount = 0;
                     	mainWidget.competition.contestData.requiresPreviewImage = true;
                     	mainWidget.competition.contestData.requiresPreviewFile = false;
-                    	mainWidget.competition.contestData.maximumSubmissions = 10;
+                    	mainWidget.competition.contestData.maximumSubmissions = 3;
                     	mainWidget.competition.contestData.submissionCount = 0;
                     	mainWidget.competition.contestData.contestChannelId = 2;
                     	mainWidget.competition.contestData.eligibility = "some text";
