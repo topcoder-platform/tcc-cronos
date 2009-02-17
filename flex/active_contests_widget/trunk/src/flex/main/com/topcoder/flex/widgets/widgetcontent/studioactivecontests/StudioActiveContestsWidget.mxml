@@ -29,7 +29,7 @@
           import mx.formatters.DateFormatter;
           import mx.rpc.events.ResultEvent;
           [Bindable]
-          private var contestList=["Component Design","Component Development","Software Assembly","Software Testing","Software Architecture","Conceptualization","Specification","Studio"];
+          private var contestList=["Studio","Conceptualization","Specification","Software Architecture","Component Design","Component Development","Software Assembly","Software Testing"];
 
           // Skins
           [Bindable]
