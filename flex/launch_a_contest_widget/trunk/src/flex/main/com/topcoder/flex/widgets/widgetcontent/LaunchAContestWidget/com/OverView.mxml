@@ -241,11 +241,11 @@
 		</mx:HBox>
 	        <mx:Label text="What type of {mainWidget.contestSelect.contestType.selection.label} contest do you want to run?" styleName="boldBlackText"/>
 	                <mx:RadioButtonGroup id="studioType" itemClick="handleSelect(event);"/>
-	        <mx:HBox id="studioTypeBox" horizontalGap="0" styleName="smallBlackText">
+	        <mx:HBox id="studioTypeBox" horizontalGap="25" styleName="smallBlackText">
 	        </mx:HBox>
 		   </mx:VBox>
 		   <mx:VBox width="100%">
-
+			<mx:Spacer height="10" />
 	        <mx:HRule width="100%" /> <!-- BUGR-1204 -->
 	        <mx:Label id="typeName" text="Web Page Design" styleName="redText" />
 	        <mx:Text width="100%" id="description" styleName="smallBlackText">
@@ -253,42 +253,42 @@
 					{contestOverview.contestType.(@id==curContestType).description}
 	            </mx:text>
 	        </mx:Text>
-   	        <mx:HRule width="100%" /> <!-- BUGR-1204 -->
+	        <mx:Spacer height="5" /> <!-- BUGR-1204 -->
+	        <mx:HRule width="100%" /> <!-- BUGR-1204 -->
    	        <mx:Spacer height="10" /> <!-- BUGR-1204 -->
 	       <mx:Label text="Examples:" styleName="redText"/>
 	        <mx:HBox verticalAlign="top" horizontalGap="0" visible="{isPresentXml('example1') || isPresentXml('example2')}" includeInLayout="{isPresentXml('example1') || isPresentXml('example2')}" width="100%">
 	            <mx:VBox verticalGap="0" width="50%" visible="{isPresentXml('example1')}" includeInLayout="{isPresentXml('example1')}" >
 	            	<mx:HBox width="100%">
-						<mx:Image source="{isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.thumbImage : ''}" click="{goToUrl(isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.fullsizeImage : '')}" width="80" height="80"/>
+						<mx:Image source="{isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.thumbImage : ''}" click="{goToUrl(isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.fullsizeImage : '')}" width="150" height="150"/>
 	            		<mx:VBox verticalGap="0" horizontalGap="0">
-	            		<!-- BUGR-1204 -->
-	            			<mx:Label text="{isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.name : ''}" styleName="boldBlackText"/>
-						<!--<mx:HBox horizontalGap="0">
-			            		<mx:Label text="Contest:" />
+	            			<mx:Text text="{isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.name : ''}" styleName="boldBlackText" />
+							<mx:HBox horizontalGap="0">
+			            		<mx:Label text="Contest" width="82" styleName="smallBlackText" />
 			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.contestLink : '')}"/>
-					            <mx:Image source="@Embed('../../assets/more_info.png')"/>
+			            		<mx:Image source="@Embed('../../assets/more_info.png')"/>
 			            	</mx:HBox>
 			            	<mx:HBox horizontalGap="0">
-			            		<mx:Label text="Submissions:" />
+			            		<mx:Label text="Submissions" width="82" styleName="smallBlackText" />
 			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.submissionsLink : '')}"/>
 			            		<mx:Image source="@Embed('../../assets/more_info.png')"/>
 			            	</mx:HBox>
 			            	<mx:HBox horizontalGap="0">
-			            		<mx:Label text="Winners:" />
+			            		<mx:Label text="Winners" styleName="smallBlackText" width="82"/>
 			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.winnersLink : '')}"/>
 			            		<mx:Image source="@Embed('../../assets/more_info.png')"/>
 			            	</mx:HBox>
-			            	<mx:Spacer height="17" /> -->
-    		            	<mx:HBox styleName="smallBlackText" paddingTop="-5">
+			            	<!--<mx:Spacer height="17" /> --> 
+    		            	<mx:HBox styleName="smallBlackText" >
 			            		<mx:Label text="Prizes" width="80" /><mx:Label text=": {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.prizes : ''}"/>	
 			            	</mx:HBox>
-    		            	<mx:HBox styleName="smallBlackText" paddingTop="-5">
+    		            	<mx:HBox styleName="smallBlackText" >
 			            		<mx:Label text="Duration" width="80" /><mx:Label text=": {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.duration : ''}"/>	
 			            	</mx:HBox>
-			            	<mx:HBox styleName="smallBlackText" paddingTop="-5">
+			            	<mx:HBox styleName="smallBlackText" >
 			            		<mx:Label text="Registrants" width="80"/><mx:Label text=": {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.registrants : ''}"/>	
 			            	</mx:HBox>
-    		            	<mx:HBox styleName="smallBlackText" paddingTop="-5">
+    		            	<mx:HBox styleName="smallBlackText" >
 			            		<mx:Label text="Submissions" width="80"/><mx:Label text=": {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.submissions : ''}" />	
 			            	</mx:HBox>
 	            		</mx:VBox>	
@@ -297,36 +297,36 @@
 	            <mx:Spacer width="40" />
 	            <mx:VBox horizontalGap="0" verticalGap="0" width="50%" visible="{isPresentXml('example2')}" includeInLayout="{isPresentXml('example2')}">
 	            	<mx:HBox width="100%">
-						<mx:Image source="{isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.thumbImage : ''}" click="{goToUrl(isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.fullsizeImage : '')}" styleName="clickableImage" width="80" height="80"/>
+						<mx:Image source="{isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.thumbImage : ''}" click="{goToUrl(isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.fullsizeImage : '')}" styleName="clickableImage" width="150" height="150"/>
 	            		<mx:VBox verticalGap="0" horizontalGap="0" paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0" verticalAlign="top">
 	            		<!-- BUGR-1204 -->
 		            		<mx:Label text="{isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.name : ''}" styleName="boldBlackText" />
-		        		<!--	<mx:HBox horizontalGap="0">
-			            		<mx:Label text="Contest:" />
+		        			<mx:HBox horizontalGap="0">
+			            		<mx:Label text="Contest" width="82" styleName="smallBlackText" />
 			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.contestLink : '')}"/>
 					            <mx:Image source="@Embed('../../assets/more_info.png')"/>
 			            	</mx:HBox>
 			            	<mx:HBox horizontalGap="0">
-			            		<mx:Label text="Submissions:" />
+			            		<mx:Label text="Submissions" width="82" styleName="smallBlackText" />
 			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.submissionsLink : '')}"/>
 			            		<mx:Image source="@Embed('../../assets/more_info.png')"/>
 			            	</mx:HBox>
 			            	<mx:HBox horizontalGap="0">
-			            		<mx:Label text="Winners:" />
+			            		<mx:Label text="Winners" width="82" styleName="smallBlackText" />
 			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.winnersLink : '')}"/>
 			            		<mx:Image source="@Embed('../../assets/more_info.png')"/>
 			            	</mx:HBox>
-			            	<mx:Spacer height="17" /> -->
-			            	<mx:HBox styleName="smallBlackText" paddingTop="-5">
+			            	<!--<mx:Spacer height="17" />-->
+			            	<mx:HBox styleName="smallBlackText" >
 			            		<mx:Label text="Prizes" width="80" /><mx:Label text=": {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.prizes : ''}"/>	
 			            	</mx:HBox>
-    		            	<mx:HBox styleName="smallBlackText" paddingTop="-5">
+    		            	<mx:HBox styleName="smallBlackText" >
 			            		<mx:Label text="Duration" width="80" /><mx:Label text=": {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.duration : ''}"/>	
 			            	</mx:HBox>
-			            	<mx:HBox styleName="smallBlackText" paddingTop="-5">
+			            	<mx:HBox styleName="smallBlackText" >
 			            		<mx:Label text="Registrants" width="80"/><mx:Label text=": {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.registrants : ''}"/>	
 			            	</mx:HBox>
-    		            	<mx:HBox styleName="smallBlackText" paddingTop="-5">
+    		            	<mx:HBox styleName="smallBlackText" >
 			            		<mx:Label text="Submissions" width="80"/><mx:Label text=": {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.submissions : ''}" />	
 			            	</mx:HBox>
 	            		</mx:VBox>	
@@ -361,13 +361,13 @@
 	            <mx:HBox>
 	            	<mx:VBox verticalGap="7" styleName="smallBlackText">
 		            	<mx:HBox horizontalGap="0">
-		            		 <mx:Label text="&#8226; 1st Place" width="60"/><mx:Label text=":$"/>
+		            		 <mx:Label text="&#8226; 1st Place" width="60" fontSize="11"/><mx:Label text=":$"/>
 	                    </mx:HBox>
 	                    <mx:HBox horizontalGap="0">
-		            		 <mx:Label text="&#8226; 2nd Place" width="60"/><mx:Label text=":$"/>
+		            		 <mx:Label text="&#8226; 2nd Place" width="60" fontSize="11"/><mx:Label text=":$"/>
 	                    </mx:HBox>
 	                    <mx:HBox horizontalGap="0">
-		            		 <mx:Label text="&#8226; 3rd Place" width="60"/><mx:Label text=":$"/>
+		            		 <mx:Label text="&#8226; 3rd Place" width="60" fontSize="11"/><mx:Label text=":$"/>
 	                    </mx:HBox>
 	            	</mx:VBox>
 	            	<mx:VBox verticalGap="2" horizontalGap="0">
@@ -380,10 +380,10 @@
 	            <mx:HBox>
 	            	<mx:VBox verticalGap="7" styleName="smallBlackText">
 	            		<mx:HBox horizontalGap="0">
-		            		 <mx:Label text="&#8226; 4th Place" width="60"/><mx:Label text=":$"/>
+		            		 <mx:Label text="&#8226; 4th Place" width="60" fontSize="11"/><mx:Label text=":$"/>
 	                    </mx:HBox>
 	                    <mx:HBox horizontalGap="0">
-		            		 <mx:Label text="&#8226; 5th Place" width="60"/><mx:Label text=":$"/>
+		            		 <mx:Label text="&#8226; 5th Place" width="60" fontSize="11"/><mx:Label text=":$"/>
 	                    </mx:HBox>
 	            	</mx:VBox>
 	            	<mx:VBox verticalGap="2" horizontalGap="0">
@@ -395,10 +395,10 @@
 	            <mx:HBox>
 	            	<mx:VBox verticalGap="7" styleName="smallBlackText">
 	            		<mx:HBox horizontalGap="0">
-		            		 <mx:Label text="&#8226; 20% Admin Fee" width="90"/><mx:Label text=":$"/>
+		            		 <mx:Label text="&#8226; 20% Admin Fee" width="90" fontSize="11"/><mx:Label text=":$"/>
 	                    </mx:HBox>
 	                    <mx:HBox horizontalGap="0">
-		            		  <mx:Label text="&#8226; Contest Total" width="90"/><mx:Label text=":$"/>
+		            		  <mx:Label text="&#8226; Contest Total" width="90" fontSize="11"/><mx:Label text=":$"/>
 	                    </mx:HBox>
 	            	</mx:VBox>
 	            	<mx:VBox verticalGap="2">

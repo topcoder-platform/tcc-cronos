@@ -842,8 +842,8 @@ Specific limitations (such as restricting a color or a specific layout style) an
              <!--<mx:Spacer  id="bottemline" height="100%"/>-->
          </mx:VBox>
      </mx:HBox>
-     <mx:HBox paddingLeft="20" paddingRight="10" horizontalAlign="center" width="100%" visible="{!initialWdt.visible}" includeInLayout="{!initialWdt.visible}">
-         <!--BUGR-1204 <mx:Button id="back" buttonMode="true" styleName="RedButton" label="&lt;&lt; back" click="previous()"/>-->
+     <mx:HBox paddingLeft="220" paddingTop="20" horizontalAlign="center" width="100%" visible="{!initialWdt.visible}" includeInLayout="{!initialWdt.visible}">
+    <!--BUGR-1204 <mx:Button id="back" buttonMode="true" styleName="RedButton" label="&lt;&lt; back" click="previous()"/>-->
          <mx:Button id="back" buttonMode="true" styleName="greenBackButton" click="previous()"/>
          <mx:Button id="save" buttonMode="true" styleName="RedButton"  label="save as draft" click="saveAsDraft()" includeInLayout="{save.visible}"/>
          <!--BUGR-1204 <mx:Button id="goNext" buttonMode="true" styleName="RedButton"  label="continue >>" click="next()"/>-->
