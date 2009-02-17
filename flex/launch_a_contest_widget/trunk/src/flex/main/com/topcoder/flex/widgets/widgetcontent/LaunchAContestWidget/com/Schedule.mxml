@@ -14,6 +14,9 @@
 			
             [Bindable]
             private var rangeEndDate:Date;
+            
+            [Bindable]
+            private var rangeStartDate:Date;
 		
 			[Bindable]
             private var scheduleTypes:XML;
@@ -21,7 +24,8 @@
             [Bindable]
             public var curContestType:Number;
 			
-	    public static const ETtoUTC:int = 1000 * 60 * 60 * 5;
+	        public static const ETtoUTC:int = 1000 * 60 * 60 * 5;
+	        private static const OneHour:Number = 1000 * 60 * 60;
 
             public function initData():void{
             	termCheckBox.selected = false;
@@ -69,13 +73,18 @@
             	}
             	
             	var current:Date = new Date();
+            	var tzOffHours:Number = current.timezoneOffset/60;
             	var startDate:Date = getAssembleDate(dfStart, CmbHourStart, CmbMinuteStart, AMPMStart);
+            	//change the start time to local time
+                startDate.setTime(startDate.getTime() + (5-tzOffHours)*OneHour);
             	if (startDate.time<=current.time){
             		Helper.showAlertMessage("Start date must be in future");
             		return false;
             	}
             	
             	var endDate:Date = getAssembleDate(dfEnd, CmbHourEnd, CmbMinuteEnd, AMPMEnd);
+                //change the end time to local time
+                endDate.setTime(endDate.getTime() + (5-tzOffHours)*OneHour);
             	if (endDate.time <= startDate.time){
             		Helper.showAlertMessage("End date must be after start date");
             		return false;
@@ -92,20 +101,22 @@
             
             private function getAssembleDate(dateField:DateField, hourComb:ComboBox, minuteComb:ComboBox, ampm:RadioButtonGroup):Date{
             	var result:Date = dateField.selectedDate;
-            	var hour:int = Number(hourComb.value);
+            	var hour:Number = Number(hourComb.value);
             	if (ampm.selectedValue == "PM"){
             		hour = hour + 12;
             	}
             	
-            	result.setHours(hour, Number(minuteComb.value), 0, 0);
-		result.setTime(result.getTime() + ETtoUTC);
+            	//result.setHours(hour, Number(minuteComb.value), 0, 0);
+            	var resultDate:Date = new Date(result.getTime()+hour*60*60*1000+Number(minuteComb.value)*60*1000);
             	
-            	return result;
+            	return resultDate;
             }
             
             private function updateData():void{
             	var start:Date = getAssembleDate(dfStart, CmbHourStart, CmbMinuteStart, AMPMStart);
+            	start.setTime(start.getTime() + ETtoUTC);
             	var end:Date = getAssembleDate(dfEnd, CmbHourEnd, CmbMinuteEnd, AMPMEnd);
+            	end.setTime(end.getTime() + ETtoUTC);
             	
             	var startDate:String = DateUtil.toString(start);
             	var endDate:String = DateUtil.toString(end);
@@ -187,6 +198,16 @@
 					scheduleTypes  = e.result as XML;
 				}
 			}
+			
+            private function startDateOpen():void {
+                var currentTime:Date = new Date();
+                //change current time to UMT-5
+                var tzOffHours:Number = currentTime.timezoneOffset/60;
+                currentTime.setTime(currentTime.getTime() - (5 - tzOffHours)*OneHour);
+                // disable those days before the current day
+                var currentDayBegin : Date = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate());
+                rangeStartDate = new Date(currentDayBegin.getTime()-1);
+            }
         ]]>
     </mx:Script>
     <mx:VBox width="100%" styleName="boxStyle" height="100%">
@@ -225,7 +246,8 @@ Tips:
         <mx:VBox paddingLeft="10">
             <mx:HBox verticalAlign="middle">
                 <mx:Label text="Start Date:" fontWeight="bold"/>
-                <mx:DateField id="dfStart" yearNavigationEnabled="true" width="116" change="startDateChanged()"/>
+                <mx:DateField id="dfStart" yearNavigationEnabled="true" width="116" disabledRanges="{[ {rangeEnd: rangeStartDate} ]}"
+                     change="startDateChanged()" open="startDateOpen()" />
                 <mx:Spacer width="10"/>
                 <mx:CheckBox id="launchCheckBox" label="Launch Immediately" selected="true"/>
             </mx:HBox>
