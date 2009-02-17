@@ -185,7 +185,7 @@
 		  _ws.addgetContestEventListener(getcontestHander);
             
 	
-		//_ws.getWebService().addEventListener(FaultEvent.FAULT, handleFault);
+		_ws.getWebService().addEventListener(FaultEvent.FAULT, handleFault);
 
 		_pws=new ProjectServiceFacadeBeanService(null, projectServiceFacadeWsdl);
 		

@@ -340,6 +340,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         	var type:CompetionType = new CompetionType();
         	type.competionType = "STUDIO";
         	this.competition.type = type;
+
+		Helper.showAlertMessage("Contest saved successfully!");
         }
         
         private function updateContest():void{
@@ -351,7 +353,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         }
         
         private function updateContestHandler(event:UpdateContestResultEvent):void{
-
+        	Helper.showAlertMessage("Contest saved successfully!");
 	}
 
 	/**
