@@ -70,6 +70,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 	 * The allowclose flag.
 	 */
 	private var _allowclose:Boolean=true;
+	
+	private var _maximized:Boolean=false;
         
         /**
          * The data for the widget.
@@ -140,8 +142,15 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          * This action will reload this widget.
          */
         public function reload():void {
-            //trigger to load the data
-            this._result = this._result.copy();
+            if(!container.contents.isMaximized())
+            {
+            		container.startMaximize();
+            }
+            var f:IWidgetFramework=widgetFramework;
+        	container.contents=new  LaunchWidget();
+        	container.contents.widgetFramework=f;
+        	container.contents.name=name;
+        	container.startRestore();
         }
         
 
@@ -180,7 +189,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          * This action will restpre this widget (for example from a menu bar).
          */
         public function restore():void {
-            
+            _maximized=false;
         }
 
         /**
@@ -188,6 +197,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          */
         public function maximize():void {
             this.percentWidth=100;
+            _maximized=true;
         }
 
         /**
@@ -240,7 +250,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
          * @return true if the widget is maximized, false otherwise.
          */
         public function isMaximized():Boolean {
-            return false;
+            return _maximized;
         }
 
         /**
