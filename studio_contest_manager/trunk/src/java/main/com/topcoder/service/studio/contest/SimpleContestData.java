@@ -1,6 +1,8 @@
 package com.topcoder.service.studio.contest;
 
 import java.util.Date;
+import java.util.List;
+
 /**
  * <p>
  * Represents the entity class for contest info for contestmonitor widget.
@@ -61,9 +63,12 @@ public class SimpleContestData {
      * Represents the status name.
      */
     private String sname;
-    
-    
-    
+
+    /**
+     * List of prize amounts. Index in the list represents the prize placement.
+     */
+    private List<Double> prizes;
+
     /**
      * Default constructor.
      */
@@ -76,9 +81,9 @@ public class SimpleContestData {
      *
      * @return the status name.
      */
-	public String getSname() {
-		return sname;
-	}
+    public String getSname() {
+        return sname;
+    }
 
 	 /**
      * Updates the sname with the specified value.
@@ -208,4 +213,27 @@ public class SimpleContestData {
 		this.statusId = statusId;
 	}
 
+    /**
+     * <p>
+     * Gets the prize list. Each value in the list is prize amount, while value index (or position) is the prize placement. That
+     * is first place prize would be at index 0, while 2nd place prize would be at index 1 and so on.
+     * </p>
+     * 
+     * @return prize list.
+     */
+    public List<Double> getPrizes() {
+        return this.prizes;
+    }
+
+    /**
+     * <p>
+     * Sets the prize list. Each value in the list is prize amount, while value index (or position) is the prize placement. That
+     * is first place prize would be at index 0, while 2nd place prize would be at index 1 and so on.
+     * </p>
+     * 
+     * @param prizes prize list.
+     */
+    public void setPrizes(List<Double> prizes) {
+        this.prizes = prizes;
+    }
 }

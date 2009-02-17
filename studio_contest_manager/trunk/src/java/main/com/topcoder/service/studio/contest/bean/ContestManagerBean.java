@@ -2975,10 +2975,35 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
 			EntityManager em = getEntityManager();
 
-			String qstr = "select contest_id, name, contest_detailed_status_id, "
-					+ "(select contest_detailed_status_desc from contest_detailed_status_lu ds " +
-							"where ds.contest_detailed_status_id =c.contest_detailed_status_id) as sname from contest c "
-					+ "where not c.tc_direct_project_id is null and c.deleted = 0   ";
+    			String qstr = "select contest_id,  "
+    			    + " name,  "
+    			    + " contest_detailed_status_id,  "
+    			    + " (select contest_detailed_status_desc  "
+    			    + " from contest_detailed_status_lu ds "
+    			    + " where ds.contest_detailed_status_id = c.contest_detailed_status_id) as sname, "
+    			    + " NVL((select amount "
+    			    + " from prize as p "
+    			    + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
+    			    + " and p.place = 1),0) as prize_1, "
+    			    + " NVL((select amount "
+    			    + " from prize as p "
+    			    + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
+    			    + " and p.place = 2),0) as prize_2, "
+    			    + " NVL((select amount "
+    			    + " from prize as p "
+    			    + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
+    			    + " and p.place = 3),0) as prize_3, "
+    			    + " NVL((select amount "
+    			    + " from prize as p "
+    			    + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
+    			    + " and p.place = 4),0) as prize_4, "
+    			    + " NVL((select amount "
+    			    + " from prize as p "
+    			    + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
+    			    + " and p.place = 5),0) as prize_5 "
+    			    + "from contest c  "
+    			    + "where not c.tc_direct_project_id is null  "
+    			    + "and c.deleted = 0 ";
 
 			Query query = em.createNativeQuery(qstr);
 
@@ -2998,8 +3023,22 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					c.setStatusId(Long.parseLong(os[2].toString()));
 				if (os[3] != null)
 					c.setSname(os[3].toString());
+				
+				List<Double> prizeList = new ArrayList<Double>(5);
+				c.setPrizes(prizeList);
+				
+				// set the prizes.
+				for (int j = 0; j < 5; j++) {
+				    prizeList.add(new Double(0));
+				}
+				
+				// set the prizes.
+				for (int j = 0; j < 5; j++) {
+				    if (os[j + 4] != null)
+	                    prizeList.set(j, Double.parseDouble(os[j + 4].toString()));
+				}
+				
 				result.add(c);
-
 			}
 			return result;
 		} catch (IllegalStateException e) {
