@@ -319,6 +319,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         }
         
         private function saveContest():void{
+        	var type:CompetionType = new CompetionType();
+        	type.competionType = "STUDIO";
+        	this.competition.type = type;
         	if (isNaN(competition.id) || competition.id < 0){
         		createContest();
         	} else {
