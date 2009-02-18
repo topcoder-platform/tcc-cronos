@@ -10,6 +10,7 @@ package com.topcoder.flex.widgets.widgetcontent.studioactivecontests
     import mx.controls.dataGridClasses.DataGridItemRenderer;
     import mx.controls.listClasses.IListItemRenderer;
     import mx.core.FlexSprite;
+    import mx.core.UIComponent;
 
     [Style(name="sortedHeaderColors",type="Array",format="Color",inherit="no")]
     [Style(name="rowSelectionColors",type="Array",format="Color",inherit="no")]
@@ -48,6 +49,12 @@ package com.topcoder.flex.widgets.widgetcontent.studioactivecontests
             drawGradient(indicator, width, rowHeight, getStyle("rowSelectionColors"));
             indicator.x = xx;
             indicator.y = yy;
+        }
+
+        override protected function mouseUpHandler(event:MouseEvent):void
+        {
+            super.mouseUpHandler(event);
+            drawHeaderGradient(event);
         }
 
         override protected function mouseDownHandler(event:MouseEvent):void
@@ -101,11 +108,28 @@ package com.topcoder.flex.widgets.widgetcontent.studioactivecontests
                                 spriteWidth += arrow.width;
                             }
                         } else {
-                            if (arrow.x > itemRenderer.x) {
+                            // This code deals with the width of the final column header
+                            var nextItem:UIComponent = dgHeader.getChildAt(dgHeader.getChildIndex(itemRenderer)+1)
+                                as UIComponent;
+                            var lastSeparator:Sprite = nextItem.getChildAt(nextItem.numChildren - 1) as Sprite;
+                            if (lastSeparator.x > itemRenderer.x) {
+                                if ( arrow.x > itemRenderer.x &&
+                                    ((itemRenderer.x + itemRenderer.width) <= lastSeparator.x) ) {
+                                    spriteWidth += arrow.width;
+                                }
+                            } else if (arrow.x > itemRenderer.x &&
+                                       ((itemRenderer.x + itemRenderer.width) < (this.x + this.width)) ) {
                                 spriteWidth += arrow.width;
                             }
                         }
                     }
+
+                    if (itemRenderer.width < spriteWidth) {
+                        itemRenderer.width = spriteWidth;
+                    }
+                    /*if (itemRenderer.width != spriteWidth) {
+                        itemRenderer.x += arrow.width;
+                    }*/
 
                     if (event.type == MouseEvent.MOUSE_DOWN) {
                         drawGradient(s, spriteWidth, headerHeight, getStyle("sortedHeaderColors"));
