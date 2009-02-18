@@ -23,9 +23,11 @@ import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.payment.CreditCardPaymentData;
 import com.topcoder.service.payment.PaymentData;
 import com.topcoder.service.payment.PaymentException;
 import com.topcoder.service.payment.PaymentResult;
+import com.topcoder.service.payment.TCPurhcaseOrderPaymentData;
 import com.topcoder.service.project.StudioCompetition;
 
 import javax.jws.WebService;
@@ -585,12 +587,46 @@ public interface ContestServiceFacade {
      * @param <code>ContestData</code> data that recognizes a contest.
      * @param <code>PaymentData</code> payment information (credit card/po details) that need to be processed.
      * @return a <code>PaymentResult</code> result of the payment processing.
-     * @throws PersistenceException if any error occurs when getting contest.
-     * @throws ContestNotFoundException 
-     * @throws IllegalArgumentException if specified <code>filter</code> is <code>null</code> or if it is not supported
-     *         by implementor.
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     * @throws ContestNotFoundException
+     *             if contest is not found while update.
+     * @throws PaymentException
+     *             if any errors occurs in processing the payment.
+     * @throws IllegalArgumentException
+     *             if specified <code>filter</code> is <code>null</code> or if it is not supported by implementor.
      */
-    public PaymentResult processContestPayment(ContestData contestData, PaymentData paymentData) 
-    throws PersistenceException, PaymentException, ContestNotFoundException;
+    public PaymentResult processContestCreditCardPayment(StudioCompetition competition, CreditCardPaymentData paymentData)
+            throws PersistenceException, PaymentException, ContestNotFoundException;
 
+    public PaymentResult processContestPurchaseOrderPayment(StudioCompetition competition, TCPurhcaseOrderPaymentData paymentData)
+            throws PersistenceException, PaymentException, ContestNotFoundException;
+
+    /**
+     * <p>
+     * Processes the submission payment. It does following steps:
+     * <ul>
+     * <li>Checks submissionId to see if is available, if not then it throws PaymentException.</li>
+     * <li>If payment type is credit card then it processes the payment through <code>PaymentProcessor</code></li>
+     * <li>Right-now this method doesn't process PO payments.</li>
+     * <li>On successful processing -
+     * <ul>
+     * <li>it calls <code>this.purchaseSubmission(...)</code></li>
+     * </ul>
+     * </li>
+     * </ul>
+     * </p>
+     * 
+     * @param submissionId
+     *            submission identifier of the submission that need to be purchased.
+     * @param paymentData
+     *            a <code>PaymentData</code> payment information (credit card/po details) that need to be processed.
+     * @return a <code>PaymentResult</code> result of the payment processing.
+     * @throws PaymentException
+     *             if any errors occurs in processing the payment or submission is not valid.
+     * @throws PersistenceException
+     *             if any error occurs when retrieving the submission.
+     */
+    public PaymentResult processSubmissionPayment(long submissionId, PaymentData paymentData) throws PaymentException,
+            PersistenceException;
 }

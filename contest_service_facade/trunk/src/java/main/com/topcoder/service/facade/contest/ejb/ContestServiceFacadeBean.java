@@ -9,6 +9,7 @@ import com.topcoder.service.payment.PaymentData;
 import com.topcoder.service.payment.PaymentException;
 import com.topcoder.service.payment.PaymentProcessor;
 import com.topcoder.service.payment.PaymentResult;
+import com.topcoder.service.payment.PaymentType;
 import com.topcoder.service.payment.TCPurhcaseOrderPaymentData;
 import com.topcoder.service.payment.paypal.PayPalPaymentProcessor;
 import com.topcoder.service.project.StudioCompetition;
@@ -55,6 +56,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.DatatypeConfigurationException;
 
+import org.jboss.logging.Logger;
 import org.jboss.ws.annotation.EndpointConfig;
 
 import java.util.List;
@@ -123,6 +125,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 	 * Private constant specifying active & public status id.
 	 */
 	private static final long CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC = 2;
+
+	/**
+	 * Private constant specifying active & public status id.
+	 */
+	private static final long CONTEST_DETAILED_STATUS_SCHEDULED = 9;
+
+	/**
+	 * Private constant specifying active & public status id.
+	 */
+	private static final long CONTEST_PAYMENT_STATUS_PAID = 1;
 
 	/**
 	 * <p>
@@ -578,36 +590,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws IllegalArgumentException if any of specified arguments is <code>null</code>.
      */
     public ContestPaymentData createContestPayment(ContestPaymentData contestPayment, String securityToken)
-        throws PersistenceException {
-		{
-
-			ContestPaymentData payment =  this.studioService.createContestPayment(contestPayment, securityToken);
-			
-
-			// TEMP: create forum here, until we have process payment ready
-			long contestId = contestPayment.getContestId();
-
-			StudioCompetition competition = null;
-
-			try {
-			competition = getContest(contestId);
-			} catch (ContestNotFoundException cnfe) {
-				throw new PersistenceException("error getting contest", cnfe.getMessage());
-			}
-
-			if (competition.getContestData().getForumId() == 0 || competition.getContestData().getForumId() == -1)
-			{
-				UserProfilePrincipal p = (UserProfilePrincipal) sessionContext
-					.getCallerPrincipal();
-				long forumid = this.studioService.createForum(competition.getContestData()
-					.getName(), p.getUserId());
-
-				competition.getContestData().setForumId(forumid);
-				
-			}
-			
-			return payment;
-		}
+            throws PersistenceException {
+        return this.studioService.createContestPayment(contestPayment, securityToken);
     }
 
     /**
@@ -898,90 +882,219 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 		}
 	}
 
-	/**
-	 * <p>
-	 * Processes the contest payment. It does following steps:
-	 * <ul>
-	 * <li>Checks contest id to decide whether to create new contest or update
-	 * existing contest</li>
-	 * <li>If payment type is credit card then it processes the payment through
-	 * <code>PaymentProcessor</code></li>
-	 * <li>Right-now this method doesn't process PO payments.</li>
-	 * <li>
-	 * On successful processing -
-	 * <ul>
-	 * <li>set contests to CONTEST_STATUS_ACTIVE_PUBLIC = 2</li>
-	 * <li>set detailed contests to CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC = 2</li>
-	 * <li>set payment reference number and type</li>
-	 * <li>Creates new forum for the contest, forum name being contest name. It
-	 * uses studio service for doing the same.</li>
-	 * </ul>
-	 * </li>
-	 * </ul>
-	 * </p>
-	 * 
-	 * @param <code>ContestData</code> data that recognizes a contest.
-	 * @param <code>PaymentData</code> payment information (credit card/po
-	 *        details) that need to be processed.
-	 * @return a <code>PaymentResult</code> result of the payment processing.
-	 * @throws PersistenceException
-	 *             if any error occurs when getting contest.
-	 * @throws ContestNotFoundException
-	 * @throws IllegalArgumentException
-	 *             if specified <code>filter</code> is <code>null</code> or if
-	 *             it is not supported by implementor.
-	 */
-	public PaymentResult processContestPayment(ContestData contestData,
-			PaymentData paymentData) throws PersistenceException,
-			PaymentException, ContestNotFoundException {
+    /**
+     * <p>
+     * Processes the contest payment. It does following steps:
+     * <ul>
+     * <li>Checks contest id to decide whether to create new contest or update existing contest</li>
+     * <li>It processes the payment through <code>PaymentProcessor</code></li>
+     * <li>On successful processing -
+     * <ul>
+     * <li>set contests to CONTEST_STATUS_ACTIVE_PUBLIC = 2</li>
+     * <li>set detailed contests to CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC = 2</li>
+     * <li>set payment reference number and type</li>
+     * <li>Creates new forum for the contest, forum name being contest name. It uses studio service for doing the same.</li>
+     * </ul>
+     * </li>
+     * </ul>
+     * </p>
+     * 
+     * @param <code>ContestData</code> data that recognizes a contest.
+     * @param <code>PaymentData</code> payment information (credit card/po details) that need to be processed.
+     * @return a <code>PaymentResult</code> result of the payment processing.
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     * @throws ContestNotFoundException
+     *             if contest is not found while update.
+     * @throws IllegalArgumentException
+     *             if specified <code>filter</code> is <code>null</code> or if it is not supported by implementor.
+     */
+    public PaymentResult processContestCreditCardPayment(StudioCompetition competition,
+            CreditCardPaymentData paymentData) throws PersistenceException, PaymentException, ContestNotFoundException {
 
-		long contestId = contestData.getContestId();
+        Logger.getLogger(this.getClass()).info("StudioCompetition: " + competition);
+        Logger.getLogger(this.getClass()).info("PaymentData: " + paymentData);
 
-		StudioCompetition competition = null;
-		try {
-			competition = getContest(contestId);
-		} catch (ContestNotFoundException cnfe) {
-			// if not contest is found then simply ignore it.
-		}
+        return processContestPaymentInternal(competition, paymentData);
+    }
 
-		if (competition == null) {
-			competition = createContest(
-					(StudioCompetition) convertToCompetition(
-							CompetionType.STUDIO, contestData), contestData
-							.getTcDirectProjectId());
-		}
+    /**
+     * <p>
+     * Processes the contest payment. It does following steps:
+     * <ul>
+     * <li>Checks contest id to decide whether to create new contest or update existing contest</li>
+     * <li>Right-now this method doesn't process PO payments.</li>
+     * <li>On successful processing -
+     * <ul>
+     * <li>set contests to CONTEST_STATUS_ACTIVE_PUBLIC = 2</li>
+     * <li>set detailed contests to CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC = 2</li>
+     * <li>set payment reference number and type</li>
+     * <li>Creates new forum for the contest, forum name being contest name. It uses studio service for doing the same.</li>
+     * </ul>
+     * </li>
+     * </ul>
+     * </p>
+     * 
+     * @param <code>ContestData</code> data that recognizes a contest.
+     * @param <code>PaymentData</code> payment information (credit card/po details) that need to be processed.
+     * @return a <code>PaymentResult</code> result of the payment processing.
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     * @throws ContestNotFoundException
+     *             if contest is not found while update.
+     * @throws IllegalArgumentException
+     *             if specified <code>filter</code> is <code>null</code> or if it is not supported by implementor.
+     */
+    public PaymentResult processContestPurchaseOrderPayment(StudioCompetition competition,
+            TCPurhcaseOrderPaymentData paymentData) throws PersistenceException, PaymentException,
+            ContestNotFoundException {
+
+        Logger.getLogger(this.getClass()).info("StudioCompetition: " + competition);
+        Logger.getLogger(this.getClass()).info("PaymentData: " + paymentData);
+
+        return processContestPaymentInternal(competition, paymentData);
+    }
+
+    /**
+     * <p>
+     * Processes the contest payment. It does following steps:
+     * <ul>
+     * <li>Checks contest id to decide whether to create new contest or update existing contest</li>
+     * <li>If payment type is credit card then it processes the payment through <code>PaymentProcessor</code></li>
+     * <li>Right-now this method doesn't process PO payments.</li>
+     * <li>On successful processing -
+     * <ul>
+     * <li>set contests to CONTEST_STATUS_ACTIVE_PUBLIC = 2</li>
+     * <li>set detailed contests to CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC = 2</li>
+     * <li>set payment reference number and type</li>
+     * <li>Creates new forum for the contest, forum name being contest name. It uses studio service for doing the same.</li>
+     * </ul>
+     * </li>
+     * </ul>
+     * </p>
+     * 
+     * @param <code>ContestData</code> data that recognizes a contest.
+     * @param <code>PaymentData</code> payment information (credit card/po details) that need to be processed.
+     * @return a <code>PaymentResult</code> result of the payment processing.
+     * @throws PersistenceException
+     *             if any error occurs when getting contest.
+     * @throws ContestNotFoundException
+     *             if contest is not found while update.
+     * @throws IllegalArgumentException
+     *             if specified <code>filter</code> is <code>null</code> or if it is not supported by implementor.
+     */
+    private PaymentResult processContestPaymentInternal(StudioCompetition competition, PaymentData paymentData)
+            throws PersistenceException, PaymentException, ContestNotFoundException {
+
+        Logger.getLogger(this.getClass()).info("StudioCompetition: " + competition);
+        Logger.getLogger(this.getClass()).info("PaymentData: " + paymentData);
+
+        long contestId = competition.getContestData().getContestId();
+
+        StudioCompetition tobeUpdatedCompetition = null;
+
+        if (contestId >= 0) {
+            try {
+                tobeUpdatedCompetition = getContest(contestId);
+            } catch (ContestNotFoundException cnfe) {
+                // if not contest is found then simply ignore it.
+            }
+        }
+
+        if (tobeUpdatedCompetition == null) {
+            tobeUpdatedCompetition = createContest(competition, competition.getContestData().getTcDirectProjectId());
+        }
 
 		PaymentResult result = null;
 
-		if (paymentData instanceof TCPurhcaseOrderPaymentData) {
-			// processing purchase order is not in scope of this assembly.
-			result = new PaymentResult();
-			result.setReferenceNumber("NOT IN SCOPE FOR PO");
-		} else if (paymentData instanceof CreditCardPaymentData) {
-			result = paymentProcessor.process(paymentData, Double
-					.toString(contestData.getContestAdministrationFee()));
-			competition.getContestData().setStatusId(
-					CONTEST_STATUS_ACTIVE_PUBLIC);
-			competition.getContestData().setDetailedStatusId(
-					CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC);
+        if (paymentData instanceof TCPurhcaseOrderPaymentData) {
+            // processing purchase order is not in scope of this assembly.
+            result = new PaymentResult();
+            result.setReferenceNumber("NOT IN SCOPE FOR PO");
+        } else if (paymentData instanceof CreditCardPaymentData) {
+            // ideally client should be sending the amount,
+            // but as client has some inconsistency
+            // so in this case we would use the amount from contest data.
+            ((CreditCardPaymentData) paymentData).setAmount(Double.toString(tobeUpdatedCompetition.getContestData()
+                    .getContestAdministrationFee()));
 
-			ContestPaymentData contestPaymentData = new ContestPaymentData();
-			contestPaymentData.setPaypalOrderId(result.getReferenceNumber());
+            result = paymentProcessor.process(paymentData);
+        }
 
-			UserProfilePrincipal p = (UserProfilePrincipal) sessionContext
-					.getCallerPrincipal();
-			String userId = Long.toString(p.getUserId());
+        tobeUpdatedCompetition.getContestData().setStatusId(CONTEST_STATUS_ACTIVE_PUBLIC);
+        tobeUpdatedCompetition.getContestData().setDetailedStatusId(CONTEST_DETAILED_STATUS_SCHEDULED);
 
-			createContestPayment(contestPaymentData, userId);
+        ContestPaymentData contestPaymentData = new ContestPaymentData();
+        contestPaymentData.setPaypalOrderId(result.getReferenceNumber());
+		contestPaymentData.setContestId(tobeUpdatedCompetition.getContestData().getContestId());
+		contestPaymentData.setPaymentStatusId(CONTEST_PAYMENT_STATUS_PAID);
 
-			// update contest.
-			updateContest(competition);
+        UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+        String userId = Long.toString(p.getUserId());
 
-			// create forum for the contest.
-			this.studioService.createForum(competition.getContestData()
-					.getName(), p.getUserId());
-		}
+        createContestPayment(contestPaymentData, userId);
 
-		return result;
-	}
+		// create forum for the contest.
+        long forumid = this.studioService.createForum(tobeUpdatedCompetition.getContestData().getName(), p.getUserId());
+
+		tobeUpdatedCompetition.getContestData().setForumId(forumid);
+
+        // update contest.
+        updateContest(tobeUpdatedCompetition);
+
+
+        return result;
+    }
+
+    /**
+     * <p>
+     * Processes the submission payment. It does following steps:
+     * <ul>
+     * <li>Checks submissionId to see if is available, if not then it throws PaymentException.</li>
+     * <li>If payment type is credit card then it processes the payment through <code>PaymentProcessor</code></li>
+     * <li>Right-now this method doesn't process PO payments.</li>
+     * <li>On successful processing -
+     * <ul>
+     * <li>it calls <code>this.purchaseSubmission(...)</code></li>
+     * </ul>
+     * </li>
+     * </ul>
+     * </p>
+     * 
+     * @param submissionId
+     *            submission identifier of the submission that need to be purchased.
+     * @param paymentData
+     *            a <code>PaymentData</code> payment information (credit card/po details) that need to be processed.
+     * @return a <code>PaymentResult</code> result of the payment processing.
+     * @throws PaymentException
+     *             if any errors occurs in processing the payment or submission is not valid.
+     * @throws PersistenceException
+     *             if any error occurs when retrieving the submission.
+     */
+    public PaymentResult processSubmissionPayment(long submissionId, PaymentData paymentData) throws PaymentException,
+            PersistenceException {
+
+        SubmissionData submissionData = this.retrieveSubmission(submissionId);
+        if (submissionData == null) {
+            throw new PaymentException("Error in processing payment for submission: " + submissionId
+                    + ". Submission is not found");
+        }
+
+        PaymentResult result = null;
+
+        if (paymentData.getType().equals(PaymentType.TCPurchaseOrder)) {
+            // processing purchase order is not in scope of this assembly.
+            result = new PaymentResult();
+            result.setReferenceNumber("NOT IN SCOPE FOR PO");
+        } else if (paymentData.getType().equals(PaymentType.PayPalCreditCard)) {
+            result = paymentProcessor.process(paymentData);
+        }
+
+        UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+        String userId = Long.toString(p.getUserId());
+
+        this.purchaseSubmission(submissionId, result.getReferenceNumber(), userId);
+
+        return result;
+    }
 }
