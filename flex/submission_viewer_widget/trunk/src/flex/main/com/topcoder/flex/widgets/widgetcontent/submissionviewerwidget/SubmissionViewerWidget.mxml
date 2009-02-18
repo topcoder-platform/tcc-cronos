@@ -368,7 +368,7 @@
                 		    
                 		    for (var j:int=0; j < prizes.length; j++) {
                 		        trace("Adding prize: " + prizes[j] + " to: " + contestInfo.name);
-                		        contestInfo.prizes.addItem(prizes[j]);
+                		        contestInfo.prizes.addItem(prizes[j] as Number);
                 		    }
                 		}
                 		
@@ -478,15 +478,21 @@
         							    if (prizes.length < sub.rank) {
         							        // do nothing here.
         							    }
-        							    else {
+        							    else if (prizes[sub.rank - 1] > 0) {
         							        sub.price=prizes[sub.rank - 1];
         							    }
         							} 
+        							else {
+        							    sub.price=0;
+        							}
+        			            }
+        			            else {
+        			                sub.price=0;
         			            }
         			        }
 							
 							if (prizes) {
-							    sub.mustPurchase=sub.rank && sub.rank > 0 && sub.rank <= prizes.length;
+							    sub.mustPurchase=sub.rank && sub.rank > 0 && sub.rank <= prizes.length && sub.price && sub.price > 0;
 							}
 							sub.purchased=sub.markedForPurchase || sub.mustPurchase;
                 		
@@ -1351,16 +1357,22 @@
     						    if (prizes.length < item.rank) {
     						        // do nothing.
     						    }
-    						    else {
+    						    else if (prizes[item.rank - 1] > 0) {
     						        item.price=prizes[item.rank - 1];
     						    }
-    						}  
+    						} 
+    						else {
+    						    item.price=0;
+    						} 
+    		            }
+    		            else {
+    		                item.price=0;
     		            }
     	            }
 					
 					// set the purchased attribute correctly.
 					if (prizes) {
-					    item.mustPurchase=item.rank && item.rank > 0 && item.rank <= prizes.length;
+					    item.mustPurchase=item.rank && item.rank > 0 && item.rank <= prizes.length && item.price && item.price > 0;
 					}
 					item.purchased=item.markedForPurchase || item.mustPurchase;
 					
