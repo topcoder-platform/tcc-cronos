@@ -1028,6 +1028,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         contestPaymentData.setPaypalOrderId(result.getReferenceNumber());
 		contestPaymentData.setContestId(tobeUpdatedCompetition.getContestData().getContestId());
 		contestPaymentData.setPaymentStatusId(CONTEST_PAYMENT_STATUS_PAID);
+		contestPaymentData.setPrice(tobeUpdatedCompetition.getContestData().getContestAdministrationFee());
 
         UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
         String userId = Long.toString(p.getUserId());
