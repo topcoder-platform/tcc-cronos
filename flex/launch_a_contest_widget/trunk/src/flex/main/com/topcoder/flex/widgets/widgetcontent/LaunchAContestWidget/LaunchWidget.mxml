@@ -64,7 +64,7 @@
 	         */
 	        private var INITIAL_WIDGET_HEIGHT:int = 460;
 	       	private var CONTEST_SELECTION_HEIGHT:int = 510;
-	       	private var OVERVIEW_HEIGHT:int = 710; // BUGR-1204 was 730
+	       	private var OVERVIEW_HEIGHT:int = 770; // BUGR-1204 was 730
 	       	private var DETAILS_HEIGHT:int = 657;
 	       	private var SPECIFICATIONS_HEIGHT:int = 820;
 	       	private var ATTACH_FILES_HEIGHT:int = 660;
@@ -854,13 +854,12 @@ Specific limitations (such as restricting a color or a specific layout style) an
              <pages:Schedule id="sched" />
              <pages:Review id="review" />
              <pages:PaymentContest id="activate" width="100%" />
-   
-             <mx:HRule width="100%"/>
+			 <mx:HRule width="100%" />
              <!--<mx:Spacer  id="bottemline" height="100%"/>-->
          </mx:VBox>
      </mx:HBox>
-     <mx:HBox paddingLeft="20" paddingRight="10" horizontalAlign="center" width="100%" visible="{!initialWdt.visible}" includeInLayout="{!initialWdt.visible}">
-         <!--BUGR-1204 <mx:Button id="back" buttonMode="true" styleName="RedButton" label="&lt;&lt; back" click="previous()"/>-->
+     <mx:HBox paddingLeft="220" paddingTop="0" horizontalAlign="center" width="100%" visible="{!initialWdt.visible}" includeInLayout="{!initialWdt.visible}">
+    <!--BUGR-1204 <mx:Button id="back" buttonMode="true" styleName="RedButton" label="&lt;&lt; back" click="previous()"/>-->
          <mx:Button id="back" buttonMode="true" styleName="greenBackButton" click="previous()"/>
          <mx:Button id="save" buttonMode="true" styleName="RedButton"  label="save as draft" click="saveAsDraft()" includeInLayout="{save.visible}"/>
          <!--BUGR-1204 <mx:Button id="goNext" buttonMode="true" styleName="RedButton"  label="continue >>" click="next()"/>-->
