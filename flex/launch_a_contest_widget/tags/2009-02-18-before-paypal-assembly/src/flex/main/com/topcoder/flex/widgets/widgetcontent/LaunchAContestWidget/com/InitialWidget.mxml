@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+          horizontalScrollPolicy="off" verticalScrollPolicy="off" >
+    <mx:Script>
+        <![CDATA[
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContest_request;
+        	import mx.collections.IList;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateProject;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateProject_request;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateProjectResultEvent;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllProjects_request;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProjectData;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllProjectsResultEvent;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllProjects;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestHeaders_request;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CompetionType;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestHeaders;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestResultEvent;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContest;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestData;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestsResultEvent;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.StudioCompetition;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestHeadersResultEvent;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContests;
+        	import mx.rpc.events.FaultEvent;
+        	import mx.rpc.events.ResultEvent;
+        	import mx.rpc.soap.WebService;
+		import mx.collections.ArrayCollection;
+		import mx.collections.SortField;
+		import mx.collections.Sort;
+		import mx.utils.ObjectUtil;
+		import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+            
+            import mx.collections.SortField;
+            import mx.collections.Sort;           
+    	import mx.utils.ObjectUtil;
+    	import com.topcoder.flex.Helper;
+            
+            [Bindable]
+            private var contestsData:ArrayCollection = new ArrayCollection(
+                [ {label:"Please select an existing project", data:-1,desc:""}]);
+            
+            [Bindable]
+            public var mainWidget:LaunchWidget;
+            /*
+            [Bindable]
+            private var _projectServiceFacadeWsdl:String="";
+        
+            public function set projectServiceFacadeWsdl(url:String):void
+            {
+            	_projectServiceFacadeWsdl=url;
+            }
+            */
+            public function init():void{
+            	//mainWidget._ws.addgetAllContestHeadersEventListener(loadContestsHandler);
+            	
+            	//mainWidget._ws.getAllContestHeaders(new GetAllContestHeaders());
+            	
+                //
+                mainWidget._pws.addgetAllProjectsEventListener(loadContestsHandler);
+                mainWidget._pws.addcreateProjectEventListener(createProjectHandler);
+                mainWidget._pws.getAllProjects_request_var=new  GetAllProjects_request();
+                mainWidget._pws.getAllProjects_request_var.getAllProjects=new GetAllProjects();
+                mainWidget._pws.getAllProjects_send();
+                  
+                  selectContests.dataProvider = contestsData;
+                  
+            }
+            private function createProjectHandler(e:CreateProjectResultEvent):void
+            {
+            	if(e && e.result)
+            	{
+            		mainWidget.tcDirectProjectId=e.result._return.projectId.toString();
+            		createContestAndContinue(e.result._return.projectId);
+            	}
+            	/*
+            	mainWidget._ws.getAllContestHeaders(new GetAllContestHeaders());
+            	
+                selectContests.dataProvider = contestsData;
+                
+                this.prjInput.text = "";
+                this.selectContests.selectedIndex = 0;
+                this.introInput.text = "";
+                this.percentHeight = 100;
+                this.percentWidth = 100;*/
+            }
+            
+            private function compareName(a:Object, b:Object, fields:Array = null):int {
+               return ObjectUtil.stringCompare(a.name,b.name,true);
+            }
+            
+            private function loadContestsHandler(e:GetAllProjectsResultEvent):void{
+            	if(e!=null && e.result!=null){
+            		if(!e.result.sort)
+        			{
+        			var sort:Sort = new Sort();   
+	                sort.compareFunction = compareName;
+	                e.result.sort = sort;
+	                }
+        			e.result.refresh();
+            		
+        			for each (var prj:ProjectData in e.result.asIList()){
+        				contestsData.addItem({label:prj.name, data:prj.projectId, desc:prj.description});
+        			}
+        			
+        		}
+            }
+
+            private function createContestAndContinue(id:Number):void
+            {
+            			mainWidget.competition = new StudioCompetition();
+                    	mainWidget.competition.competitionId = -1;
+                    	mainWidget.competition.id = -1;
+                    	mainWidget.competition.adminFee = 20;
+                    	mainWidget.competition.eligibility = "some text";
+                    	
+                    	mainWidget.competition.contestData = new ContestData();
+                    	mainWidget.competition.contestData.contestAdministrationFee = 20;
+                    	mainWidget.competition.creatorUserId = 3;
+                    	mainWidget.competition.drPoints = 100;
+                    	mainWidget.competition.contestData.drPoints = 100;
+			// dont set project id
+                    	//mainWidget.competition.contestData.projectId = id;
+                    	mainWidget.competition.contestData.tcDirectProjectId = id;
+                    	mainWidget.competition.contestData.contestId = -1;
+                    	mainWidget.competition.contestData.creatorUserId = 3;
+                    	mainWidget.competition.contestData.statusId = 5;
+                    	mainWidget.competition.contestData.forumId = -1;
+                    	mainWidget.competition.contestData.forumPostCount = 0;
+                    	mainWidget.competition.contestData.requiresPreviewImage = true;
+                    	mainWidget.competition.contestData.requiresPreviewFile = false;
+                    	mainWidget.competition.contestData.maximumSubmissions = 3;
+                    	mainWidget.competition.contestData.submissionCount = 0;
+                    	mainWidget.competition.contestData.contestChannelId = 2;
+                    	mainWidget.competition.contestData.eligibility = "some text";
+			mainWidget.competition.contestData.media = new Array();
+                    	
+                    	mainWidget.competition.contestData.numberOfRegistrants = 0;
+                    	var type:CompetionType = new CompetionType();
+        				//CompetitionType fixed to be studio
+        				type.competionType = "STUDIO";
+        				mainWidget.competition.type = type
+        	
+                    	//mainWidget.competition.contestData.name = prjInput.text;
+                    	
+                    	mainWidget.startLaunchProcess();
+            }
+            
+            private function goToContestSelection():void{
+                if ((selectContests.selectedItem == null || selectContests.selectedItem.data ==-1) && prjInput.text == ""){
+                    Helper.showAlertMessage("New Project or Existing Project must have a value.");
+                    return;
+                }else{
+                    //load the contest if it's existing
+                    /*
+                    if (selectContests.selectedItem.data !=-1){
+                    	loadContest(selectContests.selectedItem.data);
+                    } else {
+                    */
+                    if(selectContests.selectedItem != null && selectContests.selectedItem.data !=-1)
+                    {
+                    	mainWidget.tcDirectProjectId=selectContests.selectedItem.data;
+                    	createContestAndContinue(parseInt(mainWidget.tcDirectProjectId));
+                    }
+                    else
+                    {
+                    	mainWidget._pws.createProject_request_var=new CreateProject_request();
+                    	mainWidget._pws.createProject_request_var.createProject=new CreateProject();
+                    	mainWidget._pws.createProject_request_var.createProject.arg0=new ProjectData();
+                    	mainWidget._pws.createProject_request_var.createProject.arg0.name=prjInput.text;
+                    	mainWidget._pws.createProject_request_var.createProject.arg0.description=introInput.text;
+                    	mainWidget._pws.createProject_send();
+                    }
+                    	
+                    //}
+                }
+            }
+            
+       private function loadContest(contestId:int):void {
+       		var arg:GetContest = new GetContest();
+       		arg.arg0 = new Number(contestId);
+       		mainWidget._ws.addgetContestEventListener(loadContestHandle);
+       		mainWidget._ws.getContest(arg);
+        }
+        
+        private function loadContestHandle(event:GetContestResultEvent):void{
+        	
+        	mainWidget.competition = event.result._return as StudioCompetition;
+        	
+        	var type:CompetionType = new CompetionType();
+        	//CompetitionType fixed to be studio
+        	type.competionType = "STUDIO";
+        	mainWidget.competition.type = type
+        	mainWidget.startLaunchProcess();
+        }
+        
+        
+          ]]>
+    </mx:Script>
+    
+
+    <mx:VBox id="initWdt" width="100%" height="100%" styleName="boxStyle" >
+        <mx:Label text="Projects" styleName="header" />
+        <mx:Text width="100%" styleName="content" >
+            <mx:text>
+		A project is a way to organize your contests under one overall header and description. Naming the overall project here and giving a brief description will help you manage your contests later. For example, a logo and new website design can both be placed under a project called "New Website".
+            </mx:text>
+        </mx:Text>
+        <mx:HBox width="100%" horizontalGap="0">
+            <mx:Label text="Select or Create a Project" fontWeight="bold" fontSize="12"/>
+        </mx:HBox>
+        
+        <mx:HBox width="100%">
+            <mx:Spacer width="42"/>
+            <mx:Label text="New Project Name:"  width="109"/>
+            <mx:TextInput id="prjInput" width="308"/>
+        </mx:HBox>
+        
+        <mx:HBox width="100%" >
+            <mx:Spacer width="162"/>
+            <mx:Label text="----------- or ------------"/>
+        </mx:HBox>
+        
+        <mx:HBox width="100%">
+            <mx:Label text="Existing Project:" />
+            <mx:ComboBox id="selectContests"  width="309" />
+        </mx:HBox>
+        
+        <mx:HBox width="100%">
+            <mx:Label text="Project Description" fontWeight="bold" fontSize="12"/>
+        </mx:HBox>
+        
+        <mx:HBox width="100%">
+            <mx:Spacer width="32"/>
+            <mx:Text text="Brief description of the overall project:" height="37" width="117"/>
+            <mx:TextArea id="introInput" width="312" height="80"/>
+        </mx:HBox>
+        
+        <mx:HBox width="100%" >
+            <mx:Spacer width="162"/>
+            <mx:Button label="save and continue" styleName="RedButton" click="goToContestSelection()" buttonMode="true"/>
+        </mx:HBox>
+    </mx:VBox>
+</mx:Canvas>

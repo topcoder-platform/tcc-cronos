@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+          horizontalScrollPolicy="off" verticalScrollPolicy="off">
+    <mx:Script>
+	    <![CDATA[
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+	    	import mx.events.FlexEvent;
+	    	import com.topcoder.flex.Helper;
+	        import flash.events.MouseEvent;
+	        import mx.containers.Panel;
+	        
+	        [Bindable]
+	       	public var mainWidget:LaunchWidget;
+	        public var widgetHeight:Number;
+	        public var titleHint:String;
+	        public var introductionHint:String;
+	        public var primaryGoalHint:String;
+	        public var targetAudienceHint:String;
+	        public var brandGuidelinesHint:String;
+	        public var likeAndDislikesHint:String;
+	        public var criteriaHint:String;
+	        
+	        private static const ADDEDHEIGHT:Number = 80;
+			private static const ADDEDHEIGHT_GOALS:Number = 380;
+
+	        public function initData():void{
+	        	ctInput.htmlText = "";
+	        	introInput.htmlText = "";
+	        	glsInput.htmlText = "";
+	        	
+	        	ctInput.htmlText = this.mainWidget.competition.contestData.name;
+	        	introInput.htmlText = this.mainWidget.competition.contestData.shortSummary;
+	        	glsInput.htmlText = this.mainWidget.competition.contestData.contestDescriptionAndRequirements;
+	        }
+        
+	        public function validateFields():Boolean{
+	        	if (ctInput.text == ""){
+	        		Helper.showAlertMessage("Please enter contest title");
+	        		return false;
+	        	}
+	        	
+	        	if (introInput.text == ""){
+	        		Helper.showAlertMessage("Please enter introduction");
+	        		return false;
+	        	}
+	        	
+	        	if (glsInput.text == ""){
+	        		Helper.showAlertMessage("Please enter a detailed description");
+	        		return false;
+	        	}
+	        	
+	        	this.mainWidget.competition.contestData.name = ctInput.text;
+	        	this.mainWidget.competition.contestData.shortSummary = introInput.text;
+	        	this.mainWidget.competition.contestData.contestDescriptionAndRequirements = glsInput.text;
+	        	
+	        	return true;
+	        }
+	        
+	        private function showContentTitleHint(event:MouseEvent):void {
+	        	if (event.target.label == "[+ show hint]"){
+	        		event.target.label = "[- show hint]";
+	        		contentTitleHint.height = ADDEDHEIGHT;
+	        		contentTitleHint.text = titleHint;
+	        		contentTitleHint.visible = true;
+	        		mainWidget.height += ADDEDHEIGHT;
+	        		widgetHeight += ADDEDHEIGHT;
+	        	}else{
+	        		event.target.label = "[+ show hint]";
+                    contentTitleHint.height = 0;
+                    contentTitleHint.text = "";
+                    contentTitleHint.visible = false;
+                    mainWidget.height -= ADDEDHEIGHT;
+                    widgetHeight -= ADDEDHEIGHT;
+	        	}
+	        }
+	        
+	        private function showIntroductionHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]"){
+                    event.target.label = "[- show hint]";
+                    introHint.height = ADDEDHEIGHT;
+                    introHint.text = introductionHint;
+                    introHint.visible = true;
+                    mainWidget.height += ADDEDHEIGHT;
+                    widgetHeight += ADDEDHEIGHT;
+                }else{
+                    event.target.label = "[+ show hint]";
+                    introHint.height = 0;
+                    introHint.text = "";
+                    introHint.visible = false;
+                    mainWidget.height -= ADDEDHEIGHT;
+                    widgetHeight -= ADDEDHEIGHT;
+                }
+	        }
+	        
+	        private function showGoalsHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]"){
+                    event.target.label = "[- show hint]";
+                    goalsHint.height = ADDEDHEIGHT_GOALS;
+                    goalsHint.htmlText = primaryGoalHint;
+                    goalsHint.visible = true;
+                    mainWidget.height += ADDEDHEIGHT_GOALS;
+                    widgetHeight += ADDEDHEIGHT_GOALS;
+                }else{
+                    event.target.label = "[+ show hint]";
+                    goalsHint.height = 0;
+                    goalsHint.htmlText = "";
+                    goalsHint.visible = false;
+                    mainWidget.height -= ADDEDHEIGHT_GOALS;
+                    widgetHeight -= ADDEDHEIGHT_GOALS;
+                }
+	        }
+	     ]]>
+    </mx:Script>
+    <mx:VBox width="100%" styleName="boxStyle">
+	<mx:HBox horizontalAlign="right" width="100%">
+		<mx:Label text="Contest Details" fontWeight="bold" fontSize="12" width="80%"/>
+		<mx:Spacer width="100" />	
+		<mx:LinkButton baseline="middle" styleName="linkBtn" label="Preview Contest" click="this.mainWidget.previewContest()" />
+		    <mx:Image source="@Embed('../../assets/more_info.png')"/>
+	</mx:HBox>
+        <mx:Text width="100%" id="contestDetails">
+            <mx:text>
+				A successful competition begins with comprehensive, thoughtful prep work. Designers need specific information to get their creative
+				juices flowing to produce their best work to meet your needs. A great contest specification allows a designer to feel energized,
+				excited and connected to your project rather than staring at the drawing board feeling confused and unsure of which direction to take.
+            </mx:text>
+        </mx:Text>
+        
+        <mx:Spacer height="5"/>
+        
+        <mx:VBox width="100%" verticalGap="0">
+	        <mx:HBox >
+	            <mx:Label text="Contest Title:" fontWeight="bold"/>
+	            <mx:TextInput id="ctInput" width="308"/>
+	            <mx:LinkButton label="[+ show hint]" click="showContentTitleHint(event)" />
+	        </mx:HBox>
+	        <mx:Text id="contentTitleHint" color="0x888888" width="500" height="0" visible="false">
+	        </mx:Text>
+	    </mx:VBox>
+        
+        <mx:Spacer height="5"/>
+        
+        <mx:VBox width="100%" verticalGap="0">
+	        <mx:HBox >
+	            <mx:Label text="Introduction:" fontWeight="bold"/>
+	            <mx:Spacer width="305"/>
+	            <mx:LinkButton label="[+ show hint]" click="showIntroductionHint(event)"/>
+	        </mx:HBox>
+	        <mx:Text id="introHint" height="0" color="0x888888" width="500" visible="false">
+            </mx:Text>
+	        <mx:RichTextEditor id="introInput" width="500" height="200"/>
+        </mx:VBox>
+        
+        <mx:Spacer height="5"/>
+        
+        <mx:VBox width="100%" verticalGap="0">
+            <mx:HBox  width="500">
+                <mx:Label text="Detailed Description:" fontWeight="bold"/>
+                <mx:Spacer width="136"/>
+                <mx:LinkButton label="[+ show hint]" click="showGoalsHint(event)" />
+            </mx:HBox>
+            <mx:Text id="goalsHint" height="0" color="0x888888" width="500" visible="false">
+            </mx:Text>
+            <mx:RichTextEditor id="glsInput" width="500" height="200"/>
+        </mx:VBox>
+        
+        
+        
+    </mx:VBox>
+</mx:Canvas>

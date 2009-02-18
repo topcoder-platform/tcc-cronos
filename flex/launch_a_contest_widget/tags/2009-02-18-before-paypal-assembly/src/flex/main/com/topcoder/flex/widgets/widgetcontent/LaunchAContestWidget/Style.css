@@ -1,0 +1,218 @@
+/* CSS file */
+.WidgetPanel {
+   borderColor: #B7BABC;
+   borderThicknessLeft: 10;
+   borderThicknessTop: 1;
+   borderThicknessBottom: 1;
+   borderThicknessRight: 10;
+   borderAlpha: 1;
+   dropShadowEnabled: false;
+   headerColors: #cccccc, #cccccc;
+   titleStyleName: "panelTitle";
+}
+.panelTitle {
+   textAlign: left;
+   color: #000000;
+   fontWeight: bold;
+}
+.EditButton
+{
+    upSkin: Embed(source="../assets/EditButton_Up.png");
+    overSkin: Embed(source="../assets/EditButton_Over.png");
+    downSkin: Embed(source="../assets/EditButton_Over.png");
+    disabledSkin: Embed(source="../assets/EditButton_Up.png");
+    paddingLeft: 0;
+    paddingTop: 0;
+    paddingRight: 0;
+    paddingBottom: 0;
+}
+
+/* since BUGR-999*/
+.whiteBoldText {
+	color: #FFFFFF;
+	font-weight: bold;	
+	fontFamily: "Arial";
+	font-size: 14;
+	padding-top: 2; /* BUGR-1141 */
+}
+
+.boxStyle {
+	padding-left: 10;
+	padding-right: 10;
+	padding-bottom: 10;
+	padding-top: 10;
+	border-skin: Embed(source="../assets/box_bg.png",scaleGridTop="12",scaleGridLeft="12",scaleGridRight="221",scaleGridBottom="28");
+}
+
+.gradient {
+	background-gradient-colors: #FFFFFF, #a8a8a8;	
+}
+
+/* BUGR-1141 */
+.prevStep {
+	backgroundImage: Embed(source="../assets/step_prev.png");	
+}
+
+.curStep {
+	backgroundImage: Embed(source="../assets/step_cur.png");	
+}
+
+.nextStep {
+	backgroundImage: Embed(source="../assets/step_next.png");	
+}
+
+.curStepBgr {
+	background-color: #FFFFFF;
+}
+
+.prevStepBgr {
+	background-color: #EEEEEE;
+}
+
+.stepsBgr {
+	background-color: #EEEEEE;
+	border-thickness: 1;
+	border-sides: right;
+	border-style: solid;
+	border-color: #DBDBDB;
+}
+
+.stepsLabel {
+	color: #FFFFFF;
+	font-size: 18;
+	border-thickness-left: 1;
+	border-color: #CCCCCC;
+}
+
+.stepsLabelBgr {
+	backgroundColor: #DBDBDB;
+}
+
+.header {
+	font-family: Arial;
+	font-size: 16;
+	font-weight: bold;
+	color: #000000;
+}
+.content {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: normal;
+	color: #000000;
+}
+
+.contentBlack {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #000000;
+}
+
+.contentGrey {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #797979;
+}
+
+.combobox {
+	skin: Embed(source="../assets/combobox.png", 
+			scaleGridTop="1",scaleGridLeft="1",scaleGridRight="134",scaleGridBottom="18");
+	font-family: Arial;
+	font-size: 12;
+	font-weight: normal;
+	color: #000000;
+	padding-left: 8;
+	padding-right: 8;
+	vertical-align: middle;
+}
+
+.TextInput {
+	/* border-skin: Embed(source="../assets/textinput.png", 
+			scaleGridTop="1",scaleGridLeft="1",scaleGridRight="159",scaleGridBottom="18"); */
+	font-family: Arial;
+	font-size: 12;
+	font-weight: normal;
+	color: #000000;
+	vertical-align: middle;
+	border-color: #808080;
+	border-style: solid;
+}
+
+.NumericStepper {
+	border-skin: Embed(source="../assets/numericstepperBG.png", 
+			scaleGridTop="8",scaleGridLeft="2",scaleGridRight="34",scaleGridBottom="16");
+	up-arrow-skin: Embed(source="../assets/up.png");
+	down-arrow-skin: Embed(source="../assets/down.png");
+	font-family: Arial;
+	font-size: 12;
+	font-weight: normal;
+	color: #000000;
+	vertical-align: middle;	
+	padding-left: 7;
+	padding-right: 7;
+}
+
+
+.GridItem {
+	vertical-align: middle;
+}
+
+/* since BUGR-999 */
+.RedButton {
+	skin: Embed("../assets/redbtn_fixed.png");
+	over-skin: Embed("../assets/redbtn_fixed_over.png");
+	down-skin: Embed("../assets/redbtn_fixed.png");
+	color: #FFFFFF;
+	font-weight: bold;
+}
+
+/* since BUGR-1039*/
+.linkBtn {
+	color: #FF0000;
+	text-decoration: underline;
+}
+
+.clickableImage {
+	cursor: pointer;
+	cursor: hand;
+}
+
+/* BUGR-1204 */
+.redText {
+	font-family: Arial;
+	color: #CC0000;
+	font-weight: bold;
+	font-size: 12;
+}
+
+.smallBlackText {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: normal;
+}
+
+.boldBlackText {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+}
+	
+.greenBackButton {
+	upSkin: Embed('../assets/btn_Back.png');
+    overSkin: Embed('../assets/btn_Back_hover.png');
+    downSkin: Embed('../assets/btn_Back_hover.png');
+}
+
+.greenNextButton {
+	upSkin: Embed('../assets/btn_Next.png');
+    overSkin: Embed('../assets/btn_Next_hover.png');
+    downSkin: Embed('../assets/btn_Next_hover.png');
+}
+
+/* BUGR-1208 */
+.redCancelButton {
+	upSkin: Embed('../assets/btn_Cancel.png');
+	overSkin: Embed('../assets/btn_Cancel_hover.png');
+	downSkin: Embed('../assets/btn_Cancel_hover.png');
+}
