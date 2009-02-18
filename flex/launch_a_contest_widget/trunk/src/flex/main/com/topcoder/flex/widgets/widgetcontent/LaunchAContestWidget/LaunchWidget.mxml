@@ -863,7 +863,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
          <mx:Button id="back" buttonMode="true" styleName="greenBackButton" click="previous()"/>
          <mx:Button id="save" buttonMode="true" styleName="RedButton"  label="save as draft" click="saveAsDraft()" includeInLayout="{save.visible}"/>
          <!--BUGR-1204 <mx:Button id="goNext" buttonMode="true" styleName="RedButton"  label="continue >>" click="next()"/>-->
-         <mx:Button id="cancel" buttonMode="true" label="cancel" click="cancelBtn()"/>
+         <mx:Button id="cancel" buttonMode="true" styleName="redCancelButton" click="cancelBtn()"/>
          <mx:Button id="goNext" buttonMode="true" styleName="greenNextButton" click="next()"/>
              </mx:HBox>
     <tc:states>

@@ -209,3 +209,10 @@
     overSkin: Embed('../assets/btn_Next_hover.png');
     downSkin: Embed('../assets/btn_Next_hover.png');
 }
+
+/* BUGR-1208 */
+.redCancelButton {
+	upSkin: Embed('../assets/btn_Cancel.png');
+	overSkin: Embed('../assets/btn_Cancel_hover.png');
+	downSkin: Embed('../assets/btn_Cancel_hover.png');
+}
