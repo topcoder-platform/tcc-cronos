@@ -14,6 +14,28 @@
             <ejb-class>com.topcoder.service.facade.contest.ejb.ContestServiceFacadeBean</ejb-class>
             <session-type>Stateless</session-type>
             <transaction-type>Container</transaction-type>
+            
+            <env-entry>
+                <env-entry-name>payPalApiUserName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>@build-rep.contest_service_facade.payPalApiUserName@</env-entry-value>
+            </env-entry> 
+            <env-entry>
+                <env-entry-name>payPalApiPassword</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>@build-rep.contest_service_facade.payPalApiPassword@</env-entry-value>
+            </env-entry> 
+            <env-entry>
+                <env-entry-name>payPalApiSignature</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>@build-rep.contest_service_facade.payPalApiSignature@</env-entry-value>
+            </env-entry> 
+            <env-entry>
+                <env-entry-name>payPalApiEnvironment</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>@build-rep.contest_service_facade.payPalApiEnvironment@</env-entry-value>
+            </env-entry> 
+            
             <ejb-ref>
                 <ejb-ref-name>ejb/StudioService</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>

@@ -52,6 +52,7 @@
     <property name="javatests" value="${javasrc}/tests"/>
 
     <property name="builddir" value="build"/>
+    <property name="build_conf" value="${builddir}/conf"/>
     <property name="build_classdir" value="${builddir}/classes"/>
     <property name="build_testclassdir" value="${builddir}/testClasses"/>
     <property name="build_targetclassdir" value="${builddir}/targetclasses"/>
@@ -159,10 +160,19 @@
     </target>
 
     <target name="dist" depends="compile, manifest">
+        <property name="build.properties" location="${basedir}/build.properties" />
         <mkdir dir="${dist_lib}/${component_path}"/>
+        
+        <copy todir="${build_conf}">
+            <fileset dir="${basedir}/conf"/>
+            <filterset>
+              <filtersfile file="${build.properties}"/>
+            </filterset>
+        </copy>
+        
         <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}">
-            <metainf dir="conf/ejb"/>
-            <metainf dir="conf/ws" includes="jboss-wsse-server.xml"/>
+            <metainf dir="${build_conf}/ejb"/>
+            <metainf dir="${build_conf}/ws" includes="jboss-wsse-server.xml"/>
         </jar>
     </target>
 
