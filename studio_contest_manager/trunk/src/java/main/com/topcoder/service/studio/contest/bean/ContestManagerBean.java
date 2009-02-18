@@ -2674,23 +2674,23 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 			SimpleDateFormat myFmt = new SimpleDateFormat(
 					"yyyy-MM-dd HH:mm:ss.SSS");
 
-			for (int i = 0; i < list.size(); i++) {
+            for (int i = 0; i < list.size(); i++) {
 
-				SimpleContestData c = new SimpleContestData();
-				Object[] os = (Object[]) list.get(i);
-				if (os[0] != null)
-					c.setContestId(Long.parseLong(os[0].toString()));
-				if (os[1] != null)
-					c.setName(os[1].toString());
-				if (os[2] != null)
-					c.setStartDate(myFmt.parse(os[2].toString()));
-				if (os[3] != null)
-					c.setEndDate(myFmt.parse(os[3].toString()));
-				if (os[4] != null)
-					c.setNum_reg(Integer.parseInt(os[4].toString()));
-				if (os[5] != null)
-					c.setNum_sub(Integer.parseInt(os[5].toString()));
-				result.add(c);
+                SimpleContestData c = new SimpleContestData();
+                Object[] os = (Object[]) list.get(i);
+                if (os[0] != null)
+                    c.setContestId(Long.parseLong(os[0].toString()));
+                if (os[1] != null)
+                    c.setName(os[1].toString());
+                if (os[2] != null)
+                    c.setStartDate(myFmt.parse(os[2].toString()));
+                if (os[3] != null)
+                    c.setEndDate(myFmt.parse(os[3].toString()));
+                if (os[4] != null)
+                    c.setNum_reg(Integer.parseInt(os[4].toString()));
+                if (os[5] != null)
+                    c.setNum_sub(Integer.parseInt(os[5].toString()));
+                result.add(c);
 
 			}
 			return result;
@@ -2731,17 +2731,23 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
             for (int i = 0; i < list.size(); i++) {
-            	
-            	SimpleContestData c=new SimpleContestData();
-            	Object [] os=(Object [])list.get(i);
-            	if(os[0]!=null)c.setContestId(Long.parseLong(os[0].toString()));
-            	if(os[1]!=null)c.setName(os[1].toString());
-            	if(os[2]!=null)c.setStartDate(myFmt.parse(os[2].toString()));
-            	if(os[3]!=null)c.setEndDate(myFmt.parse(os[3].toString()));
-            	if(os[4]!=null)c.setNum_reg(Integer.parseInt(os[4].toString()));
-            	if(os[5]!=null)c.setNum_sub(Integer.parseInt(os[5].toString()));
-            	result.add(c);
-            	
+
+                SimpleContestData c = new SimpleContestData();
+                Object[] os = (Object[]) list.get(i);
+                if (os[0] != null)
+                    c.setContestId(Long.parseLong(os[0].toString()));
+                if (os[1] != null)
+                    c.setName(os[1].toString());
+                if (os[2] != null)
+                    c.setStartDate(myFmt.parse(os[2].toString()));
+                if (os[3] != null)
+                    c.setEndDate(myFmt.parse(os[3].toString()));
+                if (os[4] != null)
+                    c.setNum_reg(Integer.parseInt(os[4].toString()));
+                if (os[5] != null)
+                    c.setNum_sub(Integer.parseInt(os[5].toString()));
+                result.add(c);
+
             }
             return result;
         } catch (IllegalStateException e) {
@@ -2780,24 +2786,34 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
             for (int i = 0; i < list.size(); i++) {
-            	
-            	SimpleProjectContestData c=new SimpleProjectContestData();
-            	Object [] os=(Object [])list.get(i);
-				if(os[0]!=null)c.setProjectId(Long.parseLong(os[0].toString()));
-				if(os[1]!=null)c.setPname(os[1].toString());
-            	if(os[2]!=null)c.setContestId(Long.parseLong(os[2].toString()));
-            	if(os[3]!=null)c.setCname(os[3].toString());
-            	
-            	if(os[4]!=null)c.setStartDate(myFmt.parse(os[4].toString()));
-            	if(os[5]!=null)c.setEndDate(myFmt.parse(os[5].toString()));
-				if(os[6]!=null)c.setSname(os[6].toString());
-            	if(os[7]!=null)c.setNum_reg(Integer.parseInt(os[7].toString()));
-            	if(os[8]!=null)c.setNum_sub(Integer.parseInt(os[8].toString()));
-            	
-            	if(os[9]!=null)c.setNum_for(Integer.parseInt(os[9].toString()));
-            	
-            	result.add(c);
-            	
+
+                SimpleProjectContestData c = new SimpleProjectContestData();
+                Object[] os = (Object[]) list.get(i);
+                if (os[0] != null)
+                    c.setProjectId(Long.parseLong(os[0].toString()));
+                if (os[1] != null)
+                    c.setPname(os[1].toString());
+                if (os[2] != null)
+                    c.setContestId(Long.parseLong(os[2].toString()));
+                if (os[3] != null)
+                    c.setCname(os[3].toString());
+
+                if (os[4] != null)
+                    c.setStartDate(myFmt.parse(os[4].toString()));
+                if (os[5] != null)
+                    c.setEndDate(myFmt.parse(os[5].toString()));
+                if (os[6] != null)
+                    c.setSname(os[6].toString());
+                if (os[7] != null)
+                    c.setNum_reg(Integer.parseInt(os[7].toString()));
+                if (os[8] != null)
+                    c.setNum_sub(Integer.parseInt(os[8].toString()));
+
+                if (os[9] != null)
+                    c.setNum_for(Integer.parseInt(os[9].toString()));
+
+                result.add(c);
+
             }
             return result;
         } catch (IllegalStateException e) {
@@ -2854,27 +2870,27 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
 			for (int i = 0; i < list.size(); i++) {
 
-				SimpleProjectContestData c = new SimpleProjectContestData();
-				Object[] os = (Object[]) list.get(i);
-				if (os[0] != null)
-					c.setProjectId(Long.parseLong(os[0].toString()));
-				if (os[1] != null)
-					c.setPname(os[1].toString());
-				if (os[2] != null)
-					c.setContestId(Long.parseLong(os[2].toString()));
-				if (os[3] != null)
-					c.setCname(os[3].toString());
+                SimpleProjectContestData c = new SimpleProjectContestData();
+                Object[] os = (Object[]) list.get(i);
+                if (os[0] != null)
+                    c.setProjectId(Long.parseLong(os[0].toString()));
+                if (os[1] != null)
+                    c.setPname(os[1].toString());
+                if (os[2] != null)
+                    c.setContestId(Long.parseLong(os[2].toString()));
+                if (os[3] != null)
+                    c.setCname(os[3].toString());
 
-				if (os[4] != null)
-					c.setStartDate(myFmt.parse(os[4].toString()));
-				if (os[5] != null)
-					c.setEndDate(myFmt.parse(os[5].toString()));
-				if (os[6] != null)
-					c.setSname(os[6].toString());
-				if (os[7] != null)
-					c.setNum_reg(Integer.parseInt(os[7].toString()));
-				if (os[8] != null)
-					c.setNum_sub(Integer.parseInt(os[8].toString()));
+                if (os[4] != null)
+                    c.setStartDate(myFmt.parse(os[4].toString()));
+                if (os[5] != null)
+                    c.setEndDate(myFmt.parse(os[5].toString()));
+                if (os[6] != null)
+                    c.setSname(os[6].toString());
+                if (os[7] != null)
+                    c.setNum_reg(Integer.parseInt(os[7].toString()));
+                if (os[8] != null)
+                    c.setNum_sub(Integer.parseInt(os[8].toString()));
 
 				if (os[9] != null)
 					c.setNum_for(Integer.parseInt(os[9].toString()));
@@ -2924,23 +2940,33 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
             for (int i = 0; i < list.size(); i++) {
-            	
-            	SimpleProjectContestData c=new SimpleProjectContestData();
-            	Object [] os=(Object [])list.get(i);
-            	if(os[0]!=null)c.setProjectId(Long.parseLong(os[0].toString()));
-				if(os[1]!=null)c.setPname(os[1].toString());
-            	if(os[2]!=null)c.setContestId(Long.parseLong(os[2].toString()));
-            	if(os[3]!=null)c.setCname(os[3].toString());
-            	
-            	if(os[4]!=null)c.setStartDate(myFmt.parse(os[4].toString()));
-            	if(os[5]!=null)c.setEndDate(myFmt.parse(os[5].toString()));
-            	if(os[6]!=null)c.setSname(os[6].toString());
-            	if(os[7]!=null)c.setNum_reg(Integer.parseInt(os[7].toString()));
-            	if(os[8]!=null)c.setNum_sub(Integer.parseInt(os[8].toString()));
-            	
-            	if(os[9]!=null)c.setNum_for(Integer.parseInt(os[9].toString()));
-            	result.add(c);
-            	
+
+                SimpleProjectContestData c = new SimpleProjectContestData();
+                Object[] os = (Object[]) list.get(i);
+                if (os[0] != null)
+                    c.setProjectId(Long.parseLong(os[0].toString()));
+                if (os[1] != null)
+                    c.setPname(os[1].toString());
+                if (os[2] != null)
+                    c.setContestId(Long.parseLong(os[2].toString()));
+                if (os[3] != null)
+                    c.setCname(os[3].toString());
+
+                if (os[4] != null)
+                    c.setStartDate(myFmt.parse(os[4].toString()));
+                if (os[5] != null)
+                    c.setEndDate(myFmt.parse(os[5].toString()));
+                if (os[6] != null)
+                    c.setSname(os[6].toString());
+                if (os[7] != null)
+                    c.setNum_reg(Integer.parseInt(os[7].toString()));
+                if (os[8] != null)
+                    c.setNum_sub(Integer.parseInt(os[8].toString()));
+
+                if (os[9] != null)
+                    c.setNum_for(Integer.parseInt(os[9].toString()));
+                result.add(c);
+
             }
             return result;
         } catch (IllegalStateException e) {
@@ -2954,229 +2980,186 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
         }
     }
 
-
-
-	/**
+    /**
      * <p>
-     * This is going to fetch only contestid and contest name for contest.
+     * This gets list of <code>SimpleContestData</code> for given project.
      * </p>
      * 
-     * @return the list of all available contents (only id and name) (or empty if none found)
-     * 
+     * @return the list of all available <code>SimpleContestData</code> (or empty if none found)
      * @throws ContestManagementException
      *             if any error occurs when getting contest
-     * 
      * @since 1.1
      */
-    public List<SimpleContestData> getContestDataOnly() throws ContestManagementException
-    {
-    	try {
-			logEnter("getContestDataOnly()");
+    public List<SimpleContestData> getContestDataOnly() throws ContestManagementException {
+        try {
+            logEnter("getContestDataOnly()");
 
-			EntityManager em = getEntityManager();
+            return getContestDataOnlyInternal(-1, -1);
 
-    			String qstr = "select contest_id,  "
-    			    + " name,  "
-    			    + " contest_detailed_status_id,  "
-    			    + " (select contest_detailed_status_desc  "
-    			    + " from contest_detailed_status_lu ds "
-    			    + " where ds.contest_detailed_status_id = c.contest_detailed_status_id) as sname, "
-    			    + " NVL((select amount "
-    			    + " from prize as p "
-    			    + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
-    			    + " and p.place = 1),0) as prize_1, "
-    			    + " NVL((select amount "
-    			    + " from prize as p "
-    			    + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
-    			    + " and p.place = 2),0) as prize_2, "
-    			    + " NVL((select amount "
-    			    + " from prize as p "
-    			    + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
-    			    + " and p.place = 3),0) as prize_3, "
-    			    + " NVL((select amount "
-    			    + " from prize as p "
-    			    + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
-    			    + " and p.place = 4),0) as prize_4, "
-    			    + " NVL((select amount "
-    			    + " from prize as p "
-    			    + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
-    			    + " and p.place = 5),0) as prize_5 "
-    			    + "from contest c  "
-    			    + "where not c.tc_direct_project_id is null  "
-    			    + "and c.deleted = 0 ";
-
-			Query query = em.createNativeQuery(qstr);
-
-			List list = query.getResultList();
-
-			List<SimpleContestData> result = new ArrayList<SimpleContestData>();
-
-			for (int i = 0; i < list.size(); i++) {
-
-				SimpleContestData c = new SimpleContestData();
-				Object[] os = (Object[]) list.get(i);
-				if (os[0] != null)
-					c.setContestId(Long.parseLong(os[0].toString()));
-				if (os[1] != null)
-					c.setName(os[1].toString());
-				if (os[2] != null)
-					c.setStatusId(Long.parseLong(os[2].toString()));
-				if (os[3] != null)
-					c.setSname(os[3].toString());
-				
-				List<Double> prizeList = new ArrayList<Double>(5);
-				c.setPrizes(prizeList);
-				
-				// set the prizes.
-				for (int j = 0; j < 5; j++) {
-				    prizeList.add(new Double(0));
-				}
-				
-				// set the prizes.
-				for (int j = 0; j < 5; j++) {
-				    if (os[j + 4] != null)
-	                    prizeList.set(j, Double.parseDouble(os[j + 4].toString()));
-				}
-				
-				result.add(c);
-			}
-			return result;
-		} catch (IllegalStateException e) {
-			throw wrapContestManagementException(e,
-					"The EntityManager is closed.");
-		} catch (PersistenceException e) {
-			throw wrapContestManagementException(e,
-					"There are errors while persisting the entity.");
-		} finally {
-			logExit("getContestDataOnly()");
-		}
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("getContestDataOnly()");
+        }
     }
 
 	/**
      * <p>
-     * This is going to fetch only contestid and contest name for contest related to given project.
+     * This gets list of <code>SimpleContestData</code> for given project.
      * </p>
      * 
-     * @return the list of all available contents (only id and name) (or empty if none found)
-     * 
+     * @param pid tc_project_id for which to get list of <code>SimpleContestData</code>.
+     * @return the list of all available <code>SimpleContestData</code> (or empty if none found)
      * @throws ContestManagementException
      *             if any error occurs when getting contest
-     * 
      * @since 1.1
      */
-	@PermitAll
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public List<SimpleContestData> getContestDataOnly(long pid) throws ContestManagementException
-    {
-		try {
-			logEnter("getContestDataOnly(pid)");
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<SimpleContestData> getContestDataOnly(long pid) throws ContestManagementException {
+        try {
+            logEnter("getContestDataOnly(pid)");
 
-			EntityManager em = getEntityManager();
-			String qstr = "select contest_id, name, contest_detailed_status_id, "
-					+ "(select contest_detailed_status_desc from contest_detailed_status_lu ds " +
-							"where ds.contest_detailed_status_id =c.contest_detailed_status_id) as sname from contest c "
-					+ "where c.tc_direct_project_id ="+pid+" and c.deleted = 0   ";
+            return getContestDataOnlyInternal(-1, pid);
 
-			Query query = em.createNativeQuery(qstr);
-
-			List list = query.getResultList();
-
-			List<SimpleContestData> result = new ArrayList<SimpleContestData>();
-
-			for (int i = 0; i < list.size(); i++) {
-
-				SimpleContestData c = new SimpleContestData();
-				Object[] os = (Object[]) list.get(i);
-				if (os[0] != null)
-					c.setContestId(Long.parseLong(os[0].toString()));
-				if (os[1] != null)
-					c.setName(os[1].toString());
-				if (os[2] != null)
-					c.setStatusId(Long.parseLong(os[2].toString()));
-				if (os[3] != null)
-					c.setSname(os[3].toString());
-				result.add(c);
-
-			}
-			return result;
-		} catch (IllegalStateException e) {
-			throw wrapContestManagementException(e,
-					"The EntityManager is closed.");
-		} catch (PersistenceException e) {
-			throw wrapContestManagementException(e,
-					"There are errors while persisting the entity.");
-		} finally {
-			logExit("getContestDataOnly(pid)");
-		}
+        } finally {
+            logExit("getContestDataOnly(pid)");
+        }
     }
-
-
-
-	/**
-     * <p>
-     * This is going to fetch only contestid and contest name for contest.
-     * </p>
-     * 
-     * @return the list of all available contents (only id and name) (or empty if none found)
-     * 
-     * @throws ContestManagementException
-     *             if any error occurs when getting contest
-     * 
-     * @since 1.1
-     */
-    public List<SimpleContestData> getContestDataOnlyForUser(long createdUser) throws ContestManagementException
-    {
-    	try {
-			logEnter("getContestDataOnlyForUser()");
-
-			EntityManager em = getEntityManager();
-
-			String qstr = "select contest_id, name, contest_detailed_status_id, "
-				+ "(select contest_detailed_status_desc from contest_detailed_status_lu ds " +
-				"where ds.contest_detailed_status_id =c.contest_detailed_status_id) as sname from contest c "
-		+ "where not c.tc_direct_project_id is null and c.deleted = 0   and  c.create_user_id = "
-					+ createdUser;
-
-			Query query = em.createNativeQuery(qstr);
-
-			List list = query.getResultList();
-
-			List<SimpleContestData> result = new ArrayList<SimpleContestData>();
-
-			for (int i = 0; i < list.size(); i++) {
-
-				SimpleContestData c = new SimpleContestData();
-				Object[] os = (Object[]) list.get(i);
-				if (os[0] != null)
-					c.setContestId(Long.parseLong(os[0].toString()));
-				if (os[1] != null)
-					c.setName(os[1].toString());
-				if (os[2] != null)
-					c.setStatusId(Long.parseLong(os[2].toString()));
-				if (os[3] != null)
-					c.setSname(os[1].toString());
-				result.add(c);
-
-			}
-			return result;
-		} catch (IllegalStateException e) {
-			throw wrapContestManagementException(e,
-					"The EntityManager is closed.");
-		} catch (PersistenceException e) {
-			throw wrapContestManagementException(e,
-					"There are errors while persisting the entity.");
-		} finally {
-			logExit("getContestDataOnlyForUser()");
-		}
-    }
-
-
 
     /**
      * <p>
-     * This is going to get all the matching contest entities that fulfill the
-     * input criteria.
+     * This gets list of <code>SimpleContestData</code> for given user.
      * </p>
+     * 
+     * @param createdUser
+     *            create_user_id for which to get list of <code>SimpleContestData</code>
+     * @return the list of all available <code>SimpleContestData</code> (or empty if none found)
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * @since 1.1
+     */
+    public List<SimpleContestData> getContestDataOnlyForUser(long createdUser) throws ContestManagementException {
+        try {
+            logEnter("getContestDataOnlyForUser(createdUser)");
+
+            return getContestDataOnlyInternal(createdUser, -1);
+
+        } finally {
+            logExit("getContestDataOnlyForUser(createdUser)");
+        }
+    }
+
+    /**
+     * <p>
+     * This gets list of <code>SimpleContestData</code> for given user and project.
+     * If createdUserUser == -1, then no filter is applied on create_user_id.
+     * If pid == -1, then no filter is applied on tc_project_id
+     * </p>
+     * 
+     * @param createdUser
+     *            create_user_id for which to get list of <code>SimpleContestData</code>. If this value is -1, then all
+     *            users are considered.
+     * @param pid
+     *            tc_project_id for which to get list of <code>SimpleContestData</code>. If this value is -1, then all
+     *            projects are considred.
+     * @return the list of all available <code>SimpleContestData</code> (or empty if none found)
+     * @throws ContestManagementException
+     *             if any error occurs when getting contest
+     * @since 1.1
+     */
+    private List<SimpleContestData> getContestDataOnlyInternal(long createdUser, long pid)
+            throws ContestManagementException {
+        try {
+            logEnter("getContestDataOnlyInternal(createdUser, pid)");
+
+			EntityManager em = getEntityManager();
+
+            String qstr = "select contest_id,  "
+                    + " name,  "
+                    + " contest_detailed_status_id,  "
+                    + " (select contest_detailed_status_desc  "
+                    + " from contest_detailed_status_lu ds "
+                    + " where ds.contest_detailed_status_id = c.contest_detailed_status_id) as sname, "
+                    + " NVL((select amount "
+                    + " from prize as p "
+                    + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
+                    + " and p.place = 1),0) as prize_1, "
+                    + " NVL((select amount "
+                    + " from prize as p "
+                    + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
+                    + " and p.place = 2),0) as prize_2, "
+                    + " NVL((select amount "
+                    + " from prize as p "
+                    + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
+                    + " and p.place = 3),0) as prize_3, "
+                    + " NVL((select amount "
+                    + " from prize as p "
+                    + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
+                    + " and p.place = 4),0) as prize_4, "
+                    + " NVL((select amount "
+                    + " from prize as p "
+                    + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
+                    + " and p.place = 5),0) as prize_5 " + " from contest c  "
+                    + " where not c.tc_direct_project_id is null  " + " and c.deleted = 0 ";
+            if (createdUser != -1) {
+                qstr = qstr + " and c.create_user_id = " + createdUser;
+            }
+
+            if (pid != -1) {
+                qstr = qstr + " and c.tc_direct_project_id = " + pid;
+            }
+
+            Query query = em.createNativeQuery(qstr);
+
+            List list = query.getResultList();
+
+            List<SimpleContestData> result = new ArrayList<SimpleContestData>();
+
+            for (int i = 0; i < list.size(); i++) {
+
+                SimpleContestData c = new SimpleContestData();
+                Object[] os = (Object[]) list.get(i);
+                if (os[0] != null)
+                    c.setContestId(Long.parseLong(os[0].toString()));
+                if (os[1] != null)
+                    c.setName(os[1].toString());
+                if (os[2] != null)
+                    c.setStatusId(Long.parseLong(os[2].toString()));
+                if (os[3] != null)
+                    c.setSname(os[3].toString());
+
+                List<Double> prizeList = new ArrayList<Double>(5);
+                c.setPrizes(prizeList);
+
+                // set the prizes.
+                for (int j = 0; j < 5; j++) {
+                    prizeList.add(new Double(0));
+                }
+
+                // set the prizes.
+                for (int j = 0; j < 5; j++) {
+                    if (os[j + 4] != null)
+                        prizeList.set(j, Double.parseDouble(os[j + 4].toString()));
+                }
+
+                result.add(c);
+            }
+
+            return result;
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logEnter("getContestDataOnlyInternal(createdUser, pid)");
+        }
+    }
+
+    /**
+     * <p> This is going to get all the matching contest entities that fulfill the input criteria. </p>
      * 
      * @param filter
      *            a search filter used as criteria for contests.
