@@ -2,11 +2,12 @@
 <tc:LaunchWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
     xmlns:pages="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*" styleName="NewWidgetPanel"
     xmlns:tc="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.*" 
-    width="600" initialize="initWidget()" verticalScrollPolicy="off">
+    width="600" initialize="initWidget()" verticalScrollPolicy="off"     creationComplete="onCreateComplete(1)" >
     <mx:Style source="Style.css" />
 
     <mx:Script>
         <![CDATA[
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CompetionType;
         	import com.topcoder.flex.model.IWidgetFramework;
         	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestResultEvent;
         	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProjectServiceFacadeBeanService;
@@ -88,10 +89,8 @@
                 initialWdt.visible = true;
         		initialWdt.init();
         		*/
-        		var f:IWidgetFramework=widgetFramework;
-        		container.contents=new  LaunchWidget();
-        		container.contents.widgetFramework=f;
-        		container.startRestore();
+        		reload();
+        		
         	}
         
         	public function closeWidget():void{
@@ -131,9 +130,11 @@
             {
             	if(e && e.result)
             	{
-            		competition =e.result._return as StudioCompetition;
-            		startLaunchProcess();
-            		next();
+            		resetWidget();
+            		(container.contents as LaunchWidget).competition=e.result._return as StudioCompetition;
+            		//competition =e.result._return as StudioCompetition;
+            		//startLaunchProcess();
+            		//next();
             	}
             }
 
@@ -203,7 +204,23 @@
 				 setNextStep(step7box);
 				 setNextStep(step8box);
 				 stepNumber = 1;
+				 onCreateComplete(2)
 		
+            }
+            private var flag:int=0;
+            private function onCreateComplete(f:int):void
+            {
+            	flag=flag+f;
+            	
+            	if(flag==3 && competition && competition.competitionId>0)
+            	{
+            		flag=4;
+            		var type:CompetionType = new CompetionType();
+        			type.competionType = "STUDIO";
+        			competition.type = type;
+            		startLaunchProcess();
+            		next();
+            	}
             }
             
             

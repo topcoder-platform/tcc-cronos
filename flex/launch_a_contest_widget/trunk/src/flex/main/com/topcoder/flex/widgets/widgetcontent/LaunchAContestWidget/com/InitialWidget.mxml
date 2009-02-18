@@ -64,13 +64,7 @@
                 mainWidget._pws.getAllProjects_send();
                   
                   selectContests.dataProvider = contestsData;
-                  if(mainWidget.contestid)
-                  {
-                  	mainWidget._ws.getContest_request_var=new GetContest_request();
-                  	mainWidget._ws.getContest_request_var.getContest=new GetContest();
-                  	mainWidget._ws.getContest_request_var.getContest.arg0=parseInt(mainWidget.contestid);
-                  	mainWidget._ws.getContest_send();
-                  }
+                  
             }
             private function createProjectHandler(e:CreateProjectResultEvent):void
             {
