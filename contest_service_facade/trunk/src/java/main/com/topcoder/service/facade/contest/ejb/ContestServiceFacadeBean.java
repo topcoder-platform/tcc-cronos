@@ -1052,6 +1052,66 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * Processes the submission payment. It does following steps:
      * <ul>
      * <li>Checks submissionId to see if is available, if not then it throws PaymentException.</li>
+     * <li>It processes the payment through <code>PaymentProcessor</code></li>
+     * <li>On successful processing -
+     * <ul>
+     * <li>it calls <code>this.purchaseSubmission(...)</code></li>
+     * </ul>
+     * </li>
+     * </ul>
+     * </p>
+     * 
+     * @param submissionIds
+     *            submission identifiers of the submissions that need to be purchased.
+     * @param paymentData
+     *            a <code>CreditCardPaymentData</code> payment information (credit card) that need to be processed.
+     * @return a <code>PaymentResult</code> result of the payment processing.
+     * @throws PaymentException
+     *             if any errors occurs in processing the payment or submission is not valid.
+     * @throws PersistenceException
+     *             if any error occurs when retrieving the submission.
+     */
+    public PaymentResult processSubmissionCreditCardPayment(long[] submissionIds, CreditCardPaymentData paymentData) throws PaymentException,
+            PersistenceException {
+
+        return processSubmissionPaymentInternal(submissionIds, paymentData);
+    }
+    
+    /**
+     * <p>
+     * Processes the submission payment. It does following steps:
+     * <ul>
+     * <li>Checks submissionId to see if is available, if not then it throws PaymentException.</li>
+     * <li>Right-now this method doesn't process PO payments.</li>
+     * <li>On successful processing -
+     * <ul>
+     * <li>it calls <code>this.purchaseSubmission(...)</code></li>
+     * </ul>
+     * </li>
+     * </ul>
+     * </p>
+     * 
+     * @param submissionIds
+     *            submission identifiers of the submissions that need to be purchased.
+     * @param paymentData
+     *            a <code>TCPurhcaseOrderPaymentData</code> payment information (po details) that need to be processed.
+     * @return a <code>PaymentResult</code> result of the payment processing.
+     * @throws PaymentException
+     *             if any errors occurs in processing the payment or submission is not valid.
+     * @throws PersistenceException
+     *             if any error occurs when retrieving the submission.
+     */
+    public PaymentResult processSubmissionPurchaseOrderPayment(long[] submissionIds, TCPurhcaseOrderPaymentData paymentData) throws PaymentException,
+            PersistenceException {
+
+        return processSubmissionPaymentInternal(submissionIds, paymentData);
+    }
+    
+    /**
+     * <p>
+     * Processes the submission payment. It does following steps:
+     * <ul>
+     * <li>Checks submissionId to see if is available, if not then it throws PaymentException.</li>
      * <li>If payment type is credit card then it processes the payment through <code>PaymentProcessor</code></li>
      * <li>Right-now this method doesn't process PO payments.</li>
      * <li>On successful processing -
@@ -1072,13 +1132,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws PersistenceException
      *             if any error occurs when retrieving the submission.
      */
-    public PaymentResult processSubmissionPayment(long submissionId, PaymentData paymentData) throws PaymentException,
+    private PaymentResult processSubmissionPaymentInternal(long[] submissionIds, PaymentData paymentData) throws PaymentException,
             PersistenceException {
 
-        SubmissionData submissionData = this.retrieveSubmission(submissionId);
-        if (submissionData == null) {
-            throw new PaymentException("Error in processing payment for submission: " + submissionId
-                    + ". Submission is not found");
+        for (int i = 0; i < submissionIds.length; i++) {
+            long submissionId = submissionIds[i];
+            SubmissionData submissionData = this.retrieveSubmission(submissionId);
+            if (submissionData == null) {
+                throw new PaymentException("Error in processing payment for submission: " + submissionId
+                        + ". Submission is not found");
+            }
         }
 
         PaymentResult result = null;
@@ -1093,8 +1156,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
         UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
         String userId = Long.toString(p.getUserId());
-
-        this.purchaseSubmission(submissionId, result.getReferenceNumber(), userId);
+        
+        // purchase submission fails without marking submission for purchase.
+        for (int i = 0; i < submissionIds.length; i++) {
+            long submissionId = submissionIds[i];
+            this.markForPurchase(submissionId);
+            this.purchaseSubmission(submissionId, result.getReferenceNumber(), userId);
+        }
 
         return result;
     }

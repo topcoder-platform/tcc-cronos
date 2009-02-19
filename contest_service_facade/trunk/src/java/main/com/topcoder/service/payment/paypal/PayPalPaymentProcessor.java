@@ -173,6 +173,8 @@ public class PayPalPaymentProcessor implements PaymentProcessor {
             cardType = CreditCardTypeType.Amex;
         }
 
+		System.out.println("-----card number --"+ paymentData.getCardNumber());
+
         // set card number, expiry month & year.
         CreditCardDetailsType creditCard = new CreditCardDetailsType();
         creditCard.setCreditCardNumber(paymentData.getCardNumber());
