@@ -19,7 +19,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
         /**
          * Constructor, initializes the type class
          */
-public function SimpleContestData() {}
+	public function SimpleContestData() {}
                 
                    public var contestId:Number;
                    public var endDate:Date;
@@ -29,6 +29,6 @@ public function SimpleContestData() {}
                    public var sname:String;
                    public var startDate:Date;
                    public var statusId:Number;
-		   puublic var prizes:ArrayCollection;;
+		   public var prizes:ArrayCollection;
            	}
       	 }
