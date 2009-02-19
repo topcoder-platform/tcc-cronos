@@ -1035,10 +1035,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
         createContestPayment(contestPaymentData, userId);
 
-		// create forum for the contest.
-        long forumid = this.studioService.createForum(tobeUpdatedCompetition.getContestData().getName(), p.getUserId());
-
-		tobeUpdatedCompetition.getContestData().setForumId(forumid);
+		// DONOT create for now
+		// create forum for the contest. 
+        //long forumid = this.studioService.createForum(tobeUpdatedCompetition.getContestData().getName(), p.getUserId());
+		//tobeUpdatedCompetition.getContestData().setForumId(forumid);
 
         // update contest.
         updateContest(tobeUpdatedCompetition);
