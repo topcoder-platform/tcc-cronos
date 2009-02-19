@@ -1010,7 +1010,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         if (paymentData instanceof TCPurhcaseOrderPaymentData) {
             // processing purchase order is not in scope of this assembly.
             result = new PaymentResult();
-            result.setReferenceNumber("NOT IN SCOPE FOR PO");
+            result.setReferenceNumber(((TCPurhcaseOrderPaymentData)paymentData).getPoNumber());
         } else if (paymentData instanceof CreditCardPaymentData) {
             // ideally client should be sending the amount,
             // but as client has some inconsistency
@@ -1086,7 +1086,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         if (paymentData.getType().equals(PaymentType.TCPurchaseOrder)) {
             // processing purchase order is not in scope of this assembly.
             result = new PaymentResult();
-            result.setReferenceNumber("NOT IN SCOPE FOR PO");
+            result.setReferenceNumber(((TCPurhcaseOrderPaymentData)paymentData).getPoNumber());
         } else if (paymentData.getType().equals(PaymentType.PayPalCreditCard)) {
             result = paymentProcessor.process(paymentData);
         }
