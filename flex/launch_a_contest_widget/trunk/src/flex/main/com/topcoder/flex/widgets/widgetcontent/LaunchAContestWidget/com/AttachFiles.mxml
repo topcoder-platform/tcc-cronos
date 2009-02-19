@@ -383,7 +383,7 @@
 	                <mx:text>
 	                </mx:text>
 	            </mx:Text>
-	            <mx:TextArea id="fileDescInput" width="500" height="50" text="Enter file description here..."/>
+	            <mx:TextArea id="fileDescInput" width="500" height="50" text=""/>
             </mx:VBox>
             <mx:Spacer height="5"/>
             <mx:HBox >
