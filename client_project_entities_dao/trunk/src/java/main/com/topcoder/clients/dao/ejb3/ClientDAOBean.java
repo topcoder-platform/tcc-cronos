@@ -3,17 +3,18 @@
  */
 package com.topcoder.clients.dao.ejb3;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
-import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import com.topcoder.clients.dao.ClientDAO;
 import com.topcoder.clients.dao.DAOConfigurationException;
@@ -52,14 +53,24 @@ import com.topcoder.clients.model.Project;
  * @author Mafy, TCSDEVELOPER
  * @version 1.0
  */
-@Stateless(name = ClientDAO.BEAN_NAME)
 @Local(ClientDAOLocal.class)
 @Remote(ClientDAORemote.class)
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class ClientDAOBean extends GenericEJB3DAO<Client, Long> implements
         ClientDAO, ClientDAOLocal, ClientDAORemote {
-    /**
+	
+	/**
+     * The query string used to select projects.
+     */
+	private static final String SELECT_WORKER_PROJECT =
+		"SELECT distinct project_id WHERE project_worker WHERE user_account_id = ";
+	/**
+     * The query string used to select projects.
+     */
+	private static final String SELECT_MANAGER_PROJECT =
+		"SELECT distinct project_id WHERE project_manager WHERE user_account_id = ";
+	/**
      * The query string used to select projects.
      */
     private static final String QUERYSTRING = "select p from Project p "
@@ -108,6 +119,61 @@ public class ClientDAOBean extends GenericEJB3DAO<Client, Long> implements
                     "Failed to get project for client.");
         }
     }
+
+    /**
+     * <p>
+     * Defines the operation that performs the retrieval of the list with
+     * projects with the given user id. If nothing is found, return an empty list.
+     * <p>
+     * @param userId the user id
+     * @return List of Project, if nothing is found, return an empty string
+     * @throws DAOException if any error occurs while performing this operation.
+     */
+    @SuppressWarnings("unchecked")
+	public List<Project> getProjectsByUser(long userId) throws DAOException {
+		EntityManager entityManager = Helper.checkEntityManager(getEntityManager());
+		
+		try {
+			Query query = entityManager.createNativeQuery(SELECT_MANAGER_PROJECT + userId);
+			List<Long> managerProjects = query.getResultList();
+			
+			query = entityManager.createNativeQuery(SELECT_WORKER_PROJECT + userId);
+			List<Long> workerProjects = query.getResultList();
+			
+			//join all the distinct project id
+			for(Long projectId: workerProjects) {
+				boolean existed = false;
+				for(Long existingId:managerProjects) {
+					if ( existingId.longValue() == projectId.longValue()) {
+						existed = true;
+						break;
+					}
+				}
+				if (!existed) {
+					managerProjects.add(projectId);
+				}
+			}
+			
+			if ( managerProjects.isEmpty()) {
+				return new ArrayList<Project>();
+			}
+			
+			String queryString = "SELECT p FROM Project p WHERE p.id ";
+			if ( managerProjects.size() == 1) {
+				queryString += " = " + managerProjects.get(0).longValue();
+			} else {
+				queryString += " in (";
+				for(Long projectId:managerProjects) {
+					queryString += projectId + ",";
+				}
+				queryString = queryString.substring(0, queryString.length()-1);
+				queryString += ")";
+			}
+			return entityManager.createQuery(queryString).getResultList();	
+		} catch(Exception e) {
+			throw Helper.WrapExceptionWithDAOException(e, "Failed to get project for user [" + userId + "].");
+		}
+	}
 
 
 }

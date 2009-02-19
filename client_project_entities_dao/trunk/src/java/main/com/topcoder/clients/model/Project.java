@@ -46,7 +46,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "project", propOrder = { "company", "active", "salesTax",
         "pOBoxNumber", "paymentTermsId", "description", "projectStatus",
         "client", "childProjects", "parentProjectId" })
-@Entity
+@Entity(name="ClientProject")
 @Table(name = "project")
 public class Project extends AuditableEntity {
     /**

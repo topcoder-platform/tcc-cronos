@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
-import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
@@ -53,7 +52,6 @@ import com.topcoder.clients.model.Project;
  * @author Mafy, TCSDEVELOPER
  * @version 1.0
  */
-@Stateless(name = CompanyDAO.BEAN_NAME)
 @Local(CompanyDAOLocal.class)
 @Remote(CompanyDAORemote.class)
 @TransactionManagement(TransactionManagementType.CONTAINER)
