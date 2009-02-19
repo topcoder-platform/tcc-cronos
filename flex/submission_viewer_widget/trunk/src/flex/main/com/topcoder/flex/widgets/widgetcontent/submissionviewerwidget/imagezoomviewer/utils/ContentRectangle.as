@@ -221,6 +221,14 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoom
 		}
 		
 		/**
+		 * scales and centers the rectangle to the view rectangle.
+		 */
+		public function viewFullWidth(viewRectangle:Rectangle):void
+		{
+			fitWidthToRectangle(viewRectangle);
+		}
+		
+		/**
 		 * scales the rectangle based on the view rectangles origin
 		 */		
 		public function zoomByView(scaleValue:Number):void
@@ -289,6 +297,14 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoom
 			}
 			// center position
 			centerToPoint(new Point(rectangle.width/2, rectangle.height/2));
+		}
+		
+		private function fitWidthToRectangle(rectangle:Rectangle):void
+		{
+			var newWidth:Number = rectangle.width;
+			var newHeight:Number = _unscaledHeight * newWidth / _unscaledWidth;
+			scaleX = newWidth/_unscaledWidth;
+			scaleY = newHeight/_unscaledHeight;
 		}
 	}
 }

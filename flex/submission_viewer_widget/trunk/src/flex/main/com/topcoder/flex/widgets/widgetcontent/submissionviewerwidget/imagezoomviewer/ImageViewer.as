@@ -339,6 +339,12 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoom
             _contentRectangle.viewAll(viewRect);
             bitmapScaleFactor = _contentRectangle.scaleX;
         }
+        
+        public function viewFullWidth():void 
+        {
+            _contentRectangle.viewFullWidth(viewRect);
+            bitmapScaleFactor = _contentRectangle.scaleX;
+        }
 
 
         /////////////////////////////////////////////////////////
@@ -509,6 +515,9 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoom
             
             loadingImage = false;
             _percentLoadedLabel.text = "Complete";
+            
+            // fit image to the full width.
+            viewFullWidth();
         }
 
         /**
