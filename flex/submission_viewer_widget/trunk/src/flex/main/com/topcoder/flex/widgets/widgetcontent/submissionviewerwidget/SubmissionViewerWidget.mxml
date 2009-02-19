@@ -61,6 +61,10 @@
     		import mx.utils.ObjectUtil;
     		
     		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoomviewer.ImageViewer;
+    		
+    		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.CreditCardPaymentData;
+    		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.PaymentData;
+    		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.TcPurhcaseOrderPaymentData;
 
             private var _rankList:ArrayCollection = new ArrayCollection();
             
@@ -1190,9 +1194,6 @@
 				} else if (pay.selectedIndex == 1) {
 					if (sub1.label == "Submit Purchase") {
 						updatePurchaseToWS();
-						header.text = "Your Transaction was Approved!";
-						text1.htmlText = "Thank you for your order. An email confirmation will be sent as a receipt for this transaction. <b>Your reference # is EBFH53569DWS9.</b>";
-						sub1.label = "Download Submissions";
 					} else {
 						pay.selectedIndex = 0;
 						continueToSubmissionDownloadScreen();
@@ -1200,9 +1201,6 @@
 				} else if (pay.selectedIndex == 2) {
 					if (sub2.label == "Submit Purchase") {
 						updatePurchaseToWS();
-						header.text = "Your Transaction was Approved!";
-						text1.htmlText = "Thank you for your order. An email confirmation will be sent as a receipt for this transaction. <b>Your reference # is EBFH53569DWS9.</b>";
-						sub2.label = "Download Submissions";
 					} else {
 						pay.selectedIndex = 0;
 						continueToSubmissionDownloadScreen();
@@ -1222,6 +1220,33 @@
             	// do nothing
             }
             
+            
+            private var _paymentReferenceNumber:String;
+            
+            private function handleProcessSubmissionCreditCardPayment(event:ResultEvent):void
+            {
+            	Helper.showAlertMessage("Process submission payment successfully!!");
+            	if (event && event.result) {
+                    _paymentReferenceNumber = event.result as String;	
+                    
+					header.text = "Your Transaction was Approved!";
+					text1.htmlText = "Thank you for your order. An email confirmation will be sent as a receipt for this transaction. <b>Your reference # is " + _paymentReferenceNumber + ".</b>";
+					sub1.label = "Download Submissions";
+            	}
+            }
+
+            private function handleProcessSubmissionPurchaseOrderPayment(event:ResultEvent):void
+            {
+            	Helper.showAlertMessage("Process submission payment successfully!!");
+            	if (event && event.result) {
+            	    _paymentReferenceNumber = event.result as String;
+            	    
+					header.text = "Your Transaction was Approved!";
+					text1.htmlText = "Thank you for your order. An email confirmation will be sent as a receipt for this transaction. <b>Your reference # is " + _paymentReferenceNumber + ".</b>";
+					sub2.label = "Download Submissions";
+            	}
+            }
+            
             private function updatePurchaseToWS():void {
             	_contestInfoDictionary[_selectedContestId].statusId=_completedContestTypeId;
             	
@@ -1233,6 +1258,7 @@
 	            	trace("Updating contest status for: " + _selectedContestId);
 					ContestServiceFacadeBean.updateContestStatus(_selectedContestId, _completedContestTypeId);
 					
+					var submissionIds:ArrayCollection = new ArrayCollection();
 					for (var i:int; i < _downloadList.length; i++) {
 						var item:Object = _downloadList[i];
 						if (item.rank && item.rank > 0) {
@@ -1242,13 +1268,50 @@
 							ContestServiceFacadeBean.setSubmissionPlacement(item.id, item.rank);
 						}
 						
-						if (item.purchased && item.mustPurchase == false) {
-							ContestServiceFacadeBean.clearHeaders();
-	            			ContestServiceFacadeBean.addHeader(header);
-	            			trace("Marking for purchase: " + item.id);
-	            			ContestServiceFacadeBean.markForPurchase(item.id);
-	     				}	
+						if (item.purchased) {
+						    submissionIds.addItem(item.id);
+						}
 					}
+					
+					ContestServiceFacadeBean.clearHeaders();
+        			ContestServiceFacadeBean.addHeader(header);
+        			//trace("Marking for purchase: " + item.id);
+        			//ContestServiceFacadeBean.markForPurchase(item.id);
+        			//BUGR-1251
+        			//process submission payment is already doing markForPurchase.
+        			if (pay.selectedIndex == 1) {
+		                var creditCardPaymentData:CreditCardPaymentData=new CreditCardPaymentData();
+		                creditCardPaymentData.paymentType="PayPalCreditCard";
+		                creditCardPaymentData.cardNumber=wf1.cardNum.text;
+		                creditCardPaymentData.cardType=wf1.cardTypeCombo.selectedItem.data;
+		                creditCardPaymentData.cardExpiryMonth=wf1.month.selectedItem.data;
+		                creditCardPaymentData.cardExpiryYear=wf1.year.selectedItem.data;
+		                creditCardPaymentData.firstName=wf1.cardname.text;
+		                creditCardPaymentData.lastName=wf1.cardname.text;
+		                creditCardPaymentData.address=wf1.address.text;
+		                creditCardPaymentData.city=wf1.city.text;
+		                creditCardPaymentData.state=wf1.state.text;
+		                creditCardPaymentData.zipCode=wf1.code.text;
+		                creditCardPaymentData.country=wf1.country.text;
+		                creditCardPaymentData.phone=wf1.phone.text;
+		                creditCardPaymentData.email=wf1.email.text;
+		                
+		                // TODO: read ip address from client.
+		                creditCardPaymentData.ipAddress="10.10.10.10";
+		                creditCardPaymentData.sessionId="";
+		                
+		                // set the amount.
+		                // TODO: later add taxes to it.
+		                creditCardPaymentData.amount=_totalPurchaseAmount as String;
+		                
+                        ContestServiceFacadeBean.processSubmissionCreditCardPayment(submissionIds, creditCardPaymentData);
+        			}
+        			else if(pay.selectedIndex == 2) {
+		                var purchaseOrderPaymentData:TcPurhcaseOrderPaymentData=new TcPurhcaseOrderPaymentData();
+		                purchaseOrderPaymentData.paymentType="TCPurchaseOrder";
+		                purchaseOrderPaymentData.poNumber="PO-"+wf1.order.text;
+		                ContestServiceFacadeBean.processSubmissionPurchaseOrderPayment(submissionIds, purchaseOrderPaymentData);
+        			}
             	}
             }
             
@@ -1264,6 +1327,8 @@
 					ContestServiceFacadeBean.updateContestStatus(_selectedContestId, _noWinnerChosenContestTypeId);
             	}
             }
+            
+            private var _totalPurchaseAmount:Number = 0;
             
             private function updatePurchase():void {
             	trace("Updating purchase info");
@@ -1288,6 +1353,7 @@
             	}
             	
             	_purchaseMoney = moneyFormatter.format(totalMoney);
+            	_totalPurchaseAmount = totalMoney;
             	var sort:Sort = new Sort();
 	            sort.compareFunction = compareNumber;
 	            _downloadList.sort = sort;
@@ -1521,6 +1587,19 @@
 		result="handleMarkForPurchase(event)"
 		fault="Helper.showAlertMessage('markForPurchase: ' + event.fault.faultString);"> 
 	</mx:operation>
+	
+	<mx:operation name="processSubmissionCreditCardPayment" 
+        resultFormat="object" 
+        result="handleProcessSubmissionCreditCardPayment(event)"
+        fault="Helper.showAlertMessage('processSubmissionCreditCardPayment: ' + event.fault.faultString);"> 
+    </mx:operation>
+    
+    <mx:operation name="processSubmissionPurchaseOrderPayment" 
+        resultFormat="object" 
+        result="handleProcessSubmissionPurchaseOrderPayment(event)"
+        fault="Helper.showAlertMessage('processSubmissionPurchaseOrderPayment: ' + event.fault.faultString);"> 
+    </mx:operation>
+
 </mx:WebService>
 
 <mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"
@@ -1660,7 +1739,7 @@
 	                            <tcimg:ImageViewer id="currentImage" smoothBitmap="true"
 										bitmapScaleFactorMax="5"
 										bitmapScaleFactorMin=".05"
-										bitmapScaleFactor="1"
+										
 										width="{imagePreviewerCanvas.width - 2}" 
 										height="{imagePreviewerCanvas.height - 2}" 
 										x="0" y="0"/>
