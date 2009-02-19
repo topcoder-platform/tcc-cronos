@@ -390,9 +390,9 @@
 	                    </mx:HBox>
 	            	</mx:VBox>
 	            	<mx:VBox verticalGap="2" horizontalGap="0">
-	            	   <mx:TextInput id="firstPlace" width="120" text="" change="updateAmount()" styleName="textfield"/>
-	                   <mx:TextInput id="secondPlace" width="120" text="" change="updateAmount()" styleName="textfield"/>
-	                   <mx:TextInput id="thirdPlace" width="120" text="" change="updateAmount()" styleName="textfield"/>
+	            	   <mx:TextInput id="firstPlace" width="120" text="" change="updateAmount()" styleName="textfield" maxChars="4" />
+	                   <mx:TextInput id="secondPlace" width="120" text="" change="updateAmount()" styleName="textfield" maxChars="4" />
+	                   <mx:TextInput id="thirdPlace" width="120" text="" change="updateAmount()" styleName="textfield" maxChars="4" />
 	                </mx:VBox>
 	            </mx:HBox>
 	            
@@ -406,8 +406,8 @@
 	                    </mx:HBox>
 	            	</mx:VBox>
 	            	<mx:VBox verticalGap="2" horizontalGap="0">
-	            	   <mx:TextInput id="fourthPlace" width="120" text="" change="updateAmount()" styleName="textfield"/>
-	                   <mx:TextInput id="fifthPlace" width="120" text="" change="updateAmount()" styleName="textfield"/>
+	            	   <mx:TextInput id="fourthPlace" width="120" text="" change="updateAmount()" styleName="textfield" maxChars="4" />
+	                   <mx:TextInput id="fifthPlace" width="120" text="" change="updateAmount()" styleName="textfield" maxChars="4" />
 	                </mx:VBox>
 	            </mx:HBox>
 	            
