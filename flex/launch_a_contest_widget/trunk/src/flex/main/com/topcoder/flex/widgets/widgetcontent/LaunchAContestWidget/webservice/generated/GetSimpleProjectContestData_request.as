@@ -4,22 +4,21 @@
  * Any change made to this file will be overwritten when the code is re-generated.
  */
 
-package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated
-{
-	import mx.utils.ObjectProxy;
-	import flash.utils.ByteArray;
-	import mx.rpc.soap.types.*;
-	/**
-	 * Wrapper class for a operation required type
-	 */
+package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated{
+    import mx.utils.ObjectProxy;
+    import flash.utils.ByteArray;
+    import mx.rpc.soap.types.*;
+    /**
+     * Wrapper class for a operation required type
+     */
     
-	public class GetSimpleProjectContestData_request
-	{
-		/**
-		 * Constructor, initializes the type class
-		 */
-		public function GetSimpleProjectContestData_request() {}
-            
-		public var getSimpleProjectContestData:com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSimpleProjectContestData;
-	}
-}
+    public class GetSimpleProjectContestData_request
+    {
+        /**
+         * Constructor, initializes the type class
+         */
+public function GetSimpleProjectContestData_request() {}
+                
+                   public var getSimpleProjectContestData:com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSimpleProjectContestData;
+           	}
+      	 }

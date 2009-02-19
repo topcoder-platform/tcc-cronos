@@ -1,10 +1,10 @@
+
 /**
  * BaseContestServiceFacadeBeanServiceService.as
  * This file was auto-generated from WSDL by the Apache Axis2 generator modified by Adobe
  * Any change made to this file will be overwritten when the code is re-generated.
  */
-package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated
-{
+package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated{
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.net.URLLoader;
@@ -84,15 +84,15 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
        		BaseContestServiceFacadeBeanServiceBinding.portType = BaseContestServiceFacadeBeanServicePortType;
        		BaseContestServiceFacadeBeanServicePort.binding = BaseContestServiceFacadeBeanServiceBinding;
        		BaseContestServiceFacadeBeanServiceService.addPort(BaseContestServiceFacadeBeanServicePort);
-       		BaseContestServiceFacadeBeanServicePort.endpointURI = "http://174.129.135.92:8003/topcoder_contest_service_facade-topcoder_contest_service_facade/ContestServiceFacadeBean";
+       		BaseContestServiceFacadeBeanServicePort.endpointURI = "http://127.0.0.1:8080/contestfacade/ContestServiceFacadeBean";
        		if(this.endpointURI == null)
        		{
        			this.endpointURI = BaseContestServiceFacadeBeanServicePort.endpointURI; 
        		} 
        		
 			var requestMessage:WSDLMessage;
-			var responseMessage:WSDLMessage;
-			//define the WSDLOperation: new WSDLOperation(methodName)
+	        var responseMessage:WSDLMessage;
+//define the WSDLOperation: new WSDLOperation(methodName)
             var addChangeHistory:WSDLOperation = new WSDLOperation("addChangeHistory");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("addChangeHistory");
@@ -100,19 +100,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","addChangeHistory");
                 
                 responseMessage = new WSDLMessage("addChangeHistoryResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","addChangeHistoryResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","addChangeHistoryResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				addChangeHistory.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","addChangeHistory");addChangeHistory.inputMessage = requestMessage;
 	        addChangeHistory.outputMessage = responseMessage;
             addChangeHistory.schemaManager = this.schemaMgr;
             addChangeHistory.soapAction = "\"\"";
             addChangeHistory.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(addChangeHistory);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(addChangeHistory);//define the WSDLOperation: new WSDLOperation(methodName)
             var addDocumentToContest:WSDLOperation = new WSDLOperation("addDocumentToContest");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("addDocumentToContest");
@@ -120,19 +123,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","addDocumentToContest");
                 
                 responseMessage = new WSDLMessage("addDocumentToContestResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","addDocumentToContestResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","addDocumentToContestResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				addDocumentToContest.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","addDocumentToContest");addDocumentToContest.inputMessage = requestMessage;
 	        addDocumentToContest.outputMessage = responseMessage;
             addDocumentToContest.schemaManager = this.schemaMgr;
             addDocumentToContest.soapAction = "\"\"";
             addDocumentToContest.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(addDocumentToContest);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(addDocumentToContest);//define the WSDLOperation: new WSDLOperation(methodName)
             var createContest:WSDLOperation = new WSDLOperation("createContest");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("createContest");
@@ -140,19 +146,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","createContest");
                 
                 responseMessage = new WSDLMessage("createContestResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","createContestResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","createContestResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				createContest.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","createContest");createContest.inputMessage = requestMessage;
 	        createContest.outputMessage = responseMessage;
             createContest.schemaManager = this.schemaMgr;
             createContest.soapAction = "\"\"";
             createContest.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(createContest);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(createContest);//define the WSDLOperation: new WSDLOperation(methodName)
             var createContestPayment:WSDLOperation = new WSDLOperation("createContestPayment");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("createContestPayment");
@@ -160,19 +169,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","createContestPayment");
                 
                 responseMessage = new WSDLMessage("createContestPaymentResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","createContestPaymentResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","createContestPaymentResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				createContestPayment.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","createContestPayment");createContestPayment.inputMessage = requestMessage;
 	        createContestPayment.outputMessage = responseMessage;
             createContestPayment.schemaManager = this.schemaMgr;
             createContestPayment.soapAction = "\"\"";
             createContestPayment.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(createContestPayment);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(createContestPayment);//define the WSDLOperation: new WSDLOperation(methodName)
             var deleteContest:WSDLOperation = new WSDLOperation("deleteContest");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("deleteContest");
@@ -180,19 +192,91 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","deleteContest");
                 
                 responseMessage = new WSDLMessage("deleteContestResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","deleteContestResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","deleteContestResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				deleteContest.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","deleteContest");deleteContest.inputMessage = requestMessage;
 	        deleteContest.outputMessage = responseMessage;
             deleteContest.schemaManager = this.schemaMgr;
             deleteContest.soapAction = "\"\"";
             deleteContest.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(deleteContest);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(deleteContest);//define the WSDLOperation: new WSDLOperation(methodName)
+            var do_1:WSDLOperation = new WSDLOperation("do_1");
+				//input message for the operation
+    	        requestMessage = new WSDLMessage("do_1");
+            				requestMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","do_1"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","do_1")));
+                requestMessage.encoding = new WSDLEncoding();
+                requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","do_1");
+                
+                responseMessage = new WSDLMessage("do_1Response");
+            				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","do_1Response"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","do_1Response")));
+                responseMessage.encoding = new WSDLEncoding();
+                responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+                responseMessage.encoding.useStyle="literal";				
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","do_1");do_1.inputMessage = requestMessage;
+	        do_1.outputMessage = responseMessage;
+            do_1.schemaManager = this.schemaMgr;
+            do_1.soapAction = "\"\"";
+            do_1.style = "document";
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(do_1);//define the WSDLOperation: new WSDLOperation(methodName)
+            var do_2:WSDLOperation = new WSDLOperation("do_2");
+				//input message for the operation
+    	        requestMessage = new WSDLMessage("do_2");
+            				requestMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","do_2"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","do_2")));
+                requestMessage.encoding = new WSDLEncoding();
+                requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","do_2");
+                
+                responseMessage = new WSDLMessage("do_2Response");
+            				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","do_2Response"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","do_2Response")));
+                responseMessage.encoding = new WSDLEncoding();
+                responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+                responseMessage.encoding.useStyle="literal";				
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","do_2");do_2.inputMessage = requestMessage;
+	        do_2.outputMessage = responseMessage;
+            do_2.schemaManager = this.schemaMgr;
+            do_2.soapAction = "\"\"";
+            do_2.style = "document";
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(do_2);//define the WSDLOperation: new WSDLOperation(methodName)
+            var do_3:WSDLOperation = new WSDLOperation("do_3");
+				//input message for the operation
+    	        requestMessage = new WSDLMessage("do_3");
+            				requestMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","do_3"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","do_3")));
+                requestMessage.encoding = new WSDLEncoding();
+                requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","do_3");
+                
+                responseMessage = new WSDLMessage("do_3Response");
+            				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","do_3Response"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","do_3Response")));
+                responseMessage.encoding = new WSDLEncoding();
+                responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+                responseMessage.encoding.useStyle="literal";				
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","do_3");do_3.inputMessage = requestMessage;
+	        do_3.outputMessage = responseMessage;
+            do_3.schemaManager = this.schemaMgr;
+            do_3.soapAction = "\"\"";
+            do_3.style = "document";
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(do_3);//define the WSDLOperation: new WSDLOperation(methodName)
             var editContestPayment:WSDLOperation = new WSDLOperation("editContestPayment");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("editContestPayment");
@@ -200,19 +284,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","editContestPayment");
                 
                 responseMessage = new WSDLMessage("editContestPaymentResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","editContestPaymentResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","editContestPaymentResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				editContestPayment.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","editContestPayment");editContestPayment.inputMessage = requestMessage;
 	        editContestPayment.outputMessage = responseMessage;
             editContestPayment.schemaManager = this.schemaMgr;
             editContestPayment.soapAction = "\"\"";
             editContestPayment.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(editContestPayment);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(editContestPayment);//define the WSDLOperation: new WSDLOperation(methodName)
             var getAllContestHeaders:WSDLOperation = new WSDLOperation("getAllContestHeaders");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("getAllContestHeaders");
@@ -220,19 +307,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestHeaders");
                 
                 responseMessage = new WSDLMessage("getAllContestHeadersResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestHeadersResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestHeadersResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				getAllContestHeaders.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestHeaders");getAllContestHeaders.inputMessage = requestMessage;
 	        getAllContestHeaders.outputMessage = responseMessage;
             getAllContestHeaders.schemaManager = this.schemaMgr;
             getAllContestHeaders.soapAction = "\"\"";
             getAllContestHeaders.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getAllContestHeaders);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getAllContestHeaders);//define the WSDLOperation: new WSDLOperation(methodName)
             var getAllContestTypes:WSDLOperation = new WSDLOperation("getAllContestTypes");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("getAllContestTypes");
@@ -240,19 +330,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestTypes");
                 
                 responseMessage = new WSDLMessage("getAllContestTypesResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestTypesResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestTypesResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				getAllContestTypes.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestTypes");getAllContestTypes.inputMessage = requestMessage;
 	        getAllContestTypes.outputMessage = responseMessage;
             getAllContestTypes.schemaManager = this.schemaMgr;
             getAllContestTypes.soapAction = "\"\"";
             getAllContestTypes.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getAllContestTypes);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getAllContestTypes);//define the WSDLOperation: new WSDLOperation(methodName)
             var getAllContests:WSDLOperation = new WSDLOperation("getAllContests");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("getAllContests");
@@ -260,19 +353,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContests");
                 
                 responseMessage = new WSDLMessage("getAllContestsResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestsResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestsResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				getAllContests.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContests");getAllContests.inputMessage = requestMessage;
 	        getAllContests.outputMessage = responseMessage;
             getAllContests.schemaManager = this.schemaMgr;
             getAllContests.soapAction = "\"\"";
             getAllContests.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getAllContests);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getAllContests);//define the WSDLOperation: new WSDLOperation(methodName)
             var getAllDocumentTypes:WSDLOperation = new WSDLOperation("getAllDocumentTypes");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("getAllDocumentTypes");
@@ -280,19 +376,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getAllDocumentTypes");
                 
                 responseMessage = new WSDLMessage("getAllDocumentTypesResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllDocumentTypesResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getAllDocumentTypesResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				getAllDocumentTypes.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getAllDocumentTypes");getAllDocumentTypes.inputMessage = requestMessage;
 	        getAllDocumentTypes.outputMessage = responseMessage;
             getAllDocumentTypes.schemaManager = this.schemaMgr;
             getAllDocumentTypes.soapAction = "\"\"";
             getAllDocumentTypes.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getAllDocumentTypes);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getAllDocumentTypes);//define the WSDLOperation: new WSDLOperation(methodName)
             var getAllMediums:WSDLOperation = new WSDLOperation("getAllMediums");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("getAllMediums");
@@ -300,19 +399,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getAllMediums");
                 
                 responseMessage = new WSDLMessage("getAllMediumsResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllMediumsResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getAllMediumsResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				getAllMediums.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getAllMediums");getAllMediums.inputMessage = requestMessage;
 	        getAllMediums.outputMessage = responseMessage;
             getAllMediums.schemaManager = this.schemaMgr;
             getAllMediums.soapAction = "\"\"";
             getAllMediums.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getAllMediums);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getAllMediums);//define the WSDLOperation: new WSDLOperation(methodName)
             var getAllStudioFileTypes:WSDLOperation = new WSDLOperation("getAllStudioFileTypes");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("getAllStudioFileTypes");
@@ -320,19 +422,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getAllStudioFileTypes");
                 
                 responseMessage = new WSDLMessage("getAllStudioFileTypesResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllStudioFileTypesResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getAllStudioFileTypesResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				getAllStudioFileTypes.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getAllStudioFileTypes");getAllStudioFileTypes.inputMessage = requestMessage;
 	        getAllStudioFileTypes.outputMessage = responseMessage;
             getAllStudioFileTypes.schemaManager = this.schemaMgr;
             getAllStudioFileTypes.soapAction = "\"\"";
             getAllStudioFileTypes.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getAllStudioFileTypes);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getAllStudioFileTypes);//define the WSDLOperation: new WSDLOperation(methodName)
             var getChangeHistory:WSDLOperation = new WSDLOperation("getChangeHistory");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("getChangeHistory");
@@ -340,19 +445,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getChangeHistory");
                 
                 responseMessage = new WSDLMessage("getChangeHistoryResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getChangeHistoryResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getChangeHistoryResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				getChangeHistory.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getChangeHistory");getChangeHistory.inputMessage = requestMessage;
 	        getChangeHistory.outputMessage = responseMessage;
             getChangeHistory.schemaManager = this.schemaMgr;
             getChangeHistory.soapAction = "\"\"";
             getChangeHistory.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getChangeHistory);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getChangeHistory);//define the WSDLOperation: new WSDLOperation(methodName)
             var getContest:WSDLOperation = new WSDLOperation("getContest");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("getContest");
@@ -360,19 +468,68 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getContest");
                 
                 responseMessage = new WSDLMessage("getContestResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getContestResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				getContest.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getContest");getContest.inputMessage = requestMessage;
 	        getContest.outputMessage = responseMessage;
             getContest.schemaManager = this.schemaMgr;
             getContest.soapAction = "\"\"";
             getContest.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getContest);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getContest);//define the WSDLOperation: new WSDLOperation(methodName)
+            var getContestDataOnly:WSDLOperation = new WSDLOperation("getContestDataOnly");
+				//input message for the operation
+    	        requestMessage = new WSDLMessage("getContestDataOnly");
+            				requestMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestDataOnly"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getContestDataOnly")));
+                requestMessage.encoding = new WSDLEncoding();
+                requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getContestDataOnly");
+                
+                responseMessage = new WSDLMessage("getContestDataOnlyResponse");
+            				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestDataOnlyResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getContestDataOnlyResponse")));
+                responseMessage.encoding = new WSDLEncoding();
+                responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+                responseMessage.encoding.useStyle="literal";				
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getContestDataOnly");getContestDataOnly.inputMessage = requestMessage;
+	        getContestDataOnly.outputMessage = responseMessage;
+            getContestDataOnly.schemaManager = this.schemaMgr;
+            getContestDataOnly.soapAction = "\"\"";
+            getContestDataOnly.style = "document";
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getContestDataOnly);//define the WSDLOperation: new WSDLOperation(methodName)
+            var getContestDataOnlyByPID:WSDLOperation = new WSDLOperation("getContestDataOnlyByPID");
+				//input message for the operation
+    	        requestMessage = new WSDLMessage("getContestDataOnlyByPID");
+            				requestMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestDataOnlyByPID"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getContestDataOnlyByPID")));
+                requestMessage.encoding = new WSDLEncoding();
+                requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getContestDataOnlyByPID");
+                
+                responseMessage = new WSDLMessage("getContestDataOnlyByPIDResponse");
+            				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestDataOnlyByPIDResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getContestDataOnlyByPIDResponse")));
+                responseMessage.encoding = new WSDLEncoding();
+                responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+                responseMessage.encoding.useStyle="literal";				
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getContestDataOnlyByPID");getContestDataOnlyByPID.inputMessage = requestMessage;
+	        getContestDataOnlyByPID.outputMessage = responseMessage;
+            getContestDataOnlyByPID.schemaManager = this.schemaMgr;
+            getContestDataOnlyByPID.soapAction = "\"\"";
+            getContestDataOnlyByPID.style = "document";
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getContestDataOnlyByPID);//define the WSDLOperation: new WSDLOperation(methodName)
             var getContestPayment:WSDLOperation = new WSDLOperation("getContestPayment");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("getContestPayment");
@@ -380,19 +537,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getContestPayment");
                 
                 responseMessage = new WSDLMessage("getContestPaymentResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestPaymentResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getContestPaymentResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				getContestPayment.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getContestPayment");getContestPayment.inputMessage = requestMessage;
 	        getContestPayment.outputMessage = responseMessage;
             getContestPayment.schemaManager = this.schemaMgr;
             getContestPayment.soapAction = "\"\"";
             getContestPayment.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getContestPayment);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getContestPayment);//define the WSDLOperation: new WSDLOperation(methodName)
             var getContestsForClient:WSDLOperation = new WSDLOperation("getContestsForClient");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("getContestsForClient");
@@ -400,19 +560,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getContestsForClient");
                 
                 responseMessage = new WSDLMessage("getContestsForClientResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestsForClientResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getContestsForClientResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				getContestsForClient.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getContestsForClient");getContestsForClient.inputMessage = requestMessage;
 	        getContestsForClient.outputMessage = responseMessage;
             getContestsForClient.schemaManager = this.schemaMgr;
             getContestsForClient.soapAction = "\"\"";
             getContestsForClient.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getContestsForClient);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getContestsForClient);//define the WSDLOperation: new WSDLOperation(methodName)
             var getContestsForProject:WSDLOperation = new WSDLOperation("getContestsForProject");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("getContestsForProject");
@@ -420,19 +583,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getContestsForProject");
                 
                 responseMessage = new WSDLMessage("getContestsForProjectResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestsForProjectResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getContestsForProjectResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				getContestsForProject.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getContestsForProject");getContestsForProject.inputMessage = requestMessage;
 	        getContestsForProject.outputMessage = responseMessage;
             getContestsForProject.schemaManager = this.schemaMgr;
             getContestsForProject.soapAction = "\"\"";
             getContestsForProject.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getContestsForProject);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getContestsForProject);//define the WSDLOperation: new WSDLOperation(methodName)
             var getLatestChanges:WSDLOperation = new WSDLOperation("getLatestChanges");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("getLatestChanges");
@@ -440,19 +606,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getLatestChanges");
                 
                 responseMessage = new WSDLMessage("getLatestChangesResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getLatestChangesResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getLatestChangesResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				getLatestChanges.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getLatestChanges");getLatestChanges.inputMessage = requestMessage;
 	        getLatestChanges.outputMessage = responseMessage;
             getLatestChanges.schemaManager = this.schemaMgr;
             getLatestChanges.soapAction = "\"\"";
             getLatestChanges.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getLatestChanges);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getLatestChanges);//define the WSDLOperation: new WSDLOperation(methodName)
             var getMimeTypeId:WSDLOperation = new WSDLOperation("getMimeTypeId");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("getMimeTypeId");
@@ -460,19 +629,114 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getMimeTypeId");
                 
                 responseMessage = new WSDLMessage("getMimeTypeIdResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getMimeTypeIdResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getMimeTypeIdResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				getMimeTypeId.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getMimeTypeId");getMimeTypeId.inputMessage = requestMessage;
 	        getMimeTypeId.outputMessage = responseMessage;
             getMimeTypeId.schemaManager = this.schemaMgr;
             getMimeTypeId.soapAction = "\"\"";
             getMimeTypeId.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getMimeTypeId);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getMimeTypeId);//define the WSDLOperation: new WSDLOperation(methodName)
+            var getSimpleContestData:WSDLOperation = new WSDLOperation("getSimpleContestData");
+				//input message for the operation
+    	        requestMessage = new WSDLMessage("getSimpleContestData");
+            				requestMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleContestData"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleContestData")));
+                requestMessage.encoding = new WSDLEncoding();
+                requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleContestData");
+                
+                responseMessage = new WSDLMessage("getSimpleContestDataResponse");
+            				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleContestDataResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleContestDataResponse")));
+                responseMessage.encoding = new WSDLEncoding();
+                responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+                responseMessage.encoding.useStyle="literal";				
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleContestData");getSimpleContestData.inputMessage = requestMessage;
+	        getSimpleContestData.outputMessage = responseMessage;
+            getSimpleContestData.schemaManager = this.schemaMgr;
+            getSimpleContestData.soapAction = "\"\"";
+            getSimpleContestData.style = "document";
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getSimpleContestData);//define the WSDLOperation: new WSDLOperation(methodName)
+            var getSimpleContestDataByPID:WSDLOperation = new WSDLOperation("getSimpleContestDataByPID");
+				//input message for the operation
+    	        requestMessage = new WSDLMessage("getSimpleContestDataByPID");
+            				requestMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleContestDataByPID"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleContestDataByPID")));
+                requestMessage.encoding = new WSDLEncoding();
+                requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleContestDataByPID");
+                
+                responseMessage = new WSDLMessage("getSimpleContestDataByPIDResponse");
+            				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleContestDataByPIDResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleContestDataByPIDResponse")));
+                responseMessage.encoding = new WSDLEncoding();
+                responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+                responseMessage.encoding.useStyle="literal";				
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleContestDataByPID");getSimpleContestDataByPID.inputMessage = requestMessage;
+	        getSimpleContestDataByPID.outputMessage = responseMessage;
+            getSimpleContestDataByPID.schemaManager = this.schemaMgr;
+            getSimpleContestDataByPID.soapAction = "\"\"";
+            getSimpleContestDataByPID.style = "document";
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getSimpleContestDataByPID);//define the WSDLOperation: new WSDLOperation(methodName)
+            var getSimpleProjectContestData:WSDLOperation = new WSDLOperation("getSimpleProjectContestData");
+				//input message for the operation
+    	        requestMessage = new WSDLMessage("getSimpleProjectContestData");
+            				requestMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleProjectContestData"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleProjectContestData")));
+                requestMessage.encoding = new WSDLEncoding();
+                requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleProjectContestData");
+                
+                responseMessage = new WSDLMessage("getSimpleProjectContestDataResponse");
+            				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleProjectContestDataResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleProjectContestDataResponse")));
+                responseMessage.encoding = new WSDLEncoding();
+                responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+                responseMessage.encoding.useStyle="literal";				
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleProjectContestData");getSimpleProjectContestData.inputMessage = requestMessage;
+	        getSimpleProjectContestData.outputMessage = responseMessage;
+            getSimpleProjectContestData.schemaManager = this.schemaMgr;
+            getSimpleProjectContestData.soapAction = "\"\"";
+            getSimpleProjectContestData.style = "document";
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getSimpleProjectContestData);//define the WSDLOperation: new WSDLOperation(methodName)
+            var getSimpleProjectContestDataByPID:WSDLOperation = new WSDLOperation("getSimpleProjectContestDataByPID");
+				//input message for the operation
+    	        requestMessage = new WSDLMessage("getSimpleProjectContestDataByPID");
+            				requestMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleProjectContestDataByPID"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleProjectContestDataByPID")));
+                requestMessage.encoding = new WSDLEncoding();
+                requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleProjectContestDataByPID");
+                
+                responseMessage = new WSDLMessage("getSimpleProjectContestDataByPIDResponse");
+            				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleProjectContestDataByPIDResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleProjectContestDataByPIDResponse")));
+                responseMessage.encoding = new WSDLEncoding();
+                responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+                responseMessage.encoding.useStyle="literal";				
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleProjectContestDataByPID");getSimpleProjectContestDataByPID.inputMessage = requestMessage;
+	        getSimpleProjectContestDataByPID.outputMessage = responseMessage;
+            getSimpleProjectContestDataByPID.schemaManager = this.schemaMgr;
+            getSimpleProjectContestDataByPID.soapAction = "\"\"";
+            getSimpleProjectContestDataByPID.style = "document";
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getSimpleProjectContestDataByPID);//define the WSDLOperation: new WSDLOperation(methodName)
             var getStatusList:WSDLOperation = new WSDLOperation("getStatusList");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("getStatusList");
@@ -480,19 +744,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getStatusList");
                 
                 responseMessage = new WSDLMessage("getStatusListResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getStatusListResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getStatusListResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				getStatusList.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getStatusList");getStatusList.inputMessage = requestMessage;
 	        getStatusList.outputMessage = responseMessage;
             getStatusList.schemaManager = this.schemaMgr;
             getStatusList.soapAction = "\"\"";
             getStatusList.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getStatusList);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getStatusList);//define the WSDLOperation: new WSDLOperation(methodName)
             var getSubmissionFileTypes:WSDLOperation = new WSDLOperation("getSubmissionFileTypes");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("getSubmissionFileTypes");
@@ -500,19 +767,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getSubmissionFileTypes");
                 
                 responseMessage = new WSDLMessage("getSubmissionFileTypesResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","getSubmissionFileTypesResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","getSubmissionFileTypesResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				getSubmissionFileTypes.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","getSubmissionFileTypes");getSubmissionFileTypes.inputMessage = requestMessage;
 	        getSubmissionFileTypes.outputMessage = responseMessage;
             getSubmissionFileTypes.schemaManager = this.schemaMgr;
             getSubmissionFileTypes.soapAction = "\"\"";
             getSubmissionFileTypes.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getSubmissionFileTypes);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(getSubmissionFileTypes);//define the WSDLOperation: new WSDLOperation(methodName)
             var markForPurchase:WSDLOperation = new WSDLOperation("markForPurchase");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("markForPurchase");
@@ -520,19 +790,68 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","markForPurchase");
                 
                 responseMessage = new WSDLMessage("markForPurchaseResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","markForPurchaseResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","markForPurchaseResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				markForPurchase.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","markForPurchase");markForPurchase.inputMessage = requestMessage;
 	        markForPurchase.outputMessage = responseMessage;
             markForPurchase.schemaManager = this.schemaMgr;
             markForPurchase.soapAction = "\"\"";
             markForPurchase.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(markForPurchase);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(markForPurchase);//define the WSDLOperation: new WSDLOperation(methodName)
+            var processContestPayment:WSDLOperation = new WSDLOperation("processContestPayment");
+				//input message for the operation
+    	        requestMessage = new WSDLMessage("processContestPayment");
+            				requestMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","processContestPayment"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","processContestPayment")));
+                requestMessage.encoding = new WSDLEncoding();
+                requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","processContestPayment");
+                
+                responseMessage = new WSDLMessage("processContestPaymentResponse");
+            				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","processContestPaymentResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","processContestPaymentResponse")));
+                responseMessage.encoding = new WSDLEncoding();
+                responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+                responseMessage.encoding.useStyle="literal";				
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","processContestPayment");processContestPayment.inputMessage = requestMessage;
+	        processContestPayment.outputMessage = responseMessage;
+            processContestPayment.schemaManager = this.schemaMgr;
+            processContestPayment.soapAction = "\"\"";
+            processContestPayment.style = "document";
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(processContestPayment);//define the WSDLOperation: new WSDLOperation(methodName)
+            var processContestPayment_old:WSDLOperation = new WSDLOperation("processContestPayment_old");
+				//input message for the operation
+    	        requestMessage = new WSDLMessage("processContestPayment_old");
+            				requestMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","processContestPayment_old"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","processContestPayment_old")));
+                requestMessage.encoding = new WSDLEncoding();
+                requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","processContestPayment_old");
+                
+                responseMessage = new WSDLMessage("processContestPayment_oldResponse");
+            				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","processContestPayment_oldResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","processContestPayment_oldResponse")));
+                responseMessage.encoding = new WSDLEncoding();
+                responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+                responseMessage.encoding.useStyle="literal";				
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","processContestPayment_old");processContestPayment_old.inputMessage = requestMessage;
+	        processContestPayment_old.outputMessage = responseMessage;
+            processContestPayment_old.schemaManager = this.schemaMgr;
+            processContestPayment_old.soapAction = "\"\"";
+            processContestPayment_old.style = "document";
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(processContestPayment_old);//define the WSDLOperation: new WSDLOperation(methodName)
             var processMissingPayments:WSDLOperation = new WSDLOperation("processMissingPayments");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("processMissingPayments");
@@ -540,19 +859,45 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","processMissingPayments");
                 
                 responseMessage = new WSDLMessage("processMissingPaymentsResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","processMissingPaymentsResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","processMissingPaymentsResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				processMissingPayments.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","processMissingPayments");processMissingPayments.inputMessage = requestMessage;
 	        processMissingPayments.outputMessage = responseMessage;
             processMissingPayments.schemaManager = this.schemaMgr;
             processMissingPayments.soapAction = "\"\"";
             processMissingPayments.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(processMissingPayments);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(processMissingPayments);//define the WSDLOperation: new WSDLOperation(methodName)
+            var processSubmissionPayment:WSDLOperation = new WSDLOperation("processSubmissionPayment");
+				//input message for the operation
+    	        requestMessage = new WSDLMessage("processSubmissionPayment");
+            				requestMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","processSubmissionPayment"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","processSubmissionPayment")));
+                requestMessage.encoding = new WSDLEncoding();
+                requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","processSubmissionPayment");
+                
+                responseMessage = new WSDLMessage("processSubmissionPaymentResponse");
+            				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","processSubmissionPaymentResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","processSubmissionPaymentResponse")));
+                responseMessage.encoding = new WSDLEncoding();
+                responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
+                responseMessage.encoding.useStyle="literal";				
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","processSubmissionPayment");processSubmissionPayment.inputMessage = requestMessage;
+	        processSubmissionPayment.outputMessage = responseMessage;
+            processSubmissionPayment.schemaManager = this.schemaMgr;
+            processSubmissionPayment.soapAction = "\"\"";
+            processSubmissionPayment.style = "document";
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(processSubmissionPayment);//define the WSDLOperation: new WSDLOperation(methodName)
             var purchaseSubmission:WSDLOperation = new WSDLOperation("purchaseSubmission");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("purchaseSubmission");
@@ -560,19 +905,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","purchaseSubmission");
                 
                 responseMessage = new WSDLMessage("purchaseSubmissionResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","purchaseSubmissionResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","purchaseSubmissionResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				purchaseSubmission.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","purchaseSubmission");purchaseSubmission.inputMessage = requestMessage;
 	        purchaseSubmission.outputMessage = responseMessage;
             purchaseSubmission.schemaManager = this.schemaMgr;
             purchaseSubmission.soapAction = "\"\"";
             purchaseSubmission.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(purchaseSubmission);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(purchaseSubmission);//define the WSDLOperation: new WSDLOperation(methodName)
             var removeContestPayment:WSDLOperation = new WSDLOperation("removeContestPayment");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("removeContestPayment");
@@ -580,19 +928,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","removeContestPayment");
                 
                 responseMessage = new WSDLMessage("removeContestPaymentResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","removeContestPaymentResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","removeContestPaymentResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				removeContestPayment.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","removeContestPayment");removeContestPayment.inputMessage = requestMessage;
 	        removeContestPayment.outputMessage = responseMessage;
             removeContestPayment.schemaManager = this.schemaMgr;
             removeContestPayment.soapAction = "\"\"";
             removeContestPayment.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(removeContestPayment);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(removeContestPayment);//define the WSDLOperation: new WSDLOperation(methodName)
             var removeDocument:WSDLOperation = new WSDLOperation("removeDocument");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("removeDocument");
@@ -600,19 +951,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","removeDocument");
                 
                 responseMessage = new WSDLMessage("removeDocumentResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","removeDocumentResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","removeDocumentResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				removeDocument.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","removeDocument");removeDocument.inputMessage = requestMessage;
 	        removeDocument.outputMessage = responseMessage;
             removeDocument.schemaManager = this.schemaMgr;
             removeDocument.soapAction = "\"\"";
             removeDocument.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(removeDocument);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(removeDocument);//define the WSDLOperation: new WSDLOperation(methodName)
             var removeDocumentFromContest:WSDLOperation = new WSDLOperation("removeDocumentFromContest");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("removeDocumentFromContest");
@@ -620,19 +974,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","removeDocumentFromContest");
                 
                 responseMessage = new WSDLMessage("removeDocumentFromContestResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","removeDocumentFromContestResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","removeDocumentFromContestResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				removeDocumentFromContest.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","removeDocumentFromContest");removeDocumentFromContest.inputMessage = requestMessage;
 	        removeDocumentFromContest.outputMessage = responseMessage;
             removeDocumentFromContest.schemaManager = this.schemaMgr;
             removeDocumentFromContest.soapAction = "\"\"";
             removeDocumentFromContest.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(removeDocumentFromContest);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(removeDocumentFromContest);//define the WSDLOperation: new WSDLOperation(methodName)
             var removeSubmission:WSDLOperation = new WSDLOperation("removeSubmission");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("removeSubmission");
@@ -640,19 +997,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","removeSubmission");
                 
                 responseMessage = new WSDLMessage("removeSubmissionResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","removeSubmissionResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","removeSubmissionResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				removeSubmission.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","removeSubmission");removeSubmission.inputMessage = requestMessage;
 	        removeSubmission.outputMessage = responseMessage;
             removeSubmission.schemaManager = this.schemaMgr;
             removeSubmission.soapAction = "\"\"";
             removeSubmission.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(removeSubmission);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(removeSubmission);//define the WSDLOperation: new WSDLOperation(methodName)
             var retrieveAllSubmissionsByMember:WSDLOperation = new WSDLOperation("retrieveAllSubmissionsByMember");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("retrieveAllSubmissionsByMember");
@@ -660,19 +1020,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveAllSubmissionsByMember");
                 
                 responseMessage = new WSDLMessage("retrieveAllSubmissionsByMemberResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveAllSubmissionsByMemberResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveAllSubmissionsByMemberResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				retrieveAllSubmissionsByMember.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveAllSubmissionsByMember");retrieveAllSubmissionsByMember.inputMessage = requestMessage;
 	        retrieveAllSubmissionsByMember.outputMessage = responseMessage;
             retrieveAllSubmissionsByMember.schemaManager = this.schemaMgr;
             retrieveAllSubmissionsByMember.soapAction = "\"\"";
             retrieveAllSubmissionsByMember.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(retrieveAllSubmissionsByMember);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(retrieveAllSubmissionsByMember);//define the WSDLOperation: new WSDLOperation(methodName)
             var retrieveSubmission:WSDLOperation = new WSDLOperation("retrieveSubmission");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("retrieveSubmission");
@@ -680,19 +1043,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveSubmission");
                 
                 responseMessage = new WSDLMessage("retrieveSubmissionResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveSubmissionResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveSubmissionResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				retrieveSubmission.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveSubmission");retrieveSubmission.inputMessage = requestMessage;
 	        retrieveSubmission.outputMessage = responseMessage;
             retrieveSubmission.schemaManager = this.schemaMgr;
             retrieveSubmission.soapAction = "\"\"";
             retrieveSubmission.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(retrieveSubmission);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(retrieveSubmission);//define the WSDLOperation: new WSDLOperation(methodName)
             var retrieveSubmissionsForContest:WSDLOperation = new WSDLOperation("retrieveSubmissionsForContest");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("retrieveSubmissionsForContest");
@@ -700,19 +1066,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveSubmissionsForContest");
                 
                 responseMessage = new WSDLMessage("retrieveSubmissionsForContestResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveSubmissionsForContestResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveSubmissionsForContestResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				retrieveSubmissionsForContest.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveSubmissionsForContest");retrieveSubmissionsForContest.inputMessage = requestMessage;
 	        retrieveSubmissionsForContest.outputMessage = responseMessage;
             retrieveSubmissionsForContest.schemaManager = this.schemaMgr;
             retrieveSubmissionsForContest.soapAction = "\"\"";
             retrieveSubmissionsForContest.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(retrieveSubmissionsForContest);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(retrieveSubmissionsForContest);//define the WSDLOperation: new WSDLOperation(methodName)
             var searchContests:WSDLOperation = new WSDLOperation("searchContests");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("searchContests");
@@ -720,19 +1089,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","searchContests");
                 
                 responseMessage = new WSDLMessage("searchContestsResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","searchContestsResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","searchContestsResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				searchContests.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","searchContests");searchContests.inputMessage = requestMessage;
 	        searchContests.outputMessage = responseMessage;
             searchContests.schemaManager = this.schemaMgr;
             searchContests.soapAction = "\"\"";
             searchContests.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(searchContests);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(searchContests);//define the WSDLOperation: new WSDLOperation(methodName)
             var setSubmissionPlacement:WSDLOperation = new WSDLOperation("setSubmissionPlacement");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("setSubmissionPlacement");
@@ -740,19 +1112,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","setSubmissionPlacement");
                 
                 responseMessage = new WSDLMessage("setSubmissionPlacementResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","setSubmissionPlacementResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","setSubmissionPlacementResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				setSubmissionPlacement.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","setSubmissionPlacement");setSubmissionPlacement.inputMessage = requestMessage;
 	        setSubmissionPlacement.outputMessage = responseMessage;
             setSubmissionPlacement.schemaManager = this.schemaMgr;
             setSubmissionPlacement.soapAction = "\"\"";
             setSubmissionPlacement.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(setSubmissionPlacement);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(setSubmissionPlacement);//define the WSDLOperation: new WSDLOperation(methodName)
             var setSubmissionPrize:WSDLOperation = new WSDLOperation("setSubmissionPrize");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("setSubmissionPrize");
@@ -760,19 +1135,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","setSubmissionPrize");
                 
                 responseMessage = new WSDLMessage("setSubmissionPrizeResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","setSubmissionPrizeResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","setSubmissionPrizeResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				setSubmissionPrize.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","setSubmissionPrize");setSubmissionPrize.inputMessage = requestMessage;
 	        setSubmissionPrize.outputMessage = responseMessage;
             setSubmissionPrize.schemaManager = this.schemaMgr;
             setSubmissionPrize.soapAction = "\"\"";
             setSubmissionPrize.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(setSubmissionPrize);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(setSubmissionPrize);//define the WSDLOperation: new WSDLOperation(methodName)
             var updateContest:WSDLOperation = new WSDLOperation("updateContest");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("updateContest");
@@ -780,19 +1158,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","updateContest");
                 
                 responseMessage = new WSDLMessage("updateContestResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","updateContestResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","updateContestResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				updateContest.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","updateContest");updateContest.inputMessage = requestMessage;
 	        updateContest.outputMessage = responseMessage;
             updateContest.schemaManager = this.schemaMgr;
             updateContest.soapAction = "\"\"";
             updateContest.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(updateContest);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(updateContest);//define the WSDLOperation: new WSDLOperation(methodName)
             var updateContestStatus:WSDLOperation = new WSDLOperation("updateContestStatus");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("updateContestStatus");
@@ -800,19 +1181,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","updateContestStatus");
                 
                 responseMessage = new WSDLMessage("updateContestStatusResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","updateContestStatusResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","updateContestStatusResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				updateContestStatus.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","updateContestStatus");updateContestStatus.inputMessage = requestMessage;
 	        updateContestStatus.outputMessage = responseMessage;
             updateContestStatus.schemaManager = this.schemaMgr;
             updateContestStatus.soapAction = "\"\"";
             updateContestStatus.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(updateContestStatus);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(updateContestStatus);//define the WSDLOperation: new WSDLOperation(methodName)
             var updateSubmission:WSDLOperation = new WSDLOperation("updateSubmission");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("updateSubmission");
@@ -820,19 +1204,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","updateSubmission");
                 
                 responseMessage = new WSDLMessage("updateSubmissionResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","updateSubmissionResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","updateSubmissionResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				updateSubmission.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","updateSubmission");updateSubmission.inputMessage = requestMessage;
 	        updateSubmission.outputMessage = responseMessage;
             updateSubmission.schemaManager = this.schemaMgr;
             updateSubmission.soapAction = "\"\"";
             updateSubmission.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(updateSubmission);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(updateSubmission);//define the WSDLOperation: new WSDLOperation(methodName)
             var uploadDocument:WSDLOperation = new WSDLOperation("uploadDocument");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("uploadDocument");
@@ -840,19 +1227,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","uploadDocument");
                 
                 responseMessage = new WSDLMessage("uploadDocumentResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","uploadDocumentResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","uploadDocumentResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				uploadDocument.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","uploadDocument");uploadDocument.inputMessage = requestMessage;
 	        uploadDocument.outputMessage = responseMessage;
             uploadDocument.schemaManager = this.schemaMgr;
             uploadDocument.soapAction = "\"\"";
             uploadDocument.style = "document";
-            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(uploadDocument);
-			//define the WSDLOperation: new WSDLOperation(methodName)
+            BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(uploadDocument);//define the WSDLOperation: new WSDLOperation(methodName)
             var uploadDocumentForContest:WSDLOperation = new WSDLOperation("uploadDocumentForContest");
 				//input message for the operation
     	        requestMessage = new WSDLMessage("uploadDocumentForContest");
@@ -860,49 +1250,68 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
                 requestMessage.encoding = new WSDLEncoding();
                 requestMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
 			requestMessage.encoding.useStyle="literal";
+	            requestMessage.isWrapped = true;
+	            requestMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","uploadDocumentForContest");
                 
                 responseMessage = new WSDLMessage("uploadDocumentForContestResponse");
             				responseMessage.addPart(new WSDLMessagePart(new QName("http://ejb.contest.facade.service.topcoder.com/","uploadDocumentForContestResponse"),null,new QName("http://ejb.contest.facade.service.topcoder.com/","uploadDocumentForContestResponse")));
                 responseMessage.encoding = new WSDLEncoding();
                 responseMessage.encoding.namespaceURI="http://ejb.contest.facade.service.topcoder.com/";
                 responseMessage.encoding.useStyle="literal";				
-				uploadDocumentForContest.inputMessage = requestMessage;
+				
+	            responseMessage.isWrapped = true;
+	            responseMessage.wrappedQName = new QName("http://ejb.contest.facade.service.topcoder.com/","uploadDocumentForContest");uploadDocumentForContest.inputMessage = requestMessage;
 	        uploadDocumentForContest.outputMessage = responseMessage;
             uploadDocumentForContest.schemaManager = this.schemaMgr;
             uploadDocumentForContest.soapAction = "\"\"";
             uploadDocumentForContest.style = "document";
             BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.addOperation(uploadDocumentForContest);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","processContestPayment_old"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProcessContestPayment_old);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestDataOnlyByPID"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestDataOnlyByPID);
 							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestHeadersResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestHeadersResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","setSubmissionPrizeResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.SetSubmissionPrizeResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","projectData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProjectData);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","contestServiceFilter"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestServiceFilter);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","processSubmissionPayment"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProcessSubmissionPayment);
 							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getLatestChangesResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetLatestChangesResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","removeDocumentFromContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveDocumentFromContest);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllStudioFileTypes"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllStudioFileTypes);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","deleteContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.DeleteContestResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","mediumData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.MediumData);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","paymentType"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.PaymentType);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","studioCompetition"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.StudioCompetition);
+							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleProjectContestDataResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSimpleProjectContestDataResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveSubmissionResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RetrieveSubmissionResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestDataOnly"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestDataOnly);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","contestStatusData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestStatusData);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestsForProject"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestsForProject);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","purchaseSubmission"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.PurchaseSubmission);
 							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","addChangeHistory"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.AddChangeHistory);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","createContestPayment"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContestPayment);
+							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestDataOnlyByPIDResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestDataOnlyByPIDResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","documentType"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.DocumentType);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getSubmissionFileTypes"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSubmissionFileTypes);
+							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleProjectContestDataByPIDResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSimpleProjectContestDataByPIDResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getMimeTypeIdResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetMimeTypeIdResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","createContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContestResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","updateContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContest);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveSubmissionsForContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RetrieveSubmissionsForContest);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","editContestPaymentResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.EditContestPaymentResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","editContestPayment"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.EditContestPayment);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","do_2Response"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.Do_2Response);
 							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestsResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestsResponse);
 							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestsForProjectResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestsForProjectResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","paymentData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.PaymentData);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","prizeData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.PrizeData);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","uploadDocument"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadDocument);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","createContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContest);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","uploadDocument"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadDocument);
+							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestDataOnlyResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestDataOnlyResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","simpleProjectContestData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.SimpleProjectContestData);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","simpleContestData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.SimpleContestData);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","updateSubmission"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateSubmission);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestsForClient"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestsForClient);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","do_3Response"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.Do_3Response);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","do_3"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.Do_3);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","uploadDocumentResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadDocumentResponse);
 							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","searchContestsResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.SearchContestsResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","changeHistoryData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ChangeHistoryData);
@@ -923,54 +1332,70 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveSubmission"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RetrieveSubmission);
 							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestsForClientResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestsForClientResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getChangeHistory"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetChangeHistory);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","removeDocument"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveDocument);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContest);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","removeDocument"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveDocument);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestPaymentResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestPaymentResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","studioFileType"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.StudioFileType);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","setSubmissionPlacement"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.SetSubmissionPlacement);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getSubmissionFileTypesResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSubmissionFileTypesResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","setSubmissionPlacement"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.SetSubmissionPlacement);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleContestDataByPID"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSimpleContestDataByPID);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllMediums"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllMediums);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","removeSubmissionResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveSubmissionResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","processContestPaymentResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProcessContestPaymentResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","submissionData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.SubmissionData);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","removeDocumentFromContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveDocumentFromContestResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","createContestPaymentResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContestPaymentResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","markForPurchase"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.MarkForPurchase);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","deleteContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.DeleteContest);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","markForPurchaseResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.MarkForPurchaseResponse);
+							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleContestDataByPIDResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSimpleContestDataByPIDResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","competitionPrize"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CompetitionPrize);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","mimeType"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.MimeType);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","updateContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContestResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","updateContestStatusResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContestStatusResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","updateContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContestResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","processContestPayment_oldResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProcessContestPayment_oldResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","addChangeHistoryResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.AddChangeHistoryResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","contestPayload"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestPayload);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","processMissingPaymentsResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProcessMissingPaymentsResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","do_1Response"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.Do_1Response);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","tcPurhcaseOrderPaymentData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.TcPurhcaseOrderPaymentData);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestHeaders"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestHeaders);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleProjectContestDataByPID"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSimpleProjectContestDataByPID);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","do_2"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.Do_2);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","updateContestStatus"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContestStatus);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","addDocumentToContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.AddDocumentToContestResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","contestTypeData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestTypeData);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getLatestChanges"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetLatestChanges);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","do_1"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.Do_1);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","creditCardPaymentData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreditCardPaymentData);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleProjectContestData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSimpleProjectContestData);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContests"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContests);
 							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getStatusListResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetStatusListResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","contestPaymentData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestPaymentData);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllContestTypes"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestTypes);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleContestData"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSimpleContestData);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","competionType"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CompetionType);
 							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getChangeHistoryResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetChangeHistoryResponse);
 							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllMediumsResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllMediumsResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","processSubmissionPaymentResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProcessSubmissionPaymentResponse);
+							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getSimpleContestDataResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSimpleContestDataResponse);
 							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","retrieveAllSubmissionsByMemberResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RetrieveAllSubmissionsByMemberResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","setSubmissionPlacementResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.SetSubmissionPlacementResponse);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","paymentResult"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.PaymentResult);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getStatusList"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetStatusList);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","project"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.Project);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","processContestPayment"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProcessContestPayment);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllDocumentTypes"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllDocumentTypes);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","updateSubmissionResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateSubmissionResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","processMissingPayments"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProcessMissingPayments);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","updateSubmissionResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateSubmissionResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","searchContests"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.SearchContests);
 							SchemaTypeRegistry.getInstance().registerCollectionClass(new QName("http://ejb.contest.facade.service.topcoder.com/","getAllStudioFileTypesResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllStudioFileTypesResponse);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","uploadDocumentForContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadDocumentForContestResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","uploadDocumentForContest"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadDocumentForContest);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","uploadDocumentForContestResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadDocumentForContestResponse);
 							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","removeContestPaymentResponse"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveContestPaymentResponse);
-							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","uploadedDocument"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadedDocument);
-		}
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","PaymentException"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.PaymentException);
+							SchemaTypeRegistry.getInstance().registerClass(new QName("http://ejb.contest.facade.service.topcoder.com/","uploadedDocument"),com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadedDocument);}
 		/**
 		 * Performs the low level call to the server for the operation
 		 * It passes along the headers and the operation arguments
@@ -1047,6 +1472,54 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
             var out:Object = new Object();
             out["deleteContest"] = deleteContest;
 	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("deleteContest");
+            var pc:PendingCall = new PendingCall(out,headerArray);
+            call(currentOperation,out,pc.token,pc.headers);
+            return pc.token;
+		}
+		/**
+		 * Performs the low level call to the server for the operation
+		 * It passes along the headers and the operation arguments
+		 * @param do_1
+		 * @return Asynchronous token
+		 */
+		public function do_1(do_1:Do_1):AsyncToken
+		{
+			var headerArray:Array = new Array();
+            var out:Object = new Object();
+            out["do_1"] = do_1;
+	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("do_1");
+            var pc:PendingCall = new PendingCall(out,headerArray);
+            call(currentOperation,out,pc.token,pc.headers);
+            return pc.token;
+		}
+		/**
+		 * Performs the low level call to the server for the operation
+		 * It passes along the headers and the operation arguments
+		 * @param do_2
+		 * @return Asynchronous token
+		 */
+		public function do_2(do_2:Do_2):AsyncToken
+		{
+			var headerArray:Array = new Array();
+            var out:Object = new Object();
+            out["do_2"] = do_2;
+	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("do_2");
+            var pc:PendingCall = new PendingCall(out,headerArray);
+            call(currentOperation,out,pc.token,pc.headers);
+            return pc.token;
+		}
+		/**
+		 * Performs the low level call to the server for the operation
+		 * It passes along the headers and the operation arguments
+		 * @param do_3
+		 * @return Asynchronous token
+		 */
+		public function do_3(do_3:Do_3):AsyncToken
+		{
+			var headerArray:Array = new Array();
+            var out:Object = new Object();
+            out["do_3"] = do_3;
+	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("do_3");
             var pc:PendingCall = new PendingCall(out,headerArray);
             call(currentOperation,out,pc.token,pc.headers);
             return pc.token;
@@ -1198,6 +1671,38 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
 		/**
 		 * Performs the low level call to the server for the operation
 		 * It passes along the headers and the operation arguments
+		 * @param getContestDataOnly
+		 * @return Asynchronous token
+		 */
+		public function getContestDataOnly(getContestDataOnly:GetContestDataOnly):AsyncToken
+		{
+			var headerArray:Array = new Array();
+            var out:Object = new Object();
+            out["getContestDataOnly"] = getContestDataOnly;
+	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("getContestDataOnly");
+            var pc:PendingCall = new PendingCall(out,headerArray);
+            call(currentOperation,out,pc.token,pc.headers);
+            return pc.token;
+		}
+		/**
+		 * Performs the low level call to the server for the operation
+		 * It passes along the headers and the operation arguments
+		 * @param getContestDataOnlyByPID
+		 * @return Asynchronous token
+		 */
+		public function getContestDataOnlyByPID(getContestDataOnlyByPID:GetContestDataOnlyByPID):AsyncToken
+		{
+			var headerArray:Array = new Array();
+            var out:Object = new Object();
+            out["getContestDataOnlyByPID"] = getContestDataOnlyByPID;
+	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("getContestDataOnlyByPID");
+            var pc:PendingCall = new PendingCall(out,headerArray);
+            call(currentOperation,out,pc.token,pc.headers);
+            return pc.token;
+		}
+		/**
+		 * Performs the low level call to the server for the operation
+		 * It passes along the headers and the operation arguments
 		 * @param getContestPayment
 		 * @return Asynchronous token
 		 */
@@ -1278,6 +1783,70 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
 		/**
 		 * Performs the low level call to the server for the operation
 		 * It passes along the headers and the operation arguments
+		 * @param getSimpleContestData
+		 * @return Asynchronous token
+		 */
+		public function getSimpleContestData(getSimpleContestData:GetSimpleContestData):AsyncToken
+		{
+			var headerArray:Array = new Array();
+            var out:Object = new Object();
+            out["getSimpleContestData"] = getSimpleContestData;
+	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("getSimpleContestData");
+            var pc:PendingCall = new PendingCall(out,headerArray);
+            call(currentOperation,out,pc.token,pc.headers);
+            return pc.token;
+		}
+		/**
+		 * Performs the low level call to the server for the operation
+		 * It passes along the headers and the operation arguments
+		 * @param getSimpleContestDataByPID
+		 * @return Asynchronous token
+		 */
+		public function getSimpleContestDataByPID(getSimpleContestDataByPID:GetSimpleContestDataByPID):AsyncToken
+		{
+			var headerArray:Array = new Array();
+            var out:Object = new Object();
+            out["getSimpleContestDataByPID"] = getSimpleContestDataByPID;
+	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("getSimpleContestDataByPID");
+            var pc:PendingCall = new PendingCall(out,headerArray);
+            call(currentOperation,out,pc.token,pc.headers);
+            return pc.token;
+		}
+		/**
+		 * Performs the low level call to the server for the operation
+		 * It passes along the headers and the operation arguments
+		 * @param getSimpleProjectContestData
+		 * @return Asynchronous token
+		 */
+		public function getSimpleProjectContestData(getSimpleProjectContestData:GetSimpleProjectContestData):AsyncToken
+		{
+			var headerArray:Array = new Array();
+            var out:Object = new Object();
+            out["getSimpleProjectContestData"] = getSimpleProjectContestData;
+	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("getSimpleProjectContestData");
+            var pc:PendingCall = new PendingCall(out,headerArray);
+            call(currentOperation,out,pc.token,pc.headers);
+            return pc.token;
+		}
+		/**
+		 * Performs the low level call to the server for the operation
+		 * It passes along the headers and the operation arguments
+		 * @param getSimpleProjectContestDataByPID
+		 * @return Asynchronous token
+		 */
+		public function getSimpleProjectContestDataByPID(getSimpleProjectContestDataByPID:GetSimpleProjectContestDataByPID):AsyncToken
+		{
+			var headerArray:Array = new Array();
+            var out:Object = new Object();
+            out["getSimpleProjectContestDataByPID"] = getSimpleProjectContestDataByPID;
+	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("getSimpleProjectContestDataByPID");
+            var pc:PendingCall = new PendingCall(out,headerArray);
+            call(currentOperation,out,pc.token,pc.headers);
+            return pc.token;
+		}
+		/**
+		 * Performs the low level call to the server for the operation
+		 * It passes along the headers and the operation arguments
 		 * @param getStatusList
 		 * @return Asynchronous token
 		 */
@@ -1326,6 +1895,38 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
 		/**
 		 * Performs the low level call to the server for the operation
 		 * It passes along the headers and the operation arguments
+		 * @param processContestPayment
+		 * @return Asynchronous token
+		 */
+		public function processContestPayment(processContestPayment:ProcessContestPayment):AsyncToken
+		{
+			var headerArray:Array = new Array();
+            var out:Object = new Object();
+            out["processContestPayment"] = processContestPayment;
+	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("processContestPayment");
+            var pc:PendingCall = new PendingCall(out,headerArray);
+            call(currentOperation,out,pc.token,pc.headers);
+            return pc.token;
+		}
+		/**
+		 * Performs the low level call to the server for the operation
+		 * It passes along the headers and the operation arguments
+		 * @param processContestPayment_old
+		 * @return Asynchronous token
+		 */
+		public function processContestPayment_old(processContestPayment_old:ProcessContestPayment_old):AsyncToken
+		{
+			var headerArray:Array = new Array();
+            var out:Object = new Object();
+            out["processContestPayment_old"] = processContestPayment_old;
+	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("processContestPayment_old");
+            var pc:PendingCall = new PendingCall(out,headerArray);
+            call(currentOperation,out,pc.token,pc.headers);
+            return pc.token;
+		}
+		/**
+		 * Performs the low level call to the server for the operation
+		 * It passes along the headers and the operation arguments
 		 * @param processMissingPayments
 		 * @return Asynchronous token
 		 */
@@ -1335,6 +1936,22 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
             var out:Object = new Object();
             out["processMissingPayments"] = processMissingPayments;
 	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("processMissingPayments");
+            var pc:PendingCall = new PendingCall(out,headerArray);
+            call(currentOperation,out,pc.token,pc.headers);
+            return pc.token;
+		}
+		/**
+		 * Performs the low level call to the server for the operation
+		 * It passes along the headers and the operation arguments
+		 * @param processSubmissionPayment
+		 * @return Asynchronous token
+		 */
+		public function processSubmissionPayment(processSubmissionPayment:ProcessSubmissionPayment):AsyncToken
+		{
+			var headerArray:Array = new Array();
+            var out:Object = new Object();
+            out["processSubmissionPayment"] = processSubmissionPayment;
+	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("processSubmissionPayment");
             var pc:PendingCall = new PendingCall(out,headerArray);
             call(currentOperation,out,pc.token,pc.headers);
             return pc.token;
@@ -1582,54 +2199,6 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
 		/**
 		 * Performs the low level call to the server for the operation
 		 * It passes along the headers and the operation arguments
-		 * @param getSimpleContestData
-		 * @return Asynchronous token
-		 */
-		public function getSimpleContestData(getSimpleContestData:GetSimpleContestData):AsyncToken
-		{
-			var headerArray:Array = new Array();
-            var out:Object = new Object();
-            out["getSimpleContestData"] = getSimpleContestData;
-	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("getSimpleContestData");
-            var pc:PendingCall = new PendingCall(out,headerArray);
-            call(currentOperation,out,pc.token,pc.headers);
-            return pc.token;
-		}
-		/**
-		 * Performs the low level call to the server for the operation
-		 * It passes along the headers and the operation arguments
-		 * @param getSimpleProjectContestData
-		 * @return Asynchronous token
-		 */
-		public function getSimpleProjectContestData(getSimpleProjectContestData:GetSimpleProjectContestData):AsyncToken
-		{
-			var headerArray:Array = new Array();
-            var out:Object = new Object();
-            out["getSimpleProjectContestData"] = getSimpleProjectContestData;
-	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("getSimpleProjectContestData");
-            var pc:PendingCall = new PendingCall(out,headerArray);
-            call(currentOperation,out,pc.token,pc.headers);
-            return pc.token;
-		}
-		/**
-		 * Performs the low level call to the server for the operation
-		 * It passes along the headers and the operation arguments
-		 * @param getContestDataOnly
-		 * @return Asynchronous token
-		 */
-		public function getContestDataOnly(getContestDataOnly:GetContestDataOnly):AsyncToken
-		{
-			var headerArray:Array = new Array();
-            var out:Object = new Object();
-            out["getContestDataOnly"] = getContestDataOnly;
-	            currentOperation = BaseContestServiceFacadeBeanServiceService.getPort("BaseContestServiceFacadeBeanServicePort").binding.portType.getOperation("getContestDataOnly");
-            var pc:PendingCall = new PendingCall(out,headerArray);
-            call(currentOperation,out,pc.token,pc.headers);
-            return pc.token;
-		}
-		/**
-		 * Performs the low level call to the server for the operation
-		 * It passes along the headers and the operation arguments
 		 * @param uploadDocumentForContest
 		 * @return Asynchronous token
 		 */
@@ -1653,13 +2222,16 @@ BaseContestServiceFacadeBeanServiceService = new WSDLService("BaseContestService
         private function call(operation:WSDLOperation,args:Object,token:AsyncToken,headers:Array=null):void
         {
 	    	var enc:SOAPEncoder = new SOAPEncoder();
-	    	enc.strictNillability = true;//FIX for xsi:nil="true"
+	        //enc.strictNillability = true;//FIX for xsi:nil="true"
 	        var soap:Object = new Object;
 	        var message:SOAPMessage = new SOAPMessage();
 	        enc.wsdlOperation = operation;
 	        soap = enc.encodeRequest(args,headers.concat(this.headers)); //FIX for not adding security headers
 	        message.setSOAPAction(operation.soapAction);
 	        message.body = soap.toString();
+	        
+	        trace("Message body: " + message.body);
+	        
 	        message.url=endpointURI;
             var inv:AsyncRequest = new AsyncRequest();
             inv.destination = super.destination;

@@ -4,27 +4,25 @@
  * Any change made to this file will be overwritten when the code is re-generated.
  */
 
-package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated
-{
-	import mx.utils.ObjectProxy;
-	import flash.utils.ByteArray;
-	import mx.rpc.soap.types.*;
-	/**
-	 * Wrapper class for a operation required type
-	 */
+package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated{
+    import mx.utils.ObjectProxy;
+    import flash.utils.ByteArray;
+    import mx.rpc.soap.types.*;
+    /**
+     * Wrapper class for a operation required type
+     */
     
-	public class ContestTypeData
-	{
-		/**
-		 * Constructor, initializes the type class
-		 */
-		public function ContestTypeData() {}
-            
-		public var contestTypeId:Number;
-		public var description:String;
-		public var requirePreviewFile:Boolean;
-		public var requirePreviewImage:Boolean;
-		[ArrayElementType("ContestPayload")]
-		public var config:Array;
-	}
-}
+    public class ContestTypeData
+    {
+        /**
+         * Constructor, initializes the type class
+         */
+public function ContestTypeData() {}
+                
+                   public var contestTypeId:Number;
+                   public var description:String;
+                   public var requirePreviewFile:Boolean;
+                   public var requirePreviewImage:Boolean;[ArrayElementType("ContestPayload")]
+                   public var config:Array;
+           	}
+      	 }

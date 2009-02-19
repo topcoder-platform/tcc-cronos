@@ -5,48 +5,48 @@
 */
 package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated
 {
-	import mx.utils.ObjectProxy;
-	import flash.events.Event;
-	import flash.utils.ByteArray;
-	import mx.rpc.soap.types.*;
-	/**
-	 * Typed event handler for the result of the operation
-	 */
+    import mx.utils.ObjectProxy;
+    import flash.events.Event;
+    import flash.utils.ByteArray;
+    import mx.rpc.soap.types.*;
+    /**
+     * Typed event handler for the result of the operation
+     */
     
-	public class GetSimpleProjectContestDataResultEvent extends Event
-	{
-		/**
-		 * The event type value
-		 */
-		public static var GetSimpleProjectContestData_RESULT:String="GetSimpleProjectContestData_result";
-		/**
-		 * Constructor for the new event type
-		 */
-		public function GetSimpleProjectContestDataResultEvent()
-		{
-			super(GetSimpleProjectContestData_RESULT,false,false);
-		}
+    public class GetSimpleProjectContestDataResultEvent extends Event
+    {
+        /**
+         * The event type value
+         */
+        public static var GetSimpleProjectContestData_RESULT:String="GetSimpleProjectContestData_result";
+        /**
+         * Constructor for the new event type
+         */
+        public function GetSimpleProjectContestDataResultEvent()
+        {
+            super(GetSimpleProjectContestData_RESULT,false,false);
+        }
         
-		private var _headers:Object;
-		private var _result:GetSimpleProjectContestDataResponse;
-		public function get result():GetSimpleProjectContestDataResponse
-		{
-			return _result;
-		}
+        private var _headers:Object;
+        private var _result:GetSimpleProjectContestDataResponse;
+         public function get result():GetSimpleProjectContestDataResponse
+        {
+            return _result;
+        }
+        
+        public function set result(value:GetSimpleProjectContestDataResponse):void
+        {
+            _result = value;
+        }
 
-		public function set result(value:GetSimpleProjectContestDataResponse):void
-		{
-			_result = value;
-		}
-
-		public function get headers():Object
-		{
-			return _headers;
-		}
-
-		public function set headers(value:Object):void
-		{
-			_headers = value;
-		}
-	}
+        public function get headers():Object
+	    {
+            return _headers;
+	    }
+			
+	    public function set headers(value:Object):void
+	    {
+            _headers = value;
+	    }
+    }
 }

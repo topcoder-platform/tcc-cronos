@@ -9,7 +9,19 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs
 		public var cardType:String;
 		
 		[Bindable]
+		public var cardExpMonth:String;
+		
+		[Bindable]
+		public var cardExpYear:String;
+		
+		[Bindable]
 		public var cardExpDateStr:String;
+		
+		[Bindable]
+		public var firstName:String;
+		
+		[Bindable]
+		public var lastName:String;
 		
 		[Bindable]
 		public var cardname:String;

@@ -3,7 +3,8 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off" >
     <mx:Script>
         <![CDATA[
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContest_request;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreditCardPaymentData;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.*;
         	import mx.collections.IList;
         	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateProject;
         	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateProject_request;

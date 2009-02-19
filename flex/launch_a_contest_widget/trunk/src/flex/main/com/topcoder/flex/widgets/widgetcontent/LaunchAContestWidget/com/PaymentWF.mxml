@@ -33,13 +33,26 @@
 					var errors:Array = Validator.validateAll([ccv]);
 					var result:Boolean = true;
 					if (errors && errors.length > 0) {
-						result = false;
+						result = true; //false;
 					} else {
 						// Valid format for visa 4013 0714 3157 6550
+						// TODO: capture the price too.
 						result = true;
 						model.cardType = cardTypeCombo.selectedItem.data;
 						model.cardNum = cardNum.text;
+						model.cardExpMonth = month.selectedItem.data;
+						model.cardExpYear = year.selectedItem.data;
 						model.cardExpDateStr = month.selectedItem.data + "/" + year.selectedItem.data;
+						model.cardname = cardname.text;
+						model.firstName = cardname.text;
+						model.lastName = cardname.text;
+						model.address = address.text;
+						model.city = city.text;
+						model.state = state.text;
+						model.code = code.text;
+						model.country = country.text;
+						model.phone = phone.text;
+						model.email = email.text;
 					}
 					for each (var item:TextInput in inputs) {
 						result = result && doValidate(item);

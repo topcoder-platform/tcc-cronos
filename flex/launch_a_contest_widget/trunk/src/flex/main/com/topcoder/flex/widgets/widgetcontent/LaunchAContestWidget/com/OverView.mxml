@@ -131,16 +131,36 @@
         			return false;
         		}
         		
-        		if (Number(cntstTtl.text) == 0){
-        			Helper.showAlertMessage("No prize set");
-        			return false;
-        		}
-        	}
-        	
-        	updateResult();
-        	
-        	return true;
-        }
+        	if (Number(cntstTtl.text) == 0)
+                    {
+                        Helper.showAlertMessage("No prize set");
+                        return false;
+                    }
+                }
+                
+                var firstInput:TextInput=this[inputs[0]]as TextInput;
+                var secondInput:TextInput=this[inputs[1]]as TextInput;
+                if (isNaN(Number(firstInput.text)) 
+                    || firstInput.text == ""
+                    || isNaN(Number(secondInput.text)) 
+                    || secondInput.text == "") 
+                {
+                      
+                      Helper.showAlertMessage("Atleast first & second place prizes should be set!"); 
+                      
+                      return false; 
+                }
+                
+                if (Number(secondInput.text) < (0.20 * Number(firstInput.text))) {
+                       Helper.showAlertMessage("Second place prize should atleast be 20% of first place prize!");
+                      
+                      return false; 
+                }
+
+                updateResult();
+
+                return true;
+            }
         
         // since BUGR-1039
         private function loadExamples(e:ResultEvent): void {

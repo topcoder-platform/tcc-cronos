@@ -5,14 +5,18 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.model.IWidgetFramework;
     import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.widgets.model.IWidgetContainer;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CompetionType;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestServiceFacadeBeanService;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContest;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContestResultEvent;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContest;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContest_request;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreditCardPaymentData;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.PaymentType;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProjectServiceFacadeBeanService;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.StudioCompetition;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.TcPurhcaseOrderPaymentData;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContest;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContestResultEvent;
     
@@ -24,6 +28,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
 	import mx.core.Application;
+	import mx.rpc.AbstractOperation;
+    	import mx.rpc.events.ResultEvent;
+    	import mx.rpc.soap.mxml.WebService;
 
     /**
      * <p>
@@ -54,6 +61,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         
         public var _pws:ProjectServiceFacadeBeanService;
         
+        public var _csws:WebService;
         public var contestid:String=null;
 
 	/**
@@ -316,10 +324,52 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         	}
         }
         
-        public function submitPurchase():void{
-        	competition.contestData.statusId= CONTEST_STATUS_ACTIVE_PUBLIC;
-        	competition.contestData.detailedStatusId= CONTEST_DETAILED_STATUS_SCHEDULED; //Active
-        	saveContest();
+        public function submitPurchase(type:String, eventHandler:Function):void
+        {
+            competition._id=competition.id;
+            competition._type=competition.type;
+            competition.contestData.statusId=CONTEST_STATUS_ACTIVE_PUBLIC;
+            competition.contestData.detailedStatusId=CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC;
+            
+            if (type == "PayPalCreditCard") {
+                var creditCardPaymentData:CreditCardPaymentData=new CreditCardPaymentData();
+
+                creditCardPaymentData.type=new PaymentType();
+                creditCardPaymentData.type.paymentType="PayPalCreditCard";
+
+                creditCardPaymentData.cardNumber=Model.instance.cardNum;
+                creditCardPaymentData.cardType=Model.instance.cardType;
+                creditCardPaymentData.cardExpiryMonth=Model.instance.cardExpMonth;
+                creditCardPaymentData.cardExpiryYear=Model.instance.cardExpYear;
+                creditCardPaymentData.firstName=Model.instance.firstName;
+                creditCardPaymentData.lastName=Model.instance.lastName;
+                creditCardPaymentData.address=Model.instance.address;
+                creditCardPaymentData.city=Model.instance.city;
+                creditCardPaymentData.state=Model.instance.state;
+                creditCardPaymentData.zipCode=Model.instance.code;
+                creditCardPaymentData.country=Model.instance.country;
+                creditCardPaymentData.phone=Model.instance.phone;
+                creditCardPaymentData.email=Model.instance.email;
+                creditCardPaymentData.ipAddress="10.10.10.10";
+                creditCardPaymentData.sessionId="";
+                
+                var processContestPaymentOp:AbstractOperation = _csws.getOperation("processContestCreditCardPayment");
+            
+                processContestPaymentOp.addEventListener("result", eventHandler);
+                processContestPaymentOp.send(competition, creditCardPaymentData);
+            }
+            else {
+                var purchaseOrderPaymentData:TcPurhcaseOrderPaymentData=new TcPurhcaseOrderPaymentData();
+
+                purchaseOrderPaymentData.type=new PaymentType();
+                purchaseOrderPaymentData.type.paymentType="TCPurchaseOrder";
+                purchaseOrderPaymentData.poNumber=Model.instance.purchaseOrder;
+                
+                var processContestPaymentOp:AbstractOperation = _csws.getOperation("processContestPurchaseOrderPayment");
+            
+                processContestPaymentOp.addEventListener("result", eventHandler);
+                processContestPaymentOp.send(competition, purchaseOrderPaymentData);
+            }
         }
         
         public function saveAsDraft():void{
@@ -339,12 +389,24 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         	}
         }
         
-        private function createContest():void{
-        	_ws.addcreateContestEventListener(createContestHandler);
-        	var arg:CreateContest  = new CreateContest();
-        	arg.arg0  = competition;
-        	arg.arg1 = competition.contestData.tcDirectProjectId;
-        	_ws.createContest(arg);
+         private function createContest():void
+        {
+            var createContestOp:AbstractOperation = _csws.getOperation("createContest");
+            
+            competition._id=competition.id;
+            competition._type=competition.type;
+            
+            createContestOp.addEventListener("result", createContestHandler);
+            createContestOp.send(competition,competition.contestData.tcDirectProjectId);
+            
+            //_csws.createContest(competition,competition.contestData.tcDirectProjectId);
+            //_ws.addcreateContestEventListener(createContestHandler);
+            //var arg:CreateContest=new CreateContest();
+            //competition._id=competition.id;
+            //competition._type=competition.type;
+            //arg.arg0=competition;
+            //arg.arg1=competition.contestData.tcDirectProjectId;
+            //_ws.createContest(arg);
         }
         
         private function createContestHandler(event:CreateContestResultEvent):void{

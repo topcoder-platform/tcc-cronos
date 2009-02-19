@@ -1,3 +1,4 @@
+
 /**
  * ContestServiceFacadeBeanServiceService.as
  * This file was auto-generated from WSDL by the Apache Axis2 generator modified by Adobe
@@ -27,8 +28,7 @@
   * Then call the operation for which you have set the request wrapper value above, like this:
   * <mx:Button id="myButton" label="Call operation" click="myService.addChangeHistory_send()" />
   */
-package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated
-{
+ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated{
 	import mx.rpc.AsyncToken;
 	import flash.events.EventDispatcher;
 	import mx.rpc.events.ResultEvent;
@@ -70,6 +70,27 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
      * @eventType DeleteContestResultEvent
      */
     [Event(name="DeleteContest_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.DeleteContestResultEvent")]
+    
+    /**
+     * Dispatches when a call to the operation do_1 completes with success
+     * and returns some data
+     * @eventType Do_1ResultEvent
+     */
+    [Event(name="Do_1_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.Do_1ResultEvent")]
+    
+    /**
+     * Dispatches when a call to the operation do_2 completes with success
+     * and returns some data
+     * @eventType Do_2ResultEvent
+     */
+    [Event(name="Do_2_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.Do_2ResultEvent")]
+    
+    /**
+     * Dispatches when a call to the operation do_3 completes with success
+     * and returns some data
+     * @eventType Do_3ResultEvent
+     */
+    [Event(name="Do_3_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.Do_3ResultEvent")]
     
     /**
      * Dispatches when a call to the operation editContestPayment completes with success
@@ -142,6 +163,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     [Event(name="GetContestDataOnly_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestDataOnlyResultEvent")]
     
     /**
+     * Dispatches when a call to the operation getContestDataOnlyByPID completes with success
+     * and returns some data
+     * @eventType GetContestDataOnlyByPIDResultEvent
+     */
+    [Event(name="GetContestDataOnlyByPID_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestDataOnlyByPIDResultEvent")]
+    
+    /**
      * Dispatches when a call to the operation getContestPayment completes with success
      * and returns some data
      * @eventType GetContestPaymentResultEvent
@@ -184,11 +212,25 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     [Event(name="GetSimpleContestData_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSimpleContestDataResultEvent")]
     
     /**
+     * Dispatches when a call to the operation getSimpleContestDataByPID completes with success
+     * and returns some data
+     * @eventType GetSimpleContestDataByPIDResultEvent
+     */
+    [Event(name="GetSimpleContestDataByPID_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSimpleContestDataByPIDResultEvent")]
+    
+    /**
      * Dispatches when a call to the operation getSimpleProjectContestData completes with success
      * and returns some data
      * @eventType GetSimpleProjectContestDataResultEvent
      */
     [Event(name="GetSimpleProjectContestData_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSimpleProjectContestDataResultEvent")]
+    
+    /**
+     * Dispatches when a call to the operation getSimpleProjectContestDataByPID completes with success
+     * and returns some data
+     * @eventType GetSimpleProjectContestDataByPIDResultEvent
+     */
+    [Event(name="GetSimpleProjectContestDataByPID_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetSimpleProjectContestDataByPIDResultEvent")]
     
     /**
      * Dispatches when a call to the operation getStatusList completes with success
@@ -212,11 +254,32 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
     [Event(name="MarkForPurchase_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.MarkForPurchaseResultEvent")]
     
     /**
+     * Dispatches when a call to the operation processContestPayment completes with success
+     * and returns some data
+     * @eventType ProcessContestPaymentResultEvent
+     */
+    [Event(name="ProcessContestPayment_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProcessContestPaymentResultEvent")]
+    
+    /**
+     * Dispatches when a call to the operation processContestPayment_old completes with success
+     * and returns some data
+     * @eventType ProcessContestPayment_oldResultEvent
+     */
+    [Event(name="ProcessContestPayment_old_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProcessContestPayment_oldResultEvent")]
+    
+    /**
      * Dispatches when a call to the operation processMissingPayments completes with success
      * and returns some data
      * @eventType ProcessMissingPaymentsResultEvent
      */
     [Event(name="ProcessMissingPayments_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProcessMissingPaymentsResultEvent")]
+    
+    /**
+     * Dispatches when a call to the operation processSubmissionPayment completes with success
+     * and returns some data
+     * @eventType ProcessSubmissionPaymentResultEvent
+     */
+    [Event(name="ProcessSubmissionPayment_result", type="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProcessSubmissionPaymentResultEvent")]
     
     /**
      * Dispatches when a call to the operation purchaseSubmission completes with success
@@ -426,13 +489,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _addChangeHistory_populate_results(event:ResultEvent):void
-		{
-			var e:AddChangeHistoryResultEvent = new AddChangeHistoryResultEvent();
+        {
+        var e:AddChangeHistoryResultEvent = new AddChangeHistoryResultEvent();
 		            e.result = event.result as AddChangeHistoryResponse;
 		                       e.headers = event.headers;
 		             addChangeHistory_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the addDocumentToContest operation
           
@@ -510,13 +574,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _addDocumentToContest_populate_results(event:ResultEvent):void
-		{
-			var e:AddDocumentToContestResultEvent = new AddDocumentToContestResultEvent();
+        {
+        var e:AddDocumentToContestResultEvent = new AddDocumentToContestResultEvent();
 		            e.result = event.result as AddDocumentToContestResponse;
 		                       e.headers = event.headers;
 		             addDocumentToContest_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the createContest operation
           
@@ -594,13 +659,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _createContest_populate_results(event:ResultEvent):void
-		{
-			var e:CreateContestResultEvent = new CreateContestResultEvent();
+        {
+        var e:CreateContestResultEvent = new CreateContestResultEvent();
 		            e.result = event.result as CreateContestResponse;
 		                       e.headers = event.headers;
 		             createContest_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the createContestPayment operation
           
@@ -678,13 +744,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _createContestPayment_populate_results(event:ResultEvent):void
-		{
-			var e:CreateContestPaymentResultEvent = new CreateContestPaymentResultEvent();
+        {
+        var e:CreateContestPaymentResultEvent = new CreateContestPaymentResultEvent();
 		            e.result = event.result as CreateContestPaymentResponse;
 		                       e.headers = event.headers;
 		             createContestPayment_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the deleteContest operation
           
@@ -762,13 +829,269 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _deleteContest_populate_results(event:ResultEvent):void
-		{
-			var e:DeleteContestResultEvent = new DeleteContestResultEvent();
+        {
+        var e:DeleteContestResultEvent = new DeleteContestResultEvent();
 		            e.result = event.result as DeleteContestResponse;
 		                       e.headers = event.headers;
 		             deleteContest_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
+		
+		//stub functions for the do_1 operation
+          
+
+        /**
+         * @see IContestServiceFacadeBeanService#do_1()
+         */
+        public function do_1(do_1:Do_1):AsyncToken
+        {
+         	var _internal_token:AsyncToken = _baseService.do_1(do_1);
+            _internal_token.addEventListener("result",_do_1_populate_results);
+            _internal_token.addEventListener("fault",throwFault); 
+            return _internal_token;
+		}
+        /**
+		 * @see IContestServiceFacadeBeanService#do_1_send()
+		 */    
+        public function do_1_send():AsyncToken
+        {
+        	return do_1(_do_1_request.do_1);
+        }
+              
+		/**
+		 * Internal representation of the request wrapper for the operation
+		 * @private
+		 */
+		private var _do_1_request:Do_1_request;
+		/**
+		 * @see IContestServiceFacadeBeanService#do_1_request_var
+		 */
+		[Bindable]
+		public function get do_1_request_var():Do_1_request
+		{
+			return _do_1_request;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set do_1_request_var(request:Do_1_request):void
+		{
+			_do_1_request = request;
+		}
+		
+	  		/**
+		 * Internal variable to store the operation's lastResult
+		 * @private
+		 */
+        private var _do_1_lastResult:Do_1Response;
+		[Bindable]
+		/**
+		 * @see IContestServiceFacadeBeanService#do_1_lastResult
+		 */	  
+		public function get do_1_lastResult():Do_1Response
+		{
+			return _do_1_lastResult;
+		}
+		/**
+		 * @private
+		 */
+		public function set do_1_lastResult(lastResult:Do_1Response):void
+		{
+			_do_1_lastResult = lastResult;
+		}
+		
+		/**
+		 * @see IContestServiceFacadeBeanService#adddo_1()
+		 */
+		public function adddo_1EventListener(listener:Function):void
+		{
+			addEventListener(Do_1ResultEvent.Do_1_RESULT,listener);
+		}
+			
+		/**
+		 * @private
+		 */
+        private function _do_1_populate_results(event:ResultEvent):void
+        {
+        var e:Do_1ResultEvent = new Do_1ResultEvent();
+		            e.result = event.result as Do_1Response;
+		                       e.headers = event.headers;
+		             do_1_lastResult = e.result;
+		             dispatchEvent(e);
+	        		
+		}
+		
+		//stub functions for the do_2 operation
+          
+
+        /**
+         * @see IContestServiceFacadeBeanService#do_2()
+         */
+        public function do_2(do_2:Do_2):AsyncToken
+        {
+         	var _internal_token:AsyncToken = _baseService.do_2(do_2);
+            _internal_token.addEventListener("result",_do_2_populate_results);
+            _internal_token.addEventListener("fault",throwFault); 
+            return _internal_token;
+		}
+        /**
+		 * @see IContestServiceFacadeBeanService#do_2_send()
+		 */    
+        public function do_2_send():AsyncToken
+        {
+        	return do_2(_do_2_request.do_2);
+        }
+              
+		/**
+		 * Internal representation of the request wrapper for the operation
+		 * @private
+		 */
+		private var _do_2_request:Do_2_request;
+		/**
+		 * @see IContestServiceFacadeBeanService#do_2_request_var
+		 */
+		[Bindable]
+		public function get do_2_request_var():Do_2_request
+		{
+			return _do_2_request;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set do_2_request_var(request:Do_2_request):void
+		{
+			_do_2_request = request;
+		}
+		
+	  		/**
+		 * Internal variable to store the operation's lastResult
+		 * @private
+		 */
+        private var _do_2_lastResult:Do_2Response;
+		[Bindable]
+		/**
+		 * @see IContestServiceFacadeBeanService#do_2_lastResult
+		 */	  
+		public function get do_2_lastResult():Do_2Response
+		{
+			return _do_2_lastResult;
+		}
+		/**
+		 * @private
+		 */
+		public function set do_2_lastResult(lastResult:Do_2Response):void
+		{
+			_do_2_lastResult = lastResult;
+		}
+		
+		/**
+		 * @see IContestServiceFacadeBeanService#adddo_2()
+		 */
+		public function adddo_2EventListener(listener:Function):void
+		{
+			addEventListener(Do_2ResultEvent.Do_2_RESULT,listener);
+		}
+			
+		/**
+		 * @private
+		 */
+        private function _do_2_populate_results(event:ResultEvent):void
+        {
+        var e:Do_2ResultEvent = new Do_2ResultEvent();
+		            e.result = event.result as Do_2Response;
+		                       e.headers = event.headers;
+		             do_2_lastResult = e.result;
+		             dispatchEvent(e);
+	        		
+		}
+		
+		//stub functions for the do_3 operation
+          
+
+        /**
+         * @see IContestServiceFacadeBeanService#do_3()
+         */
+        public function do_3(do_3:Do_3):AsyncToken
+        {
+         	var _internal_token:AsyncToken = _baseService.do_3(do_3);
+            _internal_token.addEventListener("result",_do_3_populate_results);
+            _internal_token.addEventListener("fault",throwFault); 
+            return _internal_token;
+		}
+        /**
+		 * @see IContestServiceFacadeBeanService#do_3_send()
+		 */    
+        public function do_3_send():AsyncToken
+        {
+        	return do_3(_do_3_request.do_3);
+        }
+              
+		/**
+		 * Internal representation of the request wrapper for the operation
+		 * @private
+		 */
+		private var _do_3_request:Do_3_request;
+		/**
+		 * @see IContestServiceFacadeBeanService#do_3_request_var
+		 */
+		[Bindable]
+		public function get do_3_request_var():Do_3_request
+		{
+			return _do_3_request;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set do_3_request_var(request:Do_3_request):void
+		{
+			_do_3_request = request;
+		}
+		
+	  		/**
+		 * Internal variable to store the operation's lastResult
+		 * @private
+		 */
+        private var _do_3_lastResult:Do_3Response;
+		[Bindable]
+		/**
+		 * @see IContestServiceFacadeBeanService#do_3_lastResult
+		 */	  
+		public function get do_3_lastResult():Do_3Response
+		{
+			return _do_3_lastResult;
+		}
+		/**
+		 * @private
+		 */
+		public function set do_3_lastResult(lastResult:Do_3Response):void
+		{
+			_do_3_lastResult = lastResult;
+		}
+		
+		/**
+		 * @see IContestServiceFacadeBeanService#adddo_3()
+		 */
+		public function adddo_3EventListener(listener:Function):void
+		{
+			addEventListener(Do_3ResultEvent.Do_3_RESULT,listener);
+		}
+			
+		/**
+		 * @private
+		 */
+        private function _do_3_populate_results(event:ResultEvent):void
+        {
+        var e:Do_3ResultEvent = new Do_3ResultEvent();
+		            e.result = event.result as Do_3Response;
+		                       e.headers = event.headers;
+		             do_3_lastResult = e.result;
+		             dispatchEvent(e);
+	        		
+		}
 		
 		//stub functions for the editContestPayment operation
           
@@ -846,13 +1169,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _editContestPayment_populate_results(event:ResultEvent):void
-		{
-			var e:EditContestPaymentResultEvent = new EditContestPaymentResultEvent();
+        {
+        var e:EditContestPaymentResultEvent = new EditContestPaymentResultEvent();
 		            e.result = event.result as EditContestPaymentResponse;
 		                       e.headers = event.headers;
 		             editContestPayment_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the getAllContestHeaders operation
           
@@ -930,13 +1254,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _getAllContestHeaders_populate_results(event:ResultEvent):void
-		{
-			var e:GetAllContestHeadersResultEvent = new GetAllContestHeadersResultEvent();
+        {
+        var e:GetAllContestHeadersResultEvent = new GetAllContestHeadersResultEvent();
 		            e.result = event.result as GetAllContestHeadersResponse;
 		                       e.headers = event.headers;
 		             getAllContestHeaders_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the getAllContestTypes operation
           
@@ -1014,13 +1339,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _getAllContestTypes_populate_results(event:ResultEvent):void
-		{
-			var e:GetAllContestTypesResultEvent = new GetAllContestTypesResultEvent();
+        {
+        var e:GetAllContestTypesResultEvent = new GetAllContestTypesResultEvent();
 		            e.result = event.result as GetAllContestTypesResponse;
 		                       e.headers = event.headers;
 		             getAllContestTypes_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the getAllContests operation
           
@@ -1098,13 +1424,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _getAllContests_populate_results(event:ResultEvent):void
-		{
-			var e:GetAllContestsResultEvent = new GetAllContestsResultEvent();
+        {
+        var e:GetAllContestsResultEvent = new GetAllContestsResultEvent();
 		            e.result = event.result as GetAllContestsResponse;
 		                       e.headers = event.headers;
 		             getAllContests_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the getAllDocumentTypes operation
           
@@ -1182,13 +1509,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _getAllDocumentTypes_populate_results(event:ResultEvent):void
-		{
-			var e:GetAllDocumentTypesResultEvent = new GetAllDocumentTypesResultEvent();
+        {
+        var e:GetAllDocumentTypesResultEvent = new GetAllDocumentTypesResultEvent();
 		            e.result = event.result as GetAllDocumentTypesResponse;
 		                       e.headers = event.headers;
 		             getAllDocumentTypes_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the getAllMediums operation
           
@@ -1266,13 +1594,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _getAllMediums_populate_results(event:ResultEvent):void
-		{
-			var e:GetAllMediumsResultEvent = new GetAllMediumsResultEvent();
+        {
+        var e:GetAllMediumsResultEvent = new GetAllMediumsResultEvent();
 		            e.result = event.result as GetAllMediumsResponse;
 		                       e.headers = event.headers;
 		             getAllMediums_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the getAllStudioFileTypes operation
           
@@ -1350,13 +1679,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _getAllStudioFileTypes_populate_results(event:ResultEvent):void
-		{
-			var e:GetAllStudioFileTypesResultEvent = new GetAllStudioFileTypesResultEvent();
+        {
+        var e:GetAllStudioFileTypesResultEvent = new GetAllStudioFileTypesResultEvent();
 		            e.result = event.result as GetAllStudioFileTypesResponse;
 		                       e.headers = event.headers;
 		             getAllStudioFileTypes_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the getChangeHistory operation
           
@@ -1434,13 +1764,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _getChangeHistory_populate_results(event:ResultEvent):void
-		{
-			var e:GetChangeHistoryResultEvent = new GetChangeHistoryResultEvent();
+        {
+        var e:GetChangeHistoryResultEvent = new GetChangeHistoryResultEvent();
 		            e.result = event.result as GetChangeHistoryResponse;
 		                       e.headers = event.headers;
 		             getChangeHistory_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the getContest operation
           
@@ -1518,13 +1849,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _getContest_populate_results(event:ResultEvent):void
-		{
-			var e:GetContestResultEvent = new GetContestResultEvent();
+        {
+        var e:GetContestResultEvent = new GetContestResultEvent();
 		            e.result = event.result as GetContestResponse;
 		                       e.headers = event.headers;
 		             getContest_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the getContestDataOnly operation
           
@@ -1602,13 +1934,99 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _getContestDataOnly_populate_results(event:ResultEvent):void
-		{
-			var e:GetContestDataOnlyResultEvent = new GetContestDataOnlyResultEvent();
+        {
+        var e:GetContestDataOnlyResultEvent = new GetContestDataOnlyResultEvent();
 		            e.result = event.result as GetContestDataOnlyResponse;
 		                       e.headers = event.headers;
 		             getContestDataOnly_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
+		
+		//stub functions for the getContestDataOnlyByPID operation
+          
+
+        /**
+         * @see IContestServiceFacadeBeanService#getContestDataOnlyByPID()
+         */
+        public function getContestDataOnlyByPID(getContestDataOnlyByPID:GetContestDataOnlyByPID):AsyncToken
+        {
+         	var _internal_token:AsyncToken = _baseService.getContestDataOnlyByPID(getContestDataOnlyByPID);
+            _internal_token.addEventListener("result",_getContestDataOnlyByPID_populate_results);
+            _internal_token.addEventListener("fault",throwFault); 
+            return _internal_token;
+		}
+        /**
+		 * @see IContestServiceFacadeBeanService#getContestDataOnlyByPID_send()
+		 */    
+        public function getContestDataOnlyByPID_send():AsyncToken
+        {
+        	return getContestDataOnlyByPID(_getContestDataOnlyByPID_request.getContestDataOnlyByPID);
+        }
+              
+		/**
+		 * Internal representation of the request wrapper for the operation
+		 * @private
+		 */
+		private var _getContestDataOnlyByPID_request:GetContestDataOnlyByPID_request;
+		/**
+		 * @see IContestServiceFacadeBeanService#getContestDataOnlyByPID_request_var
+		 */
+		[Bindable]
+		public function get getContestDataOnlyByPID_request_var():GetContestDataOnlyByPID_request
+		{
+			return _getContestDataOnlyByPID_request;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set getContestDataOnlyByPID_request_var(request:GetContestDataOnlyByPID_request):void
+		{
+			_getContestDataOnlyByPID_request = request;
+		}
+		
+	  		/**
+		 * Internal variable to store the operation's lastResult
+		 * @private
+		 */
+        private var _getContestDataOnlyByPID_lastResult:GetContestDataOnlyByPIDResponse;
+		[Bindable]
+		/**
+		 * @see IContestServiceFacadeBeanService#getContestDataOnlyByPID_lastResult
+		 */	  
+		public function get getContestDataOnlyByPID_lastResult():GetContestDataOnlyByPIDResponse
+		{
+			return _getContestDataOnlyByPID_lastResult;
+		}
+		/**
+		 * @private
+		 */
+		public function set getContestDataOnlyByPID_lastResult(lastResult:GetContestDataOnlyByPIDResponse):void
+		{
+			_getContestDataOnlyByPID_lastResult = lastResult;
+		}
+		
+		/**
+		 * @see IContestServiceFacadeBeanService#addgetContestDataOnlyByPID()
+		 */
+		public function addgetContestDataOnlyByPIDEventListener(listener:Function):void
+		{
+			addEventListener(GetContestDataOnlyByPIDResultEvent.GetContestDataOnlyByPID_RESULT,listener);
+		}
+			
+		/**
+		 * @private
+		 */
+        private function _getContestDataOnlyByPID_populate_results(event:ResultEvent):void
+        {
+        var e:GetContestDataOnlyByPIDResultEvent = new GetContestDataOnlyByPIDResultEvent();
+		            e.result = event.result as GetContestDataOnlyByPIDResponse;
+		                       e.headers = event.headers;
+		             getContestDataOnlyByPID_lastResult = e.result;
+		             dispatchEvent(e);
+	        		
+		}
 		
 		//stub functions for the getContestPayment operation
           
@@ -1686,13 +2104,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _getContestPayment_populate_results(event:ResultEvent):void
-		{
-			var e:GetContestPaymentResultEvent = new GetContestPaymentResultEvent();
+        {
+        var e:GetContestPaymentResultEvent = new GetContestPaymentResultEvent();
 		            e.result = event.result as GetContestPaymentResponse;
 		                       e.headers = event.headers;
 		             getContestPayment_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the getContestsForClient operation
           
@@ -1770,13 +2189,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _getContestsForClient_populate_results(event:ResultEvent):void
-		{
-			var e:GetContestsForClientResultEvent = new GetContestsForClientResultEvent();
+        {
+        var e:GetContestsForClientResultEvent = new GetContestsForClientResultEvent();
 		            e.result = event.result as GetContestsForClientResponse;
 		                       e.headers = event.headers;
 		             getContestsForClient_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the getContestsForProject operation
           
@@ -1854,13 +2274,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _getContestsForProject_populate_results(event:ResultEvent):void
-		{
-			var e:GetContestsForProjectResultEvent = new GetContestsForProjectResultEvent();
+        {
+        var e:GetContestsForProjectResultEvent = new GetContestsForProjectResultEvent();
 		            e.result = event.result as GetContestsForProjectResponse;
 		                       e.headers = event.headers;
 		             getContestsForProject_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the getLatestChanges operation
           
@@ -1938,13 +2359,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _getLatestChanges_populate_results(event:ResultEvent):void
-		{
-			var e:GetLatestChangesResultEvent = new GetLatestChangesResultEvent();
+        {
+        var e:GetLatestChangesResultEvent = new GetLatestChangesResultEvent();
 		            e.result = event.result as GetLatestChangesResponse;
 		                       e.headers = event.headers;
 		             getLatestChanges_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the getMimeTypeId operation
           
@@ -2022,13 +2444,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _getMimeTypeId_populate_results(event:ResultEvent):void
-		{
-			var e:GetMimeTypeIdResultEvent = new GetMimeTypeIdResultEvent();
+        {
+        var e:GetMimeTypeIdResultEvent = new GetMimeTypeIdResultEvent();
 		            e.result = event.result as GetMimeTypeIdResponse;
 		                       e.headers = event.headers;
 		             getMimeTypeId_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the getSimpleContestData operation
           
@@ -2106,13 +2529,99 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _getSimpleContestData_populate_results(event:ResultEvent):void
-		{
-			var e:GetSimpleContestDataResultEvent = new GetSimpleContestDataResultEvent();
+        {
+        var e:GetSimpleContestDataResultEvent = new GetSimpleContestDataResultEvent();
 		            e.result = event.result as GetSimpleContestDataResponse;
 		                       e.headers = event.headers;
 		             getSimpleContestData_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
+		
+		//stub functions for the getSimpleContestDataByPID operation
+          
+
+        /**
+         * @see IContestServiceFacadeBeanService#getSimpleContestDataByPID()
+         */
+        public function getSimpleContestDataByPID(getSimpleContestDataByPID:GetSimpleContestDataByPID):AsyncToken
+        {
+         	var _internal_token:AsyncToken = _baseService.getSimpleContestDataByPID(getSimpleContestDataByPID);
+            _internal_token.addEventListener("result",_getSimpleContestDataByPID_populate_results);
+            _internal_token.addEventListener("fault",throwFault); 
+            return _internal_token;
+		}
+        /**
+		 * @see IContestServiceFacadeBeanService#getSimpleContestDataByPID_send()
+		 */    
+        public function getSimpleContestDataByPID_send():AsyncToken
+        {
+        	return getSimpleContestDataByPID(_getSimpleContestDataByPID_request.getSimpleContestDataByPID);
+        }
+              
+		/**
+		 * Internal representation of the request wrapper for the operation
+		 * @private
+		 */
+		private var _getSimpleContestDataByPID_request:GetSimpleContestDataByPID_request;
+		/**
+		 * @see IContestServiceFacadeBeanService#getSimpleContestDataByPID_request_var
+		 */
+		[Bindable]
+		public function get getSimpleContestDataByPID_request_var():GetSimpleContestDataByPID_request
+		{
+			return _getSimpleContestDataByPID_request;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set getSimpleContestDataByPID_request_var(request:GetSimpleContestDataByPID_request):void
+		{
+			_getSimpleContestDataByPID_request = request;
+		}
+		
+	  		/**
+		 * Internal variable to store the operation's lastResult
+		 * @private
+		 */
+        private var _getSimpleContestDataByPID_lastResult:GetSimpleContestDataByPIDResponse;
+		[Bindable]
+		/**
+		 * @see IContestServiceFacadeBeanService#getSimpleContestDataByPID_lastResult
+		 */	  
+		public function get getSimpleContestDataByPID_lastResult():GetSimpleContestDataByPIDResponse
+		{
+			return _getSimpleContestDataByPID_lastResult;
+		}
+		/**
+		 * @private
+		 */
+		public function set getSimpleContestDataByPID_lastResult(lastResult:GetSimpleContestDataByPIDResponse):void
+		{
+			_getSimpleContestDataByPID_lastResult = lastResult;
+		}
+		
+		/**
+		 * @see IContestServiceFacadeBeanService#addgetSimpleContestDataByPID()
+		 */
+		public function addgetSimpleContestDataByPIDEventListener(listener:Function):void
+		{
+			addEventListener(GetSimpleContestDataByPIDResultEvent.GetSimpleContestDataByPID_RESULT,listener);
+		}
+			
+		/**
+		 * @private
+		 */
+        private function _getSimpleContestDataByPID_populate_results(event:ResultEvent):void
+        {
+        var e:GetSimpleContestDataByPIDResultEvent = new GetSimpleContestDataByPIDResultEvent();
+		            e.result = event.result as GetSimpleContestDataByPIDResponse;
+		                       e.headers = event.headers;
+		             getSimpleContestDataByPID_lastResult = e.result;
+		             dispatchEvent(e);
+	        		
+		}
 		
 		//stub functions for the getSimpleProjectContestData operation
           
@@ -2190,13 +2699,99 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _getSimpleProjectContestData_populate_results(event:ResultEvent):void
-		{
-			var e:GetSimpleProjectContestDataResultEvent = new GetSimpleProjectContestDataResultEvent();
+        {
+        var e:GetSimpleProjectContestDataResultEvent = new GetSimpleProjectContestDataResultEvent();
 		            e.result = event.result as GetSimpleProjectContestDataResponse;
 		                       e.headers = event.headers;
 		             getSimpleProjectContestData_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
+		
+		//stub functions for the getSimpleProjectContestDataByPID operation
+          
+
+        /**
+         * @see IContestServiceFacadeBeanService#getSimpleProjectContestDataByPID()
+         */
+        public function getSimpleProjectContestDataByPID(getSimpleProjectContestDataByPID:GetSimpleProjectContestDataByPID):AsyncToken
+        {
+         	var _internal_token:AsyncToken = _baseService.getSimpleProjectContestDataByPID(getSimpleProjectContestDataByPID);
+            _internal_token.addEventListener("result",_getSimpleProjectContestDataByPID_populate_results);
+            _internal_token.addEventListener("fault",throwFault); 
+            return _internal_token;
+		}
+        /**
+		 * @see IContestServiceFacadeBeanService#getSimpleProjectContestDataByPID_send()
+		 */    
+        public function getSimpleProjectContestDataByPID_send():AsyncToken
+        {
+        	return getSimpleProjectContestDataByPID(_getSimpleProjectContestDataByPID_request.getSimpleProjectContestDataByPID);
+        }
+              
+		/**
+		 * Internal representation of the request wrapper for the operation
+		 * @private
+		 */
+		private var _getSimpleProjectContestDataByPID_request:GetSimpleProjectContestDataByPID_request;
+		/**
+		 * @see IContestServiceFacadeBeanService#getSimpleProjectContestDataByPID_request_var
+		 */
+		[Bindable]
+		public function get getSimpleProjectContestDataByPID_request_var():GetSimpleProjectContestDataByPID_request
+		{
+			return _getSimpleProjectContestDataByPID_request;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set getSimpleProjectContestDataByPID_request_var(request:GetSimpleProjectContestDataByPID_request):void
+		{
+			_getSimpleProjectContestDataByPID_request = request;
+		}
+		
+	  		/**
+		 * Internal variable to store the operation's lastResult
+		 * @private
+		 */
+        private var _getSimpleProjectContestDataByPID_lastResult:GetSimpleProjectContestDataByPIDResponse;
+		[Bindable]
+		/**
+		 * @see IContestServiceFacadeBeanService#getSimpleProjectContestDataByPID_lastResult
+		 */	  
+		public function get getSimpleProjectContestDataByPID_lastResult():GetSimpleProjectContestDataByPIDResponse
+		{
+			return _getSimpleProjectContestDataByPID_lastResult;
+		}
+		/**
+		 * @private
+		 */
+		public function set getSimpleProjectContestDataByPID_lastResult(lastResult:GetSimpleProjectContestDataByPIDResponse):void
+		{
+			_getSimpleProjectContestDataByPID_lastResult = lastResult;
+		}
+		
+		/**
+		 * @see IContestServiceFacadeBeanService#addgetSimpleProjectContestDataByPID()
+		 */
+		public function addgetSimpleProjectContestDataByPIDEventListener(listener:Function):void
+		{
+			addEventListener(GetSimpleProjectContestDataByPIDResultEvent.GetSimpleProjectContestDataByPID_RESULT,listener);
+		}
+			
+		/**
+		 * @private
+		 */
+        private function _getSimpleProjectContestDataByPID_populate_results(event:ResultEvent):void
+        {
+        var e:GetSimpleProjectContestDataByPIDResultEvent = new GetSimpleProjectContestDataByPIDResultEvent();
+		            e.result = event.result as GetSimpleProjectContestDataByPIDResponse;
+		                       e.headers = event.headers;
+		             getSimpleProjectContestDataByPID_lastResult = e.result;
+		             dispatchEvent(e);
+	        		
+		}
 		
 		//stub functions for the getStatusList operation
           
@@ -2274,13 +2869,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _getStatusList_populate_results(event:ResultEvent):void
-		{
-			var e:GetStatusListResultEvent = new GetStatusListResultEvent();
+        {
+        var e:GetStatusListResultEvent = new GetStatusListResultEvent();
 		            e.result = event.result as GetStatusListResponse;
 		                       e.headers = event.headers;
 		             getStatusList_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the getSubmissionFileTypes operation
           
@@ -2358,13 +2954,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _getSubmissionFileTypes_populate_results(event:ResultEvent):void
-		{
-			var e:GetSubmissionFileTypesResultEvent = new GetSubmissionFileTypesResultEvent();
+        {
+        var e:GetSubmissionFileTypesResultEvent = new GetSubmissionFileTypesResultEvent();
 		            e.result = event.result as GetSubmissionFileTypesResponse;
 		                       e.headers = event.headers;
 		             getSubmissionFileTypes_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the markForPurchase operation
           
@@ -2442,13 +3039,184 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _markForPurchase_populate_results(event:ResultEvent):void
-		{
-			var e:MarkForPurchaseResultEvent = new MarkForPurchaseResultEvent();
+        {
+        var e:MarkForPurchaseResultEvent = new MarkForPurchaseResultEvent();
 		            e.result = event.result as MarkForPurchaseResponse;
 		                       e.headers = event.headers;
 		             markForPurchase_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
+		
+		//stub functions for the processContestPayment operation
+          
+
+        /**
+         * @see IContestServiceFacadeBeanService#processContestPayment()
+         */
+        public function processContestPayment(processContestPayment:ProcessContestPayment):AsyncToken
+        {
+         	var _internal_token:AsyncToken = _baseService.processContestPayment(processContestPayment);
+            _internal_token.addEventListener("result",_processContestPayment_populate_results);
+            _internal_token.addEventListener("fault",throwFault); 
+            return _internal_token;
+		}
+        /**
+		 * @see IContestServiceFacadeBeanService#processContestPayment_send()
+		 */    
+        public function processContestPayment_send():AsyncToken
+        {
+        	return processContestPayment(_processContestPayment_request.processContestPayment);
+        }
+              
+		/**
+		 * Internal representation of the request wrapper for the operation
+		 * @private
+		 */
+		private var _processContestPayment_request:ProcessContestPayment_request;
+		/**
+		 * @see IContestServiceFacadeBeanService#processContestPayment_request_var
+		 */
+		[Bindable]
+		public function get processContestPayment_request_var():ProcessContestPayment_request
+		{
+			return _processContestPayment_request;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set processContestPayment_request_var(request:ProcessContestPayment_request):void
+		{
+			_processContestPayment_request = request;
+		}
+		
+	  		/**
+		 * Internal variable to store the operation's lastResult
+		 * @private
+		 */
+        private var _processContestPayment_lastResult:ProcessContestPaymentResponse;
+		[Bindable]
+		/**
+		 * @see IContestServiceFacadeBeanService#processContestPayment_lastResult
+		 */	  
+		public function get processContestPayment_lastResult():ProcessContestPaymentResponse
+		{
+			return _processContestPayment_lastResult;
+		}
+		/**
+		 * @private
+		 */
+		public function set processContestPayment_lastResult(lastResult:ProcessContestPaymentResponse):void
+		{
+			_processContestPayment_lastResult = lastResult;
+		}
+		
+		/**
+		 * @see IContestServiceFacadeBeanService#addprocessContestPayment()
+		 */
+		public function addprocessContestPaymentEventListener(listener:Function):void
+		{
+			addEventListener(ProcessContestPaymentResultEvent.ProcessContestPayment_RESULT,listener);
+		}
+			
+		/**
+		 * @private
+		 */
+        private function _processContestPayment_populate_results(event:ResultEvent):void
+        {
+        var e:ProcessContestPaymentResultEvent = new ProcessContestPaymentResultEvent();
+		            e.result = event.result as ProcessContestPaymentResponse;
+		                       e.headers = event.headers;
+		             processContestPayment_lastResult = e.result;
+		             dispatchEvent(e);
+	        		
+		}
+		
+		//stub functions for the processContestPayment_old operation
+          
+
+        /**
+         * @see IContestServiceFacadeBeanService#processContestPayment_old()
+         */
+        public function processContestPayment_old(processContestPayment_old:ProcessContestPayment_old):AsyncToken
+        {
+         	var _internal_token:AsyncToken = _baseService.processContestPayment_old(processContestPayment_old);
+            _internal_token.addEventListener("result",_processContestPayment_old_populate_results);
+            _internal_token.addEventListener("fault",throwFault); 
+            return _internal_token;
+		}
+        /**
+		 * @see IContestServiceFacadeBeanService#processContestPayment_old_send()
+		 */    
+        public function processContestPayment_old_send():AsyncToken
+        {
+        	return processContestPayment_old(_processContestPayment_old_request.processContestPayment_old);
+        }
+              
+		/**
+		 * Internal representation of the request wrapper for the operation
+		 * @private
+		 */
+		private var _processContestPayment_old_request:ProcessContestPayment_old_request;
+		/**
+		 * @see IContestServiceFacadeBeanService#processContestPayment_old_request_var
+		 */
+		[Bindable]
+		public function get processContestPayment_old_request_var():ProcessContestPayment_old_request
+		{
+			return _processContestPayment_old_request;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set processContestPayment_old_request_var(request:ProcessContestPayment_old_request):void
+		{
+			_processContestPayment_old_request = request;
+		}
+		
+	  		/**
+		 * Internal variable to store the operation's lastResult
+		 * @private
+		 */
+        private var _processContestPayment_old_lastResult:ProcessContestPayment_oldResponse;
+		[Bindable]
+		/**
+		 * @see IContestServiceFacadeBeanService#processContestPayment_old_lastResult
+		 */	  
+		public function get processContestPayment_old_lastResult():ProcessContestPayment_oldResponse
+		{
+			return _processContestPayment_old_lastResult;
+		}
+		/**
+		 * @private
+		 */
+		public function set processContestPayment_old_lastResult(lastResult:ProcessContestPayment_oldResponse):void
+		{
+			_processContestPayment_old_lastResult = lastResult;
+		}
+		
+		/**
+		 * @see IContestServiceFacadeBeanService#addprocessContestPayment_old()
+		 */
+		public function addprocessContestPayment_oldEventListener(listener:Function):void
+		{
+			addEventListener(ProcessContestPayment_oldResultEvent.ProcessContestPayment_old_RESULT,listener);
+		}
+			
+		/**
+		 * @private
+		 */
+        private function _processContestPayment_old_populate_results(event:ResultEvent):void
+        {
+        var e:ProcessContestPayment_oldResultEvent = new ProcessContestPayment_oldResultEvent();
+		            e.result = event.result as ProcessContestPayment_oldResponse;
+		                       e.headers = event.headers;
+		             processContestPayment_old_lastResult = e.result;
+		             dispatchEvent(e);
+	        		
+		}
 		
 		//stub functions for the processMissingPayments operation
           
@@ -2526,13 +3294,99 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _processMissingPayments_populate_results(event:ResultEvent):void
-		{
-			var e:ProcessMissingPaymentsResultEvent = new ProcessMissingPaymentsResultEvent();
+        {
+        var e:ProcessMissingPaymentsResultEvent = new ProcessMissingPaymentsResultEvent();
 		            e.result = event.result as ProcessMissingPaymentsResponse;
 		                       e.headers = event.headers;
 		             processMissingPayments_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
+		
+		//stub functions for the processSubmissionPayment operation
+          
+
+        /**
+         * @see IContestServiceFacadeBeanService#processSubmissionPayment()
+         */
+        public function processSubmissionPayment(processSubmissionPayment:ProcessSubmissionPayment):AsyncToken
+        {
+         	var _internal_token:AsyncToken = _baseService.processSubmissionPayment(processSubmissionPayment);
+            _internal_token.addEventListener("result",_processSubmissionPayment_populate_results);
+            _internal_token.addEventListener("fault",throwFault); 
+            return _internal_token;
+		}
+        /**
+		 * @see IContestServiceFacadeBeanService#processSubmissionPayment_send()
+		 */    
+        public function processSubmissionPayment_send():AsyncToken
+        {
+        	return processSubmissionPayment(_processSubmissionPayment_request.processSubmissionPayment);
+        }
+              
+		/**
+		 * Internal representation of the request wrapper for the operation
+		 * @private
+		 */
+		private var _processSubmissionPayment_request:ProcessSubmissionPayment_request;
+		/**
+		 * @see IContestServiceFacadeBeanService#processSubmissionPayment_request_var
+		 */
+		[Bindable]
+		public function get processSubmissionPayment_request_var():ProcessSubmissionPayment_request
+		{
+			return _processSubmissionPayment_request;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set processSubmissionPayment_request_var(request:ProcessSubmissionPayment_request):void
+		{
+			_processSubmissionPayment_request = request;
+		}
+		
+	  		/**
+		 * Internal variable to store the operation's lastResult
+		 * @private
+		 */
+        private var _processSubmissionPayment_lastResult:ProcessSubmissionPaymentResponse;
+		[Bindable]
+		/**
+		 * @see IContestServiceFacadeBeanService#processSubmissionPayment_lastResult
+		 */	  
+		public function get processSubmissionPayment_lastResult():ProcessSubmissionPaymentResponse
+		{
+			return _processSubmissionPayment_lastResult;
+		}
+		/**
+		 * @private
+		 */
+		public function set processSubmissionPayment_lastResult(lastResult:ProcessSubmissionPaymentResponse):void
+		{
+			_processSubmissionPayment_lastResult = lastResult;
+		}
+		
+		/**
+		 * @see IContestServiceFacadeBeanService#addprocessSubmissionPayment()
+		 */
+		public function addprocessSubmissionPaymentEventListener(listener:Function):void
+		{
+			addEventListener(ProcessSubmissionPaymentResultEvent.ProcessSubmissionPayment_RESULT,listener);
+		}
+			
+		/**
+		 * @private
+		 */
+        private function _processSubmissionPayment_populate_results(event:ResultEvent):void
+        {
+        var e:ProcessSubmissionPaymentResultEvent = new ProcessSubmissionPaymentResultEvent();
+		            e.result = event.result as ProcessSubmissionPaymentResponse;
+		                       e.headers = event.headers;
+		             processSubmissionPayment_lastResult = e.result;
+		             dispatchEvent(e);
+	        		
+		}
 		
 		//stub functions for the purchaseSubmission operation
           
@@ -2610,13 +3464,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _purchaseSubmission_populate_results(event:ResultEvent):void
-		{
-			var e:PurchaseSubmissionResultEvent = new PurchaseSubmissionResultEvent();
+        {
+        var e:PurchaseSubmissionResultEvent = new PurchaseSubmissionResultEvent();
 		            e.result = event.result as PurchaseSubmissionResponse;
 		                       e.headers = event.headers;
 		             purchaseSubmission_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the removeContestPayment operation
           
@@ -2694,13 +3549,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _removeContestPayment_populate_results(event:ResultEvent):void
-		{
-			var e:RemoveContestPaymentResultEvent = new RemoveContestPaymentResultEvent();
+        {
+        var e:RemoveContestPaymentResultEvent = new RemoveContestPaymentResultEvent();
 		            e.result = event.result as RemoveContestPaymentResponse;
 		                       e.headers = event.headers;
 		             removeContestPayment_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the removeDocument operation
           
@@ -2778,13 +3634,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _removeDocument_populate_results(event:ResultEvent):void
-		{
-			var e:RemoveDocumentResultEvent = new RemoveDocumentResultEvent();
+        {
+        var e:RemoveDocumentResultEvent = new RemoveDocumentResultEvent();
 		            e.result = event.result as RemoveDocumentResponse;
 		                       e.headers = event.headers;
 		             removeDocument_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the removeDocumentFromContest operation
           
@@ -2862,13 +3719,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _removeDocumentFromContest_populate_results(event:ResultEvent):void
-		{
-			var e:RemoveDocumentFromContestResultEvent = new RemoveDocumentFromContestResultEvent();
+        {
+        var e:RemoveDocumentFromContestResultEvent = new RemoveDocumentFromContestResultEvent();
 		            e.result = event.result as RemoveDocumentFromContestResponse;
 		                       e.headers = event.headers;
 		             removeDocumentFromContest_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the removeSubmission operation
           
@@ -2946,13 +3804,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _removeSubmission_populate_results(event:ResultEvent):void
-		{
-			var e:RemoveSubmissionResultEvent = new RemoveSubmissionResultEvent();
+        {
+        var e:RemoveSubmissionResultEvent = new RemoveSubmissionResultEvent();
 		            e.result = event.result as RemoveSubmissionResponse;
 		                       e.headers = event.headers;
 		             removeSubmission_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the retrieveAllSubmissionsByMember operation
           
@@ -3030,13 +3889,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _retrieveAllSubmissionsByMember_populate_results(event:ResultEvent):void
-		{
-			var e:RetrieveAllSubmissionsByMemberResultEvent = new RetrieveAllSubmissionsByMemberResultEvent();
+        {
+        var e:RetrieveAllSubmissionsByMemberResultEvent = new RetrieveAllSubmissionsByMemberResultEvent();
 		            e.result = event.result as RetrieveAllSubmissionsByMemberResponse;
 		                       e.headers = event.headers;
 		             retrieveAllSubmissionsByMember_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the retrieveSubmission operation
           
@@ -3114,13 +3974,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _retrieveSubmission_populate_results(event:ResultEvent):void
-		{
-			var e:RetrieveSubmissionResultEvent = new RetrieveSubmissionResultEvent();
+        {
+        var e:RetrieveSubmissionResultEvent = new RetrieveSubmissionResultEvent();
 		            e.result = event.result as RetrieveSubmissionResponse;
 		                       e.headers = event.headers;
 		             retrieveSubmission_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the retrieveSubmissionsForContest operation
           
@@ -3198,13 +4059,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _retrieveSubmissionsForContest_populate_results(event:ResultEvent):void
-		{
-			var e:RetrieveSubmissionsForContestResultEvent = new RetrieveSubmissionsForContestResultEvent();
+        {
+        var e:RetrieveSubmissionsForContestResultEvent = new RetrieveSubmissionsForContestResultEvent();
 		            e.result = event.result as RetrieveSubmissionsForContestResponse;
 		                       e.headers = event.headers;
 		             retrieveSubmissionsForContest_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the searchContests operation
           
@@ -3282,13 +4144,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _searchContests_populate_results(event:ResultEvent):void
-		{
-			var e:SearchContestsResultEvent = new SearchContestsResultEvent();
+        {
+        var e:SearchContestsResultEvent = new SearchContestsResultEvent();
 		            e.result = event.result as SearchContestsResponse;
 		                       e.headers = event.headers;
 		             searchContests_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the setSubmissionPlacement operation
           
@@ -3366,13 +4229,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _setSubmissionPlacement_populate_results(event:ResultEvent):void
-		{
-			var e:SetSubmissionPlacementResultEvent = new SetSubmissionPlacementResultEvent();
+        {
+        var e:SetSubmissionPlacementResultEvent = new SetSubmissionPlacementResultEvent();
 		            e.result = event.result as SetSubmissionPlacementResponse;
 		                       e.headers = event.headers;
 		             setSubmissionPlacement_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the setSubmissionPrize operation
           
@@ -3450,13 +4314,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _setSubmissionPrize_populate_results(event:ResultEvent):void
-		{
-			var e:SetSubmissionPrizeResultEvent = new SetSubmissionPrizeResultEvent();
+        {
+        var e:SetSubmissionPrizeResultEvent = new SetSubmissionPrizeResultEvent();
 		            e.result = event.result as SetSubmissionPrizeResponse;
 		                       e.headers = event.headers;
 		             setSubmissionPrize_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the updateContest operation
           
@@ -3534,13 +4399,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _updateContest_populate_results(event:ResultEvent):void
-		{
-			var e:UpdateContestResultEvent = new UpdateContestResultEvent();
+        {
+        var e:UpdateContestResultEvent = new UpdateContestResultEvent();
 		            e.result = event.result as UpdateContestResponse;
 		                       e.headers = event.headers;
 		             updateContest_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the updateContestStatus operation
           
@@ -3618,13 +4484,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _updateContestStatus_populate_results(event:ResultEvent):void
-		{
-			var e:UpdateContestStatusResultEvent = new UpdateContestStatusResultEvent();
+        {
+        var e:UpdateContestStatusResultEvent = new UpdateContestStatusResultEvent();
 		            e.result = event.result as UpdateContestStatusResponse;
 		                       e.headers = event.headers;
 		             updateContestStatus_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the updateSubmission operation
           
@@ -3702,13 +4569,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _updateSubmission_populate_results(event:ResultEvent):void
-		{
-			var e:UpdateSubmissionResultEvent = new UpdateSubmissionResultEvent();
+        {
+        var e:UpdateSubmissionResultEvent = new UpdateSubmissionResultEvent();
 		            e.result = event.result as UpdateSubmissionResponse;
 		                       e.headers = event.headers;
 		             updateSubmission_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the uploadDocument operation
           
@@ -3786,13 +4654,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _uploadDocument_populate_results(event:ResultEvent):void
-		{
-			var e:UploadDocumentResultEvent = new UploadDocumentResultEvent();
+        {
+        var e:UploadDocumentResultEvent = new UploadDocumentResultEvent();
 		            e.result = event.result as UploadDocumentResponse;
 		                       e.headers = event.headers;
 		             uploadDocument_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//stub functions for the uploadDocumentForContest operation
           
@@ -3870,13 +4739,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
 		 * @private
 		 */
         private function _uploadDocumentForContest_populate_results(event:ResultEvent):void
-		{
-			var e:UploadDocumentForContestResultEvent = new UploadDocumentForContestResultEvent();
+        {
+        var e:UploadDocumentForContestResultEvent = new UploadDocumentForContestResultEvent();
 		            e.result = event.result as UploadDocumentForContestResponse;
 		                       e.headers = event.headers;
 		             uploadDocumentForContest_lastResult = e.result;
 		             dispatchEvent(e);
-	        		}
+	        		
+		}
 		
 		//service-wide functions
 		/**

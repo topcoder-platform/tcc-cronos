@@ -123,8 +123,8 @@
             	
             	mainWidget.competition.startTime = startDate;
             	mainWidget.competition.endTime = endDate;
-            	mainWidget.competition._startTime = startDate;
-            	mainWidget.competition._endTime = endDate;
+            	//mainWidget.competition._startTime = startDate;
+            	//mainWidget.competition._endTime = endDate;
             	
             	mainWidget.competition.contestData.launchDateAndTime = startDate;
             	mainWidget.competition.contestData.winnerAnnoucementDeadline = endDate;

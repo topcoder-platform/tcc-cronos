@@ -132,11 +132,14 @@
 	        }
 	        
 	        private function getAllDocumentTypesHandler(event:GetAllDocumentTypesResultEvent):void{
-	        	fileTypes = new ArrayCollection();
-	        	
-	        	for each (var dt:DocumentType in event.result.asIList()){
-        			fileTypes.addItem({label:dt.description, data:dt.documentTypeId});
-        		}
+	            if (event && event.result) {
+	            
+    	        	fileTypes = new ArrayCollection();
+    	        	
+    	        	for each (var dt:DocumentType in event.result.asIList()){
+            			fileTypes.addItem({label:dt.description, data:dt.documentTypeId});
+            		}
+	            }
 	        }
 	        
 	        private function addDoc(doc:UploadedDocument):void{

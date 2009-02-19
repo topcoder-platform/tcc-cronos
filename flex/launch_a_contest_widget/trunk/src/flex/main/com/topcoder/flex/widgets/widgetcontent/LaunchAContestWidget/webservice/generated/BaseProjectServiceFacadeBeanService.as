@@ -84,7 +84,7 @@ BaseProjectServiceFacadeBeanServiceService = new WSDLService("BaseProjectService
        		BaseProjectServiceFacadeBeanServiceBinding.portType = BaseProjectServiceFacadeBeanServicePortType;
        		BaseProjectServiceFacadeBeanServicePort.binding = BaseProjectServiceFacadeBeanServiceBinding;
        		BaseProjectServiceFacadeBeanServiceService.addPort(BaseProjectServiceFacadeBeanServicePort);
-       		BaseProjectServiceFacadeBeanServicePort.endpointURI = "http://75.101.181.246:8003/services-project_service_facade/ProjectServiceFacadeBean";
+       		BaseProjectServiceFacadeBeanServicePort.endpointURI = "http://127.0.0.1:8080/projectfacade/ProjectServiceFacadeBean";
        		if(this.endpointURI == null)
        		{
        			this.endpointURI = BaseProjectServiceFacadeBeanServicePort.endpointURI; 

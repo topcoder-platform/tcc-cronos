@@ -71,6 +71,20 @@
 	       	private var SCHEDULE_HEIGHT:int = 860;
 	       	private var REVIEW_HEIGHT:int = 1150;
 	       	private var ACTIVATE_HEIGHT:int = 810;
+
+		private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
+            
+            	public static function getHeader(username:String, password:String):SOAPHeader {
+				var userToken:String = "UsernameToken-"+Math.round(Math.random()*999999).toString();
+				var headerXML : XML =  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+	         			<wsse:UsernameToken wsu:Id={userToken} xmlns:wsu='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'>
+		            		<wsse:Username>{username}</wsse:Username>
+		            		<wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">{password}</wsse:Password>
+	         			</wsse:UsernameToken>
+	      			</wsse:Security>;
+	      		var header : SOAPHeader = new SOAPHeader( WSSE_SECURITY, headerXML );
+	      		return header;
+			}
 	       	
 	        public function set tcDirectProjectId(projectID:String):void
 	        {
@@ -180,13 +194,16 @@
     		review.mainWidget = this;
   		activate.mainWidget = this;
 
-		 _ws = new ContestServiceFacadeBeanService(null, contestServiceFacadeWsdl);
-            
-		_ws.getWebService().addHeader(WebServiceUtil.getWSSEHeader(username ,password));
-		  _ws.addgetContestEventListener(getcontestHander);
-            
-	
-		_ws.getWebService().addEventListener(FaultEvent.FAULT, handleFault);
+		var header:SOAPHeader=getHeader(username,password);
+			    ContestServiceFacadeBean.clearHeaders();
+			    ContestServiceFacadeBean.addHeader(header);
+			    
+			    this._csws = ContestServiceFacadeBean;
+
+                _ws=new ContestServiceFacadeBeanService(null, contestServiceFacadeWsdl);
+
+                _ws.getWebService().addHeader(WebServiceUtil.getWSSEHeader(username, password));
+                //_ws.getWebService().addEventListener(FaultEvent.FAULT, handleFault);
 
 		_pws=new ProjectServiceFacadeBeanService(null, projectServiceFacadeWsdl);
 		
@@ -496,7 +513,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                         goNext.visible = false;
                         back.visible = false;
 
-                        submitPurchase();
+                        //submitPurchase();
                         break;
                     default:
                         goNext.label = "continue >>";
@@ -739,7 +756,29 @@ Specific limitations (such as restricting a color or a specific layout style) an
         ]]>
     </mx:Script>
 
-
+<mx:WebService id="ContestServiceFacadeBean" 
+		wsdl="{contestServiceFacadeWsdl}"> 
+	<mx:operation name="createContest" 
+		resultFormat="object" 
+		fault="Alert.show('createContest: ' + event.fault.faultString);"> 
+	</mx:operation>
+	
+	<mx:operation name="processContestCreditCardPayment" 
+		resultFormat="object" 
+		fault="Alert.show('processContestCreditCardPayment: ' + event.fault.faultString);"> 
+	</mx:operation>
+	
+	<mx:operation name="processContestPurchaseOrderPayment" 
+		resultFormat="object" 
+		fault="Alert.show('processContestPurchaseOrderPayment: ' + event.fault.faultString);"> 
+	</mx:operation>
+	
+	<mx:operation name="getAllDocumentTypes" 
+		resultFormat="object" 
+		fault="Alert.show('getAllDocumentTypes: ' + event.fault.faultString);"> 
+	</mx:operation>
+	
+</mx:WebService>
     <mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"
               
 		 fault="Helper.showAlertMessage(event.fault.faultString);">

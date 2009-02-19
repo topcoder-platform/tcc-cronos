@@ -219,6 +219,129 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
          */
         function set deleteContest_request_var(request:DeleteContest_request):void;
                    
+    	//Stub functions for the do_1 operation
+    	/**
+    	 * Call the operation on the server passing in the arguments defined in the WSDL file
+    	 * @param do_1
+    	 * @param arg0
+    	 * @return An AsyncToken
+    	 */
+    	function do_1(do_1:Do_1):AsyncToken;
+        /**
+         * Method to call the operation on the server without passing the arguments inline.
+         * You must however set the _request property for the operation before calling this method
+         * Should use it in MXML context mostly
+         * @return An AsyncToken
+         */
+        function do_1_send():AsyncToken;
+        
+        /**
+         * The do_1 operation lastResult property
+         */
+        function get do_1_lastResult():Do_1Response;
+		/**
+		 * @private
+		 */
+        function set do_1_lastResult(lastResult:Do_1Response):void;
+       /**
+        * Add a listener for the do_1 operation successful result event
+        * @param The listener function
+        */
+       function adddo_1EventListener(listener:Function):void;
+       
+       
+        /**
+         * The do_1 operation request wrapper
+         */
+        function get do_1_request_var():Do_1_request;
+        
+        /**
+         * @private
+         */
+        function set do_1_request_var(request:Do_1_request):void;
+                   
+    	//Stub functions for the do_2 operation
+    	/**
+    	 * Call the operation on the server passing in the arguments defined in the WSDL file
+    	 * @param do_2
+    	 * @param arg0
+    	 * @return An AsyncToken
+    	 */
+    	function do_2(do_2:Do_2):AsyncToken;
+        /**
+         * Method to call the operation on the server without passing the arguments inline.
+         * You must however set the _request property for the operation before calling this method
+         * Should use it in MXML context mostly
+         * @return An AsyncToken
+         */
+        function do_2_send():AsyncToken;
+        
+        /**
+         * The do_2 operation lastResult property
+         */
+        function get do_2_lastResult():Do_2Response;
+		/**
+		 * @private
+		 */
+        function set do_2_lastResult(lastResult:Do_2Response):void;
+       /**
+        * Add a listener for the do_2 operation successful result event
+        * @param The listener function
+        */
+       function adddo_2EventListener(listener:Function):void;
+       
+       
+        /**
+         * The do_2 operation request wrapper
+         */
+        function get do_2_request_var():Do_2_request;
+        
+        /**
+         * @private
+         */
+        function set do_2_request_var(request:Do_2_request):void;
+                   
+    	//Stub functions for the do_3 operation
+    	/**
+    	 * Call the operation on the server passing in the arguments defined in the WSDL file
+    	 * @param arg0
+    	 * @param do_3
+    	 * @return An AsyncToken
+    	 */
+    	function do_3(do_3:Do_3):AsyncToken;
+        /**
+         * Method to call the operation on the server without passing the arguments inline.
+         * You must however set the _request property for the operation before calling this method
+         * Should use it in MXML context mostly
+         * @return An AsyncToken
+         */
+        function do_3_send():AsyncToken;
+        
+        /**
+         * The do_3 operation lastResult property
+         */
+        function get do_3_lastResult():Do_3Response;
+		/**
+		 * @private
+		 */
+        function set do_3_lastResult(lastResult:Do_3Response):void;
+       /**
+        * Add a listener for the do_3 operation successful result event
+        * @param The listener function
+        */
+       function adddo_3EventListener(listener:Function):void;
+       
+       
+        /**
+         * The do_3 operation request wrapper
+         */
+        function get do_3_request_var():Do_3_request;
+        
+        /**
+         * @private
+         */
+        function set do_3_request_var(request:Do_3_request):void;
+                   
     	//Stub functions for the editContestPayment operation
     	/**
     	 * Call the operation on the server passing in the arguments defined in the WSDL file
@@ -622,6 +745,47 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
          */
         function set getContestDataOnly_request_var(request:GetContestDataOnly_request):void;
                    
+    	//Stub functions for the getContestDataOnlyByPID operation
+    	/**
+    	 * Call the operation on the server passing in the arguments defined in the WSDL file
+    	 * @param arg0
+    	 * @param getContestDataOnlyByPID
+    	 * @return An AsyncToken
+    	 */
+    	function getContestDataOnlyByPID(getContestDataOnlyByPID:GetContestDataOnlyByPID):AsyncToken;
+        /**
+         * Method to call the operation on the server without passing the arguments inline.
+         * You must however set the _request property for the operation before calling this method
+         * Should use it in MXML context mostly
+         * @return An AsyncToken
+         */
+        function getContestDataOnlyByPID_send():AsyncToken;
+        
+        /**
+         * The getContestDataOnlyByPID operation lastResult property
+         */
+        function get getContestDataOnlyByPID_lastResult():GetContestDataOnlyByPIDResponse;
+		/**
+		 * @private
+		 */
+        function set getContestDataOnlyByPID_lastResult(lastResult:GetContestDataOnlyByPIDResponse):void;
+       /**
+        * Add a listener for the getContestDataOnlyByPID operation successful result event
+        * @param The listener function
+        */
+       function addgetContestDataOnlyByPIDEventListener(listener:Function):void;
+       
+       
+        /**
+         * The getContestDataOnlyByPID operation request wrapper
+         */
+        function get getContestDataOnlyByPID_request_var():GetContestDataOnlyByPID_request;
+        
+        /**
+         * @private
+         */
+        function set getContestDataOnlyByPID_request_var(request:GetContestDataOnlyByPID_request):void;
+                   
     	//Stub functions for the getContestPayment operation
     	/**
     	 * Call the operation on the server passing in the arguments defined in the WSDL file
@@ -867,6 +1031,47 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
          */
         function set getSimpleContestData_request_var(request:GetSimpleContestData_request):void;
                    
+    	//Stub functions for the getSimpleContestDataByPID operation
+    	/**
+    	 * Call the operation on the server passing in the arguments defined in the WSDL file
+    	 * @param getSimpleContestDataByPID
+    	 * @param arg0
+    	 * @return An AsyncToken
+    	 */
+    	function getSimpleContestDataByPID(getSimpleContestDataByPID:GetSimpleContestDataByPID):AsyncToken;
+        /**
+         * Method to call the operation on the server without passing the arguments inline.
+         * You must however set the _request property for the operation before calling this method
+         * Should use it in MXML context mostly
+         * @return An AsyncToken
+         */
+        function getSimpleContestDataByPID_send():AsyncToken;
+        
+        /**
+         * The getSimpleContestDataByPID operation lastResult property
+         */
+        function get getSimpleContestDataByPID_lastResult():GetSimpleContestDataByPIDResponse;
+		/**
+		 * @private
+		 */
+        function set getSimpleContestDataByPID_lastResult(lastResult:GetSimpleContestDataByPIDResponse):void;
+       /**
+        * Add a listener for the getSimpleContestDataByPID operation successful result event
+        * @param The listener function
+        */
+       function addgetSimpleContestDataByPIDEventListener(listener:Function):void;
+       
+       
+        /**
+         * The getSimpleContestDataByPID operation request wrapper
+         */
+        function get getSimpleContestDataByPID_request_var():GetSimpleContestDataByPID_request;
+        
+        /**
+         * @private
+         */
+        function set getSimpleContestDataByPID_request_var(request:GetSimpleContestDataByPID_request):void;
+                   
     	//Stub functions for the getSimpleProjectContestData operation
     	/**
     	 * Call the operation on the server passing in the arguments defined in the WSDL file
@@ -906,6 +1111,47 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
          * @private
          */
         function set getSimpleProjectContestData_request_var(request:GetSimpleProjectContestData_request):void;
+                   
+    	//Stub functions for the getSimpleProjectContestDataByPID operation
+    	/**
+    	 * Call the operation on the server passing in the arguments defined in the WSDL file
+    	 * @param getSimpleProjectContestDataByPID
+    	 * @param arg0
+    	 * @return An AsyncToken
+    	 */
+    	function getSimpleProjectContestDataByPID(getSimpleProjectContestDataByPID:GetSimpleProjectContestDataByPID):AsyncToken;
+        /**
+         * Method to call the operation on the server without passing the arguments inline.
+         * You must however set the _request property for the operation before calling this method
+         * Should use it in MXML context mostly
+         * @return An AsyncToken
+         */
+        function getSimpleProjectContestDataByPID_send():AsyncToken;
+        
+        /**
+         * The getSimpleProjectContestDataByPID operation lastResult property
+         */
+        function get getSimpleProjectContestDataByPID_lastResult():GetSimpleProjectContestDataByPIDResponse;
+		/**
+		 * @private
+		 */
+        function set getSimpleProjectContestDataByPID_lastResult(lastResult:GetSimpleProjectContestDataByPIDResponse):void;
+       /**
+        * Add a listener for the getSimpleProjectContestDataByPID operation successful result event
+        * @param The listener function
+        */
+       function addgetSimpleProjectContestDataByPIDEventListener(listener:Function):void;
+       
+       
+        /**
+         * The getSimpleProjectContestDataByPID operation request wrapper
+         */
+        function get getSimpleProjectContestDataByPID_request_var():GetSimpleProjectContestDataByPID_request;
+        
+        /**
+         * @private
+         */
+        function set getSimpleProjectContestDataByPID_request_var(request:GetSimpleProjectContestDataByPID_request):void;
                    
     	//Stub functions for the getStatusList operation
     	/**
@@ -1028,6 +1274,90 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
          */
         function set markForPurchase_request_var(request:MarkForPurchase_request):void;
                    
+    	//Stub functions for the processContestPayment operation
+    	/**
+    	 * Call the operation on the server passing in the arguments defined in the WSDL file
+    	 * @param arg0
+    	 * @param arg1
+    	 * @param processContestPayment
+    	 * @return An AsyncToken
+    	 */
+    	function processContestPayment(processContestPayment:ProcessContestPayment):AsyncToken;
+        /**
+         * Method to call the operation on the server without passing the arguments inline.
+         * You must however set the _request property for the operation before calling this method
+         * Should use it in MXML context mostly
+         * @return An AsyncToken
+         */
+        function processContestPayment_send():AsyncToken;
+        
+        /**
+         * The processContestPayment operation lastResult property
+         */
+        function get processContestPayment_lastResult():ProcessContestPaymentResponse;
+		/**
+		 * @private
+		 */
+        function set processContestPayment_lastResult(lastResult:ProcessContestPaymentResponse):void;
+       /**
+        * Add a listener for the processContestPayment operation successful result event
+        * @param The listener function
+        */
+       function addprocessContestPaymentEventListener(listener:Function):void;
+       
+       
+        /**
+         * The processContestPayment operation request wrapper
+         */
+        function get processContestPayment_request_var():ProcessContestPayment_request;
+        
+        /**
+         * @private
+         */
+        function set processContestPayment_request_var(request:ProcessContestPayment_request):void;
+                   
+    	//Stub functions for the processContestPayment_old operation
+    	/**
+    	 * Call the operation on the server passing in the arguments defined in the WSDL file
+    	 * @param arg0
+    	 * @param arg1
+    	 * @param processContestPayment_old
+    	 * @return An AsyncToken
+    	 */
+    	function processContestPayment_old(processContestPayment_old:ProcessContestPayment_old):AsyncToken;
+        /**
+         * Method to call the operation on the server without passing the arguments inline.
+         * You must however set the _request property for the operation before calling this method
+         * Should use it in MXML context mostly
+         * @return An AsyncToken
+         */
+        function processContestPayment_old_send():AsyncToken;
+        
+        /**
+         * The processContestPayment_old operation lastResult property
+         */
+        function get processContestPayment_old_lastResult():ProcessContestPayment_oldResponse;
+		/**
+		 * @private
+		 */
+        function set processContestPayment_old_lastResult(lastResult:ProcessContestPayment_oldResponse):void;
+       /**
+        * Add a listener for the processContestPayment_old operation successful result event
+        * @param The listener function
+        */
+       function addprocessContestPayment_oldEventListener(listener:Function):void;
+       
+       
+        /**
+         * The processContestPayment_old operation request wrapper
+         */
+        function get processContestPayment_old_request_var():ProcessContestPayment_old_request;
+        
+        /**
+         * @private
+         */
+        function set processContestPayment_old_request_var(request:ProcessContestPayment_old_request):void;
+                   
     	//Stub functions for the processMissingPayments operation
     	/**
     	 * Call the operation on the server passing in the arguments defined in the WSDL file
@@ -1068,6 +1398,48 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
          * @private
          */
         function set processMissingPayments_request_var(request:ProcessMissingPayments_request):void;
+                   
+    	//Stub functions for the processSubmissionPayment operation
+    	/**
+    	 * Call the operation on the server passing in the arguments defined in the WSDL file
+    	 * @param arg0
+    	 * @param arg1
+    	 * @param processSubmissionPayment
+    	 * @return An AsyncToken
+    	 */
+    	function processSubmissionPayment(processSubmissionPayment:ProcessSubmissionPayment):AsyncToken;
+        /**
+         * Method to call the operation on the server without passing the arguments inline.
+         * You must however set the _request property for the operation before calling this method
+         * Should use it in MXML context mostly
+         * @return An AsyncToken
+         */
+        function processSubmissionPayment_send():AsyncToken;
+        
+        /**
+         * The processSubmissionPayment operation lastResult property
+         */
+        function get processSubmissionPayment_lastResult():ProcessSubmissionPaymentResponse;
+		/**
+		 * @private
+		 */
+        function set processSubmissionPayment_lastResult(lastResult:ProcessSubmissionPaymentResponse):void;
+       /**
+        * Add a listener for the processSubmissionPayment operation successful result event
+        * @param The listener function
+        */
+       function addprocessSubmissionPaymentEventListener(listener:Function):void;
+       
+       
+        /**
+         * The processSubmissionPayment operation request wrapper
+         */
+        function get processSubmissionPayment_request_var():ProcessSubmissionPayment_request;
+        
+        /**
+         * @private
+         */
+        function set processSubmissionPayment_request_var(request:ProcessSubmissionPayment_request):void;
                    
     	//Stub functions for the purchaseSubmission operation
     	/**
