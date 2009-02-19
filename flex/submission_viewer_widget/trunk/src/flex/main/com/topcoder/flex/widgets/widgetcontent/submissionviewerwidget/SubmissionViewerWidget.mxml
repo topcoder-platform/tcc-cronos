@@ -469,9 +469,7 @@
         							    if (prizes.length > 1 && prizes[1] > 0) {
         							        sub.price=prizes[1];
         							    }
-        							    else {
-        							        Helper.showAlertMessage("Illegal State: there must be 2 prizes");
-        							    }
+        							   
         							}
         							else if (sub.rank && sub.rank > 0) {
         							    // retrieve the price from contest info's prizeList.
@@ -1348,9 +1346,7 @@
     						    if (prizes.length > 1 && prizes[1] > 0) {
     						        item.price=prizes[1];
     						    }
-    						    else {
-    						        Helper.showAlertMessage("Illegal State: there must be 2 prizes");
-    						    }
+    						    
     						}
     						else if (item.rank && item.rank > 0) {
     						    // retrieve the price from contest info's prizeList.
