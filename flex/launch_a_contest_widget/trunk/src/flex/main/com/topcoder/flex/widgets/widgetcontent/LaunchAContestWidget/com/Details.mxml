@@ -131,7 +131,7 @@
         <mx:VBox width="100%" verticalGap="0">
 	        <mx:HBox >
 	            <mx:Label text="Contest Title:" fontWeight="bold"/>
-	            <mx:TextInput id="ctInput" width="308"/>
+	            <mx:TextInput id="ctInput" width="308" maxChars="100" />
 	            <mx:LinkButton label="[+ show hint]" click="showContentTitleHint(event)" />
 	        </mx:HBox>
 	        <mx:Text id="contentTitleHint" color="0x888888" width="500" height="0" visible="false">
