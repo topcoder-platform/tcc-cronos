@@ -6,19 +6,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.widgets.model.IWidgetContainer;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
-    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CompetionType;
-    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestServiceFacadeBeanService;
-    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContest;
-    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContestResultEvent;
-    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContest;
-    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContest_request;
-    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreditCardPaymentData;
-    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.PaymentType;
-    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProjectServiceFacadeBeanService;
-    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.StudioCompetition;
-    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.TcPurhcaseOrderPaymentData;
-    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContest;
-    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContestResultEvent;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CreditCardPaymentData;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PaymentType;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.StudioCompetition;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.TcPurhcaseOrderPaymentData;
     
     import flash.utils.Dictionary;
     
@@ -29,8 +21,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 	import flash.net.navigateToURL;
 	import mx.core.Application;
 	import mx.rpc.AbstractOperation;
-    	import mx.rpc.events.ResultEvent;
-    	import mx.rpc.soap.mxml.WebService;
+    import mx.rpc.events.ResultEvent;
+    import mx.rpc.soap.mxml.WebService;
+    import mx.rpc.xml.SchemaTypeRegistry;
 
     /**
      * <p>
@@ -56,30 +49,33 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 		 private const CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC:Number =2 ;
 		 private const CONTEST_DETAILED_STATUS_SCHEDULED:Number =9 ;
 
+        // Project Service Facade.
+        public var _pws:WebService;
         
-        public var _ws:ContestServiceFacadeBeanService;
-        
-        public var _pws:ProjectServiceFacadeBeanService;
-        
+        // Contest Service Facade.
         public var _csws:WebService;
+        
+        // schema type registry.
+        public var _launchContestSchemaTypeRegistry:SchemaTypeRegistry;
+        
         public var contestid:String=null;
 
-	/**
-	 * The framework of the widget.
-	 */
-	private var _framework:IWidgetFramework = null;
-
-	/**
-	 * The container for this widget.
-	 */
-	private var _container:IWidgetContainer;
-
-	/**
-	 * The allowclose flag.
-	 */
-	private var _allowclose:Boolean=true;
-	
-	private var _maximized:Boolean=false;
+    	/**
+    	 * The framework of the widget.
+    	 */
+    	private var _framework:IWidgetFramework = null;
+    
+    	/**
+    	 * The container for this widget.
+    	 */
+    	private var _container:IWidgetContainer;
+    
+    	/**
+    	 * The allowclose flag.
+    	 */
+    	private var _allowclose:Boolean=true;
+    	
+    	private var _maximized:Boolean=false;
         
         /**
          * The data for the widget.
@@ -145,6 +141,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public function set competition(comp:StudioCompetition):void {
             this._competition = comp;
         }
+        
+        public function resetWidget():void{
+    		reload();
+    	}
                 
         /**
          * This action will reload this widget.
@@ -317,10 +317,19 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         	if(map["contestid"])
         	{
         		contestid=map["contestid"];
-        		_ws.getContest_request_var=new  GetContest_request();
-			_ws.getContest_request_var.getContest=new  GetContest();
-                	_ws.getContest_request_var.getContest.arg0=parseInt(contestid);
-			_ws.getContest_send();
+        		
+        		var getContestOp:AbstractOperation = _csws.getOperation("getContest");
+                getContestOp.addEventListener("result", getContestHandler);
+                getContestOp.send(parseInt(contestid));
+        	}
+        }
+        
+        private function getContestHandler(e:ResultEvent):void
+        {
+        	if(e && e.result)
+        	{
+        		resetWidget();
+        		(container.contents as LaunchWidget).competition=e.result as StudioCompetition;
         	}
         }
         
@@ -397,39 +406,36 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             competition._type=competition.type;
             
             createContestOp.addEventListener("result", createContestHandler);
-            createContestOp.send(competition,competition.contestData.tcDirectProjectId);
-            
-            //_csws.createContest(competition,competition.contestData.tcDirectProjectId);
-            //_ws.addcreateContestEventListener(createContestHandler);
-            //var arg:CreateContest=new CreateContest();
-            //competition._id=competition.id;
-            //competition._type=competition.type;
-            //arg.arg0=competition;
-            //arg.arg1=competition.contestData.tcDirectProjectId;
-            //_ws.createContest(arg);
+            createContestOp.send(competition, competition.contestData.tcDirectProjectId);
         }
         
-        private function createContestHandler(event:CreateContestResultEvent):void{
-        	this.competition = event.result._return as StudioCompetition;
-        	
-        	var type:CompetionType = new CompetionType();
-        	type.competionType = "STUDIO";
-        	this.competition.type = type;
-
-		Helper.showAlertMessage("Contest saved successfully!");
+        // TCCC-1023
+        private function createContestHandler(event:ResultEvent):void {
+            if (event && event.result) {
+            	this.competition = event.result as StudioCompetition;
+            	
+            	trace("createContestHandler:: StudioCompetition -- " + this.competition);
+            	
+            	var type:CompetionType = new CompetionType();
+            	type.competionType = "STUDIO";
+            	this.competition.type = type;
+    
+    		    Helper.showAlertMessage("Contest created successfully!");
+            }
         }
         
+        // TCCC-1023
         private function updateContest():void{
-        	
-        	_ws.addupdateContestEventListener(updateContestHandler);
-        	var arg:UpdateContest  = new UpdateContest();
-        	arg.arg0  = competition;
-        	_ws.updateContest(arg);
+            var updateContestOp:AbstractOperation = _csws.getOperation("updateContest");
+            
+            updateContestOp.addEventListener("result", updateContestHandler);
+            updateContestOp.send(competition);
         }
         
-        private function updateContestHandler(event:UpdateContestResultEvent):void{
-        	Helper.showAlertMessage("Contest saved successfully!");
-	}
+        // TCCC-1023
+        private function updateContestHandler(event:ResultEvent):void{
+        	Helper.showAlertMessage("Contest updated successfully!");
+	    }
 
 	/**
          * Simple setter for the allowclose of this widget.

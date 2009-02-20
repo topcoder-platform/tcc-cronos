@@ -3,7 +3,7 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off">
 	<mx:Script>
 	    <![CDATA[
-	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CompetionType;
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
 	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
 	        import mx.events.ItemClickEvent;
 	        

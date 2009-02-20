@@ -3,7 +3,7 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off">
     <mx:Script>
 	    <![CDATA[
-	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadedDocument;
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.UploadedDocument;
 	    	import mx.controls.HRule;
 	    	import mx.controls.Spacer;
 	    	import mx.controls.Label;

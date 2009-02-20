@@ -3,23 +3,11 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off">
     <mx:Script>
 	    <![CDATA[
-	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadDocumentForContest;
-	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.DocumentType;
-	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllDocumentTypesResultEvent;
-	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllDocumentTypes;
-	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveDocumentFromContest;
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.DocumentType;
 	    	import mx.collections.ArrayCollection;
-	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveDocumentResultEvent;
-	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.RemoveDocument;
 	    	import mx.controls.TextArea;
 	    	import mx.controls.HRule;
-	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadDocumentResultEvent;
-	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadDocumentForContestResultEvent;
-	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadDocument;
-	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetMimeTypeIdResultEvent;
-	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetMimeTypeId;
-	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestServiceFacadeBeanService;
-	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UploadedDocument;
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.UploadedDocument;
 	    	import com.topcoder.flex.Helper;
 	    	import mx.rpc.soap.WebService;
 	    	import mx.rpc.events.ResultEvent;
@@ -33,6 +21,9 @@
 	        import mx.controls.Label;
 	        import mx.controls.Text;
 	        import mx.controls.Spacer;
+	        
+	        import mx.rpc.AbstractOperation;
+            import mx.rpc.events.ResultEvent;
 	        
 	        [Bindable]
 	        public var mainWidget:LaunchWidget;
@@ -123,15 +114,15 @@
 	            loadDocumentTypes();        	
 	        }
 	        
+	        // TCCC-1023
 	        private function loadDocumentTypes():void{
-	        	var service:ContestServiceFacadeBeanService = mainWidget._ws;
-	        	
-	        	var arg:GetAllDocumentTypes = new GetAllDocumentTypes();
-        		service.addgetAllDocumentTypesEventListener(getAllDocumentTypesHandler);
-        		service.getAllDocumentTypes(arg);
+	            var getAllDocumentTypesOp:AbstractOperation = mainWidget._csws.getOperation("getAllDocumentTypes");
+                getAllDocumentTypesOp.addEventListener("result", getAllDocumentTypesHandler);
+                getAllDocumentTypesOp.send();
 	        }
 	        
-	        private function getAllDocumentTypesHandler(event:GetAllDocumentTypesResultEvent):void{
+	        // TCCC-1023
+	        private function getAllDocumentTypesHandler(event:ResultEvent):void{
 	            if (event && event.result) {
 	            
     	        	fileTypes = new ArrayCollection();
@@ -142,6 +133,7 @@
 	            }
 	        }
 	        
+	        // TCCC-1023
 	        private function addDoc(doc:UploadedDocument):void{
 	        	var docVBox:VBox = new VBox();
 	        	docVBox.percentWidth = 100;
@@ -210,23 +202,20 @@
 	        	}
 	        }
 	        
+	        // TCCC-1023
 	        private function sendRemoveDocRequest(doc:UploadedDocument):void{
-	        	var ws:ContestServiceFacadeBeanService = mainWidget._ws;
-				
 				var contestId:Number = mainWidget.competition.contestData.contestId;
 				if (contestId == -1){
-			        	var arg:RemoveDocument = new RemoveDocument();
-			        	arg.arg0 = doc.documentId;
-			        	
-			        	ws.removeDocument(arg);
-				   } else {
-					   	var arg1:RemoveDocumentFromContest = new RemoveDocumentFromContest();
-					   	arg1.arg0 = doc;
-					   	doc.contestId = contestId;
-					   	ws.removeDocumentFromContest(arg1);
-				   }
+				    var removeDocumentOp:AbstractOperation = mainWidget._csws.getOperation("removeDocument");
+                    //removeDocumentOp.addEventListener("result", eventHandler);
+                    removeDocumentOp.send(doc.documentId);
+			   } else {
+			        var removeDocumentFromContestOp:AbstractOperation = mainWidget._csws.getOperation("removeDocumentFromContest");
+                    //removeDocumentOp.addEventListener("result", eventHandler);
+                    doc.contestId=contestId;
+                    removeDocumentFromContestOp.send(doc);
+			   }
 	        }
-	        
 	        
 	        private function showfileDecsHint(event:MouseEvent):void {
                 if (event.target.label == "[+ show hint]"){
@@ -267,13 +256,13 @@
             	file.load();
             	
             	//load mimetype id via WebService
-            	var ws:ContestServiceFacadeBeanService = mainWidget._ws;
-            	ws.addgetMimeTypeIdEventListener(loadMimeTypeIdHandler);
-            	var arg:GetMimeTypeId = new GetMimeTypeId();
-            	var dotpos:int=file.name.lastIndexOf('.');
+            	var getMimeTypeIdOp:AbstractOperation = mainWidget._csws.getOperation("getMimeTypeId");
+                getMimeTypeIdOp.addEventListener("result", loadMimeTypeIdHandler);
+                
+                var dotpos:int=file.name.lastIndexOf('.');
             	var ftype:String=dotpos<0?file.type:file.name.substring(dotpos+1);
-            	arg.arg0 = getMimetypeByFileName(ftype);
-            	ws.getMimeTypeId(arg);
+            	
+                getMimeTypeIdOp.send(getMimetypeByFileName(ftype));
             }
             
             private function getMimetypeByFileName(ext:String):String{
@@ -301,13 +290,16 @@
             	}
             }
             
-            private function loadMimeTypeIdHandler(event:GetMimeTypeIdResultEvent):void{
-            	
-            	currentDoc.mimeTypeId = event.result._return;
-				
-				//file content has been loaded            	
-            	if (currentDoc.file != null){
-            		this.dispatchEvent(new Event("UPLOADDOC_ALL_COMPLETED"));
+            // TCCC-1023
+            private function loadMimeTypeIdHandler(event:ResultEvent):void{
+            	if (event && event.result) {
+            	    // TODO: check return type.
+                	currentDoc.mimeTypeId=event.result as Number;
+    				
+    				//file content has been loaded            	
+                	if (currentDoc.file != null){
+                		this.dispatchEvent(new Event("UPLOADDOC_ALL_COMPLETED"));
+                	}
             	}
             }
             
@@ -322,12 +314,10 @@
             	if (this.mainWidget.competition.contestData.contestId != -1){
             		currentDoc.contestId = this.mainWidget.competition.contestData.contestId;
             		
-            		var ws:ContestServiceFacadeBeanService = mainWidget._ws;
-            		ws.adduploadDocumentForContestEventListener(uploadDocumentForContestHandler);
-            		var arg:UploadDocumentForContest = new UploadDocumentForContest();
-            		
-            		arg.arg0 = currentDoc;
-            		ws.uploadDocumentForContest(arg);	
+            		// TCCC-1023
+            		var uploadDocumentForContestOp:AbstractOperation = mainWidget._csws.getOperation("uploadDocumentForContest");
+                    uploadDocumentForContestOp.addEventListener("result", uploadDocumentForContestHandler);
+                    uploadDocumentForContestOp.send(currentDoc);
             	} else {
             		addDoc(currentDoc);
             		//clear up
@@ -338,20 +328,22 @@
             	
             }
             
-            private function uploadDocumentForContestHandler(event:UploadDocumentForContestResultEvent):void{
-            	var docUploaded:UploadedDocument = event.result._return;
-            	docUploaded.file = null; //Clear the content once the file has been uploaded to save memory
-            	addDoc(docUploaded);
-            	
-            	//clear up
-            	currentDoc = new UploadedDocument();
-            	fileDescInput.text = "";
-            	fileToUpload.text = "";
-            	
-            	file= null;
+            // TCCC-1023
+            private function uploadDocumentForContestHandler(event:ResultEvent):void {
+                if (event && event.result) {
+                	var docUploaded:UploadedDocument=event.result as UploadedDocument;
+                	//Clear the content once the file has been uploaded to save memory
+                	docUploaded.file = null; 
+                	addDoc(docUploaded);
+                	
+                	//clear up
+                	currentDoc = new UploadedDocument();
+                	fileDescInput.text = "";
+                	fileToUpload.text = "";
+                	
+                	file=null;
+                }
             }
-            
-            
 	    ]]>
     </mx:Script>
     <mx:VBox width="100%" height="100%" styleName="boxStyle" >

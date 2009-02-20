@@ -3,39 +3,27 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off" >
     <mx:Script>
         <![CDATA[
-            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreditCardPaymentData;
-            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.*;
         	import mx.collections.IList;
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateProject;
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateProject_request;
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateProjectResultEvent;
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllProjects_request;
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProjectData;
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllProjectsResultEvent;
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllProjects;
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestHeaders_request;
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CompetionType;
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestHeaders;
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestResultEvent;
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContest;
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestData;
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestsResultEvent;
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.StudioCompetition;
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContestHeadersResultEvent;
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetAllContests;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ProjectData;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestData;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.StudioCompetition;
         	import mx.rpc.events.FaultEvent;
         	import mx.rpc.events.ResultEvent;
         	import mx.rpc.soap.WebService;
-		import mx.collections.ArrayCollection;
-		import mx.collections.SortField;
-		import mx.collections.Sort;
-		import mx.utils.ObjectUtil;
-		import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+    		import mx.collections.ArrayCollection;
+    		import mx.collections.SortField;
+    		import mx.collections.Sort;
+    		import mx.utils.ObjectUtil;
+    		import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
             
             import mx.collections.SortField;
             import mx.collections.Sort;           
-    	import mx.utils.ObjectUtil;
-    	import com.topcoder.flex.Helper;
+        	import mx.utils.ObjectUtil;
+        	import com.topcoder.flex.Helper;
+        	
+        	import mx.rpc.AbstractOperation;
+            import mx.rpc.events.ResultEvent;
             
             [Bindable]
             private var contestsData:ArrayCollection = new ArrayCollection(
@@ -43,61 +31,29 @@
             
             [Bindable]
             public var mainWidget:LaunchWidget;
-            /*
-            [Bindable]
-            private var _projectServiceFacadeWsdl:String="";
-        
-            public function set projectServiceFacadeWsdl(url:String):void
-            {
-            	_projectServiceFacadeWsdl=url;
-            }
-            */
+
+            // TCCC-1023
             public function init():void{
-            	//mainWidget._ws.addgetAllContestHeadersEventListener(loadContestsHandler);
-            	
-            	//mainWidget._ws.getAllContestHeaders(new GetAllContestHeaders());
-            	
-                //
-                mainWidget._pws.addgetAllProjectsEventListener(loadContestsHandler);
-                mainWidget._pws.addcreateProjectEventListener(createProjectHandler);
-                mainWidget._pws.getAllProjects_request_var=new  GetAllProjects_request();
-                mainWidget._pws.getAllProjects_request_var.getAllProjects=new GetAllProjects();
-                mainWidget._pws.getAllProjects_send();
-                  
-                  selectContests.dataProvider = contestsData;
-                  
-            }
-            private function createProjectHandler(e:CreateProjectResultEvent):void
-            {
-            	if(e && e.result)
-            	{
-            		mainWidget.tcDirectProjectId=e.result._return.projectId.toString();
-            		createContestAndContinue(e.result._return.projectId);
-            	}
-            	/*
-            	mainWidget._ws.getAllContestHeaders(new GetAllContestHeaders());
-            	
-                selectContests.dataProvider = contestsData;
+                var getAllProjectsOp:AbstractOperation = mainWidget._pws.getOperation("getAllProjects");
+                //getAllProjectsOp.decoder.typeRegistry = mainWidget._launchContestSchemaTypeRegistry;
+                getAllProjectsOp.addEventListener("result", getAllProjectsHandler);
+                getAllProjectsOp.send();
                 
-                this.prjInput.text = "";
-                this.selectContests.selectedIndex = 0;
-                this.introInput.text = "";
-                this.percentHeight = 100;
-                this.percentWidth = 100;*/
+                selectContests.dataProvider = contestsData;
             }
             
-            private function compareName(a:Object, b:Object, fields:Array = null):int {
-               return ObjectUtil.stringCompare(a.name,b.name,true);
-            }
-            
-            private function loadContestsHandler(e:GetAllProjectsResultEvent):void{
+            // TCCC-1023
+            private function getAllProjectsHandler(e:ResultEvent):void{
+                Helper.showAlertMessage("getAllProjectsHandler: " + e + ", " + e.result);
+                
             	if(e!=null && e.result!=null){
             		if(!e.result.sort)
         			{
-        			var sort:Sort = new Sort();   
-	                sort.compareFunction = compareName;
-	                e.result.sort = sort;
+            			var sort:Sort = new Sort();   
+    	                sort.compareFunction = compareName;
+    	                e.result.sort = sort;
 	                }
+	                
         			e.result.refresh();
             		
         			for each (var prj:ProjectData in e.result.asIList()){
@@ -106,7 +62,11 @@
         			
         		}
             }
-
+            
+            private function compareName(a:Object, b:Object, fields:Array = null):int {
+               return ObjectUtil.stringCompare(a.name,b.name,true);
+            }
+            
             private function createContestAndContinue(id:Number):void
             {
             			mainWidget.competition = new StudioCompetition();
@@ -165,39 +125,57 @@
                     }
                     else
                     {
-                    	mainWidget._pws.createProject_request_var=new CreateProject_request();
-                    	mainWidget._pws.createProject_request_var.createProject=new CreateProject();
-                    	mainWidget._pws.createProject_request_var.createProject.arg0=new ProjectData();
-                    	mainWidget._pws.createProject_request_var.createProject.arg0.name=prjInput.text;
-                    	mainWidget._pws.createProject_request_var.createProject.arg0.description=introInput.text;
-                    	mainWidget._pws.createProject_send();
+                        // TCCC-1023
+                        var createProjectOp:AbstractOperation = mainWidget._pws.getOperation("createProject");
+                        createProjectOp.addEventListener("result", createProjectHandler);
+                        
+                        var projectData:ProjectData = new ProjectData();
+                        projectData.name=prjInput.text;
+                        projectData.description=introInput.text;
+                        
+                        createProjectOp.send(projectData);
                     }
-                    	
-                    //}
                 }
             }
             
-       private function loadContest(contestId:int):void {
-       		var arg:GetContest = new GetContest();
-       		arg.arg0 = new Number(contestId);
-       		mainWidget._ws.addgetContestEventListener(loadContestHandle);
-       		mainWidget._ws.getContest(arg);
-        }
+            // TCCC-1023
+            private function createProjectHandler(e:ResultEvent):void
+            {
+                Helper.showAlertMessage("createProjectHandler: " + e + ", " + e.result);
+            	if(e && e.result)
+            	{
+            	    
+            	    var projectData:ProjectData=e.result as ProjectData;
+            		mainWidget.tcDirectProjectId=projectData.projectId.toString();
+            		createContestAndContinue(projectData.projectId);
+            	}
+            }
+            
+            private function loadContest(contestId:int):void {
+           		var getContestOp:AbstractOperation = mainWidget._csws.getOperation("getContest");
+                getContestOp.addEventListener("result", loadContestHandler);
+                getContestOp.send(new Number(contestId));
+            }
+            
+            // TCCC-1023
+            private function loadContestHandler(event:ResultEvent):void{
+                Helper.showAlertMessage("loadContestHandler: " + event + ", " + event.result);
+                
+            	if (event && event.result) {
+                	mainWidget.competition = event.result as StudioCompetition;
+                	
+                	var type:CompetionType = new CompetionType();
+                	
+                	//CompetitionType fixed to be studio
+                	type.competionType = "STUDIO";
+                	mainWidget.competition.type = type
+                	mainWidget.startLaunchProcess();
+            	}
+            }
         
-        private function loadContestHandle(event:GetContestResultEvent):void{
-        	
-        	mainWidget.competition = event.result._return as StudioCompetition;
-        	
-        	var type:CompetionType = new CompetionType();
-        	//CompetitionType fixed to be studio
-        	type.competionType = "STUDIO";
-        	mainWidget.competition.type = type
-        	mainWidget.startLaunchProcess();
-        }
         
-        
-          ]]>
-    </mx:Script>
+    ]]>
+</mx:Script>
     
 
     <mx:VBox id="initWdt" width="100%" height="100%" styleName="boxStyle" >

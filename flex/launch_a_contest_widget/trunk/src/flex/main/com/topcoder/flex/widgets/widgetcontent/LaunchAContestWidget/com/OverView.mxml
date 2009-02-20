@@ -10,7 +10,7 @@
     	import mx.collections.ArrayCollection;
     	import mx.controls.RadioButton;
     	import mx.rpc.events.ResultEvent;
-    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.PrizeData;
+    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PrizeData;
     	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
     	import mx.containers.Panel;
     	import mx.events.FlexEvent;

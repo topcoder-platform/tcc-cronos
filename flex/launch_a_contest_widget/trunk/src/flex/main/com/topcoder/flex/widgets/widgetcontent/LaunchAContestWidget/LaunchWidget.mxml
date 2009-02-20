@@ -7,10 +7,9 @@
 
     <mx:Script>
         <![CDATA[
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CompetionType;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.TcPurhcaseOrderPaymentData;
+        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
         	import com.topcoder.flex.model.IWidgetFramework;
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.GetContestResultEvent;
-        	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ProjectServiceFacadeBeanService;
         	import mx.rpc.soap.SOAPHeader;
 		    import mx.controls.Image;
             import mx.effects.Resize;
@@ -30,21 +29,14 @@
 		    import mx.rpc.events.ResultEvent;
 		    import mx.controls.Alert;
 		    import mx.rpc.events.FaultEvent;
-	
-		    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.WebServiceUtil;
-		    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.ContestServiceFacadeBeanService;
-		    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContest;
-		    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.CreateContestResultEvent;
-		    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.StudioCompetition;
-		    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContest;
-		    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.generated.UpdateContestResultEvent;
+		    import mx.rpc.xml.SchemaTypeRegistry;
 
-		// BUGR-1141
-		[Bindable]
-		private var stepNumber:int = 1;
-		
-		[Embed(source="../assets/done.png")] 
-		private var doneImage:Class; 
+    		// BUGR-1141
+    		[Bindable]
+    		private var stepNumber:int = 1;
+    		
+    		[Embed(source="../assets/done.png")] 
+    		private var doneImage:Class; 
 		
 		    private var username:String=Application.application.parameters.username;
 		    private var password:String = "";
@@ -72,18 +64,18 @@
 	       	private var REVIEW_HEIGHT:int = 1150;
 	       	private var ACTIVATE_HEIGHT:int = 810;
 
-		private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
+		    private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
             
-            	public static function getHeader(username:String, password:String):SOAPHeader {
-				var userToken:String = "UsernameToken-"+Math.round(Math.random()*999999).toString();
-				var headerXML : XML =  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
-	         			<wsse:UsernameToken wsu:Id={userToken} xmlns:wsu='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'>
-		            		<wsse:Username>{username}</wsse:Username>
-		            		<wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">{password}</wsse:Password>
-	         			</wsse:UsernameToken>
-	      			</wsse:Security>;
-	      		var header : SOAPHeader = new SOAPHeader( WSSE_SECURITY, headerXML );
-	      		return header;
+        	public static function getHeader(username:String, password:String):SOAPHeader {
+    			var userToken:String = "UsernameToken-"+Math.round(Math.random()*999999).toString();
+    			var headerXML : XML =  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+             			<wsse:UsernameToken wsu:Id={userToken} xmlns:wsu='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'>
+    	            		<wsse:Username>{username}</wsse:Username>
+    	            		<wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">{password}</wsse:Password>
+             			</wsse:UsernameToken>
+          			</wsse:Security>;
+          		var header : SOAPHeader = new SOAPHeader( WSSE_SECURITY, headerXML );
+          		return header;
 			}
 	       	
 	        public function set tcDirectProjectId(projectID:String):void
@@ -91,22 +83,6 @@
 	        	_tcDirectProjectId=projectID;
 	        }
 
-	        public function resetWidget():void{
-//            	this.currentState = "ContestSelectionState";
-//            	back.visible = false;
-/*
-            	goToStep1();
-                launchWdt.percentWidth = 0;
-                launchWdt.height = 0; // BUGR-1134
-                launchWdt.visible = false;
-                this.height = INITIAL_WIDGET_HEIGHT; // BUGR-1134
-                initialWdt.visible = true;
-        		initialWdt.init();
-        		*/
-        		reload();
-        		
-        	}
-        
         	public function closeWidget():void{
         		resetWidget();
         		container.startMinimize();
@@ -140,17 +116,7 @@
 
 	    }
 	    
-	    private function getcontestHander(e:GetContestResultEvent):void
-            {
-            	if(e && e.result)
-            	{
-            		resetWidget();
-            		(container.contents as LaunchWidget).competition=e.result._return as StudioCompetition;
-            		//competition =e.result._return as StudioCompetition;
-            		//startLaunchProcess();
-            		//next();
-            	}
-            }
+	    
 
 	    private function processRole(e:ResultEvent): void
 	    {
@@ -194,20 +160,8 @@
     		review.mainWidget = this;
   		activate.mainWidget = this;
 
-		var header:SOAPHeader=getHeader(username,password);
-			    ContestServiceFacadeBean.clearHeaders();
-			    ContestServiceFacadeBean.addHeader(header);
-			    
-			    this._csws = ContestServiceFacadeBean;
-
-                _ws=new ContestServiceFacadeBeanService(null, contestServiceFacadeWsdl);
-
-                _ws.getWebService().addHeader(WebServiceUtil.getWSSEHeader(username, password));
-                //_ws.getWebService().addEventListener(FaultEvent.FAULT, handleFault);
-
-		_pws=new ProjectServiceFacadeBeanService(null, projectServiceFacadeWsdl);
-		
-		_pws.getWebService().addHeader(WebServiceUtil.getWSSEHeader(username ,password));
+                // initialize web-services
+                initWebServices();
 
 		  initialWdt.init();
 
@@ -224,6 +178,71 @@
 				 onCreateComplete(2)
 		
             }
+            
+            private function initWebServices():void {
+                var header:SOAPHeader=getHeader(username,password);
+                
+                // initialize contest service facade ws.
+			    ContestServiceFacadeBean.clearHeaders();
+			    ContestServiceFacadeBean.addHeader(header);
+			    this._csws = ContestServiceFacadeBean;
+			    
+			    // initialize project service facade ws.
+			    ProjectServiceFacadeBean.clearHeaders();
+			    ProjectServiceFacadeBean.addHeader(header);
+			    this._pws = ProjectServiceFacadeBean;
+
+                // create type registry.
+                var qn:QName = new QName("http://ejb.contest.facade.service.topcoder.com/", "tns");
+                
+                _launchContestSchemaTypeRegistry = new SchemaTypeRegistry();
+                
+                // register data classes.
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ChangeHistoryData);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.Competition);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetitionPrize);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestData);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestPayload);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestPaymentData);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestServiceFilter);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestStatusData);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestTypeData);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CreditCardPaymentData);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.DocumentType);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.MediumData);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.MimeType);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PaymentData);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PaymentResult);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PaymentType);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PrizeData);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.Project);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ProjectData);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.SimpleContestData);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.SimpleProjectContestData);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.StudioCompetition);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.StudioFileType);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.SubmissionData);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.TcPurhcaseOrderPaymentData);
+                _launchContestSchemaTypeRegistry.registerClass(qn, com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.UploadedDocument);
+                
+                _pws.op.decoder.typeRegistry=_launchContestSchemaTypeRegistry;
+                _pws.createProject.decoder.typeRegistry=_launchContestSchemaTypeRegistry;
+                _pws.getAllProjects.decoder.typeRegistry=_launchContestSchemaTypeRegistry;
+                _pws.processContestPurchaseOrderPayment.decoder.typeRegistry=_launchContestSchemaTypeRegistry;
+                _pws.getAllDocumentTypes.decoder.typeRegistry=_launchContestSchemaTypeRegistry;
+                
+                _csws.op.decoder.typeRegistry=_launchContestSchemaTypeRegistry;
+                _csws.createContest.decoder.typeRegistry=_launchContestSchemaTypeRegistry;
+                _csws.getContest.decoder.typeRegistry=_launchContestSchemaTypeRegistry;
+                _csws.processContestCreditCardPayment.decoder.typeRegistry=_launchContestSchemaTypeRegistry;
+                _csws.processContestPurchaseOrderPayment.decoder.typeRegistry=_launchContestSchemaTypeRegistry;
+                _csws.getAllDocumentTypes.decoder.typeRegistry=_launchContestSchemaTypeRegistry;
+                _csws.getMimeTypeId.decoder.typeRegistry=_launchContestSchemaTypeRegistry;
+                _csws.updateContest.decoder.typeRegistry=_launchContestSchemaTypeRegistry;
+                _csws.uploadDocumentForContest.decoder.typeRegistry=_launchContestSchemaTypeRegistry;
+            }
+            
             private var flag:int=0;
             private function onCreateComplete(f:int):void
             {
@@ -755,43 +774,87 @@ Specific limitations (such as restricting a color or a specific layout style) an
             }
         ]]>
     </mx:Script>
+    
+<mx:WebService id="ProjectServiceFacadeBean" 
+		wsdl="{projectServiceFacadeWsdl}"> 
+	<mx:operation name="createProject" 
+		resultFormat="object" 
+		fault="Helper.showAlertMessage('createProject: ' + event.fault.faultString);"> 
+	</mx:operation>
+	
+	<mx:operation name="getAllProjects" 
+		resultFormat="object" 
+		fault="Helper.showAlertMessage('getAllProjects: ' + event.fault.faultString);"> 
+	</mx:operation>
+	
+	<mx:operation name="processContestPurchaseOrderPayment" 
+		resultFormat="object" 
+		fault="Helper.showAlertMessage('processContestPurchaseOrderPayment: ' + event.fault.faultString);"> 
+	</mx:operation>
+	
+	<mx:operation name="getAllDocumentTypes" 
+		resultFormat="object" 
+		fault="Helper.showAlertMessage('getAllDocumentTypes: ' + event.fault.faultString);"> 
+	</mx:operation>
+</mx:WebService>    
 
 <mx:WebService id="ContestServiceFacadeBean" 
 		wsdl="{contestServiceFacadeWsdl}"> 
 	<mx:operation name="createContest" 
 		resultFormat="object" 
-		fault="Alert.show('createContest: ' + event.fault.faultString);"> 
+		fault="Helper.showAlertMessage('createContest: ' + event.fault.faultString);"> 
+	</mx:operation>
+	
+	<mx:operation name="getContest" 
+		resultFormat="object" 
+		fault="Helper.showAlertMessage('getContest: ' + event.fault.faultString);"> 
 	</mx:operation>
 	
 	<mx:operation name="processContestCreditCardPayment" 
 		resultFormat="object" 
-		fault="Alert.show('processContestCreditCardPayment: ' + event.fault.faultString);"> 
+		fault="Helper.showAlertMessage('processContestCreditCardPayment: ' + event.fault.faultString);"> 
 	</mx:operation>
 	
 	<mx:operation name="processContestPurchaseOrderPayment" 
 		resultFormat="object" 
-		fault="Alert.show('processContestPurchaseOrderPayment: ' + event.fault.faultString);"> 
+		fault="Helper.showAlertMessage('processContestPurchaseOrderPayment: ' + event.fault.faultString);"> 
 	</mx:operation>
 	
 	<mx:operation name="getAllDocumentTypes" 
 		resultFormat="object" 
-		fault="Alert.show('getAllDocumentTypes: ' + event.fault.faultString);"> 
+		fault="Helper.showAlertMessage('getAllDocumentTypes: ' + event.fault.faultString);"> 
 	</mx:operation>
 	
+	<mx:operation name="getMimeTypeId" 
+		resultFormat="object" 
+		fault="Helper.showAlertMessage('getMimeTypeId: ' + event.fault.faultString);"> 
+	</mx:operation>
+	
+	<mx:operation name="updateContest" 
+		resultFormat="object" 
+		fault="Helper.showAlertMessage('updateContest: ' + event.fault.faultString);"> 
+	</mx:operation>
+	
+	<mx:operation name="uploadDocumentForContest" 
+		resultFormat="object" 
+		fault="Helper.showAlertMessage('uploadDocumentForContest: ' + event.fault.faultString);"> 
+	</mx:operation>
 </mx:WebService>
-    <mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"
-              
-		 fault="Helper.showAlertMessage(event.fault.faultString);">
-	<mx:method name="getPassword"  result="processPassword(event)" 
-		                   fault="handleError(event)"/>
-		                   
-     <mx:method name="isUserInRole"  result="processRole(event)" 
-		                   fault="handleError(event)">
-		                   <mx:arguments>
-		                   	<role>Cockpit Administrator</role>
-		                   </mx:arguments>
-		                   </mx:method>
-     </mx:RemoteObject>
+
+<mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"
+          
+	 fault="Helper.showAlertMessage(event.fault.faultString);">
+<mx:method name="getPassword"  result="processPassword(event)" 
+	                   fault="handleError(event)"/>
+	                   
+ <mx:method name="isUserInRole"  result="processRole(event)" 
+	                   fault="handleError(event)">
+   <mx:arguments>
+    <role>Cockpit Administrator</role>
+   </mx:arguments>
+</mx:method>
+ </mx:RemoteObject>
+     
      <mx:Spacer height="5" />
      <pages:InitialWidget id="initialWdt" />
      <mx:HBox id="launchWdt" horizontalGap="0" visible="false" paddingLeft="20">
