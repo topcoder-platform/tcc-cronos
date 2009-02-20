@@ -196,6 +196,7 @@
             	_actionRequiredContestTypeId = 6;
             	_completedContestTypeId = 8;
             	_noWinnerChosenContestTypeId = 7;
+            	_inDangerContestTypeId = 10;
             	
             	if (!_isLocalTesting) {
 	                var header:SOAPHeader=getHeader(username,password);
@@ -1047,7 +1048,9 @@
                 		
 	                	if (_activeContestTypeIds[_selectedContestStatusId] == true) {
 	                		// remove continue button from here.
-	                		continue_contestViewer_btn.visible = false;
+	                		if (_inDangerContestTypeId != _selectedContestStatusId) {
+	                		    continue_contestViewer_btn.visible = false;
+	                		}
 	                		enableRatingSelector();	
 	                		enablePurchaseSelector();
 	                	}
