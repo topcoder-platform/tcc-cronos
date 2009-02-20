@@ -154,11 +154,10 @@ public interface ProjectServiceFacade {
      * Defines the operation that performs the retrieval of the list with
      * projects with the given user id. If nothing is found, return an empty list.
      * <p>
-     * @param userId the user id
      * @return List of Project, if nothing is found, return an empty string
      * @throws DAOException if any error occurs while performing this operation.
      */
-    public List<Project> getClientProjectsByUser(long userId) throws DAOFault;
+    public List<Project> getClientProjectsByUser() throws DAOFault;
     /**
      * <p>
      * Defines the operation that performs the retrieval of an entity using the

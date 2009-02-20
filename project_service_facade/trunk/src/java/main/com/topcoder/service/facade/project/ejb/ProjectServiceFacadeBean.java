@@ -25,6 +25,7 @@ import com.topcoder.service.project.ProjectNotFoundFault;
 import com.topcoder.service.project.AuthorizationFailedFault;
 import com.topcoder.service.project.UserNotFoundFault;
 import com.topcoder.service.project.ProjectHasCompetitionsFault;
+import com.topcoder.security.auth.module.UserProfilePrincipal;
 
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -1058,15 +1059,19 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      * @throws DAOException if any error occurs while performing this operation.
      */
     @WebMethod
-    public List<Project> getClientProjectsByUser(long userId) throws DAOFault {
+    public List<Project> getClientProjectsByUser() throws DAOFault {
     	if ( sessionContext.getCallerPrincipal() == null || sessionContext.getCallerPrincipal().getName() == null) {
     		throw new DAOFault("Fail to get client project for user.");
     	}
     	try {
 //    		if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
 //    			return this.projectDAO.retrieveAll();
-//    		}    	
-			return this.clientDAO.getProjectsByUser(userId);
+//    		}    
+
+			//TODO, until we fix retrieveAll, 
+			 UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+			 return this.clientDAO.getProjectsByUser(p.getUserId());
+
 		} catch(EntityNotFoundException e) {
 			throw new EntityNotFoundFault(e.getMessage(), e.getCause());
 		} catch (DAOException e) {

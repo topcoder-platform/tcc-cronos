@@ -373,7 +373,7 @@
         } else if("getClientProjectsByUserId".equals(operation)) {
         	String userId = request.getParameter("userIDDDD");
         	
-        	List<Project> projects = port.getClientProjectsByUser(Long.parseLong(userId));
+        	List<Project> projects = port.getClientProjectsByUser();
         	StringBuilder b = new StringBuilder();
         	for (Project p : projects) {
                 b.append(" Project : ID = ").append(p.getId()).append(", name = ").append(p.getName()).append("<br/>");                
