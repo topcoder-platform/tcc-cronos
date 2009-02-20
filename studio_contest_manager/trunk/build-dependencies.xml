@@ -12,7 +12,7 @@
     <property name="class_associations.jar" value="${tcs_libdir}/class_associations/1.0.0/class_associations.jar"/>
     <property name="project_service.jar" value="${tcs_libdir}/project_service/1.0.1/project_service.jar"/>
 
-    <property name="search_builder.jar" value="${tcs_libdir}/search_builder/1.3.2/search_builder.jar"/>
+    <property name="search_builder.jar" value="${tcs_libdir}/search_builder/1.4.0/search_builder_1.4_modified.jar"/>
 
     
     <!-- TCS dependencies fixed by developer -->
