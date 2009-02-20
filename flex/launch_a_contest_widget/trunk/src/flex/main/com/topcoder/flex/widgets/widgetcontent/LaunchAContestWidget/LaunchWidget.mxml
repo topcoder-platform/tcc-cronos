@@ -61,8 +61,8 @@
 	       	private var SPECIFICATIONS_HEIGHT:int = 820;
 	       	private var ATTACH_FILES_HEIGHT:int = 660;
 	       	private var SCHEDULE_HEIGHT:int = 860;
-	       	private var REVIEW_HEIGHT:int = 1150;
-	       	private var ACTIVATE_HEIGHT:int = 810;
+	       	private var REVIEW_HEIGHT:int = 1165;
+	       	private var ACTIVATE_HEIGHT:int = 830;
 
 		    private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
             
