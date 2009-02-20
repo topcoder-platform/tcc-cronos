@@ -135,15 +135,15 @@ public class ClientDAOBean extends GenericEJB3DAO<Client, Long> implements
 		
 		try {
 			Query query = entityManager.createNativeQuery(SELECT_MANAGER_PROJECT + userId);
-			List<Long> managerProjects = query.getResultList();
+			List<Integer> managerProjects = query.getResultList();
 			
 			query = entityManager.createNativeQuery(SELECT_WORKER_PROJECT + userId);
-			List<Long> workerProjects = query.getResultList();
+			List<Integer> workerProjects = query.getResultList();
 			
 			//join all the distinct project id
-			for(Long projectId: workerProjects) {
+			for(Integer projectId: workerProjects) {
 				boolean existed = false;
-				for(Long existingId:managerProjects) {
+				for(Integer existingId:managerProjects) {
 					if ( existingId.longValue() == projectId.longValue()) {
 						existed = true;
 						break;
@@ -158,7 +158,7 @@ public class ClientDAOBean extends GenericEJB3DAO<Client, Long> implements
 				return new ArrayList<Project>();
 			}
 		
-			String queryString = "SELECT p FROM Project p WHERE p.id ";
+		/*	String queryString = "SELECT p FROM Project p WHERE p.id ";
 			if ( managerProjects.size() == 1) {
 				queryString += " = " + managerProjects.get(0);
 			} else {
@@ -169,7 +169,50 @@ public class ClientDAOBean extends GenericEJB3DAO<Client, Long> implements
 				queryString = queryString.substring(0, queryString.length()-1);
 				queryString += ")";
 			}
-			return entityManager.createQuery(queryString).getResultList();	
+			return entityManager.createQuery(queryString).getResultList();	 */
+
+
+			String queryString = "select project_id, name, po_box_number, description from project where project_id ";
+			if ( managerProjects.size() == 1) {
+				queryString += " = " + managerProjects.get(0);
+			} else {
+				queryString += " in (";
+				for(Integer projectId:managerProjects) {
+					queryString += projectId + ",";
+				}
+				queryString = queryString.substring(0, queryString.length()-1);
+				queryString += ")";
+			}
+
+			Query query2 = entityManager.createNativeQuery(queryString);
+
+            List list = query2.getResultList();
+
+            List<Project> result = new ArrayList<Project>();
+System.out.println("---------sizeeeee---" + list.size());
+
+            for (int i = 0; i < list.size(); i++) {
+
+                Project c = new Project();
+                Object[] os = (Object[]) list.get(i);
+                if (os[0] != null)
+                    c.setId(Integer.parseInt(os[0].toString()));
+
+                if (os[1] != null)
+                    c.setName(os[1].toString());
+
+                if (os[2] != null)
+                    c.setPOBoxNumber(os[2].toString());
+
+                if (os[3] != null)
+                    c.setDescription(os[3].toString());
+
+                result.add(c);
+
+            }
+
+			return result;
+
 		} catch(Exception e) {
 			throw Helper.WrapExceptionWithDAOException(e, "Failed to get project for user [" + userId + "].");
 		}
