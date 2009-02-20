@@ -113,6 +113,11 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
      */
     @Resource
     private SessionContext sessionContext;
+
+	/**
+     * Private constant specifying administrator role.
+     */
+    private static final String ADMIN_ROLE = "Cockpit Administrator";
     
 
     /**
@@ -1058,9 +1063,9 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
     		throw new DAOFault("Fail to get client project for user.");
     	}
     	try {
-    		if (sessionContext.getCallerPrincipal().getName().equalsIgnoreCase("cockpit admin")) {
-    			return this.projectDAO.retrieveAll();
-    		}    	
+//    		if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
+//    			return this.projectDAO.retrieveAll();
+//    		}    	
 			return this.clientDAO.getProjectsByUser(userId);
 		} catch(EntityNotFoundException e) {
 			throw new EntityNotFoundFault(e.getMessage(), e.getCause());
