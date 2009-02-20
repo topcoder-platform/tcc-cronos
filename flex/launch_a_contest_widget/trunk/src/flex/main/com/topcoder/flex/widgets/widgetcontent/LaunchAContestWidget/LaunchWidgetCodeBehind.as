@@ -2,6 +2,7 @@
  * Copyright (c) 2008, TopCoder, Inc. All rights reserved.
  */
 package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
+    import com.topcoder.flex.Helper;
     import com.topcoder.flex.model.IWidgetFramework;
     import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.widgets.model.IWidgetContainer;
@@ -12,18 +13,17 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.StudioCompetition;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.TcPurhcaseOrderPaymentData;
     
-    import flash.utils.Dictionary;
-    
     import mx.containers.VBox;
-
-	import com.topcoder.flex.Helper;
-	import flash.net.URLRequest;
-	import flash.net.navigateToURL;
-	import mx.core.Application;
-	import mx.rpc.AbstractOperation;
+    import mx.core.Application;
+    import mx.rpc.AbstractOperation;
     import mx.rpc.events.ResultEvent;
     import mx.rpc.soap.mxml.WebService;
     import mx.rpc.xml.SchemaTypeRegistry;
+    
+    import flash.utils.Dictionary;
+    import flash.net.URLRequest;
+    import flash.net.navigateToURL;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
 
     /**
      * <p>
@@ -329,7 +329,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         	if(e && e.result)
         	{
         		resetWidget();
-        		(container.contents as LaunchWidget).competition=e.result as StudioCompetition;
+        		var c:StudioCompetition = ObjectTranslatorUtils.translate(e.result, StudioCompetition) as StudioCompetition;
+            	trace("getContestHandler:: c: " + c);
+        		(container.contents as LaunchWidget).competition=c;
         	}
         }
         
@@ -410,11 +412,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         }
         
         // TCCC-1023
-        private function createContestHandler(event:ResultEvent):void {
-            if (event && event.result) {
-            	this.competition = event.result as StudioCompetition;
-            	
-            	trace("createContestHandler:: StudioCompetition -- " + this.competition);
+        private function createContestHandler(e:ResultEvent):void {
+        	trace("createContestHandler: " + e + ", " + e.result);
+        	
+            if (e && e.result) {
+            	this.competition = ObjectTranslatorUtils.translate(e.result, StudioCompetition) as StudioCompetition;
+            	trace("createContestHandler:: this.competition: " + this.competition);
             	
             	var type:CompetionType = new CompetionType();
             	type.competionType = "STUDIO";

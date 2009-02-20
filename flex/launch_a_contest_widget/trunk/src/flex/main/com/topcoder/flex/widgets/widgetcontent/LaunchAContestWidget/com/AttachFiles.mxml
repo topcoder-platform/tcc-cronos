@@ -24,6 +24,8 @@
 	        
 	        import mx.rpc.AbstractOperation;
             import mx.rpc.events.ResultEvent;
+            
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
 	        
 	        [Bindable]
 	        public var mainWidget:LaunchWidget;
@@ -122,12 +124,16 @@
 	        }
 	        
 	        // TCCC-1023
-	        private function getAllDocumentTypesHandler(event:ResultEvent):void{
-	            if (event && event.result) {
+	        private function getAllDocumentTypesHandler(e:ResultEvent):void{
+	            trace("getAllDocumentTypesHandler: " + e + ", " + e.result);
+                
+            	if(e && e.result){
+            	    var docTypes:ArrayCollection = ObjectTranslatorUtils.translateCollection(e.result, DocumentType);
+            	    trace("getAllDocumentTypesHandler:: docTypes: " + docTypes);
 	            
     	        	fileTypes = new ArrayCollection();
     	        	
-    	        	for each (var dt:DocumentType in event.result.asIList()){
+    	        	for each (var dt:DocumentType in docTypes){
             			fileTypes.addItem({label:dt.description, data:dt.documentTypeId});
             		}
 	            }
@@ -291,11 +297,14 @@
             }
             
             // TCCC-1023
-            private function loadMimeTypeIdHandler(event:ResultEvent):void{
-            	if (event && event.result) {
-            	    // TODO: check return type.
-                	currentDoc.mimeTypeId=event.result as Number;
-    				
+            private function loadMimeTypeIdHandler(e:ResultEvent):void{
+                trace("loadMimeTypeIdHandler: " + e + ", " + e.result);
+                
+            	if (e && e.result) {
+            	    
+            	    currentDoc.mimeTypeId = ObjectTranslatorUtils.translate(e.result, Number) as Number;
+            	    trace("loadMimeTypeIdHandler:: currentDoc.mimeTypeId: " + currentDoc.mimeTypeId);
+            	    
     				//file content has been loaded            	
                 	if (currentDoc.file != null){
                 		this.dispatchEvent(new Event("UPLOADDOC_ALL_COMPLETED"));
@@ -329,9 +338,14 @@
             }
             
             // TCCC-1023
-            private function uploadDocumentForContestHandler(event:ResultEvent):void {
-                if (event && event.result) {
-                	var docUploaded:UploadedDocument=event.result as UploadedDocument;
+            private function uploadDocumentForContestHandler(e:ResultEvent):void {
+                
+                trace("getAllProjectsHandler: " + e + ", " + e.result);
+                
+            	if(e && e.result){
+            	    var docUploaded:UploadedDocument = ObjectTranslatorUtils.translate(e.result, UploadedDocument) as UploadedDocument;
+            	    trace("uploadDocumentForContestHandler:: docUploaded: " + docUploaded);
+            	    
                 	//Clear the content once the file has been uploaded to save memory
                 	docUploaded.file = null; 
                 	addDoc(docUploaded);

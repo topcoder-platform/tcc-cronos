@@ -3,6 +3,7 @@
           horizontalScrollPolicy="off" verticalScrollPolicy="off" >
     <mx:Script>
         <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
         	import mx.collections.IList;
         	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ProjectData;
         	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
@@ -44,19 +45,22 @@
             
             // TCCC-1023
             private function getAllProjectsHandler(e:ResultEvent):void{
-                Helper.showAlertMessage("getAllProjectsHandler: " + e + ", " + e.result);
+                trace("getAllProjectsHandler: " + e + ", " + e.result);
                 
-            	if(e!=null && e.result!=null){
-            		if(!e.result.sort)
+            	if(e && e.result){
+            	    var projects:ArrayCollection = ObjectTranslatorUtils.translateCollection(e.result, ProjectData);
+            	    trace("getAllProjectsHandler:: Projects: " + projects);
+            	    
+            		if(!projects.sort)
         			{
             			var sort:Sort = new Sort();   
     	                sort.compareFunction = compareName;
-    	                e.result.sort = sort;
+    	                projects.sort = sort;
 	                }
 	                
-        			e.result.refresh();
+        			projects.refresh();
             		
-        			for each (var prj:ProjectData in e.result.asIList()){
+        			for each (var prj:ProjectData in projects){
         				contestsData.addItem({label:prj.name, data:prj.projectId, desc:prj.description});
         			}
         			
@@ -141,11 +145,13 @@
             // TCCC-1023
             private function createProjectHandler(e:ResultEvent):void
             {
-                Helper.showAlertMessage("createProjectHandler: " + e + ", " + e.result);
+                trace("createProjectHandler: " + e + ", " + e.result);
             	if(e && e.result)
             	{
+            	    var projectData:ProjectData = ObjectTranslatorUtils.translate(e.result, ProjectData) as ProjectData;
+            	    trace("createProjectHandler:: Project Data: " + projectData);
             	    
-            	    var projectData:ProjectData=e.result as ProjectData;
+            	    //var projectData:ProjectData=e.result as ProjectData;
             		mainWidget.tcDirectProjectId=projectData.projectId.toString();
             		createContestAndContinue(projectData.projectId);
             	}
@@ -158,12 +164,13 @@
             }
             
             // TCCC-1023
-            private function loadContestHandler(event:ResultEvent):void{
-                Helper.showAlertMessage("loadContestHandler: " + event + ", " + event.result);
+            private function loadContestHandler(e:ResultEvent):void{
+                trace("loadContestHandler: " + e + ", " + e.result);
                 
-            	if (event && event.result) {
-                	mainWidget.competition = event.result as StudioCompetition;
-                	
+            	if (e && e.result) {
+            	    mainWidget.competition = ObjectTranslatorUtils.translate(e.result, StudioCompetition) as StudioCompetition;
+            	    trace("loadContestHandler:: mainWidget.competition: " + mainWidget.competition);
+            	    
                 	var type:CompetionType = new CompetionType();
                 	
                 	//CompetitionType fixed to be studio

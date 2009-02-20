@@ -17,6 +17,8 @@
     	import com.topcoder.flex.Helper;
         import mx.events.ItemClickEvent;
         
+        import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
+        
         private static var inputs:Array = ["firstPlace","secondPlace","thirdPlace","fourthPlace","fifthPlace"]; 
         private static var inputsMap:Object = {1:"firstPlace", 2:"secondPlace", 3:"thirdPlace", 4:"fourthPlace", 5:"fifthPlace"};
         
@@ -164,6 +166,7 @@
         
         // since BUGR-1039
         private function loadExamples(e:ResultEvent): void {
+            // Do not need to change it as this is not coming through webservice. 
         	if(e!=null && e.result!=null && e.result is XML)  	{
  				contestOverview = e.result as XML;
 			}

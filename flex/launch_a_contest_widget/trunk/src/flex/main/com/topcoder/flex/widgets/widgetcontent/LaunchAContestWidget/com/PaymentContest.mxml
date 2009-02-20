@@ -3,6 +3,8 @@
 	<mx:Script>
 		<![CDATA[
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PaymentResult;
+			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
 		
 		import mx.rpc.events.ResultEvent;
 			 [Bindable]
@@ -79,9 +81,13 @@
             
             private function processCreditCardPaymentResponse(e:ResultEvent):void
             {
+                trace("processCreditCardPaymentResponse: " + e + ", " + e.result);
                 if (e && e.result) {
+                    var paymentResult:PaymentResult = ObjectTranslatorUtils.translate(e.result, PaymentResult) as PaymentResult;
+            	    trace("processCreditCardPaymentResponse:: paymentResult: " + paymentResult);
+            	    
                     header="Your Transaction was Approved!";
-                    text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + e.result.referenceNumber + ".</b>";
+                    text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + paymentResult.referenceNumber + ".</b>";
                     text2="";
                     wf2.showApproval();
                 }
@@ -89,9 +95,13 @@
 
             private function processPOPaymentResponse(e:ResultEvent):void
             {
+                trace("processPOPaymentResponse: " + e + ", " + e.result);
                 if (e && e.result) {
+                    var paymentResult:PaymentResult = ObjectTranslatorUtils.translate(e.result, PaymentResult) as PaymentResult;
+            	    trace("processPOPaymentResponse:: paymentResult: " + paymentResult);
+            	    
                     header="Your Transaction was Approved!";
-                    text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + e.result.referenceNumber + ".</b>";
+                    text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + paymentResult.referenceNumber + ".</b>";
                     text2="";
                     wf3.showApproval();
                 }
