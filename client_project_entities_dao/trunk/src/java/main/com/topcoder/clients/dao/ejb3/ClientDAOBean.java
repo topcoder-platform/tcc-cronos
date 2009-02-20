@@ -64,12 +64,12 @@ public class ClientDAOBean extends GenericEJB3DAO<Client, Long> implements
      * The query string used to select projects.
      */
 	private static final String SELECT_WORKER_PROJECT =
-		"SELECT distinct project_id WHERE project_worker WHERE user_account_id = ";
+		"SELECT distinct project_id FROM project_worker WHERE user_account_id = ";
 	/**
      * The query string used to select projects.
      */
 	private static final String SELECT_MANAGER_PROJECT =
-		"SELECT distinct project_id WHERE project_manager WHERE user_account_id = ";
+		"SELECT distinct project_id FROM project_manager WHERE user_account_id = ";
 	/**
      * The query string used to select projects.
      */
@@ -157,10 +157,10 @@ public class ClientDAOBean extends GenericEJB3DAO<Client, Long> implements
 			if ( managerProjects.isEmpty()) {
 				return new ArrayList<Project>();
 			}
-			
+		
 			String queryString = "SELECT p FROM Project p WHERE p.id ";
 			if ( managerProjects.size() == 1) {
-				queryString += " = " + managerProjects.get(0).longValue();
+				queryString += " = " + managerProjects.get(0);
 			} else {
 				queryString += " in (";
 				for(Long projectId:managerProjects) {
