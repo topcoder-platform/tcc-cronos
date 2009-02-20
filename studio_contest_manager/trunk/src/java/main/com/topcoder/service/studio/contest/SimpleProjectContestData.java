@@ -83,7 +83,7 @@ public class SimpleProjectContestData {
     /**
      * Represents the forum id.
      */
-    private Integer forumId;
+    private Long forumId;
     
     /**
      * Represents the description for project.
@@ -296,7 +296,7 @@ public class SimpleProjectContestData {
      *
      * @return the forum id.
      */
-	public Integer getForumId() {
+	public Long getForumId() {
 		return forumId;
 	}
 	 /**
@@ -305,7 +305,7 @@ public class SimpleProjectContestData {
      * @param forumId
      *            the forumId to set.
      */
-	public void setForumId(Integer forumId) {
+	public void setForumId(Long forumId) {
 		this.forumId = forumId;
 	}
 

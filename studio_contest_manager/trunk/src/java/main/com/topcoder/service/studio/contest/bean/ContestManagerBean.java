@@ -2771,7 +2771,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             
             
             String qstr="select p.project_id , p.name as pname, c.contest_id,  c.name as cname, "
-					+ " c.start_time, c.end_time,  ds.name as sname, "
+					+ " c.start_time, c.end_time,  ds.name as sname, p.description, c.forum_id, "
 					+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, " 
 					+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1) as num_sub, "
 					+ " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for "
@@ -2804,13 +2804,20 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     c.setEndDate(myFmt.parse(os[5].toString()));
                 if (os[6] != null)
                     c.setSname(os[6].toString());
-                if (os[7] != null)
-                    c.setNum_reg(Integer.parseInt(os[7].toString()));
+
+				if (os[7] != null)
+                    c.setDescription(os[7].toString());
+
                 if (os[8] != null)
-                    c.setNum_sub(Integer.parseInt(os[8].toString()));
+                    c.setForumId(Long.parseLong(os[8].toString()));
 
                 if (os[9] != null)
-                    c.setNum_for(Integer.parseInt(os[9].toString()));
+                    c.setNum_reg(Integer.parseInt(os[9].toString()));
+                if (os[10] != null)
+                    c.setNum_sub(Integer.parseInt(os[10].toString()));
+
+                if (os[11] != null)
+                    c.setNum_for(Integer.parseInt(os[11].toString()));
 
                 result.add(c);
 
@@ -2852,7 +2859,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 			EntityManager em = getEntityManager();
 
 			String qstr = "select p.project_id , p.name as pname, c.contest_id,  c.name as cname, "
-					+ " c.start_time, c.end_time,  ds.name as sname, "
+					+ " c.start_time, c.end_time,  ds.name as sname, p.description, c.forum_id, "
 					+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
 					+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1) as num_sub, "
 					+ " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for "
@@ -2888,12 +2895,18 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                 if (os[6] != null)
                     c.setSname(os[6].toString());
                 if (os[7] != null)
-                    c.setNum_reg(Integer.parseInt(os[7].toString()));
-                if (os[8] != null)
-                    c.setNum_sub(Integer.parseInt(os[8].toString()));
+                    c.setDescription(os[7].toString());
 
-				if (os[9] != null)
-					c.setNum_for(Integer.parseInt(os[9].toString()));
+                if (os[8] != null)
+                    c.setForumId(Long.parseLong(os[8].toString()));
+
+                if (os[9] != null)
+                    c.setNum_reg(Integer.parseInt(os[9].toString()));
+                if (os[10] != null)
+                    c.setNum_sub(Integer.parseInt(os[10].toString()));
+
+                if (os[11] != null)
+                    c.setNum_for(Integer.parseInt(os[11].toString()));
 
 				result.add(c);
 
@@ -2923,7 +2936,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             
             
             String qstr="select p.project_id , p.name as pname, c.contest_id,  c.name as cname, "
-					+ " c.start_time, c.end_time,  ds.name as sname, "
+					+ " c.start_time, c.end_time,  ds.name as sname, p.description, c.forum_id, "
 					+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, " 
 					+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1) as num_sub, "
 					+ " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for "
@@ -2959,12 +2972,18 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                 if (os[6] != null)
                     c.setSname(os[6].toString());
                 if (os[7] != null)
-                    c.setNum_reg(Integer.parseInt(os[7].toString()));
+                    c.setDescription(os[7].toString());
+
                 if (os[8] != null)
-                    c.setNum_sub(Integer.parseInt(os[8].toString()));
+                    c.setForumId(Long.parseLong(os[8].toString()));
 
                 if (os[9] != null)
-                    c.setNum_for(Integer.parseInt(os[9].toString()));
+                    c.setNum_reg(Integer.parseInt(os[9].toString()));
+                if (os[10] != null)
+                    c.setNum_sub(Integer.parseInt(os[10].toString()));
+
+                if (os[11] != null)
+                    c.setNum_for(Integer.parseInt(os[11].toString()));
                 result.add(c);
 
             }
