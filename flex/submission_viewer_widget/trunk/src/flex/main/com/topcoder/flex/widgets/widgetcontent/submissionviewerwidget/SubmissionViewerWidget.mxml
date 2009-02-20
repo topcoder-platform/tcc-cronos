@@ -118,6 +118,7 @@
 			private var _completedContestTypeId:int;
 			private var _noWinnerChosenContestTypeId:int;
 			private var _leastContestPrize:Number = 0;
+			private var _inDangerContestTypeId:int;
 			
 			private var _previousColumnCount:int = 0;
 			private var _currentColumnCount:int = 0;
