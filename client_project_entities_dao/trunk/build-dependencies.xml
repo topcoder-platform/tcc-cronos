@@ -20,7 +20,7 @@
 	<property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar" />
 	<property name="data_validation.jar" value="${tcs_libdir}/data_validation/1.1.1/data_validation.jar" />
 
-    <property name="search_builder.jar" value="${testfiles}/search_builder1.4/search_builder_1.4_modified.jar" />
+    <property name="search_builder.jar" value="${tcs_libdir}/search_builder/1.4.0/search_builder_1.4_modified.jar" />
 	<!-- 3rd party dependencies -->
 	<property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar" />
 	<property name="javaee.jar" value="${ext_libdir}/javaee/javaee.jar" />
