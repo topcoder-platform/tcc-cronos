@@ -50,6 +50,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.EJB;
 import javax.jws.WebService;
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
@@ -97,6 +98,30 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 	 */
 	@Resource
 	private SessionContext sessionContext;
+
+	/**
+     * PayPal API UserName
+     */
+    @Resource(name = "payPalApiUserName")
+    private String apiUserName;
+
+    /**
+     * PayPal API Password
+     */
+    @Resource(name = "payPalApiPassword")
+    private String apiPassword;
+
+    /**
+     * PayPal API Signature.
+     */
+    @Resource(name = "payPalApiSignature")
+    private String apiSignature;
+
+    /**
+     * PayPal API Environment
+     */
+    @Resource(name = "payPalApiEnvironment")
+    private String apiEnvironment;
 
 	/**
 	 * <p>
@@ -154,9 +179,28 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 	 *             initialization time, if this fails it is thrown as exception.
 	 */
 	public ContestServiceFacadeBean() throws PaymentException {
-	    // BUGR-1239
-		paymentProcessor = new PayflowProPaymentProcessor();
+		
 	}
+	
+	/**
+     * <p>
+     * This initializes the API Profile to the <code>CallerServices</code>. The API profile are the merchant's (in this
+     * case TopCoder) PayPal API details.
+     * </p>
+     * 
+     * @throws IllegalStateException
+     *             it throws this exception on any issues during caller services initialization. Issues can be: wrong
+     *             authentication information, invalid information etc.
+     */
+    @PostConstruct
+    public void init() {
+        try {
+            Logger.getLogger(this.getClass()).debug("Initializing PayPalPaymentProcessor");
+            paymentProcessor = new PayPalPaymentProcessor(apiUserName, apiPassword, apiSignature, apiEnvironment);
+        } catch (PaymentException e) {
+            throw new IllegalStateException("Error in initializing PayPalPaymentProcessor", e);
+        }
+    }
 
     /**
      * <p>Creates new contest for specified project. Upon creation an unique ID is generated and assigned to returned

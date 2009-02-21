@@ -14,7 +14,11 @@
             <ejb-class>com.topcoder.service.facade.contest.ejb.ContestServiceFacadeBean</ejb-class>
             <session-type>Stateless</session-type>
             <transaction-type>Container</transaction-type>
-            
+            <env-entry>
+                <env-entry-name>logName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>contest_service_facade_log</env-entry-value>
+            </env-entry>
             <env-entry>
                 <env-entry-name>payPalApiUserName</env-entry-name>
                 <env-entry-type>java.lang.String</env-entry-type>

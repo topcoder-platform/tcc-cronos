@@ -47,57 +47,13 @@ public class PayPalPaymentProcessor implements PaymentProcessor {
     private CallerServices paypalServicesCaller;
 
     /**
-     * PayPal API UserName
-     */
-    @Resource(name = "payPalApiUserName")
-    private String apiUserName;
-
-    /**
-     * PayPal API Password
-     */
-    @Resource(name = "payPalApiPassword")
-    private String apiPassword;
-
-    /**
-     * PayPal API Signature.
-     */
-    @Resource(name = "payPalApiSignature")
-    private String apiSignature;
-
-    /**
-     * PayPal API Environment
-     */
-    @Resource(name = "payPalApiEnvironment")
-    private String apiEnvironment;
-
-    /**
      * <p>
      * It relies on PostConstruct mechanism to initialize the necessary resources.
      * </p>
      */
-    public PayPalPaymentProcessor() throws PaymentException {
-        // Right now PostConstruct mechanism is not working.
-        // TODO: look into it later.
-        apiUserName="seller_1234307677_biz_api1.gmail.com";
-        apiPassword="1234307687";
-        apiSignature="AnZ1R08OB-0kjv8ScKWWh7ksDw0gADepvbH.O3VcBMgT4iAXlSNSLuil";
-        apiEnvironment="beta-sandbox";
+    public PayPalPaymentProcessor(String apiUserName, String apiPassword, String apiSignature, String apiEnvironment)
+            throws PaymentException {
 
-        init();
-    }
-
-    /**
-     * <p>
-     * This initializes the API Profile to the <code>CallerServices</code>. The API profile are the merchant's (in this
-     * case TopCoder) PayPal API details.
-     * </p>
-     * 
-     * @throws IllegalStateException
-     *             it throws this exception on any issues during caller services initialization. Issues can be: wrong
-     *             authentication information, invalid information etc.
-     */
-    @PostConstruct
-    public void init() {
         try {
 
             Logger.getLogger(this.getClass()).debug("PayPal API Username: " + apiUserName);
@@ -116,7 +72,7 @@ public class PayPalPaymentProcessor implements PaymentProcessor {
             profile.setEnvironment(apiEnvironment);
             paypalServicesCaller.setAPIProfile(profile);
         } catch (PayPalException e) {
-            throw new IllegalStateException("Error in initializing PayPalPaymentProcessor", e);
+            throw new PaymentException("Error in initializing PayPalPaymentProcessor:" + e.getMessage(), e);
         }
     }
 

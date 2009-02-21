@@ -83,11 +83,11 @@ public class PayflowProPaymentProcessor implements PaymentProcessor {
      */
     public PayflowProPaymentProcessor() {
         // comment for non-local testing
-    /*    user = "tcTestAccount";
-        vendor = "tcTestAccount";
+        user = "shannontc";
+        vendor = "shannontc";
         partner = "PayPal";
-        password = "password123";
-        hostAddress = "pilot-payflowpro.paypal.com"; */
+        password = "tctesting123";
+        hostAddress = "pilot-payflowpro.paypal.com"; 
         
         logger.debug("hostAddress=" + hostAddress);
         logger.debug("user=" + user);
@@ -120,7 +120,7 @@ public class PayflowProPaymentProcessor implements PaymentProcessor {
 
         // Create a new Invoice data object with the Amount, Billing Address etc. details.
         Invoice inv = new Invoice();
-
+System.out.println("----amount = "+cardPaymentData.getAmount());
         // Set amount
         Currency amt = new Currency(new Double(cardPaymentData.getAmount()), "USD");
         inv.setAmt(amt);
