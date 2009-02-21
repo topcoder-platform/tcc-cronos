@@ -12,6 +12,7 @@ import com.topcoder.service.payment.PaymentResult;
 import com.topcoder.service.payment.PaymentType;
 import com.topcoder.service.payment.TCPurhcaseOrderPaymentData;
 import com.topcoder.service.payment.paypal.PayPalPaymentProcessor;
+import com.topcoder.service.payment.paypal.PayflowProPaymentProcessor;
 import com.topcoder.service.project.StudioCompetition;
 import com.topcoder.service.project.CompetionType;
 import com.topcoder.service.project.Competition;
@@ -153,7 +154,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 	 *             initialization time, if this fails it is thrown as exception.
 	 */
 	public ContestServiceFacadeBean() throws PaymentException {
-		paymentProcessor = new PayPalPaymentProcessor();
+	    // BUGR-1239
+		paymentProcessor = new PayflowProPaymentProcessor();
 	}
 
     /**
