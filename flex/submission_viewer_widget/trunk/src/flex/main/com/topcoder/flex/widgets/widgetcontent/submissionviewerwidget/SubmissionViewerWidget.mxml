@@ -565,6 +565,7 @@
                         obj.rank = "";
                         obj.mustPurchase=false;
                         obj.purchased=obj.markedForPurchase || obj.mustPurchase;
+			obj.price=0; 
                     }
                     
                     _rankList.setItemAt(item, index);
