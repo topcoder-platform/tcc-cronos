@@ -23,6 +23,7 @@
                 <jvmarg value="-Xmx512m" />
                 <arg line="${_mxmlc.libpath}" />
                 <arg value="+flexlib=${flex.frameworks.dir}" />
+                <arg value="-keep-as3-metadata=ArrayElementType" />
             
                 <arg value="-file-specs=@{src}" />
                 <arg value="-output=@{dest}" />
