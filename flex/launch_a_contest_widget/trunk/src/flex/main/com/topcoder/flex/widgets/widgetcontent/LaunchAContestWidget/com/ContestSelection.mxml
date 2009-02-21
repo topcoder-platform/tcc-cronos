@@ -11,10 +11,9 @@
             public var mainWidget:LaunchWidget;
             
             private function handleSelect(event:ItemClickEvent):void{
-            	var type:CompetionType = new CompetionType();
-            	type.competionType = (event.item as RadioButtonGroup).selectedValue.toString();
-            	
-            	mainWidget.competition.type = type;
+            	//var type:CompetionType = new CompetionType();
+            	var competionType:String = (event.item as RadioButtonGroup).selectedValue.toString();
+            	mainWidget.competition.type = competionType;
             }
             
             //select the button

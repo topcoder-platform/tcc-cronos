@@ -390,9 +390,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         }
         
         private function saveContest():void{
-        	var type:CompetionType = new CompetionType();
-        	type.competionType = "STUDIO";
-        	this.competition.type = type;
+        	//var type:CompetionType = new CompetionType();
+        	var competionType:String = "STUDIO";
+        	this.competition.type = competionType;
         	if (isNaN(competition.id) || competition.id < 0){
         		createContest();
         	} else {
@@ -419,9 +419,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             	this.competition = ObjectTranslatorUtils.translate(e.result, StudioCompetition) as StudioCompetition;
             	trace("createContestHandler:: this.competition: " + this.competition);
             	
-            	var type:CompetionType = new CompetionType();
-            	type.competionType = "STUDIO";
-            	this.competition.type = type;
+            	//var type:CompetionType = new CompetionType();
+            	var competitionType:String = "STUDIO";
+            	this.competition.type = competitionType;
     
     		    Helper.showAlertMessage("Contest created successfully!");
             }

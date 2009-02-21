@@ -24,12 +24,12 @@ public function Competition() {}
                    public var creatorUserId:Number;
                    public var drPoints:Number;
                    public var eligibility:String;
-                   public var endTime:Object;
+                   public var endTime:String; // TODO: see if we want date here.
                    public var id:Number;[ArrayElementType("CompetitionPrize")]
                    public var prizes:Array;
                    public var project:com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.Project;
                    public var shortSummary:String;
-                   public var startTime:Object;
-                   public var type:com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
+                   public var startTime:String; // TODO: see if we want date here.
+                   public var type:String; //com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
            	}
       	 }

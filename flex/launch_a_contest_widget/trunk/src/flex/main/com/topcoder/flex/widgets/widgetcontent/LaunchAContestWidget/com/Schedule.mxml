@@ -37,7 +37,7 @@
             	var endTime:Object = mainWidget.competition.endTime;
             	
             	if (startTime != null){
-	            	var startDateStr:String = mainWidget.competition.startTime[0] as String;
+	            	var startDateStr:String = mainWidget.competition.startTime as String;
 	            	
 	            	if (startDateStr!=null){
 	            		startDate = DateUtil.parseFromString(startDateStr);
@@ -45,7 +45,7 @@
             	}
             	
             	if (endTime != null){
-	            	var endDateStr:String = mainWidget.competition.endTime[0] as String;
+	            	var endDateStr:String = mainWidget.competition.endTime as String;
 	            	
 	            	if (endDateStr!=null){
 	            		endDate = DateUtil.parseFromString(endDateStr);

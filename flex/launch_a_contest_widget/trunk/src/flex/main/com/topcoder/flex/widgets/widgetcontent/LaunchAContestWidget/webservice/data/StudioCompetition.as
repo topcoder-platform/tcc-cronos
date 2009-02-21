@@ -21,6 +21,6 @@ public function StudioCompetition() {}
                 
                    public var _id:Number;
                    public var contestData:com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestData;
-                   public var _type:com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
+                   public var _type:String; //com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
            	}
       	 }

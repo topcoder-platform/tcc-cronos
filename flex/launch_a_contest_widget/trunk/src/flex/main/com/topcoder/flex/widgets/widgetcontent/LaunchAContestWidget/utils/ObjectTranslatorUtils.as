@@ -2,14 +2,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils
 {
     import com.darronschall.serialization.ObjectTranslator;
     
+    import flash.utils.describeType;
+    import flash.utils.getDefinitionByName;
+    import flash.xml.XMLDocument;
+    
     import mx.collections.ArrayCollection;
     import mx.rpc.xml.SimpleXMLDecoder;
     import mx.utils.ObjectProxy;
     import mx.utils.ObjectUtil;
-    
-    import flash.xml.XMLDocument;
-	import flash.utils.describeType;
-	import flash.utils.getDefinitionByName;
 
     public class ObjectTranslatorUtils
     {
@@ -72,6 +72,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils
          */
         public static function translate(fromObj:Object, toClass:Class):Object
         {
+            if (fromObj is ArrayCollection || fromObj is Array) {
+                return translateCollection(fromObj, toClass);
+            }
+            
             if (fromObj is  mx.utils.ObjectProxy) {
                 fromObj = (fromObj as ObjectProxy).valueOf();
             }

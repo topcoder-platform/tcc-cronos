@@ -24,8 +24,8 @@ public function ContestData() {}
                    public var projectId:Number;
                    public var tcDirectProjectId:Number;[ArrayElementType("PrizeData")]
                    public var prizes:Array;
-                   public var launchDateAndTime:Object;
-                   public var winnerAnnoucementDeadline:Object;
+                   public var launchDateAndTime:String; // TODO: check if we want Date here.
+                   public var winnerAnnoucementDeadline:String; // TODO: check if we want Date here.
                    public var durationInHours:Number;[ArrayElementType("UploadedDocument")]
                    public var documentationUploads:Array;[ArrayElementType("ContestPayload")]
                    public var contestPayloads:Array;

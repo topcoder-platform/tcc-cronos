@@ -73,55 +73,57 @@
             
             private function createContestAndContinue(id:Number):void
             {
-            			mainWidget.competition = new StudioCompetition();
-                    	mainWidget.competition.competitionId = -1;
-                    	mainWidget.competition.id = -1;
-                    	mainWidget.competition.adminFee = 20;
-                    	mainWidget.competition.eligibility = "some text";
-                    	
-                    	mainWidget.competition.contestData = new ContestData();
-                    	mainWidget.competition.contestData.contestAdministrationFee = 20;
-                    	mainWidget.competition.creatorUserId = 3;
-                    	mainWidget.competition.drPoints = 100;
-                    	mainWidget.competition.contestData.drPoints = 100;
-			// dont set project id
-                    	//mainWidget.competition.contestData.projectId = id;
-                    	mainWidget.competition.contestData.tcDirectProjectId = id;
-                    	mainWidget.competition.contestData.contestId = -1;
-                    	mainWidget.competition.contestData.creatorUserId = 3;
-                    	mainWidget.competition.contestData.statusId = 5;
-                    	mainWidget.competition.contestData.forumId = -1;
-                    	mainWidget.competition.contestData.forumPostCount = 0;
-                    	mainWidget.competition.contestData.requiresPreviewImage = true;
-                    	mainWidget.competition.contestData.requiresPreviewFile = false;
-                    	mainWidget.competition.contestData.maximumSubmissions = 3; 
-                    	mainWidget.competition.contestData.submissionCount = 0;
-                    	mainWidget.competition.contestData.contestChannelId = 2;
-                    	mainWidget.competition.contestData.eligibility = "some text";
-			mainWidget.competition.contestData.media = new Array();
-                    	
-                    	mainWidget.competition.contestData.numberOfRegistrants = 0;
-                    	var type:CompetionType = new CompetionType();
-        				//CompetitionType fixed to be studio
-        				type.competionType = "STUDIO";
-        				mainWidget.competition.type = type
-        	
-                    	//mainWidget.competition.contestData.name = prjInput.text;
-                    	
-                    	mainWidget.startLaunchProcess();
+    			mainWidget.competition = new StudioCompetition();
+            	mainWidget.competition.competitionId = -1;
+            	mainWidget.competition.id = -1;
+            	mainWidget.competition.adminFee = 20;
+            	mainWidget.competition.eligibility = "some text";
+            	
+            	mainWidget.competition.contestData = new ContestData();
+            	mainWidget.competition.contestData.contestAdministrationFee = 20;
+            	mainWidget.competition.creatorUserId = 3;
+            	mainWidget.competition.drPoints = 100;
+            	mainWidget.competition.contestData.drPoints = 100;
+	            
+	            // dont set project id
+            	//mainWidget.competition.contestData.projectId = id;
+            	mainWidget.competition.contestData.tcDirectProjectId = id;
+            	mainWidget.competition.contestData.contestId = -1;
+            	mainWidget.competition.contestData.creatorUserId = 3;
+            	mainWidget.competition.contestData.statusId = 5;
+            	mainWidget.competition.contestData.forumId = -1;
+            	mainWidget.competition.contestData.forumPostCount = 0;
+            	mainWidget.competition.contestData.requiresPreviewImage = true;
+            	mainWidget.competition.contestData.requiresPreviewFile = false;
+            	mainWidget.competition.contestData.maximumSubmissions = 3; 
+            	mainWidget.competition.contestData.submissionCount = 0;
+            	mainWidget.competition.contestData.contestChannelId = 2;
+            	mainWidget.competition.contestData.eligibility = "some text";
+	            mainWidget.competition.contestData.media = new Array();
+            	
+            	mainWidget.competition.contestData.numberOfRegistrants = 0;
+            	//var type:CompetionType = new CompetionType();
+				//CompetitionType fixed to be studio
+				var competionType:String = "STUDIO";
+				mainWidget.competition.type = competionType;
+	
+            	//mainWidget.competition.contestData.name = prjInput.text;
+            	
+            	mainWidget.startLaunchProcess();
             }
             
             private function goToContestSelection():void{
                 if ((selectContests.selectedItem == null || selectContests.selectedItem.data ==-1) && prjInput.text == ""){
                     Helper.showAlertMessage("New Project or Existing Project must have a value.");
                     return;
-                }else{
+                } else {
                     //load the contest if it's existing
-                    /*
-                    if (selectContests.selectedItem.data !=-1){
+                    
+                    /*if (selectContests.selectedItem.data !=-1)
+                    {
                     	loadContest(selectContests.selectedItem.data);
-                    } else {
-                    */
+                    } 
+                    else*/  
                     if(selectContests.selectedItem != null && selectContests.selectedItem.data !=-1)
                     {
                     	mainWidget.tcDirectProjectId=selectContests.selectedItem.data;
@@ -171,11 +173,11 @@
             	    mainWidget.competition = ObjectTranslatorUtils.translate(e.result, StudioCompetition) as StudioCompetition;
             	    trace("loadContestHandler:: mainWidget.competition: " + mainWidget.competition);
             	    
-                	var type:CompetionType = new CompetionType();
+                	//var type:CompetionType = new CompetionType();
                 	
                 	//CompetitionType fixed to be studio
-                	type.competionType = "STUDIO";
-                	mainWidget.competition.type = type
+                	var competitionType:String = "STUDIO";
+                	mainWidget.competition.type = competitionType;
                 	mainWidget.startLaunchProcess();
             	}
             }

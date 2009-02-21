@@ -201,9 +201,9 @@
             	if(flag==3 && competition && competition.competitionId>0)
             	{
             		flag=4;
-            		var type:CompetionType = new CompetionType();
-        			type.competionType = "STUDIO";
-        			competition.type = type;
+            		//var type:CompetionType = new CompetionType();
+        			var competitionType:String = "STUDIO";
+        			competition.type = competitionType;
             		startLaunchProcess();
             		next();
             	}
