@@ -7,6 +7,7 @@
 
     <mx:Script>
         <![CDATA[
+        	import mx.managers.PopUpManager;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.TcPurhcaseOrderPaymentData;
         	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
         	import com.topcoder.flex.model.IWidgetFramework;
@@ -724,6 +725,12 @@ Specific limitations (such as restricting a color or a specific layout style) an
             }
             
             private function showWebserviceError(opName:String, event:FaultEvent):void {
+            	
+			    if(p)
+			    {
+				PopUpManager.removePopUp(p);
+        		p=null;
+			    }
                 Helper.showAlertMessage(opName + ":: " + event.fault);
             }
         ]]>

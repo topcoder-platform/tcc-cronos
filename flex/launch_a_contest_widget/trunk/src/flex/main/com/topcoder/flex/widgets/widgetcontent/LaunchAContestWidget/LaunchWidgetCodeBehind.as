@@ -6,6 +6,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.model.IWidgetFramework;
     import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.widgets.model.IWidgetContainer;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.ProgressWindow;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CreditCardPaymentData;
@@ -13,8 +14,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.StudioCompetition;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.TcPurhcaseOrderPaymentData;
     
+    import flash.display.DisplayObject;
+    import flash.net.URLRequest;
+    import flash.net.navigateToURL;
+    import flash.utils.Dictionary;
+    
     import mx.containers.VBox;
     import mx.core.Application;
+    import mx.managers.PopUpManager;
     import mx.rpc.AbstractOperation;
     import mx.rpc.events.ResultEvent;
     import mx.rpc.soap.mxml.WebService;
@@ -59,6 +66,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public var _launchContestSchemaTypeRegistry:SchemaTypeRegistry;
         
         public var contestid:String=null;
+        
+        
+        protected var p:ProgressWindow=null;
 
     	/**
     	 * The framework of the widget.
@@ -399,6 +409,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         	} else {
         		updateContest();
         	}
+        	p=ProgressWindow(PopUpManager.createPopUp((DisplayObject)(
+														this.parentApplication),ProgressWindow, true));;
+        	
+            PopUpManager.centerPopUp(p);
         }
         
          private function createContest():void
@@ -415,7 +429,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         // TCCC-1023
         private function createContestHandler(e:ResultEvent):void {
         	trace("createContestHandler: " + e + ", " + e.result);
-        	
+        	if(p)
+			{
+				PopUpManager.removePopUp(p);
+        		p=null;
+			}
             if (e && e.result) {
             	this.competition = ObjectTranslatorUtils.translate(e.result, StudioCompetition) as StudioCompetition;
             	trace("createContestHandler:: this.competition: " + this.competition);
@@ -438,6 +456,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         
         // TCCC-1023
         private function updateContestHandler(event:ResultEvent):void{
+        	
+        	if(p)
+			{
+				PopUpManager.removePopUp(p);
+        		p=null;
+			}
         	Helper.showAlertMessage("Contest updated successfully!");
 	    }
 
