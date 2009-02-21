@@ -41,17 +41,19 @@
         		this[inptName].text = "";
         	}
         	
-        	trace("@@@@ Prizes: " + mainWidget.competition.contestData.prizes.toString());
+
+		if (mainWidget.competition.contestData.prizes) {
+
+
         	
-        	for (var i:int = 0; i < mainWidget.competition.contestData.prizes.length; i++) {
-        	    var prize:PrizeData=mainWidget.competition.contestData.prizes[i] as PrizeData;
-        	    var p:int = prize.place as int;
-        		var input:TextInput = inputsMap[p] as TextInput;
-        		input.text = prize.amount.toString();
-        		
-        		trace("@@@@ Prize: " + prize);
-        		trace("@@@@ input.text: " + input.text);
-        	}
+			for (var i:int = 0; i < mainWidget.competition.contestData.prizes.length; i++) {
+			    var prize:PrizeData=mainWidget.competition.contestData.prizes[i] as PrizeData;
+			    var p:int = prize.place as int;
+				var input:TextInput = inputsMap[p] as TextInput;
+				input.text = prize.amount.toString();
+
+			}
+		}
         	
         	updateAmount();
         }
