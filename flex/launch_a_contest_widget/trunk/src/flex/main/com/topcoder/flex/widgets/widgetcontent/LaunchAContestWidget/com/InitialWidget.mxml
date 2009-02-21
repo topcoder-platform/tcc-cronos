@@ -63,7 +63,6 @@
         			for each (var prj:ProjectData in projects){
         				contestsData.addItem({label:prj.name, data:prj.projectId, desc:prj.description});
         			}
-        			
         		}
             }
             

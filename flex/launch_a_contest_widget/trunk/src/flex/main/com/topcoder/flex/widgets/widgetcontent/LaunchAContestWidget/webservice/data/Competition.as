@@ -5,9 +5,11 @@
  */
 
 package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data{
-    import mx.utils.ObjectProxy;
     import flash.utils.ByteArray;
+    
+    import mx.collections.ArrayCollection;
     import mx.rpc.soap.types.*;
+    import mx.utils.ObjectProxy;
     /**
      * Wrapper class for a operation required type
      */
@@ -25,7 +27,9 @@ public function Competition() {}
                    public var drPoints:Number;
                    public var eligibility:String;
                    public var endTime:String; // TODO: see if we want date here.
-                   public var id:Number;[ArrayElementType("CompetitionPrize")]
+                   public var id:Number;
+
+                   [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetitionPrize")]
                    public var prizes:Array;
                    public var project:com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.Project;
                    public var shortSummary:String;

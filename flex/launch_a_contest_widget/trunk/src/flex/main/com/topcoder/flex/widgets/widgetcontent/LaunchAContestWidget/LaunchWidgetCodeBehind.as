@@ -317,7 +317,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         	if(map["contestid"])
         	{
         		contestid=map["contestid"];
-        		
+        		trace("@@@@ To get contest for: " + contestid); 
         		var getContestOp:AbstractOperation = _csws.getOperation("getContest");
                 getContestOp.addEventListener("result", getContestHandler);
                 getContestOp.send(parseInt(contestid));
@@ -326,6 +326,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         
         private function getContestHandler(e:ResultEvent):void
         {
+            trace("getContestHandler: " + e + ", " + e.result);
         	if(e && e.result)
         	{
         		resetWidget();

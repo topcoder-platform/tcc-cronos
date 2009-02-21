@@ -5,9 +5,11 @@
  */
 
 package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data{
-    import mx.utils.ObjectProxy;
     import flash.utils.ByteArray;
+    
+    import mx.collections.ArrayCollection;
     import mx.rpc.soap.types.*;
+    import mx.utils.ObjectProxy;
     /**
      * Wrapper class for a operation required type
      */
@@ -22,7 +24,8 @@ public function ContestTypeData() {}
                    public var contestTypeId:Number;
                    public var description:String;
                    public var requirePreviewFile:Boolean;
-                   public var requirePreviewImage:Boolean;[ArrayElementType("ContestPayload")]
+                   public var requirePreviewImage:Boolean;
+                   [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestPayload")]
                    public var config:Array;
            	}
       	 }

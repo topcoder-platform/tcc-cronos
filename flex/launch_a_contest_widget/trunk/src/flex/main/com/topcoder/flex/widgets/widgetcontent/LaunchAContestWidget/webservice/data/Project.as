@@ -5,9 +5,11 @@
  */
 
 package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data{
-    import mx.utils.ObjectProxy;
     import flash.utils.ByteArray;
+    
+    import mx.collections.ArrayCollection;
     import mx.rpc.soap.types.*;
+    import mx.utils.ObjectProxy;
     /**
      * Wrapper class for a operation required type
      */
@@ -18,7 +20,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
          * Constructor, initializes the type class
          */
 public function Project() {}
-                [ArrayElementType("Competition")]
+                [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.Competition")]
                    public var competitions:Array;
                    public var createDate:Date;
                    public var modifyDate:Date;

@@ -66,7 +66,7 @@
 	        private var fileTypes:ArrayCollection = new ArrayCollection();     	        
 	        
 	        [Bindable]
-	        [ArrayElementType("UploadedDocument")]
+	        [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.UploadedDocument")]
 	        private var docUploads:Array;
 	        
 	        private var currentDoc:UploadedDocument;
@@ -285,7 +285,8 @@
             	currentDoc.file = file.data;
             	currentDoc.description = fileDescInput.text;
             	currentDoc.fileName = file.name;
-		// BUGR-1172
+		        
+		        // BUGR-1172
             	currentDoc.documentTypeId = -1;//this.filetypeCombo.selectedItem.data;
             	currentDoc.contestId = -1;
             	currentDoc.documentId = -1;

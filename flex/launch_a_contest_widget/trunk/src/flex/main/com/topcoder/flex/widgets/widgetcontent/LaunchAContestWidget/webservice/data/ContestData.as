@@ -5,9 +5,11 @@
  */
 
 package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data{
-    import mx.utils.ObjectProxy;
     import flash.utils.ByteArray;
+    
+    import mx.collections.ArrayCollection;
     import mx.rpc.soap.types.*;
+    import mx.utils.ObjectProxy;
     /**
      * Wrapper class for a operation required type
      */
@@ -22,12 +24,15 @@ public function ContestData() {}
                    public var contestId:Number;
                    public var name:String;
                    public var projectId:Number;
-                   public var tcDirectProjectId:Number;[ArrayElementType("PrizeData")]
+                   public var tcDirectProjectId:Number;
+                   [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PrizeData")]
                    public var prizes:Array;
                    public var launchDateAndTime:String; // TODO: check if we want Date here.
                    public var winnerAnnoucementDeadline:String; // TODO: check if we want Date here.
-                   public var durationInHours:Number;[ArrayElementType("UploadedDocument")]
-                   public var documentationUploads:Array;[ArrayElementType("ContestPayload")]
+                   public var durationInHours:Number;
+                   [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.UploadedDocument")]
+                   public var documentationUploads:Array;
+                   [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestPayload")]
                    public var contestPayloads:Array;
                    public var shortSummary:String;
                    public var contestDescriptionAndRequirements:String;
@@ -47,7 +52,8 @@ public function ContestData() {}
                    public var notesOnWinnerSelection:String;
                    public var prizeDescription:String;
                    public var forumPostCount:Number;
-                   public var forumId:Number;[ArrayElementType("MediumData")]
+                   public var forumId:Number;
+                   [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.MediumData")]
                    public var media:Array;
                    public var drPoints:Number;
                    public var contestAdministrationFee:Number;

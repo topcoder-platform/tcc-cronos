@@ -8,6 +8,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils
     
     import mx.collections.ArrayCollection;
     import mx.rpc.xml.SimpleXMLDecoder;
+    import mx.utils.ArrayUtil;
     import mx.utils.ObjectProxy;
     import mx.utils.ObjectUtil;
 
@@ -44,15 +45,15 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils
         
         public static function translateCollection(fromObj:Object, toClass:Class):ArrayCollection
         {
-            //trace("@@@@ fromObj is ArrayCollection: " + fromObj);
+            trace("fromObj is ArrayCollection: " + fromObj);
             if (fromObj is ArrayCollection) {
                 
                 var coll:ArrayCollection = fromObj as ArrayCollection;
                 var retColl:ArrayCollection = new ArrayCollection();
                 for (var i:int = 0; i < coll.length; i++) {
-                    //trace("@@@@ before translate: " + coll[i]);
+                    trace("@@@@ before translate: " + coll[i]);
                     var obj:*=translate(coll[i], toClass);
-                    //trace("@@@@ after translate: " + obj);
+                    trace("@@@@ after translate: " + obj);
                     retColl.addItem(obj);
                 }
                 
@@ -61,7 +62,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils
             
             return null;
         }
-
+        
         //----------------------------
         // Private Methods
         //----------------------------
@@ -72,10 +73,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils
          */
         public static function translate(fromObj:Object, toClass:Class):Object
         {
-            if (fromObj is ArrayCollection || fromObj is Array) {
-                return translateCollection(fromObj, toClass);
-            }
-            
             if (fromObj is  mx.utils.ObjectProxy) {
                 fromObj = (fromObj as ObjectProxy).valueOf();
             }
@@ -100,14 +97,36 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils
                     // determine property type based on typeInfo XML "type" attribute matching that property name
                     var propertyClassName:String=typeInfo.factory.variable.(@name == key).@type.toString().replace(/::/, ".");
                     
-                    trace("Property key: " + key + ", propertyClassName: " + propertyClassName);            
+                    trace("Property key: " + key + ", propertyClassName: " + propertyClassName + ", toClass: " + classNameTo);
 
                     // only continue if target class contains this property and type lookup is successful
                     if (propertyClassName != null && propertyClassName != "")
                     {
-                        var propertyClass:Class=getClassByName(propertyClassName);
-                        // make recursive call to traverse any potential nested custom classes for this property
-                        fromObj[key]=translate(fromObj[key], propertyClass)as propertyClass;
+                        if (fromObj[key] is ArrayCollection || fromObj[key] is Array) {
+                            // find appropriate arrayElementClass.
+                            var arrayElementClassName:String=typeInfo.factory.variable.(@name == key).metadata.(@name=="ArrayElementType")..child("arg").attribute("value")[0];
+                            trace("Array Element class: " + arrayElementClassName + ", toClass: " + classNameTo);
+                            if (!arrayElementClassName) {
+                                fromObj[key]=null;
+                            }
+                            else {
+                                var arrayElementClass:Class=getClassByName(arrayElementClassName);
+                                var ret:ArrayCollection=translateCollection(fromObj[key], arrayElementClass);
+                                if (propertyClassName == "Array") {
+                                    fromObj[key]=ret.toArray();
+                                }
+                                else {
+                                    fromObj[key]=ret;
+                                }
+                            }
+                        }
+                        else { 
+                            var propertyClass:Class=getClassByName(propertyClassName);
+                            // make recursive call to traverse any potential nested custom classes for this property
+                            fromObj[key]=translate(fromObj[key], propertyClass)as propertyClass;
+                        }
+                        
+                        trace("Result OBJ: " + fromObj[key]);
                     }
                 }
             }

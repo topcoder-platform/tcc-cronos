@@ -5,9 +5,11 @@
  */
 
 package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data{
-    import mx.utils.ObjectProxy;
     import flash.utils.ByteArray;
+    
+    import mx.collections.ArrayCollection;
     import mx.rpc.soap.types.*;
+    import mx.utils.ObjectProxy;
     /**
      * Wrapper class for a operation required type
      */
@@ -21,7 +23,9 @@ public function StudioFileType() {}
                 
                    public var description:String;
                    public var extension:String;
-                   public var imageFile:Boolean;[ArrayElementType("MimeType")]
+                   public var imageFile:Boolean;
+                   
+                   [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.MimeType")]
                    public var mimeTypes:Array;
                    public var sort:Number;
                    public var studioFileType:Number;

@@ -5,9 +5,11 @@
  */
 
 package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data{
-    import mx.utils.ObjectProxy;
     import flash.utils.ByteArray;
+    
+    import mx.collections.ArrayCollection;
     import mx.rpc.soap.types.*;
+    import mx.utils.ObjectProxy;
     /**
      * Wrapper class for a operation required type
      */
@@ -21,7 +23,8 @@ public function ContestStatusData() {}
                 
                    public var statusId:Number;
                    public var name:String;
-                   public var description:String;[ArrayElementType("Number")]
+                   public var description:String;
+                   [ArrayElementType("Number")]
                    public var allowableNextStatus:Array;
                    public var displayIcon:String;
            	}
