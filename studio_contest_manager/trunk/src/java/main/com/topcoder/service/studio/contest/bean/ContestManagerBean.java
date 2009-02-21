@@ -2771,14 +2771,14 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             
             
             String qstr="select p.project_id , p.name as pname, c.contest_id,  c.name as cname, "
-					+ " c.start_time, c.end_time,  ds.name as sname, "
+					+ " c.start_time, c.end_time,  ds.name as sname, p.description, c.forum_id, "
 					+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, " 
 					+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1) as num_sub, "
 					+ " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for "
 					+ " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
 					+ " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id ";
 
-            Query query = em.createNativeQuery(qstr);
+            Query query = em.createNativeQuery(qstr,"ContestForMyProjectResults");
 
             List list = query.getResultList();
 
@@ -2786,7 +2786,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
             for (int i = 0; i < list.size(); i++) {
-
+/*
                 SimpleProjectContestData c = new SimpleProjectContestData();
                 Object[] os = (Object[]) list.get(i);
                 if (os[0] != null)
@@ -2812,7 +2812,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                 if (os[9] != null)
                     c.setNum_for(Integer.parseInt(os[9].toString()));
 
-                result.add(c);
+                result.add(c);*/
+            	result.add((SimpleProjectContestData) list.get(i));
 
             }
             return result;
@@ -2820,9 +2821,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "The EntityManager is closed.");
         } catch (PersistenceException e) {
             throw wrapContestManagementException(e, "There are errors while persisting the entity.");
-        } catch (ParseException e) {
-        	throw wrapContestManagementException(e, "There are errors while persisting the entity.");
-		} finally {
+        }  finally {
             logExit("getSimpleProjectContestData()");
         }
     }
@@ -2852,7 +2851,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 			EntityManager em = getEntityManager();
 
 			String qstr = "select p.project_id , p.name as pname, c.contest_id,  c.name as cname, "
-					+ " c.start_time, c.end_time,  ds.name as sname, "
+					+ " c.start_time, c.end_time,  ds.name as sname, p.description, c.forum_id, "
 					+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
 					+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1) as num_sub, "
 					+ " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for "
@@ -2860,7 +2859,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					+ " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
 					+ " where p.project_id = "+pid;
 
-			Query query = em.createNativeQuery(qstr);
+			Query query = em.createNativeQuery(qstr,"ContestForMyProjectResults");
 
 			List list = query.getResultList();
 
@@ -2870,32 +2869,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
 			for (int i = 0; i < list.size(); i++) {
 
-                SimpleProjectContestData c = new SimpleProjectContestData();
-                Object[] os = (Object[]) list.get(i);
-                if (os[0] != null)
-                    c.setProjectId(Long.parseLong(os[0].toString()));
-                if (os[1] != null)
-                    c.setPname(os[1].toString());
-                if (os[2] != null)
-                    c.setContestId(Long.parseLong(os[2].toString()));
-                if (os[3] != null)
-                    c.setCname(os[3].toString());
 
-                if (os[4] != null)
-                    c.setStartDate(myFmt.parse(os[4].toString()));
-                if (os[5] != null)
-                    c.setEndDate(myFmt.parse(os[5].toString()));
-                if (os[6] != null)
-                    c.setSname(os[6].toString());
-                if (os[7] != null)
-                    c.setNum_reg(Integer.parseInt(os[7].toString()));
-                if (os[8] != null)
-                    c.setNum_sub(Integer.parseInt(os[8].toString()));
-
-				if (os[9] != null)
-					c.setNum_for(Integer.parseInt(os[9].toString()));
-
-				result.add(c);
+            	result.add((SimpleProjectContestData) list.get(i));
 
 			}
 			return result;
@@ -2903,9 +2878,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 			throw wrapContestManagementException(e,
 					"The EntityManager is closed.");
 		} catch (PersistenceException e) {
-			throw wrapContestManagementException(e,
-					"There are errors while persisting the entity.");
-		} catch (ParseException e) {
 			throw wrapContestManagementException(e,
 					"There are errors while persisting the entity.");
 		} finally {
@@ -2923,7 +2895,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             
             
             String qstr="select p.project_id , p.name as pname, c.contest_id,  c.name as cname, "
-					+ " c.start_time, c.end_time,  ds.name as sname, "
+					+ " c.start_time, c.end_time,  ds.name as sname, p.description, c.forum_id, "
 					+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, " 
 					+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1) as num_sub, "
 					+ " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for "
@@ -2932,7 +2904,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					// here we check both user in project and contest
 					+ " where p.user_id = " + createdUser  + " and (c.create_user_id = "+createdUser+" or c.create_user_id is null)";
 
-            Query query = em.createNativeQuery(qstr);
+            Query query = em.createNativeQuery(qstr,"ContestForMyProjectResults");
 
             List list = query.getResultList();
 
@@ -2940,32 +2912,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             SimpleDateFormat myFmt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
             for (int i = 0; i < list.size(); i++) {
-
-                SimpleProjectContestData c = new SimpleProjectContestData();
-                Object[] os = (Object[]) list.get(i);
-                if (os[0] != null)
-                    c.setProjectId(Long.parseLong(os[0].toString()));
-                if (os[1] != null)
-                    c.setPname(os[1].toString());
-                if (os[2] != null)
-                    c.setContestId(Long.parseLong(os[2].toString()));
-                if (os[3] != null)
-                    c.setCname(os[3].toString());
-
-                if (os[4] != null)
-                    c.setStartDate(myFmt.parse(os[4].toString()));
-                if (os[5] != null)
-                    c.setEndDate(myFmt.parse(os[5].toString()));
-                if (os[6] != null)
-                    c.setSname(os[6].toString());
-                if (os[7] != null)
-                    c.setNum_reg(Integer.parseInt(os[7].toString()));
-                if (os[8] != null)
-                    c.setNum_sub(Integer.parseInt(os[8].toString()));
-
-                if (os[9] != null)
-                    c.setNum_for(Integer.parseInt(os[9].toString()));
-                result.add(c);
+            	result.add((SimpleProjectContestData) list.get(i));
 
             }
             return result;
@@ -2973,9 +2920,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "The EntityManager is closed.");
         } catch (PersistenceException e) {
             throw wrapContestManagementException(e, "There are errors while persisting the entity.");
-        } catch (ParseException e) {
-        	throw wrapContestManagementException(e, "There are errors while persisting the entity.");
-		} finally {
+        } finally {
             logExit("getSimpleProjectContestDataForUser()");
         }
     }
