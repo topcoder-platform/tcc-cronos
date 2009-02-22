@@ -37,6 +37,7 @@
 
     <mx:Script>
         <![CDATA[
+            import mx.binding.utils.BindingUtils;
         	import mx.controls.scrollClasses.ScrollBar;
             import mx.rpc.xml.SimpleXMLDecoder;
             import mx.events.FlexEvent;
@@ -65,6 +66,8 @@
     		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.CreditCardPaymentData;
     		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.PaymentData;
     		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.TcPurhcaseOrderPaymentData;
+    		
+    		import mx.rpc.AbstractOperation;
 
             private var _rankList:ArrayCollection = new ArrayCollection();
             
@@ -104,6 +107,7 @@
 			private var password:String = _isLocalTesting ? "password" : "";
         	private var blazedsendpoint:String = _isLocalTesting ? "" : Application.application.parameters.blazedsendpoint;
         	private var contestServiceFacadeWsdl:String= _isLocalTesting ? "" : Application.application.parameters.contestServiceFacadeWsdl;
+        	private var projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl;
             
             private var _statusTypeDictionary:Dictionary = new Dictionary();
             private var _contestInfoDictionary:Dictionary = new Dictionary();
@@ -124,7 +128,10 @@
 			private var _currentColumnCount:int = 0;
 			
 			public static const ACTIVE_STATUS:int = 1;
-		
+			
+			[Bindable]
+			private var _clientProjectNames:ArrayCollection=new ArrayCollection();
+			
 			public static function getHeader(username:String, password:String):SOAPHeader {
 				var userToken:String = "UsernameToken-"+Math.round(Math.random()*999999).toString();
 				var headerXML : XML =  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
@@ -210,7 +217,9 @@
 			} 
 			else {					  
 	            		ContestServiceFacadeBean.getContestDataOnly();
-			}
+        			}
+        			
+        			getClientProjectsByUser();
             	}
             	else {
 					var statuses:ArrayCollection = new ArrayCollection();
@@ -1537,11 +1546,56 @@
 		public function linkHandler(event:TextEvent):void {
 			// Open the link in a new window.
 			navigateToURL(new URLRequest("http://"+Application.application.parameters.studioAddress+"/?module=DownloadSubmission&sbmid=" + list.selectedItem.id), '_blank')
-		    }
-
+		}
+		
+		private function getClientProjectsByUser():void {
+			    // add an empty item.
+			    var item:Object = null;
+			    
+			    item = new Object();
+			    item.label="";
+			    item.data="";
+			    _clientProjectNames.addItem(item);
+			    
+			    // get client projects by user.
+			    var header:SOAPHeader=getHeader(username,password);
+			    ProjectServiceFacadeBean.clearHeaders();
+        		ProjectServiceFacadeBean.addHeader(header);
+			    var getClientProjectsByUserOp:AbstractOperation = ProjectServiceFacadeBean.getOperation("getClientProjectsByUser");
+			    if (getClientProjectsByUserOp) {
+                    getClientProjectsByUserOp.addEventListener("result", getClientProjectsHandler);
+                    getClientProjectsByUserOp.send();
+                }
+			}
+			
+			private function getClientProjectsHandler(e:ResultEvent):void {
+			    trace("getClientProjectsHandler: " + e + ", " + e.result);
+            	if(e && e.result && e.result is ArrayCollection)
+            	{
+            	    var results:ArrayCollection=e.result as ArrayCollection;
+            	    for (var i:int = 0; i < results.length; i++) {
+            	        var result=results[i];
+            	        // add client project name
+            	        var item:Object = new Object();
+			            item.label="PO-" + result.name;
+			            item.data="PO-" + result.name;
+            	        _clientProjectNames.addItem(item);
+            	    }
+            	}
+			}
 
         ]]>
     </mx:Script>
+    
+<mx:WebService id="ProjectServiceFacadeBean" 
+		wsdl="{projectServiceFacadeWsdl}"> 
+
+	<mx:operation name="getClientProjectsByUser" 
+		resultFormat="object" 
+		fault="Helper.showAlertMessage('SUB-Viewer::getClientProjectsByUser: ' + event.fault.faultString);"> 
+	</mx:operation>
+	
+</mx:WebService>      
 
 <mx:WebService id="ContestServiceFacadeBean" 
 		wsdl="{contestServiceFacadeWsdl}"> 
@@ -2018,7 +2072,7 @@
 		<tc:GridCanvas width="100%" height="100%" listData="{_downloadList}" />
 		<mx:ViewStack height="100%" width="100%" id="pay">
 			<mx:VBox width="100%" height="100%">
-				<tc:PaymentWF id="wf1" width="100%" height="100%" />
+				<tc:PaymentWF id="wf1" width="100%" height="100%"  clientProjectNames="{_clientProjectNames}"/>
 				<mx:HBox width="100%">
 					<mx:Button buttonMode="true" styleName="ButtonStyle" label="Add/Modify Selections" click="gotoContestViewer()" />
 					<mx:Spacer width="100%" />

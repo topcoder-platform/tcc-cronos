@@ -2,6 +2,8 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" verticalScrollPolicy="off">
 	<mx:Script>
 		<![CDATA[
+		    import mx.collections.ArrayCollection;
+		    import com.topcoder.flex.Helper;
 			import mx.controls.Button;
 			import mx.core.UIComponent;
 			import mx.validators.Validator;
@@ -10,23 +12,26 @@
 			import mx.events.ValidationResultEvent;
 			[Embed(source="../assets/verisign.png")]
 			[Bindable]private var sign:Class;
+			
+			[Bindable]public var clientProjectNames:ArrayCollection=new ArrayCollection();
+			
 			public function saveData():int {
 				var inputs:Array = [cardNum, cardname, address, city, state, code, country, phone, email];
 				var model:Model = Model.instance;
-				if (byPass.selected) {
+				if (order.selectedItem && order.selectedItem.data != null && order.selectedItem.data != "") {
 					for each (var target:TextInput in inputs) {
 						removeValidate(target);
 					} 
 					
-					if (doValidate(order)) {
+					//if (doValidate(order)) {
 						model.purchaseOrder = order.text;
 						return 3;
-					} else {
-						showErrorMsg();
-						return -1;
-					}
+					//} else {
+					//	showErrorMsg();
+					//	return -1;
+					//}
 				}  else {
-					removeValidate(order);
+					//removeValidate(order);
 					var result:Boolean = true;
 					for each (var item:TextInput in inputs) {
 						result = result && doValidate(item);
@@ -215,11 +220,14 @@
 			<mx:Label text="Other Payment Options" styleName="header" />
 			<mx:VBox width="100%" height="100%" borderStyle="solid" 
 					paddingLeft="10" paddingTop="10" paddingBottom="10" paddingRight="19">
-				<mx:CheckBox id="byPass" selected="false" label="Bypass Credit Card Payment"
-						styleName="content" />
+				<!--<mx:CheckBox id="byPass" selected="false" label="Bypass Credit Card Payment"
+							styleName="content" />-->
+				<mx:Text text="Bypass Credit Card Payment" fontSize="11"
+							fontWeight="normal" styleName="contentGrey" />
 				<mx:HBox width="100%">
 					<mx:Label text="Purchase Order #" styleName="content" />
-					<mx:TextInput id="order" width="100%" height="20" />
+					<!--<mx:TextInput id="order" width="100%" styleName="textfield" />-->
+					<mx:ComboBox id="order" width="100%" dataProvider="{clientProjectNames}"/>
 				</mx:HBox>
 				<mx:HBox>
 					<mx:Text text="For invoiced clients only. To learn more. " fontSize="11"
