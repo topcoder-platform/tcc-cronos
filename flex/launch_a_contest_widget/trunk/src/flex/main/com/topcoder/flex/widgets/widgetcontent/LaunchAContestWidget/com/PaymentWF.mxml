@@ -2,6 +2,9 @@
 <mx:Grid xmlns:mx="http://www.adobe.com/2006/mxml" width="100%">
 	<mx:Script>
 		<![CDATA[
+		    
+		    import mx.collections.ArrayCollection;
+		    import mx.rpc.events.ResultEvent;
 			import mx.controls.Button;
 			import mx.core.UIComponent;
 			import mx.validators.Validator;
@@ -10,26 +13,33 @@
 			import mx.events.ValidationResultEvent;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+			
+			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
+			import mx.rpc.AbstractOperation;
 		
 			 [Bindable]
        		public var mainWidget:LaunchWidget;
        		
+       		[Bindable]
+       		public var clientProjectNames:ArrayCollection;
+       		
 			public function saveData():int {
 				var inputs:Array = [cardname, address, city, state, code, country, phone, email];
 				var model:Model = Model.instance;
-				if (byPass.selected) {
+				//Helper.showAlertMessage("MAIN-Widget: " + mainWidget);
+				if (order.selectedItem && order.selectedItem.data != null && order.selectedItem.data != "") {
 					 for each (var target:TextInput in inputs) {
 						removeValidate(target);
 					} 
-					if (doValidate(order)) {
-						model.purchaseOrder = order.text;
+					//if (doValidate(order)) {
+						model.purchaseOrder = order.selectedItem as String;
 						return 3;
-					} else {
-						showErrorMsg();
-						return -1;
-					}
+					//} else {
+					//	showErrorMsg();
+					//	return -1;
+					//}
 				}  else {
-					removeValidate(order);
+					//removeValidate(order);
 					var errors:Array = Validator.validateAll([ccv]);
 					var result:Boolean = true;
 					if (errors && errors.length > 0) {
@@ -219,11 +229,14 @@
 			<mx:VBox width="100%">
 				<mx:VBox width="100%" height="100%" borderStyle="solid" 
 						paddingLeft="10" paddingTop="10" paddingBottom="10" paddingRight="19">
-					<mx:CheckBox id="byPass" selected="false" label="Bypass Credit Card Payment"
-							styleName="content" />
+					<!--<mx:CheckBox id="byPass" selected="false" label="Bypass Credit Card Payment"
+							styleName="content" />-->
+					<mx:Text text="Bypass Credit Card Payment" fontSize="11"
+								fontWeight="normal" styleName="contentGrey" />
 					<mx:HBox width="100%">
 						<mx:Label text="Purchase Order #" styleName="content" />
-						<mx:TextInput id="order" width="100%" styleName="textfield" />
+						<!--<mx:TextInput id="order" width="100%" styleName="textfield" />-->
+						<mx:ComboBox id="order" width="100%" dataProvider="{clientProjectNames}"/>
 					</mx:HBox>
 					<mx:HBox>
 						<mx:Text text="For invoiced clients only. To learn more. " fontSize="11"

@@ -8,6 +8,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.widgets.model.IWidgetContainer;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.ProgressWindow;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CreditCardPaymentData;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PaymentType;
@@ -19,6 +20,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import flash.net.navigateToURL;
     import flash.utils.Dictionary;
     
+    import mx.collections.ArrayCollection;
     import mx.containers.VBox;
     import mx.core.Application;
     import mx.managers.PopUpManager;
@@ -26,11 +28,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import mx.rpc.events.ResultEvent;
     import mx.rpc.soap.mxml.WebService;
     import mx.rpc.xml.SchemaTypeRegistry;
-    
-    import flash.utils.Dictionary;
-    import flash.net.URLRequest;
-    import flash.net.navigateToURL;
-    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
 
     /**
      * <p>
@@ -95,6 +92,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         [Bindable] private var _competition:StudioCompetition;
         
         private var _configurableText:XML;
+        
+        [Bindable]
+        public var clientProjectNames:ArrayCollection = new ArrayCollection();
         
         /**
          * ProjectWidgetCodeBehind constructor.

@@ -101,8 +101,8 @@
 	    private function getDataService():void
 	    {	
 		    dataservice.getPassword();
-		    dataservice.isUserInRole.send();
-            }
+		    //dataservice.isUserInRole.send();
+        }
 
 	    private function processPassword(e:ResultEvent): void
 	    {
@@ -119,14 +119,14 @@
 	    
 	    
 
-	    private function processRole(e:ResultEvent): void
+	    /*private function processRole(e:ResultEvent): void
 	    {
 			//Alert.show("--------"+e.result.toString());
 			if(e!=null && e.result!=null){
 				isAdmin=e.result as Boolean;
 				activate.wf1.byPass.enabled=isAdmin;
 			}
-	    }
+	    }*/
             
             
             
@@ -757,6 +757,12 @@ Specific limitations (such as restricting a color or a specific layout style) an
 		resultFormat="object" 
 		fault="showWebserviceError('getAllDocumentTypes', event);"> 
 	</mx:operation>
+	
+	<mx:operation name="getClientProjectsByUser" 
+		resultFormat="object" 
+		fault="showWebserviceError('getClientProjectsByUser', event);"> 
+	</mx:operation>
+	
 </mx:WebService>    
 
 <mx:WebService id="ContestServiceFacadeBean" 
@@ -808,12 +814,12 @@ Specific limitations (such as restricting a color or a specific layout style) an
 <mx:method name="getPassword"  result="processPassword(event)" 
 	                   fault="handleError(event)"/>
 	                   
- <mx:method name="isUserInRole"  result="processRole(event)" 
+ <!--<mx:method name="isUserInRole"  result="processRole(event)" 
 	                   fault="handleError(event)">
    <mx:arguments>
     <role>Cockpit Administrator</role>
    </mx:arguments>
-</mx:method>
+</mx:method>-->
  </mx:RemoteObject>
      
      <mx:Spacer height="5" />

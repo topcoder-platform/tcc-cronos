@@ -26,6 +26,8 @@
         	import mx.rpc.AbstractOperation;
             import mx.rpc.events.ResultEvent;
             
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ClientProject;
+            
             [Bindable]
             private var contestsData:ArrayCollection = new ArrayCollection(
                 [ {label:"Please select an existing project", data:-1,desc:""}]);
@@ -41,6 +43,8 @@
                 getAllProjectsOp.send();
                 
                 selectContests.dataProvider = contestsData;
+                
+                getClientProjectsByUser();
             }
             
             // TCCC-1023
@@ -69,6 +73,49 @@
             private function compareName(a:Object, b:Object, fields:Array = null):int {
                return ObjectUtil.stringCompare(a.name,b.name,true);
             }
+            
+            private function getClientProjectsByUser():void {
+			    // add an empty item.
+			    var item:Object = null;
+			    
+			    item = new Object();
+			    item.label="";
+			    item.data="";
+			    mainWidget.clientProjectNames.addItem(item);
+			    
+			    // get client projects by user.
+			    var getClientProjectsByUserOp:AbstractOperation = mainWidget._pws.getOperation("getClientProjectsByUser");
+			    if (getClientProjectsByUserOp) {
+                    getClientProjectsByUserOp.addEventListener("result", getClientProjectsHandler);
+                    getClientProjectsByUserOp.send();
+                }
+			}
+			
+			private function getClientProjectsHandler(e:ResultEvent):void {
+			    trace("getClientProjectsHandler: " + e + ", " + e.result);
+            	if(e && e.result)
+            	{
+            	    var projects:ArrayCollection = ObjectTranslatorUtils.translateCollection(e.result, ClientProject) as ArrayCollection;
+            	    trace("getClientProjectsHandler:: projects: " + projects);
+            	    
+            	    if (projects && projects.length > 0) {
+            	        for (var i:int = 0; i < projects.length; i++) {
+            	            var project:ClientProject = projects[i] as ClientProject;
+            	            var name:String = project.name;
+            	            
+            	            trace("Adding client project name: " + name);
+            	            // add client project name
+                	        var item:Object = new Object();
+    			            item.label="PO-" + name;
+    			            item.data="PO-" + name;
+                	        mainWidget.clientProjectNames.addItem(item);
+            	        }
+            	    }
+            	    
+            	    // assign client project names here.
+            	    mainWidget.activate.wf1.clientProjectNames = mainWidget.clientProjectNames;
+            	}
+			}
             
             private function createContestAndContinue(id:Number):void
             {
