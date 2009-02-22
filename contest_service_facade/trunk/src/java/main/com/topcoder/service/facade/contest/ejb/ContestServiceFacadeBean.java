@@ -162,27 +162,63 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 	 */
 	private static final long CONTEST_PAYMENT_STATUS_PAID = 1;
 
-	/**
-	 * <p>
-	 * Constructs new <code>ContestServiceFacadeBean</code> instance. This
-	 * implementation instantiates new instance of payment processor.
-	 * 
-	 * Current implementation just support processing through PayPalCreditCard.
-	 * When multiple processors are desired the implementation should use
-	 * factory design pattern to get the right instance of the payment
-	 * processor.
-	 * </p>
-	 * 
-	 * @throws PaymentException
-	 *             exception when instantiating PaymentProcessor.
-	 *             PaymentProcessor usually do merchant authentication etc at
-	 *             initialization time, if this fails it is thrown as exception.
-	 */
-	public ContestServiceFacadeBean() throws PaymentException {
-		
-	}
-	
-	/**
+    /**
+     * Host address. Use pilot-payflowpro.paypal.com for testing and payflowpro.paypal.com for production.
+     * 
+     * @since BUGR-1239
+     */
+    @Resource(name = "payFlowHostAddress")
+    private String payFlowHostAddress;
+
+    /**
+     * PayFlow username.
+     * 
+     * @since BUGR-1239
+     */
+    @Resource(name = "payFlowUser")
+    private String payFlowUser;
+
+    /**
+     * PayFlow partner name.
+     * 
+     * @since BUGR-1239
+     */
+    @Resource(name = "payFlowPartner")
+    private String payFlowPartner;
+
+    /**
+     * PayFlow vendor name.
+     * 
+     * @since BUGR-1239
+     */
+    @Resource(name = "payFlowVendor")
+    private String payFlowVendor;
+
+    /**
+     * PayFlow password.
+     * 
+     * @since BUGR-1239
+     */
+    @Resource(name = "payFlowPassword")
+    private String payFlowPassword;
+
+    /**
+     * <p>
+     * Constructs new <code>ContestServiceFacadeBean</code> instance. This implementation instantiates new instance of
+     * payment processor. Current implementation just support processing through PayPalCreditCard. When multiple
+     * processors are desired the implementation should use factory design pattern to get the right instance of the
+     * payment processor.
+     * </p>
+     * 
+     * @throws PaymentException
+     *             exception when instantiating PaymentProcessor. PaymentProcessor usually do merchant authentication
+     *             etc at initialization time, if this fails it is thrown as exception.
+     */
+    public ContestServiceFacadeBean() throws PaymentException {
+
+    }
+
+    /**
      * <p>
      * This initializes the API Profile to the <code>CallerServices</code>. The API profile are the merchant's (in this
      * case TopCoder) PayPal API details.
@@ -194,12 +230,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     @PostConstruct
     public void init() {
-        try {
-            Logger.getLogger(this.getClass()).debug("Initializing PayPalPaymentProcessor");
-            paymentProcessor = new PayPalPaymentProcessor(apiUserName, apiPassword, apiSignature, apiEnvironment);
-        } catch (PaymentException e) {
-            throw new IllegalStateException("Error in initializing PayPalPaymentProcessor", e);
-        }
+        Logger.getLogger(this.getClass()).debug("Initializing PayflowProPaymentProcessor");
+        // BUGR-1239
+        paymentProcessor = new PayflowProPaymentProcessor(payFlowHostAddress, payFlowUser, payFlowPartner,
+                payFlowVendor, payFlowPassword);
+
     }
 
     /**

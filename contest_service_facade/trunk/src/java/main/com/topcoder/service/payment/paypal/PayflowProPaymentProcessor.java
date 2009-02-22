@@ -44,51 +44,25 @@ public class PayflowProPaymentProcessor implements PaymentProcessor {
     private final UserInfo userInfo;
 
     /**
-     * Host address. Use pilot-payflowpro.paypal.com for testing and payflowpro.paypal.com for production.
-     */
-    @Resource(name = "payFlowHostAddress")
-    private String hostAddress;
-
-    /**
-     * PayFlow username.
-     */
-    @Resource(name = "payFlowUser")
-    private String user;
-
-    /**
-     * PayFlow partner name.
-     */
-    @Resource(name = "payFlowPartner")
-    private String partner;
-
-    /**
-     * PayFlow vendor name.
-     */
-    @Resource(name = "payFlowVendor")
-    private String vendor;
-
-    /**
-     * PayFlow password.
-     */
-    @Resource(name = "payFlowPassword")
-    private String password;
-
-    /**
      * Logger instance.
      */
-    private Logger logger = Logger.getLogger(this.getClass());
+    private final Logger logger = Logger.getLogger(this.getClass());
 
     /**
-     * Default constructor, sets log properties.
+     * Constructs the payment processor with necessary authentication info.
+     * 
+     * @param hostAddress
+     *            Host address.
+     * @param user
+     *            PayFlow username.
+     * @param partner
+     *            PayFlow partner name.
+     * @param vendor
+     *            PayFlow vendor name.
+     * @param password
+     *            PayFlow password.
      */
-    public PayflowProPaymentProcessor() {
-        // comment for non-local testing
-        user = "shannontc";
-        vendor = "shannontc";
-        partner = "PayPal";
-        password = "tctesting123";
-        hostAddress = "pilot-payflowpro.paypal.com"; 
-        
+    public PayflowProPaymentProcessor(String hostAddress, String user, String partner, String vendor, String password) {
         logger.debug("hostAddress=" + hostAddress);
         logger.debug("user=" + user);
         logger.debug("vendor=" + vendor);
@@ -96,6 +70,10 @@ public class PayflowProPaymentProcessor implements PaymentProcessor {
         logger.debug("user=" + user);
 
         userInfo = new UserInfo(user, vendor, partner, password);
+
+        SDKProperties.setHostAddress(hostAddress);
+        SDKProperties.setHostPort(443);
+        SDKProperties.setTimeOut(20);
     }
 
     /**
@@ -110,17 +88,13 @@ public class PayflowProPaymentProcessor implements PaymentProcessor {
     public PaymentResult process(PaymentData payment) throws PaymentException {
         CreditCardPaymentData cardPaymentData = (CreditCardPaymentData) payment;
 
-        SDKProperties.setHostAddress(hostAddress);
-        SDKProperties.setHostPort(443);
-        SDKProperties.setTimeOut(20);
-
         // Create the Payflow Connection data object with the required connection details.
         // The PAYFLOW_HOST and CERT_PATH are properties defined within SDKProperties.
         PayflowConnectionData connection = new PayflowConnectionData();
 
         // Create a new Invoice data object with the Amount, Billing Address etc. details.
         Invoice inv = new Invoice();
-System.out.println("----amount = "+cardPaymentData.getAmount());
+
         // Set amount
         Currency amt = new Currency(new Double(cardPaymentData.getAmount()), "USD");
         inv.setAmt(amt);
@@ -139,8 +113,12 @@ System.out.println("----amount = "+cardPaymentData.getAmount());
 
         // Create a new Payment Device - Credit Card data object.
         // The input parameters are Credit Card No. and Expiry Date for the Credit Card.
-        CreditCard cc = new CreditCard(cardPaymentData.getCardNumber(), cardPaymentData.getCardExpiryMonth()
-                + cardPaymentData.getCardExpiryYear());
+        // Should be mmyy
+        String expiry = String.format("%1$02d%2$02d", Integer.parseInt(cardPaymentData.getCardExpiryMonth()), Integer
+                .parseInt(cardPaymentData.getCardExpiryYear().substring(
+                        cardPaymentData.getCardExpiryYear().length() - 2)));
+        System.out.println(expiry);
+        CreditCard cc = new CreditCard(cardPaymentData.getCardNumber(), expiry);
         // Create a new Tender - Card Tender data object.
         CardTender card = new CardTender(cc);
 
@@ -206,7 +184,9 @@ System.out.println("----amount = "+cardPaymentData.getAmount());
      * @throws PaymentException
      */
     public static void main(String[] args) throws PaymentException {
-        PayflowProPaymentProcessor proc = new PayflowProPaymentProcessor();
+
+        PayflowProPaymentProcessor proc = new PayflowProPaymentProcessor("pilot-payflowpro.paypal.com",
+                "tcTestAccount2", "PayPal", "tcTestAccount2", "password123");
 
         SDKProperties.setLogFileName("payflow_java.log");
         SDKProperties.setLoggingLevel(PayflowConstants.SEVERITY_WARN);
