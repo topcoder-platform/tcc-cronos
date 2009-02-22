@@ -182,9 +182,17 @@
             }
         
         
-    ]]>
-</mx:Script>
-    
+        private function selectchange():void
+        {
+        	if(selectContests.selectedItem != null)
+               {
+                   introInput.text=selectContests.selectedItem.desc;
+            }
+        }
+        
+        
+          ]]>
+    </mx:Script>
 
     <mx:VBox id="initWdt" width="100%" height="100%" styleName="boxStyle" >
         <mx:Label text="Projects" styleName="header" />
@@ -210,7 +218,7 @@
         
         <mx:HBox width="100%">
             <mx:Label text="Existing Project:" />
-            <mx:ComboBox id="selectContests"  width="309" />
+            <mx:ComboBox id="selectContests"  width="309"  change="selectchange()"/>
         </mx:HBox>
         
         <mx:HBox width="100%">
