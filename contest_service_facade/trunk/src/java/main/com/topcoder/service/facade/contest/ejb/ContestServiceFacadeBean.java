@@ -1070,62 +1070,81 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         Logger.getLogger(this.getClass()).info("StudioCompetition: " + competition);
         Logger.getLogger(this.getClass()).info("PaymentData: " + paymentData);
 
-        long contestId = competition.getContestData().getContestId();
+		try
+		{
+			 long contestId = competition.getContestData().getContestId();
 
-        StudioCompetition tobeUpdatedCompetition = null;
+			StudioCompetition tobeUpdatedCompetition = null;
 
-        if (contestId >= 0) {
-            try {
-                tobeUpdatedCompetition = getContest(contestId);
-            } catch (ContestNotFoundException cnfe) {
-                // if not contest is found then simply ignore it.
-            }
-        }
+			if (contestId >= 0) {
+				try {
+					tobeUpdatedCompetition = getContest(contestId);
+				} catch (ContestNotFoundException cnfe) {
+					// if not contest is found then simply ignore it.
+				}
+			}
 
-        if (tobeUpdatedCompetition == null) {
-            tobeUpdatedCompetition = createContest(competition, competition.getContestData().getTcDirectProjectId());
-        }
+			if (tobeUpdatedCompetition == null) {
+				tobeUpdatedCompetition = createContest(competition, competition.getContestData().getTcDirectProjectId());
+			}
 
-		PaymentResult result = null;
+			PaymentResult result = null;
 
-        if (paymentData instanceof TCPurhcaseOrderPaymentData) {
-            // processing purchase order is not in scope of this assembly.
-            result = new PaymentResult();
-            result.setReferenceNumber(((TCPurhcaseOrderPaymentData)paymentData).getPoNumber());
-        } else if (paymentData instanceof CreditCardPaymentData) {
-            // ideally client should be sending the amount,
-            // but as client has some inconsistency
-            // so in this case we would use the amount from contest data.
-            ((CreditCardPaymentData) paymentData).setAmount(Double.toString(tobeUpdatedCompetition.getContestData()
-                    .getContestAdministrationFee()));
+			if (paymentData instanceof TCPurhcaseOrderPaymentData) {
+				// processing purchase order is not in scope of this assembly.
+				result = new PaymentResult();
+				result.setReferenceNumber(((TCPurhcaseOrderPaymentData)paymentData).getPoNumber());
+			} else if (paymentData instanceof CreditCardPaymentData) {
+				// ideally client should be sending the amount,
+				// but as client has some inconsistency
+				// so in this case we would use the amount from contest data.
+				((CreditCardPaymentData) paymentData).setAmount(Double.toString(tobeUpdatedCompetition.getContestData()
+						.getContestAdministrationFee()));
 
-            result = paymentProcessor.process(paymentData);
-        }
+				result = paymentProcessor.process(paymentData);
+			}
 
-        tobeUpdatedCompetition.getContestData().setStatusId(CONTEST_STATUS_ACTIVE_PUBLIC);
-        tobeUpdatedCompetition.getContestData().setDetailedStatusId(CONTEST_DETAILED_STATUS_SCHEDULED);
+			tobeUpdatedCompetition.getContestData().setStatusId(CONTEST_STATUS_ACTIVE_PUBLIC);
+			tobeUpdatedCompetition.getContestData().setDetailedStatusId(CONTEST_DETAILED_STATUS_SCHEDULED);
 
-        ContestPaymentData contestPaymentData = new ContestPaymentData();
-        contestPaymentData.setPaypalOrderId(result.getReferenceNumber());
-		contestPaymentData.setContestId(tobeUpdatedCompetition.getContestData().getContestId());
-		contestPaymentData.setPaymentStatusId(CONTEST_PAYMENT_STATUS_PAID);
-		contestPaymentData.setPrice(tobeUpdatedCompetition.getContestData().getContestAdministrationFee());
+			ContestPaymentData contestPaymentData = new ContestPaymentData();
+			contestPaymentData.setPaypalOrderId(result.getReferenceNumber());
+			contestPaymentData.setContestId(tobeUpdatedCompetition.getContestData().getContestId());
+			contestPaymentData.setPaymentStatusId(CONTEST_PAYMENT_STATUS_PAID);
+			contestPaymentData.setPrice(tobeUpdatedCompetition.getContestData().getContestAdministrationFee());
 
-        UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-        String userId = Long.toString(p.getUserId());
+			UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+			String userId = Long.toString(p.getUserId());
 
-        createContestPayment(contestPaymentData, userId);
+			createContestPayment(contestPaymentData, userId);
 
-		// DONOT create for now
-		// create forum for the contest. 
-        //long forumid = this.studioService.createForum(tobeUpdatedCompetition.getContestData().getName(), p.getUserId());
-		//tobeUpdatedCompetition.getContestData().setForumId(forumid);
+			// DONOT create for now
+			// create forum for the contest. 
+			//long forumid = this.studioService.createForum(tobeUpdatedCompetition.getContestData().getName(), p.getUserId());
+			//tobeUpdatedCompetition.getContestData().setForumId(forumid);
 
-        // update contest.
-        updateContest(tobeUpdatedCompetition);
+			// update contest.
+			updateContest(tobeUpdatedCompetition);
 
 
-        return result;
+			return result;
+		}
+		catch (PersistenceException e)
+		{
+			sessionContext.setRollbackOnly();
+			throw e;
+		}
+		catch (PaymentException e)
+		{
+			sessionContext.setRollbackOnly();
+			throw e;
+		}
+		catch (ContestNotFoundException e)
+		{
+			sessionContext.setRollbackOnly();
+			throw e;
+		}
+       
     }
 
     /**
@@ -1216,35 +1235,50 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     private PaymentResult processSubmissionPaymentInternal(long[] submissionIds, PaymentData paymentData) throws PaymentException,
             PersistenceException {
 
-        for (int i = 0; i < submissionIds.length; i++) {
-            long submissionId = submissionIds[i];
-            SubmissionData submissionData = this.retrieveSubmission(submissionId);
-            if (submissionData == null) {
-                throw new PaymentException("Error in processing payment for submission: " + submissionId
-                        + ". Submission is not found");
-            }
-        }
+		try
+		{
+		
+			for (int i = 0; i < submissionIds.length; i++) {
+				long submissionId = submissionIds[i];
+				SubmissionData submissionData = this.retrieveSubmission(submissionId);
+				if (submissionData == null) {
+					throw new PaymentException("Error in processing payment for submission: " + submissionId
+							+ ". Submission is not found");
+				}
+			}
 
-        PaymentResult result = null;
+			PaymentResult result = null;
 
-        if (paymentData.getType().equals(PaymentType.TCPurchaseOrder)) {
-            // processing purchase order is not in scope of this assembly.
-            result = new PaymentResult();
-            result.setReferenceNumber(((TCPurhcaseOrderPaymentData)paymentData).getPoNumber());
-        } else if (paymentData.getType().equals(PaymentType.PayPalCreditCard)) {
-            result = paymentProcessor.process(paymentData);
-        }
+			if (paymentData.getType().equals(PaymentType.TCPurchaseOrder)) {
+				// processing purchase order is not in scope of this assembly.
+				result = new PaymentResult();
+				result.setReferenceNumber(((TCPurhcaseOrderPaymentData)paymentData).getPoNumber());
+			} else if (paymentData.getType().equals(PaymentType.PayPalCreditCard)) {
+				result = paymentProcessor.process(paymentData);
+			}
 
-        UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-        String userId = Long.toString(p.getUserId());
-        
-        // purchase submission fails without marking submission for purchase.
-        for (int i = 0; i < submissionIds.length; i++) {
-            long submissionId = submissionIds[i];
-            this.markForPurchase(submissionId);
-            this.purchaseSubmission(submissionId, result.getReferenceNumber(), userId);
-        }
+			UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+			String userId = Long.toString(p.getUserId());
+			
+			// purchase submission fails without marking submission for purchase.
+			for (int i = 0; i < submissionIds.length; i++) {
+				long submissionId = submissionIds[i];
+				this.markForPurchase(submissionId);
+				this.purchaseSubmission(submissionId, result.getReferenceNumber(), userId);
+			}
 
-        return result;
+			return result;
+		}
+		catch (PersistenceException e)
+		{
+			sessionContext.setRollbackOnly();
+			throw e;
+		}
+		catch (PaymentException e)
+		{
+			sessionContext.setRollbackOnly();
+			throw e;
+		}
+
     }
 }
