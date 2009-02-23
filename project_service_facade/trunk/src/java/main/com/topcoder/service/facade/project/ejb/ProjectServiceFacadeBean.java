@@ -1070,7 +1070,7 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
 
 			//TODO, until we fix retrieveAll, 
 			 UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-			 return this.clientDAO.getProjectsByUser(p.getUserId());
+			 return this.clientDAO.getProjectsByUser(p.getName());
 
 		} catch(EntityNotFoundException e) {
 			throw new EntityNotFoundFault(e.getMessage(), e.getCause());
