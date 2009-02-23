@@ -189,8 +189,8 @@ public abstract class AuditableEntity implements Serializable {
      * OPTIONAL.
      * </p>
      */
-    @Column(name = "is_deleted")
-    private boolean deleted;
+    @Column(name = "is_deleted", nullable=true)
+    private Boolean deleted;
 
     /**
      * <p>
@@ -265,7 +265,7 @@ public abstract class AuditableEntity implements Serializable {
      *
      * @return the value of the 'deleted' property. It can be any value.
      */
-    public boolean isDeleted() {
+    public Boolean isDeleted() {
         return this.deleted;
     }
 
@@ -279,7 +279,7 @@ public abstract class AuditableEntity implements Serializable {
      *                the new deleted to be used for 'deleted' property. It can
      *                be any value.
      */
-    public void setDeleted(boolean deleted) {
+    public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
 

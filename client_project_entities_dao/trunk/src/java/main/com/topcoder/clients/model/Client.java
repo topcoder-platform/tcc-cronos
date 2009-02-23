@@ -44,6 +44,7 @@ import javax.xml.bind.annotation.XmlType;
         "clientStatus", "salesTax", "startDate", "endDate", "codeName" })
 @Entity
 @Table(name = "client")
+@javax.persistence.AttributeOverride(name = "id", column = @Column(name = "client_id"))
 public class Client extends AuditableEntity {
     /**
      * The serial version uid of this class.

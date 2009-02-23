@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "company", propOrder = { "passcode" })
 @Entity
 @Table(name = "company")
+@javax.persistence.AttributeOverride(name = "id", column = @Column(name = "company_id"))
 public class Company extends AuditableEntity {
     /**
      * The serial version uid of this class.

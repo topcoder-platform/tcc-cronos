@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -48,6 +49,7 @@ import javax.xml.bind.annotation.XmlType;
         "client", "childProjects", "parentProjectId" })
 @Entity(name="ClientProject")
 @Table(name = "project")
+@javax.persistence.AttributeOverride(name = "id", column = @Column(name = "project_id"))
 public class Project extends AuditableEntity {
     /**
      * The serial version uid of this class.
@@ -239,8 +241,8 @@ public class Project extends AuditableEntity {
      * OPTIONAL.
      * </p>
      */
-    @OneToMany(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "parent_project_id", referencedColumnName = "id", updatable = false)
+    @OneToMany(cascade = CascadeType.REFRESH, fetch=FetchType.EAGER)
+    @JoinColumn(name = "parent_project_id", referencedColumnName = "project_id", updatable = false)
     private List<Project> childProjects = new ArrayList<Project>();
 
     /**
