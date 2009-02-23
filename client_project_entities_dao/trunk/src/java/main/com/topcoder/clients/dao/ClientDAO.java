@@ -62,23 +62,13 @@ public interface ClientDAO extends GenericDAO<Client, Long> {
     public List<Project> getProjectsForClient(Client client)
         throws DAOException;
     
-    /**
-     * <p>
-     * Defines the operation that performs the retrieval of the list with
-     * projects with the given user id. If nothing is found, return an empty list.
-     * <p>
-     * @param userid the user id
-     * @return List of Project, if nothing is found, return an empty string
-     * @throws DAOException if any error occurs while performing this operation.
-     */
-    public List<Project> getProjectsByUser(long userid) throws DAOException;
 
 	 /**
      * <p>
      * Defines the operation that performs the retrieval of the list with
      * projects with the given user id. If nothing is found, return an empty list.
      * <p>
-     * @param userid the user id
+     * @param userid the user name
      * @return List of Project, if nothing is found, return an empty string
      * @throws DAOException if any error occurs while performing this operation.
      */
