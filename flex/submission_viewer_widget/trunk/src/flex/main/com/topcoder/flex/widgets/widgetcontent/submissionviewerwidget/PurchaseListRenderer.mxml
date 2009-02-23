@@ -42,7 +42,7 @@
 	<mx:VBox id="right" width="100%">
 		<mx:Label styleName="normalText" />
 		<mx:Text width="100%" textAlign="left" styleName="text" 
-				htmlText="Lorem ipsum dolor sit amet, et refoveo velit, populus cogo. Jugis ventosus suscipit ut nulla quibus, luptatum transverbero. &lt;br&gt;- Haero ea, loquor vereor. &lt;br&gt;- Ea ibidem valetudo validus foras vero ullamcorper." />
+				htmlText="Your feedback notes will be visible here in the next release..." />
 	</mx:VBox>
 </mx:HBox>
 </mx:HBox>
