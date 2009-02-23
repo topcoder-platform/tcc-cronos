@@ -215,7 +215,8 @@
         private function mouseOverHandle():void
         {
         	if(_dataProvider.status.toLocaleLowerCase()=="draft"
-        	  || _dataProvider.status.toLocaleLowerCase()=="unactive - not yet published")
+        	  || _dataProvider.status.toLocaleLowerCase()=="unactive - not yet published"
+        	  || _dataProvider.status.toLocaleLowerCase()=="scheduled" )
 		  {
         		editBtn.visible=true;
 		  }
