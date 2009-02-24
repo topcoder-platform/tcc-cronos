@@ -303,7 +303,7 @@
 				<mx:HBox verticalAlign="middle" width="100%" paddingRight="8">
 					<mx:Text text="* Required Field" fontSize="14" styleName="contentBlack" />
 					<mx:Spacer width="100%" />
-					<mx:Image source="../assets/verisign.png" />
+					<!--<mx:Image source="../assets/verisign.png" />-->
 				</mx:HBox>
 			</mx:VBox>
 		</mx:GridItem>

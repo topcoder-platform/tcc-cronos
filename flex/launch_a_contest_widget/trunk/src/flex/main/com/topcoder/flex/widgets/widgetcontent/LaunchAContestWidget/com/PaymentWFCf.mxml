@@ -76,7 +76,7 @@
 				</mx:GridItem>
 			</mx:GridRow>
 		</mx:Grid>
-		<mx:Image source="../assets/verisign.png" />
+		<!--<mx:Image source="../assets/verisign.png" />-->
 	</mx:HBox>
 	<mx:HBox horizontalAlign="center" width="100%" id="btPanel" visible="false" paddingTop="40">
 		<mx:Button label="create another contest" styleName="RedButton" click="this.mainWidget.resetWidget()"/>
