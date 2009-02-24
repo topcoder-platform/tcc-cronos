@@ -59,6 +59,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils
                 
                 return retColl;
             }
+            else {
+                var retColl:ArrayCollection = new ArrayCollection();
+                var obj:*=translate(fromObj, toClass);
+                retColl.addItem(obj);
+                
+                return retColl;
+            }
             
             return null;
         }
