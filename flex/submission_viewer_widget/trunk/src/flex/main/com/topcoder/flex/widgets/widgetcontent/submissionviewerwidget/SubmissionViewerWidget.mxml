@@ -1343,7 +1343,7 @@
             	}
             }
             
-            private var _totalPurchaseAmount:Number = 0;
+            private var _totalPurchaseAmount:String = "0.00";
             
             private function updatePurchase():void {
             	trace("Updating purchase info");
@@ -1368,7 +1368,7 @@
             	}
             	
             	_purchaseMoney = moneyFormatter.format(totalMoney);
-            	_totalPurchaseAmount = totalMoney;
+            	_totalPurchaseAmount = moneyFormatter.format(totalMoney);
             	var sort:Sort = new Sort();
 	            sort.compareFunction = compareNumber;
 	            _downloadList.sort = sort;
