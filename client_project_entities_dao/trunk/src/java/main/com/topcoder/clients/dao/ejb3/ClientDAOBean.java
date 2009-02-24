@@ -170,7 +170,7 @@ public class ClientDAOBean extends GenericEJB3DAO<Client, Long> implements
 				return new ArrayList<Project>();
 			}
 		
-			String queryString = "select project_id, name, po_box_number, description from project where project_id ";
+			String queryString = "select project_id, name, po_box_number, description from project where active = 1 and project_id ";
 			if ( managerProjects.size() == 1) {
 				queryString += " = " + managerProjects.get(0);
 			} else {
@@ -182,12 +182,14 @@ public class ClientDAOBean extends GenericEJB3DAO<Client, Long> implements
 				queryString += ")";
 			}
 
+			queryString += " order by upper(name) ";
+
 			Query query2 = entityManager.createNativeQuery(queryString);
 
             List list = query2.getResultList();
 
             List<Project> result = new ArrayList<Project>();
-System.out.println("---------sizeeeee---" + list.size());
+System.out.println("---------client project size ---" + list.size());
 
             for (int i = 0; i < list.size(); i++) {
 
