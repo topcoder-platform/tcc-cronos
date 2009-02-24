@@ -24,7 +24,7 @@
 					} 
 					
 					//if (doValidate(order)) {
-						model.purchaseOrder = order.text;
+						model.purchaseOrder = order.selectedItem.data as String;
 						return 3;
 					//} else {
 					//	showErrorMsg();
