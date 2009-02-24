@@ -1599,41 +1599,44 @@
 			    // get client projects by user.
 			    var header:SOAPHeader=getHeader(username,password);
 			    ProjectServiceFacadeBean.clearHeaders();
-        		ProjectServiceFacadeBean.addHeader(header);
+        			ProjectServiceFacadeBean.addHeader(header);
 			    var getClientProjectsByUserOp:AbstractOperation = ProjectServiceFacadeBean.getOperation("getClientProjectsByUser");
 			    if (getClientProjectsByUserOp) {
-                    getClientProjectsByUserOp.addEventListener("result", getClientProjectsHandler);
-                    getClientProjectsByUserOp.send();
-                }
+				getClientProjectsByUserOp.addEventListener("result", getClientProjectsHandler);
+				getClientProjectsByUserOp.send();
+			    }
 			}
 			
-			private function getClientProjectsHandler(e:ResultEvent):void {
-			    trace("getClientProjectsHandler: " + e + ", " + e.result);
-            	if(e && e.result && e.result is ArrayCollection)
-            	{
-            	    if (e.result is ArrayCollection) {
-                	    var results:ArrayCollection=e.result as ArrayCollection;
-                	    for (var i:int = 0; i < results.length; i++) {
-                	        var result=results[i];
-                	        // add client project name
-                	        var item:Object = new Object();
-                	        var name:String = result.pOBoxNumber;
-    			            item.label= result.name;
-    			            item.data="PO-" + name;
-                	        _clientProjectNames.addItem(item);
-                	    }
-            	    }
-            	    else {
-            	        var result=e.result;
-            	        // add client project name
-            	        var item:Object = new Object();
-            	        var name:String = result.pOBoxNumber;
-			            item.label= result.name;
-			            item.data="PO-" + name;
-            	        _clientProjectNames.addItem(item);
-            	    }
-            	}
-			}
+			private function getClientProjectsHandler(e:ResultEvent):void { 
+				trace("getClientProjectsHandler: " + e + ", " + e.result); 
+				 if(e && e.result) 
+				{ 
+				     if (e.result is ArrayCollection) { 
+					 var results:ArrayCollection=e.result as ArrayCollection; 
+					 for (var i:int = 0; i < results.length; i++) { 
+					 var result=results[i]; 
+					 // add client project name 
+					 var item:Object = new Object(); 
+					 var name:String = result.name; 
+					var poNumber:String = result.pOBoxNumber; 
+					item.label=name; 
+					item.data="PO-" + poNumber; 
+					 _clientProjectNames.addItem(item); 
+					 } 
+				} 
+				else { 
+					     var result=e.result; 
+					     // add client project name 
+					     var item:Object = new Object(); 
+					     var name:String = result.name; 
+						var poNumber:String = result.pOBoxNumber; 
+					     item.label=name; 
+					     item.data="PO-" + poNumber; 
+						_clientProjectNames.addItem(item); 
+				} 
+			 } 
+		} 
+
 
         ]]>
     </mx:Script>
