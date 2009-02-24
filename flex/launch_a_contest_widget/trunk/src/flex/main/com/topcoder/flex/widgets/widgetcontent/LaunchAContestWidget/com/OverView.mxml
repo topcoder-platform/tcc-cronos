@@ -107,8 +107,8 @@
         	}
         	
         	if (sum>0){
-        		adminf.text = new Number(sum * 0.2).toFixed(0);
-        		cntstTtl.text = new Number(sum * 1.2).toFixed(0);
+        		adminf.text = new Number(sum * 0.2).toFixed(2);
+        		cntstTtl.text = new Number(sum * 1.2).toFixed(2);
         	} else {
         		adminf.text = "";
         		cntstTtl.text = "";
@@ -424,7 +424,7 @@
 	            <mx:HBox>
 	            	<mx:VBox verticalGap="7" styleName="smallBlackText">
 	            		<mx:HBox horizontalGap="0">
-		            		 <mx:Label text="&#8226; 20% Admin Fee" width="90" fontSize="11"/><mx:Label text=":$"/>
+		            		 <mx:Label text="&#8226; Admin Fee" width="90" fontSize="11"/><mx:Label text=":$"/>
 	                    </mx:HBox>
 	                    <mx:HBox horizontalGap="0">
 		            		  <mx:Label text="&#8226; Contest Total" width="90" fontSize="11"/><mx:Label text=":$"/>
