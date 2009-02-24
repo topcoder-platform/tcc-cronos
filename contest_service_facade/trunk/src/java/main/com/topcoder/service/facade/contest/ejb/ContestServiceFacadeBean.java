@@ -1144,6 +1144,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 			sessionContext.setRollbackOnly();
 			throw e;
 		}
+		catch (Exception e)
+		{
+			sessionContext.setRollbackOnly();
+			throw new PaymentException(e.getMessage());
+		}
        
     }
 
@@ -1278,6 +1283,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 		{
 			sessionContext.setRollbackOnly();
 			throw e;
+		}
+		catch (Exception e)
+		{
+			sessionContext.setRollbackOnly();
+			throw new PaymentException(e.getMessage());
 		}
 
     }
