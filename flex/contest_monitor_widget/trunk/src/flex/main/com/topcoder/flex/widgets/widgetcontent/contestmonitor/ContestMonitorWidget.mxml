@@ -150,7 +150,17 @@
         private function setContests(e:ResultEvent): void
         {
         	if(e==null || e.result==null)return;
-        	contestList=e.result as ArrayCollection;
+        	if(e.result is  ArrayCollection)
+        	{
+        		
+        	  contestList=e.result  as ArrayCollection;
+        	}
+        	else
+        	{
+        		contestList=new ArrayCollection();
+        		contestList.addItem(e.result);
+        	}
+        	
         	
         		if(!contestList.sort)
         		{
