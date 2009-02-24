@@ -30,6 +30,6 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservic
             return ;
         }
 
-        public var paymentType:String;
+        public var type:String;
     }
 }

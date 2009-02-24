@@ -1258,6 +1258,7 @@
 					header.text = "Your Transaction was Approved!";
 					text1.htmlText = "Thank you for your order. An email confirmation will be sent as a receipt for this transaction. <b>Your reference # is " + _paymentReferenceNumber + ".</b>";
 					sub1.label = "Download Submissions";
+					wf2.paymentReferenceNumber.text=_paymentReferenceNumber;
             	}
             }
 
@@ -1317,7 +1318,7 @@
         			//process submission payment is already doing markForPurchase.
         			if (pay.selectedIndex == 1) {
 		                var creditCardPaymentData:CreditCardPaymentData=new CreditCardPaymentData();
-		                creditCardPaymentData.paymentType="PayPalCreditCard";
+		                creditCardPaymentData.type="PayPalCreditCard";
 		                creditCardPaymentData.cardNumber=wf1.cardNum.text;
 		                creditCardPaymentData.cardType=wf1.cardTypeCombo.selectedItem.data;
 		                creditCardPaymentData.cardExpiryMonth=wf1.month.selectedItem.data;
@@ -1344,7 +1345,7 @@
         			}
         			else if(pay.selectedIndex == 2) {
 		                var purchaseOrderPaymentData:TcPurhcaseOrderPaymentData=new TcPurhcaseOrderPaymentData();
-		                purchaseOrderPaymentData.paymentType="TCPurchaseOrder";
+		                purchaseOrderPaymentData.type="TCPurchaseOrder";
 		                purchaseOrderPaymentData.poNumber="PO-"+wf1.order.text;
 		                ContestServiceFacadeBean.processSubmissionPurchaseOrderPayment(submissionIds, purchaseOrderPaymentData);
         			}
@@ -1610,15 +1611,25 @@
 			    trace("getClientProjectsHandler: " + e + ", " + e.result);
             	if(e && e.result && e.result is ArrayCollection)
             	{
-            	    var results:ArrayCollection=e.result as ArrayCollection;
-            	    for (var i:int = 0; i < results.length; i++) {
-            	        var result=results[i];
+            	    if (e.result is ArrayCollection) {
+                	    var results:ArrayCollection=e.result as ArrayCollection;
+                	    for (var i:int = 0; i < results.length; i++) {
+                	        var result=results[i];
+                	        // add client project name
+                	        var item:Object = new Object();
+                	        var name:String = result.pOBoxNumber;
+    			            item.label= result.name;
+    			            item.data="PO-" + name;
+                	        _clientProjectNames.addItem(item);
+                	    }
+            	    }
+            	    else {
+            	        var result=e.result;
             	        // add client project name
             	        var item:Object = new Object();
-            	        var name:String = result.name;
-                        var poNumber:String = result.pOBoxNumber;
-			            item.label=name;
-			            item.data="PO-" + poNumber;
+            	        var name:String = result.pOBoxNumber;
+			            item.label= result.name;
+			            item.data="PO-" + name;
             	        _clientProjectNames.addItem(item);
             	    }
             	}
