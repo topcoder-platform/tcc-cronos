@@ -64,7 +64,7 @@
 	       	private var ATTACH_FILES_HEIGHT:int = 660;
 	       	private var SCHEDULE_HEIGHT:int = 860;
 	       	private var REVIEW_HEIGHT:int = 1165;
-	       	private var ACTIVATE_HEIGHT:int = 830;
+	       	private var ACTIVATE_HEIGHT:int = 930;
 
 		    private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
             
@@ -477,13 +477,13 @@ Specific limitations (such as restricting a color or a specific layout style) an
                         back.visible = true;
                         break;
                     case 4:
-                        goNext.visible = false;
-                        back.visible = false;
+                        //goNext.visible = false;
+                        //back.visible = false;
                         break;
                     case 5:
-                        goNext.visible = false;
-                        back.visible = false;
-                        //cancel.label="Done";
+                        //goNext.visible = false;
+                        //back.visible = false;
+
                         //submitPurchase();
                         break;
                     default:
@@ -741,7 +741,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
 				PopUpManager.removePopUp(p);
         		p=null;
 			    }
-                Helper.showAlertMessage(opName + ":: " + event.fault);
+                Helper.showAlertMessage(opName + ":: " + event.fault.content + "," + event.fault.message + "," + event.fault.faultCode + "," + event.fault.faultString);
             }
         ]]>
     </mx:Script>
@@ -788,13 +788,11 @@ Specific limitations (such as restricting a color or a specific layout style) an
 	</mx:operation>
 	
 	<mx:operation name="processContestCreditCardPayment" 
-		resultFormat="object" 
-		fault="showWebserviceError('processContestCreditCardPayment', event);"> 
+		resultFormat="object"> 
 	</mx:operation>
 	
 	<mx:operation name="processContestPurchaseOrderPayment" 
-		resultFormat="object" 
-		fault="showWebserviceError('processContestPurchaseOrderPayment', event);"> 
+		resultFormat="object"> 
 	</mx:operation>
 	
 	<mx:operation name="getAllDocumentTypes" 

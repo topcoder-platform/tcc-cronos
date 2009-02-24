@@ -65,8 +65,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public var contestid:String=null;
         
         
-        protected var p:ProgressWindow=null;
-
+        public var p:ProgressWindow=null;
+        
     	/**
     	 * The framework of the widget.
     	 */
@@ -346,7 +346,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         	}
         }
         
-        public function submitPurchase(type:String, eventHandler:Function):void
+        public function submitPurchase(type:String, eventHandler:Function, faultEventHandler:Function):void
         {
             competition._id=competition.id;
             competition._type=competition.type;
@@ -378,6 +378,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 var processContestPaymentOp:AbstractOperation = _csws.getOperation("processContestCreditCardPayment");
             
                 processContestPaymentOp.addEventListener("result", eventHandler);
+                processContestPaymentOp.addEventListener("fault", faultEventHandler);
                 processContestPaymentOp.send(competition, creditCardPaymentData);
             }
             else {
@@ -390,8 +391,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 var processContestPaymentOp:AbstractOperation = _csws.getOperation("processContestPurchaseOrderPayment");
             
                 processContestPaymentOp.addEventListener("result", eventHandler);
+                processContestPaymentOp.addEventListener("fault", faultEventHandler);
                 processContestPaymentOp.send(competition, purchaseOrderPaymentData);
             }
+            
+            p=ProgressWindow(PopUpManager.createPopUp((DisplayObject)(
+														this.parentApplication),ProgressWindow, true));;
+        	
+            PopUpManager.centerPopUp(p);
         }
         
         public function saveAsDraft():void{

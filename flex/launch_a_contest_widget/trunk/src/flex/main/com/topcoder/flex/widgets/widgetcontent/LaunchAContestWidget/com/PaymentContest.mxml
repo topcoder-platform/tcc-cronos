@@ -2,9 +2,12 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:com="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*" creationComplete="init()">
 	<mx:Script>
 		<![CDATA[
+		    import mx.rpc.events.FaultEvent;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PaymentResult;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
+			import mx.managers.PopUpManager;
+			import com.topcoder.flex.Helper;
 		
 		import mx.rpc.events.ResultEvent;
 			 [Bindable]
@@ -67,21 +70,39 @@
 				} 
 				else if (stack.selectedIndex == 1)
 				{
-				    mainWidget.submitPurchase("PayPalCreditCard", processCreditCardPaymentResponse);
+				    mainWidget.submitPurchase("PayPalCreditCard", processCreditCardPaymentResponse, paymentFaultEventHandler);
 				    return 4;
 				}
 				else if (stack.selectedIndex == 2)
 				{
-				    mainWidget.submitPurchase("TCPurchaseOrder", processPOPaymentResponse);
+				    mainWidget.submitPurchase("TCPurchaseOrder", processPOPaymentResponse, paymentFaultEventHandler);
 				    return 5;
 				}
 
 				return -1;
             }
             
+            private function paymentFaultEventHandler(e:FaultEvent):void {
+                if(mainWidget.p)
+    			{
+    				PopUpManager.removePopUp(mainWidget.p);
+            		mainWidget.p=null;
+    			}
+    			
+                Helper.showAlertMessage("We're sorry. Your payment could not be processed. " + 
+                        "Please be sure to save your work and try again if you think you received this message by mistake.");        
+            }
+            
             private function processCreditCardPaymentResponse(e:ResultEvent):void
             {
-                trace("processCreditCardPaymentResponse: " + e + ", " + e.result);
+                //Helper.showAlertMessage("processCreditCardPaymentResponse: " + e + ", " + e.result);
+                
+                if(mainWidget.p)
+    			{
+    				PopUpManager.removePopUp(mainWidget.p);
+            		mainWidget.p=null;
+    			}
+			
                 if (e && e.result) {
                     var paymentResult:PaymentResult = ObjectTranslatorUtils.translate(e.result, PaymentResult) as PaymentResult;
             	    trace("processCreditCardPaymentResponse:: paymentResult: " + paymentResult);
@@ -89,13 +110,22 @@
                     header="Your Transaction was Approved!";
                     text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + paymentResult.referenceNumber + ".</b>";
                     text2="";
-                    wf2.showApproval();
+                    mainWidget.goNext.visible=false;
+                    mainWidget.back.visible=false;
+                    wf2.showApproval(paymentResult.referenceNumber);
                 }
             }
 
             private function processPOPaymentResponse(e:ResultEvent):void
             {
-                trace("processPOPaymentResponse: " + e + ", " + e.result);
+                //Helper.showAlertMessage("processPOPaymentResponse: " + e + ", " + e.result);
+                
+                if(mainWidget.p)
+    			{
+    				PopUpManager.removePopUp(mainWidget.p);
+            		mainWidget.p=null;
+    			}
+    			
                 if (e && e.result) {
                     var paymentResult:PaymentResult = ObjectTranslatorUtils.translate(e.result, PaymentResult) as PaymentResult;
             	    trace("processPOPaymentResponse:: paymentResult: " + paymentResult);
@@ -103,7 +133,9 @@
                     header="Your Transaction was Approved!";
                     text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + paymentResult.referenceNumber + ".</b>";
                     text2="";
-                    wf3.showApproval();
+                    mainWidget.goNext.visible=false;
+                    mainWidget.back.visible=false;
+                    wf3.showApproval(paymentResult.referenceNumber);
                 }
             }
 		]]>

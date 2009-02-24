@@ -10,9 +10,10 @@
        		
 			[Bindable]
 			private var model:Model = Model.instance;
-			public function showApproval():void {
+			public function showApproval(referenceNumber:String):void {
 				approval.visible = true;
 				btPanel.visible = true;
+				paymentReferenceNumber.text=referenceNumber;
 			}			
 		]]>
 	</mx:Script>
@@ -44,7 +45,7 @@
 							<mx:Label text="Approval Information" width="100%" styleName="header" />
 							<mx:HBox>
 								<mx:Label text="Reference Number:" width="100%" styleName="contentBlack" />
-								<mx:Label text="EBFH53569DWS9" width="100%" styleName="content" />
+								<mx:Label id="paymentReferenceNumber" width="100%" styleName="content" />
 							</mx:HBox>
 						</mx:VBox>
 					</mx:VBox>
