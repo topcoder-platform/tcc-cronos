@@ -238,7 +238,7 @@
 			<mx:HBox width="100%">
 				<mx:Label text="* Required Field" styleName="normalText" />
 				<mx:Spacer width="100%" />
-				<mx:Image source="{sign}" />
+				<!--<mx:Image source="{sign}" />-->
 			</mx:HBox>
 		</mx:VBox>
 	</mx:HBox>

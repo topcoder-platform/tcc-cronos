@@ -66,6 +66,6 @@
 				</mx:GridItem>
 			</mx:GridRow>
 		</mx:Grid>
-		<mx:Image source="{sign}" />
+		<!--<mx:Image source="{sign}" />-->
 	</mx:HBox>
 </mx:VBox>
