@@ -483,7 +483,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                     case 5:
                         goNext.visible = false;
                         back.visible = false;
-                        cancel.label="Done";
+                        //cancel.label="Done";
                         //submitPurchase();
                         break;
                     default:

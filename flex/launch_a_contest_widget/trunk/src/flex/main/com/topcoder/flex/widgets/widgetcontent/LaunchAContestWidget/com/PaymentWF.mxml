@@ -32,7 +32,7 @@
 						removeValidate(target);
 					} 
 					//if (doValidate(order)) {
-						model.purchaseOrder = order.selectedItem as String;
+						model.purchaseOrder = order.selectedItem.data as String;
 						return 3;
 					//} else {
 					//	showErrorMsg();
