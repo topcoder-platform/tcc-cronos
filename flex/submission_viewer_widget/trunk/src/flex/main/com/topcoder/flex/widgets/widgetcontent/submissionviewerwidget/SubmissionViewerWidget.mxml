@@ -67,6 +67,9 @@
     		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.PaymentData;
     		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.TcPurhcaseOrderPaymentData;
     		
+    		import mx.managers.PopUpManager;
+    		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ProgressWindow;
+    		
     		import mx.rpc.AbstractOperation;
 
             private var _rankList:ArrayCollection = new ArrayCollection();
@@ -131,6 +134,8 @@
 			
 			[Bindable]
 			private var _clientProjectNames:ArrayCollection=new ArrayCollection();
+			
+			private var p:ProgressWindow=null;
 			
 			public static function getHeader(username:String, password:String):SOAPHeader {
 				var userToken:String = "UsernameToken-"+Math.round(Math.random()*999999).toString();
@@ -1240,6 +1245,12 @@
             
             private function handleProcessSubmissionCreditCardPayment(event:ResultEvent):void
             {
+                if(p)
+    			{
+    				PopUpManager.removePopUp(p);
+            		p=null;
+    			}
+    			
             	Helper.showAlertMessage("Process submission payment successfully!!");
             	if (event && event.result) {
                     _paymentReferenceNumber = event.result as String;	
@@ -1252,6 +1263,12 @@
 
             private function handleProcessSubmissionPurchaseOrderPayment(event:ResultEvent):void
             {
+                if(p)
+    			{
+    				PopUpManager.removePopUp(p);
+            		p=null;
+    			}
+    			
             	Helper.showAlertMessage("Process submission payment successfully!!");
             	if (event && event.result) {
             	    _paymentReferenceNumber = event.result as String;
@@ -1259,6 +1276,10 @@
 					header.text = "Your Transaction was Approved!";
 					text1.htmlText = "Thank you for your order. An email confirmation will be sent as a receipt for this transaction. <b>Your reference # is " + _paymentReferenceNumber + ".</b>";
 					sub2.label = "Download Submissions";
+					
+					// TODO: there is no payment reference being shown for subviewer on po orders.
+					// confirm with shannon if he wants it.
+					//wf3.paymentReferenceNumber.text=_paymentReferenceNumber;
             	}
             }
             
@@ -1327,7 +1348,23 @@
 		                purchaseOrderPaymentData.poNumber="PO-"+wf1.order.text;
 		                ContestServiceFacadeBean.processSubmissionPurchaseOrderPayment(submissionIds, purchaseOrderPaymentData);
         			}
+        			
+        			p=ProgressWindow(PopUpManager.createPopUp((DisplayObject)(
+														this.parentApplication),ProgressWindow, true));;
+        	
+                    PopUpManager.centerPopUp(p);
             	}
+            }
+            
+            private function paymentFaultEventHandler(e:FaultEvent):void {
+                if(p)
+    			{
+    				PopUpManager.removePopUp(p);
+            		p=null;
+    			}
+    			
+                Helper.showAlertMessage("We're sorry. Your payment could not be processed. " + 
+                        "Please be sure to save your work and try again if you think you received this message by mistake.");        
             }
             
             private function updateAbandonToWS():void {
@@ -1653,13 +1690,13 @@
 	<mx:operation name="processSubmissionCreditCardPayment" 
         resultFormat="object" 
         result="handleProcessSubmissionCreditCardPayment(event)"
-        fault="Helper.showAlertMessage('processSubmissionCreditCardPayment: ' + event.fault.faultString);"> 
+        fault="paymentFaultEventHandler(event)"> 
     </mx:operation>
     
     <mx:operation name="processSubmissionPurchaseOrderPayment" 
         resultFormat="object" 
         result="handleProcessSubmissionPurchaseOrderPayment(event)"
-        fault="Helper.showAlertMessage('processSubmissionPurchaseOrderPayment: ' + event.fault.faultString);"> 
+        fault="paymentFaultEventHandler(event)"> 
     </mx:operation>
 
 </mx:WebService>
