@@ -1140,7 +1140,8 @@
             	//		continue to confirmation screen if everything okay.
             	//		shows error text if  no submission selections + no winner not selected.
             	//		continue to abandon screen if no winner is selected.
-            	if (_selectedContestStatusId == _actionRequiredContestTypeId) {
+            	if (_selectedContestStatusId == _actionRequiredContestTypeId ||
+            	    _selectedContestStatusId == _inDangerContestTypeId) {
             		if (noWinner.selected) {
             			gotoAbandonScreen(abandonConfirmationScreen);
             		}
