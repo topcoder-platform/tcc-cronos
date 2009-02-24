@@ -48,13 +48,13 @@ public class SimpleProjectContestData {
     /**
      * Represents the contest id.
      */
-    
+    @Id
     private Long contestId;
     
     /**
      * Represents the project id.
      */
-    @Id
+    
     private Long projectId;
     
     /**
