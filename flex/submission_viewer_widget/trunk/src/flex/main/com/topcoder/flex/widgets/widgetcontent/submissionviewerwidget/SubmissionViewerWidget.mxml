@@ -1755,7 +1755,6 @@
 		                        click="handleSelect()" 
 		                        allowMultipleSelection="false" 
 		                        allowDragSelection="false"
-					backgroundColor="#E0E0E0"
 		                        />
 		                <mx:Button buttonMode="true" id="down" styleName="down" click="goDown(null)" />
 		            </mx:VBox>
@@ -1829,7 +1828,7 @@
 	                        <mx:Canvas id="imagePreviewerCanvas" 
 	                            borderStyle="solid" 
 	                            minWidth="526" 
-	                            minHeight="276" 
+	                            minHeight="526" 
 	                            width="100%" 
 	                            height="100%"
 	                            horizontalScrollPolicy="off"

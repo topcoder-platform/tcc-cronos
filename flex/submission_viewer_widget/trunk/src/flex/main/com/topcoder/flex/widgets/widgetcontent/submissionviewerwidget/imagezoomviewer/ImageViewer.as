@@ -543,7 +543,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoom
         	if (_loadProgressMeter <= 0 || _loadProgressMeter >= 50) {
         		_loadProgressMeter = 1;
         	}
-        	
+/*        	
         	var loadProgressText:String = "";
         	for (var i: int = 0; i < _loadProgressMeter; i++) {
         		loadProgressText = (loadProgressText + "..");
@@ -552,7 +552,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoom
         	_loadProgressMeter = _loadProgressMeter + 1;
         	
             _percentLoadedLabel.text = "Loading" + loadProgressText;
-            
+*/            
             
             /*String(
                                                Math.round(
