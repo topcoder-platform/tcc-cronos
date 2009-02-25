@@ -170,7 +170,6 @@
           <mx:Text text="/" />
           <mx:ComboBox width="70" height="20" id="year">
             <mx:dataProvider>
-              <mx:Object label="2008" data="2008"/>
               <mx:Object label="2009" data="2009"/>
               <mx:Object label="2010" data="2010"/>
               <mx:Object label="2011" data="2011"/>
