@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.topcoder.service.studio.contest.Helper;
+import com.topcoder.service.studio.PaymentType;
 
 /**
  * <p>
@@ -44,12 +45,27 @@ public class SubmissionPayment implements Serializable {
     /**
      * Represents the PayPal order id.
      */
+    @Deprecated
     private String PayPalOrderId;
 
     /**
      * Represents the create date.
      */
     private Date createDate;
+
+    /**
+     * Represents the payment type.
+     * 
+     * @since BUGR-1076
+     */
+    private PaymentType paymentType;
+
+    /**
+     * Represents the payment reference id.
+     * 
+     * @since BUGR-1076
+     */
+    private String paymentReferenceId;
 
     /**
      * Default constructor.
@@ -177,5 +193,47 @@ public class SubmissionPayment implements Serializable {
      */
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    /**
+     * Updates the payment type with the specified value.
+     * 
+     * @since BUGR-1076
+     * @param paymentType
+     *            the payment order id to set.
+     */
+    public void setPaymentType(PaymentType paymentType) {
+        this.paymentType = paymentType;
+    }
+
+    /**
+     * Returns the paymentType.
+     * 
+     * @since BUGR-1076
+     * @return payment type
+     */
+    public PaymentType getPaymentType() {
+        return paymentType;
+    }
+
+    /**
+     * Updates the payment reference id with the specified value.
+     * 
+     * @since BUGR-1076
+     * @param paymentReferenceId
+     *            the payment order id to set.
+     */
+    public void setPaymentReferenceId(String paymentReferenceId) {
+        this.paymentReferenceId = paymentReferenceId;
+    }
+
+    /**
+     * Returns the paymentOrderId.
+     * 
+     * @since BUGR-1076
+     * @return payment reference id
+     */
+    public String getPaymentReferenceId() {
+        return paymentReferenceId;
     }
 }

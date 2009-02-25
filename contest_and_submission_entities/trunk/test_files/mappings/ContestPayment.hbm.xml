@@ -13,5 +13,9 @@
 		<property name="price" not-null="true" />
 		<property name="payPalOrderId" column="paypal_order_id" not-null="true" />
 		<property name="createDate" column="create_date" not-null="true" generated="insert"/>
+		<!-- since BUGR-1076 -->
+		<property name="paymentReferenceId" column="payment_reference_id" not-null="false" />
+		<many-to-one name="paymentType" column="payment_type_id"
+			class="com.topcoder.service.studio.PaymentType" fetch="select"/>
 	</class>
 </hibernate-mapping>

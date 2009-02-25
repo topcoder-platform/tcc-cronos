@@ -174,7 +174,7 @@ public class SimpleProjectContestData {
 	/**
      * Returns the num_for.
      *
-     * @return the num_for.
+     * @param num_for the num_for.
      */
 	public void setNum_for(Integer num_for) {
 		this.num_for = num_for;
@@ -192,7 +192,7 @@ public class SimpleProjectContestData {
 	/**
      * Updates the num_reg.
      *
-     * @return the num_reg.
+     * @param num_reg.
      */
 	public void setNum_reg(Integer num_reg) {
 		this.num_reg = num_reg;
@@ -210,7 +210,7 @@ public class SimpleProjectContestData {
 	/**
      * Updates the num_sub.
      *
-     * @return the num_sub.
+     * @param num_sub.
      */
 	public void setNum_sub(Integer num_sub) {
 		this.num_sub = num_sub;
