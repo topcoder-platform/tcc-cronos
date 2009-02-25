@@ -324,7 +324,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws IllegalArgumentWSException if specified <code>contest</code> is <code>null</code>.
      */
     public void updateContest(StudioCompetition contest) throws PersistenceException, ContestNotFoundException {
-        ContestData studioContest = convertToContestData(contest);
+
+    	ContestData studioContest = convertToContestData(contest);
+
+    	Date startDate = getDate(studioContest.getLaunchDateAndTime());
+        Date endDate = new Date((long) (startDate.getTime() + 60l * 60 * 1000 * studioContest.getDurationInHours()));
+        Date winnerAnnouncementDeadlineDate;
+
+		if(studioContest.getDurationInHours() <= 24) {
+	        winnerAnnouncementDeadlineDate = new Date((long) (endDate.getTime() + 60l * 60 * 1000 * 24));
+
+		} else {
+	        winnerAnnouncementDeadlineDate = new Date((long) (endDate.getTime() + 60l * 60 * 1000 * studioContest.getDurationInHours()));
+		}
+
+		studioContest.setWinnerAnnoucementDeadline(getXMLGregorianCalendar(winnerAnnouncementDeadlineDate));
+
         this.studioService.updateContest(studioContest);
     }
 
