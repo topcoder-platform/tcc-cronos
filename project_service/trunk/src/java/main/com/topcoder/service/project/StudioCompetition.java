@@ -9,8 +9,12 @@ import javax.xml.bind.annotation.XmlType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.DatatypeConfigurationException;
 
 import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.PrizeData;
@@ -142,7 +146,12 @@ public class StudioCompetition extends Competition {
      */
     @Override
     public XMLGregorianCalendar getEndTime() {
-        return contestData.getWinnerAnnoucementDeadline();
+        Date startDate = getDate(contestData.getLaunchDateAndTime());
+        Date endDate = new Date((long) (startDate.getTime() + 60l * 60 * 1000 * contestData.getDurationInHours()));
+        return getXMLGregorianCalendar(endDate);
+
+        // BUGR- 1312
+        // return contestData.getWinnerAnnoucementDeadline();
     }
 
     /**
@@ -256,7 +265,22 @@ public class StudioCompetition extends Competition {
      */
     @Override
     public void setEndTime(XMLGregorianCalendar endTime) {
-        contestData.setWinnerAnnoucementDeadline(endTime);
+        Date endDate = getDate(endTime);
+        Date startDate = getDate(contestData.getLaunchDateAndTime());
+        double durationInHours = (endDate.getTime() - startDate.getTime()) / (double)(60l * 60 * 1000);
+        Date winnerAnnouncementDeadlineDate;
+
+        if(durationInHours <= 24) {
+            winnerAnnouncementDeadlineDate = new Date((long) (endDate.getTime() + 60l * 60 * 1000 * 24));
+
+        } else {
+            winnerAnnouncementDeadlineDate = new Date((long) (endDate.getTime() + 60l * 60 * 1000 * durationInHours));
+        }
+
+        contestData.setDurationInHours(durationInHours);
+        
+        // BUGR- 1312
+        // contestData.setWinnerAnnoucementDeadline(endTime);
     }
 
     /**
@@ -341,4 +365,43 @@ public class StudioCompetition extends Competition {
         this.type = type;
     }
 
+    /**
+     * <p>Converts specified <code>XMLGregorianCalendar</code> instance into <code>Date</code> instance.</p>
+     *
+     * @param calendar an <code>XMLGregorianCalendar</code> representing the date to be converted.
+     * @return a <code>Date</code> providing the converted value of specified calendar or <code>null</code> if specified
+     *         <code>calendar</code> is <code>null</code>.
+     */
+    private static Date getDate(XMLGregorianCalendar calendar) {
+        if (calendar == null) {
+            return null;
+        }
+        return calendar.toGregorianCalendar().getTime();
+    }
+
+    /**
+     * <p>
+     * Converts specified <code>Date</code> instance into
+     * <code>XMLGregorianCalendar</code> instance.
+     * </p>
+     *
+     * @param date
+     *            a <code>Date</code> representing the date to be converted.
+     * @return a <code>XMLGregorianCalendar</code> providing the converted value
+     *         of specified date or <code>null</code> if specified
+     *         <code>date</code> is <code>null</code> or if it can't be
+     *         converted to calendar.
+     */
+    private static XMLGregorianCalendar getXMLGregorianCalendar(Date date) {
+        if (date == null) {
+            return null;
+        }
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(date);
+        try {
+            return DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
+        } catch (DatatypeConfigurationException ex) {
+            return null;
+        }
+    }
 }
