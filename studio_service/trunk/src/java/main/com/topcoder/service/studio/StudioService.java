@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.service.studio.PaymentType;
 import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.EntityAlreadyExistsException;
@@ -704,11 +705,17 @@ public interface StudioService {
      * @since 1.1
      */
     public List<SimpleContestData> getContestDataOnly(long pid) throws PersistenceException;
- 
 
+    public long createForum(String name, long userId);
 
-	public long createForum(String name, long userId);
-	
-
+    /**
+     * Loads and returns the list of payment types (currently it is 'Paypal' and 'TC Purchase order')
+     * 
+     * @since BUGR-1076
+     * @return list of payment types
+     * @throws PersistenceException
+     *             if any error occurs
+     */
+    public List<PaymentType> getAllPaymentTypes() throws PersistenceException;
 
 }

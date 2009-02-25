@@ -26,8 +26,8 @@ import javax.xml.bind.annotation.XmlType;
  * @version 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "contestPaymentData", propOrder = { "contestId",
-        "paymentStatusId", "price", "paypalOrderId", "createDate"})
+@XmlType(name = "contestPaymentData", propOrder = { "contestId", "paymentStatusId", "price", "paypalOrderId",
+        "createDate", "paymentTypeId", "paymentReferenceId" })
 public class ContestPaymentData implements Serializable {
     /**
      * Represents contestId id.
@@ -53,6 +53,20 @@ public class ContestPaymentData implements Serializable {
      * Represents the create date.
      */
     private Date createDate;
+
+    /**
+     * Represents the payment type.
+     * 
+     * @since BUGR-1076
+     */
+    private Long paymentTypeId;
+
+    /**
+     * Represents the payment reference id.
+     * 
+     * @since BUGR-1076
+     */
+    private String paymentReferenceId;
 
     /**
      * Returns price.
@@ -146,5 +160,46 @@ public class ContestPaymentData implements Serializable {
      */
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+    /**
+     * Updates the payment type with the specified value.
+     * 
+     * @since BUGR-1076
+     * @param paymentTypeId
+     *            the payment order id to set.
+     */
+    public void setPaymentTypeId(Long paymentTypeId) {
+        this.paymentTypeId = paymentTypeId;
+    }
+
+    /**
+     * Returns the paymentType.
+     * 
+     * @since BUGR-1076
+     * @return payment type
+     */
+    public Long getPaymentTypeId() {
+        return paymentTypeId;
+    }
+
+    /**
+     * Updates the payment reference id with the specified value.
+     * 
+     * @since BUGR-1076
+     * @param paymentReferenceId
+     *            the payment order id to set.
+     */
+    public void setPaymentReferenceId(String paymentReferenceId) {
+        this.paymentReferenceId = paymentReferenceId;
+    }
+
+    /**
+     * Returns the paymentOrderId.
+     * 
+     * @since BUGR-1076
+     * @return payment reference id
+     */
+    public String getPaymentReferenceId() {
+        return paymentReferenceId;
     }
 }

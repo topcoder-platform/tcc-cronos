@@ -62,6 +62,7 @@ import com.topcoder.service.studio.UserNotAuthorizedException;
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestChangeHistory;
 import com.topcoder.service.studio.contest.ContestConfig;
+import com.topcoder.service.studio.PaymentType;
 import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.studio.contest.ContestManagerLocal;
@@ -3313,7 +3314,11 @@ public class StudioServiceBean implements StudioService {
         result.setCreateDate(data.getCreateDate());
         PaymentStatus status = submissionManager.getPaymentStatus(data.getPaymentStatusId());
         result.setStatus(status);
-
+        // BUGR-1076
+        result.setPaymentReferenceId(data.getPaymentReferenceId());
+        PaymentType paymentType = contestManager.getPaymentType(data.getPaymentTypeId());
+        result.setPaymentType(paymentType);
+        
         return result;
     }
 
@@ -3333,7 +3338,9 @@ public class StudioServiceBean implements StudioService {
         contestPaymentData.setPaymentStatusId(contestPayment.getStatus().getPaymentStatusId());
         contestPaymentData.setPaypalOrderId(contestPayment.getPayPalOrderId());
         contestPaymentData.setPrice(contestPayment.getPrice());
-
+        // BUGR-1076
+        contestPaymentData.setPaymentReferenceId(contestPayment.getPaymentReferenceId());
+        contestPaymentData.setPaymentTypeId(contestPayment.getPaymentType().getPaymentTypeId());
         return contestPaymentData;
     }
 
@@ -3945,4 +3952,17 @@ public class StudioServiceBean implements StudioService {
 
 		return null;
 	}
+
+    public List<PaymentType> getAllPaymentTypes() throws PersistenceException {
+        logEnter("getAllPaymentTypes");
+
+        try {
+            return contestManager.getAllPaymentTypes();
+            
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManagementException reports error.", e);
+        }
+
+        return null;
+    }
 }
