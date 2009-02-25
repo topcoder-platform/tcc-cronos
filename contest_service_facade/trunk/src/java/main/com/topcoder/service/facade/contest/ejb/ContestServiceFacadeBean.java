@@ -162,6 +162,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 	 */
 	private static final long CONTEST_PAYMENT_STATUS_PAID = 1;
 
+	/**
+	 * Private constant specifying active & public status id.
+	 */
+	private static final long PAYMENT_TYPE_PAYPAL_PAYFLOW = 1;
+
+	/**
+	 * Private constant specifying active & public status id.
+	 */
+	private static final long PAYMENT_TYPE_TC_PURCHASE_ORDER = 2;
+
     /**
      * Host address. Use pilot-payflowpro.paypal.com for testing and payflowpro.paypal.com for production.
      * 
@@ -1124,6 +1134,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
 			ContestPaymentData contestPaymentData = new ContestPaymentData();
 			contestPaymentData.setPaypalOrderId(result.getReferenceNumber());
+			contestPaymentData.setPaymentReferenceId(result.getReferenceNumber());
+			if (paymentData instanceof TCPurhcaseOrderPaymentData)
+			{
+				contestPaymentData.setPaymentTypeId(PAYMENT_TYPE_TC_PURCHASE_ORDER);
+			}
+			// TODO, how relate to payflow
+			else if (paymentData instanceof CreditCardPaymentData)
+			{
+				contestPaymentData.setPaymentTypeId(PAYMENT_TYPE_PAYPAL_PAYFLOW);
+			}
 			contestPaymentData.setContestId(tobeUpdatedCompetition.getContestData().getContestId());
 			contestPaymentData.setPaymentStatusId(CONTEST_PAYMENT_STATUS_PAID);
 			contestPaymentData.setPrice(tobeUpdatedCompetition.getContestData().getContestAdministrationFee());
