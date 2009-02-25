@@ -2,37 +2,15 @@
 <tc:SubmissionViewerWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
     xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
     xmlns:tcimg="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoomviewer.*"
-    title="Submission Viewer"
     creationComplete="init()" 
     width="100%" 
     height="100%" 
-    headerHeight="0"
-    layout="vertical"
+    styleName="NewWidgetPanel"
     horizontalAlign="left"
-    styleName="panel">
+   >
     
-    <mx:Style>
-		.ZoomInButton {		
-			disabledSkin: Embed(source="../assets/icon/imageZoomViewerIcons.swf",symbol="MinusButton_Disabled");
-			downSkin: Embed(source="../assets/icon/imageZoomViewerIcons.swf",symbol="MinusButton_Down");
-			overSkin: Embed(source="../assets/icon/imageZoomViewerIcons.swf",symbol="MinusButton_Over");
-			upSkin: Embed(source="../assets/icon/imageZoomViewerIcons.swf",symbol="MinusButton_Up");		
-		}	
-
-		.ZoomOutButton {		
-			disabledSkin: Embed(source="../assets/icon/imageZoomViewerIcons.swf",symbol="PlusButton_Disabled");
-			downSkin: Embed(source="../assets/icon/imageZoomViewerIcons.swf",symbol="PlusButton_Down");
-			overSkin: Embed(source="../assets/icon/imageZoomViewerIcons.swf",symbol="PlusButton_Over");
-			upSkin: Embed(source="../assets/icon/imageZoomViewerIcons.swf",symbol="PlusButton_Up");
-		}
-		
-		.ImageInNewWindowButton {		
-			disabledSkin: Embed(source="../assets/image/clickToMax.png");
-			downSkin: Embed(source="../assets/image/clickToMax.png");
-			overSkin: Embed(source="../assets/image/clickToMax.png");
-			upSkin: Embed(source="../assets/image/clickToMax.png");
-		}
-	</mx:Style>
+	<!-- BUGR-1142 -->
+    <mx:Style source="Style.css" />
 
     <mx:Script>
         <![CDATA[
@@ -132,6 +110,9 @@
 			public static const ACTIVE_STATUS:int = 1;
 			
 			[Bindable]
+			private var _placeLabel:String = "";
+			
+			[Bindable]
 			private var _clientProjectNames:ArrayCollection=new ArrayCollection();
 			
 			private var p:ProgressWindow=null;
@@ -179,6 +160,9 @@
 		    }
 
 	    	private function initComponent():void {
+				// BUGR-1142
+	    		onPreviewResize();
+
 	    		trace("Initializing Component");
             	// add list of active contest types here.
             	// Active Contests should show contests with a status of: 
@@ -345,6 +329,32 @@
 				}
             }
             
+            // since BUGR-1142
+            private function onPreviewResize():void {
+            	previewBox2.graphics.clear();
+            	
+            	drawGradient(previewBox2, [0x656565, 0x333333]);
+				drawInnerBorder(previewBox2);
+            }
+            
+            private function drawInnerBorder(c:Container):void {
+            	const H:int = 6;
+            	c.graphics.beginFill(0x000000, 0.2);
+				c.graphics.drawRect(0, 0, c.width, H);
+				c.graphics.drawRect(0, H, H, c.height - H);
+				c.graphics.drawRect(c.width - H, H, H, c.height - H);
+				c.graphics.drawRect(H, c.height - H, c.width - 2 * H, H);
+				c.graphics.endFill();
+            }
+            
+            private function drawGradient(c:Container, fillColors:Array):void {
+            	var matrix:Matrix = new Matrix();
+				matrix.createGradientBox(c.width, c.height, 90 * Math.PI / 180);
+				c.graphics.beginGradientFill("linear", fillColors, [1,1], [0, 255] , matrix, "pad", "rgb", 0.5);
+				c.graphics.drawRect(0, 0, c.width, c.height);
+				c.graphics.endFill();
+		    }
+			
             [Bindable] 
             private var activeSubmission:ArrayCollection = new ArrayCollection();
             
@@ -1581,7 +1591,7 @@
 	    	event.stopImmediatePropagation();
 	    }
 	    
-		public function linkHandler(event:TextEvent):void {
+		public function linkHandler():void {
 			// Open the link in a new window.
 			navigateToURL(new URLRequest("http://"+Application.application.parameters.studioAddress+"/?module=DownloadSubmission&sbmid=" + list.selectedItem.id), '_blank')
 		}
@@ -1734,6 +1744,7 @@
 	height="100%"
 	resizeToContent="true">
     <mx:HDividedBox id="contestViewer" 
+    	backgroundAlpha="1"
         width="100%" 
         height="100%" 
         paddingTop="2" 
@@ -1741,25 +1752,27 @@
         paddingRight="0" 
     	dividerDrag="onDividerDrag(event)" 
     	mouseDown="onMouseDown(event)" 
-    	 
+
     	resizeToContent="true">
-        <mx:VBox id="leftPanel" horizontalAlign="left" height="100%" width="200" 
+        <mx:VBox id="leftPanel" horizontalAlign="left" height="100%" width="125" 
         	verticalGap="0">
             <mx:ViewStack id="thumbnailPanel" width="100%" height="100%">
-            	<mx:VBox id="thumbnailPanel_enabled" horizontalAlign="center">
-	            	<mx:Button buttonMode="true" click="reorder()" label="prioritize" styleName="ButtonStyle"/>
-	            	<mx:VBox horizontalAlign="center" height="100%" width="100%"
-		                    paddingLeft="0" paddingRight="0" >
+            	<mx:HBox id="thumbnailPanel_enabled" horizontalAlign="center"
+            		horizontalGap="0" 
+            		>
+	            	<mx:VBox horizontalAlign="center" width="100%"
+		                    paddingLeft="0" paddingRight="0" styleName="thumbnailBgr">
 		                
 		            	<mx:Spacer height="5" />
 		                <mx:Button buttonMode="true" id="up" styleName="up" click="goUp(null)" />
 		                <tc:CustomTileList id="list" 
-		                		rowCount="4" 
+		                		rowCount="7" 
 		                		width="100%" 
-		                		columnWidth="100"
-		                		columnCount="2"
+		                		columnWidth="123"
+		                		rowHeight="75"
+		                		columnCount="3"
 		                        selectionDuration="0"
-		                        rowHeight="80"
+
 		                        dataProvider="{activeSubmission}" 
 		                        itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer" itemsChangeEffect="{myDTLE}"
 		                        verticalScrollPolicy="off" 
@@ -1768,10 +1781,15 @@
 		                        click="handleSelect()" 
 		                        allowMultipleSelection="false" 
 		                        allowDragSelection="false"
-		                        />
+		                        backgroundColor="#EEEEEE"
+					            />
 		                <mx:Button buttonMode="true" id="down" styleName="down" click="goDown(null)" />
+		            	<mx:Spacer />
+		                <mx:Button buttonMode="true" click="reorder()" label="PRIORITIZE" styleName="ButtonStyle"/>
+	            	
 		            </mx:VBox>
-	            </mx:VBox>
+	            	<mx:VRule height="100%" strokeColor="#DBDBDB"/>
+	            </mx:HBox>
 	            <mx:VBox id="thumbnailPanel_disabled" 
 	            	width="100%" height="100%" 
 	            	paddingLeft="15" 
@@ -1787,12 +1805,11 @@
         		height="100%" 
         		verticalGap="0"
         		horizontalGap="0" 
-        		backgroundColor="#ffffff"
         		paddingLeft="2"
         		paddingRight="2"
         		
         		verticalScrollPolicy="off">
-        	<mx:VBox styleName="BoxStyle" 
+        	<mx:VBox 
         	    width="100%"
         	    height="100%">
         	    <mx:Spacer height="9" width="100%"/>
@@ -1806,94 +1823,132 @@
                             itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{_contestList}" />
                     <mx:HBox horizontalAlign="right" width="100%" paddingRight="10">
                         <mx:Label text="Filter By:" styleName="normalText"/>                
-                        <mx:VBox>
-                            <mx:CheckBox id="showActive" label="Active Contests" styleName="CheckBoxStyle"
+                        <mx:CheckBox id="showActive" label="Active Contests" 
+
                                 selected="true" change="doFilter()" />
-                            <mx:CheckBox id="showPast" label="Past Contests" styleName="CheckBoxStyle"
+                         <mx:CheckBox id="showPast" label="Past Contests" 
                                 selected="true" change="doFilter()" />    
-                        </mx:VBox>       
                     </mx:HBox>         
                 </mx:HBox>
+                <!-- BUGR-1142 -->
+                <mx:Spacer height="9"/>
+            	<mx:HRule width="100%" />
             </mx:VBox>
+
             <mx:Spacer height="4"/>
             <mx:ViewStack width="100%" height="100%" id="contestViewerCenterPanel">
 	            <mx:VBox id="imageViewerScreen" 
 	            	horizontalAlign="center" 
-	            	styleName="BoxStyle" width="100%" 
-	            	paddingTop="5">
-	            	
-	            	<mx:Label htmlText="{'&lt;b&gt;' + _currentItemLabel + '&lt;/b&gt;' + ' (Status: ' + _selectedContestStatus + ')'}" 
-	                    		fontFamily="Arial"
-	                    		textAlign="center" 
-		                        fontSize="14" 
-		                        width="100%" />
-	            	
+	            	verticalAlign="top"
+	            	width="100%" 
+	            	verticalGap="0"
+	            	>
+
+					<mx:HBox width="100%">
+						<mx:Label width="125" styleName="header" fontSize="16" text="{_placeLabel}" />
+		            	<mx:Label styleName="header" fontSize="16" text="{_currentItemLabel}"/>
+					</mx:HBox>
+					<mx:Label paddingLeft="125" text="(Status: {_selectedContestStatus})" width="100%" />
+	         		<mx:HBox width="100%" 
+			               horizontalAlign="center"
+			               verticalAlign="bottom"
+			               horizontalGap="0"
+			               verticalScrollPolicy="off" 
+			               horizontalScrollPolicy="off">
+			               
+	                  	
+			            <mx:Label text="You are viewing the Preview Image." baseline="20"/>
+			            <mx:LinkButton label="Download" click="{linkHandler()}" />
+			            <mx:Label text="the Full Submission here." />   
+                    </mx:HBox>
 	            	<mx:HBox horizontalAlign="center" width="100%" height="100%" paddingLeft="10" paddingRight="10">
 	                    <mx:VBox height="100%" verticalAlign="middle">
 	                        <mx:Button buttonMode="true" id="prev" styleName="prev" click="goPrev()"/>
 	                    </mx:VBox>
-	                    <mx:VBox height="100%" 
+	                    <mx:Box height="100%" 
 	                    		width="100%" 
-	                    		borderStyle="solid"
-	                    		horizontalAlign="center">
-		                    
-							<!-- Changes for bugr-1059: Submission Viewer Preview Image -->
-	                        <mx:Canvas id="imagePreviewerCanvas" 
-	                            borderStyle="solid" 
-	                            minWidth="526" 
-	                            minHeight="526" 
-	                            width="100%" 
-	                            height="100%"
-	                            horizontalScrollPolicy="off"
-	                            verticalScrollPolicy="off"
-	                            >
-	                            <tcimg:ImageViewer id="currentImage" smoothBitmap="true"
-										bitmapScaleFactorMax="5"
-										bitmapScaleFactorMin=".05"
+	                    		minWidth="675" 
+	                            minHeight="415"
+
+
+
+
+
+
+	                    		styleName="previewAreaBorder"
+	                    		id="previewBox1"
+	                    		horizontalAlign="center"
+	                    		verticalAlign="middle"
+	                    		horizontalScrollPolicy="off"
+	                    		verticalScrollPolicy="off"
+	                    		resize="{onPreviewResize()}"
+	                    		>
+	                    	<mx:HBox id="previewBox2" 
+	                    		width="{previewBox1.width - 17}" 
+	                    		height="{previewBox1.height - 18}"
+	                    		horizontalAlign="left"
+	                    		
+	                    		>
+	                            <mx:VBox horizontalAlign="left" id="zoomPanelButtons"
+	                            	paddingLeft="20" paddingTop="20" 
+	                    			>
+
+
+
+
+										<mx:Button buttonMode="true"
+											styleName="ZoomInButton"
+											toolTip="Zoom In"
+											click="{currentImage.zoom('in');}"
+											/>
 										
-										width="{imagePreviewerCanvas.width - 2}" 
-										height="{imagePreviewerCanvas.height - 2}" 
-										x="0" y="0"/>
-								<mx:Button buttonMode="true" styleName="ImageInNewWindowButton"
-									   toolTip="Click here to get full screen view in a new window"
-									   click="openImageInNewWindow(event)"
-									   top="2"
-									   right="2"/>
-									   
-                            	<mx:VBox left="10" top="10" width="20">
-									<mx:Spacer/>
-								
-									<mx:Button buttonMode="true"
-										styleName="ZoomOutButton"
-										toolTip="Zoom In"
-										click="{currentImage.zoom('in');}"
-										/>
-									
-									<mx:HBox 
-										width="20"
-										>
-									
+
+
+
+
 										<mx:VSlider
 											minimum="{ currentImage.bitmapScaleFactorMin }" 
 											maximum="{ currentImage.bitmapScaleFactorMax }" 
 											value  ="{ currentImage.bitmapScaleFactor }"	
-											change ="{ currentImage.setZoom(VSlider(event.currentTarget).value) }" 				
+											change ="{ currentImage.setZoom(VSlider(event.currentTarget).value) }"
 											snapInterval=".001"
 											liveDragging="true" 
+											styleName="sliderStyle"
+											sliderThumbClass="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.VSliderThumbSkin"
+											
 											/>	
-														
-									</mx:HBox>
-						
-									<mx:Button buttonMode="true"
-										styleName="ZoomInButton"
-										toolTip="Zoom Out"
-										click="{ currentImage.zoom('out'); }"			
-										/>	
 								
-									<mx:Spacer/>
-								</mx:VBox>	
-	                        </mx:Canvas>
-	                    </mx:VBox>
+										<mx:Button buttonMode="true"
+											styleName="ZoomOutButton"
+											toolTip="Zoom Out"
+											click="{ currentImage.zoom('out'); }"			
+											/>	
+									
+										<mx:Spacer/>
+										
+										<mx:Button buttonMode="true" styleName="ImageInNewWindowButton"
+										   toolTip="Click here to get full screen view in a new window"
+										   click="openImageInNewWindow(event)"
+										  />
+									</mx:VBox>	
+								<!-- Changes for bugr-1059: Submission Viewer Preview Image -->
+		                        <mx:Canvas  
+		                            width="{previewBox2.width - 2 * (zoomPanelButtons.width) - 10}"
+		                            height="100%"
+		                            horizontalScrollPolicy="off"
+		                            verticalScrollPolicy="off"
+		                            id="imagePreviewerCanvas"
+		                            >
+		                            <tcimg:ImageViewer id="currentImage" smoothBitmap="true"
+											bitmapScaleFactorMax="5"
+											bitmapScaleFactorMin=".05"
+											
+											width="{imagePreviewerCanvas.width - 2}" 
+											height="{imagePreviewerCanvas.height - 2}" 
+											x="0" y="0"/>
+		                        </mx:Canvas>
+	                        </mx:HBox>
+	                    </mx:Box>
 	                    <mx:VBox height="100%" verticalAlign="middle">
 	                        <mx:Button buttonMode="true" id="next" styleName="next" click="goNext()"/>
 	                    </mx:VBox>
@@ -1902,35 +1957,21 @@
 			               horizontalAlign="center"
 			               verticalScrollPolicy="off" 
 			               horizontalScrollPolicy="off">
-			<mx:Label 
-				selectable="true" 
-				link="linkHandler(event)" 
-				htmlText="You are viewing the Preview Image.  &lt;a href='event:#'&gt;Download the Full Submission here.&lt;/a&gt;"
-				fontFamily="Arial"
-				textAlign="center" 
-	                        fontSize="14"
-	                        color="Red" 
-	                        fontWeight="bold"/>
-                    </mx:HBox>
-                    <mx:HBox width="100%" 
-			               horizontalAlign="center"
-			               verticalScrollPolicy="off" 
-			               horizontalScrollPolicy="off">
 			            <!--<mx:Spacer width="260" />-->
                         <mx:ToggleButtonBar horizontalAlign="center" horizontalGap="20"  
                                 id="rankBar" selectedIndex="-1"
-                                buttonWidth="23" 
-                                buttonHeight="23" 
+                                buttonWidth="85" 
+                                buttonHeight="24" 
                                 buttonStyleName="rankButton">
-                            <mx:String>1</mx:String>
-                            <mx:String>2</mx:String>
-                            <mx:String>3</mx:String>
-                            <mx:String>4</mx:String>
-                            <mx:String>5</mx:String>
+                            <mx:String>1st Place</mx:String>
+                            <mx:String>2nd Place</mx:String>
+                            <mx:String>3rd Place</mx:String>
+                            <mx:String>4th Place</mx:String>
+                            <mx:String>5th Place</mx:String>
                         </mx:ToggleButtonBar>
                         <!--<mx:Spacer width="100%" />-->
                     </mx:HBox>
-                    <mx:HBox width="100%" 
+                <!--    <mx:HBox width="100%" 
 			               horizontalAlign="center"
 			               verticalScrollPolicy="off" 
 			               horizontalScrollPolicy="off" horizontalGap="20">
@@ -1939,7 +1980,7 @@
                             <mx:Label text="3rd" height="23" fontWeight="bold"/>
                             <mx:Label text="4th" height="23" fontWeight="bold"/>
                             <mx:Label text="5th" height="23" fontWeight="bold"/>
-                    </mx:HBox>
+                    </mx:HBox> -->
                     <mx:HBox width="100%" horizontalAlign="right"
                            verticalScrollPolicy="off" 
                            horizontalScrollPolicy="off">
@@ -1966,21 +2007,25 @@
 		            			<mx:VBox id="purchase_enabled" 
 		            				borderStyle="solid" 
 		            				width="100%" 
+		            				borderColor="#DBDBDB"
 		            				verticalScrollPolicy="off" 
 			            			horizontalScrollPolicy="off"
 			            			height="90"
+			            			backgroundColor="#FAFAFA"
 			            			paddingLeft="18" 
 			            			paddingRight="18">
 			            			<mx:CheckBox id="purchase" label="I would like to purchase this submission." 
 			            					change="updateSubmission(false)" styleName="CheckBoxStyle" />
 			            			<mx:Canvas height="1" width="100%" backgroundColor="#797979" />
-			            			<mx:Label text="{'Submission Selected to Purchase:' + _purchaseTotal}" styleName="text" />
+			            			<mx:Label text="{'Submission Selected to Purchase: ' + _purchaseTotal}" styleName="text" />
 			            			<mx:Label text="{'Estimated Total Cost: $' + _purchaseMoney}" styleName="text" />
 			            		</mx:VBox>
 			            		<mx:VBox id="purchase_disabled" 
 			            			borderStyle="solid" 
+			            			borderColor="#DBDBDB"
 			            			width="100%" 
 			            			height="90"
+			            			backgroundColor="#FAFAFA"
 			            			verticalScrollPolicy="off" 
 			            			horizontalScrollPolicy="off"
 			            			paddingLeft="18" 
@@ -1998,7 +2043,7 @@
 	                </mx:HBox>
 	                <mx:HBox width="100%" horizontalAlign="right" paddingBottom="4" paddingRight="4">
 	                    <!--<mx:Button id="save_contestViewer_btn" label="save as draft" styleName="ButtonStyle" click="saveContestAsDraft()" /> -->
-	                    <mx:Button id="continue_contestViewer_btn" buttonMode="true" label="continue &gt;&gt;" styleName="ButtonStyle" click="continueFromContestViewer()" />
+	                    <mx:Button id="continue_contestViewer_btn" buttonMode="true" label="CONTINUE" styleName="ButtonStyle" click="continueFromContestViewer()" />
 	                </mx:HBox>
 	            </mx:VBox>
         		<mx:VBox id="abandonConfirmationScreen" paddingTop="22" verticalGap="7" width="100%" styleName="BoxStyle">
@@ -2098,7 +2143,7 @@
 		paddingRight="15"
 		verticalScrollPolicy="off" 
 		horizontalScrollPolicy="off">
-		<mx:Label text="Confirm your Selections" fontSize="16" styleName="normalText" />
+		<mx:Label text="Confirm your Selections" fontSize="16" styleName="header" />
 		<mx:Text width="100%" styleName="text" 
 				text="Please confirm your selection of the winning submissions as well as any additional submissions you wish to purchase." />
 		<mx:Canvas height="1" width="100%" backgroundColor="#797979" />
@@ -2118,7 +2163,7 @@
         </mx:HBox>
 	</mx:VBox>
 	<mx:VBox id="submissionCheckoutScreen" width="100%" height="100%" paddingTop="10" paddingBottom="25" paddingLeft="15" paddingRight="15">
-		<mx:Label id="header" text="Purchase your Submissions" fontSize="16" styleName="normalText" />
+		<mx:Label id="header" text="Purchase your Submissions" fontSize="16" styleName="header" />
 		<mx:Text id="text1" width="100%" styleName="text" 
 				htmlText="Feedback will be here..." />
 		<tc:GridCanvas width="100%" height="100%" listData="{_downloadList}" />
@@ -2155,7 +2200,7 @@
 		verticalScrollPolicy="off" 
 		horizontalScrollPolicy="off"
 		>
-		<mx:Label text="Download Submissions" fontSize="16" styleName="normalText" />
+		<mx:Label text="Download Submissions" fontSize="16" styleName="header" />
 		<mx:Text width="100%" styleName="text" 
 				text="Here are the winning submissions and any submissions you decided to purchase from your contest. " />
 		<mx:Canvas height="1" width="100%" backgroundColor="#797979" />
@@ -2170,7 +2215,7 @@
             allowMultipleSelection="false" 
             allowDragSelection="false"/>
         <mx:HBox width="100%">
-        	<mx:Button buttonMode="true" styleName="ButtonStyle" label="&lt;&lt; Back" click="gotoContestViewer()" />
+        	<mx:Button buttonMode="true" label="BACK" styleName="ButtonStyle" click="gotoContestViewer()" />
         </mx:HBox>
 	</mx:VBox>    	
 </mx:ViewStack>

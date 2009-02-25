@@ -25,7 +25,7 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
      * @author TCSDEVELOPER
      * @version 1.0
      */
-     public class SubmissionViewerWidgetCodeBehind extends Panel implements IWidget {
+     public class SubmissionViewerWidgetCodeBehind extends VBox implements IWidget { // BUGR-1142
         /**
          * The name of the widget.
          */

@@ -590,64 +590,62 @@ VBox.ContestRow
 	color: #000000;
 }	
 
+/* BUGR-1142
 .prev {
-	skin: Embed("../assets/arrow_left.png");
-	over-skin: Embed("../assets/arrow_left.png");
-	down-skin: Embed("../assets/arrow_left.png");
+	skin: Embed("../assets/btn_left_arrow.png");
+	over-skin: Embed("../assets/btn_left_arrow_hover.png");
+	down-skin: Embed("../assets/btn_left_arrow_hover.png");
 }
 
 .next {
-	skin: Embed("../assets/arrow_right.png");
-	over-skin: Embed("../assets/arrow_right.png");
-	down-skin: Embed("../assets/arrow_right.png");
+	skin: Embed("../assets/btn_right_arrow.png");
+	over-skin: Embed("../assets/btn_right_arrow_hover.png");
+	down-skin: Embed("../assets/btn_right_arrow_hover.png");
 }
 
 .up {
-	skin: Embed("../assets/arrow_up.png");
-	over-skin: Embed("../assets/arrow_up.png");
-	down-skin: Embed("../assets/arrow_up.png");	
+	skin: Embed("../assets/btn_top_arrow.png");
+	over-skin: Embed("../assets/btn_top_arrow_hover.png");
+	down-skin: Embed("../assets/btn_top_arrow_hover.png");	
 }
 
 .down {
-	skin: Embed("../assets/arrow_down.png");
-	over-skin: Embed("../assets/arrow_down.png");
-	down-skin: Embed("../assets/arrow_down.png");	
+	skin: Embed("../assets/btn_bottom_arrow.png");
+	over-skin: Embed("../assets/btn_bottom_arrow_hover.png");
+	down-skin: Embed("../assets/btn_bottom_arrow_hover.png");	
 }
-
+ */
+ 
+/*
 .rankButton {
-	color: #ffffff;
-	font-weight:bold;
-	
-	skin: Embed("../assets/23x23_norank.png");
-	over-skin: Embed("../assets/23x23_norank_over.png");
-	down-skin: Embed("../assets/23x23_norank_down.png");
-	selected-over-skin: Embed("../assets/23x23_norank_over.png");
-	selected-up-skin: Embed("../assets/23x23_norank_down.png");
-	selected-down-skin: Embed("../assets/23x23_norank_down.png");
-	
-	/*skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankButtonSkin');
-	over-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankButtonSelectedSkin');
-	down-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankButtonSelectedSkin');
-	selected-over-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankButtonSelectedSkin');
-	selected-up-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankButtonSelectedSkin');
-	selected-down-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankButtonSelectedSkin');*/
-	padding-left:0;
+	color: #000000;
+	font-weight: normal;
+	font-size: 12;
+	font-family: Arial;
+	padding-left: 5;
 	padding-right:0;
+	text-align: left;
+	
+	skin: Embed("../assets/btn_check_grey.png");
+	over-skin: Embed("../assets/btn_check_green_hover.png");
+	down-skin: Embed("../assets/btn_check_green.png");
+	selected-over-skin: Embed("../assets/btn_check_green_hover.png");
+	selected-up-skin: Embed("../assets/btn_check_green.png");
+	selected-down-skin: Embed("../assets/btn_check_green.png");
+	
 }
-
+*/
+/*
 .rankLogo {
 	color: #ffffff;
 	font-weight:bold;
-	/*skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankLogoSkin');
-	over-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankLogoSkin');
-	down-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.skins.RankLogoSkin');*/
 	skin: Embed("../assets/26x26_norank.png");
 	over-skin: Embed("../assets/26x26_norank.png");
 	down-skin: Embed("../assets/26x26_norank.png");
 	padding-left:0;
 	padding-right:0;
 }
-
+*/
 .purchaseLogo {
 	background-image: Embed("../assets/purchase.png"); 
 }
@@ -663,7 +661,7 @@ VBox.ContestRow
 			scaleGridTop="2",scaleGridLeft="2",
 			scaleGridRight="275",scaleGridBottom="21");
 }
-
+/*
 .CheckBoxStyle {
 	font-weight: normal;
 	font-size: 12;
@@ -674,7 +672,7 @@ VBox.ContestRow
 	selected-over-icon: Embed("../assets/checkbox_checked.png");
 	icon: Embed("../assets/checkbox.png");
 }
-
+*/
 .first {
 	border-style: solid;
 	border-color: #a9a9a9;
@@ -724,7 +722,7 @@ VBox.ContestRow
 	padding-left: 7;
 	padding-right: 7;
 }
-
+/* since BUGR-1142
 .BoxStyle {
 	corner-radius: 5;
 	border-style: solid;
@@ -745,4 +743,53 @@ VBox.ContestRow
 	border-thickness: 1;
 	corner-radius: 10;
 	background-color: #000000;
+}
+*/
+
+/* BUGR-1142 
+.headingText {
+	font-family: Arial;
+	color: #CC0000;
+	font-weight: bold;
+	font-size: 12;
+}*/
+/*	
+.backButton {
+	upSkin: Embed('../assets/btn_Back.png');
+    overSkin: Embed('../assets/btn_Back_hover.png');
+    downSkin: Embed('../assets/btn_Back_hover.png');
+}
+
+.nextButton {
+	upSkin: Embed('../assets/btn_Next.png');
+    overSkin: Embed('../assets/btn_Next_hover.png');
+    downSkin: Embed('../assets/btn_Next_hover.png');
+}
+*/
+.thumbnailBgr {
+	background-color: #eeeeee;
+}
+
+.previewAreaBorder {
+	border-skin: Embed('../assets/image_preview_border.png',scaleGridTop="15",scaleGridLeft="15",scaleGridRight="670",scaleGridBottom="400");
+}
+
+.ZoomInButton {		
+	disabledSkin: Embed(source="../assets/zoom_in.png");
+	downSkin: Embed(source="../assets/zoom_in_hover.png");
+	overSkin: Embed(source="../assets/zoom_in_hover.png");
+	upSkin: Embed(source="../assets/zoom_in.png");		
+}	
+
+.ZoomOutButton {		
+	disabledSkin: Embed(source="../assets/zoom_out.png");
+	downSkin: Embed(source="../assets/zoom_out_hover.png");
+	overSkin: Embed(source="../assets/zoom_out_hover.png");
+	upSkin: Embed(source="../assets/zoom_out.png");			}
+
+.ImageInNewWindowButton {		
+	disabledSkin: Embed(source="../assets/zoom_new_window.png");
+	downSkin: Embed(source="../assets/zoom_new_window_hover.png");
+	overSkin: Embed(source="../assets/zoom_new_window_hover.png");
+	upSkin: Embed(source="../assets/zoom_new_window.png");
 }
