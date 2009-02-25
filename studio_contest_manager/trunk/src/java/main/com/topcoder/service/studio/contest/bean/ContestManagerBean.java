@@ -36,6 +36,7 @@ import javax.persistence.TransactionRequiredException;
 
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.service.project.Project;
+import com.topcoder.service.studio.PaymentType;
 import com.topcoder.service.studio.contest.ContestChangeHistory;
 import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.ContestChannel;
@@ -4066,6 +4067,61 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "There are errors while deleting the contest.");
         } finally {
             logExit("deleteContest()");
+        }
+    }
+
+    /**
+     * <p>
+     * Gets all payment types to return. If no payment types exist, return an empty list.
+     * </p>
+     * 
+     * @return a list of payment types
+     * @throws ContestManagementException
+     *             if any error occurs when getting payment types
+     * @since BUGR-1076
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<PaymentType> getAllPaymentTypes() throws ContestManagementException {
+        try {
+            logEnter("getAllPaymentTypes()");
+
+            return getAll(PaymentType.class);
+
+        } finally {
+            logExit("getAllPaymentTypes()");
+        }
+    }
+
+    /**
+     * <p>
+     * Get the PaymentType with the specified id.
+     * </p>
+     * 
+     * @param paymentTypeId
+     *            id to look for
+     * @return the PaymentType with the specified id.
+     * @throws ContestManagementException
+     *             if any error occurs when getting PaymentStatus
+     * @since BUGR-1076
+     */
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public PaymentType getPaymentType(long paymentTypeId) throws ContestManagementException {
+        try {
+            logEnter("getPaymentType()");
+            logOneParameter(paymentTypeId);
+
+            EntityManager em = getEntityManager();
+
+            return em.find(PaymentType.class, paymentTypeId);
+
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("getPaymentType()");
         }
     }
 }

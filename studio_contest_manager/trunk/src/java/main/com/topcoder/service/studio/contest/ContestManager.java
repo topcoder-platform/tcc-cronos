@@ -16,6 +16,7 @@ import com.topcoder.service.studio.submission.ContestResult;
 import com.topcoder.service.studio.submission.PaymentStatus;
 import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.service.studio.submission.PrizeType;
+import com.topcoder.service.studio.PaymentType;
 
 /**
  * <p>
@@ -1174,4 +1175,26 @@ public interface ContestManager {
      *             if any other error occurs.
      */
     public void deleteContest(long contestId) throws ContestManagementException;
+
+    /**
+     * Loads and returns the list of payment types (currently it is 'Paypal' and 'TC Purchase order')
+     * 
+     * @since BUGR-1067
+     * @return list of payment types
+     * @throws PersistenceException
+     *             if any error occurs
+     */
+    public List<PaymentType> getAllPaymentTypes() throws ContestManagementException;
+
+    /**
+     * Loads and returns the concrete payment type
+     * 
+     * @since BUGR-1076
+     * @param id
+     *            the id of paymentTypeId
+     * @return list of payment types
+     * @throws PersistenceException
+     *             if any error occurs
+     */
+    public PaymentType getPaymentType(long paymentTypeId) throws ContestManagementException;
 }
