@@ -1,0 +1,25 @@
+Starting audit...
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\DemoTest.java:237:11: Catching 'RuntimeException' is not allowed.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\DemoTest.java:247:11: Catching 'RuntimeException' is not allowed.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\ProjectServicesFactoryTest.java:59:20: '<' is not preceded with whitespace.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\ProjectServicesFactoryTest.java:59:21: '<' is not followed by whitespace.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\ProjectServicesFactoryTest.java:59:43: '>' is not preceded with whitespace.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\impl\ErrorPhaseManager.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'PhaseManagementException'.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\impl\ErrorProjectManager.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'PersistenceException'.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\impl\ErrorResourceManager.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'ResourcePersistenceException'.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\impl\MockPhaseManager.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'PhaseManagementException'.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\impl\MockProjectManager.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'PersistenceException'.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\impl\MockProjectRetrieval.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'RetrievalException'.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\impl\MockResourceManager.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'ResourcePersistenceException'.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\impl\MockTeamManager.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'InvalidTeamException'.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\impl\TestHelper.java:58:22: '<' is not preceded with whitespace.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\impl\TestHelper.java:58:23: '<' is not followed by whitespace.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\impl\TestHelper.java:58:23: '?' is not preceded with whitespace.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\impl\TestHelper.java:58:24: '>' is not preceded with whitespace.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\impl\TestHelper.java:58:24: '?' is not followed by whitespace.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\impl\TestHelper.java:79:45: '<' is not preceded with whitespace.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\impl\TestHelper.java:79:46: '<' is not followed by whitespace.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\impl\TestHelper.java:79:46: '?' is not preceded with whitespace.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\impl\TestHelper.java:79:47: '>' is not preceded with whitespace.
+F:\component\Project_Services_1.1\src\java\tests\com\topcoder\project\service\impl\TestHelper.java:79:47: '?' is not followed by whitespace.
+Audit done.
