@@ -57,6 +57,7 @@ import com.topcoder.service.studio.StatusNotFoundException;
 import com.topcoder.service.studio.StudioService;
 import com.topcoder.service.studio.StudioServiceException;
 import com.topcoder.service.studio.SubmissionData;
+import com.topcoder.service.studio.SubmissionPaymentData;
 import com.topcoder.service.studio.UploadedDocument;
 import com.topcoder.service.studio.UserNotAuthorizedException;
 import com.topcoder.service.studio.contest.Contest;
@@ -3964,5 +3965,60 @@ public class StudioServiceBean implements StudioService {
         }
 
         return null;
+    }
+
+    /**
+     * <p>
+     * Purchase submission.
+     * </p>
+     * <p>
+     * set the price of submission. create an entry at submission payment table
+     * </p>
+     *
+     * @param submissionId
+     *            the id of submission to purchase.
+     * @param payment
+     *            the submission payment data
+     * @param username
+     *            the username.
+     *
+     * @throws PersistenceException
+     *             if any error occurs when purchasing submission.
+     * @throws IllegalArgumentWSException
+     *             if the submissionId is less than 0 or price is negative.
+     */
+    public void purchaseSubmission(long submissionId, SubmissionPaymentData payment, String username)
+            throws PersistenceException {
+        logEnter("purchaseSubmission", submissionId, payment);
+        checkParameter("submissionId", submissionId);
+        checkParameter("payment", payment);
+        checkParameter("username", username);
+
+        try {
+            Submission submission = submissionManager.getSubmission(submissionId);
+            // get the contest that the submission belongs to
+            if (submission == null) {
+                handleIllegalWSArgument("Submission with id " + submissionId + " is not found.");
+            }
+
+            Contest contest = submission.getContest();
+
+//            authorizeWithUsername(username, contest);
+            SubmissionPayment submissionPayment = new SubmissionPayment();
+            submissionPayment.setPrice(payment.getAmount());
+            submissionPayment.setPayPalOrderId(payment.getPaymentReferenceNumber());
+            PaymentStatus status = contestManager.getPaymentStatus(payment.getPaymentStatusId());
+            if (status == null) {
+                throw new ContestManagementException("PaymentStatus with id " + payment.getPaymentStatusId() + " is missing.");
+            }
+            submissionPayment.setStatus(status);
+
+            submissionManager.updateSubmissionPayment(submissionPayment);
+        } catch (SubmissionManagementException e) {
+            handlePersistenceError("SubmissionManager reports error.", e);
+        } catch (ContestManagementException e) {
+            handlePersistenceError("contestManager reports error.", e);
+        }
+        logExit("purchaseSubmission");
     }
 }

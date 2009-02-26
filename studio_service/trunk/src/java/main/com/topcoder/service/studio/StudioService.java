@@ -718,4 +718,26 @@ public interface StudioService {
      */
     public List<PaymentType> getAllPaymentTypes() throws PersistenceException;
 
+    /**
+     * <p>
+     * Purchase submission.
+     * </p>
+     * <p>
+     * set the price of submission. create an entry at submission payment table
+     * </p>
+     *
+     * @param submissionId
+     *            the id of submission to purchase.
+     * @param payment
+     *            the submission payment data
+     * @param username
+     *            the username.
+     *
+     * @throws PersistenceException
+     *             if any error occurs when purchasing submission.
+     * @throws IllegalArgumentWSException
+     *             if the submissionId is less than 0 or price is negative.
+     */
+    public void purchaseSubmission(long submissionId, SubmissionPaymentData payment, String username)
+            throws PersistenceException;
 }
