@@ -3066,63 +3066,7 @@ public class StudioServiceBean implements StudioService {
                                 + submissionId);
             }
 
-            // get the first place prize amount for the contest
-            Double firstPlacePrize = null;
-
-            for (Prize prize : contestManager.getContestPrizes(contest.getContestId())) {
-                if (prize.getPlace() != null && prize.getPlace().equals(1)) {
-                    firstPlacePrize = prize.getAmount();
-                    break;
-                }
-            }
-
-            if (firstPlacePrize == null) {
-                throw new ContestManagementException(
-                        "There must be a first placement prize for the contest. Contest id: " + contest.getContestId());
-            }
-
-            double amount = firstPlacePrize;
-
-            // check if the submission has a winner prize
-            boolean isWinner = false;
-            for (Prize p : submission.getPrizes()) {
-                if (p.getType().getPrizeTypeId() == contestPrizeTypeId && p.getAmount() > 0) {
-                    isWinner = true;
-                    break;
-                }
-            }
-
-            // if it doesn't have a winner prize, it's an additional purchase.
-            if (!isWinner) {
-                // the amount of the additional submission is a fraction of the
-                // first place prize.
-                amount = firstPlacePrize * additionalSubmissionPurchasePriceRatio;
-
-                Prize prize = null;
-
-                // If the contest has a prize with null place and prize_type_id
-                // = 2, that prize will be used.
-                for (Prize p : contestManager.getContestPrizes(contest.getContestId())) {
-                    if (p.getPlace() == null && p.getType().getPrizeTypeId() == clientSelectionPrizeTypeId) {
-                        prize = p;
-                        break;
-                    }
-                }
-                if (prize == null) {
-                    // Create prize.
-                    prize = new Prize();
-                    prize.setAmount(amount);
-                    prize.setPlace(null);
-                    prize.setType(contestManager.getPrizeType(clientSelectionPrizeTypeId));
-
-                    prize = submissionManager.addPrize(prize);
-                    contestManager.addPrizeToContest(contest.getContestId(), prize.getPrizeId());
-                }
-
-                submissionManager.addPrizeToSubmission(submissionId, prize.getPrizeId());
-            }
-
-            submissionPayment.setPrice(amount);
+            submissionPayment.setPrice(calculateSubmissionPaymentAmount(contest, submission));
             submissionPayment.setPayPalOrderId(payPalOrderId);
             PaymentStatus status = contestManager.getPaymentStatus(submissionPaidStatusId);
             if (status == null) {
@@ -4004,9 +3948,15 @@ public class StudioServiceBean implements StudioService {
             Contest contest = submission.getContest();
 
 //            authorizeWithUsername(username, contest);
-            SubmissionPayment submissionPayment = new SubmissionPayment();
-            submissionPayment.setPrice(payment.getAmount());
+            SubmissionPayment submissionPayment = submissionManager.getSubmissionPayment(submissionId);
+            submissionPayment.setPrice(calculateSubmissionPaymentAmount(contest, submission));
             submissionPayment.setPayPalOrderId(payment.getPaymentReferenceNumber());
+			submissionPayment.setPaymentReferenceId(payment.getPaymentReferenceNumber());
+			PaymentType type = contestManager.getPaymentType(payment.getPaymentTypeId());
+			if (type == null) {
+                throw new ContestManagementException("PaymentType with id " + payment.getPaymentTypeId() + " is missing.");
+            }
+			submissionPayment.setPaymentType(type);
             PaymentStatus status = contestManager.getPaymentStatus(payment.getPaymentStatusId());
             if (status == null) {
                 throw new ContestManagementException("PaymentStatus with id " + payment.getPaymentStatusId() + " is missing.");
@@ -4020,5 +3970,104 @@ public class StudioServiceBean implements StudioService {
             handlePersistenceError("contestManager reports error.", e);
         }
         logExit("purchaseSubmission");
+    }
+
+    /**
+     * Calculates the payment amount for the specified submission.
+     *
+     * @param contest
+     *            the contest the submission belongs to
+     * @param submission
+     *            the submission to calculate
+     * @return the payment amount
+     * @throws PersistenceException
+     *             when error reported by manager
+     * @throws ContestManagementException
+     *             when error reported by manager
+     * @throws SubmissionManagementException
+     *             when error reported by manager
+     */
+    private double calculateSubmissionPaymentAmount(Contest contest, Submission submission)
+        throws ContestManagementException, SubmissionManagementException, PersistenceException {
+        // get the first place prize amount for the contest
+        Double firstPlacePrize = null;
+
+        for (Prize prize : contestManager.getContestPrizes(contest.getContestId())) {
+            if (prize.getPlace() != null && prize.getPlace().equals(1)) {
+                firstPlacePrize = prize.getAmount();
+                break;
+            }
+        }
+
+        if (firstPlacePrize == null) {
+            throw new ContestManagementException(
+                    "There must be a first placement prize for the contest. Contest id: " + contest.getContestId());
+        }
+
+        double amount = firstPlacePrize;
+
+        // check if the submission has a winner prize
+        boolean isWinner = false;
+        for (Prize p : submission.getPrizes()) {
+            if (p.getType().getPrizeTypeId() == contestPrizeTypeId && p.getAmount() > 0) {
+                isWinner = true;
+				break;
+               
+            }
+        }
+
+        // if it doesn't have a winner prize, it's an additional purchase.
+        if (!isWinner) {
+            // BUGR-1328
+            // get the second place prize amount for the contest
+            Double secondPlacePrize = null;
+
+            for (Prize prize : contestManager.getContestPrizes(contest.getContestId())) {
+                if (prize.getPlace() != null && prize.getPlace().equals(2)) {
+                    secondPlacePrize = prize.getAmount();
+                    break;
+                }
+            }
+
+            if (secondPlacePrize == null) {
+                throw new ContestManagementException(
+                        "There must be a second placement prize for the contest. Contest id: " + contest.getContestId());
+            }
+
+
+            amount = secondPlacePrize;
+
+            Prize prize = null;
+
+            // If the contest has a prize with null place and prize_type_id
+            // = 2, that prize will be used.
+            for (Prize p : contestManager.getContestPrizes(contest.getContestId())) {
+                if (p.getPlace() == null && p.getType().getPrizeTypeId() == clientSelectionPrizeTypeId) {
+                    prize = p;
+                    break;
+                }
+            }
+            if (prize == null) {
+                // Create prize.
+                prize = new Prize();
+                prize.setAmount(amount);
+                prize.setPlace(null);
+                prize.setType(contestManager.getPrizeType(clientSelectionPrizeTypeId));
+
+                prize = submissionManager.addPrize(prize);
+                contestManager.addPrizeToContest(contest.getContestId(), prize.getPrizeId());
+            }
+
+            submissionManager.addPrizeToSubmission(submission.getSubmissionId(), prize.getPrizeId());
+
+			// BUGR-1328
+			// for not winner, need to call pacts
+			if (contest.getContestChannel().getContestChannelId() == 2) {
+				addPayment(submission, prize);
+			}
+			
+        }
+
+        return amount;
     }
 }
