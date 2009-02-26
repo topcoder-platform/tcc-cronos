@@ -3,9 +3,10 @@
  */
 package com.topcoder.service.facade.contest;
 
-import com.topcoder.service.studio.ContestData;
+import com.topcoder.service.studio.CompletedContestData;
 import com.topcoder.service.studio.IllegalArgumentWSException;
 import com.topcoder.service.studio.PersistenceException;
+import com.topcoder.service.studio.SubmissionPaymentData;
 import com.topcoder.service.studio.UserNotAuthorizedException;
 import com.topcoder.service.studio.ContestNotFoundException;
 import com.topcoder.service.studio.ProjectNotFoundException;
@@ -369,8 +370,28 @@ public interface ContestServiceFacade {
      * @throws IllegalArgumentWSException if specified <code>submissionId</code> is negative.
      * @tested
      */
-    public void purchaseSubmission(long submissionId, String payPalOrderId, String securityToken)
-        throws PersistenceException;
+    //public void purchaseSubmission(long submissionId, String payPalOrderId, String securityToken)
+    //        throws PersistenceException;
+    
+    /**
+     * <p>
+     * Purchases the specified submission. E.g. records a fact that submission referenced by specified ID has been paid
+     * </p>
+     * 
+     * @param submissionId
+     *            a <code>long</code> providing the ID of a submission which has been paid for.
+     * @param submissionPaymentData
+     *            a <code>SubmissionPaymentData</code> providing the data of successfully purchased submission.
+     * @param securityToken
+     *            a <code>String</code> providing the security token to be used for tracking the payment and prevent
+     *            fraud.
+     * @throws PersistenceException
+     *             if any error occurs when purchasing submission.
+     * @throws IllegalArgumentWSException
+     *             if specified <code>submissionId</code> is negative.
+     */
+    public void purchaseSubmission(long submissionId, SubmissionPaymentData submissionPaymentData, String securityToken)
+            throws PersistenceException;
 
     /**
      * <p>Creates a new contest payment. Upon creation an unique ID is generated and assigned to returned payment.</p>
@@ -586,9 +607,11 @@ public interface ContestServiceFacade {
      * </li>
      * </ul>
      * </p>
-     *
-     * @param <code>ContestData</code> data that recognizes a contest.
-     * @param <code>PaymentData</code> payment information (credit card/po details) that need to be processed.
+     * 
+     * @param competition
+     *            <code>ContestData</code> data that recognizes a contest.
+     * @param paymentData
+     *            <code>PaymentData</code> payment information (credit card/po details) that need to be processed.
      * @return a <code>PaymentResult</code> result of the payment processing.
      * @throws PersistenceException
      *             if any error occurs when getting contest.
@@ -620,8 +643,8 @@ public interface ContestServiceFacade {
      * </ul>
      * </p>
      * 
-     * @param submissionIds
-     *            submissions identifiers of the submissions that need to be purchased.
+     * @param completedContestData
+     *            data of completed contest.
      * @param paymentData
      *            a <code>PaymentData</code> payment information (credit card/po details) that need to be processed.
      * @return a <code>PaymentResult</code> result of the payment processing.
@@ -630,7 +653,7 @@ public interface ContestServiceFacade {
      * @throws PersistenceException
      *             if any error occurs when retrieving the submission.
      */
-    public PaymentResult processSubmissionCreditCardPayment(long[] submissionIds, CreditCardPaymentData paymentData) throws PaymentException,
+    public PaymentResult processSubmissionCreditCardPayment(CompletedContestData completedContestData, CreditCardPaymentData paymentData) throws PaymentException,
             PersistenceException;
     
     /**
@@ -647,8 +670,8 @@ public interface ContestServiceFacade {
      * </ul>
      * </p>
      * 
-     * @param submissionIds
-     *            submission identifiers of the submissions that need to be purchased.
+     * @param completedContestData
+     *            data of completed contest.
      * @param paymentData
      *            a <code>PaymentData</code> payment information (credit card/po details) that need to be processed.
      * @return a <code>PaymentResult</code> result of the payment processing.
@@ -657,6 +680,6 @@ public interface ContestServiceFacade {
      * @throws PersistenceException
      *             if any error occurs when retrieving the submission.
      */
-    public PaymentResult processSubmissionPurchaseOrderPayment(long[] submissionIds, TCPurhcaseOrderPaymentData paymentData) throws PaymentException,
+    public PaymentResult processSubmissionPurchaseOrderPayment(CompletedContestData completedContestData, TCPurhcaseOrderPaymentData paymentData) throws PaymentException,
             PersistenceException;
 }
