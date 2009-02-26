@@ -11,7 +11,7 @@ import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.persistence.logging.LogMessage;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
+import com.topcoder.util.log.LogManager;
 
 /**
  * <p>
@@ -46,7 +46,7 @@ public class InformixProjectPersistence extends
         AbstractInformixProjectPersistence {
 
 	/** Logger instance using the class name as category */
-    private static final Log LOGGER = LogFactory.getLog(InformixProjectPersistence.class.getName()); 
+    private static final Log LOGGER = LogManager.getLog(InformixProjectPersistence.class.getName()); 
 
     
     /**

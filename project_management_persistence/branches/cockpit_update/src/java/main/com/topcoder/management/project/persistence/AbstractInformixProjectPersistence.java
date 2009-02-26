@@ -74,7 +74,7 @@ import com.topcoder.util.log.Log;
  * @version 1.1
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
-	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
+	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogManager
 			.getLog(AbstractInformixProjectPersistence.class.getName());
 
 	/**
@@ -180,9 +180,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * Represents the sql statement to query projects.
      */
     private static final String QUERY_PROJECTS_SQL = "SELECT "
-            + "project.project_id, status.project_status_id, status.name, "
-            + "category.project_category_id, category.name, type.project_type_id, type.name, "
-            + "project.create_user, project.create_date, project.modify_user, project.modify_date, category.description "
+            + "project.project_id, status.project_status_id, status.name,"
+            + "category.project_category_id, category.name, type.project_type_id, type.name,"
+            + "project.create_user, project.create_date, project.modify_user, project.modify_date, category.description, "
+            + "project.tc_direct_project_id "
             + "FROM project JOIN project_status_lu AS status "
             + "ON project.project_status_id=status.project_status_id "
             + "JOIN project_category_lu AS category "
@@ -199,8 +200,41 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
         Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE,
         Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
-        Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE};
+        Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE};
+    
+    /**
+     * Represents the sql statement to query tc direct projects.
+     */
+    private static final String QUERY_TC_DIRECT_PROJECTS_SQL = "SELECT "
+            + "project.project_id, status.project_status_id, status.name,"
+            + "category.project_category_id, category.name, type.project_type_id, type.name,"
+            + "project.create_user, project.create_date, project.modify_user, project.modify_date, category.description, "
+            + "project.tc_direct_project_id "
+            + "FROM project JOIN project_status_lu AS status "
+            + "ON project.project_status_id=status.project_status_id "
+            + "JOIN project_category_lu AS category "
+            + "ON project.project_category_id=category.project_category_id "
+            + "JOIN project_type_lu AS type "
+            + "ON category.project_type_id=type.project_type_id "
+            + "WHERE project.tc_direct_project_id is not null ";
 
+   
+    /**
+     * Represents the sql statement to query tc direct projects.
+     */
+    private static final String QUERY_USER_TC_DIRECT_PROJECTS_SQL = "SELECT "
+            + "project.project_id, status.project_status_id, status.name, "
+            + "category.project_category_id, category.name, type.project_type_id, type.name,"
+            + "project.create_user, project.create_date, project.modify_user, project.modify_date, category.description, "
+            + "project.tc_direct_project_id "
+            + "FROM project JOIN project_status_lu AS status "
+            + "ON project.project_status_id=status.project_status_id "
+            + "JOIN project_category_lu AS category "
+            + "ON project.project_category_id=category.project_category_id "
+            + "JOIN project_type_lu AS type "
+            + "ON category.project_type_id=type.project_type_id "
+            + "WHERE project.tc_direct_project_id is not null AND project.create_user = ?";  
+    
     /**
      * Represents the sql statement to query project properties.
      */
@@ -245,8 +279,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private static final String CREATE_PROJECT_SQL = "INSERT INTO project "
             + "(project_id, project_status_id, project_category_id, "
-            + "create_user, create_date, modify_user, modify_date) "
-            + "VALUES (?, ?, ?, ?, CURRENT, ?, CURRENT)";
+            + "create_user, create_date, modify_user, modify_date, tc_direct_project_id) "
+            + "VALUES (?, ?, ?, ?, CURRENT, ?, CURRENT, ?)";
 
     /**
      * Represents the sql statement to create project property.
@@ -268,7 +302,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * Represents the sql statement to update project.
      */
     private static final String UPDATE_PROJECT_SQL = "UPDATE project "
-            + "SET project_status_id=?, project_category_id=?, modify_user=?, modify_date=CURRENT "
+            + "SET project_status_id=?, project_category_id=?, modify_user=?, modify_date=CURRENT, tc_direct_project_id=? "
             + "WHERE project_id=?";
 
     /**
@@ -883,11 +917,19 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
     	getLogger().log(Level.INFO, "insert record into project with id:" + projectId);
     	
+    	//set tc_direct_project_id  
+    	Long tcDirectProjectId;
+        if(project.getTcDirectProjectId() > 0 ) {
+        	tcDirectProjectId = new Long(project.getTcDirectProjectId());
+        } else {
+        	tcDirectProjectId = null;
+        }
+        
         // insert the project into database
         Object[] queryArgs = new Object[] {projectId,
             new Long(project.getProjectStatus().getId()),
             new Long(project.getProjectCategory().getId()), operator,
-            operator };
+            operator, tcDirectProjectId};
         Helper.doDMLQuery(conn, CREATE_PROJECT_SQL, queryArgs);
 
         // get the property id - property value map from the project.
@@ -914,11 +956,17 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
         getLogger().log(Level.INFO, new LogMessage(projectId, operator,
         		"update project with projectId:" + projectId));
-        
+        // 
+        Long tcDirectProjectId;
+        if(project.getTcDirectProjectId() > 0 ) {
+        	tcDirectProjectId = new Long(project.getTcDirectProjectId());
+        } else {
+        	tcDirectProjectId = null;
+        }
         // update the project type and project category
         Object[] queryArgs = new Object[] {
             new Long(project.getProjectStatus().getId()),
-            new Long(project.getProjectCategory().getId()), operator,
+            new Long(project.getProjectCategory().getId()), operator, tcDirectProjectId, 
             projectId };
         Helper.doDMLQuery(conn, UPDATE_PROJECT_SQL, queryArgs);
 
@@ -1025,6 +1073,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			    projects[i].setCreationTimestamp(result.getDate(9));
 			    projects[i].setModificationUser(result.getString(10));
 			    projects[i].setModificationTimestamp(result.getDate(11));
+			    projects[i].setTcDirectProjectId(result.getLong(12));
 			    
 			    ps.setLong(1, projects[i].getId());
 			    ResultSet rs = ps.executeQuery();
@@ -1076,51 +1125,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 new Object[] {}, QUERY_PROJECTS_COLUMN_TYPES);
 
         // create the Project array.
-        Project[] projects = new Project[rows.length];
-
-        for (int i = 0; i < rows.length; ++i) {
-            Object[] row = rows[i];
-
-            // create the ProjectStatus object
-            ProjectStatus status = new ProjectStatus(((Long) row[1])
-                    .longValue(), (String) row[2]);
-
-            // create the ProjectType object
-            ProjectType type = new ProjectType(((Long) row[5]).longValue(),
-                    (String) row[6]);
-
-            // create the ProjectCategory object
-            ProjectCategory category = new ProjectCategory(((Long) row[3])
-                    .longValue(), (String) row[4], type);
-            category.setDescription((String) row[11]);
-            // create a new instance of ProjectType class
-            projects[i] = new Project(((Long) row[0]).longValue(), category,
-                    status);
-
-            // assign the audit information
-            projects[i].setCreationUser((String) row[7]);
-            projects[i].setCreationTimestamp((Date) row[8]);
-            projects[i].setModificationUser((String) row[9]);
-            projects[i].setModificationTimestamp((Date) row[10]);
-        }
-
-        // get the Id-Project map
-        Map projectMap = makeIdProjectMap(projects);
-
-        // find project properties in the table.
-        rows = Helper.doQuery(conn, QUERY_PROJECT_PROPERTIES_SQL + idList,
-                new Object[] {}, QUERY_PROJECT_PROPERTIES_COLUMN_TYPES);
-
-        // enumerate each row
-        for (int i = 0; i < rows.length; ++i) {
-            Object[] row = rows[i];
-
-            // get the corresponding Project object
-            Project project = (Project) projectMap.get(row[0]);
-
-            // set the property to project
-            project.setProperty((String) row[1], row[2]);
-        }
+        Project[] projects = getProjects(rows, conn);
         return projects;
     }
 
@@ -1448,5 +1453,152 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
         return projectStatuses;
     }
+    
+    /**
+     * <p>
+     * Retrieves an array of project instance from the persistence where tc direct 
+     * project id is not null. The project instances are retrieved with their properties.
+     * </p>
+     * @return An array of project instances.
+     * @throws PersistenceException if error occurred while accessing the
+     *             database.
+     */
+	public Project[] getAllTcDirectProject() throws PersistenceException {		
+
+        Connection conn = null;
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get the project objects
+            // find projects in the table.
+            Object[][] rows = Helper.doQuery(conn, QUERY_TC_DIRECT_PROJECTS_SQL,
+                    new Object[] {}, QUERY_PROJECTS_COLUMN_TYPES);
+
+              
+            Project[] projects = getProjects(rows, conn); 
+            closeConnection(conn);
+            return projects;
+        } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,
+                  "Fails to retrieving all tc direct projects " , e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+		
+	}
+	
+	/**
+     * <p>
+     * Retrieves an array of project instance from the persistence given user.
+     * The project instances are retrieved with their properties.
+     * </p>
+     * @param operator The id of create user.     
+     * @return An array of project instances.
+     * @throws PersistenceException if error occurred while accessing the
+     *             database.
+     */
+	public Project[] getAllTcDirectProject(String operator) throws PersistenceException {
+//		 check if ids is empty
+        if (operator == null  ||  operator.length() == 0) {
+            throw new IllegalArgumentException("Create user should not be null.");
+        }
+		Connection conn = null;
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get the project objects
+            // find projects in the table.
+            Object[][] rows = Helper.doQuery(conn, QUERY_USER_TC_DIRECT_PROJECTS_SQL,
+                    new Object[] {operator}, QUERY_PROJECTS_COLUMN_TYPES);
+            
+            Project[] projects = getProjects(rows, conn); 
+            closeConnection(conn);
+            return projects;
+        } catch (PersistenceException e) {
+        	getLogger().log(Level.ERROR, new LogMessage(null, null,
+                  "Fails to retrieving all tc direct projects " , e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+		
+	}
+	/**
+	 * Retrieves an array of project
+	 * The project instances are retrieved with their properties.
+	 * @param rows
+	 * @param conn the database connection
+	 * @return An array of project instances.
+	 * @throws PersistenceException
+	 */
+	
+	private Project[] getProjects(Object [][]rows, Connection conn) throws PersistenceException {
+		
+		// 	create the Project array.
+        Project[] projects = new Project[rows.length];
+        
+        // if no tc direct project found
+        if(projects.length == 0 ) {        	
+            return projects;
+        }
+
+        for (int i = 0; i < rows.length; ++i) {
+            Object[] row = rows[i];
+
+            // create the ProjectStatus object
+            ProjectStatus status = new ProjectStatus(((Long) row[1])
+                    .longValue(), (String) row[2]);
+
+            // create the ProjectType object
+            ProjectType type = new ProjectType(((Long) row[5]).longValue(),
+                    (String) row[6]);
+
+            // create the ProjectCategory object
+            ProjectCategory category = new ProjectCategory(((Long) row[3])
+                    .longValue(), (String) row[4], type);
+            category.setDescription((String) row[11]);
+            // create a new instance of ProjectType class
+            projects[i] = new Project(((Long) row[0]).longValue(), category,
+                    status);
+
+            // assign the audit information
+            projects[i].setCreationUser((String) row[7]);
+            projects[i].setCreationTimestamp((Date) row[8]);
+            projects[i].setModificationUser((String) row[9]);
+            projects[i].setModificationTimestamp((Date) row[10]);
+            projects[i].setTcDirectProjectId(((Long)row[12]).longValue());
+        }
+
+        // get the Id-Project map
+        Map projectMap = makeIdProjectMap(projects);
+        String ids = projectMap.keySet().toString();
+        ids = ids.replace('[', '(');
+        ids = ids.replace(']', ')');
+        
+        // find project properties in the table.
+        rows = Helper.doQuery(conn, QUERY_PROJECT_PROPERTIES_SQL + ids ,
+                new Object[] {}, QUERY_PROJECT_PROPERTIES_COLUMN_TYPES);
+
+        // enumerate each row
+        for (int i = 0; i < rows.length; ++i) {
+            Object[] row = rows[i];
+
+            // get the corresponding Project object
+            Project project = (Project) projectMap.get(row[0]);
+
+            // set the property to project
+            project.setProperty((String) row[1], row[2]);
+        }         
+        return projects;
+        
+	}
+        
+    
+    
 
 }
