@@ -4,8 +4,9 @@
 package com.topcoder.service.payment.paypal;
 
 import javax.annotation.Resource;
-
+import java.text.DecimalFormat;
 import org.jboss.logging.Logger;
+
 
 import paypal.payflow.BillTo;
 import paypal.payflow.CardTender;
@@ -94,10 +95,17 @@ public class PayflowProPaymentProcessor implements PaymentProcessor {
 
         // Create a new Invoice data object with the Amount, Billing Address etc. details.
         Invoice inv = new Invoice();
+		Double amount = new Double(cardPaymentData.getAmount());
+		DecimalFormat twoDForm = new DecimalFormat("#.##");
+		amount =  Double.valueOf(twoDForm.format(amount));
 
+
+System.out.println("---amount is "+amount);
         // Set amount
-        Currency amt = new Currency(new Double(cardPaymentData.getAmount()), "USD");
+        Currency amt = new Currency(amount, "USD");
         inv.setAmt(amt);
+        inv.setComment1(cardPaymentData.getComment1());
+        inv.setComment2(cardPaymentData.getComment2());
 
         // Set the Billing Address details.
         BillTo bill = new BillTo();

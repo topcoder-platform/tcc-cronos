@@ -62,6 +62,7 @@ import org.jboss.logging.Logger;
 import org.jboss.ws.annotation.EndpointConfig;
 
 import java.util.List;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Date;
@@ -1115,19 +1116,24 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
 			PaymentResult result = null;
 
-			if (paymentData instanceof TCPurhcaseOrderPaymentData) {
-				// processing purchase order is not in scope of this assembly.
-				result = new PaymentResult();
-				result.setReferenceNumber(((TCPurhcaseOrderPaymentData)paymentData).getPoNumber());
-			} else if (paymentData instanceof CreditCardPaymentData) {
-				// ideally client should be sending the amount,
-				// but as client has some inconsistency
-				// so in this case we would use the amount from contest data.
-				((CreditCardPaymentData) paymentData).setAmount(Double.toString(tobeUpdatedCompetition.getContestData()
-						.getContestAdministrationFee()));
+        if (paymentData instanceof TCPurhcaseOrderPaymentData) {
+            // processing purchase order is not in scope of this assembly.
+            result = new PaymentResult();
+            result.setReferenceNumber(((TCPurhcaseOrderPaymentData)paymentData).getPoNumber());
+        } else if (paymentData instanceof CreditCardPaymentData) {
+            // ideally client should be sending the amount,
+            // but as client has some inconsistency
+            // so in this case we would use the amount from contest data.
+            CreditCardPaymentData creditCardPaymentData = (CreditCardPaymentData) paymentData;
+            
 
-				result = paymentProcessor.process(paymentData);
-			}
+            creditCardPaymentData.setAmount(Double.toString(tobeUpdatedCompetition.getContestData()
+                    .getContestAdministrationFee()));
+            // BUGR-1239
+            creditCardPaymentData.setComment1("Contest Fee");
+            creditCardPaymentData.setComment2(String.valueOf(tobeUpdatedCompetition.getContestData().getContestId()));
+            result = paymentProcessor.process(paymentData);
+		}
 
 			tobeUpdatedCompetition.getContestData().setStatusId(CONTEST_STATUS_ACTIVE_PUBLIC);
 			tobeUpdatedCompetition.getContestData().setDetailedStatusId(CONTEST_DETAILED_STATUS_SCHEDULED);
@@ -1182,7 +1188,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 		catch (Exception e)
 		{
 			sessionContext.setRollbackOnly();
-			throw new PaymentException(e.getMessage());
+			throw new PaymentException(e.getMessage(), e);
 		}
        
     }
@@ -1289,13 +1295,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
 			PaymentResult result = null;
 
-			if (paymentData.getType().equals(PaymentType.TCPurchaseOrder)) {
-				// processing purchase order is not in scope of this assembly.
-				result = new PaymentResult();
-				result.setReferenceNumber(((TCPurhcaseOrderPaymentData)paymentData).getPoNumber());
-			} else if (paymentData.getType().equals(PaymentType.PayPalCreditCard)) {
-				result = paymentProcessor.process(paymentData);
-			}
+        if (paymentData.getType().equals(PaymentType.TCPurchaseOrder)) {
+            // processing purchase order is not in scope of this assembly.
+            result = new PaymentResult();
+            result.setReferenceNumber(((TCPurhcaseOrderPaymentData)paymentData).getPoNumber());
+        } else if (paymentData.getType().equals(PaymentType.PayPalCreditCard)) {
+            // BUGR-1239
+            CreditCardPaymentData creditCardPaymentData = (CreditCardPaymentData) paymentData;
+            creditCardPaymentData.setComment1("Submission Fee");
+            creditCardPaymentData.setComment2(Arrays.toString(submissionIds));
+			result = paymentProcessor.process(paymentData);
+        }
 
 			UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
 			String userId = Long.toString(p.getUserId());
@@ -1322,7 +1332,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 		catch (Exception e)
 		{
 			sessionContext.setRollbackOnly();
-			throw new PaymentException(e.getMessage());
+			throw new PaymentException(e.getMessage(), e);
 		}
 
     }

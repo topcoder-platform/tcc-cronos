@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "creditCardPaymentData", propOrder = { "cardNumber", "cardType", "cardExpiryMonth", "cardExpiryYear",
         "firstName", "lastName", "address", "city", "state", "zipCode", "country", "phone", "email", "ipAddress",
-        "sessionId", "amount" })
+        "sessionId", "amount", "comment1", "comment2" })
 public class CreditCardPaymentData extends PaymentData {
 
     /**
@@ -106,6 +106,20 @@ public class CreditCardPaymentData extends PaymentData {
      * The amount that need to be charged to the credit card.
      */
     private String amount;
+
+    /**
+     * The comment line 1.
+     * 
+     * @since BUGR-1239
+     */
+    private String comment1;
+
+    /**
+     * The comment line 2.
+     * 
+     * @since BUGR-1239
+     */
+    private String comment2;
 
     /**
      * A do nothing default constructor.
@@ -467,4 +481,55 @@ public class CreditCardPaymentData extends PaymentData {
     public void setAmount(String amount) {
         this.amount = amount;
     }
+
+    /**
+     * <p>
+     * Gets the comment line 1.
+     * </p>
+     * 
+     * @return the comment line 1.
+     * @since BUGR-1239
+     */
+    public String getComment1() {
+        return comment1;
+    }
+
+    /**
+     * <p>
+     * Sets the comment line 1.
+     * </p>
+     * 
+     * @param comment1
+     *            the comment line 1
+     * @since BUGR-1239
+     */
+    public void setComment1(String comment1) {
+        this.comment1 = comment1;
+    }
+
+    /**
+     * <p>
+     * Gets the comment line 2.
+     * </p>
+     * 
+     * @return the comment line 2.
+     * @since BUGR-1239
+     */
+    public String getComment2() {
+        return comment2;
+    }
+
+    /**
+     * <p>
+     * Sets the comment line 2.
+     * </p>
+     * 
+     * @param comment2
+     *            the comment line 2
+     * @since BUGR-1239
+     */
+    public void setComment2(String comment2) {
+        this.comment2 = comment2;
+    }
+
 }
