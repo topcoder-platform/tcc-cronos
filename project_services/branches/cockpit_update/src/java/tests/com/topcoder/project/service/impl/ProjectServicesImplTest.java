@@ -637,6 +637,72 @@ public class ProjectServicesImplTest extends TestCase {
         assertTrue("'f3' should be true.", f3);
     }
 
+	/**
+	 * <p>
+	 * Test for <code>findAllTcDirectProjects()</code> method.
+	 * </p>
+	 * <p>
+	 * Tests it for accuracy, an array containing three elements will be returned,
+	 * two has tc direct project id=1 and other has id=2.
+	 * </p>
+	 *
+	 * @throws Exception
+	 *             to JUnit
+	 */
+	public void testFindAllTcDirectProjectsAccuracy()throws Exception {
+		Project[] projects = services.findAllTcDirectProjects();
+		assertEquals("There should be three tc direct projects returned.", 3, projects.length);
+		boolean f1 = false, f2 = false, f3 = false;
+		if (projects[0].getTcDirectProjectId() == 1) {
+			f1 = true;
+		}
+		if (projects[1].getTcDirectProjectId() == 2) {
+			f2 = true;
+		}
+		if (projects[2].getTcDirectProjectId() == 1) {
+			f3 = true;
+		}
+		assertTrue("'f1' should be true.", f1);
+		assertTrue("'f2' should be true.", f2);
+		assertTrue("'f3' should be true.", f3);
+	}
+
+	/**
+	 * <p>
+	 * Test for <code>testFindAllTcDirectProjectsForUserAccuracy()</code> method.
+	 * </p>
+	 * <p>
+	 * Tests it for accuracy, an array containing two elements will be returned for user,
+	 * and one for user2.
+	 * </p>
+	 *
+	 * @throws Exception
+	 *             to JUnit
+	 */
+	public void testFindAllTcDirectProjectsForUserAccuracy()throws Exception {
+		Project[] projects = services.findAllTcDirectProjectsForUser("user");
+		assertEquals("There should be two tc direct projects returned.", 2, projects.length);
+		boolean f1 = false, f2 = false, f3 = false;
+		if (projects[0].getTcDirectProjectId() == 1) {
+			f1 = true;
+		}
+		if (projects[1].getTcDirectProjectId() == 1) {
+			f3 = true;
+		}
+		projects = services.findAllTcDirectProjectsForUser("user2");
+		assertEquals("There should be one tc direct projects returned.", 1, projects.length);
+		if (projects[0].getTcDirectProjectId() == 2) {
+			f2 = true;
+		}
+		projects = services.findAllTcDirectProjectsForUser("user3");
+		assertEquals("There should be no tc direct projects returned.", 0, projects.length);
+		assertTrue("'f1' should be true.", f1);
+		assertTrue("'f2' should be true.", f2);
+		assertTrue("'f3' should be true.", f3);
+	}
+
+
+
     /**
      * <p>
      * Test for <code>findProjectsHeaders(filter)</code> method.

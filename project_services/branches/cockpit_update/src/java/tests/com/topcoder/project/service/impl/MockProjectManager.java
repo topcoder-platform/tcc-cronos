@@ -233,4 +233,53 @@ public class MockProjectManager implements ProjectManager {
         return null;
     }
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * com.topcoder.management.project.ProjectManager#getAllTcDirectProjects()
+	 */
+	public Project[] getAllTcDirectProjects() throws PersistenceException {
+		Project project1 = new Project(1, category, new ProjectStatus(1,
+				"active"));
+		project1.setTcDirectProjectId(1);
+		Project project2 = new Project(3, category, new ProjectStatus(1,
+				"active"));
+		project2.setTcDirectProjectId(2);
+		Project project3 = new Project(2, category, new ProjectStatus(2,
+				"inactive"));
+		project3.setTcDirectProjectId(1);
+		return new Project[] { project1, project2, project3 };
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * com.topcoder.management.project.ProjectManager#getAllTcDirectProjects
+	 * (java.lang.String)
+	 */
+	public Project[] getAllTcDirectProjects(String user)
+			throws PersistenceException {
+		Project project1 = new Project(1, category, new ProjectStatus(1,
+				"active"));
+		project1.setTcDirectProjectId(1);
+		project1.setCreationUser("user");
+		Project project2 = new Project(3, category, new ProjectStatus(1,
+				"active"));
+		project2.setTcDirectProjectId(2);
+		project2.setCreationUser("user2");
+		Project project3 = new Project(2, category, new ProjectStatus(2,
+				"inactive"));
+		project3.setTcDirectProjectId(1);
+		project3.setCreationUser("user");
+		if("user".equals(user)) {
+			return new Project[] { project1, project3 };
+		} else if("user2".equals(user)) {
+			return new Project[] {  project2};
+		} else {
+			return new Project[0];
+		}
+
+	}
 }

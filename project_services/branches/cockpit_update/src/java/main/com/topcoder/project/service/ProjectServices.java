@@ -65,6 +65,25 @@ public interface ProjectServices {
      *             If there is a system error while performing the search
      */
     public Project[] findActiveProjectsHeaders();
+    
+    /**
+     * <p>
+     * This method finds all tc direct projects. Returns empty array if no projects found.
+     * </p
+     * @return Project array with project info, or empty array if none found
+     */
+    public Project[] findAllTcDirectProjects();
+    
+    /**
+     * <p>
+     * This method finds all given user tc direct projects . Returns empty array if no projects found.
+     * </p
+     * @param operator 
+     * 				The user to search for projects
+     * @return   Project array with project info, or empty array if none found
+     */
+     
+    public Project[] findAllTcDirectProjectsForUser(String operator);
 
     /**
      * <p>

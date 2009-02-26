@@ -194,5 +194,50 @@ public class MockProjectManager implements ProjectManager {
     public static void setEmptyProjectCategory(boolean status) {
         EMPTY_PROJECT_CATEGORY = status;
     }
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * com.topcoder.management.project.ProjectManager#getAllTcDirectProjects()
+	 */
+	public Project[] getAllTcDirectProjects() throws PersistenceException {
+		Project project = new Project(1, new ProjectCategory(1,
+				"Project Services", new ProjectType(1, "type1")),
+				new ProjectStatus(1, "active"));
+		project.setTcDirectProjectId(1);
+		project.setCreationUser("user");
+		Project inactiveProject = new Project(2, new ProjectCategory(2,
+				"Project Services", new ProjectType(1, "type1")),
+				new ProjectStatus(2, "inactive"));
+		inactiveProject.setTcDirectProjectId(2);
+		inactiveProject.setCreationUser("user2");
+		return new Project[] { project, inactiveProject };
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * com.topcoder.management.project.ProjectManager#getAllTcDirectProjects
+	 * (java.lang.String)
+	 */
+	public Project[] getAllTcDirectProjects(String operator) throws PersistenceException {
+		Project project = new Project(1, new ProjectCategory(1, "Project Services", new ProjectType(1, "type1")),
+                new ProjectStatus(1, "active"));
+		project.setTcDirectProjectId(1);
+		project.setCreationUser("user");
+	    Project inactiveProject = new Project(2,
+                new ProjectCategory(2, "Project Services", new ProjectType(1, "type1")), new ProjectStatus(2,
+                        "inactive"));
+     inactiveProject.setTcDirectProjectId(2);
+     inactiveProject.setCreationUser("user2");
+     if(project.getCreationUser().equals(operator))
+    	 return new Project[] { project};
+     else if(inactiveProject.getCreationUser().equals(operator))
+    	 return new Project[] { inactiveProject};
+     else return new Project[0];
+
+	}
 
 }

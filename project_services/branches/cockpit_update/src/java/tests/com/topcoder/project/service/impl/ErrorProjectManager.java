@@ -268,4 +268,21 @@ public class ErrorProjectManager implements ProjectManager {
     public void setGetProjectReturnNull(boolean getProjectReturnNull) {
         this.getProjectReturnNull = getProjectReturnNull;
     }
+
+    /*
+     * (non-Javadoc)
+     * @see com.topcoder.management.project.ProjectManager#getAllTcDirectProjects()
+     */
+	public Project[] getAllTcDirectProjects() throws PersistenceException {
+
+		throw new PersistenceException("For test.");
+	}
+	/*
+	 * (non-Javadoc)
+	 * @see com.topcoder.management.project.ProjectManager#getAllTcDirectProjects(java.lang.String)
+	 */
+	public Project[] getAllTcDirectProjects(String arg0) throws PersistenceException {
+
+		throw new PersistenceException("For test.");
+	}
 }

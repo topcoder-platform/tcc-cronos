@@ -256,6 +256,63 @@ public class ProjectServicesImplTest extends TestCase {
                 projectServicesImpl.findActiveProjectsHeaders().length);
     }
 
+	/**
+	 *
+	 * <p>
+	 * Accuracy test of <code>findAllTcDirectProjects()</code> method.
+	 * </p>
+	 *
+	 * <p>
+	 * Tests for all tc direct project. Non empty Project[] must be retrieved.
+	 * </p>
+	 *
+	 */
+	public void testfindAllTcDirectProjects_accuracy() {
+		assertEquals("find all tc direct Project", 2, projectServicesImpl
+				.findAllTcDirectProjects().length);
+
+	}
+
+	/**
+	 *
+	 * <p>
+	 * Accuracy test of
+	 * <code>findAllTcDirectProjectsForUser(String user) </code> method.
+	 * </p>
+	 *
+	 * <p>
+	 * Tests for all user tc direct project. Non empty Project[] must be
+	 * retrieved.
+	 * </p>
+	 *
+	 */
+	public void testfindAllTcDirectProjectsForUser_accuracy1() {
+		assertEquals("find all user tc direct Project", 1, projectServicesImpl
+				.findAllTcDirectProjectsForUser("user").length);
+		assertEquals("find all user tc direct Project", 1, projectServicesImpl
+				.findAllTcDirectProjectsForUser("user2").length);
+	}
+
+	/**
+	 *
+	 * <p>
+	 * Accuracy test of
+	 * <code>findAllTcDirectProjectsForUser(String user) </code> method.
+	 * </p>
+	 *
+	 * <p>
+	 * Tests for no tc direct project for user. Empty Project[] must be
+	 * retrieved.
+	 * </p>
+	 *
+	 */
+	public void testfindAllTcDirectProjectsForUser_accuracy2() {
+		assertEquals("Unable to find empty active Project", 0,
+				projectServicesImpl.findAllTcDirectProjectsForUser("user3").length);
+	}
+
+
+
     /**
      * <p>
      * Accuracy test of <code>findFullProjects(Filter filter)</code> method.

@@ -5,6 +5,7 @@ package com.topcoder.project.service.ejb;
 
 import com.topcoder.management.project.Project;
 import com.topcoder.management.resource.Resource;
+import com.topcoder.security.auth.module.UserProfilePrincipal;
 import com.topcoder.project.service.ConfigurationException;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectServices;
@@ -17,6 +18,9 @@ import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogManager;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
+import javax.annotation.security.RunAs;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -90,9 +94,23 @@ import javax.ejb.TransactionAttributeType;
  * @version 1.1
  * @since 1.1
  */
+@RunAs("Cockpit Administrator")
+@RolesAllowed("Cockpit User")
+@DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class ProjectServicesBean implements ProjectServicesLocal, ProjectServicesRemote {
+	
+	/**
+     * Private constant specifying user role.
+     */
+    private static final String USER_ROLE = "Cockpit User";
+
+    /**
+     * Private constant specifying administrator role.
+     */
+    private static final String ADMIN_ROLE = "Cockpit Administrator";
+    
     /**
      * <p>
      * Represents the <code>SessionContext</code> injected by the <b>EJB</b> container
@@ -223,7 +241,76 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
             Util.log(logger, Level.INFO, "Exits " + method);
         }
     }
+    
+    /**
+     * <p>
+     * This method finds projects which have tc direct id.
+     * Returns empty array if no projects found.
+     * </p>
+     *
+     * @return Project array with project info, or empty array if none found
+     * @throws ProjectServicesException
+     *             If there is a system error while performing the search
+     */
+     
+    public Project[] findAllTcDirectProjects() {
+    	String method = "ProjectServicesBean#findAllTcDirectProjects() method.";
 
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+        	  
+        	 if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
+        		 Util.log(logger, Level.INFO, "User is admin.");
+        		 return getProjectServices().findAllTcDirectProjects();	 
+        	 } else {
+        		 UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+        		 Util.log(logger, Level.INFO, "User " + p.getName() + " is non-admin.");
+        		 return getProjectServices().findAllTcDirectProjectsForUser(p.getName());   	 
+        	 }
+        	 
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    	
+    }    
+    /**
+     * <p>
+     * This method finds all given user tc direct projects . Returns empty array if no projects found.
+     * </p
+     * @param operator 
+     * 				The user to search for projects
+     * @return   Project array with project info, or empty array if none found
+     */
+    public Project[] findAllTcDirectProjectsForUser(String user) {
+    	String method = "ProjectServicesBean#findAllTcDirectProjectsForUser(user) method.";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {        	  
+        	if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
+       		 Util.log(logger, Level.INFO, "User is admin.");
+       		 return getProjectServices().findAllTcDirectProjectsForUser(user);	 
+       	    } 
+        	
+       		 UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+       		 Util.log(logger, Level.INFO, "User " + p.getName() + " is non-admin.");
+       		 if(p.equals(user)) {
+       			return getProjectServices().findAllTcDirectProjectsForUser(user);	 
+       		 } else {
+       		   return new Project[0];	 
+       		 }    		        	 
+        	 
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
     /**
      * <p>
      * This method finds all projects along with all known associated information that match the

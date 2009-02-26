@@ -537,7 +537,7 @@ public class ProjectServicesImpl implements ProjectServices {
         FullProjectData[] fullDatas = assembleFullProjectDatas(projects);
 
         log(Level.INFO, "Exits ProjectServicesImpl#findActiveProjects method.");
-        return fullDatas;
+        return fullDatas;    
     }
 
     /**
@@ -577,6 +577,72 @@ public class ProjectServicesImpl implements ProjectServices {
 
         log(Level.INFO, "Exits ProjectServicesImpl#findActiveProjectsHeaders method.");
         return projects;
+    }
+    
+    /**
+     * <p>
+     * This method finds projects which have tc direct id.
+     * Returns empty array if no projects found.
+     * </p>
+     *
+     * @return Project array with project info, or empty array if none found
+     * @throws ProjectServicesException
+     *             If there is a system error while performing the search
+     */
+    public Project[] findAllTcDirectProjects() {
+    	log(Level.INFO, "Enters ProjectServicesImpl#ffindAllTcDirectProjects method.");
+
+        // represents the active projects
+        Project[] projects = null;
+        try {
+            // find all projects which have tc direct project id
+            logDebug("Starts calling ProjectManager#getAllTcDirectProjects method.");           
+            
+            projects = projectManager.getAllTcDirectProjects();
+
+            logDebug("Finished calling ProjectManager#getAllTcDirectProjects method.");
+
+        } catch (PersistenceException ex) {
+            log(Level.ERROR,
+                    "ProjectServicesException occurred in ProjectServicesImpl#findAllTcDirectProjects method.");
+            throw new ProjectServicesException("PersisteceException occurred when operating ProjectManager.", ex);
+        }
+
+        log(Level.INFO, "Exits ProjectServicesImpl#findAllTcDirectProjects method.");
+        return projects;
+
+    }
+    
+    /**
+     * <p>
+     * This method finds all given user tc direct projects . Returns empty array if no projects found.
+     * </p
+     * @param operator 
+     * 				The user to search for projects
+     * @return   Project array with project info, or empty array if none found
+     */
+    public Project[] findAllTcDirectProjectsForUser(String user) {
+    	log(Level.INFO, "Enters ProjectServicesImpl#findAllTcDirectProjectsForUser method.");
+
+        // represents the active projects
+        Project[] projects = null;
+        try {
+            // find all projects which have tc direct project id
+            logDebug("Starts calling ProjectManager#getAllTcDirectProjects(user) method.");           
+            
+            projects = projectManager.getAllTcDirectProjects(user);
+
+            logDebug("Finished calling ProjectManager#getAllTcDirectProjects(user) method.");
+
+        } catch (PersistenceException ex) {
+            log(Level.ERROR,
+                    "ProjectServicesException occurred in ProjectServicesImpl#findAllTcDirectProjectsForUser method.");
+            throw new ProjectServicesException("PersisteceException occurred when operating ProjectManager.", ex);
+        }
+
+        log(Level.INFO, "Exits ProjectServicesImpl#findAllTcDirectProjectsForUser method.");
+        return projects;
+    	
     }
 
     /**
