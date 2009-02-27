@@ -3794,7 +3794,7 @@ public class StudioServiceBean implements StudioService {
 					submission.getSubmitterId(),
 					prize.getAmount(),
 					submission.getContest().getContestId(),
-					prize.getPlace());
+					prize.getPlace() == null ? 0 : prize.getPlace());
 
 				payment = PactsServicesLocator.getService().addPayment(payment);
 
