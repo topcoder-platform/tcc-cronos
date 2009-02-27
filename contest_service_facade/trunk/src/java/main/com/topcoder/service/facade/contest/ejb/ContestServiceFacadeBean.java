@@ -1321,7 +1321,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                             + ". Submission is not found");
                 }
             }
-
+System.out.println("-------contest id ---"+completedContestData.getContestId());
 
 			for (int i = 0; i < completedContestData.getSubmissions().length; i++) {
                 SubmissionPaymentData submissionPaymentData = completedContestData.getSubmissions()[i];
@@ -1381,9 +1381,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                         submissionPaymentData.setPaymentTypeId(PAYMENT_TYPE_PAYPAL_PAYFLOW);
                     }
 
+					submissionPaymentData.setPaymentStatusId(CONTEST_PAYMENT_STATUS_PAID);
+
                     this.purchaseSubmission(submissionId, submissionPaymentData, userId);
-                } else if (submissionPaymentData.isRanked()) {
-                    this.setSubmissionPlacement(submissionId, submissionPaymentData.getRank());
                 }
             }
 
