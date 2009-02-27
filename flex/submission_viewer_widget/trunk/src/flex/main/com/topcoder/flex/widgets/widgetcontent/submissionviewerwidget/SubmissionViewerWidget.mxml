@@ -1366,7 +1366,7 @@
 		                
 		                // set the amount.
 		                // TODO: later add taxes to it.
-		                creditCardPaymentData.amount=_totalPurchaseAmount as String;
+		                creditCardPaymentData.amount=_totalPurchaseAmount.toString();
 		                
                         ContestServiceFacadeBean.processSubmissionCreditCardPayment(completedContestData, creditCardPaymentData);
         			}
