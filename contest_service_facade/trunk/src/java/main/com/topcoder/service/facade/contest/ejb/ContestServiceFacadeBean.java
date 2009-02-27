@@ -684,10 +684,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws PersistenceException if any error occurs when purchasing submission.
      * @throws IllegalArgumentWSException if specified <code>submissionId</code> is negative.
      */
-    public void purchaseSubmission(long submissionId, String payPalOrderId, String securityToken)
-            throws PersistenceException {
-        this.studioService.purchaseSubmission(submissionId, payPalOrderId, securityToken);
-    }
+//    public void purchaseSubmission(long submissionId, String payPalOrderId, String securityToken)
+//            throws PersistenceException {
+//        this.studioService.purchaseSubmission(submissionId, payPalOrderId, securityToken);
+ //   }
 
     /**
      * <p>
@@ -1352,13 +1352,6 @@ System.out.println("-------contest id ---"+completedContestData.getContestId());
                 result = paymentProcessor.process(paymentData);
             }
 
-            if (paymentData.getType().equals(PaymentType.TCPurchaseOrder)) {
-                // processing purchase order is not in scope of this assembly.
-                result = new PaymentResult();
-                result.setReferenceNumber(((TCPurhcaseOrderPaymentData) paymentData).getPoNumber());
-            } else if (paymentData.getType().equals(PaymentType.PayPalCreditCard)) {
-                result = paymentProcessor.process(paymentData);
-            }
 
             UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
             String userId = Long.toString(p.getUserId());
