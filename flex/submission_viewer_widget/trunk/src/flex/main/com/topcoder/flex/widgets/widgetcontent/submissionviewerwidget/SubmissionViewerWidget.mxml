@@ -798,7 +798,7 @@
                 
                 trace("leftPanel.width: " + leftPanel.width + ", list.columnWidth: " + list.columnWidth); 
                 //trace("Clean the active submission.");
-                for (var i:int = currentIndex; i < 4 + currentIndex; i++) {
+                for (var i:int = currentIndex; i < list.rowCount + currentIndex; i++) { // BUGR-1142 was 4
                 	trace("i: " + i + ", 4 + currentIndex: " + (4 + currentIndex));
                 	for (var j:int = 0; j < _currentColumnCount; j++) {
                 		var k: int = i * (_currentColumnCount) + j;
@@ -1442,7 +1442,8 @@
 					if (isRank && rankBar.selectedIndex >= 0) {
 						var oldItem:Object = rankBar.dataProvider[rankBar.selectedIndex];
 				        trace("Selected rank is:" + rankBar.dataProvider[rankBar.selectedIndex]);
-				        var rank:String = rankBar.dataProvider[rankBar.selectedIndex] as String;
+				        // BUGR-1142
+				        var rank:String = rankBar.dataProvider[rankBar.selectedIndex].data.toString();
 				        
 				        if (item.rank && rank == item.rank) {
 				        	trace("removing rank for the id:" + item.id);
@@ -1782,6 +1783,7 @@
 		                        allowMultipleSelection="false" 
 		                        allowDragSelection="false"
 		                        backgroundColor="#EEEEEE"
+								resize="{setSubmission()}"
 					            />
 		                <mx:Button buttonMode="true" id="down" styleName="down" click="goDown(null)" />
 		            	<mx:Spacer />
@@ -1963,11 +1965,11 @@
                                 buttonWidth="85" 
                                 buttonHeight="24" 
                                 buttonStyleName="rankButton">
-                            <mx:String>1st Place</mx:String>
-                            <mx:String>2nd Place</mx:String>
-                            <mx:String>3rd Place</mx:String>
-                            <mx:String>4th Place</mx:String>
-                            <mx:String>5th Place</mx:String>
+                            <mx:Object label="1st Place" data="1" />    
+                            <mx:Object label="2nd Place" data="2" />
+                            <mx:Object label="3rd Place" data="3" />
+                            <mx:Object label="4th Place" data="4" />
+                            <mx:Object label="5th Place" data="5" />
                         </mx:ToggleButtonBar>
                         <!--<mx:Spacer width="100%" />-->
                     </mx:HBox>
@@ -2041,12 +2043,15 @@
 		            		</mx:ViewStack>
 		            	</mx:VBox>
 	                </mx:HBox>
-	                <mx:HBox width="100%" horizontalAlign="right" paddingBottom="4" paddingRight="4">
+	                <!-- BUGR-1142 -->
+	                <mx:Spacer height="10" />
+	                <mx:HRule width="100%" strokeColor="#DBDBDB" />
+	                <mx:HBox width="100%" horizontalAlign="center" paddingTop="10" paddingBottom="4" paddingRight="4"> 
 	                    <!--<mx:Button id="save_contestViewer_btn" label="save as draft" styleName="ButtonStyle" click="saveContestAsDraft()" /> -->
 	                    <mx:Button id="continue_contestViewer_btn" buttonMode="true" label="CONTINUE" styleName="ButtonStyle" click="continueFromContestViewer()" />
 	                </mx:HBox>
 	            </mx:VBox>
-        		<mx:VBox id="abandonConfirmationScreen" paddingTop="22" verticalGap="7" width="100%" styleName="BoxStyle">
+        		<mx:VBox id="abandonConfirmationScreen" paddingTop="22" verticalGap="7" width="100%" >
         			<mx:Label fontFamily="Arial"  text="{_currentItemLabel}"
                             fontWeight="bold" fontSize="16" width="100%" />
                     <mx:Label fontFamily="Arial" fontWeight="normal" fontSize="14"
@@ -2074,7 +2079,7 @@
         				<mx:Button buttonMode="true" styleName="ButtonStyle" label="Do Not Choose a Winner" click="gotoAbandonScreen(abandonedScreen_1)" />
         			</mx:HBox>
                 </mx:VBox>
-                <mx:VBox id="abandonedScreen_1" paddingTop="22" verticalGap="7" width="100%" styleName="BoxStyle">
+                <mx:VBox id="abandonedScreen_1" paddingTop="22" verticalGap="7" width="100%" >
         			<mx:Label fontFamily="Arial"  text="{_currentItemLabel}"
                             fontWeight="bold" fontSize="16" width="100%" />
                     <mx:Label fontFamily="Arial" fontWeight="normal" fontSize="14"
@@ -2093,7 +2098,7 @@
         				<mx:Button buttonMode="true" styleName="ButtonStyle" label="Continue >>" click="gotoAbandonScreen(abandonedScreen_2)" />
         			</mx:HBox>
                 </mx:VBox>
-                <mx:VBox id="abandonedScreen_2" paddingTop="22" verticalGap="7" width="100%" styleName="BoxStyle">
+                <mx:VBox id="abandonedScreen_2" paddingTop="22" verticalGap="7" width="100%" >
         			<mx:Label fontFamily="Arial"  text="{_currentItemLabel}"
                             fontWeight="bold" fontSize="16" width="100%" />
                     <mx:Label fontFamily="Arial" fontWeight="normal" fontSize="14"
@@ -2115,7 +2120,7 @@
         				<mx:Button buttonMode="true" styleName="ButtonStyle" label="No, Thank You" click="gotoAbandonScreen(abandonedScreen_3)" />
         			</mx:HBox>
                 </mx:VBox>
-                <mx:VBox id="abandonedScreen_3" paddingTop="22" verticalGap="7" width="100%" styleName="BoxStyle">
+                <mx:VBox id="abandonedScreen_3" paddingTop="22" verticalGap="7" width="100%" >
         			<mx:Label fontFamily="Arial"  text="{_currentItemLabel}"
                             fontWeight="bold" fontSize="16" width="100%" />
                     <mx:Label fontFamily="Arial" fontWeight="normal" fontSize="14"
@@ -2127,7 +2132,7 @@
 	                    		text="The submissions for this contest are no longer available to you because you took no action on this contest after it had ended." />
         		</mx:VBox>
                 </mx:VBox>
-                <mx:VBox id="noSubmissionScreen" paddingTop="22" verticalGap="7" width="100%" styleName="BoxStyle">
+                <mx:VBox id="noSubmissionScreen" paddingTop="22" verticalGap="7" width="100%" >
         			<mx:Label fontFamily="Arial"  text="There are currently no submissions for this contest."
                             fontWeight="bold" fontSize="16" width="100%" />
                 </mx:VBox>
