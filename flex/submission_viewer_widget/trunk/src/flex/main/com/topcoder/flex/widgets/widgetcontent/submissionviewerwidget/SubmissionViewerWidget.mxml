@@ -479,6 +479,8 @@
 							sub.savedPrice=submissions[i].price;
 							
 							sub.markedForPurchase=Boolean(submissions[i].markedForPurchase);
+
+							sub.paidFor = Boolean(submissions[i].paidFor);
 							
 							var contestInfo = _contestInfoDictionary[_selectedContestId];
         						
@@ -523,7 +525,7 @@
 							if (prizes) {
 							    sub.mustPurchase=sub.rank && sub.rank > 0 && sub.rank <= prizes.length && sub.price && sub.price > 0;
 							}
-							sub.purchased=sub.markedForPurchase || sub.mustPurchase;
+							sub.purchased=sub.markedForPurchase || sub.mustPurchase || sub.paidFor;
                 		
 							_submissionList.addItem(sub);
 
