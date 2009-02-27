@@ -684,10 +684,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws PersistenceException if any error occurs when purchasing submission.
      * @throws IllegalArgumentWSException if specified <code>submissionId</code> is negative.
      */
-    //public void purchaseSubmission(long submissionId, String payPalOrderId, String securityToken)
-    //        throws PersistenceException {
-    //    this.studioService.purchaseSubmission(submissionId, payPalOrderId, securityToken);
-    //}
+    public void purchaseSubmission(long submissionId, String payPalOrderId, String securityToken)
+            throws PersistenceException {
+        this.studioService.purchaseSubmission(submissionId, payPalOrderId, securityToken);
+    }
 
     /**
      * <p>

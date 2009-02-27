@@ -370,8 +370,8 @@ public interface ContestServiceFacade {
      * @throws IllegalArgumentWSException if specified <code>submissionId</code> is negative.
      * @tested
      */
-    //public void purchaseSubmission(long submissionId, String payPalOrderId, String securityToken)
-    //        throws PersistenceException;
+    public void purchaseSubmission(long submissionId, String payPalOrderId, String securityToken)
+            throws PersistenceException;
     
     /**
      * <p>
