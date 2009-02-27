@@ -3998,19 +3998,20 @@ public class StudioServiceBean implements StudioService {
                 break;
             }
         }
+		
+		double amount = 0;
 
         if (firstPlacePrize == null) {
             throw new ContestManagementException(
                     "There must be a first placement prize for the contest. Contest id: " + contest.getContestId());
         }
 
-        double amount = firstPlacePrize;
-
         // check if the submission has a winner prize
         boolean isWinner = false;
         for (Prize p : submission.getPrizes()) {
             if (p.getType().getPrizeTypeId() == contestPrizeTypeId && p.getAmount() > 0) {
                 isWinner = true;
+				amount = p.getAmount();
 				break;
                
             }
