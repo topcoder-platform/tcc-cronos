@@ -43,6 +43,8 @@
     		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.CreditCardPaymentData;
     		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.PaymentData;
     		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.TcPurhcaseOrderPaymentData;
+		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.SubmissionPaymentData;
+                import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.CompletedContestData;
     		
     		import mx.managers.PopUpManager;
     		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ProgressWindow;
@@ -1298,24 +1300,40 @@
             	
             	if (!_isLocalTesting) {
 	            	var header:SOAPHeader=getHeader(username, password);
+	            	
+	            	var completedContestData:CompletedContestData = new CompletedContestData();
 	
-					ContestServiceFacadeBean.clearHeaders();
-	            	ContestServiceFacadeBean.addHeader(header);
-	            	trace("Updating contest status for: " + _selectedContestId);
-					ContestServiceFacadeBean.updateContestStatus(_selectedContestId, _completedContestTypeId);
+					//ContestServiceFacadeBean.clearHeaders();
+	            	//ContestServiceFacadeBean.addHeader(header);
+	            	//trace("Updating contest status for: " + _selectedContestId);
+	            	//ContestServiceFacadeBean.updateContestStatus(_selectedContestId, _completedContestTypeId);
+	            	completedContestData.contestId=_selectedContestId;
 					
-					var submissionIds:ArrayCollection = new ArrayCollection();
-					for (var i:int; i < _downloadList.length; i++) {
-						var item:Object = _downloadList[i];
+					completedContestData.submissions = new Array();
+					
+					//var submissionIds:ArrayCollection = new ArrayCollection();
+					for (var i:int; i < _submissionList.length; i++) {
+						var item:Object = _submissionList[i];
+                        var shouldAdd:Boolean = false;						
+						var submissionPaymentData:SubmissionPaymentData = new SubmissionPaymentData();
+						submissionPaymentData.id = item.id;
 						if (item.rank && item.rank > 0) {
-							ContestServiceFacadeBean.clearHeaders();
-	            			ContestServiceFacadeBean.addHeader(header);
-	            			trace("Updating submission placement for: " + item.id + " to: " + item.rank);
-							ContestServiceFacadeBean.setSubmissionPlacement(item.id, item.rank);
+							//ContestServiceFacadeBean.clearHeaders();
+	            			//ContestServiceFacadeBean.addHeader(header);
+	            			//trace("Updating submission placement for: " + item.id + " to: " + item.rank);
+							//ContestServiceFacadeBean.setSubmissionPlacement(item.id, item.rank);
+                            submissionPaymentData.rank = item.rank;
+                            shouldAdd = true;							
 						}
 						
 						if (item.purchased) {
-						    submissionIds.addItem(item.id);
+						    //submissionIds.addItem(item.id);
+						    submissionPaymentData.amount = item.price;
+						    shouldAdd = true;
+						}
+						
+						if (shouldAdd) {
+						    completedContestData.submissions.push(submissionPaymentData);
 						}
 					}
 					
@@ -1350,13 +1368,13 @@
 		                // TODO: later add taxes to it.
 		                creditCardPaymentData.amount=_totalPurchaseAmount as String;
 		                
-                        ContestServiceFacadeBean.processSubmissionCreditCardPayment(submissionIds, creditCardPaymentData);
+                        ContestServiceFacadeBean.processSubmissionCreditCardPayment(completedContestData, creditCardPaymentData);
         			}
         			else if(pay.selectedIndex == 2) {
 		                var purchaseOrderPaymentData:TcPurhcaseOrderPaymentData=new TcPurhcaseOrderPaymentData();
 		                purchaseOrderPaymentData.type="TCPurchaseOrder";
-		                purchaseOrderPaymentData.poNumber="PO-"+wf1.order.text;
-		                ContestServiceFacadeBean.processSubmissionPurchaseOrderPayment(submissionIds, purchaseOrderPaymentData);
+		                purchaseOrderPaymentData.poNumber=wf1.order.selectedItem.data as String;
+		                ContestServiceFacadeBean.processSubmissionPurchaseOrderPayment(completedContestData, purchaseOrderPaymentData);
         			}
         			
         			p=ProgressWindow(PopUpManager.createPopUp((DisplayObject)(
@@ -1390,7 +1408,7 @@
             	}
             }
             
-            private var _totalPurchaseAmount:String = "0.00";
+            private var _totalPurchaseAmount:Number = 0;
             
             private function updatePurchase():void {
             	trace("Updating purchase info");
@@ -1415,7 +1433,7 @@
             	}
             	
             	_purchaseMoney = moneyFormatter.format(totalMoney);
-            	_totalPurchaseAmount = moneyFormatter.format(totalMoney);
+            	_totalPurchaseAmount = totalMoney;
             	var sort:Sort = new Sort();
 	            sort.compareFunction = compareNumber;
 	            _downloadList.sort = sort;
