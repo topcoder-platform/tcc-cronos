@@ -16,6 +16,7 @@
 			
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
 			import mx.rpc.AbstractOperation;
+			import flash.external.ExternalInterface;
 		
 			 [Bindable]
        		public var mainWidget:LaunchWidget;
@@ -112,6 +113,12 @@
 			//	}
 			//}
 			
+			private function gotoPayPal():void {
+			    var openNewWindow:String = "function navToPayPal(){" +
+			            "javascript:window.open('https://www.paypal.com/us/cgi-bin/webscr?cmd=xpt/Marketing/popup/OLCWhatIsPayPal-outside','olcwhatispaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=400, height=350');" +
+			            "}" ;
+			    ExternalInterface.call(openNewWindow);
+			}
 			
 		]]>
 	</mx:Script>
@@ -304,6 +311,7 @@
 					<mx:Spacer width="100%" />
 					<!--<mx:Image source="../assets/verisign.png" />-->
 				</mx:HBox>
+				<mx:Image source="https://www.paypal.com/en_US/i/bnr/horizontal_solution_PPeCheck.gif" width="253" height="80" buttonMode="true" click="gotoPayPal()"/>
 			</mx:VBox>
 		</mx:GridItem>
 	</mx:GridRow>
