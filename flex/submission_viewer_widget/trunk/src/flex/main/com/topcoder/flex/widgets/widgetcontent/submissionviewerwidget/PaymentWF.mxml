@@ -10,6 +10,8 @@
 			import mx.validators.ValidationResult;
 			import com.topcoder.flex.Helper;
 			import mx.events.ValidationResultEvent;
+			import flash.external.ExternalInterface;
+			
 			[Embed(source="../assets/verisign.png")]
 			[Bindable]private var sign:Class;
 			
@@ -84,6 +86,12 @@
 			//	}
 			//}
 			
+            private function gotoPayPal():void {
+                var openNewWindow:String = "function navToPayPal(){" +
+                        "javascript:window.open('https://www.paypal.com/us/cgi-bin/webscr?cmd=xpt/Marketing/popup/OLCWhatIsPayPal-outside','olcwhatispaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=400, height=350');" +
+                        "}" ;
+                ExternalInterface.call(openNewWindow);
+            }
 			
 		]]>
 	</mx:Script>
@@ -179,6 +187,7 @@
 				</mx:VBox>
 				<mx:VBox width="10" height="100%" />
 			</mx:HBox>
+			<mx:Image source="https://www.paypal.com/en_US/i/bnr/horizontal_solution_PPeCheck.gif" width="253" height="80" buttonMode="true" click="gotoPayPal()"/>
 		</mx:VBox>
 		<mx:VBox width="100%">
 			<mx:Label text="Billing Information" styleName="header" />
