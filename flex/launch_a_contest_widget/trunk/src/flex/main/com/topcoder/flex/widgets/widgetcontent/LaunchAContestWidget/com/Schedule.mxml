@@ -168,7 +168,7 @@
             		hourData.push(o);
             	}
             	var minuteData:Array = new Array();
-            	for (i = 0; i <= 59; i++){
+            	for (i = 0; i <=45; i+=15){
             		var o1:Object = new Object();
                     if (i < 10)
                         o1.label = '0'+i.toString();
