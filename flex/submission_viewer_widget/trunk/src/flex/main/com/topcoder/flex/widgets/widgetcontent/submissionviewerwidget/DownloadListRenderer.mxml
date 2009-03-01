@@ -4,7 +4,7 @@
 		<![CDATA[
 
 			import mx.core.Application;
-
+            [Bindable]
 			private function getPurchase(dta:Object):String {
 				if (!dta) {
 					return "";
@@ -15,14 +15,20 @@
 				//}
 				if (dta.hasOwnProperty("purchased") && dta.purchased == true) {
 					temp += "Prize: $";
+					if (dta.hasOwnProperty("savedPrice")) {
+						return temp + dta.savedPrice; 
+					} else {
+					    	return "";
+					}
 				} else {
 					temp += "Cost: $";
+					if (dta.hasOwnProperty("price")) {
+						return temp + dta.price;
+					} else {
+						return "";
+					}
 				}
-				if (dta.hasOwnProperty("price")) {
-					return temp + dta.price;
-				} else {
-					return "";
-				}
+			
 			}
 			
 			private function getPurchased(dta:Object):String {
