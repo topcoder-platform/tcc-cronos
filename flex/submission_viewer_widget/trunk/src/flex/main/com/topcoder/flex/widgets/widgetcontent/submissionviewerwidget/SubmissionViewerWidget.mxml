@@ -371,7 +371,19 @@
                 _contestInfoList = new ArrayCollection();
                 if(event!=null && event.result!=null)
                 {
-                	var contests:ArrayCollection = (!_isLocalTesting ? event.result : event.result.contests.contest) as ArrayCollection;
+                	var contests:ArrayCollection = new ArrayCollection();
+			
+			if(event.result is  ArrayCollection)
+			{
+				
+			  contests=event.result  as ArrayCollection;
+			}
+			else
+			{
+				contests=new ArrayCollection();
+				contests.addItem(event.result);
+			}
+
                 	var selectIdx:int=-1;
                 	
                 	if(!contests.sort)
