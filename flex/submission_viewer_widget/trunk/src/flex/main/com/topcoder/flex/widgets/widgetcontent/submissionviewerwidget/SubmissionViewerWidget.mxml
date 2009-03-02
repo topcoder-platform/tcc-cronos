@@ -985,8 +985,15 @@
                     
                     if (currentItem.rank) {
                         rankBar.selectedIndex = parseInt(currentItem.rank) - 1;
+                        // BUGR-1142
+                        if(_selectedContestStatusId == _completedContestTypeId) {
+                      		_placeLabel = rankBar.dataProvider[parseInt(currentItem.rank) - 1].label.toString().substring(0, 3) + " PLACE:  ";
+                      	} else {
+                      		_placeLabel = "";
+                      	}
                     } else {
                         rankBar.selectedIndex = -1;
+						_placeLabel = "";
                     }
                     
                     prev.visible = (list.selectedItem.id != _submissionList.getItemAt(0).id);
@@ -1042,6 +1049,7 @@
             
             private function disablePurchaseSelector():void {
             	purchase_panel.visible=false;	
+            	purchase_panel.includeInLayout=false; //BUGR-1142
             }
             
             private function enableNoWinnerSelector():void {
@@ -1787,7 +1795,7 @@
     	mouseDown="onMouseDown(event)" 
 
     	resizeToContent="true">
-        <mx:VBox id="leftPanel" horizontalAlign="left" height="100%" width="125" 
+        <mx:VBox id="leftPanel" horizontalAlign="left" height="100%" width="125" minWidth="125" 
         	verticalGap="0">
             <mx:ViewStack id="thumbnailPanel" width="100%" height="100%">
             	<mx:HBox id="thumbnailPanel_enabled" horizontalAlign="center"
@@ -1802,7 +1810,7 @@
 		                		rowCount="7" 
 		                		width="100%" 
 		                		columnWidth="123"
-		                		rowHeight="75"
+		                		rowHeight="95"
 		                		columnCount="3"
 		                        selectionDuration="0"
 
@@ -1879,10 +1887,10 @@
 	            	>
 
 					<mx:HBox width="100%">
-						<mx:Label width="125" styleName="header" fontSize="16" text="{_placeLabel}" />
+						<mx:Label width="125" styleName="header" fontSize="16" text="{_placeLabel}" textAlign="right"/>
 		            	<mx:Label styleName="header" fontSize="16" text="{_currentItemLabel}"/>
 					</mx:HBox>
-					<mx:Label paddingLeft="125" text="(Status: {_selectedContestStatus})" width="100%" />
+					<mx:Label paddingLeft="128" text="(Status: {_selectedContestStatus})" width="100%" />
 	         		<mx:HBox width="100%" 
 			               horizontalAlign="center"
 			               verticalAlign="bottom"
@@ -1987,6 +1995,7 @@
 	                        <mx:Button buttonMode="true" id="next" styleName="next" click="goNext()"/>
 	                    </mx:VBox>
 	                </mx:HBox>
+	                <mx:Spacer height="10" /> <!-- BUGR-1142 -->
                     <mx:HBox width="100%" 
 			               horizontalAlign="center"
 			               verticalScrollPolicy="off" 
