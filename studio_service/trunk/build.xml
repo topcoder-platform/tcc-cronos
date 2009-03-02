@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <project name="Studio Service Build" default="dist" basedir=".">
     <property file="${basedir}/build.version"/>
-    <property file="${basedir}/build.properties"/>
 	<property file="../topcoder_global.properties"/>
 
 	<!-- Import common task definition -->
@@ -259,7 +258,18 @@
     </target>
 
     <target name="dist" depends="compile, manifest">
-        <property name="build.properties" location="${basedir}/build.properties" />
+		
+		<condition property="properties-file" value="build-${target}.properties" else="build.properties">
+			<and>
+				<available file="build-${target}.properties"/>
+			</and>
+		</condition>
+		
+		<echo message="Using build properties file: ${properties-file}"/>
+	
+        <property file="${properties-file}"/>
+	
+        <property name="build.properties" location="${basedir}/${properties-file}" />
         <property name="global_build.properties" location="${build.properties}"/>
 
         <mkdir dir="${dist_lib}/${component_path}"/>
@@ -325,6 +335,7 @@
     </target>
 
     <target name="dist_tcs" depends="clean,dist,javadoc">
+	
          <!-- define tcs distribution format -->
         <mkdir dir="${build_tcsdistdir}"/>
         <copy todir="${build_tcsdistdir}">
