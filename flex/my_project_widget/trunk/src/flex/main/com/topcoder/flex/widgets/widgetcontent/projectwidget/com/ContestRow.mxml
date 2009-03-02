@@ -31,7 +31,14 @@
 		startDate=_dataProvider.startDate;
 		endDate=_dataProvider.endDate;
 		submissions=_dataProvider.submissions;
-		forumPosts=_dataProvider.forumId=="-1"?"no forum":_dataProvider.forumPosts
+		if (_dataProvider.forumId == null || _dataProvider.forumId=="-1")
+		{
+			forumPosts="no forum";
+		}
+		else
+		{
+			forumPosts=_dataProvider.forumPosts
+		}
 		status=_dataProvider.status;
 		registrants=_dataProvider.registrants;
 		contextName=_dataProvider.name;
@@ -204,7 +211,7 @@
 	 */
         private function openForum():void
         {
-        	if(_dataProvider.forumId=="-1")
+        	if(_dataProvider.forumId == null || _dataProvider.forumId=="-1")
         	{
         		//Alert.show("The forum has been created!");
         		return ;
@@ -215,8 +222,7 @@
         private function mouseOverHandle():void
         {
         	if(_dataProvider.status.toLocaleLowerCase()=="draft"
-        	  || _dataProvider.status.toLocaleLowerCase()=="unactive - not yet published"
-        	  || _dataProvider.status.toLocaleLowerCase()=="scheduled" )
+        	  || _dataProvider.status.toLocaleLowerCase()=="unactive - not yet published")
 		  {
         		editBtn.visible=true;
 		  }

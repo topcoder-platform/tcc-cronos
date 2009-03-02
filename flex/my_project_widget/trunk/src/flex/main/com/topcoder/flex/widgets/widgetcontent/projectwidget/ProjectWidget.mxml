@@ -157,7 +157,7 @@
 					{
 						var c:Contest=new Contest(prjArray[i].contestId,prjArray[i].cname,prjArray[i].startDate,
 						prjArray[i].endDate,prjArray[i].num_reg,           prjArray[i].num_sub,
-						prjArray[i].num_for,"-1",
+						prjArray[i].num_for, prjArray[i].forumId,
 						prjArray[i].sname);
 						c.date=prjArray[i].endDate;
 						contests.addItem(c);
