@@ -2,16 +2,17 @@
  * Copyright (c) 2008, TopCoder, Inc. All rights reserved.
  */
 package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
-    import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.model.IWidgetFramework;
+    import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.widgets.model.IWidgetContainer;
-    import mx.collections.ArrayCollection;
-    import mx.containers.Box;
-    import mx.controls.DataGrid;
+    import mx.core.Application;
     import flash.utils.Dictionary;
-    import mx.containers.Panel;
     
-    import mx.containers.Box;
+    import mx.collections.ArrayCollection;
+    import mx.containers.Panel;
+    import mx.controls.ComboBox;
+    import mx.rpc.soap.SOAPHeader;
+    import mx.rpc.soap.WebService;
 
     /**
      * <p>
@@ -51,21 +52,42 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
 	private var _allowclose:Boolean=true;
         
         
+        [Bindable]
+		public var contestList:ArrayCollection;
+		
+		public var contestCombo:ComboBox;        
         /**
          * The default contest id.
          */
         private var _defaultcontestid:int = 0;
         
         private var _pid:String=null;
+        
+        protected var username:String=Application.application.parameters.username;
+		protected var password:String = "";
+		
+		private var _ContestServiceFacadeBean:WebService;
         [Bindable]public function get pid():String {
             return this._pid;
+        }
+        
+        public function get ContestServiceFacadeBean():WebService
+        {
+        	return _ContestServiceFacadeBean;
+        }
+        public function set ContestServiceFacadeBean(a:WebService):void
+        {
+        	_ContestServiceFacadeBean=a;
         }
         
         public function get defaultcontestid():int
         {
         	return _defaultcontestid;
         }
-        
+        public function set defaultcontestid(id:int):void
+        {
+        	 _defaultcontestid=id;
+        }
         /**
          * ContestMonitorWidgetCodeBehind constructor.
          */
@@ -102,8 +124,16 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
          * This action will reload this widget.
          */
         public function reload():void {
-            //trigger to load the data
-            this._result = this._result.copy();
+            if(contestCombo.selectedIndex>=0)
+            {
+            	defaultcontestid=contestList.getItemAt(contestCombo.selectedIndex).contestId;
+            }
+            
+            var header:SOAPHeader=ContestMonitorWidget.getHeader(username,password);
+			ContestServiceFacadeBean.clearHeaders();
+            ContestServiceFacadeBean.addHeader(header);
+
+        	ContestServiceFacadeBean.getSimpleContestData();
         }
 
         /**

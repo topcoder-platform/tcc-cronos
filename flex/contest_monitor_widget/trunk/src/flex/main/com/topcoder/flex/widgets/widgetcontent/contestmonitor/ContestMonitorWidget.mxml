@@ -41,16 +41,12 @@
 
 	public static var SLIDER_TICK_LENGTH:Number = 0;
 	public static var TRACK_WIDTH:Number = 0;
-
-	private var username:String=Application.application.parameters.username;  //"user"
-        private var password:String = "";
         private var blazedsendpoint:String= Application.application.parameters.blazedsendpoint;
         private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;
         
         private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
 		
-		[Bindable]
-		private var contestList:ArrayCollection;
+		
 		
 		[Bindable]
 		private var contestNames:ArrayCollection;
