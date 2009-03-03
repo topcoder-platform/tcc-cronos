@@ -216,3 +216,36 @@
 	overSkin: Embed('../assets/btn_Cancel_hover.png');
 	downSkin: Embed('../assets/btn_Cancel_hover.png');
 }
+
+/* BUGR-1279 */
+.RTELinkButton {		
+	disabledSkin: Embed(source="../assets/btn_hyperlink.png");
+	downSkin: Embed(source="../assets/btn_hyperlink_click.png");
+	overSkin: Embed(source="../assets/btn_hyperlink_click.png");
+	upSkin: Embed(source="../assets/btn_hyperlink.png");
+}
+
+/* BUGR-1279 */
+.RTEResizeCorner {
+	disabledSkin: Embed(source="../assets/resize_corner.png");
+	downSkin: Embed(source="../assets/resize_corner_hover.png");
+	overSkin: Embed(source="../assets/resize_corner_hover.png");
+	upSkin: Embed(source="../assets/resize_corner.png");
+	bottom: 1;
+	right: 1;
+}
+
+
+/* BUGR-1279 */
+.RTEControlBar {
+	horizontal-align: center;
+}
+
+/* BUGR-1279 */
+.RTETextArea {
+	border-color: #CCCCCC;
+	border-style: solid;	
+	left: 10;
+	top: 10;
+}
+

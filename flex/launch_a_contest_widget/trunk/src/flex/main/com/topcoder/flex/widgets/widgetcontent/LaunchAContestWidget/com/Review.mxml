@@ -52,9 +52,9 @@
 	        	adFee.text = adminFee;
 	        	total.text = contestTotal;
 	        	
-	        	ctInput.text = contentTitleStr;
-	        	introInput.text = IntroductionStr;
-	        	glsInput.text = glsInputStr;
+	        	ctInput.htmlText = contentTitleStr; // BUGR-1279
+	        	introInput.htmlText = IntroductionStr; // BUGR-1279
+	        	glsInput.htmlText = glsInputStr; // BUGR-1279
                 
                 colorInput.text = colorInputStr;
                 fontInput.text = fontInputStr;

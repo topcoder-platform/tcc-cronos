@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+<mx:Canvas 
+	xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	xmlns:tc="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.*" 
           horizontalScrollPolicy="off" verticalScrollPolicy="off">
     <mx:Script>
 	    <![CDATA[
@@ -49,9 +51,9 @@
 	        		return false;
 	        	}
 	        	
-	        	this.mainWidget.competition.contestData.name = ctInput.text;
-	        	this.mainWidget.competition.contestData.shortSummary = introInput.text;
-	        	this.mainWidget.competition.contestData.contestDescriptionAndRequirements = glsInput.text;
+	        	this.mainWidget.competition.contestData.name = ctInput.htmlText; // BUGR-1279
+	        	this.mainWidget.competition.contestData.shortSummary = introInput.htmlText; // BUGR-1279
+	        	this.mainWidget.competition.contestData.contestDescriptionAndRequirements = glsInput.htmlText; // BUGR-1279
 	        	
 	        	return true;
 	        }
@@ -148,7 +150,7 @@
 	        </mx:HBox>
 	        <mx:Text id="introHint" height="0" color="0x888888" width="500" visible="false">
             </mx:Text>
-	        <mx:RichTextEditor id="introInput" width="500" height="200"/>
+	        <tc:TCRichTextEditor id="introInput" width="500" height="150"/>  <!-- BUGR-1279 -->
         </mx:VBox>
         
         <mx:Spacer height="5"/>
@@ -161,7 +163,7 @@
             </mx:HBox>
             <mx:Text id="goalsHint" height="0" color="0x888888" width="500" visible="false">
             </mx:Text>
-            <mx:RichTextEditor id="glsInput" width="500" height="200"/>
+            <tc:TCRichTextEditor id="glsInput" width="500" height="150"/>  <!-- BUGR-1279 -->
         </mx:VBox>
         
         
