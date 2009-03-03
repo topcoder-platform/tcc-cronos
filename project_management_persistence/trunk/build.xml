@@ -14,10 +14,20 @@
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src" />
-    <property name="tcs_libdir" value="../tcs/lib/tcs" />
-    <property name="ext_libdir" value="../tcs/lib/third_party" />
-    <property name="jar_tcs_libdir" value="../tcs/lib/tcs" />
-    <property name="jar_ext_libdir" value="../tcs/lib/third_party" />
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+	<if>
+		<not>
+			<available file="../topcoder_global.properties"/>
+		</not>
+		<then>
+				<property name="tcs_libdir" value="../tcs/lib/tcs" />
+				<property name="ext_libdir" value="../tcs/lib/third_party" />
+				<property name="jar_tcs_libdir" value="../tcs/lib/tcs" />
+				<property name="jar_ext_libdir" value="../tcs/lib/third_party" />
+		</then>
+	</if>
+   
     <property name="docsdir" value="docs" />
     <property name="configdir" value="conf" />
     <property name="testlogdir" value="log" />
@@ -82,7 +92,7 @@
 	<property name="instrumented.dir" value="${builddir}/instrumented" />
 		    
     <!-- TCS Dependencies -->
-	<property name="base_exception.version" value="1.0"/>
+	<property name="base_exception.version" value="2.0.0"/>
 		<property name="base_exception.jar.name" value="base_exception.jar"/>
 		<property name="base_exception.path" value="base_exception/${base_exception.version}"/>
 		<property name="base_exception.jar" value="${tcs_libdir}/${base_exception.path}/${base_exception.jar.name}"/>
@@ -91,8 +101,14 @@
 	    <property name="configuration_manager.jar.name" value="configuration_manager.jar"/>
 	    <property name="configuration_manager.path" value="configuration_manager/${configuration_manager.version}"/>
 	    <property name="configuration_manager.jar" value="${tcs_libdir}/${configuration_manager.path}/${configuration_manager.jar.name}"/>
+
+	<property name="configuration_api.version" value="1.0"/>
+	    <property name="configuration_api.jar.name" value="configuration_api.jar"/>
+	    <property name="configuration_api.path" value="configuration_api/${configuration_api.version}"/>
+	    <property name="configuration_api.jar" value="${tcs_libdir}/${configuration_api.path}/${configuration_api.jar.name}"/>
+
 		
-	<property name="db_connection_factory.version" value="1.0"/>
+	<property name="db_connection_factory.version" value="1.1"/>
 		<property name="db_connection_factory.jar.name" value="db_connection_factory.jar"/>
 		<property name="db_connection_factory.path" value="db_connection_factory/${db_connection_factory.version}"/>
 		<property name="db_connection_factory.jar" value="${tcs_libdir}/${db_connection_factory.path}/${db_connection_factory.jar.name}"/>
@@ -117,12 +133,7 @@
 		<property name="project_management.path" value="project_management/${project_management.version}"/>
 		<property name="project_management.jar" value="${tcs_libdir}/${project_management.path}/${project_management.jar.name}"/>
 
-	<property name="logging_wrapper.version" value="1.2" />
-	    <property name="logging_wrapper.jar.name" value="logging_wrapper.jar" />
-	    <property name="logging_wrapper.path" value="logging_wrapper/${logging_wrapper.version}" />
-	    <property name="logging_wrapper.jar" value="${tcs_libdir}/${logging_wrapper.path}/${logging_wrapper.jar.name}" />
-	
-	<property name="logging_wrapper.version" value="1.2" />
+	<property name="logging_wrapper.version" value="2.0.0" />
 	    <property name="logging_wrapper.jar.name" value="logging_wrapper.jar" />
 	    <property name="logging_wrapper.path" value="logging_wrapper/${logging_wrapper.version}" />
 	    <property name="logging_wrapper.jar" value="${tcs_libdir}/${logging_wrapper.path}/${logging_wrapper.jar.name}" />
@@ -142,6 +153,8 @@
     <path id="buildlibs">
         <pathelement location="${junit.jar}" />
         <pathelement location="${configuration_manager.jar}" />
+		<pathelement location="${configuration_api.jar}" />
+
     	<pathelement location="${base_exception.jar}" />
     	<pathelement location="${db_connection_factory.jar}" />
     	<pathelement location="${id_generator.jar}" />
@@ -321,7 +334,7 @@
         <mkdir dir="${dist_coverage}"/>
         <mkdir dir="${docs_coverage}"/>
         
-        <copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
+     <!--   <copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
         <copy file="${testlogdir}/cobertura.ser" todir="${docsdir}"/>
         
         <copy todir="${dist_coverage}">
@@ -329,7 +342,7 @@
         </copy>
         <copy todir="${docs_coverage}">
             <fileset dir="${testlogdir}/coverage" />
-        </copy>
+        </copy>-->
 
         <mkdir dir="${dist_src}"/>
         <copy todir="${dist_src}">

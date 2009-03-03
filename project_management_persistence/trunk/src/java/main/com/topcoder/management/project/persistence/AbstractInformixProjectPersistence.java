@@ -74,7 +74,7 @@ import com.topcoder.util.log.Log;
  * @version 1.1
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
-	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
+	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogManager
 			.getLog(AbstractInformixProjectPersistence.class.getName());
 
 	/**
