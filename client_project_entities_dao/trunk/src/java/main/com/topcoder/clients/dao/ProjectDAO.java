@@ -82,4 +82,35 @@ public interface ProjectDAO extends GenericDAO<Project, Long> {
      */
     public List<Project> retrieveAll(boolean includeChildren)
         throws DAOException;
+
+    /**
+     * <p>
+     * Defines the operation that performs the retrieval of the list with
+     * projects with the given user id. If nothing is found, return an empty list.
+     * <p>
+     * @param username the user name
+     * @return List of Project, if nothing is found, return an empty string
+     * @throws DAOException if any error occurs while performing this operation.
+     */
+    public List<Project> getProjectsByUser(String username) throws DAOException;
+
+
+	 /**
+     * <p>
+     * Defines the operation that performs the retrieval of all projects from
+     * the persistence. If include children is true return the
+     * Project.childProjects list too; otherwise the list should not be
+     * returned. If nothing is found, return an empty list.
+     * </p>
+     *
+     * @param includeChildren
+     *                the flag that mention if the Project.childrenProjects list
+     *                should be returned or not.
+     * @return the list of Projects found in the persistence. If nothing is
+     *         found, return an empty list.
+     * @throws DAOException
+     *                 if any error occurs while performing this operation.
+     */
+    public List<Project> retrieveAllProjectsOnly() throws DAOException;
+
 }

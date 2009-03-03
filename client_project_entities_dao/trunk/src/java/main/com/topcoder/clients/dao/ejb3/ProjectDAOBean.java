@@ -3,6 +3,10 @@
  */
 package com.topcoder.clients.dao.ejb3;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -57,6 +61,25 @@ import com.topcoder.clients.model.Project;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
         ProjectDAO, ProjectDAOLocal, ProjectDAORemote {
+
+
+	
+	private static final String SELECT_WORKER_PROJECT =
+		"SELECT distinct project_id FROM project_worker p, user_account u WHERE p.user_account_id = u.user_account_id and u.user_name = ";
+	/**
+     * The query string used to select projects.
+     */
+	private static final String SELECT_MANAGER_PROJECT =
+		"SELECT distinct project_id FROM project_manager p, user_account u WHERE p.user_account_id = u.user_account_id and  u.user_name = ";
+
+	/**
+	 * The query string used to select projects.
+	 */
+	private static final String SELECT_PROJECT = "select project_id, name, po_box_number, description, "
+			+ "active, sales_tax, payment_terms_id, modification_user, modification_date, "
+			+ "creation_date, creation_user, is_deleted from project";
+
+
     /**
      * Default no-arg constructor. Constructs a new 'ProjectDAOBean' instance.
      */
@@ -124,7 +147,7 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
 
         try {
             String queryString = "select p from Project p"
-                    + " where p.deleted = false";
+                    + " where p.deleted = false and p.active = true order by upper(p.name) ";
             Query query = entityManager.createQuery(queryString);
 
             // Involves an unchecked conversion:
@@ -143,4 +166,120 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
             throw new DAOException("Failed to retrieve all project.", e);
         }
     }
+
+
+	/**
+	 * <p>
+	 * Defines the operation that performs the retrieval of the list with
+	 * projects with the given user id. If nothing is found, return an empty
+	 * list.
+	 * <p>
+	 *
+	 * @param username
+	 *            the user name
+	 * @return List of Project, if nothing is found, return an empty string
+	 * @throws DAOException
+	 *             if any error occurs while performing this operation.
+	 */
+	public List<Project> getProjectsByUser(String username) throws DAOException {
+		EntityManager entityManager = Helper
+				.checkEntityManager(getEntityManager());
+
+		try {
+
+			String queryString = SELECT_PROJECT + " where active = 1 and project_id in " + "("
+					+ SELECT_MANAGER_PROJECT + "'" + username + "' " + "union "
+					+ SELECT_WORKER_PROJECT + "'" + username + "')";
+			queryString += " order by upper(name) ";
+
+			Query query2 = entityManager.createNativeQuery(queryString);
+
+			return convertQueryToListProjects(query2);
+
+		} catch (Exception e) {
+			throw Helper.WrapExceptionWithDAOException(e,
+					"Failed to get project for user [" + username + "].");
+		}
+	}
+
+	/**
+	 * <p>
+	 * Defines the operation that performs the retrieval of the list of all
+	 * projects. If nothing is found, return an empty list.
+	 * <p>
+	 *
+	 * @return List of Project, if nothing is found, return an empty string
+	 * @throws DAOException
+	 *             if any error occurs while performing this operation.
+	 */
+	public List<Project> retrieveAllProjectsOnly() throws DAOException {
+		EntityManager entityManager = Helper
+				.checkEntityManager(getEntityManager());
+
+		try {
+			String queryString = SELECT_PROJECT;
+
+			Query query2 = entityManager.createNativeQuery(queryString);
+
+			return convertQueryToListProjects(query2);
+
+		} catch (Exception e) {
+			throw Helper.WrapExceptionWithDAOException(e,
+					"Failed to get all projects.");
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Project> convertQueryToListProjects(Query query) {
+		List list = query.getResultList();
+System.out.println("----client project size=="+list.size());
+
+		List<Project> result = new ArrayList<Project>();
+
+		for (int i = 0; i < list.size(); i++) {
+
+			Project c = new Project();
+			Object[] os = (Object[]) list.get(i);
+			if (os[0] != null)
+				c.setId(Integer.parseInt(os[0].toString()));
+
+			if (os[1] != null)
+				c.setName(os[1].toString());
+
+			if (os[2] != null)
+				c.setPOBoxNumber(os[2].toString());
+
+			if (os[3] != null)
+				c.setDescription(os[3].toString());
+
+			if (os[4] != null)
+				c.setActive(((Short) os[4]).intValue() == 1 ? true : false);
+
+			if (os[5] != null)
+				c.setSalesTax(((BigDecimal) os[5]).doubleValue());
+
+			if (os[6] != null)
+				c.setPaymentTermsId(((Integer) os[6]).intValue());
+
+			if (os[7] != null)
+				c.setModifyUsername(os[7].toString());
+
+			if (os[8] != null)
+				c.setModifyDate(new Date(((Timestamp) os[8]).getTime()));
+
+			if (os[9] != null)
+				c.setCreateDate(new Date(((Timestamp) os[9]).getTime()));
+
+			if (os[10] != null)
+				c.setCreateUsername(os[10].toString());
+
+			if (os[11] != null)
+				c.setDeleted(((Short) os[11]).intValue() == 1 ? true : false);
+
+			result.add(c);
+
+		}
+
+		return result;
+	}
 }

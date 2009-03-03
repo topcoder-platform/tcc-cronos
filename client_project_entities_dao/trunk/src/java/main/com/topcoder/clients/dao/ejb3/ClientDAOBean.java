@@ -60,25 +60,7 @@ import com.topcoder.clients.model.Project;
 public class ClientDAOBean extends GenericEJB3DAO<Client, Long> implements
         ClientDAO, ClientDAOLocal, ClientDAORemote {
 	
-	/**
-     * The query string used to select projects.
-     */
-	private static final String SELECT_WORKER_PROJECT =
-		"SELECT distinct project_id FROM project_worker WHERE user_account_id = ";
-	/**
-     * The query string used to select projects.
-     */
-	private static final String SELECT_MANAGER_PROJECT =
-		"SELECT distinct project_id FROM project_manager WHERE user_account_id = ";
-
-
-	private static final String SELECT_WORKER_PROJECT_USERNAME =
-		"SELECT distinct project_id FROM project_worker p, user_account u WHERE p.user_account_id = u.user_account_id and u.user_name = ";
-	/**
-     * The query string used to select projects.
-     */
-	private static final String SELECT_MANAGER_PROJECT_USERNAME =
-		"SELECT distinct project_id FROM project_manager p, user_account u WHERE p.user_account_id = u.user_account_id and  u.user_name = ";
+	
 
 	/**
      * The query string used to select projects.
@@ -132,91 +114,6 @@ public class ClientDAOBean extends GenericEJB3DAO<Client, Long> implements
 
   
 
-	 /**
-     * <p>
-     * Defines the operation that performs the retrieval of the list with
-     * projects with the given user id. If nothing is found, return an empty list.
-     * <p>
-     * @param userId the user id
-     * @return List of Project, if nothing is found, return an empty string
-     * @throws DAOException if any error occurs while performing this operation.
-     */
-    @SuppressWarnings("unchecked")
-	public List<Project> getProjectsByUser(String username) throws DAOException {
-		EntityManager entityManager = Helper.checkEntityManager(getEntityManager());
-		
-		try {
-			Query query = entityManager.createNativeQuery(SELECT_MANAGER_PROJECT_USERNAME + "'" + username + "'");
-			List<Integer> managerProjects = query.getResultList();
-			
-			query = entityManager.createNativeQuery(SELECT_WORKER_PROJECT_USERNAME + "'" + username + "'");
-			List<Integer> workerProjects = query.getResultList();
-			
-			//join all the distinct project id
-			for(Integer projectId: workerProjects) {
-				boolean existed = false;
-				for(Integer existingId:managerProjects) {
-					if ( existingId.longValue() == projectId.longValue()) {
-						existed = true;
-						break;
-					}
-				}
-				if (!existed) {
-					managerProjects.add(projectId);
-				}
-			}
-			
-			if ( managerProjects.isEmpty()) {
-				return new ArrayList<Project>();
-			}
-		
-			String queryString = "select project_id, name, po_box_number, description from project where active = 1 and project_id ";
-			if ( managerProjects.size() == 1) {
-				queryString += " = " + managerProjects.get(0);
-			} else {
-				queryString += " in (";
-				for(Integer projectId:managerProjects) {
-					queryString += projectId + ",";
-				}
-				queryString = queryString.substring(0, queryString.length()-1);
-				queryString += ")";
-			}
-
-			queryString += " order by upper(name) ";
-
-			Query query2 = entityManager.createNativeQuery(queryString);
-
-            List list = query2.getResultList();
-
-            List<Project> result = new ArrayList<Project>();
-System.out.println("---------client project size ---" + list.size());
-
-            for (int i = 0; i < list.size(); i++) {
-
-                Project c = new Project();
-                Object[] os = (Object[]) list.get(i);
-                if (os[0] != null)
-                    c.setId(Integer.parseInt(os[0].toString()));
-
-                if (os[1] != null)
-                    c.setName(os[1].toString());
-
-                if (os[2] != null)
-                    c.setPOBoxNumber(os[2].toString());
-
-                if (os[3] != null)
-                    c.setDescription(os[3].toString());
-
-                result.add(c);
-
-            }
-
-			return result;
-
-		} catch(Exception e) {
-			throw Helper.WrapExceptionWithDAOException(e, "Failed to get project for user [" + username + "].");
-		}
-	}
-
+	
 
 }
