@@ -60,7 +60,7 @@
 	       	private var CONTEST_SELECTION_HEIGHT:int = 510;
 	       	private var OVERVIEW_HEIGHT:int = 770; // BUGR-1204 was 730
 	       	private var DETAILS_HEIGHT:int = 657;
-	       	private var SPECIFICATIONS_HEIGHT:int = 820;
+	       	private var SPECIFICATIONS_HEIGHT:int = 920; // BUGR-1362
 	       	private var ATTACH_FILES_HEIGHT:int = 660;
 	       	private var SCHEDULE_HEIGHT:int = 860;
 	       	private var REVIEW_HEIGHT:int = 1165;
