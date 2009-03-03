@@ -1064,13 +1064,14 @@ public class ProjectServiceFacadeBean implements ProjectServiceFacadeLocal, Proj
     		throw new DAOFault("Fail to get client project for user.");
     	}
     	try {
-//    		if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
-//    			return this.projectDAO.retrieveAll();
-//    		}    
+    		if (sessionContext.isCallerInRole(ADMIN_ROLE)) {
+    			return this.projectDAO.retrieveAllProjectsOnly();
+    		}    
 
 			//TODO, until we fix retrieveAll, 
 			 UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
-			 return this.clientDAO.getProjectsByUser(p.getName());
+			 //return this.clientDAO.getProjectsByUser(p.getName());
+             		 return this.projectDAO.getProjectsByUser(p.getName());
 
 		} catch(EntityNotFoundException e) {
 			throw new EntityNotFoundFault(e.getMessage(), e.getCause());
