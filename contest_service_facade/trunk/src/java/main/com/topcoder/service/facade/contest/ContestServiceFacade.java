@@ -25,7 +25,6 @@ import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.payment.CreditCardPaymentData;
-import com.topcoder.service.payment.PaymentData;
 import com.topcoder.service.payment.PaymentException;
 import com.topcoder.service.payment.PaymentResult;
 import com.topcoder.service.payment.TCPurhcaseOrderPaymentData;

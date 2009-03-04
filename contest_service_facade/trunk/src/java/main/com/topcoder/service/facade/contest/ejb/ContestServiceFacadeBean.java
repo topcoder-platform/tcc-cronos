@@ -42,6 +42,7 @@ import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.facade.contest.ContestServiceFilter;
 import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.service.studio.submission.PrizeType;
+import com.topcoder.service.studio.submission.Submission;
 import com.topcoder.service.studio.PrizeData;
 
 import javax.ejb.SessionContext;
@@ -635,7 +636,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws PersistenceException if any error occurs during the retrieval.
      */
     public SubmissionData retrieveSubmission(long submissionId) throws PersistenceException {
-        return this.studioService.retrieveSubmission(submissionId);
+        return this.studioService.retrieveSubmissionData(submissionId);
     }
 
     /**
@@ -673,23 +674,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     }
 
     /**
-     * <p>Purchases the specified submission. E.g. records a fact that submission referenced by specified ID has been
-     * paid for in the course of payment transaction referenced by the specified <code>PayPal</code> order ID.</p>
-     *
-     * @param submissionId a <code>long</code> providing the ID of a submission which has been paid for.
-     * @param payPalOrderId a <code>String</code> providing the <code>PayPal</code> order ID referencing the payment
-     * transaction.
-     * @param securityToken a <code>String</code> providing the security token to be used for tracking the payment and
-     * prevent fraud.
-     * @throws PersistenceException if any error occurs when purchasing submission.
-     * @throws IllegalArgumentWSException if specified <code>submissionId</code> is negative.
-     */
-//    public void purchaseSubmission(long submissionId, String payPalOrderId, String securityToken)
-//            throws PersistenceException {
-//        this.studioService.purchaseSubmission(submissionId, payPalOrderId, securityToken);
- //   }
-
-    /**
      * <p>
      * Purchases the specified submission. E.g. records a fact that submission referenced by specified ID has been paid
      * </p>
@@ -708,7 +692,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public void purchaseSubmission(long submissionId, SubmissionPaymentData submissionPaymentData, String securityToken)
             throws PersistenceException {
-        // TODO: remove this comment once BUGR-1316 is solved.
         this.studioService.purchaseSubmission(submissionId, submissionPaymentData, securityToken);
     }
 
@@ -1311,25 +1294,30 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         try {
             Logger.getLogger(this.getClass()).info("CompletedContestData: " + completedContestData);
             Logger.getLogger(this.getClass()).info("PaymentData: " + paymentData + "," + paymentData.getType());
+            
+            List<SubmissionData> submissionDatas = this.retrieveSubmissionsForContest(completedContestData.getContestId());
+            int totalSubmissions = submissionDatas.size();
 
             for (int i = 0; i < completedContestData.getSubmissions().length; i++) {
                 SubmissionPaymentData submissionPaymentData = completedContestData.getSubmissions()[i];
                 long submissionId = submissionPaymentData.getId();
-                SubmissionData submissionData = this.retrieveSubmission(submissionId);
-                if (submissionData == null) {
+                
+                int j = 0;
+                for (SubmissionData s : submissionDatas) {
+                    if (submissionId == s.getSubmissionId()) {
+                        break;
+                    }
+                    
+                    j++;
+                }
+                
+                if (j >= totalSubmissions) {
                     throw new PaymentException("Error in processing payment for submission: " + submissionId
                             + ". Submission is not found");
                 }
             }
-System.out.println("-------contest id ---"+completedContestData.getContestId());
-
-			for (int i = 0; i < completedContestData.getSubmissions().length; i++) {
-                SubmissionPaymentData submissionPaymentData = completedContestData.getSubmissions()[i];
-                long submissionId = submissionPaymentData.getId();
-                if (submissionPaymentData.isRanked()) {
-                    this.setSubmissionPlacement(submissionId, submissionPaymentData.getRank());
-                }
-            }
+            
+            Logger.getLogger(this.getClass()).info("-------contest id ---" + completedContestData.getContestId());
 
             PaymentResult result = null;
             if (paymentData.getType().equals(PaymentType.TCPurchaseOrder)) {
@@ -1356,12 +1344,11 @@ System.out.println("-------contest id ---"+completedContestData.getContestId());
             UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
             String userId = Long.toString(p.getUserId());
 
-            
-
             // purchase or rank submission.
             for (int i = 0; i < completedContestData.getSubmissions().length; i++) {
                 SubmissionPaymentData submissionPaymentData = completedContestData.getSubmissions()[i];
                 long submissionId = submissionPaymentData.getId();
+                
                 if (submissionPaymentData.isPurchased()) {
                     this.markForPurchase(submissionId);
                     submissionPaymentData.setPaymentReferenceNumber(result.getReferenceNumber());
@@ -1375,9 +1362,11 @@ System.out.println("-------contest id ---"+completedContestData.getContestId());
                     }
 
 					submissionPaymentData.setPaymentStatusId(CONTEST_PAYMENT_STATUS_PAID);
-
-                    this.purchaseSubmission(submissionId, submissionPaymentData, userId);
                 }
+                
+                this.studioService.rankAndPurchaseSubmission(submissionId, 
+                        submissionPaymentData.isRanked() ? submissionPaymentData.getRank() : 0, 
+                                submissionPaymentData.isPurchased() ? submissionPaymentData : null, userId);
             }
 
 			// update contest status to complete.
