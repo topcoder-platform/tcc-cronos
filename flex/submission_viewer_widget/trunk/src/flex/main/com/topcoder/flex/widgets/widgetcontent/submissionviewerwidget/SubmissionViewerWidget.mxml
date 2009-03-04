@@ -1140,7 +1140,7 @@
                  if (event && event != null || (isContestChanged && isContestChanged == true)) {
 	                 if(_submissionList && _submissionList.length > 0)_submissionList.removeAll();
 	                 
-	                 if (!_isLocalTesting) {
+	                 if (!_isLocalTesting && _contestList && _contestList.length > 0) {
 		            	var header:SOAPHeader=getHeader(username,password);
 						ContestServiceFacadeBean.clearHeaders();
 		        		ContestServiceFacadeBean.addHeader(header);
