@@ -4,6 +4,8 @@
 package com.topcoder.service.studio.submission;
 
 import java.text.MessageFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +28,10 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+import com.topcoder.service.studio.PaymentType;
+import com.topcoder.service.studio.contest.Contest;
+import com.topcoder.service.studio.contest.FilePath;
+import com.topcoder.service.studio.contest.MimeType;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogException;
@@ -1576,6 +1582,293 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
         logEnter(methodName);
 
         PaymentStatus ret = getEntity(getEntityManager(methodName), PaymentStatus.class, paymentStatusId, methodName);
+
+        logExit(methodName);
+        return ret;
+    }
+    
+    /**
+     * <p>
+     * Gets the active submissions for the contest with the given id. Also, the selectFullSubmission will determine if
+     * the full submission is returned to the caller.
+     * </p>
+     *
+     * @param contest
+     *            a <code>Contest</code> for which the submissions to be get
+     * @param selectFullSubmission
+     *            a <code>boolean</code> flag whether the full submission should be returned
+     * @param maxSubmissionsPerUser a <code>int</code> value. if non-zero then, criteria to limit submissions by their rank else it is not considered.
+     * @param includeFailedScreening a <code>boolean</code> flag. true if failed screening submission need to be included else false.           
+     * @return List of Submission for the contest with the given id, or empty list if none found.
+     * @throws SubmissionManagementException
+     *             If any error occurs during the retrieval
+     */
+    public List<Submission> getSubmissionsForContest(Contest contest, boolean selectFullSubmission,
+            int maxSubmissionsPerUser, boolean includeFailedScreening) throws SubmissionManagementException {
+        final String methodName = "getSubmissionsForContest(Contest, boolean, int, boolean)";
+        logEnter(methodName);
+
+        long contestId = contest.getContestId();
+
+        EntityManager em = getEntityManager(methodName);
+
+        String qstr = "select submission_id,"
+                + " submitter_id,"
+                + " original_file_name,"
+                + " system_file_name,"
+                + " path_id,"
+                + " (select path from path as p where p.path_id = s.path_id) as path_desc,"
+                + " (select modify_date from path as p where p.path_id = s.path_id) as path_modify_date,"
+                + " submission_type_id,"
+                + " (select submission_type_desc from submission_type_lu as stlu where stlu.submission_type_id = s.submission_type_id) as submission_type_desc,"
+                + " mime_type_id,"
+                + " (select mime_type_desc from mime_type_lu as mtlu where mtlu.mime_type_id = s.mime_type_id) as mime_type_desc,"
+                + " rank,"
+                + " submission_date,"
+                + " height,"
+                + " width,"
+                + " submission_status_id,"
+                + " (select submission_status_desc from submission_status_lu as sslu where sslu.submission_status_id = s.submission_type_id) as submission_status_desc,"
+                + " modify_date," + " or_submission_id," + " payment_id" + " from submission as s "
+                + " where s.contest_id = " + contestId;
+
+        if (maxSubmissionsPerUser > 0) {
+            qstr = qstr + " and s.rank IS NOT NULL and s.rank <= " + maxSubmissionsPerUser;
+        }
+
+        Query query = em.createNativeQuery(qstr);
+
+        List list = query.getResultList();
+
+        List<Submission> ret = new ArrayList<Submission>();
+
+        SimpleDateFormat myFmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
+        try {
+            for (int i = 0; i < list.size(); i++) {
+                Submission s = new Submission();
+                Object[] os = (Object[]) list.get(i);
+
+                // submission_id
+                if (os[0] != null)
+                    s.setSubmissionId(Long.parseLong(os[0].toString()));
+
+                // submitter_id
+                if (os[1] != null)
+                    s.setSubmitterId(Long.parseLong(os[1].toString()));
+
+                // original_file_name
+                if (os[2] != null)
+                    s.setOriginalFileName(os[2].toString());
+
+                // system_file_name
+                if (os[3] != null)
+                    s.setSystemFileName(os[3].toString());
+
+                // path_id
+                FilePath path = new FilePath();
+                if (os[4] != null)
+                    path.setFilePathId(Long.parseLong(os[4].toString()));
+
+                // path_desc
+                if (os[5] != null)
+                    path.setPath(os[5].toString());
+
+                // file modify date
+                if (os[6] != null)
+                    path.setModifyDate(myFmt.parse(os[6].toString()));
+
+                if (os[4] != null && os[5] != null && !selectFullSubmission) {
+                    s.setFullSubmissionPath(path);
+                }
+
+                // submission_type_id
+                SubmissionType submissionType = new SubmissionType();
+                if (os[7] != null)
+                    submissionType.setSubmissionTypeId(Long.parseLong(os[7].toString()));
+
+                // submission_type_desc
+                if (os[8] != null)
+                    submissionType.setDescription(os[8].toString());
+
+                if (os[7] != null && os[8] != null) {
+                    s.setType(submissionType);
+                }
+
+                // mime_type_id
+                MimeType mimeType = new MimeType();
+                if (os[9] != null)
+                    mimeType.setMimeTypeId(Long.parseLong(os[9].toString()));
+
+                // mime_type_desc
+                if (os[10] != null)
+                    mimeType.setDescription(os[10].toString());
+
+                // NOTE: StudioFileType has list, it need to be retrieved in some good way, but set it to null for now.
+                mimeType.setStudioFileType(null);
+
+                // rank
+                if (os[11] != null)
+                    s.setRank(Integer.parseInt(os[11].toString()));
+
+                // submission_date
+                if (os[12] != null)
+                    s.setSubmissionDate(myFmt.parse(os[12].toString()));
+
+                // height
+                if (os[13] != null)
+                    s.setHeight(Integer.parseInt(os[13].toString()));
+
+                // width
+                if (os[14] != null)
+                    s.setWidth(Integer.parseInt(os[14].toString()));
+
+                // submission_status_id
+                SubmissionStatus submissionStatus = new SubmissionStatus();
+                if (os[15] != null)
+                    submissionStatus.setSubmissionStatusId(Long.parseLong(os[15].toString()));
+
+                // submission_status_desc
+                if (os[16] != null)
+                    submissionStatus.setDescription(os[16].toString());
+
+                if (os[15] != null && os[16] != null) {
+                    s.setStatus(submissionStatus);
+                }
+
+                // modify_date
+                if (os[17] != null)
+                    s.setModifyDate(myFmt.parse(os[17].toString()));
+
+                // or_submission_id
+                if (os[18] != null)
+                    s.setOrSubmission(Long.parseLong(os[18].toString()));
+
+                // payment_id
+                if (os[19] != null)
+                    s.setPaymentId(Long.parseLong(os[19].toString()));
+
+                // NOTE: set contestResult, reviews, prizes to null for now.
+                // a good way to retrieve these list need to be figured out.
+                s.setResult(null);
+                //s.setReview(null);
+                //s.setPrizes(null);
+
+                // set the contest.
+                s.setContest(contest);
+
+                ret.add(s);
+            }
+
+        } catch (ParseException excp) {
+            throw new SubmissionManagementException("Error in parsing result.", excp);
+        }
+
+        logExit(methodName);
+        return ret;
+    }
+    
+    /**
+     * <p>
+     * Gets the submission payments for the contest with the given id.
+     * </p>
+     *
+     * @param contestId
+     *            a <code>long</code> id of the contest for which the submissions to be get
+     * @return List of SubmissionPayment for the contest with the given id, or empty list if none found.
+     * @throws SubmissionManagementException
+     *             If any error occurs during the retrieval
+     */
+    public List<SubmissionPayment> getSubmissionPaymentsForContest(long contestId) throws SubmissionManagementException {
+        final String methodName = "getSubmissionPaymentsForContest(long)";
+        logEnter(methodName);
+
+        EntityManager em = getEntityManager(methodName);
+
+        String qstr = "select" +
+        		" sp.submission_id," +
+        		" sp.payment_status_id," +
+        		" (select payments_status_desc from payment_status_lu as pslu where pslu.payment_status_id = sp.payment_status_id) as payment_status_desc," +
+        		" sp.price," +
+        		" sp.paypal_order_id," +
+        		" sp.create_date," +
+        		" sp.sale_reference_id," +
+        		" sp.sale_type_id," +
+        		" (select sale_type_name from sale_type_lu as stlu where stlu.sale_type_id = sp.sale_type_id) as sale_type_name" +
+        		" from" +
+        		" submission_payment as sp" +
+        		" join submission as s" +
+        		" on sp.submission_id = s.submission_id" +
+        		" and s.contest_id = " + contestId;
+
+        Query query = em.createNativeQuery(qstr);
+
+        List list = query.getResultList();
+
+        List<SubmissionPayment> ret = new ArrayList<SubmissionPayment>();
+
+        SimpleDateFormat myFmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
+        try {
+            for (int i = 0; i < list.size(); i++) {
+                SubmissionPayment sp = new SubmissionPayment();
+                Object[] os = (Object[]) list.get(i);
+
+                // submission_id
+                if (os[0] != null) {
+                    Submission submission = new Submission();
+                    submission.setSubmissionId(Long.parseLong(os[0].toString()));
+                    sp.setSubmission(submission);
+                }
+
+                // payment_status_id
+                PaymentStatus ps = new PaymentStatus();
+                if (os[1] != null)
+                    ps.setPaymentStatusId(Long.parseLong(os[1].toString()));
+
+                // payment_status_desc
+                if (os[2] != null)
+                    ps.setDescription(os[2].toString());
+                
+                if (os[1] != null && os[2] != null) {
+                    sp.setStatus(ps);
+                }
+
+                // price
+                if (os[3] != null)
+                    sp.setPrice(Double.parseDouble(os[3].toString()));
+
+                // paypal_order_id
+                if (os[4] != null)
+                    sp.setPayPalOrderId(os[4].toString());
+
+                // create_date
+                if (os[5] != null)
+                    sp.setCreateDate(myFmt.parse(os[5].toString()));
+
+                // sale_reference_id
+                if (os[6] != null)
+                    sp.setPaymentReferenceId(os[6].toString());
+
+                // sale_type_id
+                PaymentType paymentType = new PaymentType();
+                if (os[7] != null)
+                    paymentType.setPaymentTypeId(Long.parseLong(os[7].toString()));
+
+                // sale_type_name
+                if (os[8] != null)
+                    paymentType.setDescription(os[8].toString());
+
+                if (os[7] != null && os[8] != null) {
+                    sp.setPaymentType(paymentType);
+                }
+
+                ret.add(sp);
+            }
+
+        } catch (ParseException excp) {
+            throw new SubmissionManagementException("Error in parsing result.", excp);
+        }
 
         logExit(methodName);
         return ret;

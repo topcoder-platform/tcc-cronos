@@ -5,6 +5,8 @@ package com.topcoder.service.studio.submission;
 
 import java.util.List;
 
+import com.topcoder.service.studio.contest.Contest;
+
 /**
  * <p>
  * The business interface that defines methods for managing a submission, prize, submission payment, and submission
@@ -366,4 +368,36 @@ public interface SubmissionManager {
      *             If any error occurs during the retrieval
      */
     PaymentStatus getPaymentStatus(long paymentStatusId) throws SubmissionManagementException;
+    
+    /**
+     * <p>
+     * Gets the active submissions for the contest with the given id. Also, the selectFullSubmission will determine if
+     * the full submission is returned to the caller.
+     * </p>
+     *
+     * @param contest
+     *            a <code>Contest</code> for which the submissions to be get
+     * @param selectFullSubmission
+     *            a <code>boolean</code> flag whether the full submission should be returned
+     * @param maxSubmissionsPerUser a <code>int</code> value. if non-zero then, criteria to limit submissions by their rank else it is not considered.
+     * @param includeFailedScreening a <code>boolean</code> flag. true if failed screening submission need to be included else false.           
+     * @return List of Submission for the contest with the given id, or empty list if none found.
+     * @throws SubmissionManagementException
+     *             If any error occurs during the retrieval
+     */
+    public List<Submission> getSubmissionsForContest(Contest contest, boolean selectFullSubmission, int maxSubmissionsPerUser, 
+            boolean includeFailedScreening) throws SubmissionManagementException;
+    
+    /**
+     * <p>
+     * Gets the submission payments for the contest with the given id.
+     * </p>
+     *
+     * @param contestId
+     *            a <code>long</code> id of the contest for which the submissions to be get
+     * @return List of SubmissionPayment for the contest with the given id, or empty list if none found.
+     * @throws SubmissionManagementException
+     *             If any error occurs during the retrieval
+     */
+    public List<SubmissionPayment> getSubmissionPaymentsForContest(long contestId) throws SubmissionManagementException;
 }
