@@ -83,12 +83,17 @@ public abstract class TestBase extends TestCase {
         System.setProperty(Context.PROVIDER_URL, "jnp://localhost:1099");
         System.setProperty(Context.URL_PKG_PREFIXES, "org.jboss.naming:org.jnp.interfaces");
     }
-
+    
+    /**
+     * An EntityManagerFactory instance used in tests to get EntityManager instances.
+     */
+    private static EntityManagerFactory entityManagerFactory;
+    
     /**
      * An EntityManager instance used in tests.
      */
     private static EntityManager entityManager;
-
+    
     /**
      * The clear table sql.
      */
@@ -128,6 +133,7 @@ public abstract class TestBase extends TestCase {
      */
     protected void tearDown() throws Exception {
         clearDatabase();
+        releaseEntityManager();
     }
 
     /**
@@ -239,8 +245,10 @@ public abstract class TestBase extends TestCase {
         if (entityManager == null || !entityManager.isOpen()) {
             // create entityManager
             try {
-                EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistenceUnitLocal");
-                entityManager = emf.createEntityManager();
+                if (entityManagerFactory == null || !entityManagerFactory.isOpen()) {
+                    entityManagerFactory = Persistence.createEntityManagerFactory("persistenceUnitLocal");
+                }
+                entityManager = entityManagerFactory.createEntityManager();
             } catch (Exception e) {
                 throw new RuntimeException(e.getMessage(), e);
             }
@@ -248,6 +256,27 @@ public abstract class TestBase extends TestCase {
 
         entityManager.clear();
         return entityManager;
+    }
+
+    /**
+     * Releases the entity manager and entity manager factory ressources.
+     */
+    protected void releaseEntityManager() {
+        try {
+            if (entityManager != null && entityManager.isOpen()) {
+                entityManager.close();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        
+        try {
+            if (entityManagerFactory != null && entityManagerFactory.isOpen()) {
+                entityManagerFactory.close();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
     /**

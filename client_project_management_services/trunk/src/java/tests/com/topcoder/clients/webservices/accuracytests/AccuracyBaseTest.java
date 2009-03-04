@@ -29,6 +29,11 @@ import junit.framework.TestCase;
 public class AccuracyBaseTest extends TestCase {
 
     /**
+     * An EntityManagerFactory instance used in tests to get EntityManager's.
+     */
+    private static EntityManagerFactory managerFactory;
+    
+    /**
      * An EntityManager instance used in tests.
      */
     private static EntityManager manager;
@@ -39,6 +44,7 @@ public class AccuracyBaseTest extends TestCase {
      * @throws Exception to junit
      */
     protected void setUp() throws Exception {
+        getEntityManager();
         executeScript("/data.sql");
     }
 
@@ -49,6 +55,7 @@ public class AccuracyBaseTest extends TestCase {
      */
     protected void tearDown() throws Exception {
         executeScript("/clear.sql");
+        releaseEntityManager();
     }
 
     /**
@@ -60,9 +67,10 @@ public class AccuracyBaseTest extends TestCase {
         if (manager == null || !manager.isOpen()) {
             // create manager
             try {
-                EntityManagerFactory emf = Persistence
-                    .createEntityManagerFactory("persistenceUnitLocal");
-                manager = emf.createEntityManager();
+                if (managerFactory == null || !managerFactory.isOpen()) {
+                    managerFactory = Persistence.createEntityManagerFactory("persistenceUnitLocal");
+                }
+                manager = managerFactory.createEntityManager();
             } catch (Exception e) {
                 throw new RuntimeException(e.getMessage(), e.getCause());
             }
@@ -70,6 +78,27 @@ public class AccuracyBaseTest extends TestCase {
 
         manager.clear();
         return manager;
+    }
+    
+    /**
+     * Releases the entity manager and entity manager factory.
+     */
+    protected void releaseEntityManager() {
+        try {
+            if (manager != null && manager.isOpen()) {
+                manager.close();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        
+        try {
+            if (managerFactory != null || managerFactory.isOpen()) {
+                managerFactory.close();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
     /**
