@@ -1671,7 +1671,7 @@
 					 var name:String = result.name; 
 					var poNumber:String = result.pOBoxNumber; 
 					item.label=name; 
-					item.data="PO-" + poNumber; 
+					item.data=poNumber; 
 					 _clientProjectNames.addItem(item); 
 					 } 
 				} 
@@ -1682,7 +1682,7 @@
 					     var name:String = result.name; 
 						var poNumber:String = result.pOBoxNumber; 
 					     item.label=name; 
-					     item.data="PO-" + poNumber; 
+					     item.data=poNumber; 
 						_clientProjectNames.addItem(item); 
 				} 
 			 } 
