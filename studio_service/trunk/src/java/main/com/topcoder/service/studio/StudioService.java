@@ -16,6 +16,7 @@ import com.topcoder.service.studio.contest.EntityNotFoundException;
 import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.studio.submission.Submission;
 
 /**
  * <p>
@@ -419,8 +420,22 @@ public interface StudioService {
 	 * @throws PersistenceException
 	 *             If any error occurs during the retrieval
 	 */
-	public SubmissionData retrieveSubmission(long submissionId)
+	public Submission retrieveSubmission(long submissionId)
 			throws PersistenceException;
+	
+	/**
+     * <p>
+     * Gets the submission with the given id.
+     * </p>
+     * 
+     * @param submissionId
+     *            The id of the submission to get
+     * @return the submission with the given id, or null if not found
+     * @throws PersistenceException
+     *             If any error occurs during the retrieval
+     */
+    public SubmissionData retrieveSubmissionData(long submissionId)
+            throws PersistenceException;
 
 	/**
 	 * <p>
@@ -740,4 +755,24 @@ public interface StudioService {
      */
     public void purchaseSubmission(long submissionId, SubmissionPaymentData payment, String username)
             throws PersistenceException;
+    
+    /**
+     * <p>
+     * This method ranks and purchases submission. If placement > 0, then it ranks the submission. If paymentData !=
+     * null, then it purchases the submission
+     * </p>
+     * 
+     * @param submissionId
+     *            a <code>long</code> id of submission
+     * @param placement
+     *            a <code>int</code> placement
+     * @param paymentData
+     *            a <code>SubmissionPaymentData</code>
+     * @param userId
+     *            a <code>String</code> user identifier.
+     * @throws PersistenceException
+     *             when error reported by manager
+     */
+    public void rankAndPurchaseSubmission(long submissionId, int placement, SubmissionPaymentData paymentData,
+            String userId) throws PersistenceException;
 }

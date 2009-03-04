@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -1030,7 +1031,7 @@ public class StudioServiceBean implements StudioService {
      * @throws ContestNotFoundException
      *             if the contest is not found
      */
-    public List<SubmissionData> retrieveSubmissionsForContest(long contestId) throws PersistenceException,
+    /*public List<SubmissionData> retrieveSubmissionsForContest(long contestId) throws PersistenceException,
             ContestNotFoundException {
         logEnter("retrieveSubmissionsForContest", contestId);
         checkParameter("contestId", contestId);
@@ -1098,6 +1099,70 @@ public class StudioServiceBean implements StudioService {
 
         // never reached
         return null;
+    }*/
+    
+    /**
+     * <p>
+     * Retrieve submission data. return an empty list if there are no submission
+     * data items.
+     * </p>
+     *
+     * @param contestId
+     *            the contest if used
+     * @return the submission data of contest
+     * @throws IllegalArgumentWSException
+     *             if the argument id less than 0
+     * @throws PersistenceException
+     *             if some persistence errors occur
+     * @throws UserNotAuthorizedException
+     *             if the user is not authorized to perform this method
+     * @throws ContestNotFoundException
+     *             if the contest is not found
+     */
+    public List<SubmissionData> retrieveSubmissionsForContest(long contestId) throws PersistenceException,
+            ContestNotFoundException {
+        logEnter("retrieveSubmissionsForContest", contestId);
+        checkParameter("contestId", contestId);
+
+        // authorization
+        // it is also checking if contest with such id is present
+        Contest contest = authorizeWithContest(contestId);
+
+        boolean selectFullSubmission = sessionContext.isCallerInRole(ADMIN_ROLE);
+
+        try {
+            // Retrieve max submissions per user.
+            int maxSubmissionsPerUser = 0;
+            for (ContestConfig config : contest.getConfig()) {
+                if (config.getId().getProperty().getPropertyId() == contestPropertyMaximumSubmissionsId) {
+                    try {
+                        maxSubmissionsPerUser = Integer.parseInt(config.getValue());
+                    } catch (NumberFormatException e) {
+                        maxSubmissionsPerUser = 0;
+                    }
+                    break;
+                }
+            }
+            
+            log.log(Level.DEBUG, "Max Submissions for contest is " + maxSubmissionsPerUser + ", contest id:"
+                    + contestId);
+            boolean includeFailedScreening = false;
+            
+            //List<Submission> submissions = submissionManager.getSubmissionsForContest(contest, 
+           //         selectFullSubmission, maxSubmissionsPerUser, includeFailedScreening);
+			List<Submission> submissions = submissionManager.getSubmissionsForContest(contestId, selectFullSubmission);
+            List<SubmissionPayment> submissionPayments = submissionManager.getSubmissionPaymentsForContest(contestId);
+            List<SubmissionData> result = convertSubmissions(submissions, submissionPayments);
+
+            logExit("retrieveSubmissionsForContest", result.size());
+
+            return result;
+        } catch (SubmissionManagementException e) {
+            handlePersistenceError("SubmissionManager reports error while retrieving submissions for contest.", e);
+        } 
+
+        // never reached
+        return null;
     }
 
     /**
@@ -1124,7 +1189,7 @@ public class StudioServiceBean implements StudioService {
         authorizeAdmin();
 
         try {
-            List<SubmissionData> result = convertSubmissions(submissionManager.getAllSubmissionsByMember(userId));
+            List<SubmissionData> result = convertSubmissions(submissionManager.getAllSubmissionsByMember(userId), null);
             logExit("retrieveAllSubmissionsByMember", result.size());
             return result;
         } catch (SubmissionManagementException e) {
@@ -2021,12 +2086,23 @@ public class StudioServiceBean implements StudioService {
      *
      * @param submissions
      *            list of submissions to convert
+     * @param submissionPayments list of submission payments to be used in submission.            
      * @return converted list of SubmissionData entities
      * @throws PersistenceException
      *             if SubmissionManager reports error
      */
-    private List<SubmissionData> convertSubmissions(List<Submission> submissions) throws PersistenceException {
+    private List<SubmissionData> convertSubmissions(List<Submission> submissions, List<SubmissionPayment> submissionPayments) throws PersistenceException {
         List<SubmissionData> result = new ArrayList<SubmissionData>();
+        
+        Map<Long, SubmissionPayment> submissionPaymentMap = null;
+        
+        if (submissionPayments != null) {
+            submissionPaymentMap = new HashMap<Long, SubmissionPayment>();
+            for (SubmissionPayment sp : submissionPayments) {
+                submissionPaymentMap.put(sp.getSubmission().getSubmissionId(), sp);
+            }
+        }
+        
         for (Submission s : submissions) {
             SubmissionData sd = new SubmissionData();
             if (s.getContest() != null) {
@@ -2044,11 +2120,13 @@ public class StudioServiceBean implements StudioService {
 
             // compute price
             double prizeAmount = 0;
-            for (Prize p : s.getPrizes()) {
-                prizeAmount += p.getAmount();
-
-                if (p.getPlace() != null && p.getPlace() > 0) {
-                    sd.setPlacement(p.getPlace());
+            if (s.getPrizes() != null) {
+                for (Prize p : s.getPrizes()) {
+                    prizeAmount += p.getAmount();
+    
+                    if (p.getPlace() != null && p.getPlace() > 0) {
+                        sd.setPlacement(p.getPlace());
+                    }
                 }
             }
             sd.setPrice(prizeAmount);
@@ -2056,7 +2134,17 @@ public class StudioServiceBean implements StudioService {
             // retrieve SubmissionPayment and check it
             SubmissionPayment p = null;
             try {
-                p = submissionManager.getSubmissionPayment(sd.getSubmissionId());
+                if (submissionPaymentMap != null) {
+                    p = submissionPaymentMap.get(s.getSubmissionId());
+                    
+                    // set this submission as the reference.
+                    if (p != null) {
+                        p.setSubmission(s);
+                    }
+                }
+                else {
+                    p = submissionManager.getSubmissionPayment(sd.getSubmissionId());
+                }
             } catch (SubmissionManagementException e) {
                 handlePersistenceError("SubmissionManager reports error while retrieving payment for submission.", e);
             }
@@ -2070,10 +2158,13 @@ public class StudioServiceBean implements StudioService {
             if (s.getStatus() != null) {
                 // TCCC-445
                 sd.setPassedScreening(true);
-                for (SubmissionReview review : s.getReview()) {
-                    if (review.getStatus().getReviewStatusId() == reviewFailedStatusId) {
-                        sd.setPassedScreening(false);
-                        break;
+                
+                if (s.getReview() != null) {
+                    for (SubmissionReview review : s.getReview()) {
+                        if (review.getStatus().getReviewStatusId() == reviewFailedStatusId) {
+                            sd.setPassedScreening(false);
+                            break;
+                        }
                     }
                 }
             }
@@ -2776,18 +2867,44 @@ public class StudioServiceBean implements StudioService {
      * @throws PersistenceException
      *             If any error occurs during the retrieval
      */
-    public SubmissionData retrieveSubmission(long submissionId) throws PersistenceException {
-        logEnter("retrieveSubmission");
+    public SubmissionData retrieveSubmissionData(long submissionId) throws PersistenceException {
+        logEnter("retrieveSubmissionData");
 
         try {
             Submission submission = submissionManager.getSubmission(submissionId);
 
             ArrayList<Submission> submissions = new ArrayList<Submission>();
             submissions.add(submission);
-            SubmissionData result = convertSubmissions(submissions).get(0);
+            SubmissionData result = convertSubmissions(submissions, null).get(0);
 
-            logExit("retrieveSubmission", result);
+            logExit("retrieveSubmissionData", result);
             return result;
+        } catch (SubmissionManagementException e) {
+            handlePersistenceError("SubmissionManager reports error while retrieving submission.", e);
+        }
+
+        return null;
+    }
+
+    /**
+     * <p>
+     * Gets the submission with the given id.
+     * </p>
+     *
+     * @param submissionId
+     *            The id of the submission to get
+     * @return the submission with the given id, or null if not found
+     * @throws PersistenceException
+     *             If any error occurs during the retrieval
+     */
+    public Submission retrieveSubmission(long submissionId) throws PersistenceException {
+        logEnter("retrieveSubmission");
+
+        try {
+            Submission submission = submissionManager.getSubmission(submissionId);
+
+            logExit("retrieveSubmission", submission);
+            return submission;
         } catch (SubmissionManagementException e) {
             handlePersistenceError("SubmissionManager reports error while retrieving submission.", e);
         }
@@ -3341,8 +3458,28 @@ public class StudioServiceBean implements StudioService {
 
         setSubmissionPlacement(submissionId, prizeToAdd);
     }
+    
+    /**
+     * Set submission placement.
+     *
+     * @param submission
+     *            Submission.
+     * @param placement
+     *            placement
+     * @throws PersistenceException
+     *             if any error occurs when setting placement.
+     * @since TCCC-353
+     */
+    private void setSubmissionPlacement(Submission submission, int placement) throws PersistenceException {
+        logEnter("setSubmissionPlacement", submission, placement);
+        checkParameter("submission", submission);
 
+        Prize prizeToAdd = new Prize();
+        prizeToAdd.setAmount(0d);
+        prizeToAdd.setPlace(placement);
 
+        setSubmissionPlacement(submission, prizeToAdd);
+    }
 
     /**
      * Set submission placement.
@@ -3404,8 +3541,7 @@ public class StudioServiceBean implements StudioService {
             handlePersistenceError("SubmissionManagement reports error.", e);
         }
     }
-
-
+    
     /**
      * Set submission placement.
      *
@@ -3428,6 +3564,33 @@ public class StudioServiceBean implements StudioService {
                 logDebug(message);
                 logExit("setSubmissionPlacement");
                 throw new PersistenceException(message,message);
+            }
+
+            this.setSubmissionPlacement(submission, prize);
+            
+            logExit("setSubmissionPlacement");
+            return;
+        } catch (SubmissionManagementException e) {
+            handlePersistenceError("SubmissionManagement reports error.", e);
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManagement reports error.", e);
+        }
+    }
+
+    /**
+     * Set submission placement.
+     *
+     * @param submissionId submission id.
+     * @param prize prize.
+     * @throws PersistenceException if any error occurs when setting placement.
+     */
+    protected void setSubmissionPlacement(Submission submission, Prize prize) throws PersistenceException {
+        // Need to create new prize when prizeId is null.
+        Long prizeId = prize.getPrizeId();
+        try {
+            if (prizeId == null) {
+                PrizeType prizeType = contestManager.getPrizeType(this.contestPrizeTypeId);
+                prize.setType(prizeType);
             }
 
             // If the submission is already associated to a prize, a
@@ -3457,16 +3620,16 @@ public class StudioServiceBean implements StudioService {
             Long contestId = contest.getContestId();
             List<Prize> contestPrizes = contestManager.getContestPrizes(contestId);
 
-            if (contestManager.findContestResult(submissionId,contestId)==null)
+            if (contestManager.findContestResult(submission.getSubmissionId(), contestId)==null)
             {
-		        // TCCC-425
-		        ContestResult cr = new ContestResult();
-		        cr.setContest(contest);
-		        cr.setPlaced(prize.getPlace());
-		        cr.setSubmission(submission);
-		
-		        // TCCC-484
-		        contestManager.createContestResult(cr);
+                // TCCC-425
+                ContestResult cr = new ContestResult();
+                cr.setContest(contest);
+                cr.setPlaced(prize.getPlace());
+                cr.setSubmission(submission);
+        
+                // TCCC-484
+                contestManager.createContestResult(cr);
             }
 
             for (Prize prizeToAdd : contestPrizes) {
@@ -3475,13 +3638,13 @@ public class StudioServiceBean implements StudioService {
                             + contest.getContestId());
 
                     // Associate with submission.
-                    submissionManager.addPrizeToSubmission(submissionId, prizeToAdd.getPrizeId());
+                    submissionManager.addPrizeToSubmission(submission.getSubmissionId(), prizeToAdd.getPrizeId());
 
                     // For topCoder direct, payment is done automatically
                     // STUDIO-217
                     if ( contest.getContestChannel().getContestChannelId()==2 )
                     {
-                    	addPayment(submission,prizeToAdd);
+                        addPayment(submission,prizeToAdd);
                     }
                     logExit("setSubmissionPlacement");
                     return;
@@ -3497,13 +3660,13 @@ public class StudioServiceBean implements StudioService {
             contestManager.addPrizeToContest(contestId, prize.getPrizeId());
 
             // associate the submission with the prize.
-            submissionManager.addPrizeToSubmission(submissionId, prize.getPrizeId());
+            submissionManager.addPrizeToSubmission(submission.getSubmissionId(), prize.getPrizeId());
 
             // For topCoder direct, payment is done automatically
             // STUDIO-217
             if ( contest.getContestChannel().getContestChannelId()==2 )
             {
-            	addPayment(submission,prize);
+                addPayment(submission,prize);
             }
             
             logExit("setSubmissionPlacement");
@@ -3817,9 +3980,9 @@ public class StudioServiceBean implements StudioService {
 	}
 
     /**
-     * Send payments to PACTS for all unpaid submussions with a prize already assigned
+     * Send payments to PACTS for all unpaid submissions with a prize already assigned
      * This service is not atomic. If it fails, you'll have to check what payments where
-     * actually done trough the submussion.paid flag.
+     * actually done trough the submission.paid flag.
      * @param contestId
      *            Contest Id.
      * @throws PersistenceException
@@ -3945,18 +4108,54 @@ public class StudioServiceBean implements StudioService {
                 handleIllegalWSArgument("Submission with id " + submissionId + " is not found.");
             }
 
+            this.purchaseSubmission(submission, payment, username);
+        } catch (SubmissionManagementException e) {
+            handlePersistenceError("SubmissionManager reports error.", e);
+        } 
+        
+        logExit("purchaseSubmission");
+    }
+    
+    /**
+     * <p>
+     * Purchase submission.
+     * </p>
+     * <p>
+     * set the price of submission. create an entry at submission payment table
+     * </p>
+     *
+     * @param submission
+     *            the submission to purchase.
+     * @param payment
+     *            the submission payment data
+     * @param username
+     *            the username.
+     *
+     * @throws PersistenceException
+     *             if any error occurs when purchasing submission.
+     * @throws IllegalArgumentWSException
+     *             if the submissionId is less than 0 or price is negative.
+     */
+    private void purchaseSubmission(Submission submission, SubmissionPaymentData payment, String username)
+            throws PersistenceException {
+        logEnter("purchaseSubmission", submission, payment);
+        checkParameter("submission", submission);
+        checkParameter("payment", payment);
+        checkParameter("username", username);
+
+        try {
+            
             Contest contest = submission.getContest();
 
-//            authorizeWithUsername(username, contest);
-            SubmissionPayment submissionPayment = submissionManager.getSubmissionPayment(submissionId);
+            SubmissionPayment submissionPayment = submissionManager.getSubmissionPayment(submission.getSubmissionId());
             submissionPayment.setPrice(calculateSubmissionPaymentAmount(contest, submission));
             submissionPayment.setPayPalOrderId(payment.getPaymentReferenceNumber());
-			submissionPayment.setPaymentReferenceId(payment.getPaymentReferenceNumber());
-			PaymentType type = contestManager.getPaymentType(payment.getPaymentTypeId());
-			if (type == null) {
+            submissionPayment.setPaymentReferenceId(payment.getPaymentReferenceNumber());
+            PaymentType type = contestManager.getPaymentType(payment.getPaymentTypeId());
+            if (type == null) {
                 throw new ContestManagementException("PaymentType with id " + payment.getPaymentTypeId() + " is missing.");
             }
-			submissionPayment.setPaymentType(type);
+            submissionPayment.setPaymentType(type);
             PaymentStatus status = contestManager.getPaymentStatus(payment.getPaymentStatusId());
             if (status == null) {
                 throw new ContestManagementException("PaymentStatus with id " + payment.getPaymentStatusId() + " is missing.");
@@ -4070,5 +4269,48 @@ public class StudioServiceBean implements StudioService {
         }
 
         return amount;
+    }
+
+    /**
+     * <p>
+     * This method ranks and purchases submission. If placement > 0, then it ranks the submission. If paymentData !=
+     * null, then it purchases the submission
+     * </p>
+     * 
+     * @param submissionId
+     *            a <code>long</code> id of submission
+     * @param placement
+     *            a <code>int</code> placement
+     * @param paymentData
+     *            a <code>SubmissionPaymentData</code>
+     * @param userId
+     *            a <code>String</code> user identifier.
+     * @throws PersistenceException
+     *             when error reported by manager
+     */
+    public void rankAndPurchaseSubmission(long submissionId, int placement, SubmissionPaymentData paymentData,
+            String userId) throws PersistenceException {
+        try {
+            Submission submission = submissionManager.getSubmission(submissionId);
+            if (submission == null) {
+                String message = "submission not found. submission id: " + submissionId;
+                logDebug(message);
+                logExit("rankAndPurchaseSubmission");
+                throw new PersistenceException(message, message);
+            }
+
+            if (placement > 0) {
+                this.setSubmissionPlacement(submission, placement);
+            }
+
+            if (paymentData != null) {
+                this.purchaseSubmission(submission, paymentData, userId);
+            }
+
+            logExit("rankAndPurchaseSubmission");
+            return;
+        } catch (SubmissionManagementException e) {
+            handlePersistenceError("SubmissionManagement reports error.", e);
+        }
     }
 }
