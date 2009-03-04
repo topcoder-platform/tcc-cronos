@@ -1040,6 +1040,7 @@
             private function enablePurchaseSelector():void {
             	purchase_panel.visible=true;
             	purchasePanel.selectedChild=purchase_enabled;
+		purchase_panel.includeInLayout=true;
             }
             
             private function contestActivePurchaseSelector():void {
