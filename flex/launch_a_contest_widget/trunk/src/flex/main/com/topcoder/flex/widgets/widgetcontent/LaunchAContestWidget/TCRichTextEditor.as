@@ -3,6 +3,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget
 	import flash.events.*;
 	
 	import mx.containers.*;
+	import mx.controls.Alert;
 	import mx.controls.Button;
 	import mx.controls.RichTextEditor;
 	import mx.controls.Spacer;
@@ -44,6 +45,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget
 			textArea = rte.removeChild(rte.textArea) as TextArea;
 			textArea.addEventListener(Event.CHANGE, onChange);
 			textArea.styleName = "RTETextArea";
+			textArea.verticalScrollPolicy="auto";
 			
 			var canvas:Canvas = new Canvas();
 			canvas.addChild(textArea);
@@ -117,6 +119,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget
             	height += stage.mouseY - dy;
             	width = Math.max(width, 380);
             	height = Math.max(height, 120);
+            	if(maxHeight && height > maxHeight) {
+	        		height = maxHeight;
+	        	}
+            	if(maxWidth && width > maxWidth) {
+            		width = maxWidth;
+            	}
             	dx = stage.mouseX;
             	dy = stage.mouseY;
          	}
@@ -126,7 +134,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget
         	textArea.validateNow();
 			var dh:Number = textArea.textHeight + 60 - textArea.height;
 			height += Math.max(0, dh);
-		}
+			if(maxHeight && height > maxHeight) {
+				height = maxHeight;
+        	}
+  		}
 		
 		private function addLink(event:Event):void {
 			var _window:RTEAddLinkWindow = RTEAddLinkWindow(PopUpManager.createPopUp(parent, RTEAddLinkWindow, true));
@@ -176,7 +187,12 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget
 	
 		public function set htmlText(value:String):void
 		{
-			textArea.htmlText = value;
+			var tmp:String = value;
+			if(tmp) { // BUGR-1379
+				tmp = tmp.replace(/&lt;/gi, "<");
+				tmp = tmp.replace(/&amp;/gi, "&");
+			}
+			textArea.htmlText = tmp; 
 			textArea.validateNow();
 		}
 		

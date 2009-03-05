@@ -30,7 +30,7 @@
 	        	introInput.htmlText = "";
 	        	glsInput.htmlText = "";
 	        	
-	        	ctInput.htmlText = this.mainWidget.competition.contestData.name;
+	        	ctInput.htmlText = this.mainWidget.competition.contestData.name; // BUGR-1379
 	        	introInput.htmlText = this.mainWidget.competition.contestData.shortSummary;
 	        	glsInput.htmlText = this.mainWidget.competition.contestData.contestDescriptionAndRequirements;
 	        }
@@ -51,9 +51,9 @@
 	        		return false;
 	        	}
 	        	
-	        	this.mainWidget.competition.contestData.name = ctInput.htmlText; // BUGR-1279
-	        	this.mainWidget.competition.contestData.shortSummary = introInput.htmlText; // BUGR-1279
-	        	this.mainWidget.competition.contestData.contestDescriptionAndRequirements = glsInput.htmlText; // BUGR-1279
+	        	this.mainWidget.competition.contestData.name = ctInput.text; // BUGR-1379
+	        	this.mainWidget.competition.contestData.shortSummary = introInput.htmlText; // BUGR-1379
+	        	this.mainWidget.competition.contestData.contestDescriptionAndRequirements = glsInput.htmlText; // BUGR-1379
 	        	
 	        	return true;
 	        }
@@ -150,7 +150,7 @@
 	        </mx:HBox>
 	        <mx:Text id="introHint" styleName="TextSyle" height="0" color="0x888888" width="500" visible="false">
             </mx:Text>
-	        <tc:TCRichTextEditor id="introInput" width="500" height="150"/>  <!-- BUGR-1279 -->
+	        <tc:TCRichTextEditor id="introInput" width="500" height="150" maxHeight="180" maxWidth="800"/>  <!-- BUGR-1279 -->
         </mx:VBox>
         
         <mx:Spacer height="5"/>
@@ -163,7 +163,7 @@
             </mx:HBox>
             <mx:Text id="goalsHint" styleName="TextSyle" height="0" color="0x888888" width="500" visible="false">
             </mx:Text>
-            <tc:TCRichTextEditor id="glsInput" width="500" height="150"/>  <!-- BUGR-1279 -->
+            <tc:TCRichTextEditor id="glsInput" width="500" height="150" maxHeight="180" maxWidth="800"/>  <!-- BUGR-1279 -->
         </mx:VBox>
         
         

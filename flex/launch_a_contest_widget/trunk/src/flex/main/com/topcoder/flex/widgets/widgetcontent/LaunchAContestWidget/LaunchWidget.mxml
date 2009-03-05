@@ -353,7 +353,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    save.visible = false;
                    this.height = SPECIFICATIONS_HEIGHT;  // BUGR-1134
                    
-                   review.contentTitleStr = details.ctInput.htmlText; // BUGR-1279
+                   review.contentTitleStr = details.ctInput.text; // BUGR-1379
                    review.IntroductionStr = details.introInput.htmlText; // BUGR-1279
 					review.glsInputStr = details.glsInput.htmlText; // BUGR-1279
 
