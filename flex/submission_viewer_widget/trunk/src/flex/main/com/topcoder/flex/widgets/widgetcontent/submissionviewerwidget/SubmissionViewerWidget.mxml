@@ -1891,7 +1891,7 @@
 						<mx:Label width="125" styleName="header" fontSize="16" text="{_placeLabel}" textAlign="right"/>
 		            	<mx:Label styleName="header" fontSize="16" text="{_currentItemLabel}"/>
 					</mx:HBox>
-					<mx:Label paddingLeft="128" text="(Status: {_selectedContestStatus})" width="100%" />
+					<mx:Label styleName="TextStyle" paddingLeft="128" text="(Status: {_selectedContestStatus})" width="100%" />
 	         		<mx:HBox width="100%" 
 			               horizontalAlign="center"
 			               verticalAlign="bottom"
@@ -1900,9 +1900,9 @@
 			               horizontalScrollPolicy="off">
 			               
 	                  	
-			            <mx:Label text="You are viewing the Preview Image." baseline="20"/>
+			            <mx:Label styleName="TextStyle" text="You are viewing the Preview Image." baseline="20"/>
 			            <mx:LinkButton label="Download" click="{linkHandler()}" />
-			            <mx:Label text="the Full Submission here." />   
+			            <mx:Label styleName="TextStyle" text="the Full Submission here." />   
                     </mx:HBox>
 	            	<mx:HBox horizontalAlign="center" width="100%" height="100%" paddingLeft="10" paddingRight="10">
 	                    <mx:VBox height="100%" verticalAlign="middle">
@@ -2074,11 +2074,11 @@
 			            			horizontalScrollPolicy="off"
 			            			paddingLeft="18" 
 			            			paddingRight="18">
-		            				<mx:Text width="100%" fontFamily="Arial" fontSize="12" 
+		            				<mx:Text width="100%" fontFamily="Arial" fontSize="11" 
 		            						text="Your contest is still active. Once it has completed, you will have an opportunity to purchase your wining selections and any additional submissions." />
 		            				<mx:HBox horizontalAlign="left">
-		            					<mx:Label text="To learn more." fontFamily="Arial" fontSize="12" color="#a4a4a4" />
-		            					<mx:LinkButton label="click here" fontFamily="Arial" fontSize="12" color="#a4a4a4" 
+		            					<mx:Label text="To learn more." fontFamily="Arial" fontSize="11" color="#a4a4a4" />
+		            					<mx:LinkButton label="click here" fontFamily="Arial" fontSize="11" color="#a4a4a4" 
 		            							rollOverColor="#ffffff" selectionColor="#ffffff" />
 		            				</mx:HBox>
 		            			</mx:VBox>
@@ -2101,19 +2101,19 @@
             		<mx:VBox width="100%" paddingTop="35" paddingLeft="12" verticalGap="0">
 	            		<mx:Label width="100%" paddingTop="0" fontFamily="Arial" fontWeight="bold" fontSize="14" color="#621910" 
 	                    		text="We know that picking a winner is difficult..." />
-	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
+	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="11"
 	                    		text="However, it is important to fulfill your commitment to this contest. If you decide to choose no winners, you will have no further responsiblity to puurchase any of the submitted designs." />
-	                    <mx:Label width="100%" paddingTop="9" fontFamily="Arial" fontWeight="bold" fontSize="12"
+	                    <mx:Label width="100%" paddingTop="9" fontFamily="Arial" fontWeight="bold" fontSize="11"
 	                    		text="Before you choose this option, you should know:" />
-	                    <mx:Text width="100%" paddingTop="0" fontFamily="Arial" fontWeight="normal" fontSize="12"
+	                    <mx:Text width="100%" paddingTop="0" fontFamily="Arial" fontWeight="normal" fontSize="11"
 	                    		text="1. This is irreversible; you will not be able to purchase any of the submissions in the future." />
-	                    <mx:Text width="100%" paddingTop="0" fontFamily="Arial" fontWeight="normal" fontSize="12"
+	                    <mx:Text width="100%" paddingTop="0" fontFamily="Arial" fontWeight="normal" fontSize="11"
 	                    		text="2. Your profile history will indicate that you ended a competition and chose no winner. This may discourage memebers from competing in your future contests." />
-	                    <mx:Text width="100%" paddingTop="0" fontFamily="Arial" fontWeight="normal" fontSize="12"
+	                    <mx:Text width="100%" paddingTop="0" fontFamily="Arial" fontWeight="normal" fontSize="11"
 	                    		text="3. The contest administration fee you paid to launch this competition is non-refundable." />
-	                    <mx:Label width="100%" paddingTop="9" fontFamily="Arial" fontWeight="bold" fontSize="12"
+	                    <mx:Label width="100%" paddingTop="9" fontFamily="Arial" fontWeight="bold" fontSize="11"
 	                    		text="Make a choice, but do something." />
-	                    <mx:Text width="100%" paddingTop="0" fontFamily="Arial" fontWeight="normal" fontSize="12"
+	                    <mx:Text width="100%" paddingTop="0" fontFamily="Arial" fontWeight="normal" fontSize="11"
 	                    		text="Taking no action at all would be an 'abandonment' of the competition, which also would be indicated in your public profile. Multiple contest abandonments will result in a cancellation of your account." />
         			</mx:VBox>
         			<mx:HBox horizontalAlign="center" width="100%" paddingTop="35">
@@ -2129,9 +2129,9 @@
             		<mx:VBox width="100%" paddingTop="35" paddingLeft="12" verticalGap="0">
 	            		<mx:Label width="100%" paddingTop="0" fontFamily="Arial" fontWeight="bold" fontSize="14" color="#621910" 
 	                    		text="You have chosen no winner for this contest." />
-	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
+	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="11"
 	                    		text="To help the competitors understand your decision, please include some feedback in the area below. This may be overall impression of the contest results or critique of individual submissions." />
-	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
+	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="11"
 	                    		text="The competitors may want to know why now winner was selected. If you choose not to provide any feedback, this may discourage members from competing in your future contests." />
 	     				<mx:TextArea paddingTop="9" width="90%" height="158" />
         			</mx:VBox>
@@ -2148,13 +2148,13 @@
             		<mx:VBox width="100%" paddingTop="35" paddingLeft="12" verticalGap="0">
 	            		<mx:Label width="100%" paddingTop="0" fontFamily="Arial" fontWeight="bold" fontSize="14" color="#621910" 
 	                    		text="Care to try again?" />
-	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
+	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="11"
 	                    		text="As a valued customer, you have the opportunity to post this contest one more time at no additional cost to you. This is great chance to analyze what worked (and didn't work) in your last contest." />
-	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
+	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="11"
 	                    		text="By simply making some minor modications to your descriptions, prize amounts, etc., you may increase your chances of getting more successful submissions." />
-	     				<mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
+	     				<mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="11"
 	                    		htmlText="You can learn more about reposting contests by &lt;a href=&quot;#&quot; &gt;&lt;font color=&quot;#753535&quot;&gt;visiting our help section.&lt;/font&gt;&lt;/a&gt;" />
-	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
+	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="11"
 	                    		text="So what would you like to do?" />
         			</mx:VBox>
         			<mx:HBox horizontalAlign="center" width="100%" paddingTop="35">
@@ -2170,7 +2170,7 @@
             		<mx:VBox width="100%" paddingTop="35" paddingLeft="12" verticalGap="0">
 	            		<mx:Label width="100%" paddingTop="0" fontFamily="Arial" fontWeight="bold" fontSize="14" color="#621910" 
 	                    		text="Since this contest was abandoned..." />
-	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="12"
+	                    <mx:Text width="100%" paddingTop="9" fontFamily="Arial" fontWeight="normal" fontSize="11"
 	                    		text="The submissions for this contest are no longer available to you because you took no action on this contest after it had ended." />
         		</mx:VBox>
                 </mx:VBox>
@@ -2269,14 +2269,14 @@
     
 <mx:VBox id="minPage" width="100%" height="100%" paddingLeft="10" paddingTop="10" paddingRight="5" verticalScrollPolicy="off" horizontalScrollPolicy="off" >
     <mx:HBox width="100%" horizontalGap="0">
-        <mx:Text text="Select a contest:" fontWeight="bold"/>
+        <mx:Text text="Select a contest:" fontWeight="bold" styleName="TextStyle"/>
     </mx:HBox>
     <mx:ComboBox id="contestlist_minpage" left="195" width="272" top="9" fontFamily="Arial" fontSize="10" labelField="name" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer" dataProvider="{_contestList}"
     	 change="handleContest(event)"/>
     <mx:HRule width="100%" strokeColor="#000000"/>
     <mx:HBox width="100%" >
-        <mx:Text text="Total Submissions:" fontWeight="bold"/>
-        <mx:Text text="{_submissionList.length}" id="SubNum" />
+        <mx:Text text="Total Submissions:" fontWeight="bold" styleName="TextStyle"/>
+        <mx:Text text="{_submissionList.length}" id="SubNum" styleName="TextStyle"/>
     </mx:HBox>
     
 	<mx:VBox horizontalAlign="center" width="100%" height="100%">

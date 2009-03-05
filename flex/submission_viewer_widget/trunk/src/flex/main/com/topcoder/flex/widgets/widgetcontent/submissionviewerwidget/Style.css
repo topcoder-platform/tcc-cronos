@@ -464,29 +464,23 @@ VBox.ContestRow
 
 
 
-.header {
-	font-family: Arial;
-	font-size: 16;
-	font-weight: bold;
-	color: #000000;
-}
 .content {
 	font-family: Arial;
-	font-size: 12;
+	font-size: 11;
 	font-weight: normal;
 	color: #000000;
 }
 
 .contentBlack {
 	font-family: Arial;
-	font-size: 12;
+	font-size: 11;
 	font-weight: bold;
 	color: #000000;
 }
 
 .contentGrey {
 	font-family: Arial;
-	font-size: 12;
+	font-size: 11;
 	font-weight: bold;
 	color: #797979;
 }
@@ -495,7 +489,7 @@ VBox.ContestRow
 	skin: Embed(source="../assets/combobox.png", 
 			scaleGridTop="1",scaleGridLeft="1",scaleGridRight="134",scaleGridBottom="18");
 	font-family: Arial;
-	font-size: 12;
+	font-size: 11;
 	font-weight: normal;
 	color: #000000;
 	padding-left: 8;
@@ -507,7 +501,7 @@ VBox.ContestRow
 	/* border-skin: Embed(source="../assets/textinput.png", 
 			scaleGridTop="1",scaleGridLeft="1",scaleGridRight="159",scaleGridBottom="18"); */
 	font-family: Arial;
-	font-size: 12;
+	font-size: 11;
 	font-weight: normal;
 	color: #000000;
 	vertical-align: middle;
@@ -521,7 +515,7 @@ VBox.ContestRow
 	up-arrow-skin: Embed(source="../assets/up.png");
 	down-arrow-skin: Embed(source="../assets/down.png");
 	font-family: Arial;
-	font-size: 12;
+	font-size: 11;
 	font-weight: normal;
 	color: #000000;
 	vertical-align: middle;	
@@ -578,14 +572,14 @@ VBox.ContestRow
 /* CSS file */
 .normalText {
 	font-weight: bold;
-	font-size: 12;
+	font-size: 11;
 	font-family: Arial;
 	color: #000000;
 }
 
 .text {
 	font-weight: normal;
-	font-size: 12;
+	font-size: 11;
 	font-family: Arial;
 	color: #000000;
 }	
@@ -678,7 +672,7 @@ VBox.ContestRow
 	border-color: #a9a9a9;
 	border-sides: left top;
 	font-family: Arial;
-	font-size: 12;
+	font-size: 11;
 	font-weight: bold;
 	color: #797979;
 	background-color: #ffffff;
@@ -688,21 +682,21 @@ VBox.ContestRow
 	border-color: #a9a9a9;
 	border-sides: top right;
 	font-family: Arial;
-	font-size: 12;
+	font-size: 11;
 	font-weight: bold;
 	color: #797979;
 	background-color: #ffffff;
 }
 .middle {
 	font-family: Arial;
-	font-size: 12;
+	font-size: 11;
 	font-weight: bold;
 	color: #797979;
 	background-color: #ffffff;
 }
 .contentBlack {
 	font-family: Arial;
-	font-size: 12;
+	font-size: 11;
 	font-weight: bold;
 	color: #000000;
 }
@@ -715,7 +709,7 @@ VBox.ContestRow
 
 .NumericStepper {
 	font-family: Arial;
-	font-size: 12;
+	font-size: 11;
 	font-weight: normal;
 	color: #000000;
 	vertical-align: middle;	
@@ -792,4 +786,9 @@ VBox.ContestRow
 	downSkin: Embed(source="../assets/zoom_new_window_hover.png");
 	overSkin: Embed(source="../assets/zoom_new_window_hover.png");
 	upSkin: Embed(source="../assets/zoom_new_window.png");
+}
+/*BUGR-1373 */
+.TextStyle {
+    font-family: Arial;
+    font-size: 11;
 }
