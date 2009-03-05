@@ -132,7 +132,7 @@
               </mx:dataProvider>
             </mx:ComboBox>
             <mx:Text text="/" />            
-            <mx:ComboBox width="70" height="25" styleName="combobox" id="year" enabled="{order.selectedItem.data == ''}">
+            <mx:ComboBox width="70" height="25" id="year" enabled="{order.selectedItem.data == ''}">
               <mx:dataProvider>
                 <mx:Object label="2009" data="2009"/>
                 <mx:Object label="2010" data="2010"/>
