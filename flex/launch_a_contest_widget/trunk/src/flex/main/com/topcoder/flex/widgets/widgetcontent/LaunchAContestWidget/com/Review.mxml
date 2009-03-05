@@ -139,7 +139,7 @@
     </mx:Script>
     <mx:VBox width="100%" height="100%" styleName="boxStyle">
     	<mx:HBox horizontalAlign="right" width="100%">
-    		<mx:Label text="Review" fontWeight="bold" fontSize="12" width="80%"/>
+    		<mx:Label text="Review" fontWeight="bold" fontSize="11" fontFamily="Arial" width="80%"/>
     		<mx:Spacer width="100" />	
     		<mx:LinkButton baseline="middle" styleName="linkBtn" label="Preview Contest" click="this.mainWidget.previewContest()" />
 		    <mx:Image source="@Embed('../../assets/more_info.png')"/>
@@ -148,11 +148,11 @@
         <mx:HRule width="100%" strokeColor="0x000000"/>
         
         <mx:VBox width="100%" verticalGap="0">
-            <mx:Label text="Contest Selection" fontWeight="bold" fontSize="12"/>
+            <mx:Label text="Contest Selection" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
             <mx:Spacer height="15"/>
 	        <mx:HBox width="100%">
-	            <mx:Label text="Contest Type:" fontWeight="bold"/>
-	            <mx:Text id="contestType_step1" text="Studio"/>
+	            <mx:Label text="Contest Type:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+	            <mx:Text id="contestType_step1" text="Studio" styleName="TextStyle"/>
 	            <mx:Spacer width="375"/>
 	            <mx:Button styleName="EditButton" buttonMode="true" click="goToStep1()"/>
 	        </mx:HBox>
@@ -161,44 +161,44 @@
         <mx:HRule width="100%" strokeColor="0x000000"/>
         
         <mx:VBox width="100%" verticalGap="0">
-            <mx:Label text="Contest Overview" fontWeight="bold" fontSize="12"/>
+            <mx:Label text="Contest Overview" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
             <mx:Spacer height="15"/>
             <mx:HBox width="100%">
-                <mx:Label text="Contest Type:" fontWeight="bold"/>
-                <mx:Text id="contestType_step2" text="Application Front End Design"/>
+                <mx:Label text="Contest Type:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+                <mx:Text id="contestType_step2" styleName="TextStyle" text="Application Front End Design"/>
             </mx:HBox>
 	        <mx:HBox verticalAlign="top" width="100%">
 	            <mx:VBox>
 	                <mx:HBox>
-	                   <mx:Label text="1st Place: " fontWeight="bold"/>
-	                   <mx:Text id="p1" width="120" />
+	                   <mx:Label text="1st Place: " fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+	                   <mx:Text id="p1" width="120" styleName="TextStyle"/>
 	                </mx:HBox>
 	                <mx:HBox>
-	                   <mx:Label text="2nd Place:" fontWeight="bold"/>
-	                   <mx:Text id="p2"  width="120" />
+	                   <mx:Label text="2nd Place:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+	                   <mx:Text id="p2"  width="120" styleName="TextStyle"/>
 	                </mx:HBox>
 	                <mx:HBox>
-	                   <mx:Label text="3rd Place: " fontWeight="bold"/>
-	                   <mx:Text id="p3" width="120" />
-	                </mx:HBox>
-	            </mx:VBox>
-	            <mx:VBox >
-	                <mx:HBox>
-	                   <mx:Label text="4th Place:" fontWeight="bold"/>
-	                   <mx:Text id="p4" width="120" />
-	                </mx:HBox>
-	                <mx:HBox>
-	                   <mx:Label text="5th Place:" fontWeight="bold"/>
-	                   <mx:Text id="p5"  width="120" />
+	                   <mx:Label text="3rd Place: " fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+	                   <mx:Text id="p3" width="120" styleName="TextStyle"/>
 	                </mx:HBox>
 	            </mx:VBox>
 	            <mx:VBox >
 	                <mx:HBox>
-	                   <mx:Label text="20% Admin Fee:" fontWeight="bold"/>
+	                   <mx:Label text="4th Place:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+	                   <mx:Text id="p4" width="120" styleName="TextStyle"/>
+	                </mx:HBox>
+	                <mx:HBox>
+	                   <mx:Label text="5th Place:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+	                   <mx:Text id="p5"  width="120" styleName="TextStyle"/>
+	                </mx:HBox>
+	            </mx:VBox>
+	            <mx:VBox >
+	                <mx:HBox>
+	                   <mx:Label text="20% Admin Fee:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
 	                   <mx:Text id="adFee" text="$***" width="54" />
 	                </mx:HBox>
 	                <mx:HBox>
-	                   <mx:Label text="Contest Total:" fontWeight="bold"/>
+	                   <mx:Label text="Contest Total:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
 	                   <mx:Spacer width="7"/>
                        <mx:Text id="total" text="$***" width="55" />
 	                </mx:HBox>
@@ -213,18 +213,18 @@
         <mx:HRule width="100%" strokeColor="0x000000"/>
 
         <mx:VBox width="100%" verticalGap="0">
-            <mx:Label text="Contest Details" fontWeight="bold" fontSize="12"/>
+            <mx:Label text="Contest Details" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
             <mx:Spacer height="15"/>
             <mx:HBox>
-                <mx:Label text="Content Title:" fontWeight="bold"/>
-                <mx:Text id="ctInput" width="308" text="test" />
+                <mx:Label text="Content Title:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+                <mx:Text id="ctInput" width="308" text="test" styleName="TextStyle"/>
             </mx:HBox>
             <mx:Spacer height="5"/>
-            <mx:Label text="Introduction:" fontWeight="bold"/>
-            <mx:Text id="introInput" width="500" height="50" text="test" />
+            <mx:Label text="Introduction:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+            <mx:Text id="introInput" width="500" height="50" text="test" styleName="TextStyle"/>
             <mx:Spacer height="5"/>
-            <mx:Label text="What are the primary goals for this design?" fontWeight="bold"/>
-            <mx:Text id="glsInput" width="500" height="50" text="test" />
+            <mx:Label text="What are the primary goals for this design?" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+            <mx:Text id="glsInput" width="500" height="50" text="test" styleName="TextStyle"/>
 
             <mx:HBox width="100%">
                 <mx:Spacer width="515"/>
@@ -235,22 +235,22 @@
         <mx:HRule width="100%" strokeColor="0x000000"/>
 
         <mx:VBox width="100%" verticalGap="0">
-            <mx:Label text="Contest Specifications" fontWeight="bold" fontSize="12"/>
+            <mx:Label text="Contest Specifications" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
             <mx:Spacer height="15"/>
-            <mx:Label text="Colors:" fontWeight="bold"/>
-            <mx:Text id="colorInput" width="500" height="50" text="test" />
+            <mx:Label text="Colors:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+            <mx:Text id="colorInput" width="500" height="50" text="test" styleName="TextStyle"/>
             <mx:Spacer height="5"/>
-            <mx:Label text="Fonts:" fontWeight="bold"/>
-            <mx:Text id="fontInput" width="500" height="50" text="test" />
+            <mx:Label text="Fonts:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+            <mx:Text id="fontInput" width="500" height="50" text="test" styleName="TextStyle"/>
             <mx:Spacer height="5"/>
-            <mx:Label text="Size:" fontWeight="bold"/>
-            <mx:Text id="sizeInput" width="500" height="50" text="test" />
+            <mx:Label text="Size:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+            <mx:Text id="sizeInput" width="500" height="50" text="test" styleName="TextStyle"/>
             <mx:Spacer height="5"/>
-            <mx:Label text="Additional Requirements or Restrictions:" fontWeight="bold"/>
-            <mx:Text id="addReInput" width="500" height="50" text="test" />
+            <mx:Label text="Additional Requirements or Restrictions:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+            <mx:Text id="addReInput" width="500" height="50" text="test" styleName="TextStyle"/>
             <mx:Spacer height="5"/>
-            <mx:Label text="Final File Formats:" fontWeight="bold"/>
-	        <mx:Text id="fileFormatInput" width="500" height="50" text="test" />
+            <mx:Label text="Final File Formats:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+	        <mx:Text id="fileFormatInput" width="500" height="50" text="test" styleName="TextStyle"/>
 	        
 	        <mx:HBox width="100%">
                 <mx:Spacer width="515"/>
@@ -261,7 +261,7 @@
         <mx:HRule width="100%" strokeColor="0x000000"/>
 
         <mx:VBox width="100%" verticalGap="0">
-            <mx:Label text="Attach Files" fontWeight="bold" fontSize="12"/>
+            <mx:Label text="Attach Files" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
 
             <mx:Spacer height="15"/>
             <mx:HRule width="100%"/>            
@@ -279,20 +279,20 @@
         <mx:HRule width="100%" strokeColor="0x000000"/>
 
         <mx:VBox width="100%" verticalGap="0">
-            <mx:Label text="Set the Contest Schedule" fontWeight="bold" fontSize="12"/>
+            <mx:Label text="Set the Contest Schedule" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
             <mx:Spacer height="15"/>
             <mx:HBox>
-                <mx:Label text="Start Date:" fontWeight="bold"/>
-                <mx:Text id="startDate" text="Start Date"/>
-                <mx:Label text="Start Time:" fontWeight="bold"/>
-                <mx:Text id="startTime" text="Start Time" />
+                <mx:Label text="Start Date:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+                <mx:Text id="startDate" text="Start Date" styleName="TextStyle"/>
+                <mx:Label text="Start Time:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+                <mx:Text id="startTime" text="Start Time" styleName="TextStyle"/>
             </mx:HBox>
             
             <mx:HBox>
-                <mx:Label text="End Date:" fontWeight="bold"/>
-                <mx:Text id="endDate" text="End Date" />
-                <mx:Label text="End Time:" fontWeight="bold"/>
-                <mx:Text id="endTime" text="End Time" />
+                <mx:Label text="End Date:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+                <mx:Text id="endDate" text="End Date" styleName="TextStyle"/>
+                <mx:Label text="End Time:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+                <mx:Text id="endTime" text="End Time" styleName="TextStyle"/>
             </mx:HBox>
             
             <mx:HBox width="100%">

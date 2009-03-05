@@ -250,13 +250,13 @@
             </mx:text>
         </mx:Text>
         <mx:HBox width="100%" horizontalGap="0">
-            <mx:Label text="Select or Create a Project" fontWeight="bold" fontSize="12"/>
+            <mx:Label text="Select or Create a Project" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
         </mx:HBox>
         
         <mx:HBox width="100%">
             <mx:Spacer width="42"/>
-            <mx:Label text="New Project Name:"  width="109"/>
-            <mx:TextInput id="prjInput" width="308"/>
+            <mx:Label text="New Project Name:" styleName="TextSyle" width="109"/>
+            <mx:TextInput id="prjInput" styleName="TextSyle" width="308"/>
         </mx:HBox>
         
         <mx:HBox width="100%" >
@@ -265,18 +265,18 @@
         </mx:HBox>
         
         <mx:HBox width="100%">
-            <mx:Label text="Existing Project:" />
-            <mx:ComboBox id="selectContests"  width="309"  change="selectchange()"/>
+            <mx:Label text="Existing Project:" styleName="TextSyle" />
+            <mx:ComboBox id="selectContests" styleName="TextSyle" width="309" change="selectchange()"/>
         </mx:HBox>
         
         <mx:HBox width="100%">
-            <mx:Label text="Project Description" fontWeight="bold" fontSize="12"/>
+            <mx:Label text="Project Description" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
         </mx:HBox>
         
         <mx:HBox width="100%">
             <mx:Spacer width="32"/>
-            <mx:Text text="Brief description of the overall project:" height="37" width="117"/>
-            <mx:TextArea id="introInput" width="312" height="80"/>
+            <mx:Text styleName="TextSyle" text="Brief description of the overall project:" height="37" width="117"/>
+            <mx:TextArea styleName="TextSyle" id="introInput" width="312" height="80"/>
         </mx:HBox>
         
         <mx:HBox width="100%" >

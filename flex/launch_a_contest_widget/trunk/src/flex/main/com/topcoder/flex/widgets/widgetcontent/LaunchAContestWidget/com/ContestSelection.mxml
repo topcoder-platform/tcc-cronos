@@ -7,13 +7,63 @@
 	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
 	        import mx.events.ItemClickEvent;
 	        
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
+            import mx.collections.IList;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ProjectData;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestData;
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.StudioCompetition;
+            import mx.rpc.events.ResultEvent;
+            import mx.rpc.soap.WebService;
+            import mx.collections.ArrayCollection;
+            import mx.collections.SortField;
+            import mx.collections.Sort;
+            import mx.utils.ObjectUtil;
+            import com.topcoder.flex.Helper;
+            import mx.rpc.AbstractOperation;
+	        
 	        [Bindable]
             public var mainWidget:LaunchWidget;
+            
+            [Bindable]
+            private var contestsData:ArrayCollection = new ArrayCollection(
+                [ {label:"Please select an existing project", data:-1,desc:""}]);
             
             private function handleSelect(event:ItemClickEvent):void{
             	//var type:CompetionType = new CompetionType();
             	var competionType:String = (event.item as RadioButtonGroup).selectedValue.toString();
             	mainWidget.competition.type = competionType;
+            }
+            
+            // TCCC-1023
+            public function init():void{
+                var getAllProjectsOp:AbstractOperation = mainWidget._pws.getOperation("getAllProjects");
+                //getAllProjectsOp.decoder.typeRegistry = mainWidget._launchContestSchemaTypeRegistry;
+                getAllProjectsOp.addEventListener("result", getAllProjectsHandler);
+                getAllProjectsOp.send();
+                
+                selectContests.dataProvider = contestsData;
+            }
+            
+            // TCCC-1023
+            private function getAllProjectsHandler(e:ResultEvent):void{
+                if(e && e.result){
+                    var projects:ArrayCollection = ObjectTranslatorUtils.translateCollection(e.result, ProjectData);
+                    if(!projects.sort) {
+                        var sort:Sort = new Sort();   
+                        sort.compareFunction = compareName;
+                        projects.sort = sort;
+                    }
+                    
+                    projects.refresh();
+                    
+                    for each (var prj:ProjectData in projects){
+                        contestsData.addItem({label:prj.name, data:prj.projectId, desc:prj.description});
+                    }
+                }
+            }
+            
+            private function compareName(a:Object, b:Object, fields:Array = null):int {
+               return ObjectUtil.stringCompare(a.name,b.name,true);
             }
             
             //select the button
@@ -28,72 +78,160 @@
 	        		}
 	        	}
 	        }
+	        
+            private function createContestAndContinue(id:Number):void {
+                mainWidget.competition = new StudioCompetition();
+                mainWidget.competition.competitionId = -1;
+                mainWidget.competition.id = -1;
+                mainWidget.competition.adminFee = 20;
+                mainWidget.competition.eligibility = "some text";
+                
+                mainWidget.competition.contestData = new ContestData();
+                mainWidget.competition.contestData.contestAdministrationFee = 20;
+                mainWidget.competition.creatorUserId = 3;
+                mainWidget.competition.drPoints = 100;
+                mainWidget.competition.contestData.drPoints = 100;
+                
+                // dont set project id
+                //mainWidget.competition.contestData.projectId = id;
+                mainWidget.competition.contestData.tcDirectProjectId = id;
+                mainWidget.competition.contestData.contestId = -1;
+                mainWidget.competition.contestData.creatorUserId = 3;
+                mainWidget.competition.contestData.statusId = 5;
+                mainWidget.competition.contestData.forumId = -1;
+                mainWidget.competition.contestData.forumPostCount = 0;
+                mainWidget.competition.contestData.requiresPreviewImage = true;
+                mainWidget.competition.contestData.requiresPreviewFile = false;
+                mainWidget.competition.contestData.maximumSubmissions = 3; 
+                mainWidget.competition.contestData.submissionCount = 0;
+                mainWidget.competition.contestData.contestChannelId = 2;
+                mainWidget.competition.contestData.eligibility = "some text";
+                mainWidget.competition.contestData.media = new Array();
+                
+                mainWidget.competition.contestData.numberOfRegistrants = 0;
+                //var type:CompetionType = new CompetionType();
+                //CompetitionType fixed to be studio
+                var competionType:String = "STUDIO";
+                mainWidget.competition.type = competionType;
+    
+                //mainWidget.competition.contestData.name = prjInput.text;
+                
+                mainWidget.startLaunchProcess();
+            }
+            
+            public function goToOverView():int {
+                if ((selectContests.selectedItem == null || selectContests.selectedItem.data ==-1) && prjInput.text == ""){
+                    Helper.showAlertMessage("New Project or Existing Project must have a value.");
+                    return -1;
+                } else {
+                    if(selectContests.selectedItem != null && selectContests.selectedItem.data != -1)
+                    {
+                        mainWidget.tcDirectProjectId=selectContests.selectedItem.data;
+                        createContestAndContinue(parseInt(mainWidget.tcDirectProjectId));
+                    }
+                    else
+                    {
+                        // TCCC-1023
+                        var createProjectOp:AbstractOperation = mainWidget._pws.getOperation("createProject");
+                        createProjectOp.addEventListener("result", createProjectHandler);
+                        
+                        var projectData:ProjectData = new ProjectData();
+                        projectData.name=prjInput.text;
+                        projectData.description=introInput.text;
+                        
+                        createProjectOp.send(projectData);
+                    }
+                    return 0;
+                }
+            }
+            
+            // TCCC-1023
+            private function createProjectHandler(e:ResultEvent):void {
+                if(e && e.result) {
+                    var projectData:ProjectData = ObjectTranslatorUtils.translate(e.result, ProjectData) as ProjectData;
+                    mainWidget.tcDirectProjectId=projectData.projectId.toString();
+                    createContestAndContinue(projectData.projectId);
+                }
+            }
 	      ]]>
     </mx:Script>
     <mx:VBox width="100%" styleName="boxStyle">
     	<mx:HBox horizontalAlign="right" width="100%">
-    		<mx:Label text="Contest Selection" fontWeight="bold" fontSize="12" width="80%"/>
-    		<mx:Spacer width="100" />	
+    		<!--<mx:Label text="Contest Selection" fontFamily="Arial" fontWeight="bold" fontSize="11" width="80%"/>
+    		<mx:Spacer width="100" />-->
     		<mx:LinkButton baseline="middle" styleName="linkBtn" label="Preview Contest" click="this.mainWidget.previewContest()" />
 		    <mx:Image source="@Embed('../../assets/more_info.png')"/>
     	</mx:HBox>
-	    <mx:Label text="What Type of Contest do you want to run?" fontWeight="bold"/>
-	    <mx:RadioButtonGroup id="contestType" itemClick="handleSelect(event);" />
-	    <mx:VBox width="100%" height="100%">
-	    	<mx:VBox width="100%" >
-	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="studio" label="Studio" value="STUDIO"  selected="true" paddingBottom="0"/>
-	    			<mx:Text width="100%" text="Graphic and web design contests." paddingTop="-10"/>
-	    	</mx:VBox>
-	    	<mx:Spacer height="3"/>
-	    	<mx:VBox width="100%" >
-	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="specification" label="Specification" value="specification"  enabled="false"/>
-	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
-	    	</mx:VBox>
-	    	<mx:Spacer height="3"/>
-	    	<mx:VBox width="100%" >
-					<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="componentDesign" label="Component Design" value="Design"  enabled="false"/>
-	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
-	    	</mx:VBox>
-	    	<mx:Spacer height="3"/>
-	    	<mx:VBox width="100%" >
-	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="componentDev" label="Component Development" value="dev"  enabled="false"/>
-	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
-	    	</mx:VBox>
-			<mx:Spacer height="3"/>
-	    	<mx:VBox width="100%" >
-	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="test" label="Testing" value="test"  enabled="false"/>
-	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
-	    	</mx:VBox>
-	    	<mx:Spacer height="3"/>
-	    	<mx:VBox width="100%" >
-	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="architecture" label="Architecture" value="conceptualization"  enabled="false"/>
-	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
-	    	</mx:VBox>
-	    	<mx:Spacer height="3"/>
-	    	<mx:VBox width="100%" >
-	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="moddash" label="Mod Dash" value="assembly"  enabled="false"/>
-	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
-	    	</mx:VBox>
-	    	<mx:Spacer height="3"/>
-	    	<mx:VBox width="100%" >
-	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="assembly" label="Assembly" value="assembly"  enabled="false"/>
-	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
-	    	</mx:VBox>
-	    <!--	<mx:Spacer height="3"/>
-	    	<mx:VBox width="100%" >
-	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="conceptualization" label="Software Conceptualization" value="conceptualization"  enabled="false"/>
-	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
-	    	</mx:VBox>
-	    	<mx:Spacer height="3"/>
-	    	<mx:VBox width="100%" >
-	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="softwareDesign" label="Software Design" value="softwareDesign"  enabled="false"/>
-	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
-	    	</mx:VBox>
-	    		    	<mx:Spacer height="3"/>
-	    	<mx:VBox width="100%" >
-	    			<mx:RadioButton  fontWeight="bold" fontSize="10" groupName="contestType" id="test" label="Application Testing" value="test"  enabled="false"/>
-	    			<mx:Text paddingTop="-10" width="100%" text="Coming soon!" />
-	    	</mx:VBox> -->
-	    </mx:VBox>
+    	<mx:HBox width="100%" height="100%" paddingLeft="30">
+    	    <mx:VBox width="35%" height="100%" paddingRight="15">
+        	    <mx:Label styleName="TextSyle" text="Contest Selection" fontWeight="bold" fontSize="12"/>
+        	    <mx:Label styleName="TextSyle" text="What Type of Contest do you want to run?" />
+        	    <mx:RadioButtonGroup id="contestType" itemClick="handleSelect(event);" />
+        	    <mx:VBox width="100%" height="100%">
+        	    	<mx:VBox width="100%" >
+        	    			<mx:RadioButton fontFamily="Arial" fontWeight="bold" fontSize="11" groupName="contestType" id="studio" label="Studio" value="STUDIO"  selected="true" paddingBottom="0"/>
+	    			<mx:Text styleName="TextSyle" width="100%" text="Graphic and web design contests." paddingTop="-10"/>
+        	    	</mx:VBox>
+        	    </mx:VBox>
+        	    <mx:Spacer height="5"/>
+        	    <mx:HRule width="100%" />
+        	    <mx:Spacer height="5"/>
+        	    <mx:VBox width="100%" verticalGap="0">
+        	        <mx:Label text="New Contest Types" fontWeight="bold" fontSize="12"/>
+        	        <mx:Label text="These contest types are coming soon."/>
+        	    </mx:VBox>
+        	    <mx:Spacer height="15"/>
+        	    <mx:Label styleName="TextSyle" text="- Specification"/>
+        	    <mx:Label styleName="TextSyle" text="- Component Design"/>
+        	    <mx:Label styleName="TextSyle" text="- Component Development"/>
+                <mx:Label styleName="TextSyle" text="- Testing"/>
+                <mx:Label styleName="TextSyle" text="- Architecture"/>
+                <mx:Label styleName="TextSyle" text="- Mod Dash"/>
+                <mx:Label styleName="TextSyle" text="- Assembly"/>
+    	    </mx:VBox>
+    	    <mx:VRule height="100%"/>
+    	    <mx:VBox width="65%" height="100%" paddingLeft="15">
+                <mx:Label text="Projects" styleName="header" fontSize="11" fontWeight="bold"/>
+                <mx:Text width="100%" styleName="TextSyle" >
+                    <mx:text>
+                A project is a way to organize your contests under one overall header and description. Naming the overall project here and giving a brief description will help you manage your contests later. For example, a logo and new website design can both be placed under a project called "New Website".
+                    </mx:text>
+                </mx:Text>
+                <mx:HBox width="100%" horizontalGap="0">
+                    <mx:Label text="Select or Create a Project" fontWeight="bold" fontSize="12"/>
+                </mx:HBox>
+                
+                <mx:HBox width="100%">
+                    <mx:Spacer width="42"/>
+                    <mx:Label styleName="TextSyle" text="Add a New Project:"  width="109"/>
+                    <mx:TextInput styleName="TextSyle" id="prjInput" width="308"/>
+                </mx:HBox>
+                
+                <mx:HBox width="100%" >
+                    <mx:Spacer width="162"/>
+                    <mx:Label text="----------- or ------------"/>
+                </mx:HBox>
+                
+                <mx:HBox width="100%">
+                    <mx:Label text="Choose an Existing Project:" />
+                    <mx:ComboBox id="selectContests"  width="309" />
+                </mx:HBox>
+                
+                <mx:HBox width="100%">
+                    <mx:Label styleName="TextSyle" text="Project Description" fontWeight="bold" fontSize="11"/>
+                </mx:HBox>
+                
+                <mx:HBox width="100%">
+                    <mx:Spacer width="32"/>
+                    <mx:Text styleName="TextSyle" text="Brief description of the overall project:" height="37" width="117"/>
+                    <mx:TextArea styleName="TextSyle" id="introInput" width="312" height="120"/>
+                </mx:HBox>
+                <!--
+                <mx:HBox width="100%" >
+                    <mx:Spacer width="162"/>
+                    <mx:Button label="save and continue" styleName="RedButton" click="goToOverView()" buttonMode="true"/>
+                </mx:HBox> -->
+    	    </mx:VBox>
+	    </mx:HBox>
     </mx:VBox>
 </mx:Canvas>

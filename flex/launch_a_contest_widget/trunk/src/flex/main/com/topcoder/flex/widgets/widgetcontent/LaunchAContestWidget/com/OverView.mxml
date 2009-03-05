@@ -309,16 +309,16 @@
 			            	</mx:HBox>
 			            	<!--<mx:Spacer height="17" /> --> 
     		            	<mx:HBox styleName="smallBlackText" >
-			            		<mx:Label text="Prizes" width="80" /><mx:Label text=": {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.prizes : ''}"/>	
+			            		<mx:Label styleName="TextSyle" text="Prizes" width="80" /><mx:Label styleName="TextSyle" text=": {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.prizes : ''}"/>	
 			            	</mx:HBox>
     		            	<mx:HBox styleName="smallBlackText" >
-			            		<mx:Label text="Duration" width="80" /><mx:Label text=": {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.duration : ''}"/>	
+			            		<mx:Label styleName="TextSyle" text="Duration" width="80" /><mx:Label styleName="TextSyle" text=": {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.duration : ''}"/>	
 			            	</mx:HBox>
 			            	<mx:HBox styleName="smallBlackText" >
-			            		<mx:Label text="Registrants" width="80"/><mx:Label text=": {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.registrants : ''}"/>	
+			            		<mx:Label styleName="TextSyle" text="Registrants" width="80"/><mx:Label styleName="TextSyle" text=": {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.registrants : ''}"/>	
 			            	</mx:HBox>
     		            	<mx:HBox styleName="smallBlackText" >
-			            		<mx:Label text="Submissions" width="80"/><mx:Label text=": {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.submissions : ''}" />	
+			            		<mx:Label styleName="TextSyle" text="Submissions" width="80"/><mx:Label styleName="TextSyle" text=": {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.submissions : ''}" />	
 			            	</mx:HBox>
 	            		</mx:VBox>	
 					</mx:HBox>
@@ -347,16 +347,16 @@
 			            	</mx:HBox>
 			            	<!--<mx:Spacer height="17" />-->
 			            	<mx:HBox styleName="smallBlackText" >
-			            		<mx:Label text="Prizes" width="80" /><mx:Label text=": {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.prizes : ''}"/>	
+			            		<mx:Label styleName="TextSyle" text="Prizes" width="80" /><mx:Label styleName="TextSyle" text=": {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.prizes : ''}"/>	
 			            	</mx:HBox>
     		            	<mx:HBox styleName="smallBlackText" >
-			            		<mx:Label text="Duration" width="80" /><mx:Label text=": {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.duration : ''}"/>	
+			            		<mx:Label styleName="TextSyle" text="Duration" width="80" /><mx:Label styleName="TextSyle" text=": {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.duration : ''}"/>	
 			            	</mx:HBox>
 			            	<mx:HBox styleName="smallBlackText" >
-			            		<mx:Label text="Registrants" width="80"/><mx:Label text=": {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.registrants : ''}"/>	
+			            		<mx:Label styleName="TextSyle" text="Registrants" width="80"/><mx:Label styleName="TextSyle" text=": {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.registrants : ''}"/>	
 			            	</mx:HBox>
     		            	<mx:HBox styleName="smallBlackText" >
-			            		<mx:Label text="Submissions" width="80"/><mx:Label text=": {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.submissions : ''}" />	
+			            		<mx:Label styleName="TextSyle" text="Submissions" width="80"/><mx:Label styleName="TextSyle" text=": {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.submissions : ''}" />	
 			            	</mx:HBox>
 	            		</mx:VBox>	
 					</mx:HBox>
@@ -390,49 +390,49 @@
 	            <mx:HBox>
 	            	<mx:VBox verticalGap="7" styleName="smallBlackText">
 		            	<mx:HBox horizontalGap="0">
-		            		 <mx:Label text="&#8226; 1st Place" width="60" fontSize="11"/><mx:Label text=":$"/>
+		            		 <mx:Label styleName="TextSyle" text="&#8226; 1st Place" width="60" fontSize="11"/><mx:Label styleName="TextSyle" text=":$"/>
 	                    </mx:HBox>
 	                    <mx:HBox horizontalGap="0">
-		            		 <mx:Label text="&#8226; 2nd Place" width="60" fontSize="11"/><mx:Label text=":$"/>
+		            		 <mx:Label styleName="TextSyle" text="&#8226; 2nd Place" width="60" fontSize="11"/><mx:Label styleName="TextSyle" text=":$"/>
 	                    </mx:HBox>
 	                    <mx:HBox horizontalGap="0">
-		            		 <mx:Label text="&#8226; 3rd Place" width="60" fontSize="11"/><mx:Label text=":$"/>
+		            		 <mx:Label styleName="TextSyle" text="&#8226; 3rd Place" width="60" fontSize="11"/><mx:Label styleName="TextSyle" text=":$"/>
 	                    </mx:HBox>
 	            	</mx:VBox>
 	            	<mx:VBox verticalGap="2" horizontalGap="0">
-	            	   <mx:TextInput id="firstPlace" width="120" text="" change="updateAmount()" styleName="textfield" maxChars="4" />
-	                   <mx:TextInput id="secondPlace" width="120" text="" change="updateAmount()" styleName="textfield" maxChars="4" />
-	                   <mx:TextInput id="thirdPlace" width="120" text="" change="updateAmount()" styleName="textfield" maxChars="4" />
+	            	   <mx:TextInput id="firstPlace" width="120" text="" change="updateAmount()" styleName="TextSyle" maxChars="4" />
+	                   <mx:TextInput id="secondPlace" width="120" text="" change="updateAmount()" styleName="TextSyle" maxChars="4" />
+	                   <mx:TextInput id="thirdPlace" width="120" text="" change="updateAmount()" styleName="TextSyle" maxChars="4" />
 	                </mx:VBox>
 	            </mx:HBox>
 	            
 	            <mx:HBox>
 	            	<mx:VBox verticalGap="7" styleName="smallBlackText">
 	            		<mx:HBox horizontalGap="0">
-		            		 <mx:Label text="&#8226; 4th Place" width="60" fontSize="11"/><mx:Label text=":$"/>
+		            		 <mx:Label styleName="TextSyle" text="&#8226; 4th Place" width="60" fontSize="11"/><mx:Label styleName="TextSyle" text=":$"/>
 	                    </mx:HBox>
 	                    <mx:HBox horizontalGap="0">
-		            		 <mx:Label text="&#8226; 5th Place" width="60" fontSize="11"/><mx:Label text=":$"/>
+		            		 <mx:Label styleName="TextSyle" text="&#8226; 5th Place" width="60" fontSize="11"/><mx:Label styleName="TextSyle" text=":$"/>
 	                    </mx:HBox>
 	            	</mx:VBox>
 	            	<mx:VBox verticalGap="2" horizontalGap="0">
-	            	   <mx:TextInput id="fourthPlace" width="120" text="" change="updateAmount()" styleName="textfield" maxChars="4" />
-	                   <mx:TextInput id="fifthPlace" width="120" text="" change="updateAmount()" styleName="textfield" maxChars="4" />
+	            	   <mx:TextInput id="fourthPlace" width="120" text="" change="updateAmount()" styleName="TextSyle" maxChars="4" />
+	                   <mx:TextInput id="fifthPlace" width="120" text="" change="updateAmount()" styleName="TextSyle" maxChars="4" />
 	                </mx:VBox>
 	            </mx:HBox>
 	            
 	            <mx:HBox>
 	            	<mx:VBox verticalGap="7" styleName="smallBlackText">
 	            		<mx:HBox horizontalGap="0">
-		            		 <mx:Label text="&#8226; Admin Fee" width="90" fontSize="11"/><mx:Label text=":$"/>
+		            		 <mx:Label styleName="TextSyle" text="&#8226; Admin Fee" width="90" fontSize="11"/><mx:Label styleName="TextSyle" text=":$"/>
 	                    </mx:HBox>
 	                    <mx:HBox horizontalGap="0">
-		            		  <mx:Label text="&#8226; Contest Total" width="90" fontSize="11"/><mx:Label text=":$"/>
+		            		  <mx:Label styleName="TextSyle" text="&#8226; Contest Total" width="90" fontSize="11"/><mx:Label styleName="TextSyle" text=":$"/>
 	                    </mx:HBox>
 	            	</mx:VBox>
 	            	<mx:VBox verticalGap="2">
-	            	   <mx:TextInput id="adminf" text="" width="55"  editable="false" styleName="textfield"/>
-	                   <mx:TextInput id="cntstTtl" text="" width="55" editable="false" styleName="textfield"/>
+	            	   <mx:TextInput id="adminf" text="" width="55"  editable="false" styleName="TextSyle"/>
+	                   <mx:TextInput id="cntstTtl" text="" width="55" editable="false" styleName="TextSyle"/>
 	                </mx:VBox>
 	            </mx:HBox>
 	        </mx:HBox>

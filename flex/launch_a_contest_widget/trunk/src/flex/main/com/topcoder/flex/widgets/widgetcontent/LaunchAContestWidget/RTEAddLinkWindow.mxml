@@ -7,12 +7,12 @@
 	
 	<mx:VBox width="100%" height="100%" horizontalGap="10" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10" verticalGap="10">
 	 	<mx:HBox verticalAlign="middle" width="100%">
-	 	 	<mx:Label text="Link Name:" width="120"/> 
-	  		<mx:TextInput id="linkName" width="150" /> 
+	 	 	<mx:Label text="Link Name:" width="120" fontFamily="Arial" fontSize="11"/> 
+	  		<mx:TextInput id="linkName" width="150" fontFamily="Arial" fontSize="11"/> 
 	  	</mx:HBox>
 	  	<mx:HBox verticalAlign="middle" width="100%">
-	 	 	<mx:Label text="Link Web Address:" width="120"/> 
-	  		<mx:TextInput id="linkWebAddress" width="150" /> 
+	 	 	<mx:Label text="Link Web Address:" width="120" fontFamily="Arial" fontSize="11"/> 
+	  		<mx:TextInput id="linkWebAddress" width="150" fontFamily="Arial" fontSize="11"/> 
 	  	</mx:HBox>
 	</mx:VBox>
 
