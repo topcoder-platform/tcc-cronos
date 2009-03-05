@@ -12,6 +12,7 @@
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ProjectData;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestData;
             import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.StudioCompetition;
+	    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ClientProject;
             import mx.rpc.events.ResultEvent;
             import mx.rpc.soap.WebService;
             import mx.collections.ArrayCollection;
@@ -41,6 +42,8 @@
                 getAllProjectsOp.addEventListener("result", getAllProjectsHandler);
                 getAllProjectsOp.send();
                 
+		getClientProjectsByUser();
+
                 selectContests.dataProvider = contestsData;
             }
             
@@ -61,6 +64,51 @@
                     }
                 }
             }
+
+	    private function getClientProjectsByUser():void {
+			    // add an empty item.
+			    var item:Object = null;
+			    
+			    item = new Object();
+			    item.label="";
+			    item.data="";
+			    mainWidget.clientProjectNames.addItem(item);
+			    
+			    // get client projects by user.
+			    var getClientProjectsByUserOp:AbstractOperation = mainWidget._pws.getOperation("getClientProjectsByUser");
+			    if (getClientProjectsByUserOp) {
+				getClientProjectsByUserOp.addEventListener("result", getClientProjectsHandler);
+				getClientProjectsByUserOp.send();
+			    }
+	    }
+			
+	    private function getClientProjectsHandler(e:ResultEvent):void {
+			    trace("getClientProjectsHandler: " + e + ", " + e.result);
+            	if(e && e.result)
+            	{
+            	    var projects:ArrayCollection = ObjectTranslatorUtils.translateCollection(e.result, ClientProject) as ArrayCollection;
+            	    trace("getClientProjectsHandler:: projects: " + projects);
+            	    
+            	    if (projects && projects.length > 0) {
+            	        for (var i:int = 0; i < projects.length; i++) {
+            	            var project:ClientProject = projects[i] as ClientProject;
+            	            var name:String = project.name;
+                            var poNumber:String = project.pOBoxNumber;
+            	            
+            	            trace("Adding client project name: " + name);
+            	            // add client project name
+                	        var item:Object = new Object();
+    			            item.label= name;
+    			            item.data = poNumber;
+                	        mainWidget.clientProjectNames.addItem(item);
+            	        }
+            	    }
+            	    
+            	    // assign client project names here.
+            	    mainWidget.activate.wf1.clientProjectNames = mainWidget.clientProjectNames;
+            	}
+	   }
+            
             
             private function compareName(a:Object, b:Object, fields:Array = null):int {
                return ObjectUtil.stringCompare(a.name,b.name,true);

@@ -2,7 +2,7 @@
 <tc:LaunchWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
     xmlns:pages="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*" styleName="NewWidgetPanel"
     xmlns:tc="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.*" 
-    width="600" initialize="initWidget()" verticalScrollPolicy="off"     creationComplete="onCreateComplete(1)" >
+    width="100%" initialize="initWidget()" verticalScrollPolicy="off" horizontalScrollPolicy="off" creationComplete="onCreateComplete(1)" >
     <mx:Style source="Style.css" />
 
     <mx:Script>
@@ -133,11 +133,11 @@
             
             private function initComponent():void {
             	// modified lines below for BUGR-1134
-                launchWdt.height = 0;
+                //launchWdt.height = 0;
                 this.currentState = "ContestSelectionState";
                 this.height = 460;
-                mainPanel.height = 0;
-                mainPanel.visible = false;
+                //mainPanel.height = 0;
+                //mainPanel.visible = false;
                 mainPanel.horizontalScrollPolicy = "false";
                 
                 back.visible = false;
@@ -152,7 +152,7 @@
 		overView.height = 645; // BUGR-1134
 		review.height = 1100; // BUGR-1134
 				
-		initialWdt.mainWidget = this;
+		//initialWdt.mainWidget = this;
 		contestSelect.mainWidget = this;
 		overView.mainWidget = this;
 		details.mainWidget = this;
@@ -165,7 +165,8 @@
                 // initialize web-services
                 initWebServices();
 
-		  initialWdt.init();
+		 // initialWdt.init();
+		        contestSelect.init();
 
 				 // BUGR-1141
 				 setCurStep(step1box);
@@ -553,6 +554,9 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    setCurStep(step1box);
                    setNextStep(step2box); // BUGR-1141
                    //step2Text.setStyle("color", "#a8a8a8");
+                   //BUGR-1235
+                   SaveAndContinueHBox.height = 22;
+                   SaveAndContinueHBox.visible = true;
                 }
             }
             public function goToStep1():void {
@@ -690,15 +694,16 @@ Specific limitations (such as restricting a color or a specific layout style) an
             }*/
             
             public function startLaunchProcess():void{
-                initialWdt.width = 0;
-                initialWdt.height = 0;
-                initialWdt.visible = false;
-                widgetFramework.maximize(parent);
-                width=parent.width-10;
-                height=parent.height-10;
+                //initialWdt.width = 0;
+                //initialWdt.height = 0;
+                //initialWdt.visible = false;
+                //widgetFramework.maximize(parent);
+                // BUGR-1267
+                //width=parent.width-41;
+               // height=parent.height-10;
                 launchWdt.percentWidth = 100;
                 launchWdt.percentHeight = 100;
-                launchWdt.visible = true;
+                //launchWdt.visible = true;
                 // BUGR-1134 added
                 mainPanel.percentWidth = 100;
                 mainPanel.percentHeight = 100;
@@ -743,6 +748,15 @@ Specific limitations (such as restricting a color or a specific layout style) an
         		p=null;
 			    }
                 Helper.showAlertMessage(opName + ":: " + event.fault.content + "," + event.fault.message + "," + event.fault.faultCode + "," + event.fault.faultString);
+            }
+
+		private function goToOverViewPage():void {
+                var result:int = contestSelect.goToOverView();
+                if (result < 0)
+                    return;
+                SaveAndContinueHBox.height = 0;
+                SaveAndContinueHBox.visible = false;
+                next();
             }
         ]]>
     </mx:Script>
@@ -832,8 +846,8 @@ Specific limitations (such as restricting a color or a specific layout style) an
  </mx:RemoteObject>
      
      <mx:Spacer height="5" />
-     <pages:InitialWidget id="initialWdt" />
-     <mx:HBox id="launchWdt" horizontalGap="0" visible="false" paddingLeft="20">
+     <!--<pages:InitialWidget id="initialWdt" />-->
+     <mx:HBox id="launchWdt" width="100%" horizontalGap="0" paddingLeft="20">
          <mx:VBox width="220" height="100%" paddingTop="0" verticalGap="0" 
                 horizontalScrollPolicy="off" styleName="stepsBgr">
              <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="30"
@@ -936,7 +950,10 @@ Specific limitations (such as restricting a color or a specific layout style) an
              <!--<mx:Spacer  id="bottemline" height="100%"/>-->
          </mx:VBox>
      </mx:HBox>
-     <mx:HBox paddingLeft="220" paddingTop="0" horizontalAlign="center" width="100%" visible="{!initialWdt.visible}" includeInLayout="{!initialWdt.visible}">
+     <mx:HBox id="SaveAndContinueHBox" paddingLeft="220" paddingTop="0" horizontalAlign="right" width="100%" >
+         <mx:Button label="save and continue" styleName="RedButton" click="goToOverViewPage()" buttonMode="true"/>
+    </mx:HBox>
+     <mx:HBox id="BtnsHBox" paddingLeft="220" paddingTop="0" horizontalAlign="center" width="100%" height="{SaveAndContinueHBox.visible ? 0 : 22}" visible="{!SaveAndContinueHBox.visible}" includeInLayout="{!SaveAndContinueHBox.visible}">
     <!--BUGR-1204 <mx:Button id="back" buttonMode="true" styleName="RedButton" label="&lt;&lt; back" click="previous()"/>-->
          <mx:Button id="back" buttonMode="true" styleName="greenBackButton" click="previous()"/>
          <mx:Button id="save" buttonMode="true" styleName="RedButton"  label="save as draft" click="saveAsDraft()" includeInLayout="{save.visible}"/>
