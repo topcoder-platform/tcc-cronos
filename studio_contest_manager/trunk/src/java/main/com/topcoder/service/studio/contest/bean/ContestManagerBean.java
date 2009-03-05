@@ -2605,7 +2605,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 				+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
 				+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1 ) as num_sub "
 				+ " from contest c "
-				+ " where c.tc_direct_project_id is not null and c.deleted = 0 ";
+				+ " where c.tc_direct_project_id is not null and c.deleted = 0 and c.contest_detailed_status_id!=3";
 
             Query query = em.createNativeQuery(qstr);
 
@@ -2665,7 +2665,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
 					+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1) as num_sub "
 					+ " from contest c "
-					+ " where c.tc_direct_project_id ="+pid+" and c.deleted = 0 ";
+					+ " where c.tc_direct_project_id ="+pid+" and c.deleted = 0 and c.contest_detailed_status_id!=3";
 
 			Query query = em.createNativeQuery(qstr);
 
@@ -2722,7 +2722,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 				+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
 				+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1 ) as num_sub "
 				+ " from contest c "
-				+ " where c.tc_direct_project_id is not null and c.deleted = 0 and c.create_user_id = "+createdUser;
+				+ " where c.tc_direct_project_id is not null and c.deleted = 0 and c.contest_detailed_status_id!=3 and c.create_user_id = "+createdUser;
 
             Query query = em.createNativeQuery(qstr);
 
@@ -2777,7 +2777,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1) as num_sub, "
 					+ " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for "
 					+ " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
-					+ " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id ";
+					+ " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
+					+ "  where c.deleted = 0 and c.contest_detailed_status_id!=3";
 
             Query query = em.createNativeQuery(qstr,"ContestForMyProjectResults");
 
@@ -2858,7 +2859,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					+ " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for "
 					+ " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
 					+ " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
-					+ " where p.project_id = "+pid;
+					+ "  where c.deleted = 0 and c.contest_detailed_status_id!=3 "
+					+ " and p.project_id = "+pid;
 
 			Query query = em.createNativeQuery(qstr,"ContestForMyProjectResults");
 
@@ -2902,8 +2904,9 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 					+ " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for "
 					+ " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
 					+ " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
+					+ "  where c.deleted = 0 and c.contest_detailed_status_id!=3 "
 					// here we check both user in project and contest
-					+ " where p.user_id = " + createdUser  + " and (c.create_user_id = "+createdUser+" or c.create_user_id is null)";
+					+ "  and p.user_id = " + createdUser  + " and (c.create_user_id = "+createdUser+" or c.create_user_id is null)";
 
             Query query = em.createNativeQuery(qstr,"ContestForMyProjectResults");
 
@@ -3049,7 +3052,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + " from prize as p "
                     + " where p.prize_id IN (select prize_id from contest_prize_xref as cpx where cpx.contest_id = c.contest_id) "
                     + " and p.place = 5),0) as prize_5 " + " from contest c  "
-                    + " where not c.tc_direct_project_id is null  " + " and c.deleted = 0 ";
+                    + " where not c.tc_direct_project_id is null  " + " and c.deleted = 0 and c.contest_detailed_status_id!=3 ";
             if (createdUser != -1) {
                 qstr = qstr + " and c.create_user_id = " + createdUser;
             }
