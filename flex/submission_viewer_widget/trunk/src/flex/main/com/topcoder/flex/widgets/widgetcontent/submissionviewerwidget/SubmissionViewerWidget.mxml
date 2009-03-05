@@ -2286,7 +2286,7 @@
 		        <tc:CustomTileList id="list_minpage" rowCount="4" 
 		        	height="100%"
 		        	columnWidth="100"
-		        	columnCount="2"
+		        	columnCount="{((minPage.width - 20)/list_minpage.columnWidth)}"
 		        	rowHeight="80"
 			        selectionDuration="0"
 			        dataProvider="{activeSubmissionForMin}" 
