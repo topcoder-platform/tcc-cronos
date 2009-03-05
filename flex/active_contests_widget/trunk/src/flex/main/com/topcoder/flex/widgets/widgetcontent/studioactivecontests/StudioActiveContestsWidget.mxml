@@ -214,7 +214,7 @@
   <mx:Label text="Contest Type :" left="40" top="11"
                         styleName="normalText" paddingTop="0" paddingBottom="0" />
     <mx:ComboBox id="contestCombo" left="195" width="272" top="9" styleName="ComboBoxStyle"
-                        valueCommit="handleContest()" fontFamily="Arial" fontSize="10"
+                        valueCommit="handleContest()" fontFamily="Arial" fontSize="11"
                         labelField="name"  dataProvider="{contestList}" />
     </mx:Canvas>
 
