@@ -57,7 +57,7 @@
 	         * Represents the height of this widget on different states. BUGR-1134
 	         */
 	        private var INITIAL_WIDGET_HEIGHT:int = 460;
-	       	private var CONTEST_SELECTION_HEIGHT:int = 510;
+	       	private var CONTEST_SELECTION_HEIGHT:int = 530;
 	       	private var OVERVIEW_HEIGHT:int = 770; // BUGR-1204 was 730
 	       	private var DETAILS_HEIGHT:int = 657;
 	       	private var SPECIFICATIONS_HEIGHT:int = 920; // BUGR-1362
@@ -135,7 +135,7 @@
             	// modified lines below for BUGR-1134
 
                 this.currentState = "ContestSelectionState";
-                this.height = 460;
+                this.height = 480;
                 
                 mainPanel.horizontalScrollPolicy = "false";
                 
@@ -944,8 +944,8 @@ Specific limitations (such as restricting a color or a specific layout style) an
              <!--<mx:Spacer  id="bottemline" height="100%"/>-->
          </mx:VBox>
      </mx:HBox>
-     <mx:HBox id="SaveAndContinueHBox" visible="{this.currentState == 'ContestSelectionState'}" height="{this.currentState == 'ContestSelectionState' ? 22 : 0}" paddingLeft="220" paddingTop="0" horizontalAlign="right" width="100%" >
-         <mx:Button label="save and continue" styleName="RedButton" click="goToOverViewPage()" buttonMode="true"/>
+     <mx:HBox id="SaveAndContinueHBox" visible="{this.currentState == 'ContestSelectionState'}" height="{this.currentState == 'ContestSelectionState' ? 30 : 0}" paddingLeft="220" paddingTop="0" horizontalAlign="right" width="100%" >
+         <mx:Button styleName="greenNextButton" click="goToOverViewPage()" buttonMode="true"/>
      </mx:HBox>
      <mx:HBox id="BtnsHBox" paddingLeft="220" paddingTop="0" verticalAlign="top" horizontalAlign="center" width="100%" height="{SaveAndContinueHBox.visible ? 0 : 30}" visible="{!SaveAndContinueHBox.visible}" includeInLayout="{!SaveAndContinueHBox.visible}">
 

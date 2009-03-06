@@ -166,6 +166,14 @@
                 
                 mainWidget.startLaunchProcess();
             }
+
+		private function selectchange():void
+		{
+			if(selectContests.selectedItem != null)
+		       {
+			   introInput.text=selectContests.selectedItem.desc;
+		    }
+		}
             
             public function goToOverView():int {
                 if ((selectContests.selectedItem == null || selectContests.selectedItem.data ==-1) && prjInput.text == ""){
@@ -262,7 +270,7 @@
                 
                 <mx:HBox width="100%">
                     <mx:Label text="Choose an Existing Project:" />
-                    <mx:ComboBox id="selectContests"  width="309" />
+                    <mx:ComboBox id="selectContests"  width="309" styleName="TextSyle" change="selectchange()"/>
                 </mx:HBox>
                 
                 <mx:HBox width="100%">
