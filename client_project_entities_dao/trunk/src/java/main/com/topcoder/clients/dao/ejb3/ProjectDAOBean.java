@@ -63,21 +63,22 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
         ProjectDAO, ProjectDAOLocal, ProjectDAORemote {
 
 
-	
-	private static final String SELECT_WORKER_PROJECT =
-		"SELECT distinct project_id FROM project_worker p, user_account u WHERE p.user_account_id = u.user_account_id and u.user_name = ";
+
+	private static final String SELECT_WORKER_PROJECT = "SELECT distinct project_id FROM project_worker p, user_account u "
+        + "WHERE p.start_date <= current and current <= p.end_date and p.active =1 and "
+        + "p.user_account_id = u.user_account_id and u.user_name = ";
 	/**
      * The query string used to select projects.
      */
 	private static final String SELECT_MANAGER_PROJECT =
-		"SELECT distinct project_id FROM project_manager p, user_account u WHERE p.user_account_id = u.user_account_id and  u.user_name = ";
+		"SELECT distinct project_id FROM project_manager p, user_account u WHERE p.user_account_id = u.user_account_id and p.active = 1 and  u.user_name = ";
 
 	/**
 	 * The query string used to select projects.
 	 */
 	private static final String SELECT_PROJECT = "select project_id, name, po_box_number, description, "
 			+ "active, sales_tax, payment_terms_id, modification_user, modification_date, "
-			+ "creation_date, creation_user, is_deleted from project";
+			+ "creation_date, creation_user, is_deleted from project where start_date <= current and current <= end_date";
 
 
     /**
@@ -187,7 +188,7 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
 
 		try {
 
-			String queryString = SELECT_PROJECT + " where active = 1 and project_id in " + "("
+			String queryString = SELECT_PROJECT + " and active = 1 and project_id in " + "("
 					+ SELECT_MANAGER_PROJECT + "'" + username + "' " + "union "
 					+ SELECT_WORKER_PROJECT + "'" + username + "')";
 			queryString += " order by upper(name) ";

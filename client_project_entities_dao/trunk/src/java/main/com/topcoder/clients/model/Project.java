@@ -4,6 +4,7 @@
 package com.topcoder.clients.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -266,6 +267,7 @@ public class Project extends AuditableEntity {
     @Column(name = "parent_project_id")
     private Long parentProjectId;
 
+    
     /**
      * Default no-arg constructor. Constructs a new 'Project' instance.
      */
@@ -491,4 +493,6 @@ public class Project extends AuditableEntity {
     public void setSalesTax(double salesTax) {
         this.salesTax = salesTax;
     }
+
+	
 }
