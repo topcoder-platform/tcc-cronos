@@ -1414,6 +1414,9 @@ public class StudioServiceBean implements StudioService {
             result.setEndDate(new Date((long) (startDate.getTime() + 60l * 60 * 1000 * data.getDurationInHours())));
         }
 
+		data.setShortSummary(data.getShortSummary().replaceAll("&lt;", "<").replaceAll("&amp;", "&"));
+		data.setContestDescriptionAndRequirements(data.getContestDescriptionAndRequirements().replaceAll("&lt;", "<").replaceAll("&amp;", "&"));
+
         addContestConfig(result, contestPropertyShortSummaryId, data.getShortSummary());
 
         addContestConfig(result, contestPropertyContestOverviewTextId, data.getContestDescriptionAndRequirements());
