@@ -196,7 +196,7 @@
 		        <mx:VBox width="100%" verticalGap="0">
 		            <mx:HBox width="500">
 		                <mx:Label text="Colors:" fontWeight="bold" styleName="TextStyle"/>
-		                <mx:Spacer width="344"/>
+		                <mx:Spacer width="340"/>
 		                <mx:LinkButton label="[+ show hint]" click="showColorHint(event)" />
 		            </mx:HBox>
 		            <mx:Text styleName="TextStyle" id="colorHint" color="0x888888" width="500" height="0" visible="false">
