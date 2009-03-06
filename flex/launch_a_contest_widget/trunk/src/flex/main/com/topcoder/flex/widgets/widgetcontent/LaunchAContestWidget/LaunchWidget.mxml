@@ -553,9 +553,6 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    setCurStep(step1box);
                    setNextStep(step2box); // BUGR-1141
                    //step2Text.setStyle("color", "#a8a8a8");
-                   //BUGR-1235
-                   SaveAndContinueHBox.height = 22;
-                   SaveAndContinueHBox.visible = true;
                 }
             }
             public function goToStep1():void {
@@ -707,7 +704,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                 mainPanel.percentWidth = 100;
                 mainPanel.percentHeight = 100;
                 mainPanel.visible = true;
-                this.height = CONTEST_SELECTION_HEIGHT; // BUGR-1134
+                //this.height = CONTEST_SELECTION_HEIGHT; // BUGR-1134
                 
                 contestSelect.initData();
                 overView.initData();
@@ -753,8 +750,6 @@ Specific limitations (such as restricting a color or a specific layout style) an
                 var result:int = contestSelect.goToOverView();
                 if (result < 0)
                     return;
-                SaveAndContinueHBox.height = 0;
-                SaveAndContinueHBox.visible = false;
                 next();
             }
         ]]>
@@ -949,7 +944,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
              <!--<mx:Spacer  id="bottemline" height="100%"/>-->
          </mx:VBox>
      </mx:HBox>
-     <mx:HBox id="SaveAndContinueHBox" paddingLeft="220" paddingTop="0" horizontalAlign="right" width="100%" >
+     <mx:HBox id="SaveAndContinueHBox" visible="{this.currentState == 'ContestSelectionState'}" height="{this.currentState == 'ContestSelectionState' ? 22 : 0}" paddingLeft="220" paddingTop="0" horizontalAlign="right" width="100%" >
          <mx:Button label="save and continue" styleName="RedButton" click="goToOverViewPage()" buttonMode="true"/>
      </mx:HBox>
      <mx:HBox id="BtnsHBox" paddingLeft="220" paddingTop="0" verticalAlign="top" horizontalAlign="center" width="100%" height="{SaveAndContinueHBox.visible ? 0 : 30}" visible="{!SaveAndContinueHBox.visible}" includeInLayout="{!SaveAndContinueHBox.visible}">

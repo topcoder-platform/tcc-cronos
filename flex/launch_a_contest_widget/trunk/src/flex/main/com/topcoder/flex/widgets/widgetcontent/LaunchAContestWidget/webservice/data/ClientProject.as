@@ -18,5 +18,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.
         public var childProjects:Array;
         public var parentProjectId:Number;
 
+
     }
 }
