@@ -503,7 +503,7 @@
     						trace("Prizes: " + prizes + ", selectedContestId: " + _selectedContestId);
 							
 							// BUGR-1169: give more priority to savedPrice (db price).
-							if (sub.savedPrice && sub.savedPrice > 0 && sub.markedForPurchase) {
+							if (sub.savedPrice && sub.savedPrice > 0 && (sub.markedForPurchase || sub.paidFor)) {
 							    sub.price=sub.savedPrice;
 							}
 							else {
@@ -1502,7 +1502,7 @@
     				var prizes:ArrayCollection = contestInfo.prizes as ArrayCollection;
     					
 					// if item is getting purchased separately, use the value from db.
-					if (item.savedPrice && item.savedPrice > 0 && item.markedForPurchase) {
+					if (item.savedPrice && item.savedPrice > 0 && (item.markedForPurchase || item.paidFor)) {
 					    item.price = item.savedPrice;
 					}
 					else {

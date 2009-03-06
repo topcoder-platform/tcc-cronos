@@ -15,18 +15,13 @@
 				//}
 				if (dta.hasOwnProperty("purchased") && dta.purchased == true) {
 					temp += "Prize: $";
-					if (dta.hasOwnProperty("savedPrice")) {
-						return temp + dta.savedPrice; 
+					if (dta.hasOwnProperty("price")) {
+						return temp + dta.price; 
 					} else {
 					    	return "";
 					}
 				} else {
-					temp += "Cost: $";
-					if (dta.hasOwnProperty("price")) {
-						return temp + dta.price;
-					} else {
-						return "";
-					}
+					return "";
 				}
 			
 			}
