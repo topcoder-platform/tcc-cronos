@@ -4,6 +4,7 @@
     <mx:Script>
 	    <![CDATA[
 	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.UploadedDocument;
+		import com.topcoder.flex.util.editor.*;
 	    	import mx.controls.HRule;
 	    	import mx.controls.Spacer;
 	    	import mx.controls.Label;
@@ -221,11 +222,14 @@
             </mx:HBox>
             <mx:Spacer height="5"/>
             <mx:Label text="Introduction:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
-            <mx:Text id="introInput" width="500" height="50" text="test" styleName="TextStyle"/>
+			<mx:VBox verticalScrollPolicy="auto" width="308" height="50">
+	            <mx:Text id="introInput" width="100%" height="100%" styleName="TextStyle"/>
+            </mx:VBox>
             <mx:Spacer height="5"/>
             <mx:Label text="What are the primary goals for this design?" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
-            <mx:Text id="glsInput" width="500" height="50" text="test" styleName="TextStyle"/>
-
+            <mx:VBox verticalScrollPolicy="auto" width="308" height="50">
+		        <mx:Text id="glsInput" width="100%" height="100%" styleName="TextStyle"/>
+            </mx:VBox>
             <mx:HBox width="100%">
                 <mx:Spacer width="515"/>
                 <mx:Button styleName="EditButton" buttonMode="true" click="goToStep3()"/>

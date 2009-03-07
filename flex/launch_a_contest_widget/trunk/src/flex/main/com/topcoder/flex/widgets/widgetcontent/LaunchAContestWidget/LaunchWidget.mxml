@@ -354,8 +354,8 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    this.height = SPECIFICATIONS_HEIGHT;  // BUGR-1134
                    
                    review.contentTitleStr = details.ctInput.text; // BUGR-1379
-                   review.IntroductionStr = details.introInput.htmlText; // BUGR-1279
-					review.glsInputStr = details.glsInput.htmlText; // BUGR-1279
+                   review.IntroductionStr = competition.contestData.shortSummary; // BUGR-1279
+					review.glsInputStr = competition.contestData.contestDescriptionAndRequirements; // BUGR-1279
 
                   setPreviousStep(step3box);
                    setCurStep(step4box);

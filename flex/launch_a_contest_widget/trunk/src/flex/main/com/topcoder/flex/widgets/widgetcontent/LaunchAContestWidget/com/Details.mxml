@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas 
 	xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
-	xmlns:tc="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.*" 
+	xmlns:tc="com.topcoder.flex.util.editor.*" 
           horizontalScrollPolicy="off" verticalScrollPolicy="off">
     <mx:Script>
 	    <![CDATA[
 	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
-		import com.scuty.RteHtmlParser
+		import com.scuty.RteHtmlParser;
 	    	import mx.events.FlexEvent;
 	    	import com.topcoder.flex.Helper;
 	        import flash.events.MouseEvent;
 	        import mx.containers.Panel;
+		import com.topcoder.flex.util.editor.TCRichTextEditor;
 	        
 	        [Bindable]
 	       	public var mainWidget:LaunchWidget;
@@ -55,16 +56,9 @@
 	        		return false;
 	        	}
 	        	
-
 	        	this.mainWidget.competition.contestData.name = ctInput.text; // BUGR-1379
-
-			parser.ParseToHTML(introInput.htmlText);
-			var htmlIntroInput:String = parser.StringFormat;
-	        	this.mainWidget.competition.contestData.shortSummary = htmlIntroInput; //introInput.htmlText; // BUGR-1379
-
-			parser.ParseToHTML(glsInput.htmlText);
-			var htmlglsInput:String = parser.StringFormat;
-	        	this.mainWidget.competition.contestData.contestDescriptionAndRequirements = htmlglsInput; //glsInput.htmlText; // BUGR-1379
+	        	this.mainWidget.competition.contestData.shortSummary = introInput.htmlText; // BUGR-1379
+	        	this.mainWidget.competition.contestData.contestDescriptionAndRequirements = glsInput.htmlText; // BUGR-1379
 	        	
 	        	return true;
 	        }
@@ -156,7 +150,7 @@
         <mx:VBox width="100%" verticalGap="0">
 	        <mx:HBox >
 	            <mx:Label text="Introduction:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
-	            <mx:Spacer width="305"/>
+	            <mx:Spacer width="308"/> <!-- BUGR-1279 -->
 	            <mx:LinkButton label="[+ show hint]" click="showIntroductionHint(event)"/>
 	        </mx:HBox>
 	        <mx:Text id="introHint" styleName="TextSyle" height="0" color="0x888888" width="500" visible="false">
@@ -169,7 +163,7 @@
         <mx:VBox width="100%" verticalGap="0">
             <mx:HBox  width="500">
                 <mx:Label text="Detailed Description:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
-                <mx:Spacer width="136"/>
+                <mx:Spacer width="308"/> <!-- BUGR-1279 -->
                 <mx:LinkButton label="[+ show hint]" click="showGoalsHint(event)" />
             </mx:HBox>
             <mx:Text id="goalsHint" styleName="TextSyle" height="0" color="0x888888" width="500" visible="false">
