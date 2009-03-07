@@ -117,7 +117,7 @@
 	<property name="db_connection_factory.path" value="db_connection_factory/${db_connection_factory.version}"/>
 	<property name="db_connection_factory.jar" value="${tcs_libdir}/${db_connection_factory.path}/${db_connection_factory.jar.name}"/>
 
-	<property name="project_phases.version" value="2.0"/>
+	<property name="project_phases.version" value="2.0.1"/>
 	<property name="project_phases.jar.name" value="project_phases.jar"/>
 	<property name="project_phases.path" value="project_phases/${project_phases.version}"/>
 	<property name="project_phases.jar" value="${tcs_libdir}/${project_phases.path}/${project_phases.jar.name}"/>
