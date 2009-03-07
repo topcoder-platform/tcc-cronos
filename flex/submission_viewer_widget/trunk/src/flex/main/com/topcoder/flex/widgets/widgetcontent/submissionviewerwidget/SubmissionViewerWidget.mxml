@@ -47,7 +47,7 @@
                 import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.CompletedContestData;
     		
     		import mx.managers.PopUpManager;
-    		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ProgressWindow;
+    		import com.topcoder.flex.util.progress.ProgressWindow;
     		
     		import mx.rpc.AbstractOperation;
 
@@ -195,6 +195,9 @@
             	_completedContestTypeId = 8;
             	_noWinnerChosenContestTypeId = 7;
             	_inDangerContestTypeId = 10;
+            	
+            	// BUGR-1393
+            	showLoadingProgress();
             	
             	if (!_isLocalTesting) {
 	                var header:SOAPHeader=getHeader(username,password);
@@ -368,6 +371,9 @@
                return ObjectUtil.stringCompare(a.name,b.name,true);
             }
             private function handleResult(event:ResultEvent=null):void {
+                // BUGR-1393
+                hideLoadingProgress();
+                
                 _contestInfoList = new ArrayCollection();
                 if(event!=null && event.result!=null)
                 {
@@ -435,6 +441,8 @@
             }
             
             private function handleStatusList(event:ResultEvent=null):void {
+                hideLoadingProgress();
+                
                 if(event!=null && event.result!=null)
                 {
                 	for each(var item:* in event.result as ArrayCollection)
@@ -445,6 +453,7 @@
             }
             
             private function handleSubResult(event:ResultEvent=null):void {
+                hideLoadingProgress();
                 
                 // clear rank list first.
                 _rankList.removeAll();
@@ -583,10 +592,12 @@
             }
             
             private function handleFail(event:FaultEvent):void {
+                hideLoadingProgress();
                 handleResult();
             }
             
             private function handleSubFail(event:FaultEvent):void {
+                hideLoadingProgress();
                 handleSubResult();
             }
             
@@ -1145,6 +1156,9 @@
 						ContestServiceFacadeBean.clearHeaders();
 		        		ContestServiceFacadeBean.addHeader(header);
 		        		ContestServiceFacadeBean.retrieveSubmissionsForContest.send();
+		        		
+		        		// BUGR-1393
+		        		showLoadingProgress();
 	                 }
 	                 else {
 						//retrieveSubService.send();
@@ -1279,11 +1293,8 @@
             
             private function handleProcessSubmissionCreditCardPayment(event:ResultEvent):void
             {
-                if(p)
-    			{
-    				PopUpManager.removePopUp(p);
-            		p=null;
-    			}
+                // BUGR-1393
+                hideLoadingProgress();
     			
             	Helper.showAlertMessage("Process submission payment successfully!!");
             	if (event && event.result) {
@@ -1298,11 +1309,8 @@
 
             private function handleProcessSubmissionPurchaseOrderPayment(event:ResultEvent):void
             {
-                if(p)
-    			{
-    				PopUpManager.removePopUp(p);
-            		p=null;
-    			}
+                // BUGR-1393
+                hideLoadingProgress();
     			
             	Helper.showAlertMessage("Process submission payment successfully!!");
             	if (event && event.result) {
@@ -1400,6 +1408,14 @@
 		                ContestServiceFacadeBean.processSubmissionPurchaseOrderPayment(completedContestData, purchaseOrderPaymentData);
         			}
         			
+        			// BUGR-1393
+        			showLoadingProgress();
+            	}
+            }
+            
+            // BUGR-1393
+            private function showLoadingProgress():void {
+                if (p == null) {
         			p=ProgressWindow(PopUpManager.createPopUp((DisplayObject)(
 														this.parentApplication),ProgressWindow, true));;
         	
@@ -1407,12 +1423,18 @@
             	}
             }
             
-            private function paymentFaultEventHandler(e:FaultEvent):void {
+            // BUGR-1393
+            private function hideLoadingProgress():void {
                 if(p)
     			{
     				PopUpManager.removePopUp(p);
             		p=null;
-    			}
+    			}    
+            }
+            
+            private function paymentFaultEventHandler(e:FaultEvent):void {
+                // BUGR-1393
+                hideLoadingProgress();
     			
                 Helper.showAlertMessage("We're sorry. Your payment could not be processed. " + 
                         "Please be sure to save your work and try again if you think you received this message by mistake.");        
@@ -1697,7 +1719,7 @@
 
 	<mx:operation name="getClientProjectsByUser" 
 		resultFormat="object" 
-		fault="Helper.showAlertMessage('SUB-Viewer::getClientProjectsByUser: ' + event.fault.faultString);"> 
+		fault="hideLoadingProgress(); Helper.showAlertMessage('SUB-Viewer::getClientProjectsByUser: ' + event.fault.faultString);"> 
 	</mx:operation>
 	
 </mx:WebService>      
@@ -1707,19 +1729,19 @@
 	<mx:operation name="getContestDataOnly" 
 		resultFormat="object" 
 		result="handleResult(event)"
-		fault="Helper.showAlertMessage('getContestDataOnly: ' + event.fault.faultString);"> 
+		fault="hideLoadingProgress(); Helper.showAlertMessage('getContestDataOnly: ' + event.fault.faultString);"> 
 	</mx:operation>
 		
 	<mx:operation name="getStatusList" 
 		resultFormat="object" 
 		result="handleStatusList(event)"
-		fault="Helper.showAlertMessage('getStatusList: ' + event.fault.faultString);"> 
+		fault="hideLoadingProgress(); Helper.showAlertMessage('getStatusList: ' + event.fault.faultString);"> 
 	</mx:operation>
 
 	<mx:operation name="getContestDataOnlyByPID" 
 		resultFormat="object" 
 		result="handleResult(event)"
-		fault="Helper.showAlertMessage('getContestDataOnlyByPID: ' + event.fault.faultString);"> 
+		fault="hideLoadingProgress(); Helper.showAlertMessage('getContestDataOnlyByPID: ' + event.fault.faultString);"> 
 		<mx:request>
 	<arg0>{pid}</arg0>
 	</mx:request> 
@@ -1728,7 +1750,7 @@
 	<mx:operation name="retrieveSubmissionsForContest" 
 		resultFormat="object" 
 		result="handleSubResult(event)"
-		fault="Helper.showAlertMessage('retrieveSubmissionsForContest: ' + event.fault.faultString);"> 
+		fault="hideLoadingProgress(); Helper.showAlertMessage('retrieveSubmissionsForContest: ' + event.fault.faultString);"> 
 		<mx:request>
 			<arg0>{_selectedContestId}</arg0>
 		</mx:request>
