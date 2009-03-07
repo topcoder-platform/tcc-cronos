@@ -107,6 +107,16 @@ public class FullProjectData extends com.topcoder.project.phases.Project impleme
         this.technologies = new String[0];
     }
 
+
+	/**
+     * <p>
+     * Constructs an instance of this class with given startDate and workdays.
+     * </p>
+     */
+    public FullProjectData() {
+
+    }
+
     /**
      * <p>
      * This is the full constructor of this class.
