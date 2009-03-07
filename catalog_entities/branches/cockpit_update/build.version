@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Catalog Entities
+component.distfilename=catalog_entities
+component.package=com.topcoder.catalog.entity
+component.packagedir=com/topcoder/catalog/entity
+component.version.major=1
+component.version.minor=2
+component.version.micro=0
+component.version.build=BUGR-15,BUGR-78,BUGR-79,BUGR-110
