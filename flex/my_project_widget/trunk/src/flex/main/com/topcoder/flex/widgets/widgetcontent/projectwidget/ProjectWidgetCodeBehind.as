@@ -13,6 +13,12 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
     import mx.containers.Panel;
     import mx.rpc.soap.WebService;
     import mx.core.Application;
+    
+    // BUGR-1393
+    import mx.managers.PopUpManager;
+	import com.topcoder.flex.util.progress.ProgressWindow;
+	import flash.display.DisplayObject;
+    	
     /**
      * <p>
      * This is the code behind script part for the project widget. It implements the IWidget interface.
@@ -68,6 +74,9 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
          * The allowclose flag.
          */
         private var _allowclose:Boolean=true;
+        
+        // BUGR-1393
+        private var p:ProgressWindow=null;
         
         /**
          * ProjectWidgetCodeBehind constructor.
@@ -131,6 +140,7 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         
         public function loadData():void
         {
+            showLoadingProgress();
         	if(pid)
         	{
         		ContestServiceFacadeBean.clearHeaders();
@@ -364,5 +374,24 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         	}
         	return _container;
        }
+       
+       // BUGR-1393
+        public function showLoadingProgress():void {
+            if (p == null) {
+    			p=ProgressWindow(PopUpManager.createPopUp((DisplayObject)(
+													this.parentApplication),ProgressWindow, true));;
+    	
+                PopUpManager.centerPopUp(p);
+            }
+        }
+        
+        // BUGR-1393
+        public function hideLoadingProgress():void {
+            if(p)
+			{
+				PopUpManager.removePopUp(p);
+        		p=null;
+			}    
+        }
     }
 }
