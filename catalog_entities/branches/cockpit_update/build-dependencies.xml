@@ -10,14 +10,14 @@
     <property name="id_generator.jar" value="${tcs_libdir}/id_generator/3.0/id_generator.jar"/>
            
     <!-- define 3rd party dependencies -->
-    <property name="jboss.dir" value="${ext_libdir}/jboss/4.2.0.GA/server/default/lib"/>
+    <property name="jboss.dir" value="${jboss.home}/server/${server.name}/lib"/>
       <path id="jboss.classpath">
       <fileset dir="${jboss.dir}">
           <include name="*.jar" />
       </fileset>
       </path>
       
-      <property name="jbossall-client.jar" value="${ext_libdir}/jboss/4.2.0.GA/client/jbossall-client.jar"/>
+      <property name="jbossall-client.jar" value="${jboss.home}/client/jbossall-client.jar"/>
       
       <property name="mockejb_dir" value="${ext_libdir}/mockejb/0.6"/>
       <property name="cglib.jar" value="${mockejb_dir}/cglib-full-2.0-RC2.jar"/>
