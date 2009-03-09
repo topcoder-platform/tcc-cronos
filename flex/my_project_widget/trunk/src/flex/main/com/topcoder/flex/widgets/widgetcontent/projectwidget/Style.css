@@ -12,6 +12,12 @@
 	advancedAntiAliasing: true;
 }
 
+.editBtn
+{
+	up-skin: Embed("../assets/image/EditButton_Up.png");
+	over-skin: Embed("../assets/image/EditButton_Up.png");
+	down-skin: Embed("../assets/image/EditButton_Up.png");
+}
 .bottomAlign {
 	vertical-align: bottom;
 	horizontal-align: center;
