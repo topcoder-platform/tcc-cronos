@@ -30,6 +30,7 @@
 	    import mx.core.Application;
             import mx.core.Container;
             import flash.system.Security;
+            import mx.controls.ButtonLabelPlacement;
 
             
         
@@ -2112,7 +2113,7 @@
 	                <mx:HRule width="100%" strokeColor="#DBDBDB" />
 	                <mx:HBox width="100%" horizontalAlign="center" paddingTop="10" paddingBottom="4" paddingRight="4"> 
 	                    <!--<mx:Button id="save_contestViewer_btn" label="save as draft" styleName="ButtonStyle" click="saveContestAsDraft()" /> -->
-	                    <mx:Button id="continue_contestViewer_btn" buttonMode="true" label="CONTINUE" styleName="ButtonStyle" click="continueFromContestViewer()" />
+	                    <mx:Button id="continue_contestViewer_btn" buttonMode="true" label="CONTINUE" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" click="continueFromContestViewer()" />
 	                </mx:HBox>
 	            </mx:VBox>
         		<mx:VBox id="abandonConfirmationScreen" paddingTop="22" verticalGap="7" width="100%" >
@@ -2139,8 +2140,8 @@
 	                    		text="Taking no action at all would be an 'abandonment' of the competition, which also would be indicated in your public profile. Multiple contest abandonments will result in a cancellation of your account." />
         			</mx:VBox>
         			<mx:HBox horizontalAlign="center" width="100%" paddingTop="35">
-        				<mx:Button buttonMode="true" styleName="ButtonStyle" label="Select a Winner" click="gotoImageViewer()" />
-        				<mx:Button buttonMode="true" styleName="ButtonStyle" label="Do Not Choose a Winner" click="gotoAbandonScreen(abandonedScreen_1)" />
+        				<mx:Button buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="Select a Winner" click="gotoImageViewer()" />
+        				<mx:Button buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="Do Not Choose a Winner" click="gotoAbandonScreen(abandonedScreen_1)" />
         			</mx:HBox>
                 </mx:VBox>
                 <mx:VBox id="abandonedScreen_1" paddingTop="22" verticalGap="7" width="100%" >
@@ -2158,8 +2159,8 @@
 	     				<mx:TextArea paddingTop="9" width="90%" height="158" />
         			</mx:VBox>
         			<mx:HBox horizontalAlign="center" width="100%" paddingTop="35">
-        				<mx:Button buttonMode="true" styleName="ButtonStyle" label="Select a Winner" click="gotoImageViewer()"  />
-        				<mx:Button buttonMode="true" styleName="ButtonStyle" label="Continue >>" click="gotoAbandonScreen(abandonedScreen_2)" />
+        				<mx:Button buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="Select a Winner" click="gotoImageViewer()"  />
+        				<mx:Button buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="Continue >>" click="gotoAbandonScreen(abandonedScreen_2)" />
         			</mx:HBox>
                 </mx:VBox>
                 <mx:VBox id="abandonedScreen_2" paddingTop="22" verticalGap="7" width="100%" >
@@ -2226,9 +2227,9 @@
                 height="460"/>
         <mx:Spacer height="100%" />
         <mx:HBox width="100%">
-        	<mx:Button buttonMode="true" styleName="ButtonStyle" label="Modify Selections" click="gotoContestViewer()" />
+        	<mx:Button buttonMode="true" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}" label="Modify Selections" click="gotoContestViewer()" />
         	<mx:Spacer width="100%" />
-        	<mx:Button buttonMode="true" styleName="ButtonStyle" label="Checkout" click="continueToSubmissionCheckoutScreen()" />
+        	<mx:Button buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="Checkout" click="continueToSubmissionCheckoutScreen()" />
         </mx:HBox>
 	</mx:VBox>
 	<mx:VBox id="submissionCheckoutScreen" width="100%" height="100%" paddingTop="10" paddingBottom="25" paddingLeft="15" paddingRight="15">
@@ -2240,21 +2241,21 @@
 			<mx:VBox width="100%" height="100%">
 				<tc:PaymentWF id="wf1" width="100%" height="100%"  clientProjectNames="{_clientProjectNames}"/>
 				<mx:HBox width="100%">
-					<mx:Button buttonMode="true" styleName="ButtonStyle" label="Add/Modify Selections" click="gotoContestViewer()" />
+					<mx:Button buttonMode="true" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}" label="Add/Modify Selections" click="gotoContestViewer()" />
 					<mx:Spacer width="100%" />
-					<mx:Button buttonMode="true" styleName="ButtonStyle" label="Confirm Order" click="gotoPurchase()" />
+					<mx:Button buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="Confirm Order" click="gotoPurchase()" />
 				</mx:HBox>
 			</mx:VBox>
 			<mx:VBox width="100%" height="100%">
 				<tc:PaymentWFCf id="wf2" paddingRight="6" />
 				<mx:HBox width="100%" horizontalAlign="right">
-					<mx:Button buttonMode="true" id="sub1" styleName="ButtonStyle" label="Submit Purchase" click="gotoPurchase()" />
+					<mx:Button buttonMode="true" id="sub1" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="Submit Purchase" click="gotoPurchase()" />
 				</mx:HBox>
 			</mx:VBox>
 			<mx:VBox width="100%" height="100%">
 				<tc:PaymentWFCfPO id="wf3" paddingRight="6" />
 				<mx:HBox width="100%" horizontalAlign="right">
-					<mx:Button buttonMode="true" id="sub2" styleName="ButtonStyle" label="Submit Purchase" click="gotoPurchase()" />
+					<mx:Button buttonMode="true" id="sub2" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="Submit Purchase" click="gotoPurchase()" />
 				</mx:HBox>
 			</mx:VBox>
 		</mx:ViewStack>
@@ -2284,7 +2285,7 @@
             allowMultipleSelection="false" 
             allowDragSelection="false"/>
         <mx:HBox width="100%">
-        	<mx:Button buttonMode="true" label="BACK" styleName="ButtonStyle" click="gotoContestViewer()" />
+        	<mx:Button buttonMode="true" labelPlacement="{ButtonLabelPlacement.RIGHT}" label="BACK" styleName="arrowLeftBtnStyle" click="gotoContestViewer()" />
         </mx:HBox>
 	</mx:VBox>    	
 </mx:ViewStack>

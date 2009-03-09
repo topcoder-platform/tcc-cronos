@@ -264,3 +264,27 @@ LinkButton
     over-skin: Embed("../assets/btn_bottom_arrow_hover.png");
     down-skin: Embed("../assets/btn_bottom_arrow_hover.png");    
 }
+
+/*BUGR-1089 */
+.arrowRightBtnStyle{
+    icon: Embed(source="../assets/arrow_right_icon.png");
+    fillColors: #ffffff, #bbbbbb, #ffffff, #bbbbbb;
+    themeColor: #bbbbbb;
+    color: #666666;
+    textRollOverColor: #000000;
+    textSelectedColor: #000000;
+    fontFamily: Arial;
+    fontSize: 11;
+    fontWeight: bold;
+}
+.arrowLeftBtnStyle{
+    icon: Embed(source="../assets/arrow_left_icon.png");
+    fillColors: #ffffff, #bbbbbb, #ffffff, #bbbbbb;
+    themeColor: #bbbbbb;
+    color: #666666;
+    textRollOverColor: #000000;
+    textSelectedColor: #000000;
+    fontFamily: Arial;
+    fontSize: 11;
+    fontWeight: bold;
+}
