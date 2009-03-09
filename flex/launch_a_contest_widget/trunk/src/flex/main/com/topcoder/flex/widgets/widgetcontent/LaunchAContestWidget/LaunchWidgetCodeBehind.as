@@ -28,6 +28,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import mx.rpc.events.ResultEvent;
     import mx.rpc.soap.mxml.WebService;
     import mx.rpc.xml.SchemaTypeRegistry;
+    import mx.events.FlexEvent;
 
     /**
      * <p>
@@ -83,6 +84,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     	private var _allowclose:Boolean=true;
     	
     	private var _maximized:Boolean=false;
+    	
+    	[Bindable] private var _emptyStart:Boolean = true;
         
         /**
          * The data for the widget.
@@ -139,6 +142,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             this._result = value;
         }
         
+        [Bindable]public function get emptyStart():Boolean {
+            return this._emptyStart;
+        }
+        
+        public function set emptyStart(value:Boolean):void {
+            this._emptyStart = value;
+        }
+        
         /**
          * The active contents.
          */
@@ -166,6 +177,8 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             }
             var f:IWidgetFramework=widgetFramework;
         	container.contents=new  LaunchWidget();
+        	(container.contents as LaunchWidget).openOverViewPage();
+        	
         	container.contents.widgetFramework=f;
         	container.contents.name=name;
         	container.startRestore();
@@ -327,7 +340,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         	if(map["contestid"])
         	{
         		contestid=map["contestid"];
+        		resetWidget();
         		trace("@@@@ To get contest for: " + contestid); 
+        		_emptyStart = false;
         		var getContestOp:AbstractOperation = _csws.getOperation("getContest");
                 getContestOp.addEventListener("result", getContestHandler);
                 getContestOp.send(parseInt(contestid));
@@ -339,10 +354,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             trace("getContestHandler: " + e + ", " + e.result);
         	if(e && e.result)
         	{
-        		resetWidget();
         		var c:StudioCompetition = ObjectTranslatorUtils.translate(e.result, StudioCompetition) as StudioCompetition;
             	trace("getContestHandler:: c: " + c);
         		(container.contents as LaunchWidget).competition=c;
+        		(container.contents as LaunchWidget).currentState = "ContestSelectionState";
+        		(container.contents as LaunchWidget).onCreateComplete(2);
+				
+				//_framework.openWidget("Launch Contests","Launch Contest");
         	}
         }
         

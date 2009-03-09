@@ -96,6 +96,7 @@
         	return _tcDirectProjectId;
         }
 	    private function initWidget():void{
+			this.currentState = "ContestSelectionState";
 		getDataService();
            }
 
@@ -131,10 +132,10 @@
             
             
             
-            private function initComponent():void {
+            public function initComponent():void {
             	// modified lines below for BUGR-1134
 
-                this.currentState = "ContestSelectionState";
+
                 this.height = 480;
                 
                 mainPanel.horizontalScrollPolicy = "false";
@@ -196,11 +197,10 @@
             }
             
             private var flag:int=0;
-            private function onCreateComplete(f:int):void
+            public function onCreateComplete(f:int):void
             {
             	flag=flag+f;
-            	
-            	if(flag==3 && competition && competition.competitionId>0)
+            	if(flag>=3 && competition && competition.competitionId>0)
             	{
             		flag=4;
             		//var type:CompetionType = new CompetionType();
@@ -297,8 +297,17 @@ Specific limitations (such as restricting a color or a specific layout style) an
                 attch.FileDescHint = configurableText.steps.details.fields.field.(@name == "File Description").hint;
             }
             
+			public function openOverViewPage():void {
+				   this.currentState = "OverViewState";
+                   save.visible = false;
+                   this.height = OVERVIEW_HEIGHT;  // BUGR-1134
+                   back.visible = true;
+                   
+                   setPreviousStep(step1box); // BUGR-1141
+                   setCurStep(step2box);// BUGR-1141
+			}
             
-            private function next(event:EffectEvent = null):void {
+            public function next(event:EffectEvent = null):void {
                 if (this.currentState == "ContestSelectionState"){
                     if (contestSelect.contestType.selectedValue == null) {
                         Helper.showAlertMessage("Please select a contest type!");
@@ -355,7 +364,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    
                    review.contentTitleStr = details.ctInput.text; // BUGR-1379
                    review.IntroductionStr = competition.contestData.shortSummary; // BUGR-1279
-					review.glsInputStr = competition.contestData.contestDescriptionAndRequirements; // BUGR-1279
+		   review.glsInputStr = competition.contestData.contestDescriptionAndRequirements; // BUGR-1279
 
                   setPreviousStep(step3box);
                    setCurStep(step4box);
