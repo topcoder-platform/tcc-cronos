@@ -29,7 +29,7 @@
           import mx.formatters.DateFormatter;
           import mx.rpc.events.ResultEvent;
           [Bindable]
-          private var contestList=["Studio","Conceptualization","Specification","Software Architecture","Component Design","Component Development","Software Assembly","Software Testing"];
+          private var contestList : Array = ["Studio","Conceptualization","Specification","Software Architecture","Component Design","Component Development","Software Assembly","Software Testing"];
 
           // Skins
           [Bindable]
@@ -214,7 +214,7 @@
   <mx:Label text="Contest Type :" left="40" top="11"
                         styleName="normalText" paddingTop="0" paddingBottom="0" />
     <mx:ComboBox id="contestCombo" left="195" width="272" top="9" styleName="ComboBoxStyle"
-                        valueCommit="handleContest()" fontFamily="Arial" fontSize="11"
+                        valueCommit="handleContest()" 
                         labelField="name"  dataProvider="{contestList}" />
     </mx:Canvas>
 
