@@ -178,16 +178,16 @@
          ]]>
     </mx:Script>
     <mx:VBox paddingLeft="2" width="100%" height="100%">
-    	<mx:VBox width="100%" styleName="boxStyle">
+    	<mx:VBox width="100%" styleName="boxStyle" >
     		
 	    	<mx:VBox width="100%">
 			<mx:HBox horizontalAlign="right" width="100%">
-				<mx:Label text="Contest Specifications" fontWeight="bold" fontSize="11" fontFamily="Arial" width="80%"/>
+				<mx:Label text="Contest Specifications" fontWeight="bold" width="80%"/>
 				<mx:Spacer width="100" />	
 				<mx:LinkButton baseline="middle" styleName="linkBtn" label="Preview Contest" click="this.mainWidget.previewContest()" />
 				    <mx:Image source="@Embed('../../assets/more_info.png')"/>
 			</mx:HBox>
-		        <mx:Text styleName="TextStyle" width="100%" id="contestSpecf">
+		        <mx:Text width="100%" id="contestSpecf">
 		            <mx:text>
 		                Do you have any requirements, preferences or restrictions regarding the following design elements?
 		            </mx:text>
@@ -195,81 +195,81 @@
 		        <mx:Spacer height="5"/>
 		        <mx:VBox width="100%" verticalGap="0">
 		            <mx:HBox width="500">
-		                <mx:Label text="Colors:" fontWeight="bold" styleName="TextStyle"/>
+		                <mx:Label text="Colors:" fontWeight="bold" />
 		                <mx:Spacer width="340"/>
 		                <mx:LinkButton label="[+ show hint]" click="showColorHint(event)" />
 		            </mx:HBox>
-		            <mx:Text styleName="TextStyle" id="colorHint" color="0x888888" width="500" height="0" visible="false">
+		            <mx:Text id="colorHint" color="0x888888" width="500" height="0" visible="false">
 		                <mx:text>
 		                </mx:text>
 		            </mx:Text>
-		            <mx:TextArea styleName="TextStyle" id="colorInput" width="500" height="50"/>
+		            <mx:TextArea id="colorInput" width="500" height="50"/>
 		        </mx:VBox>
 		     </mx:VBox>
 	        
 	        <mx:Spacer height="5"/>
 	        <mx:VBox width="100%" verticalGap="0" >
 	            <mx:HBox width="500">
-	                <mx:Label text="Fonts:" fontWeight="bold" styleName="TextStyle"/>
+	                <mx:Label text="Fonts:" fontWeight="bold"/>
 	                <mx:Spacer width="347"/>
 	                <mx:LinkButton label="[+ show hint]" click="showFontsHint(event)" />
 	            </mx:HBox>
-	            <mx:Text styleName="TextStyle" id="fontsHint" color="0x888888" width="500" height="0" visible="false">
+	            <mx:Text id="fontsHint" color="0x888888" width="500" height="0" visible="false">
 	                <mx:text>
 	                </mx:text>
 	            </mx:Text>
-	            <mx:TextArea styleName="TextStyle" id="fontInput" width="500" height="50"/>
+	            <mx:TextArea id="fontInput" width="500" height="50"/>
 	        </mx:VBox>
 	        <mx:Spacer height="5"/>
 	        <mx:VBox width="100%" verticalGap="0">
 	            <mx:HBox width="500">
-	                <mx:Label text="Size:" fontWeight="bold" styleName="TextStyle"/>
+	                <mx:Label text="Size:" fontWeight="bold"/>
 	                <mx:Spacer width="356"/>
 	                <mx:LinkButton label="[+ show hint]" click="showSizeHint(event)" />
 	            </mx:HBox>
-	            <mx:Text styleName="TextStyle" id="sizeHint" color="0x888888" width="500" height="0" visible="false">
+	            <mx:Text id="sizeHint" color="0x888888" width="500" height="0" visible="false">
 	                <mx:text>
 	                </mx:text>
 	            </mx:Text>
-	            <mx:TextArea styleName="TextStyle" id="sizeInput" width="500" height="50"/>
+	            <mx:TextArea id="sizeInput" width="500" height="50"/>
 	        </mx:VBox>
 	        <mx:Spacer height="5"/>
 	        <mx:VBox width="100%" verticalGap="0">
 	            <mx:HBox width="500">
-	                <mx:Label text="Additional Requirements or Restrictions:" fontWeight="bold" styleName="TextStyle"/>
+	                <mx:Label text="Additional Requirements or Restrictions:" fontWeight="bold"/>
 	                <mx:Spacer width="151"/>
 	                <mx:LinkButton label="[+ show hint]" click="showAddReqHint(event)" />
 	            </mx:HBox>
-	            <mx:Text styleName="TextStyle" id="addReqHint" color="0x888888" width="500" height="0" visible="false">
+	            <mx:Text id="addReqHint" color="0x888888" width="500" height="0" visible="false">
 	                <mx:text>
 	                </mx:text>
 	            </mx:Text>
-	            <mx:TextArea styleName="TextStyle" id="addReInput" width="500" height="50"/>
+	            <mx:TextArea id="addReInput" width="500" height="50"/>
 	        </mx:VBox>
 	    </mx:VBox>
-	    <mx:VBox width="100%" styleName="boxStyle">
+	    <mx:VBox width="100%" styleName="boxStyle" >
 		    	
-		    <mx:Label text="Final File Formats" fontWeight="bold" styleName="TextStyle"/>
+		    <mx:Label text="Final File Formats" fontWeight="bold" />
 	       		    <mx:HBox horizontalGap="0" verticalGap="0" width="100%">
-			    <mx:Label styleName="TextStyle" baseline="middle" text="If you are unsure what type of file you will need, please feel free to"/>
+			    <mx:Label baseline="middle" text="If you are unsure what type of file you will need, please feel free to"/>
 		    	<mx:LinkButton baseline="middle" styleName="linkBtn" label="post a question in the forums" click="{navigateToURL(new URLRequest('http://studio.topcoder.com/forums?module=ThreadList&amp;forumID=6'), '_blank');}" />
 		    	<mx:Image source="@Embed('../../assets/more_info.png')"/>
-		    	<mx:Label styleName="TextStyle" text="The members will be happy to help you." /> 
+		    	<mx:Label text="The members will be happy to help you." /> 
 		    </mx:HBox>
-		    <mx:Text styleName="TextStyle" htmlText="You can also email &lt;b>directassist@topcoder.com.&lt;/b>" />
-	        <mx:Text styleName="TextStyle" width="100%" text="For your chosen contest type - {mainWidget.overView.studioType.selection.label} - the most common final file formats are:" />
+		    <mx:Text htmlText="You can also email &lt;b>directassist@topcoder.com.&lt;/b>" />
+	        <mx:Text width="100%" text="For your chosen contest type - {mainWidget.overView.studioType.selection.label} - the most common final file formats are:" />
 	        <mx:VBox width="100%" paddingLeft="10">
 	        	<mx:VBox id="fileFormatsBox">
 		        	
 	        	</mx:VBox>
 		        <mx:Spacer height="5"/>
-		        <mx:Label styleName="TextStyle" text="Other File Formats:" fontWeight="bold"/>
-		        <mx:Text styleName="TextStyle" id="otherFileFormats" color="0x888888" width="100%">
+		        <mx:Label text="Other File Formats:" fontWeight="bold"/>
+		        <mx:Text id="otherFileFormats" color="0x888888" width="100%">
 	                <mx:text>
 	                    Please list any other file formats you may need that is not listed above.
 	                </mx:text>
 	            </mx:Text>
-	            <mx:TextArea styleName="TextStyle" id="fileFormatInput" width="480" height="50"/>
+	            <mx:TextArea id="fileFormatInput" width="480" height="50"/>
 	        </mx:VBox>
          </mx:VBox>
     </mx:VBox>

@@ -220,47 +220,47 @@
     	</mx:HBox>
     	<mx:HBox width="100%" height="100%" paddingLeft="30">
     	    <mx:VBox width="35%" height="100%" paddingRight="15">
-        	    <mx:Label styleName="TextSyle" text="Contest Selection" fontWeight="bold" fontSize="12"/>
-        	    <mx:Label styleName="TextSyle" text="What Type of Contest do you want to run?" />
+        	    <mx:Label text="Contest Selection" fontWeight="bold" />
+        	    <mx:Label text="What Type of Contest do you want to run?" />
         	    <mx:RadioButtonGroup id="contestType" itemClick="handleSelect(event);" />
         	    <mx:VBox width="100%" height="100%">
         	    	<mx:VBox width="100%" >
-        	    			<mx:RadioButton fontFamily="Arial" fontWeight="bold" fontSize="11" groupName="contestType" id="studio" label="Studio" value="STUDIO"  selected="true" paddingBottom="0"/>
-	    			<mx:Text styleName="TextSyle" width="100%" text="Graphic and web design contests." paddingTop="-10"/>
+        	    			<mx:RadioButton fontWeight="bold" groupName="contestType" id="studio" label="Studio" value="STUDIO"  selected="true" paddingBottom="0"/>
+	    			<mx:Text width="100%" text="Graphic and web design contests." paddingTop="-10"/>
         	    	</mx:VBox>
         	    </mx:VBox>
         	    <mx:Spacer height="5"/>
         	    <mx:HRule width="100%" />
         	    <mx:Spacer height="5"/>
         	    <mx:VBox width="100%" verticalGap="0">
-        	        <mx:Label text="New Contest Types" fontWeight="bold" fontSize="12"/>
-        	        <mx:Label text="These contest types are coming soon."/>
+        	        <mx:Label text="New Contest Types" fontWeight="bold" />
+        	        <mx:Label text="These contest types are coming soon." />
         	    </mx:VBox>
         	    <mx:Spacer height="15"/>
-        	    <mx:Label styleName="TextSyle" text="- Specification"/>
-        	    <mx:Label styleName="TextSyle" text="- Component Design"/>
-        	    <mx:Label styleName="TextSyle" text="- Component Development"/>
-                <mx:Label styleName="TextSyle" text="- Testing"/>
-                <mx:Label styleName="TextSyle" text="- Architecture"/>
-                <mx:Label styleName="TextSyle" text="- Mod Dash"/>
-                <mx:Label styleName="TextSyle" text="- Assembly"/>
+        	    <mx:Label text="- Specification"/>
+        	    <mx:Label text="- Component Design"/>
+        	    <mx:Label text="- Component Development"/>
+                <mx:Label text="- Testing"/>
+                <mx:Label text="- Architecture"/>
+                <mx:Label text="- Mod Dash"/>
+                <mx:Label text="- Assembly"/>
     	    </mx:VBox>
     	    <mx:VRule height="100%"/>
     	    <mx:VBox width="65%" height="100%" paddingLeft="15">
-                <mx:Label text="Projects" styleName="header" fontSize="11" fontWeight="bold"/>
-                <mx:Text width="100%" styleName="TextSyle" >
+                <mx:Label text="Projects" styleName="header" />
+                <mx:Text width="100%" styleName="content" >
                     <mx:text>
                 A project is a way to organize your contests under one overall header and description. Naming the overall project here and giving a brief description will help you manage your contests later. For example, a logo and new website design can both be placed under a project called "New Website".
                     </mx:text>
                 </mx:Text>
                 <mx:HBox width="100%" horizontalGap="0">
-                    <mx:Label text="Select or Create a Project" fontWeight="bold" fontSize="12"/>
+                    <mx:Label text="Select or Create a Project" fontWeight="bold" />
                 </mx:HBox>
                 
                 <mx:HBox width="100%">
                     <mx:Spacer width="42"/>
-                    <mx:Label styleName="TextSyle" text="Add a New Project:"  width="109"/>
-                    <mx:TextInput styleName="TextSyle" id="prjInput" width="308"/>
+                    <mx:Label text="Add a New Project:"  width="109"/>
+                    <mx:TextInput id="prjInput" width="308"/>
                 </mx:HBox>
                 
                 <mx:HBox width="100%" >
@@ -270,17 +270,17 @@
                 
                 <mx:HBox width="100%">
                     <mx:Label text="Choose an Existing Project:" />
-                    <mx:ComboBox id="selectContests"  width="309" styleName="TextSyle" change="selectchange()"/>
+                    <mx:ComboBox id="selectContests" width="309" />
                 </mx:HBox>
                 
                 <mx:HBox width="100%">
-                    <mx:Label styleName="TextSyle" text="Project Description" fontWeight="bold" fontSize="11"/>
+                    <mx:Label text="Project Description" fontWeight="bold" />
                 </mx:HBox>
                 
                 <mx:HBox width="100%">
                     <mx:Spacer width="32"/>
-                    <mx:Text styleName="TextSyle" text="Brief description of the overall project:" height="37" width="117"/>
-                    <mx:TextArea styleName="TextSyle" id="introInput" width="312" height="120"/>
+                    <mx:Text text="Brief description of the overall project:" height="37" width="117"/>
+                    <mx:TextArea id="introInput" width="312" height="120"/>
                 </mx:HBox>
                 <!--
                 <mx:HBox width="100%" >

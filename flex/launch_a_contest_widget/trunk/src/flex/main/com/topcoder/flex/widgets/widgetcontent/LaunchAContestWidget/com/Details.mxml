@@ -118,14 +118,14 @@
 	        }
 	     ]]>
     </mx:Script>
-    <mx:VBox width="100%" styleName="boxStyle">
+    <mx:VBox width="100%" styleName="boxStyle" >
 	<mx:HBox horizontalAlign="right" width="100%">
-		<mx:Label text="Contest Details" fontWeight="bold" fontSize="11" fontFamily="Arial" width="80%"/>
+		<mx:Label text="Contest Details" fontWeight="bold"  width="80%"/>
 		<mx:Spacer width="100" />	
 		<mx:LinkButton baseline="middle" styleName="linkBtn" label="Preview Contest" click="this.mainWidget.previewContest()" />
 		    <mx:Image source="@Embed('../../assets/more_info.png')"/>
 	</mx:HBox>
-        <mx:Text width="100%" id="contestDetails" styleName="TextSyle">
+        <mx:Text width="100%" id="contestDetails" >
             <mx:text>
 				A successful competition begins with comprehensive, thoughtful prep work. Designers need specific information to get their creative
 				juices flowing to produce their best work to meet your needs. A great contest specification allows a designer to feel energized,
@@ -137,11 +137,11 @@
         
         <mx:VBox width="100%" verticalGap="0">
 	        <mx:HBox >
-	            <mx:Label text="Contest Title:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
-	            <mx:TextInput id="ctInput" width="308" maxChars="100" styleName="TextSyle" />
+	            <mx:Label text="Contest Title:" fontWeight="bold" />
+	            <mx:TextInput id="ctInput" width="308" maxChars="100" />
 	            <mx:LinkButton label="[+ show hint]" click="showContentTitleHint(event)" />
 	        </mx:HBox>
-	        <mx:Text id="contentTitleHint" styleName="TextSyle" color="0x888888" width="500" height="0" visible="false">
+	        <mx:Text id="contentTitleHint" color="0x888888" width="500" height="0" visible="false">
 	        </mx:Text>
 	    </mx:VBox>
         
@@ -149,11 +149,11 @@
         
         <mx:VBox width="100%" verticalGap="0">
 	        <mx:HBox >
-	            <mx:Label text="Introduction:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+	            <mx:Label text="Introduction:" fontWeight="bold" />
 	            <mx:Spacer width="308"/> <!-- BUGR-1279 -->
 	            <mx:LinkButton label="[+ show hint]" click="showIntroductionHint(event)"/>
 	        </mx:HBox>
-	        <mx:Text id="introHint" styleName="TextSyle" height="0" color="0x888888" width="500" visible="false">
+	        <mx:Text id="introHint" height="0" color="0x888888" width="500" visible="false">
             </mx:Text>
 	        <tc:TCRichTextEditor id="introInput" width="500" height="150" maxHeight="180" maxWidth="800"/>  <!-- BUGR-1279 -->
         </mx:VBox>
@@ -162,16 +162,14 @@
         
         <mx:VBox width="100%" verticalGap="0">
             <mx:HBox >
-                <mx:Label text="Detailed Description:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
+                <mx:Label text="Detailed Description:" fontWeight="bold"/>
                 <mx:Spacer width="308"/> <!-- BUGR-1279 -->
                 <mx:LinkButton label="[+ show hint]" click="showGoalsHint(event)" />
             </mx:HBox>
-            <mx:Text id="goalsHint" styleName="TextSyle" height="0" color="0x888888" width="500" visible="false">
+            <mx:Text id="goalsHint" height="0" color="0x888888" width="500" visible="false">
             </mx:Text>
             <tc:TCRichTextEditor id="glsInput" width="500" height="150" maxHeight="180" maxWidth="800"/>  <!-- BUGR-1279 -->
         </mx:VBox>
-        
-        
-        
+
     </mx:VBox>
 </mx:Canvas>

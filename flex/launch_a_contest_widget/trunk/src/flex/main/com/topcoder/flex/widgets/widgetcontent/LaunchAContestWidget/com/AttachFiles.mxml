@@ -363,12 +363,12 @@
     </mx:Script>
     <mx:VBox width="100%" height="100%" styleName="boxStyle" >
 	<mx:HBox horizontalAlign="right" width="100%">
-		<mx:Label text="Attach Files" fontWeight="bold" fontSize="11" fontFamily="Arial" width="80%"/>
+		<mx:Label text="Attach Files" fontWeight="bold" width="80%"/>
 		<mx:Spacer width="100" />	
 		<mx:LinkButton baseline="middle" styleName="linkBtn" label="Preview Contest" click="this.mainWidget.previewContest()" />
 		    <mx:Image source="@Embed('../../assets/more_info.png')"/>
 	</mx:HBox>
-        <mx:Text width="100%" id="attachFiles" styleName="TextSyle" >
+        <mx:Text width="100%" id="attachFiles" >
             <mx:htmlText>
             <![CDATA[If you have your logo in vector format, photographs or images, PSD files or any other documents you think will help the competitors, upload them here. <b>**NOTE:</b> If you are trying to provide examples of the other designs that you do not own, provide a link to them in your contest description. <b>Do not upload files you do not own.</b>]]>
            </mx:htmlText>
@@ -382,25 +382,25 @@
 		    
             <mx:VBox width="100%" verticalGap="0">
 	            <mx:HBox >
-	                <mx:Label text="File Description:" fontSize="11" fontFamily="Arial" fontWeight="bold"/>
+	                <mx:Label text="File Description:" fontWeight="bold"/>
 	                <mx:Spacer width="290"/>
 	                <mx:LinkButton label="[+ show hint]" click="showfileDecsHint(event)"/>
 	            </mx:HBox>
-	            <mx:Text id="fileDescHint" styleName="TextSyle" color="0x888888" width="500" height="0" visible="false">
+	            <mx:Text id="fileDescHint" color="0x888888" width="500" height="0" visible="false">
 	                <mx:text>
 	                </mx:text>
 	            </mx:Text>
-	            <mx:TextArea id="fileDescInput" styleName="TextSyle" width="500" height="50" text=""/>
+	            <mx:TextArea id="fileDescInput" width="500" height="50" text=""/>
             </mx:VBox>
             <mx:Spacer height="5"/>
             <mx:HBox >
-                <mx:Label text="File to Upload:" fontSize="11" fontFamily="Arial" fontWeight="bold"/>
-                <mx:TextInput id="fileToUpload" styleName="TextSyle" editable="false" />
+                <mx:Label text="File to Upload:" fontWeight="bold"/>
+                <mx:TextInput id="fileToUpload" editable="false" />
                 <mx:Button id="browse" buttonMode="true" label="Browse" click="browseFile()" styleName="RedButton"/>
             </mx:HBox>
             <mx:VBox paddingLeft="90">
             	<mx:Button id="upload" buttonMode="true" label="Upload File" click="uploadFile()" styleName="RedButton"/>
-            	<mx:Text styleName="TextSyle" text="You may add more files after uploading." color="0x888888"/>
+            	<mx:Text text="You may add more files after uploading." color="0x888888"/>
             </mx:VBox>
         </mx:VBox>
         

@@ -212,12 +212,12 @@
     </mx:Script>
     <mx:VBox width="100%" styleName="boxStyle" height="100%">
 	<mx:HBox horizontalAlign="right" width="100%">
-		<mx:Label text="Set the Contest Schedule" fontWeight="bold" fontSize="11" fontFamily="Arial" width="80%"/>
+		<mx:Label text="Set the Contest Schedule" fontWeight="bold" width="80%"/>
 		<mx:Spacer width="100" />	
 		<mx:LinkButton baseline="middle" styleName="linkBtn" label="Preview Contest" click="this.mainWidget.previewContest()" />
 		    <mx:Image source="@Embed('../../assets/more_info.png')"/>
 	</mx:HBox>
-        <mx:Text width="100%" styleName="TextStyle" id="attachFiles">
+        <mx:Text width="100%" id="attachFiles">
             <mx:htmlText>
 <![CDATA[When scheduling your contest, consider the following: <br>
 -	Complexity. Are you allowing enough time for the members to complete the work with quality results, or will they be rushed?
@@ -231,11 +231,11 @@ Tips:
 ]]>
            </mx:htmlText>
         </mx:Text>
-        <mx:Text styleName="TextStyle" text="For your chosen contest type - {mainWidget.overView.studioType.selection.label} - the suggested timelines are:" />
-        <mx:Label styleName="TextStyle" text="Min Allowable Time: {scheduleTypes.contestType.(@id==curContestType).minTime}"/>
-    	<mx:Label styleName="TextStyle" text="Average Timeframe: {scheduleTypes.contestType.(@id==curContestType).averageTime}"/>
-    	<mx:Label styleName="TextStyle" text="High Complexity: {scheduleTypes.contestType.(@id==curContestType).highComplexity}"/>
-    	<mx:Text styleName="TextStyle">
+        <mx:Text text="For your chosen contest type - {mainWidget.overView.studioType.selection.label} - the suggested timelines are:" />
+        <mx:Label text="Min Allowable Time: {scheduleTypes.contestType.(@id==curContestType).minTime}"/>
+    	<mx:Label text="Average Timeframe: {scheduleTypes.contestType.(@id==curContestType).averageTime}"/>
+    	<mx:Label text="High Complexity: {scheduleTypes.contestType.(@id==curContestType).highComplexity}"/>
+    	<mx:Text>
     		<mx:htmlText>
     			<![CDATA[
 ** NOTE: Your contest will only launch at your selected date and time IF payment has been made. Otherwise, it will launch when payment is received. **    				
@@ -245,45 +245,45 @@ Tips:
         <mx:Spacer height="5"/>
         <mx:VBox paddingLeft="10">
             <mx:HBox verticalAlign="middle">
-                <mx:Label styleName="TextStyle" text="Start Date:" fontWeight="bold"/>
+                <mx:Label text="Start Date:" fontWeight="bold"/>
                 <mx:DateField id="dfStart" yearNavigationEnabled="true" width="116" disabledRanges="{[ {rangeEnd: rangeStartDate} ]}"
                      change="startDateChanged()" open="startDateOpen()" />
                 <mx:Spacer width="10"/>
-                <mx:CheckBox styleName="TextStyle" id="launchCheckBox" label="Launch Immediately" selected="true"/>
+                <mx:CheckBox id="launchCheckBox" label="Launch Immediately" selected="true"/>
             </mx:HBox>
             <mx:HBox verticalAlign="middle">
-                <mx:Label styleName="TextStyle" text="Start Time:" fontWeight="bold"/>
-                <mx:Label styleName="TextStyle" text="Hour:"/>
-                <mx:ComboBox styleName="TextStyle" id="CmbHourStart" width="57" />
-                <mx:Label styleName="TextStyle" text="Minute:"/>
-                <mx:ComboBox styleName="TextStyle" id="CmbMinuteStart" width="57" />
+                <mx:Label text="Start Time:" fontWeight="bold"/>
+                <mx:Label text="Hour:"/>
+                <mx:ComboBox id="CmbHourStart" width="57" />
+                <mx:Label text="Minute:"/>
+                <mx:ComboBox id="CmbMinuteStart" width="57" />
                 <mx:RadioButtonGroup id="AMPMStart" />
-                <mx:RadioButton groupName="AMPMStart" styleName="TextStyle" id="amStart" label="AM" value="AM" selected="true"/>
-                <mx:RadioButton groupName="AMPMStart" styleName="TextStyle" id="pmStart" label="PM" value="PM"/>
-                <mx:Text styleName="TextStyle" id="timezoneStart" text="ET(UMT-5)"/>
+                <mx:RadioButton groupName="AMPMStart" id="amStart" label="AM" value="AM" selected="true"/>
+                <mx:RadioButton groupName="AMPMStart" id="pmStart" label="PM" value="PM"/>
+                <mx:Text id="timezoneStart" text="ET(UMT-5)"/>
             </mx:HBox>
             <mx:Spacer height="5"/>
             <mx:HBox verticalAlign="middle">
-                <mx:Label text="End Date:  " styleName="TextStyle" fontWeight="bold"/>
+                <mx:Label text="End Date:  " fontWeight="bold"/>
                 <mx:DateField id="dfEnd" yearNavigationEnabled="true" width="116" disabledRanges="{[ {rangeEnd: rangeEndDate} ]}" />
             </mx:HBox>
             <mx:HBox verticalAlign="middle">
-                <mx:Label text="End Time:  " styleName="TextStyle" fontWeight="bold"/>
-                <mx:Label text="Hour:" styleName="TextStyle"/>
-                <mx:ComboBox id="CmbHourEnd" styleName="TextStyle" width="57" />
-                <mx:Label text="Minute:" styleName="TextStyle"/>
-                <mx:ComboBox id="CmbMinuteEnd" styleName="TextStyle" width="57" />
+                <mx:Label text="End Time:  " fontWeight="bold"/>
+                <mx:Label text="Hour:" />
+                <mx:ComboBox id="CmbHourEnd" width="57" />
+                <mx:Label text="Minute:" />
+                <mx:ComboBox id="CmbMinuteEnd" width="57" />
                 <mx:RadioButtonGroup id="AMPMEnd" />
-                <mx:RadioButton groupName="AMPMEnd" styleName="TextStyle" id="amEnd" label="AM" value="AM" selected="true"/>
-                <mx:RadioButton groupName="AMPMEnd" styleName="TextStyle" id="pmEnd" label="PM" value="PM"/>
-                <mx:Text styleName="TextStyle" id="timezoneEnd" text="ET(UMT-5)"/>
+                <mx:RadioButton groupName="AMPMEnd" id="amEnd" label="AM" value="AM" selected="true"/>
+                <mx:RadioButton groupName="AMPMEnd" id="pmEnd" label="PM" value="PM"/>
+                <mx:Text id="timezoneEnd" text="ET(UMT-5)"/>
             </mx:HBox>
         </mx:VBox>
         <mx:Spacer height="25"/>
         <mx:VBox verticalGap="0">
-            <mx:Label text="Terms and Conditions" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
-            <mx:Text styleName="TextStyle" text="Please read TopCoder's Term &amp; Conditions and indicate that you understand and agree."/>
-            <mx:TextArea width="100%" height="120" styleName="TextStyle">
+            <mx:Label text="Terms and Conditions" fontWeight="bold" />
+            <mx:Text text="Please read TopCoder's Term &amp; Conditions and indicate that you understand and agree."/>
+            <mx:TextArea width="100%" height="120" >
             	<mx:htmlText>
 <![CDATA[                                     <font color="#000000" size="13">TopCoder Direct Terms</font>
 
@@ -335,7 +335,7 @@ Modify, publish, transmit, transfer or sell, reproduce, create derivative works 
 9. GENERAL. This Agreement shall be governed in all respects by the laws of the State of Connecticut, USA without giving effect to principles of conflict of laws. The parties agree to submit to the jurisdiction of the Connecticut state and federal courts located in Hartford County, Connecticut for any claim relating to this Agreement which is not brought for arbitration pursuant to Section 7 above. The United Nations Convention for the International Sale of Goods shall not apply to this Agreement. All notices under this Agreement shall be in writing and shall be deemed to be made when delivered by overnight courier service to the Legal Department of such party at the address set forth on the first page of this Agreement, or to such other address as either party may specify by notice. If one party fails to enforce a provision of this Agreement, it shall not be precluded from enforcing the same provision at another time. If any provision of this Agreement is deemed unenforceable or invalid by law or by a court decision, the provision shall be changed and interpreted if possible to accomplish the intent of the provision within the constraints of the law. In the event the provision may not be so changed or interpreted, then only that provision, and not the entire agreement, shall be invalidated. Notwithstanding any provision to the contrary in this Agreement, if either party is prevented from complying, either totally or in part, with any of its obligations under this Agreement because of matters outside such party’s reasonable control (i.e., a force majeure event), then upon written notice to the other party, such obligations will be suspended during the period of such disability. Nothing contained in this Agreement shall be construed as creating any agency, partnership, or other form of joint enterprise between the parties. You may not assign this Agreement in whole or in part without the prior written consent of TopCoder. Subject to the foregoing, this Agreement shall be binding on the parties and their permitted assigns. Each party represents to the other party that it has the full corporate right, power and authority to enter into this Agreement and perform its obligations hereunder; and that when executed and delivered, this Agreement will constitute its legal, valid and binding obligation enforceable against it in accordance with its terms.]]>
            </mx:htmlText>
             </mx:TextArea>
-            <mx:CheckBox styleName="TextStyle" id="termCheckBox" label="I have read and agree to these terms."/>
+            <mx:CheckBox id="termCheckBox" label="I have read and agree to these terms."/>
         </mx:VBox>
     </mx:VBox>
 </mx:Canvas>
