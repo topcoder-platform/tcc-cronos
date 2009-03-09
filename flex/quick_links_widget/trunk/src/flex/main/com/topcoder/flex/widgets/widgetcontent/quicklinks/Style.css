@@ -16,51 +16,6 @@
    fontWeight: bold;
 }
 
-
-
-.header {
-	font-family: Arial;
-	font-size: 16;
-	font-weight: bold;
-	color: #000000;
-}
-.content {
-	font-family: Arial;
-	font-size: 12;
-	font-weight: normal;
-	color: #000000;
-}
-
-.contentBlack {
-	font-family: Arial;
-	font-size: 12;
-	font-weight: bold;
-	color: #000000;
-}
-
-.contentGrey {
-	font-family: Arial;
-	font-size: 12;
-	font-weight: bold;
-	color: #797979;
-}
-
-.TextInput {
-	/* border-skin: Embed(source="../assets/textinput.png", 
-			scaleGridTop="1",scaleGridLeft="1",scaleGridRight="159",scaleGridBottom="18"); */
-	font-family: Arial;
-	font-size: 12;
-	font-weight: normal;
-	color: #000000;
-	vertical-align: middle;
-	border-color: #808080;
-	border-style: solid;
-}
-
-.GridItem {
-	vertical-align: middle;
-}
-
 .topcoderHome {
     upSkin: Embed(source="../assets/topcoder_home_up.png", scaleGridLeft="113", scaleGridTop="25", scaleGridRight="173", scaleGridBottom="26");
     overSkin: Embed(source="../assets/topcoder_home_over.png", scaleGridLeft="113",scaleGridTop="25",scaleGridRight="173",scaleGridBottom="26");
