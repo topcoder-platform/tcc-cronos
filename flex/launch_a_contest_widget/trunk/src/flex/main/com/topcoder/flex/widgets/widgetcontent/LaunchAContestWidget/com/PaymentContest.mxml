@@ -2,6 +2,7 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:com="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*" creationComplete="init()">
 	<mx:Script>
 		<![CDATA[
+			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
 		    import mx.rpc.events.FaultEvent;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PaymentResult;
@@ -29,7 +30,8 @@
 	        	public var contestTotal:String;
 
 			public function initData():void{
-				textContestName.text = contentTitleStr;
+				init(); // BUGR-1404
+  				textContestName.text = contentTitleStr;
 				textContestTotalCost.text = contestTotal;
 				textContestLaunchFee.text = contestTotal;
 			}
@@ -37,7 +39,7 @@
 			private function init():void{
 					wf1.mainWidget = mainWidget;
 					wf2.mainWidget = mainWidget;
-					wf2.mainWidget = mainWidget;
+					//wf2.mainWidget = mainWidget; BUGR-1404
 					wf3.mainWidget = mainWidget;
 			}
 			
