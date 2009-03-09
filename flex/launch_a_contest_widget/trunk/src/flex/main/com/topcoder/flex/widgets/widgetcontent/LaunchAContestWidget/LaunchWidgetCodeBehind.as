@@ -177,7 +177,11 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             }
             var f:IWidgetFramework=widgetFramework;
         	container.contents=new  LaunchWidget();
-        	(container.contents as LaunchWidget).openOverViewPage();
+		if (!_emptyStart)
+		{
+        		(container.contents as LaunchWidget).openOverViewPage();
+			_emptyStart = true;
+		}
         	
         	container.contents.widgetFramework=f;
         	container.contents.name=name;
@@ -340,12 +344,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         	if(map["contestid"])
         	{
         		contestid=map["contestid"];
-        		resetWidget();
+        		
         		trace("@@@@ To get contest for: " + contestid); 
         		_emptyStart = false;
+			resetWidget();
         		var getContestOp:AbstractOperation = _csws.getOperation("getContest");
-                getContestOp.addEventListener("result", getContestHandler);
-                getContestOp.send(parseInt(contestid));
+			getContestOp.addEventListener("result", getContestHandler);
+			getContestOp.send(parseInt(contestid));
         	}
         }
         
@@ -355,7 +360,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         	if(e && e.result)
         	{
         		var c:StudioCompetition = ObjectTranslatorUtils.translate(e.result, StudioCompetition) as StudioCompetition;
-            	trace("getContestHandler:: c: " + c);
+            		trace("getContestHandler:: c: " + c);
         		(container.contents as LaunchWidget).competition=c;
         		(container.contents as LaunchWidget).currentState = "ContestSelectionState";
         		(container.contents as LaunchWidget).onCreateComplete(2);
