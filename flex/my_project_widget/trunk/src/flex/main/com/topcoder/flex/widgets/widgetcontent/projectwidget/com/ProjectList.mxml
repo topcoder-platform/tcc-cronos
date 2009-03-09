@@ -254,17 +254,17 @@
       <mx:Button y="6" buttonMode="true" label="Add New Contest" height="29"
           right="28" styleName="addContestBtn" click="addcontest()"/>
       <mx:Label x="-20" y="55" width="100%" id="projectDesc"
-          fontSize="12" color="#6f6f6f" textAlign="right"/>
+          fontSize="11" color="#6f6f6f" textAlign="right"/>
     </mx:Canvas>
     <mx:HBox width="100%" height="15" styleName="title" id="Hbox1"
         verticalScrollPolicy="off" horizontalScrollPolicy="off">
-      <mx:Label width="100%" textAlign="center" id="lblStartDate" text="START" fontSize="11" fontFamily="Arial"/>
-      <mx:Label width="100%" textAlign="center" id="lblEndDate" text="END" fontSize="11" fontFamily="Arial"/>
-      <mx:Label width="100%" textAlign="center" id="lblRegistrants" text="REGISTRANTS" fontSize="11" fontFamily="Arial"/>
-      <mx:Label width="100%" textAlign="center" id="lblSubmissions" text="SUBMISSIONS" fontSize="11" fontFamily="Arial"/>
-      <mx:Label width="100%" textAlign="center" id="lblForumPosts" text="FORUM" fontSize="11" fontFamily="Arial"/>
-      <mx:Label width="100%" textAlign="center" id="lStatus" text="STATUS" fontSize="11" fontFamily="Arial"/>
-      <mx:Label width="20" textAlign="center" id="lbledit" text="" fontSize="11" fontFamily="Arial"/>
+      <mx:Label width="100%" textAlign="center" id="lblStartDate" text="START" />
+      <mx:Label width="100%" textAlign="center" id="lblEndDate" text="END" />
+      <mx:Label width="100%" textAlign="center" id="lblRegistrants" text="REGISTRANTS" />
+      <mx:Label width="100%" textAlign="center" id="lblSubmissions" text="SUBMISSIONS" />
+      <mx:Label width="100%" textAlign="center" id="lblForumPosts" text="FORUM" />
+      <mx:Label width="100%" textAlign="center" id="lStatus" text="STATUS" />
+      <mx:Label width="20" textAlign="center" id="lbledit" text="" />
     </mx:HBox>
     <mx:VBox id="content" paddingLeft="0" paddingRight="0" verticalGap="0" width="100%" />
   </mx:VBox>
