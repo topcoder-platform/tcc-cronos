@@ -243,10 +243,11 @@
         			}
         			if(p==null)return ;
 					prjCt=p as ProjectsContainer;
-					var widget:IWidget=prjCt.widgetFramework.openWidget("Launch Contests","Launch Contest");
+					var widget:IWidget=prjCt.widgetFramework.getWidget("Launch Contests","Launch Contest");
 					var props:Dictionary=new Dictionary();
 					props["contestid"]=_dataProvider.id;
 					widget.setAttributes(props);
+					prjCt.widgetFramework.openWidget("Launch Contests","Launch Contest");
         }
         
         //change the time to UMT-5 time for BUGR-1196
