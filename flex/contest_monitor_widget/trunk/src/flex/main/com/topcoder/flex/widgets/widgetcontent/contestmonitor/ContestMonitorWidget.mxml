@@ -67,7 +67,7 @@
         // *** THIS NEEDS TO BE REPLACED WITH CALLS TO A SERVICE ***
         //fetch data from local xml file
         private function fetchData():void {
-            var url:URLRequest = new URLRequest("data/timeline.xml");
+            var url:URLRequest = new URLRequest("/i/cockpit/data/timeline.xml");
             var loader:URLLoader = new URLLoader();
             loader.addEventListener(Event.COMPLETE, getData);
             loader.load(url);
