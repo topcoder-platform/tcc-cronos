@@ -32,6 +32,7 @@
 		    import mx.controls.Alert;
 		    import mx.rpc.events.FaultEvent;
 		    import mx.rpc.xml.SchemaTypeRegistry;
+		    import mx.controls.ButtonLabelPlacement;
 
     		// BUGR-1141
     		[Bindable]
@@ -954,16 +955,16 @@ Specific limitations (such as restricting a color or a specific layout style) an
          </mx:VBox>
      </mx:HBox>
      <mx:HBox id="SaveAndContinueHBox" visible="{this.currentState == 'ContestSelectionState'}" height="{this.currentState == 'ContestSelectionState' ? 30 : 0}" paddingLeft="220" paddingTop="0" horizontalAlign="right" width="100%" >
-         <mx:Button styleName="greenNextButton" click="goToOverViewPage()" buttonMode="true"/>
+         <mx:Button label="NEXT" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" click="goToOverViewPage()" buttonMode="true"/>
      </mx:HBox>
      <mx:HBox id="BtnsHBox" paddingLeft="220" paddingTop="0" verticalAlign="top" horizontalAlign="center" width="100%" height="{SaveAndContinueHBox.visible ? 0 : 30}" visible="{!SaveAndContinueHBox.visible}" includeInLayout="{!SaveAndContinueHBox.visible}">
 
     <!--BUGR-1204 <mx:Button id="back" buttonMode="true" styleName="RedButton" label="&lt;&lt; back" click="previous()"/>-->
-         <mx:Button id="back" buttonMode="true" styleName="greenBackButton" click="previous()"/>
-         <mx:Button id="save" buttonMode="true" styleName="RedButton"  label="save as draft" click="saveAsDraft()" includeInLayout="{save.visible}"/>
+         <mx:Button id="back" label="BACK" buttonMode="true" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}" click="previous()"/>
+         <mx:Button id="save" buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="save as draft" click="saveAsDraft()" includeInLayout="{save.visible}"/>
          <!--BUGR-1204 <mx:Button id="goNext" buttonMode="true" styleName="RedButton"  label="continue >>" click="next()"/>-->
-         <mx:Button id="cancel" buttonMode="true" styleName="redCancelButton" click="cancelBtn()"/>
-         <mx:Button id="goNext" buttonMode="true" styleName="greenNextButton" click="next()"/>
+         <mx:Button id="cancel" label="CANCEL" buttonMode="true" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}" click="cancelBtn()"/>
+         <mx:Button id="goNext" label="NEXT" buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" click="next()"/>
       </mx:HBox>
       <mx:Spacer height="5"/>
     <tc:states>
