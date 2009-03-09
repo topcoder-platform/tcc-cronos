@@ -2,8 +2,8 @@
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
           horizontalScrollPolicy="off" verticalScrollPolicy="off">
           
-     <mx:HTTPService id="requestContestTypes" url="data/launch_a_contest/contestTypes.xml" resultFormat="xml" result="preprocessTypes(event)" ></mx:HTTPService>
-     <mx:HTTPService id="requestContestExamples" url="data/launch_a_contest/overview.xml" resultFormat="e4x" result="loadExamples(event)" fault="Helper.showAlertMessage(event.fault.faultString);"></mx:HTTPService>
+     <mx:HTTPService id="requestContestTypes" url="/i/cockpit/data/launch_a_contest/contestTypes.xml" resultFormat="xml" result="preprocessTypes(event)" ></mx:HTTPService>
+     <mx:HTTPService id="requestContestExamples" url="/i/cockpit/data/launch_a_contest/overview.xml" resultFormat="e4x" result="loadExamples(event)" fault="Helper.showAlertMessage(event.fault.faultString);"></mx:HTTPService>
 	
 	<mx:Script>
 	<![CDATA[

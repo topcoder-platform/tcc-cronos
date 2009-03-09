@@ -161,7 +161,7 @@
         <mx:Spacer height="5"/>
         
         <mx:VBox width="100%" verticalGap="0">
-            <mx:HBox  width="500">
+            <mx:HBox >
                 <mx:Label text="Detailed Description:" fontWeight="bold" fontSize="11" fontFamily="Arial"/>
                 <mx:Spacer width="308"/> <!-- BUGR-1279 -->
                 <mx:LinkButton label="[+ show hint]" click="showGoalsHint(event)" />
