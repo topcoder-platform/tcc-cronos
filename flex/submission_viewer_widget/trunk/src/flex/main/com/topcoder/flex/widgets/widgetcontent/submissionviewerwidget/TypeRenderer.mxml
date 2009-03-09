@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Label xmlns:mx="http://www.adobe.com/2006/mxml" styleName="middle" text="{setText(data)}"
-		fontFamily="Arial" fontSize="11" fontWeight="bold" color="#797979">
+		fontWeight="bold" color="#797979">
 	<mx:Script>
 		<![CDATA[
 			private function setText(dat:Object):String {

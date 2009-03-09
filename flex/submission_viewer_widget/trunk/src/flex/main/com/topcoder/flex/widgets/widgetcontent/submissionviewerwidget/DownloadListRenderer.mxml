@@ -64,7 +64,7 @@
 				width="25" height="26" textAlign="center" />
 		</mx:Canvas>
 		<mx:Label id="content" textAlign="center" text="{'#' + data.id}" bottom="0" 
-				fontWeight="bold" fontFamily="Arial" fontSize="11" />
+				fontWeight="bold" />
 		<mx:Label text="{getPurchase(data)}" textAlign="center" styleName="text" />
 		<mx:Label text="{getPurchased(data)}" textAlign="center" styleName="text" />
 	</mx:VBox>
