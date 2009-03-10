@@ -1409,6 +1409,7 @@ public class StudioServiceBean implements StudioService {
         // StartDate and endDate: the startDate is the launchDateAndTime, the
         // endDate is launchDateTime+durationInHours
         Date startDate = getDate(data.getLaunchDateAndTime());
+System.out.println("------------------start time ========"+startDate);
         result.setStartDate(startDate);
         if (startDate != null) {
             result.setEndDate(new Date((long) (startDate.getTime() + 60l * 60 * 1000 * data.getDurationInHours())));
@@ -1580,7 +1581,7 @@ public class StudioServiceBean implements StudioService {
         ContestData contestData = new ContestData();
 
         contestData.setLaunchDateAndTime(getXMLGregorianCalendar(contest.getStartDate()));
-
+System.out.println("---------getting start date 2222 ---------"+contestData.getLaunchDateAndTime());
         contestData.setContestId(unbox(contest.getContestId()));
         contestData.setCreatorUserId(unbox(contest.getCreatedUser()));
         contestData.setName(contest.getName());
@@ -1726,7 +1727,8 @@ public class StudioServiceBean implements StudioService {
         contestData.setPrizes(prizes);
 
         // TCCC-293
-        double durationInHours = (contest.getEndDate().getTime() - contest.getStartDate().getTime()) / (60 * 60 * 1000);
+        double durationInHours = (contest.getEndDate().getTime() - contest.getStartDate().getTime()) / (60.0 * 60 * 1000);
+System.out.println("-------------------------duration is ----------"+durationInHours);
         contestData.setDurationInHours(durationInHours);
 
         // TCCC-299 Exception when Editing project
@@ -2028,7 +2030,7 @@ public class StudioServiceBean implements StudioService {
      */
     private UploadedDocument uploadDocument(UploadedDocument data, Contest contest) throws PersistenceException {
         Document doc = new Document();
-	System.out.println("----upload--------------"+ data);
+	//System.out.println("----upload--------------"+ data);
         doc.setDocumentId(data.getDocumentId());
         doc.setOriginalFileName(data.getFileName());
 
