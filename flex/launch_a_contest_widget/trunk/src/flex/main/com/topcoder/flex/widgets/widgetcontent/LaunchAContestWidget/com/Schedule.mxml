@@ -33,20 +33,20 @@
             	var startDate:Date = null;
             	var endDate:Date = null;
             	
-            	var startTime:Object = mainWidget.competition.contestData.launchDateAndTime;
-            	var endTime:Object = mainWidget.competition.contestData.winnerAnnoucementDeadline;
+            	var startTime:Object = mainWidget.competition.startTime;
+            	var endTime:Object = mainWidget.competition.endTime;
             	
             	if (startTime != null){
-	            	var startDateStr:String = mainWidget.competition.contestData.launchDateAndTime as String;
-            	
+	            	var startDateStr:String = mainWidget.competition.startTime as String;
+
 	            	if (startDateStr!=null){
 	            		startDate = DateUtil.parseFromString(startDateStr);
 	            	}
             	}
             	
             	if (endTime != null){
-	            	var endDateStr:String = mainWidget.competition.contestData.winnerAnnoucementDeadline as String;
-	            	
+	            	var endDateStr:String = mainWidget.competition.endTime as String;
+
 	            	if (endDateStr!=null){
 	            		endDate = DateUtil.parseFromString(endDateStr);
 	            	}
@@ -149,7 +149,7 @@
             	//mainWidget.competition._endTime = endDate;
             	
             	mainWidget.competition.contestData.launchDateAndTime = startDate;
-            	mainWidget.competition.contestData.winnerAnnoucementDeadline = endDate;
+            	//mainWidget.competition.contestData.winnerAnnoucementDeadline = endDate;
             	
             	mainWidget.competition.contestData.launchImmediately = launchCheckBox.selected;
             	mainWidget.competition.contestData.durationInHours  = Number(((end.time - start.time) / 3600000).toFixed(2));
@@ -169,9 +169,10 @@
             		hour = hour - 12;
             		am = false;
             	}
-            	
+	      
             	hourComb.selectedIndex = hour;
-            	minuteComb.selectedIndex = date.getMinutes();
+		var minute:int = date.getMinutes();
+            	minuteComb.selectedIndex = minute;
             	if (am){
             		ampm.selectedValue = "AM";
             	} else{
