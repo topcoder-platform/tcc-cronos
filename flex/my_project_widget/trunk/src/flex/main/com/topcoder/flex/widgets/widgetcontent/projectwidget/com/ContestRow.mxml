@@ -126,78 +126,73 @@
     return lblRegistrants.text;
   }
 
-	public function set submissions(temp:String):void{
-		lblSubmissions.text = temp;
-		if (temp=='0') {
-			lnkSubmissions.includeInLayout=false
-			lnkSubmissions.visible=false
-			//canvasSubmissions.percentWidth=100;
-			lblSubmissions.setStyle("textAlign","center")
+  public function set submissions(temp:String):void{
+    lblSubmissions.label = temp;
+    var numSubmissions:Number = Number(temp);
+    if (numSubmissions > 0) {
+        lblSubmissions.styleName = "linkBtn";
+        lblSubmissions.buttonMode = true;
+        lblSubmissions.addEventListener(MouseEvent.CLICK, showSubmission);
+        lblSubmissions.setStyle("textDecoration", "underline");
+        lblSubmissions.setStyle("textAlign", "center");
+    }
 
-		}
-		else{
-			lnkSubmissions.includeInLayout=true
-			lnkSubmissions.visible=true
-			//canvasSubmissions.percentWidth=35
-			lblSubmissions.setStyle("textAlign","center")
+  }
+  public function get submissions():String{
+    return lblSubmissions.label;
+  }
+  public function set forumPosts(temp:String):void{
+    lblForumPosts.text = temp;
+    if (temp=='no forum') {
+      lnkFormPosts.includeInLayout=false
+      lnkFormPosts.visible=false
+      //canvasForumPosts.percentWidth=100
+      lblForumPosts.setStyle("textAlign","center")
+    }
+    else{
+      lnkFormPosts.includeInLayout=true
+      lnkFormPosts.visible=true
+      //canvasForumPosts.percentWidth=35
+      lblForumPosts.setStyle("textAlign","center")
+    }
+  }
+  public function get forumPosts():String{
+    return lblForumPosts.text;
+  }
 
-		}
-	}
-	public function get submissions():String{
-		return lblSubmissions.text;
-	}
-	public function set forumPosts(temp:String):void{
-		lblForumPosts.text = temp;
-		if (temp=='no forum') {
-			lnkFormPosts.includeInLayout=false
-			lnkFormPosts.visible=false
-			//canvasForumPosts.percentWidth=100
-			lblForumPosts.setStyle("textAlign","center")
-		}
-		else{
-			lnkFormPosts.includeInLayout=true
-			lnkFormPosts.visible=true
-			//canvasForumPosts.percentWidth=35
-			lblForumPosts.setStyle("textAlign","center")
-		}
-	}
-	public function get forumPosts():String{
-		return lblForumPosts.text;
-	}
-	
-	private function showStats():void
+  private function showStats():void
         {
-        	var prjCt:ProjectsContainer;
-        	var p:DisplayObjectContainer=parent;
-        	while(p!=null){
-        		if(p is ProjectsContainer)break;
-        		p=p.parent;
-        	}
-        	if(p==null)return ;
-        	
-		prjCt=p as ProjectsContainer;
-		var dict:Dictionary=new Dictionary();
-		dict["contestid"]=_ContextId;
-		prjCt.widgetFramework.addWidgetEx("Contest Monitor","Contest Monitor",dict );
-        	
-	}
-	
-	private function showSubmission():void
+          var prjCt:ProjectsContainer;
+          var p:DisplayObjectContainer=parent;
+          while(p!=null){
+            if(p is ProjectsContainer)break;
+            p=p.parent;
+          }
+          if(p==null)return ;
+
+    prjCt=p as ProjectsContainer;
+    var dict:Dictionary=new Dictionary();
+    dict["contestid"]=_ContextId;
+    prjCt.widgetFramework.addWidgetEx("Contest Monitor","Contest Monitor",dict );
+
+  }
+
+  private function showSubmission(event:MouseEvent):void
         {
-        	var prjCt:ProjectsContainer;
-        	var p:DisplayObjectContainer=parent;
-        	while(p!=null){
-        		if(p is ProjectsContainer)break;
-        		p=p.parent;
-        	}
-        	if(p==null)return ;
-		if(parseInt(submissions)>0){
-			prjCt=p as ProjectsContainer;
-			var dict:Dictionary=new Dictionary();
-			dict["contestid"]=_ContextId;
-			prjCt.widgetFramework.addWidgetEx("Submission Viewer","Submission Viewer",dict );
-		}
-	}
+          var prjCt:ProjectsContainer;
+          var p:DisplayObjectContainer=parent;
+          while(p!=null){
+            if(p is ProjectsContainer)break;
+            p=p.parent;
+          }
+          if(p==null)return ;
+    if(parseInt(submissions)>0){
+      prjCt=p as ProjectsContainer;
+      var dict:Dictionary=new Dictionary();
+      dict["contestid"]=_ContextId;
+      prjCt.widgetFramework.addWidgetEx("Submission Viewer","Submission Viewer",dict );
+    }
+  }
 
 	/**
 	 * Click on the label links to url.
@@ -271,19 +266,16 @@
     </mx:HBox>
 
   <mx:HBox width="100%" styleName="rowContent" >
-    <mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle">
+    <mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle" verticalGap="0">
         <mx:Text width="100%" styleName="rowContentLabel" id="lblStartDatePart1" />
         <mx:Text width="100%" styleName="rowContentLabel" id="lblStartDatePart2" />
     </mx:VBox>
-    <mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle">
+    <mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle" verticalGap="0">
         <mx:Text width="100%" styleName="rowContentLabel" id="lblEndDatePart1" />
         <mx:Text width="100%" styleName="rowContentLabel" id="lblEndDatePart2" />
     </mx:VBox>
     <mx:Text width="100%" styleName="rowContentLabel" id="lblRegistrants" />
-    <mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle">
-      <mx:Text width="100%" styleName="rowContentLabel" id="lblSubmissions" />
-      <mx:LinkButton buttonMode="true" styleName="viewBtn" label="View" labelPlacement="bottom" id="lnkSubmissions" click="showSubmission()"/>
-    </mx:VBox>
+    <mx:LinkButton width="100%" buttonMode="false" styleName="rowContentLink" id="lblSubmissions" />
     <mx:VBox width="100%" styleName="bottomAlign">
       <mx:Text width="100%"   styleName="rowContentLabel" id="lblForumPosts" />
       <mx:LinkButton buttonMode="true" styleName="viewBtn" label="View" labelPlacement="bottom" id="lnkFormPosts" click="openForum()"/>
