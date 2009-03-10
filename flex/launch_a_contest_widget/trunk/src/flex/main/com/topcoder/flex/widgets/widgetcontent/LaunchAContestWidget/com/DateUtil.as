@@ -29,7 +29,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com
 			return result;
 		}
 		
-		private static function formatString(num:Number, digit:int):String{
+		public static function formatString(num:Number, digit:int):String{
 			var result:String = num.toString();
 			while(result.length<digit){
 				result = "0"+result;
