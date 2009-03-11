@@ -13,6 +13,7 @@ import com.topcoder.catalog.entity.Technology;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * <p>This class is a simple DTO which provides a representation of a component that is closer to business requirements
@@ -116,7 +117,7 @@ public class AssetDTO implements Serializable {
      * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
      * <p>The acceptance region: any <code>List</code> value or <code>null</code>.</p>
      */
-    private List<Long> clientIds;
+    private List<Long> clientIds = new ArrayList<Long>();
     /**
      * <p>This field represents the text of the version.
      * Should not be null or empty when updating or creating an asset.</p>
@@ -164,14 +165,14 @@ public class AssetDTO implements Serializable {
      * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
      * <p>The acceptance region: any <code>List</code> value or <code>null</code>.</p>
      */
-    private List<Category> categories;
+    private List<Category> categories = new ArrayList<Category>();
     /**
      * <p>This field represents the technologies of this version of the asset.
      * Should not be null, empty or containing nulls when updating or creating an asset.</p>
      * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
      * <p>The acceptance region: any <code>List</code> value or <code>null</code>.</p>
      */
-    private List<Technology> technologies;
+    private List<Technology> technologies = new ArrayList<Technology>();
     /**
      * <p>This field represents the production date of this version of the asset.</p>
      * <p>The initial value is <tt>null</tt>. Access is performed via its getter and setter.</p>
@@ -223,7 +224,7 @@ public class AssetDTO implements Serializable {
      * containing <code>null</code> is legal as well.</p>
      * @since 1.1
      */
-    private List<CompDocumentation> documentation;
+    private List<CompDocumentation> documentation = new ArrayList<CompDocumentation>();
 
     /**
      * <p>
@@ -259,7 +260,7 @@ public class AssetDTO implements Serializable {
      *  A new field add in bug fix.
      * </p>
      */
-    private List<Long> dependencies;
+    private List<Long> dependencies = new ArrayList<Long>();
 
     /**
      * <p>Default constructor.</p> <p><em>Does nothing.</em></p>

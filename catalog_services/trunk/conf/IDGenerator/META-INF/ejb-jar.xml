@@ -5,7 +5,7 @@
 <ejb-jar>
     <enterprise-beans>
         <session>
-            <ejb-name>IDGeneratorHome</ejb-name>
+            <ejb-name>IDGeneratorBean</ejb-name>
             <home>com.topcoder.util.idgenerator.ejb.IDGeneratorHome</home>
             <remote>com.topcoder.util.idgenerator.ejb.IDGenerator</remote>
             <local-home>com.topcoder.util.idgenerator.ejb.IDGeneratorLocalHome</local-home>
