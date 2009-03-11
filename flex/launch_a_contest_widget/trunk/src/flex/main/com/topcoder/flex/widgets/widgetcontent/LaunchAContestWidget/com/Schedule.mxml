@@ -55,10 +55,10 @@
             	dfStart.selectedDate = startDate;
             	dfEnd.selectedDate = endDate;
             	
-            	setTimeControl(CmbHourStart, CmbMinuteStart, AMPMStart, startDate);
-            	setTimeControl(CmbHourEnd, CmbMinuteEnd, AMPMEnd, endDate);
+            	setTimeControl(CmbHourStart, CmbMinuteStart, startDate);
+            	setTimeControl(CmbHourEnd, CmbMinuteEnd, endDate);
             	
-            	launchCheckBox.selected = mainWidget.competition.contestData.launchImmediately;
+
             }
             
             public function validateFields():Boolean{
@@ -74,7 +74,7 @@
             	
             	var current:Date = new Date();
             	var tzOffHours:Number = current.timezoneOffset/60;
-            	var startDate:Date = getAssembleDate(dfStart, CmbHourStart, CmbMinuteStart, AMPMStart);
+            	var startDate:Date = getAssembleDate(dfStart, CmbHourStart, CmbMinuteStart);
             	//change the start time to local time
                 startDate.setTime(startDate.getTime() + (5-tzOffHours)*OneHour);
             	if (startDate.time<=current.time){
@@ -82,7 +82,7 @@
             		return false;
             	}
             	
-            	var endDate:Date = getAssembleDate(dfEnd, CmbHourEnd, CmbMinuteEnd, AMPMEnd);
+            	var endDate:Date = getAssembleDate(dfEnd, CmbHourEnd, CmbMinuteEnd);
                 //change the end time to local time
                 endDate.setTime(endDate.getTime() + (5-tzOffHours)*OneHour);
             	if (endDate.time <= startDate.time){
@@ -99,26 +99,20 @@
             	return true;
             }
             
-            private function getAssembleDate(dateField:DateField, hourComb:ComboBox, minuteComb:ComboBox, ampm:RadioButtonGroup):Date{
+            private function getAssembleDate(dateField:DateField, hourComb:ComboBox, minuteComb:ComboBox):Date{
             	var result:Date = dateField.selectedDate;
             	var hour:Number = Number(hourComb.value);
-            	if (ampm.selectedValue == "PM"){
-            		hour = hour + 12;
-            	}
             	
             	//result.setHours(hour, Number(minuteComb.value), 0, 0);
             	var resultDate:Date = new Date(result.getTime()+hour*60*60*1000+Number(minuteComb.value)*60*1000);
-            	
+           	
             	return resultDate;
             }
 
 
-	    private function getAssembleDateToString(dateField:DateField, hourComb:ComboBox, minuteComb:ComboBox, ampm:RadioButtonGroup):String{
+	    private function getAssembleDateToString(dateField:DateField, hourComb:ComboBox, minuteComb:ComboBox):String{
             	var result:Date = dateField.selectedDate;
             	var hour:Number = Number(hourComb.value);
-            	if (ampm.selectedValue == "PM"){
-            		hour = hour + 12;
-            	}
             	
             	//result.setHours(hour, Number(minuteComb.value), 0, 0);
             	//var resultDate:Date = new Date(result.getTime()+hour*60*60*1000+Number(minuteComb.value)*60*1000);
@@ -134,57 +128,46 @@
             }
             
             private function updateData():void{
-            	var start:Date = getAssembleDate(dfStart, CmbHourStart, CmbMinuteStart, AMPMStart);
+            	var start:Date = getAssembleDate(dfStart, CmbHourStart, CmbMinuteStart);
             	start.setTime(start.getTime() + ETtoUTC);
-            	var end:Date = getAssembleDate(dfEnd, CmbHourEnd, CmbMinuteEnd, AMPMEnd);
+            	var end:Date = getAssembleDate(dfEnd, CmbHourEnd, CmbMinuteEnd);
             	end.setTime(end.getTime() + ETtoUTC);
             	
-            	var startDate:String = getAssembleDateToString(dfStart, CmbHourStart, CmbMinuteStart, AMPMStart);   //DateUtil.toString(start);
+            	var startDate:String = getAssembleDateToString(dfStart, CmbHourStart, CmbMinuteStart);   //DateUtil.toString(start);
 
-            	var endDate:String = getAssembleDateToString(dfEnd, CmbHourEnd, CmbMinuteEnd, AMPMEnd);       //DateUtil.toString(end);
+            	var endDate:String = getAssembleDateToString(dfEnd, CmbHourEnd, CmbMinuteEnd);       //DateUtil.toString(end);
             	
             	mainWidget.competition.startTime = startDate;
             	mainWidget.competition.endTime = endDate;
-            	//mainWidget.competition._startTime = startDate;
-            	//mainWidget.competition._endTime = endDate;
             	
             	mainWidget.competition.contestData.launchDateAndTime = startDate;
             	//mainWidget.competition.contestData.winnerAnnoucementDeadline = endDate;
             	
-            	mainWidget.competition.contestData.launchImmediately = launchCheckBox.selected;
             	mainWidget.competition.contestData.durationInHours  = Number(((end.time - start.time) / 3600000).toFixed(2));
             }
             
-            private function setTimeControl(hourComb:ComboBox, minuteComb:ComboBox, ampm:RadioButtonGroup, date:Date):void{
+            private function setTimeControl(hourComb:ComboBox, minuteComb:ComboBox, date:Date):void{
             	if (date == null){
             		hourComb.selectedIndex = 0;
             		minuteComb.selectedIndex = 0;
-            		ampm.selectedValue = "AM";
             		return;
             	}
             	
             	var hour:int = date.getHours();
             	var am:Boolean = true;
-            	if (hour>12){
-            		hour = hour - 12;
-            		am = false;
-            	}
 	      
+	   
             	hourComb.selectedIndex = hour;
 		var minute:int = date.getMinutes();
-            	minuteComb.selectedIndex = minute;
-            	if (am){
-            		ampm.selectedValue = "AM";
-            	} else{
-            		ampm.selectedValue = "PM";
-            	}
+            	minuteComb.selectedIndex = minute/15;
+
             }
             
             
             
             private function init():void {
                 var hourData:Array = new Array();
-            	for(var i:Number = 1; i <= 12; i++){
+            	for(var i:Number = 0; i <= 23; i++){
             		var o:Object = new Object();
             		o.label = i.toString();
             		o.data = i;
@@ -272,7 +255,7 @@ Tips:
                 <mx:DateField id="dfStart" yearNavigationEnabled="true" width="116" disabledRanges="{[ {rangeEnd: rangeStartDate} ]}"
                      change="startDateChanged()" open="startDateOpen()" />
                 <mx:Spacer width="10"/>
-                <mx:CheckBox id="launchCheckBox" label="Launch Immediately" selected="true"/>
+
             </mx:HBox>
             <mx:HBox verticalAlign="middle">
                 <mx:Label text="Start Time:" fontWeight="bold"/>
@@ -280,9 +263,7 @@ Tips:
                 <mx:ComboBox id="CmbHourStart" width="57" />
                 <mx:Label text="Minute:"/>
                 <mx:ComboBox id="CmbMinuteStart" width="57" />
-                <mx:RadioButtonGroup id="AMPMStart" />
-                <mx:RadioButton groupName="AMPMStart" id="amStart" label="AM" value="AM" selected="true"/>
-                <mx:RadioButton groupName="AMPMStart" id="pmStart" label="PM" value="PM"/>
+               
                 <mx:Text id="timezoneStart" text="ET(UMT-5)"/>
             </mx:HBox>
             <mx:Spacer height="5"/>
@@ -296,9 +277,7 @@ Tips:
                 <mx:ComboBox id="CmbHourEnd" width="57" />
                 <mx:Label text="Minute:" />
                 <mx:ComboBox id="CmbMinuteEnd" width="57" />
-                <mx:RadioButtonGroup id="AMPMEnd" />
-                <mx:RadioButton groupName="AMPMEnd" id="amEnd" label="AM" value="AM" selected="true"/>
-                <mx:RadioButton groupName="AMPMEnd" id="pmEnd" label="PM" value="PM"/>
+
                 <mx:Text id="timezoneEnd" text="ET(UMT-5)"/>
             </mx:HBox>
         </mx:VBox>

@@ -300,12 +300,12 @@ Specific limitations (such as restricting a color or a specific layout style) an
             
 			public function openOverViewPage():void {
 				   this.currentState = "OverViewState";
-                   save.visible = false;
-                   this.height = OVERVIEW_HEIGHT;  // BUGR-1134
-                   back.visible = true;
+					save.visible = false;
+					this.height = OVERVIEW_HEIGHT;  // BUGR-1134
+					back.visible = true;
                    
-                   setPreviousStep(step1box); // BUGR-1141
-                   setCurStep(step2box);// BUGR-1141
+					setPreviousStep(step1box); // BUGR-1141
+					setCurStep(step2box);// BUGR-1141
 			}
             
             public function next(event:EffectEvent = null):void {
@@ -433,9 +433,9 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    save.visible = true;
 
                    review.fromDate = sched.dfStart.selectedDate;
-                   review.fromTime = sched.CmbHourStart.selectedItem.label+":"+sched.CmbMinuteStart.selectedItem.label+" "+ sched.AMPMStart.selectedValue.toString()+" "+sched.timezoneStart.text;
+                   review.fromTime = sched.CmbHourStart.selectedItem.label+":"+sched.CmbMinuteStart.selectedItem.label+" "+sched.timezoneStart.text;
                    review.toDate = sched.dfEnd.selectedDate;
-                   review.toTime = sched.CmbHourEnd.selectedItem.label+":"+sched.CmbMinuteEnd.selectedItem.label+" "+ sched.AMPMEnd.selectedValue.toString()+" "+sched.timezoneEnd.text;
+                   review.toTime = sched.CmbHourEnd.selectedItem.label+":"+sched.CmbMinuteEnd.selectedItem.label+" "+sched.timezoneEnd.text;
 
                    review.setAllValues();
 
