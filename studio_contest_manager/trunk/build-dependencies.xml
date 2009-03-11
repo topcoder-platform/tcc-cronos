@@ -21,6 +21,7 @@
     -->
     <property name="contest_and_submission_entities.jar" value="${cronos_libdir}/contest_and_submission_entities/1.1.0/contest_and_submission_entities.jar"/>
     <!--3rd party dependencies-->
+    <property name="jaxb-api.jar" value="${ext_libdir}/jaxb/2.1.7/jaxb-api.jar"/>
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
     <property name="jdbc.jar" value="${ext_libdir}/jdbc/informix/1.4.1/ifxjdbc.jar"/>    
     
@@ -67,6 +68,7 @@
         <pathelement location="${jboss-hibernate.jar}"/>
         <pathelement location="${jboss-transaction.jar}"/>
         <pathelement location="${jbosssx.jar}"/>
+        <pathelement location="${jaxb-api.jar}"/>
     </path>
     <path id="component.test.3rdParty-dependencies">
         <pathelement location="${junit.jar}"/>
