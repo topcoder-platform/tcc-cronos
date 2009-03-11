@@ -2,6 +2,7 @@ package com.topcoder.service.studio.contest;
 
 import java.util.Date;
 import java.util.List;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * <p>
@@ -36,12 +37,12 @@ public class SimpleContestData {
     /**
      * Represents the start date.
      */
-    private Date startDate;
+    private XMLGregorianCalendar startDate;
 
     /**
      * Represents the end date.
      */
-    private Date endDate;
+    private XMLGregorianCalendar endDate;
     
     /**
      * Represents the Registrants number.
@@ -137,7 +138,7 @@ public class SimpleContestData {
      *
      * @return the startDate.
      */
-    public Date getStartDate() {
+    public XMLGregorianCalendar getStartDate() {
         return startDate;
     }
 
@@ -147,7 +148,7 @@ public class SimpleContestData {
      * @param startDate
      *            the startDate to set.
      */
-    public void setStartDate(Date startDate) {
+    public void setStartDate(XMLGregorianCalendar startDate) {
         this.startDate = startDate;
     }
 
@@ -156,7 +157,7 @@ public class SimpleContestData {
      *
      * @return the endDate.
      */
-    public Date getEndDate() {
+    public XMLGregorianCalendar getEndDate() {
         return endDate;
     }
 
@@ -166,7 +167,7 @@ public class SimpleContestData {
      * @param endDate
      *            the endDate to set.
      */
-    public void setEndDate(Date endDate) {
+    public void setEndDate(XMLGregorianCalendar endDate) {
         this.endDate = endDate;
     }
     /**

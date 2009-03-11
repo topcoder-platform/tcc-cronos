@@ -17,6 +17,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.GregorianCalendar;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -2620,8 +2624,16 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             	Object [] os=(Object [])list.get(i);
             	if(os[0]!=null)c.setContestId(Long.parseLong(os[0].toString()));
             	if(os[1]!=null)c.setName(os[1].toString());
-            	if(os[2]!=null)c.setStartDate(myFmt.parse(os[2].toString()));
-            	if(os[3]!=null)c.setEndDate(myFmt.parse(os[3].toString()));
+				if (os[2] != null)
+				{
+                    Date st = myFmt.parse(os[2].toString());
+            	    c.setStartDate(getXMLGregorianCalendar(st));
+				}
+                if (os[3] != null)
+				{
+					Date en = myFmt.parse(os[3].toString());
+                    c.setEndDate(getXMLGregorianCalendar(en));
+				}
             	if(os[4]!=null)c.setNum_reg(Integer.parseInt(os[4].toString()));
             	if(os[5]!=null)c.setNum_sub(Integer.parseInt(os[5].toString()));
             	result.add(c);
@@ -2684,9 +2696,15 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                 if (os[1] != null)
                     c.setName(os[1].toString());
                 if (os[2] != null)
-                    c.setStartDate(myFmt.parse(os[2].toString()));
+				{
+                    Date st = myFmt.parse(os[2].toString());
+            	    c.setStartDate(getXMLGregorianCalendar(st));
+				}
                 if (os[3] != null)
-                    c.setEndDate(myFmt.parse(os[3].toString()));
+				{
+					Date en = myFmt.parse(os[3].toString());
+                    c.setEndDate(getXMLGregorianCalendar(en));
+				}
                 if (os[4] != null)
                     c.setNum_reg(Integer.parseInt(os[4].toString()));
                 if (os[5] != null)
@@ -2740,9 +2758,15 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                 if (os[1] != null)
                     c.setName(os[1].toString());
                 if (os[2] != null)
-                    c.setStartDate(myFmt.parse(os[2].toString()));
+				{
+                    Date st = myFmt.parse(os[2].toString());
+            	    c.setStartDate(getXMLGregorianCalendar(st));
+				}
                 if (os[3] != null)
-                    c.setEndDate(myFmt.parse(os[3].toString()));
+				{
+					Date en = myFmt.parse(os[3].toString());
+                    c.setEndDate(getXMLGregorianCalendar(en));
+				}
                 if (os[4] != null)
                     c.setNum_reg(Integer.parseInt(os[4].toString()));
                 if (os[5] != null)
@@ -4125,6 +4149,29 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "There are errors while persisting the entity.");
         } finally {
             logExit("getPaymentType()");
+        }
+    }
+
+
+	/**
+     * Converts standard java Date object into XMLGregorianCalendar instance.
+     * Returns null if parameter is null.
+     *
+     * @param date
+     *            Date object to convert
+     * @return converted calendar instance
+     */
+    private XMLGregorianCalendar getXMLGregorianCalendar(Date date) {
+        if (date == null) {
+            return null;
+        }
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(date);
+        try {
+            return DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
+        } catch (DatatypeConfigurationException ex) {
+            // can't create calendar, return null
+            return null;
         }
     }
 }
