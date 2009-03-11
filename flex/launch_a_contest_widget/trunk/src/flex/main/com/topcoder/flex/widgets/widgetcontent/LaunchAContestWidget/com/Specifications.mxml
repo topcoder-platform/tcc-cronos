@@ -25,7 +25,8 @@
             public var FontsHint:String;
             public var SizeHint:String;
             public var AdditionalHint:String;
-            
+            public var formatStr:String;
+
             private static const ADDEDHEIGHT:Number = 80;
             
             
@@ -35,8 +36,8 @@
 				sizeInput.text="";
 				addReInput.text="";	
 				fileFormatInput.text="";
-				
-            	var formatStr:String = this.mainWidget.competition.contestData.finalFileFormat;
+
+            	formatStr = this.mainWidget.competition.contestData.finalFileFormat;
             	if (formatStr == null){
             		formatStr = "";
             	}
@@ -46,7 +47,7 @@
             		this.epsChb.selected = (formatStr.indexOf("eps")>=0);
 				*/
             	for each(var item:* in fileFormatsBox.getChildren()) {
-            		var ext:String = (item as CheckBox).id.substr(FILE_FORMAT_PREFIX.length);
+            		var ext:String = (item as CheckBox).id.substring(FILE_FORMAT_PREFIX.length, (item as CheckBox).id.length);
             		(item as CheckBox).selected = (formatStr.indexOf(ext) >= 0);
             	}
 
@@ -172,6 +173,10 @@
  						chb.id = FILE_FORMAT_PREFIX + fmt.value;
  						fileFormatsBox.addChild(chb);
  					}
+ 					for each(var item:* in fileFormatsBox.getChildren()) {
+            			var ext:String = (item as CheckBox).id.substring(FILE_FORMAT_PREFIX.length, (item as CheckBox).id.length);
+            			(item as CheckBox).selected = (formatStr.indexOf(ext) >= 0);
+            		}
 				}
             }
 
@@ -195,8 +200,8 @@
 		        <mx:Spacer height="5"/>
 		        <mx:VBox width="100%" verticalGap="0">
 		            <mx:HBox width="500">
-		                <mx:Label text="Colors:" fontWeight="bold" />
-		                <mx:Spacer width="340"/>
+		                <mx:Label text="Colors:" fontWeight="bold"/>
+		                <mx:Spacer width="344"/>
 		                <mx:LinkButton label="[+ show hint]" click="showColorHint(event)" />
 		            </mx:HBox>
 		            <mx:Text id="colorHint" color="0x888888" width="500" height="0" visible="false">
