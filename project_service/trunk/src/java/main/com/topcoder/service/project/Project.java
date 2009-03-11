@@ -6,6 +6,8 @@ package com.topcoder.service.project;
 import java.util.Date;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * <p>
  * This data object extends the <code>{@link ProjectData}</code> class and adds additional properties, including a set
@@ -23,6 +25,7 @@ import java.util.Set;
  * @author humblefool, FireIce
  * @version 1.0
  */
+@XmlType(name = "project", namespace = "com.topcoder.service.project")
 public class Project extends ProjectData {
     /**
      * <p>
