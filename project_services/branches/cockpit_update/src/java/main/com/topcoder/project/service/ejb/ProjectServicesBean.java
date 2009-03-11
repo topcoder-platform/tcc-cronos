@@ -583,7 +583,7 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
             }
         } catch (ConfigurationException e) {
             throw new ProjectServicesException(
-                    "ConfigurationException occurred while getting ProjectServices from ProjectServicesFactory.");
+                    "ConfigurationException occurred while getting ProjectServices from ProjectServicesFactory.", e);
         }
 
         return projectServices;
