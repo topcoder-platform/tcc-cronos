@@ -644,10 +644,6 @@ public class StudioServiceBean implements StudioService {
      */
     public ContestData createContest(ContestData contestData, long tcDirectProjectId) throws PersistenceException {
 	
-		for (PrizeData p: contestData.getPrizes())
-		{
-			System.out.println("prize=="+p.getAmount()+"...place=="+p.getPlace());
-		}
         logEnter("createContest", contestData, tcDirectProjectId);
         checkParameter("contestData", contestData);
         checkParameter("tcDirectProjectId", tcDirectProjectId);
@@ -1409,7 +1405,7 @@ public class StudioServiceBean implements StudioService {
         // StartDate and endDate: the startDate is the launchDateAndTime, the
         // endDate is launchDateTime+durationInHours
         Date startDate = getDate(data.getLaunchDateAndTime());
-System.out.println("------------------start time ========"+startDate);
+
         result.setStartDate(startDate);
         if (startDate != null) {
             result.setEndDate(new Date((long) (startDate.getTime() + 60l * 60 * 1000 * data.getDurationInHours())));
@@ -1581,7 +1577,7 @@ System.out.println("------------------start time ========"+startDate);
         ContestData contestData = new ContestData();
 
         contestData.setLaunchDateAndTime(getXMLGregorianCalendar(contest.getStartDate()));
-System.out.println("---------getting start date 2222 ---------"+contestData.getLaunchDateAndTime());
+
         contestData.setContestId(unbox(contest.getContestId()));
         contestData.setCreatorUserId(unbox(contest.getCreatedUser()));
         contestData.setName(contest.getName());
@@ -1728,7 +1724,7 @@ System.out.println("---------getting start date 2222 ---------"+contestData.getL
 
         // TCCC-293
         double durationInHours = (contest.getEndDate().getTime() - contest.getStartDate().getTime()) / (60.0 * 60 * 1000);
-System.out.println("-------------------------duration is ----------"+durationInHours);
+
         contestData.setDurationInHours(durationInHours);
 
         // TCCC-299 Exception when Editing project
@@ -2030,7 +2026,7 @@ System.out.println("-------------------------duration is ----------"+durationInH
      */
     private UploadedDocument uploadDocument(UploadedDocument data, Contest contest) throws PersistenceException {
         Document doc = new Document();
-	//System.out.println("----upload--------------"+ data);
+
         doc.setDocumentId(data.getDocumentId());
         doc.setOriginalFileName(data.getFileName());
 
@@ -2679,6 +2675,10 @@ System.out.println("-------------------------duration is ----------"+durationInH
             if(contests==null) contests= new ArrayList<SimpleProjectContestData>();
 
             logExit("getSimpleProjectContestData", contests.size());
+	for (SimpleProjectContestData p: contests)
+	{
+		Stem.out.println("contest == "+p.getCname()+", start date ==="+p.getStartDate());
+	}
 			return contests;
 
         } catch (ContestManagementException e) {
