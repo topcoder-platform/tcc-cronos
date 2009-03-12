@@ -72,13 +72,6 @@
   }
   public function set rowNum(temp:Number):void{
     _rowNum = temp;
-    /*if ((_rowNum % 2 )==0) {
-      var o:Object=getStyle("oddRowColor");
-      this.setStyle("backgroundColor",getStyle("oddRowColor"))
-    }
-    else {
-      this.setStyle("backgroundColor",getStyle("evenRowColor"))
-    }*/
   }
   public function get rowNum():Number{
     return _rowNum;
@@ -96,27 +89,27 @@
     return statusBtn.label;
   }
   public function set startDate(temp:String):void{
-    var dateStr:String = changeTimeToUMTMinus5(temp);
-    var dataStrArr:Array = dateStr.split(" ");
-    lblStartDatePart1.text = dataStrArr[0]+" "+dataStrArr[1]+" "+dataStrArr[2]+" "+dataStrArr[5];
-    lblStartDatePart2.text = dataStrArr[3]+" "+dataStrArr[4];
+    var dateStr:String = temp; //tempchangeTimeToUMTMinus5(temp);
+    var dataStrArr:Array = dateStr.split("T"); //dateStr.split(" ");
+    lblStartDatePart1.text = dataStrArr[0]; //dataStrArr[0]+" "+dataStrArr[1]+" "+dataStrArr[2]+" "+dataStrArr[5];
+    lblStartDatePart2.text = dataStrArr[1]; //dataStrArr[3]+" "+dataStrArr[4];
   }
   public function get startDate():String{
-    var part1:String = lblStartDatePart1.text;
-    var part1Arr:Array = part1.split(" ");
-    var result:String = part1Arr[0]+" "+part1Arr[1]+" "+part1Arr[2]+" "+lblStartDatePart2.text+" "+part1Arr[3];
+    //var part1:String = lblStartDatePart1.text;
+    //var part1Arr:Array = part1.split(" ");
+    var result:String = lblStartDatePart1.text + "T" +  lblStartDatePart2.text; //part1Arr[0]+" "+part1Arr[1]+" "+part1Arr[2]+" "+lblStartDatePart2.text+" "+part1Arr[3];
     return result;
   }
   public function set endDate(temp:String):void{
-    var dateStr:String = changeTimeToUMTMinus5(temp);
-    var dataStrArr:Array = dateStr.split(" ");
-    lblEndDatePart1.text = dataStrArr[0]+" "+dataStrArr[1]+" "+dataStrArr[2]+" "+dataStrArr[5];
-    lblEndDatePart2.text = dataStrArr[3]+" "+dataStrArr[4];
+    var dateStr:String = temp; //changeTimeToUMTMinus5(temp);
+    var dataStrArr:Array = dateStr.split("T");
+    lblEndDatePart1.text = dataStrArr[0];  //dataStrArr[0]+" "+dataStrArr[1]+" "+dataStrArr[2]+" "+dataStrArr[5];
+    lblEndDatePart2.text = dataStrArr[1];  //dataStrArr[3]+" "+dataStrArr[4];
   }
   public function get endDate():String{
-    var part1:String = lblEndDatePart1.text;
-    var part1Arr:Array = part1.split(" ");
-    var result:String = part1Arr[0]+" "+part1Arr[1]+" "+part1Arr[2]+" "+lblEndDatePart2.text+" "+part1Arr[3];
+   //var part1:String = lblEndDatePart1.text;
+    //var part1Arr:Array = part1.split(" ");
+    var result:String =  lblEndDatePart1.text + "T" +  lblEndDatePart2.text; //part1Arr[0]+" "+part1Arr[1]+" "+part1Arr[2]+" "+lblEndDatePart2.text+" "+part1Arr[3];
     return result;
   }
   public function set registrants(temp:String):void{

@@ -152,7 +152,7 @@
 						prjArray[i].endDate,prjArray[i].num_reg,           prjArray[i].num_sub,
 						prjArray[i].num_for, prjArray[i].forumId,
 						prjArray[i].sname);
-						c.date=prjArray[i].endDate;
+						c.date= DateUtil.parseFromString(prjArray[i].endDate);    //prjArray[i].endDate;
 						contests.addItem(c);
 					}
         				
@@ -190,64 +190,6 @@
 			return ObjectUtil.dateCompare(b.date,a.date);
             }
 
-/*
-        private function setContests(e:ResultEvent): void
-        {
-        	contests=new ArrayCollection();
-        	if(e!=null && e.result!=null && e.result is  ArrayCollection)
-        	{
-        		var arr:ArrayCollection=e.result as ArrayCollection;
-        		for(var i:int=0;i<arr.length;i++)
-        		{
-        			var datePattern:RegExp = /-/g;
-            		var datePattern2:RegExp = /T/g;
-            		var endTimeTmp:String = arr[i].endTime[0];
-            		var timeZoneIndex:Number = endTimeTmp.lastIndexOf("-");
-            		endTimeTmp = endTimeTmp.substring(0, timeZoneIndex);
-            		timeZoneIndex = endTimeTmp.indexOf("T");
-            		var endTimeTmp1:String = endTimeTmp.substring(0, timeZoneIndex).replace(datePattern, "/");
-            		var endTimeTmp2:String = endTimeTmp.substring(timeZoneIndex+1, endTimeTmp.length);  
-            		var startTimeTmp:String = arr[i].startTime[0];
-            		timeZoneIndex = startTimeTmp.lastIndexOf("-");
-            		startTimeTmp=startTimeTmp.substring(0, timeZoneIndex);
-            		timeZoneIndex = startTimeTmp.indexOf("T");
-            		var startTimeTmp1:String = startTimeTmp.substring(0, timeZoneIndex).replace(datePattern, "/");
-            		var startTimeTmp2:String = startTimeTmp.substring(timeZoneIndex+1, startTimeTmp.length);
-        			var c:Contest=new Contest(arr[i].contestData.contestId,arr[i].contestData.name,startTimeTmp1+" "+startTimeTmp2,
-        			endTimeTmp1+" "+endTimeTmp2,arr[i].contestData.numberOfRegistrants,           arr[i].contestData.submissionCount,
-        			arr[i].contestData.forumPostCount,arr[i].contestData.forumId,
-        			statusDict[arr[i].contestData.statusId]);
-        			contests.addItem(c);
-        		}
-        		
-        		if(!contests.sort)
-        		{
-        			var sort:Sort = new Sort();
-				sort.compareFunction = compareName;
-				contests.sort = sort;
-        		}
-        		contests.refresh()
-        	}
-        	
-        	var list:ProjectList=new ProjectList();
-			prjList.addChild(list);
-			list.setStyle("verticalScrollPolicy","auto");
-			list.dataProvider=new Project(pname,pdesc,"",contests);
-			
-				if(prjIdx<prjArray.length)
-        		{
-        			pname=prjArray[prjIdx].name;
-        			pdesc=prjArray[prjIdx].description;
-        			projectId=prjArray[prjIdx].projectId;
-        			prjIdx++;
-        			ContestServiceFacadeBean.clearHeaders();
-        			ContestServiceFacadeBean.addHeader(getHeader(username,password));
-        			ContestServiceFacadeBean.getContestsForProject.send();
-        		}
-        	
-        	
-        }
-        */
 
 	private function getDataService():void
         {

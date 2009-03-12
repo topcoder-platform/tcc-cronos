@@ -37,14 +37,14 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget.qs
       // [3] - Time
       // [4] - Timezone offset
       // [5] - Year
-      var startDtData:Array = _stDt.split(" ");
-      var endDtData:Array = _eDt.split(" ");
+      //var startDtData:Array = _stDt.split(" ");
+      //var endDtData:Array = _eDt.split(" ");
 
-      this.startDate =  startDtData[0]+" "+startDtData[1]+" "+startDtData[2]+" "+startDtData[5]+"\n";
-      this.startDate += startDtData[3]+" "+startDtData[4];
+      this.startDate = _stDt;  //startDtData[0]+" "+startDtData[1]+" "+startDtData[2]+" "+startDtData[5]+"\n";
+      //this.startDate += startDtData[3]+" "+startDtData[4];
 
-      this.endDate =  endDtData[0]+" "+endDtData[1]+" "+endDtData[2]+" "+endDtData[5]+"\n";
-      this.endDate += endDtData[3]+" "+endDtData[4];
+      this.endDate = _eDt; //endDtData[0]+" "+endDtData[1]+" "+endDtData[2]+" "+endDtData[5]+"\n";
+      //this.endDate += endDtData[3]+" "+endDtData[4];
     }
 
 	}
