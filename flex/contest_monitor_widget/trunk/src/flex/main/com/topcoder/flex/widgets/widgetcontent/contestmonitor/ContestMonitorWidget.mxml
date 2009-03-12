@@ -29,8 +29,6 @@
             
     	import mx.utils.ObjectUtil;
 
-		private var _inputDatePattern:RegExp = /([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})[.]([0-9]{3})([-+])([0-9]{2}):([0-9]{2})/;
-
         private var startTime:Date;
         private var endTime:Date;
         
@@ -46,7 +44,8 @@
         
         private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
 		
-		
+	private var _inputDatePattern:RegExp = /([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})[.]([0-9]{3})([-+])([0-9]{2}):([0-9]{2})/;
+
 		
 		[Bindable]
 		private var contestNames:ArrayCollection;
@@ -72,6 +71,12 @@
             loader.addEventListener(Event.COMPLETE, getData);
             loader.load(url);
         }
+
+	private function getParsableDate(flds:Array):String {
+            var dt:String = flds[1] + "/" + flds[2] + "/" + flds[3] + " " + flds[4] + ":" + flds[5] + ":" + flds[6] + " " + "GMT" + flds[8] + flds[9] + flds[10];
+            return dt;
+}
+
         
         //after loading the xml file, fetch data
         private function getData(event:Event):void {
@@ -141,7 +146,14 @@
                 event.target.stop();
         }
          private function compareDate(a:Object, b:Object, fields:Array = null):int {
-               return ObjectUtil.dateCompare(b.endDate,a.endDate);
+
+		var sflds:Array = _inputDatePattern.exec(a.endDate);
+		var aend:Date = new Date(Date.parse(getParsableDate(sflds)));
+
+		var sfldss:Array = _inputDatePattern.exec(b.endDate);
+		var bend:Date = new Date(Date.parse(getParsableDate(sfldss)));
+
+               return ObjectUtil.dateCompare(bend,aend);
             }
         private function setContests(e:ResultEvent): void
         {
@@ -178,11 +190,9 @@
         	
         	contestCombo.selectedIndex=selectIdx;
         }
-        
-        private function getParsableDate(flds:Array):String {
-            var dt:String = flds[1] + "/" + flds[2] + "/" + flds[3] + " " + flds[4] + ":" + flds[5] + ":" + flds[6] + " " + "GMT" + flds[8] + flds[9] + flds[10];
-            return dt;
-        }
+
+
+    
         
         private function getDisplayableDateComp(flds:Array):String {
         	return flds[2] + "-" + flds[3] + "-" + flds[1]
@@ -196,18 +206,6 @@
         	return "GMT" + flds[8] + flds[9] + flds[10];
         }
         
-        //change the time to UMT-5 time for BUGR-1196
-        private function changeTimeToUMTMinus5(date:Date):String {
-            var dateTmp:Date = new Date(date.getTime());
-            var tzOffHours:Number = dateTmp.timezoneOffset/60;
-            dateTmp.setTime(dateTmp.getTime() - (5 - tzOffHours)*OneHour);
-            var dateStr:String = dateTmp.toString();
-            var GMTIndex:int = dateStr.indexOf("GMT");
-            var result:String = dateStr.substr(0, GMTIndex);
-            result += "UMT-0500 ";
-            result += dateStr.substr(GMTIndex+9, 4);
-            return result;
-        }
         
         private function handleContest():void
         {
@@ -215,23 +213,20 @@
         	var result:*=contestList.getItemAt(contestCombo.selectedIndex);
         	if(result==null )return ;
         	regs.text = result.num_reg;//.numberOfRegistrants;
-            subms.text = result.num_sub;//.contestData.submissionCount;
-            
-            //Format like: 2009-01-12T11:00:00.000-05:00
-            //var sflds:Array = _inputDatePattern.exec(result.startTime[0]);
-            //startTime = new Date(Date.parse(getParsableDate(sflds)));
-            //start.text = getDisplayableDateComp(sflds) + "\t" + getDisplayableTimeComp(sflds) + "\t\t" + getDisplayableTimeZoneComp(sflds);
-            
-            //var eflds:Array = _inputDatePattern.exec(result.endTime[0]);
-            //endTime = new Date(Date.parse(getParsableDate(eflds)));
-            //end.text = getDisplayableDateComp(eflds) + "\t" + getDisplayableTimeComp(eflds) + "\t\t" + getDisplayableTimeZoneComp(eflds);
-            startTime=result.startDate;
-	        start.text = changeTimeToUMTMinus5(startTime);
-            endTime=result.endDate;
-	        end.text = changeTimeToUMTMinus5(endTime);
-            var currentTime:Date = new Date();
-            var timeSpan:Number = (endTime.getTime() - startTime.getTime())/1000;
-            var currentPos:Number = (currentTime.getTime() - startTime.getTime())/1000;
+		subms.text = result.num_sub;//.contestData.submissionCount;
+         
+		//Format like: 2009-01-12T11:00:00.000-05:00
+		//var sflds:Array = _inputDatePattern.exec(result.startDate);
+		startTime = DateUtil.parseFromString(result.startDate);  //new Date(Date.parse(getParsableDate(sflds)));
+		start.text = startTime.toString();
+
+
+		//var sfldss:Array = _inputDatePattern.exec(result.endDate);
+		endTime = DateUtil.parseFromString(result.endDate);  //new Date(Date.parse(getParsableDate(sfldss)));
+		end.text = endTime.toString();
+		var currentTime:Date = new Date();
+		var timeSpan:Number = (endTime.getTime() - startTime.getTime())/1000;
+		var currentPos:Number = (currentTime.getTime() - startTime.getTime())/1000;
             
             var tickValuesArry:Array = new Array();
             var labelsArry:Array = new Array();
