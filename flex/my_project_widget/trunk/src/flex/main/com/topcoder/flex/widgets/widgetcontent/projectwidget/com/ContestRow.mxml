@@ -12,6 +12,8 @@
 	private var _ContextId:String;
 	
 	private static const OneHour:Number = 1000 * 60 * 60;
+
+	private var _inputDatePattern:RegExp = /([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})[.]([0-9]{3})([-+])([0-9]{2}):([0-9]{2})/;
 	/**
      * The base url for the link of contents;
      */
@@ -89,27 +91,29 @@
     return statusBtn.label;
   }
   public function set startDate(temp:String):void{
-    var dateStr:String = temp; //tempchangeTimeToUMTMinus5(temp);
-    var dataStrArr:Array = dateStr.split("T"); //dateStr.split(" ");
-    lblStartDatePart1.text = dataStrArr[0]; //dataStrArr[0]+" "+dataStrArr[1]+" "+dataStrArr[2]+" "+dataStrArr[5];
-    lblStartDatePart2.text = dataStrArr[1]; //dataStrArr[3]+" "+dataStrArr[4];
+    var dateStr:String = temp;
+    var dataStrArr:Array = dateStr.split("T"); 
+    lblStartDatePart1.text = dataStrArr[0]; 
+    var timeStrArray:Array = dataStrArr[1].split(".");
+    var timeStr:String = timeStrArray[1];
+    lblStartDatePart2.text = timeStrArray[0] + " GMT"+  timeStr.substr(3,3) + timeStr.substr(7,2); 
   }
   public function get startDate():String{
-    //var part1:String = lblStartDatePart1.text;
-    //var part1Arr:Array = part1.split(" ");
-    var result:String = lblStartDatePart1.text + "T" +  lblStartDatePart2.text; //part1Arr[0]+" "+part1Arr[1]+" "+part1Arr[2]+" "+lblStartDatePart2.text+" "+part1Arr[3];
+    //TODO
+    var result:String = lblStartDatePart1.text + "T" +  lblStartDatePart2.text;
     return result;
   }
   public function set endDate(temp:String):void{
-    var dateStr:String = temp; //changeTimeToUMTMinus5(temp);
+    var dateStr:String = temp; 
     var dataStrArr:Array = dateStr.split("T");
-    lblEndDatePart1.text = dataStrArr[0];  //dataStrArr[0]+" "+dataStrArr[1]+" "+dataStrArr[2]+" "+dataStrArr[5];
-    lblEndDatePart2.text = dataStrArr[1];  //dataStrArr[3]+" "+dataStrArr[4];
+    lblEndDatePart1.text = dataStrArr[0];  
+    var timeStrArray:Array = dataStrArr[1].split(".");
+    var timeStr:String = timeStrArray[1];
+    lblEndDatePart2.text = timeStrArray[0] + " GMT"+  timeStr.substr(3,3) + timeStr.substr(7,2); 
   }
   public function get endDate():String{
-   //var part1:String = lblEndDatePart1.text;
-    //var part1Arr:Array = part1.split(" ");
-    var result:String =  lblEndDatePart1.text + "T" +  lblEndDatePart2.text; //part1Arr[0]+" "+part1Arr[1]+" "+part1Arr[2]+" "+lblEndDatePart2.text+" "+part1Arr[3];
+    // TODO
+    var result:String =  lblEndDatePart1.text + "T" +  lblEndDatePart2.text; 
     return result;
   }
   public function set registrants(temp:String):void{
