@@ -2675,10 +2675,7 @@ public class StudioServiceBean implements StudioService {
             if(contests==null) contests= new ArrayList<SimpleProjectContestData>();
 
             logExit("getSimpleProjectContestData", contests.size());
-	for (SimpleProjectContestData p: contests)
-	{
-		Stem.out.println("contest == "+p.getCname()+", start date ==="+p.getStartDate());
-	}
+
 			return contests;
 
         } catch (ContestManagementException e) {
