@@ -41,6 +41,10 @@
 
 	            	if (startDateStr!=null){
 	            		startDate = DateUtil.parseFromString(startDateStr);
+				var dataStrArr:Array = startDateStr.split("T");
+				    var timeStrArray:Array = dataStrArr[1].split(".");
+				    var timeStr:String = timeStrArray[1];
+				    timezoneStart.text = "ET (GMT" +  timeStr.substr(3,3) + timeStr.substr(7,2) + ")"; 
 	            	}
             	}
             	
@@ -49,6 +53,10 @@
 
 	            	if (endDateStr!=null){
 	            		endDate = DateUtil.parseFromString(endDateStr);
+				var dataStrArr:Array = endDateStr.split("T");
+				    var timeStrArray:Array = dataStrArr[1].split(".");
+				    var timeStr:String = timeStrArray[1];
+				    timezoneEnd.text = "ET (GMT" +  timeStr.substr(3,3) + timeStr.substr(7,2) + ")"; 
 	            	}
             	}
             	
@@ -150,6 +158,8 @@
             	if (date == null){
             		hourComb.selectedIndex = 0;
             		minuteComb.selectedIndex = 0;
+			timezoneStart.text = "ET";
+			timezoneEnd.text = "ET";
             		return;
             	}
             	
@@ -264,7 +274,7 @@ Tips:
                 <mx:Label text="Minute:"/>
                 <mx:ComboBox id="CmbMinuteStart" width="57" />
                
-                <mx:Text id="timezoneStart" text="ET(UMT-5)"/>
+                <mx:Text id="timezoneStart" text="ET"/>
             </mx:HBox>
             <mx:Spacer height="5"/>
             <mx:HBox verticalAlign="middle">
@@ -278,7 +288,7 @@ Tips:
                 <mx:Label text="Minute:" />
                 <mx:ComboBox id="CmbMinuteEnd" width="57" />
 
-                <mx:Text id="timezoneEnd" text="ET(UMT-5)"/>
+                <mx:Text id="timezoneEnd" text="ET"/>
             </mx:HBox>
         </mx:VBox>
         <mx:Spacer height="25"/>
