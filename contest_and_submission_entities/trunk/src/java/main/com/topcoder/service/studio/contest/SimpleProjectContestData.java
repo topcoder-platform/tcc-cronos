@@ -7,6 +7,12 @@ import javax.persistence.EntityResult;
 import javax.persistence.FieldResult;
 import javax.persistence.Id;
 import javax.persistence.SqlResultSetMapping;
+
+import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.GregorianCalendar;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.DatatypeConfigurationException;
+
 /**
  * <p>
  * Represents the entity class for contest info for myproject widget.
@@ -21,7 +27,7 @@ import javax.persistence.SqlResultSetMapping;
  */
 @SqlResultSetMapping(
 		name="ContestForMyProjectResults",
-		entities={@EntityResult(entityClass=SimpleProjectContestData.class, 
+		entities={@EntityResult(entityClass=SimpleProjectContestData.class,
 				fields={@FieldResult(name="contestId",      column="contest_id"),
 			            @FieldResult(name="projectId", column="project_id"),
 			            @FieldResult(name="pname",           column="pname"),
@@ -34,29 +40,29 @@ import javax.persistence.SqlResultSetMapping;
 			            @FieldResult(name="num_for",           column="num_for"),
 			            @FieldResult(name="forumId",           column="forum_id"),
 			            @FieldResult(name="description",           column="description")
-			            }              
+			            }
 		)})
 @Entity
 public class SimpleProjectContestData {
-	
+
 	/**
      * Generated serial version id.
      */
     private static final long serialVersionUID = -6991488651979864256L;
-    
-    
+
+
     /**
      * Represents the contest id.
      */
     @Id
     private Long contestId;
-    
+
     /**
      * Represents the project id.
      */
-    
+
     private Long projectId;
-    
+
     /**
      * Represents the project name.
      */
@@ -66,7 +72,7 @@ public class SimpleProjectContestData {
      * Represents the contest name.
      */
     private String cname;
-    
+
     /**
      * Represents the start date.
      */
@@ -76,32 +82,32 @@ public class SimpleProjectContestData {
      * Represents the end date.
      */
     private Date endDate;
-    
+
     /**
      * Represents the Registrants number.
      */
     private Integer num_reg;
-    
+
     /**
      * Represents the submission number.
      */
     private Integer num_sub;
-    
+
     /**
      * Represents the post number in forum.
      */
     private Integer num_for;
-    
+
     /**
      * Represents the status name.
      */
     private String sname;
-    
+
     /**
      * Represents the forum id.
      */
     private Integer forumId;
-    
+
     /**
      * Represents the description for project.
      */
@@ -148,8 +154,8 @@ public class SimpleProjectContestData {
      *
      * @return the endDate.
      */
-	public Date getEndDate() {
-		return endDate;
+	public XMLGregorianCalendar getEndDate() {
+		return getXMLGregorianCalendar(endDate);
 	}
 
 	/**
@@ -158,8 +164,8 @@ public class SimpleProjectContestData {
      * @param endDate
      *            the endDate to set.
      */
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+	public void setEndDate(XMLGregorianCalendar endDate) {
+		this.endDate = getDate(endDate);
 	}
 
 	/**
@@ -259,8 +265,8 @@ public class SimpleProjectContestData {
      *
      * @return the startDate.
      */
-	public Date getStartDate() {
-		return startDate;
+	public XMLGregorianCalendar getStartDate() {
+		return getXMLGregorianCalendar(startDate);
 	}
 
 	 /**
@@ -269,8 +275,8 @@ public class SimpleProjectContestData {
      * @param startDate
      *            the startDate to set.
      */
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
+	public void setStartDate(XMLGregorianCalendar startDate) {
+		this.startDate = getDate(startDate);
 	}
 
 	/**
@@ -326,4 +332,43 @@ public class SimpleProjectContestData {
 		this.forumId = forumId;
 	}
 
+    /**
+     * <p>Converts specified <code>XMLGregorianCalendar</code> instance into <code>Date</code> instance.</p>
+     *
+     * @param calendar an <code>XMLGregorianCalendar</code> representing the date to be converted.
+     * @return a <code>Date</code> providing the converted value of specified calendar or <code>null</code> if specified
+     *         <code>calendar</code> is <code>null</code>.
+     */
+    private static Date getDate(XMLGregorianCalendar calendar) {
+        if (calendar == null) {
+            return null;
+        }
+        return calendar.toGregorianCalendar().getTime();
+    }
+
+	/**
+	 * <p>
+	 * Converts specified <code>Date</code> instance into
+	 * <code>XMLGregorianCalendar</code> instance.
+	 * </p>
+	 *
+	 * @param date
+	 *            a <code>Date</code> representing the date to be converted.
+	 * @return a <code>XMLGregorianCalendar</code> providing the converted value
+	 *         of specified date or <code>null</code> if specified
+	 *         <code>date</code> is <code>null</code> or if it can't be
+	 *         converted to calendar.
+	 */
+	private static XMLGregorianCalendar getXMLGregorianCalendar(Date date) {
+		if (date == null) {
+			return null;
+		}
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(date);
+		try {
+			return DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
+		} catch (DatatypeConfigurationException ex) {
+			return null;
+		}
+	}
 }
