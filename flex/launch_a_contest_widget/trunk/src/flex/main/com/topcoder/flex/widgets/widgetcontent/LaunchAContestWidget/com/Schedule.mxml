@@ -33,8 +33,11 @@
             	var startDate:Date = null;
             	var endDate:Date = null;
             	
-            	var startTime:Object = mainWidget.competition.startTime;
-            	var endTime:Object = mainWidget.competition.endTime;
+		if (mainWidget.competition != null)
+		{
+			var startTime:Object = mainWidget.competition.startTime;
+			var endTime:Object = mainWidget.competition.endTime;
+		}
             	
             	if (startTime != null){
 	            	var startDateStr:String = mainWidget.competition.startTime as String;

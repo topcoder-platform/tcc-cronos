@@ -56,6 +56,14 @@
 	        		return false;
 	        	}
 	        	
+	        	if(introInput.htmlText.length > 10000) { // BUGR-1279
+	        		Helper.showAlertMessage("Please shorten the intro");
+	        		return false;
+	        	}
+	        	if(glsInput.htmlText.length > 10000) { // BUGR-1279
+	        		Helper.showAlertMessage("Please shorten the detailed description");
+	        		return false;
+	        	}
 	        	this.mainWidget.competition.contestData.name = ctInput.text; // BUGR-1379
 	        	this.mainWidget.competition.contestData.shortSummary = introInput.htmlText; // BUGR-1379
 	        	this.mainWidget.competition.contestData.contestDescriptionAndRequirements = glsInput.htmlText; // BUGR-1379
