@@ -218,12 +218,22 @@
 		//Format like: 2009-01-12T11:00:00.000-05:00
 		//var sflds:Array = _inputDatePattern.exec(result.startDate);
 		startTime = DateUtil.parseFromString(result.startDate);  //new Date(Date.parse(getParsableDate(sflds)));
-		start.text = startTime.toString();
+
+		var dataStrArr:Array = result.startDate.split("T");
+		var timeStrArray:Array = dataStrArr[1].split(".");
+		var timeStr:String = timeStrArray[1];
+		start.text = dataStrArr[0] + " " + timeStrArray[0] + " GMT"+  timeStr.substr(3,3) + timeStr.substr(7,2); 
 
 
 		//var sfldss:Array = _inputDatePattern.exec(result.endDate);
 		endTime = DateUtil.parseFromString(result.endDate);  //new Date(Date.parse(getParsableDate(sfldss)));
-		end.text = endTime.toString();
+
+		var dataStrArr:Array = result.endDate.split("T");
+		var timeStrArray:Array = dataStrArr[1].split(".");
+		var timeStr:String = timeStrArray[1];
+		end.text = dataStrArr[0] + " " + timeStrArray[0] + " GMT"+  timeStr.substr(3,3) + timeStr.substr(7,2); 
+		//end.text = endTime.toString();
+
 		var currentTime:Date = new Date();
 		var timeSpan:Number = (endTime.getTime() - startTime.getTime())/1000;
 		var currentPos:Number = (currentTime.getTime() - startTime.getTime())/1000;
