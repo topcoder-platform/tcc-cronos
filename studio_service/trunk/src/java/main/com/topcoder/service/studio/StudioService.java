@@ -775,4 +775,16 @@ public interface StudioService {
      */
     public void rankAndPurchaseSubmission(long submissionId, int placement, SubmissionPaymentData paymentData,
             String userId) throws PersistenceException;
+    
+    /**
+     * <p>
+     * Updates the submission feedback
+     * </p>
+     * 
+     * @param feedback
+     *            a <code>SubmissionFeedback</code> the feedback
+     * @throws PersistenceException
+     *             when error reported by manager
+     */
+    public void updateSubmissionFeedback(SubmissionFeedback feedback) throws PersistenceException;
 }

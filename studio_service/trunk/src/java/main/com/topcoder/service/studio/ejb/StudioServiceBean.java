@@ -58,6 +58,7 @@ import com.topcoder.service.studio.StatusNotFoundException;
 import com.topcoder.service.studio.StudioService;
 import com.topcoder.service.studio.StudioServiceException;
 import com.topcoder.service.studio.SubmissionData;
+import com.topcoder.service.studio.SubmissionFeedback;
 import com.topcoder.service.studio.SubmissionPaymentData;
 import com.topcoder.service.studio.UploadedDocument;
 import com.topcoder.service.studio.UserNotAuthorizedException;
@@ -4311,6 +4312,35 @@ public class StudioServiceBean implements StudioService {
 
             logExit("rankAndPurchaseSubmission");
             return;
+        } catch (SubmissionManagementException e) {
+            handlePersistenceError("SubmissionManagement reports error.", e);
+        }
+    }
+    
+    /**
+     * <p>
+     * Updates the submission feedback
+     * </p>
+     * 
+     * @param feedback
+     *            a <code>SubmissionFeedback</code> the feedback
+     * @throws PersistenceException
+     *             when error reported by manager
+     */
+    public void updateSubmissionFeedback(SubmissionFeedback feedback) throws PersistenceException {
+        try {
+            long submissionId = feedback.getSubmissionId();
+
+            Submission submission = submissionManager.getSubmission(submissionId);
+            if (submission == null) {
+                String message = "submission not found. submission id: " + submissionId;
+                logDebug(message);
+                logExit("rankAndPurchaseSubmission");
+                throw new PersistenceException(message, message);
+            }
+
+            this.submissionManager.updateSubmissionFeedback(feedback.getSubmissionId(), feedback.getFeedbackText(),
+                    feedback.getFeedbackThumb());
         } catch (SubmissionManagementException e) {
             handlePersistenceError("SubmissionManagement reports error.", e);
         }
