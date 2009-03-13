@@ -2275,7 +2275,7 @@
         <mx:TileList id="downloadList" 
         	width="100%"
         	height="460" 
-        	columnCount="2"
+        	columnCount="3"
             selectionDuration="0"
             dataProvider="{_downloadList}" 
             itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.DownloadListRenderer"
