@@ -42,7 +42,6 @@
 	padding-right: 10;
 	padding-bottom: 10;
 	padding-top: 10;
-	border-skin: Embed(source="../assets/box_bg.png",scaleGridTop="12",scaleGridLeft="12",scaleGridRight="221",scaleGridBottom="28");
 }
 
 /* BUGR-1141 */

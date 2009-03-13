@@ -260,7 +260,7 @@
                 <mx:HBox width="100%">
                     <mx:Spacer width="42"/>
                     <mx:Label text="Add a New Project:"  width="109"/>
-                    <mx:TextInput id="prjInput" width="308"/>
+                    <mx:TextInput id="prjInput" width="100%"/>
                 </mx:HBox>
                 
                 <mx:HBox width="100%" >
@@ -270,7 +270,7 @@
                 
                 <mx:HBox width="100%">
                     <mx:Label text="Choose an Existing Project:" />
-                    <mx:ComboBox id="selectContests" width="309" />
+                    <mx:ComboBox id="selectContests" width="100%" />
                 </mx:HBox>
                 
                 <mx:HBox width="100%">
@@ -280,7 +280,7 @@
                 <mx:HBox width="100%">
                     <mx:Spacer width="32"/>
                     <mx:Text text="Brief description of the overall project:" height="37" width="117"/>
-                    <mx:TextArea id="introInput" width="312" height="120"/>
+                    <mx:TextArea id="introInput" width="100%" height="120"/>
                 </mx:HBox>
                 <!--
                 <mx:HBox width="100%" >
