@@ -155,7 +155,9 @@
 	            <mx:Label text="Contest Type:" fontWeight="bold" />
 	            <mx:Text id="contestType_step1" text="Studio" />
 	            <mx:Spacer width="375"/>
+		    <!--
 	            <mx:Button styleName="EditButton" buttonMode="true" click="goToStep1()"/>
+		    -->
 	        </mx:HBox>
         </mx:VBox>
         
@@ -226,7 +228,7 @@
 	            <mx:Text id="introInput" width="100%" height="100%" />
             </mx:VBox>
             <mx:Spacer height="5"/>
-            <mx:Label text="What are the primary goals for this design?" fontWeight="bold" />
+            <mx:Label text="Detailed Description:" fontWeight="bold" />
             <mx:VBox verticalScrollPolicy="auto" width="308" height="50">
 		        <mx:Text id="glsInput" width="100%" height="100%" />
             </mx:VBox>
