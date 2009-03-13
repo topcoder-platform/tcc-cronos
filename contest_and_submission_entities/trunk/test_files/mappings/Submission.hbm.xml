@@ -81,6 +81,12 @@
 			<column name="submission_id" />
 			<column name="contest_id" />
 		</many-to-one>
+        
+        <!-- BUGR-1366 -->
+        <property name="feedbackText" column="feedback_text" />
+        
+        <!-- BUGR-1366 -->
+        <property name="feedbackThumb" column="feedback_thumb" />
 
 	</class>
 </hibernate-mapping>

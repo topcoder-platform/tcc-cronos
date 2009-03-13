@@ -132,6 +132,19 @@ public class Submission implements Serializable {
      * have a payment or it's unknown.
      */
     private Long paymentId;
+    
+    /**
+     * Represents the user feedback on submission. 
+     * @since BUGR-1366
+     */
+    private String feedbackText;
+    
+    /**
+     * Represents the feedback thumb on submission.
+     * Feedback thumb can be Thumb Up (== 1), Thumb Down (== -1) or No Thumb (== 0)
+     * @since BUGR-1366
+     */
+    private Integer feedbackThumb;
 
     /**
      * Default constructor.
@@ -518,6 +531,54 @@ public class Submission implements Serializable {
      */
     public void setPaymentId(Long paymentId) {
         this.paymentId = paymentId;
+    }
+
+    /**
+     * <p>
+     * Gets the feedback text on the submission.
+     * </p>
+     *  
+     * @return a <code>String</code> feedback text.
+     * @since BUGR-1366
+     */
+    public String getFeedbackText() {
+        return this.feedbackText;
+    }
+
+    /**
+     * <p>
+     * Sets the feedback text on the submission.
+     * </p>
+     * 
+     * @param feedbackText a <code>String</code> feedback text.
+     * @since BUGR-1366
+     */
+    public void setFeedbackText(String feedbackText) {
+        this.feedbackText = feedbackText;
+    }
+
+    /**
+     * <p>
+     * Gets the feedback thumb of the submission.
+     * </p>
+     * 
+     * @return a <code>Integer</code> 
+     * @since BUGR-1366
+     */
+    public Integer getFeedbackThumb() {
+        return this.feedbackThumb;
+    }
+
+    /**
+     * <p>
+     * Sets the feedback thumb of the submission.
+     * </p>
+     * 
+     * @param feedbackThumb a <code>Integer</code>
+     * @since BUGR-1366
+     */
+    public void setFeedbackThumb(Integer feedbackThumb) {
+        this.feedbackThumb = feedbackThumb;
     }
 
     /**
