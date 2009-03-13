@@ -3,6 +3,20 @@
  */
 package com.topcoder.service.facade.contest.ejb;
 
+import com.cronos.onlinereview.services.uploads.ConfigurationException;
+import com.cronos.onlinereview.services.uploads.UploadExternalServices;
+import com.cronos.onlinereview.services.uploads.UploadServicesException;
+import com.cronos.onlinereview.services.uploads.impl.DefaultUploadExternalServices;
+import com.topcoder.catalog.entity.Category;
+import com.topcoder.catalog.entity.Phase;
+import com.topcoder.catalog.entity.Technology;
+import com.topcoder.catalog.service.AssetDTO;
+import com.topcoder.catalog.service.CatalogService;
+import com.topcoder.catalog.service.EntityNotFoundException;
+import com.topcoder.management.project.Project;
+import com.topcoder.project.service.FullProjectData;
+import com.topcoder.project.service.ProjectServices;
+import com.topcoder.project.service.ProjectServicesException;
 import com.topcoder.security.auth.module.UserProfilePrincipal;
 import com.topcoder.service.payment.CreditCardPaymentData;
 import com.topcoder.service.payment.PaymentData;
@@ -13,6 +27,7 @@ import com.topcoder.service.payment.PaymentType;
 import com.topcoder.service.payment.TCPurhcaseOrderPaymentData;
 import com.topcoder.service.payment.paypal.PayPalPaymentProcessor;
 import com.topcoder.service.payment.paypal.PayflowProPaymentProcessor;
+import com.topcoder.service.project.SoftwareCompetition;
 import com.topcoder.service.project.StudioCompetition;
 import com.topcoder.service.project.CompetionType;
 import com.topcoder.service.project.Competition;
@@ -39,6 +54,7 @@ import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.facade.contest.ContestServiceException;
 import com.topcoder.service.facade.contest.ContestServiceFilter;
 import com.topcoder.service.studio.submission.Prize;
 import com.topcoder.service.studio.submission.PrizeType;
@@ -53,6 +69,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.EJB;
 import javax.jws.WebService;
+import javax.activation.DataHandler;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
@@ -64,6 +81,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import org.jboss.logging.Logger;
 import org.jboss.ws.annotation.EndpointConfig;
 
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -73,6 +91,11 @@ import java.util.Date;
 /**
  * <p>This is an implementation of <code>Contest Service Facade</code> web service in form of stateless session EJB. It
  * holds a reference to {@link StudioService} which is delegated the fulfillment of requests.</p>
+ * 
+ * <p>
+ * TopCoder Service Layer Integration 3 Assembly change: expose the methods of Category Services, Project Services and
+ * Online Review Upload Services.
+ * </p>
  *
  * @author TCSDEVELOPER
  * @version 1.0
@@ -92,6 +115,24 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     @EJB(name = "ejb/StudioService")
     private StudioService studioService = null;
+
+    /**
+     * <p>A <code>CatalogService</code> providing access to available <code>Category Services EJB</code>. This bean is
+     * delegated to process the calls to the methods inherited from <code>Category Services</code> component.</p>
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    @EJB(name = "ejb/CatalogService")
+    private CatalogService catalogService = null;
+
+    /**
+     * <p>A <code>ProjectServices</code> providing access to available <code>Project Services EJB</code>. This bean is
+     * delegated to process the calls to the methods inherited from <code>Project Services</code> component.</p>
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    @EJB(name = "ejb/ProjectServicesBean")
+    private ProjectServices projectServices = null;
 
 	/**
 	 * <p>
@@ -135,6 +176,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 	 * </p>
 	 */
 	private PaymentProcessor paymentProcessor = null;
+
+	/**
+	 * <p>
+	 * A <code>UploadExternalServices</code> instance of Online Review Upload Services to expose its methods.
+	 * </p>
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+	 */
+	private UploadExternalServices uploadExternalServices = null;
 
 	/**
 	 * Private constant specifying non-active not yet published status id.
@@ -240,6 +290,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * case TopCoder) PayPal API details.
      * </p>
      * 
+     * <p>
+     * TopCoder Service Layer Integration 3 Assembly change: new instance of the DefaultUploadServices for exposing its methods.
+     * </p>
+     * 
      * @throws IllegalStateException
      *             it throws this exception on any issues during caller services initialization. Issues can be: wrong
      *             authentication information, invalid information etc.
@@ -250,6 +304,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         // BUGR-1239
         paymentProcessor = new PayflowProPaymentProcessor(payFlowHostAddress, payFlowUser, payFlowPartner,
                 payFlowVendor, payFlowPassword);
+
+        // TopCoder Service Layer Integration 3 Assembly
+        try {
+        	uploadExternalServices = new DefaultUploadExternalServices();
+		} catch (ConfigurationException e) {
+			throw new IllegalStateException("Failed to create the DefaultUploadExternalServices instance.", e);
+		}
 
     }
 
@@ -1390,5 +1451,420 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 			throw new PaymentException(e.getMessage(), e);
 		}
 
+    }
+
+    /**
+     * <p>Returns a list containing all active <code>Categories</code>.</p>
+     *
+     * @return a list containing all active <code>Categories</code>. It can be empty if no objects found.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public List<Category> getActiveCategories() throws ContestServiceException {
+        try {
+            return catalogService.getActiveCategories();
+        } catch (com.topcoder.catalog.service.PersistenceException e) {
+            throw new ContestServiceException("Operation failed in the catalogService.", e);
+        }
+    }
+
+    /**
+     * <p>Returns a list containing all active <code>Technologies</code>.</p>
+     *
+     * @return a list containing all active <code>Categories</code>. It can be empty if no objects found.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public List<Technology> getActiveTechnologies() throws ContestServiceException {
+        try {
+            return catalogService.getActiveTechnologies();
+        } catch (com.topcoder.catalog.service.PersistenceException e) {
+            throw new ContestServiceException("Operation failed in the catalogService.", e);
+        }
+    }
+
+    /**
+     * <p>Returns a list containing all <code>Phases</code>.</p>
+     *
+     * @return a list containing all active <code>Categories</code>. It can be empty if no objects found.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public List<Phase> getPhases() throws ContestServiceException {
+        try {
+            return catalogService.getPhases();
+        } catch (com.topcoder.catalog.service.PersistenceException e) {
+            throw new ContestServiceException("Operation failed in the catalogService.", e);
+        }
+    }
+
+    /**
+     * <p>
+     * Assigns a specified user to a specified <code>assetDTO</code>.
+     * </p>
+     * 
+     * <p>
+     * If the user already assigned to the asset, this method simply does nothing.
+     * </p>
+     *
+     * @param userId the id of the user
+     * @param assetId the id of the assetDTO
+     *
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public void assignUserToAsset(long userId, long assetId) throws ContestServiceException {
+        try {
+            catalogService.assignUserToAsset(userId, assetId);
+        } catch (EntityNotFoundException e) {
+            throw new ContestServiceException("Operation failed in the catalogService.", e);
+        } catch (com.topcoder.catalog.service.PersistenceException e) {
+            throw new ContestServiceException("Operation failed in the catalogService.", e);
+        }
+    }
+
+    /**
+     * <p>
+     * Removes a specified user from a specified <code>assetDTO</code>.
+     * </p>
+     *
+     * @param userId the id of the user
+     * @param assetId the id of the asset
+     *
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public void removeUserFromAsset(long userId, long assetId) throws ContestServiceException {
+        try {
+            catalogService.removeUserFromAsset(userId, assetId);
+        } catch (EntityNotFoundException e) {
+            throw new ContestServiceException("Operation failed in the catalogService.", e);
+        } catch (com.topcoder.catalog.service.PersistenceException e) {
+            throw new ContestServiceException("Operation failed in the catalogService.", e);
+        }
+    }
+
+    /**
+     * <p>
+     * This method finds all tc direct projects. Returns empty array if no projects found.
+     * </p>
+     *
+     * @return Project array with project info, or empty array if none found
+     *
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public SoftwareCompetition[] findAllTcDirectProjects() throws ContestServiceException {
+        try {
+            Project[] projects = projectServices.findAllTcDirectProjects();
+
+            SoftwareCompetition[] ret = new SoftwareCompetition[projects.length];
+            for (int i = 0; i < projects.length; i++) {
+                FullProjectData projectData = new FullProjectData(); 
+                projectData.setProjectHeader(projects[i]);
+
+            	ret[i] = new SoftwareCompetition();
+                ret[i].setProjectData(projectData);
+                ret[i].setType(CompetionType.SOFTWARE);
+                ret[i].setId(projectData.getProjectHeader().getId());
+            }
+            return ret;
+        } catch (ProjectServicesException e) {
+            throw new ContestServiceException("Operation failed in the projectServices.", e);
+        }
+    }
+
+    /**
+     * <p>
+     * This method finds all given user tc direct projects . Returns empty array if no projects found.
+     * </p>
+     *
+     * @param operator The user to search for projects
+     *
+     * @return Project array with project info, or empty array if none found
+     *
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public SoftwareCompetition[] findAllTcDirectProjectsForUser(String operator) throws ContestServiceException {
+        try {
+            Project[] projects = projectServices.findAllTcDirectProjectsForUser(operator);
+
+            SoftwareCompetition[] ret = new SoftwareCompetition[projects.length];
+            for (int i = 0; i < projects.length; i++) {
+                FullProjectData projectData = new FullProjectData(); 
+                projectData.setProjectHeader(projects[i]);
+
+            	ret[i] = new SoftwareCompetition();
+                ret[i].setProjectData(projectData);
+                ret[i].setType(CompetionType.SOFTWARE);
+                ret[i].setId(projectData.getProjectHeader().getId());
+            }
+            return ret;
+        } catch (ProjectServicesException e) {
+            throw new ContestServiceException("Operation failed in the projectServices.", e);
+        }
+    }
+
+    /**
+     * <p>
+     * This method retrieves the project along with all known associated information. Returns null if not found.
+     * </p>
+     *
+     * @param projectId The ID of the project to retrieve
+     *
+     * @return the project along with all known associated information
+     *
+     * @throws IllegalArgumentException If projectId is negative
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public SoftwareCompetition getFullProjectData(long projectId) throws ContestServiceException {
+        try {
+            FullProjectData projectData = projectServices.getFullProjectData(projectId);
+
+            if (projectData == null) {
+                return null;
+            }
+
+            SoftwareCompetition contest = new SoftwareCompetition();
+            contest.setProjectData(projectData);
+            contest.setType(CompetionType.SOFTWARE);
+            contest.setId(projectData.getProjectHeader().getId());
+
+            return contest;
+        } catch (ProjectServicesException e) {
+            throw new ContestServiceException("Operation failed in the projectServices.", e);
+        }
+    }
+
+    /**
+     * <p>
+     * Creates a new <code>SoftwareCompetition</code> in the persistence.
+     * </p>
+     *
+     * @param contest the <code>SoftwareCompetition</code> to create as a contest
+     * @param tcDirectProjectId the TC direct project id.
+     *
+     * @return the created <code>SoftwareCompetition</code> as a contest
+     *
+     * @throws IllegalArgumentException if the input argument is invalid.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public SoftwareCompetition createSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
+        throws ContestServiceException {
+        if (contest.getType() == CompetionType.SOFTWARE) {
+            try {
+                AssetDTO assetDTO = this.catalogService.createAsset(contest.getAssetDTO());
+
+                contest.setAssetDTO(assetDTO);
+            } catch (com.topcoder.catalog.service.PersistenceException e) {
+                throw new ContestServiceException("Operation failed in the catalogService.", e);
+            }
+
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            try {
+                projectServices.createProject(contest.getProjectHeader(),
+                        contest.getProjectPhases(), contest.getProjectResources(), p.getName());
+
+            } catch (ProjectServicesException e) {
+                throw new ContestServiceException("Operation failed in the projectServices.", e);
+            }
+
+            return contest;
+        } else {
+            throw new IllegalArgumentWSException("Unsupported contest type",
+                    "Contest type is not supported: " + contest.getType());
+        }
+    }
+
+    /**
+     * <p>
+     * Updates a <code>SoftwareCompetition</code> in the persistence.
+     * </p>
+     *
+     * @param contest the <code>SoftwareCompetition</code> to update as a contest
+     * @param tcDirectProjectId the TC direct project id.
+     *
+     * @throws IllegalArgumentException if the input argument is invalid.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public void updateSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
+        throws ContestServiceException {
+        if (contest.getType() == CompetionType.SOFTWARE) {
+            try {
+                this.catalogService.updateAsset(contest.getAssetDTO());
+            } catch (EntityNotFoundException e) {
+                throw new ContestServiceException("Operation failed in the catalogService.", e);
+            } catch (com.topcoder.catalog.service.PersistenceException e) {
+                throw new ContestServiceException("Operation failed in the catalogService.", e);
+            }
+
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+            try {
+                projectServices.updateProject(contest.getProjectHeader(), contest.getProjectHeaderReason(),
+                        contest.getProjectPhases(), contest.getProjectResources(), p.getName());
+            } catch (ProjectServicesException e) {
+                throw new ContestServiceException("Operation failed in the projectServices.", e);
+            }
+        } else {
+            throw new IllegalArgumentWSException("Unsupported contest type",
+                    "Contest type is not supported: " + contest.getType());
+        }
+    }
+
+    /**
+     * <p>
+     * Adds a new submission for an user in a particular project.
+     * </p>
+     * 
+     * <p>
+     * If the project allows multiple submissions for users, it will add the new submission and return. If multiple
+     * submission are not allowed for the project, firstly it will add the new submission, secondly mark previous
+     * submissions as deleted and then return.
+     * </p>
+     *
+     * @param projectId the project's id
+     * @param filename the file name to use
+     * @param submission the submission file data
+     *
+     * @return the id of the new submission
+     *
+     * @throws IllegalArgumentException if any id is &lt; 0, if any argument is <code>null</code> or trim to empty
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public long uploadSubmission(long projectId, String filename, DataHandler submission)
+        throws ContestServiceException {
+        try {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+
+            return uploadExternalServices.uploadSubmission(projectId, p.getUserId(), filename, submission);
+        } catch (UploadServicesException e) {
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
+        } catch (RemoteException e) {
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
+        }
+    }
+
+    /**
+     * <p>
+     * Adds a new final fix upload for an user in a particular project. This submission always overwrite the previous
+     * ones.
+     * </p>
+     *
+     * @param projectId the project's id
+     * @param filename the file name to use
+     * @param finalFix the final fix file data
+     *
+     * @return the id of the created final fix submission
+     *
+     * @throws IllegalArgumentException if any id is &lt; 0, if any argument is <code>null</code> or trim to empty
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public long uploadFinalFix(long projectId, String filename, DataHandler finalFix)
+        throws ContestServiceException {
+        try {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+
+            return uploadExternalServices.uploadFinalFix(projectId, p.getUserId(), filename, finalFix);
+        } catch (UploadServicesException e) {
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
+        } catch (RemoteException e) {
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
+        }
+    }
+
+    /**
+     * <p>
+     * Adds a new test case upload for an user in a particular project. This submission always overwrite the previous
+     * ones.
+     * </p>
+     *
+     * @param projectId the project's id
+     * @param filename the file name to use
+     * @param testCases the test cases data
+     *
+     * @return the id of the created test cases submission
+     *
+     * @throws IllegalArgumentException if any id is &lt; 0, if any argument is <code>null</code> or trim to empty
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public long uploadTestCases(long projectId, String filename, DataHandler testCases)
+        throws ContestServiceException {
+        try {
+            UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
+
+            return uploadExternalServices.uploadTestCases(projectId, p.getUserId(), filename, testCases);
+        } catch (UploadServicesException e) {
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
+        } catch (RemoteException e) {
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
+        }
+    }
+
+    /**
+     * <p>
+     * Sets the status of a existing submission.
+     * </p>
+     *
+     * @param submissionId the submission's id
+     * @param submissionStatusId the submission status id
+     * @param operator the operator which execute the operation
+     *
+     * @throws IllegalArgumentException if any id is &lt; 0 or if operator is null or trim to empty
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public void setSubmissionStatus(long submissionId, long submissionStatusId, String operator)
+        throws ContestServiceException {
+        try {
+            uploadExternalServices.setSubmissionStatus(submissionId, submissionStatusId, operator);
+        } catch (UploadServicesException e) {
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
+        } catch (RemoteException e) {
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
+        }
+    }
+
+    /**
+     * Adds the given user as a new submitter to the given project id.
+     *
+     * @param projectId the project to which the user needs to be added
+     * @param userId the user to be added
+     *
+     * @return the added resource id
+     *
+     * @throws IllegalArgumentException if any id is &lt; 0
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public long addSubmitter(long projectId, long userId) throws ContestServiceException {
+        try {
+            return uploadExternalServices.addSubmitter(projectId, userId);
+        } catch (UploadServicesException e) {
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
+        } catch (RemoteException e) {
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
+        }
     }
 }

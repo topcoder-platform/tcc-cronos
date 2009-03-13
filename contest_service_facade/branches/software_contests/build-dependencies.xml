@@ -128,6 +128,23 @@
     <property name="studio_service.path" value="studio_service/${studio_service.version}"/>
     <property name="studio_service.jar" value="${tcs_libdir}/${studio_service.path}/${studio_service.jar.name}"/>
 
+    <property name="online_review_upload_services.jar" value="${tcs_libdir}/online_review_upload_services/1.0/online_review_upload_services.jar"/>
+    <property name="catalog_entities.jar" value="${tcs_libdir}/catalog_entities/1.2.0/catalog_entities.jar"/>
+    <property name="catalog_services.jar" value="${tcs_libdir}/catalog_services/1.1/catalog_services.jar"/>
+    <property name="project_management.jar" value="${tcs_libdir}/project_management/1.0.1/project_management.jar"/>
+    <property name="project_services.jar" value="${tcs_libdir}/project_services/1.1/project_services.jar"/>
+    <property name="project_phases.jar" value="${tcs_libdir}/project_phases/2.0.1/project_phases.jar"/>
+    <property name="resource_management.jar" value="${tcs_libdir}/resource_management/1.1.1/resource_management.jar"/>
+    <property name="phase_management.jar" value="${tcs_libdir}/phase_management/1.0.4/phase_management.jar"/>
+    <property name="workdays.jar" value="${tcs_libdir}/workdays/1.0/workdays.jar"/>
+    <property name="submission_manager.jar" value="${tcs_libdir}/submission_manager/1.1.0/submission_manager.jar"/>
+    <property name="auto_screening_management.jar" value="${tcs_libdir}/auto_screening_management/1.0/auto_screening_management.jar"/>
+    <property name="deliverable_management.jar" value="${tcs_libdir}/deliverable_management/1.0.4/deliverable_management.jar"/>
+    <property name="team_management.jar" value="${tcs_libdir}/team_management/1.0.1/team_management.jar"/>
+    <property name="user_project_data_store.jar" value="${tcs_libdir}/user_project_data_store/1.0.1/user_project_data_store.jar"/>
+    <property name="db_connection_factory.jar" value="${tcs_libdir}/db_connection_factory/1.1/db_connection_factory.jar"/>
+    <property name="database_abstraction.jar" value="${tcs_libdir}/database_abstraction/1.1/database_abstraction.jar"/>
+
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.1/junit.jar"/>
     <property name="mockejb.jar" value="${ext_libdir}/mockejb/0.6/mockejb.jar"/>
@@ -151,6 +168,7 @@
     <property name="jbossall-client.jar" value="${jboss.home}/client/jbossall-client.jar"/>
     <property name="antlr.jar" value="${jboss.home}/client/antlr.jar"/>
     <property name="jbossws-client.jar" value="${jboss.home}/client/jbossws-client.jar"/>
+    <property name="activation.jar" value="${jboss.home}/client/activation.jar"/>
     
     <property name="jaxb-api.jar" value="${jboss.home}/client/jaxb-api.jar"/>
     <property name="jaxb-impl.jar" value="${jboss.home}/client/jaxb-impl.jar"/>
@@ -186,10 +204,27 @@
         <pathelement location="${typesafe_enum.jar}"/>
         <pathelement location="${project_service.jar}"/>
         <pathelement location="${jbossws-client.jar}"/>
+        <pathelement location="${activation.jar}"/>
         <pathelement location="${studio_service.jar}"/>
         <pathelement location="${studio_contest_manager.jar}"/>
         <pathelement location="${submission_manager.jar}"/>
         <pathelement location="${contest_and_submission_entities.jar}"/>
+        <pathelement location="${online_review_upload_services.jar}"/>
+        <pathelement location="${catalog_entities.jar}"/>
+        <pathelement location="${catalog_services.jar}"/>
+        <pathelement location="${project_management.jar}"/>
+        <pathelement location="${project_services.jar}"/>
+        <pathelement location="${project_phases.jar}"/>
+        <pathelement location="${resource_management.jar}"/>
+        <pathelement location="${phase_management.jar}"/>
+        <pathelement location="${workdays.jar}"/>
+        <pathelement location="${submission_manager.jar}"/>
+        <pathelement location="${auto_screening_management.jar}"/>
+        <pathelement location="${deliverable_management.jar}"/>
+        <pathelement location="${team_management.jar}"/>
+        <pathelement location="${user_project_data_store.jar}"/>
+        <pathelement location="${db_connection_factory.jar}"/>
+        <pathelement location="${database_abstraction.jar}"/>
     </path>
 
     <path id="component.3rdParty-dependencies">

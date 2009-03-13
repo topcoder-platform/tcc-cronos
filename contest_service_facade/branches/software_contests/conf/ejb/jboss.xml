@@ -8,6 +8,14 @@
                 <ejb-ref-name>ejb/StudioService</ejb-ref-name>
                 <jndi-name>StudioServiceBean/remote</jndi-name>
             </ejb-ref>
+            <ejb-ref>
+                <ejb-ref-name>ejb/CatalogService</ejb-ref-name>
+                <jndi-name>CatalogService/remote</jndi-name>
+            </ejb-ref>
+            <ejb-ref>
+                <ejb-ref-name>ejb/ProjectServicesBean</ejb-ref-name>
+                <jndi-name>ProjectServicesBean/remote</jndi-name>
+            </ejb-ref>
         </session>
     </enterprise-beans>
 

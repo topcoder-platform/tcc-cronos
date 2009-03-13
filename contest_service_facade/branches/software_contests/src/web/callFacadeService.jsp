@@ -38,6 +38,24 @@
 <%@ page import="com.topcoder.service.studio.ContestData" %>
 <%@ page import="com.topcoder.service.studio.contest.DocumentType" %>
 <%@ page import="javax.print.attribute.standard.Media" %>
+<%@ page import="com.topcoder.catalog.entity.Category" %>
+<%@ page import="com.topcoder.catalog.entity.Technology" %>
+<%@ page import="com.topcoder.catalog.entity.Phase" %>
+<%@ page import="com.topcoder.service.project.SoftwareCompetition" %>
+<%@ page import="com.topcoder.catalog.service.AssetDTO" %>
+<%@ page import="java.util.Arrays" %>
+<%@ page import="com.topcoder.catalog.entity.CompDocumentation" %>
+<%@ page import="com.topcoder.management.project.Project" %>
+<%@ page import="com.topcoder.management.resource.Resource" %>
+<%@ page import="com.topcoder.management.resource.ResourceRole" %>
+<%@ page import="com.topcoder.management.project.ProjectType" %>
+<%@ page import="com.topcoder.management.project.ProjectCategory" %>
+<%@ page import="com.topcoder.management.project.ProjectStatus" %>
+<%@ page import="com.topcoder.date.workdays.DefaultWorkdaysFactory" %>
+<%@ page import="com.topcoder.project.phases.PhaseType" %>
+<%@ page import="com.topcoder.project.phases.PhaseStatus" %>
+<%@ page import="javax.activation.DataHandler" %>
+<%@ page import="javax.activation.FileDataSource" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
@@ -265,12 +283,12 @@
             String ct = request.getParameter("ct1");
             long mimeTypeId = port.getMimeTypeId(ct);
             callResult = "Retrieved mime type ID for content type: " + mimeTypeId;
-        } else if ("purchaseSubmission".equals(operation)) {
-            String sid = request.getParameter("sbmid3");
-            String ppo = request.getParameter("ppo3");
-            String st = request.getParameter("st3");
-            port.purchaseSubmission(Long.parseLong(sid), ppo, st);
-            callResult = "Purchase submission successfully";
+        //} else if ("purchaseSubmission".equals(operation)) {
+        //    String sid = request.getParameter("sbmid3");
+        //    String ppo = request.getParameter("ppo3");
+        //    String st = request.getParameter("st3");
+        //    port.purchaseSubmission(Long.parseLong(sid), ppo, st);
+        //    callResult = "Purchase submission successfully";
         } else if ("createContestPayment".equals(operation)) {
             ContestPaymentData p = new ContestPaymentData();
             String cid = request.getParameter("cid6");
@@ -404,6 +422,272 @@
                         append("<br/>");
             }
             callResult = "Retrieved contest types:<br/>" + b.toString();
+        } else if ("getActiveCategories".equals(operation)) {
+            StringBuilder b = new StringBuilder();
+            List<Category> categories = port.getActiveCategories();
+            for (Category category : categories) {
+                b.append("    Category: ID = ").append(category.getId()).append(", name = ").append(category.getName()).
+                        append(", description = ").append(category.getDescription()).
+                        append(", status = ").append(category.getStatus()).
+                        append(", viewable = ").append(category.isViewable()).
+                        append(", catalogName = ").append(category.getCatalogName()).
+                        append("<br/>");
+            }
+            callResult = "Retrieved categories:<br/>" + b.toString();
+        } else if ("getActiveTechnologies".equals(operation)) {
+            StringBuilder b = new StringBuilder();
+            List<Technology> technologies = port.getActiveTechnologies();
+            for (Technology technology : technologies) {
+                b.append("    Technology: ID = ").append(technology.getId()).append(", name = ").append(technology.getName()).
+                        append(", description = ").append(technology.getDescription()).
+                        append(", status = ").append(technology.getStatus()).
+                        append("<br/>");
+            }
+            callResult = "Retrieved technologies:<br/>" + b.toString();
+        } else if ("getPhases".equals(operation)) {
+            StringBuilder b = new StringBuilder();
+            List<Phase> phases = port.getPhases();
+            for (Phase phase : phases) {
+                b.append("    Phase: ID = ").append(phase.getId()).append(", description = ").append(phase.getDescription()).
+                        append("<br/>");
+            }
+            callResult = "Retrieved phases:<br/>" + b.toString();
+        } else if ("assignUserToAsset".equals(operation)) {
+            String userId = request.getParameter("cid11");
+            String assetId = request.getParameter("cid12");
+
+            port.assignUserToAsset(Long.parseLong(userId), Long.parseLong(assetId));
+
+            callResult = "assignUserToAsset successfully";
+        } else if ("removeUserFromAsset".equals(operation)) {
+            String userId = request.getParameter("cid21");
+            String assetId = request.getParameter("cid22");
+
+            port.removeUserFromAsset(Long.parseLong(userId), Long.parseLong(assetId));
+
+            callResult = "removeUserFromAsset successfully";
+        } else if ("findAllTcDirectProjects".equals(operation)) {
+            StringBuilder b = new StringBuilder();
+            SoftwareCompetition[] contests = port.findAllTcDirectProjects();
+            for (int i = 0; i < contests.length; i++) {
+                SoftwareCompetition contest = contests[i];
+                b.append("    Project Header: ID = ").append(contest.getProjectData().getProjectHeader().getId()).
+                        append("<br/>");
+            }
+            callResult = "Retrieved projects:<br/>" + b.toString();
+        } else if ("findAllTcDirectProjectsForUser".equals(operation)) {
+            String operator = request.getParameter("cid31");
+
+            StringBuilder b = new StringBuilder();
+            SoftwareCompetition[] contests = port.findAllTcDirectProjectsForUser(operator);
+            for (int i = 0; i < contests.length; i++) {
+                SoftwareCompetition contest = contests[i];
+                b.append("    Project Header: ID = ").append(contest.getProjectData().getProjectHeader().getId()).
+                        append("<br/>");
+            }
+            callResult = "Retrieved projects:<br/>" + b.toString();
+        } else if ("getFullProjectData".equals(operation)) {
+            String projectId = request.getParameter("cid41");
+
+            StringBuilder b = new StringBuilder();
+            SoftwareCompetition contest = port.getFullProjectData(Long.parseLong(projectId));
+            b.append("    Project Header: ID = ").append(contest.getProjectData().getProjectHeader().getId()).
+                    append("<br/>");
+            b.append("    Resources: ").append(contest.getProjectData().getResources()).
+                    append("<br/>");
+            b.append("    Teams: ").append(contest.getProjectData().getTeams()).
+                    append("<br/>");
+            b.append("    Technologies: ").append(contest.getProjectData().getTechnologies()).
+                    append("<br/>");
+            callResult = "Retrieved projects:<br/>" + b.toString();
+        } else if ("createSoftwareContest".equals(operation)) {
+            String tcDirectProjectId = request.getParameter("cid51");
+
+            Category javaCategory = null;
+            Category ejb3Category = null;
+
+            List<Category> categories = port.getActiveCategories();
+            for (Category category : categories) {
+                if (category.getId().longValue() == 2) {
+                    javaCategory = category;
+                } else if (category.getId().longValue() == 3) {
+                    ejb3Category = category;
+                }
+            }
+
+            Technology java15Technology = null;
+            Technology informixTechnology = null;
+
+            List<Technology> technologies = port.getActiveTechnologies();
+            for (Technology technology : technologies) {
+                if (technology.getId().longValue() == 1) {
+                    java15Technology = technology;
+                } else if (technology.getId().longValue() == 2) {
+                    informixTechnology = technology;
+                }
+            }            
+            
+            AssetDTO newAsset = new AssetDTO();
+            newAsset.setName("Catalog Services");
+            newAsset.setVersionText("1.0");
+            newAsset.setShortDescription("short");
+            newAsset.setDetailedDescription("detailed");
+            newAsset.setFunctionalDescription("functional");
+            // set the root category
+            newAsset.setRootCategory(javaCategory);
+
+            // assign categories which this asset belongs to
+            newAsset.setCategories(Arrays.asList(ejb3Category));
+    
+            newAsset.setTechnologies(Arrays.asList(
+                java15Technology,
+                informixTechnology
+            ));
+            newAsset.setDocumentation(new ArrayList<CompDocumentation>());
+
+            ProjectType projectType = new ProjectType(1, "projectType");
+            ProjectCategory projectCategory = new ProjectCategory(123, "projectCategory", projectType);
+            ProjectStatus projectStatus = new ProjectStatus(2, "projectStatus");
+            com.topcoder.management.project.Project projectHeader = new com.topcoder.management.project.Project(
+                projectCategory, projectStatus);
+
+            com.topcoder.project.phases.Project projectPhases = new com.topcoder.project.phases.Project(new Date(),
+                    new DefaultWorkdaysFactory().createWorkdaysInstance());
+            PhaseType phaseTypeOne = new PhaseType(1, "one");
+            com.topcoder.project.phases.Phase phaseOne = new com.topcoder.project.phases.Phase(projectPhases, 1);
+            phaseOne.setPhaseType(phaseTypeOne);
+            phaseOne.setFixedStartDate(new Date());
+            phaseOne.setPhaseStatus(PhaseStatus.SCHEDULED);
+
+            Resource resource = new Resource();
+            ResourceRole resourceRole = new ResourceRole();
+            resource.setResourceRole(resourceRole);
+            Resource[] projectResources = new Resource[] {resource};
+
+            SoftwareCompetition contest = new SoftwareCompetition();
+            contest.setAssetDTO(newAsset);
+            contest.setProjectHeader(projectHeader);
+            contest.setProjectPhases(projectPhases);
+            contest.setProjectResources(projectResources);
+            contest.setType(CompetionType.SOFTWARE);
+            port.createSoftwareContest(contest, Long.parseLong(tcDirectProjectId));
+
+            callResult = "createSoftwareContest successfully";
+        } else if ("updateSoftwareContest".equals(operation)) {
+            String tcDirectProjectId = request.getParameter("cid51");
+
+            Category javaCategory = null;
+            Category ejb3Category = null;
+
+            List<Category> categories = port.getActiveCategories();
+            for (Category category : categories) {
+                if (category.getId().longValue() == 2) {
+                    javaCategory = category;
+                } else if (category.getId().longValue() == 3) {
+                    ejb3Category = category;
+                }
+            }
+
+            Technology java15Technology = null;
+            Technology informixTechnology = null;
+
+            List<Technology> technologies = port.getActiveTechnologies();
+            for (Technology technology : technologies) {
+                if (technology.getId().longValue() == 1) {
+                    java15Technology = technology;
+                } else if (technology.getId().longValue() == 2) {
+                    informixTechnology = technology;
+                }
+            }            
+            
+            AssetDTO newAsset = new AssetDTO();
+            newAsset.setName("Catalog Services");
+            newAsset.setVersionText("1.0");
+            newAsset.setShortDescription("short");
+            newAsset.setDetailedDescription("detailed");
+            newAsset.setFunctionalDescription("functional");
+            // set the root category
+            newAsset.setRootCategory(javaCategory);
+
+            // assign categories which this asset belongs to
+            newAsset.setCategories(Arrays.asList(ejb3Category));
+    
+            newAsset.setTechnologies(Arrays.asList(
+                java15Technology,
+                informixTechnology
+            ));
+            newAsset.setDocumentation(new ArrayList<CompDocumentation>());
+
+            ProjectType projectType = new ProjectType(1, "projectType");
+            ProjectCategory projectCategory = new ProjectCategory(123, "projectCategory", projectType);
+            ProjectStatus projectStatus = new ProjectStatus(2, "projectStatus");
+            com.topcoder.management.project.Project projectHeader = new com.topcoder.management.project.Project(
+                projectCategory, projectStatus);
+
+            com.topcoder.project.phases.Project projectPhases = new com.topcoder.project.phases.Project(new Date(),
+                    new DefaultWorkdaysFactory().createWorkdaysInstance());
+            PhaseType phaseTypeOne = new PhaseType(1, "one");
+            com.topcoder.project.phases.Phase phaseOne = new com.topcoder.project.phases.Phase(projectPhases, 1);
+            phaseOne.setPhaseType(phaseTypeOne);
+            phaseOne.setFixedStartDate(new Date());
+            phaseOne.setPhaseStatus(PhaseStatus.SCHEDULED);
+
+            Resource resource = new Resource();
+            ResourceRole resourceRole = new ResourceRole();
+            resource.setResourceRole(resourceRole);
+            Resource[] projectResources = new Resource[] {resource};
+
+            SoftwareCompetition contest = new SoftwareCompetition();
+            contest.setAssetDTO(newAsset);
+            contest.setProjectHeader(projectHeader);
+            contest.setProjectPhases(projectPhases);
+            contest.setProjectResources(projectResources);
+            contest.setType(CompetionType.SOFTWARE);
+            contest = port.createSoftwareContest(contest, Long.parseLong(tcDirectProjectId));
+
+            contest.setProjectHeaderReason("projectHeaderReason");
+            port.updateSoftwareContest(contest, Long.parseLong(tcDirectProjectId));
+
+            callResult = "updateSoftwareContest successfully";
+        } else if ("uploadSubmission".equals(operation)) {
+            String projectId = request.getParameter("cid11");
+            FileDataSource dataSource = new FileDataSource("D:/temp/sample.jar");
+            DataHandler dataHandler = new DataHandler(dataSource);
+
+            long submissionId = port.uploadSubmission(Long.parseLong(projectId), "newFile", dataHandler);
+
+            callResult = "Newly created submission id: " + submissionId;
+        } else if ("uploadFinalFix".equals(operation)) {
+            String projectId = request.getParameter("cid21");
+            FileDataSource dataSource = new FileDataSource("D:/temp/sample.jar");
+            DataHandler dataHandler = new DataHandler(dataSource);
+
+            long submissionId = port.uploadFinalFix(Long.parseLong(projectId), "newFile", dataHandler);
+
+            callResult = "Newly created submission id: " + submissionId;
+        } else if ("uploadTestCases".equals(operation)) {
+            String projectId = request.getParameter("cid31");
+            FileDataSource dataSource = new FileDataSource("D:/temp/sample.jar");
+            DataHandler dataHandler = new DataHandler(dataSource);
+
+            long submissionId = port.uploadTestCases(Long.parseLong(projectId), "newFile", dataHandler);
+
+            callResult = "Newly created submission id: " + submissionId;
+        } else if ("setSubmissionStatus".equals(operation)) {
+            String submissionId = request.getParameter("cid41");
+            String submissionStatusId = request.getParameter("cid42");
+            String operator = request.getParameter("cid43");
+
+            port.setSubmissionStatus(Long.parseLong(submissionId), Long.parseLong(submissionStatusId), operator);
+
+            callResult = "setSubmissionStatus successfully";
+        }  else if ("addSubmitter".equals(operation)) {
+            String projectId = request.getParameter("cid51");
+            String userId = request.getParameter("cid52");
+
+            port.addSubmitter(Long.parseLong(projectId), Long.parseLong(userId));
+
+            callResult = "addSubmitter successfully";
         }
 
     } catch (Throwable e) {

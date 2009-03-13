@@ -3,6 +3,9 @@
  */
 package com.topcoder.service.facade.contest;
 
+import com.topcoder.catalog.entity.Category;
+import com.topcoder.catalog.entity.Phase;
+import com.topcoder.catalog.entity.Technology;
 import com.topcoder.service.studio.CompletedContestData;
 import com.topcoder.service.studio.IllegalArgumentWSException;
 import com.topcoder.service.studio.PersistenceException;
@@ -28,8 +31,10 @@ import com.topcoder.service.payment.CreditCardPaymentData;
 import com.topcoder.service.payment.PaymentException;
 import com.topcoder.service.payment.PaymentResult;
 import com.topcoder.service.payment.TCPurhcaseOrderPaymentData;
+import com.topcoder.service.project.SoftwareCompetition;
 import com.topcoder.service.project.StudioCompetition;
 
+import javax.activation.DataHandler;
 import javax.jws.WebService;
 import java.util.List;
 
@@ -38,6 +43,11 @@ import java.util.List;
  * provided by global <code>TopCoder</code> application.</p>
  *
  * <p>As of this version a facade to <code>Studio Service</code> is provided only.</p>
+ * 
+ * <p>
+ * TopCoder Service Layer Integration 3 Assembly change: expose the methods of Category Services, Project Services and
+ * Online Review Upload Services.
+ * </p>
  *
  * @author TCSDEVELOPER
  * @version 1.0
@@ -681,4 +691,241 @@ public interface ContestServiceFacade {
      */
     public PaymentResult processSubmissionPurchaseOrderPayment(CompletedContestData completedContestData, TCPurhcaseOrderPaymentData paymentData) throws PaymentException,
             PersistenceException;
+
+    /**
+     * <p>Returns a list containing all active <code>Categories</code>.</p>
+     *
+     * @return a list containing all active <code>Categories</code>. It can be empty if no objects found.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public List<Category> getActiveCategories() throws ContestServiceException;
+
+    /**
+     * <p>Returns a list containing all active <code>Technologies</code>.</p>
+     *
+     * @return a list containing all active <code>Categories</code>. It can be empty if no objects found.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public List<Technology> getActiveTechnologies() throws ContestServiceException;
+
+    /**
+     * <p>Returns a list containing all <code>Phases</code>.</p>
+     *
+     * @return a list containing all active <code>Categories</code>. It can be empty if no objects found.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public List<Phase> getPhases() throws ContestServiceException;
+
+    /**
+     * <p>
+     * Creates a new <code>SoftwareCompetition</code> in the persistence.
+     * </p>
+     *
+     * @param contest the <code>SoftwareCompetition</code> to create as a contest
+     * @param tcDirectProjectId the TC direct project id.
+     *
+     * @return the created <code>SoftwareCompetition</code> as a contest
+     *
+     * @throws IllegalArgumentException if the input argument is invalid.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public SoftwareCompetition createSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
+        throws ContestServiceException;
+
+    /**
+     * <p>
+     * Updates a <code>SoftwareCompetition</code> in the persistence.
+     * </p>
+     *
+     * @param contest the <code>SoftwareCompetition</code> to update as a contest
+     * @param tcDirectProjectId the TC direct project id.
+     *
+     * @throws IllegalArgumentException if the input argument is invalid.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public void updateSoftwareContest(SoftwareCompetition contest, long tcDirectProjectId)
+        throws ContestServiceException;
+
+    /**
+     * <p>
+     * Assigns a specified user to a specified <code>assetDTO</code>.
+     * </p>
+     * 
+     * <p>
+     * If the user already assigned to the asset, this method simply does nothing.
+     * </p>
+     *
+     * @param userId the id of the user
+     * @param assetId the id of the assetDTO
+     *
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public void assignUserToAsset(long userId, long assetId) throws ContestServiceException;
+
+    /**
+     * <p>
+     * Removes a specified user from a specified <code>assetDTO</code>.
+     * </p>
+     *
+     * @param userId the id of the user
+     * @param assetId the id of the asset
+     *
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public void removeUserFromAsset(long userId, long assetId) throws ContestServiceException;
+
+    /**
+     * <p>
+     * This method finds all tc direct projects. Returns empty array if no projects found.
+     * </p>
+     *
+     * @return Project array with project info, or empty array if none found
+     *
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public SoftwareCompetition[] findAllTcDirectProjects() throws ContestServiceException;
+
+    /**
+     * <p>
+     * This method finds all given user tc direct projects . Returns empty array if no projects found.
+     * </p>
+     *
+     * @param operator The user to search for projects
+     *
+     * @return Project array with project info, or empty array if none found
+     *
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public SoftwareCompetition[] findAllTcDirectProjectsForUser(String operator) throws ContestServiceException;
+
+    /**
+     * <p>
+     * This method retrieves the project along with all known associated information. Returns null if not found.
+     * </p>
+     *
+     * @param projectId The ID of the project to retrieve
+     *
+     * @return the project along with all known associated information
+     *
+     * @throws IllegalArgumentException If projectId is negative
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public SoftwareCompetition getFullProjectData(long projectId) throws ContestServiceException;
+
+    /**
+     * <p>
+     * Adds a new submission for an user in a particular project.
+     * </p>
+     * 
+     * <p>
+     * If the project allows multiple submissions for users, it will add the new submission and return. If multiple
+     * submission are not allowed for the project, firstly it will add the new submission, secondly mark previous
+     * submissions as deleted and then return.
+     * </p>
+     *
+     * @param projectId the project's id
+     * @param filename the file name to use
+     * @param submission the submission file data
+     *
+     * @return the id of the new submission
+     *
+     * @throws IllegalArgumentException if any id is &lt; 0, if any argument is <code>null</code> or trim to empty
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public long uploadSubmission(long projectId, String filename, DataHandler submission)
+        throws ContestServiceException;
+
+    /**
+     * <p>
+     * Adds a new final fix upload for an user in a particular project. This submission always overwrite the previous
+     * ones.
+     * </p>
+     *
+     * @param projectId the project's id
+     * @param filename the file name to use
+     * @param finalFix the final fix file data
+     *
+     * @return the id of the created final fix submission
+     *
+     * @throws IllegalArgumentException if any id is &lt; 0, if any argument is <code>null</code> or trim to empty
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public long uploadFinalFix(long projectId, String filename, DataHandler finalFix)
+        throws ContestServiceException;
+
+    /**
+     * <p>
+     * Adds a new test case upload for an user in a particular project. This submission always overwrite the previous
+     * ones.
+     * </p>
+     *
+     * @param projectId the project's id
+     * @param filename the file name to use
+     * @param testCases the test cases data
+     *
+     * @return the id of the created test cases submission
+     *
+     * @throws IllegalArgumentException if any id is &lt; 0, if any argument is <code>null</code> or trim to empty
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public long uploadTestCases(long projectId, String filename, DataHandler testCases)
+        throws ContestServiceException;
+
+    /**
+     * <p>
+     * Sets the status of a existing submission.
+     * </p>
+     *
+     * @param submissionId the submission's id
+     * @param submissionStatusId the submission status id
+     * @param operator the operator which execute the operation
+     *
+     * @throws IllegalArgumentException if any id is &lt; 0 or if operator is null or trim to empty
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public void setSubmissionStatus(long submissionId, long submissionStatusId, String operator)
+        throws ContestServiceException;
+
+    /**
+     * Adds the given user as a new submitter to the given project id.
+     *
+     * @param projectId the project to which the user needs to be added
+     * @param userId the user to be added
+     *
+     * @return the added resource id
+     *
+     * @throws IllegalArgumentException if any id is &lt; 0
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     *
+     * @since TopCoder Service Layer Integration 3 Assembly
+     */
+    public long addSubmitter(long projectId, long userId) throws ContestServiceException;
 }
