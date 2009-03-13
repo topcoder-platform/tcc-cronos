@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd"
+         version="3.0">
+    <enterprise-beans>
+        <session>
+            <ejb-name>ProjectServiceBean</ejb-name>
+            <remote>com.topcoder.service.project.ProjectServiceRemote</remote>
+            <local>com.topcoder.service.project.ProjectServiceLocal</local>
+            <service-endpoint>com.topcoder.service.project.ProjectService</service-endpoint>
+            <ejb-class>com.topcoder.service.project.impl.ProjectServiceBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <env-entry>
+                <description>The name of the log to use</description>
+                <env-entry-name>log_name</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>TopCoderLog</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <description>The name of the administrator role</description>
+                <env-entry-name>administrator_role</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>Cockpit Administrator</env-entry-value>
+            </env-entry>
+            <!-- Tells the container for which persistence unit to inject an EntityManager -->
+            <persistence-context-ref>
+                <persistence-context-ref-name>catalog_manager</persistence-context-ref-name>
+                <persistence-unit-name>HibernateProjectPersistence</persistence-unit-name>
+            </persistence-context-ref>
+        </session>
+    </enterprise-beans>
+</ejb-jar>
