@@ -92,11 +92,14 @@
   }
   public function set startDate(temp:String):void{
     var dateStr:String = temp;
-    var dataStrArr:Array = dateStr.split("T"); 
-    lblStartDatePart1.text = dataStrArr[0]; 
-    var timeStrArray:Array = dataStrArr[1].split(".");
-    var timeStr:String = timeStrArray[1];
-    lblStartDatePart2.text = timeStrArray[0] + " GMT"+  timeStr.substr(3,3) + timeStr.substr(7,2); 
+    if (dateStr)
+    {
+	    var dataStrArr:Array = dateStr.split("T"); 
+	    lblStartDatePart1.text = dataStrArr[0]; 
+	    var timeStrArray:Array = dataStrArr[1].split(".");
+	    var timeStr:String = timeStrArray[1];
+	    lblStartDatePart2.text = timeStrArray[0] + " GMT"+  timeStr.substr(3,3) + timeStr.substr(7,2); 
+    }
   }
   public function get startDate():String{
     //TODO
@@ -105,11 +108,14 @@
   }
   public function set endDate(temp:String):void{
     var dateStr:String = temp; 
-    var dataStrArr:Array = dateStr.split("T");
-    lblEndDatePart1.text = dataStrArr[0];  
-    var timeStrArray:Array = dataStrArr[1].split(".");
-    var timeStr:String = timeStrArray[1];
-    lblEndDatePart2.text = timeStrArray[0] + " GMT"+  timeStr.substr(3,3) + timeStr.substr(7,2); 
+    if (dateStr)
+    {
+	    var dataStrArr:Array = dateStr.split("T");
+	    lblEndDatePart1.text = dataStrArr[0];  
+	    var timeStrArray:Array = dataStrArr[1].split(".");
+	    var timeStr:String = timeStrArray[1];
+	    lblEndDatePart2.text = timeStrArray[0] + " GMT"+  timeStr.substr(3,3) + timeStr.substr(7,2); 
+     }
   }
   public function get endDate():String{
     // TODO

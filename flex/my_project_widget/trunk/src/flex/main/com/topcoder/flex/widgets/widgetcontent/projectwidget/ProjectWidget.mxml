@@ -152,7 +152,10 @@
 						prjArray[i].endDate,prjArray[i].num_reg,           prjArray[i].num_sub,
 						prjArray[i].num_for, prjArray[i].forumId,
 						prjArray[i].sname);
-						c.date= DateUtil.parseFromString(prjArray[i].endDate);    //prjArray[i].endDate;
+						if (prjArray[i].endDate != null)
+						{
+							c.date= DateUtil.parseFromString(prjArray[i].endDate);  
+						}
 						contests.addItem(c);
 					}
         				
@@ -164,10 +167,7 @@
 						contests.sort = sort;
         			}
         			contests.refresh();
-        			//var list:ProjectList=new ProjectList();
-				///	prjList.addChild(list);
-					//list.setStyle("verticalScrollPolicy","auto");
-					//list.dataProvider=new Project(pname,pdesc,"",contests);
+
         			prjIdx=i;
         			projects.addItem(new Project(projectId.toString(),pname,pdesc,"",contests));
         		}
