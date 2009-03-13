@@ -19,6 +19,7 @@ import com.topcoder.service.project.Competition;
 import com.topcoder.service.studio.CompletedContestData;
 import com.topcoder.service.studio.StudioService;
 import com.topcoder.service.studio.PersistenceException;
+import com.topcoder.service.studio.SubmissionFeedback;
 import com.topcoder.service.studio.SubmissionPaymentData;
 import com.topcoder.service.studio.UserNotAuthorizedException;
 import com.topcoder.service.studio.IllegalArgumentWSException;
@@ -1390,5 +1391,53 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 			throw new PaymentException(e.getMessage(), e);
 		}
 
+    }
+    
+    /**
+     * <p>
+     * Ranks the submissions, given submission identifiers in the rank order.
+     * </p>
+     * 
+     * @param submissionIdsInRankOrder
+     *            an array of long submission identifier in the rank order.
+     * @return a <code>boolean</code> true if successful, else false.
+     * @throws PersistenceException
+     *             if any error occurs when retrieving/updating the data.
+     */
+    public boolean rankSubmissions(long[] submissionIdsInRankOrder) throws PersistenceException {
+        try {
+            for (int i = 0; i < submissionIdsInRankOrder.length; i++) {
+                this.studioService.setSubmissionPlacement(submissionIdsInRankOrder[i], i + 1);
+            }
+
+            return true;
+        } catch (PersistenceException e) {
+            sessionContext.setRollbackOnly();
+            throw e;
+        }
+    }
+
+    /**
+     * <p>
+     * Updates the submission feedback.
+     * </p>
+     * 
+     * @param feedbacks
+     *            an array of <code>SubmissionFeedback</code>
+     * @return a <code>boolean</code> true if successful, else false.
+     * @throws PersistenceException
+     *             if any error occurs when retrieving/updating the data.
+     */
+    public boolean updateSubmissionsFeedback(SubmissionFeedback[] feedbacks) throws PersistenceException {
+        try {
+            for (SubmissionFeedback f : feedbacks) {
+                this.studioService.updateSubmissionFeedback(f);
+            }
+
+            return true;
+        } catch (PersistenceException e) {
+            sessionContext.setRollbackOnly();
+            throw e;
+        }
     }
 }

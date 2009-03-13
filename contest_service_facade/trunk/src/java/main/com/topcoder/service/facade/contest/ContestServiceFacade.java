@@ -6,6 +6,7 @@ package com.topcoder.service.facade.contest;
 import com.topcoder.service.studio.CompletedContestData;
 import com.topcoder.service.studio.IllegalArgumentWSException;
 import com.topcoder.service.studio.PersistenceException;
+import com.topcoder.service.studio.SubmissionFeedback;
 import com.topcoder.service.studio.SubmissionPaymentData;
 import com.topcoder.service.studio.UserNotAuthorizedException;
 import com.topcoder.service.studio.ContestNotFoundException;
@@ -681,4 +682,30 @@ public interface ContestServiceFacade {
      */
     public PaymentResult processSubmissionPurchaseOrderPayment(CompletedContestData completedContestData, TCPurhcaseOrderPaymentData paymentData) throws PaymentException,
             PersistenceException;
+    
+    /**
+     * <p>
+     * Ranks the submissions, given submission identifiers in the rank order.
+     * </p>
+     * 
+     * @param submissionIdsInRankOrder
+     *            an array of long submission identifier in the rank order.
+     * @return a <code>boolean</code> true if successful, else false.
+     * @throws PersistenceException
+     *             if any error occurs when retrieving/updating the data.
+     */
+    public boolean rankSubmissions(long[] submissionIdsInRankOrder) throws PersistenceException;
+    
+    /**
+     * <p>
+     * Updates the submission feedback.
+     * </p>
+     * 
+     * @param feedbacks
+     *            an array of <code>SubmissionFeedback</code>
+     * @return a <code>boolean</code> true if successful, else false.
+     * @throws PersistenceException
+     *             if any error occurs when retrieving/updating the data.
+     */
+    public boolean updateSubmissionsFeedback(SubmissionFeedback[] feedbacks) throws PersistenceException;
 }
