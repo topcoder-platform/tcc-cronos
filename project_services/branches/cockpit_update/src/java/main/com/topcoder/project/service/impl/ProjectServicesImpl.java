@@ -907,10 +907,11 @@ public class ProjectServicesImpl implements ProjectServices {
         // if the project of phases (for each phase: phase.project)
         // is not equal to projectPhases, throws IAE
         for (Phase phase : projectPhases.getAllPhases()) {
-            if (!phase.getProject().equals(projectPhases)) {
+			phase.setProject(projectPhases);
+            /*if (!phase.getProject().equals(projectPhases)) {
                 throw new IllegalArgumentException(
                         "The Project of phase in projectPhases should equal to the projectPhases.");
-            }
+            }*/
         }
 
         // check projectResources
