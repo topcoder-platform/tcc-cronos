@@ -1,3 +1,0 @@
-<jboss-app>
-    <security-domain>java:/jaas/JBossLoginModule</security-domain>
-</jboss-app>
