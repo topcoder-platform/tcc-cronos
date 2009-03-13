@@ -400,4 +400,23 @@ public interface SubmissionManager {
      *             If any error occurs during the retrieval
      */
     public List<SubmissionPayment> getSubmissionPaymentsForContest(long contestId) throws SubmissionManagementException;
+    
+    /**
+     * <p>
+     * Updates the feedback of the submission with the given id.
+     * </p>
+     * 
+     * @param submissionId
+     *            The id of the submission to update
+     * @param feedbackText
+     *            The feedback text
+     * @param feedbackThumb
+     *            The feedback thumb.
+     * @throws EntityNotFoundException
+     *             If the submission or status does not exist in persistence, or submission already deleted
+     * @throws SubmissionManagementException
+     *             If any error occurs during the update
+     */
+    public void updateSubmissionFeedback(long submissionId, String feedbackText, int feedbackThumb)
+            throws SubmissionManagementException;
 }

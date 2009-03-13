@@ -1873,4 +1873,36 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
         logExit(methodName);
         return ret;
     }
+    
+    /**
+     * <p>
+     * Updates the feedback of the submission with the given id.
+     * </p>
+     * 
+     * @param submissionId
+     *            The id of the submission to update
+     * @param feedbackText
+     *            The feedback text
+     * @param feedbackThumb
+     *            The feedback thumb.
+     * @throws EntityNotFoundException
+     *             If the submission or status does not exist in persistence, or submission already deleted
+     * @throws SubmissionManagementException
+     *             If any error occurs during the update
+     */
+    public void updateSubmissionFeedback(long submissionId, String feedbackText, int feedbackThumb)
+            throws SubmissionManagementException {
+        final String methodName = "updateSubmissionFeedback(long, String, int)";
+        logEnter(methodName);
+
+        EntityManager entityManager = getEntityManager(methodName);
+
+        Submission submission = getActiveSubmission(entityManager, submissionId, methodName);
+        submission.setFeedbackText(feedbackText);
+        submission.setFeedbackThumb(feedbackThumb);
+
+        updateEntity(entityManager, submission, methodName);
+
+        logExit(methodName);
+    }
 }
