@@ -49,6 +49,7 @@
     		
     		import mx.managers.PopUpManager;
     		import com.topcoder.flex.util.progress.ProgressWindow;
+    		import com.topcoder.flex.util.progress.ProgressWindowManager;
     		
     		import mx.rpc.AbstractOperation;
 
@@ -1417,10 +1418,7 @@
             // BUGR-1393
             private function showLoadingProgress():void {
                 if (p == null) {
-        			p=ProgressWindow(PopUpManager.createPopUp((DisplayObject)(
-														this.parentApplication),ProgressWindow, true));;
-        	
-                    PopUpManager.centerPopUp(p);
+        			p = ProgressWindowManager.showProgressWindow(DisplayObject(this.container));
             	}
             }
             
@@ -1428,7 +1426,7 @@
             private function hideLoadingProgress():void {
                 if(p)
     			{
-    				PopUpManager.removePopUp(p);
+    				ProgressWindowManager.hideProgressWindow(p);
             		p=null;
     			}    
             }
