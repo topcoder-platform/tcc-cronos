@@ -17,5 +17,13 @@ package com.topcoder.service.project;
  *
  */
 public enum CompetionType {
-    STUDIO
+    STUDIO,
+    CONCEPTUALIZATION,
+    SPECIFICATION,
+    ARCHITECTURE,
+    COMPONENT_DESIGN,
+    COMPONENT_DEVELOPMENT,
+    ASSEMBLY,
+    TESTING,
+    SOFTWARE
 }

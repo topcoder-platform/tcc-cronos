@@ -18,7 +18,7 @@
     <property name="catalog_services.jar" value="${tcs_libdir}/catalog_services/1.1/catalog_services.jar"/>
     <property name="project_management.jar" value="${tcs_libdir}/project_management/1.0.1/project_management.jar"/>
     <property name="project_phases.jar" value="${tcs_libdir}/project_phases/2.0.1/project_phases.jar"/>
-    <property name="resource_management.jar" value="${tcs_libdir}/resource_management/1.1/resource_management.jar"/>
+    <property name="resource_management.jar" value="${tcs_libdir}/resource_management/1.1.1/resource_management.jar"/>
     <property name="project_services.jar" value="${tcs_libdir}/project_services/1.1/project_services.jar"/>
 
     <!-- 3rd party dependencies -->
