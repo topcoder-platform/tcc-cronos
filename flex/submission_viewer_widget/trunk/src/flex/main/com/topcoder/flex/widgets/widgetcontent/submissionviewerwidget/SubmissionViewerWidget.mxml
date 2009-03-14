@@ -47,7 +47,6 @@
 		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.SubmissionPaymentData;
                 import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.CompletedContestData;
     		
-    		import mx.managers.PopUpManager;
     		import com.topcoder.flex.util.progress.ProgressWindow;
     		import com.topcoder.flex.util.progress.ProgressWindowManager;
     		
@@ -1418,7 +1417,8 @@
             // BUGR-1393
             private function showLoadingProgress():void {
                 if (p == null) {
-        			p = ProgressWindowManager.showProgressWindow(DisplayObject(this.container));
+        			//p = ProgressWindowManager.showProgressWindow(DisplayObjectContainer(this.container));
+        			p = ProgressWindowManager.showProgressWindow(this.container);
             	}
             }
             
@@ -1426,7 +1426,8 @@
             private function hideLoadingProgress():void {
                 if(p)
     			{
-    				ProgressWindowManager.hideProgressWindow(p);
+    			    //ProgressWindowManager.hideProgressWindow(p);
+    			    ProgressWindowManager.hideProgressWindow(this.container, p);
             		p=null;
     			}    
             }
