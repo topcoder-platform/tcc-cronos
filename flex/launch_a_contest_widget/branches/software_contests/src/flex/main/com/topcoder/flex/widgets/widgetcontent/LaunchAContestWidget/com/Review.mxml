@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+          horizontalScrollPolicy="off" verticalScrollPolicy="off">
+    <mx:Script>
+	    <![CDATA[
+	    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.UploadedDocument;
+		import com.topcoder.flex.util.editor.*;
+	    	import mx.controls.HRule;
+	    	import mx.controls.Spacer;
+	    	import mx.controls.Label;
+	       import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+	       
+	        //step1 data
+	        public var cstTypeStep1:String;
+	        //step2 data
+	        public var cstTypeStep2:String;
+	        public var firstPrize:String;
+	        public var secondPrize:String;
+	        public var thirdPrize:String;
+	        public var fourthPrize:String;
+	        public var fifthPrize:String;
+	        public var adminFee:String;
+	        public var contestTotal:String;
+	        //step3 data
+	        public var contentTitleStr:String;
+	        public var IntroductionStr:String;
+	        public var glsInputStr:String;
+	        //step4 data
+	        public var colorInputStr:String;
+	        public var fontInputStr:String;
+	        public var sizeInputStr:String;
+	        public var addReInputStr:String;
+	        public var fileFormatInputStr:String;
+	        
+	        //step6 data
+	        public var fromDate:Date;
+	        public var toDate:Date;
+	        public var fromTime:String;
+	        public var toTime:String;
+	        
+	        public var mainWidget:LaunchWidget;
+	        
+	        // Set all section values from previous steps
+	        public function setAllValues():void {
+	        	contestType_step1.text = cstTypeStep1;
+	        	
+	        	contestType_step2.text = cstTypeStep2;
+	        	p1.text = firstPrize;
+	        	p2.text = secondPrize;
+	        	p3.text = thirdPrize;
+	        	p4.text = fourthPrize;
+	        	p5.text = fifthPrize;
+	        	adFee.text = adminFee;
+	        	total.text = contestTotal;
+	        	
+	        	ctInput.htmlText = contentTitleStr; // BUGR-1279
+	        	introInput.htmlText = IntroductionStr; // BUGR-1279
+	        	glsInput.htmlText = glsInputStr; // BUGR-1279
+                
+                colorInput.text = colorInputStr;
+                fontInput.text = fontInputStr;
+                sizeInput.text = sizeInputStr;
+                addReInput.text = addReInputStr;
+                fileFormatInput.text = fileFormatInputStr;
+                
+                startDate.text = (fromDate.getMonth()+1).toString() + '-' + fromDate.getDate() + '-' + fromDate.getFullYear().toString();
+                endDate.text = (toDate.getMonth()+1).toString() + '-' + toDate.getDate() + '-' + toDate.getFullYear().toString();
+                startTime.text = fromTime;
+                endTime.text = toTime;
+                
+                setAttachedFiles(mainWidget.competition.contestData.documentationUploads);
+	        }
+	        
+	        private function setAttachedFiles(documentationUploads:Array):void{
+	        	attachedFilesVBox.removeAllChildren();
+				
+				for each ( var doc:UploadedDocument in documentationUploads){
+					var hbox1:HBox = new HBox();
+					attachedFilesVBox.addChild(hbox1);
+					var labelDesc:Label = new Label();
+					hbox1.addChild(labelDesc);
+					labelDesc.text = "File Description:";
+					labelDesc.setStyle("fontWeight","bold");
+					
+					var textDesc:Text = new Text();
+					hbox1.addChild(textDesc);
+					textDesc.text = doc.description;
+					
+					var hbox2:HBox = new HBox();
+					attachedFilesVBox.addChild(hbox2);
+					var labelName:Label = new Label();
+					hbox2.addChild(labelName);
+					labelName.text = "File Name:";
+					labelName.setStyle("fontWeight","bold");
+					
+					var textName:Text = new Text();
+					hbox2.addChild(textName);
+					textName.text = doc.fileName;
+					
+					var spacer:Spacer = new Spacer();
+					attachedFilesVBox.addChild(spacer);
+					spacer.height = 5;
+					
+					var ruler:HRule = new HRule();
+					attachedFilesVBox.addChild(ruler);
+					ruler.percentWidth = 100;			
+				}
+	        }
+	        
+	        private function goToStep1():void {
+	            var targetParent:LaunchWidget = this.parent.parent.parent as LaunchWidget;
+	        	targetParent.goToStep1();
+	        }
+	        
+            private function goToStep2():void {
+                var targetParent:LaunchWidget = this.parent.parent.parent as LaunchWidget;
+                targetParent.goToStep2();
+            }
+            
+            private function goToStep3():void {
+                var targetParent:LaunchWidget = this.parent.parent.parent as LaunchWidget;
+                targetParent.goToStep3();
+            }
+            
+            private function goToStep4():void {
+                var targetParent:LaunchWidget = this.parent.parent.parent as LaunchWidget;
+                targetParent.goToStep4();
+            }
+            
+            private function goToStep5():void {
+                var targetParent:LaunchWidget = this.parent.parent.parent as LaunchWidget;
+                targetParent.goToStep5();
+            }
+            
+            private function goToStep6():void {
+                var targetParent:LaunchWidget = this.parent.parent.parent as LaunchWidget;
+                targetParent.goToStep6();
+            }
+	     ]]>
+    </mx:Script>
+    <mx:VBox width="100%" height="100%" styleName="boxStyle">
+    	<mx:HBox horizontalAlign="right" width="100%">
+    		<mx:Label text="Review" fontWeight="bold" width="80%"/>
+    		<mx:Spacer width="100" />	
+    		<mx:LinkButton baseline="middle" styleName="linkBtn" label="Preview Contest" click="this.mainWidget.previewContest()" />
+		    <mx:Image source="@Embed('../../assets/more_info.png')"/>
+    	</mx:HBox>
+        
+        <mx:HRule width="100%" strokeColor="0x000000"/>
+        
+        <mx:VBox width="100%" verticalGap="0">
+            <mx:Label text="Contest Selection" fontWeight="bold" />
+            <mx:Spacer height="15"/>
+	        <mx:HBox width="100%">
+	            <mx:Label text="Contest Type:" fontWeight="bold" />
+	            <mx:Text id="contestType_step1" text="Studio" />
+	            <mx:Spacer width="375"/>
+		    <!--
+	            <mx:Button styleName="EditButton" buttonMode="true" click="goToStep1()"/>
+		    -->
+	        </mx:HBox>
+        </mx:VBox>
+        
+        <mx:HRule width="100%" strokeColor="0x000000"/>
+        
+        <mx:VBox width="100%" verticalGap="0">
+            <mx:Label text="Contest Overview" fontWeight="bold" />
+            <mx:Spacer height="15"/>
+            <mx:HBox width="100%">
+                <mx:Label text="Contest Type:" fontWeight="bold" />
+                <mx:Text id="contestType_step2"  text="Application Front End Design"/>
+            </mx:HBox>
+	        <mx:HBox verticalAlign="top" width="100%">
+	            <mx:VBox>
+	                <mx:HBox>
+	                   <mx:Label text="1st Place: " fontWeight="bold" />
+	                   <mx:Text id="p1" width="120" />
+	                </mx:HBox>
+	                <mx:HBox>
+	                   <mx:Label text="2nd Place:" fontWeight="bold" />
+	                   <mx:Text id="p2"  width="120" />
+	                </mx:HBox>
+	                <mx:HBox>
+	                   <mx:Label text="3rd Place: " fontWeight="bold" />
+	                   <mx:Text id="p3" width="120" />
+	                </mx:HBox>
+	            </mx:VBox>
+	            <mx:VBox >
+	                <mx:HBox>
+	                   <mx:Label text="4th Place:" fontWeight="bold" />
+	                   <mx:Text id="p4" width="120" />
+	                </mx:HBox>
+	                <mx:HBox>
+	                   <mx:Label text="5th Place:" fontWeight="bold" />
+	                   <mx:Text id="p5"  width="120" />
+	                </mx:HBox>
+	            </mx:VBox>
+	            <mx:VBox >
+	                <mx:HBox>
+	                   <mx:Label text="20% Admin Fee:" fontWeight="bold" />
+	                   <mx:Text id="adFee" text="$***" width="54"  />
+	                </mx:HBox>
+	                <mx:HBox>
+	                   <mx:Label text="Contest Total:" fontWeight="bold" />
+	                   <mx:Spacer width="7"/>
+                       <mx:Text id="total" text="$***" width="55"  />
+	                </mx:HBox>
+	                <mx:HBox>
+	                   <mx:Spacer width="112"/>
+	                   <mx:Button styleName="EditButton" buttonMode="true" click="goToStep2()"/>
+	                </mx:HBox>
+	            </mx:VBox>
+	        </mx:HBox>
+        </mx:VBox>
+
+        <mx:HRule width="100%" strokeColor="0x000000"/>
+
+        <mx:VBox width="100%" verticalGap="0">
+            <mx:Label text="Contest Details" fontWeight="bold" />
+            <mx:Spacer height="15"/>
+            <mx:HBox>
+                <mx:Label text="Content Title:" fontWeight="bold" />
+                <mx:Text id="ctInput" width="308" text="test" />
+            </mx:HBox>
+            <mx:Spacer height="5"/>
+            <mx:Label text="Introduction:" fontWeight="bold" />
+			<mx:VBox verticalScrollPolicy="auto" width="308" height="50">
+	            <mx:Text id="introInput" width="100%" height="100%" />
+            </mx:VBox>
+            <mx:Spacer height="5"/>
+            <mx:Label text="Detailed Description:" fontWeight="bold" />
+            <mx:VBox verticalScrollPolicy="auto" width="308" height="50">
+		        <mx:Text id="glsInput" width="100%" height="100%" />
+            </mx:VBox>
+            <mx:HBox width="100%">
+                <mx:Spacer width="515"/>
+                <mx:Button styleName="EditButton" buttonMode="true" click="goToStep3()"/>
+            </mx:HBox>
+        </mx:VBox>
+        
+        <mx:HRule width="100%" strokeColor="0x000000"/>
+
+        <mx:VBox width="100%" verticalGap="0">
+            <mx:Label text="Contest Specifications" fontWeight="bold" />
+            <mx:Spacer height="15"/>
+            <mx:Label text="Colors:" fontWeight="bold" />
+            <mx:Text id="colorInput" width="500" height="50" text="test" />
+            <mx:Spacer height="5"/>
+            <mx:Label text="Fonts:" fontWeight="bold" />
+            <mx:Text id="fontInput" width="500" height="50" text="test" />
+            <mx:Spacer height="5"/>
+            <mx:Label text="Size:" fontWeight="bold" />
+            <mx:Text id="sizeInput" width="500" height="50" text="test" />
+            <mx:Spacer height="5"/>
+            <mx:Label text="Additional Requirements or Restrictions:" fontWeight="bold" />
+            <mx:Text id="addReInput" width="500" height="50" text="test" />
+            <mx:Spacer height="5"/>
+            <mx:Label text="Final File Formats:" fontWeight="bold" />
+	        <mx:Text id="fileFormatInput" width="500" height="50" text="test" />
+	        
+	        <mx:HBox width="100%">
+                <mx:Spacer width="515"/>
+                <mx:Button styleName="EditButton" buttonMode="true" click="goToStep4()"/>
+            </mx:HBox>
+        </mx:VBox>
+        
+        <mx:HRule width="100%" strokeColor="0x000000"/>
+
+        <mx:VBox width="100%" verticalGap="0">
+            <mx:Label text="Attach Files" fontWeight="bold" />
+
+            <mx:Spacer height="15"/>
+            <mx:HRule width="100%"/>            
+            <mx:VBox width="100%" id="attachedFilesVBox">
+            	
+            	
+            </mx:VBox>
+            
+            <mx:HBox width="100%">
+                <mx:Spacer width="515"/>
+                <mx:Button styleName="EditButton" buttonMode="true" click="goToStep5()"/>
+            </mx:HBox>
+        </mx:VBox>
+        
+        <mx:HRule width="100%" strokeColor="0x000000"/>
+
+        <mx:VBox width="100%" verticalGap="0">
+            <mx:Label text="Set the Contest Schedule" fontWeight="bold" />
+            <mx:Spacer height="15"/>
+            <mx:HBox>
+                <mx:Label text="Start Date:" fontWeight="bold" />
+                <mx:Text id="startDate" text="Start Date" />
+                <mx:Label text="Start Time:" fontWeight="bold" />
+                <mx:Text id="startTime" text="Start Time" />
+            </mx:HBox>
+            
+            <mx:HBox>
+                <mx:Label text="End Date:" fontWeight="bold" />
+                <mx:Text id="endDate" text="End Date" />
+                <mx:Label text="End Time:" fontWeight="bold" />
+                <mx:Text id="endTime" text="End Time" />
+            </mx:HBox>
+            
+            <mx:HBox width="100%">
+                <mx:Spacer width="515"/>
+                <mx:Button styleName="EditButton" buttonMode="true" click="goToStep6()"/>
+            </mx:HBox>
+        </mx:VBox>
+
+    </mx:VBox>
+</mx:Canvas>

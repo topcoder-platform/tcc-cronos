@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+          horizontalScrollPolicy="off" verticalScrollPolicy="off">
+          
+     <mx:HTTPService id="requestContestTypes" url="/i/cockpit/data/launch_a_contest/contestTypes.xml" resultFormat="xml" result="preprocessTypes(event)" ></mx:HTTPService>
+     <mx:HTTPService id="requestContestExamples" url="/i/cockpit/data/launch_a_contest/overview.xml" resultFormat="e4x" result="loadExamples(event)" fault="Helper.showAlertMessage(event.fault.faultString);"></mx:HTTPService>
+	
+	<mx:Script>
+	<![CDATA[
+    	import mx.collections.ArrayCollection;
+    	import mx.controls.RadioButton;
+    	import mx.rpc.events.ResultEvent;
+    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PrizeData;
+    	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+    	import mx.containers.Panel;
+    	import mx.events.FlexEvent;
+    	import com.topcoder.flex.Helper;
+        import mx.events.ItemClickEvent;
+        
+        import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
+        
+        private static var inputs:Array = ["firstPlace","secondPlace","thirdPlace","fourthPlace","fifthPlace"]; 
+        private static var inputsMap:Object = {1:"firstPlace", 2:"secondPlace", 3:"thirdPlace", 4:"fourthPlace", 5:"fifthPlace"};
+        
+        [Bindable]
+       	public var mainWidget:LaunchWidget;
+       	
+       	[Bindable]
+       	private var contestOverview:XML;
+       	
+       	[Bindable]
+       	private var curContestType:int;
+       	
+        public function initData():void{
+        	requestContestExamples.send();
+			requestContestTypes.send();
+
+        	var inputsMap:Object = {1:firstPlace, 2:secondPlace, 3:thirdPlace, 4:fourthPlace, 5:fifthPlace};
+        	
+        	for each(var inptName:String in inputs){
+        		this[inptName].text = "";
+        	}
+        	
+
+		if (mainWidget.competition.contestData.prizes) {
+
+
+        	
+			for (var i:int = 0; i < mainWidget.competition.contestData.prizes.length; i++) {
+			    var prize:PrizeData=mainWidget.competition.contestData.prizes[i] as PrizeData;
+			    var p:int = prize.place as int;
+				var input:TextInput = inputsMap[p] as TextInput;
+				input.text = prize.amount.toString();
+
+			}
+		}
+        	
+        	updateAmount();
+        }
+        
+        private function updateResult():Boolean{
+        	
+        	mainWidget.competition.contestData.contestTypeId = Number(studioType.selectedValue);
+        	
+        	var prizes:Array = new Array();
+        	mainWidget.competition.contestData.prizes = prizes;
+        	for (var i:int=0; i<inputs.length; i++){
+        		var prizeData:PrizeData = new PrizeData();
+        		
+        		var input:TextInput = this[inputs[i]] as TextInput;
+        		var amount:Number = Number(input.text);
+        		if (amount<=0){
+        			break;
+        		}
+        		
+        		prizeData.place = i+1;
+        		prizeData.amount = amount;
+        		prizes.push(prizeData);
+        	}
+        	
+        	mainWidget.competition.prizes = prizes;
+        	
+        	return true;
+        }
+        
+        
+        private function handleSelect(event:ItemClickEvent):void {
+        	typeName.text = (event.currentTarget as RadioButtonGroup).selection.label;
+        	curContestType = Number(studioType.selectedValue);
+        	dispatchEvent(new Event("curContestTypeChanged"));
+        }
+        
+        
+        
+        private function updateAmount():void{
+        	var sum:int = 0;
+        	for each (var name:String in inputs){
+        		
+        		var input:TextInput = this[name] as TextInput;
+        		var val:int = Number(input.text);
+        		
+        		if (isNaN(val)){
+        			input.text = "";
+        		}
+        		
+        		sum = sum + val;
+        	}
+        	
+        	if (sum>0){
+        		adminf.text = new Number(sum * 0.2).toFixed(2);
+        		cntstTtl.text = new Number(sum * 1.2).toFixed(2);
+        	} else {
+        		adminf.text = "";
+        		cntstTtl.text = "";
+        	}
+        }
+        
+        public function validateFields():Boolean{
+        	if (studioType.selection == null){
+        		Helper.showAlertMessage("Contest type not selected");
+        		return false;
+        	}
+        	
+        	for (var i:int=0; i<inputs.length -1; i++){
+        		
+        		var input:TextInput = this[inputs[i]] as TextInput;
+        		var val:int = Number(input.text);
+        		
+        		var nextInput:TextInput = this[inputs[i+1]] as TextInput;
+        		
+        		if (isNaN(Number(input.text)) || (Number(input.text) == 0 && Number(nextInput.text)>0)){
+        			Helper.showAlertMessage("Prize amount not set");
+        			input.setFocus();
+        			return false;
+        		}
+        		
+        		if (Number(input.text) > 0 && Number(nextInput.text) >= Number(input.text)){
+        			Helper.showAlertMessage("Prize "+ (i+1)+ " is incorrect");
+        			nextInput.setFocus();
+        			return false;
+        		}
+        		
+        	if (Number(cntstTtl.text) == 0)
+                    {
+                        Helper.showAlertMessage("No prize set");
+                        return false;
+                    }
+                }
+                
+                var firstInput:TextInput=this[inputs[0]]as TextInput;
+                var secondInput:TextInput=this[inputs[1]]as TextInput;
+                if (isNaN(Number(firstInput.text)) 
+                    || firstInput.text == ""
+                    || isNaN(Number(secondInput.text)) 
+                    || secondInput.text == "") 
+                {
+                      
+                      Helper.showAlertMessage("Atleast first & second place prizes should be set!"); 
+                      
+                      return false; 
+                }
+                
+                if (Number(secondInput.text) < (0.20 * Number(firstInput.text))) {
+                       Helper.showAlertMessage("Second place prize should atleast be 20% of first place prize!");
+                      
+                      return false; 
+                }
+
+                updateResult();
+
+                return true;
+            }
+        
+        // since BUGR-1039
+        private function loadExamples(e:ResultEvent): void {
+            // Do not need to change it as this is not coming through webservice. 
+        	if(e!=null && e.result!=null && e.result is XML)  	{
+ 				contestOverview = e.result as XML;
+			}
+        }
+        
+		[Bindable(event="curContestTypeChanged")]
+        private function isPresentXml(prop:String):Boolean {
+        	//trace("curContestType=" + curContestType + "; prop=" + prop + "; res=" + contestOverview.contestType.(@id==curContestType).hasOwnProperty(prop));
+        	return contestOverview.contestType.(@id==curContestType).hasOwnProperty(prop);
+        }
+
+        private function preprocessTypes(e:ResultEvent): void
+        {
+        	studioTypeBox.removeAllChildren();
+        	studioType.selection = null;
+        	
+        	var contestType:String = mainWidget.competition.contestData.contestTypeId.toString();
+			var selectedValue:Number = -1;
+
+        	if(e!=null && e.result!=null && e.result is XMLNode)
+        	{
+        		var root:XMLNode=e.result as XMLNode;
+        		for(var i:int=0;i<root.childNodes.length;i++)
+        		{
+        			if(studioTypeBox.getChildren().length==0)
+        			{
+        				studioTypeBox.addChild(new VBox());
+        			}
+        			var vbox:VBox=studioTypeBox.getChildAt(studioTypeBox.getChildren().length-1) as  VBox;
+        			if(vbox.getChildren().length>=2)
+        			{
+        				studioTypeBox.addChild(new VBox());
+        				vbox=studioTypeBox.getChildAt(studioTypeBox.getChildren().length-1) as  VBox;
+        			}
+        			var typeRadio:RadioButton=new RadioButton();
+        			typeRadio.group = studioType;
+        			typeRadio.label=root.childNodes[i].attributes.description;
+        			typeRadio.value=root.childNodes[i].attributes.contestTypeId;
+        			
+        			if (typeRadio.value == contestType){
+        				typeRadio.selected = true;
+        				selectedValue = Number(contestType);
+        			}
+        			vbox.addChild(typeRadio);
+        		}
+        		if(selectedValue == -1) {
+        			selectedValue = 1;
+        			studioType.selectedValue = selectedValue;
+        		}
+        		curContestType = Number(selectedValue);
+        		dispatchEvent(new Event("curContestTypeChanged"));
+        	}
+        	/*else if(e!=null && e.result!=null && e.result is ArrayCollection){
+        		var types:ArrayCollection=e.result as ArrayCollection;
+        		for(var i:int =0; i<types.length;i++)
+        		{
+        			if(studioTypeBox.getChildren().length==0)
+        			{
+        				studioTypeBox.addChild(new VBox());
+        			}
+        			var vbox:VBox=studioTypeBox.getChildAt(studioTypeBox.getChildren().length-1) as  VBox;
+        			if(vbox.getChildren().length>=3)
+        			{
+        				studioTypeBox.addChild(new VBox());
+        				vbox=studioTypeBox.getChildAt(studioTypeBox.getChildren().length-1) as  VBox;
+        			}
+        			var typeRadio:RadioButton=new RadioButton();
+        			typeRadio.group = studioType;
+        			typeRadio.label=types[i].description;
+        			typeRadio.value=types[i].contestTypeId;
+        			vbox.addChild(typeRadio);
+        			if (typeRadio.value == contestType){
+        				typeRadio.selected = true;
+        			}
+        		}
+        		
+        		
+        	}*/
+        }
+		
+		private function goToUrl(url:String):void {
+			navigateToURL(new URLRequest(url), "_blank");
+		} 
+
+    ]]>
+    </mx:Script>
+    <mx:VBox width="100%" height="100%">
+    	<mx:VBox width="100%" >
+    		
+		<mx:HBox horizontalAlign="right" width="100%">
+			<mx:Label text="Contest Overview" styleName="redText" fontSize="18" width="80%"/>
+			<mx:Spacer width="100" />	
+			<mx:LinkButton baseline="middle" styleName="linkBtn" label="Preview Contest" click="this.mainWidget.previewContest()" />
+			    <mx:Image source="@Embed('../../assets/more_info.png')"/>
+		</mx:HBox>
+	        <mx:Label text="What type of {mainWidget.contestSelect.contestType.selection.label} contest do you want to run?" styleName="boldBlackText"/>
+	                <mx:RadioButtonGroup id="studioType" itemClick="handleSelect(event);"/>
+	        <mx:HBox id="studioTypeBox" horizontalGap="25" styleName="smallBlackText">
+	        </mx:HBox>
+		   </mx:VBox>
+		   <mx:VBox width="100%">
+			<mx:Spacer height="10" />
+	        <mx:HRule width="100%" /> <!-- BUGR-1204 -->
+	        <mx:Label id="typeName" text="Web Page Design" styleName="redText" />
+	        <mx:Text width="100%" id="description" styleName="smallBlackText">
+	            <mx:text>
+					{contestOverview.contestType.(@id==curContestType).description}
+	            </mx:text>
+	        </mx:Text>
+	        <mx:Spacer height="5" /> <!-- BUGR-1204 -->
+	        <mx:HRule width="100%" /> <!-- BUGR-1204 -->
+   	       <mx:Label text="Examples:" styleName="redText"/>
+	        <mx:HBox verticalAlign="top" horizontalGap="0" visible="{isPresentXml('example1') || isPresentXml('example2')}" includeInLayout="{isPresentXml('example1') || isPresentXml('example2')}" width="100%">
+	            <mx:VBox verticalGap="0" width="50%" visible="{isPresentXml('example1')}" includeInLayout="{isPresentXml('example1')}" >
+	            	<mx:HBox width="100%">
+						<mx:Image source="{isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.thumbImage : ''}" click="{goToUrl(isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.fullsizeImage : '')}" width="150" height="150"/>
+	            		<mx:VBox verticalGap="0" horizontalGap="0">
+	            			<mx:Text text="{isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.name : ''}" styleName="boldBlackText" />
+							<mx:HBox horizontalGap="0">
+			            		<mx:Label text="Contest" width="82" styleName="smallBlackText" />
+			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.contestLink : '')}"/>
+			            		<mx:Image source="@Embed('../../assets/more_info.png')"/>
+			            	</mx:HBox>
+			            	<mx:HBox horizontalGap="0">
+			            		<mx:Label text="Submissions" width="82" styleName="smallBlackText" />
+			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.submissionsLink : '')}"/>
+			            		<mx:Image source="@Embed('../../assets/more_info.png')"/>
+			            	</mx:HBox>
+			            	<mx:HBox horizontalGap="0">
+			            		<mx:Label text="Winners" styleName="smallBlackText" width="82"/>
+			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.winnersLink : '')}"/>
+			            		<mx:Image source="@Embed('../../assets/more_info.png')"/>
+			            	</mx:HBox>
+			            	<!--<mx:Spacer height="17" /> --> 
+    		            	<mx:HBox styleName="smallBlackText" >
+			            		<mx:Label text="Prizes" width="80" /><mx:Label text=": {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.prizes : ''}"/>	
+			            	</mx:HBox>
+    		            	<mx:HBox styleName="smallBlackText" >
+			            		<mx:Label text="Duration" width="80" /><mx:Label text=": {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.duration : ''}"/>	
+			            	</mx:HBox>
+			            	<mx:HBox styleName="smallBlackText" >
+			            		<mx:Label text="Registrants" width="80"/><mx:Label text=": {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.registrants : ''}"/>	
+			            	</mx:HBox>
+    		            	<mx:HBox styleName="smallBlackText" >
+			            		<mx:Label text="Submissions" width="80"/><mx:Label text=": {isPresentXml('example1') ? contestOverview.contestType.(@id==curContestType).example1.submissions : ''}" />	
+			            	</mx:HBox>
+	            		</mx:VBox>	
+					</mx:HBox>
+	            </mx:VBox>
+	            <mx:Spacer width="40" />
+	            <mx:VBox horizontalGap="0" verticalGap="0" width="50%" visible="{isPresentXml('example2')}" includeInLayout="{isPresentXml('example2')}">
+	            	<mx:HBox width="100%">
+						<mx:Image source="{isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.thumbImage : ''}" click="{goToUrl(isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.fullsizeImage : '')}" styleName="clickableImage" width="150" height="150"/>
+	            		<mx:VBox verticalGap="0" horizontalGap="0" paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0" verticalAlign="top">
+	            		<!-- BUGR-1204 -->
+		            		<mx:Label text="{isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.name : ''}" styleName="boldBlackText" />
+		        			<mx:HBox horizontalGap="0">
+			            		<mx:Label text="Contest" width="82" styleName="smallBlackText" />
+			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.contestLink : '')}"/>
+					            <mx:Image source="@Embed('../../assets/more_info.png')"/>
+			            	</mx:HBox>
+			            	<mx:HBox horizontalGap="0">
+			            		<mx:Label text="Submissions" width="82" styleName="smallBlackText" />
+			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.submissionsLink : '')}"/>
+			            		<mx:Image source="@Embed('../../assets/more_info.png')"/>
+			            	</mx:HBox>
+			            	<mx:HBox horizontalGap="0">
+			            		<mx:Label text="Winners" width="82" styleName="smallBlackText" />
+			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.winnersLink : '')}"/>
+			            		<mx:Image source="@Embed('../../assets/more_info.png')"/>
+			            	</mx:HBox>
+			            	<!--<mx:Spacer height="17" />-->
+			            	<mx:HBox styleName="smallBlackText" >
+			            		<mx:Label text="Prizes" width="80" /><mx:Label text=": {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.prizes : ''}"/>	
+			            	</mx:HBox>
+    		            	<mx:HBox styleName="smallBlackText" >
+			            		<mx:Label text="Duration" width="80" /><mx:Label text=": {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.duration : ''}"/>	
+			            	</mx:HBox>
+			            	<mx:HBox styleName="smallBlackText" >
+			            		<mx:Label text="Registrants" width="80"/><mx:Label text=": {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.registrants : ''}"/>	
+			            	</mx:HBox>
+    		            	<mx:HBox styleName="smallBlackText" >
+			            		<mx:Label text="Submissions" width="80"/><mx:Label text=": {isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.submissions : ''}" />	
+			            	</mx:HBox>
+	            		</mx:VBox>	
+					</mx:HBox>
+	            </mx:VBox>
+	        </mx:HBox>
+	        <mx:Spacer height="5"/>
+	        <mx:VBox width="100%" verticalGap="0">
+	        	<!-- BUGR-1204 -->
+		        <mx:Label text="Suggested First Place Prize Amounts:" styleName="redText"/>
+		        <mx:HBox horizontalGap="25" styleName="smallBlackText">
+					<mx:Label text="&#8226; Minimum: {isPresentXml('minPrize') ? contestOverview.contestType.(@id==curContestType).minPrize : ''}" visible="{isPresentXml('minPrize')}" includeInLayout="{isPresentXml('minPrize')}" />
+			        <mx:Label text="&#8226; Average: {isPresentXml('averagePrize') ? contestOverview.contestType.(@id==curContestType).averagePrize : ''}" visible="{isPresentXml('averagePrize')}" includeInLayout="{isPresentXml('averagePrize')}" />
+			        <mx:Label text="&#8226; High Exposure: {isPresentXml('maxExposure') ? contestOverview.contestType.(@id==curContestType).maxExposure : ''}" visible="{isPresentXml('maxExposure')}" includeInLayout="{isPresentXml('maxExposure')}" />		        	
+		        </mx:HBox>
+		        
+	        </mx:VBox>
+
+	        
+	        <mx:Spacer height="5"/>
+	        <mx:VBox width="100%" verticalGap="0">
+	        <mx:Label text="Your Prize Amounts:" styleName="redText"/>
+		        <mx:Text width="100%" paddingTop="0" styleName="smallBlackText">
+		            <mx:text>
+		                When entering prizes, please note that each prize amount must be the same or lower than 
+		                the amount in the places above it.
+		            </mx:text>
+		        </mx:Text>
+	        </mx:VBox>
+	       <!-- <mx:Spacer height="10"/> -->
+	        <mx:HBox verticalAlign="top">
+	            <mx:HBox>
+	            	<mx:VBox verticalGap="7" styleName="smallBlackText">
+		            	<mx:HBox horizontalGap="0">
+		            		 <mx:Label text="&#8226; 1st Place" width="60" fontSize="11"/><mx:Label text=":$"/>
+	                    </mx:HBox>
+	                    <mx:HBox horizontalGap="0">
+		            		 <mx:Label text="&#8226; 2nd Place" width="60" fontSize="11"/><mx:Label text=":$"/>
+	                    </mx:HBox>
+	                    <mx:HBox horizontalGap="0">
+		            		 <mx:Label text="&#8226; 3rd Place" width="60" fontSize="11"/><mx:Label text=":$"/>
+	                    </mx:HBox>
+	            	</mx:VBox>
+	            	<mx:VBox verticalGap="2" horizontalGap="0">
+	            	   <mx:TextInput id="firstPlace" width="120" text="" change="updateAmount()" maxChars="4" />
+	                   <mx:TextInput id="secondPlace" width="120" text="" change="updateAmount()" maxChars="4" />
+	                   <mx:TextInput id="thirdPlace" width="120" text="" change="updateAmount()" maxChars="4" />
+	                </mx:VBox>
+	            </mx:HBox>
+	            
+	            <mx:HBox>
+	            	<mx:VBox verticalGap="7" styleName="smallBlackText">
+	            		<mx:HBox horizontalGap="0">
+		            		 <mx:Label text="&#8226; 4th Place" width="60" fontSize="11"/><mx:Label text=":$"/>
+	                    </mx:HBox>
+	                    <mx:HBox horizontalGap="0">
+		            		 <mx:Label text="&#8226; 5th Place" width="60" fontSize="11"/><mx:Label text=":$"/>
+	                    </mx:HBox>
+	            	</mx:VBox>
+	            	<mx:VBox verticalGap="2" horizontalGap="0">
+	            	   <mx:TextInput id="fourthPlace" width="120" text="" change="updateAmount()" maxChars="4" />
+	                   <mx:TextInput id="fifthPlace" width="120" text="" change="updateAmount()" maxChars="4" />
+	                </mx:VBox>
+	            </mx:HBox>
+	            
+	            <mx:HBox>
+	            	<mx:VBox verticalGap="7" styleName="smallBlackText">
+	            		<mx:HBox horizontalGap="0">
+		            		 <mx:Label text="&#8226; Admin Fee" width="90" fontSize="11"/><mx:Label text=":$"/>
+	                    </mx:HBox>
+	                    <mx:HBox horizontalGap="0">
+		            		  <mx:Label text="&#8226; Contest Total" width="90" fontSize="11"/><mx:Label text=":$"/>
+	                    </mx:HBox>
+	            	</mx:VBox>
+	            	<mx:VBox verticalGap="2">
+	            	   <mx:TextInput id="adminf" text="" width="55"  editable="false" />
+	                   <mx:TextInput id="cntstTtl" text="" width="55" editable="false" />
+	                </mx:VBox>
+	            </mx:HBox>
+	        </mx:HBox>
+	     </mx:VBox>
+     </mx:VBox>   
+</mx:Canvas>
