@@ -106,8 +106,8 @@
         private function initWidget():void{
         	//flash.system.Security.loadPolicyFile("http://localhost:8003/widget_app/crossdomain.xml");
         	prjList.widgetFramework=this.widgetFramework;
-        	var p:Panel=parent as Panel;
-        	p.verticalScrollPolicy="auto";
+        	//var p:Panel=parent as Panel;
+        	//p.verticalScrollPolicy="auto";
 	      getDataService();
             //loader.addEventListener(Event.COMPLETE, loadData);
             //loader.load(new URLRequest("data/moch.xml"));

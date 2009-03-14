@@ -15,10 +15,9 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
     import mx.core.Application;
     
     // BUGR-1393
-    import mx.managers.PopUpManager;
 	import com.topcoder.flex.util.progress.ProgressWindow;
 	import com.topcoder.flex.util.progress.ProgressWindowManager;
-	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
     	
     /**
      * <p>
@@ -379,7 +378,8 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
        // BUGR-1393
         public function showLoadingProgress():void {
             if (p == null) {
-                p = ProgressWindowManager.showProgressWindow(DisplayObject(this.container));
+                //p = ProgressWindowManager.showProgressWindow(DisplayObjectContainer(this.container));
+                p = ProgressWindowManager.showProgressWindow(this.container);
             }
         }
         
@@ -387,7 +387,8 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         public function hideLoadingProgress():void {
             if(p)
 			{
-				ProgressWindowManager.hideProgressWindow(p);
+				//ProgressWindowManager.hideProgressWindow(p);
+        		ProgressWindowManager.hideProgressWindow(this.container, p);
         		p=null;
 			}    
         }
