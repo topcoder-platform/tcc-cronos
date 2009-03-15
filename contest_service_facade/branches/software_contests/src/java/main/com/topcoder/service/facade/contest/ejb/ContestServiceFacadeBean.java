@@ -1674,6 +1674,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
             try {
+            	contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
                 projectServices.createProject(contest.getProjectHeader(),
                         contest.getProjectPhases(), contest.getProjectResources(), p.getName());
 
@@ -1714,6 +1715,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             UserProfilePrincipal p = (UserProfilePrincipal) sessionContext.getCallerPrincipal();
             try {
+            	contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
                 projectServices.updateProject(contest.getProjectHeader(), contest.getProjectHeaderReason(),
                         contest.getProjectPhases(), contest.getProjectResources(), p.getName());
             } catch (ProjectServicesException e) {

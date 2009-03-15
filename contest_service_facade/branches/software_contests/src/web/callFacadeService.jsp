@@ -508,9 +508,9 @@
 
             List<Category> categories = port.getActiveCategories();
             for (Category category : categories) {
-                if (category.getId().longValue() == 2) {
+                if (javaCategory == null) {
                     javaCategory = category;
-                } else if (category.getId().longValue() == 3) {
+                } else if (ejb3Category == null) {
                     ejb3Category = category;
                 }
             }
@@ -520,9 +520,9 @@
 
             List<Technology> technologies = port.getActiveTechnologies();
             for (Technology technology : technologies) {
-                if (technology.getId().longValue() == 1) {
+                if (java15Technology == null) {
                     java15Technology = technology;
-                } else if (technology.getId().longValue() == 2) {
+                } else if (informixTechnology == null) {
                     informixTechnology = technology;
                 }
             }            
@@ -546,8 +546,8 @@
             newAsset.setDocumentation(new ArrayList<CompDocumentation>());
 
             ProjectType projectType = new ProjectType(1, "projectType");
-            ProjectCategory projectCategory = new ProjectCategory(123, "projectCategory", projectType);
-            ProjectStatus projectStatus = new ProjectStatus(2, "projectStatus");
+            ProjectCategory projectCategory = new ProjectCategory(1, "projectCategory", projectType);
+            ProjectStatus projectStatus = new ProjectStatus(1, "projectStatus");
             com.topcoder.management.project.Project projectHeader = new com.topcoder.management.project.Project(
                 projectCategory, projectStatus);
 
@@ -558,9 +558,12 @@
             phaseOne.setPhaseType(phaseTypeOne);
             phaseOne.setFixedStartDate(new Date());
             phaseOne.setPhaseStatus(PhaseStatus.SCHEDULED);
+            phaseOne.setProject(null);
+            phaseOne.setScheduledStartDate(new Date());
+            phaseOne.setScheduledEndDate(new Date());
 
             Resource resource = new Resource();
-            ResourceRole resourceRole = new ResourceRole();
+            ResourceRole resourceRole = new ResourceRole(13);
             resource.setResourceRole(resourceRole);
             Resource[] projectResources = new Resource[] {resource};
 
@@ -581,9 +584,9 @@
 
             List<Category> categories = port.getActiveCategories();
             for (Category category : categories) {
-                if (category.getId().longValue() == 2) {
+                if (javaCategory == null) {
                     javaCategory = category;
-                } else if (category.getId().longValue() == 3) {
+                } else if (ejb3Category == null) {
                     ejb3Category = category;
                 }
             }
@@ -593,9 +596,9 @@
 
             List<Technology> technologies = port.getActiveTechnologies();
             for (Technology technology : technologies) {
-                if (technology.getId().longValue() == 1) {
+                if (java15Technology == null) {
                     java15Technology = technology;
-                } else if (technology.getId().longValue() == 2) {
+                } else if (informixTechnology == null) {
                     informixTechnology = technology;
                 }
             }            
@@ -619,8 +622,8 @@
             newAsset.setDocumentation(new ArrayList<CompDocumentation>());
 
             ProjectType projectType = new ProjectType(1, "projectType");
-            ProjectCategory projectCategory = new ProjectCategory(123, "projectCategory", projectType);
-            ProjectStatus projectStatus = new ProjectStatus(2, "projectStatus");
+            ProjectCategory projectCategory = new ProjectCategory(1, "projectCategory", projectType);
+            ProjectStatus projectStatus = new ProjectStatus(1, "projectStatus");
             com.topcoder.management.project.Project projectHeader = new com.topcoder.management.project.Project(
                 projectCategory, projectStatus);
 
@@ -631,9 +634,12 @@
             phaseOne.setPhaseType(phaseTypeOne);
             phaseOne.setFixedStartDate(new Date());
             phaseOne.setPhaseStatus(PhaseStatus.SCHEDULED);
+            phaseOne.setProject(null);
+            phaseOne.setScheduledStartDate(new Date());
+            phaseOne.setScheduledEndDate(new Date());
 
             Resource resource = new Resource();
-            ResourceRole resourceRole = new ResourceRole();
+            ResourceRole resourceRole = new ResourceRole(13);
             resource.setResourceRole(resourceRole);
             Resource[] projectResources = new Resource[] {resource};
 
