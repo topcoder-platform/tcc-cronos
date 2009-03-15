@@ -12,7 +12,7 @@ import com.topcoder.management.resource.persistence.ResourcePersistenceException
 import com.topcoder.management.resource.persistence.logging.LogMessage;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
+import com.topcoder.util.log.LogManager;
 
 /**
  * <p>
@@ -44,7 +44,7 @@ import com.topcoder.util.log.LogFactory;
 public class SqlResourcePersistence extends AbstractResourcePersistence {
 
 	/** Logger instance using the class name as category */
-    private static final Log LOGGER = LogFactory.getLog(SqlResourcePersistence.class.getName()); 
+    private static final Log LOGGER = LogManager.getLog(SqlResourcePersistence.class.getName()); 
     
 	/**
      * <p>

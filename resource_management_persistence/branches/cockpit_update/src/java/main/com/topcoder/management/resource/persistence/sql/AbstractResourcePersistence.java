@@ -27,7 +27,7 @@ import com.topcoder.management.resource.persistence.ResourcePersistenceException
 import com.topcoder.management.resource.persistence.logging.LogMessage;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
+import com.topcoder.util.log.LogManager;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 
@@ -78,7 +78,7 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  */
 public abstract class AbstractResourcePersistence implements ResourcePersistence {
 	/** Logger instance using the class name as category */
-    private static final Log LOGGER = LogFactory.getLog(AbstractResourcePersistence.class.getName()); 
+    private static final Log LOGGER = LogManager.getLog(AbstractResourcePersistence.class.getName()); 
     
     /**
      * <p>
@@ -435,9 +435,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         Util.checkResource(resource, false);
 
         LOGGER.log(Level.INFO, new LogMessage(new Long(resource.getId()), null,
-        		"add new resource to the project [id=" + resource.getProject().longValue()
+        		"add new resource to the project [id=" + resource.getProject()
         		+ "] with role :" + resource.getResourceRole().getName()
-        		+ " in the [id=" + resource.getPhase().longValue() + "] phase."));
+        		+ " in the [id=" + resource.getPhase() + "] phase."));
         Connection connection = openConnection();
 
         try {
@@ -445,28 +445,32 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
             // if the submissions are not empty, persist the submission.
             Long[] submissions = resource.getSubmissions();
-            for (int i = 0; i < submissions.length; i++) {
-                insertSubmission(connection, resource, submissions[i]);
+            if (submissions != null) {
+                for (int i = 0; i < submissions.length; i++) {
+                    insertSubmission(connection, resource, submissions[i]);
+                }
             }
 
             // persist properties.
             Map map = resource.getAllProperties();
 
-            for (Iterator iter = map.entrySet().iterator(); iter.hasNext();) {
-                Map.Entry entry = (Entry) iter.next();
-
-                Integer resourceInfoTypeId = getResourceInfoTypeId(connection, entry.getKey().toString());
-
-                // if resource_info_type_id is found
-                if (resourceInfoTypeId != null) {
-                    insertResourceInfo(connection, resource, resourceInfoTypeId.intValue(), entry.getValue()
-                        .toString());
+            if (map != null) {
+                for (Iterator iter = map.entrySet().iterator(); iter.hasNext();) {
+                    Map.Entry entry = (Entry) iter.next();
+    
+                    Integer resourceInfoTypeId = getResourceInfoTypeId(connection, entry.getKey().toString());
+    
+                    // if resource_info_type_id is found
+                    if (resourceInfoTypeId != null) {
+                        insertResourceInfo(connection, resource, resourceInfoTypeId.intValue(), entry.getValue()
+                            .toString());
+                    }
                 }
             }
         } catch (SQLException e) {
             closeConnectionOnError(connection);
         	LOGGER.log(Level.ERROR, new LogMessage(new Long(resource.getId()), null,
-        			"Unable to add resource to the project [id=" + resource.getProject().longValue() + "] with role:"
+        			"Unable to add resource to the project [id=" + resource.getProject() + "] with role:"
         			+ resource.getResourceRole().getName() + " in [id=" + resource.getPhase() + "] phase.", e));
             throw new ResourcePersistenceException("Unable to insert resource.", e);
         } finally {
@@ -618,9 +622,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         Util.checkResource(resource, true);
 
         LOGGER.log(Level.INFO, new LogMessage(new Long(resource.getId()), null,
-        		"delete resource in the project [id=" + resource.getProject().longValue()
+        		"delete resource in the project [id=" + resource.getProject()
         		+ "] with role :" + resource.getResourceRole().getName()
-        		+ " in the [id=" + resource.getPhase().longValue() + "] phase."));
+        		+ " in the [id=" + resource.getPhase() + "] phase."));
         
         Connection connection = openConnection();
         try {
@@ -689,9 +693,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         Util.checkResource(resource, false);
 
         LOGGER.log(Level.INFO, new LogMessage(new Long(resource.getId()), null,
-        		"update resource in the project [id=" + resource.getProject().longValue()
+        		"update resource in the project [id=" + resource.getProject()
         		+ "] with role :" + resource.getResourceRole().getName()
-        		+ " in the [id=" + resource.getPhase().longValue() + "] phase."));
+        		+ " in the [id=" + resource.getPhase() + "] phase."));
 
         Connection connection = openConnection();
         try {
@@ -789,7 +793,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         } catch (SQLException e) {
             closeConnectionOnError(connection);
             LOGGER.log(Level.ERROR, new LogMessage(new Long(resource.getId()), null,
-        			"Unable to update resource to the project [id=" + resource.getProject().longValue() + "] with role:"
+        			"Unable to update resource to the project [id=" + resource.getProject() + "] with role:"
         			+ resource.getResourceRole().getName() + " in [id=" + resource.getPhase() + "] phase.", e));
             throw new ResourcePersistenceException("Fail to update resource", e);
         } finally {
