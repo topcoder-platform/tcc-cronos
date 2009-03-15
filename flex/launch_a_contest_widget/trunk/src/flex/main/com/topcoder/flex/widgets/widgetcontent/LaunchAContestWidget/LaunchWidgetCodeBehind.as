@@ -177,12 +177,16 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             }
             var f:IWidgetFramework=widgetFramework;
         	container.contents=new  LaunchWidget();
-		if (!_emptyStart)
-		{
-        		(container.contents as LaunchWidget).openOverViewPage();
-			_emptyStart = true;
-		}
         	
+        	// Now with changes in WidgetContainer, widget.parent != container.
+        	// so this need to be set.
+        	(container.contents as LaunchWidget).container=container;
+    		if (!_emptyStart)
+    		{
+            	(container.contents as LaunchWidget).openOverViewPage();
+    			_emptyStart = true;
+    		}
+    		
         	container.contents.widgetFramework=f;
         	container.contents.name=name;
         	container.startRestore();
