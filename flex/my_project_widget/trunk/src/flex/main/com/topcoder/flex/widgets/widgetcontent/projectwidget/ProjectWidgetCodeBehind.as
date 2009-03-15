@@ -63,10 +63,20 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         
         private var _pid:String=null;
         
+        // Module Cockpit My Projects Release Assembly 1
+        // 1.1.2
+        // constant variable that defines default-visible-project-count.
+        public static var DefaultVisibleProjectCount:Number = 15;
         
+        // Module Cockpit My Projects Release Assembly 1
+        // 1.1.2
+        // constant variable that defines default-visible-project-count increment on load more.
+        public static var DefaultVisibleProjectCountIncrement:Number = 15;
         
-            
-        
+        // Module Cockpit My Projects Release Assembly 1
+        // 1.1.2
+        // state variable to hold visible project count.
+        public var visibleProjectCount:Number = 0;
         
         private var isMax:Boolean=false;
 
@@ -351,7 +361,7 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         	return _allowclose;
         }
 
-	/**
+	    /**
          * Simple setter for the container of this widget.
          *
          * @param container of this widget.

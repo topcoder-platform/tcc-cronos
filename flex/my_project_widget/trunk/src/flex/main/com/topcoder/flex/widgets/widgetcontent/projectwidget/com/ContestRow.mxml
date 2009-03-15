@@ -3,6 +3,7 @@
     styleName="ContestRowStyle" mouseOver="mouseOverHandle()" mouseOut="mouseOutHandle()">
 <mx:Script>
 	<![CDATA[
+	    import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Project;
 		import com.topcoder.flex.widgets.model.IWidget;
 	import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Contest;
 	import mx.collections.ArrayCollection;
@@ -11,6 +12,8 @@
 
 	private var _rowNum:int;
 	private var _ContextId:String;
+	
+	public var projectId:String;
 	
 	private static const OneHour:Number = 1000 * 60 * 60;
 
@@ -164,39 +167,116 @@
     return lblForumPosts.text;
   }
 
-  private function showStats():void
-        {
-          var prjCt:ProjectsContainer;
-          var p:DisplayObjectContainer=parent;
-          while(p!=null){
-            if(p is ProjectsContainer)break;
-            p=p.parent;
-          }
-          if(p==null)return ;
-
-    prjCt=p as ProjectsContainer;
-    var dict:Dictionary=new Dictionary();
-    dict["contestid"]=_ContextId;
-    prjCt.widgetFramework.addWidgetEx("Contest Monitor","Contest Monitor",dict );
-
-  }
-
-  private function showSubmission(event:MouseEvent):void
-        {
-          var prjCt:ProjectsContainer;
-          var p:DisplayObjectContainer=parent;
-          while(p!=null){
-            if(p is ProjectsContainer)break;
-            p=p.parent;
-          }
-          if(p==null)return ;
-    if(parseInt(submissions)>0){
-      prjCt=p as ProjectsContainer;
-      var dict:Dictionary=new Dictionary();
-      dict["contestid"]=_ContextId;
-      prjCt.widgetFramework.addWidgetEx("Submission Viewer","Submission Viewer",dict );
-    }
-  }
+    private function showStats():void
+    {
+    	var prjCt:ProjectsContainer;
+    	var p:DisplayObjectContainer=parent;
+    	while(p!=null){
+    		if(p is ProjectsContainer)break;
+    		p=p.parent;
+    	}    
+    	if(p==null)return ;
+        	
+		prjCt=p as ProjectsContainer;
+		
+		// Module Cockpit My Projects Release Assembly 1
+        // 1.1.5
+        // restore widget to normal width if it's not already.
+		if (prjCt.projectWidget.isMaximized()) {
+            prjCt.projectWidget.restoreScreen();
+        }
+		
+		// Module Cockpit My Projects Release Assembly 1
+        // 1.1.6 / 1.1.8
+		// call method on widget to load the selected contest.
+		var tabName:String = prjCt.widgetFramework.getActiveTabName();
+        var widgetName:String = "Contest Monitor";
+        openWidget(prjCt, tabName, widgetName);
+	}
+	
+	private function showSubmission(event:MouseEvent):void
+    {
+    	var prjCt:ProjectsContainer;
+    	var p:DisplayObjectContainer=parent;
+    	while(p!=null){
+    		if(p is ProjectsContainer)break;
+    		p=p.parent;
+    	}
+    	
+    	if(p==null)return ;
+        	
+        if(parseInt(submissions)>0){
+			prjCt=p as ProjectsContainer;
+			
+			// Module Cockpit My Projects Release Assembly 1
+            // 1.1.5
+            // restore widget to normal width if it's not already.
+			if (prjCt.projectWidget.isMaximized()) {
+                prjCt.projectWidget.restoreScreen();
+            }
+            
+			// Module Cockpit My Projects Release Assembly 1
+            // 1.1.5 / 1.1.8
+            // open submission viewer widget and load the current contest.
+            var tabName:String = prjCt.widgetFramework.getActiveTabName();
+            var widgetName:String = "Submission Viewer";
+            openWidget(prjCt, tabName, widgetName);
+					
+			// Module Cockpit My Projects Release Assembly 1
+            // 1.1.5 / 1.1.8
+			// call method on widget to load the selected contest.
+            //widget.loadContest(projectId, _ContextId);
+            			
+			// Module Cockpit My Projects Release Assembly 1
+            // 1.1.6 / 1.1.8
+		    // open contest monitor widget and load the current contest.
+		    var tabName:String = prjCt.widgetFramework.getActiveTabName();
+            var widgetName:String = "Contest Monitor";
+            openWidget(prjCt, tabName, widgetName);  
+		}
+	}
+	
+	// Module Cockpit My Projects Release Assembly 1
+    // utility function that creates / opens the Submission Viewer or Contest Monitor widget.
+	private function openWidget(prjCt:ProjectsContainer, tabName:String, widgetName:String):void {
+	    var widget:IWidget=prjCt.widgetFramework.openWidget(tabName, widgetName);
+            
+		var props:Dictionary=new Dictionary();
+		props["pid"]=projectId;
+		props["toBeLoadedContestId"]=_ContextId;
+		if (widget == null) {
+		    trace("@@@@@ Creating new widget: " + widgetName);
+		    // Module Cockpit My Projects Release Assembly 1
+            // properties (or attributes) of widget that need to be created new.
+            var propertiesObj:Dictionary=new Dictionary();
+            propertiesObj["tabName"]=tabName;
+            propertiesObj["name"]=widgetName;
+            propertiesObj["title"]=widgetName;
+            propertiesObj["column"]="2";
+            propertiesObj["minimized"]=true;
+            propertiesObj["maximized"]=false;
+            propertiesObj["allowclose"]=true;
+            propertiesObj["rowspan"]=1
+            
+            if (widgetName == "Submission Viewer") {
+                propertiesObj["row"]="1";
+                propertiesObj["columnspan"]=5;
+            }
+            else if (widgetName == "Contest Monitor") {
+                propertiesObj["row"]="2";
+                propertiesObj["columnspan"]=4;
+            }
+            
+            propertiesObj["widgetConfig"]=props;
+            //prjCt.widgetFramework.addWidgetEx2(tabName, widgetName, widgetName, props);
+            prjCt.widgetFramework.addWidgetWithProperties(propertiesObj);
+        }
+        else {
+            trace("@@@@@ Opening existing widget: " + widgetName);
+            props["reload"]=true;
+		    widget.setAttributes(props);
+        }
+	}
 
 	/**
 	 * Click on the label links to url.

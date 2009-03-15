@@ -107,13 +107,50 @@
         private function initWidget():void{
         	//flash.system.Security.loadPolicyFile("http://localhost:8003/widget_app/crossdomain.xml");
         	prjList.widgetFramework=this.widgetFramework;
-        	//var p:Panel=parent as Panel;
-        	//p.verticalScrollPolicy="auto";
-	      getDataService();
+        	
+        	// Module Cockpit My Projects Release Assembly 1
+            // set the widget container reference.
+        	prjList.widgetContainer=this.container;
+        	
+        	// Module Cockpit My Projects Release Assembly 1
+            // set the reference to this project widget.
+        	prjList.projectWidget=this;
+        	
+        	var p:Panel=this.container as Panel;
+        	p.verticalScrollPolicy="auto";
+	        getDataService();
             //loader.addEventListener(Event.COMPLETE, loadData);
             //loader.load(new URLRequest("data/moch.xml"));
+            
+            // Module Cockpit My Projects Release Assembly 1
+            // 1.1.4
+            // do not show the load more button initially.
+            this.load_more_btn_panel.visible = false;
+            this.load_more_btn_panel.includeInLayout = false;
+            
+            // Module Cockpit My Projects Release Assembly 1
+            // 1.1.1
+            // force widget to a maximized view
+            this.maximizeScreen();
 
         }
+        
+        // Module Cockpit My Projects Release Assembly 1
+        // force widget to a maximized view
+        private function maximizeScreen():void {
+		    if (this.container) {
+                this.container.startMaximize();
+    		}
+        }
+        
+        // Module Cockpit My Projects Release Assembly 1
+        // force widget to a restored view
+        public function restoreScreen():void {
+		    if (this.container) {
+                this.container.startRestore();
+    		}
+        }
+        
         // this function load an XML as data provider of the main container
         // of the projectList
         private function loadXML(e:Event):void
@@ -172,6 +209,10 @@
         			prjIdx=i;
         			projects.addItem(new Project(projectId.toString(),pname,pdesc,"",contests));
         		}
+        		
+        		    // Module Cockpit My Projects Release Assembly 1
+                    // 1.1.3
+                    // restrict the size to Default Visible count.
         			if(!projects.sort)
         			{
         				var sort:Sort = new Sort();
@@ -179,9 +220,46 @@
 						projects.sort = sort;
         			}
         			projects.refresh();
-        		prjList.dataProvider=  isMaximized()?projects: getSubArray(projects,10);
+        			
+        			// Module Cockpit My Projects Release Assembly 1
+                    // 1.1.2
+                    // restrict the size to Default Visible count.
+                    this.visibleProjectCount = ProjectWidgetCodeBehind.DefaultVisibleProjectCount;
+        		    prjList.dataProvider = getSubArray(projects, this.visibleProjectCount);
+        		    
+        		    // Module Cockpit My Projects Release Assembly 1
+                    // 1.1.4
+                    // show the load more button if there are more projects to be loaded.
+                    this.showHideLoadMoreButton();
         	}
         }
+        
+        // Module Cockpit My Projects Release Assembly 1
+        // 1.1.4
+        // handler to handle load more button click.
+        private function loadMore():void {
+            this.visibleProjectCount += ProjectWidgetCodeBehind.DefaultVisibleProjectCountIncrement;
+            prjList.dataProvider = getSubArray(projects, this.visibleProjectCount);
+            
+            // Module Cockpit My Projects Release Assembly 1
+            // 1.1.4
+            // show the load more button if there are more projects to be loaded.
+            this.showHideLoadMoreButton();
+        }
+        
+        // Module Cockpit My Projects Release Assembly 1
+        // 1.1.4
+        // show the load more button if there are more projects to be loaded.
+        private function showHideLoadMoreButton():void {
+            if (this.projects && this.projects.length > this.visibleProjectCount) {
+                this.load_more_btn_panel.visible = true;
+                this.load_more_btn_panel.includeInLayout = true;
+            } else {
+                this.load_more_btn_panel.visible = false;
+                this.load_more_btn_panel.includeInLayout = false;
+            }
+        }
+        
 		private function compareDate(a:Object, b:Object, fields:Array = null):int {
 			if(b.date==null || a.date==null)
 			{
@@ -245,5 +323,15 @@ wsdl="{contestServiceFacadeWsdl}">
 		    <!--
 		</mx:Box>		
 		-->
+		<!--
+		// Module Cockpit My Projects Release Assembly 1
+        // 1.1.1
+        // load more button
+        -->
+		<mx:HBox id="load_more_btn_panel">
+		    <mx:Button label="Load More" buttonMode="true" id="load_more_btn" click="loadMore()">
+		    </mx:Button>
+		</mx:HBox>
+		
 
 </tc:ProjectWidgetCodeBehind>

@@ -3,6 +3,8 @@
 		verticalGap="0" borderStyle="none" borderThickness="2" borderColor="#942321">
 <mx:Script>
 	<![CDATA[
+	    import com.topcoder.flex.widgets.widgetcontent.projectwidget.ProjectWidget;
+	    import com.topcoder.flex.widgets.model.IWidgetContainer;
 		import com.topcoder.flex.model.IWidgetFramework;
 		import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Contest;
 		import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Project;
@@ -10,6 +12,13 @@
 
 		private var _dataProvider:ArrayCollection;
 		private var _framework:IWidgetFramework;
+		
+		// Module Cockpit My Projects Release Assembly 1
+        // 1.1.1
+        // reference to widget container
+		public var widgetContainer:IWidgetContainer;
+		
+		public var projectWidget:ProjectWidget;
 		
 		/**
          * Simple getter for the framework of this widget.

@@ -104,6 +104,7 @@
 				content.addChild(prjRow);
 				prjRow.dataProvider=cnt ;
 				prjRow.rowNum=i;
+				prjRow.projectId=_dataProvider.id;
 			}
 			menuBarCollection = new XMLListCollection(menubarXML);
 		}
