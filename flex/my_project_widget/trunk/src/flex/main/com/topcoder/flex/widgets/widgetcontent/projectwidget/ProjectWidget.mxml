@@ -31,6 +31,7 @@
         
         import com.topcoder.flex.widgets.widgetcontent.projectwidget.com.ProjectList;
 	import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Project;
+	import com.topcoder.flex.util.date.DateUtil;
 	import mx.core.Application;
 
         /**
