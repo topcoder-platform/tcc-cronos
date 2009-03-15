@@ -47,9 +47,6 @@
 		import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.SubmissionPaymentData;
                 import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservices.CompletedContestData;
     		
-    		import com.topcoder.flex.util.progress.ProgressWindow;
-    		import com.topcoder.flex.util.progress.ProgressWindowManager;
-    		
     		import mx.rpc.AbstractOperation;
 
             private var _rankList:ArrayCollection = new ArrayCollection();
@@ -117,8 +114,6 @@
 			
 			[Bindable]
 			private var _clientProjectNames:ArrayCollection=new ArrayCollection();
-			
-			private var p:ProgressWindow=null;
 			
 			public static function getHeader(username:String, password:String):SOAPHeader {
 				var userToken:String = "UsernameToken-"+Math.round(Math.random()*999999).toString();
@@ -202,14 +197,17 @@
             	
             	if (!_isLocalTesting) {
 	                var header:SOAPHeader=getHeader(username,password);
-			ContestServiceFacadeBean.clearHeaders();
-			ContestServiceFacadeBean.addHeader(header);
-	
-			ContestServiceFacadeBean.getStatusList();
-			if (pid) {
-			    ContestServiceFacadeBean.getContestDataOnlyByPID.send();
-			} 
-			else {					  
+        			ContestServiceFacadeBean.clearHeaders();
+        			ContestServiceFacadeBean.addHeader(header);
+        			
+        			this.contestServiceFacade = ContestServiceFacadeBean;
+        	
+        			ContestServiceFacadeBean.getStatusList();
+        			
+        			if (pid) {
+        			    ContestServiceFacadeBean.getContestDataOnlyByPID(pid);
+        			} 
+        			else {					  
 	            		ContestServiceFacadeBean.getContestDataOnly();
         			}
         			
@@ -375,7 +373,9 @@
             }
             private function handleResult(event:ResultEvent=null):void {
                 // BUGR-1393
-                hideLoadingProgress();
+                // we should not hide here. 
+                // last event in sequence is submission, so let hiding happen there.
+                //hideLoadingProgress();
                 
                 _contestInfoList = new ArrayCollection();
                 if(event!=null && event.result!=null)
@@ -429,11 +429,22 @@
                 		//trace("Contest statusId: " + contestInfo.statusId + " = " + _statusTypeDictionary[contestInfo.statusId].name);
                 		//trace("");
                 		
+                		// Module Cockpit My Projects Release Assembly 1
+                        // 1.1.7
+                        // show only the toBeLoadedContestId, as passed from my project widget.
                 		if (_activeContestTypeIds[contestInfo.statusId] == true 
                 				|| _pastContestTypeIds[contestInfo.statusId] == true) {
-                			_contestInfoList.addItem(contestInfo);
-                			_contestInfoDictionary[contestInfo.id]=contestInfo;
+                				
+                		    if (!this.toBeLoadedContestId || contestInfo.id == this.toBeLoadedContestId) {
+                		        
+                			    _contestInfoList.addItem(contestInfo);
+                			    _contestInfoDictionary[contestInfo.id]=contestInfo;
+                			}
                 		}
+                		else if (!this.toBeLoadedContestId || contestInfo.id == this.toBeLoadedContestId) {
+            			    _contestInfoList.addItem(contestInfo);
+            			    _contestInfoDictionary[contestInfo.id]=contestInfo;
+            			}
                 	}
 
                 	doFilter();
@@ -444,7 +455,10 @@
             }
             
             private function handleStatusList(event:ResultEvent=null):void {
-                hideLoadingProgress();
+                // BUGR-1393
+                // we should not hide here. 
+                // last event in sequence is submission, so let hiding happen there.
+                //hideLoadingProgress();
                 
                 if(event!=null && event.result!=null)
                 {
@@ -1158,7 +1172,7 @@
 		            	var header:SOAPHeader=getHeader(username,password);
 						ContestServiceFacadeBean.clearHeaders();
 		        		ContestServiceFacadeBean.addHeader(header);
-		        		ContestServiceFacadeBean.retrieveSubmissionsForContest.send();
+		        		ContestServiceFacadeBean.retrieveSubmissionsForContest(_selectedContestId);
 		        		
 		        		// BUGR-1393
 		        		showLoadingProgress();
@@ -1414,24 +1428,6 @@
         			// BUGR-1393
         			showLoadingProgress();
             	}
-            }
-            
-            // BUGR-1393
-            private function showLoadingProgress():void {
-                if (p == null) {
-        			//p = ProgressWindowManager.showProgressWindow(DisplayObjectContainer(this.container));
-        			p = ProgressWindowManager.showProgressWindow(this.container);
-            	}
-            }
-            
-            // BUGR-1393
-            private function hideLoadingProgress():void {
-                if(p)
-    			{
-    			    //ProgressWindowManager.hideProgressWindow(p);
-    			    ProgressWindowManager.hideProgressWindow(this.container, p);
-            		p=null;
-    			}    
             }
             
             private function paymentFaultEventHandler(e:FaultEvent):void {
@@ -1711,8 +1707,7 @@
 				} 
 			 } 
 		} 
-
-
+		
         ]]>
     </mx:Script>
     
@@ -1744,18 +1739,12 @@
 		resultFormat="object" 
 		result="handleResult(event)"
 		fault="hideLoadingProgress(); Helper.showAlertMessage('getContestDataOnlyByPID: ' + event.fault.faultString);"> 
-		<mx:request>
-	<arg0>{pid}</arg0>
-	</mx:request> 
 	</mx:operation>
 		
 	<mx:operation name="retrieveSubmissionsForContest" 
 		resultFormat="object" 
 		result="handleSubResult(event)"
-		fault="hideLoadingProgress(); Helper.showAlertMessage('retrieveSubmissionsForContest: ' + event.fault.faultString);"> 
-		<mx:request>
-			<arg0>{_selectedContestId}</arg0>
-		</mx:request>
+		fault="hideLoadingProgress(); Helper.showAlertMessage('retrieveSubmissionsForContest: ' + event.fault.faultString);">
 	</mx:operation>
 	
 	<mx:operation name="updateContestStatus" 

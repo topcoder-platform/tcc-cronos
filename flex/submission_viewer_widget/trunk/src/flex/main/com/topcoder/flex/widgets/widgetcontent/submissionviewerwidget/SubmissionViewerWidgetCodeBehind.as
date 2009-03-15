@@ -11,8 +11,12 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
     import mx.containers.Panel;
     import mx.containers.VBox;
     import mx.containers.ViewStack;
-    import flash.utils.Dictionary;
-	import mx.controls.Alert;
+    import mx.controls.Alert;
+    import mx.rpc.soap.mxml.WebService;
+	import com.topcoder.flex.util.progress.ProgressWindow;
+	import com.topcoder.flex.util.progress.ProgressWindowManager;
+	
+	import flash.display.DisplayObject;
 
     /**
      * <p>
@@ -46,6 +50,19 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
 		
 		public var _restore:Function;
 		
+		// Module Cockpit My Projects Release Assembly 1
+        // 1.1.7
+        // Submission Viewer widget should only have the current contest in the drop down.
+        // to be selected contest id.
+		[Bindable]public var toBeLoadedContestId:Number;
+		
+		// Module Cockpit My Projects Release Assembly 1
+        // 1.1.7
+        // Submission Viewer widget should only have the current contest in the drop down.
+        // reference to ContestServiceFacade
+        public var contestServiceFacade:WebService = null;
+        
+        private var p:ProgressWindow=null;
 		 
         private var _pid:String=null;
         [Bindable]public function get pid():String {
@@ -311,9 +328,29 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         	{
         		_defaultcontestid=map["contestid"];
         	}
-        	else if(map.hasOwnProperty("pid"))
+        	if(map.hasOwnProperty("pid"))
         	{
         		_pid=map["pid"];
+        	}
+        	
+        	// Module Cockpit My Projects Release Assembly 1
+            // 1.1.7
+            // Submission Viewer widget should only have the current contest in the drop down.
+        	if(map.hasOwnProperty("toBeLoadedContestId"))
+        	{
+        		toBeLoadedContestId=map["toBeLoadedContestId"];
+        	}
+        	if(map.hasOwnProperty("reload"))
+        	{
+        	    showLoadingProgress();
+        	    
+        	    // reload the widget data.
+        	    if (pid) {
+    			    contestServiceFacade.getContestDataOnlyByPID(pid);
+    			} 
+    			else {					  
+            		contestServiceFacade.getContestDataOnly();
+    			}
         	}
         }
         
@@ -370,6 +407,24 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         		_container=parent as IWidgetContainer;
         	}
         	return _container;
+        }
+        
+        // BUGR-1393
+        public function showLoadingProgress():void {
+            if (p == null) {
+                //p = ProgressWindowManager.showProgressWindow(DisplayObjectContainer(this.container));
+                p = ProgressWindowManager.showProgressWindow(this.container);
+            }
+        }
+        
+        // BUGR-1393
+        public function hideLoadingProgress():void {
+            if(p)
+			{
+				//ProgressWindowManager.hideProgressWindow(p);
+        		ProgressWindowManager.hideProgressWindow(this.container, p);
+        		p=null;
+			}    
         }
     }
 }
