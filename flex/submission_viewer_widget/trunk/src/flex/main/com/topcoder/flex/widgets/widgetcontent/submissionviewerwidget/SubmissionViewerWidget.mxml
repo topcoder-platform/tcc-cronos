@@ -303,10 +303,12 @@
 						trace("_restore To be selected Index: " + index);
 						contestlist_minpage.selectedIndex=index;
 						
+						var minpageColumnCount:int = minPage.width/list_minpage.columnWidth;
+						
 						// calculate the index in the thumbnail.
 						var subIndex:int = getItemIndex(_submissionList, list.selectedItem);
-						var subRow:int = subIndex / 2;
-						var maxRows:int = (_submissionList.length / 2) + (_submissionList.length % 2 == 0 ? 0 : 1);
+						var subRow:int = subIndex / minpageColumnCount;
+						var maxRows:int = (_submissionList.length / minpageColumnCount) + (_submissionList.length % minpageColumnCount == 0 ? 0 : 1);
 						var maxAllowedIndex:int = maxRows - 4;
 						if (subRow > maxAllowedIndex) {
 							currentIndexMinPage = maxAllowedIndex;
@@ -315,15 +317,15 @@
 							currentIndexMinPage = subRow;
 						}
 						
-						if (currentIndex < 0) {
-						    currentIndex = 0;
-						}
-						
 						trace("_restore subIndex: " + subIndex);
 						trace("_restore subRow: " + subRow);
 						trace("_restore maxRows: " + maxRows);
 						trace("_restore maxAllowedIndex: " + maxAllowedIndex);
 						trace("_restore new currentIndex: " + currentIndexMinPage);
+						
+						if (currentIndexMinPage < 0) {
+						    currentIndexMinPage = 0;
+						}
 						
 						setSubmissionForMin();
 						list_minpage.select(list.selectedItem);
