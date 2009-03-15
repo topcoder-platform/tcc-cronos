@@ -85,13 +85,18 @@
         	var header:SOAPHeader=getHeader(username,password);
 			ContestServiceFacadeBean.clearHeaders();
             ContestServiceFacadeBean.addHeader(header);
+            
+            //this.contestServiceFacade = ContestServiceFacadeBean;
 
-           	// ContestServiceFacadeBean.getContest.send();
-           	if(pid) ContestServiceFacadeBean.getSimpleContestDataByPID.send();
-           	else
-        	ContestServiceFacadeBean.getSimpleContestData();
+            showLoadingProgress();
+            
+           	if(pid) {
+           	     ContestServiceFacadeBean.getSimpleContestDataByPID(pid);
+           	}
+           	else {
+        	    ContestServiceFacadeBean.getSimpleContestData();
+        	}
         }
-
 
 	private function init():void {
 		getDataService();
@@ -159,16 +164,35 @@
             }
         private function setContests(e:ResultEvent): void
         {
+            hideLoadingProgress();
+            
         	if(e==null || e.result==null)return;
+        	
+        	var clist:ArrayCollection;
         	if(e.result is  ArrayCollection)
         	{
-        		
-        	  contestList=e.result  as ArrayCollection;
+        	    clist=e.result as ArrayCollection;
         	}
         	else
         	{
-        		contestList=new ArrayCollection();
-        		contestList.addItem(e.result);
+        		clist=new ArrayCollection();
+        		clist.addItem(e.result);
+        	}
+        	
+        	contestList = new ArrayCollection();
+        	
+        	for(var i:int=0;i<clist.length;i++)
+        	{
+        		var data:*=clist.getItemAt(i); 
+        		
+        		// Module Cockpit My Projects Release Assembly 1
+                // 1.1.7
+                // show only the toBeLoadedContestId, as passed from my project widget. 
+		  	    if(data!=null){
+		  	        if (!this.toBeLoadedContestId || data.contestId == this.toBeLoadedContestId) {
+        	     	   contestList.addItem(data); 
+        	        }
+        	    }
         	}
         	
         	
@@ -302,12 +326,11 @@
 </mx:Script>
 <mx:WebService id="ContestServiceFacadeBean" 
 wsdl="{contestServiceFacadeWsdl}"> 
-<mx:operation name="getSimpleContestData" resultFormat="object" result="setContests(event)"> 
+<mx:operation name="getSimpleContestData" resultFormat="object" result="setContests(event)"
+    fault="hideLoadingProgress(); Helper.showAlertMessage('CONTEST-MONITOR::getSimpleContestData: ' + event.fault.faultString);"> 
 </mx:operation>
-<mx:operation name="getSimpleContestDataByPID" resultFormat="object" result="setContests(event)"> 
-<mx:request>
-	<arg0>{pid}</arg0>
-	</mx:request> 
+<mx:operation name="getSimpleContestDataByPID" resultFormat="object" result="setContests(event)"
+    fault="hideLoadingProgress(); Helper.showAlertMessage('CONTEST-MONITOR::getSimpleContestDataByPID: ' + event.fault.faultString);"> 
 </mx:operation>
 </mx:WebService>
 <mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"

@@ -13,6 +13,9 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
     import mx.controls.ComboBox;
     import mx.rpc.soap.SOAPHeader;
     import mx.rpc.soap.WebService;
+    
+    import com.topcoder.flex.util.progress.ProgressWindow;
+	import com.topcoder.flex.util.progress.ProgressWindowManager;
 
     /**
      * <p>
@@ -61,10 +64,24 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
          */
         private var _defaultcontestid:int = 0;
         
+        // Module Cockpit My Projects Release Assembly 1
+        // 1.1.7
+        // Contest Monitor widget should only have the current contest in the drop down.
+        // to be loaded contest id.
+		[Bindable]public var toBeLoadedContestId:Number;
+		
+		// Module Cockpit My Projects Release Assembly 1
+        // 1.1.7
+        // Contest Monitor widget should only have the current contest in the drop down.
+        // reference to ContestServiceFacade
+        //public var contestServiceFacade:WebService=null;
+        
         private var _pid:String=null;
         
         protected var username:String=Application.application.parameters.username;
 		protected var password:String = "";
+		
+		private var p:ProgressWindow=null;
 		
 		private var _ContestServiceFacadeBean:WebService;
         [Bindable]public function get pid():String {
@@ -291,9 +308,29 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
         	{
         		_defaultcontestid=map["contestid"];
         	}
-        	else if(map.hasOwnProperty("pid"))
+        	if(map.hasOwnProperty("pid"))
         	{
         		_pid=map["pid"];
+        	}
+        	
+        	// Module Cockpit My Projects Release Assembly 1
+            // 1.1.7
+            // Contest Monitor widget should only have the current contest in the drop down.
+        	if(map.hasOwnProperty("toBeLoadedContestId"))
+        	{
+        		toBeLoadedContestId=map["toBeLoadedContestId"];
+        	}
+        	if(map.hasOwnProperty("reload"))
+        	{
+        	    showLoadingProgress();
+        	    
+        	    // reload the widget data.
+        	    if(pid) {
+               	     this.ContestServiceFacadeBean.getSimpleContestDataByPID(pid);
+               	}
+               	else {
+            	    this.ContestServiceFacadeBean.getSimpleContestData();
+            	}
         	}
         }
 
@@ -339,6 +376,24 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
         		_container=parent as IWidgetContainer;
         	}
         	return _container;
+        }
+        
+        // BUGR-1393
+        public function showLoadingProgress():void {
+            if (p == null) {
+                //p = ProgressWindowManager.showProgressWindow(DisplayObjectContainer(this.container));
+                p = ProgressWindowManager.showProgressWindow(this.container);
+            }
+        }
+        
+        // BUGR-1393
+        public function hideLoadingProgress():void {
+            if(p)
+			{
+				//ProgressWindowManager.hideProgressWindow(p);
+        		ProgressWindowManager.hideProgressWindow(this.container, p);
+        		p=null;
+			}    
         }
     }
 }
