@@ -70,6 +70,7 @@
 
     <!-- NAME FOR .JAR AND .WAR FILES -->
     <property name="component.jar" value="${dist_lib}/${component_path}/${distfilename}.jar"/>
+    <property name="id_generator_ejb.jar" value="${dist_lib}/${component_path}/${distfilename}_id_generator.jar"/>
     <property name="javadoc.jar" value="javadocs.jar"/>
     <property name="component.tests.jar" value="${dist_lib}/${distfilename}_tests.jar"/>
     <property name="component.war" value="${dist_examples}/${distfilename}.war"/>
@@ -294,7 +295,12 @@
 
     <target name="dist" depends="compile, manifest">
         <mkdir dir="${dist_lib}/${component_path}"/>
-        <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}" />
+        <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}" >
+            <metainf dir="${configdir}/META-INF/" includes="*" excludes="application.xml" />
+        </jar>
+        <jar jarfile="${id_generator_ejb.jar}" >
+            <metainf dir="${configdir}/IDGenerator/META-INF/" includes="*" excludes="application.xml,DBConnectionFactory.xml" />
+        </jar>
     </target>
 
     <target name="dist_tests" depends="compile_tests">
@@ -407,6 +413,7 @@
         <mkdir dir="${cronos_libdir}/${component_path}/dist"/>
 
         <copy file="${component.jar}" todir="${cronos_libdir}/${component_path}"/>
+        <copy file="${id_generator_ejb.jar}" todir="${cronos_libdir}/${component_path}"/>
         <copy file="${component.dist.jar}" todir="${cronos_libdir}/${component_path}/dist"/>
     </target>
 

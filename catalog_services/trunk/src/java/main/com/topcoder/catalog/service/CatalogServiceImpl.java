@@ -702,6 +702,7 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
 
         // create version
         CompVersion compVersion = new CompVersion();
+        compVersion.setPhase(new Phase());
         populateVersionTechnologies(assetDTO, em, compVersion);
 
         // here is the new code line add in bug fix.
