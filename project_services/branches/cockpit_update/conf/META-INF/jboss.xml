@@ -8,6 +8,12 @@
             <ejb-name>ProjectServicesBean</ejb-name>
             <jndi-name>ProjectServicesBean/remote</jndi-name>
             <local-jndi-name>ProjectServicesBean/local</local-jndi-name>
+            <method-attributes>
+              <method>
+                <method-name>createProject</method-name>
+                <transaction-timeout>3600</transaction-timeout>
+              </method>
+            </method-attributes>
         </session>
     </enterprise-beans>
 </jboss>
