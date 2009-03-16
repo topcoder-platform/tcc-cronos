@@ -253,9 +253,9 @@
             propertiesObj["name"]=widgetName;
             propertiesObj["title"]=widgetName;
             propertiesObj["column"]="2";
-            propertiesObj["minimized"]=true;
-            propertiesObj["maximized"]=false;
-            propertiesObj["allowclose"]=true;
+            propertiesObj["minimized"]="true";
+            propertiesObj["maximized"]="false";
+            propertiesObj["allowclose"]="true";
             propertiesObj["rowspan"]=1
             
             if (widgetName == "Submission Viewer") {
