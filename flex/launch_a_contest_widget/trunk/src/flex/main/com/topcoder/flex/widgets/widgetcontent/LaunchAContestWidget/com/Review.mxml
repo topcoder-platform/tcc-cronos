@@ -63,8 +63,16 @@
                 addReInput.text = addReInputStr;
                 fileFormatInput.text = fileFormatInputStr;
                 
-                startDate.text = (fromDate.getMonth()+1).toString() + '-' + fromDate.getDate() + '-' + fromDate.getFullYear().toString();
-                endDate.text = (toDate.getMonth()+1).toString() + '-' + toDate.getDate() + '-' + toDate.getFullYear().toString();
+                // BUGR-1475
+                if (fromDate) {
+                    startDate.text = (fromDate.getMonth()+1).toString() + '-' + fromDate.getDate() + '-' + fromDate.getFullYear().toString();
+                }
+                
+                // BUGR-1475
+                if (toDate) { 
+                    endDate.text = (toDate.getMonth()+1).toString() + '-' + toDate.getDate() + '-' + toDate.getFullYear().toString();
+                }
+                
                 startTime.text = fromTime;
                 endTime.text = toTime;
                 

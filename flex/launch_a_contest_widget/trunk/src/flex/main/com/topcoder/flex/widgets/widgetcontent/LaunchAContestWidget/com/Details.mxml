@@ -41,27 +41,43 @@
 	        }
         
 	        public function validateFields():Boolean{
-	        	if (ctInput.text == ""){
-	        		Helper.showAlertMessage("Please enter contest title");
+	            // BUGR-1475
+	        	return validateFieldsEx2(true,false);
+	        }
+	        
+	        // BUGR-1475
+	        public function validateFieldsEx2(showMsg:Boolean, showPageName:Boolean):Boolean {
+	            if (ctInput.text == ""){
+	                if (showMsg) {
+	        		    Helper.showAlertMessage("Please enter contest title" + (showPageName ? " at Details Page" : ""));
+	                }
 	        		return false;
 	        	}
 	        	
 	        	if (introInput.text == ""){
-	        		Helper.showAlertMessage("Please enter introduction");
+	        	    if (showMsg) {
+	        		    Helper.showAlertMessage("Please enter introduction" + (showPageName ? " at Details Page" : ""));
+	        	    }
 	        		return false;
 	        	}
 	        	
 	        	if (glsInput.text == ""){
-	        		Helper.showAlertMessage("Please enter a detailed description");
+	        	    if (showMsg) {
+	        		    Helper.showAlertMessage("Please enter a detailed description" + (showPageName ? " at Details Page" : ""));
+	        		}
 	        		return false;
 	        	}
 	        	
 	        	if(introInput.htmlText.length > 10000) { // BUGR-1279
-	        		Helper.showAlertMessage("Please shorten the intro");
+	        	    if (showMsg) {
+	        		    Helper.showAlertMessage("Please shorten the intro" + (showPageName ? " at Details Page" : ""));
+	        		}
 	        		return false;
 	        	}
 	        	if(glsInput.htmlText.length > 10000) { // BUGR-1279
-	        		Helper.showAlertMessage("Please shorten the detailed description");
+	        	    if (showMsg) {
+	        		    Helper.showAlertMessage("Please shorten the detailed description" + (showPageName ? " at Details Page" : ""));
+	        		}
 	        		return false;
 	        	}
 	        	this.mainWidget.competition.contestData.name = ctInput.text; // BUGR-1379

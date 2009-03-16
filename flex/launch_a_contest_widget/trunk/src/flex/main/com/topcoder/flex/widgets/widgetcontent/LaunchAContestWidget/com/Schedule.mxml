@@ -73,14 +73,24 @@
 
             }
             
-            public function validateFields():Boolean{
+            public function validateFields():Boolean {
+                // BUGR-1475
+                return validateFieldsEx2(true,false);
+            }
+            
+            // BUGR-1475
+            public function validateFieldsEx2(showMsg:Boolean,showPageName:Boolean):Boolean{
             	if (dfStart.selectedDate == null){
-            		Helper.showAlertMessage("Start date not selected");
+            	    if (showMsg) {
+            		    Helper.showAlertMessage("Start date not selected" + (showPageName ? " at Schedule Page" : ""));
+            		}
             		return false;
             	}
             	
             	if (dfEnd.selectedDate == null){
-            		Helper.showAlertMessage("End date not selected");
+            	    if (showMsg) {
+            		    Helper.showAlertMessage("End date not selected" + (showPageName ? " at Schedule Page" : ""));
+            		}
             		return false;
             	}
             	
@@ -90,7 +100,9 @@
             	//change the start time to local time
                 startDate.setTime(startDate.getTime() + (5-tzOffHours)*OneHour);
             	if (startDate.time<=current.time){
-            		Helper.showAlertMessage("Start date must be in future");
+            	    if (showMsg) {
+            		    Helper.showAlertMessage("Start date must be in future" + (showPageName ? " at Schedule Page" : ""));
+            		}
             		return false;
             	}
             	
@@ -98,12 +110,16 @@
                 //change the end time to local time
                 endDate.setTime(endDate.getTime() + (5-tzOffHours)*OneHour);
             	if (endDate.time <= startDate.time){
-            		Helper.showAlertMessage("End date must be after start date");
+            	    if (showMsg) {
+            		    Helper.showAlertMessage("End date must be after start date" + (showPageName ? " at Schedule Page" : ""));
+            		}
             		return false;
             	}
             	
             	if (termCheckBox.selected == false){
-            		Helper.showAlertMessage("Please agree to TopCoder Direct Terms");
+            	    if (showMsg) {
+            		    Helper.showAlertMessage("Please agree to TopCoder Direct Terms" + (showPageName ? " at Schedule Page" : ""));
+            		}
             		return false;
             	}
             	
