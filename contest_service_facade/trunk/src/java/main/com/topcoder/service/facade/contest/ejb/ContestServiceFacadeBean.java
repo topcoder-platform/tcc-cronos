@@ -13,6 +13,7 @@ import com.topcoder.service.payment.PaymentType;
 import com.topcoder.service.payment.TCPurhcaseOrderPaymentData;
 import com.topcoder.service.payment.paypal.PayPalPaymentProcessor;
 import com.topcoder.service.payment.paypal.PayflowProPaymentProcessor;
+import com.topcoder.service.project.CompetitionPrize;
 import com.topcoder.service.project.StudioCompetition;
 import com.topcoder.service.project.CompetionType;
 import com.topcoder.service.project.Competition;
@@ -36,6 +37,7 @@ import com.topcoder.service.studio.ContestPaymentData;
 import com.topcoder.service.studio.MediumData;
 import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.ContestData;
+import com.topcoder.service.studio.contest.Contest;
 import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
@@ -54,6 +56,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.EJB;
 import javax.jws.WebService;
+import javax.persistence.EntityManager;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
@@ -65,6 +68,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import org.jboss.logging.Logger;
 import org.jboss.ws.annotation.EndpointConfig;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -279,6 +283,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 		contestData.setContestAdministrationFee(total*0.2);
 		contestData.setDrPoints(total*0.1);
 
+		if(contestData.getLaunchDateAndTime() == null) { // BUGR-1445
+            /*
+               - start: current time + 1 hour (round the minutes up to the nearest 15) 
+               - end: start time + 3 days 
+             */
+		    GregorianCalendar startDate = new GregorianCalendar();
+		    startDate.setTime(new Date());
+		    startDate.add(Calendar.HOUR, 1);
+		    int m = startDate.get(Calendar.MINUTE);
+		    startDate.add(Calendar.MINUTE, m + (15 - m % 15) % 15);
+		    contestData.setLaunchDateAndTime(getXMLGregorianCalendar(startDate.getTime()));
+		    contestData.setDurationInHours(24 * 3); // 3 days
+		}
+		
 		// BUGR-1088
 
         Date startDate = getDate(contestData.getLaunchDateAndTime());
