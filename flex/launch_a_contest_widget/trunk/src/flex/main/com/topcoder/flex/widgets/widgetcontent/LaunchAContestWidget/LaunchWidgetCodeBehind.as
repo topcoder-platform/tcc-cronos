@@ -9,6 +9,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.ProgressWindow;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
+    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestPaymentData;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CompetionType;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.CreditCardPaymentData;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PaymentType;
@@ -477,6 +478,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             	this.competition.type = competitionType;
     
     		    Helper.showAlertMessage("Contest created successfully!");
+    		    (container.contents as LaunchWidget).sched.initData(); // BUGR-1445
             }
         }
         
