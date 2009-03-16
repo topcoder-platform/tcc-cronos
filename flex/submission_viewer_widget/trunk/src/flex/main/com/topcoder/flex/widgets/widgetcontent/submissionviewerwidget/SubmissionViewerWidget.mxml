@@ -867,31 +867,27 @@
             
             private var currentIndexMinPage:int = 0;
             
+			// BUGR-1392
             private function setSubmissionForMin():void {
             	if (!_submissionList || _submissionList.length <= 0) {
             		return;
             	}
             	
-            	trace("Setting active submissions for min page: " + activeSubmission.length + "," + _submissionList.length);
+            	//trace("Setting active submissions for min page: " + activeSubmission.length + "," + _submissionList.length);
             	activeSubmissionForMin = new ArrayCollection();
-            	
+            	//currentIndexMinPage = 0;
                 //trace("Clean the active submission.");
-                for (var i:int = currentIndexMinPage; i < 4 + currentIndexMinPage; i++) {
-                    if (i * 2 < _submissionList.length) {
-                        var item:* = _submissionList.getItemAt(i * 2);
-                    	trace("Get item at " + (i * 2).toString() + " with rank " + item.rank);
-                    	activeSubmissionForMin.addItem(_submissionList.getItemAt(i * 2));
-                    } else {
-                        break;
-                    }
-                    
-                    if (i * 2 + 1 < _submissionList.length) {
-                        var item:* = _submissionList.getItemAt(i * 2 + 1);
-                    	trace("Get item at " + (i * 2 + 1).toString() + " with rank " + item.rank);
-                    	activeSubmissionForMin.addItem(_submissionList.getItemAt(i * 2 + 1));
-                    } else {
-                        break;
-                    }
+                for (var i:int = 0; i < list_minpage.rowCount; i++) {
+                	for (var j:int = 0; j < list_minpage.columnCount; j++) {
+	                	var k:int = i * list_minpage.columnCount + j;
+	                    if (k < _submissionList.length) {
+	                        var item:* = _submissionList.getItemAt(k);
+	                    	trace("Get item at " + k.toString() + " with id " + item.id);
+	                    	activeSubmissionForMin.addItem(_submissionList.getItemAt(k));
+	                    } else {
+	                        break;
+	                    }
+                 	}
                 }
                 
                 if (list_minpage && !list_minpage.dataProvider && activeSubmissionForMin) {
@@ -901,7 +897,8 @@
                 hideShowUpDownArrowMinPage();
             }
             
-            private function goUpMinPage():void {
+            // BUGR-1392
+ 			private function goUpMinPage():void {
                 if (currentIndexMinPage <= 0 || _submissionList.length == 0) {
                     currentIndexMinPage = 0;
                 } else {
@@ -909,18 +906,20 @@
                             _submissionList.getItemAt(0)) {
                         // Do nothing here.
                     } else {
-                        if (list_minpage.selectedIndex > activeSubmissionForMin.length - 3) {
-                            list_minpage.selectedItem = activeSubmissionForMin.getItemAt(list_minpage.selectedIndex - 2);
+                        if (list_minpage.selectedIndex > activeSubmissionForMin.length - list_minpage.columnCount + 1) {
+                            list_minpage.selectedItem = activeSubmissionForMin.getItemAt(list_minpage.selectedIndex - list_minpage.columnCount);
                         }
-                        if (activeSubmissionForMin.length > 6) {
-                            activeSubmissionForMin.removeItemAt(6);
-                            if (activeSubmissionForMin.length > 6) {
-                                activeSubmissionForMin.removeItemAt(6);
-                            }
+                        var s:int = (list_minpage.rowCount - 1) * list_minpage.columnCount;
+                        while(activeSubmissionForMin.length > s) {
+                        	activeSubmissionForMin.removeItemAt(activeSubmissionForMin.length - 1);
                         }
                         
-                        activeSubmissionForMin.addItemAt(_submissionList.getItemAt((currentIndexMinPage - 1) * 2), 0);
-                        activeSubmissionForMin.addItemAt(_submissionList.getItemAt((currentIndexMinPage - 1) * 2 + 1) , 1);
+                        for(var i:int = list_minpage.columnCount-1; i >=0 ; i--) {
+                        	var k:int = (currentIndexMinPage - 1) * list_minpage.columnCount + i;
+                        	if(k < _submissionList.length) {
+                        		activeSubmissionForMin.addItemAt(_submissionList.getItemAt(k) , 0);
+                        	}
+                        }
                     }
                     
                     currentIndexMinPage--;
@@ -928,20 +927,23 @@
                 }
             }
             
+            // BUGR-1392
             private function goDownMinPage():void {
-                if (_submissionList.length > 0 && currentIndexMinPage < _submissionList.length / 2 - 4) {
-                    if (list_minpage.selectedIndex < 2) {
-                        list_minpage.selectedItem = activeSubmissionForMin.getItemAt(list_minpage.selectedIndex + 2);
+                if (_submissionList.length > 0 && currentIndexMinPage < _submissionList.length / list_minpage.columnCount - list_minpage.rowCount) {
+                    if (list_minpage.selectedIndex < list_minpage.columnCount) {
+                        list_minpage.selectedItem = activeSubmissionForMin.getItemAt(list_minpage.selectedIndex + list_minpage.columnCount);
                     }
                     
-                    activeSubmissionForMin.removeItemAt(0);
-                    activeSubmissionForMin.removeItemAt(0);
-                    if ((currentIndexMinPage + 4) * 2 < _submissionList.length) {
-                        activeSubmissionForMin.addItem(_submissionList.getItemAt((currentIndexMinPage + 4) * 2));
-                        if ((currentIndex + 4) * 2 + 1 < _submissionList.length) {
-                            activeSubmissionForMin.addItem(_submissionList.getItemAt((currentIndexMinPage + 4) * 2 + 1));
-                        }
+                    for(var i:int = 0; i < list_minpage.columnCount; i++) {
+                    	activeSubmissionForMin.removeItemAt(0);
                     }
+                    
+                    for(var i:int = 0; i < list_minpage.columnCount; i++) {
+                    	var k:int = (currentIndexMinPage + list_minpage.rowCount) * list_minpage.columnCount + i;
+                    	if (k < _submissionList.length) {
+                        	activeSubmissionForMin.addItem(_submissionList.getItemAt(k));
+                    	}
+                    }	
                     currentIndexMinPage++;
                     hideShowUpDownArrowMinPage();
                 }
