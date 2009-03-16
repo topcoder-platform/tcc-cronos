@@ -307,6 +307,19 @@ Specific limitations (such as restricting a color or a specific layout style) an
 					setPreviousStep(step1box); // BUGR-1141
 					setCurStep(step2box);// BUGR-1141
 			}
+
+            // BUGR-1445
+            private function validateAndSaveAsDraft():void {
+        		if(this.currentState == "DetailsState") {
+            		if(!details.validateFields()) return;
+            	} else if(this.currentState == "SpecificationsState") {
+            		if(!specf.validateFields()) return;
+            	} else if (this.currentState == "ScheduleState") {
+        			if(!sched.validateFields()) return;
+        		} 
+	         	saveAsDraft();
+            }
+
             
             public function next(event:EffectEvent = null):void {
                 if (this.currentState == "ContestSelectionState"){
@@ -337,8 +350,8 @@ Specific limitations (such as restricting a color or a specific layout style) an
 					}
 
                    this.currentState = "DetailsState";
-                   save.visible = false;
-                   
+                   save.visible = true; // BUGR-1445
+                  
                    review.cstTypeStep2 = overView.studioType.selection.label;
                    review.firstPrize = overView.firstPlace.text;
                    review.secondPrize = overView.secondPlace.text;
@@ -360,7 +373,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    }
                    specf.requestFileTypes.send();
                    this.currentState = "SpecificationsState";
-                   save.visible = false;
+                   save.visible = true; // BUGR-1445
                    this.height = SPECIFICATIONS_HEIGHT;  // BUGR-1134
                    
                    review.contentTitleStr = details.ctInput.text; // BUGR-1379
@@ -378,7 +391,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    }
                    
                    this.currentState = "AttachFilesState";
-                   save.visible = false;
+                   save.visible = true; // BUGR-1445
                    
                    review.colorInputStr = specf.colorInput.text;
                    review.fontInputStr = specf.fontInput.text;
@@ -417,7 +430,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    sched.requestSchedule.send();
 
                    this.currentState = "ScheduleState";
-                   save.visible = false;
+                   save.visible = true; // BUGR-1445
                    
                    this.height = SCHEDULE_HEIGHT;  // BUGR-1134
                      setPreviousStep(step5box);
@@ -549,6 +562,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                   // step4Text.setStyle("color", "#a8a8a8");
                 }
                 else if(this.currentState == "DetailsState"){
+                	save.visible = false; // BUGR-1445
                    this.currentState = "OverViewState";
                    this.height = OVERVIEW_HEIGHT; // BUGR-1134
                   setCurStep(step2box);
@@ -961,9 +975,11 @@ Specific limitations (such as restricting a color or a specific layout style) an
 
     <!--BUGR-1204 <mx:Button id="back" buttonMode="true" styleName="RedButton" label="&lt;&lt; back" click="previous()"/>-->
          <mx:Button id="back" label="BACK" buttonMode="true" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}" click="previous()"/>
-         <mx:Button id="save" buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="save as draft" click="saveAsDraft()" includeInLayout="{save.visible}"/>
+	<mx:Button id="cancel" label="CANCEL" buttonMode="true" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}" click="cancelBtn()"/>         
+	<mx:Button id="save" buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="save as draft" click="validateAndSaveAsDraft()" includeInLayout="{save.visible}"/>
+
          <!--BUGR-1204 <mx:Button id="goNext" buttonMode="true" styleName="RedButton"  label="continue >>" click="next()"/>-->
-         <mx:Button id="cancel" label="CANCEL" buttonMode="true" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}" click="cancelBtn()"/>
+         
          <mx:Button id="goNext" label="NEXT" buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" click="next()"/>
       </mx:HBox>
       <mx:Spacer height="5"/>
