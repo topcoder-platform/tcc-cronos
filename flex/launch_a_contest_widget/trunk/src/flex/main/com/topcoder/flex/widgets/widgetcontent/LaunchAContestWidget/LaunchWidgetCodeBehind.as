@@ -476,9 +476,17 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             	//var type:CompetionType = new CompetionType();
             	var competitionType:String = "STUDIO";
             	this.competition.type = competitionType;
+            	
+            	
     
-    		    Helper.showAlertMessage("Contest created successfully!");
+    		   
     		    (container.contents as LaunchWidget).sched.initData(); // BUGR-1445
+
+		// BUGR-1470 - mark refresh of my project.
+            	notifyMyProjectWidget();
+
+		 Helper.showAlertMessage("Contest created successfully!");
+            	
             }
         }
         
@@ -498,6 +506,10 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 				PopUpManager.removePopUp(p);
         		p=null;
 			}
+			
+			// BUGR-1470 - mark refresh of my project.
+			notifyMyProjectWidget();
+			
         	Helper.showAlertMessage("Contest updated successfully!");
 	    }
 
@@ -555,6 +567,15 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
 
 			navigateToURL(new URLRequest(url), "_blank");
         	}
+        }
+        
+        // BUGR-1470
+        public function notifyMyProjectWidget():void {
+            var widget:IWidget=this.widgetFramework.getWidget("My Projects", "My Projects");
+            
+            var dict:Dictionary = new Dictionary();
+            dict["ContestUpdated"]=true;
+            widget.setAttributes(dict);
         }
     }
 }
