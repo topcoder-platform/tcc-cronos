@@ -41,27 +41,85 @@
 	        }
         
 	        public function validateFields():Boolean{
-	        	if (ctInput.text == ""){
-	        		Helper.showAlertMessage("Please enter contest title");
+	            // BUGR-1475 & BUGR-1067
+		        return mainWidget.studioContestType ? s_validateFieldsEx2(true,false) : ns_validateFieldsEx2(true,false);
+	        }
+	        
+	        public function validateFieldsEx2(showMsg:Boolean, showPageName:Boolean):Boolean{
+	            // BUGR-1475 & BUGR-1067
+		        return mainWidget.studioContestType ? s_validateFieldsEx2(showMsg,showPageName) : ns_validateFieldsEx2(showMsg,showPageName);
+	        }
+		
+		    // BUGR-1475 & BUGR-1067
+		    public function ns_validateFieldsEx2(showMsg:Boolean, showPageName:Boolean):Boolean{ // BUGR-1067
+	        	if (ns_ctInput.text == ""){
+                    if (showMsg) {
+    	        		Helper.showAlertMessage("Please enter contest title" + (showPageName ? " at Details Page" : ""));
+    	        		return false;
+                    }
+	        	}
+	        	
+	        	if (ns_shortDesc.text == ""){
+	        	    if (showMsg) {
+	        		    Helper.showAlertMessage("Please enter short description" + (showPageName ? " at Details Page" : ""));
+	        		    return false;
+	        		}
+	        	}
+	        	
+	        	if (ns_funcDesc.text == ""){
+	        	    if (showMsg) {
+    	        		Helper.showAlertMessage("Please enter functional description" + (showPageName ? " at Details Page" : ""));
+    	        		return false;
+	        	    }
+	        	}
+	        	
+	        	if (ns_detailedDesc.text == ""){
+	        	    if (showMsg) {
+	        		    Helper.showAlertMessage("Please enter detailed description" + (showPageName ? " at Details Page" : ""));
+	        		    return false;
+	        		}
+	        	}
+	        	
+	        	this.mainWidget.competition.contestData.name = ns_ctInput.text;
+	        	this.mainWidget.competition.contestData.shortSummary = ns_shortDesc.text;
+	        	this.mainWidget.competition.contestData.contestDescriptionAndRequirements = ns_detailedDesc.text;
+	        	
+	        	return true;
+	        }
+	        
+	        // BUGR-1475 & BUGR-1067
+	        public function s_validateFieldsEx2(showMsg:Boolean, showPageName:Boolean):Boolean {
+	            if (ctInput.text == ""){
+	                if (showMsg) {
+	        		    Helper.showAlertMessage("Please enter contest title" + (showPageName ? " at Details Page" : ""));
+	                }
 	        		return false;
 	        	}
 	        	
 	        	if (introInput.text == ""){
-	        		Helper.showAlertMessage("Please enter introduction");
+	        	    if (showMsg) {
+	        		    Helper.showAlertMessage("Please enter introduction" + (showPageName ? " at Details Page" : ""));
+	        	    }
 	        		return false;
 	        	}
 	        	
 	        	if (glsInput.text == ""){
-	        		Helper.showAlertMessage("Please enter a detailed description");
+	        	    if (showMsg) {
+	        		    Helper.showAlertMessage("Please enter a detailed description" + (showPageName ? " at Details Page" : ""));
+	        		}
 	        		return false;
 	        	}
 	        	
 	        	if(introInput.htmlText.length > 10000) { // BUGR-1279
-	        		Helper.showAlertMessage("Please shorten the intro");
+	        	    if (showMsg) {
+	        		    Helper.showAlertMessage("Please shorten the intro" + (showPageName ? " at Details Page" : ""));
+	        		}
 	        		return false;
 	        	}
 	        	if(glsInput.htmlText.length > 10000) { // BUGR-1279
-	        		Helper.showAlertMessage("Please shorten the detailed description");
+	        	    if (showMsg) {
+	        		    Helper.showAlertMessage("Please shorten the detailed description" + (showPageName ? " at Details Page" : ""));
+	        		}
 	        		return false;
 	        	}
 	        	this.mainWidget.competition.contestData.name = ctInput.text; // BUGR-1379
@@ -142,7 +200,8 @@
         </mx:Text>
         
         <mx:Spacer height="5"/>
-        
+              <mx:VBox visible="{mainWidget.studioContestType}" includeInLayout="{mainWidget.studioContestType}">
+
         <mx:VBox width="100%" verticalGap="0">
 	        <mx:HBox >
 	            <mx:Label text="Contest Title:" fontWeight="bold" />
@@ -178,6 +237,89 @@
             </mx:Text>
             <tc:TCRichTextEditor id="glsInput" width="500" height="150" maxHeight="180" maxWidth="800"/>  <!-- BUGR-1279 -->
         </mx:VBox>
-
+    	</mx:VBox>     
+       
+       <!-- BUGR-1067 --> 
+ 		<mx:VBox visible="{!mainWidget.studioContestType}" includeInLayout="{!mainWidget.studioContestType}">
+			<mx:VBox width="100%" verticalGap="0">
+		        <mx:HBox >
+		            <mx:Label text="Component Name:" fontWeight="bold"/>
+		            <mx:TextInput id="ns_ctInput" width="292"/>
+		            <mx:LinkButton label="[+ show hint]" />
+		        </mx:HBox>
+		        <mx:Text id="ns_componentNameHints" color="0x888888" width="500" height="0" visible="false">
+		        </mx:Text>
+		    </mx:VBox>
+	        
+	        <mx:Spacer height="5"/>
+	        
+	        <mx:VBox width="100%" verticalGap="0">
+		        <mx:HBox >
+		            <mx:Label text="Short Description:" fontWeight="bold"/>
+		            <mx:Spacer width="295"/>
+		            <mx:LinkButton label="[+ show hint]"/>
+		        </mx:HBox>
+		        <mx:Text id="ns_shortDescHint" height="0" color="0x888888" width="500" visible="false">
+	            </mx:Text>
+		        <mx:RichTextEditor id="ns_shortDesc" width="500" height="200"/>
+	        </mx:VBox>
+	        
+	        <mx:Spacer height="5"/>
+	        
+	        <mx:VBox width="100%" verticalGap="5">
+	            <mx:HBox>
+	                <mx:Label text="Functional Description:" fontWeight="bold"/>
+	                <mx:Spacer width="270"/>
+	                <mx:LinkButton label="[+ show hint]" />
+	            </mx:HBox>
+	            <mx:Text id="ns_funcDescHint" height="0" color="0x888888" width="500" visible="false" verticalCenter="top">
+	            </mx:Text>
+	            <mx:RichTextEditor id="ns_funcDesc" width="500" height="200"/>
+	        </mx:VBox>
+	        
+	        <mx:VBox width="100%" verticalGap="0">
+	            <mx:HBox>
+	                <mx:Label text="Detailed Description:" fontWeight="bold"/>
+	                <mx:Spacer width="280"/>
+	                <mx:LinkButton label="[+ show hint]"  />
+	            </mx:HBox>
+	            <mx:Text id="ns_detailedDescHint" height="0" color="0x888888" width="500" visible="false" verticalCenter="top">
+	            </mx:Text>
+	            <mx:RichTextEditor id="ns_detailedDesc" width="500" height="200"/>
+	        </mx:VBox>
+	        
+	        <mx:VBox verticalGap="0">
+		        <mx:HBox>
+	        		<mx:Label text="Master Technologies:" fontWeight="bold" />
+		        	<mx:Spacer width="100"/>
+		        	<mx:Label text="Current Project Technologies:" fontWeight="bold" />
+	    			<mx:LinkButton label="[+ show hint]"  />   
+		        </mx:HBox>
+		        <mx:Text id="techListHint_ns" height="0" color="0x888888" width="500" visible="false" verticalCenter="top" />
+	        </mx:VBox>
+	          
+	        <mx:HBox verticalAlign="top">
+                <mx:List id="ns_masterTech" width="225"/>
+	        	<mx:VBox verticalAlign="middle">
+	        		<mx:Button  id="toCurrentTechList" label=">"/>
+	                <mx:Spacer height="5"/>
+	                <mx:Button  id="toMasterTechList" label="&lt;"/>
+	        	</mx:VBox>
+                <mx:List id="ns_curTechList" width="225"/>
+	        </mx:HBox>
+	        
+	        <mx:VBox width="100%" verticalGap="0">
+		        <mx:HBox >
+		            <mx:Label text="Comments:" fontWeight="bold"/>
+		            <mx:Spacer width="327"/>
+		            <mx:LinkButton label="[+ show hint]" />
+		        </mx:HBox>
+		        <mx:Text id="ns_commentsHints" height="0" color="0x888888" width="500" visible="false" />
+		        <mx:RichTextEditor id="ns_comments" width="500" height="200"/>
+	        </mx:VBox>
+	</mx:VBox>        	
+       
+        
+        
     </mx:VBox>
 </mx:Canvas>

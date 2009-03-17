@@ -59,6 +59,7 @@
         }
         
         private function updateResult():Boolean{
+        	if(mainWidget.studioContestType) { // BUGR-1067
         	
         	mainWidget.competition.contestData.contestTypeId = Number(studioType.selectedValue);
         	
@@ -79,6 +80,9 @@
         	}
         	
         	mainWidget.competition.prizes = prizes;
+	        } else {
+	        	// fill with logic for non-studio contests
+	        }
         	
         	return true;
         }
@@ -115,7 +119,20 @@
         	}
         }
         
-        public function validateFields():Boolean{
+        public function ns_validateFields():Boolean{ // BUGR-1067
+        	if (isNaN(Number(ns_firstPlace.text)) || Number(ns_firstPlace.text) <= 0){
+        			Helper.showAlertMessage("Prize amount not set");
+        			ns_firstPlace.setFocus();
+        			return false;
+        	}
+        	return true;
+        }
+        
+        public function validateFields():Boolean{ // BUGR-1067
+        	return mainWidget.studioContestType ? s_validateFields() : ns_validateFields();
+        }
+        
+        public function s_validateFields():Boolean{ // BUGR-1067
         	if (studioType.selection == null){
         		Helper.showAlertMessage("Contest type not selected");
         		return false;
@@ -257,26 +274,51 @@
 		private function goToUrl(url:String):void {
 			navigateToURL(new URLRequest(url), "_blank");
 		} 
+		// BUGR-1067
+        private function ns_updateAmount():void{
+        	var firstPlace:Number = Number(ns_firstPlace.text);
+        	
+        	if (isNaN(firstPlace)){
+        		// clear
+        		ns_secondPlace.text = "";
+        		ns_dr.text = "";
+        		ns_reviewCost.text = "";
+        		ns_contestf.text = "";
+        		ns_cntstTtl.text = "";
+        		return;
+        	}
+        	
+        	if(firstPlace > 0) {
+        		ns_secondPlace.text = new Number(firstPlace * 0.5).toFixed(0);
+        		ns_dr.text = (firstPlace + new Number(ns_secondPlace.text)).toFixed(0);
+        		ns_reviewCost.text = ns_secondPlace.text;
+        		ns_contestf.text= "500";
+        		ns_cntstTtl.text = (firstPlace + new Number(ns_secondPlace.text) + new Number(ns_dr.text) + 
+        			new Number(ns_reviewCost.text) + new Number(ns_contestf.text)).toFixed(0);
+        	}
+        }
 
     ]]>
     </mx:Script>
     <mx:VBox width="100%" height="100%">
     	<mx:VBox width="100%" >
+    		<mx:HBox horizontalAlign="right" width="100%">
+    			<mx:Label text="Contest Overview" styleName="redText" fontSize="18" width="80%"/>
+    			<mx:Spacer width="100" />	
+    			<mx:LinkButton baseline="middle" styleName="linkBtn" label="Preview Contest" click="this.mainWidget.previewContest()" />
+    			    <mx:Image source="@Embed('../../assets/more_info.png')"/>
+    		</mx:HBox>
+    		<!-- BUGR-1067 -->
+    		<mx:VBox width="100%" visible="{mainWidget.studioContestType}" includeInLayout="{mainWidget.studioContestType}">
     		
-		<mx:HBox horizontalAlign="right" width="100%">
-			<mx:Label text="Contest Overview" styleName="redText" fontSize="18" width="80%"/>
-			<mx:Spacer width="100" />	
-			<mx:LinkButton baseline="middle" styleName="linkBtn" label="Preview Contest" click="this.mainWidget.previewContest()" />
-			    <mx:Image source="@Embed('../../assets/more_info.png')"/>
-		</mx:HBox>
-	        <mx:Label text="What type of {mainWidget.contestSelect.contestType.selection.label} contest do you want to run?" styleName="boldBlackText"/>
-	                <mx:RadioButtonGroup id="studioType" itemClick="handleSelect(event);"/>
-	        <mx:HBox id="studioTypeBox" horizontalGap="25" styleName="smallBlackText">
-	        </mx:HBox>
-		   </mx:VBox>
-		   <mx:VBox width="100%">
-			<mx:Spacer height="10" />
-	        <mx:HRule width="100%" /> <!-- BUGR-1204 -->
+    	        <mx:Label text="What type of {mainWidget.contestSelect.contestType.selection.label} contest do you want to run?" styleName="boldBlackText"/>
+    	        <mx:RadioButtonGroup id="studioType" itemClick="handleSelect(event);"/>
+    	        <mx:HBox id="studioTypeBox" horizontalGap="25" styleName="smallBlackText">
+    	        </mx:HBox>
+    			<mx:Spacer height="10" />
+    	        <mx:HRule width="100%" /> <!-- BUGR-1204 -->
+    	     </mx:VBox>
+			
 	        <mx:Label id="typeName" text="Web Page Design" styleName="redText" />
 	        <mx:Text width="100%" id="description" styleName="smallBlackText">
 	            <mx:text>
@@ -285,7 +327,7 @@
 	        </mx:Text>
 	        <mx:Spacer height="5" /> <!-- BUGR-1204 -->
 	        <mx:HRule width="100%" /> <!-- BUGR-1204 -->
-   	       <mx:Label text="Examples:" styleName="redText"/>
+   	        <mx:Label text="Examples:" styleName="redText"/>
 	        <mx:HBox verticalAlign="top" horizontalGap="0" visible="{isPresentXml('example1') || isPresentXml('example2')}" includeInLayout="{isPresentXml('example1') || isPresentXml('example2')}" width="100%">
 	            <mx:VBox verticalGap="0" width="50%" visible="{isPresentXml('example1')}" includeInLayout="{isPresentXml('example1')}" >
 	            	<mx:HBox width="100%">
@@ -386,7 +428,7 @@
 		        </mx:Text>
 	        </mx:VBox>
 	       <!-- <mx:Spacer height="10"/> -->
-	        <mx:HBox verticalAlign="top">
+		        <mx:HBox verticalAlign="top" visible="{mainWidget.studioContestType}" includeInLayout="{mainWidget.studioContestType}">
 	            <mx:HBox>
 	            	<mx:VBox verticalGap="7" styleName="smallBlackText">
 		            	<mx:HBox horizontalGap="0">
@@ -436,6 +478,41 @@
 	                </mx:VBox>
 	            </mx:HBox>
 	        </mx:HBox>
+		        <!-- BUGR-1067 -->
+		        <mx:HBox verticalAlign="top" visible="{!mainWidget.studioContestType}" includeInLayout="{!mainWidget.studioContestType}">
+		            <mx:HBox>
+		            	<mx:VBox verticalGap="7">
+		            	   <mx:Label text="1st Place: $" fontWeight="bold"/>
+		                   <mx:Label text="2nd Place: $" fontWeight="bold"/>
+		            	</mx:VBox>
+		            	<mx:VBox verticalGap="2">
+		            	   <mx:TextInput id="ns_firstPlace" width="120" text="" change="ns_updateAmount()"/>
+		                   <mx:TextInput id="ns_secondPlace" width="120" text="" editable="false" borderStyle="none"/>
+		                </mx:VBox>
+		            </mx:HBox>
+		            
+		            <mx:HBox>
+		            	<mx:VBox verticalGap="7">
+		            	   <mx:Label text="Review Cost: $" fontWeight="bold"/>
+		                   <mx:Label text="Digital Run: $" fontWeight="bold" />
+		            	</mx:VBox>
+		            	<mx:VBox verticalGap="2">
+		            	   <mx:TextInput id="ns_reviewCost" width="120" text="" editable="false" borderStyle="none"/>
+		                   <mx:TextInput id="ns_dr" width="120" text="" editable="false" borderStyle="none"/>
+		                </mx:VBox>
+		            </mx:HBox>
+		            
+		            <mx:HBox>
+		            	<mx:VBox verticalGap="7">
+		            	   <mx:Label text="Contest Fee: $" fontWeight="bold"/>
+		            	   <mx:Label text="Contest Total: $" fontWeight="bold" />
+		            	</mx:VBox>
+		            	<mx:VBox verticalGap="2">
+		            	   <mx:TextInput id="ns_contestf" text="" width="55"  editable="false" borderStyle="none"/>
+		                   <mx:TextInput id="ns_cntstTtl" text="" width="55" editable="false" borderStyle="none"/>
+		                </mx:VBox>
+		            </mx:HBox>
+		        </mx:HBox>
 	     </mx:VBox>
      </mx:VBox>   
 </mx:Canvas>

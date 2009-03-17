@@ -33,10 +33,16 @@
 		    import mx.rpc.events.FaultEvent;
 		    import mx.rpc.xml.SchemaTypeRegistry;
 		    import mx.controls.ButtonLabelPlacement;
+		    
+		    import mx.collections.ArrayCollection;
 
     		// BUGR-1141
     		[Bindable]
     		private var stepNumber:int = 1;
+			
+			// BUGR-1067
+			[Bindable]
+			private var totalStepsNumber:int;
     		
     		[Embed(source="../assets/done.png")] 
     		private var doneImage:Class; 
@@ -53,6 +59,35 @@
 	        private var isAdmin:Boolean;
 	        private var _tcDirectProjectId:String;
 	        
+		    // BUGR-1067
+	        private var isStudioContestType:Boolean = false;
+	        
+	        [Bindable]
+	        public function get studioContestType():Boolean {
+		       	return isStudioContestType; 	
+	        }
+	        
+	        public function set studioContestType(val:Boolean):void {
+	            trace("LAUNCH WIDGET:: Setting studio contest type: " + val);
+		       	isStudioContestType = val;
+		       	DETAILS_HEIGHT = (val ? 697 : 1350);	 	
+		       	REVIEW_HEIGHT = (val ? 1165 : 1350); // BUGR-1067
+		       	// BUGR-1067
+		       	stepNumber = 1;
+		       	setStep(step1box);
+		       	setStep(step2box);
+		       	setStep(step3box);
+		       	if(val) { 
+				 	setStep(step4box);
+				 }
+		       	setStep(step5box);
+		       	setStep(step6box);
+		       	setStep(step7box);
+		       	setStep(step8box);
+		       	totalStepsNumber = stepNumber - 1;
+		       	stepNumber = 1;
+		       	trace("LAUNCH WIDGET:: Total steps number: " + totalStepsNumber);
+	        }
 	        
 	        /**
 	         * Represents the height of this widget on different states. BUGR-1134
@@ -98,8 +133,11 @@
         }
 	    private function initWidget():void{
 			this.currentState = "ContestSelectionState";
-		getDataService();
-           }
+			
+			trace("LAUNCH WIDGET::Setting studio contest type");
+			this.studioContestType = true;
+		    getDataService();
+        }
 
 	    private function getDataService():void
 	    {	
@@ -135,10 +173,7 @@
             
             public function initComponent():void {
             	// modified lines below for BUGR-1134
-
-
-                this.height = 480;
-                
+                this.height = 580;
                 mainPanel.horizontalScrollPolicy = "false";
                 
                 back.visible = false;
@@ -300,17 +335,72 @@ Specific limitations (such as restricting a color or a specific layout style) an
             
 			public function openOverViewPage():void {
 				   this.currentState = "OverViewState";
-					save.visible = false;
+					save.visible = true;
 					this.height = OVERVIEW_HEIGHT;  // BUGR-1134
 					back.visible = true;
                    
 					setPreviousStep(step1box); // BUGR-1141
 					setCurStep(step2box);// BUGR-1141
 			}
-            
-            public function next(event:EffectEvent = null):void {
-                if (this.currentState == "ContestSelectionState"){
-                    if (contestSelect.contestType.selectedValue == null) {
+
+            // BUGR-1445
+            private function validateAndSaveAsDraft():void {
+        		if(this.currentState == "DetailsState") {
+            		if(!details.validateFields()) return;
+            	} else if(this.currentState == "SpecificationsState") {
+            		if(!specf.validateFields()) return;
+            	} else if (this.currentState == "ScheduleState") {
+        			if(!sched.validateFields()) return;
+        		} 
+	         	saveAsDraft();
+            }
+
+private var stateToStepNum:Dictionary = null;
+			private var stepBoxes:ArrayCollection = null;
+			
+			private function skipTo(step:int):void {
+			    
+			    if (!stateToStepNum) {
+			        stateToStepNum = new Dictionary();
+			        stateToStepNum["ContestSelectionState"] = 1;
+			        stateToStepNum["OverViewState"] = 2;
+			        stateToStepNum["DetailsState"] = 3;
+			        stateToStepNum["SpecificationsState"] = 4;
+			        stateToStepNum["AttachFilesState"] = 5;
+			        stateToStepNum["ScheduleState"] = 6;
+			        stateToStepNum["ReviewState"] = 7;
+			        stateToStepNum["ActivateState"] = 8;
+			    }
+			    
+			    if (!stepBoxes) {
+			        stepBoxes = new ArrayCollection();
+			        stepBoxes.addItem(step1box);
+			        stepBoxes.addItem(step2box);
+			        stepBoxes.addItem(step3box);
+			        stepBoxes.addItem(step4box);
+			        stepBoxes.addItem(step5box);
+			        stepBoxes.addItem(step6box);
+			        stepBoxes.addItem(step7box);
+			        stepBoxes.addItem(step8box);
+			    }
+			    
+			    var currentStep:int = stateToStepNum[this.currentState];
+			    var currentStepBox:Box = stepBoxes.getItemAt(currentStep - 1) as Box;
+			    var newStepBox:Box = stepBoxes.getItemAt(step - 1) as Box;
+			    
+			    // if we are on same state then do nothing.
+			    if (step == currentStep) {
+			        return;
+			    }
+			    
+			    // validate that first step is filled.
+			    if (step > 1) {
+			        if ((contestSelect.selectContests.selectedItem == null || contestSelect.selectContests.selectedItem.data ==-1) && contestSelect.prjInput.text == ""){
+                        Helper.showAlertMessage("New Project or Existing Project must have a value.");
+                        return;
+                    }
+                
+			        if (contestSelect.contestType.selectedValue == null) {
                         Helper.showAlertMessage("Please select a contest type!");
                         return;
                     }
@@ -318,12 +408,194 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    if (contestSelect.contestType.selectedValue != "STUDIO"){
                        return;
                    }
+			    }
+			    
+			    // validate that 2nd step is also filled.
+			    if (step > 2) {
+			        //validate input at overview page.
+					if (overView.validateFields() == false){
+						return;
+					}
+			    }
+			    
+			    var isCurrentStepComplete:Boolean = true;
+			    if (currentStep == 3) {
+			        isCurrentStepComplete = details.validateFieldsEx2(false,false);
+			    } else if (currentStep == 4) {
+			        isCurrentStepComplete = specf.validateFieldsEx2(false,false);
+			    } else if (currentStep == 5) {
+			        isCurrentStepComplete = true;
+			    } else if (currentStep == 6) {
+			        isCurrentStepComplete = sched.validateFieldsEx2(false,false);
+			    } else if (currentStep == 7 || currentStep == 8) {
+			        // if we are going back from review or activate page, then don't mark these complete.
+			        if (step < currentStep) {
+			            isCurrentStepComplete = false;
+			        }
+			    }
+			    
+			    if (step >= 8) {
+                   //validate input at details page (3)
+                   if (details.validateFieldsEx2(true,true) == false){
+                   		return;
+                   }
+                   
+                   //validate input at specification page. (4)
+                   if (specf.validateFieldsEx2(true,true) == false){
+                   		return;
+                   }
+                   
+                   //validate input at schedule page. (6)
+				   if (sched.validateFieldsEx2(true,true) == false){
+				        return;
+				   }	
+			    }
+			    
+			    switch (step) {
+			        case 1:
+			            
+			           this.currentState = "ContestSelectionState";
+                       this.height = CONTEST_SELECTION_HEIGHT;
+                       back.visible = false;
+         
+                       setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
+                       setCurStep(newStepBox);
+                       
+			            break;
+			        case 2:
+			            
+			            var ret:int = contestSelect.goToOverView();
+			            if (ret == 0) {
+    			            this.currentState = "OverViewState";
+                            save.visible = false;
+                            this.height = OVERVIEW_HEIGHT;
+                            back.visible = true;
+                               
+                            review.cstTypeStep1 = contestSelect.contestType.selectedValue.toString();
+                            
+                            setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
+                            setCurStep(newStepBox);
+                               
+                            result.type = contestSelect.contestType.selectedValue;
+                        }
+			            
+			            break;
+			        case 3:
+			            
+			            this.currentState = "DetailsState";
+                       save.visible = true;
+                       
+                       review.cstTypeStep2 = overView.studioType.selection.label;
+                       review.firstPrize = overView.firstPlace.text;
+                       review.secondPrize = overView.secondPlace.text;
+                       review.thirdPrize = overView.thirdPlace.text;
+                       review.fourthPrize = overView.fourthPlace.text;
+                       review.fifthPrize = overView.fifthPlace.text;
+                       review.adminFee = overView.adminf.text;
+                       review.contestTotal = overView.cntstTtl.text;
+                       
+                       this.height = DETAILS_HEIGHT;
+                       
+                       setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
+                       setCurStep(newStepBox);
+			            break;
+			        case 4:
+			            
+			           
+			           specf.requestFileTypes.send();
+                       this.currentState = "SpecificationsState";
+                       save.visible = true;
+                       this.height = SPECIFICATIONS_HEIGHT;
+                       
+                       review.contentTitleStr = details.ctInput.text;
+                       review.IntroductionStr = competition.contestData.shortSummary;
+    		           review.glsInputStr = competition.contestData.contestDescriptionAndRequirements;
+    
+                       setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
+                       setCurStep(newStepBox);
+			            break;
+			        case 5:
+			            
+			            this.currentState = "AttachFilesState";
+                       save.visible = true;
+                       
+                       review.colorInputStr = specf.colorInput.text;
+                       review.fontInputStr = specf.fontInput.text;
+                       review.sizeInputStr = specf.sizeInput.text;
+                       review.addReInputStr = specf.addReInput.text;
+    				 
+                       review.fileFormatInputStr = competition.contestData.finalFileFormat;
+                       this.height = ATTACH_FILES_HEIGHT;
+                       setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
+                       setCurStep(newStepBox);
+                       
+			            break;
+			        case 6:
+			            
+			            //validate input
+    				   sched.curContestType = Number(overView.studioType.selectedValue);
+                       sched.requestSchedule.send();
+    
+                       this.currentState = "ScheduleState";
+                       save.visible = true;
+                       
+                       this.height = SCHEDULE_HEIGHT;
+                       setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
+                       setCurStep(newStepBox);
+			            break;
+			        case 7:
+			            
+			           this.currentState = "ReviewState";
+                       save.visible = true;
+    
+                       review.fromDate = sched.dfStart.selectedDate;
+                       review.fromTime = sched.CmbHourStart.selectedItem.label+":"+sched.CmbMinuteStart.selectedItem.label+" "+sched.timezoneStart.text;
+                       review.toDate = sched.dfEnd.selectedDate;
+                       review.toTime = sched.CmbHourEnd.selectedItem.label+":"+sched.CmbMinuteEnd.selectedItem.label+" "+sched.timezoneEnd.text;
+    
+                       review.setAllValues();
+    
+                       this.height = REVIEW_HEIGHT;
+                       setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
+                       setCurStep(newStepBox);
+			            break;
+			        case 8:
+			            
+			            this.currentState = "ActivateState";
+                        save.visible = false;
+                        this.height = ACTIVATE_HEIGHT;
+                        
+                        setPreviousStepEx2(currentStepBox,isCurrentStepComplete);
+                        setCurStep(newStepBox);
+                        
+                        setButton(1);
+    
+                        activate.contentTitleStr = review.contentTitleStr;
+                        activate.contestTotal = review.adminFee;
+                        
+                        activate.initData();
+			            break;
+			    }
+			}
+
+            
+            public function next(event:EffectEvent = null):void {
+                if (this.currentState == "ContestSelectionState"){
+                    if (contestSelect.contestType.selectedValue == null) {
+                        Helper.showAlertMessage("Please select a contest type!");
+                        return;
+                    }
+                   // BUGR-1067
+		   //Currently only implement Studio constest type
+                   /*if (contestSelect.contestType.selectedValue != "STUDIO"){
+                       return;
+                   }*/
                    this.currentState = "OverViewState";
                    save.visible = false;
                    this.height = OVERVIEW_HEIGHT;  // BUGR-1134
                    back.visible = true;
                    
-                   review.cstTypeStep1 = contestSelect.contestType.selectedValue.toString();
+                   review.cstTypeStep1 = contestSelect.contestType.selection.label; // BUGR-1067
                    setPreviousStep(step1box); // BUGR-1141
                    setCurStep(step2box);// BUGR-1141
                    
@@ -337,8 +609,9 @@ Specific limitations (such as restricting a color or a specific layout style) an
 					}
 
                    this.currentState = "DetailsState";
-                   save.visible = false;
-                   
+                   save.visible = true; // BUGR-1445
+                   // BUGR-1067
+                   if(studioContestType) {
                    review.cstTypeStep2 = overView.studioType.selection.label;
                    review.firstPrize = overView.firstPlace.text;
                    review.secondPrize = overView.secondPlace.text;
@@ -347,7 +620,14 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    review.fifthPrize = overView.fifthPlace.text;
                    review.adminFee = overView.adminf.text;
                    review.contestTotal = overView.cntstTtl.text;
-                   
+                   } else {
+                   		review.ns_firstPrizeS = overView.ns_firstPlace.text;
+                   		review.ns_secondPrizeS = overView.ns_secondPlace.text;
+                   		review.ns_reviewCostS = overView.ns_reviewCost.text;
+                   		review.ns_digitalRunS = overView.ns_dr.text;
+                   		review.ns_contestFeeS = overView.ns_contestf.text;
+                   		review.ns_contestTotalS = overView.ns_cntstTtl.text;
+                   }
                    this.height = DETAILS_HEIGHT;  // BUGR-1134
                     setPreviousStep(step2box);
                    setCurStep(step3box);
@@ -358,9 +638,35 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    if (details.validateFields() == false){
                    		return;
                    }
+				   // BUGR-1067
+                   if(studioContestType) {
+						review.contentTitleStr = details.ctInput.text;
+	                   review.IntroductionStr = details.introInput.text;
+						review.glsInputStr = details.glsInput.text;
+                   } else {
+                   		review.ns_componentNameS = details.ns_ctInput.text;
+                   		review.ns_shortDescS = details.ns_shortDesc.text;
+                   		review.ns_funcDescS = details.ns_funcDesc.text;
+                   		review.ns_detailedDescS = details.ns_detailedDesc.text;
+                   		review.ns_commentsS = details.ns_comments.text;
+                   		review.ns_techListS = details.ns_curTechList.dataProvider as ArrayCollection;
+	               }
+				   
+                   // BUGR-1067
+                   if(!studioContestType) {
+                   		this.currentState = "AttachFilesState";
+                   		this.height = ATTACH_FILES_HEIGHT;  // BUGR-1134
+                   		setPreviousStep(step3box);
+                   		setCurStep(step4box);
+                   		stepNumber--;
+                    	setPreviousStep(step4box);
+                   		setCurStep(step5box);
+                   		return;
+                   }
+				   
                    specf.requestFileTypes.send();
                    this.currentState = "SpecificationsState";
-                   save.visible = false;
+                   save.visible = true; // BUGR-1445
                    this.height = SPECIFICATIONS_HEIGHT;  // BUGR-1134
                    
                    review.contentTitleStr = details.ctInput.text; // BUGR-1379
@@ -378,7 +684,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    }
                    
                    this.currentState = "AttachFilesState";
-                   save.visible = false;
+                   save.visible = true; // BUGR-1445
                    
                    review.colorInputStr = specf.colorInput.text;
                    review.fontInputStr = specf.fontInput.text;
@@ -417,7 +723,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    sched.requestSchedule.send();
 
                    this.currentState = "ScheduleState";
-                   save.visible = false;
+                   save.visible = true; // BUGR-1445
                    
                    this.height = SCHEDULE_HEIGHT;  // BUGR-1134
                      setPreviousStep(step5box);
@@ -444,6 +750,22 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    setCurStep(step7box);
                     //bottemline.height=mainPanel.height-1700;
                 } else if (this.currentState == "ReviewState") {
+                    // BUGR-1475
+                    //validate input at details page (3)
+                   if (details.validateFieldsEx2(true,true) == false){
+                   		return;
+                   }
+                   
+                   //validate input at specification page. (4)
+                   if (specf.validateFieldsEx2(true,true) == false){
+                   		return;
+                   }
+                   
+                   //validate input at schedule page. (6)
+				   if (sched.validateFieldsEx2(true,true) == false){
+				        return;
+				   }	
+    				   
                     this.currentState = "ActivateState";
                     save.visible = false;
                     this.height = ACTIVATE_HEIGHT;
@@ -533,6 +855,18 @@ Specific limitations (such as restricting a color or a specific layout style) an
                    //step6Text.setStyle("color", "#a8a8a8");
                 }
                 else if(this.currentState == "AttachFilesState"){
+                	// BUGR-1067
+                   if(!studioContestType) {
+                   		this.currentState = "DetailsState";
+                   		this.height = DETAILS_HEIGHT;  // BUGR-1134
+                   		setCurStep(step4box);
+                   		setNextStep(step5box);
+                   		stepNumber++;
+                    	setCurStep(step3box);
+                  		setNextStep(step4box);
+                   		return;
+                   }
+				
                    this.currentState = "SpecificationsState";
                    this.height = SPECIFICATIONS_HEIGHT;  // BUGR-1134
 
@@ -549,6 +883,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                   // step4Text.setStyle("color", "#a8a8a8");
                 }
                 else if(this.currentState == "DetailsState"){
+                	save.visible = true; // BUGR-1445
                    this.currentState = "OverViewState";
                    this.height = OVERVIEW_HEIGHT; // BUGR-1134
                   setCurStep(step2box);
@@ -604,6 +939,12 @@ Specific limitations (such as restricting a color or a specific layout style) an
                 previous();
             }
 
+		private function setStep(stepBox:Box):void { // BUGR-1067
+            var label:Label = stepBox.getChildAt(0) as Label;
+            label.text = stepNumber.toString();
+            stepNumber++;
+		}
+
 	    private function setCurStep(stepBox:Box):void { // BUGR-1141
                 var box:HBox = stepBox.parent as HBox;
                 if (box.numChildren == 3) {
@@ -640,11 +981,26 @@ Specific limitations (such as restricting a color or a specific layout style) an
                 }
 				// BUGR-1141
                 box.styleName = "prevStepBgr";
-                var completed:Image = new Image();
-                completed.source = doneImage;
-                box.addChild(completed);
+                
+                if (!box.getChildByName("completedImg")) {
+                    var completed:Image = new Image();
+                    completed.name="completedImg";
+                    completed.source = doneImage;
+                    box.addChild(completed);
+                }
+                
                 stepBox.styleName = "prevStep";
                 stepNumber++;
+            }
+            
+            // BUGR-1475
+            private function setPreviousStepEx2(stepBox:Box, markComplete:Boolean):void {  // BUGR-1141
+                if (markComplete) {
+                	setPreviousStep(stepBox);
+                }
+                else {
+                    setNextStep(stepBox);
+                }
             }
             
             private function showArrow(stepBox:Box):void {
@@ -709,7 +1065,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                // height=parent.height-10;
                 launchWdt.percentWidth = 100;
                 launchWdt.percentHeight = 100;
-
+                //launchWdt.visible = true;
                 // BUGR-1134 added
                 mainPanel.percentWidth = 100;
                 mainPanel.percentHeight = 100;
@@ -856,10 +1212,11 @@ Specific limitations (such as restricting a color or a specific layout style) an
                 horizontalScrollPolicy="off" styleName="stepsBgr">
              <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="30"
                     verticalAlign="middle" styleName="stepsLabelBgr">
-             		<mx:Label width="100%" height="100%" textAlign="center" text="STEP {stepNumber} of 8" styleName="stepsLabel" /> 
+             		<mx:Label width="100%" height="100%" textAlign="center" text="STEP {stepNumber} of {totalStepsNumber}" styleName="stepsLabel" /> 
+
              </mx:HBox>   
              <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
-                    verticalAlign="middle">
+                    verticalAlign="middle" click="skipTo(1)">
                  <mx:Box width="30" height="30"
                         paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step1box">
                     <mx:Label width="100%" height="100%" textAlign="center" text="1" styleName="whiteBoldText"/>
@@ -869,7 +1226,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                 <mx:Spacer width="100%" />
              </mx:HBox>
              <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
-                    verticalAlign="middle">
+                    verticalAlign="middle" click="skipTo(2)">
                  <mx:Box  width="30" height="30"
                         paddingTop="2" paddingLeft="0" paddingRight="0" left="10"  id="step2box">
                     <mx:Label width="100%" height="100%" textAlign="center" text="2" styleName="whiteBoldText"/>
@@ -879,7 +1236,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                  <mx:Spacer width="100%" /> 
              </mx:HBox>
              <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
-                    verticalAlign="middle">
+                    verticalAlign="middle" click="skipTo(3)">
                  <mx:Box width="30" height="30" 
                         paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step3box">
                     <mx:Label width="100%" height="100%" textAlign="center" text="3" styleName="whiteBoldText"/>
@@ -889,7 +1246,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                  <mx:Spacer width="100%" />
              </mx:HBox>
              <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
-                    verticalAlign="middle">
+                    verticalAlign="middle" visible="{studioContestType}" includeInLayout="{studioContestType}" click="skipTo(4)"> <!-- BUGR-1067 -->
                  <mx:Box width="30" height="30"
                         paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step4box">
                     <mx:Label width="100%" height="100%" textAlign="center" text="4" styleName="whiteBoldText"/>
@@ -899,7 +1256,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                  <mx:Spacer width="100%" />
              </mx:HBox>
              <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
-                    verticalAlign="middle" styleName="prevStepBgr">
+                    verticalAlign="middle" styleName="prevStepBgr" click="skipTo(5)">
                  <mx:Box width="30" height="30"
                         paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step5box">
                     <mx:Label width="100%" height="100%" textAlign="center" text="5" styleName="whiteBoldText"/>
@@ -909,7 +1266,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                  <mx:Spacer width="100%" />
              </mx:HBox>
              <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
-                    verticalAlign="middle" styleName="nextStepBgr">
+                    verticalAlign="middle" styleName="nextStepBgr" click="skipTo(6)">
                  <mx:Box width="30" height="30"
                         paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step6box">
                     <mx:Label width="100%" height="100%" textAlign="center" text="6" styleName="whiteBoldText"/>
@@ -919,7 +1276,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                  <mx:Spacer width="100%" />
              </mx:HBox>
              <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
-                    verticalAlign="middle"  styleName="nextStepBgr">
+                    verticalAlign="middle"  styleName="nextStepBgr" click="skipTo(7)">
                  <mx:Box width="30" height="30"
                         paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step7box">
                     <mx:Label width="100%" height="100%" textAlign="center" text="7" styleName="whiteBoldText"/>
@@ -929,7 +1286,7 @@ Specific limitations (such as restricting a color or a specific layout style) an
                  <mx:Spacer width="100%" />
              </mx:HBox>
              <mx:HBox paddingLeft="10" paddingRight="5" width="100%" horizontalGap="5" height="40"
-                    verticalAlign="middle" styleName="nextStepBgr">
+                    verticalAlign="middle" styleName="nextStepBgr" click="skipTo(8)">
                  <mx:Box width="30" height="30"
                         paddingTop="2" paddingLeft="0" paddingRight="0" left="10" id="step8box">
                     <mx:Label width="100%" height="100%" textAlign="center" text="8" styleName="whiteBoldText"/>
@@ -961,9 +1318,11 @@ Specific limitations (such as restricting a color or a specific layout style) an
 
     <!--BUGR-1204 <mx:Button id="back" buttonMode="true" styleName="RedButton" label="&lt;&lt; back" click="previous()"/>-->
          <mx:Button id="back" label="BACK" buttonMode="true" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}" click="previous()"/>
-         <mx:Button id="save" buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="save as draft" click="saveAsDraft()" includeInLayout="{save.visible}"/>
+	<mx:Button id="cancel" label="CANCEL" buttonMode="true" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}" click="cancelBtn()"/>         
+	<mx:Button id="save" buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="save as draft" click="validateAndSaveAsDraft()" includeInLayout="{save.visible}"/>
+
          <!--BUGR-1204 <mx:Button id="goNext" buttonMode="true" styleName="RedButton"  label="continue >>" click="next()"/>-->
-         <mx:Button id="cancel" label="CANCEL" buttonMode="true" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}" click="cancelBtn()"/>
+         
          <mx:Button id="goNext" label="NEXT" buttonMode="true" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" click="next()"/>
       </mx:HBox>
       <mx:Spacer height="5"/>

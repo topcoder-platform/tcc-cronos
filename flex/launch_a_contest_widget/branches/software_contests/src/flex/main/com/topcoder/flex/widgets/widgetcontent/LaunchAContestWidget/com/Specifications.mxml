@@ -81,6 +81,12 @@
             }
             
             public function validateFields():Boolean{
+                // BUGR-1475
+            	return validateFieldsEx2(true,false);
+            }
+            
+            // BUGR-1475
+            public function validateFieldsEx2(showMsg:Boolean, showPageName:Boolean):Boolean{
             	//no validation required for this step
             	updateData();
             	return true;

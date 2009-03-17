@@ -368,11 +368,17 @@
 		<mx:LinkButton baseline="middle" styleName="linkBtn" label="Preview Contest" click="this.mainWidget.previewContest()" />
 		    <mx:Image source="@Embed('../../assets/more_info.png')"/>
 	</mx:HBox>
-        <mx:Text width="100%" id="attachFiles" >
+        <mx:Text width="100%" id="attachFiles" visible="{mainWidget.studioContestType}" includeInLayout="{mainWidget.studioContestType}">
             <mx:htmlText>
             <![CDATA[If you have your logo in vector format, photographs or images, PSD files or any other documents you think will help the competitors, upload them here. <b>**NOTE:</b> If you are trying to provide examples of the other designs that you do not own, provide a link to them in your contest description. <b>Do not upload files you do not own.</b>]]>
            </mx:htmlText>
         </mx:Text>
+        <mx:Text width="100%" visible="{!mainWidget.studioContestType}" includeInLayout="{!mainWidget.studioContestType}">
+            <mx:htmlText>
+            <![CDATA[Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam erat purus, ultricies eget, porta ornare, suscipit in, libero. Curabitur id tortor. Etiam tristique ullamcorper lacus. Pellentesque eleifend. Mauris lacus mi, dignissim vel, iaculis id, tempus eget, turpis. Nulla ultrices congue arcu. Donec a neque at tortor vulputate luctus. Duis pulvinar suscipit magna. Nam eget orci.]]>
+           </mx:htmlText>
+        </mx:Text>
+
         <mx:Spacer height="5"/>
         <mx:VBox paddingLeft="10">
         	<mx:VBox width="100%" id="uploadFilesVBox">
@@ -398,6 +404,11 @@
                 <mx:TextInput id="fileToUpload" editable="false" />
                 <mx:Button id="browse" buttonMode="true" label="Browse" click="browseFile()" styleName="RedButton"/>
             </mx:HBox>
+            <mx:Spacer height="5"/> <!-- BUGR-1067 -->
+            <mx:HBox visible="{!mainWidget.studioContestType}" includeInLayout="{!mainWidget.studioContestType}">
+            	<mx:Label text="File Type:" fontWeight="bold" />
+            	<mx:ComboBox id="fileType" width="309" dataProvider="{fileTypes}"/>
+        	</mx:HBox>
             <mx:VBox paddingLeft="90">
             	<mx:Button id="upload" buttonMode="true" label="Upload File" click="uploadFile()" styleName="RedButton"/>
             	<mx:Text text="You may add more files after uploading." color="0x888888"/>
