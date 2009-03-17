@@ -187,7 +187,10 @@
         	if(p==null)return ;
 			prjCt=p as ProjectsContainer;
 			var dict:Dictionary=new Dictionary();
-			prjCt.widgetFramework.addWidgetEx2("Launch Contest","Launch Contest","Launch Contest",dict );
+			var tabDict:Dictionary = new Dictionary();
+			tabDict["columnNum"] = 1;
+
+			prjCt.widgetFramework.addWidgetEx2("Launch Contest","Launch Contest","Launch Contest",dict, tabDict);
         }
 		
 		
@@ -240,9 +243,8 @@
       verticalScrollPolicy="off" horizontalScrollPolicy="auto" click="winResize()"
       useHandCursor="true" buttonMode="true"
       rollOver="{projectTitle.styleName='titleBarHover'}" rollOut="{projectTitle.styleName='titleBar'}">
-    <mx:Image width="16" height="16" id="winCtrlBut" init="winResize()" buttonMode="true"
-        click="winResize()" source="{winMin}"/>
-    <mx:Label text="Label" id="projectName" styleName="nameLabel" />
+    <mx:Image width="16" height="16" id="winCtrlBut" init="winResize()" buttonMode="true" source="{winMin}"/>
+    <mx:Label text="Label" id="projectName" styleName="nameLabel" buttonMode="true" />
     <mx:Spacer width="100%" />
     <mx:Label id="projectStatus" styleName="statusLabel" />
     <mx:Image id="statusIcon" />

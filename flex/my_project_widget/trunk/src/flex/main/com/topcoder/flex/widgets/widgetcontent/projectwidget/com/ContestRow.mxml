@@ -135,36 +135,28 @@
 
   public function set submissions(temp:String):void{
     lblSubmissions.label = temp;
-    var numSubmissions:Number = Number(temp);
-    if (numSubmissions > 0) {
-        lblSubmissions.styleName = "linkBtn";
-        lblSubmissions.buttonMode = true;
-        lblSubmissions.addEventListener(MouseEvent.CLICK, showSubmission);
-        lblSubmissions.setStyle("textDecoration", "underline");
-        lblSubmissions.setStyle("textAlign", "center");
-    }
-
+    setLinkProperties(lblSubmissions, showSubmission);
   }
   public function get submissions():String{
     return lblSubmissions.label;
   }
   public function set forumPosts(temp:String):void{
-    lblForumPosts.text = temp;
-    if (temp=='no forum') {
-      lnkFormPosts.includeInLayout=false
-      lnkFormPosts.visible=false
-      //canvasForumPosts.percentWidth=100
-      lblForumPosts.setStyle("textAlign","center")
-    }
-    else{
-      lnkFormPosts.includeInLayout=true
-      lnkFormPosts.visible=true
-      //canvasForumPosts.percentWidth=35
-      lblForumPosts.setStyle("textAlign","center")
-    }
+    lblForumPosts.label = temp;
+    setLinkProperties(lblForumPosts, openForum);
   }
   public function get forumPosts():String{
-    return lblForumPosts.text;
+    return lblForumPosts.label;
+  }
+
+  private function setLinkProperties(linkButton:LinkButton, clickHandler:Function) {
+	var value:Number = Number(linkButton.label);
+	if (value > 0) {
+		linkButton.styleName = "linkBtn";
+    	linkButton.buttonMode = true;
+    	linkButton.addEventListener(MouseEvent.CLICK, clickHandler);
+    	linkButton.setStyle("textDecoration", "underline");
+    	linkButton.setStyle("textAlign", "center");
+	}
   }
 
     private function showStats():void
@@ -288,7 +280,7 @@
         /**
 	 * Click on the view button to open forum link.
 	 */
-        private function openForum():void
+        private function openForum(event:MouseEvent):void
         {
         	if(_dataProvider.forumId == null || _dataProvider.forumId=="-1")
         	{
@@ -360,10 +352,7 @@
     </mx:VBox>
     <mx:Text width="100%" styleName="rowContentLabel" id="lblRegistrants" />
     <mx:LinkButton width="100%" buttonMode="false" styleName="rowContentLink" id="lblSubmissions" />
-    <mx:VBox width="100%" styleName="bottomAlign">
-      <mx:Text width="100%"   styleName="rowContentLabel" id="lblForumPosts" />
-      <mx:LinkButton buttonMode="true" styleName="viewBtn" label="View" labelPlacement="bottom" id="lnkFormPosts" click="openForum()"/>
-    </mx:VBox>
+    <mx:LinkButton width="100%" buttonMode="false" styleName="rowContentLink" id="lblForumPosts" />
     <mx:VBox width="100%" styleName="bottomAlign">
       <mx:LinkButton buttonMode="true" id="statusBtn" styleName="statusBtn" labelPlacement="bottom" click="showStats()"/>
     </mx:VBox>
