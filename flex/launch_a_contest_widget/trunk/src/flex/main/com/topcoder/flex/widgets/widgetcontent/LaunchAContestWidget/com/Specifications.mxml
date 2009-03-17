@@ -269,7 +269,7 @@
 		    </mx:HBox>
 		    <mx:HBox horizontalGap="0"> <!-- BUGR-1472 -->
 		    	<mx:Text htmlText="You can also email" paddingTop="3" />
-		    	<mx:LinkButton styleName="linkBtn" label="directassist@topcoder.com" click="{navigateToURL(new URLRequest('mailto:directassist@topcoder.com'), '_blank');}" />	
+		    	<mx:LinkButton styleName="linkBtn" label="directassist@topcoder.com" click="{navigateToURL(new URLRequest('mailto:directassist@topcoder.com'), '_self');}" />	
 		    </mx:HBox>
 	        <mx:Text width="100%" text="For your chosen contest type - {mainWidget.overView.studioType.selection.label} - the most common final file formats are:" />
 	        <mx:VBox width="100%" paddingLeft="10">
