@@ -49,6 +49,8 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
 	
 	 protected var username:String=Application.application.parameters.username;
 	protected var password:String = "";
+	
+	public var _isRefreshNeeded:Boolean = false;
         
         /**
          * The data for the widget.
@@ -338,6 +340,19 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         	if(map.hasOwnProperty("pid"))
         	{
         		_pid=map["pid"];
+        	}
+        	
+        	// BUGR-1470
+        	if (map.hasOwnProperty("ContestUpdated") && map["ContestUpdated"] == true) {
+        	    _isRefreshNeeded = true;    
+        	}
+        	
+        	// BUGR-1470
+        	if (map.hasOwnProperty("LayoutChange") && map["LayoutChange"] == "TAB_OPEN") {
+        	    if (_isRefreshNeeded) {
+        	        reload();
+        	        _isRefreshNeeded = false;
+        	    }
         	}
         }
         
