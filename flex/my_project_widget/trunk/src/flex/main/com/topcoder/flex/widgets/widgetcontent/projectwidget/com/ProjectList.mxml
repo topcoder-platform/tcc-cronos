@@ -8,6 +8,7 @@
     import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Contest;
     import mx.collections.ArrayCollection;
     import com.topcoder.flex.widgets.widgetcontent.projectwidget.com.ContestRow;
+    import com.topcoder.flex.widgets.widgetcontent.projectwidget.ProjectWidget;
     //status icon class declaration
     [Embed(source="../../assets/icon/terminated.png")]
         private var prjTerminated:Class;
@@ -195,7 +196,7 @@
 		
 		
 		 // Event handler for the MenuBar control's itemClick event.
-            private function openNewTabHandler(event:MouseEvent):void {
+            private function openNewTabHandler(event:MouseEvent):void  {
             
                     var prjCt:ProjectsContainer;
         			var p:DisplayObjectContainer=parent;
@@ -207,6 +208,7 @@
 					prjCt=p as ProjectsContainer;
 					var props:Dictionary=new Dictionary();
 					props["pid"]=_dataProvider.id;
+					props["openAll"]="True";
 					
 					var dict:Dictionary=new Dictionary();
 					dict["name"]=_dataProvider.name;
@@ -235,7 +237,7 @@
 					prjCt.widgetFramework.addWidgetEx2(_dataProvider.name,"Contest Monitor","Contest Monitor",dict );
 					prjCt.widgetFramework.addWidgetEx2(_dataProvider.name,"Submission Viewer","Submission Viewer",dict );
 					*/
-                
+                     
             }
 	]]>
 </mx:Script>

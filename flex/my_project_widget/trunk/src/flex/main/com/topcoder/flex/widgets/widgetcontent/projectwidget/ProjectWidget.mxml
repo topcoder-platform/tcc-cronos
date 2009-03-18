@@ -230,6 +230,9 @@
         		    // Module Cockpit My Projects Release Assembly 1
                     // 1.1.4
                     // show the load more button if there are more projects to be loaded.
+			if (openAll) {
+            		prjList.expandAll();
+			}
                     this.showHideLoadMoreButton();
         	}
         }

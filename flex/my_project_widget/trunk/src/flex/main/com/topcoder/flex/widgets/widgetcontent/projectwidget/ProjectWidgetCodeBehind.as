@@ -57,6 +57,8 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
          */
         [Bindable] private var _result:XML = null;
         
+         private var _openAll:Boolean = false;
+        
         private var _projects:ArrayCollection;
         
         private var _prjList:ProjectsContainer;
@@ -303,6 +305,9 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         public function get widgetFramework():IWidgetFramework {
         	return _framework;
         }
+        public function get openAll():Boolean {
+        	return _openAll;
+        }
         public function get projects():ArrayCollection{
         	return _projects;
         }
@@ -353,6 +358,11 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
         	        reload();
         	        _isRefreshNeeded = false;
         	    }
+        	}
+
+		if(map["openAll"])
+        	{
+        		_openAll = true;
         	}
         }
         
