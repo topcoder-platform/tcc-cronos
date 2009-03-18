@@ -12,6 +12,7 @@
 	        import flash.events.MouseEvent;
 	        import mx.containers.Panel;
 		import com.topcoder.flex.util.editor.TCRichTextEditor;
+		import mx.controls.ButtonLabelPlacement; // BUGR-1501
 	        
 	        [Bindable]
 	       	public var mainWidget:LaunchWidget;
@@ -23,6 +24,7 @@
 	        public var brandGuidelinesHint:String;
 	        public var likeAndDislikesHint:String;
 	        public var criteriaHint:String;
+		    			
 		public var parser:RteHtmlParser;
 	        
 	        private static const ADDEDHEIGHT:Number = 80;
@@ -146,8 +148,8 @@
 	<mx:HBox horizontalAlign="right" width="100%">
 		<mx:Label text="Contest Details" fontWeight="bold"  width="80%"/>
 		<mx:Spacer width="100" />	
-		<mx:LinkButton baseline="middle" styleName="linkBtn" label="Preview Contest" click="this.mainWidget.previewContest()" />
-		    <mx:Image source="@Embed('../../assets/more_info.png')"/>
+		<mx:Button styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="PREVIEW" click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
+		<!--  <mx:Image source="@Embed('../../assets/more_info.png')"/>  BUGR-1501 -->
 	</mx:HBox>
         <mx:Text width="100%" id="contestDetails" >
             <mx:text>

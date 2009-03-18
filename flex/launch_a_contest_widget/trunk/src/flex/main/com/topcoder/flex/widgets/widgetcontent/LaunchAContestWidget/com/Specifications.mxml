@@ -6,11 +6,12 @@
     <mx:Script>
         <![CDATA[
         	import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
-            import flash.events.MouseEvent;
-            import mx.containers.Panel;
-            import mx.rpc.events.ResultEvent;
-            import com.topcoder.flex.Helper;
-			import mx.controls.CheckBox;
+                import flash.events.MouseEvent;
+                import mx.containers.Panel;
+                import mx.rpc.events.ResultEvent;
+                import com.topcoder.flex.Helper;
+		import mx.controls.CheckBox;
+		import mx.controls.ButtonLabelPlacement; // BUGR-1501			
 
             private static const FILE_FORMAT_PREFIX:String = "chb_";
             
@@ -195,8 +196,8 @@
 			<mx:HBox horizontalAlign="right" width="100%">
 				<mx:Label text="Contest Specifications" fontWeight="bold" width="80%"/>
 				<mx:Spacer width="100" />	
-				<mx:LinkButton baseline="middle" styleName="linkBtn" label="Preview Contest" click="this.mainWidget.previewContest()" />
-				    <mx:Image source="@Embed('../../assets/more_info.png')"/>
+		                <mx:Button styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="PREVIEW" click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
+		                <!--  <mx:Image source="@Embed('../../assets/more_info.png')"/>  BUGR-1501 -->
 			</mx:HBox>
 		        <mx:Text width="100%" id="contestSpecf">
 		            <mx:text>

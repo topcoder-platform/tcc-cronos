@@ -21,6 +21,7 @@
             import mx.utils.ObjectUtil;
             import com.topcoder.flex.Helper;
             import mx.rpc.AbstractOperation;
+            import mx.controls.ButtonLabelPlacement; // BUGR-1501			
 	        
 	        [Bindable]
             public var mainWidget:LaunchWidget;
@@ -215,8 +216,8 @@
     	<mx:HBox horizontalAlign="right" width="100%">
     		<!--<mx:Label text="Contest Selection" fontFamily="Arial" fontWeight="bold" fontSize="11" width="80%"/>
     		<mx:Spacer width="100" />-->
-    		<mx:LinkButton baseline="middle" styleName="linkBtn" label="Preview Contest" click="this.mainWidget.previewContest()" />
-		    <mx:Image source="@Embed('../../assets/more_info.png')"/>
+		<mx:Button styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="PREVIEW" click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
+		<!--  <mx:Image source="@Embed('../../assets/more_info.png')"/>  BUGR-1501 -->
     	</mx:HBox>
     	<mx:HBox width="100%" height="100%" paddingLeft="30">
     	    <mx:VBox width="35%" height="100%" paddingRight="15">

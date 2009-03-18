@@ -8,7 +8,8 @@
 	    	import mx.controls.HRule;
 	    	import mx.controls.Spacer;
 	    	import mx.controls.Label;
-	       import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+	        import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+		import mx.controls.ButtonLabelPlacement; // BUGR-1501		   
 	       
 	        //step1 data
 	        public var cstTypeStep1:String;
@@ -150,8 +151,8 @@
     	<mx:HBox horizontalAlign="right" width="100%">
     		<mx:Label text="Review" fontWeight="bold" width="80%"/>
     		<mx:Spacer width="100" />	
-    		<mx:LinkButton baseline="middle" styleName="linkBtn" label="Preview Contest" click="this.mainWidget.previewContest()" />
-		    <mx:Image source="@Embed('../../assets/more_info.png')"/>
+		<mx:Button styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="PREVIEW" click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
+		<!--  <mx:Image source="@Embed('../../assets/more_info.png')"/>  BUGR-1501 -->
     	</mx:HBox>
         
         <mx:HRule width="100%" strokeColor="0x000000"/>
