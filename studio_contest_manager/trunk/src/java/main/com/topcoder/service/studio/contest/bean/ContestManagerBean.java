@@ -2607,7 +2607,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             
             String qstr="select c.contest_id, c.name as cname, c.start_time,  c.end_time,  " 
 				+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
-				+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1 ) as num_sub "
+				+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1 "
+				+     "  and rank is not null and rank <= (select property_value from contest_config where contest_id = c.contest_id and property_id = 8)) as num_sub "
 				+ " from contest c "
 				+ " where c.tc_direct_project_id is not null and c.deleted = 0 and c.contest_detailed_status_id!=3";
 
@@ -2675,7 +2676,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
 			String qstr = "select c.contest_id, c.name as cname, c.start_time,  c.end_time,  "
 					+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
-					+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1) as num_sub "
+					+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1"
+					+     "  and rank is not null and rank <= (select property_value from contest_config where contest_id = c.contest_id and property_id = 8)) as num_sub "
 					+ " from contest c "
 					+ " where c.tc_direct_project_id ="+pid+" and c.deleted = 0 and c.contest_detailed_status_id!=3";
 
@@ -2738,7 +2740,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             
             String qstr="select c.contest_id, c.name as cname, c.start_time,  c.end_time,  " 
 				+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
-				+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1 ) as num_sub "
+				+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1 "
+				+     "  and rank is not null and rank <= (select property_value from contest_config where contest_id = c.contest_id and property_id = 8)) as num_sub "
 				+ " from contest c "
 				+ " where c.tc_direct_project_id is not null and c.deleted = 0 and c.contest_detailed_status_id!=3 and c.create_user_id = "+createdUser;
 
@@ -2798,7 +2801,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             String qstr="select p.project_id , p.name as pname, c.contest_id,  c.name as cname, "
 					+ " c.start_time, c.end_time,  ds.name as sname, p.description, c.forum_id, "
 					+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, " 
-					+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1) as num_sub, "
+					+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1 "
+					+     "  and rank is not null and rank <= (select property_value from contest_config where contest_id = c.contest_id and property_id = 8)) as num_sub, "
 					+ " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for "
 					+ " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
 					+ " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
@@ -2879,7 +2883,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 			String qstr = "select p.project_id , p.name as pname, c.contest_id,  c.name as cname, "
 					+ " c.start_time, c.end_time,  ds.name as sname, p.description, c.forum_id, "
 					+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, "
-					+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1) as num_sub, "
+					+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1 "
+					+     "  and rank is not null and rank <= (select property_value from contest_config where contest_id = c.contest_id and property_id = 8)) as num_sub, "
 					+ " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for "
 					+ " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
 					+ " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
@@ -2924,7 +2929,8 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             String qstr="select p.project_id , p.name as pname, c.contest_id,  c.name as cname, "
 					+ " c.start_time, c.end_time,  ds.name as sname, p.description, c.forum_id, "
 					+ " (select count(*) from contest_registration where contest_id = c.contest_id ) as num_reg, " 
-					+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1) as num_sub, "
+					+ " (select count(*) from submission where contest_id = c.contest_id and submission_status_id = 1 "
+					+     "  and rank is not null and rank <= (select property_value from contest_config where contest_id = c.contest_id and property_id = 8)) as num_sub, "
 					+ " (select count(*) from jivemessage where forumid = c.forum_id ) as num_for "
 					+ " from tc_direct_project p left OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id "
 					+ " left outer join contest_detailed_status_lu ds on c.contest_detailed_status_id = ds.contest_detailed_status_id "
