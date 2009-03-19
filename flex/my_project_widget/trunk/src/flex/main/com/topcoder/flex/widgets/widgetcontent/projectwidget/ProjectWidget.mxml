@@ -131,7 +131,7 @@
             // Module Cockpit My Projects Release Assembly 1
             // 1.1.1
             // force widget to a maximized view
-            this.maximizeScreen();
+            //this.maximizeScreen();
 
         }
         
@@ -241,6 +241,8 @@
         // 1.1.4
         // handler to handle load more button click.
         private function loadMore():void {
+            showLoadingProgress();
+            
             this.visibleProjectCount += ProjectWidgetCodeBehind.DefaultVisibleProjectCountIncrement;
             prjList.dataProvider = getSubArray(projects, this.visibleProjectCount);
             
@@ -248,6 +250,8 @@
             // 1.1.4
             // show the load more button if there are more projects to be loaded.
             this.showHideLoadMoreButton();
+            
+            hideLoadingProgress();
         }
         
         // Module Cockpit My Projects Release Assembly 1
@@ -255,6 +259,15 @@
         // show the load more button if there are more projects to be loaded.
         private function showHideLoadMoreButton():void {
             if (this.projects && this.projects.length > this.visibleProjectCount) {
+                if (this.visibleProjectCount + ProjectWidgetCodeBehind.DefaultVisibleProjectCountIncrement < this.projects.length)
+                {
+                    this.load_more_btn.label = "Show " + ProjectWidgetCodeBehind.DefaultVisibleProjectCountIncrement + " More"; 
+                }
+                else
+                {
+                    this.load_more_btn.label = "Show " + (this.projects.length - this.visibleProjectCount) + " More";
+                }
+                
                 this.load_more_btn_panel.visible = true;
                 this.load_more_btn_panel.includeInLayout = true;
             } else {
@@ -332,7 +345,7 @@ wsdl="{contestServiceFacadeWsdl}">
         // load more button
         -->
 		<mx:HBox id="load_more_btn_panel">
-		    <mx:Button label="Load More" buttonMode="true" id="load_more_btn" click="loadMore()">
+		    <mx:Button label="Show More" buttonMode="true" id="load_more_btn" click="loadMore()">
 		    </mx:Button>
 		</mx:HBox>
 		
