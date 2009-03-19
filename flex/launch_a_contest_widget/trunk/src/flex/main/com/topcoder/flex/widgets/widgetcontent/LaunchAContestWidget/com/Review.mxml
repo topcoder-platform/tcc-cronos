@@ -149,7 +149,7 @@
     </mx:Script>
     <mx:VBox width="100%" height="100%" styleName="boxStyle">
     	<mx:HBox horizontalAlign="right" width="100%">
-    		<mx:Label text="Review" fontWeight="bold" width="80%"/>
+    		<mx:Label text="Review" width="80%" styleName="sectionTitle" /> <!-- BUGR-1503 -->
     		<mx:Spacer width="100" />	
 		<mx:Button styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="PREVIEW" click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
 		<!--  <mx:Image source="@Embed('../../assets/more_info.png')"/>  BUGR-1501 -->
@@ -158,7 +158,7 @@
         <mx:HRule width="100%" strokeColor="0x000000"/>
         
         <mx:VBox width="100%" verticalGap="0">
-            <mx:Label text="Contest Selection" fontWeight="bold" />
+            <mx:Label text="Contest Selection" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
             <mx:Spacer height="15"/>
 	        <mx:HBox width="100%">
 	            <mx:Label text="Contest Type:" fontWeight="bold" />
@@ -173,7 +173,7 @@
         <mx:HRule width="100%" strokeColor="0x000000"/>
         
         <mx:VBox width="100%" verticalGap="0">
-            <mx:Label text="Contest Overview" fontWeight="bold" />
+            <mx:Label text="Contest Overview" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
             <mx:Spacer height="15"/>
             <mx:HBox width="100%">
                 <mx:Label text="Contest Type:" fontWeight="bold" />
@@ -225,7 +225,7 @@
         <mx:HRule width="100%" strokeColor="0x000000"/>
 
         <mx:VBox width="100%" verticalGap="0">
-            <mx:Label text="Contest Details" fontWeight="bold" />
+            <mx:Label text="Contest Details" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
             <mx:Spacer height="15"/>
             <mx:HBox>
                 <mx:Label text="Content Title:" fontWeight="bold" />
@@ -250,7 +250,7 @@
         <mx:HRule width="100%" strokeColor="0x000000"/>
 
         <mx:VBox width="100%" verticalGap="0">
-            <mx:Label text="Contest Specifications" fontWeight="bold" />
+            <mx:Label text="Contest Specifications" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
             <mx:Spacer height="15"/>
             <mx:Label text="Colors:" fontWeight="bold" />
             <mx:Text id="colorInput" width="500" height="50" text="test" />
@@ -276,7 +276,7 @@
         <mx:HRule width="100%" strokeColor="0x000000"/>
 
         <mx:VBox width="100%" verticalGap="0">
-            <mx:Label text="Attach Files" fontWeight="bold" />
+            <mx:Label text="Attach Files" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
 
             <mx:Spacer height="15"/>
             <mx:HRule width="100%"/>            
@@ -294,7 +294,7 @@
         <mx:HRule width="100%" strokeColor="0x000000"/>
 
         <mx:VBox width="100%" verticalGap="0">
-            <mx:Label text="Set the Contest Schedule" fontWeight="bold" />
+            <mx:Label text="Set the Contest Schedule" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
             <mx:Spacer height="15"/>
             <mx:HBox>
                 <mx:Label text="Start Date:" fontWeight="bold" />

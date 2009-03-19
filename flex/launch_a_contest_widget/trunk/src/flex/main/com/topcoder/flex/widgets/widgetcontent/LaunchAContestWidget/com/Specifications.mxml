@@ -194,7 +194,7 @@
     		
 	    	<mx:VBox width="100%">
 			<mx:HBox horizontalAlign="right" width="100%">
-				<mx:Label text="Contest Specifications" fontWeight="bold" width="80%"/>
+				<mx:Label text="Contest Specifications" width="80%" styleName="sectionTitle" /> <!-- BUGR-1503 -->
 				<mx:Spacer width="100" />	
 		                <mx:Button styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="PREVIEW" click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
 		                <!--  <mx:Image source="@Embed('../../assets/more_info.png')"/>  BUGR-1501 -->
@@ -261,7 +261,7 @@
 	    </mx:VBox>
 	    <mx:VBox width="100%" styleName="boxStyle" >
 		    	
-		    <mx:Label text="Final File Formats" fontWeight="bold" />
+		    <mx:Label text="Final File Formats" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
 	       		    <mx:HBox horizontalGap="0" verticalGap="0" width="100%">
 			    <mx:Label paddingTop="3" text="If you are unsure what type of file you will need, please feel free to"/>  <!-- BUGR-1472 -->
 		    	<mx:LinkButton baseline="middle" styleName="linkBtn" label="post a question in the forums" click="{navigateToURL(new URLRequest('http://studio.topcoder.com/forums?module=ThreadList&amp;forumID=6'), '_blank');}" />

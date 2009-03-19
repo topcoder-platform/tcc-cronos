@@ -23,10 +23,10 @@
 		<mx:Grid width="100%">
 			<mx:GridRow width="100%">
 				<mx:GridItem width="100%">
-					<mx:Label text="Billing Information" styleName="header" />
+					<mx:Label text="Billing Information" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
 				</mx:GridItem>
 				<mx:GridItem width="100%">
-					<mx:Label text="Contact Information" styleName="header" />
+					<mx:Label text="Contact Information" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
 				</mx:GridItem>
 			</mx:GridRow>
 			<mx:GridRow width="100%">
@@ -43,7 +43,7 @@
 							</mx:VBox>
 						</mx:HBox>
 						<mx:VBox width="100%" id="approval" visible="false">
-							<mx:Label text="Approval Information" width="100%" styleName="header" />
+							<mx:Label text="Approval Information" width="100%" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
 							<mx:HBox>
 								<mx:Label text="Reference Number:" width="100%" styleName="contentBlack" />
 								<mx:Label id="paymentReferenceNumber" width="100%" styleName="content" />

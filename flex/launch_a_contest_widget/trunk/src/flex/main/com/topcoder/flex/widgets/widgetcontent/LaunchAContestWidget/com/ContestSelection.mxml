@@ -221,7 +221,7 @@
     	</mx:HBox>
     	<mx:HBox width="100%" height="100%" paddingLeft="30">
     	    <mx:VBox width="35%" height="100%" paddingRight="15">
-        	    <mx:Label text="Contest Selection" fontWeight="bold" />
+        	    <mx:Label text="Contest Selection" styleName="sectionTitle"/> <!-- BUGR-1503 -->
         	    <mx:Label text="What Type of Contest do you want to run?" />
         	    <mx:RadioButtonGroup id="contestType" itemClick="handleSelect(event);" />
         	    <mx:VBox width="100%" height="100%">
@@ -248,7 +248,7 @@
     	    </mx:VBox>
     	    <mx:VRule height="100%"/>
     	    <mx:VBox width="65%" height="100%" paddingLeft="15">
-                <mx:Label text="Projects" styleName="header" />
+                <mx:Label text="Projects" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
                 <mx:Text width="100%" styleName="content" >
                     <mx:text>
                 A project is a way to organize your contests under one overall header and description. Naming the overall project here and giving a brief description will help you manage your contests later. For example, a logo and new website design can both be placed under a project called "New Website".

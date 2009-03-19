@@ -265,7 +265,7 @@
     	<mx:VBox width="100%" >
     		
 		<mx:HBox horizontalAlign="right" width="100%">
-			<mx:Label text="Contest Overview" styleName="redText" fontSize="18" width="80%"/>
+			<mx:Label text="Contest Overview" styleName="sectionTitle" width="80%"/> <!-- BUGR-1503 -->
 			<mx:Spacer width="100" />	
 		<mx:Button styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="PREVIEW" click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
 		<!--  <mx:Image source="@Embed('../../assets/more_info.png')"/>  BUGR-1501 -->
@@ -278,7 +278,7 @@
 		   <mx:VBox width="100%">
 			<mx:Spacer height="10" />
 	        <mx:HRule width="100%" /> <!-- BUGR-1204 -->
-	        <mx:Label id="typeName" text="Web Page Design" styleName="redText" />
+	        <mx:Label id="typeName" text="Web Page Design" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
 	        <mx:Text width="100%" id="description" styleName="smallBlackText">
 	            <mx:text>
 					{contestOverview.contestType.(@id==curContestType).description}
@@ -286,7 +286,7 @@
 	        </mx:Text>
 	        <mx:Spacer height="5" /> <!-- BUGR-1204 -->
 	        <mx:HRule width="100%" /> <!-- BUGR-1204 -->
-   	       <mx:Label text="Examples:" styleName="redText"/>
+   	       <mx:Label text="Examples:" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
 	        <mx:HBox verticalAlign="top" horizontalGap="0" visible="{isPresentXml('example1') || isPresentXml('example2')}" includeInLayout="{isPresentXml('example1') || isPresentXml('example2')}" width="100%">
 	            <mx:VBox verticalGap="0" width="50%" visible="{isPresentXml('example1')}" includeInLayout="{isPresentXml('example1')}" >
 	            	<mx:HBox width="100%">
@@ -366,7 +366,7 @@
 	        <mx:Spacer height="5"/>
 	        <mx:VBox width="100%" verticalGap="0">
 	        	<!-- BUGR-1204 -->
-		        <mx:Label text="Suggested First Place Prize Amounts:" styleName="redText"/>
+		        <mx:Label text="Suggested First Place Prize Amounts:"  styleName="subsectionTitle" /> <!-- BUGR-1503 -->
 		        <mx:HBox horizontalGap="25" styleName="smallBlackText">
 					<mx:Label text="&#8226; Minimum: {isPresentXml('minPrize') ? contestOverview.contestType.(@id==curContestType).minPrize : ''}" visible="{isPresentXml('minPrize')}" includeInLayout="{isPresentXml('minPrize')}" />
 			        <mx:Label text="&#8226; Average: {isPresentXml('averagePrize') ? contestOverview.contestType.(@id==curContestType).averagePrize : ''}" visible="{isPresentXml('averagePrize')}" includeInLayout="{isPresentXml('averagePrize')}" />
@@ -378,7 +378,7 @@
 	        
 	        <mx:Spacer height="5"/>
 	        <mx:VBox width="100%" verticalGap="0">
-	        <mx:Label text="Your Prize Amounts:" styleName="redText"/>
+	        <mx:Label text="Your Prize Amounts:"  styleName="subsectionTitle" /> <!-- BUGR-1503 -->
 		        <mx:Text width="100%" paddingTop="0" styleName="smallBlackText">
 		            <mx:text>
 		                When entering prizes, please note that each prize amount must be the same or lower than 

@@ -144,10 +144,10 @@
 	<mx:StringValidator id="commonValidator" property="text"  required="true"/>
 	<mx:GridRow width="100%">
 		<mx:GridItem width="100%">
-			<mx:Label text="Credit Card Information" styleName="header" />
+			<mx:Label text="Credit Card Information" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
 		</mx:GridItem>
 		<mx:GridItem width="100%">
-			<mx:Label text="Other Payment Options" styleName="header" />
+			<mx:Label text="Other Payment Options" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
 		</mx:GridItem>
 	</mx:GridRow>
 	<mx:GridRow  width="100%">
@@ -268,10 +268,10 @@
 	</mx:GridRow>
 	<mx:GridRow width="100%" >
 		<mx:GridItem width="100%">
-			<mx:Label text="Billing Information" styleName="header" />
+			<mx:Label text="Billing Information" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
 		</mx:GridItem>
 		<mx:GridItem width="100%">
-			<mx:Label text="Not Ready to Activate?" styleName="header" />
+			<mx:Label text="Not Ready to Activate?" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
 		</mx:GridItem>
 	</mx:GridRow>
 	<mx:GridRow width="100%">

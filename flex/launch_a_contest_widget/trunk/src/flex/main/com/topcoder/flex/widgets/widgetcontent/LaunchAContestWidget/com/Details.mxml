@@ -146,7 +146,7 @@
     </mx:Script>
     <mx:VBox width="100%" styleName="boxStyle" >
 	<mx:HBox horizontalAlign="right" width="100%">
-		<mx:Label text="Contest Details" fontWeight="bold"  width="80%"/>
+		<mx:Label text="Contest Details" width="80%" styleName="sectionTitle" /> <!-- BUGR-1503 -->
 		<mx:Spacer width="100" />	
 		<mx:Button styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="PREVIEW" click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
 		<!--  <mx:Image source="@Embed('../../assets/more_info.png')"/>  BUGR-1501 -->
