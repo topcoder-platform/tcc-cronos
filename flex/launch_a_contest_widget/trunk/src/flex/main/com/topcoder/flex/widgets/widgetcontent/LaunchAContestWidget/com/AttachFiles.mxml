@@ -23,8 +23,8 @@
 	        import mx.controls.Spacer;
 	        
 	        import mx.rpc.AbstractOperation;
-                import mx.rpc.events.ResultEvent;
-		import mx.controls.ButtonLabelPlacement; // BUGR-1501			
+            import mx.rpc.events.ResultEvent;
+		    import mx.controls.ButtonLabelPlacement; // BUGR-1505			
             
                 import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
 	        
@@ -383,7 +383,7 @@
             <mx:HBox >
                 <mx:Label text="File to Upload:" fontWeight="bold"/>
                 <mx:TextInput id="fileToUpload" editable="false" />
-                <mx:Button id="browse" buttonMode="true" label="Browse" click="browseFile()" styleName="RedButton"/>
+                               <mx:Button id="browse" buttonMode="true" label="BROWSE" click="browseFile()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
             </mx:HBox>
 
             <mx:VBox width="100%" verticalGap="0">
@@ -400,7 +400,7 @@
             </mx:VBox>
             <mx:Spacer height="5"/>
             <mx:VBox>
-            	<mx:Button id="upload" buttonMode="true" label="Upload File" click="uploadFile()" styleName="RedButton"/>
+            	<mx:Button id="upload" buttonMode="true" label="UPLOAD FILE" click="uploadFile()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
             	<mx:Text text="You may add more files after uploading." color="0x888888"/>
             </mx:VBox>
         </mx:VBox>

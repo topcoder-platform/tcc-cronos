@@ -5,6 +5,7 @@
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+		    import mx.controls.ButtonLabelPlacement; // BUGR-1505		
 		
 			 [Bindable]
        		public var mainWidget:LaunchWidget;
@@ -84,7 +85,7 @@
 		<!--<mx:Image source="../assets/verisign.png" />-->
 	</mx:HBox>
 	<mx:HBox horizontalAlign="center" width="100%" id="btPanel" visible="false" paddingTop="40">
-		<mx:Button label="create another contest" styleName="RedButton" click="this.mainWidget.resetWidget()"/>
-		<mx:Button label="close" styleName="RedButton" click="this.mainWidget.closeWidget()"/>
+		<mx:Button label="CREATE NEW CONTEST" click="this.mainWidget.resetWidget()" styleName="arrowLeftBtnStyle" labelPlacement="{ButtonLabelPlacement.RIGHT}"/> <!-- BUGR-1505 -->
+		<mx:Button label="VIEW MY CONTESTS" click="this.mainWidget.closeWidget()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
 	</mx:HBox>
 </mx:VBox>

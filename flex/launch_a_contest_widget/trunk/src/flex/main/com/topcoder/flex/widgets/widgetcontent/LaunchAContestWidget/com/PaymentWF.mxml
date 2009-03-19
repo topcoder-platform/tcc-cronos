@@ -13,7 +13,7 @@
 			import mx.events.ValidationResultEvent;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
-			
+		    import mx.controls.ButtonLabelPlacement; // BUGR-1505			
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
 			import mx.rpc.AbstractOperation;
 			import flash.external.ExternalInterface;
@@ -330,8 +330,8 @@
 					<mx:Text width="100%" text="Want to add another contest? Save this contest as a draft and pay for all of your contest at once." styleName="content" />
 					<mx:Spacer width="100%" height="100%" />
 					<mx:HBox width="100%" horizontalAlign="center">
-						<mx:Button label="save as draft" buttonMode="true" click="this.mainWidget.saveAsDraft()" styleName="RedButton"/>
-						<mx:Button label="add a contest" buttonMode="true" click="this.mainWidget.resetWidget()" styleName="RedButton"/>
+						<mx:Button label="SAVE AS DRAFT" buttonMode="true" click="this.mainWidget.saveAsDraft()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
+						<mx:Button label="ADD A CONTEST" buttonMode="true" click="this.mainWidget.resetWidget()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
 					</mx:HBox>
 				</mx:VBox>
 				<mx:HBox verticalAlign="middle" width="100%" paddingRight="8">
