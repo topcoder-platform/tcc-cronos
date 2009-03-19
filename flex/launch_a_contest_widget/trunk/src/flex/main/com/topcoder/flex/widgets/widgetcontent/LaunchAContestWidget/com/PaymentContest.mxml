@@ -117,6 +117,7 @@
                     mainWidget.back.visible=false;
                     wf2.showApproval(paymentResult.referenceNumber);
                 }
+		mainWidget.notifyMyProjectWidget();
             }
 
             private function processPOPaymentResponse(e:ResultEvent):void
@@ -140,6 +141,7 @@
                     mainWidget.back.visible=false;
                     wf3.showApproval(paymentResult.referenceNumber);
                 }
+		mainWidget.notifyMyProjectWidget();
             }
 		]]>
 	</mx:Script>

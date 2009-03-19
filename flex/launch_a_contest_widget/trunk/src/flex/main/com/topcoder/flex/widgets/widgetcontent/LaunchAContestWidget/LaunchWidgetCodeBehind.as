@@ -402,6 +402,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 creditCardPaymentData.email=Model.instance.email;
                 creditCardPaymentData.ipAddress="10.10.10.10";
                 creditCardPaymentData.sessionId="";
+                creditCardPaymentData.csc=Model.instance.csc; // BUGR-1398
                 
                 var processContestPaymentOp:AbstractOperation = _csws.getOperation("processContestCreditCardPayment");
             
