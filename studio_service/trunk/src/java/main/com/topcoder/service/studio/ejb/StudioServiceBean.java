@@ -1147,7 +1147,7 @@ public class StudioServiceBean implements StudioService {
             
             //List<Submission> submissions = submissionManager.getSubmissionsForContest(contest, 
            //         selectFullSubmission, maxSubmissionsPerUser, includeFailedScreening);
-			List<Submission> submissions = submissionManager.getSubmissionsForContest(contestId, selectFullSubmission);
+			List<Submission> submissions = submissionManager.getSubmissionsForContest(contestId, selectFullSubmission, maxSubmissionsPerUser);
             List<SubmissionPayment> submissionPayments = submissionManager.getSubmissionPaymentsForContest(contestId);
             List<SubmissionData> result = convertSubmissions(submissions, submissionPayments);
 
