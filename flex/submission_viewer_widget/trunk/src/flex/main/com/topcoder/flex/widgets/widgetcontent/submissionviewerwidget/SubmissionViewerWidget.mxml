@@ -1409,6 +1409,7 @@
 		                creditCardPaymentData.country=wf1.country.text;
 		                creditCardPaymentData.phone=wf1.phone.text;
 		                creditCardPaymentData.email=wf1.email.text;
+		                creditCardPaymentData.csc=wf1.csc.text; // BUGR-1398
 		                
 		                // TODO: read ip address from client.
 		                creditCardPaymentData.ipAddress="10.10.10.10";

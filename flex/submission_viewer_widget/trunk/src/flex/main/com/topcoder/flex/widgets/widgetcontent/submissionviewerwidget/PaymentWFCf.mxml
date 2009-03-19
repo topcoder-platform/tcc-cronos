@@ -28,7 +28,11 @@
 								<mx:Label text="Expiration Date:" styleName="contentBlack" />
 							</mx:VBox>
 							<mx:VBox width="100%">
-								<mx:Label text="{model.cardNum}" styleName="content" />
+								<!-- BUGR-1398 -->
+								<mx:HBox width="100%" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+									<mx:Label text="{model.cardNum}" styleName="content" />
+									<mx:Label text="{model.csc}" styleName="content" />	
+								</mx:HBox>
 								<mx:Label text="{model.cardType}" styleName="content" />
 								<mx:Label text="{model.cardExpDateStr}" styleName="content" />
 							</mx:VBox>

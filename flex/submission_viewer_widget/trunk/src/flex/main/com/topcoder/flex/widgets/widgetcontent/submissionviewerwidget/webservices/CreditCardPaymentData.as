@@ -37,5 +37,6 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.webservic
        public var sessionId:String;
        public var state:String;
        public var zipCode:String;
+       public var csc:String; //BUGR-1398
    }
 }

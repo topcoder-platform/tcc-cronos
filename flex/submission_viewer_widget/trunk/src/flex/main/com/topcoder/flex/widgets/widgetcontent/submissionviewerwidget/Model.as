@@ -37,6 +37,10 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget
 		
 		[Bindable]
 		public var purchaseOrder:String;
+
+		// BUGR-1398
+		[Bindable]
+		public var csc:String;
 		
 		public function Model()
 		{

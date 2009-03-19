@@ -18,7 +18,7 @@
 			[Bindable]public var clientProjectNames:ArrayCollection=new ArrayCollection();
 			
 			public function saveData():int {
-				var inputs:Array = [cardNum, cardname, address, city, state, code, country, phone, email];
+				var inputs:Array = [cardNum, csc, cardname, address, city, state, code, country, phone, email]; // BUGR-1398
 				var model:Model = Model.instance;
 				if (order.selectedItem && order.selectedItem.data != null && order.selectedItem.data != "") {
 					for each (var target:TextInput in inputs) {
@@ -93,6 +93,14 @@
                 ExternalInterface.call(openNewWindow);
             }
 			
+			// BUGR-1398
+			private function gotoCSC():void {
+			    var openNewWindow:String = "function navToPayPalCSC(){" +
+			            "javascript:window.open('https://www.paypal.com/us/cgi-bin/webscr?cmd=xpt/Help/popup/CVVInfoPopC-outside','CVVInfoPopC','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=850, height=400');" +
+			            "}" ;
+			    ExternalInterface.call(openNewWindow);
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:StringValidator id="commonValidator" property="text"  required="true"/>
@@ -106,7 +114,12 @@
 					<mx:Label text="Expiration Date:" styleName="contentBlack" />
 				</mx:VBox>
 				<mx:VBox width="100%">
-					<mx:TextInput id="cardNum" width="100%" height="20" enabled="{order.selectedItem.data == ''}"/>
+					<mx:HBox verticalScrollPolicy="off" horizontalScrollPolicy="off">	 <!-- BUGR-1398 -->	
+					<mx:TextInput id="cardNum" width="125" enabled="{order.selectedItem.data == ''}"/>
+						<mx:TextInput id="csc" width="45" enabled="{order.selectedItem.data == ''}"/>
+						<mx:LinkButton label="What's this?" click="gotoCSC();" enabled="{order.selectedItem.data == ''}"/>
+					</mx:HBox>
+
 					<mx:ComboBox width="100%" height="20" id="cardTypeCombo" enabled="{order.selectedItem.data == ''}">
 						<mx:dataProvider>
 							<mx:Object label="Visa" data="Visa"/>
