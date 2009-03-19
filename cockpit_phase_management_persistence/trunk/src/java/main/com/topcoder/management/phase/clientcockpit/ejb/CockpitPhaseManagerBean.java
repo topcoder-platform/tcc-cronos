@@ -939,8 +939,9 @@ public class CockpitPhaseManagerBean implements CockpitPhaseManagerInterface {
         // if there are no sufficient number submissions received the contest is closed
 //        statusMapping.put(activePhaseTypeName,
 //            new String[] {actionRequiredPhaseTypeName, insufficientSubmissionsReRunPossiblePhaseTypeName});
-        statusMapping.put(activePhaseTypeName, new String[] {actionRequiredPhaseTypeName, completedPhaseTypeName});
-
+//        statusMapping.put(activePhaseTypeName, new String[] {actionRequiredPhaseTypeName, completedPhaseTypeName});
+// Shannon Ma 03-18-2009, add insufficient submission phase
+		statusMapping.put(activePhaseTypeName, new String[] {actionRequiredPhaseTypeName, insufficientSubmissionsPhaseTypeName});
         // ISV : Re-Post phase is currently removed as application does not provide UI for re-posting the contest
 //        statusMapping.put(actionRequiredPhaseTypeName, new String[] {completedPhaseTypeName, inDangerPhaseTypeName,
 //                                                                     repostPhaseTypeName, noWinnerChosenPhaseTypeName});
@@ -967,6 +968,8 @@ public class CockpitPhaseManagerBean implements CockpitPhaseManagerInterface {
         statusMapping.put(abandonedPhaseTypeName, new String[] {});
 
         statusMapping.put(completedPhaseTypeName, new String[] {});
+// Shannon Ma 03-18-2009, insufficient submission phase a final state for now
+		statusMapping.put(insufficientSubmissionsPhaseTypeName, new String[] {});
     }
 
     /**
