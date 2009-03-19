@@ -3,11 +3,13 @@
  */
 package com.topcoder.service.payment.paypal;
 
-import javax.annotation.Resource;
 import java.text.DecimalFormat;
+import java.util.Locale;
+
 import org.jboss.logging.Logger;
 
-
+import paypal.payflow.AuthorizationTransaction;
+import paypal.payflow.BaseTransaction;
 import paypal.payflow.BillTo;
 import paypal.payflow.CardTender;
 import paypal.payflow.ClientInfo;
@@ -21,7 +23,6 @@ import paypal.payflow.PayflowConstants;
 import paypal.payflow.PayflowUtility;
 import paypal.payflow.Response;
 import paypal.payflow.SDKProperties;
-import paypal.payflow.SaleTransaction;
 import paypal.payflow.TransactionResponse;
 import paypal.payflow.UserInfo;
 
@@ -96,11 +97,10 @@ public class PayflowProPaymentProcessor implements PaymentProcessor {
         // Create a new Invoice data object with the Amount, Billing Address etc. details.
         Invoice inv = new Invoice();
 		Double amount = new Double(cardPaymentData.getAmount());
-		DecimalFormat twoDForm = new DecimalFormat("#.##");
+		DecimalFormat twoDForm = (DecimalFormat) DecimalFormat.getNumberInstance(Locale.US); // set US locale! BUGR-1398
+        twoDForm.applyLocalizedPattern("#.##");
 		amount =  Double.valueOf(twoDForm.format(amount));
 
-
-System.out.println("---amount is "+amount);
         // Set amount
         Currency amt = new Currency(amount, "USD");
         inv.setAmt(amt);
@@ -127,12 +127,13 @@ System.out.println("---amount is "+amount);
                         cardPaymentData.getCardExpiryYear().length() - 2)));
         System.out.println(expiry);
         CreditCard cc = new CreditCard(cardPaymentData.getCardNumber(), expiry);
+        cc.setCvv2(cardPaymentData.getCsc()); // BUGR-1398
         // Create a new Tender - Card Tender data object.
         CardTender card = new CardTender(cc);
 
         // Create a new Sale Transaction.
-        SaleTransaction trans = new SaleTransaction(userInfo, connection, inv, card, PayflowUtility.getRequestId());
-
+        BaseTransaction trans = new AuthorizationTransaction(userInfo, connection, inv, card, PayflowUtility.getRequestId()); // BUGR-1398
+        trans.setVerbosity("MEDIUM");  // BUGR-1398
         // Submit the Transaction
         Response resp = trans.submitTransaction();
 
@@ -209,6 +210,7 @@ System.out.println("---amount is "+amount);
         c.setLastName("McClaine");
         c.setAddress("24285 Elm");
         c.setZipCode("00382");
+        c.setCsc("422"); // use 1-300 to succeed and 301-600 to fail csc BUGR-1398
         System.out.print("reference number=" + proc.process(c).getReferenceNumber());
     }
 

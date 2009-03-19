@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "creditCardPaymentData", propOrder = { "cardNumber", "cardType", "cardExpiryMonth", "cardExpiryYear",
         "firstName", "lastName", "address", "city", "state", "zipCode", "country", "phone", "email", "ipAddress",
-        "sessionId", "amount", "comment1", "comment2" })
+        "sessionId", "amount", "comment1", "comment2", "csc" })
 public class CreditCardPaymentData extends PaymentData {
 
     /**
@@ -120,6 +120,13 @@ public class CreditCardPaymentData extends PaymentData {
      * @since BUGR-1239
      */
     private String comment2;
+
+    /**
+     * The card security code
+     * 
+     * @since BUGR-1398
+     */
+    private String csc;
 
     /**
      * A do nothing default constructor.
@@ -530,6 +537,31 @@ public class CreditCardPaymentData extends PaymentData {
      */
     public void setComment2(String comment2) {
         this.comment2 = comment2;
+    }
+
+    /**
+     * <p>
+     * Gets the card security code.
+     * </p>
+     * 
+     * @return the card security code.
+     * @since BUGR-1398
+     */
+    public String getCsc() {
+        return csc;
+    }
+
+    /**
+     * <p>
+     * Sets the card security code.
+     * </p>
+     * 
+     * @param csc
+     *            card security code.
+     * @since BUGR-1398
+     */
+    public void setCsc(String csc) {
+        this.csc = csc;
     }
 
 }
