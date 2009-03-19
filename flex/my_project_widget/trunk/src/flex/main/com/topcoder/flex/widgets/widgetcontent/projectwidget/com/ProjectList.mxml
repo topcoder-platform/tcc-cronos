@@ -208,7 +208,6 @@
 					prjCt=p as ProjectsContainer;
 					var props:Dictionary=new Dictionary();
 					props["pid"]=_dataProvider.id;
-					props["openAll"]="True";
 					
 					var dict:Dictionary=new Dictionary();
 					dict["name"]=_dataProvider.name;
