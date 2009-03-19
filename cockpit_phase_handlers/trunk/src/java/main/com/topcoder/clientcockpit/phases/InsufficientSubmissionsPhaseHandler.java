@@ -260,8 +260,11 @@ public class InsufficientSubmissionsPhaseHandler extends AbstractPhaseHandler {
     protected boolean canStart(Phase phase, Contest contest) throws PhaseHandlingException {
         //Start case: if the minimum number of submissions has not been reached
         //and the contest has been rerun (check if contest.status.name is "Rerun")
-        return !isEnoughSubmissionsReceived(phase, contest)
-            && isContestStatusMatch(contest, CockpitPhase.RERUN);
+		boolean result = !isEnoughSubmissionsReceived(phase, contest) && isEndDateReached(contest) ;
+//System.out.println("---------- [InsufficientSubmissions]: can start for contest id " + contest.getContestId() + " is: " + result);
+			return result;
+       // return !isEnoughSubmissionsReceived(phase, contest)
+         //   && isContestStatusMatch(contest, CockpitPhase.RERUN);
     }
 
     /**

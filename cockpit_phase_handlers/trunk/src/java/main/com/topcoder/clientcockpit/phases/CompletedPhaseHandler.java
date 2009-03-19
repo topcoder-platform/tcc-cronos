@@ -265,9 +265,11 @@ public class CompletedPhaseHandler extends AbstractPhaseHandler {
 //        return isEndDateReached(contest) && isEnoughSubmissionsReceived(phase, contest)
 //            && (contest.getResults() != null && !contest.getResults().isEmpty());
         try {
-            return isEndDateReached(contest)
-                   && ((isEnoughSubmissionsReceived(phase, contest) && isWinnerChosen(contest) && isWinningSubmissionPaid(contest))
-                       || (!isEnoughSubmissionsReceived(phase, contest) && isContestStatusMatch(contest, CockpitPhase.ACTIVE)));
+            boolean result =  isEndDateReached(contest)
+                   && ((isEnoughSubmissionsReceived(phase, contest) && isWinnerChosen(contest) && isWinningSubmissionPaid(contest)));
+//System.out.println("---------- [Complete]: can start for contest id " + contest.getContestId() + " is: " + result);
+			return result;
+                //       || (!isEnoughSubmissionsReceived(phase, contest) && isContestStatusMatch(contest, CockpitPhase.ACTIVE)));
         } catch (SubmissionManagementException e) {
             throw new PhaseHandlingException("Could not check the payment for winning submission for contest ["
                                              + contest.getContestId() + "]", e);
