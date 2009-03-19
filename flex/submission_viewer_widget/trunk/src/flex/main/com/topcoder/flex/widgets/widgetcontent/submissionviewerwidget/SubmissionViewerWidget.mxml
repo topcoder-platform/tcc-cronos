@@ -14,8 +14,9 @@
 
     <mx:Script>
         <![CDATA[
+	    import mx.controls.ButtonLabelPlacement; // BUGR-1505        
             import mx.binding.utils.BindingUtils;
-        	import mx.controls.scrollClasses.ScrollBar;
+            import mx.controls.scrollClasses.ScrollBar;
             import mx.rpc.xml.SimpleXMLDecoder;
             import mx.events.FlexEvent;
             import mx.collections.SortField;
@@ -1844,7 +1845,7 @@
 					            />
 		                <mx:Button buttonMode="true" id="down" styleName="down" click="goDown(null)" />
 		            	<mx:Spacer />
-		                <mx:Button buttonMode="true" click="reorder()" label="PRIORITIZE" styleName="ButtonStyle"/>
+		                <mx:Button buttonMode="true" click="reorder()" label="PRIORITIZE"  styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
 	            	
 		            </mx:VBox>
 	            	<mx:VRule height="100%" strokeColor="#DBDBDB"/>

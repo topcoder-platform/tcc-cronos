@@ -2,7 +2,7 @@
 <mx:HBox styleName="BoxStyle" xmlns:mx="http://www.adobe.com/2006/mxml">
 	<mx:Script>
 		<![CDATA[
-
+		    import mx.controls.ButtonLabelPlacement; // BUGR-1505
 			import mx.core.Application;
             [Bindable]
 			private function getPurchase(dta:Object):String {
@@ -72,7 +72,7 @@
 				fontWeight="bold" styleName="text" />
 		<mx:Label text="{getPurchase(data)}" textAlign="center" styleName="text" />
 		<mx:Label text="{getPurchased(data)}" textAlign="center" styleName="text" />	
-		<mx:Button id="down" buttonMode="true" styleName="ButtonStyle" label="Download" click="{download(data.id)}" />                
+				<mx:Button id="down" buttonMode="true" label="DOWNLOAD" click="{download(data.id)}"  styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
 	</mx:VBox>
 </mx:HBox>
 </mx:HBox>
