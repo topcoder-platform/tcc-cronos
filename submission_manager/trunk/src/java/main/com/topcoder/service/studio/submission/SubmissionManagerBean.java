@@ -322,6 +322,55 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
         return submissions;
     }
 
+
+	 /**
+     * <p>
+     * Gets the active submissions for the contest with the given id. Also, the selectFullSubmission will determine if
+     * the full submission is returned to the caller.
+     * </p>
+     *
+     * @param contestId
+     *            The id of the contest of the submissions to get
+     * @param selectFullSubmission
+     *            a flag whether the full submission should be returned
+     * @return List of Submission for the contest with the given id, or empty list if none found.
+     * @throws SubmissionManagementException
+     *             If any error occurs during the retrieval
+     */
+    public List<Submission> getSubmissionsForContest(long contestId, boolean selectFullSubmission, int maxSubmissionsPerUser)
+        throws SubmissionManagementException {
+        final String methodName = "getSubmissionsForContest(long, boolean)";
+        logEnter(methodName);
+		
+        List<Submission> submissions = new ArrayList<Submission>();
+		
+		if (maxSubmissionsPerUser > 0)
+		{
+			submissions = getSubmissionsForContest(
+                getEntityManager(methodName), contestId, maxSubmissionsPerUser, methodName);
+		}
+		else
+		{
+			submissions = getSubmissionsForContest(
+                getEntityManager(methodName), contestId, methodName);
+		}
+
+        if (!selectFullSubmission) {
+            // Fix [TCCC-137]
+            List<Submission> ret = new ArrayList<Submission>();
+            for (Submission submission : submissions) {
+                Submission clonedSubmission = cloneSubmission(submission);
+                clonedSubmission.setFullSubmissionPath(null);
+                ret.add(clonedSubmission);
+            }
+
+            return ret;
+        }
+
+        logExit(methodName);
+        return submissions;
+    }
+
     /**
      * <p>
      * Gets the active submissions for the submitter with the given id.
@@ -1525,9 +1574,42 @@ public class SubmissionManagerBean implements SubmissionManagerLocal, Submission
 
         List<Submission> submissions = getResultList(entityManager,
                 "SELECT s FROM Submission s WHERE s.contest.contestId=:contestId"
-                        + " AND s.status.description != :description", parameters, methodName);
+                        + " AND s.status.description != :description AND s.rank <= s.contest.maximumSubmissions", parameters, methodName);
         return submissions;
     }
+
+
+	/**
+     * <p>
+     * Gets the active submissions for the contest with the given id.
+     * </p>
+     *
+     * @param entityManager
+     *            the entity manager
+     * @param contestId
+     *            The id of the contest of the submissions to get
+     * @param selectFullSubmission
+     *            a flag whether the full submission should be returned
+     * @param methodName
+     *            this called method name
+     * @return List of Submission for the contest with the given id, or empty list if none found.
+     * @throws SubmissionManagementException
+     *             If any error occurs during the retrieval
+     */
+    @SuppressWarnings("unchecked")
+    private List<Submission> getSubmissionsForContest(EntityManager entityManager, long contestId, int maxSubmissionsPerUser,  String methodName)
+        throws SubmissionManagementException {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("contestId", new Long(contestId));
+        parameters.put("description", DELETED_STATUS);
+		parameters.put("maxSubmissionsPerUser", new Integer(maxSubmissionsPerUser));
+
+        List<Submission> submissions = getResultList(entityManager,
+                "SELECT s FROM Submission s WHERE s.contest.contestId=:contestId"
+                        + " AND s.status.description != :description AND s.rank is not null AND s.rank <= :maxSubmissionsPerUser", parameters, methodName);
+        return submissions;
+    }
+
 
 
     /**

@@ -53,6 +53,26 @@ public interface SubmissionManager {
     List<Submission> getSubmissionsForContest(long contestId, boolean selectFullSubmission)
         throws SubmissionManagementException;
 
+	/**
+     * <p>
+     * Gets the submissions for the contest with the given id. Also, the selectFullSubmission flag will determine if the
+     * full submission is returned to the caller.
+     * </p>
+     *
+     * @param contestId
+     *            The id of the contest of the submissions to get
+     * @param selectFullSubmission
+     *            a flag whether the full submission should be returned
+     *
+	 * @param maxSubmissionsPerUser max sub per user
+     * @return List of Submission for the contest with the given id, possibly empty if none found.
+     * @throws SubmissionManagementException
+     *             If any error occurs during the retrieval
+     */
+	List<Submission> getSubmissionsForContest(long contestId, boolean selectFullSubmission, int maxSubmissionsPerUser)
+		throws SubmissionManagementException;
+
+
     /**
      * <p>
      * Gets the submissions for the submitter with the given id.
