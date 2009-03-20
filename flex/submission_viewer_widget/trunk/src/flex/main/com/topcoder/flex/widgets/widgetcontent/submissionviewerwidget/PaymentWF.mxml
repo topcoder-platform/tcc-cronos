@@ -11,6 +11,8 @@
 			import com.topcoder.flex.Helper;
 			import mx.events.ValidationResultEvent;
 			import flash.external.ExternalInterface;
+			import mx.collections.SortField;
+                           import mx.collections.Sort;
 			
 			[Embed(source="../assets/verisign.png")]
 			[Bindable]private var sign:Class;
@@ -100,6 +102,16 @@
 			            "}" ;
 			    ExternalInterface.call(openNewWindow);
 			}
+
+			// BUGR-1531
+            private function sortComboBox(original : ArrayCollection) : ArrayCollection {
+                var sorted:ArrayCollection = new ArrayCollection(original.source);
+                var sort:Sort = new Sort();
+                sort.fields = [new SortField("label")];
+                sorted.sort = sort;
+                sorted.refresh();   
+                return sorted;
+            }
 			
 		]]>
 	</mx:Script>
@@ -249,7 +261,7 @@
 				<mx:HBox width="100%">
 					<mx:Label text="Purchase Order #" styleName="content" />
 					<!--<mx:TextInput id="order" width="100%" styleName="textfield" />-->
-					<mx:ComboBox id="order" width="100%" dataProvider="{clientProjectNames}"/>
+					<mx:ComboBox id="order" width="100%" dataProvider="{sortComboBox(clientProjectNames)}"/>
 				</mx:HBox>
 				<mx:HBox>
 					<mx:Text text="For invoiced clients only. To learn more. " fontSize="11"
