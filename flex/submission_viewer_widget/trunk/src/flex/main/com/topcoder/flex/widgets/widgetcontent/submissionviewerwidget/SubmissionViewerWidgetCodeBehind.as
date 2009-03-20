@@ -13,7 +13,6 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
     import mx.containers.ViewStack;
     import mx.controls.Alert;
     import mx.rpc.soap.mxml.WebService;
-	import com.topcoder.flex.util.progress.ProgressWindow;
 	import com.topcoder.flex.util.progress.ProgressWindowManager;
 	
 	import flash.display.DisplayObject;
@@ -62,8 +61,6 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         // reference to ContestServiceFacade
         public var contestServiceFacade:WebService = null;
         
-        private var p:ProgressWindow=null;
-		 
         private var _pid:String=null;
         [Bindable]public function get pid():String {
             return this._pid;
@@ -411,20 +408,12 @@ package com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget {
         
         // BUGR-1393
         public function showLoadingProgress():void {
-            if (p == null) {
-                //p = ProgressWindowManager.showProgressWindow(DisplayObjectContainer(this.container));
-                p = ProgressWindowManager.showProgressWindow(this.container);
-            }
+            ProgressWindowManager.showProgressWindow(this.container);
         }
         
         // BUGR-1393
         public function hideLoadingProgress():void {
-            if(p)
-			{
-				//ProgressWindowManager.hideProgressWindow(p);
-        		ProgressWindowManager.hideProgressWindow(this.container, p);
-        		p=null;
-			}    
+            ProgressWindowManager.hideProgressWindow(this.container);
         }
     }
 }

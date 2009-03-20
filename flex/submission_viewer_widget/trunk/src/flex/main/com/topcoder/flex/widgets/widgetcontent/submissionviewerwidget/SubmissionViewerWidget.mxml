@@ -193,8 +193,7 @@
             	_noWinnerChosenContestTypeId = 7;
             	_inDangerContestTypeId = 10;
             	
-            	// BUGR-1393
-            	showLoadingProgress();
+            	
             	
             	if (!_isLocalTesting) {
 	                var header:SOAPHeader=getHeader(username,password);
@@ -205,11 +204,20 @@
         	
         			ContestServiceFacadeBean.getStatusList();
         			
+        			// BUGR-1393
+            	    showLoadingProgress();
+        			
         			if (pid) {
         			    ContestServiceFacadeBean.getContestDataOnlyByPID(pid);
+        			    
+        			    // BUGR-1393
+            	        showLoadingProgress();
         			} 
         			else {					  
 	            		ContestServiceFacadeBean.getContestDataOnly();
+	            		
+	            		// BUGR-1393
+            	        showLoadingProgress();
         			}
         			
         			getClientProjectsByUser();
@@ -374,9 +382,7 @@
             }
             private function handleResult(event:ResultEvent=null):void {
                 // BUGR-1393
-                // we should not hide here. 
-                // last event in sequence is submission, so let hiding happen there.
-                //hideLoadingProgress();
+                hideLoadingProgress();
                 
                 _contestInfoList = new ArrayCollection();
                 if(event!=null && event.result!=null)
@@ -457,9 +463,7 @@
             
             private function handleStatusList(event:ResultEvent=null):void {
                 // BUGR-1393
-                // we should not hide here. 
-                // last event in sequence is submission, so let hiding happen there.
-                //hideLoadingProgress();
+                hideLoadingProgress();
                 
                 if(event!=null && event.result!=null)
                 {
@@ -1298,14 +1302,20 @@
             
             private function handleContestStatusUpdate(event:ResultEvent):void {
             	// do nothing	
+            	// BUGR-1393
+                hideLoadingProgress();
             }
             
             private function handleSetSubmissionPlacement(event:ResultEvent):void {
             	// do nothing
+            	// BUGR-1393
+                hideLoadingProgress();
             }
             
             private function handleMarkForPurchase(event:ResultEvent):void {
             	// do nothing
+            	// BUGR-1393
+                hideLoadingProgress();
             }
             
             
@@ -1452,6 +1462,8 @@
 	            	ContestServiceFacadeBean.addHeader(header);
 	            	trace("Updating contest status for: " + _selectedContestId + " to statusId: " + _noWinnerChosenContestTypeId);
 					ContestServiceFacadeBean.updateContestStatus(_selectedContestId, _noWinnerChosenContestTypeId);
+					
+					showLoadingProgress();
             	}
             }
             
@@ -1679,11 +1691,15 @@
 			    if (getClientProjectsByUserOp) {
 				getClientProjectsByUserOp.addEventListener("result", getClientProjectsHandler);
 				getClientProjectsByUserOp.send();
+				
+				// BUGR-1393
+            	showLoadingProgress();
 			    }
 			}
 			
 			private function getClientProjectsHandler(e:ResultEvent):void { 
 				trace("getClientProjectsHandler: " + e + ", " + e.result); 
+				hideLoadingProgress();
 				 if(e && e.result) 
 				{ 
 				     if (e.result is ArrayCollection) { 
@@ -1754,19 +1770,19 @@
 	<mx:operation name="updateContestStatus" 
 		resultFormat="object" 
 		result="handleContestStatusUpdate(event)"
-		fault="Helper.showAlertMessage('updateContestStatus: ' + event.fault.faultString);"> 
+		fault="hideLoadingProgress(); Helper.showAlertMessage('updateContestStatus: ' + event.fault.faultString);"> 
 	</mx:operation>
 	
 	<mx:operation name="setSubmissionPlacement" 
 		resultFormat="object" 
 		result="handleSetSubmissionPlacement(event)"
-		fault="Helper.showAlertMessage('setSubmissionPlacement: ' + event.fault.faultString);"> 
+		fault="hideLoadingProgress(); Helper.showAlertMessage('setSubmissionPlacement: ' + event.fault.faultString);"> 
 	</mx:operation>
 	
 	<mx:operation name="markForPurchase" 
 		resultFormat="object" 
 		result="handleMarkForPurchase(event)"
-		fault="Helper.showAlertMessage('markForPurchase: ' + event.fault.faultString);"> 
+		fault="hideLoadingProgress(); Helper.showAlertMessage('markForPurchase: ' + event.fault.faultString);"> 
 	</mx:operation>
 	
 	<mx:operation name="processSubmissionCreditCardPayment" 
