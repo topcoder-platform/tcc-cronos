@@ -151,7 +151,7 @@
     	<mx:HBox horizontalAlign="right" width="100%">
     		<mx:Label text="Review" width="80%" styleName="sectionTitle" /> <!-- BUGR-1503 -->
     		<mx:Spacer width="100" />	
-		<mx:Button styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="PREVIEW" click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
+		<mx:Button styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}" label="PREVIEW CONTEST" click="this.mainWidget.previewContest()" /> <!-- BUGR-1501 -->
 		<!--  <mx:Image source="@Embed('../../assets/more_info.png')"/>  BUGR-1501 -->
     	</mx:HBox>
         
