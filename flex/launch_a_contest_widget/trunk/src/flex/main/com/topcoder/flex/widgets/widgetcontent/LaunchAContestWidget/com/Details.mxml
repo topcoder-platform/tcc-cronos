@@ -181,7 +181,7 @@
 	        </mx:HBox>
 	        <mx:Text id="introHint" height="0" color="0x888888" width="500" visible="false">
             </mx:Text>
-	        <tc:TCRichTextEditor id="introInput" width="500" height="150" maxHeight="180" maxWidth="800"/>  <!-- BUGR-1279 -->
+	        <tc:TCRichTextEditor id="introInput" width="100%" height="150" maxHeight="180" />  <!-- BUGR-1279 -->
         </mx:VBox>
         
         <mx:Spacer height="5"/>
@@ -194,7 +194,7 @@
             </mx:HBox>
             <mx:Text id="goalsHint" height="0" color="0x888888" width="500" visible="false">
             </mx:Text>
-            <tc:TCRichTextEditor id="glsInput" width="500" height="150" maxHeight="180" maxWidth="800"/>  <!-- BUGR-1279 -->
+            <tc:TCRichTextEditor id="glsInput" width="100%" height="150" maxHeight="180" />  <!-- BUGR-1279 -->
         </mx:VBox>
 
     </mx:VBox>
