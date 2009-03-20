@@ -9,6 +9,7 @@
     import mx.collections.ArrayCollection;
     import com.topcoder.flex.widgets.widgetcontent.projectwidget.com.ContestRow;
     import com.topcoder.flex.widgets.widgetcontent.projectwidget.ProjectWidget;
+    import mx.controls.ButtonLabelPlacement;
     //status icon class declaration
     [Embed(source="../../assets/icon/terminated.png")]
         private var prjTerminated:Class;
@@ -27,11 +28,6 @@
         private var winMax:Class;
         [Embed(source="../../assets/image/winMin.png")]
         [Bindable]private var winMin:Class;
-        
-        [Embed(source="../../assets/icon/rightArrow.png")]
-		[Bindable]private var rightArrowHidden:Class;
-		[Embed(source="../../assets/icon/rightArrowDown.png")]
-		private var rightArrowShow:Class;
 					
 		private var projectRow:Array=new Array();
 		private var winH:int;
@@ -155,7 +151,6 @@
 			{
 			projectDesc.text = prjDesc;
 			//projectDesc.x = 0;
-//			rightArrowImg.source = rightArrowShow;
       //open.styleName = "blackBtnOpen";
       Table.height=80;
       if (!donealigning)
@@ -168,7 +163,6 @@
       else
       {
       projectDesc.text = "";
-//			rightArrowImg.source = rightArrowHidden;
       //open.styleName = "blackBtn";
       Table.height=46;
       }
@@ -253,12 +247,12 @@
   <mx:VBox id="contents" paddingLeft="4" paddingRight="4" width="100%" verticalGap="0" initialize="winResize()">
     <mx:Canvas width="100%" styleName="descPanel" backgroundSize="100%" height="46" id="Table"
         verticalScrollPolicy="off" horizontalScrollPolicy="off">
-      <mx:Button id="open" buttonMode="true" styleName="viewDescButton" y="6" label="View Description"
-          left="10" height="29" click="toggleDescription()"/>
-      <mx:Button id="launch" buttonMode="true" styleName="openNewTabButton" y="6" label="Open in New Tab"
-          left="{open.x+open.width+10}" height="29" click="openNewTabHandler(event)"/>
+      <mx:Button id="open" buttonMode="true" styleName="viewDescButton" y="6" labelPlacement="{ButtonLabelPlacement.LEFT}" label="VIEW DESCRIPTION"
+          left="10" click="toggleDescription()"/>
+      <mx:Button id="launch" buttonMode="true" styleName="openNewTabButton" y="6" labelPlacement="{ButtonLabelPlacement.LEFT}" label="OPEN IN NEW TAB"
+          left="{open.x+open.width+10}" click="openNewTabHandler(event)"/>
 
-      <mx:Button y="6" buttonMode="true" label="Add New Contest" height="29"
+      <mx:Button y="6" buttonMode="true" label="ADD NEW CONTEST" labelPlacement="{ButtonLabelPlacement.LEFT}"
           right="28" styleName="addContestBtn" click="addcontest()"/>
       <mx:HBox x="0" y="47" height="100%" width="100%" backgroundColor="#e0e0e0"
           paddingTop="8" paddingLeft="5" paddingRight="5">

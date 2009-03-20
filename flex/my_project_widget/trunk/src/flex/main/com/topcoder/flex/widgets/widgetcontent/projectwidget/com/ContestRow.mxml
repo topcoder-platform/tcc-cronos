@@ -9,6 +9,7 @@
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
 	import com.topcoder.flex.util.date.DateUtil;
+	import mx.controls.ButtonLabelPlacement;
 
 	private var _rowNum:int;
 	private var _ContextId:String;
@@ -148,14 +149,14 @@
     return lblForumPosts.label;
   }
 
-  private function setLinkProperties(linkButton:LinkButton, clickHandler:Function) {
+  private function setLinkProperties(linkButton:Button, clickHandler:Function) {
 	var value:Number = Number(linkButton.label);
 	if (value > 0) {
-		linkButton.styleName = "linkBtn";
+		linkButton.styleName = "rowContentBtn";
+		linkButton.labelPlacement = ButtonLabelPlacement.LEFT;
     	linkButton.buttonMode = true;
     	linkButton.addEventListener(MouseEvent.CLICK, clickHandler);
-    	linkButton.setStyle("textDecoration", "underline");
-    	linkButton.setStyle("textAlign", "center");
+    	linkButton.setStyle("textAlign", "right");
 	}
   }
 
@@ -351,10 +352,14 @@
         <mx:Text width="100%" styleName="rowContentLabel" id="lblEndDatePart2" />
     </mx:VBox>
     <mx:Text width="100%" styleName="rowContentLabel" id="lblRegistrants" />
-    <mx:LinkButton width="100%" buttonMode="false" styleName="rowContentLink" id="lblSubmissions" />
-    <mx:LinkButton width="100%" buttonMode="false" styleName="rowContentLink" id="lblForumPosts" />
+    <mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle" verticalGap="0">
+        <mx:Button buttonMode="false" width="60" styleName="rowContentLink" id="lblSubmissions" />
+    </mx:VBox>
+    <mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle" verticalGap="0">
+        <mx:Button buttonMode="false" width="60" styleName="rowContentLink" id="lblForumPosts" />
+    </mx:VBox>
     <mx:VBox width="100%" styleName="bottomAlign">
-      <mx:LinkButton buttonMode="true" id="statusBtn" styleName="statusBtn" labelPlacement="bottom" click="showStats()"/>
+      <mx:LinkButton buttonMode="true" id="statusBtn" labelPlacement="bottom" click="showStats()"/>
     </mx:VBox>
   </mx:HBox>
 </mx:VBox>
