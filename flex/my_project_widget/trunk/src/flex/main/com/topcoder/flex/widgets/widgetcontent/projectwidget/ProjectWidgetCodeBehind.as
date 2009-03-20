@@ -15,7 +15,6 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
     import mx.core.Application;
     
     // BUGR-1393
-	import com.topcoder.flex.util.progress.ProgressWindow;
 	import com.topcoder.flex.util.progress.ProgressWindowManager;
 	import flash.display.DisplayObjectContainer;
     	
@@ -86,9 +85,6 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
          * The allowclose flag.
          */
         private var _allowclose:Boolean=true;
-        
-        // BUGR-1393
-        private var p:ProgressWindow=null;
         
         /**
          * ProjectWidgetCodeBehind constructor.
@@ -403,20 +399,12 @@ package com.topcoder.flex.widgets.widgetcontent.projectwidget {
        
        // BUGR-1393
         public function showLoadingProgress():void {
-            if (p == null) {
-                //p = ProgressWindowManager.showProgressWindow(DisplayObjectContainer(this.container));
-                p = ProgressWindowManager.showProgressWindow(this.container);
-            }
+            ProgressWindowManager.showProgressWindow(this.container);
         }
         
         // BUGR-1393
         public function hideLoadingProgress():void {
-            if(p)
-			{
-				//ProgressWindowManager.hideProgressWindow(p);
-        		ProgressWindowManager.hideProgressWindow(this.container, p);
-        		p=null;
-			}    
+        	ProgressWindowManager.hideProgressWindow(this.container);
         }
     }
 }

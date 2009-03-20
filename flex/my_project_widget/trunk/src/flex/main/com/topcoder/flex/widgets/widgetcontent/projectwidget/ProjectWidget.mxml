@@ -131,7 +131,7 @@
             // Module Cockpit My Projects Release Assembly 1
             // 1.1.1
             // force widget to a maximized view
-            //this.maximizeScreen();
+            this.maximizeScreen();
 
         }
         
