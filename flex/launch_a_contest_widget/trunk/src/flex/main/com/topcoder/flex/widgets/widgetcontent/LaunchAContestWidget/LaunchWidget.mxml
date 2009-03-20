@@ -151,9 +151,9 @@
 		details.widgetHeight = 940; // BUGR-1134
                 specf.widgetHeight = 800;
                 attch.height = 600;
-		sched.height = 750; 
+		sched.height = 780; 
 		overView.height = 700; // BUGR-1134
-		review.height = 1100; // BUGR-1134
+		review.height = 1120; // BUGR-1134
 				
 		//initialWdt.mainWidget = this;
 		contestSelect.mainWidget = this;
