@@ -14,7 +14,6 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
     import mx.rpc.soap.SOAPHeader;
     import mx.rpc.soap.WebService;
     
-    import com.topcoder.flex.util.progress.ProgressWindow;
 	import com.topcoder.flex.util.progress.ProgressWindowManager;
 
     /**
@@ -80,8 +79,6 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
         
         protected var username:String=Application.application.parameters.username;
 		protected var password:String = "";
-		
-		private var p:ProgressWindow=null;
 		
 		private var _ContestServiceFacadeBean:WebService;
         [Bindable]public function get pid():String {
@@ -380,20 +377,12 @@ package com.topcoder.flex.widgets.widgetcontent.contestmonitor {
         
         // BUGR-1393
         public function showLoadingProgress():void {
-            if (p == null) {
-                //p = ProgressWindowManager.showProgressWindow(DisplayObjectContainer(this.container));
-                p = ProgressWindowManager.showProgressWindow(this.container);
-            }
+            ProgressWindowManager.showProgressWindow(this.container);
         }
         
         // BUGR-1393
         public function hideLoadingProgress():void {
-            if(p)
-			{
-				//ProgressWindowManager.hideProgressWindow(p);
-        		ProgressWindowManager.hideProgressWindow(this.container, p);
-        		p=null;
-			}    
+        	ProgressWindowManager.hideProgressWindow(this.container);
         }
     }
 }
