@@ -3,20 +3,22 @@
 	<mx:Script>
 		<![CDATA[
 		    
-		    import mx.collections.ArrayCollection;
-		    import mx.rpc.events.ResultEvent;
-			import mx.controls.Button;
-			import mx.core.UIComponent;
-			import mx.validators.Validator;
-			import mx.validators.ValidationResult;
-			import com.topcoder.flex.Helper;
-			import mx.events.ValidationResultEvent;
-			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
-			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
-		    import mx.controls.ButtonLabelPlacement; // BUGR-1505			
-			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
-			import mx.rpc.AbstractOperation;
-			import flash.external.ExternalInterface;
+		import mx.collections.ArrayCollection;
+		import mx.rpc.events.ResultEvent;
+		import mx.controls.Button;
+		import mx.core.UIComponent;
+		import mx.validators.Validator;
+		import mx.validators.ValidationResult;
+		import com.topcoder.flex.Helper;
+		import mx.events.ValidationResultEvent;
+		import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
+		import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+		import mx.controls.ButtonLabelPlacement; // BUGR-1505			
+		import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
+		import mx.rpc.AbstractOperation;
+		import flash.external.ExternalInterface;
+		import mx.collections.SortField;
+                import mx.collections.Sort;
 		
 			 [Bindable]
        		public var mainWidget:LaunchWidget;
@@ -128,6 +130,16 @@
 			            "}" ;
 			    ExternalInterface.call(openNewWindow);
 			}
+	
+			 // BUGR-1531
+            private function sortComboBox(original : ArrayCollection) : ArrayCollection {
+                var sorted:ArrayCollection = new ArrayCollection(original.source);
+                var sort:Sort = new Sort();
+                sort.fields = [new SortField("label")];
+                sorted.sort = sort;
+                sorted.refresh();   
+                return sorted;
+            }
 
 		]]>
 	</mx:Script>
@@ -241,106 +253,106 @@
 					<mx:NumericStepper minimum="1800" maximum="2800" value="2008" id="year"
 							height="20" width="70" styleName="NumericStepper" /-->
         </mx:HBox>
-			</mx:VBox>
-			<mx:VBox width="10" height="100%" />
-		</mx:GridItem>
-		<mx:GridItem width="100%">
-			<mx:VBox width="100%">
-				<mx:VBox width="100%" height="100%" borderStyle="solid" 
-						paddingLeft="10" paddingTop="10" paddingBottom="10" paddingRight="19">
-					<!--<mx:CheckBox id="byPass" selected="false" label="Bypass Credit Card Payment"
-							styleName="content" />-->
-					<mx:Text text="Bypass Credit Card Payment" fontSize="11"
-								fontWeight="normal" styleName="contentGrey" />
-					<mx:HBox width="100%">
-						<mx:Label text="Purchase Order #" styleName="content" />
-						<!--<mx:TextInput id="order" width="100%" styleName="textfield" />-->
-						<mx:ComboBox id="order" width="100%" dataProvider="{clientProjectNames}"/>
-					</mx:HBox>
-					<mx:HBox>
-						<mx:Text text="For invoiced clients only. To learn more. " fontSize="11"
-								fontWeight="normal" styleName="contentGrey" />
-						<mx:LinkButton label="click here." />
-					</mx:HBox>
-				</mx:VBox>
-			</mx:VBox>
-		</mx:GridItem>
-	</mx:GridRow>
-	<mx:GridRow width="100%" >
-		<mx:GridItem width="100%">
-			<mx:Label text="Billing Information" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
-		</mx:GridItem>
-		<mx:GridItem width="100%">
-			<mx:Label text="Not Ready to Activate?" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
-		</mx:GridItem>
-	</mx:GridRow>
-	<mx:GridRow width="100%">
-		<mx:GridItem width="100%">
-		    <mx:VBox width="100%" 
-		        height="100%" 
-		        styleName="contentBlack" 
-		        verticalGap="13">
-		        <mx:HBox>
-		            <mx:Label text="Name on Card:" width="100" />
-		            <mx:TextInput id="cardname" width="100%" enabled="{order.selectedItem.data == ''}" />
-		            <mx:Label text="*" />
-		        </mx:HBox>
-		        <mx:HBox>
-		            <mx:Label text="Address:" width="100" />
-		            <mx:TextInput id="address" width="100%" enabled="{order.selectedItem.data == ''}"/>
-		            <mx:Label text="*" />
-		        </mx:HBox>
-		        <mx:HBox>
-		            <mx:Label text="City:" width="100" />
-		            <mx:TextInput id="city" width="100%" enabled="{order.selectedItem.data == ''}"/>
-		            <mx:Label text="*" />
-		        </mx:HBox>
-		        <mx:HBox>
-		            <mx:Label text="State:" width="100" />
-		            <mx:TextInput id="state" width="100%" enabled="{order.selectedItem.data == ''}"/>
-		            <mx:Label text="*" />
-		        </mx:HBox>
-		        <mx:HBox>
-		            <mx:Label text="Zip Code:" width="100" />
-		            <mx:TextInput id="code" width="100%" enabled="{order.selectedItem.data == ''}"/>
-		            <mx:Label text="*" />
-		        </mx:HBox>
-		        <mx:HBox>
-		            <mx:Label text="Country:" width="100" />
-		            <mx:TextInput id="country" width="100%" enabled="{order.selectedItem.data == ''}"/>
-		            <mx:Label text="*" />
-		        </mx:HBox>
-		        <mx:HBox>
-		            <mx:Label text="Phone:" width="100" />
-		            <mx:TextInput id="phone" width="100%" enabled="{order.selectedItem.data == ''}"/>
-		            <mx:Label text="*" />
-		        </mx:HBox>
-		        <mx:HBox>
-		            <mx:Label text="Email:" width="100" />
-		            <mx:TextInput id="email" width="100%" enabled="{order.selectedItem.data == ''}" />
-		            <mx:Label text="*" height="20" />
-		        </mx:HBox>
-		    </mx:VBox>
-		</mx:GridItem>
-		<mx:GridItem width="100%">
-			<mx:VBox width="100%" height="100%">
-				<mx:VBox width="100%" height="124" borderStyle="solid" 
-						paddingLeft="10" paddingTop="10" paddingBottom="10" paddingRight="19">
-					<mx:Text width="100%" text="Save your contest as a draft and activate it later." styleName="content" />
-					<mx:Text width="100%" text="Want to add another contest? Save this contest as a draft and pay for all of your contest at once." styleName="content" />
-					<mx:Spacer width="100%" height="100%" />
-					<mx:HBox width="100%" horizontalAlign="center">
-						<mx:Button label="SAVE AS DRAFT" buttonMode="true" click="this.mainWidget.saveAsDraft()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
-						<mx:Button label="ADD A CONTEST" buttonMode="true" click="this.mainWidget.resetWidget()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
-					</mx:HBox>
-				</mx:VBox>
-				<mx:HBox verticalAlign="middle" width="100%" paddingRight="8">
-					<mx:Text text="* Required Field" fontSize="14" styleName="contentBlack" />
-					<mx:Spacer width="100%" />
-					<!--<mx:Image source="../assets/verisign.png" />-->
-				</mx:HBox>
-				<mx:Image source="https://www.paypal.com/en_US/i/bnr/horizontal_solution_PPeCheck.gif" width="253" height="80" buttonMode="true" click="gotoPayPal()"/>
-			</mx:VBox>
-		</mx:GridItem>
-	</mx:GridRow>
+            </mx:VBox>
+            <mx:VBox width="10" height="100%" />
+        </mx:GridItem>
+        <mx:GridItem width="100%">
+            <mx:VBox width="100%">
+                <mx:VBox width="100%" height="100%" borderStyle="solid" 
+                        paddingLeft="10" paddingTop="10" paddingBottom="10" paddingRight="19">
+                    <!--<mx:CheckBox id="byPass" selected="false" label="Bypass Credit Card Payment"
+                            styleName="content" />-->
+                    <mx:Text text="Bypass Credit Card Payment" fontSize="11"
+                                fontWeight="normal" styleName="contentGrey" />
+                    <mx:HBox width="100%">
+                        <mx:Label text="Purchase Order #" styleName="content" />
+                        <!--<mx:TextInput id="order" width="100%" styleName="textfield" />-->
+                        <mx:ComboBox id="order" width="100%" dataProvider="{sortComboBox(clientProjectNames)}"/>
+                    </mx:HBox>
+                    <mx:HBox>
+                        <mx:Text text="For invoiced clients only. To learn more. " fontSize="11"
+                                fontWeight="normal" styleName="contentGrey" />
+                        <mx:LinkButton label="click here." />
+                    </mx:HBox>
+                </mx:VBox>
+            </mx:VBox>
+        </mx:GridItem>
+    </mx:GridRow>
+    <mx:GridRow width="100%" >
+        <mx:GridItem width="100%">
+            <mx:Label text="Billing Information" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
+        </mx:GridItem>
+        <mx:GridItem width="100%">
+            <mx:Label text="Not Ready to Activate?" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
+        </mx:GridItem>
+    </mx:GridRow>
+    <mx:GridRow width="100%">
+        <mx:GridItem width="100%">
+            <mx:VBox width="100%" 
+                height="100%" 
+                styleName="contentBlack" 
+                verticalGap="13">
+                <mx:HBox>
+                    <mx:Label text="Name on Card:" width="100" />
+                    <mx:TextInput id="cardname" width="100%" enabled="{order.selectedItem.data == ''}" />
+                    <mx:Label text="*" />
+                </mx:HBox>
+                <mx:HBox>
+                    <mx:Label text="Address:" width="100" />
+                    <mx:TextInput id="address" width="100%" enabled="{order.selectedItem.data == ''}"/>
+                    <mx:Label text="*" />
+                </mx:HBox>
+                <mx:HBox>
+                    <mx:Label text="City:" width="100" />
+                    <mx:TextInput id="city" width="100%" enabled="{order.selectedItem.data == ''}"/>
+                    <mx:Label text="*" />
+                </mx:HBox>
+                <mx:HBox>
+                    <mx:Label text="State:" width="100" />
+                    <mx:TextInput id="state" width="100%" enabled="{order.selectedItem.data == ''}"/>
+                    <mx:Label text="*" />
+                </mx:HBox>
+                <mx:HBox>
+                    <mx:Label text="Zip Code:" width="100" />
+                    <mx:TextInput id="code" width="100%" enabled="{order.selectedItem.data == ''}"/>
+                    <mx:Label text="*" />
+                </mx:HBox>
+                <mx:HBox>
+                    <mx:Label text="Country:" width="100" />
+                    <mx:TextInput id="country" width="100%" enabled="{order.selectedItem.data == ''}"/>
+                    <mx:Label text="*" />
+                </mx:HBox>
+                <mx:HBox>
+                    <mx:Label text="Phone:" width="100" />
+                    <mx:TextInput id="phone" width="100%" enabled="{order.selectedItem.data == ''}"/>
+                    <mx:Label text="*" />
+                </mx:HBox>
+                <mx:HBox>
+                    <mx:Label text="Email:" width="100" />
+                    <mx:TextInput id="email" width="100%" enabled="{order.selectedItem.data == ''}" />
+                    <mx:Label text="*" height="20" />
+                </mx:HBox>
+            </mx:VBox>
+        </mx:GridItem>
+        <mx:GridItem width="100%">
+            <mx:VBox width="100%" height="100%">
+                <mx:VBox width="100%" height="124" borderStyle="solid" 
+                        paddingLeft="10" paddingTop="10" paddingBottom="10" paddingRight="19">
+                    <mx:Text width="100%" text="Save your contest as a draft and activate it later." styleName="content" />
+                    <mx:Text width="100%" text="Want to add another contest? Save this contest as a draft and pay for all of your contest at once." styleName="content" />
+                    <mx:Spacer width="100%" height="100%" />
+                    <mx:HBox width="100%" horizontalAlign="center">
+                        <mx:Button label="SAVE AS DRAFT" buttonMode="true" click="this.mainWidget.saveAsDraft()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
+                        <mx:Button label="ADD A CONTEST" buttonMode="true" click="this.mainWidget.resetWidget()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
+                    </mx:HBox>
+                </mx:VBox>
+                <mx:HBox verticalAlign="middle" width="100%" paddingRight="8">
+                    <mx:Text text="* Required Field" fontSize="14" styleName="contentBlack" />
+                    <mx:Spacer width="100%" />
+                    <!--<mx:Image source="../assets/verisign.png" />-->
+                </mx:HBox>
+                <mx:Image source="https://www.paypal.com/en_US/i/bnr/horizontal_solution_PPeCheck.gif" width="253" height="80" buttonMode="true" click="gotoPayPal()"/>
+            </mx:VBox>
+        </mx:GridItem>
+    </mx:GridRow>
 </mx:Grid>
