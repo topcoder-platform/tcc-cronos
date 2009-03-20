@@ -86,11 +86,7 @@
             }
             
             private function paymentFaultEventHandler(e:FaultEvent):void {
-                if(mainWidget.p)
-    			{
-    				PopUpManager.removePopUp(mainWidget.p);
-            		mainWidget.p=null;
-    			}
+                mainWidget.hideLoadingProgress();
     			
                 Helper.showAlertMessage("We're sorry. Your payment could not be processed. " + 
                         "Please be sure to save your work and try again if you think you received this message by mistake.");        
@@ -100,11 +96,7 @@
             {
                 //Helper.showAlertMessage("processCreditCardPaymentResponse: " + e + ", " + e.result);
                 
-                if(mainWidget.p)
-    			{
-    				PopUpManager.removePopUp(mainWidget.p);
-            		mainWidget.p=null;
-    			}
+                mainWidget.hideLoadingProgress();
 			
                 if (e && e.result) {
                     var paymentResult:PaymentResult = ObjectTranslatorUtils.translate(e.result, PaymentResult) as PaymentResult;
@@ -124,11 +116,7 @@
             {
                 //Helper.showAlertMessage("processPOPaymentResponse: " + e + ", " + e.result);
                 
-                if(mainWidget.p)
-    			{
-    				PopUpManager.removePopUp(mainWidget.p);
-            		mainWidget.p=null;
-    			}
+                mainWidget.hideLoadingProgress();
     			
                 if (e && e.result) {
                     var paymentResult:PaymentResult = ObjectTranslatorUtils.translate(e.result, PaymentResult) as PaymentResult;

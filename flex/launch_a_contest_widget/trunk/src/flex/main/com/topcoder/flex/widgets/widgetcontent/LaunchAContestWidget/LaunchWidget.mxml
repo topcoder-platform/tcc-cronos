@@ -1019,11 +1019,8 @@ private var stateToStepNum:Dictionary = null;
             
             private function showWebserviceError(opName:String, event:FaultEvent):void {
             	
-			    if(p)
-			    {
-				PopUpManager.removePopUp(p);
-        		p=null;
-			    }
+			    hideLoadingProgress();
+			    
                 Helper.showAlertMessage(opName + ":: " + event.fault.content + "," + event.fault.message + "," + event.fault.faultCode + "," + event.fault.faultString);
             }
 

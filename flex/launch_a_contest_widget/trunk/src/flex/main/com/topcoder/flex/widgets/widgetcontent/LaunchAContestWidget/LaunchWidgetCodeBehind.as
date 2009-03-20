@@ -6,7 +6,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import com.topcoder.flex.model.IWidgetFramework;
     import com.topcoder.flex.widgets.model.IWidget;
     import com.topcoder.flex.widgets.model.IWidgetContainer;
-    import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.ProgressWindow;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
     import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestPaymentData;
@@ -24,12 +23,15 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
     import mx.collections.ArrayCollection;
     import mx.containers.VBox;
     import mx.core.Application;
-    import mx.managers.PopUpManager;
     import mx.rpc.AbstractOperation;
     import mx.rpc.events.ResultEvent;
     import mx.rpc.soap.mxml.WebService;
     import mx.rpc.xml.SchemaTypeRegistry;
     import mx.events.FlexEvent;
+    
+    // BUGR-1393
+	import com.topcoder.flex.util.progress.ProgressWindowManager;
+	import flash.display.DisplayObjectContainer;
 
     /**
      * <p>
@@ -65,9 +67,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         public var _launchContestSchemaTypeRegistry:SchemaTypeRegistry;
         
         public var contestid:String=null;
-        
-        
-        public var p:ProgressWindow=null;
         
     	/**
     	 * The framework of the widget.
@@ -356,11 +355,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         		var getContestOp:AbstractOperation = _csws.getOperation("getContest");
 			getContestOp.addEventListener("result", getContestHandler);
 			getContestOp.send(parseInt(contestid));
+			
+			showLoadingProgress();
         	}
         }
         
         private function getContestHandler(e:ResultEvent):void
         {
+            hideLoadingProgress();
             trace("getContestHandler: " + e + ", " + e.result);
         	if(e && e.result)
         	{
@@ -424,10 +426,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
                 processContestPaymentOp.send(competition, purchaseOrderPaymentData);
             }
             
-            p=ProgressWindow(PopUpManager.createPopUp((DisplayObject)(
-														this.parentApplication),ProgressWindow, true));;
-        	
-            PopUpManager.centerPopUp(p);
+            showLoadingProgress();
         }
         
         public function saveAsDraft():void{
@@ -445,10 +444,6 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         	} else {
         		updateContest();
         	}
-        	p=ProgressWindow(PopUpManager.createPopUp((DisplayObject)(
-														this.parentApplication),ProgressWindow, true));;
-        	
-            PopUpManager.centerPopUp(p);
         }
         
          private function createContest():void
@@ -460,16 +455,16 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             
             createContestOp.addEventListener("result", createContestHandler);
             createContestOp.send(competition, competition.contestData.tcDirectProjectId);
+            
+            showLoadingProgress();
         }
         
         // TCCC-1023
         private function createContestHandler(e:ResultEvent):void {
         	trace("createContestHandler: " + e + ", " + e.result);
-        	if(p)
-			{
-				PopUpManager.removePopUp(p);
-        		p=null;
-			}
+        	
+        	hideLoadingProgress();
+        	
             if (e && e.result) {
             	this.competition = ObjectTranslatorUtils.translate(e.result, StudioCompetition) as StudioCompetition;
             	trace("createContestHandler:: this.competition: " + this.competition);
@@ -497,16 +492,14 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             
             updateContestOp.addEventListener("result", updateContestHandler);
             updateContestOp.send(competition);
+            
+            showLoadingProgress();
         }
         
         // TCCC-1023
         private function updateContestHandler(event:ResultEvent):void{
         	
-        	if(p)
-			{
-				PopUpManager.removePopUp(p);
-        		p=null;
-			}
+        	hideLoadingProgress();
 			
 			// BUGR-1470 - mark refresh of my project.
 			notifyMyProjectWidget();
@@ -577,6 +570,16 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             var dict:Dictionary = new Dictionary();
             dict["ContestUpdated"]=true;
             widget.setAttributes(dict);
+        }
+        
+        // BUGR-1393
+        public function showLoadingProgress():void {
+            ProgressWindowManager.showProgressWindow(this.container);
+        }
+        
+        // BUGR-1393
+        public function hideLoadingProgress():void {
+        	ProgressWindowManager.hideProgressWindow(this.container);
         }
     }
 }

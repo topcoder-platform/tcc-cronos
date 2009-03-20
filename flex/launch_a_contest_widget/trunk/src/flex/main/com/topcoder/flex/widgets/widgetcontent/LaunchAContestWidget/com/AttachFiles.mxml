@@ -122,11 +122,15 @@
 	            var getAllDocumentTypesOp:AbstractOperation = mainWidget._csws.getOperation("getAllDocumentTypes");
                 getAllDocumentTypesOp.addEventListener("result", getAllDocumentTypesHandler);
                 getAllDocumentTypesOp.send();
+                
+                mainWidget.showLoadingProgress();
 	        }
 	        
 	        // TCCC-1023
 	        private function getAllDocumentTypesHandler(e:ResultEvent):void{
 	            trace("getAllDocumentTypesHandler: " + e + ", " + e.result);
+	            
+	            mainWidget.hideLoadingProgress();
                 
             	if(e && e.result){
             	    var docTypes:ArrayCollection = ObjectTranslatorUtils.translateCollection(e.result, DocumentType);
@@ -270,6 +274,8 @@
             	var ftype:String=dotpos<0?file.type:file.name.substring(dotpos+1);
             	
                 getMimeTypeIdOp.send(getMimetypeByFileName(ftype));
+                
+                mainWidget.showLoadingProgress();
             }
             
             private function getMimetypeByFileName(ext:String):String{
@@ -302,6 +308,8 @@
             private function loadMimeTypeIdHandler(e:ResultEvent):void{
                 trace("loadMimeTypeIdHandler: " + e + ", " + e.result);
                 
+                mainWidget.hideLoadingProgress();
+                
             	if (e && e.result) {
             	    
             	    currentDoc.mimeTypeId = ObjectTranslatorUtils.translate(e.result, Number) as Number;
@@ -329,6 +337,8 @@
             		var uploadDocumentForContestOp:AbstractOperation = mainWidget._csws.getOperation("uploadDocumentForContest");
                     uploadDocumentForContestOp.addEventListener("result", uploadDocumentForContestHandler);
                     uploadDocumentForContestOp.send(currentDoc);
+                    
+                    mainWidget.showLoadingProgress();
             	} else {
             		addDoc(currentDoc);
             		//clear up
@@ -343,6 +353,8 @@
             private function uploadDocumentForContestHandler(e:ResultEvent):void {
                 
                 trace("getAllProjectsHandler: " + e + ", " + e.result);
+                
+                mainWidget.hideLoadingProgress();
                 
             	if(e && e.result){
             	    var docUploaded:UploadedDocument = ObjectTranslatorUtils.translate(e.result, UploadedDocument) as UploadedDocument;
