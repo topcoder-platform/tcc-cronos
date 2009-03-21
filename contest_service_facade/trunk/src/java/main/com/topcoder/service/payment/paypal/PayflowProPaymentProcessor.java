@@ -8,7 +8,7 @@ import java.util.Locale;
 
 import org.jboss.logging.Logger;
 
-import paypal.payflow.AuthorizationTransaction;
+import paypal.payflow.SaleTransaction;
 import paypal.payflow.BaseTransaction;
 import paypal.payflow.BillTo;
 import paypal.payflow.CardTender;
@@ -132,7 +132,7 @@ public class PayflowProPaymentProcessor implements PaymentProcessor {
         CardTender card = new CardTender(cc);
 
         // Create a new Sale Transaction.
-        BaseTransaction trans = new AuthorizationTransaction(userInfo, connection, inv, card, PayflowUtility.getRequestId()); // BUGR-1398
+        BaseTransaction trans = new SaleTransaction(userInfo, connection, inv, card, PayflowUtility.getRequestId()); // BUGR-1398
         trans.setVerbosity("MEDIUM");  // BUGR-1398
         // Submit the Transaction
         Response resp = trans.submitTransaction();
