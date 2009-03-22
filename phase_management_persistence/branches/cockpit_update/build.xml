@@ -14,10 +14,20 @@
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src" />
-    <property name="tcs_libdir" value="../tcs/lib/tcs" />
-    <property name="ext_libdir" value="../tcs/lib/third_party" />
-    <property name="jar_tcs_libdir" value="../tcs/lib/tcs" />
-    <property name="jar_ext_libdir" value="../tcs/lib/third_party" />
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+	<if>
+		<not>
+			<available file="../topcoder_global.properties"/>
+		</not>
+		<then>		
+			  <property name="tcs_libdir" value="../tcs/lib/tcs" />
+			  <property name="ext_libdir" value="../tcs/lib/third_party" />
+			  <property name="jar_tcs_libdir" value="../tcs/lib/tcs" />
+			  <property name="jar_ext_libdir" value="../tcs/lib/third_party" />
+		</then>
+	</if>
+  
     <property name="docsdir" value="docs" />
     <property name="configdir" value="conf" />
     <property name="testlogdir" value="log" />
@@ -70,7 +80,7 @@
     <property name="dist_docpackage" value="${builddir}/doc_package" />
     <property name="docpackage.jar" value="${distfilename}_docs.jar" />
 
-	<property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8" />
+	<property name="cobertura.dir" value="${ext_libdir}/cobertura/1.9" />
 	<path id="cobertura.classpath">
     		<fileset dir="${cobertura.dir}">
       	  		<include name="cobertura.jar" />
@@ -92,7 +102,7 @@
     <property name="search_builder.path" value="search_builder/${search_builder.version}"/>
     <property name="search_builder.jar" value="${tcs_libdir}/${search_builder.path}/${search_builder.jar.name}"/>
     
-    <property name="db_connection_factory.version" value="1.0"/>
+    <property name="db_connection_factory.version" value="1.1"/>
     <property name="db_connection_factory.jar.name" value="db_connection_factory.jar"/>
     <property name="db_connection_factory.path" value="db_connection_factory/${db_connection_factory.version}"/>
     <property name="db_connection_factory.jar" value="${tcs_libdir}/${db_connection_factory.path}/${db_connection_factory.jar.name}"/>
@@ -112,17 +122,17 @@
     <property name="typesafe_enum.path" value="typesafe_enum/${typesafe_enum.version}"/>
     <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.jar.name}"/>
     
-    <property name="base_exception.version" value="1.0"/>
+    <property name="base_exception.version" value="2.0.0"/>
     <property name="base_exception.jar.name" value="base_exception.jar"/>
     <property name="base_exception.path" value="base_exception/${base_exception.version}"/>
     <property name="base_exception.jar" value="${tcs_libdir}/${base_exception.path}/${base_exception.jar.name}"/>
 
-    <property name="phase_management.version" value="1.0.3"/>
+    <property name="phase_management.version" value="1.0.4"/>
     <property name="phase_management.jar.name" value="phase_management.jar"/>
     <property name="phase_management.path" value="phase_management/${phase_management.version}"/>
     <property name="phase_management.jar" value="${tcs_libdir}/${phase_management.path}/${phase_management.jar.name}"/>
 
-    <property name="project_phases.version" value="2.0"/>
+    <property name="project_phases.version" value="2.0.1"/>
     <property name="project_phases.jar.name" value="project_phases.jar"/>
     <property name="project_phases.path" value="project_phases/${project_phases.version}"/>
     <property name="project_phases.jar" value="${tcs_libdir}/${project_phases.path}/${project_phases.jar.name}"/>
@@ -136,6 +146,7 @@
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
     <property name="ifxjdbc.jar" value="${ext_libdir}/informix/ifxjdbc.jar"/>
     <property name="ejb.jar" value="${ext_libdir}/ejb/2.0/ejb-2_0.jar"/>
+	<property name="jaxb-api.jar" value="${ext_libdir}/jaxb/2.1.7/jaxb-api.jar"/>
 
     <!-- Java Locations -->
     <property name="java_1_3_bootclasspath" value="c:\program files\JavaSoft\JRE\1.3.1\lib\rt.jar"/>
@@ -153,6 +164,7 @@
         <pathelement location="${base_exception.jar}" />
         <pathelement location="${object_factory.jar}" />
         <pathelement location="${ejb.jar}" />
+		<pathelement location="${jaxb-api.jar}" />
         <pathelement location="${configdir}" />
         <pathelement location="${testfiles}" />
     </path>
@@ -321,15 +333,15 @@
         <mkdir dir="${dist_coverage}"/>
         <mkdir dir="${docs_coverage}"/>
         
-        <copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
+        <!--      <copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
         <copy file="${testlogdir}/cobertura.ser" todir="${docsdir}"/>
         
-        <copy todir="${dist_coverage}">
+		<copy todir="${dist_coverage}">
             <fileset dir="${testlogdir}/coverage" />
         </copy>
         <copy todir="${docs_coverage}">
             <fileset dir="${testlogdir}/coverage" />
-        </copy>
+        </copy>-->
 
         <mkdir dir="${dist_src}"/>
         <copy todir="${dist_src}">
