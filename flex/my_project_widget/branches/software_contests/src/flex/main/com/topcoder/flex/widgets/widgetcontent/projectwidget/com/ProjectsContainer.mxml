@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+		verticalGap="0" borderStyle="none" borderThickness="2" borderColor="#942321">
+<mx:Script>
+	<![CDATA[
+	    import com.topcoder.flex.widgets.widgetcontent.projectwidget.ProjectWidget;
+	    import com.topcoder.flex.widgets.model.IWidgetContainer;
+		import com.topcoder.flex.model.IWidgetFramework;
+		import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Contest;
+		import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Project;
+		import mx.collections.ArrayCollection;
+
+		private var _dataProvider:ArrayCollection;
+		private var _framework:IWidgetFramework;
+		
+		// Module Cockpit My Projects Release Assembly 1
+        // 1.1.1
+        // reference to widget container
+		public var widgetContainer:IWidgetContainer;
+		
+		public var projectWidget:ProjectWidget;
+		
+		/**
+         * Simple getter for the framework of this widget.
+         *
+         * @return the current set framework fo this widget. Could be null if not set.
+         */
+        public function get widgetFramework():IWidgetFramework {
+        	return _framework;
+        }
+        
+        /**
+         * Simple setter for the framework of this widget.
+         *
+         * @param framework the framework of this widget.
+         */
+        public function set widgetFramework(framework:IWidgetFramework):void {
+        	this._framework = framework;
+        }
+
+		// set of data provider
+		// this class accept an xml type dataprovider
+		public function set dataProvider(arrCol:ArrayCollection):void{
+			var expandList:ArrayCollection=new ArrayCollection();
+			
+			for(var i:int=0;i<getChildren().length;i++)
+			{
+				var prjList:ProjectList=getChildAt(i) as  ProjectList;
+				if(prjList.isexpand())
+				{
+					expandList.addItem(prjList.dataProvider.id);
+				}
+			}
+			removeAllChildren();
+			if(arrCol==null)arrCol=new ArrayCollection();
+			_dataProvider=arrCol;
+			for (var i:int=0; i<arrCol.length;i++) {
+				var prj:Project=arrCol.getItemAt(i) as Project;
+				var prjList:ProjectList=new ProjectList();
+			    addChild(prjList);
+				prjList.setStyle("verticalScrollPolicy","off");
+				prjList.dataProvider=prj;
+				for(var j:int=0;j<expandList.length;j++)
+				{
+					if(prj.id==expandList[j])
+					{
+						prjList.expand();
+						break;
+					}
+				}
+			}
+
+		}
+		public function get dataProvider():ArrayCollection{
+			return _dataProvider;
+		}
+		public function collapseAll ():void {
+			for each (var prj:ProjectList in this.getChildren()) {
+				prj.collapse();
+			}
+		}
+		public function expandAll ():void {
+			for each (var prj:ProjectList in this.getChildren()) {
+				prj.expand();
+			}
+		}
+
+
+	]]>
+</mx:Script>
+</mx:VBox>

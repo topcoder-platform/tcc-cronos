@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tc:ProjectWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:tc="com.topcoder.flex.widgets.widgetcontent.projectwidget.*"
+    xmlns:ns1="com.topcoder.flex.widgets.widgetcontent.projectwidget.com.*"
+    horizontalAlign="center" width="100%" height="100%" headerHeight="0" 
+    creationComplete="initWidget()"
+    verticalScrollPolicy="auto" >
+
+<mx:Style source="./Style.css" />
+<mx:Script>
+    <![CDATA[
+    	import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Contest;
+    	import mx.rpc.events.ResultEvent;
+    	import mx.controls.scrollClasses.ScrollBar;
+    	import mx.events.ResizeEvent;
+        import mx.collections.ArrayCollection;
+        import mx.core.IUIComponent;
+        import mx.core.UIComponent;
+        import mx.controls.Button;
+        import com.topcoder.flex.Helper;
+        import mx.containers.Panel;
+        import mx.core.DragSource;
+        import flash.events.MouseEvent;
+        import mx.containers.Canvas;
+        import mx.events.DragEvent;
+        import mx.events.CloseEvent;
+        import mx.rpc.soap.SOAPHeader;
+        import mx.collections.SortField;
+        import mx.collections.Sort;
+	import mx.utils.ObjectUtil;
+        
+        import com.topcoder.flex.widgets.widgetcontent.projectwidget.com.ProjectList;
+	import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Project;
+	import com.topcoder.flex.util.date.DateUtil;
+	import mx.core.Application;
+
+        /**
+         * Handle cursor's image class.
+         */
+        [Embed(source="../assets/image/cursor.gif")]
+            private var cursor:Class;
+        [Embed(source="../assets/image/arrow_left.gif")]
+            private var leftArrow:Class;
+        [Embed(source="../assets/image/arrow_right.gif")]
+            private var rightArrow:Class;
+
+        private var isMax : Boolean = false;
+
+        public static const WINDOW_STATE_DEFAULT:Number = -1;
+        public static const WINDOW_STATE_COLLAPSED:Number = 0;
+        public static const WINDOW_STATE_MAXIMIZED:Number = 1;
+        public static const COLLAPSED_HEIGHT:Number = 50;
+        public static const LEFTSPACE:Number=25;
+
+        private var iconSize:int=18;
+        private var iconGap:int=10;
+
+        private var loader:URLLoader = new URLLoader();
+
+        public function get maximized():Boolean
+        {
+            return isMax;
+        }
+
+        /**
+         * Current selected column index.
+         */
+        [Bindable]
+        public var columnIndx: int;
+
+        /**
+         * Current selected row index.
+         */
+        [Bindable]
+        public var rowIndx: int;
+        [Bindable]
+        private var projectId:int;
+        
+               
+        
+        
+        
+     
+        private var blazedsendpoint:String= Application.application.parameters.blazedsendpoint;
+   
+	    private var projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl;
+        private var contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;     
+          
+        private static const WSSE_SECURITY:QName = new QName( "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd", "Security" );
+		
+		
+		public static function getHeader(username:String, password:String):SOAPHeader
+		{
+			var userToken:String = "UsernameToken-"+Math.round(Math.random()*999999).toString();
+			var headerXML : XML =  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         			<wsse:UsernameToken wsu:Id={userToken} xmlns:wsu='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'>
+	            		<wsse:Username>{username}</wsse:Username>
+	            		<wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">{password}</wsse:Password>
+         			</wsse:UsernameToken>
+      			</wsse:Security>;
+      		var header : SOAPHeader = new SOAPHeader( WSSE_SECURITY, headerXML );
+      		return header;
+		}
+
+
+
+        private function initWidget():void{
+        	//flash.system.Security.loadPolicyFile("http://localhost:8003/widget_app/crossdomain.xml");
+        	prjList.widgetFramework=this.widgetFramework;
+        	
+        	// Module Cockpit My Projects Release Assembly 1
+            // set the widget container reference.
+        	prjList.widgetContainer=this.container;
+        	
+        	// Module Cockpit My Projects Release Assembly 1
+            // set the reference to this project widget.
+        	prjList.projectWidget=this;
+        	
+        	var p:Panel=this.container as Panel;
+        	p.verticalScrollPolicy="auto";
+	        getDataService();
+            //loader.addEventListener(Event.COMPLETE, loadData);
+            //loader.load(new URLRequest("data/moch.xml"));
+            
+            // Module Cockpit My Projects Release Assembly 1
+            // 1.1.4
+            // do not show the load more button initially.
+            this.load_more_btn_panel.visible = false;
+            this.load_more_btn_panel.includeInLayout = false;
+            
+            // Module Cockpit My Projects Release Assembly 1
+            // 1.1.1
+            // force widget to a maximized view
+            this.maximizeScreen();
+
+        }
+        
+        // Module Cockpit My Projects Release Assembly 1
+        // force widget to a maximized view
+        private function maximizeScreen():void {
+		    if (this.container) {
+                this.container.startMaximize();
+    		}
+        }
+        
+        // Module Cockpit My Projects Release Assembly 1
+        // force widget to a restored view
+        public function restoreScreen():void {
+		    if (this.container) {
+                this.container.startRestore();
+    		}
+        }
+        
+        // this function load an XML as data provider of the main container
+        // of the projectList
+        private function loadXML(e:Event):void
+        {
+            result = new XML(e.target.data);
+            //prjList.dataProvider=result;
+        }
+	
+
+        
+        
+        
+        private function setProject(e:ResultEvent): void
+        {
+            hideLoadingProgress();
+            
+        	if(e!=null && e.result!=null){
+        		var prjArray:ArrayCollection=new ArrayCollection;
+        		if(e.result is ArrayCollection) prjArray=e.result as ArrayCollection;
+        		else prjArray.addItem(e.result);
+        		projects=new ArrayCollection();
+        		for(var prjIdx=0;prjIdx<prjArray.length;)
+        		{
+        			var pname:String=prjArray[prjIdx].pname;
+        			var pdesc:String=prjArray[prjIdx].description;
+        			projectId=prjArray[prjIdx].projectId;
+        			var contests:ArrayCollection=new ArrayCollection();
+        			for(var i:int=prjIdx;i<prjArray.length;i++)
+        			{
+        				if(projectId!=prjArray[i].projectId)
+        				{
+        					break;
+        				}
+					if (prjArray[i].contestId != null && prjArray[i].contestId !=0)
+					{
+						var c:Contest=new Contest(prjArray[i].contestId,prjArray[i].cname,prjArray[i].startDate,
+						prjArray[i].endDate,prjArray[i].num_reg,           prjArray[i].num_sub,
+						prjArray[i].num_for, prjArray[i].forumId,
+						prjArray[i].sname);
+						if (prjArray[i].endDate != null)
+						{
+							c.date= DateUtil.parseFromString(prjArray[i].endDate);  
+						}
+						contests.addItem(c);
+					}
+        				
+        			}
+        			if(!contests.sort)
+        			{
+        				var sort:Sort = new Sort();
+						sort.compareFunction = compareDate;
+						contests.sort = sort;
+        			}
+        			contests.refresh();
+
+        			prjIdx=i;
+        			projects.addItem(new Project(projectId.toString(),pname,pdesc,"",contests));
+        		}
+        		
+        		    // Module Cockpit My Projects Release Assembly 1
+                    // 1.1.3
+                    // restrict the size to Default Visible count.
+        			if(!projects.sort)
+        			{
+        				var sort:Sort = new Sort();
+						sort.compareFunction = compareDate;
+						projects.sort = sort;
+        			}
+        			projects.refresh();
+        			
+        			// Module Cockpit My Projects Release Assembly 1
+                    // 1.1.2
+                    // restrict the size to Default Visible count.
+                    this.visibleProjectCount = ProjectWidgetCodeBehind.DefaultVisibleProjectCount;
+        		    prjList.dataProvider = getSubArray(projects, this.visibleProjectCount);
+        		    
+        		    // Module Cockpit My Projects Release Assembly 1
+                    // 1.1.4
+                    // show the load more button if there are more projects to be loaded.
+			if (pid) {
+            		prjList.expandAll();
+			}
+                    this.showHideLoadMoreButton();
+        	}
+        }
+        
+        // Module Cockpit My Projects Release Assembly 1
+        // 1.1.4
+        // handler to handle load more button click.
+        private function loadMore():void {
+            showLoadingProgress();
+            
+            this.visibleProjectCount += ProjectWidgetCodeBehind.DefaultVisibleProjectCountIncrement;
+            prjList.dataProvider = getSubArray(projects, this.visibleProjectCount);
+            
+            // Module Cockpit My Projects Release Assembly 1
+            // 1.1.4
+            // show the load more button if there are more projects to be loaded.
+            this.showHideLoadMoreButton();
+            
+            hideLoadingProgress();
+        }
+        
+        // Module Cockpit My Projects Release Assembly 1
+        // 1.1.4
+        // show the load more button if there are more projects to be loaded.
+        private function showHideLoadMoreButton():void {
+            if (this.projects && this.projects.length > this.visibleProjectCount) {
+                if (this.visibleProjectCount + ProjectWidgetCodeBehind.DefaultVisibleProjectCountIncrement < this.projects.length)
+                {
+                    this.load_more_btn.label = "Show " + ProjectWidgetCodeBehind.DefaultVisibleProjectCountIncrement + " More"; 
+                }
+                else
+                {
+                    this.load_more_btn.label = "Show " + (this.projects.length - this.visibleProjectCount) + " More";
+                }
+                
+                this.load_more_btn_panel.visible = true;
+                this.load_more_btn_panel.includeInLayout = true;
+            } else {
+                this.load_more_btn_panel.visible = false;
+                this.load_more_btn_panel.includeInLayout = false;
+            }
+        }
+        
+		private function compareDate(a:Object, b:Object, fields:Array = null):int {
+			if(b.date==null || a.date==null)
+			{
+			   return ObjectUtil.dateCompare(a.date,b.date);
+			}
+
+			return ObjectUtil.dateCompare(b.date,a.date);
+            }
+
+
+	private function getDataService():void
+        {
+			
+            dataservice.getPassword();
+        }
+
+	private function processPassword(e:ResultEvent): void
+        {
+        	if(e!=null && e.result!=null){
+        		password = e.result.toString();
+        		
+        	}
+
+		loadData();
+
+        }
+    ]]>
+</mx:Script>
+<mx:WebService id="ContestServiceFacadeBean" 
+wsdl="{contestServiceFacadeWsdl}"> 
+<mx:operation name="getSimpleProjectContestData" 
+    resultFormat="object" 
+    result="setProject(event)" 
+    fault="hideLoadingProgress(); Helper.showAlertMessage('getSimpleProjectContestData: ' + event.fault.faultString);" /> 
+<mx:operation name="getSimpleProjectContestDataByPID" 
+    resultFormat="object" 
+    result="setProject(event)"  
+    fault="hideLoadingProgress(); Helper.showAlertMessage('getSimpleProjectContestData: ' + event.fault.faultString);" >
+<mx:request>
+	<arg0>{pid}</arg0>
+</mx:request> 
+</mx:operation>
+</mx:WebService>
+
+<mx:RemoteObject id="dataservice" destination="remoteDataService" endpoint="{blazedsendpoint}"
+              
+		 fault="Helper.showAlertMessage(event.fault.faultString);">
+    <mx:method name="getPassword"  result="processPassword(event)" 
+		                   fault="Helper.showAlertMessage(event.fault.faultString);"/>
+
+</mx:RemoteObject>
+
+
+
+<!--
+		<mx:Box id="container" paddingTop="5" paddingRight="5" width="100%" height="98%"
+				horizontalAlign="center" horizontalScrollPolicy="off" verticalScrollPolicy="auto">
+			-->
+		    <ns1:ProjectsContainer id="prjList"  horizontalScrollPolicy="off" verticalScrollPolicy="auto"  width="100%" height="100%">
+		    </ns1:ProjectsContainer>
+		    <!--
+		</mx:Box>		
+		-->
+		<!--
+		// Module Cockpit My Projects Release Assembly 1
+        // 1.1.1
+        // load more button
+        -->
+		<mx:HBox id="load_more_btn_panel">
+		    <mx:Button label="Show More" buttonMode="true" id="load_more_btn" click="loadMore()">
+		    </mx:Button>
+		</mx:HBox>
+		
+
+</tc:ProjectWidgetCodeBehind>

@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%"
+    styleName="ContestRowStyle" mouseOver="mouseOverHandle()" mouseOut="mouseOutHandle()">
+<mx:Script>
+	<![CDATA[
+	    import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Project;
+		import com.topcoder.flex.widgets.model.IWidget;
+	import com.topcoder.flex.widgets.widgetcontent.projectwidget.qs.Contest;
+	import mx.collections.ArrayCollection;
+	import mx.controls.Alert;
+	import com.topcoder.flex.util.date.DateUtil;
+	import mx.controls.ButtonLabelPlacement;
+
+	private var _rowNum:int;
+	private var _ContextId:String;
+	
+	public var projectId:String;
+	
+	private static const OneHour:Number = 1000 * 60 * 60;
+
+	private var _inputDatePattern:RegExp = /([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})[.]([0-9]{3})([-+])([0-9]{2}):([0-9]{2})/;
+	/**
+     * The base url for the link of contents;
+     */
+    private var urlBase:String = "http://studio.topcoder.com/?module=ViewContestDetails&ct=";
+    
+    /**
+     * The base url for the link of contents;
+     */
+    private var forumUrlBase:String = "http://studio.topcoder.com/forums?module=ThreadList&forumID=";
+    
+    
+	[Bindable]
+	private var _dataProvider:Contest;
+	//setter and getter of dataProvider
+	public function set dataProvider(temp:Contest):void{
+		_dataProvider = temp;
+		startDate=_dataProvider.startDate;
+		endDate=_dataProvider.endDate;
+		submissions=_dataProvider.submissions;
+		if (_dataProvider.forumId == null || _dataProvider.forumId=="-1")
+		{
+			forumPosts="no forum";
+		}
+		else
+		{
+			forumPosts=_dataProvider.forumPosts
+		}
+		status=_dataProvider.status;
+		registrants=_dataProvider.registrants;
+		contextName=_dataProvider.name;
+		ContextId=_dataProvider.id;
+		editBtn.visible=false;
+
+    var tmp:String = status.toLowerCase();
+    if (tmp.indexOf("active") >= 0) {
+      statusBtn.styleName = "active";
+    } else if (tmp.indexOf("terminated") >= 0) {
+      statusBtn.styleName = "terminated";
+    } else if (tmp.indexOf("completed") >= 0) {
+      statusBtn.styleName = "completed";
+    } else if (tmp.indexOf("draft") >= 0) {
+      statusBtn.styleName = "draft";
+    } else if (tmp.indexOf("scheduled") >= 0) {
+      statusBtn.styleName = "scheduled";
+    } else if (tmp.indexOf("danger") >= 0) {
+      statusBtn.styleName = "danger";
+    }
+  }
+  public function get dataProvider():Contest{
+    return _dataProvider;
+  }
+  // setter and getter of all propriety of Context
+  public function set ContextId(value:String):void{
+    _ContextId = value;
+  }
+  public function get ContextId():String{
+    return _ContextId;
+  }
+  public function set rowNum(temp:Number):void{
+    _rowNum = temp;
+  }
+  public function get rowNum():Number{
+    return _rowNum;
+  }
+  public function set status(temp:String):void{
+    statusBtn.label = temp;
+  }
+  public function get contextName():String{
+    return lblContextName.label;
+  }
+  public function set contextName(temp:String):void{
+    lblContextName.label = temp;
+  }
+  public function get status():String{
+    return statusBtn.label;
+  }
+  public function set startDate(temp:String):void{
+    var dateStr:String = temp;
+    if (dateStr)
+    {
+	    var dataStrArr:Array = dateStr.split("T"); 
+	    lblStartDatePart1.text = dataStrArr[0]; 
+	    var timeStrArray:Array = dataStrArr[1].split(".");
+	    var timeStr:String = timeStrArray[1];
+	    lblStartDatePart2.text = timeStrArray[0] + " GMT"+  timeStr.substr(3,3) + timeStr.substr(7,2); 
+    }
+  }
+  public function get startDate():String{
+    //TODO
+    var result:String = lblStartDatePart1.text + "T" +  lblStartDatePart2.text;
+    return result;
+  }
+  public function set endDate(temp:String):void{
+    var dateStr:String = temp; 
+    if (dateStr)
+    {
+	    var dataStrArr:Array = dateStr.split("T");
+	    lblEndDatePart1.text = dataStrArr[0];  
+	    var timeStrArray:Array = dataStrArr[1].split(".");
+	    var timeStr:String = timeStrArray[1];
+	    lblEndDatePart2.text = timeStrArray[0] + " GMT"+  timeStr.substr(3,3) + timeStr.substr(7,2); 
+     }
+  }
+  public function get endDate():String{
+    // TODO
+    var result:String =  lblEndDatePart1.text + "T" +  lblEndDatePart2.text; 
+    return result;
+  }
+  public function set registrants(temp:String):void{
+    lblRegistrants.text = temp;
+  }
+  public function get registrants():String{
+    return lblRegistrants.text;
+  }
+
+  public function set submissions(temp:String):void{
+    lblSubmissions.label = temp;
+    setLinkProperties(lblSubmissions, showSubmission);
+  }
+  public function get submissions():String{
+    return lblSubmissions.label;
+  }
+  public function set forumPosts(temp:String):void{
+    lblForumPosts.label = temp;
+    setLinkProperties(lblForumPosts, openForum);
+  }
+  public function get forumPosts():String{
+    return lblForumPosts.label;
+  }
+
+  private function setLinkProperties(linkButton:Button, clickHandler:Function) {
+	var value:Number = Number(linkButton.label);
+	if (value > 0) {
+		linkButton.styleName = "rowContentBtn";
+		linkButton.labelPlacement = ButtonLabelPlacement.LEFT;
+    	linkButton.buttonMode = true;
+    	linkButton.addEventListener(MouseEvent.CLICK, clickHandler);
+    	linkButton.setStyle("textAlign", "right");
+	}
+  }
+
+    private function showStats():void
+    {
+    	var prjCt:ProjectsContainer;
+    	var p:DisplayObjectContainer=parent;
+    	while(p!=null){
+    		if(p is ProjectsContainer)break;
+    		p=p.parent;
+    	}    
+    	if(p==null)return ;
+        	
+		prjCt=p as ProjectsContainer;
+		
+		// Module Cockpit My Projects Release Assembly 1
+        // 1.1.5
+        // restore widget to normal width if it's not already.
+		if (prjCt.projectWidget.isMaximized()) {
+            prjCt.projectWidget.restoreScreen();
+        }
+		
+		// Module Cockpit My Projects Release Assembly 1
+        // 1.1.6 / 1.1.8
+		// call method on widget to load the selected contest.
+		var tabName:String = prjCt.widgetFramework.getActiveTabName();
+        var widgetName:String = "Contest Monitor";
+        openWidget(prjCt, tabName, widgetName);
+	}
+	
+	private function showSubmission(event:MouseEvent):void
+    {
+    	var prjCt:ProjectsContainer;
+    	var p:DisplayObjectContainer=parent;
+    	while(p!=null){
+    		if(p is ProjectsContainer)break;
+    		p=p.parent;
+    	}
+    	
+    	if(p==null)return ;
+        	
+        if(parseInt(submissions)>0){
+			prjCt=p as ProjectsContainer;
+			
+			// Module Cockpit My Projects Release Assembly 1
+            // 1.1.5
+            // restore widget to normal width if it's not already.
+			if (prjCt.projectWidget.isMaximized()) {
+                prjCt.projectWidget.restoreScreen();
+            }
+            
+			// Module Cockpit My Projects Release Assembly 1
+            // 1.1.5 / 1.1.8
+            // open submission viewer widget and load the current contest.
+            var tabName:String = prjCt.widgetFramework.getActiveTabName();
+            var widgetName:String = "Submission Viewer";
+            openWidget(prjCt, tabName, widgetName);
+					
+			// Module Cockpit My Projects Release Assembly 1
+            // 1.1.5 / 1.1.8
+			// call method on widget to load the selected contest.
+            //widget.loadContest(projectId, _ContextId);
+            			
+			// Module Cockpit My Projects Release Assembly 1
+            // 1.1.6 / 1.1.8
+		    // open contest monitor widget and load the current contest.
+		    var tabName:String = prjCt.widgetFramework.getActiveTabName();
+            var widgetName:String = "Contest Monitor";
+            openWidget(prjCt, tabName, widgetName);  
+		}
+	}
+	
+	// Module Cockpit My Projects Release Assembly 1
+    // utility function that creates / opens the Submission Viewer or Contest Monitor widget.
+	private function openWidget(prjCt:ProjectsContainer, tabName:String, widgetName:String):void {
+	    var widget:IWidget=prjCt.widgetFramework.openWidget(tabName, widgetName);
+            
+		var props:Dictionary=new Dictionary();
+		props["pid"]=projectId;
+		props["toBeLoadedContestId"]=_ContextId;
+		if (widget == null) {
+		    trace("@@@@@ Creating new widget: " + widgetName);
+		    // Module Cockpit My Projects Release Assembly 1
+            // properties (or attributes) of widget that need to be created new.
+            var propertiesObj:Dictionary=new Dictionary();
+            propertiesObj["tabName"]=tabName;
+            propertiesObj["name"]=widgetName;
+            propertiesObj["title"]=widgetName;
+            propertiesObj["column"]="2";
+            propertiesObj["minimized"]="true";
+            propertiesObj["maximized"]="false";
+            propertiesObj["allowclose"]="true";
+            propertiesObj["rowspan"]=1
+            
+            if (widgetName == "Submission Viewer") {
+                propertiesObj["row"]="1";
+                propertiesObj["columnspan"]=5;
+            }
+            else if (widgetName == "Contest Monitor") {
+                propertiesObj["row"]="2";
+                propertiesObj["columnspan"]=4;
+            }
+            
+            propertiesObj["widgetConfig"]=props;
+            //prjCt.widgetFramework.addWidgetEx2(tabName, widgetName, widgetName, props);
+            prjCt.widgetFramework.addWidgetWithProperties(propertiesObj);
+        }
+        else {
+            trace("@@@@@ Opening existing widget: " + widgetName);
+            props["reload"]=true;
+		    widget.setAttributes(props);
+        }
+	}
+
+	/**
+	 * Click on the label links to url.
+	 */
+        private function handleClick():void {
+            navigateToURL(new URLRequest(urlBase+ ContextId));
+        }
+        
+        /**
+	 * Click on the view button to open forum link.
+	 */
+        private function openForum(event:MouseEvent):void
+        {
+        	if(_dataProvider.forumId == null || _dataProvider.forumId=="-1")
+        	{
+        		//Alert.show("The forum has been created!");
+        		return ;
+        	}
+        	navigateToURL(new URLRequest(forumUrlBase+ _dataProvider.forumId ));
+        }
+        
+        private function mouseOverHandle():void
+        {
+        	if(_dataProvider.status.toLocaleLowerCase()=="draft"
+        	  || _dataProvider.status.toLocaleLowerCase()=="unactive - not yet published")
+		  {
+        		editBtn.visible=true;
+		  }
+        }
+        
+         private function mouseOutHandle():void
+        {
+        	editBtn.visible=false;
+        }
+        
+        private function editContest():void
+        {
+        	var prjCt:ProjectsContainer;
+        			var p:DisplayObjectContainer=parent;
+        			while(p!=null){
+        				if(p is ProjectsContainer)break;
+        				p=p.parent;
+        			}
+        			if(p==null)return ;
+					prjCt=p as ProjectsContainer;
+					var widget:IWidget=prjCt.widgetFramework.getWidget("Launch Contests","Launch Contest");
+					var props:Dictionary=new Dictionary();
+					props["contestid"]=_dataProvider.id;
+					widget.setAttributes(props);
+					prjCt.widgetFramework.openWidget("Launch Contests","Launch Contest");
+        }
+        
+        //change the time to UMT-5 time for BUGR-1196
+        private function changeTimeToUMTMinus5(date:String):String {
+            var dateTmp:Date = new Date(date);
+            var tzOffHours:Number = dateTmp.timezoneOffset/60;
+            dateTmp.setTime(dateTmp.getTime() - (5 - tzOffHours)*OneHour);
+            var dateStr:String = dateTmp.toString();
+            var GMTIndex:int = dateStr.indexOf("GMT");
+            var result:String = dateStr.substr(0, GMTIndex);
+            result += "UMT-0500 ";
+            result += dateStr.substr(GMTIndex+9, 4);
+            return result;
+        }
+	]]>
+</mx:Script>
+    <mx:HBox width="100%">
+    	<mx:LinkButton width="100%" buttonMode="true" useHandCursor="true" id="lblContextName" styleName="linkBtn" click="handleClick()"/>
+        <mx:Spacer width="100%" />
+        <mx:LinkButton width="10%" id="editBtn" styleName="editBtn" labelPlacement="top" click="editContest()"/> 
+    </mx:HBox>
+
+  <mx:HBox width="100%" styleName="rowContent" >
+    <mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle" verticalGap="0">
+        <mx:Text width="100%" styleName="rowContentLabel" id="lblStartDatePart1" />
+        <mx:Text width="100%" styleName="rowContentLabel" id="lblStartDatePart2" />
+    </mx:VBox>
+    <mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle" verticalGap="0">
+        <mx:Text width="100%" styleName="rowContentLabel" id="lblEndDatePart1" />
+        <mx:Text width="100%" styleName="rowContentLabel" id="lblEndDatePart2" />
+    </mx:VBox>
+    <mx:Text width="100%" styleName="rowContentLabel" id="lblRegistrants" />
+    <mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle" verticalGap="0">
+        <mx:Button buttonMode="false" width="60" styleName="rowContentLink" id="lblSubmissions" />
+    </mx:VBox>
+    <mx:VBox width="100%" horizontalAlign="center" verticalAlign="middle" verticalGap="0">
+        <mx:Button buttonMode="false" width="60" styleName="rowContentLink" id="lblForumPosts" />
+    </mx:VBox>
+    <mx:VBox width="100%" styleName="bottomAlign">
+      <mx:LinkButton buttonMode="true" id="statusBtn" labelPlacement="bottom" click="showStats()"/>
+    </mx:VBox>
+  </mx:HBox>
+</mx:VBox>
