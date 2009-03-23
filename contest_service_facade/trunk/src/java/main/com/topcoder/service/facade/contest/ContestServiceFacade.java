@@ -415,8 +415,9 @@ public interface ContestServiceFacade {
      *         <code>null</code> if there is no such contest.
      * @throws PersistenceException if any error occurs when getting contest.
      * @tested
+     * @since BUGR-1363 changed method signature
      */
-    public ContestPaymentData getContestPayment(long contestId) throws PersistenceException;
+    public List<ContestPaymentData> getContestPayments(long contestId) throws PersistenceException;
 
     /**
      * <p>Updates specified contest payment data.</p>
