@@ -3524,17 +3524,21 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
      * 
      * @throws ContestManagementException
      *             if any error occurs when getting contest.
+     * @since BUGR-1363 changed method signature
      */
     @PermitAll
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public ContestPayment getContestPayment(long contestId) throws ContestManagementException {
+    public List<ContestPayment> getContestPayments(long contestId) throws ContestManagementException {
         try {
-            logEnter("getContestPayment()");
+            logEnter("getContestPayments()");
             logOneParameter(contestId);
 
             EntityManager em = getEntityManager();
-            ContestPayment contestPayment = em.find(ContestPayment.class, new Long(contestId));
-            return contestPayment;
+            Query query = em.createQuery("select c from ContestPayment c where c.contestId = "  + contestId);
+            List list = query.getResultList();
+            List<ContestPayment> result = new ArrayList<ContestPayment>();
+            result.addAll(list);
+            return result;
         } catch (IllegalStateException e) {
             throw wrapContestManagementException(e, "The EntityManager is closed.");
         } catch (PersistenceException e) {
