@@ -430,8 +430,7 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         }
         
         public function saveAsDraft():void{
-        	competition.contestData.statusId= CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED; //inactived
-        	competition.contestData.detailedStatusId= CONTEST_DETAILED_STATUS_DRAFT;
+        	
         	saveContest();
         }
         
@@ -452,6 +451,9 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
             
             competition._id=competition.id;
             competition._type=competition.type;
+
+	    competition.contestData.statusId= CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED; //inactived
+            competition.contestData.detailedStatusId= CONTEST_DETAILED_STATUS_DRAFT;
             
             createContestOp.addEventListener("result", createContestHandler);
             createContestOp.send(competition, competition.contestData.tcDirectProjectId);
@@ -488,6 +490,13 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         
         // TCCC-1023
         private function updateContest():void{
+
+	    if (getExtraContestFee() > 0) 
+	    {
+		competition.contestData.statusId= CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED; //inactived
+		competition.contestData.detailedStatusId= CONTEST_DETAILED_STATUS_DRAFT;
+		
+	    }
             var updateContestOp:AbstractOperation = _csws.getOperation("updateContest");
             
             updateContestOp.addEventListener("result", updateContestHandler);
@@ -580,6 +589,25 @@ package com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget {
         // BUGR-1393
         public function hideLoadingProgress():void {
         	ProgressWindowManager.hideProgressWindow(this.container);
+        }
+
+	// BUGR-1363
+        public function getPaidContestFee():Number {
+        	if(!competition.contestData.payments) {
+        		return 0;
+        	}
+        	var paidFee:Number = 0;
+        	for(var i:int = 0; i < competition.contestData.payments.length; i++) {
+        		paidFee += (competition.contestData.payments[i] as ContestPaymentData).price;
+        	}
+        	return new Number(paidFee.toFixed(2));
+        }
+        
+        // BUGR-1363
+        public function getExtraContestFee():Number {
+        	var me:LaunchWidget = container.contents as LaunchWidget; 
+        	var result:Number = new Number(me.overView.adminf.text) - getPaidContestFee(); 
+        	return new Number(result.toFixed(2));
         }
     }
 }

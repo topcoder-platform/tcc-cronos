@@ -585,6 +585,9 @@ private var stateToStepNum:Dictionary = null;
                    review.fourthPrize = overView.fourthPlace.text;
                    review.fifthPrize = overView.fifthPlace.text;
                    review.adminFee = overView.adminf.text;
+				   if(getExtraContestFee() > 0) {// BUGR-1363
+                   		review.adminFee += ' (extra $' + getExtraContestFee().toFixed(2) + ')'; 
+                   }
                    review.contestTotal = overView.cntstTtl.text;
                    
                    this.height = DETAILS_HEIGHT;  // BUGR-1134
@@ -670,6 +673,10 @@ private var stateToStepNum:Dictionary = null;
 					
                    this.currentState = "ReviewState";
                    save.visible = true;
+                   save.label = getExtraContestFee() == 0 ? "save" : "save as draft"; // BUGR-1363
+                   if(getExtraContestFee() == 0) { // BUGR-1363
+                    	goNext.visible = false;
+                   }
 
                    review.fromDate = sched.dfStart.selectedDate;
                    review.fromTime = sched.CmbHourStart.selectedItem.label+":"+sched.CmbMinuteStart.selectedItem.label+" "+sched.timezoneStart.text;
@@ -708,8 +715,7 @@ private var stateToStepNum:Dictionary = null;
                      //bottemline.height=mainPanel.height-800;
 
                     activate.contentTitleStr = review.contentTitleStr;
-                    activate.contestTotal = review.adminFee;
-                    
+                    activate.contestTotal = getExtraContestFee().toFixed(2); // BUGR-1363
                     activate.initData();
                 } else if (this.currentState == "ActivateState") {
                     save.visible = false;
@@ -774,7 +780,7 @@ private var stateToStepNum:Dictionary = null;
                 } else if (this.currentState == "ReviewState"){
                    this.currentState = "ScheduleState";
                    this.height = SCHEDULE_HEIGHT;  // BUGR-1134
-
+					goNext.visible = true; // BUGR-1363
                    setCurStep(step6box);
                    setNextStep(step7box); // BUGR-1141
                    //step7Text.setStyle("color", "#a8a8a8");

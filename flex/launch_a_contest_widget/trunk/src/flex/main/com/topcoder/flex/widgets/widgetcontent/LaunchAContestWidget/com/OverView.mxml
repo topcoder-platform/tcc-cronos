@@ -7,6 +7,7 @@
 	
 	<mx:Script>
 	<![CDATA[
+		import mx.formatters.NumberFormatter;
     	import mx.collections.ArrayCollection;
     	import mx.controls.RadioButton;
     	import mx.rpc.events.ResultEvent;
@@ -114,6 +115,10 @@
         		adminf.text = "";
         		cntstTtl.text = "";
         	}
+        	// BUGR-1363
+        /*	if(mainWidget.scheduledEditMode && _oldContestFee == null) {
+        		_oldContestFee = adminf.text;
+        	} */
         }
         
         public function validateFields():Boolean{
@@ -166,7 +171,22 @@
                       
                       return false; 
                 }
-
+                // BUGR-1363
+				var diff:Number = mainWidget.getExtraContestFee();
+        		if(diff < 0) {
+        			var formatter:NumberFormatter = new NumberFormatter();
+        			formatter.precision = 2;
+        			formatter.useThousandsSeparator = true;
+        			formatter.thousandsSeparatorTo = ",";
+        			formatter.decimalSeparatorTo = ".";
+        			Helper.showAlertMessage("Decreasing the total prize amount is not permitted at this time. If you would like to decrease the overall prize amounts please contact directassist@topcoder.com." +
+        			"Your total prize amount must be at least equal to $" + formatter.format(mainWidget.getPaidContestFee() / 0.2), 160);
+        			return false;
+        		} 
+        		// check if we need step 8
+        		(mainWidget.step8box.parent as HBox).visible = diff > 0;
+        		(mainWidget.step8box.parent as HBox).includeInLayout = diff > 0;
+				mainWidget.save.label = diff == 0 ? "SAVE" : "SAVE AS DRAFT"; // BUGR-1363
                 updateResult();
 
                 return true;

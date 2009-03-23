@@ -207,7 +207,7 @@
 	            <mx:VBox >
 	                <mx:HBox>
 	                   <mx:Label text="20% Admin Fee:" fontWeight="bold" />
-	                   <mx:Text id="adFee" text="$***" width="54"  />
+	                   <mx:Text id="adFee" text="$***" width="154" /> <!-- BUGR-1363 -->
 	                </mx:HBox>
 	                <mx:HBox>
 	                   <mx:Label text="Contest Total:" fontWeight="bold" />

@@ -62,5 +62,7 @@ public function ContestData() {}
                    public var requiresPreviewFile:Boolean;
                    public var maximumSubmissions:Number;
                    public var numberOfRegistrants:Number;
+                   [ArrayElementType("com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestPaymentData")]
+                   public var payments:Array; // BUGR-1363
            	}
       	 }

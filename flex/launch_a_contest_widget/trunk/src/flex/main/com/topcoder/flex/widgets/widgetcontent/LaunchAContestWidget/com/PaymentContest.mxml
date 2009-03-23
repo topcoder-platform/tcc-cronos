@@ -163,7 +163,7 @@
 					</mx:HBox>
 				</mx:GridItem>
 				<mx:GridItem horizontalAlign="center" width="165">
-					<mx:Text text="Contest Launch Fee" styleName="contentGrey" />
+					<mx:Text text="{mainWidget.getPaidContestFee() > 0 ? 'Contest Launch Fee\n(Prize Adjustment)' : 'Contest Launch Fee'}" styleName="contentGrey" /> <!-- BUGR-1363 -->
 				</mx:GridItem>
 				<mx:GridItem horizontalAlign="center" width="159">
 					<mx:Text id="textContestLaunchFee" styleName="contentGrey" />
