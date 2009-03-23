@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=ContestMonitor widget
+component.distfilename=contest_monitor_widget
+component.package=com.topcoder.flex.widgets.widgetcontent.contestmonitor
+component.packagedir=com/topcoder/flex/widgets/widgetcontent/contestmonitor
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=0
