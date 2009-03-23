@@ -3252,24 +3252,25 @@ public class StudioServiceBean implements StudioService {
      *
      * @throws PersistenceException
      *             if any error occurs when getting contest.
+     *  @since BUGR-1363 changed method signature
      */
-    public ContestPaymentData getContestPayment(long contestPaymentId) throws PersistenceException {
-        logEnter("getContestPayment", contestPaymentId);
-        checkParameter("contestPaymentId", contestPaymentId);
+    public List<ContestPaymentData> getContestPayments(long contestId) throws PersistenceException {
+        logEnter("getContestPayments", contestId);
+        checkParameter("contestPaymentId", contestId);
 
         try {
-            ContestPayment contestPayment = contestManager.getContestPayment(contestPaymentId);
+            List<ContestPayment> contestPayment = contestManager.getContestPayments(contestId);
             if (contestPayment == null) {
-                throw new EntityNotFoundException("ContestPayment with id " + contestPaymentId + " is not found.");
+                throw new EntityNotFoundException("ContestPayment with id " + contestId + " is not found.");
             }
             // authorization
-            authorizeWithContest(contestPayment.getContestId());
-            if (contestPayment == null) {
-                // handleContestNotFoundError(null, contestPaymentId);
+            authorizeWithContest(contestId);
+            
+            List<ContestPaymentData> result = new ArrayList<ContestPaymentData>();
+            for(ContestPayment cp : contestPayment) {
+                result.add(convertContestPayment(cp));
             }
-
-            ContestPaymentData result = convertContestPayment(contestPayment);
-            logExit("getContestPayment", result);
+            logExit("getContestPayments", result);
             return result;
         } catch (ContestManagementException e) {
             handlePersistenceError("ContestManager reports error while retrieving contest payment.", e);
