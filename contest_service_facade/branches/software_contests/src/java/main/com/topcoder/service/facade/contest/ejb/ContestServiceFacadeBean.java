@@ -1635,6 +1635,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 return null;
             }
 
+			com.topcoder.project.phases.Phase[] allPhases = projectData.getAllPhases();
+            for (int i = 0; i < allPhases.length; i++) {
+                allPhases[i].setProject(null);
+            }
+
             SoftwareCompetition contest = new SoftwareCompetition();
             contest.setProjectData(projectData);
             contest.setType(CompetionType.SOFTWARE);
