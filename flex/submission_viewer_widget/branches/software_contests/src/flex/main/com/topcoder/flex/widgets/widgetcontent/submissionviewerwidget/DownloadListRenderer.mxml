@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox styleName="BoxStyle" xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Script>
+		<![CDATA[
+		    import mx.controls.ButtonLabelPlacement; // BUGR-1505
+			import mx.core.Application;
+            [Bindable]
+			private function getPurchase(dta:Object):String {
+				if (!dta) {
+					return "";
+				}
+				var temp:String = "";
+				//if (dta.hasOwnProperty("size")) {
+					down.label = "Download"
+				//}
+				if (dta.hasOwnProperty("purchased") && dta.purchased == true) {
+					temp += "Prize: $";
+					if (dta.hasOwnProperty("price")) {
+						return temp + dta.price; 
+					} else {
+					    	return "";
+					}
+				} else {
+					return "";
+				}
+			
+			}
+			
+			private function getPurchased(dta:Object):String {
+				if (!dta) {
+					return "";
+				}
+				if (dta.hasOwnProperty("purchased") && dta.purchased == true) {
+					return "Purchase: Yes";
+				} else {
+					return "Purchase: No";
+				}
+			}
+			
+			private function download(id:String):void {
+				trace("Submission id @ download: " + id);
+
+				// TODO: read url from app settings.				
+				
+				var url:String = "http://"+Application.application.parameters.hostAddress+"/direct/cockpit/impersonation/cockpitStudio.do?&sbmid=" + id + "&sbt=original";
+        			var u:URLRequest = new URLRequest(url);
+        			navigateToURL(u,"_blank");
+				
+				/*
+				var request:URLRequest = new URLRequest(url);
+				var fileRef:FileReference = new FileReference();
+				fileRef.download(request);
+				*/
+			}
+		]]>
+	</mx:Script>
+<mx:HBox styleName="BoxStyle" shadowDistance="0" width="100%" dropShadowEnabled="false" horizontalAlign="center" verticalAlign="middle">
+	<mx:VBox id="left" horizontalAlign="right" verticalGap="0"
+			paddingTop="0" paddingLeft="0" paddingBottom="0" paddingRight="20">
+		<mx:Canvas width="116" height="94">
+			<mx:Canvas id="thumbnail" top="9" left="8" bottom="0" right="8"
+				backgroundImage="{data.thumbnail}" backgroundSize="100%"/>
+			<mx:Button styleName="rankLogo" buttonMode="true" id="rank" label="{(data.rank)?data.rank:'+'}"
+				width="25" height="26" textAlign="center" />
+		</mx:Canvas>
+	</mx:VBox>
+	<mx:VBox id="right" width="100%" horizontalScrollPolicy="off" verticalScrollPolicy="off"  horizontalAlign="left" verticalAlign="middle">
+		<mx:Label styleName="normalText" />
+		<mx:Text width="100%" textAlign="left" styleName="text" 
+				htmlText="" />
+		<mx:Label id="content" textAlign="center" text="{'#' + data.id}" bottom="0" 
+				fontWeight="bold" styleName="text" />
+		<mx:Label text="{getPurchase(data)}" textAlign="center" styleName="text" />
+		<mx:Label text="{getPurchased(data)}" textAlign="center" styleName="text" />	
+				<mx:Button id="down" buttonMode="true" label="DOWNLOAD" click="{download(data.id)}"  styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
+	</mx:VBox>
+</mx:HBox>
+</mx:HBox>
