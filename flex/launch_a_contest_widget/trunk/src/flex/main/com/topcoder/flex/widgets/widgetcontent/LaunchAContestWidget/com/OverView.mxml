@@ -140,7 +140,7 @@
         			return false;
         		}
         		
-        		if (Number(input.text) > 0 && Number(nextInput.text) >= Number(input.text)){
+        		if (Number(input.text) > 0 && Number(nextInput.text) > Number(input.text)){
         			Helper.showAlertMessage("Prize "+ (i+1)+ " is incorrect");
         			nextInput.setFocus();
         			return false;
