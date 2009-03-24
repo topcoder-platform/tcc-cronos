@@ -425,7 +425,7 @@
                 		if (item.prizes && item.prizes is ArrayCollection) {
                 		    var prizes:ArrayCollection = item.prizes as ArrayCollection;
                 		    
-                		    for (var j:int=0; j < prizes.length; j++) {
+                		    for (var j:int=0; j < prizes.length && j < 5; j++) {
                 		        trace("Adding prize: " + prizes[j] + " to: " + contestInfo.name);
                 		        contestInfo.prizes.addItem(prizes[j] as Number);
                 		    }
@@ -508,7 +508,7 @@
                 		
 							// placement in submission data is mapped to rank.
 							//sub.rank=submissions[i].placement;
-							if ( submissions[i].placement > 0 ) { 
+							if ( submissions[i].placement > 0 && submissions[i].placement < 6 ) { 
 								sub.rank=submissions[i].placement 
 							} 
 							else {	
