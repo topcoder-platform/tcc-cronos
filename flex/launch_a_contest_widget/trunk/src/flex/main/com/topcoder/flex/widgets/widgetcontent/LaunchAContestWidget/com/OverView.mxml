@@ -48,7 +48,7 @@
 
 
         	
-			for (var i:int = 0; i < mainWidget.competition.contestData.prizes.length; i++) {
+			for (var i:int = 0; i < mainWidget.competition.contestData.prizes.length && i < 5; i++) {
 			    var prize:PrizeData=mainWidget.competition.contestData.prizes[i] as PrizeData;
 			    var p:int = prize.place as int;
 				var input:TextInput = inputsMap[p] as TextInput;
