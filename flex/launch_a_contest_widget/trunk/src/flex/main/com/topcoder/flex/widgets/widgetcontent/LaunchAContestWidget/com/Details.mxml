@@ -148,8 +148,10 @@
 	        private function handleRTEMouseMove(event:MouseEvent):void {
 	        	var editor:TCRichTextEditor = event.currentTarget as TCRichTextEditor;
 	        	if (editor && editor.isResizing) {
-	        		mainWidget.height += (stage.mouseY - editor.deltaY);
-	        		widgetHeight += (stage.mouseY - editor.deltaY);
+	        		if ( (editor.height + (stage.mouseY - editor.deltaY)) > editor.minHeight ) {
+		        		mainWidget.height += (stage.mouseY - editor.deltaY);
+		        		widgetHeight += (stage.mouseY - editor.deltaY);
+	        		}
 	        	}
 	        }
 
@@ -196,7 +198,7 @@
 	        </mx:HBox>
 	        <mx:Text id="introHint" height="0" color="0x888888" width="500" visible="false">
             </mx:Text>
-	        <tc:TCRichTextEditor id="introInput" width="100%" height="150" />  <!-- BUGR-1279 -->
+	        <tc:TCRichTextEditor id="introInput" width="100%" height="300" minHeight="150" />  <!-- BUGR-1279 -->
         </mx:VBox>
         
         <mx:Spacer height="5"/>
@@ -209,7 +211,7 @@
             </mx:HBox>
             <mx:Text id="goalsHint" height="0" color="0x888888" width="500" visible="false">
             </mx:Text>
-            <tc:TCRichTextEditor id="glsInput" width="100%" height="150" />  <!-- BUGR-1279 -->
+            <tc:TCRichTextEditor id="glsInput" width="100%" height="300" minHeight="300" />  <!-- BUGR-1279 -->
         </mx:VBox>
 
     </mx:VBox>
