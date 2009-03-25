@@ -216,7 +216,7 @@
         			if(!projects.sort)
         			{
         				var sort:Sort = new Sort();
-						sort.compareFunction = compareDate;
+						sort.compareFunction = compareName; // BUGR-1549
 						projects.sort = sort;
         			}
         			projects.refresh();
@@ -284,8 +284,13 @@
 
 			return ObjectUtil.dateCompare(b.date,a.date);
             }
-
-
+		
+		// BUGR-1549
+		private function compareName(a:Object, b:Object, fields:Array = null):int {
+			return ObjectUtil.stringCompare(a.name, b.name, true);
+        }
+            
+            
 	private function getDataService():void
         {
 			
