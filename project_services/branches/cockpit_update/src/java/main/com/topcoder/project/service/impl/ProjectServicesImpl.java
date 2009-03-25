@@ -24,6 +24,8 @@ import com.topcoder.management.resource.search.ResourceFilterBuilder;
 import com.topcoder.management.team.TeamHeader;
 import com.topcoder.management.team.TeamManager;
 import com.topcoder.project.phases.Phase;
+import com.topcoder.project.phases.template.PhaseTemplate;
+import com.topcoder.project.phases.template.PhaseTemplateException;
 import com.topcoder.project.service.ConfigurationException;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectDoesNotExistException;
@@ -198,6 +200,13 @@ public class ProjectServicesImpl implements ProjectServices {
 
     /**
      * <p>
+     * Represents the <b>teamManagerKey</b> property key.
+     * </p>
+     */
+    private static final String PROJECT_PHASE_TEMPLATE_KEY = "projectPhaseTemplateKey";
+
+    /**
+     * <p>
      * Represents the <b>loggerName</b> property key.
      * </p>
      */
@@ -299,6 +308,16 @@ public class ProjectServicesImpl implements ProjectServices {
 
     /**
      * <p>
+     * Represents the <code>DefaultPhaseTemplate</code> instance that is used to generate project phases. It is set in
+     * the constructor to a non-null value, and will never change.
+     * </p>
+     * 
+     * @since BUGR-1473
+     */
+    private final PhaseTemplate template;
+
+    /**
+     * <p>
      * Default constructor.
      * </p>
      *
@@ -345,6 +364,9 @@ public class ProjectServicesImpl implements ProjectServices {
             this.projectManager = (ProjectManager) createObject(cm, objectFactory, namespace, PROJECT_MANAGER_KEY);
             // gets the value of teamManagerKey and creates an instance by ObjectFactory
             this.teamManager = (TeamManager) createObject(cm, objectFactory, namespace, TEAM_MANAGER_KEY);
+
+            // BUGR-1473
+            this.template = (PhaseTemplate) createObject(cm, objectFactory, namespace, PROJECT_PHASE_TEMPLATE_KEY);
 
             // gets name of the log and gets the logger instance from LogManager if necessary
             String logName = cm.getString(namespace, LOGGER_NAME);
@@ -428,7 +450,7 @@ public class ProjectServicesImpl implements ProjectServices {
      */
     public ProjectServicesImpl(ProjectRetrieval projectRetrieval, ResourceManager resourceManager,
             PhaseManager phaseManager, TeamManager teamManager, ProjectManager projectManager, Log logger,
-            long activeProjectStatusId) {
+            long activeProjectStatusId, PhaseTemplate phaseTemplate) {
         Util.checkObjNotNull(projectRetrieval, "projectRetrieval", null);
         Util.checkObjNotNull(resourceManager, "resourceManager", null);
         Util.checkObjNotNull(phaseManager, "phaseManager", null);
@@ -443,6 +465,7 @@ public class ProjectServicesImpl implements ProjectServices {
         this.projectManager = projectManager;
         this.logger = logger;
         this.activeProjectStatusId = activeProjectStatusId;
+        this.template = phaseTemplate;
     }
 
     /**
@@ -1242,6 +1265,110 @@ public class ProjectServicesImpl implements ProjectServices {
                     throw new IllegalArgumentException("The resource.project must equal to prohectHeader.id.");
                 }
             }
+        }
+    }
+
+    /**
+     * <p>
+     * Persist the project and all related data. All ids (of project header, project phases and resources) will be
+     * assigned as new, for this reason there is no exception like 'project already exists'.
+     * </p>
+     * <p>
+     * First it persist the projectHeader a com.topcoder.management.project.Project instance. Its properties and
+     * associating scorecards, the operator parameter is used as the creation/modification user and the creation date
+     * and modification date will be the current date time when the project is created. The id in Project will be
+     * ignored: a new id will be created using ID Generator (see Project Management CS). This id will be set to Project
+     * instance.
+     * </p>
+     * <p>
+     * Then it persist the phases a com.topcoder.project.phases.Project instance. The id of project header previous
+     * saved will be set to project Phases. The phases' ids will be set to 0 (id not set) and then new ids will be
+     * created for each phase after persist operation.
+     * </p>
+     * <p>
+     * At last it persist the resources, they can be empty.The id of project header previous saved will be set to
+     * resources. The ids of resources' phases ids must be null. See &quot;id problem with resources&quot; thread in
+     * design forum. The resources could be empty or null, null is treated like empty: no resources are saved. The
+     * resources' ids will be set to UNSET_ID of Resource class and therefore will be persisted as new resources's.
+     * </p>
+     * 
+     * @param projectHeader
+     *            the project's header, the main project's data
+     * @param projectPhases
+     *            the project's phases
+     * @param projectResources
+     *            the project's resources, can be null or empty, can't contain null values. Null is treated like empty.
+     * @param operator
+     *            the operator used to audit the operation, can be null but not empty
+     * @throws IllegalArgumentException
+     *             if any case in the following occurs:
+     *             <ul>
+     *             <li>if projectHeader is null;</li>
+     *             <li>if projectPhases is null;</li>
+     *             <li>if the project of phases (for each phase: phase.project) is not equal to projectPhases;</li>
+     *             <li>if projectResources contains null entries;</li>
+     *             <li>if for each resources: a required field of the resource is not set : if
+     *             resource.getResourceRole() is null;</li>
+     *             <li>if operator is null or empty;</li>
+     *             </ul>
+     * @throws ProjectServicesException
+     *             if there is a system error while performing the create operation
+     * @since BUGR-1473
+     */
+    public void createProjectWithTemplate(Project projectHeader, com.topcoder.project.phases.Project projectPhases,
+            Resource[] projectResources, String operator) {
+
+        Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#createProjectWithTemplate method.");
+
+        ExceptionUtils.checkNull(projectHeader, null, null, "The parameter[projectHeader] should not be null.");
+
+        // check projectPhases
+        ExceptionUtils.checkNull(projectPhases, null, null, "The parameter[projectPhases] should not be null.");
+        try {
+            String category = projectHeader.getProjectCategory().getName();
+			String type = projectHeader.getProjectCategory().getProjectType().getName();
+
+			String[] templates = template.getAllTemplateNames();
+
+			String templateName = null;
+			for (String t : templates )
+			{
+				if (category.equals(t))
+				{
+					templateName = t;
+					break;
+				}
+				else if (type.equals(t))
+				{
+					templateName = t;
+					break;
+				}
+			}
+
+			if (templateName == null)
+			{
+				throw new PhaseTemplateException("No template found for type "+ type+" or category "+category);
+			}
+            // apply a template with name category with a given start date
+            com.topcoder.project.phases.Project newProjectPhases = template
+                    .applyTemplate(templateName, projectPhases.getStartDate());
+        
+            /*for (Phase p : newProjectPhases.getAllPhases()) {
+					System.out.println("phase is --- "+ p.getPhaseType().getName() + "---date " + p.calcStartDate());
+            }*/
+
+
+            
+            this.createProject(projectHeader, newProjectPhases, projectResources, operator);
+
+        } catch (PhaseTemplateException e) {
+            ProjectServicesException pse = new ProjectServicesException(
+                    "PhaseTemplateException occurred in ProjectServicesImpl#createProjectWithTemplate method : " + e.getMessage(),
+                    e);
+            logError(e, pse.getMessage());
+            throw pse;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits ProjectServicesImpl#createProjectWithTemplate method.");
         }
     }
 }

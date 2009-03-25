@@ -178,6 +178,12 @@
     <property name="jboss_login_module.jar"
               value="${tcs_libdir}/${jboss_login_module.path}/${jboss_login_module.jar.name}"/>
 
+	 <!-- BUGR-1473 -->
+    <property name="project_phase_template.version" value="1.0"/>
+	<property name="project_phase_template.jar.name" value="project_phase_template.jar"/>
+	<property name="project_phase_template.path" value="project_phase_template/${project_phase_template.version}"/>
+	<property name="project_phase_template.jar" value="${tcs_libdir}/${project_phase_template.path}/${project_phase_template.jar.name}"/>
+
 
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
@@ -212,6 +218,9 @@
         <pathelement location="${typesafe_enum.jar}" />
         <pathelement location="${object_formatter.jar}" />
 		<pathelement location="${user_project_data_store.jar}" />
+
+        <!-- BUGR-1473 -->
+        <pathelement location="${project_phase_template.jar}" />
 		<pathelement location="${jboss_login_module.jar}" />
 		
         <pathelement location="${jboss-ejb3x.jar}" />

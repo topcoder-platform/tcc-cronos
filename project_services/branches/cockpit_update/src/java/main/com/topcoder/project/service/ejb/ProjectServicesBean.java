@@ -588,4 +588,73 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
 
         return projectServices;
     }
+    
+    /**
+     * <p>
+     * Persist the project and all related data. All ids (of project header, project phases and
+     * resources) will be assigned as new, for this reason there is no exception like 'project
+     * already exists'.
+     * </p>
+     * <p>
+     * First it persist the projectHeader a com.topcoder.management.project.Project instance. Its
+     * properties and associating scorecards, the operator parameter is used as the
+     * creation/modification user and the creation date and modification date will be the current
+     * date time when the project is created. The id in Project will be ignored: a new id will be
+     * created using ID Generator (see Project Management CS). This id will be set to Project
+     * instance.
+     * </p>
+     * <p>
+     * Then it persist the phases a com.topcoder.project.phases.Project instance. The id of project
+     * header previous saved will be set to project Phases. The phases' ids will be set to 0 (id not
+     * set) and then new ids will be created for each phase after persist operation.
+     * </p>
+     * <p>
+     * At last it persist the resources, they can be empty.The id of project header previous saved
+     * will be set to resources. The ids of resources' phases ids must be null. See &quot;id problem
+     * with resources&quot; thread in design forum. The resources could be empty or null, null is
+     * treated like empty: no resources are saved. The resources' ids will be set to UNSET_ID of
+     * Resource class and therefore will be persisted as new resources's.
+     * </p>
+     *
+     * @param projectHeader
+     *            the project's header, the main project's data
+     * @param projectPhases
+     *            the project's phases
+     * @param projectResources
+     *            the project's resources, can be null or empty, can't contain null values. Null is
+     *            treated like empty.
+     * @param operator
+     *            the operator used to audit the operation, can be null but not empty
+     * @throws IllegalArgumentException
+     *             if any case in the following occurs:
+     *             <ul>
+     *             <li>if projectHeader is null;</li>
+     *             <li>if projectPhases is null;</li>
+     *             <li>if the project of phases (for each phase: phase.project) is not equal to
+     *             projectPhases;</li>
+     *             <li>if projectResources contains null entries;</li>
+     *             <li>if for each resources: a required field of the resource is not set : if
+     *             resource.getResourceRole() is null;</li>
+     *             <li>if operator is null or empty;</li>
+     *             </ul>
+     * @throws ProjectServicesException
+     *             if there is a system error while performing the create operation
+     * @since BUGR-1473
+     */
+    public void createProjectWithTemplate(Project projectHeader, com.topcoder.project.phases.Project projectPhases,
+            Resource[] projectResources, String operator) {
+        String method = "ProjectServicesBean#createProjectWithTemplate(Project projectHeader, com.topcoder.project.phases.Project"
+                + " projectPhases, Resource[] projectResources, String operator) method.";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+            getProjectServices().createProjectWithTemplate(projectHeader, projectPhases, projectResources, operator);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+}
 }
