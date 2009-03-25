@@ -44,16 +44,18 @@
         	}
         	
 
-		if (mainWidget.competition.contestData.prizes) {
+		if (mainWidget.competition && mainWidget.competition.contestData && mainWidget.competition.contestData.prizes) {
 
 
         	
-			for (var i:int = 0; i < mainWidget.competition.contestData.prizes.length && i < 5; i++) {
+			for (var i:int = 0; i < mainWidget.competition.contestData.prizes.length; i++) {
 			    var prize:PrizeData=mainWidget.competition.contestData.prizes[i] as PrizeData;
 			    var p:int = prize.place as int;
+			    if (p <=5)
+			    {
 				var input:TextInput = inputsMap[p] as TextInput;
 				input.text = prize.amount.toString();
-
+			    }
 			}
 		}
         	
