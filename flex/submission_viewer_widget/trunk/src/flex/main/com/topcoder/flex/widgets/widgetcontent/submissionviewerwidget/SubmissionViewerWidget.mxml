@@ -272,7 +272,7 @@
 						var subIndex:int = getItemIndex(_submissionList, list_minpage.selectedItem);
 						var subRow:int = subIndex / _currentColumnCount;
 						var maxRows:int = (_submissionList.length / _currentColumnCount) + (_submissionList.length % _currentColumnCount == 0 ? 0 : 1);
-						var maxAllowedIndex:int = maxRows - 4;
+						var maxAllowedIndex:int = maxRows - list.rowCount;
 						if (subRow > maxAllowedIndex) {
 							currentIndex = maxAllowedIndex;
 						}
@@ -316,7 +316,7 @@
 						var subIndex:int = getItemIndex(_submissionList, list.selectedItem);
 						var subRow:int = subIndex / minpageColumnCount;
 						var maxRows:int = (_submissionList.length / minpageColumnCount) + (_submissionList.length % minpageColumnCount == 0 ? 0 : 1);
-						var maxAllowedIndex:int = maxRows - 4;
+						var maxAllowedIndex:int = maxRows - list.rowCount;
 						if (subRow > maxAllowedIndex) {
 							currentIndexMinPage = maxAllowedIndex;
 						}
@@ -747,7 +747,7 @@
                     	var selectedIndex: int = getItemIndex(activeSubmission, list.selectedItem);
                     	trace("goUp Selected Index: " + selectedIndex); 
                     	
-                    	var maxActiveSubmissionListSize: int = 4 * _currentColumnCount;
+                    	var maxActiveSubmissionListSize: int = list.rowCount * _currentColumnCount;
                     	
                     	var reselectSubmission:Boolean = false;
 	                	if (selectedIndex >= maxActiveSubmissionListSize - _currentColumnCount) {
@@ -813,7 +813,7 @@
                 	
                 	// we will add item which can fill the row.
                 	for (var j:int = 0; j < _currentColumnCount; j++) {
-                		var k:int = ((currentIndex + 4) * _currentColumnCount) + j;
+                		var k:int = ((currentIndex + list.rowCount) * _currentColumnCount) + j;
                 		trace("Adding item from k: " + k);
                 		if (k < _submissionList.length) {
                 			activeSubmission.addItem(_submissionList.getItemAt(k));
@@ -848,7 +848,7 @@
                 trace("leftPanel.width: " + leftPanel.width + ", list.columnWidth: " + list.columnWidth); 
                 //trace("Clean the active submission.");
                 for (var i:int = currentIndex; i < list.rowCount + currentIndex; i++) { // BUGR-1142 was 4
-                	trace("i: " + i + ", 4 + currentIndex: " + (4 + currentIndex));
+                	trace("i: " + i + ", list.rowCount + currentIndex: " + (list.rowCount + currentIndex));
                 	for (var j:int = 0; j < _currentColumnCount; j++) {
                 		var k: int = i * (_currentColumnCount) + j;
                 		trace("i: " + i + ", j: " + j + ", _currentColumnCount: " + _currentColumnCount + ", k:" + k);
