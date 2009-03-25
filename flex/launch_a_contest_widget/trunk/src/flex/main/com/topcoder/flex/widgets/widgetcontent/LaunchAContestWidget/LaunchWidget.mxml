@@ -673,7 +673,7 @@ private var stateToStepNum:Dictionary = null;
 					
                    this.currentState = "ReviewState";
                    save.visible = true;
-                   save.label = getExtraContestFee() == 0 ? "save" : "save as draft"; // BUGR-1363
+                   save.label = getExtraContestFee() == 0 ? "SAVE" : "SAVE AS DRAFT"; // BUGR-1363
                    if(getExtraContestFee() == 0) { // BUGR-1363
                     	goNext.visible = false;
                    }
@@ -734,17 +734,17 @@ private var stateToStepNum:Dictionary = null;
             private function setButton(index:int):void {
                 switch (index) {
                     case 1:
-                        goNext.label = "Confirm Order";
+                        goNext.label = "CONFIRM ORDER";
                         goNext.visible = true;
                         back.visible = true;
                         break;
                     case 2:
-                        goNext.label = "Submit for Processing";
+                        goNext.label = "SUBMIT FOR PROCESSING";
                         goNext.visible = true;
                         back.visible = true;
                         break;
                     case 3:
-                        goNext.label = "Submit Purchase";
+                        goNext.label = "SUBMIT PURCHASE";
                         goNext.visible = true;
                         back.visible = true;
                         break;

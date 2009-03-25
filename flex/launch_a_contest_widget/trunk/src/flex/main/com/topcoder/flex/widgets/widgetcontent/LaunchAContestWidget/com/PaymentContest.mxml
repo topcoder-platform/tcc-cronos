@@ -2,6 +2,7 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:com="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*" creationComplete="init()">
 	<mx:Script>
 		<![CDATA[
+			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestPaymentResult;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
 		        import mx.rpc.events.FaultEvent;
 			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
@@ -92,6 +93,7 @@
                         "Please be sure to save your work and try again if you think you received this message by mistake.");        
             }
             
+            // BUGR-1494
             private function processCreditCardPaymentResponse(e:ResultEvent):void
             {
                 //Helper.showAlertMessage("processCreditCardPaymentResponse: " + e + ", " + e.result);
@@ -99,19 +101,25 @@
                 mainWidget.hideLoadingProgress();
 			
                 if (e && e.result) {
-                    var paymentResult:PaymentResult = ObjectTranslatorUtils.translate(e.result, PaymentResult) as PaymentResult;
-            	    trace("processCreditCardPaymentResponse:: paymentResult: " + paymentResult);
+                    var contestPaymentResult:ContestPaymentResult = ObjectTranslatorUtils.translate(e.result, ContestPaymentResult) as ContestPaymentResult; 
+            	    trace("processCreditCardPaymentResponse:: paymentResult: " + contestPaymentResult);
             	    
                     header="Your Transaction was Approved!";
-                    text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + paymentResult.referenceNumber + ".</b>";
+                    text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + contestPaymentResult.paymentResult.referenceNumber + ".</b>";
                     text2="";
                     mainWidget.goNext.visible=false;
                     mainWidget.back.visible=false;
-                    wf2.showApproval(paymentResult.referenceNumber);
-                }
-		mainWidget.notifyMyProjectWidget();
+                    wf2.showApproval(contestPaymentResult.paymentResult.referenceNumber);
+                
+                	// update contest data   
+                	mainWidget.competition.contestData = contestPaymentResult.contestData;
+            		var competitionType:String = "STUDIO";
+	            	mainWidget.competition.type = competitionType;
+            	}
+				mainWidget.notifyMyProjectWidget();
             }
 
+			// BUGR-1494
             private function processPOPaymentResponse(e:ResultEvent):void
             {
                 //Helper.showAlertMessage("processPOPaymentResponse: " + e + ", " + e.result);
@@ -119,17 +127,22 @@
                 mainWidget.hideLoadingProgress();
     			
                 if (e && e.result) {
-                    var paymentResult:PaymentResult = ObjectTranslatorUtils.translate(e.result, PaymentResult) as PaymentResult;
-            	    trace("processPOPaymentResponse:: paymentResult: " + paymentResult);
+                    var contestPaymentResult:ContestPaymentResult = ObjectTranslatorUtils.translate(e.result, ContestPaymentResult) as ContestPaymentResult; 
+            	    trace("processPOPaymentResponse:: paymentResult: " + contestPaymentResult);
             	    
                     header="Your Transaction was Approved!";
-                    text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + paymentResult.referenceNumber + ".</b>";
+                    text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + contestPaymentResult.paymentResult.referenceNumber + ".</b>";
                     text2="";
                     mainWidget.goNext.visible=false;
                     mainWidget.back.visible=false;
-                    wf3.showApproval(paymentResult.referenceNumber);
+                    wf3.showApproval(contestPaymentResult.paymentResult.referenceNumber);
+                    
+                    // update contest data   
+                    mainWidget.competition.contestData = contestPaymentResult.contestData;
+            		var competitionType:String = "STUDIO";
+	            	mainWidget.competition.type = competitionType;
                 }
-		mainWidget.notifyMyProjectWidget();
+				mainWidget.notifyMyProjectWidget();
             }
 		]]>
 	</mx:Script>
