@@ -31,6 +31,9 @@
 	        private static const ADDEDHEIGHT:Number = 80;
 			private static const ADDEDHEIGHT_GOALS:Number = 380;
 
+			private var dx:Number = 0;
+			private var dy:Number = 0;
+
 	        public function initData():void{
 	        	ctInput.htmlText = "";
 	        	introInput.htmlText = "";
@@ -148,15 +151,26 @@
 	        private function handleRTEMouseMove(event:MouseEvent):void {
 	        	var editor:TCRichTextEditor = event.currentTarget as TCRichTextEditor;
 	        	if (editor && editor.isResizing) {
-	        		if ( (editor.height + (stage.mouseY - editor.deltaY)) > editor.minHeight ) {
-		        		mainWidget.height += (stage.mouseY - editor.deltaY);
-		        		widgetHeight += (stage.mouseY - editor.deltaY);
+	        		if ( (editor.height + (stage.mouseY - dy)) > editor.minHeight ) {
+		        		mainWidget.height += (stage.mouseY - dy);
+		        		widgetHeight += (stage.mouseY - dy);
+
+		        		dx = stage.mouseX;
+		        		dy = stage.mouseY;
 	        		}
 	        	}
 	        }
 
+	        private function handleRTEDragStart(event:Event): void {
+	        	dx = stage.mouseX;
+	        	dy = stage.mouseY;
+	        }
+
 	        private function handleCreationComplete(event:Event):void {
+	        	introInput.addEventListener(TCRichTextEditor.DRAG_START, handleRTEDragStart);
 	        	introInput.addEventListener(MouseEvent.MOUSE_MOVE, handleRTEMouseMove);
+
+	        	glsInput.addEventListener(TCRichTextEditor.DRAG_START, handleRTEDragStart);
 	        	glsInput.addEventListener(MouseEvent.MOUSE_MOVE, handleRTEMouseMove);
 	        }
 	     ]]>
