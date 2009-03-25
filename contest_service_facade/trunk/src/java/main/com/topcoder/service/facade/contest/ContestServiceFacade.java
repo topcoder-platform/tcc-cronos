@@ -25,6 +25,7 @@ import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.DocumentType;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
+import com.topcoder.service.facade.contest.ContestPaymentResult;
 import com.topcoder.service.payment.CreditCardPaymentData;
 import com.topcoder.service.payment.PaymentException;
 import com.topcoder.service.payment.PaymentResult;
@@ -622,11 +623,22 @@ public interface ContestServiceFacade {
      *             if any errors occurs in processing the payment.
      * @throws IllegalArgumentException
      *             if specified <code>filter</code> is <code>null</code> or if it is not supported by implementor.
+     * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
-    public PaymentResult processContestCreditCardPayment(StudioCompetition competition, CreditCardPaymentData paymentData)
+    public ContestPaymentResult processContestCreditCardPayment(StudioCompetition competition, CreditCardPaymentData paymentData)
             throws PersistenceException, PaymentException, ContestNotFoundException;
 
-    public PaymentResult processContestPurchaseOrderPayment(StudioCompetition competition, TCPurhcaseOrderPaymentData paymentData)
+    /**
+     * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
+     * 
+     * @param competition
+     * @param paymentData
+     * @return
+     * @throws PersistenceException
+     * @throws PaymentException
+     * @throws ContestNotFoundException
+     */
+    public ContestPaymentResult processContestPurchaseOrderPayment(StudioCompetition competition, TCPurhcaseOrderPaymentData paymentData)
             throws PersistenceException, PaymentException, ContestNotFoundException;
 
     /**

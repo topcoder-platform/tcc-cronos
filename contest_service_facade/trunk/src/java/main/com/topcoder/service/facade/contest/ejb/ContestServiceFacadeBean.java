@@ -4,6 +4,7 @@
 package com.topcoder.service.facade.contest.ejb;
 
 import com.topcoder.security.auth.module.UserProfilePrincipal;
+import com.topcoder.service.facade.contest.ContestPaymentResult;
 import com.topcoder.service.payment.CreditCardPaymentData;
 import com.topcoder.service.payment.PaymentData;
 import com.topcoder.service.payment.PaymentException;
@@ -1060,8 +1061,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      *             if contest is not found while update.
      * @throws IllegalArgumentException
      *             if specified <code>filter</code> is <code>null</code> or if it is not supported by implementor.
+     *  @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
-    public PaymentResult processContestCreditCardPayment(StudioCompetition competition,
+    public ContestPaymentResult processContestCreditCardPayment(StudioCompetition competition,
             CreditCardPaymentData paymentData) throws PersistenceException, PaymentException, ContestNotFoundException {
 
         Logger.getLogger(this.getClass()).info("StudioCompetition: " + competition);
@@ -1096,8 +1098,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      *             if contest is not found while update.
      * @throws IllegalArgumentException
      *             if specified <code>filter</code> is <code>null</code> or if it is not supported by implementor.
+     * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
-    public PaymentResult processContestPurchaseOrderPayment(StudioCompetition competition,
+    public ContestPaymentResult processContestPurchaseOrderPayment(StudioCompetition competition,
             TCPurhcaseOrderPaymentData paymentData) throws PersistenceException, PaymentException,
             ContestNotFoundException {
 
@@ -1134,8 +1137,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      *             if contest is not found while update.
      * @throws IllegalArgumentException
      *             if specified <code>filter</code> is <code>null</code> or if it is not supported by implementor.
+     * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
-    private PaymentResult processContestPaymentInternal(StudioCompetition competition, PaymentData paymentData)
+    private ContestPaymentResult processContestPaymentInternal(StudioCompetition competition, PaymentData paymentData)
             throws PersistenceException, PaymentException, ContestNotFoundException {
 
         Logger.getLogger(this.getClass()).info("StudioCompetition: " + competition);
@@ -1241,8 +1245,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 			// update contest.
 			updateContest(tobeUpdatedCompetition);
 
-
-			return result;
+			// BUGR-1494
+			ContestPaymentResult contestPaymentResult = new ContestPaymentResult();
+			contestPaymentResult.setPaymentResult(result);
+			contestPaymentResult.setContestData(getContest(tobeUpdatedCompetition.getContestData().getContestId()).getContestData());
+			return contestPaymentResult;
 		}
 		catch (PersistenceException e)
 		{
