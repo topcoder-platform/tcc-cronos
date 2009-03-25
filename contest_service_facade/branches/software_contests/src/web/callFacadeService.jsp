@@ -528,7 +528,7 @@
             }            
             
             AssetDTO newAsset = new AssetDTO();
-            newAsset.setName("Catalog Services");
+            newAsset.setName("Shannon Services");
             newAsset.setVersionText("1.0");
             newAsset.setShortDescription("short");
             newAsset.setDetailedDescription("detailed");
@@ -545,22 +545,22 @@
             ));
             newAsset.setDocumentation(new ArrayList<CompDocumentation>());
 
-            ProjectType projectType = new ProjectType(1, "projectType");
-            ProjectCategory projectCategory = new ProjectCategory(1, "projectCategory", projectType);
+            ProjectType projectType = new ProjectType(1, "Component");
+            ProjectCategory projectCategory = new ProjectCategory(1, "Design", projectType);
             ProjectStatus projectStatus = new ProjectStatus(1, "projectStatus");
             com.topcoder.management.project.Project projectHeader = new com.topcoder.management.project.Project(
                 projectCategory, projectStatus);
 
             com.topcoder.project.phases.Project projectPhases = new com.topcoder.project.phases.Project(new Date(),
                     new DefaultWorkdaysFactory().createWorkdaysInstance());
-            PhaseType phaseTypeOne = new PhaseType(1, "one");
-            com.topcoder.project.phases.Phase phaseOne = new com.topcoder.project.phases.Phase(projectPhases, 1);
-            phaseOne.setPhaseType(phaseTypeOne);
-            phaseOne.setFixedStartDate(new Date());
-            phaseOne.setPhaseStatus(PhaseStatus.SCHEDULED);
-            phaseOne.setProject(null);
-            phaseOne.setScheduledStartDate(new Date());
-            phaseOne.setScheduledEndDate(new Date());
+           // PhaseType phaseTypeOne = new PhaseType(1, "one");
+           // com.topcoder.project.phases.Phase phaseOne = new com.topcoder.project.phases.Phase(projectPhases, 1);
+           // phaseOne.setPhaseType(phaseTypeOne);
+         //   phaseOne.setFixedStartDate(new Date());
+          //  phaseOne.setPhaseStatus(PhaseStatus.SCHEDULED);
+          //  phaseOne.setProject(null);
+          //  phaseOne.setScheduledStartDate(new Date());
+          //  phaseOne.setScheduledEndDate(new Date());
 
             Resource resource = new Resource();
             ResourceRole resourceRole = new ResourceRole(13);
