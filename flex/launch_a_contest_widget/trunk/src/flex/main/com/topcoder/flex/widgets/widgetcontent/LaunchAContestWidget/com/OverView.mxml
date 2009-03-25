@@ -350,9 +350,9 @@
 	            <mx:VBox horizontalGap="0" verticalGap="0" width="50%" visible="{isPresentXml('example2')}" includeInLayout="{isPresentXml('example2')}">
 	            	<mx:HBox width="100%">
 						<mx:Image source="{isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.thumbImage : ''}" click="{goToUrl(isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.fullsizeImage : '')}" styleName="clickableImage" width="150" height="150"/>
-	            		<mx:VBox verticalGap="0" horizontalGap="0" paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0" verticalAlign="top">
+	            		<mx:VBox verticalGap="0" horizontalGap="0" paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0" verticalAlign="top" width="100%">
 	            		<!-- BUGR-1204 -->
-		            		<mx:Text text="{isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.name : ''}" styleName="boldBlackText" width="100%"/>
+		            		<mx:Label text="{isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.name : ''}" styleName="boldBlackText" width="100%"/>
 		        			<mx:HBox horizontalGap="0">
 			            		<mx:Label text="Contest" width="82" styleName="smallBlackText" />
 			            		<mx:LinkButton styleName="linkBtn" label="link" click="{goToUrl(isPresentXml('example2') ? contestOverview.contestType.(@id==curContestType).example2.contestLink : '')}"/>
