@@ -1789,7 +1789,7 @@ public class AbstractResourcePersistenceFailureTest extends TestCase {
      */
     public void testLoadResourcesFailure1() throws Exception {
         try {
-            persistence.loadResources(null);
+            persistence.loadResources((long[])null);
             fail("Expect IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expect
@@ -1852,7 +1852,7 @@ public class AbstractResourcePersistenceFailureTest extends TestCase {
      */
     public void testLoadNotificationTypesFailure1() throws Exception {
         try {
-            persistence.loadNotificationTypes(null);
+            persistence.loadNotificationTypes((long[])null);
             fail("Expect IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expect
@@ -1915,7 +1915,7 @@ public class AbstractResourcePersistenceFailureTest extends TestCase {
      */
     public void testLoadResourceRolesFailure1() throws Exception {
         try {
-            persistence.loadResourceRoles(null);
+            persistence.loadResourceRoles((long[])null);
             fail("Expect IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expect

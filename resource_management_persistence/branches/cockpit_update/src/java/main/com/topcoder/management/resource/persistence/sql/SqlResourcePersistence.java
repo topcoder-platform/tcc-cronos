@@ -46,6 +46,11 @@ public class SqlResourcePersistence extends AbstractResourcePersistence {
 	/** Logger instance using the class name as category */
     private static final Log LOGGER = LogManager.getLog(SqlResourcePersistence.class.getName()); 
     
+    /**
+     * this property use for unmanaged environments/test cases 
+     */
+    private boolean useManualCommit;
+    
 	/**
      * <p>
      * Creates a new <code>SqlResourcePersistence</code> using the connectionFactory.
@@ -100,7 +105,9 @@ public class SqlResourcePersistence extends AbstractResourcePersistence {
             			"creating db connection using connection name: " + getConnectionName()));
                 connection = getConnectionFactory().createConnection(getConnectionName());
             }
-            connection.setAutoCommit(false);
+            if(useManualCommit) {
+            	connection.setAutoCommit(false);
+            }
             return connection;
         } catch (DBConnectionException e) {
             throw new ResourcePersistenceException("Failed to create the connection", e);
@@ -129,7 +136,9 @@ public class SqlResourcePersistence extends AbstractResourcePersistence {
         try {
             if (!connection.isClosed()) {
             	LOGGER.log(Level.INFO, "committing transaction");
-                connection.commit();
+            	if(useManualCommit) {
+            		connection.commit();
+            	}
             }
         } catch (SQLException e) {
             throw new ResourcePersistenceException("Failed to close the connection properly", e);
@@ -160,7 +169,9 @@ public class SqlResourcePersistence extends AbstractResourcePersistence {
         try {
             if (!connection.isClosed()) {
             	LOGGER.log(Level.INFO, "rollback transaction");
-                connection.rollback();
+            	if(useManualCommit) {
+            		connection.rollback();
+            	}
             }
         } catch (SQLException e) {
             throw new ResourcePersistenceException("Failed to close the connection properly", e);
@@ -172,4 +183,20 @@ public class SqlResourcePersistence extends AbstractResourcePersistence {
             }
         }
     }
+    
+    /**
+	 * <p>Return the useManualCommit.</p>
+	 * @return the boolean 
+	 */
+	public boolean isUseManualCommit() {
+		return useManualCommit;
+	}
+	
+	/**
+	 * set useManualCommit
+	 * @param useManualCommit
+	 */
+	public void setUserManualCommit(boolean useManualCommit) {
+		this.useManualCommit = useManualCommit;
+	}
 }

@@ -52,6 +52,7 @@ public class SqlResourcePersistenceTest extends TestCase {
         StressTestsHelper.prepareDatabase();
         factory = StressTestsHelper.getDBConnectionFactory();
         persistence = new SqlResourcePersistence(factory);
+        persistence.setUserManualCommit(true);
     }
 
     /**

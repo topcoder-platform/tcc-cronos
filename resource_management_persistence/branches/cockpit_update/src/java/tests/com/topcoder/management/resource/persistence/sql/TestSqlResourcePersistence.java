@@ -21,7 +21,9 @@ public class TestSqlResourcePersistence extends TestAbstractResourcePersistence 
     public void setUp() throws Exception {
         super.setUp();
         persistence1 = new SqlResourcePersistence(factory);
+        ((SqlResourcePersistence)persistence1).setUserManualCommit(true);
         persistence2 = new SqlResourcePersistence(factory, "sysuser");
+        ((SqlResourcePersistence)persistence2).setUserManualCommit(true);
     }
 
     /**
