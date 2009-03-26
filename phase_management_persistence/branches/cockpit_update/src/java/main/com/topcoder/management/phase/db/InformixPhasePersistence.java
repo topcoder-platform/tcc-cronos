@@ -44,6 +44,12 @@ import com.topcoder.util.idgenerator.IDGenerator;
  */
 public class InformixPhasePersistence extends AbstractInformixPhasePersistence {
 
+	
+	/**
+     * this property use for unmanaged environments/test cases 
+     */
+    private boolean useManualCommit;
+    
     /**
      * <p>
      * An simple constructor which will populate the connectionFactory and
@@ -115,7 +121,9 @@ public class InformixPhasePersistence extends AbstractInformixPhasePersistence {
         Connection conn = super.getConnection();
         try {
             // set the auto commit property.
-            conn.setAutoCommit(false);
+        	if(useManualCommit) {
+        		conn.setAutoCommit(false);
+        	}
             return conn;
         } catch (SQLException e) {
             throw new PhasePersistenceException(
@@ -166,7 +174,9 @@ public class InformixPhasePersistence extends AbstractInformixPhasePersistence {
 
         Connection conn = checkConnectionExists(context, "context");
         try {
-            conn.commit();
+        	if(useManualCommit) {
+        		conn.commit();
+        	}
         } catch (SQLException e) {
             throw new PhasePersistenceException(
                     "Error occurs when doing commit.", e);
@@ -193,7 +203,9 @@ public class InformixPhasePersistence extends AbstractInformixPhasePersistence {
 
         Connection conn = checkConnectionExists(context, "context");
         try {
-            conn.rollback();
+        	if(useManualCommit) {
+        		conn.rollback();
+        	}
         } catch (SQLException e) {
             throw new PhasePersistenceException(
                     "Error occurs when doing rollback.", e);
@@ -234,5 +246,21 @@ public class InformixPhasePersistence extends AbstractInformixPhasePersistence {
         }
         return conn;
     }
+    
+    /**
+	 * <p>Return the useManualCommit.</p>
+	 * @return the boolean 
+	 */
+	public boolean isUseManualCommit() {
+		return useManualCommit;
+	}
+	
+	/**
+	 * set useManualCommit
+	 * @param useManualCommit
+	 */
+	public void setUserManualCommit(boolean useManualCommit) {
+		this.useManualCommit = useManualCommit;
+	}
 
 }

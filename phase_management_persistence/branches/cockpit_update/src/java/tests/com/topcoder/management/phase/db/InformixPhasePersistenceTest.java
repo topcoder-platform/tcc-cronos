@@ -52,6 +52,7 @@ public class InformixPhasePersistenceTest extends TestCase {
         manager.add("configV11.xml");
         TestHelper.initDatabase();
         persistence = new InformixPhasePersistence(NAMESPACE);
+        persistence.setUserManualCommit(true);
     }
 
     /**

@@ -66,6 +66,7 @@ public class InformixPhasePersistenceTest extends TestCase {
         persistence =
             new InformixPhasePersistence(
                 new DBConnectionFactoryImpl(TestHelper.CONNECTION_FACTORY_NAMESPACE), "informix", generator);
+        persistence.setUserManualCommit(true);
     }
 
     /**

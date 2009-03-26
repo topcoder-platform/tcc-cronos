@@ -52,7 +52,9 @@ public class AbstractInformixPhasePersistenceTest extends DbTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         persistence = new InformixPhasePersistence(getConnectionFactory(),
-                CONNECTION_NAME, getIDGenerator());
+                CONNECTION_NAME, getIDGenerator());        
+        persistence.setUserManualCommit(true);
+        
     }
 
     /**
