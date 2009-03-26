@@ -24,6 +24,7 @@ import com.topcoder.management.resource.search.ResourceFilterBuilder;
 import com.topcoder.management.team.TeamHeader;
 import com.topcoder.management.team.TeamManager;
 import com.topcoder.project.phases.Phase;
+import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.template.PhaseTemplate;
 import com.topcoder.project.phases.template.PhaseTemplateException;
 import com.topcoder.project.service.ConfigurationException;
@@ -315,6 +316,7 @@ public class ProjectServicesImpl implements ProjectServices {
      * @since BUGR-1473
      */
     private final PhaseTemplate template;
+
 
     /**
      * <p>
@@ -1353,9 +1355,11 @@ public class ProjectServicesImpl implements ProjectServices {
             com.topcoder.project.phases.Project newProjectPhases = template
                     .applyTemplate(templateName, projectPhases.getStartDate());
         
-            /*for (Phase p : newProjectPhases.getAllPhases()) {
-					System.out.println("phase is --- "+ p.getPhaseType().getName() + "---date " + p.calcStartDate());
-            }*/
+            for (Phase p : newProjectPhases.getAllPhases()) {
+					p.setPhaseStatus(PhaseStatus.SCHEDULED);
+					p.setScheduledStartDate(p.calcStartDate());
+					p.setScheduledEndDate(p.calcEndDate());
+            }
 
 
             
